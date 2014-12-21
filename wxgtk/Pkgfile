@@ -1,0 +1,18 @@
+version=2.8.12.1
+
+source=(http://downloads.sourceforge.net/wxpython/wxPython-src-$version.tar.bz2)
+build() {
+cd wxPython-src-$version
+./configure --prefix=/usr --libdir=/usr/lib --with-gtk=2 --with-opengl --enable-unicode \
+--enable-graphics_ctx  --disable-optimize --enable-mediactrl --with-regex=builtin \
+--with-libpng=sys --with-libxpm=sys --with-libjpeg=sys --with-libtiff=sys \
+--with-sdl --disable-precomp-headers
+make
+make -C locale allmo
+cd contrib/src
+make
+cd ../..
+make DESTDIR=$PKG install
+cd contrib/src
+make DESTDIR=$PKG install
+}
