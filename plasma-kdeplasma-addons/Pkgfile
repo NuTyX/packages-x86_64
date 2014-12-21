@@ -1,0 +1,19 @@
+version=5.1.0.1
+
+source=(http://download.kde.org/stable/plasma/5.1.0/kdeplasma-addons-$version.tar.xz)
+
+build() {
+cd kdeplasma-addons*
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr        \
+      -DCMAKE_BUILD_TYPE=Release         \
+      -DLIB_INSTALL_DIR=lib              \
+      -DBUILD_TESTING=OFF                \
+      -DQML_INSTALL_DIR=lib/qt5/qml           \
+      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
+      ..
+make
+make DESTDIR=$PKG install
+}
