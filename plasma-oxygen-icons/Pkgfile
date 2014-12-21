@@ -1,0 +1,16 @@
+version=4.14.2
+
+_name=oxygen-icons
+
+source=(http://download.kde.org/stable/$version/src/${_name}-$version.tar.xz)
+	
+build() {
+cd ${_name}-$version
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+make
+make DESTDIR=$PKG install
+}
+
+
