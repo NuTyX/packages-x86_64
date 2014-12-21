@@ -1,0 +1,19 @@
+version=5.1.0.1
+_name=kde-cli-tools
+
+source=(http://download.kde.org/stable/plasma/5.1.0/${_name}-$version.tar.xz)
+
+build() {
+cd ${_name}*
+sed -i "s|ecm_optional_add_subdirectory(po)|#ecm_optional_add_subdirectory(po)|" CMakeLists.txt
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release         \
+      -DLIB_INSTALL_DIR=lib              \
+      -DBUILD_TESTING=OFF                \
+      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
+      -Wno-dev .. 
+make
+make DESTDIR=$PKG install
+}
