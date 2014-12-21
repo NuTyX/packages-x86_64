@@ -1,0 +1,11 @@
+version=0.6.3
+
+source=(http://archive.xfce.org/src/apps/$name/0.6/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc
+make
+make DESTDIR=$PKG install
+}
