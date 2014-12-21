@@ -1,0 +1,18 @@
+name=remmina
+version=1.0.0
+source=(https://github.com/FreeRDP/Remmina/archive/${version}.tar.gz)
+
+build() {
+   cd Remmina-$version
+   mkdir build
+   cmake \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DWITH_AVAHI=OFF \
+      -DWITH_APPINDICATOR=OFF \
+      -DWITH_TELEPATHY=OFF \
+      --build=build .
+   sed 's/$/ -lX11 -lpthread -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lgmodule-2.0 -lavahi-client -lavahi-common -lgthread-2.0/' -i remmina/CMakeFiles/remmina.dir/link.txt
+   make
+   make DESTDIR=$PKG install
+}
