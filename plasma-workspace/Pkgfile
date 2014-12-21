@@ -1,0 +1,22 @@
+version=5.1.0.1
+source=(http://download.kde.org/stable/plasma/5.1.0/plasma-workspace-$version.tar.xz)
+
+build() {
+cd $name*
+
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr      \
+      -DCMAKE_BUILD_TYPE=Release              \
+      -DSYSCONF_INSTALL_DIR=/etc/kf5   \
+      -DLIB_INSTALL_DIR=lib                   \
+      -DBUILD_TESTING=OFF                     \
+      -DQML_INSTALL_DIR=lib/qt5/qml           \
+      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
+      -Wno-dev .. 
+make
+make DESTDIR=$PKG install
+
+sed -i "s:startkde-wrapper:startkde:g" $PKG/usr/share/xsessions/plasma.desktop
+}
