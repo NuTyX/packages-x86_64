@@ -1,0 +1,17 @@
+version=5.1.0.1
+_name=breeze
+source=(http://download.kde.org/stable/plasma/5.1.0/breeze-$version.tar.xz )
+
+build() {
+cd ${_name}*
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release         \
+      -DLIB_INSTALL_DIR=lib              \
+      -DBUILD_TESTING=OFF                \
+      -DQML_INSTALL_DIR=lib/qt5/qml      \
+      -Wno-dev .. 
+make
+make DESTDIR=$PKG install
+}
