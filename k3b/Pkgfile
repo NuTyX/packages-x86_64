@@ -1,0 +1,14 @@
+version=2.0.3
+
+source=(http://download.kde.org/stable/$name/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr     \
+      -DSYSCONF_INSTALL_DIR=/etc/kde  \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
