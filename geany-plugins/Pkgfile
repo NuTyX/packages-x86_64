@@ -1,0 +1,8 @@
+version=1.24
+source=(http://plugins.geany.org/geany-plugins/$name-$version.tar.bz2)
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
