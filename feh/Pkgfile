@@ -1,0 +1,13 @@
+version=2.12
+
+
+source=(http://derf.homelinux.org/projects/feh/$name-$version.tar.bz2)
+
+
+build()
+        {
+        cd $name-$version
+        make PREFIX=/usr
+        make DESTDIR=$PKG PREFIX=/usr install
+}
+
