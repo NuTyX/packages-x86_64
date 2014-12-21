@@ -1,0 +1,15 @@
+
+_name=kapidox
+source=(http://download.kde.org/stable/frameworks/$version/${_name}-$version.tar.xz )
+
+build() {
+cd ${_name}-$version
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -Wno-dev .. 
+
+make
+make DESTDIR=$PKG install
+}
