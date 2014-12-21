@@ -1,0 +1,9 @@
+version=1.24.1
+
+source=(http://download.$name.org/$name-$version.tar.bz2)
+build() {
+cd $name-$version
+	./configure --prefix=/usr
+	make
+	make DESTDIR=$PKG install
+}
