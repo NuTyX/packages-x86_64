@@ -1,0 +1,17 @@
+version=4.13.80-49-g7a85453
+
+source=(http://www.linuxfromscratch.org/~krejzi/pkgs/baloo-widgets-$version.tar.xz)
+
+build() {
+cd baloo-widgets-*
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr    \
+      -DCMAKE_BUILD_TYPE=Release     \
+      -DLIB_INSTALL_DIR=lib          \
+      -DBUILD_TESTING=OFF            \
+      ..
+make
+make DESTDIR=$PKG install
+}
