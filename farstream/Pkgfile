@@ -1,0 +1,10 @@
+version=0.2.3
+
+source=( http://freedesktop.org/software/farstream/releases/farstream/farstream-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr 
+make
+make DESTDIR=$PKG install
+}
