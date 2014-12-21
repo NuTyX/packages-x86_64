@@ -1,0 +1,13 @@
+version=0.5.2
+
+source=(http://razor-qt.org/downloads/razorqt-${version}.tar.bz2)
+build ()
+{
+cd razorqt-$version
+
+cmake ./ -DCMAKE_INSTALL_PREFIX=/usr -DLIB_SUFFIX="" -DENABLE_LIGHTDM_GREETER=OFF -DMODULE_LIGHTDM=OFF
+
+make
+make DESTDIR="$PKG" install
+
+}
