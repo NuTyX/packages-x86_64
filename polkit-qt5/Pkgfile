@@ -1,0 +1,16 @@
+version=0.112.0
+basename=polkit-qt
+
+source=(http://download.kde.org/stable/apps/KDE4.x/admin/$basename-1-$version.tar.bz2)
+
+build() {
+cd $basename-1-$version
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release         \
+      -DCMAKE_INSTALL_LIBDIR=lib         \
+      .. 
+make
+make DESTDIR=$PKG install
+}
