@@ -1,0 +1,12 @@
+version=0.9.2
+
+source=(http://quassel-irc.org/pub/$name-$version.tar.bz2)
+
+build(){
+	cd $name-$version
+	mkdir build
+	cd build
+	cmake .. -DWITH_KDE=ON -DCMAKE_INSTALL_PREFIX=/usr
+	make
+	make DESTDIR=$PKG install
+}
