@@ -1,0 +1,17 @@
+version=1.1
+
+source=(https://bitbucket.org/acoustid/$name/downloads/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBUILD_EXAMPLES=ON \
+      ..
+make
+make DESTDIR=$PKG install
+}
+
+
