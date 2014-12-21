@@ -1,0 +1,14 @@
+version=1.6.50
+
+source=(ftp://ftp.fox-toolkit.org/pub/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr \
+	--mandir=/usr/share/man \
+	--with-xft=yes \
+	--with-opengl=yes
+	make
+	make DESTDIR=$PKG install
+}
+  
