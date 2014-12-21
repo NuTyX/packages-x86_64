@@ -1,0 +1,12 @@
+version=0.8.3
+
+source=(ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-$version.tar.bz2)
+
+build() {
+cd pinentry-$version
+./configure --prefix=/usr \
+--enable-fallback-curses \
+--libexecdir=/usr/lib
+make
+make DESTDIR=$PKG install
+}
