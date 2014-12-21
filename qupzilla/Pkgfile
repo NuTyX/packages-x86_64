@@ -1,0 +1,17 @@
+version=1.6.1
+
+source=(http://qupzilla.com/uploads/QupZilla-$version.tar.gz)
+build ()
+{
+
+cd QupZilla-$version
+
+export USE_WEBGL=true
+
+qmake QUPZILLA_PREFIX=/usr/
+
+make
+
+make INSTALL_ROOT="$PKG/" install
+
+}
