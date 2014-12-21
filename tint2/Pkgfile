@@ -1,0 +1,13 @@
+version=0.11
+ 
+source=(http://tint2.googlecode.com/files/$name-$version.tar.bz2)
+ 
+build() {
+cd $name-$version
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr ../
+make
+make DESTDIR=$PKG install
+rm -r $PKG/usr/share/doc  
+}
