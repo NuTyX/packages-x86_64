@@ -1,0 +1,18 @@
+# name=freerdp
+version=1.0.1
+release=1
+source=(https://github.com/downloads/FreeRDP/FreeRDP/$name-$version.tar.gz
+        patch-ffmpeg-2.0.diff)
+
+build() {
+   cd $name-$version
+patch channels/drdynvc/tsmf/ffmpeg/tsmf_ffmpeg.c < $SRC/patch-ffmpeg-2.0.diff
+   cmake \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DWITH_CUPS=OFF \
+      -DWITH_SSE2=ON
+   make
+   make DESTDIR=$PKG install
+}
