@@ -1,0 +1,13 @@
+version=0.5.9
+source=(http://www.midori-browser.org/downloads/midori_${version}_all_.tar.bz2)
+build () {
+cd $name-$version
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+ -DCMAKE_INSTALL_DOCDIR=/usr/share/doc/midori-0.5.8 \
+ -DUSE_ZEITGEIST=OFF \
+ ..
+make
+make DESTDIR=$PKG install
+}
