@@ -1,0 +1,25 @@
+version=1.12.91-105-g0386515
+
+source=(http://www.linuxfromscratch.org/~krejzi/pkgs/akonadi-$version.tar.xz)
+
+build() {
+cd akonadi-*
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr    \
+      -DCMAKE_BUILD_TYPE=Release     \
+      -DSYSCONF_INSTALL_DIR=/etc/kf5 \
+      -DLIB_INSTALL_DIR=lib          \
+      -DBUILD_TESTING=OFF            \
+      ..
+make
+make DESTDIR=$PKG install
+
+install -v -dm755 $PKG/usr/lib/qt5/plugins/sqldrivers
+
+mv -v $PKG/usr/lib/plugins/sqldrivers/*   \
+      $PKG/usr/lib/qt5/plugins/sqldrivers
+
+rm -rfv $PKG/usr/lib/plugins
+}
