@@ -1,0 +1,11 @@
+version=3.12.0
+
+source=(https://launchpad.net/$name/${version%.*}/$version/+download/$name-$version.tar.xz)
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr \
+		--disable-schemas-compile
+	make
+	make DESTDIR=$PKG install
+}
