@@ -7,7 +7,7 @@ version=1.9.0
 release=1
 source=(http://www.surina.net/soundtouch/$name-$version.tar.gz)
 build() {
-cd $name-$version
+cd $name
 ./bootstrap
 ./configure --prefix=/usr \
 --docdir=/usr/share/doc/$name-$version
