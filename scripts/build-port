@@ -1,8 +1,85 @@
-if [ $# -lt 1 ]; then
-	echo "need a port name"
-	exit 1
-fi
+#!/bin/bash
 
+list_ports() {
+	cd $PORT_BASE && find . -name Pkgfile -follow -printf "%h\n" | sed 's|^./||g' | sort
+}
+checkBinaryValid()
+{
+	cd ${BINARY_BASE}
+	for DIR in *
+	do
+		if [ ! -d $PORT_BASE/$DIR ]; then
+			echo "'$DIR' should be removed and delete from the .PKGREPO file"
+			# rm -vf $DIR
+			# sed -i "/#$DIR#/d" .PKGREPO
+#		else
+#			echo "The package $DIR is OK"
+		fi
+	done
+}
+checkNewPort()
+{
+	cd ${PORT_BASE}
+	for DIR in *
+	do
+		if [ ! -d ${BINARY_BASE}/$DIR ]; then
+			echo "'$DIR' should be added"
+			# rsync -av ${PORT_BASE}/$DIR ${BINARY_BASE}/$DIR
+		fi
+	done
+}
+list_diff()
+{
+	ports_list=`mktemp` || exit 1
+	binaries_list=`mktemp` || exit 1
+	output=`mktemp` || exit 1
+	output_sorted=`mktemp` || exit 1
+	found="no"
+
+	cards list -p | grep -v ^Number >> $binaries_list
+	list_ports >> $ports_list
+
+	for binary_package in `cat $binaries_list | gawk '{ print $1 }'`; do
+		binary_package_version=`cat $binaries_list | grep "^$binary_package " | gawk '{ print $2 }'| cut -d "-" -f1`
+		binary_package_release=`cat $binaries_list | grep "^$binary_package " | gawk '{ print $2 }'| cut -d "-" -f2`
+		if [ "$binary_package_version" == "" ]; then
+			base_binary_package=`echo $binary_package | cut -d "-" -f1`
+			if [ "$base_binary_package" != "$binary_package" ]; then
+				binary_package_version=`cat $binaries_list | grep "^$base_binary_package " | gawk '{ print $2 }'| cut -d "-" -f1`
+				binary_package_release=`cat $binaries_list | grep "^$base_binary_package " | gawk '{ print $2 }'| cut -d "-" -f2`
+			fi
+		fi
+		binary_version=`echo $binary_package_version-$binary_package_release`
+		package=$binary_package
+		if [ -f $PORT_BASE/$package/Pkgfile ]; then
+			base_package=`echo $package | cut -d "-" -f1`
+			cd $PORT_BASE/$package
+			version=""
+			release=""
+			. Pkgfile
+			if [ "$version" = "" ] && [ "$base_package" != "$package" ] ; then 
+				if [ -f $PORT_BASE/$base_package/Pkgfile ]; then
+					cd $PORT_BASE/$base_package
+					. Pkgfile
+					echo "$package $version-$release"
+				fi
+			fi
+			[ -z $release ] && release=1
+			port_version=`echo $version-$release`
+			if [ "$binary_version" != "$port_version" ]; then
+				echo "$package $port_version $binary_version" >> $output
+				found="yes"
+			fi
+		fi
+	done
+	if [ "$found" = "yes" ]; then
+		echo "Name Port Compiled" >> $output_sorted
+		sort $output >> $output_sorted
+		column -t $output_sorted
+	else
+		echo "Binaries from collection $COLLECTION is OK"
+	fi
+}
 COLLECTION="`basename $0`"
 
 if [ "$COLLECTION" != "console" ] && [ "$COLLECTION" != "desktop" ] && [ "$COLLECTION" != "base" ] ; then
@@ -13,19 +90,29 @@ fi
 PORT_BASE=/home/thierry/devel/git/saravane/$COLLECTION
 BINARY_BASE=/root/saravane/$COLLECTION
 
+if [ $# -lt 1 ]; then
+	echo "need a port name"
+	echo "check what's valid"
+	checkBinaryValid
+	echo "check what's new"
+	checkNewPort
+	list_diff
+	exit 0
+fi
+
 if [ ! -d "$PORT_BASE/$1" ]; then
 	echo "I dont know the port $1"
 	exit 1
 fi
 
-rsync -av --exclude '.*.swp'  --exclude '*~'  --delete-after ${PORT_BASE}/$1/ \
+rsync -avu --exclude '.*.swp'  --exclude '*~'  --delete-after ${PORT_BASE}/$1/ \
 ${BINARY_BASE}/$1/
 
 chown -R 0:0 ${BINARY_BASE}/$1/
 
 if [ "$COLLECTION" == "base" ]; then
 	cd ${BINARY_BASE}/$1/
-	pkgmk -d -u || pkgmk -d -i
+	pkgmk -d -i || pkgmk -d -u
 else
 	cards create -r $1
 fi
