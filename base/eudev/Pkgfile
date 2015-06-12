@@ -23,11 +23,11 @@ BLKID_LIBS='-lblkid' \
 --with-rootlibdir=/lib \
 --enable-split-usr \
 --enable-hwdb  \
---disable-introspection \cards
+--disable-introspection \
 --disable-gudev \
 --disable-static  \
 --config-cache   \
---disable-gtk-doc-html \cards
+--disable-gtk-doc-html \
 --with-firmware-path=/lib/firmware
 make
 mkdir -pv $PKG/lib/{firmware,udev/devices/pts}
