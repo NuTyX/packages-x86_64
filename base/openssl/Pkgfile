@@ -2,16 +2,14 @@
 # URL: http://www.openssl.org/
 # Packager: tnut at nutyx dot org
 name=openssl
-version=1.0.2a
-release=2
+version=1.0.2c
+release=1
 
-source=(http://www.openssl.org/source/$name-$version.tar.gz
-	http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-fix_parallel_build-2.patch)
+source=(http://www.openssl.org/source/$name-$version.tar.gz)
 PKGMK_GROUPS=(devel man doc)
 
 build() {
 cd $name-$version
-patch -Np1 -i ../$name-$version-fix_parallel_build-2.patch
 
 ./config --prefix=/usr \
 	--openssldir=/etc/ssl \
