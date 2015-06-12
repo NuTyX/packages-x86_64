@@ -7,11 +7,13 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-iso
-version=3.18.13
+version=3.18.14
 release=1
 _version=${version%.*}
+AAABASICFS=20150529
 
-source=(http://www.kernel.org/pub/linux/kernel/v3.x/linux-${_version}.tar.xz
+source=(http://downloads.nutyx.org/files/aaabasicfs-${AAABASICFS}.tar.xz
+        http://www.kernel.org/pub/linux/kernel/v3.x/linux-${_version}.tar.xz
 	https://www.kernel.org/pub/linux/kernel/v3.x/patch-$version.xz
 	$name.config $name.config_64 )
 
@@ -33,7 +35,7 @@ case `uname -m` in
 		cp $SRC/$name.config ./.config;
 esac
 
- make menuconfig
+#make menuconfig
 
 make || make -j1
 
@@ -89,6 +91,20 @@ echo "mkinitramfs $INITRD_VERSION" > $PKGMK_ROOT/$name.post-install
 echo "[ -f boot/initrd ] && rm boot/initrd" >> $PKGMK_ROOT/$name.post-install
 echo "ln -sf initrd-$INITRD_VERSION boot/initrd" >> $PKGMK_ROOT/$name.post-install
 echo "ln -sf $name-$version boot/kernel" >> $PKGMK_ROOT/$name.post-install
+#pre-install autogen
+cd $SRC
+if [ -f aaabasicfs-${AAABASICFS}.tar.xz ]; then
+ bsdtar -p -o -C $SRC -xf aaabasicfs-${AAABASICFS}.tar.xz
+ echo ". lib/lsb/init-functions" >  $PKGMK_ROOT/$name.pre-install
+ for FILE in `tar --list --file aaabasicfs-${AAABASICFS}.tar.xz|grep -v /$`
+ do
+   echo "log_info_msg \"update $FILE\"" >> $PKGMK_ROOT/$name.pre-install
+   echo "cat  > $FILE << \"END_OF_FILE\"" >> $PKGMK_ROOT/$name.pre-install
+   cat $SRC/$FILE >> $PKGMK_ROOT/$name.pre-install
+   echo "END_OF_FILE" >> $PKGMK_ROOT/$name.pre-install
+   echo "evaluate_retval" >> $PKGMK_ROOT/$name.pre-install
+ done
+fi
 }
 devel() {
 
