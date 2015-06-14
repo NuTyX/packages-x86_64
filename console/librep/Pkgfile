@@ -4,16 +4,16 @@
 # Depends on: libffi 
 
 name=librep
-version=0.92.4
+version=0.92.3
 release=1
 
-source=(http://download.tuxfamily.org/$name/$name-$version.tar.xz)
+source=(http://download.tuxfamily.org/$name/${name}_$version.tar.xz)
 
 build() {
-cd $name-$version
+cd ${name}_$version
 ./configure --prefix=/usr \
-	--disable-static
-make
+--disable-static
+make || make -j1
 make prefix=$PKG/usr install
 rm -rf $PKG/usr/share
 }
