@@ -40,8 +40,8 @@ make DESTDIR=$PKG install
 
 install -d $PKG/$LIB
 mv -v $PKG/usr/lib/libnss_win{s,bind}.so*   $PKG/$LIB
-ln -v -sf lib/libnss_winbind.so.2 $PKG/usr/$LIB/libnss_winbind.so
-ln -v -sf lib/libnss_wins.so.2    $PKG/usr/$LIB/libnss_wins.s
+ln -v -sf /$LIB/libnss_winbind.so.2 $PKG/usr/lib/libnss_winbind.so
+ln -v -sf /$LIB/libnss_wins.so.2    $PKG/usr/lib/libnss_wins.so
    
 install -v -m644 examples/smb.conf.default $PKG/etc/samba/smb.conf.default
 
