@@ -1,7 +1,7 @@
 # Description: Gives more easily access to internet services which says be "RESTful".
 # URL: http://www.gnome.org/
 # Packager: pierre at nutyx dot org
-# Depends on: libsoup gobject-introspection 
+# Depends on: ca-certificates libsoup gobject-introspection 
 
 name=librest
 version=0.7.93
@@ -13,9 +13,8 @@ build() {
 cd rest-$version
 ./configure \
     --prefix=/usr \
-    --sysconfdir=/etc	
+    --sysconfdir=/etc \
+    --with-ca-certificates=/etc/ssl/certs
 make
 make DESTDIR=$PKG install
-rm -rf $PKG/usr/share/gtk-doc
 }
-  
