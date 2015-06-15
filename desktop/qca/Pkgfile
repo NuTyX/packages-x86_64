@@ -13,11 +13,11 @@ build() {
 	cd $name-$version
 	mkdir build
 	cd    build
-	cmake -DCMAKE_INSTALL_PREFIX=$QT4DIR \
+	cmake -DCMAKE_INSTALL_PREFIX=$PKG/$QT4DIR \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DQT4_BUILD=ON \
 	..
 	make
 	make INSTALL_ROOT=$PKG install
-	rm -f $(find $PKG -name '*.debug') $(find $PKG -name 'README')
+	find $PKG -name "*.pc" -exec sed -i "s,$PKG,,g" {} \;	
 }
