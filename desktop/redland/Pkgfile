@@ -5,7 +5,7 @@
 
 name=redland
 version=1.0.17
-release=1
+release=2
 
 source=(http://download.librdf.org/source/$name-$version.tar.gz)
 
@@ -17,6 +17,4 @@ cd $name-$version
  
 make
 make DESTDIR=$PKG install
-rm -rf $PKG/usr/share/gtk-doc
 }
-
