@@ -1,0 +1,18 @@
+# Description: Common development macros for MATE
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core mate
+# Packager: fanchyannmaria at orange dot fr
+
+name=mate-common
+version=1.8.0
+release=1
+source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz add-automake-115.diff)
+
+build() {
+	cd $name-$version
+	patch -Np1 -i ${SRC}/add-automake-115.diff
+   ./autogen.sh \
+        --prefix=/usr
+make
+make DESTDIR=$PKG install
+}

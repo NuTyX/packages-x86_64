@@ -1,0 +1,23 @@
+# Description:  MATE panel
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: caja,dbus-glib,dconf,gtk,libwnck,libcanberra,xorg-libice,mate-libweather,librsvg,xorg-libsm,libsoup,xorg-libxau,marco
+
+name=mate-panel
+version=1.8.1
+release=1
+source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh --prefix=/usr \
+        --libexecdir=/usr/lib/${name} \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --with-gtk=2.0 \
+        --enable-introspection \
+        --disable-static
+make
+make DESTDIR=$PKG install
+}

@@ -1,0 +1,22 @@
+# Description: Common MATE utilities for viewing disk usage, logs and fonts, taking screenshots, managing dictionaries and searching files.	
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: libgtop, libcanberra, xorg-libsm, hicolor-icon-theme, desktop-file-utils, mate-applets
+
+name=mate-utils
+version=1.8.2
+release=1
+source=(http://pub.mate-desktop.org/releases/1.8/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh \
+        --prefix=/usr \
+        --libexecdir=/usr/lib/${name} \
+        --with-gtk=2.0 \
+        --sysconfdir=/etc \
+        --disable-static
+make
+make DESTDIR=$PKG install
+}

@@ -1,0 +1,20 @@
+# Description: A MATE applet that shows how much traffic occurs on a specified network device.
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: gtk,libgtop,mate-panel,wireless-tools
+
+name=mate-netspeed
+version=1.8.0
+release=1
+source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh \
+--prefix=/usr \
+        --libexecdir=/usr/lib/${name} \
+        --disable-static
+make
+make DESTDIR=$PKG install
+}

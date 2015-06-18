@@ -1,0 +1,22 @@
+# Description:  The MATE Settings daemon (GTK2 version)
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: dbus-glib,gtk,xorg-libsm,xorg-libxtst,mate-desktop,mate-polkit,mate-settings-daemon,upower,xdg-utils
+
+name=mate-settings-daemon
+version=1.8.3
+release=1
+source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh \
+        --prefix=/usr \
+        --libexecdir=/usr/lib/${name} \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --with-gtk=2.0
+make
+make DESTDIR=$PKG install
+}

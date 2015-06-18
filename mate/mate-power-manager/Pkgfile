@@ -1,0 +1,25 @@
+# Description: Power management tool for the MATE desktop.
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: libnotify, libunique1, libcanberra, hicolor-icon-theme, upower, mate-applets, mate-panel, mate-control-center
+
+name=mate-power-manager
+version=1.8.1
+release=1
+source=(http://pub.mate-desktop.org/releases/1.8/$name-$version.tar.xz )
+
+build() {
+cd $name-$version
+sed -e 's:@HAVE_DOCBOOK2MAN_TRUE@.*::' -i man/Makefile.in
+./autogen.sh \
+        --prefix=/usr \
+        --libexecdir=/usr/lib/${name} \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --sbindir=/usr/bin \
+        --enable-applets \
+        --enable-unique
+make
+make DESTDIR=$PKG install
+}

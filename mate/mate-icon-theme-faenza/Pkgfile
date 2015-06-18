@@ -1,0 +1,18 @@
+# Description: Faenza icon theme for MATE
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: mate-common, intltool, hicolor-icon-theme,icon-naming-utils,gtk-update-icon-cache
+
+name=mate-icon-theme-faenza
+version=1.8.0
+release=1
+source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh --prefix=/usr 
+make
+make DESTDIR=$PKG install
+rm -f  $PKG/usr/share/icons/matefaenza/icon-theme.cache
+}

@@ -1,0 +1,19 @@
+# Description: A MATE Panel applet to display readings from hardware sensors, including CPU temperature, fan speeds and voltage readings.
+# URL: http://mate-desktop.org
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: dbus,gtk,libatasmart,libnotify,lm-sensors,mate-panel
+
+name=mate-sensors-applet
+version=1.8.0
+release=1
+source=(http://pub.mate-desktop.org/releases/1.8/${name}-${version}.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh -prefix=/usr \
+        --libexecdir=/usr/lib/${name} \
+        --disable-static
+make
+make DESTDIR=$PKG install
+}

@@ -1,0 +1,25 @@
+# Description:  User level public file sharing via WebDAV for MATE
+# URL: http://mate.desktop.org
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: dbus-glib,dconf,libunique1,mod-dnssd
+
+
+name=mate-user-share
+version=1.8.0
+release=1
+source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh   \
+        --prefix=/usr \
+        --libexec=/usr/lib/${name} \
+        --sysconfdir=/etc \
+        --disable-static \
+        --disable-scrollkeeper \
+        --disable-bluetooth
+make
+make DESTDIR=$PKG install
+rm -f ${PKG}/usr/share/mate-user-share/dav_user_2.0.conf
+}

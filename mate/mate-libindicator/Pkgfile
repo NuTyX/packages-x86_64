@@ -1,0 +1,19 @@
+# Description: A set of symbols and convience functions that all indicators would like to use. 
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: gtk 
+
+name=mate-libindicator
+version=12.10.1
+release=1
+source=(http://launchpad.net/libindicator/${version%.*}/$version/+download/libindicator-$version.tar.gz)
+
+build() {
+cd libindicator-$version
+sed -i 's/-Werror//' */Makefile.{am,in}
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libexecdir=/usr/lib/$name \
+              --disable-static --with-gtk=2
+make
+make DESTDIR=$PKG install
+}

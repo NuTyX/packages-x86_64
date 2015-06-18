@@ -1,0 +1,20 @@
+# Description: A system tools for MATE
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: dconf,liboobs,mate-polkit,system-tools-backends,wireless-tools
+
+name=mate-system-tools
+version=1.8.1
+release=1
+source=(http://pub.mate-desktop.org/releases/1.8/$name-$version.tar.xz )
+
+build() {
+cd $name-$version
+./configure \
+        --prefix=/usr \
+        --sysconfdir=/etc
+make
+make DESTDIR=$PKG install
+rm -f "${PKG}/usr/lib/caja/extensions-2.0/libcaja-gst-shares.a"
+}

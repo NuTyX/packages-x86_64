@@ -1,0 +1,17 @@
+# Description: Calculate MATE
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: dconf,gtk
+
+name=mate-calc
+version=1.8.0
+release=1
+source=(http://pub.mate-desktop.org/releases/1.8/$name-$version.tar.xz)
+build() {
+cd $name-$version
+./autogen.sh   --prefix=/usr \
+        --with-gtk=2.0
+make
+make DESTDIR=$PKG install
+}

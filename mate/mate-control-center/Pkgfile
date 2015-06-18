@@ -1,0 +1,24 @@
+# Description: The Control Center for MATE
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: xorg-libxscrnsaver, desktop-file-utils, mate-settings-daemon, mate-libkbd, libunique, mate-menus, librsvg, mate-desktop
+
+name=mate-control-center
+version=1.8.3
+release=1
+source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh  --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--disable-static \
+--disable-scrollkeeper \
+--enable-aboutme \
+--disable-update-mimedb
+make
+make DESTDIR=$PKG install
+rm -f  $PKG/usr/share/applications/mimeinfo.cache
+}

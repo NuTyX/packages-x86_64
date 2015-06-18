@@ -1,0 +1,19 @@
+# Description: Applet MATE
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: dbus,gtk,mate-libindicator,mate-panel
+
+name=mate-indicator-applet
+version=1.8.0
+release=1
+source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh --prefix=/usr \
+        --libexec=/usr/lib/${name} \
+        --disable-static
+make
+make DESTDIR=$PKG install
+}

@@ -1,0 +1,22 @@
+# Description: Themes MATE
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: nutyx
+# Depends on: gtk,gtk-engines
+
+
+name=mate-themes
+version=1.8.1
+release=1
+source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+
+build() {
+	cd $name-$version
+    ./autogen.sh \
+        --prefix=/usr \
+        --enable-all-themes \
+        --enable-test-themes \
+        --disable-placeholders
+make
+make DESTDIR=$PKG install
+}

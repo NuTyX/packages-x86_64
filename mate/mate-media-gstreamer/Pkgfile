@@ -1,0 +1,29 @@
+# Description:  	MATE Media Tools (GStreamer)
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: gstreamer-plugins-base, mate-panel, pulseaudio, mate-settings-daemon, intltool, mate-icon-theme, marco
+
+_name=mate-media
+name=mate-media-gstreamer
+version=1.8.0
+release=1
+source=(http://pub.mate-desktop.org/releases/1.8/$_name-$version.tar.xz)
+
+build() {
+cd $_name-$version
+./configure \
+        --prefix=/usr \
+        --sysconfdir=/etc \
+        --libexecdir=/usr/lib/${_name} \
+        --localstatedir=/var \
+        --with-gtk=2.0 \
+        --enable-gstmix \
+        --enable-gst-mixer-applet \
+        --enable-deprecated \
+        --disable-pulseaudio \
+        --disable-static
+    make
+make 	
+make DESTDIR=$PKG install 
+}

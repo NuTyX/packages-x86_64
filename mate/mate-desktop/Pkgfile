@@ -1,0 +1,24 @@
+# Description:Library with common API for various MATE modules
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: dconf,gtk,hicolor-icon-theme,libunique,python,startup-notification,dejavu-ttf
+
+name=mate-desktop
+version=1.8.2
+release=1
+source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh \
+        --prefix=/usr \
+        --with-gtk=2.0 \
+        --enable-mpaste \
+        --disable-static \
+        --disable-schemas-compile \
+        --disable-desktop-docs \
+        --enable-gtk-doc
+make
+make DESTDIR=$PKG install
+}

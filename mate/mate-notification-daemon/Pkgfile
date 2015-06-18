@@ -1,0 +1,20 @@
+# Description:  	Notification daemon for MATE
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: dconf,dbus-glib,gtk,libcanberra,libwnck,libnotify
+
+name=mate-notification-daemon
+version=1.8.2
+release=1
+source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh  --prefix=/usr \
+        --libexecdir=/usr/lib/${name} \
+        --with-gtk=2.0 \
+        --disable-static
+make
+make DESTDIR=$PKG install
+}

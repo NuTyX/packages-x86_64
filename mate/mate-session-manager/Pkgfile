@@ -1,0 +1,22 @@
+# Description: The MATE Session Handler
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: dbus-glib,dconf,libcanberra,libgnome-keyring,libnotify,libunique,mate-panel,upower
+
+name=mate-session-manager
+version=1.8.2
+release=1
+source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh --prefix=/usr  \
+        --libexecdir=/usr/lib/${name} \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --with-gtk=2.0 \
+        --disable-upower
+make
+make DESTDIR=$PKG install
+}

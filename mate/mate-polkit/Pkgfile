@@ -1,0 +1,24 @@
+# Description: PolicyKit integration for the MATE desktop
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: mate-common, polkit, gtk, gtk-doc, intltool, gobject-introspection
+
+name=mate-polkit
+version=1.8.0
+release=1
+source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh \
+        --prefix=/usr \
+        --libexecdir=/usr/lib/${name} \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --with-gtk=2.0 \
+        --enable-introspection \
+        --disable-static
+make
+make DESTDIR=$PKG install
+}
