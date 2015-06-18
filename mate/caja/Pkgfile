@@ -1,0 +1,24 @@
+# Description: File manager for the MATE desktop (GTK2 version)
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: dbus,desktop-file-utils,exempi,gtk,gvfs,libexif,libunique,xorg-libxt,mate-desktop,mate-icon-theme,startup-notification
+
+name=caja
+version=1.8.2
+release=1
+source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./autogen.sh \
+        --prefix=/usr \
+        --libexecdir=/usr/lib/${name} \
+        --with-gtk=2.0 \
+        --enable-unique \
+        --enable-introspection \
+        --disable-static \
+        --disable-update-mimedb
+make
+make DESTDIR=$PKG install
+}

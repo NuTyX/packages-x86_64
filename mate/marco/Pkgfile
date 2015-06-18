@@ -1,0 +1,29 @@
+# Description:A window manager for MATE (GTK2 version)
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: gtk,libcanberra,libgtop,xorg-libice,xorg-libsm,xorg-libxt,mate-desktop,mate-dialogs,startup-notification
+# Run on: mate-common,perl-xml-parser,yelp-tools
+
+name=marco
+version=1.8.2
+release=1
+source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz
+do_not_add_shadows_to_ARGB_windows.diff update_keybindings_with_new_name.diff fix_maximise.diff)
+
+
+build() {
+cd $name-$version
+patch -Np1 -i ${SRC}/do_not_add_shadows_to_ARGB_windows.diff
+patch -Np1 -i ${SRC}/update_keybindings_with_new_name.diff
+patch -Np1 -i ${SRC}/fix_maximise.diff
+./configure \
+        --prefix=/usr \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --with-gtk=2.0 \
+        --enable-startup-notification \
+        --disable-static
+make
+make DESTDIR=$PKG install
+}
