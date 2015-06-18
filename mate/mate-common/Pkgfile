@@ -4,14 +4,13 @@
 # Packager: fanchyannmaria at orange dot fr
 
 name=mate-common
-version=1.8.0
+version=1.10.0
 release=1
-source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz add-automake-115.diff)
+source=(http://pub.mate-desktop.org/releases/${version%.*}/${name}-${version}.tar.xz)
 
 build() {
 	cd $name-$version
-	patch -Np1 -i ${SRC}/add-automake-115.diff
-   ./autogen.sh \
+   ./configure \
         --prefix=/usr
 make
 make DESTDIR=$PKG install
