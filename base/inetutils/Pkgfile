@@ -4,7 +4,7 @@
 # Packager: pierre at nutyx dot org
 
 name=inetutils
-version=1.9.3
+version=1.9.4
 release=1
 
 source=(http://ftp.gnu.org/gnu/inetutils/inetutils-$version.tar.xz)
@@ -12,8 +12,6 @@ source=(http://ftp.gnu.org/gnu/inetutils/inetutils-$version.tar.xz)
 build()
 {
 cd  inetutils-$version
-
-echo '#define PATH_PROCNET_DEV "/proc/net/dev"' >> ifconfig/system/linux.h
 
 ./configure --prefix=/usr \
 -libexecdir=/sbin \
