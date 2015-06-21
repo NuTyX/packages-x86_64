@@ -6,7 +6,7 @@
 name=udev-extras
 _name=eudev
 version=3.1.1
-release=2
+release=3
 
 source=(http://dev.gentoo.org/~blueness/eudev/${_name}-$version.tar.gz)
 build() {
@@ -30,4 +30,13 @@ sed -r -i 's|/usr(/bin/test)|\1|' test/udev-test.pl
             --disable-static 
 make
 make DESTDIR=$PKG install
+# Most of the files are in eudev package
+for DIR in etc sbin lib usr/share usr/lib/libudev.*
+do
+   rm -r $PKG/$DIR
+done
+
+rm $PKG/usr/lib/pkgconfig/libudev.pc
+rm $PKG/usr/include/libudev.h
+rm $PKG/usr/include/udev.h
 }
