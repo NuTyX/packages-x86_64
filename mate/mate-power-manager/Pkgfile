@@ -2,24 +2,26 @@
 # URL: http://matsusoft.com.ar/projects/mate
 # Maintainer: NuTyX core team
 # Packager: fanchyannmaria at orange dot fr
-# Depends on: libnotify, libunique1, libcanberra, hicolor-icon-theme, upower, mate-media-gstreamer
+# Depends on: dconf libcanberra libnotify libunique1 mate-desktop mate-panel upower gnome-keyring gvfs
 
 name=mate-power-manager
-version=1.8.1
+version=1.10.0
 release=1
-source=(http://pub.mate-desktop.org/releases/1.8/$name-$version.tar.xz )
+source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
 sed -e 's:@HAVE_DOCBOOK2MAN_TRUE@.*::' -i man/Makefile.in
-./autogen.sh \
+./configure \
         --prefix=/usr \
         --libexecdir=/usr/lib/${name} \
         --sysconfdir=/etc \
         --localstatedir=/var \
         --sbindir=/usr/bin \
         --enable-applets \
-        --enable-unique
+        --enable-unique \
+        --with-gtk=2.0 \
+        --disable-strict
 make
 make DESTDIR=$PKG install
 }

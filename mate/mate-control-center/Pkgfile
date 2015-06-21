@@ -2,16 +2,16 @@
 # URL: http://matsusoft.com.ar/projects/mate
 # Maintainer: NuTyX core team
 # Packager: fanchyannmaria at orange dot fr
-# Depends on: xorg-libxscrnsaver, desktop-file-utils, mate-libkbd, libunique, librsvg, mate-notification-daemon
+# Depends on: caja dconf desktop-file-utils gsettings-desktop-schemas gtk libgtop librsvg libunique1 xorg-libxt mate-desktop mate-icon-theme mate-libkbd mate-menus marco mate-settings-daemon
 
 name=mate-control-center
-version=1.8.3
+version=1.10.0
 release=1
-source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-./autogen.sh  --prefix=/usr \
+./configure  --prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \
 --disable-static \

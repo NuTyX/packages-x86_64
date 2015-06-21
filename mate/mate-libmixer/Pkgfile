@@ -1,0 +1,22 @@
+# Description: Mixer library for MATE Desktop
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: alsa-lib pulseaudio
+
+name=mate-libmixer
+version=1.10.0
+release=1
+_name=libmatemixer
+source=(http://pub.mate-desktop.org/releases/${version%.*}/${_name}-$version.tar.xz)
+
+build() {
+cd ${_name}-$version
+./configure \
+        --prefix=/usr \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --disable-static
+make
+make DESTDIR=$PKG install
+}

@@ -1,0 +1,21 @@
+# Description: A Caja extension for opening terminals in arbitrary local paths (GTK2 version)
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: caja caja-extensions-common 
+
+
+name=caja-extensions-open-terminal
+_name=caja-extensions
+version=1.10.0
+release=1
+source=(http://pub.mate-desktop.org/releases/${version%.*}/${_name}-$version.tar.xz)
+
+build() {
+cd ${_name}-$version
+ ./configure \
+        --prefix=/usr \
+        --with-gtk=2.0
+make
+make -C open-terminal DESTDIR=$PKG install
+}

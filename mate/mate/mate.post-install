@@ -1,0 +1,5 @@
+/usr/bin/update-desktop-database
+/usr/bin/gtk-update-icon-cache
+sed -i "s/^id:[3-5]/id:4/" /etc/inittab
+# Activer mate par défaut
+sed -i "s/^\(Session=\).*$/\1mate/g" /etc/skel/.dmrc

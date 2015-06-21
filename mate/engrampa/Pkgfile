@@ -1,0 +1,23 @@
+# Description: Archive manipulator for MATE (GTK2 version)
+# URL: http://matsusoft.com.ar/projects/mate
+# Maintainer: NuTyX core team
+# Packager: fanchyannmaria at orange dot fr
+# Depends on: caja
+
+name=engrampa
+version=1.10.0
+release=1
+source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz fr-rpm-bsdtar.patch)
+
+build() {
+cd $name-$version
+patch -Np1 -i ../fr-rpm-bsdtar.patch
+./configure \
+        --prefix=/usr \
+        --libexecdir=/usr/lib/${name} \
+        --with-gtk=2.0 \
+        --disable-static \
+        --disable-packagekit
+make
+make DESTDIR=$PKG install
+}

@@ -2,12 +2,14 @@
 # URL: http://matsusoft.com.ar/projects/mate
 # Maintainer: NuTyX core team
 # Packager: fanchyannmaria at orange dot fr
-# Depends on: gstreamer-plugins-base,libgtop, libwnck, system-tools-backends, mate-system-monitor, mate-settings-daemon, mate-icon-theme, networkmanager
+# Depends on: gtksourceview2 mate-panel mate-icon-theme upower
+
 
 name=mate-applets
-version=1.8.1
+version=1.10.0
 release=1
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
+
 build() {
 cd $name-$version
  ./configure \
@@ -15,8 +17,8 @@ cd $name-$version
         --sysconfdir=/etc \
         --libexecdir=/usr/lib/${name} \
         --enable-polkit \
-        --enable-networkmanager \
         --enable-ipv6 \
+        --with-gtk=2.0 \
         --disable-static
 make
 make DESTDIR=$PKG install

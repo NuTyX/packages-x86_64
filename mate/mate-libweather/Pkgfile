@@ -2,23 +2,23 @@
 # URL: http://matsusoft.com.ar/projects/mate
 # Maintainer: NuTyX core team
 # Packager: fanchyannmaria at orange dot fr
-# Depends on: dconf,mate-common, glib, libsoup, gtk, gtk-doc
+# Depends on: dconf gtk libsoup 
 
 name=mate-libweather
-version=1.8.0
+version=1.10.0
 release=1
 _name=libmateweather
 source=(http://pub.mate-desktop.org/releases/${version%.*}/${_name}-$version.tar.xz)
 
 build() {
 cd ${_name}-$version
-PYTHON=/usr/bin/python2 ./configure \
+	./configure \
         --prefix=/usr \
         --sysconfdir=/etc \
         --localstatedir=/var \
         --with-gtk=2.0 \
         --disable-static \
-        --enable-python \
+        --disable-python \
         --enable-locations-compression
 make
 make DESTDIR=$PKG install

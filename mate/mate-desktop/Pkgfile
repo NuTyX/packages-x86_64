@@ -2,16 +2,16 @@
 # URL: http://matsusoft.com.ar/projects/mate
 # Maintainer: NuTyX core team
 # Packager: fanchyannmaria at orange dot fr
-# Depends on: dconf,gtk,hicolor-icon-theme,libunique,python,startup-notification,dejavu-ttf,mate-common
+# Depends on: dconf gtk
 
 name=mate-desktop
-version=1.8.2
+version=1.10.0
 release=1
-source=(http://git.mate-desktop.org/$name/snapshot/$name-$version.tar.xz)
+source=(http://pub.mate-desktop.org/releases/${version%.*}/${name}-${version}.tar.xz)
 
 build() {
 cd $name-$version
-./autogen.sh \
+./configure \
         --prefix=/usr \
         --with-gtk=2.0 \
         --enable-mpaste \
