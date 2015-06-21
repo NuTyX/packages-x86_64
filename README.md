@@ -6,9 +6,9 @@ Contributions are welcome
 
 #### 1. Clone it
 
-    # git clone git@github.com/NuTyX/mate.git
+    # git clone git://github.com/NuTyX/mate.git
 
-#### 2. adjust /etc/cards by adding the ports directory. By default it should be:
+#### 2. adjust /etc/cards.conf by adding the ports directory. By default it should be:
 
       dir /var/lib/pkg/saravane/mate
 
@@ -30,7 +30,7 @@ This method means you have ALL the binaries of the base,console and desktop coll
 
 ###### 4.2.1 build a list of package to build
 
-    # bash mate/scritps/mate|cut -d " " -f1 > list
+    # bash mate/scripts/mate|cut -d " " -f1 > list
 
 ###### 4.2.2 build each package per level
 
