@@ -1,0 +1,27 @@
+# Description: Le paquet LXAppearance contient un changeur de thème indépendant du bureau pour GTK+. 
+# URL: http://lxde.org/
+# Maintainer: brother@bsnet.se
+# Packager: geantbrun at gmail dot com
+# Depends on: gtk,intltool
+
+
+name=lxde-appearance
+_name=lxappearance
+version=0.6.1
+release=1
+
+source=(http://downloads.sourceforge.net/lxde/files/${_name}-$version.tar.xz)
+
+
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr     \
+            --sysconfdir=/etc \
+            --disable-static  \
+            --enable-dbus 
+
+make
+make DESTDIR=$PKG install
+
+}
+  
