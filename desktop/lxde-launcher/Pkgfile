@@ -1,0 +1,20 @@
+# Description:  Clone libre  pour lanceur Asus d'EeePC
+# URL: http://lxde.org/about.html
+# Maintainer: Hong Jen Yee (PCMan) pcman dot tw at gmail dot com
+# Packager: geantbrun at gmail dot com
+# Depends on: gtk, startup-notification, lxde-menu-data, menu-cache
+
+name=lxde-launcher
+_name=lxlauncher
+version=0.2.4
+release=1
+source=(http://downloads.sourceforge.net/lxde/files/${_name}-$version.tar.xz)
+
+build() {
+    cd ${_name}-$version
+    ./configure --prefix=/usr \
+	--sysconfdir=/etc
+    make
+    make DESTDIR=$PKG install
+
+}
