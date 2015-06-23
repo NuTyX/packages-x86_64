@@ -1,0 +1,22 @@
+# Description: Le paquet LXSession contient les gestionnaires de session par défaut de LXDE. 
+# URL: http://lxde.org/
+# Maintainer: Hong Jen Yee (aka PCMan) pcman dot tw at gmail dot com
+# Packager: geantbrun at gmail dot com
+# Depends on: dbus-glib,gtk,libunique1,lsb-release,polkit,vala
+
+
+name=lxde-session
+_name=lxsession
+version=0.5.2
+release=1
+
+source=(http://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz)
+
+
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr --disable-man
+make
+make DESTDIR=$PKG install
+}
+  
