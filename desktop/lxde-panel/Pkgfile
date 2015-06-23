@@ -1,0 +1,21 @@
+# Description: Le paquet LXPanel contient un panel X11 de bureau léger. 
+# URL: http://lxde.org/
+# Maintainer: Martin Bagge  brother at bsnet dot se
+# Maintainer: NuTyX core team
+# Packager: geantbrun at gmail dot com
+# Depends on: gtk, menu-cache, alsa-lib, libwnck,wireless-tools,keybinder2,libfm
+
+name=lxde-panel
+_name=lxpanel
+version=0.8.1
+release=1
+
+source=(http://downloads.sourceforge.net/lxde/files/${_name}-$version.tar.xz)
+
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+sed -i "s/gnome-terminal/lxterminal/" $PKG/etc/xdg/lxpanel/default/panels/panel
+}
