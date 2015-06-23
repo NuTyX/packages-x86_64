@@ -1,0 +1,18 @@
+# Description: Gestionnaire de fichiers très léger et très rapide
+# URL: http://pcmanfm.sourceforge.net/
+# Maintainer: git.lxde.org/gitweb/?p=debian/pcmanfm.git;a=summary
+# Packager: thierryn1 at hispeed dot ch
+# Depends on: gtk, libfm, lxde-menu-data
+
+
+name=pcmanfm
+version=1.2.3
+release=1
+source=(http://downloads.sourceforge.net/${name}/${name}-$version.tar.xz)
+build () {
+cd $name-$version
+./configure --prefix=/usr --sysconfdir=/etc
+make
+make DESTDIR=$PKG install
+sed -i 's/System;//' $PKG/usr/share/applications/pcmanfm.desktop
+}
