@@ -5,7 +5,7 @@
 
 name=libfm
 version=1.2.3
-release=1
+release=2
 source=(http://downloads.sourceforge.net/pcmanfm/${name}-$version.tar.xz)
 
 build() {
@@ -15,4 +15,6 @@ cd $name-$version
             --disable-static
 make 
 make DESTDIR=$PKG install
+# already in libfm-extra
+rm $PKG/usr/lib/libfm-extra.so.4.0.3
 }
