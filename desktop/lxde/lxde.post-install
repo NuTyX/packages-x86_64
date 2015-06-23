@@ -1,0 +1,4 @@
+update-desktop-database
+sed -i "s/^id:[3-5]/id:4/" /etc/inittab
+# Activer lxde par défaut
+sed -i "s/^\(Session=\).*$/\1LXDE/g" /etc/skel/.dmrc
