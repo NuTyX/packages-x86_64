@@ -1,0 +1,20 @@
+# Description: lxshortcut, gestionnaire de raccourcis pour LXDE
+# URL: http://lxde.org/
+# Maintainer: Martin Bagge
+# Packager: geantbrun at gmail dot com
+# Depends on: gtk
+
+name=lxde-shortcut
+_name=lxshortcut
+version=0.1.2
+release=1
+
+source=(http://downloads.sourceforge.net/lxde/files/${_name}-$version.tar.gz)
+
+
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
