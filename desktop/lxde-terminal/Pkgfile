@@ -1,0 +1,21 @@
+# Description: Le paquet LXTerminal contient un émulateur de terminal basé sur VTE pour LXDE avec le support pour plusieurs onglets. 
+# URL: http://lxde.org/
+# Maintainer: NuTyX core team
+# Packager: geantbrun at gmail dot com
+# Depends on: intltool vte
+
+name=lxde-terminal
+_name=lxterminal
+version=0.2.0
+release=1
+
+source=(http://downloads.sourceforge.net/lxde/lxterminal-$version.tar.gz)
+
+
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr \
+make
+make DESTDIR=$PKG install
+}
+  
