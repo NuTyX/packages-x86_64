@@ -90,14 +90,12 @@ case "${1}" in
 									echo -n .
 									let NETWORKDELAY=$NETWORKDELAY-1
 									if [ $NETWORKDELAY -lt 1 ]; then
-										log_info_msg "Time out"
-										echo_failure
+										log_failure_msg2 "Time out"
 									exit 1
 								fi
 							fi
 						done
-						log_info_msg "Network successfully configured..."
-						echo_ok
+						log_success_msg2 "Network successfully configured..."
 					fi
 				fi
 			else

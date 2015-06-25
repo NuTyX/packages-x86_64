@@ -1184,7 +1184,7 @@ $(gettext "Are you sure you want to continue ?")" 7 60
 						mkfs.btrfs -f $PARTITION > /dev/tty2 || error "mkfs.btrfs -f $PARTITION"
 						;;
 					xfs)
-						mkfs.xfs -f $PARTITION > /dev/tty2 || error "mkfs.xfs -f $PARTITION"
+						mkfs.xfs -f -m crc=0 $PARTITION > /dev/tty2 || error "mkfs.xfs -f $PARTITION"
 						;;
 					jfs)
 						mkfs.jfs -f $PARTITION > /dev/tty2 || error "mkfs.jfs -f $PARTITION"
@@ -1220,6 +1220,7 @@ install_nutyx() {
 	etc/sysconfig/network \
 	etc/sysconfig/clock \
 	etc/sysconfig/console \
+	etc/X11/xorg.conf.d/20-keyboard.conf \
 	etc/cards.conf \
 	etc/resolv.conf \
 	etc/localtime \
