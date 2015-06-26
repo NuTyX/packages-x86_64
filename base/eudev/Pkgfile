@@ -14,8 +14,13 @@ build() {
 cd $name-$version
 sed -r -i 's|/usr(/bin/test)|\1|' test/udev-test.pl
 
-BLKID_CFLAGS=-I/tools/include \
-BLKID_LIBS='-lblkid' \
+
+cat > config.cache << "EOF"
+HAVE_BLKID=1
+BLKID_LIBS="-lblkid"
+BLKID_CFLAGS="-I/tools/include"
+EOF
+
 ./configure --prefix=/usr --bindir=/sbin \
 --sbindir=/sbin --libdir=/usr/lib \
 --sysconfdir=/etc --libexecdir=/lib \
@@ -29,11 +34,11 @@ BLKID_LIBS='-lblkid' \
 --config-cache   \
 --disable-gtk-doc-html \
 --with-firmware-path=/lib/firmware
-make
+LIBRARY_PATH=/tools/lib make
 mkdir -pv $PKG/lib/{firmware,udev/devices/pts}
 mkdir -pv $PKG/lib/udev/rules.d
 mkdir -pv $PKG/etc/udev/rules.d
-make DESTDIR=$PKG install
+make LD_LIBRARY_PATH=/tools/lib DESTDIR=$PKG install
 
 # man pages
 pushd man
