@@ -4,20 +4,17 @@
 # Packager: pierre at nutyx dot org, tnut at nutyx dot org
 
 name=libtirpc
-version=0.3.1
+version=0.3.2
 release=1
 
-source=(http://downloads.sourceforge.net/project/libtirpc/libtirpc/$version/libtirpc-$version.tar.bz2)
+source=(http://downloads.sourceforge.net/project/libtirpc/libtirpc/$version/libtirpc-$version.tar.bz2
+	 http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-api_fixes-1.patch)
 
 build()
 {
 cd libtirpc-$version
 
-sed -e '/rpcsec_gss.h/         i #ifdef HAVE_RPCSEC_GSS' \
-    -e '/svc_rpc_gss_parms_t;/ a #endif' \
-    -e '/svc_rpc_gss_parms_t / i #ifdef HAVE_RPCSEC_GSS' \
-    -e '/rpc_gss_rawcred_t /   a #endif' \
-    -i tirpc/rpc/svc_auth.h
+patch -Np1 -i ../libtirpc-$version-api_fixes-1.patch
 
 ./configure --prefix=/usr     \
             --sysconfdir=/etc \
