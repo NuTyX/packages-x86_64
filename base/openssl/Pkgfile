@@ -5,11 +5,13 @@ name=openssl
 version=1.0.2c
 release=1
 
-source=(http://www.openssl.org/source/$name-$version.tar.gz)
+source=(http://www.openssl.org/source/$name-$version.tar.gz
+	http://www.linuxfromscratch.org/patches/downloads/openssl/$name-$version-fix_parallel_build-1.patch)
 PKGMK_GROUPS=(devel man doc)
 
 build() {
 cd $name-$version
+patch -Np1 -i ../$name-$version-fix_parallel_build-1.patch
 
 ./config --prefix=/usr \
 	--openssldir=/etc/ssl \
