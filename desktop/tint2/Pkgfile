@@ -1,0 +1,21 @@
+# Description: task bar for wm light
+# URL: http://code.google.com/p/tint2/
+# Packager: geantbrun at gmail dot com
+# Depends on: cmake gtk xorg-libxrandr xorg-libxinerama xorg-libxdamage xorg-libxcomposite pango imlib2 cairo
+
+
+name=tint2
+version=0.11
+release=2
+ 
+source=(http://tint2.googlecode.com/files/$name-$version.tar.bz2)
+ 
+build() {
+cd $name-$version
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr ../
+make
+make DESTDIR=$PKG install
+rm -r $PKG/usr/share/doc  
+}
