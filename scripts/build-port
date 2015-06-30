@@ -26,6 +26,8 @@ checkNewPort()
                 fi
                 if [ ! -f ${BINARY_BASE}/$DIR/.PKGREPO ];then
                         echo "$DIR should be build"
+			rsync -au --exclude '.*.swp'  --exclude '*~' ${PORT_BASE}/$DIR/ \
+			${BINARY_BASE}/$DIR/
                 fi
         done
 }
