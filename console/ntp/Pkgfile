@@ -3,7 +3,7 @@
 # Packagers: pierre at nutyx dot org, tnut at nutyx dot org
 
 name=ntp
-version=4.2.8p1
+version=4.2.8p3
 release=1
 
 source=( http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/$name-4.2/$name-$version.tar.gz
@@ -17,13 +17,18 @@ tar xvf $scripts-$scriptsversion.tar.bz2
 
 cd $name-$version
 ./configure --prefix=/usr \
+--bindir=/usr/sbin \
 --sysconfdir=/etc \
---with-binsubdir=sbin \
 --mandir=/usr/share/man \
 --infodir=/usr/share/info \
---disable-debug
+--enable-linuxcaps \
+--with-lineeditlibs=readline \
+--docdir=/usr/share/doc/$name-$version
+
 make
 make DESTDIR=$PKG install
+mkdir -p $PKG/var/lib/ntp
+install -v -o ntp -g ntp -d $PKG/var/lib/ntp
 mkdir -p $PKG/etc
 cat > $PKG/etc/ntp.conf << "EOF"
 
@@ -52,9 +57,8 @@ server 2.south-america.pool.ntp.org
 
 driftfile /var/lib/ntp/ntp.drift
 pidfile   /var/run/ntpd.pid
-
+EOF
 # service
 cd ../$scripts-$scriptsversion
 make DESTDIR=$PKG install-ntpd
-EOF
 }
