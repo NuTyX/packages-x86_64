@@ -89,8 +89,16 @@ if [ "$COLLECTION" != "console" ] && [ "$COLLECTION" != "desktop" ] && [ "$COLLE
    exit 1
 fi
 
-PORT_BASE=/home/thierry/devel/git/saravane/$COLLECTION
-BINARY_BASE=/root/saravane/$COLLECTION
+if [ -f /etc/cards.conf.d/$COLLECTION.conf ] ; then
+        . /etc/cards.conf.d/$COLLECTION.conf
+fi
+
+[ -z $COLLECTION ] && COLLECTION="`basename $0`"
+
+[ -z $PORT_BASE ] && PORT_BASE=/home/thierry/devel/git/saravane/$COLLECTION
+[ -z $BINARY_BASE ] && BINARY_BASE=/root/saravane/$COLLECTION
+
+[ ! -d $BINARY_BASE ] && mkdir -p $BINARY_BASE
 
 if [ $# -lt 1 ]; then
 	echo "need a port name"
