@@ -30,7 +30,7 @@
  <hr>
   <h1>On the 2015-04-18</h1>
    <h2>cards 0.10.90 available</h2>
-    <p>The tool has been completly review. The synchronisation takes now a few seconds. The separation between binaries and ports is now more clear.</p>
+    <p>The <b>cards</b> tool has been completely re-worked. The synchronisation now takes a few seconds. The separation between binaries and ports is a lot clearer.</p>
     <p>News commands added:</p>
 
 <pre class="command"><kbd>cards purge</kbd></pre>
@@ -40,49 +40,49 @@ flush old binaries and other obsolets files.
 provide an help about cards.
 
 <pre class="command"><kbd>cards depcreate</kbd></pre>
-Compile a port and its dépendencies in the right order. Similar to the prt-get depinst command.
+Compile a port and its dépendencies in the right order. Similar to the <b>prt-get</b> and <b>depinst</b> commands.
 
-<p>man cards and man cards.conf are now availables</p>
+<p>Additional man command: <b>man cards</b> and <b>man cards.conf</b></p>
 
-<p>Remembe: Commands:</p>
+<p>Note: Following commands altered:</p>
 
 <pre class="command"><kbd>cards sync -i
 cards list -i
 cards info -i <paquet>
 cards diff -b</kbd></pre>
 
-are simpler and becomes:
+Are now more streamlined and becomes:
 
 <pre class="command"><kbd>cards sync
 cards list
 cards info <paquet>
 cards diff</kbd></pre>
 
-   <h2>Up to date the documentation on the site</h2>
+   <h2>Updated the documentation on the site</h2>
     <p>Articles <a href="recept.html">What's a port</a>, <a href="build-package.html">How to build a package</a>, <a href="generate-iso.html">Produce a customised ISO</a> are review.</p>
     <h2>New kernels</h2>
-    <p>A new kernel is finaly available, we move to the kernel 3.19.4, blocking problems on the first versions are gone.</p>
-    <p>A new long term support kernel from serie 3.18 is also available. It can be installed in parallel on the standard kernel. It's just two links to adjust in the boot folder. (initrd and kernel)</p>
+    <p>A new <b>kernel</b> is now available, we have migrated to the improved and more stable version 3.19.4, thus removing all problematic incidences.</p>
+    <p>A new long term support kernel 3.18 is also available. It can be installed in parallel on the standard kernel. It has just two links to adjust in the boot folder. (initrd and kernel)</p>
     <h2>Next ISO</h2>
-    <p>The openssh service will not be implemented in the iso anymore, this is an easy way to connect remotly if the password is too week. Even more when the router is not doing it's firewall job.</p>
-    <p>A new article explain how to produce it's own ISO to make a deploy very easy.</p>
+    <p>The openssh service will not be implemented in the ISO anymore for security reasons. Hackers could connect remotely if the password was too weak. Even more so when the router is not doing it's firewall job.</p>
+    <p>We have a new article explaining how to create easilly your own ISO for distribution.</p>
 
-    <h2>The installation script install-saravane available</h2>
-    <p><b>install-saravane</b> is working again. Be aware they are no kernel installed. It checks the minimum requirements: uptodate bash, gawk and wget</p>
-    <h2>Stop  prt-get / pkgutils support</h2>
-    <p>I stop the support of cards and prt-get/pkgutils in parallel. The ports of crux are compatible with cards but not the other way around. Under NuTyX, we keep the doc, we keep man pages devel in separates sub packages. If we use the ports of NuTyX with pkgutils, we quickly end up with big packages (kernel for ex ) and then the DB of pkgutils get saturated which make pkgutils very slow.</p>
-    <p>The other problem is that the pre an post install are not names similar under cards and pkgutils, under pkgutils, they are named without the name of the package (or subpackage).</p>
+    <h2>The installation script install-saravane is once again available</h2>
+    <p><b>install-saravane</b> is working again. Be aware there are no kernel installed. It checks the minimum requirements: uptodate bash, gawk and wget</p>
+    <h2>Halting  prt-get / pkgutils support</h2>
+    <p>Support of <b>cards</b> and <b>prt-get/pkgutils</b> in parallel has been halted permanently. The ports of crux are compatible with <b>cards</b> but not the other way around. Under NuTyX, we keep the doc, we keep man pages devel in separates sub packages. If we use the ports of NuTyX with <b>pkgutils</b>, we quickly end up with big packages (kernel for ex ) and then the DB of <b>pkgutils</b> get saturated which make <b>pkgutils</b> very slow.</p>
+    <p>The other problem encountered was that the pre-install an post-install are not names similar under <b>cards</b> and <b>pkgutils</b>, under <b>pkgutils</b>, they are named <b>pre-install</b> and <b>post-install</b>. Under <b>cards</b>, they are named <b>&lt;name_of_the_package&gt;.pre-install</b> or <b>&lt;name_of_the_package&gt;.post-install</b>.</p>
     <h2>News sections</h2>
     <p>Section  system becomes base</p>
     <p>Section  server becomes console</p>
     <p>Section  desktop stays desktop</p>
   <h1>On the 2015-03-16</h1>
    <h2>New 32bits and 64 bits iso available</h2>
-    <p>I'm please to propose you news 32 bits and 64 bits isos :</p>
+    <p>I'm pleased to make available new 32 bits and 64 bits ISO. Click on following down-loadable links :</p>
     <a href="http://download.nutyx.org/NuTyX_x86_64-saravane-20150315.iso">In 64 bits</a> and <a href="http://download.nutyx.org/NuTyX_i686-saravane-20150315.iso">in 32 bits</a>
-    <p>The installer is even more simple. From now on if you configure and format the destination partition before launching the installer, soon you start the installation from the iso, <a href="http://nutyx.org/en/install.html#4">no questions will be ask and the installation will start immediatly</a> means a matter of 15 seconds max</p>
-    <p>Openssh service is available from the moment you have installed the base. It means you can connect from a terminal from the host machine if you did an installation in virtualbox (with the network configured as bridge). Also very usefull if you have two PC in the network</p>
-    <p>Wifi should works again after xcfe4 / kde installation</p>
+    <p>The installer is made even more simple. From now on if you pre-configure and format the destination partition before launching the installer, the CD <a href="http://nutyx.org/en/install.html#4">ask no questions and the installation will start immediatly</a>within 15 seconds max</p>
+    <p>Openssh service is available from the moment you have installed the base. It means you can connect from a terminal from the host machine if you did an installation in virtualbox (with the network configured as bridge). Also very usefull if you have two PC's on the network</p>
+    <p><b>Wifi</b> should works again after xcfe4 / kde installation</p>
     <p>About the package:</p>
 
 <li>kernel 3.19.1-NuTyX</li>
@@ -108,14 +108,15 @@ Can install a file if available on the pc. The file must be a valid downloaded p
 <pre class="command"><kbd>cards install -f &lt;paquet&gt; | &lt;file&gt;</kbd></pre>
 Force installation in case of duplicate files
 
-<p>The commands:</p>
+<p><b>Final reminder:</b></p>
+<p>The Commands:</p>
 
 <pre class="command"><kbd>cards sync -i
 cards list -i
 cards info -i <paquet>
 cards diff -b</kbd></pre>
 
-are simplify and becomes:
+are now more streamlined and become:
 
 <pre class="command"><kbd>cards sync
 cards list
@@ -124,10 +125,10 @@ cards diff</kbd></pre>
 
 
 
-<p>The help has been completly re write</p>
+<p>The help Menu has been completely re written</p>
 
 <img src="http://downloads.tuxfamily.org/nutyx/archives/cards_0.10.82.96.jpg"  alt="Help summary" title="cards Help summary" width="578"/>
-    <p class="updated">Updated 2015-03-16 23:37</p>
+    <p class="updated">Updated 2015-07-05 13:59</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
