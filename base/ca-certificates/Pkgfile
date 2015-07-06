@@ -4,7 +4,7 @@
 
 name=ca-certificates
 version=20150530
-release=1
+release=2
 
 source=(http://downloads.nutyx.org/files/$name-$version.tar.gz)
 
@@ -203,7 +203,7 @@ function mydate()
   certdate="${y}${m}${d}"
 }
 
-OPENSSL=/usr/bin/openssl
+OPENSSL="`which openssl`"
 DIR=/etc/ssl/certs
 
 if [ $# -gt 0 ]; then
