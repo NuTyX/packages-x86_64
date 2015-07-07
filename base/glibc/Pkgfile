@@ -5,7 +5,7 @@ kernelversion=4.1
 PKGMK_GROUPS=(devel man doc)
 name=glibc
 version=2.21
-release=2
+release=3
 
 source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/glibc/glibc-$version-fhs-1.patch
@@ -92,10 +92,6 @@ cat > $PKG/etc/ld.so.conf << "EOF"
 /usr/lib64
 /usr/local/lib
 /usr/local/lib64
-/opt/xorg/lib
-/opt/xfce4/lib
-/opt/xfce4/lib64
-/opt/kde/lib
 
 # Add an include directory
 include /etc/ld.so.conf.d/*.conf
