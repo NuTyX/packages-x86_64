@@ -4,16 +4,14 @@
 # Packager: tnut at nutyx dot org
 name=ncurses
 version=5.9
-release=2
+release=3
 
-source=(ftp://invisible-island.net/ncurses/ncurses-$version.tar.gz
- http://www.linuxfromscratch.org/patches/lfs/development/ncurses-5.9-gcc5_buildfixes-1.patch)
+source=(ftp://invisible-island.net/ncurses/ncurses-$version.tar.gz)
 
 build()
 {
 cd ncurses-$version
 
-patch -Np1 -i ../ncurses-5.9-gcc5_buildfixes-1.patch
 
 sed -i '/LIBTOOL_INSTALL/d' c++/Makefile.in
 

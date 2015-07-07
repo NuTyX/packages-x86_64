@@ -1,4 +1,4 @@
-version=5.1.0
+version=4.9.3
 source=(\
 http://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.xz \
 http://www.mpfr.org/mpfr-current/mpfr-3.1.3.tar.xz \
@@ -32,28 +32,27 @@ mkdir -v ../gcc-build
 cd ../gcc-build
 
 ../gcc-$version/configure         \
-    --target=$LFS_TGT                              \
-    --prefix=/tools                                \
-    --with-glibc-version=2.11                      \
-    --with-sysroot=$LFS                            \
-    --with-newlib                                  \
-    --without-headers                              \
-    --with-local-prefix=/tools                     \
+    --target=$LFS_TGT          \
+    --prefix=/tools            \
+    --with-sysroot=$LFS        \
+    --with-newlib              \
+    --without-headers          \
+    --with-local-prefix=/tools \
     --with-native-system-header-dir=/tools/include \
-    --disable-nls                                  \
-    --disable-shared                               \
-    --disable-multilib                             \
-    --disable-decimal-float                        \
-    --disable-threads                              \
-    --disable-libatomic                            \
-    --disable-libgomp                              \
-    --disable-libitm                               \
-    --disable-libquadmath                          \
-    --disable-libsanitizer                         \
-    --disable-libssp                               \
-    --disable-libvtv                               \
-    --disable-libcilkrts                           \
-    --disable-libstdc++-v3                         \
+    --disable-nls              \
+    --disable-shared           \
+    --disable-multilib         \
+    --disable-decimal-float    \
+    --disable-threads          \
+    --disable-libatomic        \
+    --disable-libgomp          \
+    --disable-libitm           \
+    --disable-libquadmath      \
+    --disable-libsanitizer     \
+    --disable-libssp           \
+    --disable-libvtv           \
+    --disable-libcilkrts       \
+    --disable-libstdc++-v3     \
     --enable-languages=c,c++
 make
 
