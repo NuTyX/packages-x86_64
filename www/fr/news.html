@@ -28,85 +28,25 @@
      </tr>
     </table>
  <hr>
-  <h1>Dernière nouvelle 15-05-2015</h1>
-   <h2>NuTyX saravane 15.05 disponible avec cards 1.0</h2>
-   <h3>Introduction pour les plus pressés</h3>
-    <p>Septs mois après la sortie de saravane 14.11 au lieu des trois mois prévus à l'origine, je suis très fier de vous annoncer (enfin) la sortie de NuTyX saravane 15.05 dont voici en résumé les nouveautées:</p>
-    <ul>
-     <li>glibc 2.21</li>
-     <li>gcc 4.9.2</li>
-     <li>binutils 2.25</li>
-     <li>kernel 3.19.6</li>
-     <li>kernel-lts 3.18.12</li>
-     <li>kernel-iso 3.18.11</li>
-     <li>cards 1.0</li>
-     <li>curl 7.42.1</li>
-     <li>firefox 37.0.2</li>
-     <li>Outil de configuration très pratique en ligne de commande pour l'horloge, le clavier, le réseau et la langue: <b>setup-nutyx</b></li>
-     <li>Interface graphiques prête pour l'installation en toute simplicitée (avec autologin): KDE 4.14.3 et Xfce4 4.10.1</li>
-     <li>Nouvel iso 15.05 en 32 et 64 bits</li>
-     <li>Nouvelle version complètement revue de <b>cards</b> qui passe finalement en 1.0</li>
-     <li>Documentation sur le site complètée</li>
-     <li>Script d'installation de NuTyX saravane</li>
-     <li>Le projet complèt des sources de NuTyX disponible sur https://github.com/NuTyX</li>
-    </ul>
-    <p>Pour connaître toutes les mise à jour des paquets, vous pouvez consultez la page: <a href="https://github.com/NuTyX/saravane/commits/master">https://github.com/NuTyX/saravane/commits/master</a></p>
-   <h3>L'iso</h3>
-    <p>Si le travail de partitionnement et de formatage de la partition de destination a été faite en amont et si la partition de destination est unique, l'installation se fait très rapidement puisque il suffit de choisir: "<b>Installer</b>" dans le menu principal.</p>
-    <p>L'installation de la procédure d'amorçage a été également simplifiée: Si vous installez GRUB <u>AVANT NuTyX</u>, vous pourrez choisir la partition de destination. Si vous installer NuTyX <u>IMMEDIATEMENT</u> et que vous choisissez (à la fin de l'installation de NuTyX) de mettre GRUB, celui-ci sera d'<u>OFFICE</u> sur la partition où est installé NuTyX.</p>
-    <p>Le kernel utilisé est un 3.19.6. Une version LTS (support à long termer) est également disponible en version 3.18.12.</p>
-    <p>L'iso est désormais traduite à 100 % dans les langues suivantes: le français, le néerlandais, le finlandais, le suédoise, le norvégien et l'allemand.</p>
-    <p>Le système de fichier <b>jfs</b> a été ajouté comme possibilitée de format. Il semble que ce ne soit pas le meilleur système de fichier que l'on peut trouver aujourd'hui. Niveau performance, il y a le <b>btrfs</b>, niveau stabilitée il y a <b>xfs</b></p>
-    <p>Si vous souhaitez installer NuTyX sur une partition formatée en btrfs, vous <u>devez</u> installer grub sur une partition séparée et surtout ne plus installer grub (une deuxième fois) sur la partition de NuTyX. Par exemple sur <b>/dev/sda1</b> formatée en <b>ext2</b> sera installée l'amorçage de la machine et sur <b>/dev/sda2</b> formatée en <b>btrfs</b> sera installée NuTyX.</p>
-   <h3>Le script d'installation</h3>
-    <p>Il est désormais possible d'installer très facilement NuTyX depuis <u>n'importe quelle distribution</u>. Les derniers problèmes liés à la version de l'interpréteur <b>BASH</b> ont été résolus.</p>
-    <p>Deux variables sont très utiles à connaître:
-    <pre class="output">LFS
-URL</pre>
-    <p>La variable <b>LFS</b> permet de définir un dossier de destination. Une fois définie et "exportée", la commande d'installation se réduit à:
-    <pre class="output">bash install-saravane</pre>
-    <p>La variable <b>URL</b> permet de définir un miroir personalisé. Une fois l'installation terminée, cards se verra configuré sur ce miroir.</p>
-   <h3>Le site</h3>
-    <p>Tous les articles ont été mis à jour pour les nouvelles fonctionnalitées du gestionnaire de paquets <b>cards 1.0</b>.</p>
-    <p>L'article sur la construction d'un paquet a complètement été revue. Il explique en détails ce qu'est un scénario sous NuTyX, ce qu'est une collection, les dépendances pour la compilation, la configuration pour chaque scénario, etc</p>
-    <p>Un premier article sur la configuration d'un pare feu a été rédigé par un des utilisateurs de NuTyX, <b>sh4d0w</b> que je remercie vivement. J'encourage tous les utilisateurs à proposer le leur. Si l'article est complet et correct, il sera évidement ajouté.</p>
-   <h3>Les codes source de Saravane disponible sur github.com/NuTyX et suivi de bugs</h3>
-    <p>Vous pouvez trouvez l'intégralité de mon travail sur NuTyX sur le site: https://github.com/NuTyX, vous y trouverez le code source de cards, les recettes des collection base, console et desktop de saravane, les scripts, les passes 1 et 2 pour la construction de NuTyX, la structure des fichiers qui constitue le système de base de NuTyX (le paquet aaabasicfs), l'initrd, l'installateur et les pages html du site. Il y a aussi les recettes de la collection "extra".</p>
-    <p>Il est désormais très facile de suivre l'évolution de NuTyX, vous pouvez désormais soumettre directement vos souhaits et soupsons de bugs sur la platforme github.</p>
-   <h3>Le gestionnaire de paquets cards finalement en version 1.0</h3>
-    <p>Dans sa version définitive, <b>cards</b> est désormais encore plus rapide et plus simple d'utilisation. Les commandes les plus courantes ont été simplifiées:</p>
-    <p>Pour synchroniser les infos</p>
-    <pre class="command"><kbd>cards sync</kbd></pre>
-    <p>Pour connaître la liste des paquets installés:</p>
-    <pre class="command"><kbd>cards list</kbd></pre>
-    <p>Pour connaître les détails d'un paquet installé:</p>
-    <pre class="command"><kbd>cards info &lt;nom_de_mon_paquet&gt;</kbd></pre>
-    <p>Pour vérifier la liste des paquets installés obsolètes:</p>
-    <pre class="command"><kbd>cards diff</kbd></pre>
-    <p>la commande:</p>
-    <pre class="command"><kbd>man cards</kbd></pre>
-    <p>vous donnera tous les détails (en anglais) sur les commandes disponibles dont certaines sont nouvelles:</p>
-    <pre class="command"><kbd>cards query
-cards files
-cards help
-cards purge
-cards depcreate</kbd></pre>
-    <p>Du côté des nouveautées pour le packager, des nouvelles variables ont été ajoutées:</p>
-    <pre class="output">PKGMK_LOCALES</pre>
-    <p>Valeur par défaut:</p>
-    <pre class="output">PKGMK_LOCALES=(fr)</pre>
-    <p>Définie les locales que l'on souhaite garder dans le binaire, exemple: PKGMK_LOCALES=(fr nl) ne conservera que les locales françaises et néerlandaises (si disponible lors de la compilation) dans les sous-paquets <b>&lt;nom_paquet&gt;.nl et &lt;nom_paquet&gt;.fr</b></p>
-    <pre class="output">PKGMK_IGNORE_REPO</pre>
-    <p>Valeur par défaut:</p>
-    <pre class="output">PKGMK_IGNORE_REPO="yes"</pre>
-    <p>Si défini comme <b>"no"</b>, le fichier <b>.PKGREPO</b> sera (re)généré à l'issue de la (re)construction du paquet (et sous-paquets) binaire(s). Ce fichier est indispensable pour les commandes <b>cards depcreate et cards create</b>
-    <pre class="output">PKGMK_IGNORE_COLLECTION</pre>
-    <p>Valeur par défaut:</p>
-    <pre class="output">PKGMK_IGNORE_COLLECTION="yes"</pre>
-    <p>Si défini comme <b>"no"</b>, le fichier <b>.PKGREPO</b> de la collection (cad le nom du dossier parent de votre paquet) sera (re)généré. Ce fichier est indispensable si vous souhaitez installer des paquets à l'extérieure de votre chroot</p>
+  <h1>Dernière nouvelle 08-07-2015</h1>
+   <h2>NuTyX Saravane fin de vie</h2>
+    <p>Le concept de rolling release sous NuTyX est un échec total. Etant seul à maintenir et à compiler manuellement les paquets, c'est un travail de titan. Aujourd'hui cela devient tout simplement impossible de suivre tout ce travail seul.</p>
+    <p>Après plusieurs tentatives de maj des binaires proposés sur la NuTyX saravane 15.05, je dois me rendre à l'évidence, c'est un désastre.</p> 
+    <p>Je crois que Saravane doit rester en version actuelle (cad 15.05). Les interfaces graphiques KDE 4.14.3 et Xfce4 4.10.1 sont disponible et remplissent parfaitement le boulot.</p>
+   <h2>Un nouveau membre dans l'équipe</h2>
+    <p>Je tiens à remercier John Delport (originaire d'afrique du sud) pour son aide précieuse sur la traduction en anglais des articles. Cela me soulage grandement.</p>
+   <h2>Future de NuTyX</h2>
+    <p>Le développement de la prochaine NuTyX Houaphan a commencé hier soir</p>
+    <p>En grande lignes ce que je peux vous dire, car il y aura (de nouveau) beaucoup de changements. Ce qui est maintenu, c'est en tout cas deux des trois collections actuelles <b>base</b> et <b>desktop</b>. Cette dernière sera probablement renomée en <b>xorg</b>. Je ne sais pas encore si la collection <b>console</b> sera conservée</p>
+    <p>Cards devra être encore dévelopopé. La séparation des dépendances runtime <b>obligatoires</b> et des dépendances runtime <b>optionnelles</b> sera une des nouveautées.</b>
+    <p>Les collections maintenues seront sous divisées en <b> system</b> et <b>extra</b>. Ce qui signifie que les 2 ou 3 collections <b>system</b> seront toujours interdépendantes hierachiquement mais disposeront également d'une collection <b>extra</b></p>
+    <p>Les paquets des collections <b>extra</b> devront impérativement être indépendants des paquets de leur "penchant" <b>system</b>. Ils pourront donc être mis à jour sans problème puisqu'ils ne seront pas des dépendances de la collection <b>system</b>.</p>
+    <p>Les paquets des collections <b>system</b> seront regroupées en un seul paquet de base, sous paquet de developpement, sous paquet de documentation et sous paquet de manuels. Pour les services ce n'est pas encore défini.</p>
+    <p>Les bureaux disponibles ne seront plus dans la collection <b>xorg</b> ou <b>desktop</b>. Ils seront chacun dans une collection dédidée. cad: <b>kde, kf5, gnome, mate, lxde, xfce, etc</b>
+    <p>Le système de maintenance graphique sera rétabli. Il consistera en un système de secours constitué des collections <b>base-system</b> et <b>graphique</b>.</p>
   <p class="updated"><a href="old-news.html">Anciennes nouvelles</a></p>
   <hr>  
-   <p class="updated">Le 15-05-2015 17:44</p>
+   <p class="updated">Le 08-07-2015 11:44</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
