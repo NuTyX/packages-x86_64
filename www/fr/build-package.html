@@ -345,14 +345,14 @@ base /srv/www/saravane/aconserver</pre>
       <p>Il faut commencer par créer les dossiers</p>
       <pre class="command_user"><kbd>sudo mkdir -p /srv/www/saravane/{x86_64,personnel,aconserver}</kbd></pre>
       <p>On peut maintenant synchroniser l'ensemble des binaires:</p>
-      <pre class="command_user"><kbd>sudo rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/test/x86_64/ \
+      <pre class="command_user"><kbd>sudo rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/saravane/x86_64/ \
 /srv/www/saravane/x86_64/</kbd></pre>
       <p>Allez peut-être boire un café, manger une pizza ou un bon paquet de frites <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />, ça peut-être long...</p>
      <a name='245'></a>
      <h4>Le fichier /etc/pkgmk.conf</h4>
       <p>Pour ce scénario, il est indispensable de vérifier toutes les variables necessaires pour le bon fonctionnement du duo <b>pkgmk/cards</b>.</p>
       <p>Mon processeur est un double coeur et je suis en 64bits.</p>
-      <p>Les sources sont stockées dans un dossier commun, je ne souhaite pas qu'elles soient effacées. Pour ne pas polué ni perdre le travail effectué lors d'un <b>rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/test/x86_64/ /srv/www/saravane/x86_64/</b>, je préfère utiliser un dossier de travail temporaire:</p>
+      <p>Les sources sont stockées dans un dossier commun, je ne souhaite pas qu'elles soient effacées. Pour ne pas polué ni perdre le travail effectué lors d'un <b>rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/saravane/x86_64/ /srv/www/saravane/x86_64/</b>, je préfère utiliser un dossier de travail temporaire:</p>
       <pre class="output">PKGMK_SOURCE_DIR="/srv/www/sources"
 PKGMK_KEEP_SOURCES="yes"
 PKGMK_WORK_DIR="/tmp/work"</pre>
@@ -399,7 +399,7 @@ PKGMK_CLEAN="no"</pre>
       <pre class="command"><kbd>cards level
 cards base -r
 cards create
-rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/test/x86_64/ \
+rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/saravane/x86_64/ \
 /srv/www/saravane/x86_64/</kbd></pre>
     <a name='25'></a>
     <h3>Scénario E</h3>
@@ -691,7 +691,7 @@ Local Directory: /chroot/usr/ports/personnel</pre>
     <pre class="output">Retrieve info about the 622 packages: 100 %
 ADD: clipit-1.4.2, 71 files: 100 %</pre>
    <hr>
-  <p class="updated">Dernière mise à jour 20-06-2015 22:00</p>
+  <p class="updated">Dernière mise à jour 08-07-2015 21:32</p>
      <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
