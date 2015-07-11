@@ -1,10 +1,7 @@
 NuTyX est une distribution GNU/Linux pour systèmes 32 bits (i686) et 64 bits (x86_64).
 Sa construction est basée sur la documentation en ligne disponible sur http://www.linuxfromscratch.org.
 L'objectif de NuTyX est de permettre à ses utilisateurs d'être le plus rapidement possible autonomes.
-Le nombre de paquets est volontairement limité. Les environnement graphiques disponible sont:
-
-- Xfce 4.10
-- KDE 4.14.3
+Le nombre de paquets est volontairement limité. Les environnement graphiques sont disponible dans des projets git séparés.
 
 NuTyX utilise son propre gestionnaire de paquets "cards". Sa particularité, gérer de façon autonome 
 les dépendances de fonctionnement. Cela signifie que l'empaqueteur ne doit pas s'en soucier lors de
@@ -20,13 +17,13 @@ Par défaut, il y a 3 collections:
 - base qui comprend l'ensemble des paquets /ports  qui constituent un système minimal utilisable avec tous les
 outils de développement nécessaire.
 
-- console consiste à l'ensemble des paquets / ports pour se construire un serveur ou une box SANS interface graphique.
+- console comprend tous es paquets / ports necessaire au bon fonctionnement d'un système en ligne de commande.
 
-- desktop comprend tous les paquets / ports necessaire au bon fonctionnement d'un environnement de bureau.
+- graphic comprend tous les paquets / ports necessaire au bon fonctionnement d'un environnement graphique minimaliste.
 
 Ces trois collections fondamentales, dépendent l'une de l'autre dans le sens:
 
-desktop -> console -> base
+graphic -> console -> base
 
 Sous NuTyX, on parle de "scénario" pour expliquer le choix d'utilisation de cette dernière. On peut très bien
 n'utiliser que les binaires proposés dans les trois collections mentionnées ci-dessus, n'utiliser que la collection de
