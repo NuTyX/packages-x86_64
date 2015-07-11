@@ -1,0 +1,34 @@
+# Description: A movie player for linux
+# URL: http://www.mplayerhq.hu/
+# Packager: pierre at nutyx dot org
+# Depends on: x264 yasm cdparanoia libdvdread libdvdnav libdvdcss alsa-lib aalib giflib libmad lzo speex libtheora mpg123 liba52 faac faad2 xvid libvpx lame fribidi 
+
+name=mplayer
+version=1.1.1
+release=1
+
+source=(http://www.mplayerhq.hu/MPlayer/releases/MPlayer-$version.tar.xz \
+	http://www.linuxfromscratch.org/patches/blfs/svn/MPlayer-$version-giflib_fixes-1.patch \
+	http://www.linuxfromscratch.org/patches/blfs/svn/MPlayer-$version-live_fixes-1.patch )
+
+build() {
+cd MPlayer-$version
+patch -Np1 -i ../MPlayer-$version-giflib_fixes-1.patch
+patch -Np1 -i ../MPlayer-$version-live_fixes-1.patch
+
+sed -i 's:libsmbclient.h:samba-4.0/&:' configure stream/stream_smb.c
+sed -i 's/EGifCloseFile(new_gif/&, NULL/'   libvo/vo_gif89a.c
+sed -i 's/DGifCloseFile(priv->gif/&, NULL/' libmpdemux/demux_gif.c
+
+./configure --prefix=/usr \
+--confdir=/etc/mplayer \
+--enable-dynamic-plugins \
+--disable-gui --disable-x11 \
+--disable-fontconfig
+make
+make DESTDIR=$PKG install
+install -v -m644 etc/*.conf $PKG/etc/mplayer
+install -v -m755 -d $PKG/usr/share/doc/mplayer-$version
+install -v -m644 DOCS/HTML/en/* \
+$PKG/usr/share/doc/mplayer-$version
+}
