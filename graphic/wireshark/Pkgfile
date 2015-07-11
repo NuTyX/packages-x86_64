@@ -1,0 +1,38 @@
+# Description: Network Sniffer with nice GTK+ UI
+# URL: http://www.wireshark.org
+# Packager: fanch at nutyx dot org
+# Depends on: gtk3 libpcap pcre
+
+name=wireshark
+version=1.12.5
+release=1
+source=(http://www.$name.org/download/src/all-versions/$name-$version.tar.bz2)
+
+build() {
+  cd $name-$version
+
+  ./configure --prefix=/usr \
+              --mandir=/usr/man \
+              --with-plugins=/usr/lib/$name/plugins \
+              --disable-nls \
+              --enable-snmp \
+              --disable-gcry \
+              --without-krb5 \
+              --with-qt4=no \
+              --with-gtk3=yes
+
+  make
+  make DESTDIR=$PKG install
+
+  install -Dm755 .libs/wireshark $PKG/usr/bin/wireshark
+  for d in 16 32 48; do
+    install -Dm644 image/hi${d}-app-wireshark.png  \
+                   $PKG/usr/share/icons/hicolor/${d}x${d}/apps/wireshark.png
+  done
+
+  for d in 16 24 32 48 64 128 256 ; do
+    install -Dm644 image/WiresharkDoc-${d}.png \
+                   $PKG/usr/share/icons/hicolor/${d}x${d}/mimetypes/application-vnd.tcpdump.pcap.png
+  done
+  install -Dm644 wireshark.desktop $PKG/usr/share/applications/wireshark.desktop
+}
