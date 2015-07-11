@@ -1,0 +1,20 @@
+# Description: The GTK Xfce Engine package contains several GTK+ 2 and GTK+ 3 themes and libraries needed to display them. This is useful for customising the appearance of your Xfce desktop.
+# URL: http://www.xfce.org
+# Packager: tyrry at nutyx dot org tnut at nutyx dot org
+# Depends on: gtk gtk3
+
+_name=gtk-xfce-engine
+
+name=xfce4-gtk-engine
+version=3.2.0
+release=1
+
+source=(http://archive.xfce.org/src/xfce/${_name}/${version%.*}/${_name}-$version.tar.bz2)
+
+build() {
+cd ${_name}-$version
+	./configure --prefix=/usr \
+	--enable-gtk3
+	make
+	make DESTDIR=$PKG install
+}
