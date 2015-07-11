@@ -1,0 +1,162 @@
+# Description: Standalone web browser from mozilla.org
+# URL: http://www.mozilla.com/firefox/
+# Packager: pierre at nutyx dot org,tnut at nutyx dot org
+# Depends on: yasm,sqlite,libvpx,libevent,nss,alsa-lib,gtk,xorg-app,zip,unzip,gstreamer,gstreamer-plugins-base
+
+
+name=firefox
+version=39.0
+release=1
+
+source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.bz2)
+
+build() {
+
+cd $SRC
+ARCH=`uname -m`
+
+for lang in da de en-US es-ES fi fr it nb-NO nl pt-PT sv-SE
+do 
+wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$ARCH/xpi/$lang.xpi
+done
+
+cd mozilla-release
+cat > mozconfig << "EOF"
+# If you have a multicore machine, firefox will now use all the cores by
+# default. Exceptionally, you can reduce the number of cores, e.g. to 1,
+# by uncommenting the next line and setting a valid number of CPU cores.
+#mk_add_options MOZ_MAKE_FLAGS="-j1"
+
+# If you have installed DBus-Glib comment out this line:
+ac_add_options --disable-dbus
+
+# If you have installed dbus-glib, and you have installed (or will install)
+# wireless-tools, and you wish to use geolocation web services, comment out
+# this line
+ac_add_options --disable-necko-wifi
+
+# If you have installed libnotify comment out this line:
+ac_add_options --disable-libnotify
+
+# GStreamer is necessary for H.264 video playback in HTML5 Video Player;
+# to be enabled, also remember to set "media.gstreamer.enabled" to "true"
+# in about:config. If you have GStreamer 0.x.y, uncomment this line:
+#ac_add_options --enable-gstreamer
+# or uncomment this line, if you have GStreamer 1.x.y
+#ac_add_options --enable-gstreamer=1.0
+
+# Uncomment these lines if you have installed optional dependencies:
+#ac_add_options --enable-system-hunspell
+#ac_add_options --enable-startup-notification
+
+# Comment out following option if you have PulseAudio installed
+ac_add_options --disable-pulseaudio
+
+# If you have not installed Yasm then uncomment this line:
+#ac_add_options --disable-webm
+
+# If you have installed xulrunner uncomment the next two ac_add_options lines
+# and check that the sdk will be set by running pkg-config in a subshell
+# and has not become hardcoded or empty when you created this file
+#ac_add_options --with-system-libxul
+#ac_add_options --with-libxul-sdk=$(pkg-config --variable=sdkdir libxul)
+
+# Comment out following options if you have not installed
+# recommended dependencies:
+ac_add_options --enable-system-sqlite
+ac_add_options --with-system-libevent
+ac_add_options --with-system-libvpx
+ac_add_options --with-system-nspr
+ac_add_options --with-system-nss
+ac_add_options --with-system-icu
+
+# The BLFS editors recommend not changing anything below this line:
+ac_add_options --prefix=/usr
+ac_add_options --enable-application=browser
+
+ac_add_options --disable-crashreporter
+ac_add_options --disable-updater
+ac_add_options --disable-tests
+
+ac_add_options --enable-optimize
+ac_add_options --enable-strip
+ac_add_options --enable-install-strip
+
+ac_add_options --enable-gio
+ac_add_options --enable-official-branding
+ac_add_options --enable-safe-browsing
+ac_add_options --enable-url-classifier
+
+ac_add_options --enable-system-cairo
+ac_add_options --enable-system-ffi
+ac_add_options --enable-system-pixman
+
+ac_add_options --with-pthreads
+
+ac_add_options --with-system-bz2
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-png
+ac_add_options --with-system-zlib
+
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
+EOF
+
+test $(uname -m) = "i686" && sed -i 's/enable-optimize/disable-optimize/' mozconfig || true
+
+SHELL=/bin/sh  make -f client.mk build
+
+make -C firefox-build-dir/browser/installer
+
+rm -rf $PKG/usr/lib/firefox-$version
+mkdir -p $PKG/usr/lib/firefox-$version
+tar -xvf firefox-build-dir/dist/firefox-$version.en-US.linux-$(uname -m).tar.bz2 \
+-C $PKG/usr/lib/firefox-$version --strip-components=1
+
+mkdir -pv $PKG/usr/bin
+ln -sfv ../lib/firefox-$version/firefox $PKG/usr/bin
+mkdir -pv $PKG/usr/lib/mozilla/plugins
+ln -sfv ../mozilla/plugins $PKG/usr/lib/firefox-$version
+chown -R -v root:root $PKG/usr/lib/firefox-$version
+
+# Need for gnash
+mkdir -p $PKG//usr/include/npapi
+cp -v dom/plugins/base/*.h $PKG//usr/include/npapi
+
+# Launcher 
+mkdir -pv $PKG/usr/share/applications &&
+cat > $PKG/usr/share/applications/firefox.desktop << "EOF" &&
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Firefox
+Comment=Browse The Web
+Icon=firefox
+Exec=firefox
+Categories=Network;GTK;Application;Browser;WebBrowser;
+StartupNotify=true
+Terminal=false
+EOF
+mkdir -pv $PKG/usr/share/pixmaps
+ln -sfv /usr/lib/firefox-$version/browser/icons/mozicon128.png $PKG/usr/share/pixmaps/firefox.png
+mkdir -p $PKG/etc/ld.so.conf.d
+echo "/usr/lib/$name-$version" > $PKG/etc/ld.so.conf.d/firefox.conf
+
+
+for lang in da de en-US es-ES fi fr it nb-NO nl pt-PT sv-SE
+do 
+install -Dm644 $SRC/$lang.xpi \
+    $PKG/usr/lib/firefox-$version/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+done
+
+cat > $PKG/usr/lib/firefox-$version/defaults/pref/vendor.js << "EOF"
+// Use LANG environment variable to choose locale
+pref("intl.locale.matchOS", true);
+
+// Disable default browser checking.
+pref("browser.shell.checkDefaultBrowser", false);
+
+// Don't disable our bundled extensions in the application directory
+pref("extensions.autoDisableScopes", 11);
+pref("extensions.shownSelectionUI", true);
+EOF
+}
