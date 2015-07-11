@@ -1,0 +1,17 @@
+It is recommended to run Transmission in it's own user.
+By default, the script is configured to 'transmission'.
+For the sake of security you shouldn't set a password on this user.
+
+# Exemple:
+useradd -m -b /srv/ -c "transmission user" transmission
+# Will create the transmission user with /srv/transmission as $HOME
+
+Then, if you want to run transmission-daemon as a service.
+First, activate it:
+chmod +x /etc/rc.d/init.d/transmission
+
+Then, you have to edit it if needed to change 
+the TRANSMISSION_USER variable to fit your choice.
+
+Then, run it:
+/etc/rc.d/init.d/transmission start
