@@ -1,0 +1,17 @@
+# Description: feh is a fast, lightweight image viewer which uses Imlib2. It is commandline-driven and supports multiple images through slideshows, thumbnail browsing or multiple windows, and montages or index prints (using TrueType fonts to display file info). Advanced features include fast dynamic zooming, progressive loading, loading via HTTP (with reload support for watching webcams), recursive file opening (slideshow of a directory hierarchy), and mouse wheel/keyboard control.
+# Url: http://linuxbrit.co.uk/feh/
+# Packagers: geantbrun at gmail dot com, tnut at nutyx dot org
+# Depends on: libpng giblib libexif xorg-libxt xorg-libxcursor xorg-libxdamage xorg-libxrandr xorg-libxinerama curl
+
+name=feh
+version=2.13.1
+release=1
+
+source=(http://feh.finalrewind.org/$name-$version.tar.bz2)
+
+build() {
+        cd $name-$version
+	sed -i "s:doc/feh:&-2.13.1:" config.mk
+        make PREFIX=/usr
+        make DESTDIR=$PKG PREFIX=/usr install
+}
