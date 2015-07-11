@@ -1,0 +1,22 @@
+# Description: The Wget package contains a useful utility for non-interactive download of files. GNU Wget is a free software package for retrieving files using HTTP, HTTPS and FTP, the most widely-used Internet protocols. It is a non-interactive commandline tool, so it may easily be called from scripts, cron jobs, terminals without X-Windows support, etc.
+# URL: http://www.gnu.org/software/wget/
+# Maintainer: gscrivano at gnu dot org
+# Packager: tnut at nutyx dot org
+name=wget
+version=1.16.3
+release=1
+
+source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz) 
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--with-ssl=openssl \
+--disable-debug \
+--mandir=/usr/share/man \
+--infodir=/usr/share/info
+make
+make DESTDIR=$PKG install
+rm -rf $PKG/usr/share/info/dir
+}
