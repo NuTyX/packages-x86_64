@@ -1,0 +1,16 @@
+# Description: Squashfs is a compressed read-only filesystem for Linux. It is intended for general read-only filesystem use, for archival use (i.e. in cases where a .tar.gz file may be used),and in constrained block device/memory systems (e.g. embedded systems) where low overhead is needed.
+# URL: http://squashfs.sourceforge.net/
+# Maintainer: phillip at lougher.demon.co.uk
+# Packager: guy at nutyx dot org
+name=squashfs
+version=4.3
+release=1
+
+source=(http://downloads.sourceforge.net/sourceforge/$name/$name$version.tar.gz)
+
+build() {
+cd $name$version/squashfs-tools
+make 
+mkdir -p $PKG/bin
+make INSTALL_DIR=$PKG/bin install
+}
