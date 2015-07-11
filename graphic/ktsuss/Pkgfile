@@ -1,0 +1,25 @@
+# Description: allows l'execution of program root in environment not root
+# URL: http://developer.berlios.de/projects/ktsuss
+# Packager: pierre at nutyx dot org
+# Depends on: atk xorg-fontconfig gtk pango libxcb xorg-libxcursor xorg-libxdamage xorg-libxrandr xorg-libxinerama 
+
+name=ktsuss
+version=2.1
+release=1
+
+source=(https://github.com/nomius/ktsuss/releases/download/$version/ktsuss-$version.tar.gz \
+	http://downloads.nutyx.org/files/patchs/ktsuss/ktsuss-$version-gksu-1 
+	http://downloads.nutyx.org/files/patchs/ktsuss/ktsuss-$version-1)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+chmod u+s $PKG/usr/bin/ktsuss
+mkdir $PKG/usr/libexec
+mv $PKG/usr/bin/ktsuss $PKG/usr/libexec
+
+install -m755 ../ktsuss-$version-1 $PKG/usr/bin/ktsuss
+install -m755 ../ktsuss-$version-gksu-1 $PKG/usr/bin/gksu
+}
