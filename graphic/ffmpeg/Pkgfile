@@ -1,0 +1,33 @@
+# Description: Complete and free Internet live audio and video broadcasting solution
+# URL: http://ffmpeg.org/
+# Packager: pierre at nutyx dot org
+# Depends on: x264 liba52 lame sdl libvorbis libogg xvid faac faad2 libtheora alsa-lib openjpeg libvpx xorg-libxext xorg-libxfixes 
+name=ffmpeg
+version=2.6.3
+release=1
+
+source=(http://ffmpeg.org/releases/ffmpeg-$version.tar.bz2)
+
+build() {
+cd ffmpeg-$version
+sed -i 's/-lflite"/-lflite -lasound"/' configure
+./configure --prefix=/usr      \
+            --enable-gpl         \
+            --enable-version3    \
+            --enable-nonfree     \
+            --disable-static     \
+            --enable-shared      \
+            --disable-debug      \
+            --enable-libmp3lame  \
+            --enable-libtheora   \
+            --enable-libvorbis   \
+            --enable-libvpx      \
+            --enable-libx264     \
+            --enable-x11grab     \
+            --docdir=/usr/share/doc/$name-$version
+make
+gcc tools/qt-faststart.c -o tools/qt-faststart
+make DESTDIR=$PKG install
+install -v -m755 tools/qt-faststart \
+$PKG/usr/bin
+}
