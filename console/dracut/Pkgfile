@@ -1,0 +1,15 @@
+# Description: dracut can generate a customized initrams image which contains only whatever is necessary to boot some particular computer, such as ATA, SCSI and filesystem kernel modules (host-only mode). dracut can also generate a more generic initramfs image (default mode).
+# URL: https://www.kernel.org/pub/linux/utils/boot/dracut/dracut.html
+# Packager: tnut at nutyx dot org
+# Maintainer: Harald Hoyer harald at redhat dot com
+
+name=dracut
+version=037
+release=1
+source=(http://kernel.org/pub/linux/utils/boot/dracut/$name-$version.tar.xz)
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
