@@ -1,0 +1,32 @@
+# Description: Pidgin is a Gtk+ 2 instant messaging client that can connect with a wide range of networks including AIM, ICQ, GroupWise, MSN, Jabber, IRC, Napster, Gadu-Gadu, SILC, Zephyr and Yahoo!
+# URL:  http://www.pidgin.im
+# Packager: pierre at nutyx dot org
+# Depends on: gtk libxml2 perl-xml-parser gnutls nss nspr xorg-libxscrnsaver xorg-libxrandr xorg-libxinerama xorg-libsm gstreamer xscreensaver startup-notification hicolor-icon-theme libidn farstream dbus networkmanager 
+
+name=pidgin
+version=2.10.11
+release=1
+
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--disable-gevolution \
+--disable-meanwhile \
+--disable-avahi \
+--disable-mono \
+--disable-tk \
+--disable-cap \
+--disable-gtkspell  \
+--disable-vv \
+--disable-nm \
+--disable-tcl \
+--disable-schemas-install \
+--enable-gnutls=yes
+ 
+make
+make DESTDIR=$PKG install
+rm -rf $PKG/{etc,usr/lib/perl5}
+}
