@@ -1,0 +1,19 @@
+# Description: Outil de configuration pour openbox
+# URL: URL: http://openbox.org/wiki/ObConf:About
+# Packager: - 
+# Depends on: openbox startup-notification gtk cairo xorg-pixman xorg-libxext gdk-pixbuf atk libglade avahi dbus-python dbus-glib libdaemon xorg-mesa 
+# name=obconf
+release=1
+
+name=obconf
+version=2.0.4
+release=1
+
+source=(http://icculus.org/openbox/obconf/$name-$version.tar.gz)
+
+build() {
+   cd $name-$version
+   ./configure --prefix=/usr
+   make
+   make DESTDIR=$PKG install
+}
