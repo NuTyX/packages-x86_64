@@ -1,0 +1,31 @@
+# Description: The GPM (General Purpose Mouse daemon) package contains a mouse server for the console and xterm. It not only provides cut and paste support generally, but its library component is used by various software such as Links to provide mouse support to the application. It is useful on desktops, especially if following (Beyond) Linux From Scratch instructions; it's often much easier (and less error prone) to cut and paste between two console windows than to type everything by hand!
+# URL: http://unix.schottelius.org/gpm
+# Packager: pierre at nutyx dot org
+name=gpm
+version=1.20.7
+release=1
+
+source=(http://www.nico.schottelius.org/software/$name/archives/$name-$version.tar.bz2)
+
+build() {
+	source /etc/blfs-bootscripts
+	wget  http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
+	tar xvf $scripts-$scriptsversion.tar.bz2
+
+	cd $name-$version
+	./autogen.sh
+	./configure --prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+                --enable-cxx \
+                --enable-mpbsd
+	LDFLAGS="-lm" make
+	make ROOT=$PKG install
+	ln -sv libgpm.so.2.1.0 $PKG/usr/lib/libgpm.so.1
+	ln -sv libgpm.so.2.1.0 $PKG/usr/lib/libgpm.so
+	cp -v conf/gpm-root.conf $PKG/etc
+
+	cd ../$scripts-$scriptsversion
+	make DESTDIR=$PKG install-gpm
+}
