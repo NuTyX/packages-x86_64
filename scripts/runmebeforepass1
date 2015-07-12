@@ -1,11 +1,12 @@
+nutyx-version="houaphan"
 echo "Ce script vérifie tout ce qu'il peut pour que vous puissiez commencez"
 echo ""
 echo "Pressez Entrer pour continuer ou ctrl+c pour interrompre"
 echo ""
 read a
 # Checking the current directory
-if [ "`pwd`" != "/home/lfs/houaphan" ]; then
-	echo "Le script doit être lancé depuis le dossier /home/lfs/houaphan"
+if [ "`pwd`" != "/home/lfs/$nutyx-version" ]; then
+	echo "Le script doit être lancé depuis le dossier /home/lfs/$nutyx-version"
 	exit 1
 fi
 # Checking the variables
@@ -88,13 +89,13 @@ fi
 
 if [ ! -L /home/lfs/bin ]; then
 	echo "Lien /home/lfs/bin n'existe pas"
-	ln -sv $HOME/houaphan/scripts $HOME/bin
+	ln -sv $HOME/$nutyx-version/scripts $HOME/bin
 fi
 echo "link /home/lfs/bin: OK" 
 
 if [ ! -L /home/lfs/config ];then
    echo "Lien /home/lfs/config n'existe pas"
-   ln -sv $HOME/houaphan/scripts $HOME/config
+   ln -sv $HOME/$nutyx-version/scripts $HOME/config
 fi
 echo "link /home/lfs/config: OK"
 
