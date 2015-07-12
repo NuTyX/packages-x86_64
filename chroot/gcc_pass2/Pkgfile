@@ -1,4 +1,4 @@
-version=4.9.3
+version=5.1.0
 source=(\
 http://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.xz \
 http://www.mpfr.org/mpfr-current/mpfr-3.1.3.tar.xz \
@@ -11,10 +11,6 @@ cd  gcc-$version
 
 cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
   `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
-
-case `uname -m` in
-  i?86) sed -i 's/^T_CFLAGS =$/& -fomit-frame-pointer/' gcc/Makefile.in ;;
-esac
 
 
 for file in \
@@ -47,10 +43,6 @@ RANLIB=$LFS_TGT-ranlib                               \
     --prefix=/tools                                  \
     --with-local-prefix=/tools                       \
     --with-native-system-header-dir=/tools/include   \
-    --enable-clocale=gnu                             \
-    --enable-shared                                  \
-    --enable-threads=posix                           \
-    --enable-__cxa_atexit                            \
     --enable-languages=c,c++                         \
     --disable-libstdcxx-pch                          \
     --disable-multilib                               \
