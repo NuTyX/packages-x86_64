@@ -24,5 +24,6 @@ x86_64) ln -sv lib $PKG/lib64
         ln -sv lib $PKG/usr/lib64
         ln -sv lib $PKG/usr/local/lib64;;
 esac
+mkdir -p $PKG/var/lib/pkg
 echo "$version" > $PKG/var/lib/pkg/nutyx-version
 }
