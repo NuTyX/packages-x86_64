@@ -1,10 +1,11 @@
 version=5.9
-source=(\
-ftp://invisible-island.net/ncurses/ncurses-$version.tar.gz)
+source=(ftp://invisible-island.net/ncurses/ncurses-$version.tar.gz
+	http://www.linuxfromscratch.org/patches/downloads/ncurses/ncurses-5.9-gcc5_buildfixes-1.patch)
 
 build()
 {
 cd ncurses-$version
+patch -Np1 -i ../ncurses-5.9-gcc5_buildfixes-1.patch
 ./configure --prefix=/tools --with-shared \
  --without-debug --without-ada --enable-widec  \
  --enable-overwrite

@@ -6,17 +6,18 @@ name=ncurses
 version=5.9
 release=3
 
-source=(ftp://invisible-island.net/ncurses/ncurses-$version.tar.gz)
+source=(ftp://invisible-island.net/ncurses/ncurses-$version.tar.gz
+	http://www.linuxfromscratch.org/patches/downloads/ncurses/ncurses-5.9-gcc5_buildfixes-1.patch)
 
 build()
 {
 cd ncurses-$version
-
+patch -Np1 -i ../ncurses-5.9-gcc5_buildfixes-1.patch
 
 sed -i '/LIBTOOL_INSTALL/d' c++/Makefile.in
 
 ./configure --prefix=/usr --mandir=/usr/share/man \
--infodir=/usr/share/info \
+-infodir=/usr/share/info --without-normal \
 --with-shared --bindir=/bin --sbindir=/sbin \
 --libdir=/lib --without-debug --enable-pc-files \
 --enable-widec --with-install-prefix=$PKG
