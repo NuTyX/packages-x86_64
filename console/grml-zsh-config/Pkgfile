@@ -1,0 +1,28 @@
+# Description: grml's Zsh setup
+# URL: URL: http://grml.org/zsh/
+# NuTyX package info file (http://nutyx.org)
+# Packager: # NuTyX package info file (http://nutyx.org)
+# Depends on: zsh 
+name=grml-zsh-config
+version=0.10.1
+release=1
+
+source=(
+http://deb.grml.org/pool/main/g/grml-etc-core/grml-etc-core_${version}.tar.gz)
+
+build(){
+    cd $SRC/grml-etc-core-$version/doc
+    make
+    cd $SRC/grml-etc-core-$version
+    install -D -m644 etc/skel/.zshrc $PKG/etc/skel/.zshrc
+    install -D -m644 etc/zsh/keephack $PKG/etc/zsh/keephack
+    install -D -m644 etc/zsh/zshrc $PKG/etc/zsh/zshrc
+
+    install -D -m644 doc/grmlzshrc.5 \
+        $PKG/usr/share/man/man5/grmlzshrc.5
+    ln -sf grmlzshrc.5.gz $PKG/usr/share/man/man5/grml-zsh-config.5.gz
+}
+
+
+
+# NuTyX Pkgfile (http://nutyx.org)
