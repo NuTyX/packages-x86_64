@@ -3,21 +3,22 @@
 # Packager: tnut at nutyx dot org
 name=openssl
 version=1.0.2d
-release=1
+release=2
 
-source=(http://www.openssl.org/source/$name-$version.tar.gz
-	http://www.linuxfromscratch.org/patches/downloads/openssl/$name-$version-fix_parallel_build-1.patch)
+source=(http://www.openssl.org/source/$name-$version.tar.gz)
+
 PKGMK_GROUPS=(devel man doc)
 
 build() {
+unset MAKEFLAGS
+
 cd $name-$version
-patch -Np1 -i ../$name-$version-fix_parallel_build-1.patch
 
 ./config --prefix=/usr \
 	--openssldir=/etc/ssl \
 	shared zlib-dynamic
 
-make || make -j1
+make
 make INSTALL_PREFIX=$PKG MANDIR=/usr/share/man \
 MANSUFFIX=ssl install
 
