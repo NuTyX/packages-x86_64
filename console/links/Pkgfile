@@ -1,0 +1,16 @@
+# Description: Links is a text and graphics mode WWW browser. It includes support for rendering tables and frames, features background downloads, can display colors and has many other features
+# URL: http://links.twibright.com/
+# Packager: pierre at nutyx dot org
+# Depends on: gpm libpng libtiff libjpeg-turbo 
+name=links
+version=2.9
+release=1
+
+source=(http://links.twibright.com/download/links-$version.tar.bz2)
+build() {
+cd $name-$version
+./configure --prefix=/usr --enable-graphics \
+--mandir=/usr/share/man
+make
+make DESTDIR=$PKG install
+}
