@@ -1,0 +1,23 @@
+# Description : KDE5 system fonts
+# URL: https://www.kde.org/
+# Packager: pierre at nutyx dot org
+# Depends on: cmake extra-cmake-modules fontforge
+
+name=oxygen-fonts
+release=1
+version=5.3.2
+source=(http://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build() {
+cd $name*
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=$KF5_PREFIX  \
+      -DCMAKE_BUILD_TYPE=Release          \
+      -DLIB_INSTALL_DIR=lib               \
+      -DBUILD_TESTING=OFF                 \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
+
