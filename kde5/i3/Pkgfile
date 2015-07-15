@@ -1,0 +1,17 @@
+# Description: An improved dynamic tiling window manager 
+# URL: http://i3wm.org/
+# Packager: pierre at nutyx dot org
+# Depends on: xcb-util-cursor xcb-util-keysyms xcb-util-wm libev yajl startup-notification pango libxkbcommon xorg-libxkbfile
+
+name=i3
+version=4.10.2
+release=1
+
+source=(http://i3wm.org/downloads/$name-$version.tar.bz2)
+
+build() {
+MAKEFLAGS="-j1"
+cd $name-$version
+make
+make DESTDIR=$PKG install
+}
