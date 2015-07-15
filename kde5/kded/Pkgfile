@@ -1,0 +1,24 @@
+# Description : Parts of framework 5
+# URL: https://www.kde.org/
+# Packager: pierre at nutyx dot org
+# Depends on: cmake extra-cmake-modules qt5 kinit 
+name=kded
+release=1
+version=5.12.0
+_version=5.12
+source=(http://download.kde.org/stable/frameworks/${_version}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=$KF5_PREFIX \
+      -DCMAKE_PREFIX_PATH=$QT5_PREFIX    \
+      -DCMAKE_BUILD_TYPE=Release         \
+      -DLIB_INSTALL_DIR=lib              \
+      -DBUILD_TESTING=OFF                \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
+
