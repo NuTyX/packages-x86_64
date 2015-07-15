@@ -1,0 +1,18 @@
+# Description : Project to define a protocol for a compositor to talk to its clients as well as a library implementation of the protoco
+# URL:  http://wayland.freedesktop.org/
+# Packager: pierre at nutyx dot org
+# Depends on: libffi doxygen xmlto docbook-xml libxslt
+name=wayland
+release=1
+version=1.8.1
+source=( http://wayland.freedesktop.org/releases/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr    \
+            --disable-static \
+            --disable-documentation
+make
+make DESTDIR=$PKG install
+}
+
