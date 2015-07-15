@@ -1,0 +1,27 @@
+# Description : Parts of framework 5
+# URL: https://www.kde.org/
+# Packager: pierre at nutyx dot org
+# Depends on: 
+name=plasma-sdk
+release=1
+version=5.3.2
+_version=5.3.2
+source=(http://download.kde.org/stable/plasma/${_version}/$name-$version.tar.xz)
+
+build() {
+source /usr/bin/setqt5 &&
+cd $name-$version
+mkdir build
+cd    build
+cmake -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_SKIP_RPATH=ON \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DPHONON_INSTALL_QT_EXTENSIONS_INTO_SYSTEM_QT=ON \
+      -DPHONON_BUILD_PHONON4QT5=ON \
+      -D__KDE_HAVE_GCC_VISIBILITY=NO \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+       -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
+
