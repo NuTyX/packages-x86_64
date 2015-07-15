@@ -1,0 +1,22 @@
+# Description : Parts of application kde 5
+# URL: https://www.kde.org/
+# Packager: pierre at nutyx dot org
+# Depends on: kdelibs4support kinit knotifyconfig kpty 
+name=konsole
+release=1
+version=15.04.3
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=$KF5_PREFIX  \
+      -DCMAKE_BUILD_TYPE=Release          \
+      -DLIB_INSTALL_DIR=lib               \
+      -DBUILD_TESTING=OFF                 \
+      -Wno-dev .. 
+make
+make DESTDIR=$PKG install
+}
+
