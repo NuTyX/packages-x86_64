@@ -1,0 +1,18 @@
+# Description: Yet Another JSON Library 
+# URL: http://lloyd.github.com/yajl/
+# Packager: pierre at nutyx dot org
+# Depends on: cmake,git
+
+name=yajl
+version=2.1.0
+release=1
+
+source=()
+
+build() {
+git clone git://github.com/lloyd/yajl
+cd $name
+cmake -DCMAKE_INSTALL_PREFIX=/usr .
+make
+make DESTDIR=$PKG install
+}
