@@ -13,40 +13,35 @@ source=(http://download.qt-project.org/official_releases/qt/${version%.*}/$versi
 
 build() {
 
+export QT5PREFIX=/opt/qt5
+
 cd ${_name}*
 
-./configure -prefix         /usr                        \
-            -sysconfdir     /etc/xdg                    \
-            -bindir         /usr/lib/qt5/bin            \
-	    -plugindir      /usr/lib/qt5/plugins        \
-	    -importdir      /usr/lib/qt5/imports        \
-            -headerdir      /usr/include/qt5            \
-            -datadir        /usr/share/qt5              \
-            -docdir         /usr/share/doc/qt5          \
-            -translationdir /usr/share/qt5/translations \
-            -examplesdir    /usr/share/doc/qt5/examples \
-            -confirm-license  \
-            -opensource       \
-            -dbus-linked      \
-            -openssl-linked   \
-            -system-harfbuzz  \
-            -system-sqlite    \
-            -nomake examples  \
-	    -no-rpath         \
-	    -optimized-qmake  \
-	    -skip qtwebengine &&
+./configure -prefix         $QT5PREFIX \
+            -sysconfdir     /etc/xdg   \
+            -confirm-license           \
+            -opensource                \
+            -dbus-linked               \
+            -openssl-linked            \
+            -system-harfbuzz           \
+            -system-sqlite             \
+            -nomake examples           \
+            -no-rpath                  \
+            -optimized-qmake           \
+            -skip qtwebengine
               
 make
 make INSTALL_ROOT=$PKG install
 
-find $PKG/usr/lib/pkgconfig -name "*.pc" -exec perl -pi -e "s, -L$PWD/?\S+,,g" {} \;
+find $PKG/$QT5PREFIX/lib/pkgconfig -name "*.pc" -exec perl -pi -e "s, -L$PWD/?\S+,,g" {} \;
 
-find $PKG/usr/ -name qt_lib_bootstrap_private.pri \
+find $PKG/$QT5PREFIX/ -name qt_lib_bootstrap_private.pri \
    -exec sed -i -e "s:$PWD/qtbase:/$QT5PREFIX/lib/:g" {} \; &&
 
 find $PKG/usr -name \*.prl \
    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
 
+QT5BINDIR=$QT5PREFIX/bin
 
 install -v -dm755 $PKG/usr/share/pixmaps/
 
@@ -69,7 +64,7 @@ cat > $PKG/usr/share/applications/assistant-qt5.desktop << "EOF"
 [Desktop Entry]
 Name=Qt5 Assistant
 Comment=Shows Qt5 documentation and examples
-Exec=/usr/lib/qt5/bin/assistant-qt5
+Exec=/opt/qt5/bin/assistant-qt5
 Icon=assistant-qt5
 Terminal=false
 Encoding=UTF-8
@@ -82,7 +77,7 @@ cat > $PKG/usr/share/applications/designer-qt5.desktop << "EOF"
 Name=Qt5 Designer
 GenericName=Interface Designer
 Comment=Design GUIs for Qt5 applications
-Exec=/usr/lib/qt5/bin/designer-qt5
+Exec=/opt/qt5/bin/designer-qt5
 Icon=designer-qt5
 MimeType=application/x-designer;
 Terminal=false
@@ -95,7 +90,7 @@ cat > $PKG/usr/share/applications/linguist-qt5.desktop << "EOF"
 [Desktop Entry]
 Name=Qt5 Linguist
 Comment=Add translations to Qt5 applications
-Exec=/usr/lib/qt5/bin/linguist-qt5
+Exec=/opt/qt5/bin/linguist-qt5
 Icon=linguist-qt5
 MimeType=text/vnd.trolltech.linguist;application/x-linguist;
 Terminal=false
@@ -109,7 +104,7 @@ cat > $PKG/usr/share/applications/qdbusviewer-qt5.desktop << "EOF"
 Name=Qt5 QDbusViewer
 GenericName=D-Bus Debugger
 Comment=Debug D-Bus applications
-Exec=/usr/lib/qt5/bin/qdbusviewer-qt5
+Exec=/opt/qt5/bin/qdbusviewer-qt5
 Icon=qdbusviewer-qt5
 Terminal=false
 Encoding=UTF-8
@@ -117,22 +112,28 @@ Type=Application
 Categories=Qt;Development;Debugger;
 EOF
 
+mkdir $PKG/etc/profile.d
+
 cat > /etc/profile.d/qt5.sh << EOF
 # Begin /etc/profile.d/qt5.sh
 
-QT5DIR=/usr
+QT5DIR=/opt/qt5
+
+pathappend $QT5DIR/bin           PATH
+pathappend $QT5DIR/lib/pkgconfig PKG_CONFIG_PATH
+
 export QT5DIR
 
 # End /etc/profile.d/qt5.sh
 EOF
 
-cat > /usr/bin/setqt4 << 'EOF'
+cat > $PKG/usr/bin/setqt4 << 'EOF'
 if [ "x$QT5DIR" != "x/usr" ] && [ "x$QT5DIR" != "x" ]; then pathremove  $QT5DIR/bin; fi
 if [ "x$QT4DIR" != "x/usr" ]; then pathprepend $QT4DIR/bin; fi
 echo $PATH
 EOF
 
-cat > /usr/bin/setqt5 << 'EOF'
+cat > $PKG/usr/bin/setqt5 << 'EOF'
 if [ "x$QT4DIR" != "x/usr" ] && [ "x$QT4DIR" != "x" ]; then pathremove  $QT4DIR/bin; fi
 if [ "x$QT5DIR" != "x/usr" ]; then pathprepend $QT5DIR/bin; fi
 echo $PATH
