@@ -9,7 +9,6 @@ _name=phonon
 source=(http://download.kde.org/stable/${_name}/$version/src/${_name}-$version.tar.xz)
 
 build() {
-source /usr/bin/setqt5
 cd ${_name}-$version
 
 sed -i "s:BSD_SOURCE:DEFAULT_SOURCE:g" cmake/FindPhononInternal.cmake
