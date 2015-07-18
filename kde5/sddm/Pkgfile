@@ -1,17 +1,17 @@
-# Description : Parts of framework 5
+# Description : The SDDM package contains a lightweight display manager written in Qt and QML. 
 # URL: https://www.kde.org/
-# Packager: pierre at nutyx dot org
-# Depends on: cmake qt5 pam docutils
+# Packager: pierre at nutyx dot org, fanch at nutyx dot org, tnut at nutyx dot org
+# Depends on: cmake pam qt5  
 name=sddm
 release=1
 version=0.11.0
-source=(https://github.com/$name/$name/archive/$version.tar.gz)
+
+source=( http://www.linuxfromscratch.org/~krejzi/pkgs/${name}-$version.tar.gz)
 
 build() {
-cd $name-$version
+cd ${name}-$version
 mkdir build
 cd    build
-
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_BUILD_TYPE=Release  \
       -DCMAKE_INSTALL_LIBEXECDIR=/usr/lib/sddm \
@@ -19,12 +19,7 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
 make
 make DESTDIR=$PKG install
 
-install -v -dm755 -o sddm -g sddm $PKG/var/lib/sddm
-
-
-mkdir -p $PKG/etc/pam.d
-
-cat > $PKG/etc/pam.d/sddm << "EOF"  &&
+cat > /etc/pam.d/sddm << "EOF"  &&
 # Begin /etc/pam.d/sddm
 
 auth     requisite      pam_nologin.so
@@ -41,7 +36,7 @@ session  include        system-session
 
 # End /etc/pam.d/sddm
 EOF
-cat > $PKG/etc/pam.d/sddm-autologin << "EOF" &&
+cat > /etc/pam.d/sddm-autologin << "EOF" &&
 # Begin /etc/pam.d/sddm-autologin
 
 auth     requisite      pam_nologin.so
@@ -59,7 +54,7 @@ session  include        system-session
 
 # End /etc/pam.d/sddm-autologin
 EOF
-cat > $PKG/etc/pam.d/sddm-greeter << "EOF"
+cat > /etc/pam.d/sddm-greeter << "EOF"
 # Begin /etc/pam.d/sddm-greeter
 
 auth     required       pam_env.so
@@ -73,4 +68,3 @@ session  required       pam_unix.so
 # End /etc/pam.d/sddm-greeter
 EOF
 }
-
