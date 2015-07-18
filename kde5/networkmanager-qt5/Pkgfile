@@ -1,0 +1,27 @@
+# Description : Parts of framework 5
+# URL: https://www.kde.org/
+# Packager: pierre at nutyx dot org
+# Depends on: extra-cmake-modules qt5 networkmanager 
+name=networkmanager-qt5
+_name=networkmanager-qt
+release=1
+version=5.12.0
+_version=5.12
+source=(http://download.kde.org/stable/frameworks/${_version}/${_name}-$version.tar.xz)
+
+build() {
+cd ${_name}-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr             \
+      -DCMAKE_BUILD_TYPE=Release              \
+      -DLIB_INSTALL_DIR=lib                   \
+      -DBUILD_TESTING=OFF                     \
+      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
+      -DQML_INSTALL_DIR=lib/qt5/qml           \
+      -DECM_MKSPECS_INSTALL_DIR=/usr/share/qt5/mkspecs/modules \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
+
