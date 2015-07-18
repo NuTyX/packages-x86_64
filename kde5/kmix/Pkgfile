@@ -1,22 +1,30 @@
-# Description : Parts of application kde 5
+# Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: kdelibs4support alsa-lib libcanberra pulseaudio 
+# Depends on: extra-cmake-modules qt5 kdelibs4support alsa-lib libcanberra pulseaudio
 name=kmix
 release=1
 version=15.04.3
+_version=15.04
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
+
+#sed -i "s:\${ECM_MODULE_PATH}:\${CMAKE_SOURCE_DIR}/cmake/modules &:g" CMakeLists.txt
+
+
 mkdir build
 cd    build
-cmake -DCMAKE_INSTALL_PREFIX=$KF5_PREFIX -DCMAKE_PREFIX_PATH=$QT5DIR \
-      -DCMAKE_BUILD_TYPE=Release         \
-      -DLIB_INSTALL_DIR=lib              \
-      -DBUILD_TESTING=OFF                \
-      -DKMIX_KF5_BUILD=1                 \
-      -Wno-dev .. 
+cmake -DCMAKE_INSTALL_PREFIX=/usr             \
+      -DCMAKE_BUILD_TYPE=Release              \
+      -DLIB_INSTALL_DIR=lib                   \
+      -DBUILD_TESTING=OFF                     \
+      -DKMIX_KF5_BUILD=ON                      \
+      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
+      -DQML_INSTALL_DIR=lib/qt5/qml           \
+      -DECM_MKSPECS_INSTALL_DIR=/usr/share/qt5/mkspecs/modules \
+      -Wno-dev ..
 make
 make DESTDIR=$PKG install
 }
