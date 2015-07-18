@@ -9,13 +9,17 @@ _version=5.3.2
 source=(http://download.kde.org/stable/plasma/${_version}/$name-$version.tar.xz)
 
 build() {
+source /usr/bin/setqt5 &&
 cd $name-$version
 mkdir build
 cd    build
-cmake -DCMAKE_INSTALL_PREFIX=$KF5_PREFIX -DCMAKE_PREFIX_PATH=$QT5DIR  \
-      -DCMAKE_BUILD_TYPE=Release          \
-      -DLIB_INSTALL_DIR=lib               \
-      -DBUILD_TESTING=OFF                 \
+cmake -DCMAKE_INSTALL_PREFIX=/usr             \
+      -DCMAKE_BUILD_TYPE=Release              \
+      -DLIB_INSTALL_DIR=lib                   \
+      -DBUILD_TESTING=OFF                     \
+      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
+      -DQML_INSTALL_DIR=lib/qt5/qml           \
+      -DECM_MKSPECS_INSTALL_DIR=/usr/share/qt5/mkspecs/modules \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
