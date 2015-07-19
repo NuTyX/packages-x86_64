@@ -3,7 +3,7 @@
 # Packager: Risto Kankkunen's
 # Maintainer: pierre at nutyx dot org
 name=kbd
-version=2.0.2
+version=2.0.3
 release=1
 
 source=(http://ftp.altlinux.com/pub/people/legion/kbd/kbd-$version.tar.xz \
@@ -25,4 +25,7 @@ make
 make check
 make DESTDIR=$PKG install
 
+mkdir -v $PKG/usr/share/doc/$name-$version
+cp -R -v docs/doc/* \
+$PKG/usr/share/doc/$name-$version
 }
