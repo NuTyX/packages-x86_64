@@ -46,13 +46,6 @@ find $PKG/usr/ -name qt_lib_bootstrap_private.pri \
 find $PKG/usr -name \*.prl \
    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
 
-
-mkdir -p $PKG/usr/bin/qt5
-cd $PKG/usr/bin/qt5
-for file in *; do
-  ln -s $file $PKG/usr/bin/qt5/$file-qt5
-done
-
 install -v -dm755 $PKG/usr/share/pixmaps/
 
 install -v -Dm644 qttools/src/assistant/assistant/images/assistant-128.png \
@@ -122,7 +115,7 @@ Type=Application
 Categories=Qt;Development;Debugger;
 EOF
 
-cat > /etc/profile.d/qt5.sh << EOF
+cat > $PKG/etc/profile.d/qt5.sh << EOF
 # Begin /etc/profile.d/qt5.sh
 
 QT5DIR=/usr
@@ -131,16 +124,20 @@ export QT5DIR
 # End /etc/profile.d/qt5.sh
 EOF
 
-cat > /usr/bin/setqt4 << 'EOF'
+cat > $PKG/usr/bin/setqt4 << 'EOF'
 if [ "x$QT5DIR" != "x/usr" ] && [ "x$QT5DIR" != "x" ]; then pathremove  $QT5DIR/bin; fi
 if [ "x$QT4DIR" != "x/usr" ]; then pathprepend $QT4DIR/bin; fi
 echo $PATH
 EOF
 
-cat > /usr/bin/setqt5 << 'EOF'
+cat > $PKG/usr/bin/setqt5 << 'EOF'
 if [ "x$QT4DIR" != "x/usr" ] && [ "x$QT4DIR" != "x" ]; then pathremove  $QT4DIR/bin; fi
 if [ "x$QT5DIR" != "x/usr" ]; then pathprepend $QT5DIR/bin; fi
 echo $PATH
 EOF
 
+cd $PKG/usr/bin/qt5
+for file in *; do
+  ln -s $file $PKG/usr/bin/qt5/$file-qt5
+done
 }
