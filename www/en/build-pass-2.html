@@ -48,20 +48,21 @@
 <pre class="command"><kbd>chown -R root:root $LFS</kbd></pre>
       <li>We create folders and links to put the recepts in place.</li>
 <pre class="command"><kbd>install -dv -m0750  $LFS/root
-ln -sv saravane/scripts $LFS/root/bin</kbd></pre>
+ln -sv houaphan/scripts $LFS/root/bin</kbd></pre>
       <li>We move the receipts to the right folder and go in this folder</li>
-<pre class="command"><kbd>mv /home/lfs/saravane $LFS/root/
-cd $LFS/root/saravane/base/aaabasicfs</kbd></pre>
+<pre class="command"><kbd>mv /home/lfs/houaphan $LFS/root/
+mv /home/lfs/extra $LFS/root/
+cd $LFS/root/houaphan/base/nutyx</kbd></pre>
       <li>We compile the first package of NuTyX</li>
 <pre class="command"><kbd>/tools/bin/pkgmk -cf ../../../bin/pkgmk.conf.passes</kbd></pre>
-      <li>We install aaabasicfs in the NuTyX</li>
-<pre class="command"><kbd>/tools/bin/pkgadd -r $LFS aaabasicfs1*
-/tools/bin/pkgadd -r $LFS aaabasicfs.man1*</kbd></pre>
+      <li>We install the <b>nutyx</b> package in the NuTyX</li>
+<pre class="command"><kbd>/tools/bin/pkgadd -r $LFS nutyx1*
+/tools/bin/pkgadd -r $LFS nutyx.man1*</kbd></pre>
       <li>We check if it's present</li>
 <pre class="command"><kbd>/tools/bin/pkginfo -r $LFS -i</kbd></pre>
 should return
-<pre class="output">aaabasicfs 2015.3
-aaabasicfs.man 2015.3</pre>
+<pre class="output">nutyx 8.0.2015...
+nutyx.man 8.0.2015...</pre>
       <li>We mount all different folders</li>
 <pre class="command"><kbd>mount -v -B /dev $LFS/dev
 mount -vt devpts devpts $LFS/dev/pts
@@ -97,7 +98,7 @@ bash: tput: command not found
      <li>We redefine the PATH variable</li>
 <pre class="command"><kbd>export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin:/root/bin</kbd></pre>
      <li> We launch the compilation of the packages</li>
-<pre class="command"><kbd>cd /root/saravane/base
+<pre class="command"><kbd>cd /root/houaphan/base
 pass</kbd></pre>
 	return
 <pre class="output">tar -p -o -C /tmp/work/src -xf /sources/linux-3.19.3.tar.xz
@@ -107,7 +108,7 @@ pass</kbd></pre>
     <li>As it's says, the <b>bash</b> packages needs to be installed manually. So let's do it from outside the NuTyX. We got out first:</li>
     <pre class="command"><kbd>exit</kbd></pre>
     <li>Now we go to the right place and install the <b>bash</b> packages:</li>
-    <pre class="command"><kbd>cd $LFS/root/saravane/base/bash
+    <pre class="command"><kbd>cd $LFS/root/houaphan/base/bash
 for PACK in *.xz; do /tools/bin/pkgadd -r $LFS $PACK;done</kbd></pre>
      <li>We check if it has been added:</li>
      <pre class="command"><kbd>/tools/bin/pkginfo -r $LFS -i|grep bash</kbd></pre>
@@ -124,7 +125,7 @@ bash.de 4.3.33
            <li>We redefine AGAIN the PATH variable:</li>
 <pre class="command"><kbd>export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin:/root/bin</kbd></pre>
      <li> We launch AGAIN the compilation of the packages:</li>
-<pre class="command"><kbd>cd /root/saravane/base
+<pre class="command"><kbd>cd /root/houaphan/base
 pass</kbd></pre>
 <pre class="output">tar -p -o -C /tmp/work/src -xf /sources/bc-1.06.95.tar.bz2
 ....</pre>
@@ -144,7 +145,7 @@ source  ~/.bash_profile</kbd></pre>
       <li>We create the folder to put the receiptes in place and the log folder as well. We create also a link so that the script <b>pass</b> is found.</li>
       <li>We will now compile the first package which is aaabasicfs. For this we need to go in the folder of the recept</li>
       <li>This package doent contains any code so it's just create all the folders and configuration files for the NuTyX.</li>
-      <li>We install the first package aaabasicfs into the NuTyX and</li>
+      <li>We install the first package <b>nutyx</b> into the NuTyX and</li>
       <li>We check if it's corretly installed by looking at the database folder.</li>
       <li>It's time to mount all the necessary folders to be able to enter and to compile without problems the rest of the NuTyX.</li>
       <li>In case of a package need to download something (for exemple the kernel) we copy the resolv.conf file from the host to be able to resolve the adress.</li>
@@ -162,7 +163,7 @@ source  ~/.bash_profile</kbd></pre>
   <div class="pied_page"><a class="url" href="build-post.html">One pass 2 is done, you can start the post-construction and generation of the iso</a></div>
 <p>
   <hr>
-  <p class="updated">Last updated on 2015-03-31 21:14</p>
+  <p class="updated">Last updated on 2015-07-19 13:26</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

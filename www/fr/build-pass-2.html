@@ -48,20 +48,21 @@
         <pre class="command"><kbd>chown -R root:root $LFS</kbd></pre>
       <li>On créé les dossiers et lien pour y placer les recettes.</li>
         <pre class="command"><kbd>install -dv -m0750  $LFS/root
-ln -sv saravane/scripts $LFS/root/bin</kbd></pre>
+ln -sv houaphan/scripts $LFS/root/bin</kbd></pre>
       <li>On déplace les recettes et l'on se place dans le dossier adéquat</li>
-        <pre class="command"><kbd>mv /home/lfs/saravane $LFS/root/
-cd $LFS/root/saravane/base/aaabasicfs</kbd></pre>
+        <pre class="command"><kbd>mv /home/lfs/houaphan $LFS/root/
+mv /home/lfs/extra $LFS/root/
+cd $LFS/root/houaphan/base/nutyx</kbd></pre>
       <li>On compile le premier paquet de NuTyX</li>
         <pre class="command"><kbd>/tools/bin/pkgmk -cf ../../../bin/pkgmk.conf.passes</kbd></pre>
-      <li>On installe aaabasicfs dans la NuTyX</li>
-        <pre class="command"><kbd>/tools/bin/pkgadd -r $LFS aaabasicfs1*
-/tools/bin/pkgadd -r $LFS aaabasicfs.man1*</kbd></pre>
+      <li>On installe les paquets <b>nutyx</b> dans la NuTyX</li>
+        <pre class="command"><kbd>/tools/bin/pkgadd -r $LFS nutyx1*
+/tools/bin/pkgadd -r $LFS nutyx.man1*</kbd></pre>
       <li>On vérifie sa présence</li>
         <pre class="command"><kbd>/tools/bin/pkginfo -r $LFS -i</kbd></pre>
 retourne
-        <pre class="output">aaabasicfs 2015.3
-aaabasicfs.man 2015.3</pre>
+        <pre class="output">nutyx 8.0.2015...
+nutyx.man 8.0.2015...</pre>
       <li>On monte les différents dossiers</li>
         <pre class="command"><kbd>mount -v --bind /dev $LFS/dev
 mount -vt devpts devpts $LFS/dev/pts -o gid=5,mode=620
@@ -97,18 +98,18 @@ bash: tput: command not found
       <li>On redéfinie la variable PATH</li>
        <pre class="command"><kbd>export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin:/root/bin</kbd></pre>
       <li> On lance la compilation des paquets</li>
-       <pre class="command"><kbd>cd /root/saravane/base
+       <pre class="command"><kbd>cd /root/houaphan/base
 pass</kbd></pre>
 	retourne
        <pre class="output">tar -p -o -C /tmp/work/src -xf /sources/linux-3.19.3.tar.xz
 ...</pre>
       <li>On attend le message suivant:</li>
-      <pre class="output">=======> Building '/root/saravane/base/bash/bash...' succeeded.
+      <pre class="output">=======> Building '/root/houaphan/base/bash/bash...' succeeded.
 need to install bash manually</pre>
      <li>En français cela signifie qu'il faut installer le paquet <b>bash</b> à la main. Il faut donc le faire en dehors de la NuTyX. Il faut donc sortir:</li>
       <pre class="command"><kbd>exit</kbd></pre>
      <li>Nous allons maintenant dans le bon dossier et installons le paquet <b>bash</b>:</li>
-      <pre class="command"><kbd>cd $LFS/root/saravane/base/bash
+      <pre class="command"><kbd>cd $LFS/root/houaphan/base/bash
 for PACK in *.xz; do /tools/bin/pkgadd -r $LFS $PACK;done</kbd></pre>
      <li>On vérifie qu'il est bien ajouté:</li>
      <pre class="command"><kbd>/tools/bin/pkginfo -r $LFS -i|grep bash</kbd></pre>
@@ -125,7 +126,7 @@ bash.fr 4.3.33
      <li>Nous définissons la variable PATH une dernière fois:</li>
       <pre class="command"><kbd>export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin:/root/bin</kbd></pre>
      <li>Nous relançons la compilation des paquets restants:</li>
-      <pre class="command"><kbd>cd /root/saravane/base
+      <pre class="command"><kbd>cd /root/houaphan/base
 pass</kbd></pre>
       <pre class="output">tar -p -o -C /tmp/work/src -xf /sources/bc-1.06.95.tar.bz2
 ....</pre>
@@ -144,7 +145,7 @@ source  ~/.bash_profile</kbd></pre>
       <li>On créer le dossier pour y placer les recettes ainsi qe le dossier logs qui recevra les resultats de la compilation de chaque recette. On créer également un lien pour que le script <b>pass</b> soit trouvé.</li>
       <li>On va maintenant compiler le premier paquet qui est aaabasicfs. Pour cela on se rend dans le dossier</li>
       <li>On compile le premier paquet qui d'ailleurs ne contient aucun code, ce paquet consiste à crééer tous les dossiers et fichiers de configuration de la NuTyX.</li>
-      <li>On installe le premier paquet aaabasicfs dans la NuTyX et</li>
+      <li>On installe le premier paquet <b>nutyx</b> dans la NuTyX et</li>
       <li>On vérifie bien sa présence dans la base de données de celle-ci.</li>
       <li>Il s'agit maintenant de monter les quelques dossiers indispensable pour le bon déroulement des opérations de compilation.</li>
       <li>Pour que le cas échéant, une recette necessite de télécharger les sources, on copie le fichier resolv.conf qui définie le routage et la résolution de noms de domaine.</li>
@@ -167,7 +168,7 @@ source  ~/.bash_profile</kbd></pre>
     </ol>
   <div class="pied_page"><a class="url" href="build-post.html">Une fois la passe 2 terminée, vous pouvez passer à la post-installation et génération de l'iso</a></div>
   <hr>
-  <p class="updated"> Dernière mise à jour 31-03-2015 21:30</p>
+  <p class="updated"> Dernière mise à jour 19-07-2015 13:27</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

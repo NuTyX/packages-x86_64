@@ -36,9 +36,12 @@
     <p>Note that in this article, we use only a folder and not a partition. It's possible to build the CHROOT in a folder.</p>
     <p>A few warning prior to start:</p>
     <p>1. Use only the BASH interpreter</p>
-    <p>2. If you are under NuTyX saravane, make shure the package (and it's dependencies) cards.devel is installed. Make shure you are on version 1.1.2 or newer. In case of:
+    <p>2. Make shure the tools <b>git</b> and <b>wget</b> are installed, under NuTyX:
+    <pre class="command_user"><kbd>get git
+get wget</kbd></pre></p>
+    <p>3. If you are under NuTyX houaphan or saravane, make shure the package (and it's dependencies) cards.devel is installed. In case of:
     <pre class="command_user"><kbd>get cards.devel</kbd></pre></p>
-    <p>3. Check that all the conditions are fullfill by checking this <a  class="url" href="http://www.linuxfromscratch.org/lfs/view/lfs-svn/prologue/hostreqs.html" target="_blank">page</a></p>
+    <p>4. Check that all the conditions are fullfill by checking this <a  class="url" href="http://www.linuxfromscratch.org/lfs/view/lfs-svn/prologue/hostreqs.html" target="_blank">page</a></p>
     <h2>Administrator part:</h2>
     <p>
      <ol>
@@ -79,16 +82,17 @@ export LFS LC_ALL LFS_TGT PATH
 EOF</code></kbd></pre>
     And then we load the new environnement:
 <pre class="command_user"><kbd>source ~/.bash_profile</kbd></pre>
-    And to finish, we get the latest version from the git:
-<pre class="command_user"><kbd>git clone git://github.com/NuTyX/saravane.git</kbd></pre>
-    Ones this is done, a new folder is created: saravane. We enter in it and launch the first script:
-<pre class="command_user"><kbd>cd saravane
+    And to finish, we get the latest version of the NuTyX project from the git:
+<pre class="command_user"><kbd>git clone git://github.com/NuTyX/houaphan.git
+git clone git://github.com/NuTyX/extra.git</kbd></pre>
+    Ones this is done, a new folder is created: houaphan. We enter in it and launch the first script:
+<pre class="command_user"><kbd>cd houaphan
 scripts/runmebeforepass1</kbd></pre>
     The script will check a serie of verification and NO error should occur. The downloading of the sources will start automatically. When it's finish you just have to follow instructions.
     If everything went well, you should read the following messages: <pre class="output">====> Successfull configured</pre>
 
 If your read this, congratulations you are ready to launch the first pass for the construction of your future NuTyX, do:    
-<pre class="command_user"><kbd>cd /home/lfs/saravane/chroot
+<pre class="command_user"><kbd>cd /home/lfs/houaphan/chroot
 pass</kbd></pre>
 
 <p>Let's the show begin ... </p>
@@ -98,12 +102,12 @@ mkdir: created directory '/mnt/lfs/var'
 mkdir: created directory '/mnt/lfs/var/lib'
 mkdir: created directory '/mnt/lfs/var/lib/pkg'
 mkdir: created directory '/mnt/lfs/var/lib/pkg/DB'
-=======> Building '/home/lfs/saravane/chroot/cards/Pkgfile' succeeded.
-/home/lfs/saravane/chroot</pre>
+=======> Building '/home/lfs/houaphan/chroot/cards/Pkgfile' succeeded.
+/home/lfs/houaphan/chroot</pre>
     <p>Note that you can follow the evolution of the construction and then check that everything goes well by consulting the folder /home/lfs/logs/chroot/ . For each build package is a log corresponding</p>
   <div class="pied_page"><a class="url" href="build-pass-2.html">We will see in a next article how to enter the CHROOT and to build a NuTyX from scratch by using a second time the same script.</a></div>
   <hr>
-  <p class="updated">Last updated on 2015-06-28 21:37</p>
+  <p class="updated">Last updated on 2015-07-19 13:15</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

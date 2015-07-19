@@ -51,12 +51,13 @@
     <p>
     1. Utilisez l'interpréteur BASH
     </p>
+    <p>2. Assurez-vous que les outils <b>git</b> et <b>wget</b> sont installés, sous NuTyX:
+    <pre class="command_user"><kbd>get git
+get wget</kbd></pre></p>
+    <p>3. Si vous êtes sous NuTyX houaphan ou saravane, assurez d'avoir le paquet (et ses dépendances) cards.devel installé. Un petit:
+    <pre class="command_user"><kbd>get cards.devel</kbd></pre></p>
     <p>
-    2. Si vous êtes sous NuTyX saravane, assurez d'avoir le paquet (et ses dépendances) cards.devel installé.  Assurez-vous également d'être sur la version 1.1.2 ou plus récente, un petit:
-    <pre class="command_user"><kbd>get cards.devel</kbd></pre>
-    </p>
-    <p>
-    3. Vérifiez que toutes les conditions soient remplies en consultant cette <a  class="url" href="http://lfs.traduc.org/view/lfs-svn/prologue/hostreqs.html" target="_blank">page</a>
+    4. Vérifiez que toutes les conditions soient remplies en consultant cette <a  class="url" href="http://lfs.traduc.org/view/lfs-svn/prologue/hostreqs.html" target="_blank">page</a>
     </p>
     <h2>Partie Administrateur:</h2>
      <ol>
@@ -104,11 +105,12 @@ EOF</code></kbd></pre>
     </p>
     <pre class="command_user"><kbd>source ~/.bash_profile</kbd></pre>
     Et pour finir on récupère la dernière version du git:
-    <pre class="command_user"><kbd>git clone git://github.com/NuTyX/saravane.git</kbd></pre>
+    <pre class="command_user"><kbd>git clone git://github.com/NuTyX/houaphan.git
+git clone git://github.com/NuTyX/extra.git</kbd></pre>
     <p>
-    Une fois terminée, un nouveau dossier a été créé: saravane. On y entre et on lance le premier script:
+    Une fois terminée, un nouveau dossier a été créé: houaphan. On y entre et on lance le premier script:
     </p>
-    <pre class="command_user"><kbd>cd saravane
+    <pre class="command_user"><kbd>cd houaphan
 scripts/runmebeforepass1</kbd></pre>
     <p>
     Le script va effectuer toute une série de vérifications et si aucune erreur ne s'est produite, le téléchargement des sources commence automatiquement. Une fois le téléchargement terminé, il suffit de suivre les instructions.
@@ -120,7 +122,7 @@ scripts/runmebeforepass1</kbd></pre>
     <p>    
      Si vous lisez ce message, vous êtes prêt pour lancer la première passe pour la construction de votre future NuTyX,faites:
     </p>
-    <pre class="command_user"><kbd>cd /home/lfs/saravane/chroot
+    <pre class="command_user"><kbd>cd /home/lfs/houaphan/chroot
 pass</kbd></pre>
     <p>
     Admirez le travail ...
@@ -131,13 +133,13 @@ mkdir: created directory '/mnt/lfs/var/lib'
 mkdir: created directory '/mnt/lfs/var/lib/pkg'
 mkdir: created directory '/mnt/lfs/var/lib/pkg/DB'
 =======> Building '/home/lfs/MakeNuTyX/CHROOT/cards/Pkgfile' succeeded.
-/home/lfs/saravane/chroot</pre>
+/home/lfs/houaphan/chroot</pre>
     <p>
     Notez que vous pouvez suivre l'évolution et contrôler la bonne conduite de chaque paquet construit en consultant le dossier /home/lfs/logs/chroot/ . En effet à chaque paquet construit correspond un log.
     </p>
   <div class="pied_page"><a class="url" href="build-pass-2.html">On verra dans un prochain article comment entrer dans la chroot et y construire une NuTyX depuis scratch en utilisant une deuxième fois le même script </a></div>
   <hr>
-  <p class="updated">Dernière mise à jour 28-06-2015 21:37</p>
+  <p class="updated">Dernière mise à jour 19-07-2015 13:17</p>
 
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
