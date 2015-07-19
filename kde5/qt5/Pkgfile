@@ -33,8 +33,7 @@ cd ${_name}*
             -system-sqlite    \
             -nomake examples  \
 	    -no-rpath         \
-	    -optimized-qmake  \
-	    -skip qtwebengine
+	    -optimized-qmake
               
 make
 make INSTALL_ROOT=$PKG install
@@ -47,6 +46,12 @@ find $PKG/usr/ -name qt_lib_bootstrap_private.pri \
 find $PKG/usr -name \*.prl \
    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
 
+
+mkdir -p $PKG/usr/bin/qt5
+cd $PKG/usr/bin/qt5
+for file in *; do
+  ln -s $file $PKG/usr/bin/qt5/$file-qt5
+done
 
 install -v -dm755 $PKG/usr/share/pixmaps/
 
