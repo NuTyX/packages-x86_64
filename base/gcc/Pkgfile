@@ -12,7 +12,6 @@ PKGMK_GROUPS=(devel man doc)
 build()
 {
 cd gcc-$version
-patch -Np1 -i ../gcc-5.1.0-upstream_fixes-1.patch
 
 mkdir -v ../gcc-build
 cd ../gcc-build
