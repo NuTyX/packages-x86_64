@@ -115,6 +115,8 @@ Type=Application
 Categories=Qt;Development;Debugger;
 EOF
 
+
+mkdir $PKG/etc/profile.d
 cat > $PKG/etc/profile.d/qt5.sh << EOF
 # Begin /etc/profile.d/qt5.sh
 
@@ -124,6 +126,7 @@ export QT5DIR
 # End /etc/profile.d/qt5.sh
 EOF
 
+mkdir -p $PKG/usr/bin
 cat > $PKG/usr/bin/setqt4 << 'EOF'
 if [ "x$QT5DIR" != "x/usr" ] && [ "x$QT5DIR" != "x" ]; then pathremove  $QT5DIR/bin; fi
 if [ "x$QT4DIR" != "x/usr" ]; then pathprepend $QT4DIR/bin; fi
