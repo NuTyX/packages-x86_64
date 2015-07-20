@@ -12,7 +12,7 @@ _name=qt-everywhere-opensource-src-${version}
 source=(http://download.qt-project.org/official_releases/qt/${version%.*}/$version/single/${_name}.tar.xz)
 
 build() {
-
+unset MAKEFLAGS
 cd ${_name}*
 
 ./configure -prefix         /usr                        \
@@ -116,7 +116,7 @@ Categories=Qt;Development;Debugger;
 EOF
 
 
-mkdir $PKG/etc/profile.d
+mkdir -p $PKG/etc/profile.d
 cat > $PKG/etc/profile.d/qt5.sh << EOF
 # Begin /etc/profile.d/qt5.sh
 
