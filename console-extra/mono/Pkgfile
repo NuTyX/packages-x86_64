@@ -1,0 +1,28 @@
+# Description: implementation of .NET
+# URL: http://www.mono-project.com/
+# Packager: pierre at nutyx dot org
+# Depends on: 
+
+name=mono
+version=2.10.8
+release=1
+
+source=(http://download.mono-project.com/sources/$name/$name-$version.tar.bz2)
+
+build() {
+	unset MAKEFLAGS
+	cd $name-$version
+	./configure --prefix=/usr \
+		--sysconfdir=/etc \
+		--with-libgdiplus=installed \
+		--with-icu=no \
+		--with-tls=pthread \
+		--with-jit=yes \
+		--with-preview=yes \
+		--with-sigaltstack=yes,no \
+		--enable-nunit-tests
+
+	sed 's/HAVE_LOCALCHARSET_H 1/HAVE_LOCALCHARSET_H 0/' -i eglib/config.h
+	make
+	make DESTDIR=$PKG install
+}
