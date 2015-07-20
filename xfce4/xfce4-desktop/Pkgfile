@@ -7,16 +7,15 @@ _name=xfdesktop
 run=(gtk-update-icon-cache)
 
 name=xfce4-desktop
-version=4.12.1
-release=2
+version=4.12.3
+release=1
 
 source=(http://archive.xfce.org/src/xfce/${_name}/4.12/${_name}-$version.tar.bz2
-        http://downloads.nutyx.org/FondsEcrans/140203075407731241.png git-fixes.patch)
+        http://downloads.nutyx.org/FondsEcrans/150213091432829037.jpg)
 
 build() {
 cd ${_name}-$version
-sed -i "s/xfce-blue.jpg/wall-saravane.png/" common/xfdesktop-common.h
-patch -Np1 -i ../git-fixes.patch
+sed -i "s/xfce-blue.jpg/wall-houaphan.jpg/" common/xfdesktop-common.h
 ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
@@ -29,6 +28,6 @@ patch -Np1 -i ../git-fixes.patch
     --disable-debug
 make
 make DESTDIR=$PKG install
-install -D -m644 ../140203075407731241.png \
-$PKG//usr/share/backgrounds/xfce/wall-saravane.png
+install -D -m644 ../150213091432829037.jpg \
+$PKG/usr/share/backgrounds/xfce/wall-houaphan.jpg
 }
