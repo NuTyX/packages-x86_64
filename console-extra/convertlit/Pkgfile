@@ -1,0 +1,20 @@
+# Description: Extractor/converter for .LIT eBooks
+# URL: http://www.convertlit.com/
+# Packager: pierre at nutyx dot org
+# Depends on: libtommath 
+name=convertlit
+version=1.8
+release=1
+
+source=(http://www.convertlit.com/clit18src.zip)
+
+build() {
+cd $SRC/lib
+make
+
+cd $SRC/clit18
+sed -i 's|../libtommath-0.30/|/usr/lib/|' Makefile
+make
+install -Dm755 clit $PKG/usr/bin/clit
+}
+
