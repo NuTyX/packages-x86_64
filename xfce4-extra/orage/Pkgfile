@@ -6,18 +6,20 @@
 _name=orage
 
 name=orage
-version=4.10.0
+version=4.12.1
 release=1
 
 source=(http://archive.xfce.org/src/apps/${_name}/${version%.*}/${_name}-$version.tar.bz2)
 
 build() {
 cd ${_name}-$version
-	./configure --prefix=/usr \
-	--sysconfdir=/etc \
-	--libexecdir=/usr/lib/xfce4 \
-	--localstatedir=/var \
-	--disable-static
+	 ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib \
+    --localstatedir=/var \
+    --enable-libical \
+    --disable-debug
 	make
 	make DESTDIR=$PKG install
 }
