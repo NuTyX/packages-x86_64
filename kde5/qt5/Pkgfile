@@ -1,7 +1,7 @@
 # Description: A cross-platform application and UI framework
 # URL: http://qt-project.org/
 # Packager: pierre at nutyx dot org, tnut at nutyx dot org, fanch at nutyx dot org
-# Depends on: alsa-lib xorg-mesa xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm ca-certificates cups dbus glib gstreamer-plugins-base icu libjpeg-turbo libmng libpng libtiff mtdev openssl pcre sqlite ruby gstreamer1-plugins-base gtk xorg-libxkbfile mysql postgresql pulseaudio unixodbc libxkbcommon
+# Depends on: alsa-lib xorg xorg.devel xorg-mesa xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm ca-certificates cups dbus glib gstreamer-plugins-base icu libjpeg-turbo libmng libpng libtiff mtdev openssl pcre sqlite ruby gstreamer1-plugins-base gtk xorg-libxkbfile mysql postgresql pulseaudio unixodbc libxkbcommon libpci
 
 name=qt5
 version=5.5.0
@@ -12,7 +12,7 @@ _name=qt-everywhere-opensource-src-${version}
 source=(http://download.qt-project.org/official_releases/qt/${version%.*}/$version/single/${_name}.tar.xz)
 
 build() {
-unset MAKEFLAGS
+
 cd ${_name}*
 
 ./configure -prefix         /usr                        \
