@@ -4,7 +4,7 @@
 # Depends on: libsoup xfce4-panel xfce4-libgui 
 
 name=xfce4-weather-plugin
-version=0.8.5
+version=0.8.6
 release=1
 
 source=(http://archive.xfce.org/src/panel-plugins/xfce4-weather-plugin/0.8/$name-$version.tar.bz2)
@@ -18,7 +18,7 @@ cd $name-$version
 --localstatedir=/var \
 --disable-static \
 --disable-debug \
-    --disable-upower
+--disable-upower
 make
 make DESTDIR=$PKG install
 }
