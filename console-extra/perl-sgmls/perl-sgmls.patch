@@ -1,0 +1,10 @@
+--- Makefile	1995-12-05 13:26:11.000000000 +0100
++++ Makefile.new	2014-06-16 20:24:13.000000000 +0200
+@@ -82,6 +82,7 @@
+ 	cd DOC; make html
+ 	rm -rf ${HTMLDIR}/SGMLSpm ${HTMLDIR}/sgmlspl
+ 	cp -r ${HTML_SOURCES} ${HTMLDIR}
++	find \${HTMLDIR} -type l -exec rm -f {} \;
+ 	chmod a+x,a+r ${HTMLDIR}/SGMLSpm ${HTMLDIR}/sgmlspl
+ 	chmod a+r ${HTMLDIR}/SGMLSpm/* ${HTMLDIR}/sgmlspl/*
+ 
