@@ -3,15 +3,14 @@
 # Packager: pierre at nutyx dot org
 # Depends on: nasm 
 name=libjpeg-turbo
-version=1.4.0
+version=1.4.1
 release=1
 
-source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz )
+source=(http://sourceforge.net/projects/libjpeg-turbo/files/$version/libjpeg-turbo-$version.tar.gz)
 
 build() {
 cd $name-$version
-sed -i -e '/^docdir/     s:$:/libjpeg-turbo-1.4.0:' \
-       -e '/^exampledir/ s:$:/libjpeg-turbo-1.4.0:' Makefile.in
+sed -i -e '/^docdir/ s:$:/libjpeg-turbo-1.4.1:' Makefile.in
 
 ./configure --prefix=/usr \
 --mandir=/usr/share/man \
