@@ -4,25 +4,24 @@
 # Depends on: patch autoconf automake m4 pkg-config libtool xorg-makedepend xorg-libx11 xorg-libdrm xorg-libxext xorg-libxdamage expat llvm elfutils xorg-libxshmfence 
 
 name=xorg-mesa
-version=10.5.7
-release=2
+version=10.6.2
+release=1
 
 source=(ftp://ftp.freedesktop.org/pub/mesa/${version}/mesa-$version.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/mesa/mesa-$version-add_xdemos-1.patch)
 build() {
 cd mesa-$version
 patch -Np1 -i ../mesa-$version-add_xdemos-1.patch 
-autoreconf -f -i
-./configure CFLAGS="-O2" CXXFLAGS="-O2" \
---prefix=/usr \
---sysconfdir=/etc \
---enable-texture-float \
---enable-gles1 \
---enable-gles2 \
---enable-osmesa \
---enable-xa \
---enable-gbm \
---enable-glx-tls \
+./configure CFLAGS='-O2' CXXFLAGS='-O2'    \
+--prefix=$XORG_PREFIX          \
+--sysconfdir=/etc              \
+--enable-texture-float         \
+--enable-gles1                 \
+--enable-gles2                 \
+--enable-osmesa                \
+--enable-xa                    \
+--enable-gbm                   \
+--enable-glx-tls               \
 --with-egl-platforms="drm,x11" \
 --with-gallium-drivers="nouveau,r300,r600,radeonsi,svga,swrast"
 make
