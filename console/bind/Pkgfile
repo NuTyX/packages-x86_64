@@ -3,10 +3,10 @@
 # Packager: tnut at nutyx dot org
 # Depends on: kerberos libxml2 
 name=bind
-version=9.10.2
+version=9.10.2.p2
 release=1
 
-source=(ftp://ftp.isc.org/isc/bind9/$version/bind-$version.tar.gz)
+source=(ftp://ftp.isc.org/isc/bind9/$version/bind-9.10.2-P2 .tar.gz)
 
 build(){
     # blfs-bootscript
@@ -15,7 +15,7 @@ build(){
     tar xvf $scripts-$scriptsversion.tar.bz2
 
     # pkg
-    cd $name-$version
+    cd $name-9.10.2-P2
     ./configure --prefix=/usr \
                 --sysconfdir=/etc \
                 --localstatedir=/var \
