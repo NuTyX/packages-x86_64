@@ -5,29 +5,20 @@
 
 
 name=gtk3
-version=3.16.4
+version=3.16.5
 release=1
 
 source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
 
 build() {
 cd gtk+-$version
-sed -e '/priv->decorated ||$/ a\    return;\n' \
-    -e 's/\(.*priv->decorated\) ||$/\1)/' \
-    -e '/(!gtk_window_should/ i\  if (!priv->client_decorated &&' \
-    -e '/ !priv->client_decorated) ||/ s/(!/!(/' \
-    -e 's/ !priv->client_decorated) ||//' \
-    -e 's/!\(gtk_window_supports.*\)/  \1)/' \
-    -i gtk/gtkwindow.c 
 ./configure --prefix=/usr \
---mandir=/usr/share/man \
+--sysconfdir=/etc         \
+--mandir=/usr/share/man   \
 --infodir=/usr/share/info \
---disable-packagekit \
---sysconfdir=/etc \
---enable-x11-backend \
 --enable-broadway-backend \
---enable-gtk2-dependency \
---disable-schemas-compile
+--enable-x11-backend      \
+--disable-wayland-backend
 
 make || make -j1
 make DESTDIR=$PKG install
