@@ -1,7 +1,8 @@
-# Description: A cross-platform application and UI framework
+# Description: A cross-platform application and Ui framework
 # URL: http://qt-project.org/
 # Packager: pierre at nutyx dot org, tnut at nutyx dot org, fanch at nutyx dot org
-# Depends on: alsa-lib xorg xorg.devel xorg-mesa xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm ca-certificates cups dbus glib gstreamer-plugins-base icu libjpeg-turbo libmng libpng libtiff mtdev openssl pcre sqlite ruby gstreamer1-plugins-base gtk xorg-libxkbfile mysql postgresql pulseaudio unixodbc libxkbcommon pciutils
+# Depends on:xorg-proto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xorg-libxscrnsaver xorg-libxt xorg-libxmu xorg-libxpm xorg-libxaw xorg-libxfixes xorg-libxcomposite xorg-libxrender xorg-libxcursor xorg-libxdamage xorg-libfontenc xorg-libxfont xorg-libxft xorg-libxi xorg-libxinerama xorg-libxrandr xorg-libxres xorg-libxtst xorg-libxv xorg-libxvmc xorg-libxxf86dga xorg-libxxf86vm xorg-libdmx xorg-libpciaccess xorg-libxkbfile xorg-libxshmfence  xcb-proto xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm alsa-lib ca-certificates cups dbus glib gstreamer-plugins-base icu jasper libjpeg-turbo libmng libpng libtiff libwebp xorg-mesa mtdev openssl pcre sqlite ruby gstreamer1-plugins-base geoclue gtk harfbuzz mysql postgresql pulseaudio unixodbc libxkbcommon pciutils
+
 
 name=qt5
 version=5.5.0
@@ -24,6 +25,7 @@ cd ${_name}*
             -datadir        /usr/share/qt5              \
             -docdir         /usr/share/doc/qt5          \
             -translationdir /usr/share/qt5/translations \
+            -demosdir       /usr/share/doc/qt5/demos    \
             -examplesdir    /usr/share/doc/qt5/examples \
             -confirm-license  \
             -opensource       \
@@ -33,18 +35,18 @@ cd ${_name}*
             -system-sqlite    \
 	    -optimized-qmake  \
             -nomake examples  \
-	    -no-rpath         
+	    -no-rpath
 
 make
-make INSTALL_ROOT=$PKG install
+make iNSTALL_ROOT=$PKG install
 
 find $PKG/usr/lib/pkgconfig -name "*.pc" -exec perl -pi -e "s, -L$PWD/?\S+,,g" {} \;
 
 find $PKG/usr/ -name qt_lib_bootstrap_private.pri \
-   -exec sed -i -e "s:$PWD/qtbase:/$QT5PREFIX/lib/:g" {} \; &&
+   -exec sed -i -e "s:$PWD/qtbase:/$QT5PREfiX/lib/:g" {} \; &&
 
 find $PKG/usr -name \*.prl \
-   -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+   -exec sed -i -e '/^QmAKE_PRL_BUiLD_DiR/d' {} \;
 
 install -v -dm755 $PKG/usr/share/pixmaps/
 
@@ -63,81 +65,81 @@ install -v -Dm644 qttools/src/qdbus/qdbusviewer/images/qdbusviewer-128.png \
 install -dm755 $PKG/usr/share/applications
 
 
-cat > $PKG/usr/share/applications/assistant-qt5.desktop << "EOF"
+cat > $PKG/usr/share/applications/assistant-qt5.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 Assistant
-Comment=Shows Qt5 documentation and examples
+comment=Shows Qt5 documentation and examples
 Exec=/usr/lib/qt5/bin/assistant-qt5
-Icon=assistant-qt5
+icon=assistant-qt5
 Terminal=false
-Encoding=UTF-8
+Encoding=UTf-8
 Type=Application
-Categories=Qt;Development;Documentation;
-EOF
+categories=Qt;Development;Documentation;
+EOf
 
-cat > $PKG/usr/share/applications/designer-qt5.desktop << "EOF"
+cat > $PKG/usr/share/applications/designer-qt5.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 Designer
-GenericName=Interface Designer
-Comment=Design GUIs for Qt5 applications
+GenericName=interface Designer
+comment=Design GUis for Qt5 applications
 Exec=/usr/lib/qt5/bin/designer-qt5
-Icon=designer-qt5
-MimeType=application/x-designer;
+icon=designer-qt5
+mimeType=application/x-designer;
 Terminal=false
-Encoding=UTF-8
+Encoding=UTf-8
 Type=Application
-Categories=Qt;Development;
-EOF
+categories=Qt;Development;
+EOf
 
-cat > $PKG/usr/share/applications/linguist-qt5.desktop << "EOF"
+cat > $PKG/usr/share/applications/linguist-qt5.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 Linguist
-Comment=Add translations to Qt5 applications
+comment=Add translations to Qt5 applications
 Exec=/usr/lib/qt5/bin/linguist-qt5
-Icon=linguist-qt5
-MimeType=text/vnd.trolltech.linguist;application/x-linguist;
+icon=linguist-qt5
+mimeType=text/vnd.trolltech.linguist;application/x-linguist;
 Terminal=false
-Encoding=UTF-8
+Encoding=UTf-8
 Type=Application
-Categories=Qt;Development;
-EOF
+categories=Qt;Development;
+EOf
 
-cat > $PKG/usr/share/applications/qdbusviewer-qt5.desktop << "EOF"
+cat > $PKG/usr/share/applications/qdbusviewer-qt5.desktop << "EOf"
 [Desktop Entry]
-Name=Qt5 QDbusViewer
+Name=Qt5 QDbusviewer
 GenericName=D-Bus Debugger
-Comment=Debug D-Bus applications
+comment=Debug D-Bus applications
 Exec=/usr/lib/qt5/bin/qdbusviewer-qt5
-Icon=qdbusviewer-qt5
+icon=qdbusviewer-qt5
 Terminal=false
-Encoding=UTF-8
+Encoding=UTf-8
 Type=Application
-Categories=Qt;Development;Debugger;
-EOF
+categories=Qt;Development;Debugger;
+EOf
 
 
 mkdir -p $PKG/etc/profile.d
-cat > $PKG/etc/profile.d/qt5.sh << EOF
+cat > $PKG/etc/profile.d/qt5.sh << EOf
 # Begin /etc/profile.d/qt5.sh
 
-QT5DIR=/usr
-export QT5DIR
+QT5DiR=/usr
+export QT5DiR
 
 # End /etc/profile.d/qt5.sh
-EOF
+EOf
 
 mkdir -p $PKG/usr/bin
-cat > $PKG/usr/bin/setqt4 << 'EOF'
-if [ "x$QT5DIR" != "x/usr" ] && [ "x$QT5DIR" != "x" ]; then pathremove  $QT5DIR/bin; fi
-if [ "x$QT4DIR" != "x/usr" ]; then pathprepend $QT4DIR/bin; fi
+cat > $PKG/usr/bin/setqt4 << 'EOf'
+if [ "x$QT5DiR" != "x/usr" ] && [ "x$QT5DiR" != "x" ]; then pathremove  $QT5DiR/bin; fi
+if [ "x$QT4DiR" != "x/usr" ]; then pathprepend $QT4DiR/bin; fi
 echo $PATH
-EOF
+EOf
 
-cat > $PKG/usr/bin/setqt5 << 'EOF'
-if [ "x$QT4DIR" != "x/usr" ] && [ "x$QT4DIR" != "x" ]; then pathremove  $QT4DIR/bin; fi
-if [ "x$QT5DIR" != "x/usr" ]; then pathprepend $QT5DIR/bin; fi
+cat > $PKG/usr/bin/setqt5 << 'EOf'
+if [ "x$QT4DiR" != "x/usr" ] && [ "x$QT4DiR" != "x" ]; then pathremove  $QT4DiR/bin; fi
+if [ "x$QT5DiR" != "x/usr" ]; then pathprepend $QT5DiR/bin; fi
 echo $PATH
-EOF
+EOf
 
 cd $PKG/usr/bin/qt5
 for file in *; do
