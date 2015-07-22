@@ -11,7 +11,7 @@ source=( https://github.com/anholt/libepoxy/releases/download/v$version/libepoxy
 
 build() {
 cd libepoxy-$version
-./autogen.sh --prefix=/usr
+./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
 }
