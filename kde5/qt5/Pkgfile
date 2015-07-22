@@ -3,7 +3,6 @@
 # Packager: pierre at nutyx dot org, tnut at nutyx dot org, fanch at nutyx dot org
 # Depends on:xorg-proto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xorg-libxscrnsaver xorg-libxt xorg-libxmu xorg-libxpm xorg-libxaw xorg-libxfixes xorg-libxcomposite xorg-libxrender xorg-libxcursor xorg-libxdamage xorg-libfontenc xorg-libxfont xorg-libxft xorg-libxi xorg-libxinerama xorg-libxrandr xorg-libxres xorg-libxtst xorg-libxv xorg-libxvmc xorg-libxxf86dga xorg-libxxf86vm xorg-libdmx xorg-libpciaccess xorg-libxkbfile xorg-libxshmfence  xcb-proto xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm alsa-lib ca-certificates cups dbus glib gstreamer-plugins-base icu jasper libjpeg-turbo libmng libpng libtiff libwebp xorg-mesa mtdev openssl pcre sqlite ruby gstreamer1-plugins-base geoclue gtk harfbuzz mysql postgresql pulseaudio unixodbc libxkbcommon pciutils
 
-
 name=qt5
 version=5.5.0
 release=1
@@ -13,6 +12,11 @@ _name=qt-everywhere-opensource-src-${version}
 source=(http://download.qt-project.org/official_releases/qt/${version%.*}/$version/single/${_name}.tar.xz)
 
 build() {
+
+export QT5PREFIX=/usr
+export QTDIR=$SRC/${_name}
+export LD_LIBRARY_PATH="${QTDIR}"/qtbase/lib:"${QTDIR}"/qttools/lib:"${LD_LIBRARY_PATH}"
+export QT_PLUGIN_PATH="${QTDIR}"/qtbase/plugins
 
 cd ${_name}*
 
@@ -34,12 +38,11 @@ cd ${_name}*
             -system-sqlite    \
 	    -optimized-qmake  \
             -nomake examples  \
-	    -no-rpath
+	    -no-rpath         \
+            -skip qtwebengine 
 
 make
 make iNSTALL_ROOT=$PKG install
-
-find $PKG/usr/lib/pkgconfig -name "*.pc" -exec perl -pi -e "s, -L$PWD/?\S+,,g" {} \;
 
 find $PKG/usr/ -name qt_lib_bootstrap_private.pri \
    -exec sed -i -e "s:$PWD/qtbase:/$QT5PREfiX/lib/:g" {} \; &&
@@ -68,7 +71,7 @@ cat > $PKG/usr/share/applications/assistant-qt5.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 Assistant
 comment=Shows Qt5 documentation and examples
-Exec=/usr/lib/qt5/bin/assistant-qt5
+Exec=/usr/bin/qt5/assistant-qt5
 icon=assistant-qt5
 Terminal=false
 Encoding=UTf-8
@@ -81,7 +84,7 @@ cat > $PKG/usr/share/applications/designer-qt5.desktop << "EOf"
 Name=Qt5 Designer
 GenericName=interface Designer
 comment=Design GUis for Qt5 applications
-Exec=/usr/lib/qt5/bin/designer-qt5
+Exec=/usr/bin/qt5/designer-qt5
 icon=designer-qt5
 mimeType=application/x-designer;
 Terminal=false
@@ -94,7 +97,7 @@ cat > $PKG/usr/share/applications/linguist-qt5.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 Linguist
 comment=Add translations to Qt5 applications
-Exec=/usr/lib/qt5/bin/linguist-qt5
+Exec=/usr/bin/qt5/linguist-qt5
 icon=linguist-qt5
 mimeType=text/vnd.trolltech.linguist;application/x-linguist;
 Terminal=false
@@ -108,7 +111,7 @@ cat > $PKG/usr/share/applications/qdbusviewer-qt5.desktop << "EOf"
 Name=Qt5 QDbusviewer
 GenericName=D-Bus Debugger
 comment=Debug D-Bus applications
-Exec=/usr/lib/qt5/bin/qdbusviewer-qt5
+Exec=/usr/bin/qt5/qdbusviewer-qt5
 icon=qdbusviewer-qt5
 Terminal=false
 Encoding=UTf-8
@@ -116,13 +119,12 @@ Type=Application
 categories=Qt;Development;Debugger;
 EOf
 
-
 mkdir -p $PKG/etc/profile.d
 cat > $PKG/etc/profile.d/qt5.sh << EOf
 # Begin /etc/profile.d/qt5.sh
 
-QT5DiR=/usr
-export QT5DiR
+export QT5DiR=/usr
+export QT5PREFIX=/usr
 
 # End /etc/profile.d/qt5.sh
 EOf
@@ -140,8 +142,14 @@ if [ "x$QT5DiR" != "x/usr" ]; then pathprepend $QT5DiR/bin; fi
 echo $PATH
 EOf
 
-cd $PKG/usr/bin/qt5
-for file in *; do
-  ln -s $file $PKG/usr/bin/qt5/$file-qt5
-done
+
+### Creation liens entre les binaires dans /usr/bin/qt5 vers /usr/bin/ en ajoutant qt5
+#mkdir -p $PKG/usr/bin/qt5
+
+#for i in $PKG/usr/bin/qt5/*; do 
+#  file=$i|cut -d "/" -f5
+#  ln -s $file $PKG/usr/bin/$file-qt5
+#done
+
+
 }
