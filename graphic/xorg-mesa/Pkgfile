@@ -5,7 +5,7 @@
 
 name=xorg-mesa
 version=10.6.2
-release=1
+release=2
 
 source=(ftp://ftp.freedesktop.org/pub/mesa/${version}/mesa-$version.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/mesa/mesa-$version-add_xdemos-1.patch)
@@ -13,7 +13,7 @@ build() {
 cd mesa-$version
 patch -Np1 -i ../mesa-$version-add_xdemos-1.patch 
 ./configure CFLAGS='-O2' CXXFLAGS='-O2'    \
---prefix=$XORG_PREFIX          \
+--prefix=/usr                  \
 --sysconfdir=/etc              \
 --enable-texture-float         \
 --enable-gles1                 \
