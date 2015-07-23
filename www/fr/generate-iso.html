@@ -31,144 +31,154 @@
    <h1>Produire une ISO personalisée</h1>
     <div class="note"><img alt="[NOTE IMPORTANTE]" src="../graphics/note.gif"/>Toutes les commandes mentionnées dans cet article doivent se faire en root</div>
     <ol>
-    <li>
-     <h2>Récupérer les outils</h2>
-      <pre class="command"><kbd>git clone git://github.com/NuTyX/saravane.git
+     <li>
+      <h2>Intallation d'une NuTyX</h2>
+      <ol>
+       <li>
+        <h3>Récupérer les outils</h3>
+         <pre class="command"><kbd>git clone git://github.com/NuTyX/houaphan.git
 wget http://downloads.nutyx.org/enter-chroot{,.md5sum}
-wget http://downloads.nutyx.org/install-saravane{,.md5sum}
+wget http://downloads.nutyx.org/install-houaphan{,.md5sum}
 md5sum -c enter-chroot.md5sum</kbd></pre>
-     <pre class="output">enter-chroot: Réussi</pre>
-     <pre class="command"><kbd>md5sum -c install-saravane.md5sum</kbd></pre>
-     <pre class="output">install-saravane: Réussi</pre>
-    </li>
-    <li>
-     <h2>Assurez vous d'avoir installé les logiciels cdrkit et syslinux, au pire</h2>
-      <pre class="command"><kbd>get cdrkit
+         <pre class="output">enter-chroot: Réussi</pre>
+         <pre class="command"><kbd>md5sum -c install-houaphan.md5sum</kbd></pre>
+         <pre class="output">install-houaphan: Réussi</pre>
+       </li>
+       <li>
+        <h3>Assurez vous d'avoir installé les logiciels cdrkit et syslinux, au pire</h3>
+         <pre class="command"><kbd>get cdrkit
 get syslinux</kbd></pre>
-    </li>
-    <li>
-     <h2>La variable indispensable pour la construction elle sera utilisée tout au long du processus</h2>
-      <p>La variable LFS DOIT être définie</p>
-      <pre class="command"><kbd>export LFS=/ISO-MINI</kbd></pre>
-      <p>La chroot sera donc dans le dossier "/ISO-MINI". Libre à vous de choisir un autre dossier.</p>
-    </li>
-    <li>
-     <h2>Installer le système de base saravane</h2>
-      <pre class="command"><kbd>bash install-saravane</kbd></pre>
-    </li>
-    <li>
-     <h2>Copier les fichiers pour l'iso</h2>
-      <pre class="command"><kbd>cp -av saravane/iso $LFS/ISO</kbd></pre>
-    </li>
-    <li>
-     <h2>Entrer dans le sytème de base saravane</h2>
-      <pre class="command"><kbd>bash enter-chroot</kbd></pre>
-    </li>
-    <li>
-     <h2>Optionnel: si vous avez tout sur votre host</h2>
-      <pre class="command"><kbd>sed -i "s@downloads.nutyx.org@localhost@" etc/cards.conf</kbd></pre>
-    </li>
-    <li>
-     <h2>Récupérer les meta données</h2>
-      <pre class="command"><kbd>cards sync</kbd></pre>
-    </li>
-    <li>
-     <h2>Installer les outils pour le bon fonctionnement de l'installateur</h2>
-      <h3>En fonction du système de fichier de votre choix, installez:</h3>
-       <p>Pour ext2, 3 et 4:</p>
-       <pre class="command"><kbd>get e2fsprogs</kbd></pre>
-       <p>Pour reiserfs:</p>
-       <pre class="command"><kbd>get reiserfsprogs</kbd></pre>
-       <p>Pour xfs:</p>
-       <pre class="command"><kbd>get xfsprogs</kbd></pre>
-       <p>Pour jfs:</p>
-       <pre class="command"><kbd>get jfsutils</kbd></pre>
-       <p>Pour btrfs:</p>
-       <pre class="command"><kbd>get btrfs-progs</kbd></pre>
-      <h3>Gestionnaire de mot de passe</h3>
-       <pre class="command"><kbd>get sudo</kbd></pre>
-      <h3>Gestionnaire des inits et logs</h3>
-       <pre class="command"><kbd>get sysklogd
+       </li>
+       <li>
+        <h3>La variable indispensable pour la construction elle sera utilisée tout au long du processus</h3>
+         <p>La variable LFS DOIT être définie</p>
+         <pre class="command"><kbd>export LFS=/ISO-MINI</kbd></pre>
+         <p>La chroot sera donc dans le dossier "/ISO-MINI". Libre à vous de choisir un autre dossier.</p>
+       </li>
+       <li>
+        <h3>Installer le système de base houaphan</h3>
+         <pre class="command"><kbd>bash install-houaphan</kbd></pre>
+       </li>
+       <li>
+        <h3>Copier les fichiers pour l'iso</h3>
+         <pre class="command"><kbd>cp -av houaphan/iso $LFS/ISO</kbd></pre>
+       </li>
+       <li>
+        <h3>Entrer dans le sytème de base houaphan</h3>
+         <pre class="command"><kbd>bash enter-chroot</kbd></pre>
+       </li>
+       <li>
+        <h3>Optionnel: si vous avez tout sur votre host</h3>
+         <pre class="command"><kbd>sed -i "s@downloads.nutyx.org@localhost@" etc/cards.conf</kbd></pre>
+       </li>
+       <li>
+        <h3>Récupérer les meta données</h3>
+         <pre class="command"><kbd>cards sync</kbd></pre>
+       </li>
+       <li>
+        <h3>Installer les outils pour le bon fonctionnement de l'installateur</h3>
+         <h4>En fonction du système de fichier de votre choix, installez:</h4>
+          <p>Pour ext2, 3 et 4:</p>
+          <pre class="command"><kbd>get e2fsprogs</kbd></pre>
+          <p>Pour reiserfs:</p>
+          <pre class="command"><kbd>get reiserfsprogs</kbd></pre>
+          <p>Pour xfs:</p>
+          <pre class="command"><kbd>get xfsprogs</kbd></pre>
+          <p>Pour jfs:</p>
+          <pre class="command"><kbd>get jfsutils</kbd></pre>
+          <p>Pour btrfs:</p>
+          <pre class="command"><kbd>get btrfs-progs</kbd></pre>
+         <h4>Gestionnaire de mot de passe</h4>
+          <pre class="command"><kbd>get sudo</kbd></pre>
+         <h4>Gestionnaire des inits et logs</h4>
+          <pre class="command"><kbd>get sysklogd
 get sysvinit</kbd></pre>
-      <h3>Service dhcp</h3>
-       <pre class="command"><kbd>get dhcpcd</kbd></pre>
-      <h3>Grub le gestionnaire d'amorçage</h3>
-       <pre class="command"><kbd>get grub</kbd></pre>
-      <h3>Donnée de localisation et de communication</h3>
-       <pre class="command"><kbd>get tzdata
+         <h4>Service dhcp</h4>
+          <pre class="command"><kbd>get dhcpcd</kbd></pre>
+         <h4>Grub le gestionnaire d'amorçage</h4>
+          <pre class="command"><kbd>get grub</kbd></pre>
+         <h4>Donnée de localisation et de communication</h4>
+          <pre class="command"><kbd>get tzdata
 get iproute2
 get iana-etc</kbd></pre>
-      <h3>Editeur de texte</h3>
-       <pre class="command"><kbd>get e3</kbd></pre>
-       <p>ou</p>
-       <pre class="command"><kbd>get vim</kbd></pre>
-      <h3>Utilitaires pour le kernel et l'initialisation de la machine</h3>
-       <pre class="command"><kbd>get eudev
+         <h4>Editeur de texte</h4>
+          <pre class="command"><kbd>get e3</kbd></pre>
+          <p>ou</p>
+          <pre class="command"><kbd>get vim</kbd></pre>
+         <h4>Utilitaires pour le kernel et l'initialisation de la machine</h4>
+          <pre class="command"><kbd>get eudev
 get kmod</kbd></pre>
-      <h3>Documentation</h3>
-       <pre class="command"><kbd>get less
+         <h4>Documentation</h4>
+          <pre class="command"><kbd>get less
 get groff
 get man-db
 get cards.man
-get aaabasicfs.man</kbd></pre>
-      <h3>Utilitaires pour l'iso:</h3>
-       <pre class="command"><kbd>get lvm2
+get nutyx.man</kbd></pre>
+         <h4>Utilitaires pour l'iso:</h4>
+          <pre class="command"><kbd>get lvm2
 get mdadm
 get dialog
 get cpio
 get squashfs</kbd></pre>
-      <h3>Firmwares</h3>
-       <pre class="command"><kbd>get linux-firmware</kbd></pre> 
-      <h3>Un kernel</h3>
-       <pre class="command"><kbd>get kernel</kbd></pre>
-       <p>ou</p>
-       <pre class="command"><kbd>get kernel-lts</kbd></pre>
-       <p>ou</p>
-       <pre class="command"><kbd>get kernel-iso</kbd></pre>
-    </li>
-    <li>
-     <h2>Mettre le kernel et l'initrd au bon endroit</h2>
-      <pre class="command"><kbd>cp -v /boot/kernel-* /ISO/isolinux/kernel
+         <h4>Firmwares</h4>
+          <pre class="command"><kbd>get linux-firmware</kbd></pre> 
+         <h4>Un kernel</h4>
+          <pre class="command"><kbd>get kernel</kbd></pre>
+          <p>ou</p>
+          <pre class="command"><kbd>get kernel-lts</kbd></pre>
+          <p>ou</p>
+          <pre class="command"><kbd>get kernel-iso</kbd></pre>
+       </li>
+      </ol>
+     </li>
+     <li>
+      <h2>Génération de l'iso</h2>
+       <ol>
+        <li>
+         <h3>Mettre le kernel et l'initrd au bon endroit</h3>
+          <pre class="command"><kbd>cp -v /boot/kernel-* /ISO/isolinux/kernel
 cp -v /boot/initrd-* /ISO/isolinux/initrd</kbd></pre>
-    </li>
-    <li>
-     <h2>Optionnel: Remettre l'adresse par défaut du mirroir NuTyX</h2>
-      <pre class="command"><kbd>sed -i "s@localhost@downloads.nutyx.org@" etc/cards.conf</kbd></pre>
-    </li>
-    <li>
-     <h2>Supprimer les archives des binaires</h2>
-      <pre class="command"><kbd>cards purge</kbd></pre>
-    </li>
-    <li>
-     <h2>Générer les fichiers squashfs</h2>
-      <pre class="command"><kbd>mkdir -p /ISO/isolinux/boot/
+        </li>
+        <li>
+         <h3>Optionnel: Remettre l'adresse par défaut du mirroir NuTyX</h3>
+          <pre class="command"><kbd>sed -i "s@localhost@downloads.nutyx.org@" etc/cards.conf</kbd></pre>
+        </li>
+        <li>
+         <h3>Supprimer les archives des binaires</h3>
+          <pre class="command"><kbd>cards purge</kbd></pre>
+        </li>
+        <li>
+          <h3>Générer les fichiers squashfs</h3>
+           <pre class="command"><kbd>mkdir -p /ISO/isolinux/boot/
 cd /
 for dir in opt bin etc lib root run sbin usr var home
 do
   [ -f ISO/isolinux/boot/$dir.squashfs ] && rm ISO/isolinux/boot/$dir.squashfs
   mksquashfs $dir ISO/isolinux/boot/$dir.squashfs
 done</kbd></pre>
-    </li>
-    <li>
-     <h2>Quitter NuTyX chroot</h2>
-     <pre class="command"><kbd>exit</kbd></pre>
-    </li>
-    <li>
-     <h2>Générer l'ISO</h2>
-     <pre class="command"><kbd>sh saravane/scripts/mkiso saravane-`date +%Y%m%d`</kbd></pre>
-    </li>
-    <li>
-     <h2>Conclusion</h2>
-     <p>La taille de l'iso ne devrait pas dépasser 300 MB si vous n'avez rien ajouté de plus que les paquets ci-dessus. Vous la trouverez dans le dossier $LFS.</p>
-     <pre class="command"><kbd>ls $LFS</kbd></pre>
-     <pre class="output">bin   dev  home  lib  NuTyX_i686-saravane-20150417.iso     proc  run   srv  tmp  var
-boot  etc  ISO   mnt  NuTyX_i686-saravane-20150417.md5sum  root  sbin  sys  usr</pre>
-    </li>
-   </ol>
-  <hr>
-  <p class="updated">Dernière mise à jour 15-05-2015 17:03</p>
-    <footer>
-        <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
+        </li>
+        <li>
+         <h3>Quitter NuTyX chroot</h3>
+          <pre class="command"><kbd>exit</kbd></pre>
+        </li>
+        <li>
+         <h3>Générer l'ISO</h3>
+          <pre class="command"><kbd>sh houaphan/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
+        </li>
+       </ol>
+       </li>
+       <li>
+        <h2>Conclusion</h2>
+         <p>La taille de l'iso ne devrait pas dépasser 300 MB si vous n'avez rien ajouté de plus que les paquets ci-dessus. Vous la trouverez dans le dossier $LFS.</p>
+         <pre class="command"><kbd>ls $LFS</kbd></pre>
+         <pre class="output">bin   dev  home  lib  NuTyX_x86_64-houaphan-20150724.iso     proc  run   srv  tmp  var
+boot  etc  ISO   mnt  NuTyX_x86_64-houaphan-20150724.md5sum  root  sbin  sys  usr</pre>
+       </li>
+      </ol>
+     <hr>
+     <p class="updated">Dernière mise à jour 23-07-2015 22:11</p>
+      <footer>
+       <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
     <a href="http://www.wtfpl.net/"><img
        src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
