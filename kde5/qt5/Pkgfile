@@ -22,9 +22,9 @@ cd ${_name}*
 
 ./configure -prefix         /usr                        \
             -sysconfdir     /etc/xdg                    \
-            -bindir         /usr/bin/qt5                \
-	    -plugindir      /usr/lib/qt5/plugins        \
-	    -importdir      /usr/lib/qt5/imports        \
+            -bindir         /usr/lib/qt5/bin            \
+            -plugindir      /usr/lib/qt5/plugins        \
+            -importdir      /usr/lib/qt5/imports        \
             -headerdir      /usr/include/qt5            \
             -datadir        /usr/share/qt5              \
             -docdir         /usr/share/doc/qt5          \
@@ -71,7 +71,7 @@ cat > $PKG/usr/share/applications/assistant-qt5.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 Assistant
 comment=Shows Qt5 documentation and examples
-Exec=/usr/bin/qt5/assistant-qt5
+Exec=/usr/lib/qt5/bin/assistant-qt5
 icon=assistant-qt5
 Terminal=false
 Encoding=UTf-8
@@ -84,7 +84,7 @@ cat > $PKG/usr/share/applications/designer-qt5.desktop << "EOf"
 Name=Qt5 Designer
 GenericName=interface Designer
 comment=Design GUis for Qt5 applications
-Exec=/usr/bin/qt5/designer-qt5
+Exec=/usr/lib/qt5/bin/designer-qt5
 icon=designer-qt5
 mimeType=application/x-designer;
 Terminal=false
@@ -97,7 +97,7 @@ cat > $PKG/usr/share/applications/linguist-qt5.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 Linguist
 comment=Add translations to Qt5 applications
-Exec=/usr/bin/qt5/linguist-qt5
+Exec=/usr/lib/qt5/bin/linguist-qt5
 icon=linguist-qt5
 mimeType=text/vnd.trolltech.linguist;application/x-linguist;
 Terminal=false
@@ -111,7 +111,7 @@ cat > $PKG/usr/share/applications/qdbusviewer-qt5.desktop << "EOf"
 Name=Qt5 QDbusviewer
 GenericName=D-Bus Debugger
 comment=Debug D-Bus applications
-Exec=/usr/bin/qt5/qdbusviewer-qt5
+Exec=/usr/lib/qt5/bin/qdbusviewer-qt5
 icon=qdbusviewer-qt5
 Terminal=false
 Encoding=UTf-8
@@ -148,9 +148,10 @@ EOf
 
 ### Creation des liens /usr/bin vers les binaires se trouvant
 ### dans le dossier /usr/bin/qt5 en ajoutant qt5 à la fin du lien
+mkdir -p $PKG/usr/bin
 
-for i in $PKG/usr/bin/qt5/*; do 
-	ln -sv qt5/`basename $i` $PKG/usr/bin/`basename $i`-qt5
+for i in $PKG/usr/lib/qt5/bin/*; do 
+	ln -sv /usr/lib/qt5/bin/$(basename $i) $PKG/usr/bin/$(basename $i)-qt5
 done
 
 
