@@ -4,7 +4,7 @@
 
 Contributions are welcome
 
-This git is under construction
+This git is under construction, for tests only.
 
 
 ### How to test this git :
