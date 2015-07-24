@@ -37,6 +37,7 @@ pathappend () {
         export $PATHVARIABLE="${!PATHVARIABLE:+${!PATHVARIABLE}:}$1"
 }
 
+export -f pathremove pathprepend pathappend
 
 # Set the initial path
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin
@@ -50,7 +51,8 @@ export HISTSIZE=1000
 export HISTIGNORE="&:[bf]g:exit"
 
 # Set some defaults for graphical systems
-export XDG_DATA_DIRS=/usr/share
+export XDG_DATA_DIRS=/usr/share/
+export XDG_CONFIG_DIRS=/etc/xdg/
 
 # Setup a red prompt for root and a green one for users.
 NORMAL="\[\e[0m\]"
@@ -68,7 +70,6 @@ for script in /etc/profile.d/*.sh ; do
         fi
 done
 
-# Now to clean up
-unset pathremove pathprepend pathappend
+unset script RED GREEN NORMAL
 
 # End /etc/profile
