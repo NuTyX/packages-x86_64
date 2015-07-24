@@ -21,8 +21,8 @@ Contributions are welcome
 #### 3. Copy all the ports in place
 
     # mkdir -p /var/lib/pkg/remote
-    # rsync -a kde5/kde/ /var/lib/pkg/remote/kde/
-    # rsync -a kde5/kde-extra/ /var/lib/pkg/remote/kde-extra/
+    # rsync -a kde5/kde5/ /var/lib/pkg/remote/kde/
+    # rsync -a kde5/kde5-extra/ /var/lib/pkg/remote/kde-extra/
 
 #### 4. Compile all ports in good order
 
