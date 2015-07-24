@@ -7,17 +7,16 @@ section="driver"
 
 name=xorg
 version=7.7
-release=4
+release=5
 
-source=(http://www.linuxfromscratch.org/patches/blfs/svn/xf86-input-vmmouse-13.0.0-build_fix-1.patch
-	) 
+source=()
 
 build() {
 cat > list.md5 << "EOF"
 99eebf171e6c7bffc42d4fc430d47454  xf86-input-evdev-2.9.2.tar.bz2
 8ed68e8cc674dd61adb280704764aafb  xf86-input-synaptics-1.8.2.tar.bz2
-34f9f64ee6a1a51fc8266a9af24e1e07  xf86-input-vmmouse-13.0.0.tar.bz2
-50786440df6044a483cdab2008a7efe7  xf86-input-wacom-0.29.0.tar.bz2
+85e2e464b7219c495ad3a16465c226ed  xf86-input-vmmouse-13.1.0.tar.bz2
+3ab2bccf356999f1a96d03deba155bc3  xf86-input-wacom-0.30.0.tar.bz2
 29654190e37310b87e44a14c229967ee  xf86-video-ati-7.5.0.tar.bz2
 3931c0e19d441cc576dc088f9eb9fd73  xf86-video-fbdev-0.4.4.tar.bz2
 fa196a66e52c0c624fe5d350af7a5e7b  xf86-video-intel-2.99.917.tar.bz2
@@ -41,8 +40,6 @@ for package in $(grep -v '^#' list.md5 |cut -d " " -f 3)
 		pushd $packagedir
 		case $packagename in
 		xf86-input-vmmouse-[0-9]*)
-			patch -Np1 -i ../xf86-input-vmmouse-13.0.0-build_fix-1.patch
-			sed -i -e '/__i386__/a iopl(3);' tools/vmmouse_detect.c
 			./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
             --with-udev-rules-dir=/lib/udev/rules.d \
             --without-hal-callouts-dir \
@@ -51,9 +48,6 @@ for package in $(grep -v '^#' list.md5 |cut -d " " -f 3)
 			./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --enable-kms-only;;
 		xf86-input-wacom-[0-9]*)
 			./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --with-systemd-unit-dir=no;;
-		xf86-video-vmware-[0-9]*)
-			sed -i "/xf86xv.h/i #include <xorg-server.h>" vmwgfx/vmwgfx_overlay.c
-			./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var;;
 		*)
 			./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var;;
 		esac
