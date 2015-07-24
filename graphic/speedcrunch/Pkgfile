@@ -13,7 +13,7 @@ build ()
 cd speedcrunch-$version/src
 cmake . -DCMAKE_INSTALL_PREFIX=/usr || return 1
 make
-lrelease speedcrunch.pro
+lrelease-qt4 speedcrunch.pro
 make DESTDIR=$PKG install
 
 }
