@@ -5,7 +5,7 @@
 
 name=qt4
 version=4.8.7
-release=1
+release=2
 
 _name=qt-everywhere-opensource-src-${version}
 
@@ -13,10 +13,13 @@ source=(http://download.qt-project.org/official_releases/qt/${version%.*}/$versi
 
 build() {
 
+QT4PREFIX=/usr
+QT4BINDIR=$QT4PREFIX/lib/qt4/bin
+
 cd ${_name}
 
-     ./configure -prefix    /usr                 \
-            -bindir         /usr/lib/qt4/bin     \
+     ./configure -prefix    $QT4PREFIX           \
+            -bindir         $QT4BINDIR           \
             -plugindir      /usr/lib/qt4/plugins \
             -importdir      /usr/lib/qt4/imports \
             -headerdir      /usr/include/qt4     \
@@ -147,10 +150,18 @@ mkdir -p $PKG/etc/profile.d
 cat > $PKG/etc/profile.d/qt4.sh << EOF
 # Begin /etc/profile.d/qt4.sh
 
-QT4DIR=/usr
+QT4PREFIX=$QT4PREFIX
+QT4DIR=$QT4PREFIX
+QT4BINDIR=$QT4BINDIR
 QTDIR=$QT4DIR
-export QT4DIR QTDIR
+export QT4PREFIX QT4DIR QTDIR QT4BINDIR
 
 # End /etc/profile.d/qt4.sh
+EOF
+
+cat > $PKG/usr/bin/setqt4 << EOF
+if [ "x$QT5BINDIR" != "x/usr/bin" ] && [ "x$QT5BINDIR" != "x" ]; then pathremove  $QT5BINDIR; fi
+if [ "x$QT4BINDIR" != "x/usr/bin" ]; then pathprepend $QT4BINDIR; fi
+echo $PATH
 EOF
 }
