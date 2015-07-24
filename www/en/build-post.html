@@ -30,7 +30,7 @@
   <h1>Post-construction and generation of the iso</h1>
    <p>All the packages of a base system are now available. We can finalise and produce an installable ISO of our NuTyX</p>
    <ol>
-    <li>We start to exit from the NuTyX saravane</li>
+    <li>We start to exit from the NuTyX houaphan</li>
     <pre class="command"><kbd>exit</kbd></pre>
     <p>We check if the LFS variable is still set</p>
     <pre class="command"><kbd>echo $LFS</kbd></pre>
@@ -41,24 +41,27 @@
 /bin/bash --login</kbd></pre>
 No error should be print:
     <pre class="output">root [ / ]# </pre>
-    <li>We begin by adjusting the cards.conf file. We used from now on only the recept coming from the git project. You need to adapt the language and arch if necessary (<b>i686</b> for the 32 bits version).</li>
+    <li>We begin by adjusting the cards.conf file. We used from now on only the recept coming from the git project. You need to adapt the language if necessary.</li>
     <pre class="command"><kbd>cat > /etc/cards.conf << "EOF"
-dir /root/saravane/desktop
-dir /root/saravane/console
-dir /root/saravane/base
+dir /root/extra/graphic-extra
+dir /root/houaphan/graphic
+dir /root/extra/console-extra
+dir /root/houaphan/console
+dir /root/extra/base-extra
+dir /root/houaphan/base
 logdir /var/log/pkgbuild
-arch x86_64
 locale fr
-base /root/saravane/base
+base /root/houaphan/base
+base /root/houaphan/base-extra
 EOF</kbd></pre>
     <li>We add all the necessary files for a working iso</li>
-    <pre class="command"><kbd>cp -av /root/saravane/iso /ISO</kbd></pre>
-    <pre class="output">'/root/saravane/iso' -> '/ISO'
-'/root/saravane/iso/isolinux' -> '/ISO/isolinux'
-'/root/saravane/iso/isolinux/boot.cat' -> '/ISO/isolinux/boot.cat'
-'/root/saravane/iso/isolinux/boot.msg' -> '/ISO/isolinux/boot.msg'
-'/root/saravane/iso/isolinux/isolinux.bin' -> '/ISO/isolinux/isolinux.bin'
-'/root/saravane/iso/isolinux/isolinux.cfg' -> '/ISO/isolinux/isolinux.cfg'</pre>
+    <pre class="command"><kbd>cp -av /root/houaphan/iso /ISO</kbd></pre>
+    <pre class="output">'/root/houaphan/iso' -> '/ISO'
+'/root/houaphan/iso/isolinux' -> '/ISO/isolinux'
+'/root/houaphan/iso/isolinux/boot.cat' -> '/ISO/isolinux/boot.cat'
+'/root/houaphan/iso/isolinux/boot.msg' -> '/ISO/isolinux/boot.msg'
+'/root/houaphan/iso/isolinux/isolinux.bin' -> '/ISO/isolinux/isolinux.bin'
+'/root/houaphan/iso/isolinux/isolinux.cfg' -> '/ISO/isolinux/isolinux.cfg'</pre>
     <pre class="command"><kbd>cp -v /boot/kernel-* /ISO/isolinux/kernel</kbd></pre>
     <pre class="output">'/boot/kernel-3.19.3' -> '/ISO/isolinux/kernel'</pre>
     <pre class="command"><kbd>cp -v /boot/initrd-* /ISO/isolinux/initrd</kbd></pre>
@@ -72,11 +75,11 @@ do
   [ -f ISO/isolinux/boot/$dir.squashfs ] && rm ISO/isolinux/boot/$dir.squashfs
   mksquashfs $dir ISO/isolinux/boot/$dir.squashfs
 done</kbd></pre>
-    <li>We can now go out of NuTyX saravane and produce the iso</li>
+    <li>We can now go out of NuTyX houaphan and produce the iso</li>
     <pre class="command"><kbd>exit</kbd></pre>
     <li>We can finally generate our ISO where the version is the date of today.</li>
     <div class="important"><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" />Before you start the next command, make shure the <b>LFS</b> variable is still set and the commands <b>mkisofs</b> and <b>isohybrid</b> are available on your host linux distribution. They are belonging to <b>cdrkit</b> and <b>syslinux</b> packages.</div>
-    <pre class="command"><kbd>sh $LFS/root/saravane/scripts/mkiso saravane-`date +%Y%m%d`</kbd></pre>
+    <pre class="command"><kbd>sh $LFS/root/houaphan/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
     <pre class="output">Warning: creating filesystem that does not conform to ISO-9660.
 I: -input-charset not specified, using utf-8 (detected in locale settings)
 Size of boot image is 4 sectors -> No emulation
@@ -114,11 +117,11 @@ Max brk space used 28000
 165140 extents written (322 MB)</pre>
    <p>You have now an ISO located in the $LFS folder</p>
    <pre class="command"><kbd>ls $LFS/</kbd></pre>
-   <pre class="output">bin   etc   lib    NuTyX_x86_64-saravane-20150207.iso     root  sources  base  usr
-boot  home  lib64  NuTyX_x86_64-saravane-20150207.md5sum  run   srv      tmp     var
+   <pre class="output">bin   etc   lib    NuTyX_x86_64-houaphan-20150725.iso     root  sources  base  usr
+boot  home  lib64  NuTyX_x86_64-houaphan-20150725.md5sum  run   srv      tmp     var
 dev   ISO   mnt    proc                                   sbin  sys      tools</pre>
    <li>You just need to transfer it to your usb key and test it</li>
-   <pre class="command"><kbd>dd if=$LFS/NuTyX_x86_64-saravane-20150207.iso of=/dev/sdb</kbd></pre>
+   <pre class="command"><kbd>dd if=$LFS/NuTyX_x86_64-houaphan-20150207.iso of=/dev/sdb</kbd></pre>
    <pre class="output">526336+0 records in
 526336+0 records out
 269484032 bytes (269 MB) copied, 66.4757 s, 4.1 MB/s</pre>
@@ -131,8 +134,8 @@ dev   ISO   mnt    proc                                   sbin  sys      tools</
 cards depcreate xorg</kbd></pre>
     <p>The compilation start:</p>
     <pre class="output">=======> PKGMK_INSTALL: install
-=======> PKGMK_WORK_DIR: /root/saravane/console/elfutils/work
-=======> PKGMK_SOURCE_DIR: /root/saravane/console/elfutils
+=======> PKGMK_WORK_DIR: /root/houaphan/console/elfutils/work
+=======> PKGMK_SOURCE_DIR: /root/houaphan/console/elfutils
 =======> PKGMK_KEEP_SOURCES: no
 =======> PKGMK_CLEAN: yes
 =======> WARNING: FOOTPRINT AND MD5SUM IGNORED
@@ -142,10 +145,10 @@ cards depcreate xorg</kbd></pre>
 =======> version: 0.161</pre>
      <p>One the compilation finish, you can either choose the option below or continue the generation of the squashfs files at point 5</p>
     <li>If you want to reduce the size of the final ISO, you can remove the binaries archives and the logs, they won't be needed. If you want to keep the archives, give the following command</li>
-     <pre class="command"><kbd>rsync -a /root/saravane/base /base</kbd></pre>
+     <pre class="command"><kbd>rsync -a /root/houaphan/base /base</kbd></pre>
      <p>no error should be printout</p>
      <p>We can now delete the binaries from the git</p>
-     <pre class="command"><kbd>find /root/saravane/base/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
+     <pre class="command"><kbd>find /root/houaphan/base/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
      <p>no error should be printout</p>
      <p>We erase the logs</p>
      <pre class="command"><kbd>mv /root/logs /logs</kbd></pre>
@@ -155,7 +158,7 @@ cards depcreate xorg</kbd></pre>
 pkgrm kernel.devel</kbd></pre>
   </ol>
   <hr>
-  <p class="updated">Last updated on 2015-05-01 20:56</p>
+  <p class="updated">Last updated on 2015-07-25 00:09</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

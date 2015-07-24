@@ -42,24 +42,27 @@
 /bin/bash --login</kbd></pre>
 Aucune erreur ne doit apparaître:
 <pre class="output">root [ / ]# </pre>
-   <li>On commence par adapter le fichier cards.conf. En effet, on utilisera désormais uniquement les recettes issues du projet git. Adaptez si necessaire la langue et l'arch (<b>i686</b> si en 32 bits).</li>
+   <li>On commence par adapter le fichier cards.conf. En effet, on utilisera désormais uniquement les recettes issues du projet git. Adaptez si necessaire la langue.</li>
    <pre class="command"><kbd>cat > /etc/cards.conf << "EOF"
-dir /root/saravane/desktop
-dir /root/saravane/console
-dir /root/saravane/base
+dir /root/extra/graphic-extra
+dir /root/houaphan/graphic
+dir /root/extra/console-extra
+dir /root/houaphan/console
+dir /root/extra/base-extra
+dir /root/houaphan/base
 logdir /var/log/pkgbuild
-arch x86_64
 locale fr
-base /root/saravane/base
+base /root/houaphan/base
+base /root/extra/base-extra
 EOF</kbd></pre>
    <li>On ajoute les fichiers necessaires au fonctionnement de l'iso</li>
-   <pre class="command"><kbd>cp -av /root/saravane/iso /ISO</kbd></pre>
-   <pre class="output">'/root/saravane/iso' -> '/ISO'
-'/root/saravane/iso/isolinux' -> '/ISO/isolinux'
-'/root/saravane/iso/isolinux/boot.cat' -> '/ISO/isolinux/boot.cat'
-'/root/saravane/iso/isolinux/boot.msg' -> '/ISO/isolinux/boot.msg'
-'/root/saravane/iso/isolinux/isolinux.bin' -> '/ISO/isolinux/isolinux.bin'
-'/root/saravane/iso/isolinux/isolinux.cfg' -> '/ISO/isolinux/isolinux.cfg'</pre>
+   <pre class="command"><kbd>cp -av /root/houaphan/iso /ISO</kbd></pre>
+   <pre class="output">'/root/houaphan/iso' -> '/ISO'
+'/root/houaphan/iso/isolinux' -> '/ISO/isolinux'
+'/root/houaphan/iso/isolinux/boot.cat' -> '/ISO/isolinux/boot.cat'
+'/root/houaphan/iso/isolinux/boot.msg' -> '/ISO/isolinux/boot.msg'
+'/root/houaphan/iso/isolinux/isolinux.bin' -> '/ISO/isolinux/isolinux.bin'
+'/root/houaphan/iso/isolinux/isolinux.cfg' -> '/ISO/isolinux/isolinux.cfg'</pre>
    <pre class="command"><kbd>cp -v /boot/kernel-* /ISO/isolinux/kernel</kbd></pre>
    <pre class="output">'/boot/kernel-3.19.0' -> '/ISO/isolinux/kernel'</pre>
    <pre class="command"><kbd>cp -v /boot/initrd-* /ISO/isolinux/initrd</kbd></pre>
@@ -73,11 +76,11 @@ do
   [ -f ISO/isolinux/boot/$dir.squashfs ] && rm ISO/isolinux/boot/$dir.squashfs
   mksquashfs $dir ISO/isolinux/boot/$dir.squashfs
 done</kbd></pre>
-   <li>On peut maintenant sortir de la saravane pour produire l'iso.</li>
+   <li>On peut maintenant sortir de la houaphan pour produire l'iso.</li>
    <pre class="command"><kbd>exit</kbd></pre>
    <li>On peut enfin générer notre ISO dont la version est à la date du jour.</li>
    <div class="important"><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" />Avant de lancer la prochaine commande, assurez-vous que vous avez bien la variable <b>LFS</b> configurée et que les commandes <b>mkisofs</b> et <b>isohybrid</b> sont à disposition sur votre linux principale. Elles sont respectivement dans les paquets <b>cdrkit</b> et <b>syslinux</b>.</div>
-    <pre class="command"><kbd>sh $LFS/root/saravane/scripts/mkiso saravane-`date +%Y%m%d`</kbd></pre>
+    <pre class="command"><kbd>sh $LFS/root/houaphan/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
     <pre class="output">Warning: creating filesystem that does not conform to ISO-9660.
 I: -input-charset not specified, using utf-8 (detected in locale settings)
 Size of boot image is 4 sectors -> No emulation
@@ -115,11 +118,11 @@ Max brk space used 28000
 165140 extents written (322 MB)</pre>
    <p>Vous avez désormais une ISO qui se trouve dans le dossier $LFS</p>
    <pre class="command"><kbd>ls $LFS/</kbd></pre>
-   <pre class="output">base   bin   etc   lib    NuTyX_x86_64-saravane-20150109.iso   root  sources  usr
-boot  home  lib64  NuTyX_x86_64-saravane-20150207.md5sum  run   srv      tmp     var
+   <pre class="output">base   bin   etc   lib    NuTyX_x86_64-houaphan-20150725.iso   root  sources  usr
+boot  home  lib64  NuTyX_x86_64-houaphan-20150725.md5sum  run   srv      tmp     var
 dev   ISO   mnt    proc                                   sbin  sys      tools</pre>
    <li>Il ne vous reste plus qu'à la transférer sur une clé usb et la tester</li>
-   <pre class="command"><kbd>dd if=$LFS/NuTyX_x86_64-saravane-20150207.iso of=/dev/sdb</kbd></pre>
+   <pre class="command"><kbd>dd if=$LFS/NuTyX_x86_64-houaphan-20150207.iso of=/dev/sdb</kbd></pre>
    <pre class="output">526336+0 enregistrements lus
 526336+0 enregistrements écrits
 269484032 octets (269 MB) copiés, 67.3208 s, 4.0 MB/s</pre>
@@ -132,8 +135,8 @@ dev   ISO   mnt    proc                                   sbin  sys      tools</
 cards depcreate xorg</kbd></pre>
      <p>La compilation commence:</p>
      <pre class="output">=======> PKGMK_INSTALL: install
-=======> PKGMK_WORK_DIR: /root/saravane/console/elfutils/work
-=======> PKGMK_SOURCE_DIR: /root/saravane/console/elfutils
+=======> PKGMK_WORK_DIR: /root/houaphan/console/elfutils/work
+=======> PKGMK_SOURCE_DIR: /root/houaphan/console/elfutils
 =======> PKGMK_KEEP_SOURCES: no
 =======> PKGMK_CLEAN: yes
 =======> WARNING: FOOTPRINT AND MD5SUM IGNORED
@@ -143,10 +146,10 @@ cards depcreate xorg</kbd></pre>
 =======> version: 0.161</pre>
      <p>Une fois la compilation terminée, vous pouvez soit choisir l'option ci-dessous, soit continuer la génération des fichiers squashfs au point 5.</p>
     <li>Si vous souhaitez réduire la taille finale de l'ISO, vous pouvez supprimer les binaires du git et les logs produits, ils ne serviront plus. Si vous souhaitez conserver les binaires, lancez la commande ci-dessus.</li>
-<pre class="command"><kbd>rsync -a /root/saravane/base /base</kbd></pre>
+<pre class="command"><kbd>rsync -a /root/houaphan/base /base</kbd></pre>
      <p>Aucune erreur ne doit apparaître</p>
      <p>On peut maintenant effacer les binaires du git</p>
-     <pre class="command"><kbd>find /root/saravane/base/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
+     <pre class="command"><kbd>find /root/houaphan/base/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
      <p>Aucune erreur ne doit apparaître</p>
      <p>On efface les logs.</p>
      <pre class="command"><kbd>mv /root/logs /logs</kbd></pre>
@@ -156,7 +159,7 @@ cards depcreate xorg</kbd></pre>
 pkgrm kernel.devel</kbd></pre>
    </ol>
    <hr>
-   <p class="updated">Dernière mise à jour 01-05-2015 19:10</p>
+   <p class="updated">Dernière mise à jour 25-07-2015 00:11</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
