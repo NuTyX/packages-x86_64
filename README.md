@@ -25,4 +25,6 @@ This git is under construction, for tests only.
     
 #### 4. Start it
 
+    # source /etc/profile
+    # su - $USER
     $ startx
