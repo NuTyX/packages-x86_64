@@ -15,7 +15,7 @@ Contributions are welcome
 
 #### 2. Compile all ports in good order
 
-    # for i in `cat kde5/kde5.lst; do cards depcreate $i; done
+    # for i in `cat kde5/kde5.lst`; do cards depcreate $i; done
 
 #### 3. Install the environment variable and the starter
 
