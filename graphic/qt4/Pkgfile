@@ -13,12 +13,10 @@ source=(http://download.qt-project.org/official_releases/qt/${version%.*}/$versi
 
 build() {
 
-export QT4LINK=/usr
-
 cd ${_name}
 
      ./configure -prefix    /usr                 \
-            -bindir         /usr/bin             \
+            -bindir         /usr/lib/qt4/bin     \
             -plugindir      /usr/lib/qt4/plugins \
             -importdir      /usr/lib/qt4/imports \
             -headerdir      /usr/include/qt4     \
@@ -36,10 +34,11 @@ cd ${_name}
             -system-sqlite     \
             -no-phonon         \
             -no-phonon-backend \
-            -no-nis            \
+            -no-webkit         \
             -no-openvg         \
             -nomake demos      \
             -nomake examples   \
+            -nomake docs       \
             -optimized-qmake   
 
 make
@@ -49,13 +48,12 @@ find . -name "*.pc" -exec perl -pi -e "s, -L$PWD/?\S+,,g" {} \;
 make INSTALL_ROOT=$PKG install
 
 rm -rf $PKG/usr/tests
-for file in 3Support CLucene Core DBus Declarative DesignerComponents \
-            Designer Gui Help Multimedia Network OpenGL Script \
-            ScriptTools Sql Svg Test UiTools WebKit XmlPatterns Xml phonon; do
 
-     [ -e /usr/lib/libQt${file}.prl ] &&
-     sed -r '/^QMAKE_PRL_BUILD_DIR/d;s/(QMAKE_PRL_LIBS =).*/\1/' \
-         -i $PKG/usr/lib/libQt${file}.prl
+for file in $PKG/usr/lib/libQt*.prl; do
+	sed -r -e '/^QMAKE_PRL_BUILD_DIR/d'    \
+	       -e 's/(QMAKE_PRL_LIBS =).*/\1/' \
+	       -i $file
+
 done
 unset file
 
@@ -75,12 +73,18 @@ install -v -Dm644 tools/qdbus/qdbusviewer/images/qdbusviewer-128.png \
                   $PKG/usr/share/pixmaps/qdbusviewer-qt4.png
 
 install -dm755 $PKG/usr/share/applications
- 
+
+install -d $PKG/usr/bin
+
+for i in $PKG/usr/lib/qt4/bin/*; do
+	ln -s /usr/lib/qt4/bin/$(basename $i) $PKG/usr/bin/$(basename $i)-qt4	
+done
+
 cat > $PKG/usr/share/applications/assistant-qt4.desktop << EOF
 [Desktop Entry]
 Name=Qt4 Assistant 
 Comment=Shows Qt4 documentation and examples
-Exec=/usr/bin/assistant
+Exec=/usr/lib/qt4/bin/assistant
 Icon=assistant-qt4.png
 Terminal=false
 Encoding=UTF-8
@@ -92,7 +96,7 @@ cat > $PKG/usr/share/applications/designer-qt4.desktop << EOF
 [Desktop Entry]
 Name=Qt4 Designer
 Comment=Design GUIs for Qt4 applications
-Exec=/usr/bin/designer
+Exec=/usr/lib/qt4/bin/designer
 Icon=designer-qt4.png
 MimeType=application/x-designer;
 Terminal=false
@@ -105,7 +109,7 @@ cat > $PKG/usr/share/applications/linguist-qt4.desktop << EOF
 [Desktop Entry]
 Name=Qt4 Linguist 
 Comment=Add translations to Qt4 applications
-Exec=/usr/bin/linguist
+Exec=/usr/lib/qt4/bin/linguist
 Icon=linguist-qt4.png
 MimeType=text/vnd.trolltech.linguist;application/x-linguist;
 Terminal=false
@@ -119,7 +123,7 @@ cat > $PKG/usr/share/applications/qdbusviewer-qt4.desktop << EOF
 Name=Qt4 QDbusViewer 
 GenericName=D-Bus Debugger
 Comment=Debug D-Bus applications
-Exec=/usr/bin/qdbusviewer
+Exec=/usr/lib/qt4/bin/qdbusviewer
 Icon=qdbusviewer-qt4.png
 Terminal=false
 Encoding=UTF-8
@@ -131,7 +135,7 @@ cat > $PKG/usr/share/applications/qtconfig-qt4.desktop << EOF
 [Desktop Entry]
 Name=Qt4 Config 
 Comment=Configure Qt4 behavior, styles, fonts
-Exec=/usr/bin/qtconfig
+Exec=/usr/lib/qt4/bin/qtconfig
 Icon=qt4logo.png
 Terminal=false
 Encoding=UTF-8
@@ -144,7 +148,8 @@ cat > $PKG/etc/profile.d/qt4.sh << EOF
 # Begin /etc/profile.d/qt4.sh
 
 QT4DIR=/usr
-export QT4DIR
+QTDIR=$QT4DIR
+export QT4DIR QTDIR
 
 # End /etc/profile.d/qt4.sh
 EOF
