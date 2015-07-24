@@ -13,7 +13,7 @@ This git is under construction, for tests only.
 
     # git clone git://github.com/NuTyX/kde5.git
 
-#### 2. Compile all the ports in good order
+#### 2. Compile all ports in good order
 
     # for i in `cat kde5/kde5.lst; do cards depcreate $i; done
 
