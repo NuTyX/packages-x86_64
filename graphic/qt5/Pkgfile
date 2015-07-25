@@ -5,7 +5,7 @@
 
 name=qt5
 version=5.5.0
-release=1
+release=2
 
 _name=qt-everywhere-opensource-src-${version}
 
@@ -142,8 +142,8 @@ for i in $PKG/usr/lib/qt5/bin/*; do
 done
 
 cat > $PKG/usr/bin/setqt5 << EOF
-if [ "x\$QT4DIR" != "x/usr" ] && [ "x\$QT4DIR" != "x" ]; then pathremove $QT4DIR/bin; fi
-if [ "x\$QT5DIR" != "x/usr" ]; then pathprepend $QT5DIR/bin; fi
+if [ "x\$QT4BINDIR" != "x/usr/bin" ] && [ "x\$QT4BINDIR" != "x" ]; then pathremove $QT4BINDIR; fi
+if [ "x\$QT5BINDIR" != "x/usr/bin" ]; then pathprepend $QT5BINDIR; fi
 echo \$PATH
 EOF
 }
