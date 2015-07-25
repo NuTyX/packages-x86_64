@@ -8,7 +8,7 @@
 # *********************************************************************
 
 if [ -z "${version}" ]; then
-	version='saravane'
+	version='houaphan'
 fi
 if [ -z "${URL}" ]; then
 	URL='http://downloads.nutyx.org'
@@ -16,16 +16,16 @@ fi
  
 Homepage="${URL}"                 ## http://downloads.nutyx.org
 ARCH=`uname -m`                   ## i686
-Installbase="$version/$ARCH/"     ## saravane/i686
-Package="$Homepage/$Installbase"  ## http://downloads.nutyx.org/saravane/i686
+Installbase="$version/$ARCH/"     ## houaphan/i686
+Package="$Homepage/$Installbase"  ## http://downloads.nutyx.org/houaphan/i686
 
-Packagebase="$Package/base"       ## http://downloads.nutyx.org/saravane/i686/base
+Packagebase="$Package/base"       ## http://downloads.nutyx.org/houaphan/i686/base
 
 if [ -z "${MountFolder}" ]; then
 	MountFolder="/mnt/hd"
 fi
 
-Depot="/var/lib/pkg/saravane"
+Depot="/var/lib/pkg/depotrepo"
 DepotPackages="$Depot/base"
 DepotCD="/media/cdrom"
 
@@ -458,16 +458,75 @@ fi
 install_base()
 {
 for i in \
-aaabasicfs acl attr bash bc binutils bzip2 coreutils curl \
+nutyx acl attr bash bc binutils bzip2 coreutils curl \
 diffutils expat file findutils flex gcc gdbm \
 gettext glibc gmp gperf grep gzip inetutils kbd lzo \
 libarchive libcap libpipeline mpc mpfr ncurses openssl pam \
-procps-ng psmisc readline sed shadow tar util-linux xz zlib \
+procps-ng psmisc readline sed shadow util-linux xz zlib \
 cards
 do 
 	install_pkg "$i"
 done
 
+}
+generate_cards_conf ()
+{
+echo "## For kde5" > ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/kde5-extra|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/kde5|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "## For kde (4)" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/kde-extra|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/kde|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "## For Gnome" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/gnome-extra|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/gnome|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "## For mate" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/mate-extra|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/mate|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "## For xfce4" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/xfce4-extra|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/xfce4|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "## For lxde" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/lxde-extra|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/lxde|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "## For all the graphical applications" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/graphic-extra|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "## For a minimal graphical interface" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/graphic|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "## For all the console applications" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/console-extra|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "## For a minimal console interface" >> ${MountFolder}/etc/cards.conf
+echo "# dir ${Depot}/console|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "## Strict minimum Base applications" >> ${MountFolder}/etc/cards.conf
+echo "dir ${Depot}/base-extra|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "# Chroot system" >> ${MountFolder}/etc/cards.conf
+echo "dir ${Depot}/base|${URL}" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "## Normaly you want to keep base and" >> ${MountFolder}/etc/cards.conf
+echo "base ${Depot}/base" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "## and base-extra" >> ${MountFolder}/etc/cards.conf
+echo "base ${Depot}/base-extra" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "## If you want to keep more collections remove comments below" >> ${MountFolder}/etc/cards.conf
+echo "# Adjust to your needs" >> ${MountFolder}/etc/cards.conf
+echo "#" >> ${MountFolder}/etc/cards.conf
+echo "# base ${Depot}/console" >> ${MountFolder}/etc/cards.conf
+echo "# base ${Depot}/console-extra" >> ${MountFolder}/etc/cards.conf
+echo "# base ${Depot}/graphic" >> ${MountFolder}/etc/cards.conf
+echo "# base ${Depot}/graphic-extra" >> ${MountFolder}/etc/cards.conf
+echo "# base ${Depot}/..." >> ${MountFolder}/etc/cards.conf
 }
 # *****************************************************************************************************
 # Begin of Installer
@@ -530,7 +589,7 @@ fi
 
 if [ "$MIG" == "0" ]; then
 	if [ $# -lt 2 ]; then
-		echo "* You didn't specify enough arguments     *"
+		echo "* You didn\'t specify enough arguments     *"
 		echo "* Argument 1: Destination partition       *"
 		echo "* Argument 2: Filesystem to be used       *"
 		echo "*                                         *"	
@@ -547,7 +606,7 @@ if [ "$MIG" == "0" ]; then
 	FILESYSTEM=$2
 else
 	if [ -z ${LFS} ] && [ $# -lt 1 ]; then
-		echo "* You didn't specify enough arguments     *"
+		echo "* You didn\'t specify enough arguments     *"
 		echo "* Argument 1: Folder destionation         *"
 		echo "*                                         *"
 		echo "* Please re-enter the command with the    *"
@@ -592,11 +651,7 @@ if ! [ -d ${MountFolder}${DepotPackages} ]; then
 fi
 if ! [ -f ${MountFolder}/etc/cards.conf ]; then
 	mkdir -p  ${MountFolder}/etc
-	echo "dir ${Depot}/desktop|${Package}/desktop
-dir ${Depot}/console|${Package}/console
-dir ${Depot}/base|${Package}/base
-arch ${ARCH}
-base ${DepotPackages}" > ${MountFolder}/etc/cards.conf
+	generate_cards_conf
 fi
 pkgconf="fail"
 error_value=101
@@ -623,9 +678,6 @@ if [ ! -d ${MountFolder}/var/lib/pkg/DB ]; then
 fi
 install_base
 
-# replace in cards with the correct arch
-sed -i "s|latest|${ARCH}|" ${MountFolder}/etc/cards.conf
-
 if [ "$MIG" == "0" ]; then
 	echo "$1     /    $2    defaults   0   1" >> ${MountFolder}/etc/fstab  
 fi
@@ -651,4 +703,3 @@ echo "*                                                 *"
 echo "*              http://www.nutyx.org               *"
 echo "*                                                 *"
 echo "***************************************************"
-echo ""
