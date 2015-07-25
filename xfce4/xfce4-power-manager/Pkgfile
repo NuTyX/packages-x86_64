@@ -4,7 +4,7 @@
 # Depends on: dbus-glib xorg-app libnotify xfce4-panel upower udisks 
 
 name=xfce4-power-manager
-version=1.5.2
+version=1.4.4
 release=1
 
 source=(http://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2)
@@ -12,14 +12,7 @@ build() {
 cd $name-$version
 ./configure \
     --prefix=/usr \
-    --sysconfdir=/etc \
-    --sbindir=/usr/bin \
-    --libexecdir=/usr/lib \
-    --localstatedir=/var \
-    --disable-network-manager \
-    --enable-polkit \
-    --disable-debug
+    --sysconfdir=/etc
 make
 make DESTDIR=$PKG install
 }
-
