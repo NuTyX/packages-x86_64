@@ -84,14 +84,20 @@ list_diff()
 }
 COLLECTION="`basename $0`"
 
-if [ "$COLLECTION" != "console" ] && [ "$COLLECTION" != "desktop" ] && [ "$COLLECTION" != "base" ] ; then
+if [ ! -d "$COLLECTION" ]; then
    echo "I dont know the collection $COLLECTION"
+   echo "Make shure you are at the root of the git"
    exit 1
 fi
 
-if [ -f /etc/cards.conf.d/$COLLECTION.conf ] ; then
-        . /etc/cards.conf.d/$COLLECTION.conf
+if [ ! -f /etc/cards.conf.d/$COLLECTION.conf ] ; then
+	echo "Create $COLLECTION.conf file"
+	[ ! -d /etc/cards.conf.d ] && mkdir -p /etc/cards.conf.d
+	echo "PORT_BASE=/root/houaphan/$COLLECTION
+BINARY_BASE=/houaphan/$COLLECTION" > /etc/cards.conf.d/$COLLECTION.conf
 fi
+
+. /etc/cards.conf.d/$COLLECTION.conf
 
 [ -z $COLLECTION ] && COLLECTION="`basename $0`"
 
