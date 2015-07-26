@@ -1,0 +1,29 @@
+# Description: engine for structured graphics.
+# URL: http://developer.gnome.org/doc/API/2.0/libgnomecanvas
+# Packager: fanch at nutyx dot org
+# Depends on: gtk, libart_lgpl, libglade
+
+
+name=libgnomecanvas
+version=2.30.3
+release=1
+source=(http://ftp.gnome.org/pub/GNOME/sources/$name/${version%.*}/$name-$version.tar.bz2)
+
+build() {
+	cd $name-$version
+
+	rm po/*.po
+	sed -i \
+		-e 's/USE_NLS=yes/USE_NLS=no/' \
+		-e 's/ENABLE_NLS 1/ENABLE_NLS 0/' \
+		configure
+
+	./configure \
+		--prefix=/usr \
+		--enable-glade \
+		--disable-gtk-doc
+
+	make
+	make DESTDIR=$PKG install
+	rm -r $PKG/usr/share/gtk-doc
+}
