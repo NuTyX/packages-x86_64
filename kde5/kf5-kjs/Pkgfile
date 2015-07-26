@@ -2,14 +2,13 @@
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
 # Depends on: extra-cmake-modules qt5
-name=kjs
+name=kf5-kjs
 release=1
-version=5.12.0
-_version=5.12
-source=(http://download.kde.org/stable/frameworks/${_version}/portingAids/$name-$version.tar.xz)
+_name=kjs
+source=(http://download.kde.org/stable/frameworks/${version%.*}/portingAids/${_name}-$version.tar.xz)
 
 build() {
-cd $name-$version
+cd ${_name}-$version
 mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr             \
