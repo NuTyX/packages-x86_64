@@ -2,13 +2,11 @@
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
 # Depends on: cmake 
-name=extra-cmake-modules
+_name=extra-cmake-modules
 release=1
-version=5.12.0
-source=(http://download.kde.org/stable/frameworks/5.12/$name-$version.tar.xz)
 
 build() {
-cd $name-$version
+cd ${_name}-$version
 mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr ..
