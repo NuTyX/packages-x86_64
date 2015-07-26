@@ -2,14 +2,11 @@
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
 # Depends on: extra-cmake-modules qt5 kio
-name=kxmlrpcclient
+_name=kxmlrpcclient
 release=1
-version=5.12.0
-_version=5.12
-source=(http://download.kde.org/stable/frameworks/${_version}/$name-$version.tar.xz)
 
 build() {
-cd $name-$version
+cd ${_name}-$version
 mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr             \
