@@ -13,6 +13,7 @@ checkBinaryValid()
 	fi
 	cd ${BINARY_BASE}
 	for DIR in *
+	do
 		if [ -d $DIR ]; then
 			do
 				if [ ! -d $PORT_BASE/$DIR ]; then
