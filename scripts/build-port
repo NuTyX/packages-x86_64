@@ -19,6 +19,8 @@ checkBinaryValid()
 				echo "'$DIR' should be removed and delete from the .PKGREPO file"
 				rm -vr $DIR
 				[ -f .PKGREPO ] && sed -i "/#$DIR#/d" .PKGREPO
+			else
+				rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/	
 			fi
 		fi
 	done
@@ -98,10 +100,16 @@ COLLECTION="`basename $0`"
 
 GIT=`pwd`
 
-if [ ! -d "$COLLECTION" ]; then
-   echo "I dont know the collection $COLLECTION"
+if [ ! -d .git ] && [ ! -d scripts ]; then 
    echo "Make shure you are at the root of the git"
    echo "Your are in: $GIT"
+   exit 1
+fi
+
+git pull
+
+if [ ! -d "$COLLECTION" ]; then
+   echo "I dont know the collection $COLLECTION"
    exit 1
 fi
 
