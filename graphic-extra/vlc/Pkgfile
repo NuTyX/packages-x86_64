@@ -1,15 +1,18 @@
 # Description: Media player, streamer, and encoder. It can play from many inputs
 # URL:  http://www.slackware.com/~alien/slackbuilds/vlc/
 # Packager: pierre at nutyx dot org
-# Depends on: qt x264 flac libmad glib librsvg alsa-lib xorg-libxinerama xorg-libxpm libvpx libcdio vcdimager live libdvdcss libdvdread libdvdnav libogg libtheora lame faac libvorbis ffmpeg faad2 liba52 libmpeg2 libmpcdec fribidi lua libdv speex 
+# Depends on: qt5 x264 flac libmad glib librsvg alsa-lib xorg-libxinerama xorg-libxpm libvpx libcdio vcdimager live libdvdcss libdvdread libdvdnav libogg libtheora lame faac libvorbis ffmpeg faad2 liba52 libmpeg2 libmpcdec fribidi lua libdv speex 
 
 name=vlc
 version=2.2.1
-release=2
+release=3
 
 source=( http://download.videolan.org/pub/videolan/vlc/$version/vlc-$version.tar.xz)
 	
 build() {
+
+source setqt5
+
 cd $name-$version
 sed -i 's:libsmbclient.h:samba-4.0/&:' modules/access/smb.c
 
