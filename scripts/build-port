@@ -5,20 +5,34 @@ list_ports() {
 }
 checkBinaryValid()
 {
+	if [ ! -d ${BINARY_BASE} ]; then
+		echo "The directory ${BINARY_BASE} doesn't exist"
+		echo "Please fix your setting in /etc/cards.conf.d/$COLLECTION.conf file"
+		echo "Variable 'BINARY_BASE'"
+		exit 1
+	fi
 	cd ${BINARY_BASE}
 	for DIR in *
 	do
-		if [ ! -d $PORT_BASE/$DIR ]; then
-			echo "'$DIR' should be removed and delete from the .PKGREPO file"
-			rm -vr $DIR
-			sed -i "/#$DIR#/d" .PKGREPO
-#		else
-#			echo "The package $DIR is OK"
+		if [ -d $DIR ]; then
+			if [ ! -d $PORT_BASE/$DIR ]; then
+				echo "'$DIR' should be removed and delete from the .PKGREPO file"
+				rm -vr $DIR
+				[ -f .PKGREPO ] && sed -i "/#$DIR#/d" .PKGREPO
+			else
+				rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/	
+			fi
 		fi
 	done
 }
 checkNewPort()
 {
+	if [ ! -d ${PORT_BASE} ]; then
+		echo "The directory ${PORT_BASE} doesn't exist"
+		echo "Please fix your setting in /etc/cards.conf.d/$COLLECTION.conf file"
+		echo "Variable 'PORT_BASE'"
+		exit 1
+	fi
 	cd ${PORT_BASE}
 	for DIR in *
 	do
@@ -86,10 +100,16 @@ COLLECTION="`basename $0`"
 
 GIT=`pwd`
 
-if [ ! -d "$COLLECTION" ]; then
-   echo "I dont know the collection $COLLECTION"
+if [ ! -d .git ] && [ ! -d scripts ]; then 
    echo "Make shure you are at the root of the git"
    echo "Your are in: $GIT"
+   exit 1
+fi
+
+git pull
+
+if [ ! -d "$COLLECTION" ]; then
+   echo "I dont know the collection $COLLECTION"
    exit 1
 fi
 
@@ -110,8 +130,7 @@ fi
 [ ! -d $BINARY_BASE ] && mkdir -p $BINARY_BASE
 
 if [ $# -lt 1 ]; then
-	echo "need a port name"
-	echo "check what's valid"
+	echo "No name port passed, check what's valid"
 	checkBinaryValid
 	echo "check what's new"
 	checkNewPort
