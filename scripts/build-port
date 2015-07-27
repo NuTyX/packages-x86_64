@@ -20,7 +20,7 @@ checkBinaryValid()
 				rm -vr $DIR
 				[ -f .PKGREPO ] && sed -i "/#$DIR#/d" .PKGREPO
 			else
-				rsync -au  --exclude="*cards.tar*" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/	
+				rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/	
 			fi
 		fi
 	done
