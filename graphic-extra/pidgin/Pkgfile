@@ -1,18 +1,22 @@
 # Description: Pidgin is a Gtk+ 2 instant messaging client that can connect with a wide range of networks including AIM, ICQ, GroupWise, MSN, Jabber, IRC, Napster, Gadu-Gadu, SILC, Zephyr and Yahoo!
 # URL:  http://www.pidgin.im
 # Packager: pierre at nutyx dot org
-# Depends on: gtk libxml2 perl-xml-parser gnutls nss nspr xorg-libxscrnsaver xorg-libxrandr xorg-libxinerama xorg-libsm gstreamer xscreensaver startup-notification hicolor-icon-theme libidn farstream dbus networkmanager 
+# Depends on: gtk2 gstreamer1 libxml2 perl-xml-parser gnutls nss nspr xorg-libxscrnsaver xorg-libxrandr xorg-libxinerama xorg-libsm xscreensaver startup-notification hicolor-icon-theme libidn farstream dbus networkmanager 
 
 name=pidgin
 version=2.10.11
-release=1
+release=2
 
-source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2
+	http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-gstreamer1-1.patch)
 
 build() {
 cd $name-$version
+patch -Np1 -i ../pidgin-2.10.11-gstreamer1-1.patch
+autoreconf -fi
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
+--with-gstreamer=1.0 \
 --disable-gevolution \
 --disable-meanwhile \
 --disable-avahi \
