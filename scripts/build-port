@@ -105,6 +105,9 @@ if [ ! -d .git ] && [ ! -d scripts ]; then
    echo "Your are in: $GIT"
    exit 1
 fi
+
+git pull
+
 if [ ! -d "$COLLECTION" ]; then
    echo "I dont know the collection $COLLECTION"
    exit 1
