@@ -1,10 +1,10 @@
 # Description: Thunderbird is a stand-alone mail/news client based on the Mozilla codebase. It uses the Gecko rendering engine to enable it to display and compose HTML emails. 
 # URL: http://www.mozilla.org/thunderbird
 # Packager: pierre at nutyx dot org, tnut at nutyx dot org
-# Depends on: alsa-lib gtk zip unzip libevent libvpx nspr nss yasm dbus-glib doxygen gstreamer-plugins-good gstreamer-plugins-ffmpeg libnotify openjdk startup-notification hunspell sqlite wireless-tools xorg-libx11 xorg-libxt xorg-libxrandr desktop-file-utils hicolor-icon-theme shared-mime-info pulseaudio
+# Depends on: alsa-lib gtk2 zip unzip libevent libvpx nspr nss yasm dbus-glib doxygen gstreamer-plugins-good gstreamer-plugins-ffmpeg libnotify openjdk startup-notification hunspell sqlite wireless-tools xorg-libx11 xorg-libxt xorg-libxrandr desktop-file-utils hicolor-icon-theme shared-mime-info pulseaudio
 
 name=thunderbird
-version=38.0.1
+version=38.1.0
 release=1
 
 source=(ftp://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.bz2)
@@ -95,12 +95,9 @@ ac_add_options --with-system-jpeg
 ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 
-# Build broken with system freetype-2.6
-ac_add_options --enable-tree-freetype
-
-
 EOF
 
+sed -i '/^ftglyph.h/ i ftfntfmt.h' mozilla/config/system-headers
 
 make -f client.mk
 make -f client.mk DESTDIR=$PKG install INSTALL_SDK=
