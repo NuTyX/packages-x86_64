@@ -15,13 +15,11 @@ checkBinaryValid()
 	for DIR in *
 	do
 		if [ -d $DIR ]; then
-			do
-				if [ ! -d $PORT_BASE/$DIR ]; then
-					echo "'$DIR' should be removed and delete from the .PKGREPO file"
-					rm -vr $DIR
-					[ -f .PKGREPO ] && sed -i "/#$DIR#/d" .PKGREPO
-				fi
-			done
+			if [ ! -d $PORT_BASE/$DIR ]; then
+				echo "'$DIR' should be removed and delete from the .PKGREPO file"
+				rm -vr $DIR
+				[ -f .PKGREPO ] && sed -i "/#$DIR#/d" .PKGREPO
+			fi
 		fi
 	done
 }
