@@ -24,12 +24,14 @@ Contributions are welcome
     # bash scripts/kde5
     # bash scripts/kde5-extra
 
-#### 4. Compile all ports in good order
+#### 4. Compile all ports in the right order
 
 There are severall methods. One could be via the same script. But we need to get a correct order list of packages to build.
+
     # for i in `cards level -I| cut -d " " -f2|grep houaphan/kde5`; do echo `basename $i`;done > ~/list
 
 This means you have all the binaries from the base,console and graphic collections in place. Now We can build them:
+
     # for i in `cat ~/list`; do bash scripts/kde5 $i||break; done
 
 It will stop at the first failure
