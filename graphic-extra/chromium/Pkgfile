@@ -1,10 +1,11 @@
 # Description: The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins
 # URL: http://www.chromium.org/Home
 # Packagers: pierre at nutyx dot org, tnut at nutyx dot org
-# Depends on: ninja pciutils gperf yasm xorg-mesa libgnome-keyring elfutils subversion gtk dbus-glib nss alsa-lib xdg-utils bzip2 libevent libgcrypt dejavu-ttf opus snappy dbus desktop-file-utils hicolor-icon-theme flac libxml2 pulseaudio kde-baseapps xorg-libxscrnsaver xorg-libxtst libexif.devel
+# Depends on: atk nss ninja pciutils gperf yasm xorg-mesa libgnome-keyring elfutils subversion gtk2 dbus-glib nss alsa-lib xdg-utils bzip2 libevent libgcrypt dejavu-ttf opus snappy dbus desktop-file-utils hicolor-icon-theme flac libxml2 pulseaudio xorg-libxscrnsaver xorg-libxtst libexif
 
 name=chromium
-version=41.0.2272.76
+version=44.0.2403.125
+#41.0.2272.76
 release=1
 
 source=(http://commondatastorage.googleapis.com/chromium-browser-official/$name-$version.tar.xz
@@ -14,22 +15,15 @@ _google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
 _google_default_client_id=413772536636.apps.googleusercontent.com
 _google_default_client_secret=0ZChLK6AxeA3Isu96MkwqDR4
 
-
 build() {
 	export GYP_GENERATORS='ninja'
 
 	cd $name-$version
-
-	# There are still a lot of relative calls which need a workaround
-	mkdir $SRC/python2-path
-	ln -s /usr/bin/python $SRC/python2-path/python
-
-	export PATH=$SRC/python2-path:$PATH
 	
 	# CFLAGS are passed through release_extra_cflags below
 	export -n CFLAGS CXXFLAGS
 
-	 # Build with clang as a temporary solution to startup crash with GCC 4.9
+	# Build with clang as a temporary solution to startup crash with GCC 4.9
   	mkdir -p third_party/llvm-build/Release+Asserts/bin
   	ln -s /usr/bin/clang third_party/llvm-build/Release+Asserts/bin/
   	ln -s /usr/bin/clang++ third_party/llvm-build/Release+Asserts/bin/
@@ -73,7 +67,8 @@ local _chromium_conf=(
     -Duse_gconf=0
     -Ddisable_fatal_linker_warnings=1
     -Ddisable_glibc=1
-    -Ddisable_nacl=1)
+    -Ddisable_nacl=1
+    -Ddisable_pnacl=1)
 
     build/linux/unbundle/replace_gyp_files.py "${_chromium_conf[@]}"
     build/gyp_chromium --depth=. "${_chromium_conf[@]}"
@@ -87,7 +82,7 @@ local _chromium_conf=(
 	install -Dm4755 -o root -g root out/Release/chrome_sandbox $PKG/opt/chromium/chrome-sandbox
 	install -D out/Release/chromedriver $PKGr/opt/chromium/chromedriver
 
-	cp out/Release/{*.pak,*.bin,libffmpegsumo.so,libpdf.so} $PKG/opt/chromium/
+	cp out/Release/{*.pak,*.bin} $PKG/opt/chromium/
 	cp -a out/Release/locales $PKG/opt/chromium/
 	cp -a out/Release/icudtl.dat $PKG/opt/chromium/
 	
