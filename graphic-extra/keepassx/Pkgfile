@@ -6,11 +6,12 @@
 
 name=keepassx
 version=0.4.3
-release=2
+release=3
 
 source=(http://downloads.sourceforge.net/keepassx/keepassx-$version.tar.gz)
 build ()
 {
+source setqt4
 cd keepassx-$version
 sed -i '1,1i#include <unistd.h>' src/lib/random.cpp
 qmake PREFIX=/usr
