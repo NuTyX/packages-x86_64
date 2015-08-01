@@ -1,7 +1,7 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: plasma-framework kf5-ktexteditor kf5-knewstuff qt5 kf5-extra-cmake-modules 
+# Depends on: kf5-plasma-framework kf5-ktexteditor kf5-knewstuff qt5 kf5-extra-cmake-modules 
 name=plasma-sdk
 release=1
 version=5.3.2
@@ -9,7 +9,6 @@ _version=5.3.2
 source=(http://download.kde.org/stable/plasma/${_version}/$name-$version.tar.xz)
 
 build() {
-source /usr/bin/setqt5 &&
 cd $name-$version
 mkdir build
 cd    build
