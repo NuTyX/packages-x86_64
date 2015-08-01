@@ -3,12 +3,8 @@
 # Packager: pierre at nutyx dot org
 # Depends on: kf5-kcmutils kf5-kdelibs4support xorg-glu libraw pciutils plasma-kwayland 
 
-name=plasma-kinfocenter
 _name=kinfocenter
 release=1
-version=5.3.2
-_version=5.3.2
-source=(http://download.kde.org/stable/plasma/${_version}/${_name}-$version.tar.xz)
 
 build() {
 cd ${_name}-$version
@@ -23,4 +19,3 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
 make
 make DESTDIR=$PKG install
 }
-
