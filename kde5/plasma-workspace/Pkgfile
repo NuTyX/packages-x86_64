@@ -1,7 +1,8 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: baloo kdesu kdewebkit kjsembed knotifyconfig krunner kwin kxmlrpcclient libkscreen libksysguard networkmanager ktexteditor kwayland
+# Depends on: plasma-baloo kf5-kdesu kf5-kdewebkit kf5-kjsembed kf5-knotifyconfig kf5-krunner plasma-kwin kf5-kxmlrpcclient plasma-libkscreen plasma-libksysguard kf5-networkmanager-qt kf5-ktexteditor plasma-kwayland libdbusmenu-qt5
+
 name=plasma-workspace
 release=1
 version=5.3.2
@@ -18,7 +19,6 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DBUILD_TESTING=OFF                     \
       -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
       -DQML_INSTALL_DIR=lib/qt5/qml           \
-      -DECM_MKSPECS_INSTALL_DIR=/usr/share/qt5/mkspecs/modules \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
@@ -38,5 +38,9 @@ session  include        system-session
 
 # End /etc/pam.d/kde
 EOF
+
+install -v -dm755 $PKG/usr/share/xsessions
+sed -i "s:startkde:&-wrapper:g" $PKG/usr/share/xsessions/plasma.desktop
+ln -sfv /usr/share/xsessions/plasma.desktop $PKG/usr/share/xsessions/kf5-plasma.desktop
 }
 
