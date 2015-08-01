@@ -99,8 +99,8 @@ EOF
 
 sed -i '/^ftglyph.h/ i ftfntfmt.h' mozilla/config/system-headers
 
-make -f client.mk
-make -f client.mk DESTDIR=$PKG install INSTALL_SDK=
+SHELL=/bin/sh make -f client.mk
+SHELL=/bin/sh make -f client.mk DESTDIR=$PKG install INSTALL_SDK=
 	
 mkdir -pv $PKG/usr/bin
 ln -sfv ../lib/$name-$version/thunderbird $PKG/usr/bin
