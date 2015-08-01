@@ -3,11 +3,8 @@
 # Packager: pierre at nutyx dot org
 # Depends on: plasma-baloo kf5-kdesu kf5-kdewebkit kf5-kjsembed kf5-knotifyconfig kf5-krunner plasma-kwin kf5-kxmlrpcclient plasma-libkscreen plasma-libksysguard kf5-networkmanager-qt kf5-ktexteditor plasma-kwayland libdbusmenu-qt5
 
-name=plasma-workspace
 release=1
-version=5.3.2
-_version=5.3.2
-source=(http://download.kde.org/stable/plasma/${_version}/$name-$version.tar.xz)
+source=(http://download.kde.org/stable/plasma/${version}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
@@ -43,4 +40,3 @@ install -v -dm755 $PKG/usr/share/xsessions
 sed -i "s:startkde:&-wrapper:g" $PKG/usr/share/xsessions/plasma.desktop
 ln -sfv /usr/share/xsessions/plasma.desktop $PKG/usr/share/xsessions/kf5-plasma.desktop
 }
-
