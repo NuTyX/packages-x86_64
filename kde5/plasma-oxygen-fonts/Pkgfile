@@ -1,7 +1,7 @@
 # Description : KDE5 system fonts
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: cmake extra-cmake-modules fontforge
+# Depends on: cmake kf5-extra-cmake-modules fontforge
 
 name=oxygen-fonts
 release=1
@@ -12,13 +12,9 @@ build() {
 cd $name*
 mkdir build
 cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr             \
-      -DCMAKE_BUILD_TYPE=Release              \
-      -DLIB_INSTALL_DIR=lib                   \
-      -DBUILD_TESTING=OFF                     \
-      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
-      -DQML_INSTALL_DIR=lib/qt5/qml           \
-      -DECM_MKSPECS_INSTALL_DIR=/usr/share/qt5/mkspecs/modules \
+cmake -DCMAKE_INSTALL_PREFIX=/usr                                \
+      -DLIB_INSTALL_DIR=lib                                      \
+      -DOXYGEN_FONT_INSTALL_DIR=/usr/share/fonts/truetype/oxygen \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
