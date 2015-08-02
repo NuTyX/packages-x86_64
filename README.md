@@ -36,10 +36,9 @@ This means you have all the binaries from the base,console and graphic collectio
 
 It will stop at the first failure
 
-#### 5. Install the environment variable and the starter
+#### 5. Install the starter
 
-    # cp -a kde5/kf5.sh /etc/profile.d/
-    # cp -a kde5/.xinitrc /home/$USER/
+    # echo "exec dbus-launch --exit-with-session startkde" > /home/$USER/.xinitrc
     
 #### 6. Start it
 
