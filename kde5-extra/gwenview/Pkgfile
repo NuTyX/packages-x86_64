@@ -1,7 +1,7 @@
 # Description :  fast and easy to use image viewer for KDE 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: kf5
+# Depends on: kde5
 name=gwenview
 release=1
 version=15.04.3
@@ -19,7 +19,6 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DGWENVIEW_SEMANTICINFO_BACKEND="Baloo" \
       -DBUILD_TESTING=OFF                     \
       -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
-      -DQML_INSTALL_DIR=lib/qt5/qml           \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
