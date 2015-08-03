@@ -19,9 +19,8 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DCMAKE_BUILD_TYPE=Release              \
       -DLIB_INSTALL_DIR=lib                   \
       -DBUILD_TESTING=OFF                     \
-      -DKMIX_KF5_BUILD=ON                      \
+      -DKMIX_KF5_BUILD=ON                     \
       -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
-      -DQML_INSTALL_DIR=lib/qt5/qml           \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
