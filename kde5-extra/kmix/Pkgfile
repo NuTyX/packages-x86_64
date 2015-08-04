@@ -1,26 +1,27 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: kf5 alsa-lib libcanberra pulseaudio
+# Depends on: kde5 alsa-lib libcanberra pulseaudio hicolor-icon-theme
+
 name=kmix
 release=1
-version=15.04.3
+version=15.07.80
 _version=15.04
-source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+source=(http://download.kde.org/unstable/applications/$version/src/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
 
-#sed -i "s:\${ECM_MODULE_PATH}:\${CMAKE_SOURCE_DIR}/cmake/modules &:g" CMakeLists.txt
+sed -e 's|${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR}|${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} ${CMAKE_SOURCE_DIR}/cmake/modules|' -i CMakeLists.txt
 
 mkdir build
 cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr             \
-      -DCMAKE_BUILD_TYPE=Release              \
-      -DLIB_INSTALL_DIR=lib                   \
-      -DBUILD_TESTING=OFF                     \
-      -DKMIX_KF5_BUILD=ON                     \
-      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
+cmake -DCMAKE_INSTALL_PREFIX=/usr       \
+      -DCMAKE_BUILD_TYPE=Release        \
+      -DLIB_INSTALL_DIR=lib             \
+      -DBUILD_TESTING=OFF               \
+      -DKMIX_KF5_BUILD=ON               \
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
