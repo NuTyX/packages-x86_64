@@ -1,0 +1,31 @@
+# Description: translation of KDE4
+# URL: http://www.kde.org
+# Packager: pierre at nutyx dot org
+# Depends on: kde-libs cmake automoc4 docbook-xsl
+
+name=kde-l10n
+version=15.04.3
+release=1
+
+source=(http://download.kde.org/stable/applications/$version/src/kde-l10n/kde-l10n-{da,de,es,fi,fr,it,nl,nn,pt,sv}-$version.tar.xz)
+
+build() {
+for lang in kde-l10n-*
+do
+
+sed -e '/kde-runtime/d' -e '/kde-workspace/d' -i $name-$lang-$version/4/$lang/docs/CMakeLists.txt || true
+
+cd $SRC/${lang}
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DSYSCONF_INSTALL_DIR=/etc/kde   \
+      -DCMAKE_BUILD_TYPE=Release       \
+      -DWITH_ActiveApp=OFF             \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+done
+}
+
+
