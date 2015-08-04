@@ -2,6 +2,7 @@
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
 # Depends on: kde5 dolphin
+
 name=dolphin-plugins
 release=1
 version=15.07.80
@@ -20,6 +21,7 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DLIB_INSTALL_DIR=lib                   \
       -DBUILD_TESTING=OFF                     \
       -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
