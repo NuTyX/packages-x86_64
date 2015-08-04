@@ -3,7 +3,7 @@
 # Packager: pierre at nutyx dot org
 # Depends on: phonon-qt5 gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad gstreamer-plugins-ugly gstreamer-plugins-ffmpeg libxml2 
 name=phonon-backend-gstreamer-qt5
-release=1
+release=2
 version=4.8.2
 _name=phonon-backend-gstreamer
 source=( http://download.kde.org/stable/phonon/${_name}/$version/src/${_name}-$version.tar.xz)
@@ -13,14 +13,12 @@ source /usr/bin/setqt5
 cd ${_name}-$version
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=/usr                                \
-      -DCMAKE_BUILD_TYPE=Release                                 \
-      -DCMAKE_INSTALL_LIBDIR=lib                                 \
-      -D__KDE_HAVE_GCC_VISIBILITY=NO                             \
-      -DPHONON_BUILD_PHONON4QT5=ON                               \
-      -DPHONON_INSTALL_QT_EXTENSIONS_INTO_SYSTEM_QT=FALSE        \
-      -DDBUS_INTERFACES_INSTALL_DIR=/usr/share/dbus-1/interfaces \
-      -Wno-dev ..
+cmake -DCMAKE_INSTALL_PREFIX=/usr    \
+      -DCMAKE_INSTALL_LIBDIR=lib     \
+      -DCMAKE_BUILD_TYPE=Release     \
+      -DPHONON_BUILD_PHONON4QT5=ON   \
+      -D__KDE_HAVE_GCC_VISIBILITY=NO \
+      -Wno-dev .. 
 make
 make DESTDIR=$PKG install
 }
