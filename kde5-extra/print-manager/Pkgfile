@@ -1,0 +1,27 @@
+# Description : Parts of framework 5
+# URL: https://www.kde.org/
+# Packager: pierre at nutyx dot org
+# Depends on: kde5
+name=print-manager
+release=1
+version=15.07.80
+_version=15.04
+
+source=(http://download.kde.org/unstable/applications/$version/src/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr             \
+      -DCMAKE_BUILD_TYPE=Release              \
+      -DLIB_INSTALL_DIR=lib                   \
+      -DBUILD_TESTING=OFF                     \
+      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
+
