@@ -14,7 +14,6 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DLIB_INSTALL_DIR=lib                   \
       -DBUILD_TESTING=OFF                     \
       -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
-      -DECM_MKSPECS_INSTALL_DIR=/usr/share/qt5/mkspecs/modules \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
