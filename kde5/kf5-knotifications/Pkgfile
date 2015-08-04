@@ -3,19 +3,17 @@
 # Packager: pierre at nutyx dot org
 # Depends on: kf5-kjobwidgets phonon-qt5 libdbusmenu-qt5
 _name=knotifications
-release=1
+release=2
 
 build() {
 cd ${_name}-$version
 mkdir build
 cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr             \
-      -DCMAKE_BUILD_TYPE=Release              \
-      -DLIB_INSTALL_DIR=lib                   \
-      -DBUILD_TESTING=OFF                     \
-      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
-      -DQML_INSTALL_DIR=lib/qt5/qml           \
-      -DECM_MKSPECS_INSTALL_DIR=/usr/share/qt5/mkspecs/modules \
+cmake -DCMAKE_INSTALL_PREFIX=/usr       \
+      -DCMAKE_BUILD_TYPE=Release        \
+      -DLIB_INSTALL_DIR=lib             \
+      -DBUILD_TESTING=OFF               \
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
