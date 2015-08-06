@@ -471,62 +471,95 @@ done
 }
 generate_cards_conf ()
 {
-echo "## For kde5" > ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/kde5-extra|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/kde5|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "## For kde (4)" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/kde-extra|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/kde|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "## For Gnome" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/gnome-extra|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/gnome|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "## For mate" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/mate-extra|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/mate|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "## For xfce4" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/xfce4-extra|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/xfce4|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "## For lxde" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/lxde-extra|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/lxde|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "## For all the graphical applications" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/graphic-extra|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "## For a minimal graphical interface" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/graphic|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "## For all the console applications" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/console-extra|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "## For a minimal console interface" >> ${MountFolder}/etc/cards.conf
-echo "# dir ${Depot}/console|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "## Strict minimum Base applications" >> ${MountFolder}/etc/cards.conf
-echo "dir ${Depot}/base-extra|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "# Chroot system" >> ${MountFolder}/etc/cards.conf
-echo "dir ${Depot}/base|${URL}" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "## Normaly you want to keep base and" >> ${MountFolder}/etc/cards.conf
-echo "base ${Depot}/base" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "## and base-extra" >> ${MountFolder}/etc/cards.conf
-echo "base ${Depot}/base-extra" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "## If you want to keep more collections remove comments below" >> ${MountFolder}/etc/cards.conf
-echo "# Adjust to your needs" >> ${MountFolder}/etc/cards.conf
-echo "#" >> ${MountFolder}/etc/cards.conf
-echo "# base ${Depot}/console" >> ${MountFolder}/etc/cards.conf
-echo "# base ${Depot}/console-extra" >> ${MountFolder}/etc/cards.conf
-echo "# base ${Depot}/graphic" >> ${MountFolder}/etc/cards.conf
-echo "# base ${Depot}/graphic-extra" >> ${MountFolder}/etc/cards.conf
-echo "# base ${Depot}/..." >> ${MountFolder}/etc/cards.conf
+echo "## For kde5
+# Comment folling 2 lines
+# if you don't want to install kde5
+#
+dir ${Depot}/kde5-extra|${URL}
+dir ${Depot}/kde5|${URL}
+##
+## For kde (4)
+# Comment folling 2 lines
+# if you don't want to install kde (version4)
+#
+
+dir ${Depot}/kde-extra|${URL}
+dir ${Depot}/kde|${URL}
+#
+## For Gnome
+# Comment folling 2 lines
+# if you don't want to install gnome
+#
+dir ${Depot}/gnome-extra|${URL}
+dir ${Depot}/gnome|${URL}
+#
+## For cinnamon
+# Comment folling 2 lines
+# if you don't want to install cinnamon
+#
+dir ${Depot}/cinnamon-extra|${URL}
+dir ${Depot}/cinnamon|${URL}
+#
+## For mate
+# Comment folling 2 lines
+# if you don't want to install mate
+#
+dir ${Depot}/mate-extra|${URL}
+dir ${Depot}/mate|${URL}
+#
+## For xfce4
+# Comment folling 2 lines
+# if you don't want to install xfce4
+#
+dir ${Depot}/xfce4-extra|${URL}
+dir ${Depot}/xfce4|${URL}
+#
+## For lxqt
+# Comment folling 2 lines
+# if you don't want to install lxqt
+#
+dir ${Depot}/lxqt-extra|${URL}
+dir ${Depot}/lxqt|${URL}
+#
+## For lxde
+# Comment folling 2 lines
+# if you don't want to install lxde
+#
+dir ${Depot}/lxde-extra|${URL}
+dir ${Depot}/lxde|${URL}
+#
+## For all the graphical applications
+dir ${Depot}/graphic-extra|${URL}
+#
+## For a minimal graphical interface
+dir ${Depot}/graphic|${URL}
+#
+## For all the console applications
+dir ${Depot}/console-extra|${URL}
+#
+## For a minimal console interface
+dir ${Depot}/console|${URL}
+#
+## Strict minimum Base applications
+dir ${Depot}/base-extra|${URL}
+#
+# Chroot system
+dir ${Depot}/base|${URL}
+#
+## Normaly you want to keep base and
+base ${Depot}/base
+#
+## and base-extra
+base ${Depot}/base-extra
+#
+## If you want to keep more collections remove comments below
+# Adjust to your needs
+#
+# base ${Depot}/console
+# base ${Depot}/console-extra
+# base ${Depot}/graphic
+# base ${Depot}/graphic-extra
+# base ${Depot}/..." > ${MountFolder}/etc/cards.conf
 }
 # *****************************************************************************************************
 # Begin of Installer
@@ -679,7 +712,7 @@ fi
 install_base
 
 if [ "$MIG" == "0" ]; then
-	echo "$1     /    $2    defaults   0   1" >> ${MountFolder}/etc/fstab  
+	echo "$1     /    $2    defaults   0   1" >> ${MountFolder}/etc/fstab
 fi
 if [ -f /etc/resolv.conf ]; then
 	cp /etc/resolv.conf ${MountFolder}/etc
@@ -695,11 +728,15 @@ fi
 echo "***************************************************"
 echo "* Installation finish. Tanks for installing NuTyX *"
 echo "*                                                 *"
-echo "* Dont forget to choose a valid kernel before you *"
-echo "*      want to boot on your install NuTyX         *"
+echo "*    This is a bare installation for a chroot     *"
+echo "* If you want to boot this installation you need  *"
+echo "* to install more packages.                       *"
 echo "*                                                 *"
-echo "*        For more info, come to visit us:         *"
 echo "*                                                 *"
-echo "*              http://www.nutyx.org               *"
+echo "* Check http://www.nutyx.org/en/documentation.html*"
+echo "* or http://www.nutyx.org/fr/documentation.html   *"
+echo "*                                                 *"
+echo "* Make shure to review /etc/cards.conf            *"
+echo "* to meet your requirements in packages selection *"
 echo "*                                                 *"
 echo "***************************************************"
