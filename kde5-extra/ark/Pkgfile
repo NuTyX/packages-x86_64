@@ -1,0 +1,22 @@
+# Description : Archiving Tool
+# URL: https://www.kde.org/
+# Packager: pierre at nutyx dot org
+# Depends on: cmake automoc4 kde-runtime kde-libs libarchive qjson p7zip zip unzip unrar 
+
+name=ark
+version=15.04.3
+release=2
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cmake ../$name-$version        \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DKDE4_BUILD_TESTS=OFF     \
+    -DCMAKE_INSTALL_PREFIX=/usr
+make
+make DESTDIR=$PKG install
+}
+
