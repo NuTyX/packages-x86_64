@@ -13,7 +13,10 @@ fi
 if [ -z "${URL}" ]; then
 	URL='http://downloads.nutyx.org'
 fi
- 
+if [ -z "${DEPOT}" ]; then
+	DEPOT="/var/lib/pkg/depotrepo"
+fi
+
 Homepage="${URL}"                 ## http://downloads.nutyx.org
 ARCH=`uname -m`                   ## i686
 Installbase="$version/$ARCH/"     ## houaphan/i686
@@ -25,8 +28,7 @@ if [ -z "${MountFolder}" ]; then
 	MountFolder="/mnt/hd"
 fi
 
-Depot="/var/lib/pkg/depotrepo"
-DepotPackages="$Depot/base"
+DepotPackages="$DEPOT/base"
 DepotCD="/media/cdrom"
 
 
@@ -279,7 +281,7 @@ unmountall() {
 #	exit 1
 # fi
 if [ -d "$DepotCD/depot" ]; then
-	umount ${1}/${Depot}
+	umount ${1}/${DEPOT}
 	umount  `cat /tmp/depot`
 fi
 umount ${1}/dev/shm
@@ -397,7 +399,7 @@ exit 1
 end() {
 if [ "$ERREUR" == "yes" ]; then
 	if [ ! -f $TMP/depot ]; then
-		rm -r ${MountFolder}/${Depot}
+		rm -r ${MountFolder}/${DEPOT}
 		boot_mesg "Cleaning up temporary files.."
 		boot_mesg "Please correct and start again"
 	fi
@@ -475,91 +477,91 @@ echo "## For kde5
 # Comment folling 2 lines
 # if you don't want to install kde5
 #
-dir ${Depot}/kde5-extra|${URL}
-dir ${Depot}/kde5|${URL}
+dir ${DEPOT}/kde5-extra|${URL}
+dir ${DEPOT}/kde5|${URL}
 ##
 ## For kde (4)
 # Comment folling 2 lines
 # if you don't want to install kde (version4)
 #
 
-dir ${Depot}/kde-extra|${URL}
-dir ${Depot}/kde|${URL}
+dir ${DEPOT}/kde-extra|${URL}
+dir ${DEPOT}/kde|${URL}
 #
 ## For Gnome
 # Comment folling 2 lines
 # if you don't want to install gnome
 #
-dir ${Depot}/gnome-extra|${URL}
-dir ${Depot}/gnome|${URL}
+dir ${DEPOT}/gnome-extra|${URL}
+dir ${DEPOT}/gnome|${URL}
 #
 ## For cinnamon
 # Comment folling 2 lines
 # if you don't want to install cinnamon
 #
-dir ${Depot}/cinnamon-extra|${URL}
-dir ${Depot}/cinnamon|${URL}
+dir ${DEPOT}/cinnamon-extra|${URL}
+dir ${DEPOT}/cinnamon|${URL}
 #
 ## For mate
 # Comment folling 2 lines
 # if you don't want to install mate
 #
-dir ${Depot}/mate-extra|${URL}
-dir ${Depot}/mate|${URL}
+dir ${DEPOT}/mate-extra|${URL}
+dir ${DEPOT}/mate|${URL}
 #
 ## For xfce4
 # Comment folling 2 lines
 # if you don't want to install xfce4
 #
-dir ${Depot}/xfce4-extra|${URL}
-dir ${Depot}/xfce4|${URL}
+dir ${DEPOT}/xfce4-extra|${URL}
+dir ${DEPOT}/xfce4|${URL}
 #
 ## For lxqt
 # Comment folling 2 lines
 # if you don't want to install lxqt
 #
-dir ${Depot}/lxqt-extra|${URL}
-dir ${Depot}/lxqt|${URL}
+dir ${DEPOT}/lxqt-extra|${URL}
+dir ${DEPOT}/lxqt|${URL}
 #
 ## For lxde
 # Comment folling 2 lines
 # if you don't want to install lxde
 #
-dir ${Depot}/lxde-extra|${URL}
-dir ${Depot}/lxde|${URL}
+dir ${DEPOT}/lxde-extra|${URL}
+dir ${DEPOT}/lxde|${URL}
 #
 ## For all the graphical applications
-dir ${Depot}/graphic-extra|${URL}
+dir ${DEPOT}/graphic-extra|${URL}
 #
 ## For a minimal graphical interface
-dir ${Depot}/graphic|${URL}
+dir ${DEPOT}/graphic|${URL}
 #
 ## For all the console applications
-dir ${Depot}/console-extra|${URL}
+dir ${DEPOT}/console-extra|${URL}
 #
 ## For a minimal console interface
-dir ${Depot}/console|${URL}
+dir ${DEPOT}/console|${URL}
 #
 ## Strict minimum Base applications
-dir ${Depot}/base-extra|${URL}
+dir ${DEPOT}/base-extra|${URL}
 #
 # Chroot system
-dir ${Depot}/base|${URL}
+dir ${DEPOT}/base|${URL}
 #
 ## Normaly you want to keep base and
-base ${Depot}/base
+base ${DEPOT}/base
 #
 ## and base-extra
-base ${Depot}/base-extra
+base ${DEPOT}/base-extra
 #
 ## If you want to keep more collections remove comments below
 # Adjust to your needs
 #
-# base ${Depot}/console
-# base ${Depot}/console-extra
-# base ${Depot}/graphic
-# base ${Depot}/graphic-extra
-# base ${Depot}/..." > ${MountFolder}/etc/cards.conf
+# base ${DEPOT}/console
+# base ${DEPOT}/console-extra
+# base ${DEPOT}/graphic
+# base ${DEPOT}/graphic-extra
+# base ${DEPOT}/..." > ${MountFolder}/etc/cards.conf
 }
 # *****************************************************************************************************
 # Begin of Installer
