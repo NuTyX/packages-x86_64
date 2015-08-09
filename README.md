@@ -1,47 +1,69 @@
-# kde5
-#
 ## Ports for constructing kde5
 
 Contributions are welcome
 
-### This git is under construction, for tests only.
+### How to test this git:
 
-
-### How to test this git :
-
-#### 1. Clone it
+#### 1. Clone it in your home directory
 
     # git clone git://github.com/NuTyX/kde5.git
 
-#### 2. Adjust your /etc/cards.conf by adding the ports directories of kde5. By default it should be
+#### 2. Get the script to Install a bare houaphan NuTyX:
 
-    dir /houaphan/kde5-extra
-    dir /houaphan/kde5
+    # export LFS=/mnt/lfs
+    # mkdir $LFS
+    # wget http://downloads.nutyx.org/install-houaphan{,.md5sum}
+    # wget http://downloads.nutyx.org/enter-chroot{,.md5sum}
 
-#### 3. Copy all the ports in place
+#### 3. Check the validity of the scripts:
 
-    # cd kde5
-    # bash scripts/kde5
-    # bash scripts/kde5-extra
+    # md5sum -c install-houaphan.md5sum
 
-#### 4. Compile all ports in the right order
+   install-houaphan: OK
 
-There are severall methods. One could be via the same script. But we need to get a correct order list of packages to build.
+    # md5sum -c enter-chroot.md5sum
 
-    # for i in `cards level -I| cut -d " " -f2|grep houaphan/kde5`; do echo `basename $i`;done > ~/list
+   enter-chroot: OK
 
-This means you have all the binaries from the base,console and graphic collections in place. Now We can build them:
+#### 4. Install a bare NuTyX
 
-    # for i in `cat ~/list`; do bash scripts/kde5 $i||break; done
+    # bash install-houaphan
 
-It will stop at the first failure
+#### 5. Enter in the chroot NuTyX
 
-#### 5. Install the starter
+    # bash enter-chroot
 
-    # echo "exec dbus-launch --exit-with-session startkde" > /home/$USER/.xinitrc
-    
-#### 6. Start it
+#### 6. As it says review and adjust cards.conf to your needs.
 
-    # source /etc/profile
-    # su - $USER
-    $ startx
+    # check
+    # get vim
+    # vim /etc/cards.conf
+
+
+#### 7. In your chroot Make the directory where the git copy will comes
+
+    # mkdir /root/kde5
+
+#### 8. Exit and mount your git project (asume below the user is 'tnut') adapt to yours
+
+    # mount -o bind /home/tnut/kde5 /mnt/lfs/root/kde5
+
+#### 9. Enter again in your chroot
+
+    # bash enter-chroot
+    # cd /root/kde5
+
+#### 10. you can now try the following command:
+
+    # bash script/kde5
+
+It will print a help included point 1,7 and 8 above. Note that it's even possible to get the available binaries from the mirror.
+
+
+#### 11. If everythin OK, check with cards level whats new
+
+    # cards level
+
+#### 12. TO BE CONTINUE ...
+
+Have fun :)

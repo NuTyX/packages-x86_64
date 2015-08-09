@@ -1,10 +1,58 @@
 #!/bin/bash
 
+
+usage() {
+echo "
+How to proceed:
+
+You should mount the '$PROJECT' git as bind option (--bind) in your personnal account
+
+Exemple if your personnal account is 'tnut' and
+this chroot NuTyX is installed in '/mnt/lfs', proceed as follow
+
+1. clone this project as 'tnut' user:
+   cd ~
+   git clone git://github.com/NuTyX/$PROJECT.git
+
+2. your git is now in following directory:
+   '/home/tnut/$PROJECT'
+
+
+3. Delete this git in your chroot and create an empty folder
+    rm -r /mnt/lfs/root/$PROJECT
+    mkdir -p /mnt/lfs/root/$PROJECT
+
+4. Mount your '$PROJECT' git projet as bind option INTO your chroot
+    mount -o bind /home/tnut/$PROJECT /mnt/lfs/root/$PROJECT
+
+5. Make your git operation in 'tnut' user
+
+Option: you could add this alias into your chroot root .bashrc
+    alias $COLLECTION='_() { cd $GIT; bash scripts/$COLLECTION \$@; cd -; };_ \$@'
+
+It will makes your life more easy. To build any port from the collection $COLLECTION,
+You will just to type:
+    $COLLECTION  <name_of_the_port>
+"
+
+}
+print_help()
+{
+	echo "usage: $COLLECTION [option]"
+	echo "options:"
+	echo "  -cp,  --check-ports         check if new ports are available"
+	echo "  -cb,  --check-binaries      check if binaries are uptodate"
+	echo "  -cd,  --check-diff          check if binaries are different then the ports"
+	echo "  -s,   --sync                synchronise binaries from rsync server location"
+	echo "  -h,   --help                print help and exit"
+}
 list_ports() {
 	cd $PORT_BASE && find . -name Pkgfile -follow -printf "%h\n" | sed 's|^./||g' | sort
 }
-checkBinaryValid()
+check_binaries()
 {
+	check_location
+	check_config_file
 	if [ ! -d ${BINARY_BASE} ]; then
 		echo "The directory ${BINARY_BASE} doesn't exist"
 		echo "Please fix your setting in /etc/cards.conf.d/$COLLECTION.conf file"
@@ -25,8 +73,10 @@ checkBinaryValid()
 		fi
 	done
 }
-checkNewPort()
+check_ports()
 {
+	check_location
+	check_config_file
 	if [ ! -d ${PORT_BASE} ]; then
 		echo "The directory ${PORT_BASE} doesn't exist"
 		echo "Please fix your setting in /etc/cards.conf.d/$COLLECTION.conf file"
@@ -45,8 +95,10 @@ checkNewPort()
 		fi
 	done
 }
-list_diff()
+check_diff()
 {
+	check_location
+	check_config_file
 	ports_list=`mktemp` || exit 1
 	binaries_list=`mktemp` || exit 1
 	output=`mktemp` || exit 1
@@ -59,13 +111,6 @@ list_diff()
 	for binary_package in `cat $binaries_list | gawk '{ print $1 }'`; do
 		binary_package_version=`cat $binaries_list | grep "^$binary_package " | gawk '{ print $2 }'| cut -d "-" -f1`
 		binary_package_release=`cat $binaries_list | grep "^$binary_package " | gawk '{ print $2 }'| cut -d "-" -f2`
-		if [ "$binary_package_version" == "" ]; then
-			base_binary_package=`echo $binary_package | cut -d "-" -f1`
-			if [ "$base_binary_package" != "$binary_package" ]; then
-				binary_package_version=`cat $binaries_list | grep "^$base_binary_package " | gawk '{ print $2 }'| cut -d "-" -f1`
-				binary_package_release=`cat $binaries_list | grep "^$base_binary_package " | gawk '{ print $2 }'| cut -d "-" -f2`
-			fi
-		fi
 		binary_version=`echo $binary_package_version-$binary_package_release`
 		package=$binary_package
 		if [ -f $PORT_BASE/$package/Pkgfile ]; then
@@ -92,60 +137,142 @@ list_diff()
 		echo "Name Port Compiled" >> $output_sorted
 		sort $output >> $output_sorted
 		column -t $output_sorted
-	else
-		echo "Binaries from $COLLECTION OK"
 	fi
 }
-COLLECTION="`basename $0`"
+check_port_name() {
+	check_config_file
+	if [ ! -d "$PORT_BASE/$1" ]; then
+		echo "I dont know the port $1"
+		exit 1
+	fi
+}
+check_collection_exist() {
+	if [ ! -d "$COLLECTION" ]; then
+		echo "I dont know the collection $COLLECTION"
+		exit 1
+	fi
+}
+parse_options() {
+	while [ "$1" ]; do
+		case $1 in
+			-cp|--check-ports)
+				check_ports
+				exit 0
+				;;
+			-cb|--check-binaries)
+				check_binaries
+				exit 0
+				;;
+			-cd|--check-diff)
+				check_diff
+				exit 0
+				;;
+			-s|--sync)
+				sync_binaries
+				exit 0;;
 
-GIT=`pwd`
+			-h|--help)
+				print_help
+				usage
+				exit 0;;
 
-if [ ! -d .git ] && [ ! -d scripts ]; then 
-   echo "Make shure you are at the root of the git"
-   echo "Your are in: $GIT"
-   exit 1
-fi
+			*)
+				check_port_name $1
+				;;
 
-git pull
-
-if [ ! -d "$COLLECTION" ]; then
-   echo "I dont know the collection $COLLECTION"
-   exit 1
-fi
-
-if [ ! -f /etc/cards.conf.d/$COLLECTION.conf ] ; then
-	echo "Create $COLLECTION.conf file"
-	[ ! -d /etc/cards.conf.d ] && mkdir -p /etc/cards.conf.d
-	echo "PORT_BASE=/$GIT/$COLLECTION
-BINARY_BASE=/houaphan/$COLLECTION" > /etc/cards.conf.d/$COLLECTION.conf
-fi
-
-. /etc/cards.conf.d/$COLLECTION.conf
-
-[ -z $COLLECTION ] && COLLECTION="`basename $0`"
-
-[ -z $PORT_BASE ] && PORT_BASE=/home/thierry/devel/git/saravane/$COLLECTION
-[ -z $BINARY_BASE ] && BINARY_BASE=/root/saravane/$COLLECTION
-
-[ ! -d $BINARY_BASE ] && mkdir -p $BINARY_BASE
-
-if [ $# -lt 1 ]; then
-	echo "No name port passed, check what's valid"
-	checkBinaryValid
-	echo "check what's new"
-	checkNewPort
-	list_diff
-	exit 0
-fi
-
-if [ ! -d "$PORT_BASE/$1" ]; then
-	echo "I dont know the port $1"
+		esac
+		shift
+	done
+}
+check_tools () {
+	if ! (`which rsync > /dev/null`); then
+		echo "'rsync' not available"
+		exit 1
+	fi
+	if ! (`which git > /dev/null`); then
+		echo "'git' not available"
+		exit 1
+	fi
+}
+check_location () {
+if [ ! -d .git ] && [ ! -d scripts ]; then
+	echo "Make shure you are at the root of the git"
+	echo "Your are in: $GIT"
 	exit 1
 fi
+}
+check_user () {
+if [ "$UID" == "0" ] && [ -O scripts ] ; then
+	echo "your are 'root' account
+Means you are not suppose to 'git pull' this git project"
+	usage
+	echo "I quit for now
 
-rsync -avu --exclude '.*.swp'  --exclude '*~'  --delete-after ${PORT_BASE}/$1/ \
-${BINARY_BASE}/$1/
+"
+	exit 1
+fi
+}
+get_binary_directory() {
+	local DIR
+	DIR=`cards config|grep Directory| cut -d " " -f3|grep ${COLLECTION}$|sed "s/\/${COLLECTION}$//"|head -1`
+	if [ ! -z ${DIR} ]; then
+		BINARY_DIR=${DIR}
+	else
+		BINARY_DIR=${RSYNC_NUTYX_VERSION}
+	fi
+}
+check_config_file () {
+	get_binary_directory
+	if [ ! -f /etc/cards.conf.d/$COLLECTION.conf ] ; then
+		echo "Create $COLLECTION.conf file"
+		[ ! -d /etc/cards.conf.d ] && mkdir -p /etc/cards.conf.d
+		echo "PORT_BASE=$GIT/$COLLECTION
+BINARY_BASE=${BINARY_DIR}/$COLLECTION" > /etc/cards.conf.d/$COLLECTION.conf
+	fi
 
-chown -R 0:0 ${BINARY_BASE}/$1/
+	. /etc/cards.conf.d/$COLLECTION.conf || exit 1
 
-cards create -r $1
+	[ ! -d $BINARY_BASE ] && mkdir -p $BINARY_BASE
+
+}
+sync_binaries () {
+	local ARCH
+	ARCH=`uname -m`
+	check_tools
+	check_config_file
+	check_collection_exist
+	rsync -av --delete ${RSYNC_SERVER}${RSYNC_NUTYX_VERSION}/${ARCH}/$COLLECTION/ \
+	$BINARY_BASE/
+}
+
+main() {
+	parse_options "$@"
+	check_tools
+	check_location
+	check_user
+	check_config_file
+	check_collection_exist
+	if [ $# -lt 1 ]; then
+#		check_Binaries
+#		check_ports
+#		check_diff
+		print_help
+		usage
+		exit 0
+	fi
+	rsync -av --exclude '.*.swp'  --exclude '*~' \
+	--delete-after ${PORT_BASE}/$1/ \
+	${BINARY_BASE}/$1/
+
+	chown -R 0:0 ${BINARY_BASE}/$1/
+
+	cards create -r $1
+
+}
+RSYNC_SERVER="rsync://downloads.nutyx.org/nutyx"
+RSYNC_NUTYX_VERSION="/houaphan"
+COLLECTION="`basename $0`"
+GIT=`pwd`
+PROJECT="`basename $GIT`"
+
+main "$@"
