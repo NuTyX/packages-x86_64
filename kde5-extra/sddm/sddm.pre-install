@@ -1,0 +1,10 @@
+if ! getent group sddm > /dev/null; then
+   groupadd -g 64 --system sddm
+fi
+if ! getent passwd sddm > /dev/null; then
+   useradd -c "Simple Desktop Display Manager" --system -d /var/lib/sddm -s /usr/bin/nologin -u 64 -g sddm sddm
+   passwd -l sddm > /dev/null
+fi
+
+mkdir -p var/lib/sddm
+chown -R sddm:sddm var/lib/sddm > /dev/null
