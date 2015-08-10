@@ -111,6 +111,13 @@ check_diff()
 	for binary_package in `cat $binaries_list | gawk '{ print $1 }'`; do
 		binary_package_version=`cat $binaries_list | grep "^$binary_package " | gawk '{ print $2 }'| cut -d "-" -f1`
 		binary_package_release=`cat $binaries_list | grep "^$binary_package " | gawk '{ print $2 }'| cut -d "-" -f2`
+		if [ "$binary_package_version" == "" ]; then
+			base_binary_package=`echo $binary_package | cut -d "-" -f1`
+			if [ "$base_binary_package" != "$binary_package" ]; then
+				binary_package_version=`cat $binaries_list | grep "^$base_binary_package " | gawk '{ print $2 }'| cut -d "-" -f1`
+				binary_package_release=`cat $binaries_list | grep "^$base_binary_package " | gawk '{ print $2 }'| cut -d "-" -f2`
+			fi
+		fi
 		binary_version=`echo $binary_package_version-$binary_package_release`
 		package=$binary_package
 		if [ -f $PORT_BASE/$package/Pkgfile ]; then
