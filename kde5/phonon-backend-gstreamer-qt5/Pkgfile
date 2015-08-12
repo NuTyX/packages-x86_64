@@ -1,18 +1,22 @@
 # Description : phonon-backend-gstreamer plugin audio for KDE
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: phonon-qt5 gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad gstreamer-plugins-ugly gstreamer-plugins-ffmpeg libxml2 
+# Depends on: phonon-qt5 gstreamer gstreamer-plugins-base libxml2 pulseaudio
 name=phonon-backend-gstreamer-qt5
-release=3
+release=5
 version=4.8.2
 _name=phonon-backend-gstreamer
 source=( http://download.kde.org/stable/phonon/${_name}/$version/src/${_name}-$version.tar.xz)
 
 build() {
-source /usr/bin/setqt5
+
+bash /usr/bin/setqt5 
+
 cd ${_name}-$version
+
 mkdir build
-cd build
+cd    build
+
 cmake -DCMAKE_INSTALL_PREFIX=/usr    \
       -DCMAKE_INSTALL_LIBDIR=lib     \
       -DCMAKE_BUILD_TYPE=Release     \
