@@ -1,23 +1,21 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: cmake qt5
+# Depends on: cmake kf5-extra-cmake-modules qt5 kf5-kwidgetsaddons kf5-kwallet kf5-kconfig kf5-kdoctools
 
 _name=ksshaskpass
 release=2
 
 build() {
-cd ${_name}-$version
+
 mkdir build
 cd    build
-cmake -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_SKIP_RPATH=ON \
-      -DCMAKE_INSTALL_PREFIX=/usr \
-      -DPHONON_INSTALL_QT_EXTENSIONS_INTO_SYSTEM_QT=ON \
-      -DPHONON_BUILD_PHONON4QT5=ON \
-      -D__KDE_HAVE_GCC_VISIBILITY=NO \
-      -DCMAKE_INSTALL_LIBDIR=lib \
-       -Wno-dev ..
+
+cmake ../ksshaskpass-$version       \
+  -DCMAKE_BUILD_TYPE=Release        \
+  -DCMAKE_INSTALL_PREFIX=/usr       \
+  -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+  -DBUILD_TESTING=OFF
 make
 make DESTDIR=$PKG install
 }
