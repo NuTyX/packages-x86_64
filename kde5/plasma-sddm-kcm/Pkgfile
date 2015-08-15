@@ -3,23 +3,20 @@
 # Packager: pierre at nutyx dot org
 # Depends on: qt5 kf5-extra-cmake-modules kf5-kcoreaddons kf5-ki18n kf5-kxmlgui kf5-kconfigwidgets kf5-kio
 
-name=sddm-kcm
+_name=sddm-kcm
 release=1
-groupe=plasma
-
 
 build() {
 source /usr/bin/setqt5
-cd $name-$version
+cd ${_name}-$version
 mkdir build
 cd    build
 cmake -DCMAKE_BUILD_TYPE=Release        \
       -DCMAKE_INSTALL_PREFIX=/usr       \
       -DLIB_INSTALL_DIR=lib             \
-      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
       -DSYSCONF_INSTALL_DIR=/etc        \
       -DBUILD_TESTING=OFF               \
-      -Wno-dev ..
+      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
 make
 make DESTDIR=$PKG install
 }
