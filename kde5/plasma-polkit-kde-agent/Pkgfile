@@ -5,7 +5,7 @@
 
 _name=polkit-kde-agent
 release=2
-source=(http://download.kde.org/stable/plasma/${version}/${_name}-1-$version.tar.xz)
+source=(http://download.kde.org/unstable/plasma/${version}/${_name}-1-$version.tar.xz)
 
 build() {
 cd ${_name}-1-$version
@@ -15,7 +15,7 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DCMAKE_BUILD_TYPE=Release              \
       -DLIB_INSTALL_DIR=lib                   \
       -DBUILD_TESTING=OFF                     \
-      -Wno-dev ..
+      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
 make
 make DESTDIR=$PKG install
 }
