@@ -14,8 +14,8 @@ cd    build
 cmake ../ksshaskpass-$version       \
   -DCMAKE_BUILD_TYPE=Release        \
   -DCMAKE_INSTALL_PREFIX=/usr       \
-  -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
-  -DBUILD_TESTING=OFF
+  -DBUILD_TESTING=OFF               \
+  -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON
 make
 make DESTDIR=$PKG install
 }
