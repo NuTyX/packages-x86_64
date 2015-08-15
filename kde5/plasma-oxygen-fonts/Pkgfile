@@ -13,7 +13,7 @@ cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr                                \
       -DLIB_INSTALL_DIR=lib                                      \
       -DOXYGEN_FONT_INSTALL_DIR=/usr/share/fonts/truetype/oxygen \
-      -Wno-dev ..
+      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
 make
 make DESTDIR=$PKG install
 }
