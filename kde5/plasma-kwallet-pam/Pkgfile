@@ -1,0 +1,22 @@
+# Description : Parts of framework 5
+# URL: https://www.kde.org/
+# Packager: pierre at nutyx dot org
+# Depends on: kf5-kwallet 
+
+_name=kwallet-pam
+release=1
+
+build() {
+cd ${_name}-$version
+mkdir build
+cd    build
+cmake -DCMAKE_BUILD_TYPE=Release        \
+      -DCMAKE_INSTALL_PREFIX=/usr       \
+      -DLIB_INSTALL_DIR=lib             \
+      -DSYSCONF_INSTALL_DIR=/etc        \
+      -DBUILD_TESTING=OFF               \
+      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
+
+make
+make DESTDIR=$PKG install
+}
