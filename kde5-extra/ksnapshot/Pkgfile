@@ -4,19 +4,20 @@
 # Depends on: kde-runtime
 
 name=ksnapshot
-version=15.07.80
+version=15.04.3
 release=2
 
-source=(http://download.kde.org/unstable/applications/$version/src/$name-$version.tar.xz )
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz )
 
 build() {
 cd $name-$version
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=/usr \
-      -DSYSCONF_INSTALL_DIR=/etc/kde   \
-      -DCMAKE_BUILD_TYPE=Release       \
-      -DWITH_ActiveApp=OFF             \
+cmake -DCMAKE_INSTALL_PREFIX=/usr       \
+      -DSYSCONF_INSTALL_DIR=/etc/kde    \
+      -DCMAKE_BUILD_TYPE=Release        \
+      -DWITH_ActiveApp=OFF              \
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
