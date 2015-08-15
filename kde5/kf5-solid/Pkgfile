@@ -6,14 +6,17 @@ _name=solid
 release=4
 source=(http://download.kde.org/stable/frameworks/${version%.*}/${_name}-$version.tar.xz)
 build() {
+cd ${_name}-$version
 mkdir build
 cd    build
-cmake ../${_name}-${version}           \
-    -DCMAKE_BUILD_TYPE=Release        \
-    -DCMAKE_INSTALL_PREFIX=/usr       \
-    -DLIB_INSTALL_DIR=lib             \
-    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
-    -DBUILD_TESTING=OFF
+cmake -DCMAKE_INSTALL_PREFIX=/usr             \
+      -DCMAKE_BUILD_TYPE=Release              \
+      -DLIB_INSTALL_DIR=lib                   \
+      -DBUILD_TESTING=OFF                     \
+      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
+      -DQML_INSTALL_DIR=lib/qt5/qml           \
+      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
+
 make
 make DESTDIR=$PKG install
 }
