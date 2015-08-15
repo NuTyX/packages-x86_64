@@ -5,13 +5,11 @@
 
 _name=bluedevil
 release=2
-source=(http://download.kde.org/stable/plasma/${version}/${_name}-$version.tar.xz
-        http://www.linuxfromscratch.org/patches/blfs/systemd/bluedevil-5.3.1-bluezqt_api_changes-1.patch)
+source=(http://download.kde.org/unstable/plasma/${version}/${_name}-$version.tar.xz)
 
 build() {
 cd ${_name}-$version
 
-patch -Np1 -i ../bluedevil-5.3.1-bluezqt_api_changes-1.patch
 
 mkdir build
 cd    build
@@ -21,7 +19,7 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DBUILD_TESTING=OFF                     \
       -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
       -DQML_INSTALL_DIR=lib/qt5/qml           \
-      -Wno-dev ..
+      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
 make
 make DESTDIR=$PKG install
 }
