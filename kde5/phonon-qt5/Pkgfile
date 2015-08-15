@@ -7,26 +7,25 @@ name=phonon-qt5
 release=3
 version=4.8.3
 _name=phonon
-source=(http://download.kde.org/stable/${_name}/$version/src/${_name}-$version.tar.xz)
+source=(http://download.kde.org/stable/${_name}/$version/src/${_name}-$version.tar.xz
+       phonon-qt5-qt-5.4.2.patch)
 
 build() {
 
 bash  /usr/bin/setqt5
-
-cd ${_name}-$version
-
-sed -i "s:BSD_SOURCE:DEFAULT_SOURCE:g" cmake/FindPhononInternal.cmake
-
-mkdir build 
-cd    build
-
-cmake -DCMAKE_INSTALL_PREFIX=/usr    \
-      -DCMAKE_BUILD_TYPE=Release     \
-      -DCMAKE_INSTALL_LIBDIR=lib     \
-      -DPHONON_BUILD_PHONON4QT5=ON   \
-      -D__KDE_HAVE_GCC_VISIBILITY=NO \
-      -Wno-dev .. 
-
+mkdir build
+cd phonon-$version
+patch -p1 -i ../phonon-qt5-qt-5.4.2.patch
+cd    ../build
+cmake ../phonon-$version           \
+    -DCMAKE_BUILD_TYPE=Release     \
+    -DCMAKE_SKIP_RPATH=ON          \
+    -DCMAKE_INSTALL_PREFIX=/usr    \
+    -DPHONON_INSTALL_QT_EXTENSIONS_INTO_SYSTEM_QT=ON \
+    -DPHONON_BUILD_PHONON4QT5=ON   \
+    -D__KDE_HAVE_GCC_VISIBILITY=NO \
+    -DCMAKE_INSTALL_LIBDIR=lib     \
+    -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON
 make
 make DESTDIR=$PKG install
 }
