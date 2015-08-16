@@ -1,0 +1,18 @@
+# Description : Symas Lightning Memory-Mapped Database
+# URL : http://symas.com/mdb
+# Packager : pierre at nutyx dot org
+# Depends on : git
+
+name=lmdb
+version=0.9.16
+release=1
+
+source=()
+
+build() {
+git clone git://github.com/LMDB/lmdb.git
+cd lmdb/libraries/liblmdb
+make prefix=/usr
+install -dm755 $PKG/usr/{bin,lib,include,man/man1,share}
+make DESTDIR=$PKG prefix=/usr install
+}
