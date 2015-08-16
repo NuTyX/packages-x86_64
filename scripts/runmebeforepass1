@@ -1,4 +1,5 @@
 version="houaphan"
+URL="http://downloads.nutyx.org/"
 echo "Ce script vérifie tout ce qu'il peut pour que vous puissiez commencez"
 echo ""
 echo "Pressez Entrer pour continuer ou ctrl+c pour interrompre"
@@ -99,24 +100,23 @@ if [ ! -L /home/lfs/config ];then
 fi
 echo "link /home/lfs/config: OK"
 
-[ -f $LFS/sources/md5sums ] && rm $LFS/sources/md5sums
+[ -f $LFS/sources/.md5sums ] && rm $LFS/sources/.md5sums
 
-for i in `cat scripts/wget_nutyx_list`
+for i in `cat scripts/wget_nutyx_list|grep -v ^#|sed "s@  @|@"`
 do
-	URL=`echo $i|cut -d "|" -f2`
-	FILE=`basename $URL`
+	FILE=`echo $i|cut -d "|" -f2`
 	MD5SUM=`echo $i|cut -d "|" -f1`
 	if [ ! -f $LFS/sources/$FILE ]; then
-		wget --no-check-certificate $URL -P $LFS/sources
+		wget --no-check-certificate $URL/$version/sources/$FILE -P $LFS/sources
 	fi
 	if [ "$MD5SUM" != "skip" ]; then
-		echo "$MD5SUM  $FILE" >> $LFS/sources/md5sums
+		echo "$MD5SUM  $FILE" >> $LFS/sources/.md5sums
 	fi
 done
-if [ -f $LFS/sources/md5sums ]; then
-	pushd  $LFS/sources
-	md5sum -c md5sums || exit 1
-	popd
+if [ -f $LFS/sources/.md5sums ]; then
+	cd  $LFS/sources
+	md5sum -c .md5sums || exit 1
+	cd -
 else
 	echo "$LFS/sources/md5sums pas trouvé, impossible de vérifier les sources"
 	exit 1

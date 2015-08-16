@@ -40,6 +40,8 @@ print_help()
 {
 	echo "usage: $COLLECTION [option]"
 	echo "options:"
+	echo "  -a,   --all                 will build all the ports of the '$COLLECTION' collection in the right order"
+	echo "  -l,   --list                will list all the ports of the '$COLLECTION' collection in the right order"
 	echo "  -cp,  --check-ports         check if new ports are available"
 	echo "  -cb,  --check-binaries      check if binaries are uptodate"
 	echo "  -cd,  --check-diff          check if binaries are different then the ports"
@@ -89,11 +91,14 @@ check_ports()
 		if [ ! -d ${BINARY_BASE}/$DIR ] || [ ! -f ${BINARY_BASE}/$DIR/Pkgfile ]; then
 			echo "'$DIR' should be added"
 			rsync -av --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/
+		else
+			rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/
 		fi
 		if [ ! -f ${BINARY_BASE}/$DIR/.PKGREPO ];then
 			echo "$DIR should be build"
 		fi
 	done
+	cd -
 }
 check_diff()
 {
@@ -162,6 +167,16 @@ check_collection_exist() {
 parse_options() {
 	while [ "$1" ]; do
 		case $1 in
+			-l|--list)
+				check_ports
+				list_binaries
+				exit 0
+				;;
+			-a|-all)
+				check_ports
+				build_binaries
+				exit 0
+				;;
 			-cp|--check-ports)
 				check_ports
 				exit 0
@@ -251,7 +266,15 @@ sync_binaries () {
 	rsync -av --delete ${RSYNC_SERVER}${RSYNC_NUTYX_VERSION}/${ARCH}/$COLLECTION/ \
 	$BINARY_BASE/
 }
-
+build_binaries () {
+	for i in `cards level -I |grep ${BINARY_BASE}|cut -d " " -f2`
+	do
+		bash scripts/$COLLECTION `basename $i`|| exit 1
+	done
+}
+list_binaries () {
+	cards level -I |grep ${BINARY_BASE}
+}
 main() {
 	parse_options "$@"
 	check_tools
