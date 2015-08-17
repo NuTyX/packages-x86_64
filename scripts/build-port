@@ -42,6 +42,7 @@ print_help()
 	echo "options:"
 	echo "  -a,   --all                 will build all the ports of the '$COLLECTION' collection in the right order"
 	echo "  -l,   --list                will list all the ports of the '$COLLECTION' collection in the right order"
+	echo "  -ru,  --remove-url          remove the URL part in /etc/cards.conf file for the '$COLLECTION' collection"
 	echo "  -cp,  --check-ports         check if new ports are available"
 	echo "  -cb,  --check-binaries      check if binaries are uptodate"
 	echo "  -cd,  --check-diff          check if binaries are different then the ports"
@@ -74,6 +75,7 @@ check_binaries()
 			fi
 		fi
 	done
+	cd - > /dev/null
 }
 check_ports()
 {
@@ -98,7 +100,7 @@ check_ports()
 			echo "$DIR should be build"
 		fi
 	done
-	cd -
+	cd - > /dev/null
 }
 check_diff()
 {
@@ -174,6 +176,7 @@ parse_options() {
 				;;
 			-a|-all)
 				check_ports
+				check_binaries
 				build_binaries
 				exit 0
 				;;
@@ -187,6 +190,11 @@ parse_options() {
 				;;
 			-cd|--check-diff)
 				check_diff
+				exit 0
+				;;
+			-ru|--remove-url)
+				check_config_file
+				remove_url
 				exit 0
 				;;
 			-s|--sync)
@@ -263,8 +271,16 @@ sync_binaries () {
 	check_tools
 	check_config_file
 	check_collection_exist
+	remove_url
 	rsync -av --delete ${RSYNC_SERVER}${RSYNC_NUTYX_VERSION}/${ARCH}/$COLLECTION/ \
 	$BINARY_BASE/
+}
+remove_url () {
+	local URL
+	URL="`cat /etc/cards.conf|grep \"^dir ${BINARY_BASE}|\"| cut -d '|' -s -f2`"
+	if [ ! -z "$URL" ]; then
+		sed -i "s@${BINARY_BASE}|${URL}@${BINARY_BASE}@" /etc/cards.conf
+	fi
 }
 build_binaries () {
 	for i in `cards level -I |grep ${BINARY_BASE}|cut -d " " -f2`
