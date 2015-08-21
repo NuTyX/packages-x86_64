@@ -13,7 +13,7 @@ cmake ../${_name}-${version}      \
       -DCMAKE_BUILD_TYPE=Release  \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DBUILD_TESTING=OFF         \
-      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON
+      -Wno-dev
 make
 make DESTDIR=$PKG install
 }
