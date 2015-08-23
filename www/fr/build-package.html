@@ -51,8 +51,8 @@
     <ol>
      <li><a href="#21">Scénario <b>A</b></a>: Je ne veux rien compiler, les binaires disponibles me suffisent<img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />. Cela peut vous paraître absurde d'en parler ici, mais comme vous êtes très interessés par le sujet, sachez que ce scénario vous permet de garder votre distribution favorite la plus légère possible.</li>
      <li><a href="#22">Scénario <b>B</b></a>: Les binaires disponibles ne me suffisent pas, je voudrais ajouter un ou deux paquets.</li>
-     <li><a href="#23">Scénario <b>C</b></a>: Je ne souhaite pas installer les binaires des collections <b>console</b> et <b>desktop</b>. Je les compile moi-même. </li>
-     <li><a href="#24">Scénario <b>D</b></a>: Je souhaite utiliser les binaires disponibles des collections <b>console</b> et <b>desktop</b>. Je souhaite que mes ports personnels utilisent les dépendances provenant des binaires déjà disponibles. Seul mes ports personnels doivent être compilés.</li>
+     <li><a href="#23">Scénario <b>C</b></a>: Je ne souhaite pas installer les binaires des collections <b>console</b> et <b>graphic</b>. Je les compile moi-même. </li>
+     <li><a href="#24">Scénario <b>D</b></a>: Je souhaite utiliser les binaires disponibles des collections <b>console</b> et <b>graphic</b>. Je souhaite que mes ports personnels utilisent les dépendances provenant des binaires déjà disponibles. Seul mes ports personnels doivent être compilés.</li>
      <li><a href="#25">Scénario <b>E</b></a>: Je souhaite construire mes recettes dans un environnement isolé et garder ma distribution intacte et vierge de tout paquets de développement. Mes paquets produits dans mon environnement isolé pourront être installés dans ma NuTyX principale.</li>
     </ol>
   <a name='2'></a>
@@ -67,20 +67,24 @@
     <a name='212'></a>
     <h4>Le fichier /etc/cards.conf</h4>
      <p>Les collections binaires sont activées</p>
-     <p>L'arch de la machine est vérfiée</p>
      <p>La(les) langue(s) utilisée(s) sur la machine est ajustée(s)</p>
-     <p>Le dossier définissant le système de base, en cas de retour à un système de base est défini</p>
+     <p>Les dossiers définissant le système de base, en cas de retour à un système de base sont définis</p>
      <p>Le contenu typique de votre fichier <b>/etc/cards.conf</b>:</p>
      <pre class="output">
-dir /var/lib/pkg/saravane/desktop|http://downloads.nutyx.org/saravane/x86_64/desktop
-dir /var/lib/pkg/saravane/console|http://downloads.nutyx.org/saravane/x86_64/console
-dir /var/lib/pkg/saravane/base|http://downloads.nutyx.org/saravane/x86_64/base
-arch x86_64
+
+dir /var/lib/pkg/depotrepo/graphic|http://downloads.nutyx.org
+dir /var/lib/pkg/depotrepo/graphic-extra|http://downloads.nutyx.org
+dir /var/lib/pkg/depotrepo/console|http://downloads.nutyx.org
+dir /var/lib/pkg/depotrepo/console-extra|http://downloads.nutyx.org
+dir /var/lib/pkg/depotrepo/base|http://downloads.nutyx.org
+dir /var/lib/pkg/depotrepo/base-extra|http://downloads.nutyx.org
 locale fr
 locale de
-base /var/lib/pkg/saravane/base</pre>
-     <p>Les trois collections standards <b>base</b>, <b>console</b> et <b>desktop</b> sont activées. La machine est une 64 bits <b>x86_64</b>. Les langues qui doivent être installées sont le français <b>fr</b> et l'allemand <b>de</b>. Le dossier contenant les paquets de base est celui de la collection standard <b>base</b>.</p>
-     <pre class="output">base /var/lib/pkg/saravane/base</b></pre>
+base /var/lib/pkg/depotrepo/base
+base /var/lib/pkg/depotrepo/base-extra</pre>
+     <p>Les six collections standards <b>base</b>, <b>console</b> et <b>graphic</b> sont activées. Les langues qui doivent être installées sont le français <b>fr</b> et l'allemand <b>de</b>. Les dossiers contenant les paquets de base snt ceux des collections standard <b>base</b> et <b>base-extra</b>.</p>
+     <pre class="output">base /var/lib/pkg/depotrepo/base
+base /var/lib/pkg/depotrepo/base-extra</b></pre>
     <a name='213'></a>
     <h4>Le fichier /etc/pkgmk.conf</h4>
      <p>Pour le scénario <b>A</b>, le fichier <b>/etc/pkgmk.conf</b> n'est pas présent puisque vous ne devez rien compiler. Les outils de développement ne sont pas présents.</p>
@@ -104,35 +108,34 @@ base /var/lib/pkg/saravane/base</pre>
      <h4>Le fichier /etc/cards.conf</h4>
       <p>Un dossier contenant mes recettes personnelles est ajouté, ce dossier ne <u> doit jamais</u> être mis à jour par la commande <b>cards sync</b>, donc on ne doit pas spécifier d'adresse URL associées.</p>
       <p>Les collections binaires sont activées, cela me permettra d'ajouter facilement les éventuelles dépendances manquantes...</p>
-      <p>L'arch de la machine est vérfiée, nous sommes en 64 bits.</p>
       <p>La(les) langue(s) utilisée(s) sur la machine est ajustée(s)</p>
       <p>Le dossier définissant le système de base, en cas de retour à un système de base est défini</p>
       <p>Le contenu typique de votre fichier <b>/etc/cards.conf</b> pour le scénario <b>B</b>:</p>
       <pre class="output">
 dir /usr/ports/personnel
-dir /var/lib/pkg/saravane/desktop|http://downloads.nutyx.org/saravane/x86_64/desktop
-dir /var/lib/pkg/saravane/console|http://downloads.nutyx.org/saravane/x86_64/console
-dir /var/lib/pkg/saravane/base|http://downloads.nutyx.org/saravane/x86_64/base
-arch x86_64
+dir /var/lib/pkg/depotrepo/graphic|http://downloads.nutyx.org
+dir /var/lib/pkg/depotrepo/console|http://downloads.nutyx.org
+dir /var/lib/pkg/depotrepo/base|http://downloads.nutyx.org
 locale fr
 locale de
-base /var/lib/pkg/saravane/base</pre>
+base /var/lib/pkg/depotrepo/base
+base /var/lib/pkg/depotrepo/base-extra</pre>
      <a name='223'></a>
      <h4>Installation des outils de développement</h4>
       <p>On peut maintenant commencer par installer les paquets de développement, cad un compilateur, les librairies C et C++ les outils autoconf, automake, etc etc.. Commençons par créer le dossier <b>/usr/ports/personnel</b>.</p>
       <pre class="command_user"><kbd>sudo mkdir -p /usr/ports/personnel</kbd></pre>
       <p>Et maintenant on installe les outils:</p>
       <pre class="command_user"><kbd>sudo cards sync</kbd></pre>
-      <pre class="output">/var/lib/pkg/saravane/desktop/.PKGREPO
-/var/lib/pkg/saravane/console/.PKGREPO
-/var/lib/pkg/saravane/base/.PKGREPO</pre>
+      <pre class="output">/var/lib/pkg/depotrepo/graphic/.PKGREPO
+/var/lib/pkg/depotrepo/console/.PKGREPO
+/var/lib/pkg/depotrepo/base/.PKGREPO</pre>
       <pre class="command_user"><kbd>sudo cards install cards.devel</kbd></pre>
       <pre class="output">Retrieve info about the 66 packages: 100 %
-/var/lib/pkg/saravane/base/cards/.PKGREPO
-/var/lib/pkg/saravane/base/cards/cards.devel1429192050x86_64.cards.tar.xz
+/var/lib/pkg/depotrepo/base/cards/.PKGREPO
+/var/lib/pkg/depotrepo/base/cards/cards.devel1429192050x86_64.cards.tar.xz
 661020 Bytes - 671821 Bytes/Sec - 100% - 0 Sec remain  remain 
-/var/lib/pkg/saravane/base/acl/.PKGREPO
-/var/lib/pkg/saravane/base/acl/acl.devel1412540285x86_64.cards.tar.xz
+/var/lib/pkg/depotrepo/base/acl/.PKGREPO
+/var/lib/pkg/depotrepo/base/acl/acl.devel1412540285x86_64.cards.tar.xz
 ...</pre>
      <a name='224'></a>
      <h4>Le fichier /etc/pkgmk.conf</h4>
@@ -201,22 +204,22 @@ pkgadd</kbd></pre>
      <h4>Le fichier /etc/cards.conf</h4>
       <p>Un dossier contenant mes recettes personnelles est ajouté, ce dossier ainsi que les collections ne <u>doivent jamais</u> être mis à jour par la commande <b>cards sync</b>, donc on ne spécifie aucune adresse URL.</p>
       <p>Seule la collection <b>base</b> doit rester active afin de pouvoir installer les outils de développement.</p>
-      <p>L'arch de la machine est vérfiée, nous sommes en 32 bits.</p>
+      <p>Mon processeur est un 4 coeurs, donc autant en profiter:</p>
       <p>Le dossier contenant les logs de compilation est défini</p>
       <p>Les dossiers définissant le système de base, en cas de retour à un système de base sont définis</p>
       <p>Le contenu typique de votre fichier <b>/etc/cards.conf</b> pour le scénario <b>C</b>:</p>
       <pre class="output">
 dir /usr/ports/personnel
 dir /usr/ports/gnome
-dir /usr/ports/desktop
+dir /usr/ports/graphic
 dir /usr/ports/console
 dir /usr/ports/base
-dir /var/lib/pkg/saravane/base|http://downloads.nutyx.org/saravane/i686/base
-arch i686
+dir /var/lib/pkg/depotrepo/base|http://downloads.nutyx.org
 logdir /var/log/pkgbuild
 locale fr
 locale it
 base /usr/ports/base
+base /usr/ports/base-extra
 base /usr/ports/aconserver</pre>
      <a name='233'></a>
      <h4>Installation des outils de développement</h4>
@@ -225,21 +228,20 @@ base /usr/ports/aconserver</pre>
 sudo mkdir -p /srv/www/sources</kbd></pre>
       <p>Et maintenant on installe les outils</p>
       <pre class="command_user"><kbd>sudo cards sync</kbd></pre>
-      <pre class="output">/var/lib/pkg/saravane/base/.PKGREPO</pre>
+      <pre class="output">/var/lib/pkg/depotrepo/base/.PKGREPO</pre>
       <pre class="command_user"><kbd>sudo cards install cards.devel</kbd></pre>
       <pre class="output">Retrieve info about the 66 packages: 100 %
-/var/lib/pkg/saravane/base/cards/.PKGREPO
-/var/lib/pkg/saravane/base/cards/cards.devel1429192050x86_64.cards.tar.xz
+/var/lib/pkg/depotrepo/base/cards/.PKGREPO
+/var/lib/pkg/depotrepo/base/cards/cards.devel1429192050x86_64.cards.tar.xz
 661020 Bytes - 671821 Bytes/Sec - 100% - 0 Sec remain  remain 
-/var/lib/pkg/saravane/base/acl/.PKGREPO
-/var/lib/pkg/saravane/base/acl/acl.devel1412540285x86_64.cards.tar.xz
+/var/lib/pkg/depotrepo/base/acl/.PKGREPO
+/var/lib/pkg/depotrepo/base/acl/acl.devel1412540285x86_64.cards.tar.xz
 ...</pre>
       <pre class="command_user"><kbd>sudo cards install rsync
 sudo cards install ports</kbd></pre>
      <a name='234'></a>
      <h4>Le fichier /etc/pkgmk.conf</h4>
       <p>Pour ce scénario, il est indispensable de vérifier toutes les variables necessaires pour le bon fonctionnement du duo <b> pkgmk/cards</b></p>
-      <p>Mon processeur est un 4 coeurs mais je suis sur une NuTyX 32 bits.</p>
       <pre class="output">export MAKEFLAGS="-j4"</pre>
       <p>Les sources sont stockées dans un dossier commun, je ne souhaite pas qu'elles soient effacées. Je souhaite que le dossier de travail reste dans le dossier du port, cela me permettra eventuellement de compiler plusieurs ports sans perdre le travail. C'est très utile pour vérifier.</p>
       <pre class="output">PKGMK_SOURCE_DIR="/srv/www/sources"
@@ -286,17 +288,10 @@ PKGMK_CLEAN="no"</pre>
      <a name='235'></a>
      <h4>Conclusion</h4>
       <p>On peut maintenant récupérer les ports disponibles de NuTyX:</p>
-      <pre class="command_user"><kbd>sudo ports -u</kbd></pre>
-      <pre class="output">Updating file list from downloads.nutyx.org::nutyx/ports/saravane/base/
-Updating collection base
- Checkout ./
- Checkout aaabasicfs/
- Checkout aaabasicfs/Pkgfile
-...</pre>
+      <pre class="command_user"><kbd>cd /usr/ports
+git clone git://github.com/NuTyX/houaphan.git</kbd></pre>
       <p><a href="#5">On verra plus tard, comment créer, compiler et installer une ensemble de paquets</a>. Pour ce scénario, les commandes à retenir sont:</p>
-      <pre class="command"><kbd>ports -u
-ports -d
-cards depends
+      <pre class="command"><kbd>cards depends
 cards depcreate
 cards level</kbd></pre>
     <a name='24'></a>
@@ -307,21 +302,21 @@ cards level</kbd></pre>
      <a name='242'></a>
      <h4>Le fichier /etc/cards.conf</h4>
       <p>Un dossier contenant mes recettes personnelles est ajouté, ce dossier ainsi que les collections ne <u>doivent jamais</u> être mis à jour par la commande <b>cards sync</b>. On ne spécifie aucune URL.</p>
-      <p>Seule la collection <b>base</b> doit rester active le temps de récupérer la commande <b>rsync</b> si pas encore installée.</p>
-      <p>L'arch de la machine est vérfiée, nous sommes en 64 bits.</p>
+      <p>Seule la collection <b>base-extra</b> doit rester active le temps de récupérer la commande <b>rsync</b> si pas encore installée.</p>
       <p>Le dossier contenant les logs de compilation est défini</p>
+      <p>Mon processeur est un 64 bit (x86_64). Important pour le serveur.</p>
       <p>Je n'ai pas besoin de spécifier les locales, elles seront toujours toutes installées</p>
       <p>Les dossiers définissant le système de base, en cas de retour à un système de base sont définis</p>
       <p>Le contenu typique de votre fichier <b>/etc/cards.conf</b> pour le scénario <b>D</b>:</p>
-      <pre class="output">dir /srv/www/saravane/personnel
-dir /srv/www/saravane/x86_64/desktop
-dir /srv/www/saravane/x86_64/console
-dir /srv/www/saravane/x86_64/base
-dir /var/lib/pkg/saravane/base|http://downloads.nutyx.org/saravane/x86_64/base
-arch x86_64
+      <pre class="output">dir /srv/www/houaphan/x86_64/personnel
+dir /srv/www/houaphan/x86_64/graphic
+dir /srv/www/houaphan/x86_64/console
+dir /srv/www/houaphan/x86_64/base
+dir /var/lib/pkg/depotrepo/base-extra|http://downloads.nutyx.org
 logdir /var/log/pkgbuild
-base /srv/www/saravane/x86_64/base
-base /srv/www/saravane/aconserver</pre>
+base /srv/www/houaphan/x86_64/base
+base /srv/www/houaphan/x86_64/base-extra
+base /srv/www/houaphan/x86_64/aconserver</pre>
      <a name='243'></a>
      <h4>Installation de rsync et suppression du dossier concerné</h4>
       <p>Pour ce scénario, nous allons synchroniser tous les binaires disponible sur le miroir de NuTyX et allons restés "callés" sur la version de ceux-ci.</p>
@@ -330,29 +325,30 @@ base /srv/www/saravane/aconserver</pre>
       <p>On peut maintenant supprimer la ligne pointant sur l'url du miroir de NuTyX pour déactiver définitivement la commande <b>cards sync</b>.</p>
       <p>Le nouveau fichier <b>/etc/cards.conf</b>:</p>
       <pre class="output">dir /srv/www/saravane/personnel
-dir /srv/www/saravane/x86_64/desktop
-dir /srv/www/saravane/x86_64/console
-dir /srv/www/saravane/x86_64/base
-arch x86_64
+dir /srv/www/houaphan/x86_64/graphic
+dir /srv/www/houaphan/x86_64/console
+dir /srv/www/houaphan/x86_64/base
+dir /srv/www/houaphan/x86_64/base-extra
 logdir /var/log/pkgbuild
-base /srv/www/saravane/x86_64/base
-base /srv/www/saravane/aconserver</pre>
+base /srv/www/houaphan/x86_64/base
+base /srv/www/houaphan/x86_64/base-extra
+base /srv/www/houaphan/aconserver</pre>
      <a name='244'></a>
      <h4>Synchronisation des binaires via rsync</h4>
       <p>Cette opération consiste à rapatrier les quelques 11000 paquets disponible en binaires. Elle peut durer entre quelques minutes et quelques heures en fonction de votre connection.</p>
       <p>Heureusement, cette opération n'est longue que la première fois <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" /> <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" /> <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />.</p>
       <p>Notez bien le dossier de destination, j'ai choisi de "déposer" les binaires à la racine du serveur http <img src="../graphics/smiley-tongue-out.gif" alt="Tongue out" title="Tongue out" />. </p>
       <p>Il faut commencer par créer les dossiers</p>
-      <pre class="command_user"><kbd>sudo mkdir -p /srv/www/saravane/{x86_64,personnel,aconserver}</kbd></pre>
+      <pre class="command_user"><kbd>sudo mkdir -p /srv/www/houaphan/x86_64/{personnel,aconserver}</kbd></pre>
       <p>On peut maintenant synchroniser l'ensemble des binaires:</p>
-      <pre class="command_user"><kbd>sudo rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/saravane/x86_64/ \
-/srv/www/saravane/x86_64/</kbd></pre>
+      <pre class="command_user"><kbd>for i in base console graphic; do sudo rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/houaphan/x86_64/$i \
+/srv/www/houaphan/x86_64/$i;done</kbd></pre>
       <p>Allez peut-être boire un café, manger une pizza ou un bon paquet de frites <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />, ça peut-être long...</p>
      <a name='245'></a>
      <h4>Le fichier /etc/pkgmk.conf</h4>
       <p>Pour ce scénario, il est indispensable de vérifier toutes les variables necessaires pour le bon fonctionnement du duo <b>pkgmk/cards</b>.</p>
       <p>Mon processeur est un double coeur et je suis en 64bits.</p>
-      <p>Les sources sont stockées dans un dossier commun, je ne souhaite pas qu'elles soient effacées. Pour ne pas polué ni perdre le travail effectué lors d'un <b>rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/saravane/x86_64/ /srv/www/saravane/x86_64/</b>, je préfère utiliser un dossier de travail temporaire:</p>
+      <p>Les sources sont stockées dans un dossier commun, je ne souhaite pas qu'elles soient effacées. Pour ne pas polué ni perdre le travail effectué lors d'un <b>for i in base console graphic; do sudo  rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/houaphan/x86_64/$i /srv/www/houaphan/x86_64/$i;done</b>, je préfère utiliser un dossier de travail temporaire:</p>
       <pre class="output">PKGMK_SOURCE_DIR="/srv/www/sources"
 PKGMK_KEEP_SOURCES="yes"
 PKGMK_WORK_DIR="/tmp/work"</pre>
@@ -399,8 +395,8 @@ PKGMK_CLEAN="no"</pre>
       <pre class="command"><kbd>cards level
 cards base -r
 cards create
-rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/saravane/x86_64/ \
-/srv/www/saravane/x86_64/</kbd></pre>
+for i in base console graphic;do rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/saravane/x86_64/$i \
+/srv/www/saravane/x86_64/$i;done</kbd></pre>
     <a name='25'></a>
     <h3>Scénario E</h3>
      <a name='251'></a>
@@ -421,12 +417,15 @@ rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/saravane/x86_64/ \
         <u>   *** NuTyX Principale ***   </u>
         <pre class="output">
 dir /chroot/usr/ports/personnel
-dir /var/lib/pkg/saravane/desktop|http://downloads.nutyx.org/saravane/x86_64/desktop
-dir /var/lib/pkg/saravane/console|http://downloads.nutyx.org/saravane/x86_64/console
-dir /var/lib/pkg/saravane/base|http://downloads.nutyx.org/saravane/x86_64/base
-arch x86_64
+dir /var/lib/pkg/depotrepo/graphic|http://downloads.nutyx.org
+dir /var/lib/pkg/depotrepo/graphic-extra|http://downloads.nutyx.org
+dir /var/lib/pkg/depotrepo/console|http://downloads.nutyx.org
+dir /var/lib/pkg/depotrepo/console-extra|http://downloads.nutyx.org
+dir /var/lib/pkg/depotrepo/base|http://downloads.nutyx.org
+dir /var/lib/pkg/depotrepo/base-extra|http://downloads.nutyx.org
 locale fr
-base /var/lib/pkg/saravane/base</pre>
+base /var/lib/pkg/depotrepo/base
+base /var/lib/pkg/depotrepo/base-extra</pre>
         <p>Vous noterez que j'ai volontairement ajouter la ligne:</p>
         <pre class="output">dir /chroot/usr/ports/personnel</pre>
         <p>En effet, on veut pouvoir installer les paquets de la <b>chroot</b> dans la principale</p>
@@ -434,14 +433,15 @@ base /var/lib/pkg/saravane/base</pre>
         <u>   *** NuTyX chroot     *** Scénario C ***  </u>
         <pre class="output">
 dir /usr/ports/personnel
-dir /usr/ports/desktop
+dir /usr/ports/graphic
 dir /usr/ports/console
 dir /usr/ports/base
-dir /var/lib/pkg/saravane/base|http://downloads.nutyx.org/saravane/x86_64/base
-arch x86_64
+dir /var/lib/pkg/depotrepo/base|http://downloads.nutyx.org
+dir /var/lib/pkg/depotrepo/base-extra|http://downloads.nutyx.org
 logdir /var/log/pkgbuild
 locale fr
 base /usr/ports/base
+base /usr/ports/base-extra
 base /usr/ports/aconserver</pre>
      <a name='253'></a>
      <h4>Le fichier /etc/pkgmk.conf</h4>
@@ -607,17 +607,17 @@ build() {
    <p>Elle permet en effet d'éviter de "casser" la NuTyX qu'on utilise tous les jours. Dans un environnement isolé, vous vous assurez de préserver votre NuTyX principale contre toute fausse manoeuvre.</p>
    <p>On appellera désormais notre environnement isolé: <b> chroot</b>.<p>
    <p>On va commencer par récupérer les bon scripts:</p>
-   <pre class="command"><kbd>wget http://downloads.nutyx.org/install-saravane{,.md5sum}
+   <pre class="command"><kbd>wget http://downloads.nutyx.org/install-houaphan{,.md5sum}
 wget http://downloads.nutyx.org/enter-chroot{,.md5sum}
-md5sum -c install-saravane.md5sum</kbd></pre>
-   <pre class="output">install-saravane: Réussi</pre>
+md5sum -c install-houaphan.md5sum</kbd></pre>
+   <pre class="output">install-houaphan: Réussi</pre>
    <pre class="command"><kbd>md5sum -c enter-chroot.md5sum</kbd></pre>
    <pre class="output">enter-chroot: Réussi</pre>
    <p>Nous allons définir une fois pour toute la variable LFS, elle définiera le dossier dans lequel sera installée <b>la chroot</b>:</p>
    <p>Comme je suis un grand original, je vous propose de choisir le dossier ...<b>/chroot</b> comme dossier de destination, la commande est donc:</p>
    <pre class="command"><kbd>export LFS=/chroot</kbd></pre>
    <p>On peut maintenant lancer l'installation sans grosse crainte</p>
-   <pre class="command"><kbd>bash install-saravane</kbd></pre>
+   <pre class="command"><kbd>bash install-houaphan</kbd></pre>
    <p>Et l'installation commence.</p>
    <pre class="output">This installation will be on /chroot                                     [ INFO ]
 *******************************************
@@ -691,7 +691,7 @@ Local Directory: /chroot/usr/ports/personnel</pre>
     <pre class="output">Retrieve info about the 622 packages: 100 %
 ADD: clipit-1.4.2, 71 files: 100 %</pre>
    <hr>
-  <p class="updated">Dernière mise à jour 08-07-2015 21:32</p>
+  <p class="updated">Dernière mise à jour 23-08-2015 13:39</p>
      <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
