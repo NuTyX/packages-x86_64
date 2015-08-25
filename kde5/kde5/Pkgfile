@@ -30,6 +30,9 @@ pathappend $QT5DIR/lib/qt5/qml      QML2_IMPORT_PATH
 # End Qt5 changes for KDE5
 #
 export KF5_PREFIX=/usr
+export XDG_DATA_DIRS=$KF5_PREFIX/share:/usr/share
+export XDG_CONFIG_DIRS=$KF5_PREFIX/etc/xdg:/etc/xdg
+ 
 #
 pathappend /usr/lib/qt5/plugins    QT_PLUGIN_PATH
 pathappend $QT5DIR/lib/qt5/plugins QT_PLUGIN_PATH
