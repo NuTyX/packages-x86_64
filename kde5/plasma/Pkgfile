@@ -1,5 +1,5 @@
 # Packager: pierre at nutyx dot org, fanch at nutyx dot org, tnut at nutyx dot org
-# Depends on: plasma-ksshaskpass plasma-bluedevil plasma-breeze plasma-desktop plasma-kde-cli-tools plasma-kdecoration plasma-kde-gtk-config plasma-kdeplasma-addons kf5-kfilemetadata plasma-khelpcenter plasma-khotkeys plasma-kinfocenter  plasma-kmenuedit plasma-kscreen plasma-ksysguard plasma-kwayland plasma-kwin plasma-kwrited plasma-libkscreen plasma-libksysguard plasma-milou plasma-nm plasma-oxygen plasma-oxygen-fonts plasma-polkit-kde-agent plasma-powerdevil plasma-sdk plasma-systemsettings plasma-workspace plasma-workspace-wallpapers plasma-pa plasma-user-manager plasma-kgamma5
+# Depends on: plasma-ksshaskpass plasma-bluedevil plasma-breeze plasma-desktop plasma-kde-cli-tools plasma-kdecoration plasma-kde-gtk-config plasma-kdeplasma-addons kf5-kfilemetadata plasma-khelpcenter plasma-khotkeys plasma-kinfocenter  plasma-kmenuedit plasma-kscreen plasma-ksysguard plasma-kwayland plasma-kwin plasma-kwrited plasma-libkscreen plasma-libksysguard plasma-milou plasma-nm plasma-oxygen plasma-oxygen-fonts plasma-polkit-kde-agent plasma-powerdevil plasma-sdk plasma-systemsettings plasma-workspace plasma-workspace-wallpapers plasma-user-manager plasma-kgamma5 plasma-pa
 run=(plasma-ksshaskpass plasma-bluedevil plasma-breeze plasma-desktop plasma-kde-cli-tools 
 plasma-kdecoration plasma-kde-gtk-config plasma-kdeplasma-addons kf5-kfilemetadata plasma-khelpcenter 
 plasma-khotkeys plasma-kinfocenter plasma-kmenuedit 
@@ -7,13 +7,13 @@ plasma-kscreen plasma-ksysguard plasma-kwayland plasma-kwin plasma-kwrited plasm
 plasma-libksysguard plasma-milou plasma-nm plasma-oxygen plasma-oxygen-fonts 
 plasma-polkit-kde-agent plasma-powerdevil plasma-sdk plasma-systemsettings 
 plasma-workspace plasma-workspace-wallpapers
-plasma-pa plasma-user-manager plasma-kgamma5)
+plasma-user-manager plasma-kgamma5 plasma-pa)
 
-version=5.3.95
+version=5.4.0
 release=1
 
 if [ ! -z ${_name} ]; then
-        source=(http://download.kde.org/unstable/plasma/$version/${_name}-$version.tar.xz)
+        source=(http://download.kde.org/stable/plasma/$version/${_name}-$version.tar.xz)
 fi
 build() {
 
