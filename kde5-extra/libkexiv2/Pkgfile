@@ -1,0 +1,22 @@
+# Description: A library to manipulate pictures metadata
+# URL: http://www.kde.org
+# Packager: pierre at nutyx dot org
+# Depends on: cmake automoc4 kde-libs
+
+
+name=libkexiv2
+version=15.08.0
+release=1
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build() {
+mkdir build
+cd build
+cmake ../$name-$version          \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DKDE4_BUILD_TESTS=OFF     \
+      -DCMAKE_INSTALL_PREFIX=/usr
+make
+make DESTDIR=$PKG install
+}
