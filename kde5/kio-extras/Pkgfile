@@ -1,0 +1,28 @@
+# Description : Parts of framework 5
+# URL: https://www.kde.org/
+# Packager: pierre at nutyx dot org
+# Depends on: qt5 kf5-karchive kf5-kbookmarks kf5-kcodecs kf5-kconfig kf5-kconfigwidgets kf5-kcoreaddons kf5-kdbusaddons kf5-kdelibs4support kf5-kdnssd kf5-kguiaddons kf5-khtml kf5-ki18n kf5-kiconthemes kf5-kio kf5-kparts kf5-kpty kf5-kservice kf5-kxmlgui kf5-solid libjpeg-turbo exiv2 libmtp phonon-qt5 samba shared-mime-info
+
+run=(qt5 kf5-karchive kf5-kbookmarks kf5-kcodecs kf5-kconfig kf5-kconfigwidgets kf5-kcoreaddons kf5-kdbusaddons kf5-kdelibs4support kf5-kdnssd kf5-kguiaddons kf5-khtml kf5-ki18n kf5-kiconthemes kf5-kio kf5-kparts kf5-kpty kf5-kservice kf5-kxmlgui kf5-solid libjpeg-turbo exiv2 libmtp phonon-qt5 samba kf5-kded shared-mime-info )
+
+name=kio-extras
+version=15.08.0
+release=1
+
+source=(http://download.kde.org/stable/applications/$version/src/kio-extras-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr             \
+      -DCMAKE_BUILD_TYPE=Release              \
+      -DLIB_INSTALL_DIR=lib                   \
+      -DBUILD_TESTING=OFF                     \
+      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
+      -DQML_INSTALL_DIR=lib/qt5/qml           \
+      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
+make
+make DESTDIR=$PKG install
+}
+
