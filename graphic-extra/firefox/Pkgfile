@@ -1,11 +1,12 @@
 # Description: Standalone web browser from mozilla.org
 # URL: http://www.mozilla.com/firefox/
 # Packager: pierre at nutyx dot org,tnut at nutyx dot org
-# Depends on: yasm,sqlite,libvpx,libevent,nss,alsa-lib,gtk2,xorg-app,zip,unzip,gstreamer,gstreamer-plugins-base
+# Depends on: yasm,sqlite,libvpx,libevent,nss,alsa-lib,gtk2,xorg-app,zip,unzip,gstreamer1,gstreamer1-plugins-base,gstreamer1-plugins-good,gstreamer1-plugins-libav
 
+run=(gstreamer1-plugins-good gstreamer1-plugins-libav)
 
 name=firefox
-version=40.0.2
+version=40.0.3
 release=1
 
 source=(https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.bz2)
@@ -43,7 +44,7 @@ ac_add_options --disable-libnotify
 # in about:config. If you have GStreamer 0.x.y, uncomment this line:
 #ac_add_options --enable-gstreamer
 # or uncomment this line, if you have GStreamer 1.x.y
-#ac_add_options --enable-gstreamer=1.0
+ac_add_options --enable-gstreamer=1.0
 
 # Uncomment these lines if you have installed optional dependencies:
 #ac_add_options --enable-system-hunspell
