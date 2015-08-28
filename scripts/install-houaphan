@@ -357,7 +357,7 @@ scriptsversion=20150823" > ${MountFolder}/etc/blfs-bootscripts
 }
 generate_etc_bashrc() {
 [ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
-}cat > ${MountFolder}/etc/bashrc << "EOF"
+cat > ${MountFolder}/etc/bashrc << "EOF"
 # Begin /etc/bashrc
 # Written for Beyond Linux From Scratch
 # by James Robertson <jameswrobertson@earthlink.net>
@@ -1297,6 +1297,9 @@ if [ "$MIG" == "0" ]; then
                 mount -t $FILESYSTEM $1 $MountFolder || error "Invalid partition or wrong format"
         fi
 fi
+if [ -z $MountFolder ]; then
+	error "Variable MountFolder not define"
+fi
 }
 welcome() {
 if [ "$MIG" == "0" ]; then
@@ -1372,7 +1375,7 @@ install_configuration_files() {
 
 }
 main() {
-	check_variables
+	check_variables  "$@"
 	if [ $# -lt 1 ] && [ -z "$LFS" ] ; then
 		echo "
 *******************************************
@@ -1391,7 +1394,7 @@ example: install-$version /chroot
 	check_root
 	check_bash
 	check_tools
-	check_lfs
+	check_lfs "$@"
 	check_destination
 
 	welcome
