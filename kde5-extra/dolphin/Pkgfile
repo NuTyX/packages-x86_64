@@ -11,9 +11,6 @@ source=(http://download.kde.org/stable/applications/$version/src/$name-$version.
 
 build() {
 cd $name-$version
-
-#sed -i "s:\${ECM_MODULE_PATH}:\${CMAKE_SOURCE_DIR}/cmake/modules &:g" CMakeLists.txt
-
 mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr             \
