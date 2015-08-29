@@ -170,6 +170,7 @@ if [ -d "$DepotCD/depot" ]; then
 	umount ${{MountFolder}/${DEPOT}
 	umount  `cat /tmp/depot`
 fi
+umount ${MountFolder}/run
 umount ${MountFolder}/dev/pts
 umount ${MountFolder}/dev
 umount ${MountFolder}/proc
@@ -1392,7 +1393,7 @@ nutyx.man \
 lvm2 mdadm dialog cpio squashfs \
 linux-firmware \
 kernel-lts
-exit" > $MountFolder/tmp/$SetupFile
+exit" > $MountFolder/$SetupFile
 chmod 177 $MountFolder/$SetupFile
 setup_chroot
 chroot ${MountFolder} /bin/bash -c "$SetupFile"
