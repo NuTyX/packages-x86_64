@@ -18,6 +18,7 @@
 #
 # Todo:
 #*******************************************************************************
+VERSION=8.0.20150829
 boot_mesg() {
         local ECHOPARM=""
 
@@ -166,15 +167,13 @@ log_warning_msg() {
 #*******************************************************************************
 unmountall() {
 if [ -d "$DepotCD/depot" ]; then
-	umount ${1}/${DEPOT}
+	umount ${{MountFolder}/${DEPOT}
 	umount  `cat /tmp/depot`
 fi
-umount ${1}/dev/shm
-umount ${1}/dev/pts
-umount ${1}/dev
-umount ${1}/tmp 
-umount ${1}/proc 
-umount ${1}/sys
+umount ${MountFolder}/dev/pts
+umount ${MountFolder}/dev
+umount ${MountFolder}/proc
+umount ${MountFolder}/sys
 }
 #*******************************************************************************
 # Function - setup_chroot
@@ -189,11 +188,26 @@ umount ${1}/sys
 #
 #*******************************************************************************
 setup_chroot() {
-mount --bind /dev ${1}/dev
-mount -t devpts devpts ${1}/dev/pts
-mount -t proc proc ${1}/proc 
-mount -t sysfs sysfs ${1}/sys
-chroot ${1} /bin/bash -c "$SetupFile"
+mount --bind /dev ${MountFolder}/dev
+mount -t devpts devpts ${MountFolder}/dev/pts
+mount -t proc proc ${MountFolder}/proc
+mount -t sysfs sysfs ${MountFolder}/sys
+mount -t tmpfs tmpfs ${MountFolder}/run
+if [ -h ${MountFolder}/dev/shm ]; then
+   rm -f ${MountFolder}/dev/shm
+   mkdir -pv ${MountFolder}/$(readlink ${MountFolder}/dev/shm)
+fi
+}
+enter_chroot() {
+echo "
+******************************
+Chroot path: $DEVICE
+******************************"
+chroot ${MountFolder} /usr/bin/env -i \
+HOME=/root \
+TERM="$TERM" \
+PS1='\u:\w\$ ' \
+/bin/bash --login
 }
 #*******************************************************************************
 # Function - install_pkg()
@@ -351,11 +365,13 @@ do
 done
 }
 generate_blfs_bootscripts() {
+[ -f ${MountFolder}/etc/${MountFolder}/etc/blfs-bootscripts ] && return
 [ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
 echo "scripts=blfs-bootscripts
 scriptsversion=20150823" > ${MountFolder}/etc/blfs-bootscripts
 }
 generate_etc_bashrc() {
+[ -f ${MountFolder}/etc/bashrc ] && return
 [ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
 cat > ${MountFolder}/etc/bashrc << "EOF"
 # Begin /etc/bashrc
@@ -427,6 +443,7 @@ fi
 EOF
 }
 generate_rc_site() {
+[ -f ${MountFolder}/etc/sysconfig/rc.site ] && return
 [ ! -d ${MountFolder}/etc/sysconfig ] && mkdir -pv ${MountFolder}/etc/sysconfig
 cat > ${MountFolder}/etc/sysconfig/rc.site << "EOF"
 # rc.site                                                                            [20:15 i686 3.18.11-NuTyX-iso thierry@nutyx]
@@ -518,6 +535,7 @@ cat > ${MountFolder}/etc/sysconfig/rc.site << "EOF"
 EOF
 }
 generate_udev_retry() {
+[ -f ${MountFolder}/etc/sysconfig/udev_retry ] && return
 [ ! -d ${MountFolder}/etc/sysconfig ] && mkdir -pv ${MountFolder}/etc/sysconfig
 cat > ${MountFolder}/etc/sysconfig/udev_retry << "EOF"
 ########################################################################
@@ -542,6 +560,7 @@ rtc
 EOF
 }
 generate_createfiles() {
+[ -f ${MountFolder}/etc/sysconfig/createfiles ] && return
 [ ! -d ${MountFolder}/etc/sysconfig ] && mkdir -pv ${MountFolder}/etc/sysconfig
 cat > ${MountFolder}/etc/sysconfig/createfiles << "EOF"
 ########################################################################
@@ -578,6 +597,7 @@ cat > ${MountFolder}/etc/sysconfig/createfiles << "EOF"
 EOF
 }
 generate_modules() {
+[ -f ${MountFolder}/etc/sysconfig/modules ] && return
 [ ! -d ${MountFolder}/etc/sysconfig ] && mkdir -pv ${MountFolder}/etc/sysconfig
 cat > ${MountFolder}/etc/sysconfig/modules << "EOF"
 ########################################################################
@@ -601,6 +621,7 @@ cat > ${MountFolder}/etc/sysconfig/modules << "EOF"
 EOF
 }
 generate_mouse() {
+[ -f ${MountFolder}/etc/mouse ] && return
 [ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
 cat > ${MountFolder}/etc/mouse << "EOF"
 MDEVICE="/dev/input/mice"
@@ -608,6 +629,7 @@ PROTOCOL="imps2"
 EOF
 }
 generate_inputrc() {
+[ -f ${MountFolder}/etc/inputrc ] && return
 [ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
 cat > ${MountFolder}/etc/inputrc << "EOF"
 # Begin /etc/inputrc
@@ -654,6 +676,7 @@ set bell-style none
 EOF
 }
 generate_hosts() {
+[ -f ${MountFolder}/etc/hosts ] && return
 [ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
 cat > ${MountFolder}/etc/hosts << "EOF"
 # Begin /etc/hosts
@@ -665,6 +688,7 @@ cat > ${MountFolder}/etc/hosts << "EOF"
 EOF
 }
 generate_shells() {
+[ -f ${MountFolder}/etc/shells ] && return
 [ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
 cat > ${MountFolder}/etc/shells << "EOF"
 # Begin /etc/shells
@@ -676,6 +700,7 @@ cat > ${MountFolder}/etc/shells << "EOF"
 EOF
 }
 generate_umask_sh() {
+[ -f ${MountFolder}/etc/profile.d/umask.sh ] && return
 [ ! -d ${MountFolder}/etc/profile.d ] && mkdir -pv ${MountFolder}/etc/profile.d
 cat > ${MountFolder}/etc/profile.d/umask.sh << "EOF"
 # By default we want the umask to get set.
@@ -697,6 +722,7 @@ export INPUTRC
 EOF
 }
 generate_extrapaths_sh() {
+[ -f ${MountFolder}/etc/profile.d/extrapaths.sh ] && return
 [ ! -d ${MountFolder}/etc/profile.d ] && mkdir -pv ${MountFolder}/etc/profile.d
 cat > ${MountFolder}/etc/profile.d/extrapaths.sh << "EOF"
 if [ -d /usr/local/lib/pkgconfig ] ; then
@@ -718,6 +744,7 @@ fi
 EOF
 }
 generate_dircolors_sh() {
+[ -f ${MountFolder}/etc/profile.d/dircolors.sh ] && return
 [ ! -d ${MountFolder}/etc/profile.d ] && mkdir -pv ${MountFolder}/etc/profile.d
 cat > ${MountFolder}/etc/profile.d/dircolors.sh << "EOF"
 # Setup for /bin/ls to support color, the alias is in /etc/bashrc.
@@ -732,6 +759,7 @@ alias ls='ls --color=auto'
 EOF
 }
 generate_profile() {
+[ -f ${MountFolder}/etc/profile ] && return
 [ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
 cat > ${MountFolder}/etc/profile << "EOF"
 # Begin /etc/profile
@@ -812,6 +840,7 @@ unset script RED GREEN NORMAL
 EOF
 }
 generate_group() {
+[ -f ${MountFolder}/etc/group ] && return
 [ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
 cat > ${MountFolder}/etc/group << "EOF"
 root:x:0:
@@ -881,6 +910,7 @@ users:x:999:
 EOF
 }
 generate_passwd() {
+[ -f ${MountFolder}/etc/passwd ] && return
 [ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
 cat > ${MountFolder}/etc/passwd << "EOF"
 root::0:0:root:/root:/bin/bash
@@ -926,6 +956,7 @@ nobody:x:99:99:Unprivileged User:/dev/null:/bin/false
 EOF
 }
 generate_fstab() {
+[ -f ${MountFolder}/etc/fstab ] && return
 [ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
 cat > ${MountFolder}/etc/fstab << "EOF"
 # Begin /etc/fstab
@@ -943,6 +974,7 @@ devtmpfs       /dev         devtmpfs mode=0755,nosuid    0     0
 EOF
 }
 generate_dmrc() {
+[ -f ${MountFolder}/etc/skel/.dmrc ] && return
 [ ! -d ${MountFolder}/etc/skel ] && mkdir -pv ${MountFolder}/etc/skel
 cat > ${MountFolder}/etc/skel/.dmrc << "EOF"
 [Desktop]
@@ -950,6 +982,7 @@ Session=default
 EOF
 }
 generate_bashrc() {
+[ -f ${MountFolder}/etc/skel/.bashrc ] && return
 [ ! -d ${MountFolder}/etc/skel ] && mkdir -pv ${MountFolder}/etc/skel
 cat > ${MountFolder}/etc/skel/.bashrc << "EOF"
 # Personal aliases and functions.
@@ -982,11 +1015,13 @@ alias pkgfind='cards list | grep -i'
 
 # End ~/.bashrc
 EOF
+[ -f ${MountFolder}/root/.bashrc ] && return
 [ ! -d ${MountFolder}/root ] && install -dv -m0750 ${MountFolder}/root
 cp -v ${MountFolder}/etc/skel/.bashrc \
 ${MountFolder}/root
 }
 generate_bash_profile() {
+[ -f ${MountFolder}/etc/skel/.bash_profile ] && return
 [ ! -d ${MountFolder}/etc/skel ] && mkdir -pv ${MountFolder}/etc/skel
 cat > ${MountFolder}/etc/skel/.bash_profile << "EOF"
 # Personal environment variables and startup programs.
@@ -1018,10 +1053,12 @@ fi
 # End ~/.bash_profile
 EOF
 [ ! -d ${MountFolder}/root ] && install -dv -m0750 ${MountFolder}/root
+[ -f ${MountFolder}/root/.bash_profile ] && return
 cp -v ${MountFolder}/etc/skel/.bash_profile \
 ${MountFolder}/root
 }
 generate_cards_conf() {
+[ -f ${MountFolder}/etc/cards.conf ] && return
 [ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
 echo "## For kde5
 # Comment folling 2 lines
@@ -1200,6 +1237,8 @@ fi
 DepotPackages="$DEPOT/base"
 DepotCD="/media/cdrom"
 
+SetupFile=/tmp/setup
+
 # Size of the FullInstall in Mbytes
 let BaseInstall=450
 
@@ -1260,19 +1299,11 @@ check_lfs() {
 # LFS is set ?
 if [ ! -z "${LFS}" ]; then
         MIG=`echo $LFS|cut -d "/" -f 2`
-        # if LFS is set only installation on folder is possible
-        if [ $# -gt 0 ]; then
-                echo "* Variable LFS is set, no arguments allow *"
-                echo "*                                         *"
-                echo "* Please re-enter the command without any *"
-                echo "*******************************************"
-                exit 1
-        fi
         DEVICE=${LFS}
 else
 
-        MIG=`echo $1|cut -d "/" -f 2`
-        DEVICE=${1}
+        MIG=`echo $MountFolder|cut -d "/" -f 2`
+        DEVICE=${MountFolder}
 fi
 }
 check_destination() {
@@ -1281,24 +1312,23 @@ if [ "$MIG" == "dev" ]; then
 else
         MountFolder=$DEVICE
         MIG=1
-		echo "*******************************************"
-                echo "  This installation will be on $DEVICE"
-                echo "*******************************************"
+		echo "
+******************************
+Installation path: $DEVICE
+******************************"
 fi
 }
 check_mountpoint() {
+[ -z $MountFolder ] && error "Variable MountFolder not define"
 if [ "$MIG" == "0" ]; then
         # Checking the device exist ?
-        if ! [ -b  $1 ]; then
-                error "Mounting point $1 not existing"
+        if ! [ -b  $MountFolder ]; then
+                error "Mounting point $MountFolder not existing"
         fi
         # Mounting the System files
         if ! mountpoint /$MountFolder > /dev/null; then
                 mount -t $FILESYSTEM $1 $MountFolder || error "Invalid partition or wrong format"
         fi
-fi
-if [ -z $MountFolder ]; then
-	error "Variable MountFolder not define"
 fi
 }
 welcome() {
@@ -1328,7 +1358,6 @@ download_pkgadd() {
 	if [ ! -f $TMP/usr/bin/pkgadd ]; then
         	cd $TMP
         	basepackagefile=`getPackageName cards`
-        	echo "basepackagefile: $basepackagefile"
         	if [ "$basepackagefile" == "" ]; then
                 	error "$basepackagefile not found"
         	fi
@@ -1346,6 +1375,28 @@ download_pkgadd() {
 }
 check_mountfolder() {
 	[ ! -d $MountFolder ] && mkdir -pv $MountFolder
+}
+generate_setupfile() {
+echo "#!/bin/bash
+cards sync
+cards install e2fsprogs \
+reiserfsprogs \
+xfsprogs jfsutils \
+btrfs-progs sudo \
+sysklogd sysvinit \
+dhcpcd grub \
+tzdata iproute2 iana-etc \
+e3 eudev kmod less \
+groff man-db cards.man \
+nutyx.man \
+lvm2 mdadm dialog cpio squashfs \
+linux-firmware \
+kernel-lts
+exit" > $MountFolder/tmp/$SetupFile
+chmod 177 $MountFolder/$SetupFile
+setup_chroot
+chroot ${MountFolder} /bin/bash -c "$SetupFile"
+unmountall
 }
 install_configuration_files() {
 	generate_cards_conf
@@ -1374,8 +1425,63 @@ install_configuration_files() {
 	generate_blfs_bootscripts
 
 }
+print_help() {
+	echo "usage: `basename $0` [options]"
+	echo "options:"
+	echo "   -p,  --path  <installation-path> will install NuTyX in <installation-path>"
+	echo "  -ec,  --enter-chroot              will enter in the chroot if exist"
+	echo "  -ic,  --install-config            will install all the configuration files only"
+	echo "  -h,   --help                      print help and exit"
+	echo "  -v,   --version                   print the version and exit"
+
+}
+
+parse_options() {
+	while [ "$1" ]; do
+		case $1 in
+			-h|--help)
+				print_help
+				exit 0;;
+			-ec|--enter-chroot)
+				check_lfs "$@"
+				check_root
+				check_destination
+				setup_chroot
+				enter_chroot
+				unmountall
+				exit 0;;
+			-ic|--install-config)
+				check_lfs "$@"
+				check_root
+				check_destination
+				install_configuration_files
+				exit 0;;
+			-p|--path)
+				if [ ! "$2" ]; then
+					echo "`basename $0`: option $1 requires an argument"
+					exit 1
+				fi
+				MountFolder="$2"
+				shift;;
+			-v|--version)
+				echo "`basename $0` $VERSION"
+				exit;;
+			/*)
+				boot_mesg " >>> This methode is depreciate <<<: use '-p $1' instead"
+				echo_warning
+				MountFolder="$1";;
+			*)
+				echo "`basename $0`: invalid option $1"
+				exit 1 ;;
+		esac
+		shift
+	done
+}
 main() {
+	[ -f /etc/`basename $0`.conf ] && source /etc/`basename $0`.conf
 	check_variables  "$@"
+	parse_options "$@"
+	check_lfs "$@"
 	if [ $# -lt 1 ] && [ -z "$LFS" ] ; then
 		echo "
 *******************************************
@@ -1394,7 +1500,6 @@ example: install-$version /chroot
 	check_root
 	check_bash
 	check_tools
-	check_lfs "$@"
 	check_destination
 
 	welcome
@@ -1409,8 +1514,11 @@ example: install-$version /chroot
 
 	download_pkgadd
 	create_database
+
 	install_base
+
 	install_configuration_files
+	generate_setupfile
 	update_fstab
 	end
 	umount_all
