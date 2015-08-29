@@ -5,14 +5,13 @@
 # Depends on: caja
 
 
-name=caja-extensions-common
-_name=caja-extensions
+name=caja-extensions
 version=1.10.0
-release=1
-source=(http://pub.mate-desktop.org/releases/${version%.*}/${_name}-$version.tar.xz)
+release=2
+source=(http://pub.mate-desktop.org/releases/${version%.*}/${name}-$version.tar.xz)
 
 build() {
-cd ${_name}-$version
+cd ${name}-$version
  ./configure \
         --prefix=/usr \
         --with-gtk=2.0
