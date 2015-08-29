@@ -7,7 +7,7 @@ name=thunderbird
 version=38.2.0
 release=1
 
-source=(ftp://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.bz2)
+source=(http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.bz2)
 
 build() {
 export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/thunderbird"
