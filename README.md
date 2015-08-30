@@ -53,17 +53,17 @@ Contributions are welcome
     # bash enter-chroot
     # cd /root/kde5
 
-#### 10. you can now try the following command:
+#### 10. You can now try the following command:
 
-    # bash script/kde5
+    # bash scripts/kde5
 
 It will print a help included point 1,7 and 8 above. Note that it's even possible to get the available binaries from the mirror.
 
 
-#### 11. If everythin OK, check with cards level whats new
+#### 11. If everything is OK, check with cards level whats new
 
     # cards level
 
-#### 12. TO BE CONTINUE ...
+#### 12. TO BE CONTINUED ...
 
 Have fun :)
