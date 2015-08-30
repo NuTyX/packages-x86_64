@@ -63,6 +63,8 @@ cd $LFS/root/houaphan/base/nutyx</kbd></pre>
 retourne
         <pre class="output">nutyx 8.0.2015...
 nutyx.man 8.0.2015...</pre>
+      <li>On installe les fichiers de configurations dans notre nouvelle NuTyX</li>
+        <pre class="command"><kbd>bash $LFS/root/houaphan/scripts/install-houaphan -ic</kbd></pre>
       <li>On monte les différents dossiers</li>
         <pre class="command"><kbd>mount -v --bind /dev $LFS/dev
 mount -vt devpts devpts $LFS/dev/pts -o gid=5,mode=620
@@ -130,10 +132,10 @@ bash.fr 4.3.33
 pass</kbd></pre>
       <pre class="output">tar -p -o -C /tmp/work/src -xf /sources/bc-1.06.95.tar.bz2
 ....</pre>
-     <li>La compilation se termine par le kernel:</li>
-      <pre class="output">ADD: kernel-3.19.3, 4550 files: 100%
-=======> Installing 'kernel1418739487x86_64.cards.tar' succeeded.
-=======> compress kernel1418739487x86_64.cards.tar</pre>
+     <li>La compilation se termine par le paquet <b>ca-certificates</b>:</li>
+      <pre class="output">ADD: ca-certificates-20150725, 1282 files: 100%
+=======> Installing 'ca-certificates1418739487x86_64.cards.tar' succeeded.
+=======> compress ca-certificates1418739487x86_64.cards.tar</pre>
     </ol>
     <h2>Explications relative à chaque action</h2>
     <ol>
@@ -143,10 +145,11 @@ pass</kbd></pre>
 source  ~/.bash_profile</kbd></pre>
       <li>Vérification de la variable LFS. Si tout est ok, on change le propriétaire et le groupe du contenu du dossier $LFS</li>
       <li>On créer le dossier pour y placer les recettes ainsi qe le dossier logs qui recevra les resultats de la compilation de chaque recette. On créer également un lien pour que le script <b>pass</b> soit trouvé.</li>
-      <li>On va maintenant compiler le premier paquet qui est aaabasicfs. Pour cela on se rend dans le dossier</li>
-      <li>On compile le premier paquet qui d'ailleurs ne contient aucun code, ce paquet consiste à crééer tous les dossiers et fichiers de configuration de la NuTyX.</li>
+      <li>On va maintenant compiler le premier paquet qui est <b>nutyx</b>. Pour cela on se rend dans le dossier</li>
+      <li>On compile le premier paquet qui d'ailleurs ne contient aucun code, ce paquet consiste à crééer tous les dossiers de la NuTyX.</li>
       <li>On installe le premier paquet <b>nutyx</b> dans la NuTyX et</li>
       <li>On vérifie bien sa présence dans la base de données de celle-ci.</li>
+      <li>On ajoute tous les fichiers de configuration par défaut, ceux-ci se trouvent dans le script d'installation de la NuTyX houaphan</li>
       <li>Il s'agit maintenant de monter les quelques dossiers indispensable pour le bon déroulement des opérations de compilation.</li>
       <li>Pour que le cas échéant, une recette necessite de télécharger les sources, on copie le fichier resolv.conf qui définie le routage et la résolution de noms de domaine.</li>
       <li>Une dernière vérification sur la présence de tous les dossiers concernés.</li>
@@ -155,11 +158,12 @@ source  ~/.bash_profile</kbd></pre>
       <li>On se met dans le dossier des recettes NuTyX version courante. Et on lance la compilation des paquets dans le bonne ordre.</li>
       <li>L'interpreteur bash doit être installé en dehors de la chroot, on attend donc le message.</li>
       <li>On va donc devoir ressortir de la chroot</li>
-      <li>On lance une boucle pour installer tous les paquets bash.</li>
+      <li>On lance une boucle pour installer tous les paquets <b>bash</b>.</li>
+      <li>On vérifie que les paquets bash se soient correctements installés</li>
       <li>On peut retourner dans la CHROOT cad la future NuTyX. Cette fois aucune erreurs ne doit s'afficher</li>
       <li>La variable PATH est réajustée en effet, lorsque l'on entre dans la chroot elle n'est pas configurée correctement</li>
       <li>On se met dans le dossier des recettes NuTyX version courante. Et on relance la compilation des paquets restants dans le bonne ordre.</li>
-      <li>Une fois le kernel compilé et installé, votre NuTyX de base est complète</li>
+      <li>Une fois le paquet <b>ca-certificates</b> compilé et installé, votre NuTyX de base est complète</li>
     </ol>
     <h2>Ce qu'il faut savoir:</h2>
     <ol>
@@ -168,7 +172,7 @@ source  ~/.bash_profile</kbd></pre>
     </ol>
   <div class="pied_page"><a class="url" href="build-post.html">Une fois la passe 2 terminée, vous pouvez passer à la post-installation et génération de l'iso</a></div>
   <hr>
-  <p class="updated"> Dernière mise à jour 19-07-2015 13:27</p>
+  <p class="updated"> Dernière mise à jour 30-08-2015 16:50</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

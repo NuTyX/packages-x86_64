@@ -63,6 +63,8 @@ cd $LFS/root/houaphan/base/nutyx</kbd></pre>
 should return
 <pre class="output">nutyx 8.0.2015...
 nutyx.man 8.0.2015...</pre>
+      <li>We install all the configuration files in our new NuTyX</li>
+        <pre class="command"><kbd>bash $LFS/root/houaphan/scripts/install-houaphan -ic</kbd></pre>
       <li>We mount all different folders</li>
 <pre class="command"><kbd>mount -v -B /dev $LFS/dev
 mount -vt devpts devpts $LFS/dev/pts
@@ -129,10 +131,10 @@ bash.de 4.3.33
 pass</kbd></pre>
 <pre class="output">tar -p -o -C /tmp/work/src -xf /sources/bc-1.06.95.tar.bz2
 ....</pre>
-    <li>The compilation ends with the kernel:</li>
-    <pre class="output">ADD: kernel-3.17.6, 1282 files: 100%
-=======> Installing 'kernel1418739487x86_64.cards.tar' succeeded.
-=======> compress kernel1418739487x86_64.cards.tar</pre>
+    <li>The compilation ends with <b>ca-certificates</b> package:</li>
+    <pre class="output">ADD: ca-certificates-20150725, 1282 files: 100%
+=======> Installing 'ca-certificates1418739487x86_64.cards.tar' succeeded.
+=======> compress ca-certificates1418739487x86_64.cards.tar</pre>
  
     </ol>
     <h2>Explanation to each step</h2>
@@ -143,16 +145,25 @@ pass</kbd></pre>
 source  ~/.bash_profile</kbd></pre>
       <li>Checking the LFS variable. If OK we change the owner and group of the contents of $LFS</li>
       <li>We create the folder to put the receiptes in place and the log folder as well. We create also a link so that the script <b>pass</b> is found.</li>
-      <li>We will now compile the first package which is aaabasicfs. For this we need to go in the folder of the recept</li>
-      <li>This package doent contains any code so it's just create all the folders and configuration files for the NuTyX.</li>
+      <li>We will now compile the first package which is <b>nutyx</b>. For this we go in the folder of the recept</li>
+      <li>This package doent contains any code so it's just create all the folders for the NuTyX.</li>
       <li>We install the first package <b>nutyx</b> into the NuTyX and</li>
-      <li>We check if it's corretly installed by looking at the database folder.</li>
+      <li>We check if it's corretly installed.</li>
+      <li>We add all the defaults configuration files, those are included in the instal-houaphan script.</li>
       <li>It's time to mount all the necessary folders to be able to enter and to compile without problems the rest of the NuTyX.</li>
       <li>In case of a package need to download something (for exemple the kernel) we copy the resolv.conf file from the host to be able to resolve the adress.</li>
       <li>One last check before we enter the CHROOT.</li>
       <li>We can now enter the CHROOT means the future NuTyX. As it has still no programms at the right place, we get all kind of uggly messages, The PATH must be define again so that all the binaries are found in the right order.</li>
       <li>The PATH variable is not set properly, so we need to redefine it</li>
       <li>We go in the right folder. We launch the compilation of the packages in the right order.</li>
+      <li>The bash interpreter must be installed outside the chroot, so we wait until the message comes.</li>
+      <li>We go out of the chroot.</li>
+      <li>We go in the right folder and start a loop to install all the <b>bash</b> packages.</li>
+      <li>Again we check if it's corretly installed by.</li>
+      <li>We can now return into the CHROOT means the future NuTyX. This time, they should be NO weard messages printout</li>
+      <li>The PATH variable is redefine</li>
+      <li>We go in  the right folder and relaunch the compilation of the remains packages in the right order.</li>
+      <li>One the <b>ca-certificates</b> package is compiled and installed, the construction of your base NuTyX is done</li>
     </ol>
     <h2>You need to know:</h2>
     <ol>
@@ -163,7 +174,7 @@ source  ~/.bash_profile</kbd></pre>
   <div class="pied_page"><a class="url" href="build-post.html">One pass 2 is done, you can start the post-construction and generation of the iso</a></div>
 <p>
   <hr>
-  <p class="updated">Last updated on 2015-07-19 13:26</p>
+  <p class="updated">Last updated on 2015-08-30 16:47</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

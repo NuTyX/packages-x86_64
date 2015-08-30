@@ -54,6 +54,18 @@ locale fr
 base /root/houaphan/base
 base /root/houaphan/base-extra
 EOF</kbd></pre>
+    <li>We still need to compile the rest of a Base NuTyX. All the packages included in the <b>base-extra</b> collection will now be compiled:</li>
+     <pre class="command"><kbd>cd /root/extra/base-extra</kbd></pre>
+    <li>And we launch the <b>base-extra</b> collection compilation in the right order</li>
+     <pre class="command"><kbd>pass</kbd></pre>
+     <pre class="output">=======> PKGMK_INSTALL: install
+ =======> PKGMK_WORK_DIR: /root/extra/base-extra/wget/work
+ =======> PKGMK_SOURCE_DIR: /root/extra/base-extra/wget
+ ...</pre>
+    <li>The compilation of the <b>base-extra</b> collection must end with the <b>sysvinit</b> package.</li>
+       <pre class="output">ADD: sysvinit2.88dsf, 16 files: 100%
+ =======> Installing 'sysvinit1439823127x86_64.cards.tar' succeeded.
+ =======> compress sysvinit1439823127x86_64.cards.tar</pre>
     <li>We add all the necessary files for a working iso</li>
     <pre class="command"><kbd>cp -av /root/houaphan/iso /ISO</kbd></pre>
     <pre class="output">'/root/houaphan/iso' -> '/ISO'
@@ -158,7 +170,7 @@ cards depcreate xorg</kbd></pre>
 pkgrm kernel.devel</kbd></pre>
   </ol>
   <hr>
-  <p class="updated">Last updated on 2015-07-25 00:09</p>
+  <p class="updated">Last updated on 2015-08-30 17:12</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
