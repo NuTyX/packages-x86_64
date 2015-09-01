@@ -45,8 +45,10 @@ Contributions are welcome
     # bash houaphan/scripts/install-houaphan -ec
     # cd /root/mate
 
-#### 10. You can now try the following command:
+#### 10. You can now try the following commands:
 
+    # get rsync
+    # get git
     # bash scripts/mate
 
 It will print a help included point 1,7 and 8 above. Note that it's even possible to get the available binaries from the mirror.
