@@ -36,13 +36,7 @@
        <ol>
         <li>
          <h3>Get all the tools</h3>
-          <pre class="command"><kbd>git clone git://github.com/NuTyX/houaphan.git
-wget http://downloads.nutyx.org/enter-chroot{,.md5sum}
-wget http://downloads.nutyx.org/install-houaphan{,.md5sum}
-md5sum -c enter-chroot.md5sum</kbd></pre>
-          <pre class="output">enter-chroot: OK</pre>
-          <pre class="command"><kbd>md5sum -c install-houaphan.md5sum</kbd></pre>
-          <pre class="output">install-houaphan: OK</pre>
+          <pre class="command"><kbd>git clone git://github.com/NuTyX/houaphan.git</kbd></pre>
         </li>
         <li>
          <h3>Make shure you have cdrkit and syslinux installed, in worth case:</h3>
@@ -57,7 +51,7 @@ get syslinux</kbd></pre>
         </li>
         <li>
          <h3>Install the houaphan base system</h3>
-          <pre class="command"><kbd>bash install-houaphan</kbd></pre>
+          <pre class="command"><kbd>bash houaphan/scripts/install-houaphan</kbd></pre>
         </li>
         <li>
          <h3>Copy the files for the iso</h3>
@@ -65,70 +59,12 @@ get syslinux</kbd></pre>
         </li>
         <li>
          <h3>Enter the houaphan base system</h3>
-          <pre class="command"><kbd>bash enter-chroot</kbd></pre>
-        </li>
-        <li>
-         <h3>Optionnal: if you have everything on your local host</h3>
-          <pre class="command"><kbd>sed -i "s@downloads.nutyx.org@localhost@" etc/cards.conf</kbd></pre>
+          <pre class="command"><kbd>bash houaphan/scripts/install-houaphan -ec</kbd></pre>
         </li>
         <li>
          <h3>Get the meta datas</h3>
           <pre class="command"><kbd>cards sync</kbd></pre>
         </li>
-        <li>
-         <h3>Needed tools for the installer</h3>
-          <h4>Depending of your file system choice,  install:</h4>
-           <p>For ext2, 3 et 4:</p>
-           <pre class="command"><kbd>get e2fsprogs</kbd></pre>
-           <p>For reiserfs:</p>
-           <pre class="command"><kbd>get reiserfsprogs</kbd></pre>
-           <p>For xfs:</p>
-           <pre class="command"><kbd>get xfsprogs</kbd></pre>
-           <p>For jfs:</p>
-           <pre class="command"><kbd>get jfsutils</kbd></pre>
-           <p>For btrfs:</p>
-           <pre class="command"><kbd>get btrfs-progs</kbd></pre>
-          <h4>Password handler</h4>
-           <pre class="command"><kbd>get sudo</kbd></pre>
-          <h4>Gestionnaire des inits et logs</h4>
-           <pre class="command"><kbd>get sysklogd
-get sysvinit</kbd></pre>
-          <h4>DHCP Service</h4>
-           <pre class="command"><kbd>get dhcpcd</kbd></pre>
-          <h4>Grub the boot system</h4>
-           <pre class="command"><kbd>get grub</kbd></pre>
-          <h4>Localisation and communication data</h4>
-           <pre class="command"><kbd>get tzdata
-get iproute2
-get iana-etc</kbd></pre>
-          <h4>Text editor</h4>
-           <pre class="command"><kbd>get e3</kbd></pre>
-           <p>or</p>
-           <pre class="command"><kbd>get vim</kbd></pre>
-          <h4>Utilities for the  kernel and init of the machine</h4>
-           <pre class="command"><kbd>get eudev
-get kmod</kbd></pre>
-          <h4>Documentation</h4>
-           <pre class="command"><kbd>get less
-get groff
-get man-db
-get cards.man
-get nutyx.man</kbd></pre>
-          <h4>Utilities for the iso:</h4>
-           <pre class="command"><kbd>get lvm2
-get mdadm
-get dialog
-get cpio
-get squashfs</kbd></pre>
-          <h4>Firmwares</h4>
-           <pre class="command"><kbd>get linux-firmware</kbd></pre>
-          <h4>A kernel</h4>
-           <pre class="command"><kbd>get kernel</kbd></pre>
-           <p>or</p>
-           <pre class="command"><kbd>get kernel-lts</kbd></pre>
-           <p>or</p>
-           <pre class="command"><kbd>get kernel-iso</kbd></pre>
-         </li>
         </ol>
        </li>
        <li>
@@ -138,10 +74,6 @@ get squashfs</kbd></pre>
            <h3>Put the kernel and the initrd in the right place</h3>
             <pre class="command"><kbd>cp -v /boot/kernel-* /ISO/isolinux/kernel
 cp -v /boot/initrd-* /ISO/isolinux/initrd</kbd></pre>
-          </li>
-          <li>
-           <h3>Optionnal: Reset the default adress of the NuTyX mirror</h3>
-            <pre class="command"><kbd>sed -i "s@localhost@downloads.nutyx.org@" etc/cards.conf</kbd></pre>
           </li>
           <li>
            <h3>Flush the binaries archives</h3>
@@ -163,7 +95,7 @@ done</kbd></pre>
           </li>
           <li>
            <h3>Generate the ISO</h3>
-            <pre class="command"><kbd>sh houaphan/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
+            <pre class="command"><kbd>bash houaphan/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
           </li>
          </ol>
         </li>
@@ -176,7 +108,7 @@ boot  etc  ISO   mnt  NuTyX_x86_64-houaphan-20150723.md5sum  root  sbin  sys  us
         </li>
        </ol>
       <hr>
-      <p class="updated">Last updated 2015-05-23 22:12</p>
+      <p class="updated">Last updated 2015-09-01 20:33</p>
        <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
