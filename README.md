@@ -37,6 +37,7 @@ Contributions are welcome
 
 #### 8. Exit and mount your git project (asume below the user is 'tnut') adapt to yours
 
+    # exit
     # mount -o bind /home/tnut/mate /mnt/lfs/root/mate
 
 #### 9. Enter again in your chroot
