@@ -10,35 +10,26 @@ Contributions are welcome
 
 #### 2. Get the script to Install a bare houaphan NuTyX:
 
+    # git clone git://github.com/NuTyX/houaphan.git
+
+#### 3. Define and create the directory used by the scripts:
+
     # export LFS=/mnt/lfs
     # mkdir $LFS
-    # wget http://downloads.nutyx.org/install-houaphan{,.md5sum}
-    # wget http://downloads.nutyx.org/enter-chroot{,.md5sum}
-
-#### 3. Check the validity of the scripts:
-
-    # md5sum -c install-houaphan.md5sum
-
-   install-houaphan: OK
-
-    # md5sum -c enter-chroot.md5sum
-
-   enter-chroot: OK
 
 #### 4. Install a bare NuTyX
 
-    # bash install-houaphan
+    # bash houaphan/scripts/install-houaphan
 
 #### 5. Enter in the chroot NuTyX
 
-    # bash enter-chroot
+    # bash houaphan/scripts/install-houaphan -ec
 
 #### 6. As it says review and adjust cards.conf to your needs.
 
     # check
     # get vim
     # vim /etc/cards.conf
-
 
 #### 7. In your chroot Make the directory where the git copy will comes
 
@@ -58,7 +49,6 @@ Contributions are welcome
     # bash scripts/mate
 
 It will print a help included point 1,7 and 8 above. Note that it's even possible to get the available binaries from the mirror.
-
 
 #### 11. If everything is OK, check with cards level whats new
 
