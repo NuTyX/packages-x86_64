@@ -1501,6 +1501,7 @@ check_mountfolder() {
 }
 generate_setupfile() {
 echo "#!/bin/bash
+source /etc/profile
 /bin/cards sync
 /bin/cards install e2fsprogs \
 reiserfsprogs \
