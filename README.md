@@ -42,7 +42,7 @@ Contributions are welcome
 
 #### 9. Enter again in your chroot
 
-    # bash enter-chroot
+    # bash houaphan/scripts/install-houaphan -ec
     # cd /root/mate
 
 #### 10. You can now try the following command:
