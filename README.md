@@ -19,13 +19,13 @@ Contributions are welcome
 DEPOT=/houaphan" > /etc/install-houaphan.conf
     # mkdir -p /etc/install-houaphan.conf.d
     # echo "dir /houaphan/mate
-dir /houaphan/graphic
-dir /houaphan/console
-dir /houaphan/base|http://downloads.nutyx.org
-dir /houaphan/base-extra|http://downloads.nutyx.org
-base /houaphan/base
-base /houaphan/base-extra
-logdir /var/log/pkgbuild" > /etc/install-houaphan.conf.d/cards.conf
+      dir /houaphan/graphic
+      dir /houaphan/console
+      dir /houaphan/base|http://downloads.nutyx.org
+      dir /houaphan/base-extra|http://downloads.nutyx.org
+      base /houaphan/base
+      base /houaphan/base-extra
+      logdir /var/log/pkgbuild" > /etc/install-houaphan.conf.d/cards.conf
 
 #### 4. Install a bare NuTyX (assume below the user is 'tnut' so adapt to yours)
 
