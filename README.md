@@ -76,8 +76,8 @@ Contributions are welcome
 
  then you are ready to compile the 'mate-extra' collection
 
-   # cd /root/mate-extra
-   # bash scripts/mate-extra -s
-   # bash scripts/mate-extra -a 
+    # cd /root/mate-extra
+    # bash scripts/mate-extra -s
+    # bash scripts/mate-extra -a 
 
 Have fun :)
