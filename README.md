@@ -17,14 +17,14 @@ Contributions are welcome
     $ su -
     # echo "LFS=/mnt/lfs" > /etc/install-houaphan.conf
     # echo "DEPOT=/houaphan" >> /etc/install-houaphan.conf
-    # mkdir -p /etc/install-houaphan.conf
-    # echo "dir /houaphan/mate" > /etc/install-houaphan.conf/cards.conf
-    # echo "dir /houaphan/graphic" >> /etc/install-houaphan.conf/cards.conf
-    # echo "dir /houaphan/console >> /etc/install-houaphan.conf/cards.conf
-    # echo "dir /houaphan/base|http://downloads.nutyx.org >> /etc/install-houaphan.conf/cards.conf
-    # echo "dir /houaphan/base-extra|http://downloads.nutyx.org >> /etc/install-houaphan.conf/cards.conf
-    # echo "base /houaphan/base >> /etc/install-houaphan.conf/cards.conf
-    # echo "base /houaphan/base-extra >> /etc/install-houaphan.conf/cards.conf
+    # mkdir -p /etc/install-houaphan.conf.d
+    # echo "dir /houaphan/mate" > /etc/install-houaphan.conf.d/cards.conf
+    # echo "dir /houaphan/graphic" >> /etc/install-houaphan.conf.d/cards.conf
+    # echo "dir /houaphan/console >> /etc/install-houaphan.conf.d/cards.conf
+    # echo "dir /houaphan/base|http://downloads.nutyx.org >> /etc/install-houaphan.conf.d/cards.conf
+    # echo "dir /houaphan/base-extra|http://downloads.nutyx.org >> /etc/install-houaphan.conf.d/cards.conf
+    # echo "base /houaphan/base >> /etc/install-houaphan.conf.d/cards.conf
+    # echo "base /houaphan/base-extra >> /etc/install-houaphan.conf.d/cards.conf
     # echo "logdir /var/log/pkgbuild" >> /etc/install-houaphan.conf.d/cards.conf
 
 #### 4. Install a bare NuTyX (assume below the user is 'tnut' so adapt to yours)
