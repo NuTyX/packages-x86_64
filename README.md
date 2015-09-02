@@ -51,9 +51,9 @@ Contributions are welcome
     # get git
     # bash scripts/mate
 
-It will print a help included point 1,7 and 8 above. Note that it's even possible to get the available binaries from the mirror.
+It will print a help including points 1,7 and 8 above. Note that it's even possible to get the available binaries from the mirror.
 
-#### 11. If everything is OK, check with cards level whats new
+#### 11. If everything is OK, check with cards level what's new
 
     # cards level
 
