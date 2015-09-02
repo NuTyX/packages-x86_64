@@ -18,7 +18,7 @@
 #
 # Todo:
 #*******************************************************************************
-VERSION=8.0.20150901
+VERSION=8.0.20150902
 boot_mesg() {
         local ECHOPARM=""
 
@@ -1293,9 +1293,9 @@ update_fstab() {
 if [ "$MIG" == "0" ]; then
         echo "$1     /    $2    defaults   0   1" >> ${MountFolder}/etc/fstab
 fi
-if [ -f /etc/resolv.conf ]; then
-        cp /etc/resolv.conf ${MountFolder}/etc
-fi
+}
+install_resolv_conf() {
+[ -f /etc/resolv.conf ] && cp /etc/resolv.conf ${MountFolder}/etc
 }
 umount_all() {
 if [ "$MIG" == "0" ]; then
@@ -1502,8 +1502,8 @@ check_mountfolder() {
 generate_setupfile() {
 echo "#!/bin/bash
 source /etc/profile
-/bin/cards sync
-/bin/cards install e2fsprogs \
+cards sync
+cards install e2fsprogs \
 reiserfsprogs \
 xfsprogs jfsutils \
 btrfs-progs sudo \
@@ -1644,6 +1644,7 @@ example: install-$version /chroot
 	install_base
 
 	install_configuration_files
+	install_resolv_conf
 	generate_setupfile
 	update_fstab
 	end
