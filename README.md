@@ -35,7 +35,7 @@ Contributions are welcome
 
     # mkdir /root/mate
 
-#### 8. Exit and mount your git project (asume below the user is 'tnut') adapt to yours
+#### 8. Exit and mount your git project (assume below the user is 'tnut' so adapt to yours)
 
     # exit
     # mount -o bind /home/tnut/mate /mnt/lfs/root/mate
