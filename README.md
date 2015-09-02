@@ -17,7 +17,7 @@ Contributions are welcome
     $ su -
     # echo "LFS=/mnt/lfs" > /etc/install-houaphan.conf
     # echo "DEPOT=/houaphan" >> /etc/install-houaphan.conf
-    # mkdir -p /etc/install-houaphan.conf/cards.conf
+    # mkdir -p /etc/install-houaphan.conf
     # echo "dir /houaphan/mate" > /etc/install-houaphan.conf/cards.conf
     # echo "dir /houaphan/graphic" >> /etc/install-houaphan.conf/cards.conf
     # echo "dir /houaphan/console >> /etc/install-houaphan.conf/cards.conf
