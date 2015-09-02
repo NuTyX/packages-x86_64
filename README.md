@@ -15,17 +15,17 @@ Contributions are welcome
  The script is checking the files /etc/install-houaphan.conf and /etc/install-houaphan.conf.d/cards.conf if they exist, if yes it will use them, so:
 
     $ su -
-    # echo "LFS=/mnt/lfs
-DEPOT=/houaphan" > /etc/install-houaphan.conf
-    # mkdir -p /etc/install-houaphan.conf.d
-    # echo "dir /houaphan/mate
-      dir /houaphan/graphic
-      dir /houaphan/console
-      dir /houaphan/base|http://downloads.nutyx.org
-      dir /houaphan/base-extra|http://downloads.nutyx.org
-      base /houaphan/base
-      base /houaphan/base-extra
-      logdir /var/log/pkgbuild" > /etc/install-houaphan.conf.d/cards.conf
+    # echo "LFS=/mnt/lfs" > /etc/install-houaphan.conf
+    # echo "DEPOT=/houaphan" >> /etc/install-houaphan.conf
+    # mkdir -p /etc/install
+    # echo "dir /houaphan/mate" > /etc/install-houaphan.conf/cards.conf
+    # echo "dir /houaphan/graphic" >> /etc/install-houaphan.conf/cards.conf
+    # echo "dir /houaphan/console >> /etc/install-houaphan.conf/cards.conf
+    # echo "dir /houaphan/base|http://downloads.nutyx.org >> /etc/install-houaphan.conf/cards.conf
+    # echo "dir /houaphan/base-extra|http://downloads.nutyx.org >> /etc/install-houaphan.conf/cards.conf
+    # echo "base /houaphan/base >> /etc/install-houaphan.conf/cards.conf
+    # echo "base /houaphan/base-extra >> /etc/install-houaphan.conf/cards.conf
+    # echo "logdir /var/log/pkgbuild" >> /etc/install-houaphan.conf.d/cards.conf
 
 #### 4. Install a bare NuTyX (assume below the user is 'tnut' so adapt to yours)
 
