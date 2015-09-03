@@ -1,20 +1,25 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: kf5-kdelibs4support kf5-knewstuff plasma-libksysguard lm-sensors 
+# Depends on: plasma-libksysguard kf5-kcompletion kf5-kconfig kf5-kconfigwidgets kf5-kcoreaddons kf5-kdbusaddons kf5-kdelibs4support kf5-ki18n kf5-kiconthemes kf5-kio kf5-kitemviews kf5-knewstuff kf5-knotifications kf5-kwidgetsaddons kf5-kwindowsystem kf5-kxmlgui lm-sensors
+
+run=(lm-sensors) 
 
 _name=ksysguard
-release=1
+release=2
 
 build() {
 cd ${_name}-$version
 mkdir build
 cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_BUILD_TYPE=Release  \
-      -DLIB_INSTALL_DIR=lib       \
-      -DBUILD_TESTING=OFF         \
-      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
+cmake -DCMAKE_INSTALL_PREFIX=/usr             \
+      -DCMAKE_BUILD_TYPE=Release              \
+      -DLIB_INSTALL_DIR=lib                   \
+      -DBUILD_TESTING=OFF                     \
+      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
+      -DQML_INSTALL_DIR=lib/qt5/qml           \
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
+      -Wno-dev ..
 make
 make DESTDIR=$PKG install
 }
