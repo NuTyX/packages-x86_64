@@ -283,7 +283,7 @@ remove_url () {
 	fi
 }
 build_binaries () {
-	for i in `cards level -I |grep ${BINARY_BASE}|cut -d " " -f2`
+	for i in `cards level -I |grep /${BINARY_BASE}/|cut -d " " -f2`
 	do
 		bash scripts/$COLLECTION `basename $i`|| exit 1
 	done
