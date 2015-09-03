@@ -1,10 +1,10 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: kf5-extra-cmake-modules plasma-workspace pulseaudio  
+# Depends on: kf5-plasma-framework kf5-kcoreaddons kf5-kdeclarative kf5-kglobalaccel kf5-ki18n pulseaudio 
 
 _name=plasma-pa
-release=1
+release=2
 
 build() {
 cd $name-$version
@@ -16,7 +16,8 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DBUILD_TESTING=OFF                     \
       -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
       -DQML_INSTALL_DIR=lib/qt5/qml           \
-      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
+      -Wno-dev ..
 make
 make DESTDIR=$PKG install
 }
