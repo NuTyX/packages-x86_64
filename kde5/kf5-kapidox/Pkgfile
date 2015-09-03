@@ -1,18 +1,19 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: kf5-attica
+# Depends on: kf5-attica doxygen python-pyyaml
 
 _name=kapidox
-release=1
+release=2
 
 build() {
 cd ${_name}-$version
 mkdir build
 cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_BUILD_TYPE=Release  \
-      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
+cmake -DCMAKE_INSTALL_PREFIX=/usr       \
+      -DCMAKE_BUILD_TYPE=Release        \
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+      -Wno-dev ..
 make
 make DESTDIR=$PKG install
 }
