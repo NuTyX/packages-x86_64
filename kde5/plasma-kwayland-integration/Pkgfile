@@ -1,10 +1,10 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: cmake kf5-extra-cmake-modules qt5 wayland plasma-kwayland kf5-kwindowsystem
+# Depends on: cmake kf5-extra-cmake-modules wayland plasma-kwayland kf5-kwindowsystem kf5-kidletime
 
 _name=kwayland-integration
-release=1
+release=2
 
 build() {
 cd ${_name}-$version
@@ -15,7 +15,8 @@ cmake -DCMAKE_BUILD_TYPE=Release        \
       -DLIB_INSTALL_DIR=lib             \
       -DSYSCONF_INSTALL_DIR=/etc        \
       -DBUILD_TESTING=OFF               \
-      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+      -Wno-dev ..
 
 make
 make DESTDIR=$PKG install
