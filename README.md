@@ -1,4 +1,4 @@
-## Ports for constructing the 'kde' and 'kde-extra' collections
+## Ports for constructing the 'kde5' and 'kde5-extra' collections
 
 Contributions are welcome. If you don't know what it all about, please take the time to read the documentation at
 http://www.nutyx.org/en/build-package.html
@@ -12,7 +12,7 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 #### 1. Clone it in your home directory
 
     $ cd
-    $ git clone git://github.com/NuTyX/kde.git
+    $ git clone git://github.com/NuTyX/kde5.git
     $ git clone git://github.com/NuTyX/houaphan.git
 
 #### 2. Become root until the end, define and create the directory used by the scripts:
@@ -24,7 +24,7 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
     DEPOT=/houaphan" > /etc/install-houaphan.conf
     # mkdir -p /etc/install-houaphan.conf.d
     # cat > /etc/install-houaphan.conf.d/cards.conf << "EOF"
-    dir /houaphan/kde
+    dir /houaphan/kde5
     dir /houaphan/graphic
     dir /houaphan/console
     dir /houaphan/base|http://downloads.nutyx.org
@@ -40,11 +40,11 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
 #### 4. In your chroot Make the directory where the git copy will comes
 
-    # mkdir -v /mnt/lfs/root/{houaphan,kde}
+    # mkdir -v /mnt/lfs/root/{houaphan,kde5}
 
 #### 5. Mount your git project (assume below the user is 'tnut' so adapt to yours)
 
-    # mount -o bind /home/tnut/kde /mnt/lfs/root/kde
+    # mount -o bind /home/tnut/kde5 /mnt/lfs/root/kde5
     # mount -o bind /home/tnut/houaphan /mnt/lfs/root/houaphan
 
 #### 6. Enter now in your chroot
@@ -62,10 +62,10 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
     # bash scripts/console -s
     # bash scripts/graphic -s
     
-#### 9. If everything is OK, synchronize the 'kde' collection binaries 
+#### 9. If everything is OK, synchronize the 'kde5' collection binaries 
 
-    # cd /root/kde
-    # bash scripts/kde -s
+    # cd /root/kde5
+    # bash scripts/kde5 -s
 
 #### 10. If everything is OK, check with cards level what's new
 
@@ -73,18 +73,18 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
  It should shows all the packages available.
 
-#### 11. If you want to build the 'kde' collection from the sources
+#### 11. If you want to build the 'kde5' collection from the sources
 
-    # bash scripts/kde -a
+    # bash scripts/kde5 -a
 
-#### 12. If you want to build the 'kde-extra' collection from the sources, add the proper line in top of the cards.conf file like this:
+#### 12. If you want to build the 'kde5-extra' collection from the sources, add the proper line in top of the cards.conf file like this:
 
-    dir /houaphan/kde-extra
+    dir /houaphan/kde5-extra
 
- then you are ready to compile the 'kde-extra' collection
+ then you are ready to compile the 'kde5-extra' collection
 
-    # cd /root/kde-extra
-    # bash scripts/kde-extra -s
-    # bash scripts/kde-extra -a 
+    # cd /root/kde5-extra
+    # bash scripts/kde5-extra -s
+    # bash scripts/kde5-extra -a 
 
 Have fun :)
