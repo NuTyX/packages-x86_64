@@ -1,9 +1,10 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: kf5-frameworkintegration plasma-kdecoration 
+# Depends on: kf5-frameworkintegration kf5-kcmutils kf5-kcompletion kf5-kconfig kf5-kconfigwidgets kf5-kcoreaddons kf5-kguiaddons kf5-ki18n kf5-kwidgetsaddons kf5-kwindowsystem plasma-kdecoration libxcb
+
 _name=oxygen
-release=1
+release=2
 
 build() {
 cd ${_name}-$version
@@ -13,7 +14,8 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DCMAKE_BUILD_TYPE=Release              \
       -DBUILD_TESTING=OFF                     \
       -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
-      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
+      -Wno-dev ..
 make
 make DESTDIR=$PKG install
 }
