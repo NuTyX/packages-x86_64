@@ -1,39 +1,91 @@
-NuTyX est une distribution GNU/Linux pour systèmes 32 bits (i686) et 64 bits (x86_64).
-Sa construction est basée sur la documentation en ligne disponible sur http://www.linuxfromscratch.org.
-L'objectif de NuTyX est de permettre à ses utilisateurs d'être le plus rapidement possible autonomes.
-Le nombre de paquets est volontairement limité. Les environnement graphiques disponibles sont: XFCE, KDE, LXQT, LXDE, Mate, Cinnamon, GNOME.
+## Ports for constructing the 'base-extra' 'console-extra and 'graphic-extra' collections
 
-NuTyX utilise son propre gestionnaire de paquets "cards". Sa particularité: gérer de façon autonome 
-les dépendances de fonctionnement. Cela signifie que l'empaqueteur ne doit pas s'en soucier lors de
-la création d'un paquet. Dans 99 % des cas, seul les dépendances de compilation suffisent. Comme chaque
-paquet est compilé à partir d'un système de base, aucune dépendance superflue ne sera ajoutée lors
-de l'installation du binaire.
+Contributions are welcome. If you don't know what it all about, please take the time to read the documentation at
+http://www.nutyx.org/en/build-package.html
+(version française)
+http://www.nutyx.org/fr/build-package.html
 
-La syntaxe d'une recette d'un paquet est très proche de celle de la distribution CRUX. Le gestionnaire
-de paquet étant au départ le même. 
+It will explain you what's a collection, a git, a port, the tools around 'cards' etc
 
-Sous NuTyX, une collection de paquets / de ports correspond à un ensemble de paquets ou de ports interdépendants.
-Par défaut, il y a 3 collections:
+### How to test this git:
 
-- base qui comprend l'ensemble des paquets /ports  qui constituent un système minimal utilisable avec tous les
-outils de développement nécessaire.
+#### 1. Clone it in your home directory
 
-- console consiste à l'ensemble des paquets / ports pour se construire un serveur ou une box SANS interface graphique.
+    $ cd
+    $ git clone git://github.com/NuTyX/extra.git
+    $ git clone git://github.com/NuTyX/houaphan.git
 
-- graphic comprend tous les paquets / ports necessaire au bon fonctionnement d'un environnement graphique.
+#### 2. Become root until the end, define and create the directory used by the scripts:
 
-Ces trois collections fondamentales, dépendent l'une de l'autre dans le sens:
+ The script is checking the files /etc/install-houaphan.conf and /etc/install-houaphan.conf.d/cards.conf if they exist, if yes it will use them, so:
 
-graphic -> console -> base
+    $ su -
+    # echo "LFS=/mnt/lfs
+    DEPOT=/houaphan" > /etc/install-houaphan.conf
+    # mkdir -p /etc/install-houaphan.conf.d
+    # cat > /etc/install-houaphan.conf.d/cards.conf << "EOF"
+    dir /houaphan/graphic
+    dir /houaphan/console
+    dir /houaphan/base|http://downloads.nutyx.org
+    dir /houaphan/base-extra|http://downloads.nutyx.org
+    base /houaphan/base
+    base /houaphan/base-extra
+    logdir /var/log/pkgbuild
+    EOF
 
+#### 3. Install a base NuTyX system (assume below the user is 'tnut' so adapt to yours)
 
-Ce git reprend les ports qui ne sont pas indispensables, mais qui permettent d'avoir un système d'exploitation plus complet
-que ce soit pour un système de base, un système fonctionnant uniquemnent en console ou un système graphique complet.
+    # bash /home/tnut/houaphan/scripts/install-houaphan
 
-- Les ports qui se trouvent dans CE GIT sous le dossier base dépendent de la collection "base" de NuTyX 8.X
-- Les ports qui se trouvent dans CE GIT sous le dossier console dépendent des collections "base" et "console" de NuTyX 8.X
-- Les ports qui se trouvent dans CE GIT sous le dossier graphic dépendent des collections "base", "console" et "graphic" de NuTyX 8.X
+#### 4. In your chroot Make the directory where the git copy will comes
 
-Sous NuTyX, on parle de "scénario" pour expliquer le choix d'utilisation de cette dernière. On peut très bien
-n'utiliser que les binaires proposés dans les trois collections mentionnées ci-dessus, n'utiliser que la collection de
-base et ses propres recettes, ou un mélange.
+    # mkdir -v /mnt/lfs/root/{houaphan,extra}
+
+#### 5. Mount your git project (assume below the user is 'tnut' so adapt to yours)
+
+    # mount -o bind /home/tnut/extra /mnt/lfs/root/extra
+    # mount -o bind /home/tnut/houaphan /mnt/lfs/root/houaphan
+
+#### 6. Enter now in your chroot
+
+    # bash /home/tnut/houaphan/scripts/install-houaphan -ec
+
+#### 7. Prepare the first execution of the build script
+
+    # get cards.devel wget vim rsync git tar
+ 
+#### 8. If everything is OK, synchronize the  houaphan 'base', 'console' and 'graphic' collections binaries
+
+    # cd /root/houaphan
+    # bash scripts/base -s
+    # bash scripts/console -s
+    # bash scripts/graphic -s
+    
+#### 9. If everything is OK, synchronize the 'base-extra' collection binaries 
+
+    # cd /root/extra
+    # bash scripts/base-extra -s
+
+#### 10. If everything is OK, check with cards level what's new
+
+    # cards level
+
+ It should shows all the packages available.
+
+#### 11. If you want to build the 'kde' collection from the sources
+
+    # bash scripts/base-extra -a
+
+#### 12. If you want to build the 'console-extra' collection from the sources, add the proper line in top of the cards.conf file like this:
+
+    dir /houaphan/console-extra
+
+ then you are ready to compile the 'console-extra' collection
+
+    # cd /root/console-extra
+    # bash scripts/console-extra -s
+    # bash scripts/console-extra -a
+
+#### 12. If you want to build the 'graphic-extra' collection from the sources, repeat step 12 but for the 'graphic-extra' collection
+
+Have fun :)
