@@ -1,10 +1,10 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: kf5-knotifications polkit-qt5 
+# Depends on: kf5-kcoreaddons kf5-kcrash kf5-kdbusaddons kf5-ki18n kf5-knotifications kf5-kwidgetsaddons kf5-kwindowsystem kf5-kiconthemes polkit-qt5 
 
 _name=polkit-kde-agent
-release=1
+release=2
 
 source=(http://download.kde.org/stable/plasma/${version}/${_name}-1-$version.tar.xz)
 
@@ -16,7 +16,9 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DCMAKE_BUILD_TYPE=Release              \
       -DLIB_INSTALL_DIR=lib                   \
       -DBUILD_TESTING=OFF                     \
-      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
+      -DLIBEXEC_INSTALL_DIR=lib/polkit-kde    \
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
+      -Wno-dev  ..
 make
 make DESTDIR=$PKG install
 }
