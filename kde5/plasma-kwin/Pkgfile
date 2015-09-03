@@ -1,10 +1,12 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on:  plasma-kdecoration kf5-kinit kf5-knewstuff kf5-plasma-framework  plasma-kwayland xorg-mesa libinput xcb-util-cursor 
+# Depends on: kf5-kactivities kf5-kauth kf5-kcmutils kf5-kcompletion kf5-kconfig kf5-kconfigwidgets kf5-kcoreaddons kf5-kcrash kf5-kdeclarative kf5-kglobalaccel kf5-ki18n kf5-kiconthemes kf5-kinit kf5-kio kf5-knewstuff kf5-knotifications kf5-kpackage kf5-kservice kf5-kwidgetsaddons kf5-kwindowsystem kf5-kxmlgui kf5-plasma-framework plasma-kdecoration libepoxy libxcb xcb-util-cursor xcb-util-image xcb-util-keysyms plasma-kwayland libinput eudev plasma-kde-cli-tools xorg-mesa
+
+run=(libepoxy libxcb xcb-util-cursor xcb-util-image xcb-util-keysyms libinput eudev) 
 
 _name=kwin
-release=1
+release=2
 
 build() {
 cd ${_name}-$version
@@ -16,7 +18,8 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DBUILD_TESTING=OFF                     \
       -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
       -DQML_INSTALL_DIR=lib/qt5/qml           \
-      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
+      -Wno-dev ..
 make
 make DESTDIR=$PKG install
 }
