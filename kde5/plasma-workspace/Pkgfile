@@ -1,12 +1,12 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: consolekit kf5-baloo kf5-kdesu kf5-kdewebkit kf5-kjsembed kf5-knotifyconfig kf5-krunner plasma-kwin kf5-kxmlrpcclient plasma-libkscreen plasma-libksysguard kf5-networkmanager-qt kf5-ktexteditor plasma-kwayland libdbusmenu-qt5 kio-extras
+# Depends on: consolekit kf5-baloo kf5-kdesu kf5-kdewebkit kf5-kjsembed kf5-knotifyconfig kf5-krunner plasma-kwin kf5-kxmlrpcclient plasma-libkscreen plasma-libksysguard kf5-networkmanager-qt kf5-ktexteditor plasma-kwayland libdbusmenu-qt5 kio-extras kf5-kactivities
 
 run=(kio-extras)
 
 _name=plasma-workspace
-release=1
+release=2
 
 build() {
 cd $name-$version
@@ -18,7 +18,8 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DBUILD_TESTING=OFF                     \
       -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
       -DQML_INSTALL_DIR=lib/qt5/qml           \
-      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
+      -Wno-dev ..
 make
 make DESTDIR=$PKG install
 
