@@ -1,6 +1,11 @@
-## Ports for constructing the 'mate' collection
+## Ports for constructing the 'mate' and 'mate-extra' collections
 
-Contributions are welcome
+Contributions are welcome. If you don't know what it all about, please take the time to read the documentation at
+http://www.nutyx.org/en/build-package.html
+(version française)
+http://www.nutyx.org/fr/build-package.html
+
+It will explain you what's a collection, a git, a port, the tools around 'cards' etc
 
 ### How to test this git:
 
@@ -29,50 +34,50 @@ Contributions are welcome
     logdir /var/log/pkgbuild
     EOF
 
-#### 4. Install a bare NuTyX (assume below the user is 'tnut' so adapt to yours)
+#### 3. Install a base NuTyX system (assume below the user is 'tnut' so adapt to yours)
 
     # bash /home/tnut/houaphan/scripts/install-houaphan
 
-#### 5. In your chroot Make the directory where the git copy will comes
+#### 4. In your chroot Make the directory where the git copy will comes
 
     # mkdir -v /mnt/lfs/root/{houaphan,mate}
 
-#### 6. Mount your git project (assume below the user is 'tnut' so adapt to yours)
+#### 5. Mount your git project (assume below the user is 'tnut' so adapt to yours)
 
     # mount -o bind /home/tnut/mate /mnt/lfs/root/mate
     # mount -o bind /home/tnut/houaphan /mnt/lfs/root/houaphan
 
-#### 7. Enter now in your chroot
+#### 6. Enter now in your chroot
 
     # bash /home/tnut/houaphan/scripts/install-houaphan -ec
 
-#### 8. Prepare the first execution of the build script
+#### 7. Prepare the first execution of the build script
 
     # get cards.devel wget vim rsync git tar
  
-#### 9. If everything is OK, synchronize the bare houaphan binaries
+#### 8. If everything is OK, synchronize the  houaphan 'base', 'console' and 'graphic' collections binaries
 
     # cd /root/houaphan
     # bash scripts/base -s
     # bash scripts/console -s
     # bash scripts/graphic -s
     
-#### 10. If everything is OK, synchronize the mate binaries and mate-extra binaries
+#### 9. If everything is OK, synchronize the 'mate' collection binaries 
 
     # cd /root/mate
     # bash scripts/mate -s
 
-#### 11. If everything is OK, check with cards level what's new
+#### 10. If everything is OK, check with cards level what's new
 
     # cards level
 
- It should shows all the packages available
+ It should shows all the packages available.
 
-#### 12. If you want to build mate from the sources
+#### 11. If you want to build the 'mate' collection from the sources
 
     # bash scripts/mate -a
 
-#### 13. If you want to build the 'mate-extra' from the sources, add the proper line in top of the cards.conf file like this:
+#### 12. If you want to build the 'mate-extra' collection from the sources, add the proper line in top of the cards.conf file like this:
 
     dir /houaphan/mate-extra
 
