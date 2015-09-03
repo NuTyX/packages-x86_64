@@ -1,9 +1,10 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: kf5-kdoctools
+# Depends on: kf5-kcoreaddons kf5-ki18n
+
 _name=kpty
-release=1
+release=2
 
 build() {
 cd ${_name}-$version
@@ -15,7 +16,8 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DBUILD_TESTING=OFF                     \
       -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
       -DQML_INSTALL_DIR=lib/qt5/qml           \
-      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
+      -Wno-dev ..
 make
 make DESTDIR=$PKG install
 }
