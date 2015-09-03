@@ -72,7 +72,7 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
  It should shows all the packages available.
 
-#### 11. If you want to build the 'kde' collection from the sources
+#### 11. If you want to build the 'base-extra' collection from the sources
 
     # bash scripts/base-extra -a
 
@@ -82,7 +82,7 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
  then you are ready to compile the 'console-extra' collection
 
-    # cd /root/console-extra
+    # cd /root/extra
     # bash scripts/console-extra -s
     # bash scripts/console-extra -a
 
