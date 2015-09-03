@@ -15,17 +15,19 @@ Contributions are welcome
  The script is checking the files /etc/install-houaphan.conf and /etc/install-houaphan.conf.d/cards.conf if they exist, if yes it will use them, so:
 
     $ su -
-    # echo "LFS=/mnt/lfs" > /etc/install-houaphan.conf
-    # echo "DEPOT=/houaphan" >> /etc/install-houaphan.conf
+    # echo "LFS=/mnt/lfs
+    DEPOT=/houaphan" > /etc/install-houaphan.conf
     # mkdir -p /etc/install-houaphan.conf.d
-    # echo "dir /houaphan/mate" > /etc/install-houaphan.conf.d/cards.conf
-    # echo "dir /houaphan/graphic" >> /etc/install-houaphan.conf.d/cards.conf
-    # echo "dir /houaphan/console >> /etc/install-houaphan.conf.d/cards.conf
-    # echo "dir /houaphan/base|http://downloads.nutyx.org >> /etc/install-houaphan.conf.d/cards.conf
-    # echo "dir /houaphan/base-extra|http://downloads.nutyx.org >> /etc/install-houaphan.conf.d/cards.conf
-    # echo "base /houaphan/base >> /etc/install-houaphan.conf.d/cards.conf
-    # echo "base /houaphan/base-extra >> /etc/install-houaphan.conf.d/cards.conf
-    # echo "logdir /var/log/pkgbuild" >> /etc/install-houaphan.conf.d/cards.conf
+    # cat > /etc/install-houaphan.conf.d/cards.conf << "EOF"
+    dir /houaphan/mate
+    dir /houaphan/graphic
+    dir /houaphan/console
+    dir /houaphan/base|http://downloads.nutyx.org
+    dir /houaphan/base-extra|http://downloads.nutyx.org
+    base /houaphan/base
+    base /houaphan/base-extra
+    logdir /var/log/pkgbuild
+    EOF
 
 #### 4. Install a bare NuTyX (assume below the user is 'tnut' so adapt to yours)
 
@@ -72,7 +74,7 @@ Contributions are welcome
 
 #### 13. If you want to build the 'mate-extra' from the sources, add the proper line in top of the cards.conf file like this:
 
-  dir /houaphan/mate-extra
+    dir /houaphan/mate-extra
 
  then you are ready to compile the 'mate-extra' collection
 
