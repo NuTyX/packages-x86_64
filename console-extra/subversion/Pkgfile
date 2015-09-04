@@ -4,7 +4,7 @@
 # Depends on: apr-util neon expat sqlite db cyrus-sasl 
 
 name=subversion
-version=1.8.11
+version=1.9.1
 release=1
 
 source=(http://archive.apache.org/dist/$name/$name-$version.tar.bz2)
@@ -14,8 +14,6 @@ unset MAKEFLAGS
 cd $name-$version
 ./configure --prefix=/usr \
 	--disable-static
-
-#sed -i 's#Makefile.PL.in$#& libsvn_swig_perl#' Makefile.in
 make
 make DESTDIR=$PKG install
 }
