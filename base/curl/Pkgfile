@@ -6,7 +6,7 @@
 
 name=curl
 version=7.44.0
-release=1
+release=2
 
 source=(http://curl.haxx.se/download/$name-$version.tar.bz2)
 
@@ -23,18 +23,18 @@ make DESTDIR=$PKG install
 
 # reorganise the libs
 mkdir $PKG/lib
-mv $PKG/usr/lib/libcurl.so.4.3.0 \
+mv $PKG/usr/lib/libcurl.so.4.4.0 \
 $PKG/lib/
 for LIB in libcurl.so{,.4}
 	do 
-		ln -sv libcurl.so.4.3.0 $PKG/lib/$LIB
+		ln -sv libcurl.so.4.4.0 $PKG/lib/$LIB
 		rm $PKG/usr/lib/$LIB
-		ln -sv ../../lib/libcurl.so.4.3.0 \
+		ln -sv ../../lib/libcurl.so.4.4.0 \
 		$PKG/usr/lib/$LIB
 done
 
-ln -sv ../../lib/libcurl.so.4.3.0 \
-$PKG/usr/lib/libcurl.so.4.3.0
+ln -sv ../../lib/libcurl.so.4.4.0 \
+$PKG/usr/lib/libcurl.so.4.4.0
 
 }
 devel() {
