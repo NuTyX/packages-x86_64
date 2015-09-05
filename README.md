@@ -22,6 +22,7 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
     $ su -
     # echo "LFS=/mnt/lfs
     DEPOT=/houaphan" > /etc/install-houaphan.conf
+    # mkdir -p /mnt/lfs
     # mkdir -p /etc/install-houaphan.conf.d
     # cat > /etc/install-houaphan.conf.d/cards.conf << "EOF"
     dir /houaphan/mate
