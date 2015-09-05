@@ -112,7 +112,7 @@ check_diff()
 	output_sorted=`mktemp` || exit 1
 	found="no"
 
-	cards list -p | grep -v ^Number >> $binaries_list
+	cards list -p|grep $BINARY_BASE|sed "s@$BINARY_BASE/@@" >> $binaries_list
 	list_ports >> $ports_list
 
 	for binary_package in `cat $binaries_list | gawk '{ print $1 }'`; do
@@ -283,7 +283,7 @@ remove_url () {
 	fi
 }
 build_binaries () {
-	for i in `cards level -I |grep ${BINARY_BASE}|cut -d " " -f2`
+	for i in `cards level -I |grep ${BINARY_BASE}/|cut -d " " -f2`
 	do
 		bash scripts/$COLLECTION `basename $i`|| exit 1
 	done
