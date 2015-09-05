@@ -5,15 +5,21 @@
 
 name=owncloud-cli
 release=1
-version=2.0.0
+version=2.0.1
 _name=owncloudclient
 
-source=(https://download.owncloud.com/desktop/stable/${_name}-$version.tar.xz)
+source=(https://download.owncloud.com/desktop/stable/${_name}-$version.tar.xz
+       owncloud-cli-fix-tray-icon.patch)
 
 build() {
 
+cd $_name-$version
+patch -p1 -i ../owncloud-cli-fix-tray-icon.patch
+
+cd ../
 mkdir build
 cd    build
+
 cmake ../$_name-$version            \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_INSTALL_LIBDIR=lib  \
