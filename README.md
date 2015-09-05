@@ -1,69 +1,90 @@
-## Ports for constructing kde5
+## Ports for constructing the 'kde5' and 'kde5-extra' collections
 
-Contributions are welcome
+Contributions are welcome. If you don't know what it all about, please take the time to read the documentation at
+http://www.nutyx.org/en/build-package.html
+(version française)
+http://www.nutyx.org/fr/build-package.html
+
+It will explain you what's a collection, a git, a port, the tools around 'cards' etc
 
 ### How to test this git:
 
 #### 1. Clone it in your home directory
 
-    # git clone git://github.com/NuTyX/kde5.git
+    $ cd
+    $ git clone git://github.com/NuTyX/kde5.git
+    $ git clone git://github.com/NuTyX/houaphan.git
 
-#### 2. Get the script to Install a bare houaphan NuTyX:
+#### 2. Become root until the end, define and create the directory used by the scripts:
 
-    # export LFS=/mnt/lfs
-    # mkdir $LFS
-    # wget http://downloads.nutyx.org/install-houaphan{,.md5sum}
-    # wget http://downloads.nutyx.org/enter-chroot{,.md5sum}
+ The script is checking the files /etc/install-houaphan.conf and /etc/install-houaphan.conf.d/cards.conf if they exist, if yes it will use them, so:
 
-#### 3. Check the validity of the scripts:
+    $ su -
+    # echo "LFS=/mnt/lfs
+    DEPOT=/houaphan" > /etc/install-houaphan.conf
+    # mkdir -p /etc/install-houaphan.conf.d
+    # cat > /etc/install-houaphan.conf.d/cards.conf << "EOF"
+    dir /houaphan/kde5
+    dir /houaphan/graphic
+    dir /houaphan/console
+    dir /houaphan/base|http://downloads.nutyx.org
+    dir /houaphan/base-extra|http://downloads.nutyx.org
+    base /houaphan/base
+    base /houaphan/base-extra
+    logdir /var/log/pkgbuild
+    EOF
 
-    # md5sum -c install-houaphan.md5sum
+#### 3. Install a base NuTyX system (assume below the user is 'tnut' so adapt to yours)
 
-   install-houaphan: OK
+    # bash /home/tnut/houaphan/scripts/install-houaphan
 
-    # md5sum -c enter-chroot.md5sum
+#### 4. In your chroot Make the directory where the git copy will comes
 
-   enter-chroot: OK
+    # mkdir -v /mnt/lfs/root/{houaphan,kde5}
 
-#### 4. Install a bare NuTyX
-
-    # bash install-houaphan
-
-#### 5. Enter in the chroot NuTyX
-
-    # bash enter-chroot
-
-#### 6. As it says review and adjust cards.conf to your needs.
-
-    # check
-    # get vim
-    # vim /etc/cards.conf
-
-
-#### 7. In your chroot Make the directory where the git copy will comes
-
-    # mkdir /root/kde5
-
-#### 8. Exit and mount your git project (asume below the user is 'tnut') adapt to yours
+#### 5. Mount your git project (assume below the user is 'tnut' so adapt to yours)
 
     # mount -o bind /home/tnut/kde5 /mnt/lfs/root/kde5
+    # mount -o bind /home/tnut/houaphan /mnt/lfs/root/houaphan
 
-#### 9. Enter again in your chroot
+#### 6. Enter now in your chroot
 
-    # bash enter-chroot
+    # bash /home/tnut/houaphan/scripts/install-houaphan -ec
+
+#### 7. Prepare the first execution of the build script
+
+    # get cards.devel wget vim rsync git tar
+ 
+#### 8. If everything is OK, synchronize the  houaphan 'base', 'console' and 'graphic' collections binaries
+
+    # cd /root/houaphan
+    # bash scripts/base -s
+    # bash scripts/console -s
+    # bash scripts/graphic -s
+    
+#### 9. If everything is OK, synchronize the 'kde5' collection binaries 
+
     # cd /root/kde5
+    # bash scripts/kde5 -s
 
-#### 10. You can now try the following command:
-
-    # bash scripts/kde5
-
-It will print a help included point 1,7 and 8 above. Note that it's even possible to get the available binaries from the mirror.
-
-
-#### 11. If everything is OK, check with cards level whats new
+#### 10. If everything is OK, check with cards level what's new
 
     # cards level
 
-#### 12. TO BE CONTINUED ...
+ It should shows all the packages available.
+
+#### 11. If you want to build the 'kde5' collection from the sources
+
+    # bash scripts/kde5 -a
+
+#### 12. If you want to build the 'kde5-extra' collection from the sources, add the proper line in top of the cards.conf file like this:
+
+    dir /houaphan/kde5-extra
+
+ then you are ready to compile the 'kde5-extra' collection
+
+    # cd /root/kde5-extra
+    # bash scripts/kde5-extra -s
+    # bash scripts/kde5-extra -a 
 
 Have fun :)
