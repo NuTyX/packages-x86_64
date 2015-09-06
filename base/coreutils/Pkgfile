@@ -5,7 +5,7 @@
 
 name=coreutils
 version=8.24
-release=1
+release=2
 
 source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-i18n-1.patch
@@ -15,7 +15,7 @@ build()
 cd $name-$version
 
 patch -Np1 -i ../$name-$version-i18n-1.patch
-touch Makefile.in
+sed -i '/tests\/misc\/sort.pl/ d' Makefile.in
 
 FORCE_UNSAFE_CONFIGURE=1 ./configure --prefix=/usr \
 --libexecdir=/lib --bindir=/bin --sbindir=/sbin \
