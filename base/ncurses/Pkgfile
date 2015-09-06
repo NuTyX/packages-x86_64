@@ -3,16 +3,14 @@
 # Maintainers: Thomas E. Dickey TD,Juergen Pfeifer JPF,Eric S Raymond ESR,Alexander V Lukyanov,Philippe Blain PB,Sven Verdoolaege SV
 # Packager: tnut at nutyx dot org
 name=ncurses
-version=5.9
-release=3
+version=6.0
+release=1
 
-source=(ftp://invisible-island.net/ncurses/ncurses-$version.tar.gz
-	http://www.linuxfromscratch.org/patches/downloads/ncurses/ncurses-5.9-gcc5_buildfixes-1.patch)
+source=(ftp://invisible-island.net/ncurses/ncurses-$version.tar.gz)
 
 build()
 {
 cd ncurses-$version
-patch -Np1 -i ../ncurses-5.9-gcc5_buildfixes-1.patch
 
 sed -i '/LIBTOOL_INSTALL/d' c++/Makefile.in
 
@@ -49,7 +47,7 @@ make distclean
 
 make sources libs
 
-cp -av lib/lib*.so.5* $PKG/lib
+cp -av lib/lib*.so.6* $PKG/lib
 
 rm -rf $PKG/usr/lib/terminfo
 
