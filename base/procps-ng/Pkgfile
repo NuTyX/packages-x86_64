@@ -2,7 +2,7 @@
 # URL: http://procps.sourceforge.net/
 # Packager: pierre at nutyx dot org, tnut at nutyx dot org
 name=procps-ng
-version=3.3.10
+version=3.3.11
 release=1
 
 source=(http://downloads.sourceforge.net/project/$name/Production/$name-$version.tar.xz )
@@ -28,8 +28,4 @@ mkdir -p $PKG/usr/lib
 mv $PKG/lib/pkgconfig \
 $PKG/usr/lib/
 
-mv $PKG/usr/bin/* \
-$PKG/bin/
-
-rm -r $PKG/usr/bin
 }
