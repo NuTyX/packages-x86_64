@@ -1,16 +1,13 @@
-version=2.21
+version=2.22
 source=(\
-http://ftp.gnu.org/gnu/glibc/glibc-$version.tar.xz \
+http://ftp.gnu.org/gnu/glibc/glibc-$version.tar.xz
+  http://www.linuxfromscratch.org/patches/lfs/development/glibc-$version-upstream_i386_fix-1.patch
 )
 
 build()
 {
 cd glibc-$version
-
-
-sed -e '/ia32/s/^/1:/' \
-    -e '/SSE2/s/^1://' \
-    -i  sysdeps/i386/i686/multiarch/mempcpy_chk.S
+patch -Np1 -i ../glibc-$version-upstream_i386_fix-1.patch
 
 mkdir -v ../glibc-build
 cd ../glibc-build
@@ -19,7 +16,7 @@ cd ../glibc-build
 ../glibc-$version/configure  \
       --prefix=/tools                               \
       --host=$LFS_TGT                               \
-      --build=$(../glibc-2.21/scripts/config.guess) \
+      --build=$(../glibc-$version/scripts/config.guess) \
       --disable-profile                             \
       --enable-kernel=2.6.32                        \
       --enable-obsolete-rpc                         \
