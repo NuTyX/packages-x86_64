@@ -4,20 +4,15 @@
 
 name=automake
 version=1.15
-release=1
+release=2
 
 source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz)
 build() {
 cd automake-$version
+sed -i 's:/\\\${:/\\\$\\{:' bin/automake.in
 ./configure --prefix=/usr \
 --docdir=$PKG/usr/share/doc/automake-$version
 make
 make prefix=$PKG/usr install
-cat > $PKG/usr/share/aclocal/dirlist << "EOF"
-/opt/xorg/share/aclocal
-/opt/kde/share/aclocal
-/opt/xfce4/share/aclocal
-/opt/gnome/share/aclocal
-EOF
 rm -rf $PKG/usr/share/info/dir
 }
