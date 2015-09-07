@@ -18,7 +18,7 @@
 #
 # Todo:
 #*******************************************************************************
-VERSION=8.0.20150902
+VERSION=8.0.20150907
 boot_mesg() {
         local ECHOPARM=""
 
@@ -195,7 +195,6 @@ mount -t proc proc ${MountFolder}/proc
 mount -t sysfs sysfs ${MountFolder}/sys
 mount -t tmpfs tmpfs ${MountFolder}/run
 if [ -h ${MountFolder}/dev/shm ]; then
-   rm -f ${MountFolder}/dev/shm
    mkdir -pv ${MountFolder}/$(readlink ${MountFolder}/dev/shm)
 fi
 }
