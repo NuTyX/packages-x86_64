@@ -2,13 +2,14 @@
 # Url: http://wiki.lxde.org/en/LXDM
 # Maintainer: dgod dot osa at gmail dot com
 # Packager: tnut at nutyx dot org
-# Depends on: iso-codes librsvg xorg-libxinerama xorg-libxrandr xorg-libxcursor xorg-libxdamage gtk2 consolekit
+# Depends on: iso-codes librsvg xorg-libxinerama xorg-libxrandr xorg-libxcursor xorg-libxdamage gtk2 consolekit2
+
 PKGMK_GROUPS=()
-run=(consolekit librsvg)
+run=(consolekit2 librsvg)
 
 name=lxdm
 version=0.5.1
-release=1
+release=2
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.xz)
 
 build() {
