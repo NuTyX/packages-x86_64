@@ -22,12 +22,29 @@
             <li><a href="faq.html">FAQ</a></li>
             <li><a href="packages.html">Paquets</a></li>
             <li><a href="http://forum.nutyx.org/index.php?board=10.0">Forum</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
         </ul>
        </nav>
       </td>
      </tr>
     </table>
  <hr>
+  <h1>Le 08-07-2015</h1>
+   <h2>NuTyX Saravane fin de vie</h2>
+    <p>Le concept de rolling release sous NuTyX est un échec total. Etant seul à maintenir et à compiler manuellement les paquets, c'est un travail de titan. Aujourd'hui cela devient tout simplement impossible de suivre tout ce travail seul.</p>
+    <p>Après plusieurs tentatives de maj des binaires proposés sur la NuTyX saravane 15.05, je dois me rendre à l'évidence, c'est un désastre.</p>
+    <p>Je crois que Saravane doit rester en version actuelle (cad 15.05). Les interfaces graphiques KDE 4.14.3 et Xfce4 4.10.1 sont disponible et remplissent parfaitement le boulot.</p>
+   <h2>Un nouveau membre dans l'équipe</h2>
+    <p>Je tiens à remercier John Delport (originaire d'afrique du sud) pour son aide précieuse sur la traduction en anglais des articles. Cela me soulage grandement.</p>
+   <h2>Future de NuTyX</h2>
+    <p>Le développement de la prochaine NuTyX Houaphan a commencé hier soir</p>
+    <p>En grande lignes ce que je peux vous dire, car il y aura (de nouveau) beaucoup de changements. Ce qui est maintenu, c'est en tout cas deux des trois collections actuelles <b>base</b> et <b>desktop</b>. Cette dernière sera probablement renomée en <b>xorg</b>. Je ne sais pas encore si la collection <b>console</b> sera conservée</p>
+    <p>Cards devra être encore dévelopopé. La séparation des dépendances runtime <b>obligatoires</b> et des dépendances runtime <b>optionnelles</b> sera une des nouveautées.</b>
+    <p>Les collections maintenues seront sous divisées en <b> system</b> et <b>extra</b>. Ce qui signifie que les 2 ou 3 collections <b>system</b> seront toujours interdépendantes hierachiquement mais disposeront également d'une collection <b>extra</b></p>
+    <p>Les paquets des collections <b>extra</b> devront impérativement être indépendants des paquets de leur "penchant" <b>system</b>. Ils pourront donc être mis à jour sans problème puisqu'ils ne seront pas des dépendances de la collection <b>system</b>.</p>
+    <p>Les paquets des collections <b>system</b> seront regroupées en un seul paquet de base, sous paquet de developpement, sous paquet de documentation et sous paquet de manuels. Pour les services ce n'est pas encore défini.</p>
+    <p>Les bureaux disponibles ne seront plus dans la collection <b>xorg</b> ou <b>desktop</b>. Ils seront chacun dans une collection dédidée. cad: <b>kde, kf5, gnome, mate, lxde, xfce, etc</b>
+    <p>Le système de maintenance graphique sera rétabli. Il consistera en un système de secours constitué des collections <b>base-system</b> et <b>graphique</b>.</p>
   <h1>Le 15-05-2015</h1>
    <h2>NuTyX saravane 15.05 disponible avec cards 1.0</h2>
    <h3>Introduction pour les plus pressés</h3>

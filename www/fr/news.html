@@ -22,31 +22,94 @@
             <li><a href="faq.html">FAQ</a></li>
             <li><a href="packages.html">Paquets</a></li>
             <li><a href="http://forum.nutyx.org/index.php?board=10.0">Forum</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
         </ul>
        </nav>
       </td>
      </tr>
     </table>
  <hr>
-  <h1>Dernière nouvelle 08-07-2015</h1>
-   <h2>NuTyX Saravane fin de vie</h2>
-    <p>Le concept de rolling release sous NuTyX est un échec total. Etant seul à maintenir et à compiler manuellement les paquets, c'est un travail de titan. Aujourd'hui cela devient tout simplement impossible de suivre tout ce travail seul.</p>
-    <p>Après plusieurs tentatives de maj des binaires proposés sur la NuTyX saravane 15.05, je dois me rendre à l'évidence, c'est un désastre.</p> 
-    <p>Je crois que Saravane doit rester en version actuelle (cad 15.05). Les interfaces graphiques KDE 4.14.3 et Xfce4 4.10.1 sont disponible et remplissent parfaitement le boulot.</p>
-   <h2>Un nouveau membre dans l'équipe</h2>
-    <p>Je tiens à remercier John Delport (originaire d'afrique du sud) pour son aide précieuse sur la traduction en anglais des articles. Cela me soulage grandement.</p>
-   <h2>Future de NuTyX</h2>
-    <p>Le développement de la prochaine NuTyX Houaphan a commencé hier soir</p>
-    <p>En grande lignes ce que je peux vous dire, car il y aura (de nouveau) beaucoup de changements. Ce qui est maintenu, c'est en tout cas deux des trois collections actuelles <b>base</b> et <b>desktop</b>. Cette dernière sera probablement renomée en <b>xorg</b>. Je ne sais pas encore si la collection <b>console</b> sera conservée</p>
-    <p>Cards devra être encore dévelopopé. La séparation des dépendances runtime <b>obligatoires</b> et des dépendances runtime <b>optionnelles</b> sera une des nouveautées.</b>
-    <p>Les collections maintenues seront sous divisées en <b> system</b> et <b>extra</b>. Ce qui signifie que les 2 ou 3 collections <b>system</b> seront toujours interdépendantes hierachiquement mais disposeront également d'une collection <b>extra</b></p>
-    <p>Les paquets des collections <b>extra</b> devront impérativement être indépendants des paquets de leur "penchant" <b>system</b>. Ils pourront donc être mis à jour sans problème puisqu'ils ne seront pas des dépendances de la collection <b>system</b>.</p>
-    <p>Les paquets des collections <b>system</b> seront regroupées en un seul paquet de base, sous paquet de developpement, sous paquet de documentation et sous paquet de manuels. Pour les services ce n'est pas encore défini.</p>
-    <p>Les bureaux disponibles ne seront plus dans la collection <b>xorg</b> ou <b>desktop</b>. Ils seront chacun dans une collection dédidée. cad: <b>kde, kf5, gnome, mate, lxde, xfce, etc</b>
-    <p>Le système de maintenance graphique sera rétabli. Il consistera en un système de secours constitué des collections <b>base-system</b> et <b>graphique</b>.</p>
+  <h1>Dernière nouvelle 08-09-2015</h1>
+   <h2>Pourquoi Saravane n'a pas survécue ?</h2>
+    <ol>
+     <li>Le concept de rolling release sous NuTyX demande beaucoup de travail.</li>
+     <li>Le nombre de collections est trop limité et surtout contient des paquets pas toujours souhaités.</li>
+     <li>L'idée des collections est bonne mais peut être plus développée.</li>
+     <li>L'intégration de kde5 dans la collection 'desktop' est infaisable vu le nombre de recettes qu'elle contient (plus de 120 recettes).</li>
+     <li>C'est très difficile d'ajouter de nouveaux ports, les collections deviennent vite trop grosses en nombre de recettes.</li>
+     <li>Vu le nombre d'interfaces graphiques disponible sous NuTyX se limite à KDE(4) et XFCE(4).</li>
+     <li>La dénomination des collections est mal choisie.</li>
+     <li>La configuration de cards doit être encore simplifiée.</li>
+     <li>La synchronisation des ports via la commande <b>rsync</b> pose de nombreux problèmes.</li>
+     <li>Le script d'installation a perdu beaucoup de fonctionnalitées par rapport aux versions précédentes.</li>
+    </ol>
+   <h2>Quelles sont les nouveautées de NuTyX houaphan actuelles ?</h2>
+    <h3>Les nouvelles collections de ports et de binaires</h3>
+     <p>Le nombre de collection est passé de <b><u>3</u></b> à <b><u>18</u></b>.</p>
+     <p>Les collections <b><i>'base'</i></b> et <b><i>base-extra'</i></b> consistent comme le nom le sous-entend en un système de base et ses applications extra. Le script d'installation extrait et installe tous les paquets qui se trouvent dans la collection <b><i>'base'</i></b>. Une fois terminé, il effectue un 'chroot' dans l'installation pour y ajouter tous les paquets en provenance de la collection <b><i>'base-extra'</i></b>. Une fois terminé, si vous le souhaitez, vous relancez votre machine en choisissant la nouvelle entrée que vous avez préalablement configurée dans le fichier <b>grub.cfg</b>.</p>
+     <p>Les collections <b><i>'cli'</i></b> et <b><i>'cli-extra'</i></b> constituent un ensemble de ports / binaires necessaires pour le fonctionnement de NuTyX en 'ligne de commande uniquement'.</p>
+     <p>Les collections <b><i>'gui'</i></b> et <b><i>'gui-extra'</i></b> constituent un ensemble de ports / binaires necessaires pour le fonctionnement de NuTyX via une 'interface utilisateur graphique'.</p>
+     <p>Chacune des collections <b><i>'base', 'cli' et 'gui'</i></b> possède donc une 'collection' dite <b><i>-extra</i></b>
+     <p>Il y a une différence fondammentale entre, par exemple, la collection <b>'cli'</b> et <b>'cli-extra'</b>: Les ports et binaires contenus dans la collection <b><i>'cli'</i></b> sont quasi figés dans leur version au moment de la sortie de la version NuTyX, alors que les ports et binaires des collections <b><i>-extra</i></b> peuvent être mis à jour à tout moment.</p>
+     <p>Cette technique permet d'isoler le <b>'système central'</b> (cad les collections <b><i>'base'</i></b>, <b><i>'cli'</i></b> et <b><i>'gui'</i></b>) des mises à jour qui peuvent l'être sur les applications <i>"périphériques"</i> contenues dans les collections <b><i>-extra</i></b>.</p>
+     <p>Par conséquent, les applications se trouvant dans les collections <b><i>'base-extra'</i></b>,<b><i>'cli-extra'</i></b> ou <b><i>'gui-extra'</i></b> sont complètement indépendantes du <b>'système central'</b>, techniquement cela signifie qu'aucune dépendances du 'système centrale' ne doit s'y trouver.</p>
+     <p>En plus des interfaces graphiques <b>xfce</b> (collections <b><i>'xfce4'</i></b> et <b><i>'xfce4-extra'</i></b>), <b>kde</b> (collections <b><i>'kde'</i></b> et <b><i>'kde-extra'</i></b>) et <b>openbox</b> déjà disponibles sous saravane, de nouvelles sont désormais maintenues et disponibles en binaires:</p>
+     <p>
+     <ol>
+      <li><b><i>kde5 et kde5-extra</i></b> pour la nouvelle version de kde basée sur la bibliothèque graphique <a href="http://qt.oi">Qt</a> en version 5.</li>
+      <li><b><i>mate</i></b> et <b><i>mate-extra</i></b> pour l'interface graphique basée sur gtk version 2.</li>
+      <li> <b><i>lxde</i></b>, <b><i>lxde-extra</i></b>, <b><i>lxqt</i></b> et <b><i>lxqt-extra</i></b> pour les 2 interfaces graphiques très légères utilisant respectivement les librairies graphiques <a href="http://www.gtk.org">GTK</a> et <a href="http://qt.io>">Qt</a></p></li>
+     </ol>
+     </p>
+     <h3>Le gestionnaire de paquets <b><u>cards</u></b> dans sa version 1.3.1</h3>
+     <p>Cards dans sa version <b>1.3.1</b> permet d'installer un ou plusieurs paquets, une ou plusieurs collections, ou un mélange de paquets et de collections. Si un paquet et une collection portent le même nom, ce sera le paquet (et ses dépendances) qui sera installé.</p>
+     <p>Il ne faut plus spécifier l'architecture de votre machine dans le fichier de configuration de cards. D'autre part, l'adresse URL spécifiant le mirroir de téléchargement est désormais simplifée.</p>
+    <h2>La flexibilité d'une installation NuTyX</h2>
+     <h3>Configuration et scénarios d'installation</h3>
+      <p>Comme dit plus haut, vous avez, actuellement, le choix entre <b>18 collections</b> de ports  / binaires.</p>
+      <p>Il est cependant possible de choisir votre propre scénario d'installation en n'utilisant par exemple (en cas extreme) que les collections <b><i>'base'</i></b> et <b><i>'base-extra'</i></b> et ensuite de construire vos propres paquets à partir (encore un exemple) du site <a href="http://www.linuxfromscratch.org">BLFS</a></p>
+      <p>Si la compilation ne vous attire pas, si vous avez une idée précise sur l'interface graphique que vous souhaitez utiliser, activez juste les collections qui vous intéressent dans le fichier <b>/etc/cards.conf</b> dont voici un exemple pour un usage de <a href="http://www.xfce.org">xfce4</a>:
+      <pre class="output">dir /var/lib/pkg/depot/xfce4-extra|http://downloads.nutyx.org
+dir /var/lib/pkg/depot/xfce4|http://downloads.nutyx.org
+dir /var/lib/pkg/depot/graphic-extra|http://downloads.nutyx.org
+dir /var/lib/pkg/depot/graphic|http://downloads.nutyx.org
+dir /var/lib/pkg/depot/console-extra|http://downloads.nutyx.org
+dir /var/lib/pkg/depot/console|http://downloads.nutyx.org
+dir /var/lib/pkg/depot/base-extra|http://downloads.nutyx.org
+dir /var/lib/pkg/depot/base|http://downloads.nutyx.org
+base /var/lib/pkg/depot/base-extra
+base /var/lib/pkg/depot/base
+locale fr</pre>
+      <p>En effet, il est inutile de spécifier les collections dont vous n'avez pas besoin ( mate, mate-extra, kde, kde-extra, kde5, kde5-extra, ...)
+     <h3>Le script d'installation de NuTyX</h3>
+     <p>Le script <b>bash</b> install-houaphan fonctionne désormais comme une véritable application. Il dispose des options suivantes:</p>
+     <li>Une aide en ligne de commande
+      <pre class="command"><kbd>bash install-houaphan -h</kbd></pre></li>
+     <li>Entrer dans une chroot
+      <pre class="command"><kbd>bash install-houaphan -ec</kbd></pre></li>
+     <li>Installer les fichiers de configuration se trouvant dans le dossier <b>/etc/install-houphan.conf.d/</b>:
+      <pre class="command"><kbd>bash install-houaphan -ic</kbd></pre></li>
+     <li>Installer NuTyX dans un dossier
+      <pre class="command"><kbd>bash install-houaphan -p /mnt/lfs</kbd></pre>
+      <p>Le script va analyser le contenu du fichier <b>/etc/install-houphan.conf</b> si il existe et utiliser les variables définies dans ce dernier. Il n'est alors plus nessecaire de spécifier le chemin:
+      <pre class="command"><kbd>bash install-houaphan</kbd></pre>
+      <p>Actuellement 3 variables sont configurables: le chemin d'installation défini par la variable <b>LFS</b>, l'adresse url où se trouvent les binaires défini par la variable <b>URL</b> et enfin le chemin des binaires téléchargés défini par la variable <b>DEPOT</b>. Voici un exemple complèt du fichier <b>/etc/install-houphan.conf</b>:
+      <pre class="output">URL="http://192.168.254.254"
+DEPOT="/houaphan"
+LFS="/mnt/lfs"</pre>
+</li>
+    <h2>Quelles sont les nouveautées futures de NuTyX houaphan ?</h2>
+     <h3>Quatres nouvelles collections</h3>
+      <p>Si tout se passe comme prévu, notre contributeur fanch devrait nous fournir les collections:</p>
+     <ol>
+      <li><b><i>gnome</i></b> et <b><i>gnome-extra</i></b></li>
+      <li><b><i>cinnamon</i></b> et <b><i>cinnamon-extra</i></b></li>
+      <li><b>...</b></li>
+     </ol>
+     <p>Vous êtes bien-sûr les bienvenues pour contribuer et participer à l'intégration des recettes de fanch sur <a href="http://github.com/fanch">github</a>.</p>
   <p class="updated"><a href="old-news.html">Anciennes nouvelles</a></p>
   <hr>  
-   <p class="updated">Le 08-07-2015 11:44</p>
+   <p class="updated">Le 08-09-2015 19:49</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
