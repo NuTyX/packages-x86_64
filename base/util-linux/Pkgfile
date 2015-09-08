@@ -3,9 +3,9 @@
 # Maintainer: Karel Zak kzak at redhat dot com 
 # Packager: tnut at nutyx dot org
 name=util-linux
-version=2.26.2
+version=2.27
 release=1
-source=(http://www.kernel.org/pub/linux/utils/util-linux/v${version%.*}/util-linux-$version.tar.xz
+source=(http://www.kernel.org/pub/linux/utils/util-linux/v${version:0:4}/util-linux-$version.tar.xz
 	)
 
 PKGMK_GROUPS=(devel doc man)
@@ -16,18 +16,18 @@ cd util-linux-$version
 
 mkdir -pv $PKG/var/lib/hwclock
 ./configure ADJTIME_PATH=/var/lib/hwclock/adjtime \
-			--docdir=/usr/share/doc/$name-$version \
-			--disable-chfn-chsh  \
-            --disable-login      \
-            --disable-nologin    \
-            --disable-su         \
-            --disable-setpriv    \
-            --disable-runuser    \
-            --disable-pylibmount \
-            --disable-static     \
-            --without-python     \
-            --without-systemd    \
-            --without-systemdsystemunitdir
+	--docdir=/usr/share/doc/$name-$version \
+	--disable-chfn-chsh  \
+	--disable-login      \
+	--disable-nologin    \
+	--disable-su         \
+	--disable-setpriv    \
+	--disable-runuser    \
+	--disable-pylibmount \
+	--disable-static     \
+	--without-python     \
+	--without-systemd    \
+	--without-systemdsystemunitdir
 
 make
 make DESTDIR=$PKG  install
