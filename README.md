@@ -77,13 +77,14 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
     # bash scripts/kde5 -a
 
-#### 12. If you want to build the 'kde5-extra' collection from the sources, add the proper line in top of the cards.conf file like this:
+#### 12. If you want to build the 'kde5-extra' collection from the sources, add the proper lines in top of the cards.conf file like this:
 
     dir /houaphan/kde5-extra
+    dir /houaphan/kde
 
  then you are ready to compile the 'kde5-extra' collection
 
-    # cd /root/kde5-extra
+    # cd /root/kde5
     # bash scripts/kde5-extra -s
     # bash scripts/kde5-extra -a 
 
