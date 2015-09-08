@@ -83,7 +83,7 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
  then you are ready to compile the 'xfce4-extra' collection
 
-    # cd /root/xfce4-extra
+    # cd /root/xfce4
     # bash scripts/xfce4-extra -s
     # bash scripts/xfce4-extra -a 
 
