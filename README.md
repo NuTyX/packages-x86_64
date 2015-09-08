@@ -83,7 +83,7 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
  then you are ready to compile the 'mate-extra' collection
 
-    # cd /root/mate-extra
+    # cd /root/mate
     # bash scripts/mate-extra -s
     # bash scripts/mate-extra -a 
 
