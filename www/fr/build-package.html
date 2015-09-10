@@ -37,7 +37,7 @@
     <h3>
      <a href="#1">Quel scénario choisissez-vous ?</a><br />
      <a href="#2">Ajuster les fichiers de configuration en fonction de votre scénario</a><br />
-     <a href="#4">Scénario B: un paquet sans dépendances</a><br />
+     <a href="#4">Scénario B: un paquet sans dépendance</a><br />
      <a href="#5">Scénario C: Un paquet avec quelques dépendances</a><br />
      <a href="#6">Scénario E: construction dans un environnement isolé aussi appelé "chroot"</a><br />
     </h3>
@@ -47,7 +47,7 @@
     <p>Ne demandez pas (encore) à google, je ne crois pas que ce concept existe déjà sur d'autres distributions <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" /> <p>
     <p>C'est un concept que j'ai imaginé en crééant le gestionnaire de paquets <b>cards</b>.</p>
     <p>Au fil des années, je me suis rendu compte que le public cible pour l'utilisation d'une distribution comme NuTyX était très très large. Chaque utilisateur (plus ou moins averti) souhaite évoluer sur sa distribution à sa manière.</p> 
-    <p>La plupart des utilisateurs se dirigeant vers NuTyX souhaitent compiler leurs paquets à leur guise. Certains ne choisiront peut-être pas toutes les collections proposées par défaut. D'autres utilisateurs souhaiteront mélanger les paquets standards proposés en binaire avec leur propres paquets. Toutes ces approchent sont différentes, je les appelle <b>scénarios</b> d'utilisation de la NuTyX.</p>
+    <p>La plupart des utilisateurs se dirigeant vers NuTyX souhaitent compiler leurs paquets à leur guise. Certains ne choisiront peut-être pas toutes les collections proposées par défaut. D'autres utilisateurs souhaiteront mélanger les paquets standards proposés en binaire avec leur propres paquets. Toutes ces approches sont différentes, je les appelle <b>scénarios</b> d'utilisation de la NuTyX.</p>
    <h3>Quels sont les scénarios possibles (cad ce que je peux imaginer aujourd'hui)</h3>
     <ol>
      <li><a href="#21">Scénario <b>A</b></a>: Je ne veux rien compiler, les binaires disponibles me suffisent<img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />. Cela peut vous paraître absurde d'en parler ici, mais comme vous êtes très interessés par le sujet, sachez que ce scénario vous permet de garder votre distribution favorite la plus légère possible.</li>
@@ -64,7 +64,7 @@
    <h3>Scénario A</h3>
     <a name='211'></a>
     <h4>Introduction</h4>
-     <p>Comme expliqué plus haut, vous ne souhaitez pas compiler dans votre NuTyX. Ce qui est tout à fait possible si vous n'avez pas besoin de programmes particuliers et que les binaires proposés vous suffisent. Ce scenario est aussi valable dans le cas où vous gérer plusieurs installation sur les quelles aucune compilation n'est necessaire.</p>
+     <p>Comme expliqué plus haut, vous ne souhaitez pas compiler dans votre NuTyX. Ce qui est tout à fait possible si vous n'avez pas besoin de programmes particuliers et que les binaires proposés vous suffisent. Ce scenario est aussi valable dans le cas où vous gérer plusieurs installations sur les quelles aucune compilation n'est necessaire.</p>
     <a name='212'></a>
     <h4>Le fichier /etc/cards.conf</h4>
      <p>Les collections binaires sont activées</p>
@@ -197,7 +197,7 @@ pkgadd</kbd></pre>
      <a name='231'></a>
      <h4>Introduction</h4>
       <p>Vous avez des envies de compilation à grande échelle, vous êtes convaincu que c'est le meilleur scénario pour gérer une NuTyX. Vous n'avez aucune envie d'utiliser les binaires proposés.</p>
-      <p>La plus part des paquets que vous utilisés ne sont pas présent et ceux qui le sont, seront compiler par vous-même.</p>
+      <p>La plus part des paquets que vous utilisez ne sont pas présent et ceux qui le sont, seront compiler par vous-même.</p>
       <p>Vous souhaitez obtenir les maj des ports disponibles.</p>
       <p> Et bien évidement, vous souhaitez que les dépendances soient compilées automatiquement.</p>
       <p> Vous l'avez compris, ce scenario est sans doute le plus "attirant" et le plus proche des distributions "dite" sources telle que CRUX ou gentoo.</p>
@@ -320,7 +320,7 @@ base /srv/www/houaphan/x86_64/base-extra
 base /srv/www/houaphan/x86_64/aconserver</pre>
      <a name='243'></a>
      <h4>Installation de rsync et suppression du dossier concerné</h4>
-      <p>Pour ce scénario, nous allons synchroniser tous les binaires disponible sur le miroir de NuTyX et allons restés "callés" sur la version de ceux-ci.</p>
+      <p>Pour ce scénario, nous allons synchroniser tous les binaires disponibles sur le miroir de NuTyX et allons restés "callés" sur la version de ceux-ci.</p>
       <p>Commençons par installer la commande <b>rsync</b> si ce n'est pas encore le cas:</p>
       <pre class="command_user"><kbd>get rsync</kbd></pre>
       <p>On peut maintenant supprimer la ligne pointant sur l'url du miroir de NuTyX pour déactiver définitivement la commande <b>cards sync</b>.</p>
@@ -336,7 +336,7 @@ base /srv/www/houaphan/x86_64/base-extra
 base /srv/www/houaphan/aconserver</pre>
      <a name='244'></a>
      <h4>Synchronisation des binaires via rsync</h4>
-      <p>Cette opération consiste à rapatrier les quelques 11000 paquets disponible en binaires. Elle peut durer entre quelques minutes et quelques heures en fonction de votre connection.</p>
+      <p>Cette opération consiste à rapatrier les quelques 11000 paquets disponibles en binaires. Elle peut durer entre quelques minutes et quelques heures en fonction de votre connection.</p>
       <p>Heureusement, cette opération n'est longue que la première fois <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" /> <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" /> <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />.</p>
       <p>Notez bien le dossier de destination, j'ai choisi de "déposer" les binaires à la racine du serveur http <img src="../graphics/smiley-tongue-out.gif" alt="Tongue out" title="Tongue out" />. </p>
       <p>Il faut commencer par créer les dossiers</p>
@@ -687,7 +687,7 @@ Arch           : x86_64
 Url            :
 Local Directory: /chroot/usr/ports/personnel</pre>
     <div><img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" /><img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" /><img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" /></div>
-    <p>Il ne nous reste plus qu'a l'installer <img src="../graphics/smiley-surprised.gif" alt="Surprised" title="Surprised" /></p>
+    <p>Il ne nous reste plus qu'à l'installer <img src="../graphics/smiley-surprised.gif" alt="Surprised" title="Surprised" /></p>
     <pre class="command_user"><kbd>get clipit</kbd></pre>
     <pre class="output">Retrieve info about the 622 packages: 100 %
 ADD: clipit-1.4.2, 71 files: 100 %</pre>
