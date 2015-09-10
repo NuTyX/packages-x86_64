@@ -25,8 +25,8 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
     # mkdir -p /etc/install-houaphan.conf.d
     # cat > /etc/install-houaphan.conf.d/cards.conf << "EOF"
     dir /houaphan/kde5
-    dir /houaphan/graphic
-    dir /houaphan/console
+    dir /houaphan/gui
+    dir /houaphan/cli
     dir /houaphan/base|http://downloads.nutyx.org
     dir /houaphan/base-extra|http://downloads.nutyx.org
     base /houaphan/base
@@ -55,12 +55,12 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
     # get cards.devel wget vim rsync git tar
  
-#### 8. If everything is OK, synchronize the  houaphan 'base', 'console' and 'graphic' collections binaries
+#### 8. If everything is OK, synchronize the  houaphan 'base', 'cli' and 'gui' collections binaries
 
     # cd /root/houaphan
     # bash scripts/base -s
-    # bash scripts/console -s
-    # bash scripts/graphic -s
+    # bash scripts/cli -s
+    # bash scripts/gui -s
     
 #### 9. If everything is OK, synchronize the 'kde5' collection binaries 
 
