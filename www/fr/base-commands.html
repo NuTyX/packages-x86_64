@@ -40,9 +40,9 @@
     <pre class="command_user"><kbd>nomdelacommande --help</kbd></pre> ou
     <pre class="command_user"><kbd>nomdelacommande -h</kbd></pre>
     <p>le <i>help</i> permet d'obtenir un aperçu des possibilités de la <b>nomdelacommande</b>, <i>--help</i> ou <i>-h</i> sont aussi des options permettant l'affichage de l'aide.</p>
-   <h2>Vérifier si il y a des mises à jour disponible</h2>
+   <h2>Vérifier si il y a des mises à jour disponibles</h2>
     <p>La commande <b>cards sync</b> permet d'obtenir le dernier état des mises à jour disponibles sur votre système.</p>
-    <p>La commande <b>cards diff</b> affichera une liste de paquets pouvant être mis à jour</p>
+    <p>La commande <b>cards diff</b> affichera la liste de paquets pouvant être mis à jour</p>
     <p>Essayez les commandes:</p>
     <pre class="command"><kbd>cards sync
 cards diff</kbd></pre>
@@ -56,7 +56,7 @@ glibc                           2.20                      2.21</pre>
     <pre class="command"><kbd>cards install -u gcc</kbd></pre>
     <p>Mettra le paquet <b>gcc</b> à jour</p>
    <h2>Recherche d'un paquet</h2>
-    <p>Pour rechercher un paquet sous NuTyX, c'est très simple, la commande :</p>
+    <p>Rechercher un paquet sous NuTyX est très simple, la commande :</p>
     <pre class="command_user"><kbd>cards search <b>chaîne_à_trouver</b></kbd></pre>
     <p>retournera tous les paquets dont le nom ou la description contient la <b>chaîne_à_trouver</b>. Par exemple si vous souhaitez connaître les navigateurs disponible</p>
     <pre class="command_user"><kbd>cards search browser</kbd></pre>
@@ -67,7 +67,7 @@ firefox            Standalone web browser from mozilla.org
    <h2>Ajout d'un paquet</h2>
     <p>Pour ajouter un paquet, la commande <b>cards install</b> suivi du nom du paquet à installer sera utilisée :</p>
     <pre class="command"><kbd>cards install xfce4</kbd></pre>
-    <p>Le téléchargement de l'application <b>xfce4</b> commence imnmédiatement, une fois le paquet téléchargé, ses dépendances seront à leurs tours téléchargées. Quand le téléchargement est terminé, tous les paquets seront installés dans le bon ordre. Dans cet exemple, une fois la commande terminée, vous aurez un bureau <a href="http://www.xfce.org">xfce4</a> installé sur votre NuTyX.</p>
+    <p>Le téléchargement de l'application <b>xfce4</b> commence imnmédiatement, une fois le paquet téléchargé, ses dépendances seront à leur tour téléchargées. Quand le téléchargement est terminé, tous les paquets seront installés dans le bon ordre. Dans cet exemple, une fois la commande terminée, vous aurez un bureau <a href="http://www.xfce.org">xfce4</a> installé sur votre NuTyX.</p>
    <h2>Ajout d'un utilisateur</h2>
     <p>Pour ajouter un utilisateur sous NuTyX, c'est également très simple, la commande :</p>
      <pre class="command"><kbd>nu</kbd></pre>
@@ -80,7 +80,7 @@ Description de l'utilisateur: François Perrin</pre>
     <h2>Les alias</h2>
      <div class="note"><img alt="[Note]" src="../graphics/note.gif"> Il faut savoir que certaines commandes mentionnées dans cet article peuvent être remplacés par des alias, c'est à dire un racourci de la commande originale. Si vous souhaitez connaître la liste des alias, utilisez la commande:
 <pre class="command_user"><kbd>alias</kbd></pre></div>
-     <div class="important"><img alt="[Important]" src="../graphics/caution.gif">Bien que ce ne soit absolument pas necessaire, si vous souhaitez malgré tout modifier les alias définis dans votre NuTyX, vous devez éditer le fichier <b><span style="color: #007a00;">.bashrc</span></b> qui se trouve dans le dossier personnel du compte concerné. Encore une fois, cette opération n'est pas du tout indispensable et il est vivement conseillé de bien connaître le principe avant de modifier les alias prédéfinis</div>
+     <div class="important"><img alt="[Important]" src="../graphics/caution.gif">Bien que ce ne soit absolument pas nécessaire, si vous souhaitez malgré tout modifier les alias définis dans votre NuTyX, vous devez éditer le fichier <b><span style="color: #007a00;">.bashrc</span></b> qui se trouve dans le dossier personnel du compte concerné. Encore une fois, cette opération n'est pas du tout indispensable et il est vivement conseillé de bien connaître le principe avant de modifier les alias prédéfinis</div>
      <pre class="output">/root/.bashrc</pre>
      <div>En voici un extrait:
      </div>
