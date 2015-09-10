@@ -1,4 +1,4 @@
-## Ports for constructing the 'base-extra' 'console-extra and 'graphic-extra' collections
+## Ports for constructing the 'base-extra' 'cli-extra and 'gui-extra' collections
 
 Contributions are welcome. If you don't know what it all about, please take the time to read the documentation at
 http://www.nutyx.org/en/build-package.html
@@ -24,8 +24,8 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
     DEPOT=/houaphan" > /etc/install-houaphan.conf
     # mkdir -p /etc/install-houaphan.conf.d
     # cat > /etc/install-houaphan.conf.d/cards.conf << "EOF"
-    dir /houaphan/graphic
-    dir /houaphan/console
+    dir /houaphan/gui
+    dir /houaphan/cli
     dir /houaphan/base|http://downloads.nutyx.org
     dir /houaphan/base-extra|http://downloads.nutyx.org
     base /houaphan/base
@@ -54,12 +54,12 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
     # get cards.devel wget vim rsync git tar
  
-#### 8. If everything is OK, synchronize the  houaphan 'base', 'console' and 'graphic' collections binaries
+#### 8. If everything is OK, synchronize the  houaphan 'base', 'cli' and 'gui' collections binaries
 
     # cd /root/houaphan
     # bash scripts/base -s
-    # bash scripts/console -s
-    # bash scripts/graphic -s
+    # bash scripts/cli -s
+    # bash scripts/gui -s
     
 #### 9. If everything is OK, synchronize the 'base-extra' collection binaries 
 
@@ -76,16 +76,16 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
     # bash scripts/base-extra -a
 
-#### 12. If you want to build the 'console-extra' collection from the sources, add the proper line in top of the cards.conf file like this:
+#### 12. If you want to build the 'cli-extra' collection from the sources, add the proper line in top of the cards.conf file like this:
 
-    dir /houaphan/console-extra
+    dir /houaphan/cli-extra
 
- then you are ready to compile the 'console-extra' collection
+ then you are ready to compile the 'cli-extra' collection
 
     # cd /root/extra
-    # bash scripts/console-extra -s
-    # bash scripts/console-extra -a
+    # bash scripts/cli-extra -s
+    # bash scripts/cli-extra -a
 
-#### 13. If you want to build the 'graphic-extra' collection from the sources, repeat step 12 but for the 'graphic-extra' collection
+#### 13. If you want to build the 'gui-extra' collection from the sources, repeat step 12 but for the 'graphic-extra' collection
 
 Have fun :)
