@@ -31,10 +31,10 @@
   <hr>
    <h1>Construction de la CHROOT (pass 1)</h1>
     <p>
-    Dans cette première pass nous allons construire un environnement chroot qui sera utilisé pour construire NuTyX dans la pass 2. Si vous avez choisis d'utiliser une partition, pensez à monter cette partition avant d'aller plus loin.
+    Dans cette première passe nous allons construire un environnement chroot qui sera utilisé pour construire NuTyX dans la passe 2. Si vous avez choisis d'utiliser une partition, pensez à la monter avant d'aller plus loin.
     </p>
     <p>
-    On va commencer par créér les dossiers, les liens et le compte adéquoit pour la construction de la première passe.
+    On va commencer par créér les dossiers, les liens et le compte adéquat pour la construction de la première passe.
     </p>
     <p>
     La première partie des préparatifs se fait en compte root et la deuxième partie en compte LFS. 
@@ -74,13 +74,13 @@ ln -svf $LFS/sources /</kbd></pre>
       <pre class="command"><kbd>groupadd lfs
 useradd -s /bin/bash -g lfs -m -k /dev/null lfs
 passwd lfs</kbd></pre>
-     Vous entrez le mot de passe de votre choix, ce n'est pas indispensable si vous entrez ds le compte lfs depuis root.
+     Vous entrez le mot de passe de votre choix, ce n'est pas indispensable si vous entrez dans le compte lfs depuis root.
       <li>Changement de propriètaire et de mode des dossiers:</li>
       <pre class="command"><kbd>chown -v lfs $LFS/{tools,sources}
 chmod -v a+wt $LFS/sources
 chown -v lfs $LFS</kbd></pre>
      </ol>
-     Il est temps de passer à la 2ième partie et donc de se connecter en utilisateur lfs:
+     Il est temps de passer à la 2ème partie et donc de se connecter en utilisateur lfs:
      <pre class="command"><kbd>su - lfs</kbd></pre>
      <h2>Partie LFS:</h2>
      <p>
