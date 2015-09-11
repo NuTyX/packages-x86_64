@@ -13,6 +13,7 @@ build() {
 
 for lang in da de es fi fr it nb nl pt sv
 do
+  cd $SRC
   wget http://download.kde.org/stable/applications/$version/src/kde-l10n/kde-l10n-$lang-$version.tar.xz
   tar xf kde-l10n-$lang-$version.tar.xz
   cd kde-l10n-$lang-$version
