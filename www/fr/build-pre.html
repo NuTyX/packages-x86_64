@@ -31,22 +31,22 @@
   <hr>
    <h1>Préparation de la construction</h1>
     <h2>Option</h2>
-    <p>Si vous avez déjà lancé une fois tout le processus de construction, il faut d'abord tout supprimer les infos liées au compte utilisateur lfs ainsi que son dossier personnel.</p>
+    <p>Si vous avez déjà lancé une fois tout le processus de construction, il faut d'abord supprimer toutes les infos liées au compte utilisateur lfs ainsi que son dossier personnel.</p>
     <p>Donc si tel est le cas, supprimez toutes les infos existantes:</p>
     <pre class="command"><kbd>userdel lfs
 rm -r /home/lfs</kbd></pre>
     <p>Normalement, en supprimant l'utilisateur, son groupe est également supprimé. Si vous n'êtes pas certain, vous pouvez lancer la commande ci-dessous sans crainte:</p>
     <pre class="command"><kbd>groupdel lfs</kbd></pre>
    <h2>Préparation de la partition.</h2>
-    <p>Pour pouvoir commencer la première pass sans trop de soucis, nous allons voir les préparatifs à faire. C'est assez direct.</p>
+    <p>Pour pouvoir commencer la première passe sans trop de soucis, nous allons voir les préparatifs à faire. C'est assez direct.</p>
     <p>Normalement si l'on construit une linux, il faut prévoir une partition pour y mettre sa construction. Ce n'est cependant pas indispensable. On peut très bien construire la distribution dans un dossier et ensuite faire une sauvegarde de son contenu sur une clé USB ou directement utiliser la commande rsync pour transférer sur la partition ou le disque de destination.</p>
-    <p>Donc si vous décidez d'utilisez une partition, il faut la formater dans le système de fichier de votre choix ensuite la monter l sur le dossier qui est défini par la variable LFS.</p>
+    <p>Donc si vous décidez d'utiliser une partition, il faut la formater dans le système de fichier de votre choix ensuite la monter l sur le dossier qui est défini par la variable LFS.</p>
     <p>Dans tous les articles, on utilisera le même dossier:</p>
     <pre class="command"><kbd>/mnt/lfs</kbd></pre>
-    Une fois la partition formatée, il suffit de créér le dossier et de monter la partition.  Dans mon exemple, je choisis la partition Nr 2 du premier disque, ajustez cette valeur à votre choix
+    Une fois la partition formatée, il suffit de créér le dossier et de monter la partition. Dans mon exemple, je choisis la partition Nr 2 du premier disque, ajustez cette valeur à votre choix
     <pre class="command"><kbd>mkdir /mnt/lfs
 mount /dev/sda2 /mnt/lfs</kbd></pre>
-    Pensez juste à toujours monter la partition avant de commencer la pass1 ou 2. Une fois la partition montée. On peut se lancer dans la première pass
+    Pensez juste à toujours monter la partition avant de commencer la passe 1 ou 2. Une fois la partition montée. On peut se lancer dans la première pass
   <div class="pied_page"><a class="url" href="build-pass-1.html">Il est temps de commencer la pass 1...</a>
   </div>
   <hr>
