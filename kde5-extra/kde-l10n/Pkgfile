@@ -1,0 +1,24 @@
+# Description : french Localization for KDE5
+# URL : http://www.kde.org
+# Packager : pierre at nutyx dot com
+# Depends on : automoc4 extra-cmake-modules kde-libs kde-kdoctools
+
+name=kde-l10n-fr
+version=15.08.0
+release=1
+
+source=()
+
+build() {
+
+for lang in da de es fi fr it nb nl pt sv
+do
+  wget http://download.kde.org/stable/applications/$version/src/kde-l10n/kde-l10n-$lang-$version.tar.xz
+  tar xf kde-l10n-$lang-$version.tar.xz
+  cd kde-l10n-$lang-$version
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=Release
+  make
+  make DESTDIR=$PKG install
+done
+}
