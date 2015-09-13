@@ -263,6 +263,15 @@ BINARY_BASE=${BINARY_DIR}/$COLLECTION" > /etc/cards.conf.d/$COLLECTION.conf
 	. /etc/cards.conf.d/$COLLECTION.conf || exit 1
 
 	[ ! -d $BINARY_BASE ] && mkdir -p $BINARY_BASE
+	if [  "$BINARY_BASE" == "$PORT_BASE" ]; then
+		echo "Correct your $COLLECTION.conf file
+BINARY_BASE and PORT_BASE should NEVER be equal
+BINARY_BASE=$BINARY_BASE
+PORT_BASE=$PORT_BASE
+I quit for now
+"
+		exit 1
+	fi
 
 }
 sync_binaries () {
