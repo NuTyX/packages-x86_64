@@ -1,11 +1,11 @@
 # Description: A cross-platform application and UI framework
 # URL: http://qt-project.org/
 # Packager: pierre at nutyx dot org, tnut at nutyx dot org, fanch at nutyx dot org
-# Depends on:xorg-proto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xorg-libxscrnsaver xorg-libxt xorg-libxmu xorg-libxpm xorg-libxaw xorg-libxfixes xorg-libxcomposite xorg-libxrender xorg-libxcursor xorg-libxdamage xorg-libfontenc xorg-libxfont xorg-libxft xorg-libxi xorg-libxinerama xorg-libxrandr xorg-libxres xorg-libxtst xorg-libxv xorg-libxvmc xorg-libxxf86dga xorg-libxxf86vm xorg-libdmx xorg-libpciaccess xorg-libxkbfile xorg-libxshmfence  xcb-proto xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm alsa-lib ca-certificates cups dbus glib gstreamer-plugins-base icu jasper libjpeg-turbo libmng libpng libtiff libwebp xorg-mesa mtdev openssl pcre sqlite ruby gstreamer1-plugins-base geoclue gtk2 harfbuzz mysql postgresql pulseaudio unixodbc libxkbcommon
+# Depends on:xorg-proto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xorg-libxscrnsaver xorg-libxt xorg-libxmu xorg-libxpm xorg-libxaw xorg-libxfixes xorg-libxcomposite xorg-libxrender xorg-libxcursor xorg-libxdamage xorg-libfontenc xorg-libxfont xorg-libxft xorg-libxi xorg-libxinerama xorg-libxrandr xorg-libxres xorg-libxtst xorg-libxv xorg-libxvmc xorg-libxxf86dga xorg-libxxf86vm xorg-libdmx xorg-libpciaccess xorg-libxkbfile xorg-libxshmfence  xcb-proto xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm alsa-lib ca-certificates cups dbus glib gstreamer-plugins-base icu jasper libjpeg-turbo libmng libpng libtiff libwebp xorg-mesa mtdev openssl pcre sqlite ruby gstreamer1-plugins-base geoclue gtk2 harfbuzz postgresql pulseaudio unixodbc libxkbcommon
 
 name=qt5
 version=5.5.0
-release=2
+release=3
 
 _name=qt-everywhere-opensource-src-${version}
 
@@ -16,9 +16,6 @@ build() {
 QT5PREFIX=/usr
 QT5BINDIR=$QT5PREFIX/lib/qt5/bin
 
-export QTDIR=$SRC/${_name}
-export LD_LIBRARY_PATH="${QTDIR}"/qtbase/lib:"${QTDIR}"/qttools/lib:"${LD_LIBRARY_PATH}"
-export QT_PLUGIN_PATH="${QTDIR}"/qtbase/plugins
 
 cd ${_name}*
 
