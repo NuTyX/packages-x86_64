@@ -5,7 +5,7 @@ PKGMK_IGNORE_RUNTIMEDEPS=yes
 
 name=nutyx
 version=8.0.20150828
-release=1
+release=2
 
 source=(http://downloads.nutyx.org/files/nutyx-basicfs-20150828.tar.bz2)
 build () {
@@ -26,7 +26,4 @@ x86_64) ln -sv lib $PKG/lib64
         ln -sv lib $PKG/usr/lib64
         ln -sv lib $PKG/usr/local/lib64;;
 esac
-mkdir -p $PKG/var/lib/pkg
-echo "name houaphan
-version $version" > $PKG/var/lib/pkg/nutyx-version
 }
