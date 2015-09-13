@@ -4,17 +4,21 @@
 # Depends on: 
 
 name=lm-sensors
-version=3.3.5
+version=3.4.0
 release=1
 
-source=(http://dl.lm-sensors.org/lm-sensors/releases/lm_sensors-$version.tar.bz2)
+source=(http://ftp.osuosl.org/pub/blfs/conglomeration/lmsensors/lm_sensors-$version.tar.bz2)
 
 build() {
 	cd lm_sensors-$version
-	make
-	make user_install PREFIX=/usr DESTDIR=$PKG
-	mkdir -p $PKG/usr/share/man
-	mv $PKG/usr/man $PKG/usr/share/man
-	rm -rf $PKG/usr/lib/libsensors.a
-	rm -rf $PKG/usr/include/linux
+	make PREFIX=/usr DESTDIR=$PKG \
+	BUILD_STATIC_LIB=0 \
+	MANDIR=/usr/share/man
+	make PREFIX=/usr DESTDIR=$PKG \
+	BUILD_STATIC_LIB=0 \
+	MANDIR=/usr/share/man install
+
+	install -v -m755 -d $PKG/usr/share/doc/$name-$version
+	cp -rv README INSTALL doc/* \
+	$PKG/usr/share/doc/$name-$version
 }
