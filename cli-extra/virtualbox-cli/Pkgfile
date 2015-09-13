@@ -5,19 +5,22 @@
 buildrelease=102546
 name=virtualbox-cli
 version=5.0.4
-release=1
+release=2
 
-source=(http://download.virtualbox.org/virtualbox/${version}/VirtualBox-${version}-${buildrelease}-Linux_x86.run)
+[ "`uname -m`" == "i686"   ] && _ARCH=x86
+[ "`uname -m`" == "x86_64"   ] && _ARCH=amd64
+
+source=(http://download.virtualbox.org/virtualbox/${version}/VirtualBox-${version}-${buildrelease}-Linux_${_ARCH}.run)
 
 build() {
-sh VirtualBox-${version}-${buildrelease}-Linux_x86.run --target vb --keep --noexec
+sh VirtualBox-${version}-${buildrelease}-Linux_${_ARCH}.run --target vb --keep --noexec
 cd vb
 tar xfj VirtualBox.tar.bz2
 cd src/vboxhost/
 
 KERNELRELEASE=`uname -r`
 
-KERN_DIR=/usr/src/linux-3.18 make
+KERN_DIR=/usr/src/linux-${KERNELRELEASE%.*} make
 
 mkdir -p $PKG/lib/modules/${KERNELRELEASE}/kernel/drivers/zzzz
 for i in *.ko
