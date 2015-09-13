@@ -29,7 +29,7 @@
      </tr>
     </table>
  <hr>
-  <h1>Dernière nouvelle 08-09-2015</h1>
+  <h1>Dernière nouvelle 13-09-2015</h1>
    <h2>Pourquoi Saravane n'a pas survécue ?</h2>
     <ol>
      <li>Le concept de rolling release sous NuTyX demande beaucoup de travail.</li>
@@ -85,7 +85,7 @@ locale fr</pre>
      <p>Le script <b>bash</b> install-houaphan fonctionne désormais comme une véritable application. Il dispose des options suivantes:</p>
      <li>Une aide en ligne de commande
       <pre class="command"><kbd>bash install-houaphan -h</kbd></pre></li>
-     <li>Entrer dans une chroot
+     <li>Le script <b>enter-chroot</b> est désormais obsolète, pour entrer dans une chroot, on utilise l'option <b>-ec</b>
       <pre class="command"><kbd>bash install-houaphan -ec</kbd></pre></li>
      <li>Installer les fichiers de configuration se trouvant dans le dossier <b>/etc/install-houphan.conf.d/</b>:
       <pre class="command"><kbd>bash install-houaphan -ic</kbd></pre></li>
@@ -93,7 +93,7 @@ locale fr</pre>
       <pre class="command"><kbd>bash install-houaphan -p /mnt/lfs</kbd></pre>
       <p>Le script va analyser le contenu du fichier <b>/etc/install-houphan.conf</b> si il existe et utiliser les variables définies dans ce dernier. Il n'est alors plus nessecaire de spécifier le chemin:
       <pre class="command"><kbd>bash install-houaphan</kbd></pre>
-      <p>Actuellement 3 variables sont configurables: le chemin d'installation défini par la variable <b>LFS</b>, l'adresse url où se trouvent les binaires défini par la variable <b>URL</b> et enfin le chemin des binaires téléchargés défini par la variable <b>DEPOT</b>. Voici un exemple complèt du fichier <b>/etc/install-houphan.conf</b>:
+      <p>Actuellement 4 variables sont configurables: le chemin d'installation défini par la variable <b>LFS</b>, l'adresse url où se trouvent les binaires défini par la variable <b>URL</b>, la version à installée (houaphan ou current) définie par la variable <b>version</b> et enfin le chemin des binaires téléchargés défini par la variable <b>DEPOT</b>. Voici un exemple complèt du fichier <b>/etc/install-houphan.conf</b>:
       <pre class="output">URL="http://192.168.254.254"
 DEPOT="/houaphan"
 LFS="/mnt/lfs"</pre>
@@ -107,9 +107,13 @@ LFS="/mnt/lfs"</pre>
       <li><b>...</b></li>
      </ol>
      <p>Vous êtes bien-sûr les bienvenues pour contribuer et participer à l'intégration des recettes de fanch sur <a href="http://github.com/fanch">github</a>.</p>
+    <h3>Le gestionnaire de paquets</h3>
+     <p>Un nouveaux script <b>build-port</b> est en développement, il est actuellement documenté et présent dans chaque git disponible sur <a href="http://github.com/NuTyX">github</a>. Il est probable qu'une fois stabilisé, ils seront intégrés dans le paquet <b>cards.devel</b>. Son nom n'est pas définitif, ce qui n'est pas un soucis puisque l'on utilise uniquement un lien renommé en &lt;nom_de_collection&gt; </p>
+    <h3>La version current</h3>
+     <p>Un nouveau dépot <b>current</b> sera bientôt disponible sur <a href="http://downloads.nutyx.org/current/x86_64">downloads.nutyx.org</a>. Il permettra de tester la version de développement de NuTyX ainsi que les git houaphan et extra actuels sur la version <b>current</b> de NuTyX. Actuellement il déjà possible d'installer la version <b>current</b> mais seul les dépots <a href="http://downloads.nutyx.org/current/x86_64/base">base</a> et <a href="http://downloads.nutyx.org/current/x86_64/base-extra">base-extra</a> sont disponibles en binaires. Les autres collections sont en cours de construction.</p>
   <p class="updated"><a href="old-news.html">Anciennes nouvelles</a></p>
   <hr>  
-   <p class="updated">Le 08-09-2015 19:49</p>
+   <p class="updated">Le 13-09-2015 21:18</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
