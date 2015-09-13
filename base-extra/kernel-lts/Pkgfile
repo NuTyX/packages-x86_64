@@ -7,9 +7,9 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-lts
-version=3.18.18
+version=3.18.21
 release=1
-_version=${version%.*}
+_version=${version:0:4}
 
 source=(http://www.kernel.org/pub/linux/kernel/v3.x/linux-${_version}.tar.xz
 	https://www.kernel.org/pub/linux/kernel/v3.x/patch-$version.xz
