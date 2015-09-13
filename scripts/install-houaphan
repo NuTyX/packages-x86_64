@@ -18,7 +18,7 @@
 #
 # Todo:
 #*******************************************************************************
-VERSION=8.0.20150907
+VERSION=8.0.20150913
 boot_mesg() {
         local ECHOPARM=""
 
@@ -1288,6 +1288,14 @@ base ${DEPOT}/base-extra
 # base ${DEPOT}/graphic-extra
 # base ${DEPOT}/..." > ${MountFolder}/etc/cards.conf
 }
+generate_nutyx_version() {
+local FILE
+FILE="nutyx-version"
+[ -f ${MountFolder}/var/lib/pkg/$FILE ] && return
+[ ! -d ${MountFolder}/var/lib/pkg ] && mkdir -pv ${MountFolder}/var/lib/pkg
+echo "name $version
+version $VERSION" > ${MountFolder}/var/lib/pkg/$FILE
+}
 update_fstab() {
 if [ "$MIG" == "0" ]; then
         echo "$1     /    $2    defaults   0   1" >> ${MountFolder}/etc/fstab
@@ -1546,7 +1554,7 @@ install_configuration_files() {
 	generate_rc_site
 	generate_etc_bashrc
 	generate_blfs_bootscripts
-
+	generate_nutyx_version
 }
 print_help() {
 	echo "
