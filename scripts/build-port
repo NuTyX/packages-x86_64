@@ -47,6 +47,7 @@ print_help()
 	echo "  -cb,  --check-binaries      check if binaries are uptodate"
 	echo "  -cd,  --check-diff          check if binaries are different then the ports"
 	echo "  -s,   --sync                synchronise binaries from rsync server location"
+	echo "  -c,   --config              printout the configuration"
 	echo "  -h,   --help                print help and exit"
 }
 list_ports() {
@@ -200,6 +201,15 @@ parse_options() {
 			-s|--sync)
 				sync_binaries
 				exit 0;;
+			-c|--config)
+				check_config_file
+				echo "Your config is:
+
+version you are using: $RSYNC_NUTYX_VERSION
+BINARY_BASE          : $BINARY_BASE
+PORT_BASE            : $PORT_BASE
+"
+				exit 0;;
 
 			-h|--help)
 				print_help
@@ -272,7 +282,24 @@ I quit for now
 "
 		exit 1
 	fi
+	if [ -f /var/lib/pkg/nutyx-version ]; then
+		RSYNC_NUTYX_VERSION=`cat /var/lib/pkg/nutyx-version|grep name|sed "s/name //"| sed "s/ //g"`
+	else
+		echo "/var/lib/pkg/nutyx-version file not exist
+I quit for now
+"
+		exit 1
+	fi
+	if [ -z $RSYNC_NUTYX_VERSION ]; then
+		echo "Dont know the version you want to rsync
+Check the /var/lib/pkg/nutyx-version, should have a
+line like:
 
+name current
+
+"
+		exit 1
+	fi
 }
 sync_binaries () {
 	local ARCH
@@ -281,7 +308,7 @@ sync_binaries () {
 	check_config_file
 	check_collection_exist
 	remove_url
-	rsync -av --delete ${RSYNC_SERVER}${RSYNC_NUTYX_VERSION}/${ARCH}/$COLLECTION/ \
+	rsync -av --delete ${RSYNC_SERVER}/${RSYNC_NUTYX_VERSION}/${ARCH}/$COLLECTION/ \
 	$BINARY_BASE/
 }
 remove_url () {
@@ -325,7 +352,6 @@ main() {
 
 }
 RSYNC_SERVER="rsync://downloads.nutyx.org/nutyx"
-RSYNC_NUTYX_VERSION="/houaphan"
 COLLECTION="`basename $0`"
 GIT=`pwd`
 PROJECT="`basename $GIT`"
