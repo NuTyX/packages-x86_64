@@ -30,7 +30,7 @@
     </table>
  <hr>
  <h1>Comment configurer le service http ?</h1>
-   <p>La commande <b>cards install</b> a besoin de télécharger le paquet que vous venez de créer, il faut donc installer et activer le service http (si vous ne l'avez pas encore fait), vous allez voir c'est très simple. On ouvre un terminal:</p>
+   <p>Pour installer et activer le service http (si vous ne l'avez pas encore fait), vous allez voir c'est très simple. On ouvre un terminal:</p>
    <pre class="command_user"><kbd>get apache
 get apache.service</kbd></pre>
    <p>Malheureusement la configuration de apache n'étant parfaite, un minimum d'actions s'impose.</p>
@@ -38,8 +38,8 @@ get apache.service</kbd></pre>
    <pre class="command"><kbd>ln -svf /chroot/NFS/personnel /srv/www</kbd></pre>
    <div>Il est temps d'ajustez le fichier <b>/etc/cards.conf</b> comme ceci:</div>
    <pre class="command"><kbd>dir /var/lib/pkg/saravane/personnel|http://localhost/personnel
-dir /var/lib/pkg/saravane/desktop|http://...
-dir /var/lib/pkg/saravane/server|http://...</kbd></pre>
+dir /var/lib/pkg/depot/desktop|http://...
+dir /var/lib/pkg/depot/server|http://...</kbd></pre>
    <p>La ligne qui nous intéresse est uniquement la première:</p>
    <p>Et comme vous le remarquez, vous utilisez donc le dépot de votre ... <b><u>chroot</u></b> <img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" /> C'est cool non ?</p>
    <p>On active le service http via le terminal toujours en root:</p>
@@ -52,7 +52,7 @@ using 127.0.0.1. Set the 'ServerName' directive globally to suppress this messag
    <p>Vous pouvez vérifier le bon fonctionnement de votre serveur http, en allant à l'adresse: <a href=http://localhost/personnel/>http://localhost/personnel/</a> avec votre navigateur favori</p>
    <p>Donc si vous faites maintenant:</p>
     <hr>
-    <p class="updated">Dernière mise à jour 15-04-2015 20:56</p>
+    <p class="updated">Dernière mise à jour 14-09-2015 20:50</p>
      <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

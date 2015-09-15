@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
      <link rel="shortcut icon" href="../favicon.ico">
      <link rel="stylesheet" href="../css/nutyx.css" />
-     <title>NuTyX - Manuel de Saravane</title>
+     <title>NuTyX - Manuel de la version 8.0</title>
  </head>
  <body>
     <table>
@@ -29,7 +29,7 @@
      </tr>
     </table>
  <hr>
-  <h1>Manuel NuTyX Saravane </h1>
+  <h1>Manuel NuTyX version 8.0 </h1>
     <div>Cette page de manuel vous permet de prendre connaissance du minimum vital pour pouvoir utiliser votre système d'exploitation NuTyX GNU/Linux. Veuillez consulter les fichiers mentionnés pour obtenir plus d'information.</div>
   <ol>
    <li><h3>CONFIGURATION</h3></li>
@@ -269,7 +269,7 @@ Connaître l'appartenance d'un fichier
       <div>La gestion des recettes des paquets ainsi que les dépendances de ceux-ci se fait via la commande <b>cards</b> également.</div>
       <ol>
        <li><h4>Configuration de cards</h4></li>
-        <div>Le fichier <b>/etc/cards.conf</b> définit les règles de fonctionnement de la commande <b>cards</b>. Les lignes <b>dir /var/lib/pkg/saravane/...</b> sont très importantes, l'ordre défini dans quel dossier la recette sera choisie si le port est en double.</div>
+        <div>Le fichier <b>/etc/cards.conf</b> définit les règles de fonctionnement de la commande <b>cards</b>. Les lignes <b>dir /var/lib/pkg/depot/...</b> sont très importantes, l'ordre défini dans quel dossier la recette sera choisie si le port est en double.</div>
        <li><h4>Les commandes à savoir</h4></li>
 Lister les dépendances d'un paquet et voir si elles sont installées ou pas
        <pre class="command"><kbd>cards deptree paquetX</kbd></pre>
@@ -278,7 +278,7 @@ Voir si paquetX est disponible
 Rechercher avec la description d'un paquet
        <pre class="command"><kbd>cards info -p paquetX</kbd></pre>
 Empaqueter et installer un port (necessite les droits du compte root)
-       <pre class="command"><kbd>cd /var/lib/pkg/saravane/&lt;categorie&gt;/paquetX && pkgmk -d -i</kbd></pre>
+       <pre class="command"><kbd>cd /var/lib/pkg/depot/&lt;collection&gt;/paquetX && pkgmk -d -i</kbd></pre>
 Télécharge, empaquete et installe paquetX en une seule commande. Les dépendances DOIVENT être disponible en binaire. Celles-ci ne seront pas compilées.
        <pre class="command"><kbd>sudo cards create -n paquetX</kbd></pre>
       </ol>
@@ -294,7 +294,8 @@ Redémarrage du serviceC cette option n'est pas toujours disponible.
       <div><b>IRC</b> rejoindre le canal <b>#nutyx</b> sur le réseau irc.freenode.net (utf-8)</div>
       <div><b>Site des utilisateurs</b> http://www.nutyx.org</div>
      <li><h3>FICHIERS</h3></li>
-      <pre class="output"><b>/etc/cards.conf,
+      <pre class="output"><b>/var/lib/pkg/nutyx-version,
+etc/cards.conf,
 /etc/pkgadd.conf,
 /etc/pkgmk.conf,
 /etc/sysconfig/console,
@@ -320,7 +321,7 @@ Ceci est un document libre publié sous licence libre WTFPL - Do What The Fuck Y
 ( http://www.wtfpl.net/ ) </pre>
   </ol>
 <hr>
-  <p class="updated">Dernière mise à jour 13-05-2015 21:18</p>
+  <p class="updated">Dernière mise à jour 14-09-2015 20:20</p>
    <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
