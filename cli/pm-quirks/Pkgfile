@@ -1,9 +1,6 @@
 # Description: pm-utils is a small collection of scripts that handle suspend and resume on behalf of HAL
 # URL: http://pm-utils.freedesktop.org/wiki/
 # Packager: pierre at nutyx dot org
-# Depends on: 
-# Depends on:
-
 
 name=pm-quirks
 version=20100619
@@ -15,6 +12,3 @@ build() {
 	install -m755 -d "${PKG}/usr/lib/pm-utils/video-quirks"
 	install -m644 video-quirks/*.quirkdb "${PKG}/usr/lib/pm-utils/video-quirks/"
 }
-
-
-
