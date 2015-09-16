@@ -1,10 +1,10 @@
 # Description: Library implementation of the Media Transfer Protocol.
-# URL: URL: http://libmtp.sourceforge.net
-# NuTyX package info file (http://nutyx.org)
-# Packager: # NuTyX package info file (http://nutyx.org)
-# Depends on: libusb libgcrypt 
+# URL: http://libmtp.sourceforge.net
+# Packager: alienus at nutyx dot org, tnut at nutyx dot org
+# Depends on: libusb libgcrypt
+
 name=libmtp
-version=1.1.8
+version=1.1.9
 release=1
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
@@ -17,7 +17,3 @@ build(){
     make -k check
     make DESTDIR=$PKG install
 }
-
-
-
-# NuTyX Pkgfile (http://nutyx.org)
