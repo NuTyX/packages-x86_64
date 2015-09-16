@@ -1,10 +1,9 @@
 # Description: ranger is a file manager with VI key bindings.
-# URL: URL: http://ranger.nongnu.org/
-# NuTyX package info file (http://nutyx.org)
-# Packager: # NuTyX package info file (http://nutyx.org)
-# Depends on: python 
+# URL: http://ranger.nongnu.org/
+# Packager: alienus at nutyx dot org, tnut at nutyx dot org
+# Depends on: python
 name=ranger
-version=1.6.1
+version=1.7.1
 release=1
 
 source=(http://ranger.nongnu.org/$name-$version.tar.gz
@@ -14,7 +13,3 @@ build() {
     cd $name-$version
     python2 setup.py install --prefix=/usr --root=$PKG
 }
-
-
-
-# NuTyX Pkgfile (http://nutyx.org)
