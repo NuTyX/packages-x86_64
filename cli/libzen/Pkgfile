@@ -1,10 +1,9 @@
 # Description: Shared library for libmediainfo and mediainfo
-# URL: URL: http://mediainfo.sourceforge.net/
-# NuTyX package info file (http://nutyx.org)
-# Packager: # NuTyX package info file (http://nutyx.org)
+# URL: http://mediainfo.sourceforge.net/
+# Packager: tnut at nutyx dot org
 # Depends on: 
 name=libzen
-version=0.4.29
+version=0.4.31
 release=1
 
 source=(
@@ -32,7 +31,3 @@ build(){
     sed -i -e 's|Version: |Version: '$version'|g' \
         $PKG/usr/lib/pkgconfig/libzen.pc
 }
-
-
-
-# NuTyX Pkgfile (http://nutyx.org)

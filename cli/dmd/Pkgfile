@@ -1,13 +1,12 @@
 # Description: The D programming language reference compiler
-# URL: URL: http://www.dlang.org
-# NuTyX package info file (http://nutyx.org)
-# Packager: # NuTyX package info file (http://nutyx.org)
-# Depends on: 
+# URL: http://www.dlang.org
+# Packager: alienus at nutyx dot org, tnut at nutyx dot org
+# Depends on: unzip
 name=dmd
-version=2.065.0
+version=2.068.1
 release=1
 
-source=(http://downloads.dlang.org/releases/2014/dmd.$version.zip
+source=(http://downloads.dlang.org/releases/2015/dmd.$version.zip
 dmd.desktop dmd.logo_48.png)
 
 build(){
@@ -17,6 +16,8 @@ build(){
 
     # dmd
     cd $SRC/dmd2/src/dmd
+    make AUTO_BOOTSTRAP=1 -f posix.mak MODEL=$archstr
+    PATH=.:$PATH
     make -f posix.mak MODEL=$archstr
     install -Dm755 dmd $PKG/usr/bin/dmd
 
@@ -78,7 +79,3 @@ build(){
     install -Dm 644 $SRC/$name.logo_48.png \
         $PKG/usr/share/icons/hicolor/48x48/apps/dlogo_48.png
 }
-
-
-
-# NuTyX Pkgfile (http://nutyx.org)

@@ -1,12 +1,12 @@
 # Description: Interface for terminal emulators such as screen and xterm to record user sessions to utmp and wtmp files.
-# URL: # NuTyX package info file (http://nutyx.org)
-# Packager: # NuTyX package info file (http://nutyx.org)
+# URL:
+# Packager: tnut at nutyx dot org
 # Depends on: 
 name=libutempter
 version=1.1.6
 release=1
 
-source=(ftp://ftp.altlinux.org/pub/people/ldv/utempter/$name-$version.tar.bz2)
+source=(http://ftp.altlinux.org/pub/people/ldv/utempter/$name-$version.tar.bz2)
 
 build(){
     cd $name-$version
@@ -16,7 +16,3 @@ build(){
     chown root:utmp $PKG/usr/lib/utempter/utempter
     chmod 2755 $PKG/usr/lib/utempter/utempter
 }
-
-
-
-# NuTyX Pkgfile (http://nutyx.org)
