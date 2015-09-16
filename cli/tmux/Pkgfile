@@ -1,12 +1,12 @@
 # Description: A terminal multiplexer
-# URL: 
-# Packager: - tnut at nutyx.org
+# URL: https://tmux.github.io
+# Packager: tnut at nutyx.org
 # Depends on: libevent 
 name=tmux
-version=1.9a
+version=2.0
 release=1
 
-source=(http://sourceforge.net/projects/tmux/files/tmux/tmux-1.9/$name-$version.tar.gz)
+source=(https://github.com/tmux/tmux/releases/download/$version/$name-$version.tar.gz)
 build() {
 cd $name-$version
 ./configure --prefix=/usr
