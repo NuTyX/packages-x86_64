@@ -4,10 +4,11 @@
 # Depends on: kde5 baloo-widgets
 
 name=dolphin
-release=1
+release=2
 version=15.08.1
 
-source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz
+        http://download.kde.org/stable/applications/$version/src/kde-baseapps-$version.tar.xz)
 
 build() {
 cd $name-$version
@@ -22,5 +23,8 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
+
+install -Dm644 $SRC/kde-baseapps-$version/lib/konq/konq*.desktop $PKG/usr/share/kservicetypes5/
+
 }
 
