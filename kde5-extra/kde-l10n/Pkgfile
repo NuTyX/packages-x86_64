@@ -1,0 +1,25 @@
+# Description :  Many Localization for KDE5
+# URL : http://www.kde.org
+# Packager : pierre at nutyx dot org
+# Depends on : kde-libs automoc4 cmake kf5-extra-cmake-modules kf5-ki18n kf5-kdoctools phonon
+
+name=kde-l10n
+version=15.08.1
+release=1
+
+source=()
+
+build() {
+
+for lang in da de es fi fr it nb nl pt sv
+do
+  cd $SRC
+  wget http://download.kde.org/stable/applications/$version/src/kde-l10n/kde-l10n-$lang-$version.tar.xz
+  tar xf kde-l10n-$lang-$version.tar.xz
+  cd kde-l10n-$lang-$version
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=Release
+  make
+  make DESTDIR=$PKG install
+done
+}
