@@ -3,7 +3,7 @@
 # Packager: alienus at nutyx dot org, tnut at nutyx dot org
 # Depends on: sqlite expat 
 name=python3
-version=3.4.3
+version=3.5.0
 release=1
 
 source=(
@@ -23,7 +23,7 @@ build() {
 	make
 	make DESTDIR=$PKG install
 
-	chmod -v 755 $PKG/usr/lib/libpython3.4m.so
+	chmod -v 755 $PKG/usr/lib/libpython3.5m.so
 	chmod -v 755 $PKG//usr/lib/libpython3.so
 
 # Install all HTML Docs files with desktop menu integration
