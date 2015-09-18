@@ -1,10 +1,9 @@
 # Description: C++ library to work with the PDF file format
-# URL: URL: http://podofo.sourceforge.net
-# NuTyX package info file (http://nutyx.org)
-# Packager: # NuTyX package info file (http://nutyx.org)
-# Depends on: xorg-fontconfig freetype libidn libpng libtiff lua51 
+# URL: http://podofo.sourceforge.net
+# Packager: alienus at nutyx dot org, tnut at nutyx dot org
+# Depends on: cmake xorg-fontconfig freetype libidn libpng libtiff lua51 
 name=podofo
-version=0.9.2
+version=0.9.3
 release=1
 
 source=(
@@ -24,7 +23,3 @@ build() {
     make
     make DESTDIR=$PKG install
 }
-
-
-
-# NuTyX Pkgfile (http://nutyx.org)
