@@ -3,16 +3,14 @@
 # Packager: pierre at nutyx dot org
 # Depends on: glib gobject-introspection vala 
 
-_name=libgee
-
-name=libgee06
-version=0.6.8
+name=libgee
+version=0.18.0
 release=1
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$_name/${version%.*}/$_name-$version.tar.xz)
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build() {
-cd $_name-$version
+cd $name-$version
 ./configure --prefix=/usr
 make 
 make DESTDIR=$PKG install
