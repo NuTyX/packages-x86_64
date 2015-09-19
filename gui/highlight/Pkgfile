@@ -5,7 +5,7 @@
 # Depends on: qt4 boost lua
 run=( lua )
 name=highlight
-version=3.21
+version=3.23
 release=1
 
 source=(
@@ -16,6 +16,3 @@ build(){
     make QMAKE=qmake-qt4
     make DESTDIR=$PKG QMAKE=qmake-qt4 install
 }
-
-
-
