@@ -18,13 +18,11 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DCMAKE_BUILD_TYPE=Release              \
       -DLIB_INSTALL_DIR=lib                   \
       -DBUILD_TESTING=OFF                     \
-      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
       -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
 
 install -Dm644 $SRC/kde-baseapps-$version/lib/konq/konq*.desktop $PKG/usr/share/kservicetypes5/
-
 }
 
