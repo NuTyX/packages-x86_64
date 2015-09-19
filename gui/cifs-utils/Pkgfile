@@ -4,7 +4,7 @@
 # Depends on: samba 
 
 name=cifs-utils
-version=6.1
+version=6.4
 release=1
 
 source=( http://ftp.samba.org/pub/linux-cifs/$name/$name-$version.tar.bz2)
@@ -12,7 +12,7 @@ source=( http://ftp.samba.org/pub/linux-cifs/$name/$name-$version.tar.bz2)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr
+./configure --prefix=/usr --disable-systemd
 make
 make DESTDIR=$PKG install
 }
