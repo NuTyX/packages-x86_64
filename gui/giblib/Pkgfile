@@ -7,13 +7,12 @@ name=giblib
 version=1.2.4
 release=1
 
-source=(http://linuxbrit.co.uk/downloads/$name-$version.tar.gz)
+source=(https://mirrors.kernel.org/debian/pool/main/${name:0:1}/${name}/${name}_${version}.orig.tar.gz)
+# http://linuxbrit.co.uk/downloads/$name-$version.tar.gz)
 
 build() {
-cd $name-$version
+cd $name-$version*
         ./configure --prefix=/usr
         make
         make DESTDIR=$PKG install
-        rm -rf $PKG/usr/doc/
 }
-
