@@ -1,0 +1,28 @@
+# Description : Qt5 Cryptographic Architecture
+# URL : http://delta.affinix.com/qca/
+# Packager : pierre at nutyx dot org
+# Depends on : qt5 nss cmake doxygen
+
+name=qca-qt5
+version=2.1.0.3
+release=1
+
+source=(http://download.kde.org/stable/$name/$version/src/$name-$version.tar.xz
+        qca-qt5-qiodevice.patch)
+
+build() {
+mkdir build
+
+cd $name-$version
+patch -p1 -i $SRC/qca-qt5-qiodevice.patch
+
+cd ../build
+cmake ../$name-$version           \
+    -DCMAKE_INSTALL_PREFIX=/usr   \
+    -DBUILD_TESTS=OFF             \
+    -DQCA_SUFFIX=qt5              \
+    -DQCA_INSTALL_IN_QT_PREFIX=ON
+
+make
+make DESTDIR=$PKG install
+}
