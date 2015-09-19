@@ -4,18 +4,17 @@
 # Depends on: sdl
 
 name=smpeg
-version=0.4.4
-release=2
+version=0.4.5
+release=1
 source=(http://gentoo.osuosl.org/distfiles/smpeg-$version.tar.gz
 	smpeg-mpegaudiosdl.patch
 	smpeg-0.4.4_m4.patch)
 
 build() {
 	cd smpeg-$version
-	patch -p 1 -i $SRC/smpeg-mpegaudiosdl.patch
-	patch -p 1 -i $SRC/smpeg-0.4.4_m4.patch
 	./configure \
 		--prefix=/usr \
+		--mandir=/usr/share/man \
 		--disable-static \
 		--enable-gtk-player=no
 	sed -i -e 's|\(libsmpeg_la_LDFLAGS = .*\)|\1 -lstdc++|' Makefile
