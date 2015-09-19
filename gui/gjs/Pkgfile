@@ -1,10 +1,10 @@
 # Description: Javascript Bindings for GNOME
 # URL: http://www.gnome.org/
 # Packager: pierre at nutyx dot org
-# Depends on: cairo dbus-glib gobject-introspection js xorg-libxxf86vm 
+# Depends on: cairo dbus-glib gobject-introspection js2 xorg-libxxf86vm 
 
 name=gjs
-version=1.36.1
+version=1.43.3
 release=1
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
@@ -14,5 +14,4 @@ cd $name-$version
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
-rm -rf $PKG/usr/share/doc
 }
