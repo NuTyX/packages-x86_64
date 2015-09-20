@@ -1,4 +1,4 @@
-.TH "NuTyX saravane" 8 "Avril, 2015" ""
+.TH "NuTyX version 8.0" 8 "Septembre, 2015" ""
 
 
 .SH NuTyX
@@ -189,7 +189,7 @@ Le lien \fI/etc/localtime\fR défini la région où vous vous trouvez et ajuster
   \fBL'amorçage de la machine\fR:
 Si vous avez utilisez une iso pour l'installation de NuTyX et que vous avez choisi d'installer l'amorçage de la machine, le fichier de configuration de l'amorçage se trouve dans \fI/boot/grub/grub.cfg\fR. Le nom du fichier du kernel de NuTyX s'appelle \fBkernel\fR, et le nom de l'initrd s'appelle \fBnutyx-initrd\fR. Les deux  fichiers se trouvent par défaut dans le dossier \fB/boot\fR. Dans l'exemple qui suit: NuTyX est installée sur la première partition du deuxième disque, grub est installé sur le premier disque. Le fichier de configurations sera:
 .P
-menuentry "NuTyX saravane" {
+menuentry "NuTyX houaphan" {
   set root=(hd1,1)
   linux /boot/kernel root=/dev/sdb1 ro quiet 3
   initrd /boot/initrd
@@ -228,7 +228,7 @@ Le fichier \fI/etc/sysconfig/createfiles\fR défini les fichiers / dossiers qui 
  
 .SH EN CAS DE PROBLEMES
 
-Il existe de nombreux fichiers logs qui peuvent afficher de precieuses informations. Les informations de démarrage se trouvent dans les fichiers \fI/var/log/boot.log\fR et \fI/var/log/sys.log\fR. Les informations du dernier lancement du serveur X se trouvent dans le fichier \fI/var/log/Xorg.0.log\fR. La plupart des services disposent également de leur propre log. Si vous avez un problème de connection ssh, une source d'info peut se trouver dans le fichier \fI/var/log/auth.log\fR du serveur ssh. Pour connaître l'historique des paquets binaires installés, consultez le fichier \fI/var/log/pkg-get.conf\fR. 
+Il existe de nombreux fichiers logs qui peuvent afficher de precieuses informations. Les informations de démarrage se trouvent dans les fichiers \fI/var/log/boot.log\fR et \fI/var/log/sys.log\fR. Les informations du dernier lancement du serveur X se trouvent dans le fichier \fI/var/log/Xorg.0.log\fR. La plupart des services disposent également de leur propre log. Si vous avez un problème de connection ssh, une source d'info peut se trouver dans le fichier \fI/var/log/auth.log\fR du serveur ssh\fR. 
 
 .SH GESTION DES PAQUETS BINAIRES DISTANTS (ET INSTALLES)
 La gestion des paquets binaires se fait via la commande \fBcards\fP. Elle comprends de nombreuses options dont voici quelques unes. Tapez \fBcards\fP pour une aide sommaire. Les commandes modifiant votre installation s'utilisent avec votre compte root (su \-) ou via la commande \fBsudo\fR.
@@ -242,8 +242,8 @@ Le fichier \fI/etc/cards.conf\fR définit les règles de fonctionnement de la co
   \fBcheck\fR ou \fBsudo cards sync && cards diff\fR
 synchronisation, voir les mises à jour disponibles
 .TP
-  \fBget <paquet>\fR  ou \fBsudo cards install <paquet>\fR
-installe le paquetX et ses dépendances
+  \fBget <paquet1> .. <paquetn>\fR  ou \fBsudo cards install <paquet>\fR
+installe les paquet1 .. paquetn et leurs dépendances
 .TP
   \fBdel paquetX\fR ou \fBsudo cards remove paquetX\fR
 désinstalle le paquetX. Si vous souhaitez supprimer le paquetX et ses sous-paquets, utilisez l'option -a ou --all \fBcards remove -a paquetX\fR.
