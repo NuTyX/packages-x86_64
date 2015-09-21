@@ -4,14 +4,14 @@
 # Depends on: sqlite expat 
 name=python3
 version=3.5.0
-release=1
+release=2
 
 source=(
 http://www.python.org/ftp/python/$version/Python-$version.tar.xz
 python3.desktop
 python3.png)
 
-docversion=3.4.0
+docversion=3.5.0a3
 
 build() {
 	cd Python-$version
@@ -30,7 +30,7 @@ build() {
 
     install -v -dm755 $PKG/usr/share/doc/$name-$docversion/html
     cd $SRC
-    wget --no-check-certificate -c https://www.python.org/ftp/python/doc/$docversion/python-${docversion}-docs-html.tar.bz2 
+    wget --no-check-certificate -c https://www.python.org/ftp/python/doc/${docversion:0:5}/python-${docversion}-docs-html.tar.bz2 
     tar --strip-components=1 \
         --no-same-owner \
         --no-same-permissions \
