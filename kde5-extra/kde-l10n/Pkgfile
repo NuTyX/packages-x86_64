@@ -1,5 +1,5 @@
 # Description :  Many Localization for KDE5
-# URL : http://www.kde.org
+# URL : http:/$langwww.kde.org
 # Packager : pierre at nutyx dot org
 # Depends on : kde-libs automoc4 cmake kf5-extra-cmake-modules kf5-ki18n kf5-kdoctools phonon
 
@@ -21,5 +21,65 @@ do
         -DCMAKE_BUILD_TYPE=Release
   make
   make DESTDIR=$PKG install
+
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/attica_kde.mo 
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/baloo*
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/drkonqi*
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/filetypes.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/freespacenotifier.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/htmlsearch.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/joystick.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kaccess.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kcm-kwin-scripts.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kfilemetadata.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kfontinst.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/khelpcenter.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/khotkeys.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kinfocenter.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/plasma_applet*
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/plasma_engine*
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/plasma_runner*
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/powerdevil*
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kcm*
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kio*
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kdesu.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/klipper.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kmenuedit.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kmimetypefinder.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/knetattach.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/konqprofiles.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/konsoleprofiles.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/krdb.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/krunner.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kscreenlocker.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kscreenlocker_greet.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/ksgrd.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/ksmserver.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kstart.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/ksysguard.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/ksysguardlsofwidgets.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/ktraderclient.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kwin.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kwin_clients.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kwin_effects.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/kwin_scripting.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/lancelot.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/libkworkspace.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/liblancelot-datamodels.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/liboxygenstyleconfig.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/libplasma_groupingcontainment.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/libplasmaweather.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/libpowerdevilcommonconfig.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/libtaskmanager.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/phonon_kde.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/plasma_containmentactions_contextmenu.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/plasma_containmentactions_switchwindow.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/plasma_packagestructure_comic.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/processcore.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/processui.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/soliduiserver.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/systemsettings.mo
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/useraccount.mo
+
 done
 }
