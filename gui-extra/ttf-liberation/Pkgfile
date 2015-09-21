@@ -1,7 +1,6 @@
 # Description: Red Hats Liberation fonts.
-# URL: URL: https://www.redhat.com/promo/fonts/
-# NuTyX package info file (http://nutyx.org)
-# Packager: # NuTyX package info file (http://nutyx.org)
+# URL: https://www.redhat.com/promo/fonts/
+# Packager: alienus at nutyx dot org, tnut at nutyx
 # Depends on: xorg-fontconfig xorg-font-util xorg-encodings fontforge
 run=( xorg-fontconfig xorg-font-util xorg-encodings fontforge )
 name=ttf-liberation
@@ -27,7 +26,3 @@ build(){
     install -Dm644 $SRC/ttf-liberation.30-0-liberation-serif.conf \
         $PKG/etc/fonts/conf.avail/30-$pkgname-serif.conf
 }
-
-
-
-# NuTyX Pkgfile (http://nutyx.org)
