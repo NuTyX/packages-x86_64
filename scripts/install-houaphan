@@ -18,7 +18,6 @@
 #
 # Todo:
 #*******************************************************************************
-VERSION=8.0.20150913
 boot_mesg() {
         local ECHOPARM=""
 
@@ -166,15 +165,15 @@ log_warning_msg() {
 #
 #*******************************************************************************
 unmountall() {
-if [ -d "$DepotCD/depot" ]; then
-	umount ${{MountFolder}/${DEPOT}
+if [ -d "$DEPOT_CD/depot" ]; then
+	umount ${{FOLDER}/${DEPOT}
 	umount  `cat /tmp/depot`
 fi
-umount ${MountFolder}/run
-umount ${MountFolder}/dev/pts
-umount ${MountFolder}/dev
-umount ${MountFolder}/proc
-umount ${MountFolder}/sys
+umount ${FOLDER}/run
+umount ${FOLDER}/dev/pts
+umount ${FOLDER}/dev
+umount ${FOLDER}/proc
+umount ${FOLDER}/sys
 }
 #*******************************************************************************
 # Function - setup_chroot
@@ -189,13 +188,13 @@ umount ${MountFolder}/sys
 #
 #*******************************************************************************
 setup_chroot() {
-mount --bind /dev ${MountFolder}/dev
-mount -t devpts devpts ${MountFolder}/dev/pts
-mount -t proc proc ${MountFolder}/proc
-mount -t sysfs sysfs ${MountFolder}/sys
-mount -t tmpfs tmpfs ${MountFolder}/run
-if [ -h ${MountFolder}/dev/shm ]; then
-   mkdir -pv ${MountFolder}/$(readlink ${MountFolder}/dev/shm)
+mount --bind /dev ${FOLDER}/dev
+mount -t devpts devpts ${FOLDER}/dev/pts
+mount -t proc proc ${FOLDER}/proc
+mount -t sysfs sysfs ${FOLDER}/sys
+mount -t tmpfs tmpfs ${FOLDER}/run
+if [ -h ${FOLDER}/dev/shm ]; then
+   mkdir -pv ${FOLDER}/$(readlink ${FOLDER}/dev/shm)
 fi
 }
 enter_chroot() {
@@ -203,7 +202,7 @@ echo "
 ******************************
 Chroot path: $DEVICE
 ******************************"
-chroot ${MountFolder} /usr/bin/env -i \
+chroot ${FOLDER} /usr/bin/env -i \
 HOME=/root \
 TERM="$TERM" \
 PS1='\u:\w\$ ' \
@@ -225,16 +224,16 @@ PS1='\u:\w\$ ' \
 # Todo:
 #*******************************************************************************
 install_pkg() {
-	if $TMP/usr/bin/pkginfo -r $MountFolder -i| grep "^$1 " > /dev/null; then
+	if $TMP/usr/bin/pkginfo -r $FOLDER -i| grep "^$1 " > /dev/null; then
 		boot_mesg "$1 is already install on $DEVICE..."
 		echo_info
 	else
 		packagefileToDownload=`getPackageName ${1}`
 		boot_mesg "Downloading $1..."
-		wget $Packagebase/${1}/$packagefileToDownload  -O $TMP/$packagefileToDownload > /dev/null 2>&1
+		wget ${DEPOT_BASE}/${1}/$packagefileToDownload  -O $TMP/$packagefileToDownload > /dev/null 2>&1
 		echo_info
 		# Installing the package
-		$TMP/usr/bin/pkgadd -r $MountFolder $packagefileToDownload || print_error_msg
+		$TMP/usr/bin/pkgadd -r $FOLDER $packagefileToDownload || print_error_msg
 		echo_ok	
 	fi
 }
@@ -253,7 +252,7 @@ install_pkg() {
 check_diskspace() {
 	# df|grep "$1"|awk '{print $4}'
 	let MinSize=$2+100
-	let Amoung=`df|grep $MountFolder |awk '{print $(NF-2)}'`/1024 || exit 1
+	let Amoung=`df|grep $FOLDER |awk '{print $(NF-2)}'`/1024 || exit 1
 	let Amoung=$Amoung-$MinSize
 
 	status="0"
@@ -297,16 +296,16 @@ error() {
 end() {
 	if [ "$ERREUR" == "yes" ]; then
 		if [ ! -f $TMP/depot ]; then
-			rm -r ${MountFolder}/${DEPOT}
+			rm -r ${FOLDER}/${DEPOT}
 			boot_mesg "Cleaning up temporary files.."
 			boot_mesg "Please correct and start again"
 		fi
 	fi
 	cd ~
-	unmountall $MountFolder > /dev/null 2>&1
+	unmountall $FOLDER > /dev/null 2>&1
 
 	if [ "$MIG" == "0" ]; then
-		umount $MountFolder > /dev/null 2>&1
+		umount $FOLDER > /dev/null 2>&1
 	fi
 	rm -rf $TMP
 }
@@ -342,8 +341,7 @@ done
 #****************************************************************************
 getPackageName() {
 	local BUILD_DATE EXT HEAD
-	wget $Packagebase/${1}/.PKGREPO  -O $TMP/.PKGREPO > /dev/null  2>&1
-
+	wget ${DEPOT_BASE}/${1}/.PKGREPO  -O $TMP/.PKGREPO > /dev/null  2>&1
 	HEAD=`head -1 $TMP/.PKGREPO`
 	if [ "${HEAD:10:1}" == "#" ]; then
 		BUILD_DATE="`echo $HEAD|cut -d "#" -f1`"
@@ -365,22 +363,22 @@ do
 done
 }
 generate_blfs_bootscripts() {
-[ -f ${MountFolder}/etc/${MountFolder}/etc/blfs-bootscripts ] && return
-[ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
+[ -f ${FOLDER}/etc/${FOLDER}/etc/blfs-bootscripts ] && return
+[ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
 echo "scripts=blfs-bootscripts
-scriptsversion=20150823" > ${MountFolder}/etc/blfs-bootscripts
+scriptsversion=20150823" > ${FOLDER}/etc/blfs-bootscripts
 }
 generate_etc_bashrc() {
 local FILE
 FILE="bashrc"
-[ -f ${MountFolder}/etc/$FILE ] && return
-[ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-  ${MountFolder}/etc/$FILE
+[ -f ${FOLDER}/etc/$FILE ] && return
+[ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+  ${FOLDER}/etc/$FILE
   return
 fi
-cat > ${MountFolder}/etc/$FILE << "EOF"
+cat > ${FOLDER}/etc/$FILE << "EOF"
 # Begin /etc/bashrc
 # Written for Beyond Linux From Scratch
 # by James Robertson <jameswrobertson@earthlink.net>
@@ -452,14 +450,14 @@ EOF
 generate_rc_site() {
 local FILE
 FILE="rc.site"
-[ -f ${MountFolder}/etc/sysconfig/$FILE ] && return
-[ ! -d ${MountFolder}/etc/sysconfig ] && mkdir -pv ${MountFolder}/etc/sysconfig
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-  ${MountFolder}/etc/sysconfig/$FILE
+[ -f ${FOLDER}/etc/sysconfig/$FILE ] && return
+[ ! -d ${FOLDER}/etc/sysconfig ] && mkdir -pv ${FOLDER}/etc/sysconfig
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+  ${FOLDER}/etc/sysconfig/$FILE
   return
 fi
-cat > ${MountFolder}/etc/sysconfig/$FILE << "EOF"
+cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 # rc.site                                                                            [20:15 i686 3.18.11-NuTyX-iso thierry@nutyx]
 # Optional parameters for boot scripts.
 
@@ -551,14 +549,14 @@ EOF
 generate_udev_retry() {
 local FILE
 FILE="udev_retry"
-[ -f ${MountFolder}/etc/sysconfig/$FILE ] && return
-[ ! -d ${MountFolder}/etc/sysconfig ] && mkdir -pv ${MountFolder}/etc/sysconfig
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
+[ -f ${FOLDER}/etc/sysconfig/$FILE ] && return
+[ ! -d ${FOLDER}/etc/sysconfig ] && mkdir -pv ${FOLDER}/etc/sysconfig
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
    cp /etc/sysconfig/$FILE \
-   ${MountFolder}/etc/sysconfig/$FILE
+   ${FOLDER}/etc/sysconfig/$FILE
    return
 fi
-cat > ${MountFolder}/etc/sysconfig/$FILE << "EOF"
+cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 ########################################################################
 # Begin /etc/sysconfig/udev_retry
 #
@@ -583,14 +581,14 @@ EOF
 generate_createfiles() {
 local FILE
 FILE="createfiles"
-[ -f ${MountFolder}/etc/sysconfig/$FILE ] && return
-[ ! -d ${MountFolder}/etc/sysconfig ] && mkdir -pv ${MountFolder}/etc/sysconfig
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/sysconfig/$FILE
+[ -f ${FOLDER}/etc/sysconfig/$FILE ] && return
+[ ! -d ${FOLDER}/etc/sysconfig ] && mkdir -pv ${FOLDER}/etc/sysconfig
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/sysconfig/$FILE
    return
 fi
-cat > ${MountFolder}/etc/sysconfig/$FILE << "EOF"
+cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 ########################################################################
 # Begin /etc/sysconfig/createfiles
 #
@@ -627,14 +625,14 @@ EOF
 generate_modules() {
 local FILE
 FILE="modules"
-[ -f ${MountFolder}/etc/sysconfig/$FILE ] && return
-[ ! -d ${MountFolder}/etc/sysconfig ] && mkdir -pv ${MountFolder}/etc/sysconfig
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/sysconfig/$FILE
+[ -f ${FOLDER}/etc/sysconfig/$FILE ] && return
+[ ! -d ${FOLDER}/etc/sysconfig ] && mkdir -pv ${FOLDER}/etc/sysconfig
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/sysconfig/$FILE
    return
 fi
-cat > ${MountFolder}/etc/sysconfig/$FILE << "EOF"
+cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 ########################################################################
 # Begin /etc/sysconfig/modules
 #
@@ -658,14 +656,14 @@ EOF
 generate_mouse() {
 local FILE
 FILE="modules"
-[ -f ${MountFolder}/etc/$FILE ] && return
-[ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/$FILE
+[ -f ${FOLDER}/etc/$FILE ] && return
+[ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/$FILE
    return
 fi
-cat > ${MountFolder}/etc/$FILE << "EOF"
+cat > ${FOLDER}/etc/$FILE << "EOF"
 MDEVICE="/dev/input/mice"
 PROTOCOL="imps2"
 EOF
@@ -673,14 +671,14 @@ EOF
 generate_inputrc() {
 local FILE
 FILE="inputrc"
-[ -f ${MountFolder}/etc/$FILE ] && return
-[ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/$FILE
+[ -f ${FOLDER}/etc/$FILE ] && return
+[ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/$FILE
    return
 fi
-cat > ${MountFolder}/etc/$FILE << "EOF"
+cat > ${FOLDER}/etc/$FILE << "EOF"
 # Begin /etc/inputrc
 # Modified by Chris Lynn <roryo@roryo.dynup.net>
 
@@ -727,14 +725,14 @@ EOF
 generate_hosts() {
 local FILE
 FILE="hosts"
-[ -f ${MountFolder}/etc/$FILE ] && return
-[ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-  cp /etc/install-$version.conf.d/$FILE \
-  ${MountFolder}/etc/$FILE
+[ -f ${FOLDER}/etc/$FILE ] && return
+[ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+  cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+  ${FOLDER}/etc/$FILE
   return
 fi
-cat > ${MountFolder}/etc/$FILE << "EOF"
+cat > ${FOLDER}/etc/$FILE << "EOF"
 # Begin /etc/hosts
 
 127.0.0.1 localhost.localdomain localhost
@@ -746,14 +744,14 @@ EOF
 generate_shells() {
 local FILE
 FILE="shells"
-[ -f ${MountFolder}/etc/$FILE ] && return
-[ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-  cp /etc/install-$version.conf.d/$FILE \
-  ${MountFolder}/etc/$FILE
+[ -f ${FOLDER}/etc/$FILE ] && return
+[ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+  cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+  ${FOLDER}/etc/$FILE
   return
 fi
-cat > ${MountFolder}/etc/$FILE << "EOF"
+cat > ${FOLDER}/etc/$FILE << "EOF"
 # Begin /etc/shells
 
 /bin/sh
@@ -765,14 +763,14 @@ EOF
 generate_umask_sh() {
 local FILE
 FILE="umask.sh"
-[ -f ${MountFolder}/etc/profile.d/$FILE ] && return
-[ ! -d ${MountFolder}/etc/profile.d ] && mkdir -pv ${MountFolder}/etc/profile.d
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/profile.d/$FILE
+[ -f ${FOLDER}/etc/profile.d/$FILE ] && return
+[ ! -d ${FOLDER}/etc/profile.d ] && mkdir -pv ${FOLDER}/etc/profile.d
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/profile.d/$FILE
    return
 fi
-cat > ${MountFolder}/etc/profile.d/$FILE << "EOF"
+cat > ${FOLDER}/etc/profile.d/$FILE << "EOF"
 # By default we want the umask to get set.
 if [ "$(id -gn)" = "$(id -un)" -a $EUID -gt 99 ] ; then
   umask 002
@@ -784,14 +782,14 @@ EOF
 generate_readline_sh() {
 local FILE
 FILE="readline.sh"
-[ -f ${MountFolder}/etc/profile.d/$FILE ] && return
-[ ! -d ${MountFolder}/etc/profile.d ] && mkdir -pv ${MountFolder}/etc/profile.d
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/profile.d/$FILE
+[ -f ${FOLDER}/etc/profile.d/$FILE ] && return
+[ ! -d ${FOLDER}/etc/profile.d ] && mkdir -pv ${FOLDER}/etc/profile.d
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/profile.d/$FILE
    return
 fi
-cat > ${MountFolder}/etc/profile.d/$FILE << "EOF"
+cat > ${FOLDER}/etc/profile.d/$FILE << "EOF"
 # Setup the INPUTRC environment variable.
 if [ -z "$INPUTRC" -a ! -f "$HOME/.inputrc" ] ; then
         INPUTRC=/etc/inputrc
@@ -802,14 +800,14 @@ EOF
 generate_extrapaths_sh() {
 local FILE
 FILE="extrapaths.sh"
-[ -f ${MountFolder}/etc/profile.d/$FILE ] && return
-[ ! -d ${MountFolder}/etc/profile.d ] && mkdir -pv ${MountFolder}/etc/profile.d
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/profile.d/$FILE
+[ -f ${FOLDER}/etc/profile.d/$FILE ] && return
+[ ! -d ${FOLDER}/etc/profile.d ] && mkdir -pv ${FOLDER}/etc/profile.d
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/profile.d/$FILE
    return
 fi
-cat > ${MountFolder}/etc/profile.d/$FILE << "EOF"
+cat > ${FOLDER}/etc/profile.d/$FILE << "EOF"
 if [ -d /usr/local/lib/pkgconfig ] ; then
         pathappend /usr/local/lib/pkgconfig PKG_CONFIG_PATH
 fi
@@ -831,14 +829,14 @@ EOF
 generate_dircolors_sh() {
 local FILE
 FILE="dircolors.sh"
-[ -f ${MountFolder}/etc/profile.d/$FILE ] && return
-[ ! -d ${MountFolder}/etc/profile.d ] && mkdir -pv ${MountFolder}/etc/profile.d
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/profile.d/$FILE
+[ -f ${FOLDER}/etc/profile.d/$FILE ] && return
+[ ! -d ${FOLDER}/etc/profile.d ] && mkdir -pv ${FOLDER}/etc/profile.d
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/profile.d/$FILE
    return
 fi
-cat > ${MountFolder}/etc/profile.d/$FILE << "EOF"
+cat > ${FOLDER}/etc/profile.d/$FILE << "EOF"
 # Setup for /bin/ls to support color, the alias is in /etc/bashrc.
 if [ -f "/etc/dircolors" ] ; then
         eval $(dircolors -b /etc/dircolors)
@@ -853,14 +851,14 @@ EOF
 generate_profile() {
 local FILE
 FILE="profile"
-[ -f ${MountFolder}/etc/$FILE ] && return
-[ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/$FILE
+[ -f ${FOLDER}/etc/$FILE ] && return
+[ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/$FILE
    return
 fi
-cat > ${MountFolder}/etc/$FILE << "EOF"
+cat > ${FOLDER}/etc/$FILE << "EOF"
 # Begin /etc/profile
 # Written for Beyond Linux From Scratch
 # by James Robertson <jameswrobertson@earthlink.net>
@@ -939,9 +937,9 @@ unset script RED GREEN NORMAL
 EOF
 }
 generate_group() {
-[ -f ${MountFolder}/etc/group ] && return
-[ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
-cat > ${MountFolder}/etc/group << "EOF"
+[ -f ${FOLDER}/etc/group ] && return
+[ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+cat > ${FOLDER}/etc/group << "EOF"
 root:x:0:
 bin:x:1:
 sys:x:2:
@@ -1009,9 +1007,9 @@ users:x:999:
 EOF
 }
 generate_passwd() {
-[ -f ${MountFolder}/etc/passwd ] && return
-[ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
-cat > ${MountFolder}/etc/passwd << "EOF"
+[ -f ${FOLDER}/etc/passwd ] && return
+[ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+cat > ${FOLDER}/etc/passwd << "EOF"
 root::0:0:root:/root:/bin/bash
 bin:x:1:1:bin:/dev/null:/bin/false
 lp:x:9:9:Print Service User:/dev/null:/bin/false
@@ -1057,14 +1055,14 @@ EOF
 generate_fstab() {
 local FILE
 FILE="fstab"
-[ -f ${MountFolder}/etc/$FILE ] && return
-[ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/$FILE
+[ -f ${FOLDER}/etc/$FILE ] && return
+[ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/$FILE
    return
 fi
-cat > ${MountFolder}/etc/$FILE << "EOF"
+cat > ${FOLDER}/etc/$FILE << "EOF"
 # Begin /etc/fstab
 
 # file system  mount-point  type     options             dump  fsck
@@ -1082,14 +1080,14 @@ EOF
 generate_dmrc() {
 local FILE
 FILE=".dmrc"
-[ -f ${MountFolder}/etc/skel/$FILE ] && return
-[ ! -d ${MountFolder}/etc/skel ] && mkdir -pv ${MountFolder}/etc/skel
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/skel/$FILE
+[ -f ${FOLDER}/etc/skel/$FILE ] && return
+[ ! -d ${FOLDER}/etc/skel ] && mkdir -pv ${FOLDER}/etc/skel
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/skel/$FILE
    return
 fi
-cat > ${MountFolder}/etc/skel/$FILE << "EOF"
+cat > ${FOLDER}/etc/skel/$FILE << "EOF"
 [Desktop]
 Session=default
 EOF
@@ -1097,14 +1095,14 @@ EOF
 generate_bashrc() {
 local FILE
 FILE=".bashrc"
-[ -f ${MountFolder}/etc/skel/$FILE ] && return
-[ ! -d ${MountFolder}/etc/skel ] && mkdir -pv ${MountFolder}/etc/skel
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/skel/$FILE
+[ -f ${FOLDER}/etc/skel/$FILE ] && return
+[ ! -d ${FOLDER}/etc/skel ] && mkdir -pv ${FOLDER}/etc/skel
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/skel/$FILE
    return
 fi
-cat > ${MountFolder}/etc/skel/$FILE << "EOF"
+cat > ${FOLDER}/etc/skel/$FILE << "EOF"
 # Personal aliases and functions.
 
 # Personal environment variables and startup programs should go in
@@ -1135,22 +1133,22 @@ alias pkgfind='cards list | grep -i'
 
 # End ~/.bashrc
 EOF
-[ -f ${MountFolder}/root/$FILE ] && return
-[ ! -d ${MountFolder}/root ] && install -dv -m0750 ${MountFolder}/root
-cp -v ${MountFolder}/etc/skel/$FILE \
-${MountFolder}/root
+[ -f ${FOLDER}/root/$FILE ] && return
+[ ! -d ${FOLDER}/root ] && install -dv -m0750 ${FOLDER}/root
+cp -v ${FOLDER}/etc/skel/$FILE \
+${FOLDER}/root
 }
 generate_bash_profile() {
 local FILE
 FILE=".bash_profile"
-[ -f ${MountFolder}/etc/skel/$FILE ] && return
-[ ! -d ${MountFolder}/etc/skel ] && mkdir -pv ${MountFolder}/etc/skel
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/skel/$FILE
+[ -f ${FOLDER}/etc/skel/$FILE ] && return
+[ ! -d ${FOLDER}/etc/skel ] && mkdir -pv ${FOLDER}/etc/skel
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/skel/$FILE
    return
 fi
-cat > ${MountFolder}/etc/skel/$FILE << "EOF"
+cat > ${FOLDER}/etc/skel/$FILE << "EOF"
 # Personal environment variables and startup programs.
 
 # Personal aliases and functions should go in ~/.bashrc.  System wide
@@ -1178,19 +1176,29 @@ fi
 
 # End ~/.bash_profile
 EOF
-[ ! -d ${MountFolder}/root ] && install -dv -m0750 ${MountFolder}/root
-[ -f ${MountFolder}/root/$FILE ] && return
-cp -v ${MountFolder}/etc/skel/$FILE \
-${MountFolder}/root
+[ ! -d ${FOLDER}/root ] && install -dv -m0750 ${FOLDER}/root
+[ -f ${FOLDER}/root/$FILE ] && return
+cp -v ${FOLDER}/etc/skel/$FILE \
+${FOLDER}/root
+}
+generate_pkgmk_conf() {
+local FILE
+FILE="pkgmk.conf"
+[ -f ${FOLDER}/etc/$FILE ] && return
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+  [ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+  cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+  ${FOLDER}/etc/$FILE
+fi
 }
 generate_cards_conf() {
 local FILE
 FILE="cards.conf"
-[ -f ${MountFolder}/etc/$FILE ] && return
-[ ! -d ${MountFolder}/etc ] && mkdir -pv ${MountFolder}/etc
-if [ -f /etc/install-$version.conf.d/$FILE ]; then
-   cp /etc/install-$version.conf.d/$FILE \
-   ${MountFolder}/etc/$FILE
+[ -f ${FOLDER}/etc/$FILE ] && return
+[ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
+   ${FOLDER}/etc/$FILE
    return
 fi
 echo "## For kde5
@@ -1256,16 +1264,16 @@ dir ${DEPOT}/lxde|${URL}
 # are need stuffs
 #
 ## For all the graphical applications
-dir ${DEPOT}/graphic-extra|${URL}
+dir ${DEPOT}/gui-extra|${URL}
 #
 ## For a minimal graphical interface
-dir ${DEPOT}/graphic|${URL}
+dir ${DEPOT}/gui|${URL}
 #
 ## For all the console applications
-dir ${DEPOT}/console-extra|${URL}
+dir ${DEPOT}/cli-extra|${URL}
 #
 ## For a minimal console interface
-dir ${DEPOT}/console|${URL}
+dir ${DEPOT}/cli|${URL}
 #
 ## Strict minimum Base applications
 dir ${DEPOT}/base-extra|${URL}
@@ -1286,29 +1294,29 @@ base ${DEPOT}/base-extra
 # base ${DEPOT}/console-extra
 # base ${DEPOT}/graphic
 # base ${DEPOT}/graphic-extra
-# base ${DEPOT}/..." > ${MountFolder}/etc/cards.conf
+# base ${DEPOT}/..." > ${FOLDER}/etc/cards.conf
 }
 generate_nutyx_version() {
 local FILE
 FILE="nutyx-version"
-[ -f ${MountFolder}/var/lib/pkg/$FILE ] && return
-[ ! -d ${MountFolder}/var/lib/pkg ] && mkdir -pv ${MountFolder}/var/lib/pkg
-echo "name $version
-version $VERSION" > ${MountFolder}/var/lib/pkg/$FILE
+[ -f ${FOLDER}/var/lib/pkg/$FILE ] && return
+[ ! -d ${FOLDER}/var/lib/pkg ] && mkdir -pv ${FOLDER}/var/lib/pkg
+echo "name ${CODE_NAME}
+version $VERSION" > ${FOLDER}/var/lib/pkg/$FILE
 }
 update_fstab() {
 if [ "$MIG" == "0" ]; then
-        echo "$1     /    $2    defaults   0   1" >> ${MountFolder}/etc/fstab
+        echo "$1     /    $2    defaults   0   1" >> ${FOLDER}/etc/fstab
 fi
 }
 install_resolv_conf() {
-[ -f /etc/resolv.conf ] && cp /etc/resolv.conf ${MountFolder}/etc
+[ -f /etc/resolv.conf ] && cp /etc/resolv.conf ${FOLDER}/etc
 }
 umount_all() {
 if [ "$MIG" == "0" ]; then
         if [ -f $TMP/depot ]; then
-                umount  ${MountFolder}${DepotPackages} > /dev/null 2>&1
-                umount  ${MountFolder}${DepotCD} > /dev/null 2>&1
+                umount  ${FOLDER}${LOCAL_DEPOT_PACKAGES} > /dev/null 2>&1
+                umount  ${FOLDER}${DEPOT_CD} > /dev/null 2>&1
         fi
 fi
 }
@@ -1353,24 +1361,23 @@ check_tools() {
 }
 check_variables() {
 
-[ -z "${version}" ] && version="houaphan"
-[ -z "${URL}" ] && URL="http://downloads.nutyx.org"
-[ -z "${DEPOT}" ] && DEPOT="/var/lib/pkg/depotrepo"
-[ -z "${MountFolder}" ] && MountFolder="/mnt/hd"
+[ -z $URL ] && URL="http://downloads.nutyx.org"
+[ -z $VERSION ] && VERSION="8.0-rc1"
+[ -z $DEPOT ] && DEPOT="/var/lib/pkg/depotrepo"
+[ -z $FOLDER ] && FOLDER="/mnt/hd"
 
-Homepage="${URL}"                 ## http://downloads.nutyx.org
-ARCH=`uname -m`                   ## i686
-Installbase="$version/$ARCH/"     ## houaphan/i686
-Package="$Homepage/$Installbase"  ## http://downloads.nutyx.org/houaphan/i686
-Packagebase="$Package/base"       ## http://downloads.nutyx.org/houaphan/i686/base
+HOMEPAGE="${URL}"                       ## http://downloads.nutyx.org
+INSTALL_BASE="$VERSION/$ARCH"           ## 8.0/x86_64
+DEPOT_ROOT="$HOMEPAGE/${INSTALL_BASE}"  ## http://downloads.nutyx.org/8.0/x86_64
+DEPOT_BASE="$DEPOT_ROOT/$BASE"          ## http://downloads.nutyx.org/8.0/x86_64/base
 
-DepotPackages="$DEPOT/base"
-DepotCD="/media/cdrom"
+LOCAL_DEPOT_PACKAGES="$DEPOT/$BASE"
+DEPOT_CD="/media/cdrom"
 
-SetupFile=/tmp/setup
-
+SETUP_FILE=/tmp/setup
+echo "$DEPOT_BASE"
 # Size of the FullInstall in Mbytes
-let BaseInstall=450
+let BASE_SIZE=450
 
 # Number of seconds between STOPSIG and FALLBACK when stopping processes
 KILLDELAY="3"
@@ -1432,15 +1439,15 @@ if [ ! -z "${LFS}" ]; then
         DEVICE=${LFS}
 else
 
-        MIG=`echo $MountFolder|cut -d "/" -f 2`
-        DEVICE=${MountFolder}
+        MIG=`echo $FOLDER|cut -d "/" -f 2`
+        DEVICE=${FOLDER}
 fi
 }
 check_destination() {
 if [ "$MIG" == "dev" ]; then
         MIG=0  # Disk
 else
-        MountFolder=$DEVICE
+        FOLDER=$DEVICE
         MIG=1
 		echo "
 ******************************
@@ -1449,16 +1456,25 @@ Installation path: $DEVICE
 fi
 }
 check_mountpoint() {
-[ -z $MountFolder ] && error "Variable MountFolder not define"
+[ -z $FOLDER ] && error "Variable FOLDER not define"
 if [ "$MIG" == "0" ]; then
         # Checking the device exist ?
-        if ! [ -b  $MountFolder ]; then
-                error "Mounting point $MountFolder not existing"
+        if ! [ -b  $FOLDER ]; then
+                error "Mounting point $FOLDER not existing"
         fi
         # Mounting the System files
-        if ! mountpoint /$MountFolder > /dev/null; then
-                mount -t $FILESYSTEM $1 $MountFolder || error "Invalid partition or wrong format"
+        if ! mountpoint /$FOLDER > /dev/null; then
+                mount -t $FILESYSTEM $1 $FOLDER || error "Invalid partition or wrong format"
         fi
+fi
+}
+check_arch() {
+ARCH=`uname -m`
+if [ "$ARCH" != "x86_64" ]; then
+	boot_mesg "
+ >>> This arch ($ARCH) is not supported"
+	echo_failure
+	exit 1
 fi
 }
 welcome() {
@@ -1472,7 +1488,7 @@ if [ "$MIG" == "0" ]; then
                 echo "* corrects arguments                      *"
                 echo "*******************************************"
                 echo ""
-                echo "example: install-$version /dev/sda1 xfs"
+                echo "example: ${INSTALL_COMMAND} /dev/sda1 xfs"
 
                 exit 1
         fi
@@ -1482,19 +1498,18 @@ if [ "$MIG" == "0" ]; then
 fi
 }
 create_database() {
-[ ! -d ${MountFolder}/var/lib/pkg/DB ] && mkdir -p ${MountFolder}/var/lib/pkg/DB
+[ ! -d ${FOLDER}/var/lib/pkg/DB ] && mkdir -p ${FOLDER}/var/lib/pkg/DB
 }
 download_pkgadd() {
 	if [ ! -f $TMP/usr/bin/pkgadd ]; then
         	cd $TMP
         	basepackagefile=`getPackageName cards`
         	if [ "$basepackagefile" == "" ]; then
-                	error "$basepackagefile not found"
+                	error "variable 'basepackagefile' is not set"
         	fi
         	packagefile=`echo ${basepackagefile}|sed "s|^cards|cards.devel|"`
-        	echo "Downloads of $packagefile"
         	if  [ ! -f ${packagefile} ]; then
-                	wget $Packagebase/cards/$packagefile || print_error_msg
+                	wget ${DEPOT_BASE}/cards/$packagefile || print_error_msg
                 	echo_ok
         	fi
         	echo "Extraction of cards.devel ..."
@@ -1504,7 +1519,7 @@ download_pkgadd() {
 	fi
 }
 check_mountfolder() {
-	[ ! -d $MountFolder ] && mkdir -p $MountFolder
+	[ ! -d $FOLDER ] && mkdir -p $FOLDER
 }
 generate_setupfile() {
 echo "#!/bin/bash
@@ -1524,14 +1539,15 @@ lvm2 mdadm dialog cpio squashfs \
 linux-firmware \
 kernel-lts \
 ca-certificates
-exit" > $MountFolder/$SetupFile
-chmod 177 $MountFolder/$SetupFile
+exit" > $FOLDER/$SETUP_FILE
+chmod 177 $FOLDER/$SETUP_FILE
 setup_chroot
-chroot ${MountFolder} /bin/bash -c "$SetupFile"
+chroot ${FOLDER} /bin/bash -c "$SETUP_FILE"
 unmountall
 }
 install_configuration_files() {
 	generate_cards_conf
+	generate_pkgmk_conf
 	generate_fstab
 	generate_passwd
 	generate_group
@@ -1559,7 +1575,7 @@ install_configuration_files() {
 }
 print_help() {
 	echo "
-usage: `basename $0` [options] options
+usage: `basename ${INSTALL_COMMAND}` [options] options
   -p,   --path  <installation-path> will install NuTyX in <installation-path>
   -ec,  --enter-chroot              will enter in the chroot if exist
   -ic,  --install-config            will install all the configuration files only
@@ -1592,18 +1608,23 @@ parse_options() {
 				exit 0;;
 			-p|--path)
 				if [ ! "$2" ]; then
-					echo "`basename $0`: option $1 requires an argument"
+					echo "`basename $INSTALL_COMMAND`: option $1 requires an argument"
 					exit 1
 				fi
-				MountFolder="$2"
+				FOLDER="$2"
 				shift;;
 			-v|--version)
-				echo "`basename $0` $VERSION"
+				echo "`basename $INSTALL_COMMAND` $VERSION.$RELEASE"
 				exit;;
 			/*)
-				boot_mesg " >>> This methode is depreciate <<<: use '-p $1' instead"
+				boot_mesg "
+ >>> This methode is depreciate <<<: use '-p $1' instead or adjust the 'LFS' variable"
 				echo_warning
-				MountFolder="$1";;
+				echo "
+   press any key to continue ...
+"
+				read a
+				FOLDER="$1";;
 			*)
 				echo "`basename $0`: invalid option $1"
 				exit 1 ;;
@@ -1612,7 +1633,8 @@ parse_options() {
 	done
 }
 main() {
-	[ -f /etc/`basename $0`.conf ] && source /etc/`basename $0`.conf
+	[ -f /etc/`basename $INSTALL_COMMAND`.conf ] && source /etc/`basename $INSTALL_COMMAND`.conf
+	check_arch
 	check_variables  "$@"
 	parse_options "$@"
 	check_lfs "$@"
@@ -1626,7 +1648,7 @@ main() {
 * corrects arguments                      *
 *******************************************
 
-example: install-$version /chroot
+example: ${INSTALL_COMMAND} /chroot
 "
 
 		return
@@ -1639,14 +1661,16 @@ example: install-$version /chroot
 	welcome
 
 	TMP=`mktemp -d`
-
+	echo "check_mountfolder"
 	check_mountfolder
+	echo "check_mountpoint"
 	check_mountpoint
 
-#	[ "$MIG" == "0" ] && check_diskspace $1 $BaseInstall
+#	[ "$MIG" == "0" ] && check_diskspace $1 ${BASE_SIZE}
 
-
+	echo "download_pkgadd"
 	download_pkgadd
+	echo "create_database"
 	create_database
 
 	install_base
@@ -1660,4 +1684,8 @@ example: install-$version /chroot
 	successfull_installation
 }
 
+readonly CODE_NAME="8.0-rc1"
+readonly BASE="base"
+readonly RELEASE=0
+INSTALL_COMMAND="`basename $0`"
 main "$@"
