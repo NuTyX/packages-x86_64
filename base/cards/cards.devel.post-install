@@ -1,0 +1,8 @@
+. lib/lsb/init-functions
+if [ ! -f etc/pkgmk.conf ]; then
+   if [ -f etc/pkgmk.conf.example ]; then
+	cp etc/pkgmk.conf.example etc/pkgmk.conf
+	log_success_msg "${WARNING} /etc/pkgmk.conf.example copied as /etc/pkgmk.conf ${NORMAL}"
+	log_warning_msg "${WARNING} Double check /etc/pkgmk.conf and adapted to your needs ${NORMAL}"
+   fi
+fi
