@@ -5,12 +5,12 @@
 name=nasm
 version=2.11.06
 release=1
-
-source=( http://www.nasm.us/pub/nasm/releasebuilds/$version/$name-$version.tar.xz
-	http://www.nasm.us/pub/nasm/releasebuilds/$version/nasm-$version-xdoc.tar.xz)
+# http://www.nasm.us/pub/nasm/releasebuilds/$version/$name-$version.tar.xz
+source=( ftp://ftp.debian.org/debian/pool/main/n/nasm/nasm_2.11.06-1really2.11.05.orig.tar.xz
+ 	http://www.nasm.us/pub/nasm/releasebuilds/$version/nasm-$version-xdoc.tar.xz)
 
 build() {
-	cd $name-$version
+	cd $name-2.11.05
 	./configure --prefix=/usr\
 		    --mandir=/usr/share/man
 	make
@@ -19,6 +19,7 @@ build() {
 	make INSTALLROOT=$PKG  install
 
 mkdir -pv $PKG/usr/share/doc/nasm-$version/html
+cd ../$name-2.11.06
 cp -v doc/html/*.html    $PKG/usr/share/doc/nasm-$version/html
 cp -v doc/*.{txt,ps,pdf} $PKG/usr/share/doc/nasm-$version
 mkdir -pv $PKG/usr/share/info
