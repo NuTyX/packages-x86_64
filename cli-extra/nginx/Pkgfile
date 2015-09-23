@@ -1,10 +1,10 @@
 # Description: nginx [engine x] is a high-performance HTTP server and reverse proxy,
-# URL: URL: http://nginx.net/
+# URL: http://nginx.net/
 # Packager: alienus at nutyx dot org
 # Depends on: libxml2 libxslt pcre 
 name=nginx
 version=1.6.2
-release=1
+release=2
 
 source=(http://nginx.org//download/$name-$version.tar.gz
 nginx.service
@@ -98,5 +98,10 @@ build() {
     chmod 750 $PKG/var/log/$name
     # Create sub-directory for virtual servers.
     mkdir -p $PKG/etc/$name/conf.d
+    # Remove perllocal.pod and .packlist if present in the package
+    for i in perllocal.pod .packlist; do
+        find $PKG -name "$i" -exec rm -rf {} \;
+    done
+
 }
 
