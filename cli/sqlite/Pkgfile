@@ -7,7 +7,7 @@ _amalgamationver=3081101
 
 name=sqlite
 version=3.8.11.1
-release=1
+release=2
 
 source=(http://www.sqlite.org/2015/sqlite-autoconf-$_amalgamationver.tar.gz
 	http://www.sqlite.org/2015/sqlite-doc-$_amalgamationver.zip )
@@ -19,6 +19,8 @@ cd $name-autoconf-$_amalgamationver
 CFLAGS="-g -O2 -DSQLITE_ENABLE_FTS3=1 \
 -DSQLITE_ENABLE_COLUMN_METADATA=1 \
 -DSQLITE_SECURE_DELETE=1 \
+-DSQLITE_ENABLE_DBSTAT_VTAB=1 \
+-DSQLITE_ENABLE_RTREE=1 \
 -DSQLITE_ENABLE_UNLOCK_NOTIFY=1"
 make -j1
 make DESTDIR=$PKG install
