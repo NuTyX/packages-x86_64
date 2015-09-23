@@ -1375,10 +1375,11 @@ LOCAL_DEPOT_PACKAGES="$DEPOT/$BASE"
 DEPOT_CD="/media/cdrom"
 
 SETUP_FILE=/tmp/setup
-echo "$DEPOT_BASE"
 # Size of the FullInstall in Mbytes
 let BASE_SIZE=450
-
+}
+config() {
+ARCH=`uname -m`
 # Number of seconds between STOPSIG and FALLBACK when stopping processes
 KILLDELAY="3"
 
@@ -1469,32 +1470,11 @@ if [ "$MIG" == "0" ]; then
 fi
 }
 check_arch() {
-ARCH=`uname -m`
 if [ "$ARCH" != "x86_64" ]; then
 	boot_mesg "
  >>> This arch ($ARCH) is not supported"
 	echo_failure
 	exit 1
-fi
-}
-welcome() {
-if [ "$MIG" == "0" ]; then
-        if [ $# -lt 2 ]; then
-                echo "* You didn't specify enough arguments     *"
-                echo "* Argument 1: Destination partition       *"
-                echo "* Argument 2: Filesystem to be used       *"
-                echo "*                                         *"
-                echo "* Please re-enter the command with the    *"
-                echo "* corrects arguments                      *"
-                echo "*******************************************"
-                echo ""
-                echo "example: ${INSTALL_COMMAND} /dev/sda1 xfs"
-
-                exit 1
-        fi
-        echo "    The file sytem will be  $2 "
-        echo_info
-        FILESYSTEM=$2
 fi
 }
 create_database() {
@@ -1633,10 +1613,11 @@ parse_options() {
 	done
 }
 main() {
+	config
 	[ -f /etc/`basename $INSTALL_COMMAND`.conf ] && source /etc/`basename $INSTALL_COMMAND`.conf
-	check_arch
 	check_variables  "$@"
 	parse_options "$@"
+	check_arch
 	check_lfs "$@"
 	if [ $# -lt 1 ] && [ -z "$LFS" ] ; then
 		echo "
@@ -1648,7 +1629,7 @@ main() {
 * corrects arguments                      *
 *******************************************
 
-example: ${INSTALL_COMMAND} /chroot
+example: ${INSTALL_COMMAND} -p /chroot
 "
 
 		return
@@ -1657,20 +1638,13 @@ example: ${INSTALL_COMMAND} /chroot
 	check_bash
 	check_tools
 	check_destination
-
-	welcome
-
 	TMP=`mktemp -d`
-	echo "check_mountfolder"
 	check_mountfolder
-	echo "check_mountpoint"
 	check_mountpoint
 
 #	[ "$MIG" == "0" ] && check_diskspace $1 ${BASE_SIZE}
 
-	echo "download_pkgadd"
 	download_pkgadd
-	echo "create_database"
 	create_database
 
 	install_base
@@ -1686,6 +1660,6 @@ example: ${INSTALL_COMMAND} /chroot
 
 readonly CODE_NAME="8.0-rc1"
 readonly BASE="base"
-readonly RELEASE=0
+readonly RELEASE=1
 INSTALL_COMMAND="`basename $0`"
 main "$@"
