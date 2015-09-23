@@ -3,7 +3,7 @@
 # Packager: pierre at nutyx dot org
 # Depends on: gpm libpng libtiff libjpeg-turbo 
 name=links
-version=2.11
+version=2.12
 release=1
 
 source=(http://links.twibright.com/download/links-$version.tar.bz2)
@@ -13,4 +13,7 @@ cd $name-$version
 --mandir=/usr/share/man
 make
 make DESTDIR=$PKG install
+mkdir -p $PKG/usr/share/doc/$name-$version
+install -v -m644 doc/links_cal/* KEYS BRAILLE_HOWTO \
+$PKG/usr/share/doc/$name-$version
 }
