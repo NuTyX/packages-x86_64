@@ -4,7 +4,7 @@
 # Depends on: python python-setuptools libnl openssl pciutils 
 name=net-snmp
 version=5.7.2.1
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz{,.asc})
 
@@ -28,5 +28,8 @@ make NETSNMP_DONT_CHECK_VERSION=1
 sed -i -e "s:install --basedir=\$\$dir:install --basedir=\$\$dir --root=$PKG:" Makefile
 
 make DESTDIR=$PKG INSTALL_PREFIX=$PKG INSTALLDIRS=vendor install
-
+# Remove perllocal.pod and .packlist if present in the package
+for i in perllocal.pod .packlist; do
+   find $PKG -name "$i" -exec rm -rf {} \;
+done
 }
