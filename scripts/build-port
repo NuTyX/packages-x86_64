@@ -3,7 +3,7 @@
 
 usage() {
 echo "
-How to proceed:
+Recommended use:
 
 You should mount the '$PROJECT' git as bind option (--bind) in your personnal account
 
@@ -49,6 +49,7 @@ print_help()
 	echo "  -s,   --sync                synchronise binaries from rsync server location"
 	echo "  -c,   --config              printout the configuration"
 	echo "  -h,   --help                print help and exit"
+	echo "  -u,   --usage               print the recommended way of using the '$COLLECTION' script"
 }
 list_ports() {
 	cd $PORT_BASE && find . -name Pkgfile -follow -printf "%h\n" | sed 's|^./||g' | sort
@@ -194,6 +195,8 @@ parse_options() {
 				exit 0
 				;;
 			-ru|--remove-url)
+				check_root
+				check_tools
 				check_config_file
 				remove_url
 				exit 0
@@ -202,17 +205,21 @@ parse_options() {
 				sync_binaries
 				exit 0;;
 			-c|--config)
+				check_root
+				check_tools
 				check_config_file
 				echo "Your config is:
-
-version you are using: $RSYNC_NUTYX_VERSION
-BINARY_BASE          : $BINARY_BASE
-PORT_BASE            : $PORT_BASE
+NuTyX name    : $RSYNC_NUTYX_NAME
+NuTyX version : $RSYNC_NUTYX_VERSION
+BINARY_BASE   : $BINARY_BASE
+PORT_BASE     : $PORT_BASE
 "
 				exit 0;;
 
 			-h|--help)
 				print_help
+				exit 0;;
+			-u|--usage)
 				usage
 				exit 0;;
 
@@ -225,12 +232,22 @@ PORT_BASE            : $PORT_BASE
 	done
 }
 check_tools () {
+	if ! (`which cards > /dev/null`); then
+		echo "'cards' not available"
+		exit 1
+	fi
+	if ! (`which pkgmk > /dev/null`); then
+		echo "'cards.devel' not available"
+		exit 1
+	fi
 	if ! (`which rsync > /dev/null`); then
 		echo "'rsync' not available"
 		exit 1
 	fi
-	if ! (`which git > /dev/null`); then
-		echo "'git' not available"
+}
+check_root () {
+	if [ ! "$UID" == "0" ]; then
+		echo "You are not 'root'"
 		exit 1
 	fi
 }
@@ -283,7 +300,8 @@ I quit for now
 		exit 1
 	fi
 	if [ -f /var/lib/pkg/nutyx-version ]; then
-		RSYNC_NUTYX_VERSION=`cat /var/lib/pkg/nutyx-version|grep name|sed "s/name //"| sed "s/ //g"`
+		RSYNC_NUTYX_VERSION=`cat /var/lib/pkg/nutyx-version|grep version|sed "s/version //"| sed "s/ //g"`
+		RSYNC_NUTYX_NAME=`cat /var/lib/pkg/nutyx-version|grep name|sed "s/name //"| sed "s/ //g"`
 	else
 		echo "/var/lib/pkg/nutyx-version file not exist
 I quit for now
@@ -295,7 +313,8 @@ I quit for now
 Check the /var/lib/pkg/nutyx-version, should have a
 line like:
 
-name current
+name houaphan
+version 8.0
 
 "
 		exit 1
