@@ -304,9 +304,6 @@ end() {
 	cd ~
 	unmountall $FOLDER > /dev/null 2>&1
 
-	if [ "$MIG" == "0" ]; then
-		umount $FOLDER > /dev/null 2>&1
-	fi
 	rm -rf $TMP
 }
 #****************************************************************************
@@ -366,7 +363,7 @@ generate_blfs_bootscripts() {
 [ -f ${FOLDER}/etc/${FOLDER}/etc/blfs-bootscripts ] && return
 [ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
 echo "scripts=blfs-bootscripts
-scriptsversion=20150823" > ${FOLDER}/etc/blfs-bootscripts
+scriptsversion=20150924" > ${FOLDER}/etc/blfs-bootscripts
 }
 generate_etc_bashrc() {
 local FILE
@@ -1275,10 +1272,10 @@ dir ${DEPOT}/cli-extra|${URL}
 ## For a minimal console interface
 dir ${DEPOT}/cli|${URL}
 #
-## Strict minimum Base applications
+## Strict minimum Base system to be able to boot on it
 dir ${DEPOT}/base-extra|${URL}
 #
-# Chroot system
+# Chroot system without reboot possibilities for a chroot
 dir ${DEPOT}/base|${URL}
 #
 ## Normaly you want to keep base and
@@ -1304,21 +1301,8 @@ FILE="nutyx-version"
 echo "name ${CODE_NAME}
 version $VERSION" > ${FOLDER}/var/lib/pkg/$FILE
 }
-update_fstab() {
-if [ "$MIG" == "0" ]; then
-        echo "$1     /    $2    defaults   0   1" >> ${FOLDER}/etc/fstab
-fi
-}
 install_resolv_conf() {
 [ -f /etc/resolv.conf ] && cp /etc/resolv.conf ${FOLDER}/etc
-}
-umount_all() {
-if [ "$MIG" == "0" ]; then
-        if [ -f $TMP/depot ]; then
-                umount  ${FOLDER}${LOCAL_DEPOT_PACKAGES} > /dev/null 2>&1
-                umount  ${FOLDER}${DEPOT_CD} > /dev/null 2>&1
-        fi
-fi
 }
 successfull_installation () {
 echo "
@@ -1436,38 +1420,19 @@ STRING_LENGTH="0"   # the length of the current message
 check_lfs() {
 # LFS is set ?
 if [ ! -z "${LFS}" ]; then
-        MIG=`echo $LFS|cut -d "/" -f 2`
         DEVICE=${LFS}
+	FOLDER=${LFS}
 else
 
-        MIG=`echo $FOLDER|cut -d "/" -f 2`
         DEVICE=${FOLDER}
 fi
-}
-check_destination() {
-if [ "$MIG" == "dev" ]; then
-        MIG=0  # Disk
-else
-        FOLDER=$DEVICE
-        MIG=1
-		echo "
+echo "
 ******************************
 Installation path: $DEVICE
 ******************************"
-fi
 }
 check_mountpoint() {
 [ -z $FOLDER ] && error "Variable FOLDER not define"
-if [ "$MIG" == "0" ]; then
-        # Checking the device exist ?
-        if ! [ -b  $FOLDER ]; then
-                error "Mounting point $FOLDER not existing"
-        fi
-        # Mounting the System files
-        if ! mountpoint /$FOLDER > /dev/null; then
-                mount -t $FILESYSTEM $1 $FOLDER || error "Invalid partition or wrong format"
-        fi
-fi
 }
 check_arch() {
 if [ "$ARCH" != "x86_64" ]; then
@@ -1574,7 +1539,6 @@ parse_options() {
 			-ec|--enter-chroot)
 				check_lfs "$@"
 				check_root
-				check_destination
 				setup_chroot
 				enter_chroot
 				unmountall
@@ -1583,7 +1547,6 @@ parse_options() {
 				check_variables
 				check_lfs "$@"
 				check_root
-				check_destination
 				install_configuration_files
 				exit 0;;
 			-p|--path)
@@ -1637,12 +1600,9 @@ example: ${INSTALL_COMMAND} -p /chroot
 	check_root
 	check_bash
 	check_tools
-	check_destination
 	TMP=`mktemp -d`
 	check_mountfolder
 	check_mountpoint
-
-#	[ "$MIG" == "0" ] && check_diskspace $1 ${BASE_SIZE}
 
 	download_pkgadd
 	create_database
@@ -1652,14 +1612,12 @@ example: ${INSTALL_COMMAND} -p /chroot
 	install_configuration_files
 	install_resolv_conf
 	generate_setupfile
-	update_fstab
 	end
-	umount_all
 	successfull_installation
 }
 
 readonly CODE_NAME="8.0-rc1"
 readonly BASE="base"
-readonly RELEASE=1
+readonly RELEASE=2
 INSTALL_COMMAND="`basename $0`"
 main "$@"
