@@ -5,7 +5,7 @@
 
 name=qca-qt5
 version=2.1.0.3
-release=1
+release=2
 
 source=(http://download.kde.org/stable/$name/$version/src/$name-$version.tar.xz
         qca-qt5-qiodevice.patch)
@@ -25,4 +25,8 @@ cmake ../$name-$version           \
 
 make
 make DESTDIR=$PKG install
+
+rm $PKG/usr/certs/rootcerts.pem
+rm $PKG/usr/mkspecs/features/crypto.prf
 }
+
