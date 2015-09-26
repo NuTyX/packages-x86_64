@@ -23,17 +23,6 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr         \
 make
 make DESTDIR=$PKG install
 
-cd $SRC/kde-baseapps-$version/konqueror
-mkdir build
-cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_BUILD_TYPE=Release  \
-      -DLIB_INSTALL_DIR=lib       \
-      -DBUILD_TESTING=OFF         \
-      -Wno-dev ..
-make
-make DESTDIR=$PKG install
-
 install -Dm644 $SRC/kde-baseapps-$version/lib/konq/konq*.desktop $PKG/usr/share/kservicetypes5/
 }
 
