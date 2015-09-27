@@ -5,7 +5,7 @@
 buildrelease=102546
 name=virtualbox-cli
 version=5.0.4
-release=3
+release=4
 
 [ "`uname -m`" == "i686"   ] && _ARCH=x86
 [ "`uname -m`" == "x86_64"   ] && _ARCH=amd64
@@ -42,7 +42,7 @@ log_success_msg "update modules population"
 EOF
 echo "depmod $KERNELRELEASE" >> $PKGMK_ROOT/$name.post-install
 cat >> $PKGMK_ROOT/$name.post-install << "EOF"
-log_warning_msg "${WARNING}Check the file /etc/modprobe.d/virtualbox.conf ${NORMAL}"
+log_warning_msg "${WARNING}Check the file /etc/sysconfig/modules.d/virtualbox.conf ${NORMAL}"
 log_warning_msg "${WARNING}Reboot if you want the modules being automatically loaded${NORMAL}"
 EOF
 }
