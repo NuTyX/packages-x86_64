@@ -1,20 +1,17 @@
 # Description: st is a simple terminal implementation for X
-# URL: URL: http://st.suckless.org/
-# NuTyX package info file (http://nutyx.org)
-# Packager: # NuTyX package info file (http://nutyx.org)
-# Depends on: xorg-libxext xorg-libxft 
+# URL: http://st.suckless.org/
+# Packager: alienus at nutyx dot org, tnut at nutyx dot org
+# Depends on: xorg-libxext xorg-libxft
+
 name=st
-version=0.5
+version=0.6
 release=1
 
 source=(http://dl.suckless.org/st/$name-$version.tar.gz)
 
 build(){
-    cd $name-$version
-    make X11INC=/usr/include/ X11LIB=/usr/lib/
-    make PREFIX=/usr DESTDIR=$PKG TERMINFO=$PKG/usr/share/terminfo install
+cd $name-$version
+make X11INC=/usr/include/ X11LIB=/usr/lib/
+make PREFIX=/usr DESTDIR=$PKG TERMINFO=$PKG/usr/share/terminfo install
+rm $PKG/usr/share/terminfo/s/st{,-256color}
 }
-
-
-
-# NuTyX Pkgfile (http://nutyx.org)
