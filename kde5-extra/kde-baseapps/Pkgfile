@@ -1,0 +1,29 @@
+# Description : Collection of applications used for file and Internet browsing
+# URL : https://projects.kde.org/projects/kde/applications/kde-baseapps
+# Packager : pierre at nutyx dot org
+# Depends on : kf5-extra-cmake-modules kf5-kdoctools git kf5-kdelibs4support kf5kdesu kf5-kactivities kf5-kded kf5-khtml kf5-knewstuff tidyhtml dolphin
+
+name=kde-baseapps
+version=20150928
+release=1
+
+source=()
+
+build() {
+
+git clone -b frameworks git://anongit.kde.org/kde-baseapps.git
+
+mkdir -p build
+cd build
+  
+cmake ../${name} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DPLUGIN_INSTALL_DIR=/usr/lib/qt5/plugins \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DLIB_INSTALL_DIR=lib
+
+make
+make DESTDIR=$PKG install
+}
