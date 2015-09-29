@@ -72,8 +72,8 @@ check_binaries()
 				echo "'$DIR' should be removed and delete from the .PKGREPO file"
 				rm -vr $DIR
 				[ -f .PKGREPO ] && sed -i "/#$DIR#/d" .PKGREPO
-			else
-				rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/	
+#			else
+#				rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/	
 			fi
 		fi
 	done
@@ -95,8 +95,8 @@ check_ports()
 		if [ ! -d ${BINARY_BASE}/$DIR ] || [ ! -f ${BINARY_BASE}/$DIR/Pkgfile ]; then
 			echo "'$DIR' should be added"
 			rsync -av --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/
-		else
-			rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/
+#		else
+#			rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/
 		fi
 		if [ ! -f ${BINARY_BASE}/$DIR/.PKGREPO ];then
 			echo "$DIR should be build"
@@ -191,6 +191,7 @@ parse_options() {
 				exit 0
 				;;
 			-cd|--check-diff)
+				check_tools
 				check_diff
 				exit 0
 				;;
@@ -242,6 +243,10 @@ check_tools () {
 	fi
 	if ! (`which rsync > /dev/null`); then
 		echo "'rsync' not available"
+		exit 1
+	fi
+	if ! (`which gawk > /dev/null`); then
+		echo "'gawk' not available"
 		exit 1
 	fi
 }
@@ -338,9 +343,42 @@ remove_url () {
 	fi
 }
 build_binaries () {
+	local NAME
 	for i in `cards level -I |grep ${BINARY_BASE}/|cut -d " " -f2`
 	do
-		bash scripts/$COLLECTION `basename $i`|| exit 1
+		NAME=`basename $i`
+		if [ !  -z "`ls ${BINARY_BASE}/$NAME/*x86_64.cards.tar.xz 2>/dev/null `" ];then
+			if [ ! -f ${BINARY_BASE}/$NAME/.PKGREPO ]; then
+				bash scripts/$COLLECTION $NAME|| exit 1
+			else
+				if [ ! -z "`diff ${BINARY_BASE}/$NAME/Pkgfile ${PORT_BASE}/$NAME/Pkgfile`" ]; then
+					echo "
+$NAME is changed
+
+${BINARY_BASE}/$NAME/Pkgfile
+${PORT_BASE}/$NAME/Pkgfile
+are different ...
+
+WILL BUILD $NAME NEW..
+
+"
+					read a
+					bash scripts/$COLLECTION $NAME || exit 1
+
+				else
+
+					echo "
+Some package(s) from '$NAME' are already available.
+
+WILL NOT BUILD '$NAME' AGAIN..
+
+"
+					read a
+				fi
+			fi
+		else
+			bash scripts/$COLLECTION $NAME|| exit 1
+		fi
 	done
 }
 list_binaries () {
@@ -354,9 +392,6 @@ main() {
 	check_config_file
 	check_collection_exist
 	if [ $# -lt 1 ]; then
-#		check_Binaries
-#		check_ports
-#		check_diff
 		print_help
 		usage
 		exit 0
