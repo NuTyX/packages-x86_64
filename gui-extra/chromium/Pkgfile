@@ -4,12 +4,11 @@
 # Depends on: atk nss ninja pciutils gperf yasm xorg-mesa libgnome-keyring elfutils subversion gtk2 dbus-glib nss alsa-lib xdg-utils bzip2 libevent libgcrypt dejavu-ttf opus snappy dbus desktop-file-utils hicolor-icon-theme flac libxml2 pulseaudio xorg-libxscrnsaver xorg-libxtst libexif
 
 name=chromium
-version=45.0.2454.85
-#44.0.2403.125
-#41.0.2272.76
+version=45.0.2454.101
 release=1
 
 source=(http://commondatastorage.googleapis.com/chromium-browser-official/$name-$version.tar.xz
+	demand-for-newer-POSIX-macro.patch
         chromium.desktop chromium.default chromium.sh)
 
 _google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
@@ -20,7 +19,10 @@ build() {
 	export GYP_GENERATORS='ninja'
 
 	cd $name-$version
-	
+	patch -Np1 -d third_party/boringssl/src < $SRC/demand-for-newer-POSIX-macro.patch
+
+	find third_party/icu -type f \! -regex '.*\.\(gyp\|gypi\|isolate\)' -delete
+
 	# CFLAGS are passed through release_extra_cflags below
 	export -n CFLAGS CXXFLAGS
 
@@ -38,29 +40,33 @@ local _chromium_conf=(
     -Dgoogle_default_client_id=$_google_default_client_id
     -Dgoogle_default_client_secret=$_google_default_client_secret
     -Dwerror=
-    -Dclang=1
+    -Dclang=0
     -Dclang_use_chrome_plugins=0
     -Dpython_ver=2.7
     -Dlinux_link_gsettings=1
     -Dlinux_link_libpci=1
     -Dlinux_link_pulseaudio=1
     -Dlinux_strip_binary=1
-    -Dlinux_use_gold_binary=0
+    -Dlinux_use_bundled_binutils=0
+    -Dlinux_use_bundled_gold=0
     -Dlinux_use_gold_flags=0
+    -Dicu_use_data_file_flag=0
     -Dlogging_like_official_build=1
     -Drelease_extra_cflags="$CFLAGS"
+    -Dlibspeechd_h_prefix=speech-dispatcher/
     -Dffmpeg_branding=Chrome
     -Dproprietary_codecs=1
     -Duse_system_bzip2=1
     -Duse_system_flac=1
     -Duse_system_ffmpeg=0
     -Duse_system_harfbuzz=1
+    -Duse_system_icu=1
     -Duse_system_libevent=1
     -Duse_system_libjpeg=1
     -Duse_system_libpng=1
+    -Duse_system_libvpx=0
     -Duse_system_libxml=0
     -Duse_system_snappy=1
-    -Duse_system_ssl=0
     -Duse_system_xdg_utils=1
     -Duse_system_yasm=1
     -Duse_system_zlib=0
@@ -85,14 +91,16 @@ local _chromium_conf=(
 
 	cp out/Release/{*.pak,*.bin} $PKG/opt/chromium/
 	cp -a out/Release/locales $PKG/opt/chromium/
-	cp -a out/Release/icudtl.dat $PKG/opt/chromium/
+#	cp -a out/Release/icudtl.dat $PKG/opt/chromium/
 	
 	install -Dm644 $SRC/chromium.default $PKG/etc/chromium/default
 
 	find "$PKG/opt/chromium/" -name '*.d' -type f -delete
 
-	install -Dm644 out/Release/chrome.1 $PKG/opt/chromium/share/man/man1/chromium.1
-	install -Dm644 $SRC/chromium.desktop $PKG/usr/share/applications/chromium.desktop
+	[ -f out/Release/chrome.1 ] && install -Dm644 out/Release/chrome.1 \
+	$PKG/opt/chromium/share/man/man1/chromium.1
+	install -Dm644 $SRC/chromium.desktop \
+	$PKG/usr/share/applications/chromium.desktop
 
 	for size in 22 24 48 64 128 256; do
 		install -Dm644 "chrome/app/theme/chromium/product_logo_$size.png" \
