@@ -993,6 +993,7 @@ lightdm:x:63:
 sddm:x:64:
 scanner:x:70:
 colord:x:71:
+vboxusers:x:80:
 ldap:x:83:
 avahi:x:84:
 avahi-autoipd:x:85:
@@ -1222,12 +1223,11 @@ dir ${DEPOT}/kde|${URL}
 # dir ${DEPOT}/cinnamon|${URL}
 #
 ## For Gnome
-# Gnome is not yet ready to ude
-# Decomment following 2 lines
-# if you want to try gnome anyway
+# Comment following 2 lines
+# if you don't want to install gnome
 #
-# dir ${DEPOT}/gnome-extra|${URL}
-# dir ${DEPOT}/gnome|${URL}
+dir ${DEPOT}/gnome-extra|${URL}
+dir ${DEPOT}/gnome|${URL}
 #
 ## For mate
 # Comment following 2 lines
@@ -1258,7 +1258,7 @@ dir ${DEPOT}/lxde-extra|${URL}
 dir ${DEPOT}/lxde|${URL}
 #
 ## Normally everything under this line
-# are need stuffs
+# are needed stuffs
 #
 ## For all the graphical applications
 dir ${DEPOT}/gui-extra|${URL}
@@ -1618,6 +1618,6 @@ example: ${INSTALL_COMMAND} -p /chroot
 
 readonly CODE_NAME="8.0-rc1"
 readonly BASE="base"
-readonly RELEASE=2
+readonly RELEASE=3
 INSTALL_COMMAND="`basename $0`"
 main "$@"
