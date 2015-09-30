@@ -5,9 +5,10 @@
 
 name=thunderbird
 version=38.2.0
-release=1
+release=2
 
-source=(http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.bz2)
+source=(http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.bz2
+	$name.desktop)
 
 build() {
 export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/thunderbird"
@@ -106,23 +107,15 @@ mkdir -pv $PKG/usr/bin
 ln -sfv ../lib/$name-$version/thunderbird $PKG/usr/bin
 
 mkdir -pv $PKG/usr/share/applications 
-cat > $PKG/usr/share/applications/thunderbird.desktop << "EOF" 
-[Desktop Entry]
-Encoding=UTF-8
-Name=Thunderbird Mail
-Comment=Send and receive mail with Thunderbird
-GenericName=Mail Client
-Exec=thunderbird %u
-Terminal=false
-Type=Application
-Icon=thunderbird
-Categories=Application;Network;Email;
-MimeType=application/xhtml+xml;text/xml;application/xhtml+xml;application/xml;application/rss+xml;x-scheme-handler/mailto;
-StartupNotify=true
-EOF
-mkdir -pv $PKG/usr/share/pixmaps
-ln -sfv $PKG/usr/lib/thunderbird-$version/chrome/icons/default/default256.png \
-$PKG/usr/share/pixmaps/thunderbird.png
+install -Dm644 $SRC/thunderbird.desktop \
+$PKG/usr/share/applications/thunderbird.desktop
+
+for i in 16 22 24 32 48 256; do
+   install -Dm644 other-licenses/branding/thunderbird/mailicon$i.png \
+      $PKG/usr/share/icons/hicolor/${i}x${i}/apps/thunderbird.png
+done
+
+
 mkdir -p $PKG/etc/ld.so.conf.d
 echo "/usr/lib/$name-$version" > $PKG/etc/ld.so.conf.d/$name.conf
 cat > $PKG/usr/lib/thunderbird-$version/defaults/pref/vendor.js << "EOF"
