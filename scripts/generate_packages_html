@@ -5,6 +5,9 @@
 
 TMP=`mktemp -d`
 CURRENT_DIR=`pwd`
+DIR_NUTYX_NAME=`dirname $CURRENT_DIR`
+NUTYX_NAME=`basename $DIR_NUTYX_NAME`
+
 [ -f index.html ] && rm index.html
 
 CLASS="even"
@@ -34,7 +37,7 @@ cat > $TMP/index.html << "EOF"
       <link rel="shortcut icon" href="../../favicon.ico">
       <link rel="stylesheet" href="http://www.nutyx.org/css/nutyx.css" />
 EOF
-echo "      <title>Paquets NuTyX $DATE</title>" >> $TMP/index.html
+echo "      <title>Paquets NuTyX $NUTYX_NAME</title>" >> $TMP/index.html
 cat >> $TMP/index.html << "EOF"
   </head>
   <body>
@@ -63,10 +66,16 @@ cat >> $TMP/index.html << "EOF"
 EOF
 
 echo "
-   <h1>Paquets NuTyX </h1>
+   <h1>Paquets NuTyX $NUTYX_NAME</h1>
     <h2>Nombre de binaires de base: $NUMBER</h2>">> $TMP/index.html
 
 cat >> $TMP/index.html << "EOF"
+    <table width="25%" cellspacing="0">
+     <tr class="header">
+      <td><input id="searchInput" placeholder="Search for ... "></td>
+     </tr>
+    </table>
+     <hr>
     <table width="100%" cellspacing="0">
       <tr class="header">
        <td width="5%">COLLECTION</td>
@@ -75,6 +84,7 @@ cat >> $TMP/index.html << "EOF"
        <td width="65%">DESCRIPTION</td>
        <td width="5%">DATE</td>
       </tr>
+      <tbody id="fbody">
 EOF
 
 sort -r $TMP/PackagesList >> $TMP/PackagesList_sorted
@@ -104,7 +114,8 @@ do
         </tr>" >> $TMP/index.html
 done
 cat >> $TMP/index.html << "EOF"
-   </table>
+     </tbody>
+    </table>
 EOF
 NUMBER=`cat  $TMP/PackagesList|wc -l`
 echo "<h2>Nombre de binaires de base: $NUMBER</h2>" >> $TMP/index.html
@@ -122,6 +133,18 @@ cat >> $TMP/index.html << "EOF"
          src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
          width="80" height="15" alt="WTFPL" /></a></p>
     </footer>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+     <script>
+      jQuery(function() {
+        jQuery("#searchInput").keyup(function() {
+          var rows = jQuery("#fbody").find("tr").hide();
+          var data = this.value.split(" ");
+          jQuery.each(data, function(i, v) {
+             rows.filter(":contains('" + v + "')").show();
+          });
+        });
+       });
+     </script>
  </body>
 </html>
 EOF
