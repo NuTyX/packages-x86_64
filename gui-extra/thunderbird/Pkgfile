@@ -3,9 +3,16 @@
 # Packager: pierre at nutyx dot org, tnut at nutyx dot org
 # Depends on: alsa-lib gtk2 zip unzip libevent libvpx nspr nss yasm dbus-glib doxygen gstreamer-plugins-good gstreamer-plugins-ffmpeg libnotify openjdk startup-notification hunspell sqlite wireless-tools xorg-libx11 xorg-libxt xorg-libxrandr desktop-file-utils hicolor-icon-theme shared-mime-info pulseaudio
 
+run on: (startup-notification hunspell)
+
 name=thunderbird
+<<<<<<< HEAD
+version=38.3.0
+release=1
+=======
 version=38.2.0
 release=2
+>>>>>>> 9bf231823ccc4e91456d21cca55daee6910908a9
 
 source=(http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.bz2
 	$name.desktop)
@@ -38,7 +45,7 @@ cat > mozconfig << "EOF"
 # ac_add_options --disable-necko-wifi
 
 # If you have installed libnotify comment out this line:
-ac_add_options --disable-libnotify
+####  ac_add_options --disable-libnotify
 
 # GStreamer is necessary for H.264 video playback in HTML5 Video Player;
 # to be enabled, also remember to set "media.gstreamer.enabled" to "true"
@@ -48,8 +55,8 @@ ac_add_options --disable-libnotify
 #ac_add_options --enable-gstreamer=1.0
 
 # Uncomment these lines if you have installed optional dependencies:
-#ac_add_options --enable-system-hunspell
-#ac_add_options --enable-startup-notification
+ac_add_options --enable-system-hunspell
+ac_add_options --enable-startup-notification
 
 # Comment out following option if you have PulseAudio installed
 # ac_add_options --disable-pulseaudio
