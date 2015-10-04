@@ -1445,6 +1445,13 @@ fi
 create_database() {
 [ ! -d ${FOLDER}/var/lib/pkg/DB ] && mkdir -p ${FOLDER}/var/lib/pkg/DB
 }
+create_locale_link() {
+[ ! -d ${FOLDER}/etc/locale ] && mkdir -p ${FOLDER}/etc/locale
+if [ -d ${FOLDER}/usr/lib/locale ]; then
+   rm -r ${FOLDER}/usr/lib/locale
+   ln -sv /etc/locale/ ${FOLDER}/usr/lib/locale
+fi
+}
 download_pkgadd() {
 	if [ ! -f $TMP/usr/bin/pkgadd ]; then
         	cd $TMP
@@ -1609,6 +1616,8 @@ example: ${INSTALL_COMMAND} -p /chroot
 
 	install_base
 
+	create_locale_link
+
 	install_configuration_files
 	install_resolv_conf
 	generate_setupfile
@@ -1618,6 +1627,6 @@ example: ${INSTALL_COMMAND} -p /chroot
 
 readonly CODE_NAME="8.0-rc1"
 readonly BASE="base"
-readonly RELEASE=3
+readonly RELEASE=4
 INSTALL_COMMAND="`basename $0`"
 main "$@"
