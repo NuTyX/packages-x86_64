@@ -1570,7 +1570,7 @@ parse_options() {
 				check_mountfolder
 				check_mountpoint
 				make_directories
-				create_locale_links
+				create_locale_link
 				install_configuration_files
 				exit 0;;
 			-p|--path)
@@ -1645,6 +1645,6 @@ example: ${INSTALL_COMMAND} -p /chroot
 
 readonly CODE_NAME="houaphan"
 readonly BASE="base"
-readonly RELEASE=5
+readonly RELEASE=6
 INSTALL_COMMAND="`basename $0`"
 main "$@"
