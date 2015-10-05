@@ -45,15 +45,15 @@ Aucune erreur ne doit apparaître:
 <pre class="output">root [ / ]# </pre>
    <li>On commence par adapter le fichier cards.conf. En effet, on utilisera désormais uniquement les recettes issues du projet git. Adaptez si necessaire la langue.</li>
    <pre class="command"><kbd>cat > /etc/cards.conf << "EOF"
-dir /root/extra/graphic-extra
-dir /root/houaphan/graphic
-dir /root/extra/console-extra
-dir /root/houaphan/console
-dir /root/extra/base-extra
-dir /root/houaphan/base
+dir /root/extra/gui-extra
+dir /root/current/gui
+dir /root/extra/cli-extra
+dir /root/current/cli
+dir /root/extra/base-cli
+dir /root/current/base
 logdir /var/log/pkgbuild
 locale fr
-base /root/houaphan/base
+base /root/current/base
 base /root/extra/base-extra
 EOF</kbd></pre>
    <li>Il ne nous reste plus qu'a complèter la NuTyX de base en compilant les paquets se trouvant dans la collection <b>base-extra</b>. On se rend donc dans le bon dossier:</li>
@@ -69,13 +69,13 @@ EOF</kbd></pre>
 =======> Installing 'sysvinit1439823127x86_64.cards.tar' succeeded.
 =======> compress sysvinit1439823127x86_64.cards.tar</pre>
    <li>On ajoute les fichiers necessaires au fonctionnement de l'iso</li>
-   <pre class="command"><kbd>cp -av /root/houaphan/iso /ISO</kbd></pre>
-   <pre class="output">'/root/houaphan/iso' -> '/ISO'
-'/root/houaphan/iso/isolinux' -> '/ISO/isolinux'
-'/root/houaphan/iso/isolinux/boot.cat' -> '/ISO/isolinux/boot.cat'
-'/root/houaphan/iso/isolinux/boot.msg' -> '/ISO/isolinux/boot.msg'
-'/root/houaphan/iso/isolinux/isolinux.bin' -> '/ISO/isolinux/isolinux.bin'
-'/root/houaphan/iso/isolinux/isolinux.cfg' -> '/ISO/isolinux/isolinux.cfg'</pre>
+   <pre class="command"><kbd>cp -av /root/current/iso /ISO</kbd></pre>
+   <pre class="output">'/root/current/iso' -> '/ISO'
+'/root/current/iso/isolinux' -> '/ISO/isolinux'
+'/root/current/iso/isolinux/boot.cat' -> '/ISO/isolinux/boot.cat'
+'/root/current/iso/isolinux/boot.msg' -> '/ISO/isolinux/boot.msg'
+'/root/current/iso/isolinux/isolinux.bin' -> '/ISO/isolinux/isolinux.bin'
+'/root/current/iso/isolinux/isolinux.cfg' -> '/ISO/isolinux/isolinux.cfg'</pre>
    <pre class="command"><kbd>cp -v /boot/kernel-* /ISO/isolinux/kernel</kbd></pre>
    <pre class="output">'/boot/kernel-3.19.0' -> '/ISO/isolinux/kernel'</pre>
    <pre class="command"><kbd>cp -v /boot/initrd-* /ISO/isolinux/initrd</kbd></pre>
@@ -93,7 +93,7 @@ done</kbd></pre>
    <pre class="command"><kbd>exit</kbd></pre>
    <li>On peut enfin générer notre ISO dont la version est à la date du jour.</li>
    <div class="important"><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" />Avant de lancer la prochaine commande, assurez-vous que vous avez bien la variable <b>LFS</b> configurée et que les commandes <b>mkisofs</b> et <b>isohybrid</b> sont à disposition sur votre linux principale. Elles sont respectivement dans les paquets <b>cdrkit</b> et <b>syslinux</b>.</div>
-    <pre class="command"><kbd>sh $LFS/root/houaphan/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
+    <pre class="command"><kbd>sh $LFS/root/current/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
     <pre class="output">Warning: creating filesystem that does not conform to ISO-9660.
 I: -input-charset not specified, using utf-8 (detected in locale settings)
 Size of boot image is 4 sectors -> No emulation
@@ -143,26 +143,11 @@ dev   ISO   mnt    proc                                   sbin  sys      tools</
     <p>Félicitations, vous avez maintenant entre les mains une ISO NuTyX de base prête à être installée sur toutes vos machines.</p>
    <h2>Options</h2>
     <ol>
-     <li>Si vous souhaitez produire une iso contenant vos applications favorites, vous pouvez les compiler et les installer avant de produire l'iso. Dans l'exemple ci-dessus, c'est l'interface graphique <b>xorg</b> qui sera ajoutée</li>
-     <pre class="command"><kbd>ports -u
-cards depcreate xorg</kbd></pre>
-     <p>La compilation commence:</p>
-     <pre class="output">=======> PKGMK_INSTALL: install
-=======> PKGMK_WORK_DIR: /root/houaphan/console/elfutils/work
-=======> PKGMK_SOURCE_DIR: /root/houaphan/console/elfutils
-=======> PKGMK_KEEP_SOURCES: no
-=======> PKGMK_CLEAN: yes
-=======> WARNING: FOOTPRINT AND MD5SUM IGNORED
-=======> MD5SUM file will be generated
-=======> PKGMK_COMPRESS_PACKAGE: no
-=======> name: elfutils
-=======> version: 0.161</pre>
-     <p>Une fois la compilation terminée, vous pouvez soit choisir l'option ci-dessous, soit continuer la génération des fichiers squashfs au point 5.</p>
     <li>Si vous souhaitez réduire la taille finale de l'ISO, vous pouvez supprimer les binaires du git et les logs produits, ils ne serviront plus. Si vous souhaitez conserver les binaires, lancez la commande ci-dessus.</li>
-<pre class="command"><kbd>rsync -a /root/houaphan/base /base</kbd></pre>
+<pre class="command"><kbd>rsync -a /root/current/base /base</kbd></pre>
      <p>Aucune erreur ne doit apparaître</p>
      <p>On peut maintenant effacer les binaires du git</p>
-     <pre class="command"><kbd>find /root/houaphan/base/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
+     <pre class="command"><kbd>find /root/current/base/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
      <p>Aucune erreur ne doit apparaître</p>
      <p>On efface les logs.</p>
      <pre class="command"><kbd>mv /root/logs /logs</kbd></pre>
@@ -172,7 +157,7 @@ cards depcreate xorg</kbd></pre>
 pkgrm kernel.devel</kbd></pre>
    </ol>
    <hr>
-   <p class="updated">Dernière mise à jour 30-08-2015 17:06</p>
+   <p class="updated">Dernière mise à jour 05-10-2015 21:20</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
