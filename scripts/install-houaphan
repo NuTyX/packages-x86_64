@@ -1445,6 +1445,26 @@ fi
 create_database() {
 [ ! -d ${FOLDER}/var/lib/pkg/DB ] && mkdir -p ${FOLDER}/var/lib/pkg/DB
 }
+create_locale_link() {
+[ ! -d ${FOLDER}/etc/locale ] && mkdir -p ${FOLDER}/etc/locale
+if [ -d ${FOLDER}/usr/lib/locale ]; then
+   rm -r ${FOLDER}/usr/lib/locale
+   ln -sv /etc/locale/ ${FOLDER}/usr/lib/locale
+fi
+}
+make_directories() {
+mkdir ${FOLDER}/{dev,sys,proc,run,tmp,home,srv,mnt,var}
+mkdir ${FOLDER}/var/tmp
+mkdir -p ${FOLDER}/usr/{,local/}lib
+
+chmod 1777 ${FOLDER}/{,var/}tmp
+
+mkdir -v ${FOLDER}/var/{mail,spool}
+mkdir -pv ${FOLDER}/var/run/lock
+
+mknod -m 600 ${FOLDER}/dev/console c 5 1
+mknod -m 666 ${FOLDER}/dev/null c 1 3
+}
 download_pkgadd() {
 	if [ ! -f $TMP/usr/bin/pkgadd ]; then
         	cd $TMP
@@ -1547,6 +1567,10 @@ parse_options() {
 				check_variables
 				check_lfs "$@"
 				check_root
+				check_mountfolder
+				check_mountpoint
+				make_directories
+				create_locale_links
 				install_configuration_files
 				exit 0;;
 			-p|--path)
@@ -1609,6 +1633,9 @@ example: ${INSTALL_COMMAND} -p /chroot
 
 	install_base
 
+	create_locale_link
+
+	make_directories
 	install_configuration_files
 	install_resolv_conf
 	generate_setupfile
@@ -1616,8 +1643,8 @@ example: ${INSTALL_COMMAND} -p /chroot
 	successfull_installation
 }
 
-readonly CODE_NAME="8.0-rc1"
+readonly CODE_NAME="houaphan"
 readonly BASE="base"
-readonly RELEASE=3
+readonly RELEASE=5
 INSTALL_COMMAND="`basename $0`"
 main "$@"

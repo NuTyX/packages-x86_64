@@ -1,26 +1,20 @@
 # Description: Base system of NuTyX, contains all folders and startup scripts.
+# URL: https://github.com/nutyx
+# Maintainer: tnut at nutyx dot org
+# Packager: tnut at nutyx dot org
 
 PKGMK_GROUPS=(man)
 PKGMK_IGNORE_RUNTIMEDEPS=yes
 
 name=nutyx
-version=8.0.20150828
-release=2
+version=8.0-rc1
+release=1
 
-source=(http://downloads.nutyx.org/files/nutyx-basicfs-20150828.tar.bz2)
+source=(http://downloads.nutyx.org/files/nutyx-basicfs-20151004.tar.bz2)
 build () {
 cd nutyx-basicfs/nutyx-houaphan-basicfs/rootfs
 mv * $PKG/
-mkdir $PKG/{dev,sys,proc,run,tmp,home,srv,mnt}
-mknod -m 600 $PKG/dev/console c 5 1
-mknod -m 666 $PKG/dev/null c 1 3
-
-mkdir $PKG/var/tmp
-mkdir -p $PKG/usr/{,local/}lib
-chmod 1777 $PKG/{,var/}tmp
-mkdir -v $PKG/var/{mail,spool}
-mkdir -pv $PKG/var/run/lock
-
+mkdir -p $PKG/usr/local
 case $(uname -m) in
 x86_64) ln -sv lib $PKG/lib64
         ln -sv lib $PKG/usr/lib64

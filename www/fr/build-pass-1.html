@@ -107,12 +107,12 @@ EOF</code></kbd></pre>
     </p>
     <pre class="command_user"><kbd>source ~/.bash_profile</kbd></pre>
     Et pour finir on récupère la dernière version des sources sous git:
-    <pre class="command_user"><kbd>git clone git://github.com/NuTyX/houaphan.git
+    <pre class="command_user"><kbd>git clone git://github.com/NuTyX/houaphan.git current
 git clone git://github.com/NuTyX/extra.git</kbd></pre>
     <p>
-    Une fois terminée, un nouveau dossier a été créé: houaphan. On y entre et on lance le premier script:
+    Une fois terminée, un nouveau dossier a été créé: <b>current</b> On y entre et on lance le premier script:
     </p>
-    <pre class="command_user"><kbd>cd houaphan
+    <pre class="command_user"><kbd>cd current
 scripts/runmebeforepass1</kbd></pre>
     <p>
     Le script va effectuer toute une série de vérifications et si aucune erreur ne s'est produite, le téléchargement des sources commence automatiquement. Une fois le téléchargement terminé, il suffit de suivre les instructions.
@@ -124,7 +124,7 @@ scripts/runmebeforepass1</kbd></pre>
     <p>    
      Si vous lisez ce message, vous êtes prêt pour lancer la première passe pour la construction de votre future NuTyX,faites:
     </p>
-    <pre class="command_user"><kbd>cd /home/lfs/houaphan/chroot
+    <pre class="command_user"><kbd>cd /home/lfs/current/chroot
 pass</kbd></pre>
     <p>
     Admirez le travail ...
@@ -135,13 +135,13 @@ mkdir: created directory '/mnt/lfs/var/lib'
 mkdir: created directory '/mnt/lfs/var/lib/pkg'
 mkdir: created directory '/mnt/lfs/var/lib/pkg/DB'
 =======> Building '/home/lfs/MakeNuTyX/CHROOT/cards/Pkgfile' succeeded.
-/home/lfs/houaphan/chroot</pre>
+/home/lfs/current/chroot</pre>
     <p>
     Notez que vous pouvez suivre l'évolution et contrôler la bonne conduite de chaque paquet construit en consultant le dossier /home/lfs/logs/chroot/ . En effet à chaque paquet construit correspond un log.
     </p>
   <div class="pied_page"><a class="url" href="build-pass-2.html">On verra dans un prochain article comment entrer dans la chroot et y construire une NuTyX depuis scratch en utilisant une deuxième fois le même script </a></div>
   <hr>
-  <p class="updated">Dernière mise à jour 15-09-2015 18:06</p>
+  <p class="updated">Dernière mise à jour 04-10-2015 22:39</p>
 
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />

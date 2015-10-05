@@ -45,12 +45,17 @@ is_true()
  [ "$1" = "1" ] || [ "$1" = "yes" ] || [ "$1" = "true" ]
 }
 _msgfmt() {
-	echo "locale ${1}" >> ${CARDS}
-	if [ -n /etc/rc.d/init.d/po/setup-nutyx.${1} ]; then
-		mkdir -p $TEXTDOMAINDIR/${1}/LC_MESSAGES
-		msgfmt /etc/rc.d/init.d/po/setup-nutyx.${1} \
-		-o $TEXTDOMAINDIR/${1}/LC_MESSAGES/setup-nutyx.mo
+	local L C
+	L=`echo ${1}|cut -d "_" -f1`
+	C=`echo ${1}|cut -d "_" -f2`
+	echo "locale ${L}" >> ${CARDS}
+	localedef -i ${1} -f UTF-8 ${1}.UTF-8
+	if [ -n /etc/rc.d/init.d/po/setup-nutyx.${L} ]; then
+		mkdir -p $TEXTDOMAINDIR/${L}/LC_MESSAGES
+		msgfmt /etc/rc.d/init.d/po/setup-nutyx.${L} \
+		-o $TEXTDOMAINDIR/${L}/LC_MESSAGES/setup-nutyx.mo
 	fi
+	echo "export LANG=${1}.utf-8" > ${LOCALE}
 }
 calc(){
         echo "scale=2;$@"|bc
@@ -211,6 +216,7 @@ SETUP_CONFIG_NETWORK="no"
 }
 setup_language()
 {
+/usr/bin/localedef -i de_CH -f UTF-8 de_CH.UTF8
 /bin/setfont LatGrkCyr-8x16
 while [ true ]; do
 dialog   \
@@ -328,407 +334,308 @@ done
 sed -i "/locale/d" /etc/cards.conf
 case ${REPLY} in
  "United Arab Emirates")
-	_msgfmt ar
-	echo "export LANG=ar_AE.utf-8" > ${LOCALE}
+	_msgfmt ar_AE
 	ln -sf ${ZONEINFO}Asia/Dubai ${LOCALTIME};;
  "Agleria")
-	_msgfmt ar
-	echo "export LANG=ar_DZ.utf-8" > ${LOCALE}
+	_msgfmt ar_DZ
 	ln -sf ${ZONEINFO}Africa/Addis_Ababa ${LOCALTIME};;
  "Egypt")
-	_msgfmt ar
-	echo "export LANG=ar_EG.utf-8" > ${LOCALE}
+	_msgfmt ar_EG
 	ln -sf ${ZONEINFO}Egypt ${LOCALTIME};;
  "India")
-	_msgfmt ar
-	echo "export LANG=ar_IN.utf-8" > ${LOCALE}
+	_msgfmt ar_IN
 	ln -sf ${ZONEINFO}Asia/Kolkata ${LOCALTIME};;
  "Iraq")
-	_msgfmt ar
-	echo "export LANG=ar_IQ.utf-8" > ${LOCALE}
+	_msgfmt ar_IQ
 	ln -sf ${ZONEINFO}Asia/Baghdad ${LOCALTIME};;
  "Jordan")
-	_msgfmt ar
-	echo "export LANG=ar_IQ.utf-8" > ${LOCALE}
+	_msgfmt ar_IQ
 	ln -sf ${ZONEINFO}Asia/Amman ${LOCALTIME};;
  "Kuwait")
-	_msgfmt ar
-	echo "export LANG=ar_KW.utf-8" > ${LOCALE}
+	_msgfmt ar_KW
 	ln -sf ${ZONEINFO}Asia/Kuwait ${LOCALTIME};;
  "Lebanon")
-	_msgfmt ar
-	echo "export LANG=ar_LB.utf-8" > ${LOCALE}
+	_msgfmt ar_LB
 	ln -sf ${ZONEINFO}Asia/Beirut ${LOCALTIME};;
  "Libyan Arab Jamahiriya")
-	_msgfmt ar
-	echo "export LANG=ar_LY.utf-8" > ${LOCALE}
+	_msgfmt ar_LY
 	ln -sf ${ZONEINFO}Africa/Tripoli ${LOCALTIME};;
  "Moroco")
-	_msgfmt ar
-	echo "export LANG=ar_MA.utf-8" > ${LOCALE}
+	_msgfmt ar_MA
 	ln -sf ${ZONEINFO}Africa/Casablanca ${LOCALTIME};;
  "Oman")
-	_msgfmt ar
-	echo "export LANG=ar_OM.utf-8" > ${LOCALE}
+	_msgfmt ar_OM
 	ln -sf ${ZONEINFO}Asia/Muscat ${LOCALTIME};;
  "Qatar")
-	_msgfmt ar
-	echo "export LANG=ar_QA.utf-8" > ${LOCALE}
+	_msgfmt ar_QA
 	ln -sf ${ZONEINFO}Asia/Qatar ${LOCALTIME};;
  "Saudi Arabia")
-	_msgfmt ar
-	echo "export LANG=ar_SA.utf-8" > ${LOCALE}
+	_msgfmt ar_SA
 	ln -sf ${ZONEINFO}Asia/Riyadh ${LOCALTIME};;
  "Sudan")
-	_msgfmt ar
-	echo "export LANG=ar_SD.utf-8" > ${LOCALE}
+	_msgfmt ar_SD
 	ln -sf ${ZONEINFO}Africa/Khartoum ${LOCALTIME};;
  "South Sudan")
-	_msgfmt ar
-	echo "export LANG=ar_SS.utf-8" > ${LOCALE}
+	_msgfmt ar_SS
 	ln -sf ${ZONEINFO}Africa/Khartoum ${LOCALTIME};;
  "Syrian Arab Republic")
-	_msgfmt ar
-	echo "export LANG=ar_SY.utf-8" > ${LOCALE}
+	_msgfmt ar_SY
 	ln -sf ${ZONEINFO}Asia/Damascus ${LOCALTIME};;
  "Tunisia")
-	_msgfmt ar
-	echo "export LANG=ar_TN.utf-8" > ${LOCALE}
+	_msgfmt ar_TN
 	ln -sf ${ZONEINFO}Africa/Tunis ${LOCALTIME};;
  "Yemen")
-	_msgfmt ar
-	echo "export LANG=ar_YE.utf-8" > ${LOCALE}
+	_msgfmt ar_YE
 	ln -sf ${ZONEINFO}Asia/Aden ${LOCALTIME};;
  "Azerbaijan")
-	_msgfmt az
-	echo "export LANG=az_AZ.utf-8" > ${LOCALE}
+	_msgfmt az_AZ
 	ln -sf ${ZONEINFO}Asia/Baku;;
  "Cataluña")
-	_msgfmt ca
-	echo "export LANG=ca_ES.utf-8" > ${LOCALE}
+	_msgfmt ca_ES
 	ln -sf ${ZONEINFO}Europe/Madrid ${LOCALTIME};;
  "Cestina")
-	_msgfmt cs
-	echo "export LANG=cs_CZ.utf-8" > ${LOCALE}
+	_msgfmt cs_CZ
 	ln -sf ${ZONEINFO}Europe/Prague ${LOCALTIME};;
  "Cymraeg")
-	_msgfmt cy
-	echo "export LANG=cy_GB.utf-8" > ${LOCALE}
+	_msgfmt cy_GB
 	ln -sf ${ZONEINFO}Europe/London ${LOCALTIME};;
  "Danmark")
-	_msgfmt da
-	echo "export LANG=da_DK.utf-8" > ${LOCALE}
+	_msgfmt da_DK
 	ln -sf ${ZONEINFO}Europe/Copenhagen ${LOCALTIME};;
  "Deutschland")
-	_msgfmt de
-	echo "export LANG=de_DE.utf-8" > ${LOCALE}
+	_msgfmt de_DE
 	ln -sf ${ZONEINFO}Europe/Berlin ${LOCALTIME};;
  "Österreich")
-	_msgfmt de
-	echo "export LANG=de_AT.utf-8" > ${LOCALE}
+	_msgfmt de_AT
 	ln -sf ${ZONEINFO}Europe/Vienna ${LOCALTIME};;
  "Schweiz")
-	_msgfmt de
-	echo "export LANG=de_CH.utf-8" > ${LOCALE}
+	_msgfmt de_CH
 	ln -sf ${ZONEINFO}Europe/Zurich ${LOCALTIME};;
  "Luxemburg")
-	_msgfmt de
-	echo "export LANG=de_BE.utf-8" > ${LOCALE}
+	_msgfmt de_LU
 	ln -sf ${ZONEINFO}Europe/Luxembourg ${LOCALTIME};;
  "Belgien")
-	_msgfmt de
-	echo "export LANG=de_BE.utf-8" > ${LOCALE}
+	_msgfmt de_BE
 	ln -sf ${ZONEINFO}Europe/Brussels ${LOCALTIME};;
  "Eesti")
-	_msgfmt et
-	echo "export LANG=et_EE.utf-8" > ${LOCALE}
+	_msgfmt et_EE
 	ln -sf ${ZONEINFO}Europe/Tallinn ${LOCALTIME};;
  "Australia")
-	_msgfmt en
-	echo "export LANG=en_AU.utf-8" > ${LOCALE}
+	_msgfmt en_AU
 	ln -sf ${ZONEINFO}Australia/Sydney ${LOCALTIME};;
  "Botwana")
-	_msgfmt en
-	echo "export LANG=en_BW.utf-8" > ${LOCALE}
+	_msgfmt en_BW
 	ln -sf ${ZONEINFO}Africa/Gaborone ${LOCALTIME};;
  "Canada")
-	_msgfmt en
-	echo "export LANG=en_CA.utf-8" > ${LOCALE}
+	_msgfmt en_CA
 	ln -sf ${ZONEINFO}Canada/Central ${LOCALTIME};;
  "Denmark")
-	_msgfmt en
-	echo "export LANG=en_DK.utf-8" > ${LOCALE}
+	_msgfmt en_DK
 	ln -sf ${ZONEINFO}Europe/Copenhagen ${LOCALTIME};;
  "United Kingdom")
-	_msgfmt en
-	echo "export LANG=en_GB.utf-8" > ${LOCALE}
+	_msgfmt en_GB
 	ln -sf ${ZONEINFO}Europe/London ${LOCALTIME};;
  "Hong Kong")
-	_msgfmt en
-	echo "export LANG=en_HK.utf-8" > ${LOCALE}
+	_msgfmt en_HK
 	ln -sf ${ZONEINFO}Asia/Hong_Kong ${LOCALTIME};;
  "Ireland")
-	_msgfmt en
-	echo "export LANG=en_IE.utf-8" > ${LOCALE}
+	_msgfmt en_IE
 	ln -sf ${ZONEINFO}Europe/Dublin ${LOCALTIME};;
  "India ")
-	_msgfmt en
-	echo "export LANG=en_IN.utf-8" > ${LOCALE}
+	_msgfmt en_IN
 	ln -sf ${ZONEINFO}Indian/Maldives ${LOCALTIME};;
  "Nigeria")
-	_msgfmt en
-	echo "export LANG=en_NG.utf-8" > ${LOCALE}
+	_msgfmt en_NG
 	ln -sf ${ZONEINFO}Africa/Lagos ${LOCALTIME};;
  "New Zealand")
-	_msgfmt en
-	echo "export LANG=en_NZ.utf-8" > ${LOCALE}
+	_msgfmt en_NZ
 	ln -sf ${ZONEINFO}Pacific/Auckland ${LOCALTIME};;
  "Philippines")
-	_msgfmt en
-	echo "export LANG=en_PH.utf-8" > ${LOCALE}
+	_msgfmt en_PH
 	ln -sf ${ZONEINFO}Asia/Manila ${LOCALTIME};;
  "Singapore")
-	_msgfmt en
-	echo "export LANG=en_SG.utf-8" > ${LOCALE}
+	_msgfmt en_SG
 	ln -sf ${ZONEINFO}Asia/Singapore ${LOCALTIME};;
  "United States")
-	_msgfmt en
-	echo "export LANG=en_US.utf-8" > ${LOCALE}
+	_msgfmt en_US
 	ln -sf ${ZONEINFO}America/New_York ${LOCALTIME};;
  "South Africa")
-	_msgfmt en
-	echo "export LANG=en_ZA.utf-8" > ${LOCALE}
+	_msgfmt en_ZA
 	ln -sf ${ZONEINFO}Africa/Johannesburg ${LOCALTIME};;
  "Zambia")
-	_msgfmt en
-	echo "export LANG=en_ZM.utf-8" > ${LOCALE}
+	_msgfmt en_ZM
 	ln -sf ${ZONEINFO}Africa/Lusaka ${LOCALTIME};;
  "Zimbabwe")
-	_msgfmt en
-	echo "export LANG=en_ZW.utf-8" > ${LOCALE}
+	_msgfmt en_ZW
 	ln -sf ${ZONEINFO}Africa/Harare ${LOCALTIME};;
  "Argentiña")
-	_msgfmt es
-	echo "export LANG=es_AR.utf-8" > ${LOCALE}
+	_msgfmt es_AR
 	ln -sf ${ZONEINFO}America/Buenos_Aires ${LOCALTIME};;
  "Bolivia")
-	_msgfmt es
-	echo "export LANG=es_BO.utf-8" > ${LOCALE}
+	_msgfmt es_BO
 	ln -sf ${ZONEINFO}America/La_paz ${LOCALTIME};;
  "Chile")
-	_msgfmt es
-	echo "export LANG=es_CL.utf-8" > ${LOCALE}
+	_msgfmt es_CL
 	ln -sf ${ZONEINFO}America/Santiago ${LOCALTIME};;
  "Colombia")
-	_msgfmt es
-	echo "export LANG=es_CO.utf-8" > ${LOCALE}
+	_msgfmt es_CO
 	ln -sf ${ZONEINFO}America/Bogota ${LOCALTIME};;
  "Costa Ricar")
-	_msgfmt es
-	echo "export LANG=es_CR.utf-8" > ${LOCALE}
+	_msgfmt es_CR
 	ln -sf ${ZONEINFO}America/Costa_Rica ${LOCALTIME};;
  "Cuba")
-	_msgfmt es
-	echo "export LANG=es_CU.utf-8" > ${LOCALE}
+	_msgfmt es_CU
 	ln -sf ${ZONEINFO}America/Havana ${LOCALTIME};;
  "Dominican Republic")
-	_msgfmt es
-	echo "export LANG=es_DO.utf-8" > ${LOCALE}
+	_msgfmt es_DO
 	ln -sf ${ZONEINFO}America/Santo_Domingo ${LOCALTIME};;
  "Ecuador")
-	_msgfmt es
-	echo "export LANG=es_EC.utf-8" > ${LOCALE}
+	_msgfmt es_EC
 	ln -sf ${ZONEINFO}America/Guayaquil ${LOCALTIME};;
  "España")
-	_msgfmt es
-	echo "export LANG=es_ES.utf-8" > ${LOCALE}
+	_msgfmt es_ES
 	ln -sf ${ZONEINFO}Europe/Madrid ${LOCALTIME};;
  "Guatemala")
-	_msgfmt es
-	echo "export LANG=es_GT.utf-8" > ${LOCALE}
+	_msgfmt es_GT
 	ln -sf ${ZONEINFO}America/Guatemala ${LOCALTIME};;
  "Honduras")
-	_msgfmt es
-	echo "export LANG=es_HN.utf-8" > ${LOCALE}
+	_msgfmt es_HN
 	ln -sf ${ZONEINFO}America/Tegucigalpa ${LOCALTIME};;
  "Mexico")
-	_msgfmt es
-	echo "export LANG=es_MX.utf-8" > ${LOCALE}
+	_msgfmt es_MX
 	ln -sf ${ZONEINFO}America/Mexico_City ${LOCALTIME};;
  "Nicaragua")
-	_msgfmt es
-	echo "export LANG=es_NI.utf-8" > ${LOCALE}
+	_msgfmt es_NI
 	ln -sf ${ZONEINFO}America/Managua ${LOCALTIME};;
  "Panama")
-	_msgfmt es
-	echo "export LANG=es_PA.utf-8" > ${LOCALE}
+	_msgfmt es_PA
 	ln -sf ${ZONEINFO}America/Panama ${LOCALTIME};;
  "Peru")
-	_msgfmt es
-	echo "export LANG=es_PE.utf-8" > ${LOCALE}
+	_msgfmt es_PE
 	ln -sf ${ZONEINFO}America/Lima ${LOCALTIME};;
  "Puerto Rico")
-	_msgfmt es
-	echo "export LANG=es_PR.utf-8" > ${LOCALE}
+	_msgfmt es_PR
 	ln -sf ${ZONEINFO}America/Argentina/San_Juan ${LOCALTIME};;
  "Paraguay")
-	_msgfmt es
-	echo "export LANG=es_PY.utf-8" > ${LOCALE}
+	_msgfmt es_PY
 	ln -sf ${ZONEINFO}America/Asuncion ${LOCALTIME};;
  "El Salvador")
-	_msgfmt es
-	echo "export LANG=es_SV.utf-8" > ${LOCALE}
+	_msgfmt es_SV
 	ln -sf ${ZONEINFO}America/El_Salvador ${LOCALTIME};;
  "Estados Unidos")
-	_msgfmt es
-	echo "export LANG=es_US.utf-8" > ${LOCALE}
+	_msgfmt es_US
 	ln -sf ${ZONEINFO}America/New_York ${LOCALTIME};;
  "Uruguay")
-	_msgfmt es
-	echo "export LANG=es_UY.utf-8" > ${LOCALE}
+	_msgfmt es_UY
 	ln -sf ${ZONEINFO}America/Montevideo ${LOCALTIME};;
  "Venezuala")
-	_msgfmt es
-	echo "export LANG=es_VE.utf-8" > ${LOCALE}
+	_msgfmt es_VE
 	ln -sf ${ZONEINFO}America/Caracas ${LOCALTIME};;
  "Euskera")
-	_msgfmt es
-	echo "export LANG=eu_ES.utf-8" > ${LOCALE}
+	_msgfmt es_ES
 	ln -sf ${ZONEINFO}Europe/Madrid;;
  "France")
-	_msgfmt fr
-	echo "export LANG=fr_FR.utf-8" > ${LOCALE}
+	_msgfmt fr_FR
 	ln -sf ${ZONEINFO}Europe/Paris ${LOCALTIME};;
  "Belgique")
-	_msgfmt fr
-	echo "export LANG=fr_BE.utf-8" > ${LOCALE}
+	_msgfmt fr_BE
 	ln -sf ${ZONEINFO}Europe/Brussels ${LOCALTIME};;
  "Suisse")
-	_msgfmt fr
-	echo "export LANG=fr_CH.utf-8" > ${LOCALE}
+	_msgfmt fr_CH
 	ln -sf ${ZONEINFO}Europe/Zurich ${LOCALTIME};;
  "Luxembourg")
-	_msgfmt fr
-	echo "export LANG=fr_LU.utf-8" > ${LOCALE}
+	_msgfmt fr_LU
 	ln -sf ${ZONEINFO}Europe/Luxembourg ${LOCALTIME};;
  "Quebec")
-	_msgfmt fr
-	echo "export LANG=fr_CA.utf-8" > ${LOCALE}
+	_msgfmt fr_CA
 	ln -sf ${ZONEINFO}America/Montreal ${LOCALTIME};;
  "Ελληνικά")
-	_msgfmt el
-	echo "export LANG=el_GR.utf-8" > ${LOCALE}
+	_msgfmt el_GR
 	ln -sf ${ZONEINFO}Europe/Athens ${LOCALTIME};;
  "Galego")
-	_msgfmt gl
-	echo "export LANG=gl_ES.utf-8" > ${LOCALE}
+	_msgfmt gl_ES
 	ln -sf ${ZONEINFO}Europe/Madrid ${LOCALTIME};;
  "Hrvatska")
-	_msgfmt hr
-	echo "locale hr" >> ${CARDS}
-	echo "export LANG=hr_HR.utf-8" > ${LOCALE}
+	_msgfmt hr_HR
 	ln -sf ${ZONEINFO}Europe/Zagreb ${LOCALTIME};;
  "Iceland")
-	_msgfmt is
-	echo "export LANG=is_IS.utf-8" > ${LOCALE}
+	_msgfmt is_IS
 	ln -sf ${ZONEINFO}Atlantic/Reykjavik ${LOCALTIME};;
  "Ireland")
-	_msgfmt ga
-	echo "export LANG=ga_IE.utf-8" > ${LOCALE}
+	_msgfmt ga_IE
 	ln -sf ${ZONEINFO}Europe/Dublin ${LOCALTIME};;
  "Italia")
-	_msgfmt it
-	echo "export LANG=it_IT.utf-8" > ${LOCALE}
+	_msgfmt it_IT
 	ln -sf ${ZONEINFO}Europe/Rome ${LOCALTIME};;
  "Svizzera")
-	_msgfmt it
-	echo "export LANG=it_CH.utf-8" > ${LOCALE}
+	_msgfmt it_CH
 	ln -sf ${ZONEINFO}Europe/Zurich ${LOCALTIME};;
  "kinyarwanda")
-	_msgfmt rw
-	echo "export LANG=rw_RW.utf-8" > ${LOCALE}
+	_msgfmt rw_RW
 	ln -sf ${ZONEINFO}/Africa/Kigali ${LOCALTIME};;
  "latviešu")
-	_msgfmt lv
-	echo "export LANG=lv_LV.utf-8" > ${LOCALE};;
+	_msgfmt lv_LV;;
  "lietuvių")
-	_msgfmt lt
-	echo "export LANG=lt_LT.utf-8" > ${LOCALE};;
+	_msgfmt lt_LT;;
  "Magyar")
-	_msgfmt hu
-	echo "export LANG=hu_HU.utf-8" > ${LOCALE};;
+	_msgfmt hu_HU;;
  "Aruba")
-	_msgfmt nl
-	echo "export LANG=nl_AW.utf-8" > ${LOCALE}
+	_msgfmt nl_AW
 	ln -sf ${ZONEINFO}America/Aruba ${LOCALTIME};;
  "België")
-	_msgfmt nl
-	echo "export LANG=nl_BE.utf-8" > ${LOCALE}
+	_msgfmt nl_BE
 	ln -sf ${ZONEINFO}Europe/Brussels ${LOCALTIME};;
  "The Nederlands")
-	_msgfmt nl
-	echo "export LANG=nl_NL.utf-8" > ${LOCALE}
+	_msgfmt nl_NL
  	ln -sf ${ZONEINFO}Europe/Amsterdam ${LOCALTIME};;
  "Norge")
-	_msgfmt nb
+	_msgfmt nb_NO
+  _msgfmt nn_NO
 	echo "export LANG=nb_NO.utf-8" > ${LOCALE}
 	ln -sf ${ZONEINFO}Europe/Oslo ${LOCALTIME};;
  "Polski")
-	_msgfmt pl
+	_msgfmt pl_PL
 	echo "export LANG=pl_PL.utf-8" > ${LOCALE}
 	ln -sf ${ZONEINFO}Europe/Warsaw ${LOCALTIME};;
  "Portugal")
-	_msgfmt pt
+	_msgfmt pt_PT
 	echo "export LANG=pt_PT.utf-8" > ${LOCALE}
 	ln -sf ${ZONEINFO}Europe/Lisbon ${LOCALTIME};;
  "Brazil")
-	_msgfmt pt
-	echo "export LANG=pt_BR.utf-8" > ${LOCALE}
+	_msgfmt pt_BR
 	ln -sf ${ZONEINFO}America/Sao_Paulo ${LOCALTIME};;	
  "română")
-	_msgfmt ro
-	echo "export LANG=ro_RO.utf-8" > ${LOCALE}
+	_msgfmt ro_RO
 	ln -sf ${ZONEINFO}Europe/Bucharest ${LOCALTIME};;
  "shqip")
-	_msgfmt sq
-	echo "locale sq" >> ${CARDS}
-	echo "export LANG=sq_MK.utf-8" > ${LOCALE}
+	_msgfmt sq_MK
 	ln -sf ${ZONEINFO}Europe/Tirane ${LOCALTIME};;
  "slovenčina")
-	_msgfmt sk
-	echo "export LANG=sk_SK.utf-8" > ${LOCALE}
+	_msgfmt sk_SK
 	lb -sf ${ZONEINFO}Europe/Bratislava ${LOCALTIME};;
  "Slovenščina")
-	_msgfmt sl
-	echo "export LANG=sl_SI.utf-8" > ${LOCALE}
+	_msgfmt sl_SI
 	lb -sf ${ZONEINFO}Europe/Ljubljana ${LOCALTIME};;
  "Srbija")
-	_msgfmt sr
-	echo "export LANG=sr_RS.utf-8" > ${LOCALE}
+	_msgfmt sr_RS
 	ln -sf ${ZONEINFO}Europe/Belgrade ${LOCALTIME};;
  "Suomi")
-	_msgfmt fi
-	echo "export LANG=fi_FI.utf-8" > ${LOCALE}
+	_msgfmt fi_FI
 	ln -sf ${ZONEINFO}Europe/Helsinki ${LOCALTIME};;
  "Sverige")
-	_msgfmt sv
-	echo "export LANG=sv_SE.utf-8" > ${LOCALE}
+	_msgfmt sv_SE
 	ln -sf ${ZONEINFO}Europe/Stockholm ${LOCALTIME};;
  "Türkiye")
-	_msgfmt tr
-	echo "export LANG=tr_TR.utf-8" > ${LOCALE}
+	_msgfmt tr_TR
 	ln -sf ${ZONEINFO}Europe/Istanbul ${LOCALTIME};;
  "Thaïland")
-	_msgfmt th
-	echo "export LANG=th_TH.utf-8" > ${LOCALE}
+	_msgfmt th_TH
 	ln -sf ${ZONEINFO}Asia/Bangkok ${LOCALTIME};;
  "Ukraïna")
-	_msgfmt uk
-	echo "export LANG=uk_UA.utf-8" > ${LOCALE}
+	_msgfmt uk_UA
 	ln -sf ${ZONEINFO}Europe/Kiev ${LOCALTIME};;
  "Viêt nam")
-	_msgfmt vi
-	echo "export LANG=vi_VN.utf-8" > ${LOCALE}
+	_msgfmt vi_VN
 	ln -sf ${ZONEINFO}Asia/Ho_Chi_Minh ${LOCALTIME};;
 esac
 . ${LOCALE}
@@ -1231,6 +1138,10 @@ install_nutyx() {
 			cp -a /$FILE  ${2}/$FILE
 		fi
 	done
+	if [ -f /etc/locale/locale-archive ]; then
+		rm -f ${2}/usr/lib/locale
+		cp -a /etc/locale ${2}/usr/lib/
+	fi
 	if [ -f ${1}/kernel ]; then
 		cp  ${1}/kernel ${2}/boot/kernel-`uname -r`
 		ln -sf kernel-`uname -r` ${2}/boot/kernel
