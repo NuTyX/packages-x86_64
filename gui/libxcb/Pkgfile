@@ -5,15 +5,22 @@
 
 name=libxcb
 version=1.11.1
-release=1
+release=2
 
 source=(http://xcb.freedesktop.org/dist/$name-$version.tar.bz2)
 
 build() {
-	cd $name-$version
-	sed -e "s/pthread-stubs//" -i configure
-	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
-	--docdir='${datadir}'/doc/libxcb-$version
-	make
-	make DESTDIR=$PKG install
+cd $name-$version
+
+sed -e "s/pthread-stubs//" -i configure
+
+./configure --prefix=/usr \
+	    --sysconfdir=/etc \
+	    --localstatedir=/var \
+	    --docdir='${datadir}'/doc/libxcb-$version \
+	    --enable-xinput \
+            --enable-xkb \
+            --disable-static
+make
+make DESTDIR=$PKG install
 }
