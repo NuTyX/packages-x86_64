@@ -6,6 +6,7 @@
 name=kde5-baseapps
 version=20150928
 release=1
+_name=kde-baseapps
 
 source=()
 
@@ -16,7 +17,7 @@ git clone -b frameworks git://anongit.kde.org/kde-baseapps.git
 mkdir -p build
 cd build
   
-cmake ../${name} \
+cmake ../${_name} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DSYSCONF_INSTALL_DIR=/etc \
