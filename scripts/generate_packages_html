@@ -5,6 +5,7 @@
 
 TMP=`mktemp -d`
 CURRENT_DIR=`pwd`
+ARCH_NAME=`basename $CURRENT_DIR`
 DIR_NUTYX_NAME=`dirname $CURRENT_DIR`
 NUTYX_NAME=`basename $DIR_NUTYX_NAME`
 
@@ -37,7 +38,7 @@ cat > $TMP/index.html << "EOF"
       <link rel="shortcut icon" href="../../favicon.ico">
       <link rel="stylesheet" href="http://www.nutyx.org/css/nutyx.css" />
 EOF
-echo "      <title>Paquets NuTyX $NUTYX_NAME</title>" >> $TMP/index.html
+echo "      <title>Paquets NuTyX $NUTYX_NAME $ARCH_NAME</title>" >> $TMP/index.html
 cat >> $TMP/index.html << "EOF"
   </head>
   <body>
@@ -66,7 +67,7 @@ cat >> $TMP/index.html << "EOF"
 EOF
 
 echo "
-   <h1>Paquets NuTyX $NUTYX_NAME</h1>
+   <h1>Paquets NuTyX $NUTYX_NAME $ARCH_NAME</h1>
     <h2>Nombre de binaires de base: $NUMBER</h2>">> $TMP/index.html
 
 cat >> $TMP/index.html << "EOF"
