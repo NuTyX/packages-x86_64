@@ -6,8 +6,8 @@
 run=(gstreamer1-plugins-good gstreamer1-plugins-libav)
 
 name=firefox
-version=41.0
-release=2
+version=41.0.1
+release=1
 
 source=(https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.xz)
 
@@ -23,6 +23,7 @@ done
 
 cd mozilla-release
 cat > mozconfig << "EOF"
+ac_add_options --enable-official-branding
 ac_add_options --disable-optimize
 ac_add_options --enable-gstreamer=1.0
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
