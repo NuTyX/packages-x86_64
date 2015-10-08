@@ -18,9 +18,9 @@ cd vb
 tar xfj VirtualBox.tar.bz2
 cd src/vboxhost/
 
-KERNELRELEASE=`uname -r`
+KERNELRELEASE=`echo /usr/src/linux-*|cut -d "-" -f2`
 
-KERN_DIR=/usr/src/linux-${KERNELRELEASE%.*} make
+KERN_DIR=/usr/src/linux-${KERNELRELEASE} make
 
 mkdir -p $PKG/lib/modules/${KERNELRELEASE}/kernel/drivers/zzzz
 for i in *.ko

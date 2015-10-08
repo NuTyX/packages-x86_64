@@ -5,7 +5,7 @@
 
 name=virtualbox
 version=5.0.6
-release=2
+release=3
 _name=Oracle_VM_VirtualBox_Extension_Pack
 _release=103037
 
@@ -51,4 +51,8 @@ build() {
 		$PKG/opt/VirtualBox/ExtensionPacks/${_name}-$version-${_release}.vbox-extpack
 	mkdir -p $PKG/etc/ld.so.conf.d
 	echo /opt/VirtualBox > $PKG/etc/ld.so.conf.d/virtualbox.conf
+	# Icon
+	ln -s VBox.png $PKG/usr/share/pixmaps/virtualbox.png
+	# Source code files obsolet
+	rm -r $PKG/opt/VirtualBox/src
 }
