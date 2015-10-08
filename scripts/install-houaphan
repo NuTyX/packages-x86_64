@@ -1287,10 +1287,10 @@ base ${DEPOT}/base-extra
 ## If you want to keep more collections remove comments below
 # Adjust to your needs
 #
-# base ${DEPOT}/console
-# base ${DEPOT}/console-extra
-# base ${DEPOT}/graphic
-# base ${DEPOT}/graphic-extra
+# base ${DEPOT/cli
+# base ${DEPOT}/cli-extra
+# base ${DEPOT}/gui
+# base ${DEPOT}/gui-extra
 # base ${DEPOT}/..." > ${FOLDER}/etc/cards.conf
 }
 generate_nutyx_version() {
@@ -1435,7 +1435,7 @@ check_mountpoint() {
 [ -z $FOLDER ] && error "Variable FOLDER not define"
 }
 check_arch() {
-if [ "$ARCH" != "x86_64" ]; then
+if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ]; then
 	boot_mesg "
  >>> This arch ($ARCH) is not supported"
 	echo_failure
@@ -1453,8 +1453,8 @@ if [ -d ${FOLDER}/usr/lib/locale ]; then
 fi
 }
 make_directories() {
-mkdir ${FOLDER}/{dev,sys,proc,run,tmp,home,srv,mnt,var}
-mkdir ${FOLDER}/var/tmp
+mkdir ${FOLDER}/{dev,sys,proc,run,tmp,home,srv,mnt}
+mkdir -p ${FOLDER}/var/tmp
 mkdir -p ${FOLDER}/usr/{,local/}lib
 
 chmod 1777 ${FOLDER}/{,var/}tmp
