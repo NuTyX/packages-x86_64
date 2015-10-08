@@ -194,7 +194,7 @@ mount -t proc proc ${FOLDER}/proc
 mount -t sysfs sysfs ${FOLDER}/sys
 mount -t tmpfs tmpfs ${FOLDER}/run
 if [ -h ${FOLDER}/dev/shm ]; then
-   mkdir -pv ${FOLDER}/$(readlink ${FOLDER}/dev/shm)
+   mkdir -p ${FOLDER}/$(readlink ${FOLDER}/dev/shm)
 fi
 }
 enter_chroot() {
@@ -1287,7 +1287,7 @@ base ${DEPOT}/base-extra
 ## If you want to keep more collections remove comments below
 # Adjust to your needs
 #
-# base ${DEPOT/cli
+# base ${DEPOT}/cli
 # base ${DEPOT}/cli-extra
 # base ${DEPOT}/gui
 # base ${DEPOT}/gui-extra
@@ -1645,6 +1645,6 @@ example: ${INSTALL_COMMAND} -p /chroot
 
 readonly CODE_NAME="houaphan"
 readonly BASE="base"
-readonly RELEASE=6
+readonly RELEASE=7
 INSTALL_COMMAND="`basename $0`"
 main "$@"
