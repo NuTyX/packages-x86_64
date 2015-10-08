@@ -7,10 +7,9 @@ PKGMK_GROUPS=(man)
 PKGMK_IGNORE_RUNTIMEDEPS=yes
 
 name=nutyx
-version=8.0-rc1
+version=8.0
 release=1
-
-source=(http://downloads.nutyx.org/files/nutyx-basicfs-20151004.tar.bz2)
+source=(http://downloads.nutyx.org/files/nutyx-basicfs-$version.tar.bz2)
 build () {
 cd nutyx-basicfs/nutyx-houaphan-basicfs/rootfs
 mv * $PKG/
