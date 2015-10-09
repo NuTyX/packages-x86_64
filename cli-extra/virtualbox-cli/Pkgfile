@@ -5,7 +5,7 @@
 buildrelease=103037
 name=virtualbox-cli
 version=5.0.6
-release=1
+release=2
 
 [ "`uname -m`" == "i686"   ] && _ARCH=x86
 [ "`uname -m`" == "x86_64"   ] && _ARCH=amd64
@@ -18,9 +18,9 @@ cd vb
 tar xfj VirtualBox.tar.bz2
 cd src/vboxhost/
 
-KERNELRELEASE=`echo /usr/src/linux-*|cut -d "-" -f2`
+KERNELRELEASE=`uname -r`
 
-KERN_DIR=/usr/src/linux-${KERNELRELEASE} make
+KERN_DIR=/usr/src/linux-${KERNELRELEASE%.*} make
 
 mkdir -p $PKG/lib/modules/${KERNELRELEASE}/kernel/drivers/zzzz
 for i in *.ko
