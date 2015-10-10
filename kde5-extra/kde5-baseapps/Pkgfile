@@ -3,9 +3,10 @@
 # Packager : pierre at nutyx dot org
 # Depends on : kf5-extra-cmake-modules kf5-kdoctools git kf5-kdelibs4support kf5kdesu kf5-kactivities kf5-kded kf5-khtml kf5-knewstuff tidyhtml dolphin
 
-name=kde-baseapps
+name=kde5-baseapps
 version=20150928
 release=1
+_name=kde-baseapps
 
 source=()
 
@@ -16,7 +17,7 @@ git clone -b frameworks git://anongit.kde.org/kde-baseapps.git
 mkdir -p build
 cd build
   
-cmake ../${name} \
+cmake ../${_name} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DSYSCONF_INSTALL_DIR=/etc \
