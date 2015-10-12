@@ -652,15 +652,15 @@ EOF
 }
 generate_mouse() {
 local FILE
-FILE="modules"
+FILE="mouse"
 [ -f ${FOLDER}/etc/$FILE ] && return
-[ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+[ ! -d ${FOLDER}/etc/sysconfig ] && mkdir -pv ${FOLDER}/etc/sysconfig
 if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
    cp /etc/${INSTALL_COMMAND}.conf.d/$FILE \
-   ${FOLDER}/etc/$FILE
+   ${FOLDER}/etc/sysconfig/$FILE
    return
 fi
-cat > ${FOLDER}/etc/$FILE << "EOF"
+cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 MDEVICE="/dev/input/mice"
 PROTOCOL="imps2"
 EOF
@@ -1307,7 +1307,9 @@ install_resolv_conf() {
 successfull_installation () {
 echo "
 ****************************************************
-* Installation finish. Tanks for installing NuTyX  *
+*      Installation of NuTyX $VERSION finish.           *
+*                                                  *
+* Tanks for installing NuTyX                       *
 *                                                  *
 * Check http://www.nutyx.org/en/documentation.html *
 * or http://www.nutyx.org/fr/documentation.html    *
@@ -1346,7 +1348,7 @@ check_tools() {
 check_variables() {
 
 [ -z $URL ] && URL="http://downloads.nutyx.org"
-[ -z $VERSION ] && VERSION="8.0-rc1"
+[ -z $VERSION ] && VERSION="8.0"
 [ -z $DEPOT ] && DEPOT="/var/lib/pkg/depotrepo"
 [ -z $FOLDER ] && FOLDER="/mnt/hd"
 
@@ -1581,8 +1583,8 @@ parse_options() {
 				FOLDER="$2"
 				shift;;
 			-v|--version)
-				echo "`basename $INSTALL_COMMAND` $VERSION.$RELEASE"
-				exit;;
+				echo "`basename $INSTALL_COMMAND` $VERSION-$RELEASE"
+				exit 0;;
 			/*)
 				boot_mesg "
  >>> This methode is depreciate <<<: use '-p $1' instead or adjust the 'LFS' variable"
@@ -1645,6 +1647,6 @@ example: ${INSTALL_COMMAND} -p /chroot
 
 readonly CODE_NAME="houaphan"
 readonly BASE="base"
-readonly RELEASE=7
+readonly RELEASE=1
 INSTALL_COMMAND="`basename $0`"
 main "$@"
