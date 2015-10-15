@@ -29,91 +29,170 @@
      </tr>
     </table>
  <hr>
-  <h1>Dernière nouvelle 13-09-2015</h1>
-   <h2>Pourquoi Saravane n'a pas survécue ?</h2>
-    <ol>
-     <li>Le concept de rolling release sous NuTyX demande beaucoup de travail.</li>
-     <li>Le nombre de collections est trop limité et surtout contient des paquets pas toujours souhaités.</li>
-     <li>L'idée des collections est bonne mais peut être plus développée.</li>
-     <li>L'intégration de kde5 dans la collection 'desktop' est infaisable vu le nombre de recettes qu'elle contient (plus de 120 recettes).</li>
-     <li>C'est très difficile d'ajouter de nouveaux ports, les collections deviennent vite trop grosses en nombre de recettes.</li>
-     <li>Vu le nombre d'interfaces graphiques disponible sous NuTyX se limite à KDE(4) et XFCE(4).</li>
-     <li>La dénomination des collections est mal choisie.</li>
-     <li>La configuration de cards doit être encore simplifiée.</li>
-     <li>La synchronisation des ports via la commande <b>rsync</b> pose de nombreux problèmes.</li>
-     <li>Le script d'installation a perdu beaucoup de fonctionnalitées par rapport aux versions précédentes.</li>
-    </ol>
-   <h2>Quelles sont les nouveautées de NuTyX houaphan actuelles ?</h2>
-    <h3>Les nouvelles collections de ports et de binaires</h3>
-     <p>Le nombre de collection est passé de <b><u>3</u></b> à <b><u>18</u></b>.</p>
-     <p>Les collections <b><i>'base'</i></b> et <b><i>base-extra'</i></b> consistent comme le nom le sous-entend en un système de base et ses applications extra. Le script d'installation extrait et installe tous les paquets qui se trouvent dans la collection <b><i>'base'</i></b>. Une fois terminé, il effectue un 'chroot' dans l'installation pour y ajouter tous les paquets en provenance de la collection <b><i>'base-extra'</i></b>. Une fois terminé, si vous le souhaitez, vous relancez votre machine en choisissant la nouvelle entrée que vous avez préalablement configurée dans le fichier <b>grub.cfg</b>.</p>
-     <p>Les collections <b><i>'cli'</i></b> et <b><i>'cli-extra'</i></b> constituent un ensemble de ports / binaires necessaires pour le fonctionnement de NuTyX en 'ligne de commande uniquement'.</p>
-     <p>Les collections <b><i>'gui'</i></b> et <b><i>'gui-extra'</i></b> constituent un ensemble de ports / binaires necessaires pour le fonctionnement de NuTyX via une 'interface utilisateur graphique'.</p>
-     <p>Chacune des collections <b><i>'base', 'cli' et 'gui'</i></b> possède donc une 'collection' dite <b><i>-extra</i></b>
+  <h1>Dernière nouvelle 15-10-2015</h1>
+   <h2>NuTyX houaphan 8.0 disponible avec cards 1.3.3</h2>
+    <h3>Introduction pour les plus pressés</h3>
+     <p>Onze mois après la sortie de saravane 14.11 et cinq mois après la sortie de saravane 15.05, je suis fier de vous annoncer la sortie de NuTyX. Son nom de code est <b>houaphan</b>. La première version se décline en <b>8.0</b>. Pourquoi ce chiffre ? Le temps passe très vite, <b>houaphan</b> est déjà la 8ième version majeur depuis la première version publique de NuTyX cad en 2007. Voici en résumé quelques nouveautées:
+      <ul>
+       <li>glibc 2.22</li>
+       <li>gcc 5.2.0</li>
+       <li>kernel 4.2.0</li>
+       <li>kernel-lts 3.18.21</li>
+       <li>cards 1.3.3</li>
+       <li>curl 7.44.0</li>
+       <li>binutils 2.25.1</li>
+       <li>util-linux 2.27</li>
+       <li>xorg-server 1.17.2</li>
+       <li>xorg-mesa 10.6.6</li>
+       <li>firefox 42.0.1</li>
+       <li>thunderbird 38.3.0</li>
+       <li>libreoffice 5.0.2.2</li>
+       <li>clementine 1.2.3</li>
+       <li>vlc 2.2.1</li>
+       <li>chromium 45.0.2454.101</li>
+       <li>abiword 3.0.1</li>
+       <li>gnumeric 1.12.23</li>
+       <li>gnome 3.16.2</li>
+       <li>kf5 5.15.0</li>
+       <li>plasma 5.4.2</li>
+       <li>lxde 0.99.0</li>
+       <li>lxqt 0.9.0</li>
+       <li>mate 1.10.0</li>
+       <li>xfce 4.12.3</li>
+       <li>kde 4.14.3</li>
+       <li>openbox 3.6.1</li>
+       <li>...</li>
+      </ul>
+     <p>Il est faut noter que toutes les interfaces graphiques disponibles sont accéssibles depuis le gestionnaire de connection polyvalent <b>lxdm</b>, pensez donc à l'ajouter (ainsi que xorg ) dans votre liste de paquets quelque soit l'interface que vous choisissez d'installer. Un exemple d'installation de gnome avec tous les paquets disponibles à ce jour donnera donc:</p>
+     <pre class="command"><kbd>check
+get xorg gnome gnome-extra lxdm</kbd></pre>
+<div class="important"><img alt="[Important]" src="../graphics/caution.gif" />Bien que le paquet <b>gdm</b> (gestionnaire de sessions de gnome) fasse parti de la collection de <b>gnome</b>, il n'est pas possible de l'utiliser pour se connecter a quelque session que ce soit. Cependant, il est indispensable au bon fonctionnement de gnome.</div>
+     <p>Pour installer l'interface xfce, on remplacera simplement gnome par xfce4</p>
+     <pre class="command"><kbd>check
+get xorg xfce4 xfce4-extra lxdm</kbd></pre> 
+     <p>Pensez à créer au moins un utilisateur avec la commande:</p>
+     <pre class="command"><kbd>nu</kbd></pre>
+     <p>Ensuite, redémarrez la machine avant de tenter de vous loger en mode graphique (c'est la méthode la plus simple)</p>
+    <h3>Les nouvelles interfaces graphiques</h3>
+     <p>En plus des interfaces graphiques <b>xfce</b> et <b>kde</b> (collections <b><i>'xfce4'</i></b>, <b><i>'xfce4-extra',</i></b>, <b><i>'kde'</i></b> et <b><i>'kde-extra'</i></b>), les collections <b>kde5</b> et <b>kde5-extra</b>, <b>gnome</b> et <b>gnome-extra</b>, <b>mate</b> et <b>mate-extra</b>, <b>lxde</b> et <b>lxde-extra</b>, <b>lxqt</b> et <b>lxqt-extra</b> sont désormais également disponibles.</p>
+    <h3>Les nouveautées de cards</h3>
+      <p>Cards dans sa version <b>1.3.3</b> permet d'installer un ou plusieurs paquets, une ou plusieurs <i>collections</i>, ou un mélange de paquets et de collections. Si un paquet et une collection portent le même nom, ce sera le paquet (et ses dépendances) qui sera installé.</p>
+     <p>Il ne faut plus spécifier l'architecture de votre machine dans le fichier de configuration de cards. D'autre part, l'adresse URL spécifiant le mirroir de téléchargement est désormais simplifée.</p>
+     <p>Lors d'une recherche de paquet, le résultat affiche désormais également la collection du ou des paquet(s) trouvé(s).</p>
+     <p>Le nouveau format de configuration est désormais plus simple comme le montre l'exemple ci-dessous:
+      <pre class="output">dir /var/lib/pkg/depot/gui|http://downloads.nutyx.org
+dir /var/lib/pkg/depot/xfce4-extra|http://downloads.nutyx.org
+dir /var/lib/pkg/depot/xfce4|http://downloads.nutyx.org
+dir /var/lib/pkg/depot/cli|http://downloads.nutyx.org
+dir /var/lib/pkg/depot/base|http://downloads.nutyx.org
+base /var/lib/pkg/depot/base
+base /var/lib/pkg/depot/base-extra
+locale fr</pre>
+    <h3>La différence entre une collection &lt;nnn&gt; et la collection &lt;nnn-extra&gt;</h3>
      <p>Il y a une différence fondammentale entre, par exemple, la collection <b>'cli'</b> et <b>'cli-extra'</b>: Les ports et binaires contenus dans la collection <b><i>'cli'</i></b> sont quasi figés dans leur version au moment de la sortie de la version NuTyX, alors que les ports et binaires des collections <b><i>-extra</i></b> peuvent être mis à jour à tout moment.</p>
      <p>Cette technique permet d'isoler le <b>'système central'</b> (cad les collections <b><i>'base'</i></b>, <b><i>'cli'</i></b> et <b><i>'gui'</i></b>) des mises à jour qui peuvent l'être sur les applications <i>"périphériques"</i> contenues dans les collections <b><i>-extra</i></b>.</p>
-     <p>Par conséquent, les applications se trouvant dans les collections <b><i>'base-extra'</i></b>,<b><i>'cli-extra'</i></b> ou <b><i>'gui-extra'</i></b> sont complètement indépendantes du <b>'système central'</b>, techniquement cela signifie qu'aucune dépendances du 'système centrale' ne doit s'y trouver.</p>
-     <p>En plus des interfaces graphiques <b>xfce</b> (collections <b><i>'xfce4'</i></b> et <b><i>'xfce4-extra'</i></b>), <b>kde</b> (collections <b><i>'kde'</i></b> et <b><i>'kde-extra'</i></b>) et <b>openbox</b> déjà disponibles sous saravane, de nouvelles sont désormais maintenues et disponibles en binaires:</p>
-     <p>
-     <ol>
-      <li><b><i>kde5 et kde5-extra</i></b> pour la nouvelle version de kde basée sur la bibliothèque graphique <a href="http://qt.oi">Qt</a> en version 5.</li>
-      <li><b><i>mate</i></b> et <b><i>mate-extra</i></b> pour l'interface graphique basée sur gtk version 2.</li>
-      <li> <b><i>lxde</i></b>, <b><i>lxde-extra</i></b>, <b><i>lxqt</i></b> et <b><i>lxqt-extra</i></b> pour les 2 interfaces graphiques très légères utilisant respectivement les librairies graphiques <a href="http://www.gtk.org">GTK</a> et <a href="http://qt.io>">Qt</a></p></li>
-     </ol>
-     </p>
-     <h3>Le gestionnaire de paquets <b><u>cards</u></b> dans sa version 1.3.1</h3>
-     <p>Cards dans sa version <b>1.3.1</b> permet d'installer un ou plusieurs paquets, une ou plusieurs collections, ou un mélange de paquets et de collections. Si un paquet et une collection portent le même nom, ce sera le paquet (et ses dépendances) qui sera installé.</p>
-     <p>Il ne faut plus spécifier l'architecture de votre machine dans le fichier de configuration de cards. D'autre part, l'adresse URL spécifiant le mirroir de téléchargement est désormais simplifée.</p>
-    <h2>La flexibilité d'une installation NuTyX</h2>
-     <h3>Configuration et scénarios d'installation</h3>
-      <p>Comme dit plus haut, vous avez, actuellement, le choix entre <b>18 collections</b> de ports  / binaires.</p>
-      <p>Il est cependant possible de choisir votre propre scénario d'installation en n'utilisant par exemple (en cas extreme) que les collections <b><i>'base'</i></b> et <b><i>'base-extra'</i></b> et ensuite de construire vos propres paquets à partir (encore un exemple) du site <a href="http://www.linuxfromscratch.org">BLFS</a></p>
-      <p>Si la compilation ne vous attire pas, si vous avez une idée précise sur l'interface graphique que vous souhaitez utiliser, activez juste les collections qui vous intéressent dans le fichier <b>/etc/cards.conf</b> dont voici un exemple pour un usage de <a href="http://www.xfce.org">xfce4</a>:
-      <pre class="output">dir /var/lib/pkg/depot/xfce4-extra|http://downloads.nutyx.org
-dir /var/lib/pkg/depot/xfce4|http://downloads.nutyx.org
-dir /var/lib/pkg/depot/graphic-extra|http://downloads.nutyx.org
-dir /var/lib/pkg/depot/graphic|http://downloads.nutyx.org
-dir /var/lib/pkg/depot/console-extra|http://downloads.nutyx.org
-dir /var/lib/pkg/depot/console|http://downloads.nutyx.org
-dir /var/lib/pkg/depot/base-extra|http://downloads.nutyx.org
-dir /var/lib/pkg/depot/base|http://downloads.nutyx.org
-base /var/lib/pkg/depot/base-extra
-base /var/lib/pkg/depot/base
-locale fr</pre>
-      <p>En effet, il est inutile de spécifier les collections dont vous n'avez pas besoin ( mate, mate-extra, kde, kde-extra, kde5, kde5-extra, ...)
-     <h3>Le script d'installation de NuTyX</h3>
-     <p>Le script <b>bash</b> install-houaphan fonctionne désormais comme une véritable application. Il dispose des options suivantes:</p>
-     <li>Une aide en ligne de commande
-      <pre class="command"><kbd>bash install-houaphan -h</kbd></pre></li>
-     <li>Le script <b>enter-chroot</b> est désormais obsolète, pour entrer dans une chroot, on utilise l'option <b>-ec</b>
-      <pre class="command"><kbd>bash install-houaphan -ec</kbd></pre></li>
-     <li>Installer les fichiers de configuration se trouvant dans le dossier <b>/etc/install-houphan.conf.d/</b>:
-      <pre class="command"><kbd>bash install-houaphan -ic</kbd></pre></li>
+     <p>Par conséquent, les applications se trouvant dans les collections <b><i>'base-extra'</i></b>,<b><i>'cli-extra'</i></b> ou <b><i>'gui-extra'</i></b> sont complètement indépendantes du <b>'système central'</b>, techniquement cela signifie qu'aucune dépendance du 'système centrale' ne doit s'y trouver.</p>
+    <h3>Le nouveau script d'installation</h3>
+     <p>Le script <b>bash</b> <a href="http://downloads.nutyx.org/install-houaphan">install-houaphan</a> fonctionne désormais comme une véritable application. Il dispose des options suivantes:</p>
      <li>Installer NuTyX dans un dossier
       <pre class="command"><kbd>bash install-houaphan -p /mnt/lfs</kbd></pre>
       <p>Le script va analyser le contenu du fichier <b>/etc/install-houphan.conf</b> si il existe et utiliser les variables définies dans ce dernier. Il n'est alors plus nessecaire de spécifier le chemin:
       <pre class="command"><kbd>bash install-houaphan</kbd></pre>
-      <p>Actuellement 4 variables sont configurables: le chemin d'installation défini par la variable <b>LFS</b>, l'adresse url où se trouvent les binaires défini par la variable <b>URL</b>, la version à installée (houaphan ou current) définie par la variable <b>version</b> et enfin le chemin des binaires téléchargés défini par la variable <b>DEPOT</b>. Voici un exemple complèt du fichier <b>/etc/install-houphan.conf</b>:
+      <p>Actuellement 4 variables sont configurables: le chemin d'installation défini par la variable <b>LFS</b>, l'adresse url où se trouvent les binaires défini par la variable <b>URL</b>, la version à installée (8.0 ou current) définie par la variable <b>VERSION</b> et enfin le chemin <b>local</b> des binaires téléchargés défini par la variable <b>DEPOT</b>. Voici un exemple complèt du fichier <b>/etc/install-houphan.conf</b>:
       <pre class="output">URL="http://192.168.254.254"
 DEPOT="/houaphan"
-LFS="/mnt/lfs"</pre>
+LFS="/mnt/lfs"
+VERSION="current"</pre>
 </li>
-    <h2>Quelles sont les nouveautées futures de NuTyX houaphan ?</h2>
-     <h3>Quatres nouvelles collections</h3>
-      <p>Si tout se passe comme prévu, notre contributeur fanch devrait nous fournir les collections:</p>
-     <ol>
-      <li><b><i>gnome</i></b> et <b><i>gnome-extra</i></b></li>
-      <li><b><i>cinnamon</i></b> et <b><i>cinnamon-extra</i></b></li>
-      <li><b>...</b></li>
-     </ol>
-     <p>Vous êtes bien-sûr les bienvenues pour contribuer et participer à l'intégration des recettes de fanch sur <a href="http://github.com/fanch">github</a>.</p>
-    <h3>Le gestionnaire de paquets</h3>
-     <p>Un nouveaux script <b>build-port</b> est en développement, il est actuellement documenté et présent dans chaque git disponible sur <a href="http://github.com/NuTyX">github</a>. Il est probable qu'une fois stabilisé, ils seront intégrés dans le paquet <b>cards.devel</b>. Son nom n'est pas définitif, ce qui n'est pas un soucis puisque l'on utilise uniquement un lien renommé en &lt;nom_de_collection&gt; </p>
-    <h3>La version current</h3>
-     <p>Un nouveau dépot <b>current</b> sera bientôt disponible sur <a href="http://downloads.nutyx.org/current/x86_64">downloads.nutyx.org</a>. Il permettra de tester la version de développement de NuTyX ainsi que les git houaphan et extra actuels sur la version <b>current</b> de NuTyX. Actuellement il déjà possible d'installer la version <b>current</b> mais seul les dépots <a href="http://downloads.nutyx.org/current/x86_64/base">base</a> et <a href="http://downloads.nutyx.org/current/x86_64/base-extra">base-extra</a> sont disponibles en binaires. Les autres collections sont en cours de construction.</p>
+      <p>Pour l'heure, la variable <b>VERSION</b> peut prendre 2 valeurs: "current" ou "8.0" qui est d'ailleurs la valeur par défaut.</p>
+     <li>Utiliser les fichiers de configuration se trouvant dans le dossier <b>/etc/install-houphan.conf.d/</b> lors de l'installation de NuTyX dont voici la liste:
+      <p></p>
+       <table width="60%" cellspacing="0" >
+       <tr>
+        <td width="30%" >NOM DU FICHIER</td><td width="70%">CHEMIN COMPLET DU FICHIER</td>
+       </tr>
+       <tr><td><p></td></tr>
+       <tr>
+        <td>cards.conf</td><td>/etc/cards.conf</td>
+       </tr>
+       <tr>
+        <td>pkgmk.conf</td><td>/etc/pkgmk.conf</td>
+       </tr>
+       <tr>
+        <td>fstab</td><td>/etc/fstab</td>
+       </tr>
+       <tr>
+        <td>.bashrc</td><td>/root/.bashrc et /home/&lt;nomutilisateur&gt;/.bashrc</td>
+       </tr>
+       <tr>
+        <td>bashrc</td><td>/etc/bashrc</td>
+      </tr>
+      <tr>
+        <td>profile</td><td>/etc/profile</td>
+      </tr>
+      <tr>
+        <td>hosts</td><td>/etc/hosts</td>
+      </tr>
+      <tr>
+        <td>inputrc</td><td>/etc/inputrc</td>
+      </tr>
+      <tr>
+        <td>rc_site</td><td>/etc/sysconfig/rc_site</td>
+      </tr>
+      <tr>
+        <td>.bash_profile</td><td>/root/.bash_profile et /home/&lt;nomutilisateur&gt;/.bash_profile</td>
+      </tr>
+      <tr>
+        <td>.dmrc</td><td>/etc/skel/.dmrc</td>
+      </tr>
+      <tr>
+        <td>shells</td><td>/etc/shells</td>
+      </tr>
+      <tr>
+        <td>dircolors.sh</td><td>/etc/profile.d/dircolors.sh</td>
+      </tr>
+      <tr>
+        <td>extrapaths.sh</td><td>/etc/profile.d/extrapaths.sh</td>
+      </tr>
+      <tr>
+        <td>readline.sh</td><td>/etc/profile.d/readline.sh</td>
+      </tr>
+      <tr>
+        <td>umask.sh</td><td>/etc/profile.d/umask.sh</td>
+      </tr>
+      <tr>
+        <td>modules</td><td>/etc/sysconfig/modules</td>
+      </tr>
+      <tr>
+        <td>createfiles</td><td>/etc/sysconfig/createfiles</td>
+      </tr>
+      <tr>
+        <td>mouse</td><td>/etc/sysconfig/mouse</td>
+       </tr>
+      </table>
+     <p></p>
+     <li>Installer uniquement les fichiers de configuration, indispensable si vous souhaitez construire NuTyX depuis rien:
+      <pre class="command"><kbd>bash install-houaphan -ic</kbd></pre></li>
+     <li>Le script <b>enter-chroot</b> est désormais obsolète, pour entrer dans une chroot, on utilise l'option <b>-ec</b>
+      <pre class="command"><kbd>bash install-houaphan -ec</kbd></pre></li>
+     <li>Affiche la version du script, la version détermine la branche sur laquelle l'installation de NuTyX se fera:
+      <pre class="command"><kbd>bash install-houaphan -v</kbd></pre></li>
+     <li>Une aide en ligne de commande
+      <pre class="command"><kbd>bash install-houaphan -h</kbd></pre></li>
+
+    <h3>Le site github et les différents projets</h3>
+     <p>Vous pouvez retrouver toutes les recettes, le code de l'installeur, le site, la documentation sur <a href="https://github.com/NuTyX">le site github</a>.</p>
+    <h3>La construction de NuTyX</h3>
+     <p>La méthode de construction se base désormais sur les sources disponible à l'adresse <a href="https://github.com/NuTyX/houaphan">https://github.com/NuTyX/houaphan</a>.</p>
+     <p>La construction de NuTyX suit donc les commits sur la branche current de houaphan</p>
+     <p>Pour garantir la disponibilitée des sources des paquets que constituent un système de base, ceux-ci sont désormais disponibles à l'adresse <a href="http://downloads.nutyx.org/current/sources">http://downloads.nutyx.org/current/sources</a>.</p>
+    <h3>Le renomage de certains paquets</h3>
+     <p>Avec le temps, nombreux paquets (surtout des librairies) propose plusieurs versions du même paquet installables ensembles, (qt, gtk, etc) il faut un moment être cohérent dans le nom de ces librairies.</p>
+    <h3>La version 32 bits</h3>
+     <p>Pour cette nouvelle version de NuTyX, la version 32 bits n'est proposée qu'en base, l'utilisateur qui le souhaite pourra compiler soi-même les paquets qu'il souhaite utiliser.</p>
   <p class="updated"><a href="old-news.html">Anciennes nouvelles</a></p>
   <hr>  
-   <p class="updated">Le 13-09-2015 21:18</p>
+   <p class="updated">Le 15-10-2015 20:04</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
