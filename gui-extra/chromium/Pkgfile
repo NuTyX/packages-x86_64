@@ -4,12 +4,14 @@
 # Depends on: atk nss ninja pciutils gperf yasm xorg-mesa libgnome-keyring elfutils subversion gtk2 dbus-glib nss alsa-lib xdg-utils bzip2 libevent libgcrypt dejavu-ttf opus snappy dbus desktop-file-utils hicolor-icon-theme flac libxml2 pulseaudio xorg-libxscrnsaver xorg-libxtst libexif
 
 name=chromium
-version=45.0.2454.101
+version=46.0.2490.71
 release=1
 
 source=(http://commondatastorage.googleapis.com/chromium-browser-official/$name-$version.tar.xz
-	demand-for-newer-POSIX-macro.patch
-        chromium.desktop chromium.default chromium.sh)
+        chromium-widevine.patch
+        chromium.desktop 
+        chromium.default 
+        chromium.sh)
 
 _google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
 _google_default_client_id=413772536636.apps.googleusercontent.com
@@ -19,7 +21,10 @@ build() {
 	export GYP_GENERATORS='ninja'
 
 	cd $name-$version
-	patch -Np1 -d third_party/boringssl/src < $SRC/demand-for-newer-POSIX-macro.patch
+
+        touch chrome/test/data/webui/i18n_process_css_test.html
+  
+        sed "s/@WIDEVINE_VERSION@/Pinkie Pie/" ../chromium-widevine.patch | patch -Np1
 
 	find third_party/icu -type f \! -regex '.*\.\(gyp\|gypi\|isolate\)' -delete
 
