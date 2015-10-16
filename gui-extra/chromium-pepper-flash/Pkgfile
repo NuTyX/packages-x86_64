@@ -1,0 +1,19 @@
+# Description : Google Chrome's Pepper Flash plugin for Chromium 
+# URL : http://www.google.com/chrome
+# Packager : pierre at nutyx dot com
+
+name=chromium-pepper-flash
+version=19.0.0.207
+_verbld=46.0.2490.71-1
+release=1
+
+[ "`uname -m`" == "i686"   ] && _ARCH=i386
+[ "`uname -m`" == "x86_64"   ] && _ARCH=x86_64
+
+source=(https://dl.google.com/linux/chrome/rpm/stable/${_ARCH}/google-chrome-stable-${_verbld}.${_ARCH}.rpm)
+
+build() {
+ install -d $PKG/usr/lib/PepperFlash
+ install -m644 $SRC/opt/google/chrome/PepperFlash/* $PKG/usr/lib/PepperFlash
+}
+
