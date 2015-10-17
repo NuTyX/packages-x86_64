@@ -79,21 +79,8 @@ passwd lfs</kbd></pre>
       <pre class="command"><kbd>chown -v lfs $LFS/{tools,sources}
 chmod -v a+wt $LFS/sources
 chown -v lfs $LFS</kbd></pre>
-     </ol>
-     Il est temps de passer à la 2ème partie et donc de se connecter en utilisateur lfs:
-     <pre class="command"><kbd>su - lfs</kbd></pre>
-     <h2>Partie LFS:</h2>
-     <p>
-     A partir de maintenant vous tapez toutes les commandes en compte lfs
-     </p>
-     <p>
-     Ajuster l'envitonnement de travail: le fichier ~/.bash_profile:
-     </p>
-     <pre class="command_user"><kbd><code>cat > ~/.bash_profile << "EOF"
-exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
-EOF</code></kbd></pre>
-     et le fichier ~/.bashrc:
-    <pre class="command_user"><kbd><code>cat > ~/.bashrc << "EOF"
+      <li>Ajuster l'envitonnement de travail: le fichier /home/lfs/.bash_profile:</li>
+      <pre class="command"><kbd>cat &gt; /home/lfs/.bash_profile &lt;&lt; "EOF"
 set +h
 umask 022
 LFS=/mnt/lfs
@@ -101,17 +88,26 @@ LC_ALL=POSIX
 LFS_TGT=$(uname -m)-lfs-linux-gnu
 PATH=$HOME/bin:/tools/bin:/bin:/usr/bin
 export LFS LC_ALL LFS_TGT PATH
-EOF</code></kbd></pre>
-    <p>
-    Et on charge le nouvel environnement:
-    </p>
-    <pre class="command_user"><kbd>source ~/.bash_profile</kbd></pre>
-    Et pour finir on récupère la dernière version des sources sous git:
-    <pre class="command_user"><kbd>git clone git://github.com/NuTyX/houaphan.git current
+EOF</kbd></pre>
+      
+     et le fichier /home/lfs/.bashrc:
+     <pre class="command"><kbd>echo "set +h
+umask 022
+LFS=$LFS
+LC_ALL=POSIX
+LFS_TGT=$(uname -m)-lfs-linux-gnu
+PATH=$HOME/bin:/tools/bin:/bin:/usr/bin
+export LFS LC_ALL LFS_TGT PATH " &gt; /home/lfs/.bashrc</kbd></pre>
+    </ol>
+     Il est temps de passer à la 2ème partie et donc de se connecter en utilisateur lfs:
+     <pre class="command"><kbd>su - lfs</kbd></pre>
+
+     <h2>Partie LFS:</h2>
+      <p>A partir de maintenant vous tapez toutes les commandes en compte lfs</p>
+      <p>On récupère la dernière version des sources sous git:</p>
+     <pre class="command_user"><kbd>git clone git://github.com/NuTyX/houaphan.git current
 git clone git://github.com/NuTyX/extra.git</kbd></pre>
-    <p>
-    Une fois terminée, un nouveau dossier a été créé: <b>current</b> On y entre et on lance le premier script:
-    </p>
+    <p>Une fois terminée, un nouveau dossier a été créé: <b>current</b> On y entre et on lance le premier script:</p>
     <pre class="command_user"><kbd>cd current
 scripts/runmebeforepass1</kbd></pre>
     <p>
@@ -120,7 +116,7 @@ scripts/runmebeforepass1</kbd></pre>
     <p>
     Si tout s'est bien passé, vous devriez avoir le message:
     </p>
-    <pre class="output">====> Successfull configured</pre>
+    <pre class="output">====&gt; Successfull configured</pre>
     <p>    
      Si vous lisez ce message, vous êtes prêt pour lancer la première passe pour la construction de votre future NuTyX,faites:
     </p>
@@ -134,14 +130,14 @@ mkdir: created directory '/mnt/lfs/var'
 mkdir: created directory '/mnt/lfs/var/lib'
 mkdir: created directory '/mnt/lfs/var/lib/pkg'
 mkdir: created directory '/mnt/lfs/var/lib/pkg/DB'
-=======> Building '/home/lfs/MakeNuTyX/CHROOT/cards/Pkgfile' succeeded.
+=======&gt; Building '/home/lfs/MakeNuTyX/CHROOT/cards/Pkgfile' succeeded.
 /home/lfs/current/chroot</pre>
     <p>
     Notez que vous pouvez suivre l'évolution et contrôler la bonne conduite de chaque paquet construit en consultant le dossier /home/lfs/logs/chroot/ . En effet à chaque paquet construit correspond un log.
     </p>
   <div class="pied_page"><a class="url" href="build-pass-2.html">On verra dans un prochain article comment entrer dans la chroot et y construire une NuTyX depuis scratch en utilisant une deuxième fois le même script </a></div>
   <hr>
-  <p class="updated">Dernière mise à jour 04-10-2015 22:39</p>
+  <p class="updated">Dernière mise à jour 17-10-2015 20:13</p>
 
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />

@@ -107,7 +107,7 @@ pass</kbd></pre>
        <pre class="output">tar -p -o -C /tmp/work/src -xf /sources/linux-3.19.3.tar.xz
 ...</pre>
       <li>On attend le message suivant:</li>
-      <pre class="output">=======> Building '/root/current/base/bash/bash...' succeeded.
+      <pre class="output">=======&gt; Building '/root/current/base/bash/bash...' succeeded.
 need to install bash manually</pre>
      <li>En français cela signifie qu'il faut installer le paquet <b>bash</b> à la main. Il faut donc le faire en dehors de la NuTyX. Il faut donc sortir:</li>
       <pre class="command"><kbd>exit</kbd></pre>
@@ -135,14 +135,14 @@ pass</kbd></pre>
 ....</pre>
      <li>La compilation se termine par le paquet <b>ca-certificates</b>:</li>
       <pre class="output">ADD: ca-certificates-20150725, 1282 files: 100%
-=======> Installing 'ca-certificates1418739487x86_64.cards.tar' succeeded.
-=======> compress ca-certificates1418739487x86_64.cards.tar</pre>
+=======&gt; Installing 'ca-certificates1418739487x86_64.cards.tar' succeeded.
+=======&gt; compress ca-certificates1418739487x86_64.cards.tar</pre>
     </ol>
     <h2>Explications relative à chaque action</h2>
     <ol>
       <li><div class="important"><img alt="[Important]" src="../graphics/caution.gif" />Il est indispensable d'effectuer toutes les opérations via le compte root.</div></li>
       <li>La variable LFS est utilisé tout au long de l'article, il est indispensable qu'elle soit correctement définie et surtout qu'elle soit identique tout au long des 2 passes. Une solution radicale consiste à la définir une fois pour toute dans le fichier .bash_profile du compte root et de la sourcer:</li>
-<pre class="command"><kbd>echo "export LFS=/mnt/lfs" >> /root/.bash_profile
+<pre class="command"><kbd>echo "export LFS=/mnt/lfs" &gt;&gt; /root/.bash_profile
 source  ~/.bash_profile</kbd></pre>
       <li>Vérification de la variable LFS. Si tout est ok, on change le propriétaire et le groupe du contenu du dossier $LFS</li>
       <li>On créer le dossier pour y placer les recettes ainsi qe le dossier logs qui recevra les resultats de la compilation de chaque recette. On crée également un lien pour que le script <b>pass</b> soit trouvé.</li>
@@ -173,7 +173,7 @@ source  ~/.bash_profile</kbd></pre>
     </ol>
   <div class="pied_page"><a class="url" href="build-post.html">Une fois la passe 2 terminée, vous pouvez passer à la post-installation et génération de l'iso</a></div>
   <hr>
-  <p class="updated"> Dernière mise à jour 05-10-2015 21:03</p>
+  <p class="updated"> Dernière mise à jour 17-10-2015 20:50</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

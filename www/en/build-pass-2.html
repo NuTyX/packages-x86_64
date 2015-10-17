@@ -49,11 +49,11 @@
 <pre class="command"><kbd>chown -R root:root $LFS</kbd></pre>
       <li>We create folders and links to put the recepts in place.</li>
 <pre class="command"><kbd>install -dv -m0750  $LFS/root
-ln -sv houaphan/scripts $LFS/root/bin</kbd></pre>
+ln -sv current/scripts $LFS/root/bin</kbd></pre>
       <li>We move the receipts to the right folder and go in this folder</li>
-<pre class="command"><kbd>mv /home/lfs/houaphan $LFS/root/
+<pre class="command"><kbd>mv /home/lfs/current $LFS/root/
 mv /home/lfs/extra $LFS/root/
-cd $LFS/root/houaphan/base/nutyx</kbd></pre>
+cd $LFS/root/current/base/nutyx</kbd></pre>
       <li>We compile the first package of NuTyX</li>
 <pre class="command"><kbd>/tools/bin/pkgmk -cf ../../../bin/pkgmk.conf.passes</kbd></pre>
       <li>We install the <b>nutyx</b> package in the NuTyX</li>
@@ -62,10 +62,10 @@ cd $LFS/root/houaphan/base/nutyx</kbd></pre>
       <li>We check if it's present</li>
 <pre class="command"><kbd>/tools/bin/pkginfo -r $LFS -i</kbd></pre>
 should return
-<pre class="output">nutyx 8.0.2015...
-nutyx.man 8.0.2015...</pre>
+<pre class="output">nutyx 8.0...
+nutyx.man 8.0...</pre>
       <li>We install all the configuration files in our new NuTyX</li>
-        <pre class="command"><kbd>bash $LFS/root/houaphan/scripts/install-houaphan -ic</kbd></pre>
+        <pre class="command"><kbd>bash $LFS/root/current/scripts/install-houaphan -ic</kbd></pre>
       <li>We mount all different folders</li>
 <pre class="command"><kbd>mount -v -B /dev $LFS/dev
 mount -vt devpts devpts $LFS/dev/pts
@@ -101,7 +101,7 @@ bash: tput: command not found
      <li>We redefine the PATH variable</li>
 <pre class="command"><kbd>export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin:/root/bin</kbd></pre>
      <li> We launch the compilation of the packages</li>
-<pre class="command"><kbd>cd /root/houaphan/base
+<pre class="command"><kbd>cd /root/current/base
 pass</kbd></pre>
 	return
 <pre class="output">tar -p -o -C /tmp/work/src -xf /sources/linux-3.19.3.tar.xz
@@ -111,7 +111,7 @@ pass</kbd></pre>
     <li>As it's says, the <b>bash</b> packages needs to be installed manually. So let's do it from outside the NuTyX. We got out first:</li>
     <pre class="command"><kbd>exit</kbd></pre>
     <li>Now we go to the right place and install the <b>bash</b> packages:</li>
-    <pre class="command"><kbd>cd $LFS/root/houaphan/base/bash
+    <pre class="command"><kbd>cd $LFS/root/current/base/bash
 for PACK in *.xz; do /tools/bin/pkgadd -r $LFS $PACK;done</kbd></pre>
      <li>We check if it has been added:</li>
      <pre class="command"><kbd>/tools/bin/pkginfo -r $LFS -i|grep bash</kbd></pre>
@@ -128,21 +128,21 @@ bash.de 4.3.33
            <li>We redefine AGAIN the PATH variable:</li>
 <pre class="command"><kbd>export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin:/root/bin</kbd></pre>
      <li> We launch AGAIN the compilation of the packages:</li>
-<pre class="command"><kbd>cd /root/houaphan/base
+<pre class="command"><kbd>cd /root/current/base
 pass</kbd></pre>
 <pre class="output">tar -p -o -C /tmp/work/src -xf /sources/bc-1.06.95.tar.bz2
 ....</pre>
     <li>The compilation ends with <b>ca-certificates</b> package:</li>
     <pre class="output">ADD: ca-certificates-20150725, 1282 files: 100%
-=======> Installing 'ca-certificates1418739487x86_64.cards.tar' succeeded.
-=======> compress ca-certificates1418739487x86_64.cards.tar</pre>
+=======&gt; Installing 'ca-certificates1418739487x86_64.cards.tar' succeeded.
+=======&gt; compress ca-certificates1418739487x86_64.cards.tar</pre>
  
     </ol>
     <h2>Explanation to each step</h2>
     <ol>
       <li><div class="important"><img alt="[Important]" src="../graphics/caution.gif" />Its very important that everything is done via the root account.</div></li>
       <li>The LFS variable is used all along the article, its important that it's correctly set and that it point always to the same folder. One way to solve this problem is to define ones for all in the .bash_profile file and to source it:</li>
-<pre class="command"><kbd>echo "export LFS=/mnt/lfs" >> /root/.bash_profile
+<pre class="command"><kbd>echo "export LFS=/mnt/lfs" &gt;&gt; /root/.bash_profile
 source  ~/.bash_profile</kbd></pre>
       <li>Checking the LFS variable. If OK we change the owner and group of the contents of $LFS</li>
       <li>We create the folder to put the receiptes in place and the log folder as well. We create also a link so that the script <b>pass</b> is found.</li>
@@ -175,7 +175,7 @@ source  ~/.bash_profile</kbd></pre>
   <div class="pied_page"><a class="url" href="build-post.html">One pass 2 is done, you can start the post-construction and generation of the iso</a></div>
 <p>
   <hr>
-  <p class="updated">Last updated on 2015-08-30 16:47</p>
+  <p class="updated">Last updated on 2015-10-17 20:50</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

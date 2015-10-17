@@ -31,7 +31,7 @@
   <h1>Post-construction and generation of the iso</h1>
    <p>All the packages of a base system are now available. We can finalise and produce an installable ISO of our NuTyX</p>
    <ol>
-    <li>We start to exit from the NuTyX houaphan</li>
+    <li>We start to exit from the NuTyX</li>
     <pre class="command"><kbd>exit</kbd></pre>
     <p>We check if the LFS variable is still set</p>
     <pre class="command"><kbd>echo $LFS</kbd></pre>
@@ -43,42 +43,42 @@
 No error should be print:
     <pre class="output">root [ / ]# </pre>
     <li>We begin by adjusting the cards.conf file. We used from now on only the recept coming from the git project. You need to adapt the language if necessary.</li>
-    <pre class="command"><kbd>cat > /etc/cards.conf << "EOF"
-dir /root/extra/graphic-extra
-dir /root/houaphan/graphic
-dir /root/extra/console-extra
-dir /root/houaphan/console
+    <pre class="command"><kbd>cat &gt; /etc/cards.conf &lt;&lt; "EOF"
+dir /root/extra/gui-extra
+dir /root/current/gui
+dir /root/extra/cli-extra
+dir /root/current/console
 dir /root/extra/base-extra
-dir /root/houaphan/base
+dir /root/current/base
 logdir /var/log/pkgbuild
-locale fr
-base /root/houaphan/base
-base /root/houaphan/base-extra
+locale de
+base /root/current/base
+base /root/extra/base-extra
 EOF</kbd></pre>
     <li>We still need to compile the rest of a Base NuTyX. All the packages included in the <b>base-extra</b> collection will now be compiled:</li>
      <pre class="command"><kbd>cd /root/extra/base-extra</kbd></pre>
     <li>And we launch the <b>base-extra</b> collection compilation in the right order</li>
      <pre class="command"><kbd>pass</kbd></pre>
-     <pre class="output">=======> PKGMK_INSTALL: install
- =======> PKGMK_WORK_DIR: /root/extra/base-extra/wget/work
- =======> PKGMK_SOURCE_DIR: /root/extra/base-extra/wget
+     <pre class="output">=======&gt; PKGMK_INSTALL: install
+=======&gt; PKGMK_WORK_DIR: /root/extra/base-extra/wget/work
+=======&gt; PKGMK_SOURCE_DIR: /root/extra/base-extra/wget
  ...</pre>
     <li>The compilation of the <b>base-extra</b> collection must end with the <b>sysvinit</b> package.</li>
        <pre class="output">ADD: sysvinit2.88dsf, 16 files: 100%
- =======> Installing 'sysvinit1439823127x86_64.cards.tar' succeeded.
- =======> compress sysvinit1439823127x86_64.cards.tar</pre>
+=======&gt; Installing 'sysvinit1439823127x86_64.cards.tar' succeeded.
+=======&gt; compress sysvinit1439823127x86_64.cards.tar</pre>
     <li>We add all the necessary files for a working iso</li>
-    <pre class="command"><kbd>cp -av /root/houaphan/iso /ISO</kbd></pre>
-    <pre class="output">'/root/houaphan/iso' -> '/ISO'
-'/root/houaphan/iso/isolinux' -> '/ISO/isolinux'
-'/root/houaphan/iso/isolinux/boot.cat' -> '/ISO/isolinux/boot.cat'
-'/root/houaphan/iso/isolinux/boot.msg' -> '/ISO/isolinux/boot.msg'
-'/root/houaphan/iso/isolinux/isolinux.bin' -> '/ISO/isolinux/isolinux.bin'
-'/root/houaphan/iso/isolinux/isolinux.cfg' -> '/ISO/isolinux/isolinux.cfg'</pre>
+    <pre class="command"><kbd>cp -av /root/current/iso /ISO</kbd></pre>
+    <pre class="output">'/root/current/iso' -&gt; '/ISO'
+'/root/current/iso/isolinux' -&gt; '/ISO/isolinux'
+'/root/current/iso/isolinux/boot.cat' -&gt; '/ISO/isolinux/boot.cat'
+'/root/current/iso/isolinux/boot.msg' -&gt; '/ISO/isolinux/boot.msg'
+'/root/current/iso/isolinux/isolinux.bin' -&gt; '/ISO/isolinux/isolinux.bin'
+'/root/current/iso/isolinux/isolinux.cfg' -&gt; '/ISO/isolinux/isolinux.cfg'</pre>
     <pre class="command"><kbd>cp -v /boot/kernel-* /ISO/isolinux/kernel</kbd></pre>
-    <pre class="output">'/boot/kernel-3.19.3' -> '/ISO/isolinux/kernel'</pre>
+    <pre class="output">'/boot/kernel-3.19.3' -&gt; '/ISO/isolinux/kernel'</pre>
     <pre class="command"><kbd>cp -v /boot/initrd-* /ISO/isolinux/initrd</kbd></pre>
-    <pre class="output">'/boot/initrd-3.19.3' -> '/ISO/isolinux/initrd'</pre>
+    <pre class="output">'/boot/initrd-3.19.3' -&gt; '/ISO/isolinux/initrd'</pre>
     <div class="note"><img alt="[Note]" src="../graphics/note.gif" />Consult options at the botton of the page before going further if you want to customize your ISO by adding some packages or if you want to get rid of the binaries archives and build logs to reduce the size of your ISO.</div>
     <li>We produce the squashfs files used by the iso and erase the existing one if necessary as the mksquashfs command is not able to overight existing file.</li>
     <pre class="command"><kbd>mkdir -p /ISO/isolinux/boot/
@@ -88,14 +88,14 @@ do
   [ -f ISO/isolinux/boot/$dir.squashfs ] && rm ISO/isolinux/boot/$dir.squashfs
   mksquashfs $dir ISO/isolinux/boot/$dir.squashfs
 done</kbd></pre>
-    <li>We can now go out of NuTyX houaphan and produce the iso</li>
+    <li>We can now go out of NuTyX and produce the iso</li>
     <pre class="command"><kbd>exit</kbd></pre>
     <li>We can finally generate our ISO where the version is the date of today.</li>
     <div class="important"><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" />Before you start the next command, make shure the <b>LFS</b> variable is still set and the commands <b>mkisofs</b> and <b>isohybrid</b> are available on your host linux distribution. They are belonging to <b>cdrkit</b> and <b>syslinux</b> packages.</div>
-    <pre class="command"><kbd>sh $LFS/root/houaphan/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
+    <pre class="command"><kbd>sh $LFS/root/current/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
     <pre class="output">Warning: creating filesystem that does not conform to ISO-9660.
 I: -input-charset not specified, using utf-8 (detected in locale settings)
-Size of boot image is 4 sectors -> No emulation
+Size of boot image is 4 sectors -&gt; No emulation
   3.82% done, estimate finish Fri Jan  9 21:46:48 2015
   7.63% done, estimate finish Fri Jan  9 21:46:48 2015
  11.44% done, estimate finish Fri Jan  9 21:46:48 2015
@@ -142,26 +142,11 @@ dev   ISO   mnt    proc                                   sbin  sys      tools</
    <p>Congratulations, you have now a new base system NuTyX in your hands ready to be installed on all yours machines.</p>
   <h2>Options</h2>
    <ol>
-    <li>If you want to produce an iso containing your favorites applications, you can then compile them before creating the iso. In the following exemple, we compile the package <b>xorg</b>
-    <pre class="command"><kbd>ports -u
-cards depcreate xorg</kbd></pre>
-    <p>The compilation start:</p>
-    <pre class="output">=======> PKGMK_INSTALL: install
-=======> PKGMK_WORK_DIR: /root/houaphan/console/elfutils/work
-=======> PKGMK_SOURCE_DIR: /root/houaphan/console/elfutils
-=======> PKGMK_KEEP_SOURCES: no
-=======> PKGMK_CLEAN: yes
-=======> WARNING: FOOTPRINT AND MD5SUM IGNORED
-=======> MD5SUM file will be generated
-=======> PKGMK_COMPRESS_PACKAGE: no
-=======> name: elfutils
-=======> version: 0.161</pre>
-     <p>One the compilation finish, you can either choose the option below or continue the generation of the squashfs files at point 5</p>
     <li>If you want to reduce the size of the final ISO, you can remove the binaries archives and the logs, they won't be needed. If you want to keep the archives, give the following command</li>
      <pre class="command"><kbd>rsync -a /root/houaphan/base /base</kbd></pre>
      <p>no error should be printout</p>
      <p>We can now delete the binaries from the git</p>
-     <pre class="command"><kbd>find /root/houaphan/base/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
+     <pre class="command"><kbd>find /root/current/base/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
      <p>no error should be printout</p>
      <p>We erase the logs</p>
      <pre class="command"><kbd>mv /root/logs /logs</kbd></pre>
@@ -171,7 +156,7 @@ cards depcreate xorg</kbd></pre>
 pkgrm kernel.devel</kbd></pre>
   </ol>
   <hr>
-  <p class="updated">Last updated on 2015-08-30 17:12</p>
+  <p class="updated">Last updated on 2015-10-17 21:03</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
