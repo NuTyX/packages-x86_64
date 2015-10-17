@@ -50,12 +50,12 @@ cat >> $TMP/index.html << "EOF"
         <td>
          <nav>
           <ul>
-            <li><a href="http://www.nutyx.org/fr/">Accueil</a></li>
-            <li><a href="http://www.nutyx.org/fr/news.html">Nouvelles</a></li>
-            <li><a href="http://www.nutyx.org/fr/information.html">Information</a></li>
-            <li><a href="http://www.nutyx.org/fr/documentation.html">Documentation</a></li>
-            <li><a href="http://www.nutyx.org/fr/installation.html">Installation</a></li>
-            <li><a href="http://www.nutyx.org/fr/faq.html">FAQ</a></li>
+            <li><a href=".">Accueil</a></li>
+            <li><a href="news.html">Nouvelles</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="faq.html">FAQ</a></li>
             <li><a href="http://forum.nutyx.org/index.php?action=recent">Forum</a></li>
             <li><a href="http://github.com/NuTyX">Code</a></li>
           </ul>
@@ -109,7 +109,7 @@ do
         <tr class=\"$CLASS\">
          <td width="5%">$collection</td>
          <td width="10%"><a href=\"${url}\">${name}</a></td>
-         <td width="5%"><a href=\"${collection}/${name}/Pkgfile\">$version-$release</a></td>
+         <td width="5%"><a href=\"http://downloads.nutyx.org/${NUTYX_NAME}/${ARCH_NAME}/${collection}/${name}/Pkgfile\">$version-$release</a></td>
          <td width="70%">$description</td>
          <td width="10%">$build</td>
         </tr>" >> $TMP/index.html
