@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
      <link rel="shortcut icon" href="../favicon.ico">
      <link rel="stylesheet" href="../css/nutyx.css" />
-     <title>NuTyX - Saravane manual</title>
+     <title>NuTyX - Version 8.0 manual</title>
  </head>
  <body>
     <table>
@@ -22,20 +22,20 @@
             <li><a href="faq.html">FAQ</a></li>
             <li><a href="packages.html">Packages</a></li>
             <li><a href="http://forums.nutyx.org/index.php?board=16.0">Forums</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
         </ul>
        </nav>
       </td>
      </tr>
     </table>
  <hr>
-  <h1>Saravane NuTyX manual</h1>
-    <div>This page of manual give you the chance to know all about your GNU/Linux operating system NuTyX. Please refer to the mentionned files to obtain more information.
- </div>
+  <h1>NuTyX version 8.0 manual</h1>
+    <div>This page of manual give you the chance to know all about your GNU/Linux operating system NuTyX. Please refer to the mentionned files to obtain more information.</div>
   <ol>
-    <li><h3>CONFIGURATION</h3></li>
+   <li><h3>CONFIGURATION</h3></li>
     <div>The configuration of NuTyX include: the keyboard, the network, mounting of partitions or extra disks, add a swap partition or swap file, create a new user, adjust the clock, the name of the machine, adjust the language used, the region you are located, the booting process, the manual loading of the kernel modules, adjust the file taking care of the boot process.</div>
-     <ol>
-      <li><h4>The keyboard</h4></li>
+   <ol>
+    <li><h4>The keyboard</h4></li>
          <div>The file <b>/etc/sysconfig/console</b> define the configuration of the keyboard in console mode means no graphical mode. Here is an exemple of configuration of the console:</div>
          <pre class="command"><kbd>cat &gt;  /etc/sysconfig/console &lt;&lt; "EOF"
 FONT="LatGrkCyr-8x16"
@@ -78,12 +78,11 @@ PRINTIP="no"
 # Put PRINTALL="yes" so that the script shows all details
 # of the connection
 PRINTALL="no"
-EOF
-</kbd></pre>
-
-         <li><b>Define a wireless network and  activate the wpa key</b></li></div>
-      <div>If your machine is supportinf the wifi, its necessary to configure it. To know the name of the network card, uses the command in root: <pre class="command"><kbd>iwconfig</kbd></pre> If the result show something like:
-      <pre class="output">eth0       no wireless extensions.
+EOF</kbd></pre>
+   <li><b>Define a wireless network and  activate the wpa key</b></li></div>
+   <div>If your machine is supportinf the wifi, its necessary to configure it. To know the name of the network card, uses the command in root: <pre class="command"><kbd>iwconfig</kbd></pre> If the result show something like:
+    </div>
+<pre class="output">eth0       no wireless extensions.
 
 eth1       IEEE 802.11abg 
            Mode:Managed  Frequency:2.417 GHz  Access Point: C4:3D:C7:9F:D0:CF
@@ -94,8 +93,7 @@ eth1       IEEE 802.11abg
      <div>In this exemple above, the eth1 card support the wifi, we just have to provide  the configuration file which will be used by the network connection. <b>ATTENTION</b> it is important to respect the name of the configuration file so that the script can find it. In this exemple, the name of the card will be <b>eth1</b>, the name of the wifi network will be named <b>casabianca</b> and the access key will be <b>Gg6!-@1234</b>. Based on thoses informations, we produces the configuration file like this:</div>
      <pre class="command"><kbd>wpa_passphrase "<b>casabianca</b>" "<b>Gg6!-@1234</b>" &gt; /etc/wpa_supplicant.conf.eth1</kbd></pre>
      <div>Then we add the configuration file as explain in the manual configuration. In this exemple, we have to create the file <b>/etc/sysconfig/ifconfig.eth1</b>. Once, this is done, you can restart the network by restarting the service:
-<pre class="command"><kbd>/etc/rc.d/init.d/network restart</kbd></pre> Make shure to adjust the definition of the variable <b>MANAGER</b> define in the file <b>/etc/sysconfig/network</b>. The management of the network service can be done through the command line. The value of the variable is then <b>cli</b>. or if via wicd, put <b>wicd</b> as a value, if via networkmanager means you install the gnome graphical interface, put then <b>networkmanager</b>.
-   </div>
+<pre class="command"><kbd>/etc/rc.d/init.d/network restart</kbd></pre> Make shure to adjust the definition of the variable <b>MANAGER</b> define in the file <b>/etc/sysconfig/network</b>. The management of the network service can be done through the command line. The value of the variable is then <b>cli</b>. or if via wicd, put <b>wicd</b> as a value, if via networkmanager means you install the gnome graphical interface, put then <b>networkmanager</b>.</div>
    </ul>
    <li><h4>Add a partition, a disk or a NFS share folder</h4></li>
     <div class="note"><img alt="[NOTE IMPORTANTE]" src="../graphics/note.gif"/>If you have allready define the user(s) on this machine and wish to mount the <b>/home</b> folder (which contains then the personnal of the users) on a separate partition/disk/NFS dossier folder, it's important to backup the content of this folder before, they are a lot of methodes, whatever the methode you used make shure you are login as root and the X server is stopped</div>
@@ -170,7 +168,7 @@ swapon /SWAP</kbd></pre>
 <pre class="command"><kbd>sudo ln -sf /usr/share/zoneinfo/Europe/Rome /etc/localtime</kbd></pre> will define Rome as city of your region.</div>
       <li><h4>The boot of the machine</h4></li>
        <div>If you use an ISO for the installation of NuTyX and you choose to install GRUB to be able to boot the computer, the configuration file is locate in <b>/boot/grub/grub.cfg</b>. The name of the kernel file of NuTyX is call <b>kernel</b>, and the name of the initrd is <b>initrd</b>. Both files are by default locates in the folder <b>/boot</b>. In the following exemple: NuTyX is installed on the first partition of the second harddisk, grub is installed on the first disk. The configuration file will be:</div>
-       <pre class="output">menuentry "NuTyX sekong" {
+       <pre class="output">menuentry "NuTyX 8.0" {
   set root=(hd1,1)
   linux /boot/kernel root=/dev/sdb1 ro quiet 3
   initrd /boot/initrd
@@ -186,7 +184,7 @@ swapon /SWAP</kbd></pre>
        <pre class="command"><kbd>sudo grub-install /dev/sdb</kbd></pre>
        <div>Ajust according your settings</div>
       <li><h4>Manual loading of the kernel modules</h4></li>
-       <div>A module is a piece of code used by the kernel which can be integreted while the machine is running The command:
+       <div>A module is a piece of code used by the kernel which can be integreted while the machine is running. The command:
 <pre class="command"><kbd>lsmod</kbd></pre> list the loaded modules by  the kernel. The command:
 <pre class="command"><kbd>modprobe-v module</kbd></pre> load manually in memory the charge manuellement the <b>module</b>. The command:
 <pre class="command"><kbd>rmmod -v module</kbd></pre> unload the <b>module</b>.</div>
@@ -196,6 +194,7 @@ swapon /SWAP</kbd></pre>
        <pre class="output">blacklist radeon</pre>
       <li><h4>Modify/Create folders/files at booting</h4></li></ol>
       <div>The file <b>/etc/sysconfig/createfiles</b> specify files / folders to be created or modify when the machine starts.</div>
+     </ol>
     <li><h3>IN CASE OF PROBLEMS</h3></li>
      <div>They are a lot of log files which can gives very nice informations. The boot information is in the files <b>/var/log/boot.log</b> and <b>/var/log/sys.log</b>. The information about the last start of the X server is in the file <b>/var/log/Xorg.0.log</b>. Most of the services have they own logs.If you have a ssh connection problem, some info will be found in the file <b>/var/log/auth.log</b> of the ssh server. To know the history of the installed binary packages, check the file <b>/var/log/cards.log</b>. 
   </div>
@@ -211,21 +210,21 @@ synchronisation, to check the available updates.
 <pre class="command"><kbd>check</kbd></pre>
 or
 <pre class="command"><kbd>sudo cards sync -i</kbd></pre>
-Install the X package 
-<pre class="command"><kbd>get paquetX</kbd></pre>or
-<pre class="command"><kbd>sudo cards install paquetX</kbd></pre>
+Install the X..Y package(s) 
+<pre class="command"><kbd>get packageX .. packageY</kbd></pre>or
+<pre class="command"><kbd>sudo cards install packageX .. packageY</kbd></pre>
 Uninstall the X package
 <pre class="command"><kbd>del paquetX</kbd></pre>
 or
 <pre class="command"><kbd>sudo cards remove paquetX</kbd></pre>
-Updating of the X package. Note that all the dependencies will also be updated.
+Updating of the X package. Note that all the dependencies will NOT be updated.
 <pre class="command"><kbd>up paquetX</kbd></pre>
 or
 <pre class="command"><kbd>sudo cards install -u paquetX</kbd></pre>
 Searching the string in the name or description of the availables packages.
-<pre class="command"><kbd>search <string></kbd></pre>
+<pre class="command"><kbd>search &lt;string&gt;</kbd></pre>
 or
-<pre class="command"><kbd>sudo cards search <string></kbd></pre>
+<pre class="command"><kbd>sudo cards search &lt;string&gt;</kbd></pre>
 Printout the list of out of date packages. It's also shows the packages locked and then which should not be upgraded.
 <pre class="command"><kbd>sudo cards diff -i</kbd></pre>
 
@@ -257,7 +256,7 @@ Find out the owner of a filename
  <div>The management of the recepts of packages as well the dependencies of thoses is done via the command <b>cards</b> as well.
  </div>
    <ol><li><h4>cards configuration</h4></li>
-         <div>The file <b>/etc/cards.conf</b> define rules of the command <b>cards</b>. The line <b>dir /var/lib/pkg/saravane/...</b> is very important, the order define which directory will be treated first. Even if the recept is available in two directories. The first one will be the one.</div>
+         <div>The file <b>/etc/cards.conf</b> define rules of the command <b>cards</b>. The line <b>dir /var/lib/pkg/houaphan/...</b> is very important, the order define which directory will be treated first. Even if the recept is available in two directories. The first one will be the one.</div>
        <li><h4>Commands to knows</h4></li></ol>
 List dependencies of a package and see if they are installed.
 <pre class="command"><kbd>cards deptree package</kbd></pre>
@@ -266,13 +265,13 @@ Check if package is available
 Search a package with the description
 <pre class="command"><kbd>cards info -p package</kbd></pre>
 Build and install a port (need the administratives rights of the account root)
-<pre class="command"><kbd>cd /var/lib/pkg/saravane/&lt;category&gt;/paquetX && pkgmk -d -i</kbd></pre>
+<pre class="command"><kbd>cd /var/lib/pkg/houaphan/&lt;collection&gt;/paquetX && pkgmk -d -i</kbd></pre>
 Download, build and install the package in one single command
 <pre class="command"><kbd>sudo cards create -n paquetX</kbd></pre>
 Download, build and install the package. It's dependencies MUST be available for installation. They will not be compiled
 
    <li><h3>SERVICES</h3></li>
-   <div>The various services are available under the name &lt;nameoftheservice&gt;. The command <b>cards search service</b> will printout the list of all the packages of availables services. Ones installed, they are available (cups, gdm, sshd, ...) in the directory <b>/etc/rc.d/init.d</b></div>
+   <div>The various services are available under the name &lt;nameoftheservice&gt;.service. The command <b>cards search service</b> will printout the list of all the packages of availables services. Ones installed, they are available (cups, gdm, sshd, ...) in the directory <b>/etc/rc.d/init.d</b></div>
    <div>
 Starting of the Xservice
     <pre class="command"><kbd>/etc/rc.d/init.d/Xservice start</kbd></pre>
@@ -283,10 +282,11 @@ Restarting of the service, this option is not always available.
    </div>
 
    <li><h3>ONLINE HELP</h3></li>
-    <div><b>IRC</b> join the chat room <b>#nutyx</b> on the irc.freenode.net (utf-8) network</div>
+    <div><b>IRC</b> join the chat room <b>#nutyx</b> on the irc.freenode.net (utf-8) network (mostly after 8PM Paris Local Time)</div>
     <div><b>WEB site</b> http://www.nutyx.org</div>
    <li><h3>FILES</h3></li>
-    <pre class="output"><b>/etc/cards.conf,
+    <pre class="output"><b>/var/lib/pkg/nutyx-version,
+/etc/cards.conf,
 /etc/pkgadd.conf,
 /etc/pkgmk.conf,
 /etc/sysconfig/console,
@@ -301,8 +301,8 @@ Restarting of the service, this option is not always available.
     <div>Thierry Nuttens &lt;tnut ~AT~ nutyx dot org&gt; </div>
    <li><h3>SEE ALSO</h3></li>
 man pages of
-    <pre class="output">pkgmk(8) pkgadd(8),
-pkgrm(8), pkginfo(8), modprobe(8), modprobe.conf(5),
+    <pre class="output">nutyx(8), cards(8), pkgmk(8) pkgadd(8),
+cards.conf(5), pkgmk.conf(5), pkgrm(8), pkginfo(8), modprobe(8), modprobe.conf(5),
 useradd(8), userdel(8)</pre>
    <li><h3>COPYRIGHT</h3></li></ol>
     <pre class="output">
@@ -311,7 +311,7 @@ Copyright (C) 2013 - 2015 Thierry Nuttens
 This free document is publish under the free license WTFPL - Do What The Fuck You Want To Public License.
 ( http://www.wtfpl.net/ ) </pre>
   <hr>
-  <p class="updated">Last updated 2015-02-21 21:53</p>
+  <p class="updated">Last updated 2015-10-17 18:31</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

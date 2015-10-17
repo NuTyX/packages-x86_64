@@ -37,7 +37,7 @@
    <ol>
     <li><h4>Le Clavier</h4></li>
      <div>Le fichier <b>/etc/sysconfig/console</b> défini la configuration du clavier en mode console cad non graphique. Un exemple de configuration de la console:</div>
-     <pre class="command"><kbd>cat >  /etc/sysconfig/console << "EOF"
+     <pre class="command"><kbd>cat &gt;  /etc/sysconfig/console &lt;&lt; "EOF"
 FONT="LatGrkCyr-8x16"
 UNICODE="1"
 LOGLEVEL=1
@@ -51,7 +51,7 @@ KEYMAP=fr_CH-latin1.map
        <div>Le variable <b>MANAGER</b> se trouvant dans le fichier <b>/etc/sysconfig/network</b> n'est pas définie. Le script s'occupant du réseau s'adaptera en fonction de l'application installée. Si <b>wicd</b> est trouvé, le service wicd sera lancé, si <b>networkmanager</b> est trouvé, le service networkmanager sera lancé. Si les 2 applications sont installées, c'est le service networkmanager qui sera lancé. Si aucune des 2 n'est trouvée, ce sera le script en ligne de commande qui sera lancé. Si vous souhaitez choisir votre propre mode de configuration, suivez les instructions ci-dessous.</div>
       <li><b>Configuration manuelle:</b></li>
        <div>Chaque connection réseau est définie dans un fichier se terminant par le nom de la connection. Le nom d'une carte réseau peut s'appeller soit eth0, eth1, etc ou wlan0, wlan1, etc. Pour connaître le nom des cartes réseaux reconnues sur la machine, vérifiez le contenu du dossier <b>/sys/class/net</b>. Utilisez la commande <b>ls /sys/class/net</b>. Notez que wlan0, wlan1, etc représentent dans la plupart des cas la connection wifi. La carte <b>lo</b> ne doit pas être configurée. Exemple: le fichier <b>/etc/sysconfig/ifconfig.eth0</b> défini la configuration de la connection de <b>eth0</b>. Ce premier exemple défini la carte eth0 en adresse statique, le contenu de <b>/etc/sysconfig/ifconfig.eth0</b> sera:</div>
-       <pre class="command"><kbd>cat > /etc/sysconfig/ifconfig.eth0 << "EOF"
+       <pre class="command"><kbd>cat &gt; /etc/sysconfig/ifconfig.eth0 &lt;&lt; "EOF"
 ONBOOT=yes
 SERVICE=ipv4-static
 IP=192.168.1.10
@@ -60,7 +60,7 @@ PREFIX=255.255.255.0
 BROADCAST=192.168.1.255
 EOF</kbd></pre>
        <div>Dans le cas d'utilisation d'une adresse statique, il est necessaire de spécifier la (les) adtresse(s) IP du (des) serveurs de noms de domaine (DNS). Par exemple, si vous souhaitez utiliser les serveurs de google. Mettez ceci dans le fichier <b>/etc/resolv.conf</b>:</div>
-       <pre class="command"><kbd>cat > /etc/resolv.conf << "EOF"
+       <pre class="command"><kbd>cat &gt; /etc/resolv.conf &lt;&lt; "EOF"
 nameserver 8.8.8.8
 nameserver 8.8.4.4
 EOF
@@ -79,7 +79,7 @@ PRINTIP="no"
 PRINTALL="no"
 EOF</kbd></pre>
    <li><b>Définir un réseau sans fils et activation de la clé wpa</b></li>
-   <div>Si votre machine supporte le réseau sans fils, il est necessaire de le configurer. Pour connaître le nom de la carte reseau, utilisez la commande en root <b>iwconfig</b>. Si le resultat de la commande affiche ce genre d'information:
+   <div>Si votre machine supporte le réseau sans fils, il est necessaire de le configurer. Pour connaître le nom de la carte reseau, utilisez la commande en root: <pre class="command"><kbd>iwconfig</kbd></pre> Si le resultat de la commande affiche ce genre d'information:
    </div>
 <pre class="command"><kbd>iwconfig</kbd></pre>
 peut retourner:
@@ -134,7 +134,7 @@ qui retournera quelque chose comme ceci:
 tar xf /root/users.tar</kbd></pre>
      <div>Vous pouvez repasser en mode graphique et vous connectez en non root</div>
     <li><h4>Ajout d'une partition ou fichier d'échange</h4></li>
-     <div>La commange <b>fdisk</b> permet de modifier la répartition de votre(vos) disque(s). Si vous avez moins de 1 GigaOctets de RAM et que vous êtes en 32 bits (ou moins de 2 GigaOctets en 64 bits), il est vivement recommandé de créer une partition d'échange. Si tout le disque est occupé, il est encore possible de créer un fichier d'échange et de le monter automatiquement à l'amorçage de la machine. On commence par créer un fichier d'une taille suffisante (ici +/- 500 MegaOctets):</div>
+     <div>La commande <b>fdisk</b> permet de modifier la répartition de votre(vos) disque(s). Si vous avez moins de 1 GigaOctets de RAM et que vous êtes en 32 bits (ou moins de 2 GigaOctets en 64 bits), il est vivement recommandé de créer une partition d'échange. Si tout le disque est occupé, il est encore possible de créer un fichier d'échange et de le monter automatiquement à l'amorçage de la machine. On commence par créer un fichier d'une taille suffisante (ici +/- 500 MegaOctets):</div>
      <pre class="command"><kbd>dd if=/dev/zero of=/SWAP bs=1024 count=500000</kbd></pre>
      <div>Un fichier <b>SWAP</b> de 512Moctets est créé à la racine. On va le formater et le rendre actif:</div>
 <pre class="command"><kbd>mkswap /SWAP
@@ -166,7 +166,7 @@ swapon /SWAP</kbd></pre>
      <pre class="command"><kbd>sudo ln -sf /usr/share/zoneinfo/Europe/Rome /etc/localtime</kbd></pre> défini Rome comme ville de votre région.</div>
    <li><h4>L'amorçage de la machine</h4></li>
     <div>Si vous avez utilisez une iso pour l'installation de NuTyX et que vous avez choisi d'installer l'amorçage de la machine, le fichier de configuration de l'amorçage se trouve dans <b>/boot/grub/grub.cfg</b>. Le nom du fichier du kernel de NuTyX s'appelle <b>kernel</b>, et le nom de l'initrd s'appelle <b>initrd</b>. Les deux  fichiers se trouvent par défaut dans le dossier <b>/boot</b>. Dans l'exemple qui suit: NuTyX est installée sur la première partition du deuxième disque, grub est installé sur le premier disque. Le fichier de configurations sera:</div>
-    <pre class="output">menuentry "NuTyX sekong" {
+    <pre class="output">menuentry "NuTyX 8.0" {
   set root=(hd1,1)
   linux /boot/kernel root=/dev/sdb1 ro quiet 3
   initrd /boot/initrd
@@ -183,7 +183,11 @@ lequel la partition de NuTyX sekong se trouve, dans notre exemple ci-dessus, on 
     <pre class="command"><kbd>sudo grub-install /dev/sdb</kbd></pre>
     <div>Ajustez en fonction de votre partition.</div>
    <li><h4>Chargement manuel des modules du kernel</h4></li>
-    <div>Un module est une partie du noyau qui peut être intégrée pendant le fonctionnement de la machine. La commande <b>lsmod</b> liste les différents modules chargés par le noyau. La commande <b>modprobe-v module</b> charge manuellement en mémoire le <b>module</b>. La commande <b>rmmod -v module</b> décharge le <b>module</b>.</div>
+    <div>Un module est une partie du noyau qui peut être intégrée pendant le fonctionnement de la machine. La commande:
+<pre class="command"><kbd>lsmod</kbd></pre> liste les différents modules chargés par le noyau. La commande:
+<pre class="command"><kbd>modprobe-v module</kbd></pre> charge manuellement en mémoire le <b>module</b>. La commande:
+<pre class="command"><kbd>rmmod -v module</kbd></pre> décharge le <b>module</b>.</div>
+
     <div><b>Déactiver le chargement (blacklister) d'un module</b></div>
     <div>Le dossier <b>/etc/modprobe.conf</b> contient tous les fichiers définissant les modules à "blacklister". Exemple de syntaxe de fichier, le fichier <b>/etc/modprobe.conf/ati.conf</b> contient: </div>
     <pre class="output">blacklist radeon</pre>
@@ -203,19 +207,19 @@ synchronisation, voir les mises à jour disponibles
      <pre class="command"><kbd>check</kbd></pre>
 ou
      <pre class="command"><kbd>sudo cards sync -i</kbd></pre>
-Installe le paquetX 
-     <pre class="command"><kbd>get paquetX</kbd></pre>ou
+Installe le(s) paquetX.. paquetY 
+     <pre class="command"><kbd>get paquetX paquetY</kbd></pre>ou
      <pre class="command"><kbd>sudo cards install paquetX</kbd></pre>
 Désinstalle le paquetX
      <pre class="command"><kbd>del paquetX</kbd></pre>
 ou
      <pre class="command"><kbd>sudo cards remove paquetX</kbd></pre>
-Mise à jour du paquetX. Notez que toutes les dépendances du paquetX seront également mise à jour.
+Mise à jour du paquetX. Notez que les dépendances du paquetX ne seront PAS mise à jour.
      <pre class="command"><kbd>up paquetX</kbd></pre>
 ou
      <pre class="command"><kbd>sudo cards install -u paquetX</kbd></pre>
 Recherche le mots &lt;chaîne&gt; dans le nom et la description des paquets.
-     <pre class="command"><kbd>search <chaîne></kbd></pre>
+     <pre class="command"><kbd>search &lt;chaîne&gt;</kbd></pre>
 ou
      <pre class="command"><kbd>sudo cards search <chaîne></kbd></pre>
 Affiche la liste des paquets pouvant être mis à jour. On trouve aussi dans cette liste les paquets verrouillé ne devant pas être mis à jour.
@@ -291,7 +295,7 @@ Arrêt du serviceX
 Redémarrage du serviceC cette option n'est pas toujours disponible.
       <pre class="command"><kbd>/etc/rc.d/init.d/serviceX restart</kbd></pre>
      <li><h3>AIDE EN LIGNE</h3></li>
-      <div><b>IRC</b> rejoindre le canal <b>#nutyx</b> sur le réseau irc.freenode.net (utf-8)</div>
+      <div><b>IRC</b> rejoindre le canal <b>#nutyx</b> sur le réseau irc.freenode.net (utf-8) (principalement après 20H heure locale de Paris</div>
       <div><b>Site des utilisateurs</b> http://www.nutyx.org</div>
      <li><h3>FICHIERS</h3></li>
       <pre class="output"><b>/var/lib/pkg/nutyx-version,
@@ -310,8 +314,8 @@ etc/cards.conf,
       <div>Thierry Nuttens &lt;tnut ~AT~ nutyx.org&gt; et Pierre Bouchet &lt;pierre ~AT~ nutyx.org&gt;</div>
      <li><h3>VOIR AUSSI</h3></li>
 les pages man de
-      <pre class="output">pkgmk(8) pkgadd(8),
-pkgrm(8), pkginfo(8), modprobe(8), modprobe.conf(5),
+      <pre class="output">nutyx(8), cards(8), pkgmk(8) pkgadd(8),
+cards.conf(5), pkgmk.conf(5), pkgrm(8), pkginfo(8), modprobe(8), modprobe.conf(5),
 useradd(8), userdel(8)</pre>
      <li><h3>COPYRIGHT</h3></li>
       <pre class="output">
@@ -321,7 +325,7 @@ Ceci est un document libre publié sous licence libre WTFPL - Do What The Fuck Y
 ( http://www.wtfpl.net/ ) </pre>
   </ol>
 <hr>
-  <p class="updated">Dernière mise à jour 14-09-2015 20:20</p>
+  <p class="updated">Dernière mise à jour 17-10-2015 18:30</p>
    <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
