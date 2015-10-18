@@ -86,6 +86,6 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
     # bash scripts/cli-extra -s
     # bash scripts/cli-extra -a
 
-#### 13. If you want to build the 'gui-extra' collection from the sources, repeat step 12 but for the 'graphic-extra' collection
+#### 13. If you want to build the 'gui-extra' collection from the sources, repeat step 12 but for the 'gui-extra' collection
 
 Have fun :)
