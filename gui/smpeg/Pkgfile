@@ -5,8 +5,8 @@
 
 name=smpeg
 version=0.4.5
-release=1
-source=(http://gentoo.osuosl.org/distfiles/smpeg-$version.tar.gz
+release=2
+source=(http://downloads.nutyx.org/archives/smpeg-$version.tar.xz
 	smpeg-mpegaudiosdl.patch
 	smpeg-0.4.4_m4.patch)
 
@@ -17,9 +17,9 @@ build() {
 		--mandir=/usr/share/man \
 		--disable-static \
 		--enable-gtk-player=no
-	sed -i -e 's|\(libsmpeg_la_LDFLAGS = .*\)|\1 -lstdc++|' Makefile
+#	sed -i -e 's|\(libsmpeg_la_LDFLAGS = .*\)|\1 -lstdc++|' Makefile
 	make
 	make install DESTDIR=$PKG
-	rm $PKG/usr/man/man1/gtv.1
+#	rm $PKG/usr/man/man1/gtv.1
 }
 
