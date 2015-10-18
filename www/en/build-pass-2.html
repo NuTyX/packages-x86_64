@@ -29,21 +29,20 @@
     </table>
   <hr>
    <h1>Construction of the NuTyX (pass 2)</h1>
-    It's time to build your NuTyX. One single condition: Have been able to finish with success the construction of the CHROOT (pass 1).
+    <p>It's time to build your NuTyX. One single condition: Have been able to finish with success the construction of the CHROOT (pass 1).</p>
     <div class="important"><img alt="[Important]" src="../graphics/caution.gif" />The author is not responsable for the lost of your datas or others dammage which could occur during a wrong manipulation. This article is target for aware Linux peoples.</div>
-    All the operations will be done in the root account. It's then ABSOLUTLY necessary to be very carefull otherwise you could broker your actual distribution.
-    <p>
-    The LFS variable in our exemple is pointing to /mnt/lfs. Up to you to adjust to your need if necessary.
-<div class="important"><img alt="[Important]" src="../graphics/caution.gif" />Please note that the pass2 can be much more an "aventure" as it can always have problems when compiling a package the first time. Up to you to give us a feedback with all the details of the error. You can use <a href="http://forums.nutyx.org/index.php?board=8.0" title="Lire dans une autre fenêtre" class="external" onclick="window.open(this.href); return false;">the forums</a> or the irc channel for that.</div>
-<div>To avoid any confusion and avoid dispersion in the actions to take, the article is split in two parts. The first shows every step to do and the second gives an explaignation about each step.</div> 
-<div>They are 14 actions. SO again: <div class="important"><img alt="[Important]" src="../graphics/caution.gif" />All the manipulations should be done in the root account.</div></div>
+    <p>All the operations will be done in the root account. It's then ABSOLUTLY necessary to be very carefull otherwise you could broker your actual distribution.</p>
+    <p>The LFS variable in our exemple is pointing to /mnt/lfs. Up to you to adjust to your need if necessary.</p>
+    <div class="important"><img alt="[Important]" src="../graphics/caution.gif" />Please note that the pass2 can be much more an "aventure" as it can always have problems when compiling a package the first time. Up to you to give us a feedback with all the details of the error. You can use <a href="http://forums.nutyx.org/index.php?board=8.0" title="Lire dans une autre fenêtre" class="external" onclick="window.open(this.href); return false;">the forums</a> or the irc channel for that.</div>
+    <p>To avoid any confusion and avoid dispersion in the actions to take, the article is split in two parts. The first shows every step to do and the second gives an explaignation about each step.</p> 
+    <p>They are 14 actions. SO again:</p>
+    <div class="important"><img alt="[Important]" src="../graphics/caution.gif" />All the manipulations should be done in the root account.</div></div>
+    <h2>The actions</h2>
     <ol>
-      <li>We switch to root</li>
-<pre class="command"><kbd>su -</kbd></pre>
-      <li>We  define the LFS variable</li>
-<pre class="command"><kbd>export LFS=/mnt/lfs</kbd></pre>
+      <li>We go out of the 'lfs' account</li>
+<pre class="command_user"><kbd>exit</kbd></pre>
       <li>We check the LFS variable</li>
-<pre class="command"><kbd>echo $LFS</kbd></pre>MUST return <pre class="output">/mnt/lfs</pre>
+<pre class="command"><kbd>echo $LFS</kbd></pre>MUST return <pre class="output">/mnt/lfs</pre> or the value define in the begining of pass 1
 <div class="important"><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" />BEFORE YOU GO FURTER MAKE SHURE THE LFS VARIABLE IS PROPERLY SET OTHERWISE YOU WILL BREAK YOUR DISTRIBUTION</div>
 	If the result is correct:
 <pre class="command"><kbd>chown -R root:root $LFS</kbd></pre>
@@ -175,7 +174,7 @@ source  ~/.bash_profile</kbd></pre>
   <div class="pied_page"><a class="url" href="build-post.html">One pass 2 is done, you can start the post-construction and generation of the iso</a></div>
 <p>
   <hr>
-  <p class="updated">Last updated on 2015-10-17 20:50</p>
+  <p class="updated">Last updated on 2015-10-18 12:12</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
