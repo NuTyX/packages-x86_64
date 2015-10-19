@@ -1,13 +1,13 @@
 # Description: The CUPS Printing System
 # URL: http://www.cups.org
 # Packager: pierre at nutyx dot org
-# Depends on: avahi python gnutls
+# Depends on: avahi python gnutls xdg-utils
  
 PKGMK_GROUPS=(man devel)
 name=cups
 version=2.1.0
-release=1
-
+release=2
+run=(xdg-utils)
 source=( http://cups.org/software/$version/cups-$version-source.tar.gz)
 
 build() {
