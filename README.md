@@ -6,6 +6,10 @@ http://www.nutyx.org/en/build-package.html
 http://www.nutyx.org/fr/build-package.html
 
 It will explain you what's a collection, a git, a port, the tools around 'cards' etc
+### Introduction
+How does this works ? This git contains the 3 "extra" collection of respectively 'base', 'cli' and 'gui'. As those last ones, collections 'base-extra', 'cli-extra' and 'gui-extra' needs to be pickup in the right order. Be aware that the 'extra' git contains the biggest binaries packages in size. Means the synchronisation of all the binaries can be very long if your internet connection is slow (100 Mb/Sec or less)
+### How does this works:
+First we get this git and the houaphan git localy (step1) as normal user. As we want to install a NuTyX base system in a local directory, we need to become root admin. Before installing the NuTyX in a chroot, we adjust some configuration files (step 2) so that the install-houaphan script pickup during the installation (step 3). Once the chroot is in place, we want to make the 2 git projects visible into the chroot (step 4 and 5). Now we are ready to start, so we can enter into the chroot (step 6). As we installed a minimal set of packages, we first need to install the 'devel' packages and some extra tools (step 6 and 7). One this is done, we have 2 choices. Because all the packages of extra collections will depends on houaphan collections (base,cli or gui) we need to synchronise them (step 8).Either we synchronise ALL the existing binaries, means we just want to update a few packages (case 1). Either we want to build ALL the binaries ourself (case 2). So Case 1, we should use option -s and for case 2 it will be -a
 
 ### How to test this git:
 
@@ -21,15 +25,17 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
     $ su -
     # echo "LFS=/mnt/lfs
-    DEPOT=/houaphan" > /etc/install-houaphan.conf
+    DEPOT=/8.0" > /etc/install-houaphan.conf
     # mkdir -p /etc/install-houaphan.conf.d
     # cat > /etc/install-houaphan.conf.d/cards.conf << "EOF"
-    dir /houaphan/gui
-    dir /houaphan/cli
-    dir /houaphan/base|http://downloads.nutyx.org
-    dir /houaphan/base-extra|http://downloads.nutyx.org
-    base /houaphan/base
-    base /houaphan/base-extra
+    dir /8.0/gui-extra
+    dir /8.0/gui
+    dir /8.0/cli-extra
+    dir /8.0/cli
+    dir /8.0/base|http://downloads.nutyx.org
+    dir /8.0/base-extra|http://downloads.nutyx.org
+    base /8.0/base
+    base /8.0/base-extra
     logdir /var/log/pkgbuild
     EOF
 
@@ -61,10 +67,12 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
     # bash scripts/cli -s
     # bash scripts/gui -s
     
-#### 9. If everything is OK, synchronize the 'base-extra' collection binaries 
+#### 9. If everything is OK, synchronize all the 'xxx-extra' collections binaries in case of a few updates 
 
     # cd /root/extra
     # bash scripts/base-extra -s
+    # bash scripts/cli-extra -s
+    # bash scripts/gui-extra -s
 
 #### 10. If everything is OK, check with cards level what's new
 
@@ -72,20 +80,11 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
  It should shows all the packages available.
 
-#### 11. If you want to build the 'base-extra' collection from the sources
+#### 11. If you want to re build completly one of the 'xxx-extra' collection from the sources
 
     # bash scripts/base-extra -a
-
-#### 12. If you want to build the 'cli-extra' collection from the sources, add the proper line in top of the cards.conf file like this:
-
-    dir /houaphan/cli-extra
-
- then you are ready to compile the 'cli-extra' collection
-
-    # cd /root/extra
-    # bash scripts/cli-extra -s
     # bash scripts/cli-extra -a
+    # bash scripts/gui-extra -a
 
-#### 13. If you want to build the 'gui-extra' collection from the sources, repeat step 12 but for the 'gui-extra' collection
 
 Have fun :)
