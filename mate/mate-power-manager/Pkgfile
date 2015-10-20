@@ -5,13 +5,12 @@
 # Depends on: dconf libgnome-keyring libcanberra libnotify libunique1 mate-desktop mate-panel upower gvfs
 
 name=mate-power-manager
-version=1.10.1
+version=1.11.0
 release=1
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-sed -e 's:@HAVE_DOCBOOK2MAN_TRUE@.*::' -i man/Makefile.in
 ./configure \
         --prefix=/usr \
         --libexecdir=/usr/lib/${name} \
