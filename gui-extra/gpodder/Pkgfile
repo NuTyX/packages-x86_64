@@ -1,0 +1,24 @@
+# Description: Podcatcher
+# URL: http://gpodder.org/
+# Packager: Chris Farrell, timcowchip at gmail dot com
+# Maintainer: Chris Farrell, timcowchip at gmail dot com
+# Depends on: python, dbus-python, python-gtk, feedparser, mygpoclient
+
+name=gpodder
+version=3.8.4
+release=4
+source=(http://gpodder.org/src/$name-$version.tar.gz)
+
+build(){
+	cd $name-$version
+	make 
+	mkdir -p $PKG/usr/bin
+	mkdir -p $PKG/usr/man/man1
+	sed -i \
+    "/Popen(\['ip\|Popen(\['ifconfig/s/Popen(\['/Popen(['\/sbin\//" \
+    src/gpodder/util.py
+	make DESTDIR=$PKG install
+	rm -rf $PKG/usr/share/man
+	rm -rf $PKG/usr/share/locale
+
+}

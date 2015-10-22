@@ -1,0 +1,24 @@
+# Description: Open Source H265/HEVC video encoder.
+# URL: https://bitbucket.org/multicoreware/x265/wiki/Home
+# Maintainer: Danny Rawlins, crux at romster dot me
+# Packager: Danny Rawlins, crux at romster dot me
+# Depends on: yasm cmake
+
+name=x265
+version=1.7
+release=1
+source=(https://bitbucket.org/multicoreware/x265/get/$version.tar.bz2)
+
+build() {
+	cd multicoreware-$name-*/build/linux
+
+	# setting CC and CXX breaks compilation
+	if [ -n "$(pkginfo -i | grep '^ccache ')" ]; then
+		unset CC CXX
+		export PATH="/usr/lib/ccache/:$PATH"
+	fi
+
+	cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr ../../source
+	make
+	make DESTDIR=$PKG install
+}

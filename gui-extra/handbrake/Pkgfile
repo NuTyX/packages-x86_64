@@ -1,0 +1,23 @@
+# Description: open source video transcoder
+# URL: http://handbrake.fr/
+# Packager: Chris Farrell, timcowchip at gmail dot com
+# Maintainer: Chris Farrell, timcowchip at gmail dot com
+# Depends on: gtk3 faad2 freetype fribidi xorg-fontconfig libass libbluray libogg libpng libsamplerate libtheora libvorbis libvpx libxml2 perl-xml-parser pcre xorg-pixman python yasm x265
+
+name=handbrake
+version=0.10.2
+release=2
+source=(
+http://download.handbrake.fr/releases/$version/HandBrake-$version.tar.bz2)
+
+build() {
+	cd HandBrake-$version
+	
+	    ./configure \
+		--prefix=/usr \
+		--disable-gtk-update-checks
+
+	cd build
+	make
+	make DESTDIR=$PKG install
+}
