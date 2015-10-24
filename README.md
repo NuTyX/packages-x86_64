@@ -28,15 +28,47 @@ First we get this git and the houaphan git localy (step1) as normal user. As we 
     DEPOT=/8.0" > /etc/install-houaphan.conf
     # mkdir -p /etc/install-houaphan.conf.d
     # cat > /etc/install-houaphan.conf.d/cards.conf << "EOF"
-    dir /8.0/gui-extra
-    dir /8.0/gui
-    dir /8.0/cli-extra
-    dir /8.0/cli
+    dir /8.0/gui-extra|http://downloads.nutyx.org
+    dir /8.0/gui|http://downloads.nutyx.org
+    dir /8.0/cli-extra|http://downloads.nutyx.org
+    dir /8.0/cli|http://downloads.nutyx.org
     dir /8.0/base|http://downloads.nutyx.org
     dir /8.0/base-extra|http://downloads.nutyx.org
     base /8.0/base
     base /8.0/base-extra
     logdir /var/log/pkgbuild
+    EOF
+ We need to have a correct pkgmk.conf file as well so, lets create it:
+ 
+
+    # cat > /etc/install-houaphan.conf.d/cards.conf << "EOF"
+    export CFLAGS="-O2 -pipe"
+    export CXXFLAGS="${CFLAGS}"
+    case ${PKGMK_ARCH} in
+        "x86_64"|"")
+            export MAKEFLAGS="-j4"
+            ;;
+        "i686")
+            export CFLAGS="${CFLAGS} -m32"
+            export CXXFLAGS="${CXXFLAGS} -m32"
+            export LDFLAGS="${LDFLAGS} -m32"
+            ;;
+        *)
+            echo "Unknown architecture selected! Exiting."
+            exit 1
+            ;;
+        esac
+        PKGMK_GROUPS=(devel man doc service)
+        PKGMK_LOCALES=(fr de it es nl pt da nn sv fi)
+        PKGMK_CLEAN="no"
+        PKGMK_KEEP_SOURCES="yes"
+        PKGMK_SOURCE_DIR="/tmp"
+        PKGMK_WORK_DIR="/tmp/work"
+        PKGMK_COMPRESS_PACKAGE="yes"
+        PKGMK_COMPRESSION_MODE="xz"
+        PKGMK_IGNORE_REPO="no"
+        PKGMK_IGNORE_COLLECTION="no"
+        PKGMK_IGNORE_RUNTIMEDEPS="no"
     EOF
 
 #### 3. Install a base NuTyX system (assume below the user is 'tnut' so adapt to yours)
