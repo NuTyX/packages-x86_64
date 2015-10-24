@@ -6,7 +6,7 @@
 
 name=gpodder
 version=3.8.4
-release=4
+release=5
 source=(http://gpodder.org/src/$name-$version.tar.gz)
 
 build(){
@@ -18,7 +18,4 @@ build(){
     "/Popen(\['ip\|Popen(\['ifconfig/s/Popen(\['/Popen(['\/sbin\//" \
     src/gpodder/util.py
 	make DESTDIR=$PKG install
-	rm -rf $PKG/usr/share/man
-	rm -rf $PKG/usr/share/locale
-
 }
