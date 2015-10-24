@@ -41,7 +41,7 @@ First we get this git and the houaphan git localy (step1) as normal user. As we 
  We need to have a correct pkgmk.conf file as well so, lets create it:
  
 
-    # cat > /etc/install-houaphan.conf.d/cards.conf << "EOF"
+    # cat > /etc/install-houaphan.conf.d/pkgmk.conf << "EOF"
     export CFLAGS="-O2 -pipe"
     export CXXFLAGS="${CFLAGS}"
     case ${PKGMK_ARCH} in
@@ -57,18 +57,18 @@ First we get this git and the houaphan git localy (step1) as normal user. As we 
             echo "Unknown architecture selected! Exiting."
             exit 1
             ;;
-        esac
-        PKGMK_GROUPS=(devel man doc service)
-        PKGMK_LOCALES=(fr de it es nl pt da nn sv fi)
-        PKGMK_CLEAN="no"
-        PKGMK_KEEP_SOURCES="yes"
-        PKGMK_SOURCE_DIR="/tmp"
-        PKGMK_WORK_DIR="/tmp/work"
-        PKGMK_COMPRESS_PACKAGE="yes"
-        PKGMK_COMPRESSION_MODE="xz"
-        PKGMK_IGNORE_REPO="no"
-        PKGMK_IGNORE_COLLECTION="no"
-        PKGMK_IGNORE_RUNTIMEDEPS="no"
+    esac
+    PKGMK_GROUPS=(devel man doc service)
+    PKGMK_LOCALES=(fr de it es nl pt da nn sv fi)
+    PKGMK_CLEAN="no"
+    PKGMK_KEEP_SOURCES="yes"
+    PKGMK_SOURCE_DIR="/tmp"
+    PKGMK_WORK_DIR="/tmp/work"
+    PKGMK_COMPRESS_PACKAGE="yes"
+    PKGMK_COMPRESSION_MODE="xz"
+    PKGMK_IGNORE_REPO="no"
+    PKGMK_IGNORE_COLLECTION="no"
+    PKGMK_IGNORE_RUNTIMEDEPS="no"
     EOF
 
 #### 3. Install a base NuTyX system (assume below the user is 'tnut' so adapt to yours)
