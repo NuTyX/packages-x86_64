@@ -1,9 +1,10 @@
 # Description: The ntp package contains a client and server to keep the time synchronized between various computers over a network. This package is the official reference implementation of the NTP protocol.
 # URL: http://www.ntp.org/ 
 # Packagers: pierre at nutyx dot org, tnut at nutyx dot org
-
+# Depends on: wget
+run=(wget)
 name=ntp
-version=4.2.8p3
+version=4.2.8p4
 release=1
 
 source=( http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/$name-4.2/$name-$version.tar.gz
@@ -30,6 +31,7 @@ make DESTDIR=$PKG install
 mkdir -p $PKG/var/lib/ntp
 install -v -o ntp -g ntp -d $PKG/var/lib/ntp
 mkdir -p $PKG/etc
+
 cat > $PKG/etc/ntp.conf << "EOF"
 
 # Europe
@@ -57,6 +59,13 @@ server 2.south-america.pool.ntp.org
 
 driftfile /var/lib/ntp/ntp.drift
 pidfile   /var/run/ntpd.pid
+
+# Security session
+restrict    default limited kod nomodify notrap nopeer noquery
+restrict -6 default limited kod nomodify notrap nopeer noquery
+
+restrict 127.0.0.1
+restrict ::1
 EOF
 # service
 cd ../$scripts-$scriptsversion
