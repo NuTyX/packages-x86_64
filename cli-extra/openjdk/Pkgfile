@@ -4,10 +4,10 @@
 
 
 name=openjdk
-version=1.8.0.45
+version=8u60
 release=1
-
-source=(http://anduin.linuxfromscratch.org/files/BLFS/OpenJDK-$version/OpenJDK-$version-`uname -m`-bin.tar.xz )
+_version=1.8.0.60
+source=(http://anduin.linuxfromscratch.org/files/BLFS/OpenJDK-${_version}/OpenJDK-${_version}-`uname -m`-bin.tar.xz )
 	
 build() {
 cd OpenJDK*
