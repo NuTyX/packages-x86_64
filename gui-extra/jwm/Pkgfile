@@ -17,5 +17,5 @@ build() {
 		    --with-x
 	make
 	sed -i "s|/usr/bin|$PKG/usr/bin|g" src/Makefile
-	make SYSCONF=$PKG/usr/etc MANDIR=$PKG/usr/man install
+	make SYSCONF=$PKG/etc MANDIR=$PKG/usr/share/man install
 }
