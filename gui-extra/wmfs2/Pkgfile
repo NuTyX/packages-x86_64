@@ -20,7 +20,7 @@ build() {
 
   ./configure --prefix /usr \
               --xdg-config-dir /etc/xdg \
-	          --man-prefix /usr/man \
+	          --man-prefix /usr/share/man \
 	          --without-xinerama 
   make 
   make DESTDIR=$PKG install 
