@@ -1,0 +1,23 @@
+# Description : Libraries and daemons to implement searching in Akonadi
+# URL : https://projects.kde.org/akonadi
+# Packager : pierre at nutyx dot org
+# Depends on : kf5-extra-cmake-modules boost kf5-kdoctools kf5-kdelibs4support xapian akonadi kf5-ki18 kf5-kconfig kf5-kcrash  kdepimlibs kcontacts kmime kcalcore
+
+name=akonadi-search
+version=15.08.2
+release=1
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build() {
+  mkdir -p build
+  cd build
+  cmake ../$name-$version \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DBUILD_TESTING=OFF
+  make
+  make DESTDIR=$PKG install
+}
