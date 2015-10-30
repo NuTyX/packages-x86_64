@@ -5,18 +5,13 @@
 
 name=owncloud-cli
 release=1
-version=2.0.1
+version=2.0.2
 _name=owncloudclient
 
-source=(https://download.owncloud.com/desktop/stable/${_name}-$version.tar.xz
-       owncloud-cli-fix-tray-icon.patch)
+source=(https://download.owncloud.com/desktop/stable/${_name}-$version.tar.xz)
 
 build() {
 
-cd $_name-$version
-patch -p1 -i ../owncloud-cli-fix-tray-icon.patch
-
-cd ../
 mkdir build
 cd    build
 
