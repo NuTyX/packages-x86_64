@@ -5,7 +5,7 @@
 name=chromium-pepper-flash
 version=19.0.0.226
 _verbld=46.0.2490.80-1
-release=1
+release=2
 
 [ "`uname -m`" == "i686"   ] && _ARCH=i386
 [ "`uname -m`" == "x86_64"   ] && _ARCH=x86_64
@@ -13,7 +13,8 @@ release=1
 source=(https://dl.google.com/linux/chrome/rpm/stable/${_ARCH}/google-chrome-stable-${_verbld}.${_ARCH}.rpm)
 
 build() {
- install -d $PKG/usr/lib/PepperFlash
+ install -d $PKG/{usr/lib/PepperFlash,opt/chromium/lib}
  install -m644 $SRC/opt/google/chrome/PepperFlash/* $PKG/usr/lib/PepperFlash
+ ln -sv ../../usr/lib/PepperFlash $PKG/opt/chromium/lib/PepperFlash
 }
 
