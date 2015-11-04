@@ -3,15 +3,14 @@
 # Packager: pierre at nutyx dot org
 # Depends on: bc cups lcms2 poppler qpdf libjpeg-turbo libpng libtiff ghostscript avahi ijs harfbuzz 
 name=cups-filters
-version=1.0.71
+version=1.1.0
 release=1
 
 source=( http://www.openprinting.org/download/$name/$name-$version.tar.xz
-	cups-filters-1.0.71-poppler0340.patch)
+	)
 build() {
 cd $name-$version
 
-patch -Np1 -i ../cups-filters-1.0.71-poppler0340.patch
 
 ./configure --prefix=/usr                   \
             --sysconfdir=/etc               \
