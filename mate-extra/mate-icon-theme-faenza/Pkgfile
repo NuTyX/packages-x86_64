@@ -5,13 +5,13 @@
 # Depends on: mate-common gtk-update-icon-cache
 
 name=mate-icon-theme-faenza
-version=1.10.0
+version=1.12.0
 release=1
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-./autogen.sh --prefix=/usr 
+./configure --prefix=/usr 
 make
 make DESTDIR=$PKG install
 rm -f  $PKG/usr/share/icons/matefaenza/icon-theme.cache
