@@ -49,7 +49,7 @@ dir /root/extra/gui-extra
 dir /root/current/gui
 dir /root/extra/cli-extra
 dir /root/current/cli
-dir /root/extra/base-cli
+dir /root/extra/base-extra
 dir /root/current/base
 logdir /var/log/pkgbuild
 locale fr
@@ -144,10 +144,11 @@ dev   ISO   mnt    proc                                   sbin  sys      tools</
    <h2>Options</h2>
     <ol>
     <li>Si vous souhaitez réduire la taille finale de l'ISO, vous pouvez supprimer les binaires du git et les logs produits, ils ne serviront plus. Si vous souhaitez conserver les binaires, lancez la commande ci-dessus.</li>
-<pre class="command"><kbd>rsync -a /root/current/base /base</kbd></pre>
+<pre class="command"><kbd>rsync -a /root/current/base/ /base/
+rsync -a /root/extra/base-extra/ /base-extra/</kbd></pre>
      <p>Aucune erreur ne doit apparaître</p>
      <p>On peut maintenant effacer les binaires du git</p>
-     <pre class="command"><kbd>find /root/current/base/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
+     <pre class="command"><kbd>find /root/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
      <p>Aucune erreur ne doit apparaître</p>
      <p>On efface les logs.</p>
      <pre class="command"><kbd>mv /root/logs /logs</kbd></pre>
@@ -157,7 +158,7 @@ dev   ISO   mnt    proc                                   sbin  sys      tools</
 pkgrm kernel.devel</kbd></pre>
    </ol>
    <hr>
-   <p class="updated">Dernière mise à jour 17-10-2015 21:04</p>
+   <p class="updated">Dernière mise à jour 09-11-2015 19:06</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

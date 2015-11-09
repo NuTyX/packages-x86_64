@@ -143,10 +143,11 @@ dev   ISO   mnt    proc                                   sbin  sys      tools</
   <h2>Options</h2>
    <ol>
     <li>If you want to reduce the size of the final ISO, you can remove the binaries archives and the logs, they won't be needed. If you want to keep the archives, give the following command</li>
-     <pre class="command"><kbd>rsync -a /root/houaphan/base /base</kbd></pre>
+     <pre class="command"><kbd>rsync -a /root/current/base/ /base/
+rsync -a /root/extra/base-extra/ /base-extra/</kbd></pre>
      <p>no error should be printout</p>
      <p>We can now delete the binaries from the git</p>
-     <pre class="command"><kbd>find /root/current/base/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
+     <pre class="command"><kbd>find /root/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
      <p>no error should be printout</p>
      <p>We erase the logs</p>
      <pre class="command"><kbd>mv /root/logs /logs</kbd></pre>
@@ -156,7 +157,7 @@ dev   ISO   mnt    proc                                   sbin  sys      tools</
 pkgrm kernel.devel</kbd></pre>
   </ol>
   <hr>
-  <p class="updated">Last updated on 2015-10-17 21:03</p>
+  <p class="updated">Last updated on 2015-11-09 19:05</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
