@@ -4,7 +4,7 @@
 # Depends on: libpng 
 
 name=freetype
-version=2.6
+version=2.6.1
 release=1
 
 source=( http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
@@ -12,11 +12,11 @@ source=( http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
 
 build() {
 cd $name-$version
-sed -i  -e "/AUX.*.gxvalid/s@^# @@" \
- -e "/AUX.*.otvalid/s@^# @@" \
- modules.cfg
-sed -ri -e 's:.*(#.*SUBPIXEL.*) .*:\1:' \
- include/config/ftoption.h
+sed -e "/AUX.*.gxvalid/s@^# @@" \
+-e "/AUX.*.otvalid/s@^# @@" \
+-i modules.cfg
+sed -e 's:.*\(#.*SUBPIXEL.*\) .*:\1:' \
+-i include/freetype/config/ftoption.h
 
 ./configure --prefix=/usr --disable-static
 make
