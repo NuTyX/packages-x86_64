@@ -15,7 +15,9 @@ build() {
 		    --disable-confirm \
 		    --disable-fribidi \
 		    --with-x
-	make
+	make || return 1
+	mkdir -p $PKG/usr/share/xsessions
+	cp $SRC/$name.desktop $PKG/usr/share/xsessions/
 	sed -i "s|/usr/bin|$PKG/usr/bin|g" src/Makefile
 	make SYSCONF=$PKG/etc MANDIR=$PKG/usr/share/man install
 }
