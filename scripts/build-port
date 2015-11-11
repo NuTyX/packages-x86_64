@@ -132,16 +132,7 @@ check_diff()
 		if [ -f $PORT_BASE/$package/Pkgfile ]; then
 			base_package=`echo $package | cut -d "-" -f1`
 			cd $PORT_BASE/$package
-			version=""
-			release=""
-			. Pkgfile
-			if [ "$version" = "" ] && [ "$base_package" != "$package" ] ; then 
-				if [ -f $PORT_BASE/$base_package/Pkgfile ]; then
-					cd $PORT_BASE/$base_package
-					. Pkgfile
-				fi
-			fi
-			[ -z $release ] && release=1
+			get_port_version
 			port_version=`echo $version-$release`
 			if [ "$binary_version" != "$port_version" ]; then
 				echo "$package $port_version $binary_version" >> $output
@@ -283,6 +274,33 @@ get_binary_directory() {
 		BINARY_DIR=${RSYNC_NUTYX_VERSION}
 	fi
 }
+get_binary_version() {
+	local version release
+	cd $BINARY_BASE/$package
+	version=`head -1 .PKGREPO|cut -d "#" -f3`
+	release=`head -1 .PKGREPO|cut -d "#" -f4`
+	binary_version=$version-$release
+}
+get_port_version() {
+	local port base_port PORTS_DIR tmprel
+	port=/$PORT_BASE/$package
+	PORTS_DIR=$PORT_BASE
+	base_port=`echo $package | cut -d "-" -f1`
+	cd $port
+	unset version
+	unset release
+	. Pkgfile
+	[ ! -z $release ] && tmprel=$release
+	if [ -z $version ] && [ "$base_port" != "$package" ] ; then
+		if [ -f $PORTS_DIR/$base_port/Pkgfile ]; then
+			cd $PORTS_DIR/$base_port
+			. Pkgfile
+		fi
+	fi
+	[ -z $release ] && release=1
+	[ ! -z $tmprel ] && release=$tmprel
+	port_version="$version-$release"
+}
 check_config_file () {
 	get_binary_directory
 	if [ ! -f /etc/cards.conf.d/$COLLECTION.conf ] ; then
@@ -341,42 +359,46 @@ remove_url () {
 	fi
 }
 build_binaries () {
-	local NAME
+	local package port_version binary_version currentdir
+	currentdir=$PWD
 	for i in `cards level -I |grep ${BINARY_BASE}/|cut -d " " -f2`
 	do
-		NAME=`basename $i`
-		if [ !  -z "`ls ${BINARY_BASE}/$NAME/*$ARCH.cards.tar.xz 2>/dev/null `" ];then
-			if [ ! -f ${BINARY_BASE}/$NAME/.PKGREPO ]; then
-				bash scripts/$COLLECTION $NAME|| exit 1
-			else
-				if [ ! -z "`diff ${BINARY_BASE}/$NAME/Pkgfile ${PORT_BASE}/$NAME/Pkgfile`" ]; then
-					echo "
-$NAME is changed
-
-${BINARY_BASE}/$NAME/Pkgfile
-${PORT_BASE}/$NAME/Pkgfile
-are different ...
-
-WILL BUILD $NAME NEW..
-
-"
-					read a
-					bash scripts/$COLLECTION $NAME || exit 1
-
-				else
-
-					echo "
-Some package(s) from '$NAME' are already available.
-
-WILL NOT BUILD '$NAME' AGAIN..
-
-"
-					read a
-				fi
-			fi
-		else
-			bash scripts/$COLLECTION $NAME|| exit 1
+		package=`basename $i`
+		if [  -z "`ls ${BINARY_BASE}/$package/*$ARCH.cards.tar.xz 2>/dev/null `" ];then
+			cd $currentdir
+			bash scripts/$COLLECTION $package|| exit 1
+			continue
 		fi
+		if [ ! -f ${BINARY_BASE}/$package/.PKGREPO ]; then
+			cd $currentdir
+			bash scripts/$COLLECTION $package|| exit 1
+			continue
+		fi
+		if [ ! -z "`diff ${BINARY_BASE}/$package/Pkgfile ${PORT_BASE}/$package/Pkgfile`" ]; then
+			echo " ${BINARY_BASE}/$package/Pkgfile
+AND
+${PORT_BASE}/$package/Pkgfile are different ...
+
+WILL BUILD $package NEW.."
+#			read a
+			cd $currentdir
+			bash scripts/$COLLECTION $package || exit 1
+			continue
+		fi
+		get_port_version
+		get_binary_version
+		if [ "$port_version" != "$binary_version" ]; then
+			echo "$package:
+Port version: $port_version
+Binary version: $binary_version
+
+WILL BUILD $package NEW.."
+#			read a
+			cd $currentdir
+			bash scripts/$COLLECTION $package || exit 1
+			continue
+		fi
+		echo "WILL NOT BUILD '$package' AGAIN.."
 	done
 }
 list_binaries () {
