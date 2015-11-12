@@ -40,16 +40,16 @@ print_help()
 {
 	echo "usage: $COLLECTION [option]"
 	echo "options:"
-	echo "  -a,   --all                 will build all the ports of the '$COLLECTION' collection in the right order"
-	echo "  -l,   --list                will list all the ports of the '$COLLECTION' collection in the right order"
-	echo "  -ru,  --remove-url          remove the URL part in /etc/cards.conf file for the '$COLLECTION' collection"
-	echo "  -cp,  --check-ports         check if new ports are available"
-	echo "  -cb,  --check-binaries      check if binaries are uptodate"
-	echo "  -cd,  --check-diff          check if binaries are different then the ports"
-	echo "  -s,   --sync                synchronise binaries from rsync server location"
-	echo "  -c,   --config              printout the configuration"
-	echo "  -h,   --help                print help and exit"
-	echo "  -u,   --usage               print the recommended way of using the '$COLLECTION' script"
+	echo "   -a,   --all                 will build all the ports of the '$COLLECTION' collection in the right order"
+	echo "   -l,   --list                will list all the ports of the '$COLLECTION' collection in the right order"
+	echo "  -ru,   --remove-url          remove the URL part in /etc/cards.conf file for the '$COLLECTION' collection"
+	echo "  -cp,   --check-ports         check if new ports are available"
+	echo "  -cb,   --check-binaries      check if binaries are uptodate"
+	echo "   -d,   --dry                 check if binaries are different then the ports but dont build anything"
+	echo "   -s,   --sync                synchronise binaries from rsync server location"
+	echo "   -c,   --config              printout the configuration"
+	echo "   -h,   --help                print help and exit"
+	echo "   -u,   --usage               print the recommended way of using the '$COLLECTION' script"
 }
 list_ports() {
 	cd $PORT_BASE && find . -name Pkgfile -follow -printf "%h\n" | sed 's|^./||g' | sort
@@ -72,8 +72,8 @@ check_binaries()
 				echo "'$DIR' should be removed and delete from the .PKGREPO file"
 				rm -vr $DIR
 				[ -f .PKGREPO ] && sed -i "/#$DIR#/d" .PKGREPO
-#			else
-#				rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/	
+			else
+				rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/
 			fi
 		fi
 	done
@@ -95,8 +95,8 @@ check_ports()
 		if [ ! -d ${BINARY_BASE}/$DIR ] || [ ! -f ${BINARY_BASE}/$DIR/Pkgfile ]; then
 			echo "'$DIR' should be added"
 			rsync -av --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/
-#		else
-#			rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/
+		else
+			rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/
 		fi
 		if [ ! -f ${BINARY_BASE}/$DIR/.PKGREPO ];then
 			echo "$DIR should be build"
@@ -181,9 +181,11 @@ parse_options() {
 				check_binaries
 				exit 0
 				;;
-			-cd|--check-diff)
-				check_tools
-				check_diff
+			-cd|--check-diff|-d|--dry)
+				DRY="yes"
+				check_ports
+				check_binaries
+				build_binaries
 				exit 0
 				;;
 			-ru|--remove-url)
@@ -366,39 +368,33 @@ build_binaries () {
 		package=`basename $i`
 		if [  -z "`ls ${BINARY_BASE}/$package/*$ARCH.cards.tar.xz 2>/dev/null `" ];then
 			cd $currentdir
+			[ "$DRY" == "yes" ] && continue
 			bash scripts/$COLLECTION $package|| exit 1
 			continue
 		fi
 		if [ ! -f ${BINARY_BASE}/$package/.PKGREPO ]; then
 			cd $currentdir
+			[ "$DRY" == "yes" ] && continue
 			bash scripts/$COLLECTION $package|| exit 1
 			continue
 		fi
 		if [ ! -z "`diff ${BINARY_BASE}/$package/Pkgfile ${PORT_BASE}/$package/Pkgfile`" ]; then
-			echo " ${BINARY_BASE}/$package/Pkgfile
-AND
-${PORT_BASE}/$package/Pkgfile are different ...
-
-WILL BUILD $package NEW.."
-#			read a
+			echo " ${BINARY_BASE}/$package/Pkgfile AND ${PORT_BASE}/$package/Pkgfile are different ...WILL BUILD NEW.."
 			cd $currentdir
+			[ "$DRY" == "yes" ] && continue
 			bash scripts/$COLLECTION $package || exit 1
 			continue
 		fi
 		get_port_version
 		get_binary_version
 		if [ "$port_version" != "$binary_version" ]; then
-			echo "$package:
-Port version: $port_version
-Binary version: $binary_version
-
-WILL BUILD $package NEW.."
-#			read a
+			echo "$package: Port: $port_version, Binary: $binary_version"
 			cd $currentdir
+			[ "$DRY" == "yes" ] && continue
 			bash scripts/$COLLECTION $package || exit 1
 			continue
 		fi
-		echo "WILL NOT BUILD '$package' AGAIN.."
+		[ "$DRY" == "yes" ] || echo "WILL NOT BUILD '$package' AGAIN.."
 	done
 }
 list_binaries () {
@@ -425,6 +421,7 @@ main() {
 	cards create -r $1
 
 }
+DRY="no"
 ARCH=`uname -m`
 RSYNC_SERVER="rsync://downloads.nutyx.org/nutyx"
 COLLECTION="`basename $0`"
