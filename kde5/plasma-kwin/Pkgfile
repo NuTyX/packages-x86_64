@@ -1,12 +1,12 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: kf5-kactivities kf5-kauth kf5-kcmutils kf5-kcompletion kf5-kconfig kf5-kconfigwidgets kf5-kcoreaddons kf5-kcrash kf5-kdeclarative kf5-kglobalaccel kf5-ki18n kf5-kiconthemes kf5-kinit kf5-kio kf5-knewstuff kf5-knotifications kf5-kpackage kf5-kservice kf5-kwidgetsaddons kf5-kwindowsystem kf5-kxmlgui kf5-plasma-framework plasma-kdecoration libepoxy libxcb xcb-util-cursor xcb-util-image xcb-util-keysyms plasma-kwayland libinput eudev plasma-kde-cli-tools xorg-mesa
+# Depends on: kf5-kactivities kf5-kauth kf5-kcmutils kf5-kcompletion kf5-kconfig kf5-kconfigwidgets kf5-kcoreaddons kf5-kcrash kf5-kdeclarative kf5-kglobalaccel kf5-ki18n kf5-kiconthemes kf5-kinit kf5-kio kf5-knewstuff kf5-knotifications kf5-kpackage kf5-kservice kf5-kwidgetsaddons kf5-kwindowsystem kf5-kxmlgui kf5-plasma-framework plasma-kdecoration libepoxy libxcb xcb-util-cursor xcb-util-image xcb-util-keysyms plasma-kwayland libinput eudev plasma-kde-cli-tools xorg-mesa xdg-utils
 
-run=(libepoxy libxcb xcb-util-cursor xcb-util-image xcb-util-keysyms libinput eudev) 
+run=(libepoxy libxcb xcb-util-cursor xcb-util-image xcb-util-keysyms libinput eudev xdg-utils) 
 
 _name=kwin
-release=2
+release=3
 
 build() {
 cd ${_name}-$version

@@ -1,10 +1,12 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: plasma-libkscreen kf5-kconfigwidgets kf5-kcoreaddons kf5-kdbusaddons kf5-kglobalaccel kf5-ki18n kf5-kwidgetsaddons kf5-kxmlgui plasma-kde-cli-tools
+# Depends on: plasma-libkscreen kf5-kconfigwidgets kf5-kcoreaddons kf5-kdbusaddons kf5-kglobalaccel kf5-ki18n kf5-kwidgetsaddons kf5-kxmlgui plasma-kde-cli-tools xdg-utils
+
+run=(xdg-utils)
 
 _name=kscreen
-release=2
+release=3
 
 build() {
 cd ${_name}-$version
