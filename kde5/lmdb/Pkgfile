@@ -5,13 +5,12 @@
 
 name=lmdb
 version=0.9.16
-release=1
+release=2
 
-source=()
+source=(ftp://ftp.debian.org/debian/pool/main/l/lmdb/lmdb_$version.orig.tar.gz)
 
 build() {
-git clone git://github.com/LMDB/lmdb.git
-cd lmdb/libraries/liblmdb
+cd lmdb-LMDB_$version/libraries/liblmdb/
 make prefix=/usr
 install -dm755 $PKG/usr/{bin,lib,include,man/man1,share}
 make DESTDIR=$PKG prefix=/usr install
