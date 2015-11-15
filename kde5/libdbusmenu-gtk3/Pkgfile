@@ -5,14 +5,14 @@
 
 name=libdbusmenu-gtk3
 _name=libdbusmenu
-release=1
+release=2
 version=0.5.90
 
 source=(http://launchpad.net/dbusmenu/0.6/${version}/+download/${_name}-$version.tar.gz )
 
 build() {
   cd libdbusmenu-$version
-  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libexecdir=/usr/lib/$pkgname \
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libexecdir=/usr/lib/$name \
                --disable-static --disable-scrollkeeper --disable-tests
   make
   make -C libdbusmenu-glib DESTDIR=$PKG install
