@@ -4,25 +4,30 @@
 # Depends on: phonon-qt5 gstreamer1 gstreamer1-plugins-base gstreamer1-plugins-good gstreamer1-plugins-bad gstreamer1-plugins-ugly libxml2 pulseaudio
 
 name=phonon-backend-gstreamer-qt5
-release=1
+release=2
 version=4.8.2
 _name=phonon-backend-gstreamer
-source=( http://download.kde.org/stable/phonon/${_name}/$version/src/${_name}-$version.tar.xz)
+
+source=( http://download.kde.org/stable/phonon/${_name}/$version/src/${_name}-$version.tar.xz
+         http://www.linuxfromscratch.org/patches/blfs/svn/${_name}-$version-compatibility-1.patch)
 
 build() {
 
+cd ${_name}-$version
+
+patch -Np1 -i ../${_name}-$version-compatibility-1.patch
+
 bash  /usr/bin/setqt5
+
 mkdir build
 cd    build
-cmake ../${_name}-$version           \
-    -DCMAKE_BUILD_TYPE=Release     \
-    -DCMAKE_SKIP_RPATH=ON          \
-    -DCMAKE_INSTALL_PREFIX=/usr    \
-    -DPHONON_INSTALL_QT_EXTENSIONS_INTO_SYSTEM_QT=ON \
-    -DPHONON_BUILD_PHONON4QT5=ON   \
-    -D__KDE_HAVE_GCC_VISIBILITY=NO \
-    -DCMAKE_INSTALL_LIBDIR=lib     \
-    -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON
+cmake -DCMAKE_BUILD_TYPE=Release     \
+      -DCMAKE_SKIP_RPATH=ON          \
+      -DCMAKE_INSTALL_PREFIX=/usr    \
+      -DPHONON_BUILD_PHONON4QT5=ON   \
+      -D__KDE_HAVE_GCC_VISIBILITY=NO \
+      -DCMAKE_INSTALL_LIBDIR=lib     \
+      -Wno-dev ..
 
 make
 make DESTDIR=$PKG install
