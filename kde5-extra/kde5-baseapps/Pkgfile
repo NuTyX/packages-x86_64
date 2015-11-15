@@ -4,8 +4,8 @@
 # Depends on : kf5-extra-cmake-modules kf5-kdoctools git kf5-kdelibs4support kf5-kdesu kf5-kactivities kf5-kded kf5-khtml kf5-knewstuff dolphin
 
 name=kde5-baseapps
-version=20151114
-release=2
+version=20151115
+release=1
 _name=kde-baseapps
 
 source=()
@@ -27,7 +27,4 @@ cmake ../${_name} \
 
 make
 make DESTDIR=$PKG install
-
-rm -f $PKG/usr/share/kservicetypes5/konqpopupmenuplugin.desktop
-
 }
