@@ -5,7 +5,7 @@
 
 name=doxygen
 version=1.8.10
-release=1
+release=2
 
 source=(http://ftp.stack.nl/pub/$name/$name-$version.src.tar.gz)
 build() {
@@ -18,7 +18,7 @@ cmake -G "Unix Makefiles" \
 ..
 make
 
-make INSTALL=$PKG install
+make DESTDIR=$PKG install
 
 mkdir -p $PKG/usr/share/man/man1
 install -vm644 ../doc/*.1 $PKG/usr/share/man/man1
