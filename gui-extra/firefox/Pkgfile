@@ -7,7 +7,7 @@ run=(gstreamer1-plugins-good gstreamer1-plugins-libav)
 
 name=firefox
 version=42.0
-release=1
+release=2
 
 source=(https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.xz)
 
@@ -30,6 +30,8 @@ mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 EOF
 
 test $(uname -m) = "i686" && sed -i 's/enable-optimize/disable-optimize/' mozconfig || true
+
+sed -i '/^freetype\/ftcache.h/a freetype\/ftfntfmt.h' config/system-headers
 
 SHELL=/bin/sh  make -f client.mk build
 
