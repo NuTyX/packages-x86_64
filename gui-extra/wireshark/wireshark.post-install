@@ -1,5 +1,6 @@
-gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor
-    update-desktop-database -q
+xdg-icon-resource forceupdate --theme hicolor &> /dev/null
+update-mime-database usr/share/mime &>/dev/null
+
     
 getent group wireshark >/dev/null 2>&1 ||  groupadd -g 150 wireshark &>/dev/null
 

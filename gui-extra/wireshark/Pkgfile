@@ -4,13 +4,14 @@
 # Depends on: gtk3 libpcap pcre
 
 name=wireshark
-version=1.12.8
+version=2.0.0
 release=1
-source=(http://www.$name.org/download/src/all-versions/$name-$version.tar.bz2)
+source=(http://www.$name.org/download/src/all-versions/$name-$version.tar.bz2
+ http://www.linuxfromscratch.org/patches/blfs/svn/wireshark-2.0.0-lua_5_3_1-1.patch)
 
 build() {
   cd $name-$version
-
+patch -Np1 -i ../wireshark-2.0.0-lua_5_3_1-1.patch
   ./configure --prefix=/usr \
               --mandir=/usr/man \
               --with-plugins=/usr/lib/$name/plugins \
@@ -21,18 +22,22 @@ build() {
               --with-qt4=no \
               --with-gtk3=yes
 
-  make
-  make DESTDIR=$PKG install
+   make
+   make DESTDIR=$PKG install
+   install -v -m755 -d $PKG/usr/share/doc/wireshark-2.0.0 
+   install -v -m644    README{,.linux} doc/README.* doc/*.{pod,txt} \
+                    $PKG/usr/share/doc/wireshark-2.0.0 
 
-  install -Dm755 .libs/wireshark $PKG/usr/bin/wireshark
-  for d in 16 32 48; do
-    install -Dm644 image/hi${d}-app-wireshark.png  \
-                   $PKG/usr/share/icons/hicolor/${d}x${d}/apps/wireshark.png
-  done
+   pushd $PKG/usr/share/doc/wireshark-2.0.0 
+   for FILENAME in ../../wireshark/*.html; do
+      ln -s -v -f $FILENAME .
+   done 
+   popd
+   unset FILENAME
+ 
+  chown -v root:wireshark $PKG/usr/bin/{tshark,dumpcap} &&
+  chmod -v 6550 $PKG/usr/bin/{tshark,dumpcap} 
 
-  for d in 16 24 32 48 64 128 256 ; do
-    install -Dm644 image/WiresharkDoc-${d}.png \
-                   $PKG/usr/share/icons/hicolor/${d}x${d}/mimetypes/application-vnd.tcpdump.pcap.png
-  done
-  install -Dm644 wireshark.desktop $PKG/usr/share/applications/wireshark.desktop
+  install -Dm755 .libs/wireshark-gtk ${PKG}/usr/bin/wireshark-gtk
+  install -Dm644 wireshark-gtk.desktop ${PKG}/usr/share/applications/wireshark-gtk.desktop
 }
