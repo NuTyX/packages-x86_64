@@ -1,0 +1,22 @@
+# Description: 	This is a library for handling page faults in user mode. A page fault occurs when a program tries to access to a region of memory that is currently not available. 
+# URL:         	http://ftp.debian.org/debian/pool/main/libp/libpaper
+# Packager:		berlius at nutyx dot com
+# Depends on:  	
+
+name=libsigsegv
+version=2.10
+release=1
+
+source=(http://ftp.gnu.org/gnu/libsigsegv/$name-$version.tar.gz)
+
+build () {
+
+    cd $name-$version
+    
+ 	./configure --prefix=/usr  \
+ 	        --enable-shared \
+            --disable-static                 
+    make
+	make DESTDIR=$PKG install
+
+}
