@@ -2,16 +2,17 @@
 # URL: http://www.codeblocks.org/
 # Maintainer: The Code::Blocks Team
 # Packager: pierre at nutyx dot org, tnut at nutyx dot org
-# Depends on: zip boost desktop-file-utils gamin gtk-update-icon-cache hicolor-icon-theme hunspell shared-mime-info wxgtk
+# Depends on: zip boost desktop-file-utils gamin gtk-update-icon-cache hicolor-icon-theme hunspell shared-mime-info wxgtk28
+
 name=codeblocks
 version=13.12.1
 _version=13.12-1
-release=2
+release=3
 
 source=(http://sourceforge.net/projects/$name/files/Sources/13.12/codeblocks_${_version}.tar.gz)
 build () {
 cd $name-*
-LDFLAGS+=' -lX11'
+export WX_CONFIG_PATH=/usr/bin/wx-config-2.8
 ./configure --prefix=/usr --with-contrib-plugins=all
 make
 make DESTDIR=$PKG install
