@@ -3,15 +3,12 @@
 # Packager: pierre at nutyx dot org
 # Depends on: bc cups lcms2 poppler qpdf libjpeg-turbo libpng libtiff ghostscript avahi ijs harfbuzz 
 name=cups-filters
-version=1.1.0
+version=1.2.0
 release=1
 
-source=( http://www.openprinting.org/download/$name/$name-$version.tar.xz
-	)
+source=( http://www.openprinting.org/download/$name/$name-$version.tar.xz)
 build() {
 cd $name-$version
-
-
 ./configure --prefix=/usr                   \
             --sysconfdir=/etc               \
             --localstatedir=/var            \
