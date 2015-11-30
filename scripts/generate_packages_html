@@ -141,7 +141,11 @@ cat >> $TMP/index.html << "EOF"
           var rows = jQuery("#fbody").find("tr").hide();
           var data = this.value.split(" ");
           jQuery.each(data, function(i, v) {
-             rows.filter(":contains('" + v + "')").show();
+             v = v.toLowerCase();
+             rows.filter(function() {
+                return (this.textContent || this.innerText || this.text() || "").toLowerCase().indexOf(v) >= 0;
+             })
+             .show();
           });
         });
        });
