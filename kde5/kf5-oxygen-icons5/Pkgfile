@@ -1,0 +1,22 @@
+# Description : The Oxygen Icon Theme for kf5
+# URL: https://www.kde.org/
+# Packager: pierre at nutyx dot org
+# Depends on: cmake, kf5-extra-cmake-modules
+
+_name=oxygen-icons5
+release=1
+
+source=(http://download.kde.org/stable/frameworks/${version%.*}/${_name}-$version.tar.xz)
+
+build() {
+cd ${_name}-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr             \
+      -DCMAKE_BUILD_TYPE=Release              \
+      -Wno-dev ..
+
+make
+make DESTDIR=$PKG install
+}
+
