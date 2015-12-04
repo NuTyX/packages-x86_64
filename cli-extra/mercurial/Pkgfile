@@ -1,0 +1,27 @@
+# Description: Mercurial is a distributed source control management tool similar to Git and Bazaar. Mercurial is written in Python and is used by projects such as Mozilla and Vim. 
+# URL: http://mercurial.selenic.com
+# Packager: berlius at nutyx dot com
+# Depends on: python git gnupg subversion bzr python-docutils ca-certificates
+
+name=mercurial
+version=3.6.1	
+release=1
+source=(http://mercurial.selenic.com/release/mercurial-3.6.1.tar.gz hgrc)
+ 
+build() {
+
+cd $name-$version
+	
+make build
+	
+make doc
+
+make DESTDIR=$PKG PREFIX=/usr install-bin
+	
+make DESTDIR=$PKG PREFIX=/usr install-doc
+	
+install -v -d -m755 $PKG/etc/mercurial 
+cp -v $SRC/hgrc $PKG/etc/mercurial/hgrc
+	
+	
+}
