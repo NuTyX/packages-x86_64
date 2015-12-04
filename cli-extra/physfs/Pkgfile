@@ -1,0 +1,26 @@
+# Description: PhysicsFS is a library to provide abstract access to various archives. It is intended for use in video games, and the design was somewhat inspired by Quake 3's file subsystem. The programmer defines a "write directory" on the physical filesystem. 
+# URL: http://www.icculus.org/physfs/
+# Packager: berlius at nutyx dot com
+# Depends on: cmake
+
+name=physfs
+version=2.0.0
+release=1
+
+source=(http://www.icculus.org/physfs/downloads/$name-$version.tar.gz)
+
+build() {
+
+cd $name-$version
+
+sed -i -e 's|-Werror||' CMakeLists.txt
+
+cmake \
+   -DPHYSFS_BUILD_STATIC=FALSE \
+   -DCMAKE_INSTALL_PREFIX=/usr
+
+make
+
+make DESTDIR=$PKG install
+
+}
