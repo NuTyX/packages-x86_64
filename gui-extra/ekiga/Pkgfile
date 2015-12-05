@@ -1,0 +1,25 @@
+# Description: Ekiga is a VoIP, IP Telephony, and Video Conferencing application that allows you to make audio and video calls to remote users with SIP or H.323 compatible hardware and software. It supports many audio and video codecs and all modern VoIP features for both SIP and H.323. Ekiga is the first Open Source application to support both H.323 and SIP, as well as audio and video. 
+# URL: http://ftp.gnome.org/pub/gnome/sources/ekiga
+# Packager:	berlius at nutyx dot com
+# Depends on: gtk2 opal boost gnome-icon-theme dbus gconf libnotify avahi gnome-doc-utils openldap
+
+name=ekiga
+version=4.0.1	
+release=1
+source=(http://ftp.gnome.org/pub/gnome/sources/ekiga/4.0/$name-$version.tar.xz)
+ 
+build() {
+
+	cd $name-$version
+	
+	./configure --prefix=/usr     \
+	            --sysconfdir=/etc \
+	            --disable-eds     \
+	            --disable-gdu     \
+	            --disable-ldap    \
+	            --disable-scrollkeeper 
+	make
+	
+	make DESTDIR=$PKG install
+	
+}
