@@ -13,7 +13,7 @@ source=("http://sourceforge.net/projects/k9copy-reloaded/files/$name-$version.ta
 
 build() {
   cd $SRC/$name
-     patch -p1 -i $SRC/CMakeLists.patch
+     patch -p1 -i $SRC/k9copy-CMakeLists.patch
      sed -i -e 's|#SET(CMAKE_BUILD_TYPE Debug)|cmake_minimum_required(VERSION 3.2)|' ${SRC}/${name}/CMakeLists.txt
      cmake ../${name} \
     -DCMAKE_BUILD_TYPE=Release \
