@@ -1,21 +1,30 @@
 # Description: A small utility to copy DVD
 # URL: http://sourceforge.net/projects/k9copy-reloaded/
 # Maintainer: Chris Farrell, timcowchip at gmail dot com
-# Depends on: qt5 cmake kde-libs libmpeg2 xine-lib docbook-xsl docbook-xml dvd+rw-tools libdvdnav libdvdcss kf5-kwidgetsaddons kf5-kguiaddons kf5-kxmlgui kf5-kauth kf5-kcodecs kf5-kcmutils kf5-kcompletion kf5-kconfig kf5-kconfigwidgets kf5-kcoreaddons kf5-kdbusaddons kf5-kdesu kf5-kdnssd kf5-ki18n kf5-kjobwidgets kf5-kpty kf5-kservice kf5-ktexteditor kf5-ktextwidgets kf5-kwidgetsaddons kf5-kxmlgui kf5-kxmlrpcclient kf5-solid
+# Depends on: qt5 cmake kde-libs libmpeg2 xine-lib docbook-xsl docbook-xml dvd+rw-tools dvdauthor libdvdnav libdvdcss kf5-kwidgetsaddons kf5-kguiaddons kf5-kxmlgui kf5-kauth kf5-kcodecs kf5-kcmutils kf5-kcompletion kf5-kconfig kf5-kconfigwidgets kf5-kcoreaddons kf5-kdbusaddons kf5-kdesu kf5-kdnssd kf5-ki18n kf5-kjobwidgets kf5-kpty kf5-kservice kf5-ktexteditor kf5-ktextwidgets kf5-kwidgetsaddons kf5-kxmlgui kf5-kxmlrpcclient kf5-solid
 
 name=k9copy
 version=3.0.3
 release=1
 
-source=(http://sourceforge.net/projects/k9copy-reloaded/files/$name-$version.tar.gz)
+source=("http://sourceforge.net/projects/k9copy-reloaded/files/$name-$version.tar.gz" "k9copy-CMakeLists.patch")
+
 
 
 build() {
-   cd $SRC/$name
-   sed -e 's|Name=k9copy|Name=K9copy|g' \
-        -e '/xdg-open/d' -e '/Encoding/d' -e '/MimeTypes/d' \
-        -i k9copy{,_assistant}.desktop
-   cmake -DCMAKE_INSTALL_PREFIX=/usr -DQT5_BUILD=ON
-   make
-   make DESTDIR=$PKG install
-}
+  cd $SRC/$name
+     patch -p1 -i $SRC/CMakeLists.patch
+     sed -i -e 's|#SET(CMAKE_BUILD_TYPE Debug)|cmake_minimum_required(VERSION 3.2)|' ${SRC}/${name}/CMakeLists.txt
+     cmake ../${name} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DQT5_BUILD=ON \
+    -DQML_INSTALL_DIR=/usr/lib/qt5/qml \
+    -DPLUGIN_INSTALL_DIR=/usr/lib/qt5/plugins \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON 
+
+  make
+   
+
