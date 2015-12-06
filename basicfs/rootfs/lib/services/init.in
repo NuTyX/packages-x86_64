@@ -50,6 +50,8 @@ do_mount_root()
        cat /proc/partitions
        while true ; do sleep 10000 ; done
    fi
+   [ -z "$overlayroot" ] && mountpoint=/.root  || mountpoint=/.roRoot
+   mkdir -p $mountpoint
    if ! mount -n -t "$rootfstype" -o "$rootflags" "$device" /.root ; then
        no_mount $device
        cat /proc/partitions
@@ -57,6 +59,27 @@ do_mount_root()
    else
        log_info_msg "Mounting root file system ${root} in read-only mode..."
        evaluate_retval
+   fi
+   if [ -n "$overlayroot" ]; then
+     overlaydevice=$overlayroot;         # /dev/mapper/<vg>/<lv>
+     mkdir -p /mnt/OVL
+     if ! mount -n "$overlaydevice" /mnt/OVL; then
+       no_mount $overlaydevice
+       cat /proc/partitions
+       while true ; do sleep 10000 ; done
+     else
+       log_info_msg "Mounting overlay upper file system ${overlayroot}..."
+       evaluate_retval
+     fi
+     mkdir -p /mnt/OVL/{upper,work}
+     if ! mount -n -t overlay -o lowerdir=$mountpoint,upperdir=/mnt/OVL/upper,workdir=/mnt/OVL/work overlayrootfs /.root; then
+       no_mount "overlayrootfs"
+       cat /proc/partitions
+       while true ; do sleep 10000 ; done
+     else
+       log_info_msg "Mounting overlay root filesystem..."
+       evaluate_retval
+     fi
    fi
 }
 
@@ -183,6 +206,7 @@ MainLoop(){
 # **********
 
 init=/sbin/init
+overlayroot=
 root=
 rootdelay=
 rootfstype=auto
@@ -199,15 +223,16 @@ read -r cmdline < /proc/cmdline
 
 for param in $cmdline ; do
   case $param in
-    init=*      ) init=${param#init=}             ;;
-    root=*      ) root=${param#root=}             ;;
-    rootdelay=* ) rootdelay=${param#rootdelay=}   ;;
-    rootfstype=*) rootfstype=${param#rootfstype=} ;;
-    rootflags=* ) rootflags=${param#rootflags=}   ;;
-    ro          ) ro="ro"                         ;;
-    rw          ) ro="rw"                         ;;
-    quiet       ) export verbose="no"             ;;
-    testiso     ) export verbose="yes"             ;;
+    init=*       ) init=${param#init=}               ;;
+    root=*       ) root=${param#root=}               ;;
+    rootdelay=*  ) rootdelay=${param#rootdelay=}     ;;
+    overlayroot=*) overlayroot=${param#overlayroot=} ;;
+    rootfstype=* ) rootfstype=${param#rootfstype=}   ;;
+    rootflags=*  ) rootflags=${param#rootflags=}     ;;
+    ro           ) ro="ro"                           ;;
+    rw           ) ro="rw"                           ;;
+    quiet        ) export verbose="no"               ;;
+    testiso      ) export verbose="yes"              ;;
   esac
 done
 
