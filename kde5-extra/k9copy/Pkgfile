@@ -25,6 +25,6 @@ build() {
     -DPLUGIN_INSTALL_DIR=/usr/lib/qt5/plugins \
     -DKDE_INSTALL_USE_QT_SYS_PATHS=ON 
 
-  make
+  	make
    
-
+	make DESTDIR="${pkgdir}" install
