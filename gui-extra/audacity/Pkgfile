@@ -15,7 +15,7 @@ build() {
   patch -p1 -i "${SRC}/ffmpeg.patch"
 
   WX_CONFIG=/usr/bin/wx-config-2.8 \
-  ./configure --prefix=/usr --enable-unicode --with-wx-config=$WX_CONFIG # --with-ffmpeg=no
+  ./configure --prefix=/usr --enable-unicode --with-wx-config=$WX_CONFIG
 
   make
  
