@@ -52,7 +52,7 @@ do_mount_root()
    fi
    [ -z "$overlayroot" ] && mountpoint=/.root  || mountpoint=/.roRoot
    mkdir -p $mountpoint
-   if ! mount -n -t "$rootfstype" -o "$rootflags" "$device" /.root ; then
+   if ! mount -n -t "$rootfstype" -o "$rootflags" "$device" $mountpoint ; then
        no_mount $device
        cat /proc/partitions
        while true ; do sleep 10000 ; done
