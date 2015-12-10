@@ -6,19 +6,19 @@
 name=tripwire
 version=2.4.2.2
 release=1
-source=(http://downloads.sourceforge.net/tripwire/$name-$version-src.tar.bz2 tripwire.patch)
+source=(http://downloads.sourceforge.net/tripwire/$name-$version-src.tar.bz2)
 
 build () {
 
     cd $name-$version-src
     
-    patch -p1 -i $SRC/tripwire.patch
-
-	sed -i -e 's@TWDB="${prefix}@TWDB="/var@' install/install.cfg            
+	sed -i -e 's@TWBIN="${prefix}@TWBIN="$PKG/usr@' install/install.cfg            
+	sed -i -e 's@TWPOLICY="${sysconfdir}@TWPOLICY="$PKG/etc@' install/install.cfg            
+	sed -i -e 's@TWDB="${prefix}@TWDB="$PKG/var@' install/install.cfg            
 	sed -i -e 's/!Equal/!this->Equal/' src/cryptlib/algebra.h                
 	sed -i -e '/stdtwadmin.h/i#include <unistd.h>' src/twadmin/twadmincl.cpp 
-	sed -i -e '/TWMAN/ s|${prefix}|/usr/share|' \
-       -e '/TWDOCS/s|${prefix}/doc/tripwire|/usr/share/doc/tripwire-2.4.2.2|' \
+	sed -i -e '/TWMAN/ s|${prefix}|$PKG/usr/share|' \
+       -e '/TWDOCS/s|${prefix}/doc/tripwire|$PKG/usr/share/doc/tripwire-2.4.2.2|' \
        install/install.cfg                                               
 	sed -i -e 's/eArchiveOpen e\([^)]*)\)/throw ( eArchiveOpen\1 )/' \
        -e '/throw e;/d' src/core/archive.cpp                             
