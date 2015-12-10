@@ -24,6 +24,7 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
     DEPOT=/houaphan" > /etc/install-houaphan.conf
     # mkdir -p /etc/install-houaphan.conf.d
     # cat > /etc/install-houaphan.conf.d/cards.conf << "EOF"
+    dir /houaphan/xfce4-extra
     dir /houaphan/xfce4
     dir /houaphan/gui
     dir /houaphan/cli
@@ -73,15 +74,12 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
  It should shows all the packages available.
 
-#### 11. If you want to build the 'xfce4' collection from the sources
+#### 11. If you want to build the 'xfce4' collection from the sources:
 
+    # cd /root/xfce4
     # bash scripts/xfce4 -a
 
-#### 12. If you want to build the 'xfce4-extra' collection from the sources, add the proper line in top of the cards.conf file like this:
-
-    dir /houaphan/xfce4-extra
-
- then you are ready to compile the 'xfce4-extra' collection
+#### 12. If you want to build the 'xfce4-extra' collection from the sources:
 
     # cd /root/xfce4
     # bash scripts/xfce4-extra -s
