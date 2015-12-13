@@ -4,14 +4,16 @@
 # Depends on: atk nss ninja pciutils gperf yasm xorg-mesa libgnome-keyring elfutils subversion gtk2 dbus-glib nss alsa-lib xdg-utils bzip2 libevent libgcrypt dejavu-ttf opus snappy dbus desktop-file-utils hicolor-icon-theme flac libxml2 pulseaudio xorg-libxscrnsaver xorg-libxtst libexif
 
 name=chromium
-version=46.0.2490.80
+version=47.0.2526.80
 release=1
 
 source=(http://commondatastorage.googleapis.com/chromium-browser-official/$name-$version.tar.xz
         chromium-widevine.patch
         chromium.desktop 
         chromium.default 
-        chromium.sh)
+        chromium.sh
+        chromium-fix-print-preview-on-en_GB-locale.patch
+        0001-Add-FPDFAPIJPEG_-prefix-to-more-libjpeg-functions.patch)
 
 _google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
 _google_default_client_id=413772536636.apps.googleusercontent.com
@@ -23,22 +25,33 @@ build() {
 	cd $name-$version
 
         touch chrome/test/data/webui/i18n_process_css_test.html
+        
+      
+		sed -i "/'target_name': 'libvpx'/s/libvpx/&_new/" build/linux/unbundle/libvpx.gyp
+
+ 
+		patch -Np1 -i ../chromium-fix-print-preview-on-en_GB-locale.patch
+
+ 
+		patch -d third_party/pdfium -Np1 <../0001-Add-FPDFAPIJPEG_-prefix-to-more-libjpeg-functions.patch
+        
+             
   
         sed "s/@WIDEVINE_VERSION@/Pinkie Pie/" ../chromium-widevine.patch | patch -Np1
 
-	find third_party/icu -type f \! -regex '.*\.\(gyp\|gypi\|isolate\)' -delete
+		find third_party/icu -type f \! -regex '.*\.\(gyp\|gypi\|isolate\)' -delete
 
-	# CFLAGS are passed through release_extra_cflags below
-	export -n CFLAGS CXXFLAGS
+	
+		find . -name '*.py' -exec sed -i -r 's|/usr/bin/python$|&2|g' {} +
+		mkdir $SRC/python2-path
+		ln -s /usr/bin/python2 "$SRC/python2-path/python"
 
-	# Build with clang as a temporary solution to startup crash with GCC 4.9
-  	mkdir -p third_party/llvm-build/Release+Asserts/bin
-  	ln -s /usr/bin/clang third_party/llvm-build/Release+Asserts/bin/
-  	ln -s /usr/bin/clang++ third_party/llvm-build/Release+Asserts/bin/
-  	ln -s /usr/bin/llvm-symbolizer third_party/llvm-build/Release+Asserts/bin/
-
-	# clang 3.4 doesn't support this option
-  	sed -i '/-Wno-absolute-value/d' build/common.gypi
+  
+		if (( $_build_nacl )); then
+		python2 build/download_nacl_toolchains.py \
+		--packages nacl_x86_newlib,pnacl_newlib,pnacl_translator \
+		sync --extract
+		fi
 
 local _chromium_conf=(
     -Dgoogle_api_key=$_google_api_key
