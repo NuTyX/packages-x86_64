@@ -4,7 +4,7 @@
 # Depends on:  	clucene icu libcap pam mariadb kerberos openldap openssl postgresql sqlite valgrind 
 
 name=dovecot
-version=2.2.20
+version=2.2.21
 release=1
 
 source=(http://dovecot.org/releases/2.2/$name-$version.tar.gz local.conf)
@@ -21,7 +21,7 @@ build () {
     ./configure --prefix=/usr \
             --sysconfdir=/etc \
             --localstatedir=/var \
-            --docdir=/usr/share/doc/dovecot-2.2.19 \
+            --docdir=/usr/share/doc/dovecot-$version \
             --disable-static \
             --with-ssl=openssl
  
