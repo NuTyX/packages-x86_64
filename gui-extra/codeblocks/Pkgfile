@@ -7,11 +7,12 @@
 name=codeblocks
 version=13.12.1
 _version=13.12-1
-release=3
+release=4
 
 source=(http://sourceforge.net/projects/$name/files/Sources/13.12/codeblocks_${_version}.tar.gz)
 build () {
 cd $name-*
+export CPPFLAGS+=" -DBOOST_ERROR_CODE_HEADER_ONLY"
 export WX_CONFIG_PATH=/usr/bin/wx-config-2.8
 ./configure --prefix=/usr --with-contrib-plugins=all
 make
