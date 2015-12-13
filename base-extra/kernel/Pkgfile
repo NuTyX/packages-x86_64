@@ -7,7 +7,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel
-version=4.2.6
+version=4.3.2
 release=1
 _version=${version%.*}
 
@@ -33,7 +33,7 @@ case `uname -m` in
 		cp $SRC/$name.config ./.config;
 esac
 
-# make menuconfig
+make menuconfig
 
 make || make -j1
 
