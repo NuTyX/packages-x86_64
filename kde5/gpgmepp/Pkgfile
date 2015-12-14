@@ -1,0 +1,25 @@
+# Description : C++ bindings/wrapper for gpgme
+# URL : https://projects.kde.org/gpgmepp
+# Packager : pierre at nutyx dot org
+# Depends on : boost kf5-extra-cmake-modules gpgme qt5
+
+name=gpgmepp
+version=15.08.3
+release=1
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build() {
+mkdir build
+cd    build
+cmake ../$name-$version                 \
+      -DCMAKE_INSTALL_PREFIX=/usr       \
+      -DCMAKE_BUILD_TYPE=Release        \
+      -DLIB_INSTALL_DIR=lib             \
+      -DBUILD_TESTING=OFF               \
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+      -Wno-dev
+make
+make DESTDIR=$PKG install
+}
+
