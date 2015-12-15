@@ -1,23 +1,21 @@
 # Description : Parts of framework 5
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: kf5-kcompletion kf5-kconfig kf5-kconfigwidgets kf5-kcoreaddons kf5-kdbusaddons kf5-kdeclarative kf5-kdelibs4support kf5-ki18n kf5-kiconthemes kf5-kio kf5-kitemviews kf5-knotifications kf5-kservice kf5-kwallet kf5-kwidgetsaddons kf5-kwindowsystem kf5-kxmlgui kf5-networkmanager-qt kf5-plasma-framework kf5-solid 
+# Depends on: kf5-kcompletion kf5-kconfig kf5-kconfigwidgets kf5-kcoreaddons kf5-kdbusaddons kf5-kdeclarative kf5-kdelibs4support kf5-ki18n kf5-kiconthemes kf5-kio kf5-kitemviews kf5-knotifications kf5-kservice kf5-kwallet kf5-kwidgetsaddons kf5-kwindowsystem kf5-kxmlgui kf5-networkmanager-qt kf5-plasma-framework kf5-solid qca-qt5 
 
 _name=plasma-nm
 release=1
 
 build() {
-cd $name-$version
 mkdir build
 cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr             \
-      -DCMAKE_BUILD_TYPE=Release              \
-      -DLIB_INSTALL_DIR=lib                   \
-      -DBUILD_TESTING=OFF                     \
-      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
-      -DQML_INSTALL_DIR=lib/qt5/qml           \
-      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
-      -Wno-dev ..
+cmake ../plasma-nm-$version             \
+      -DCMAKE_INSTALL_PREFIX=/usr       \
+      -DCMAKE_BUILD_TYPE=Release        \
+      -DLIB_INSTALL_DIR=lib             \
+      -DBUILD_TESTING=OFF               \
+      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+      -Wno-dev
 make
 make DESTDIR=$PKG install
 }
