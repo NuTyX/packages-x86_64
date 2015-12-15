@@ -1,17 +1,19 @@
 # Description : This package going install KDE5 and its dependencies
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org, fanch at nutyx dot org, tnut at nutyx dot org
-# Depends on: xorg kf5 plasma phonon-backend-gstreamer-qt5 oxygen-gtk2 oxygen-gtk3 gnupg kmix alsa-plugins kio-extras plasma-kwayland-integration plasma-kwallet-pam libappindicator-gtk2 kf5-oxygen-icons5
+# Depends on: xorg kf5 plasma phonon-backend-gstreamer-qt5 oxygen-gtk2 oxygen-gtk3 gnupg kmix alsa-plugins kio-extras plasma-kwayland-integration plasma-kwallet-pam kf5-oxygen-icons5 kf5-breeze-icons noto-fonts
 
-run=(xorg kf5 plasma phonon-backend-gstreamer-qt5 oxygen-gtk2 oxygen-gtk3 gnupg kmix alsa-plugins kio-extras plasma-kwayland-integration plasma-kwallet-pam libappindicator-gtk2 kf5-oxygen-icons5 ) 
+run=(xorg kf5 plasma phonon-backend-gstreamer-qt5 oxygen-gtk2 oxygen-gtk3 gnupg kmix alsa-plugins kio-extras plasma-kwayland-integration plasma-kwallet-pam kf5-oxygen-icons5 kf5-breeze-icons noto-fonts)  
 
 name=kde5
 release=1
-version=20151130
+version=20151209
 
 source=()
 
 build() {
+
+unset makeflags
 
 mkdir -pv $PKG/etc/profile.d/
 
