@@ -14,13 +14,13 @@ source=(http://download.kde.org/stable/applications/$version/src/$name-$version.
 build() {
   mkdir -p build
   cd build
-  cmake ../$name-$version \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib \
+  cmake ../$name-$version             \
+    -DCMAKE_BUILD_TYPE=Release        \
+    -DCMAKE_INSTALL_PREFIX=/usr       \
+    -DCMAKE_INSTALL_LIBDIR=lib        \
     -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
-    -DINSTALL_QSQLITE_IN_QT_PREFIX=TRUE \
-    -DBUILD_TESTING=OFF
+    -DBUILD_TESTING=OFF               \
+    -Wno-dev
   make
   make DESTDIR=$PKG install
 }
