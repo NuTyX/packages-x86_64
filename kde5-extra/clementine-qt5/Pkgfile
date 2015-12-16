@@ -1,0 +1,30 @@
+# Description: A music player and library organizer.
+# URL: http://www.clementine-player.org/
+# Packager: pierre at nutyx dot org
+# Depends on: boost libechonest kf5-kcrash qt5 crypto++ qjson sparsehash xorg-mesa libcdio libmtp protobuf qca-qt5 taglib chromaprint glew gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-ugly gstreamer-plugins-ffmpeg gstreamer-plugins-bad gvfs
+
+run=(gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-ugly gstreamer-plugins-ffmpeg gstreamer-plugins-bad gvfs)
+
+name=clementine-qt5
+version=1.2.3
+
+release=1
+
+source=(https://github.com/clementine-player/Clementine/tarball/qt5/Clementine-$version.tar.gz
+       clementine-qt5-tab_color.diff)
+
+build() {
+   cd clementine-player*
+
+   patch -p1 -i ../clementine-qt5-tab_color.diff
+
+   mkdir build
+   cd    build
+
+   cmake .. \
+      -DCMAKE_INSTALL_PREFIX=/usr  \
+      -DCMAKE_BUILD_TYPE='Release' \
+      -DENABLE_VK=ON
+   make
+   make DESTDIR=$PKG install
+}
