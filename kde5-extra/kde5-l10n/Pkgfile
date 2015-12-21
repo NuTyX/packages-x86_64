@@ -1,10 +1,10 @@
 # Description :  Many Localization for KDE5
 # URL : http:/$langwww.kde.org
 # Packager : pierre at nutyx dot org
-# Depends on : kde-libs automoc4 cmake kf5-extra-cmake-modules kf5-ki18n kf5-kdoctools phonon
+# Depends on : kde-runtime kf5-extra-cmake-modules kf5-ki18n kf5-kdoctools phonon
 
 name=kde5-l10n
-version=15.08.3
+version=15.12.0
 release=1
 
 source=()
@@ -80,6 +80,6 @@ do
   rm $PKG/usr/share/locale/$lang/LC_MESSAGES/soliduiserver.mo
   rm $PKG/usr/share/locale/$lang/LC_MESSAGES/systemsettings.mo
   rm $PKG/usr/share/locale/$lang/LC_MESSAGES/useraccount.mo
-
+  rm -rf $PKG/usr/share/doc/HTML/
 done
 }

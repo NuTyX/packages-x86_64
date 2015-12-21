@@ -4,20 +4,15 @@
 # Depends on : qt5 nss cmake doxygen
 
 name=qca-qt5
-version=2.1.0.3
-release=2
+version=2.1.1
+release=1
 
-source=(http://download.kde.org/stable/$name/$version/src/$name-$version.tar.xz
-        qca-qt5-qiodevice.patch)
+source=(http://download.kde.org/stable/qca/$version/src/qca-$version.tar.xz)
 
 build() {
 mkdir build
-
-cd $name-$version
-patch -p1 -i $SRC/qca-qt5-qiodevice.patch
-
-cd ../build
-cmake ../$name-$version           \
+cd build
+cmake ../qca-$version           \
     -DCMAKE_INSTALL_PREFIX=/usr   \
     -DBUILD_TESTS=OFF             \
     -DQCA_SUFFIX=qt5              \

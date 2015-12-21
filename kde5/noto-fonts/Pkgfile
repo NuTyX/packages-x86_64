@@ -1,0 +1,17 @@
+# Description : Google Noto TTF fonts
+# URL : https://www.google.com/get/noto/
+# Packager : pierre at nutyx dot org
+# Depends on : xorg-fontconfig
+
+name=noto-fonts
+version=2015-09-29
+_pkgver=2015-09-29
+pkgver=${_pkgver//-}
+release=1
+
+source=(https://github.com/googlei18n/noto-fonts/archive/v$_pkgver-license-adobe.tar.gz)
+
+build() {
+  mkdir -p $PKG/usr/share/fonts/noto
+  install -m644 $name-$_pkgver-license-adobe/hinted/*.ttf $PKG/usr/share/fonts/noto
+}

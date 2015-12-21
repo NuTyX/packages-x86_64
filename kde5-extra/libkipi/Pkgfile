@@ -1,0 +1,24 @@
+# Description : An interface to use kipi-plugins from a KDE application
+# URL : https://projects.kde.org/projects/kde/kdegraphics/libs/libkipi
+# Pakager : pierre at nutyx dot org
+# Depends on : kf5-extra-cmake-modules kf5-kxmlgui hicolor-icon-theme
+
+name=libkipi
+version=15.12.0
+release=1
+
+source=(http://download.kde.org/stable/applications/${version}/src/${name}-${version}.tar.xz)
+
+build() {
+mkdir -p build
+cd build
+cmake ../${name}-${version} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_TESTING=OFF \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON
+make
+make DESTDIR=$PKG install
+}
+
