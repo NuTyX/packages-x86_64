@@ -1,7 +1,7 @@
 # Description: Document Viewer
 # URL: http://www.kde.org
 # Packager: pierre at nutyx dot org
-# Depends on : cmake automoc4 kde-runtime freetype qimageblitz poppler-qt4 libspectre djvulibre qca libkexiv2 plasma-libkscreen zlib
+# Depends on : cmake automoc4 kde-libs freetype qimageblitz poppler-qt4 libspectre djvulibre qca-qt5 exiv2 zlib
                
 name=okular
 version=15.12.0
@@ -10,14 +10,14 @@ release=1
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build() {
-cd $name-$version
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/usr      \
-      -DSYSCONF_INSTALL_DIR=/etc/kde   \
-      -DCMAKE_BUILD_TYPE=Release       \
-      -DWITH_ActiveApp=OFF             \
-      -Wno-dev ..
-make
-make DESTDIR=$PKG install
+  mkdir build
+  cd build
+  cmake ../okular-$version       \
+     -DCMAKE_BUILD_TYPE=Release  \
+     -DKDE4_BUILD_TESTS=OFF      \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DWITH_ActiveApp=OFF        \
+     -Wno-dev
+  make
+  make DESTDIR=$PKG install
 }
