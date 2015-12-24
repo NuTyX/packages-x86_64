@@ -4,11 +4,11 @@
 # Depends on: gtk2 yasm desktop-file-utils libdvdnav libdvdcss cdparanoia libcdio-paranoia libdvdread samba libbluray live xorg-libxvmc opus alsa-utils pulseaudio sdl jack openal sgml-common aalib giflib libjpeg-turbo libmng libpng openjpeg libcaca faac faad2 lame liba52 libdv libmad libmpeg2 libtheora libvpx lzo mpg123 speex xvid libmpcdec xorg-fontconfig freetype gnutls openssl opus unrar libxslt docbook-xsl docbook-xml enca glib xorg-libxxf86dga 
 
 name=mplayer
-version=1.2
-release=2
+version=r37561
+release=1
 
 source=(MPlayer-rectif-traduction-fr.patch $name.conf
-	http://www.mplayerhq.hu/MPlayer/releases/MPlayer-$version.tar.xz
+	 http://anduin.linuxfromscratch.org/BLFS/other/$name-SVN-r37561.tar.xz
 		ftp://ftp.mplayerhq.hu/MPlayer/skins/Clearlooks-1.7.tar.bz2
 		ftp://ftp.mplayerhq.hu/MPlayer/skins/KDE-0.3.tar.bz2
 		ftp://ftp.mplayerhq.hu/MPlayer/skins/XFce4-1.0.tar.bz2
@@ -17,7 +17,8 @@ source=(MPlayer-rectif-traduction-fr.patch $name.conf
 
 build() {
 
-cd MPlayer-$version
+cd $name-SVN-$version
+
 sed -i 's:libsmbclient.h:samba-4.0/&:' configure stream/stream_smb.c 
 
 patch -p1 -i ../MPlayer-rectif-traduction-fr.patch
@@ -53,38 +54,37 @@ make doc
 
 make DESTDIR=$PKG install
 
-
-install -v -m755 -d $PKG/usr/share/doc/mplayer-1.2 
+install -v -m755 -d $PKG/usr/share/doc/mplayer-SVN-r37561
 
 install -v -m644    DOCS/HTML/fr/* \
-                    $PKG/usr/share/doc/mplayer-1.2
+                    $PKG/usr/share/doc/mplayer-SVN-r37561
                     
 install -v -m644    DOCS/HTML/de/* \
-                    $PKG/usr/share/doc/mplayer-1.2
+                    $PKG/usr/share/doc/mplayer-SVN-r37561
                     
 install -v -m644    DOCS/HTML/it/* \
-                    $PKG/usr/share/doc/mplayer-1.2
+                    $PKG/usr/share/doc/mplayer-SVN-r37561
                     
 install -v -m644    DOCS/HTML/es/* \
-                    $PKG/usr/share/doc/mplayer-1.2
+                    $PKG/usr/share/doc/mplayer-SVN-r37561
            
 install -v -m644    DOCS/HTML/en/* \
-                    $PKG/usr/share/doc/mplayer-1.2
+                    $PKG/usr/share/doc/mplayer-SVN-r37561
 
 install -v -m644    DOCS/HTML/cs/* \
-                    $PKG/usr/share/doc/mplayer-1.2
+                    $PKG/usr/share/doc/mplayer-SVN-r37561
 
 install -v -m644    DOCS/HTML/hu/* \
-                    $PKG/usr/share/doc/mplayer-1.2
+                    $PKG/usr/share/doc/mplayer-SVN-r37561
 
 install -v -m644    DOCS/HTML/pl/* \
-                    $PKG/usr/share/doc/mplayer-1.2
+                    $PKG/usr/share/doc/mplayer-SVN-r37561
 
 install -v -m644    DOCS/HTML/ru/* \
-                    $PKG/usr/share/doc/mplayer-1.2
+                    $PKG/usr/share/doc/mplayer-SVN-r37561
                     
 install -v -m644    DOCS/HTML/zh_CN/* \
-                    $PKG/usr/share/doc/mplayer-1.2
+                    $PKG/usr/share/doc/mplayer-SVN-r37561
 
                     
 install -v -m644 etc/codecs.conf $PKG/etc/mplayer
