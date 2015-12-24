@@ -5,13 +5,13 @@
 # Depends on: freetype fox libpng libjpeg-turbo libtiff expat intltool
 
 name=xfe
-version=1.37
-release=2
+version=1.41
+release=1
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 build() {
 cd $name-$version
-sed -i 's|freetype/config/ftheader.h|config/ftheader.h|g' configure.ac
+export CFLAGS="$CFLAGS `pkg-config --cflags freetype2`"
 aclocal
 automake --add-missing
 autoreconf
