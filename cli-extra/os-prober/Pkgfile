@@ -42,6 +42,9 @@ mkdir $PKG/usr/lib/linux-boot-probes/mounted
 cp linux-boot-probes/mounted/common/* $PKG/usr/lib/linux-boot-probes/mounted
 cp linux-boot-probes/mounted/x86/* $PKG/usr/lib/linux-boot-probes/mounted
 
+mkdir -p $PKG/etc/default/
+cp $SRC/grub $PKG/etc/default/
+
 mkdir -p $PKG/usr/share/$name
 cp common.sh $PKG/usr/share/$name
 chmod +x $PKG/usr/share/$name/common.sh
