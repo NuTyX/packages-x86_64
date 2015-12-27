@@ -3,20 +3,21 @@
 # Packager: berlius at nutyx dot com
 # Depends on: ocaml
 
-name=findlib
+name=ocaml-findlib
+_name=findlib
 version=1.5.6
 release=1
-source=(http://download.camlcity.org/download/$name-$version.tar.gz)
+source=(http://download.camlcity.org/download/${_name}-$version.tar.gz)
 
 build() {
 
-    cd $name-$version
+    cd ${_name}-$version
     
     ./configure -bindir /usr/bin \
                 -config /etc/findlib.conf
                 
     export prefix=$PKG
-    make
+    make -j1
     make opt
     make install
     
