@@ -24,6 +24,7 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
     DEPOT=/houaphan" > /etc/install-houaphan.conf
     # mkdir -p /etc/install-houaphan.conf.d
     # cat > /etc/install-houaphan.conf.d/cards.conf << "EOF"
+    dir /houaphan/kde5-extra
     dir /houaphan/kde5
     dir /houaphan/gui
     dir /houaphan/cli
@@ -73,16 +74,11 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
 
  It should shows all the packages available.
 
-#### 11. If you want to build the 'kde5' collection from the sources
+#### 11. If you want to build the 'kde5' collection from the sources:
 
     # bash scripts/kde5 -a
 
-#### 12. If you want to build the 'kde5-extra' collection from the sources, add the proper lines in top of the cards.conf file like this:
-
-    dir /houaphan/kde5-extra
-    dir /houaphan/kde
-
- then you are ready to compile the 'kde5-extra' collection
+#### 12. If you want to build the 'kde5-extra' collection from the sources:
 
     # cd /root/kde5
     # bash scripts/kde5-extra -s
