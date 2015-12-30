@@ -4,14 +4,13 @@
 # Depends on : xorg-fontconfig
 
 name=noto-fonts
-version=2015-09-29
-_pkgver=2015-09-29
-pkgver=${_pkgver//-}
+version=20151224
+_commit=3f1dc1
 release=1
 
-source=(https://github.com/googlei18n/noto-fonts/archive/v$_pkgver-license-adobe.tar.gz)
+source=(https://github.com/googlei18n/noto-fonts/archive/$_commit.zip)
 
 build() {
   mkdir -p $PKG/usr/share/fonts/noto
-  install -m644 $name-$_pkgver-license-adobe/hinted/*.ttf $PKG/usr/share/fonts/noto
+  install -m644 $name-*/hinted/Noto*.ttf $PKG/usr/share/fonts/noto
 }
