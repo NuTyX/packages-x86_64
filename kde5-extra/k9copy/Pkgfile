@@ -5,17 +5,20 @@
 
 name=k9copy
 version=3.0.3
-release=1
+release=2
 
-source=("http://sourceforge.net/projects/k9copy-reloaded/files/$name-$version.tar.gz" "CMakeLists.txt")
+source=(http://sourceforge.net/projects/k9copy-reloaded/files/$name-$version.tar.gz
+        k9copy-CMakeLists.txt)
 
 build(){
-    cd "$SRC/$name"
-	rm CMakeLists.txt
-	cp ${SRC}/CMakeLists.txt ${SRC}/${name}/CMakeLists.txt
-	sed -e 's|Name=k9copy|Name=K9copy|g' \
-    -e '/xdg-open/d' -e '/Encoding/d' -e '/MimeTypes/d' \
-    -i k9copy{,_assistant}.desktop
+    cd $SRC/$name
+    rm CMakeLists.txt
+    cp $SRC/k9copy-CMakeLists.txt $SRC/$name/CMakeLists.txt
+
+    sed -e 's|Name=k9copy|Name=K9copy|g' \
+        -e '/xdg-open/d' -e '/Encoding/d' -e '/MimeTypes/d' \
+        -i k9copy{,_assistant}.desktop
+
     cmake -DCMAKE_INSTALL_PREFIX=/usr -DQT5_BUILD=ON -Wno-dev
     make
 
