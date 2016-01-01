@@ -1,0 +1,52 @@
+# Description: GNU Standard C++ library version 3
+# URL: http://gcc.gnu.org
+# Packager: Chris Farrell, timcowchip at gmail dot com
+# Maintainer: Chris Farrell, timcowchip at gmail dot com
+# Depends on:
+
+name=libstdc++5
+version=3.3.6
+release=1
+pkgdesc="GNU Standard C++ library version 3"
+arch=('i686' 'x86_64')
+url="http://gcc.gnu.org"
+license=('GPL' 'LGPL')
+depends=('gcc-libs')
+makedepends=('binutils' 'gcc')
+options=('!makeflags')
+source=(ftp://gcc.gnu.org/pub/gcc/releases/gcc-${version}/gcc-{core,g++}-${version}.tar.bz2
+        gcc-3.4.3-no_multilib_amd64.patch
+        siginfo.patch)
+
+build() {
+
+  cd gcc-$version
+
+  if [ "$CARCH" = "x86_64" ]; then
+    patch -Np0 -i $SRC/gcc-3.4.3-no_multilib_amd64.patch
+  fi
+  
+  # fix build issue with recent gcc
+  sed -i "s#O_CREAT#O_CREAT, 0666#" gcc/collect2.c
+
+  # No fixincludes
+  sed -i -e 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
+
+  patch -Np0 -i ../siginfo.patch
+
+  mkdir ../gcc-build
+
+  cd $SRC/gcc-build
+  CPP=/usr/bin/cpp ../gcc-${version}/configure --prefix=/usr --enable-shared \
+      --enable-languages=c++ --enable-threads=posix --enable-__cxa_atexit \
+      --disable-multilib --libdir=/usr/lib
+  make all-target-libstdc++-v3 BOOT_CFLAGS="${CFLAGS}" STAGE1_CFLAGS="-O"
+
+  make DESTDIR=${PKG} install-target-libstdc++-v3
+
+  # Remove includefiles and libs provided by gcc
+  rm -rf ${PKG}/usr/{include,share/locale}
+  rm -f ${PKG}/usr/lib/*.a
+  rm -f ${PKG}/usr/lib/libstdc++.so
+}
+
