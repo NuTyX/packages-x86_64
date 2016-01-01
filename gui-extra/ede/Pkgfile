@@ -1,0 +1,26 @@
+# Description: The lightweight Equinox Desktop Environment
+# URL: http://equinox-project.org/
+# Packager: Chris Farrell, timcowchip at gmail dot com
+# Maintainer: Chris Farrell, timcowchip at gmail dot com
+# Depends on: edelib ftjam asciidoc libxkbfile libxpm libpnglibrsvg upower curl
+
+name=ede
+version=2.2
+release=1
+
+source=()
+
+build() {
+	svn co https://svn.code.sf.net/p/ede/code/trunk/ede2/
+    cd ede2
+        
+    ./autogen.sh
+	FLTK_CONFIG="/usr/bin/fltk-config"
+    ./configure --prefix=/usr
+	     
+    jam || true
+    
+    install -d "$PKG"/usr/{bin,etc,share}
+    
+	jam DESTDIR="$PKG" install || true
+}
