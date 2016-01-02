@@ -6,7 +6,7 @@
 name=os-prober
 version=1.70
 release=1
-source=(http://ftp.de.debian.org/debian/pool/main/o/os-prober/os-prober_1.70.tar.xz)
+source=(http://ftp.de.debian.org/debian/pool/main/o/os-prober/os-prober_1.70.tar.xz grub)
 
 build() {
 	cd $name-$version
@@ -50,6 +50,6 @@ cp common.sh $PKG/usr/share/$name
 chmod +x $PKG/usr/share/$name/common.sh
 # End of making os-prober directory hierarchy.
 
-tar  -cvjf os-prober#1.63-1.pkg.tar.bz2 $PKG/*
+tar  -cvjf os-prober#1.70.pkg.tar.bz2 $PKG/*
 
 }
