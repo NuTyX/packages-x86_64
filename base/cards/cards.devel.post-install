@@ -1,9 +1,12 @@
 . lib/lsb/init-functions
 [ ! -d etc/ports ] && mkdir -p etc/ports
-for i in base.cards cli.cards gui.cards base-extra.cards cli-extra.cards gui-extra.cards
+for i in base cli gui base-extra cli-extra gui-extra xfce4 xfce4-extra kde5 kde5-extra gnome gnome-extra
 do
    if [ ! -f etc/ports/$i ]; then
-      echo "host=downloads.nutyx.org" > etc/ports/$i
+      echo "host=downloads.nutyx.org
+destination=/usr/ports/$i
+version=houaphan
+collection=$i" > etc/ports/$i.cards
       log_success_msg "${WARNING} /etc/ports/$i created ${NORMAL}"
       log_warning_msg "${WARNING} Double check /etc/ports/$i and adapted to your needs ${NORMAL}"
    fi
