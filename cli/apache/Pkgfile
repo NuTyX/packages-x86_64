@@ -4,7 +4,7 @@
 # Depends on: pcre apr-util sqlite expat 
 
 name=apache
-version=2.4.17
+version=2.4.18
 release=1
 
 source=(http://archive.apache.org/dist/httpd/httpd-$version.tar.bz2
@@ -44,4 +44,5 @@ cd $SRC
 tar xf $scripts-$scriptsversion.tar.bz2
 cd $SRC/$scripts-$scriptsversion
 make DESTDIR=$PKG install-httpd
+mv $PKG/etc/httpd/httpd.conf{,.example}
 }
