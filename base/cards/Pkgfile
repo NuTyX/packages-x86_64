@@ -21,7 +21,8 @@ devel()
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+usr/include \
 usr/bin \
 etc/pkgmk.conf.example
-rm -rf usr/bin etc/pkgmk.conf.example
+rm -rf usr/bin usr/include etc/pkgmk.conf.example
 }
