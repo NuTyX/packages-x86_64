@@ -1,17 +1,17 @@
-# Description: The grep command searches one or more input files for lines containing a match to a specified pattern. By default, grep prints the matching lines.
+# Description: The grep command searches one or more input files for lines containing a match to a specified pattern.
 # URL: http://www.gnu.org/software/grep/
 # Maintainers: Jim Meyering jim at meyering dot net,Paolo Bonzini bonzini at gnu dot org
 # Packager: pierre at nutyx dot org
+
 name=grep
-version=2.21
-release=2
+version=2.22
+release=1
 
 source=(http://ftp.gnu.org/gnu/grep/grep-$version.tar.xz)
 
 build()
 {
 cd grep-$version
-sed -i -e '/tp++/a  if (ep <= tp) break;' src/kwset.c
 
 ./configure --prefix=/usr --bindir=/bin
 make
