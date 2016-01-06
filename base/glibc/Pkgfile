@@ -1,13 +1,14 @@
-# Description: The Glibc package contains the main C library. This library provides the basic routines for allocating memory,searching directories, opening and closing files,reading and writing files, string handling,pattern matching, arithmetic, and so on.
+# Description: The Glibc package contains the main C library.
 # URL: https://www.gnu.org/software/libc/
 # Packagers: tnut at nutyx dot org
 kernelversion=4.2
 PKGMK_GROUPS=(devel man doc)
 name=glibc
 version=2.22
-release=1
+release=2
 
 source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
+	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-largefile-1.patch
 	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
 	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-upstream_i386_fix-1.patch
 	http://ftp.gnu.org/gnu/glibc/glibc-$version.tar.xz glibc.locales.supported )
@@ -24,17 +25,9 @@ cp -rv dest/include/* $PKG/usr/include
 
 cd ../glibc-$version
 
+patch -Np1 -i ../glibc-$version-fhs-1.patch
 patch -Np1 -i ../glibc-$version-upstream_i386_fix-1.patch
-
-sed -e '/ia32/s/^/1:/' \
-    -e '/SSE2/s/^1://' \
-    -i  sysdeps/i386/i686/multiarch/mempcpy_chk.S
-
-sed -i '/glibc.*pad/{i\  buflen = buflen > pad ? buflen - pad : 0;
-                     s/ + pad//}' resolv/nss_dns/dns-host.c
-                     
-sed -e '/tst-audit2-ENV/i CFLAGS-tst-audit2.c += -fno-builtin' \
-    -i elf/Makefile    
+patch -Np1 -i ../glibc-$version-largefile-1.patch
 
 mkdir -v ../glibc-build
 cd ../glibc-build
@@ -97,6 +90,19 @@ cat > $PKG/etc/ld.so.conf << "EOF"
 include /etc/ld.so.conf.d/*.conf
 # End of  /etc/ld.so.conf
 EOF
+
+if [ "`uname -m`" == "i686" ];then
+	cat > $PKG/etc/ld.so.conf << "EOF"
+# Begin /etc/ld.so.conf
+/lib
+/usr/lib
+/usr/local/lib
+
+# Add an include directory
+include /etc/ld.so.conf.d/*.conf
+# End of  /etc/ld.so.conf
+EOF
+fi
 
 mkdir $PKG/etc/ld.so.conf.d
 }
