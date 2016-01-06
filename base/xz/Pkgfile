@@ -1,4 +1,4 @@
-# Description: XZ Utils is free general-purpose data compression software with high compression ratio. XZ Utils were written for POSIX-like systems, but also work on some not-so-POSIX systems. XZ Utils are the successor to LZMA Utils.
+# Description: XZ Utils is free general-purpose data compression software with high compression ratio.
 # URL: http://tukaani.org/xz/
 # Maintainer: Lasse Collin, lasse dot collin at tukaani dot org
 # Packager: tnut at nutyx dot org
@@ -6,13 +6,17 @@
 PKGMK_GROUPS=(devel man doc)
 
 name=xz
-version=5.2.1
+version=5.2.2
 release=1
 
 source=(http://tukaani.org/xz/xz-$version.tar.xz)
 build()
 {
 cd xz-$version
+
+sed -e '/mf\.buffer = NULL/a next->coder->mf.size = 0;' \
+     -i src/liblzma/lz/lz_encoder.c
+
 ./configure --prefix=/usr \
 --bindir=/bin \
  --docdir=/usr/share/doc/xz-$version
