@@ -13,7 +13,6 @@ build()
 cd texinfo-*
 ./configure --prefix=/usr
 make
-make check
 make install DESTDIR=$PKG
 rm -rf $PKG/usr/share/info/dir
 }
