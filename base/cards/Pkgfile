@@ -4,9 +4,9 @@
 # Packager: tnut at nutyx dot org
 
 PKGMK_IGNORE_RUNTIMEDEPS="no"
-
+PKGMK_GROUPS=(devel lib doc man)
 name=cards
-version=1.97.0
+version=1.98.0
 release=1
 
 source=(http://downloads.nutyx.org/files/$name-$version.tar.gz)
@@ -21,8 +21,11 @@ devel()
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
-usr/include \
 usr/bin \
+usr/ports \
+usr/include \
+var \
+etc/ports \
 etc/pkgmk.conf.example
-rm -rf usr/bin usr/include etc/pkgmk.conf.example
+rm -rf var usr/bin usr/ports usr/include etc/pkgmk.conf.example etc/ports 
 }
