@@ -1,18 +1,16 @@
-# Description: SWIG (Simplified Wrapper and Interface Generator) is a compiler that integrates C and C++ with languages including Perl, Python, Tcl, Ruby, PHP, Java, C#, D, Go, Lua, Octave, R, Scheme, Ocaml, Modula-3, Common Lisp, and Pike. SWIG can also export its parse tree into Lisp s-expressions and XML.
+# Description: SWIG (Simplified Wrapper and Interface Generator) is a compiler that integrates C and C++ with languages including Perl, Python, Tcl, Ruby, PHP, Java, C#, D, Go, Lua, Octave, R, Scheme, Ocaml, Modula-3, Common Lisp, and Pike.
 # URL: http://www.swig.org/
 # Packagers: pierre at nutyx dot org, tnut at nutyx dot org
 # Depends on: pcre 
 
-
 name=swig
-version=3.0.7
+version=3.0.8
 release=1
 
 source=("http://downloads.sourceforge.net/$name/$name-$version.tar.gz")
 
 build() {
 cd $name-$version
-sed -i 's/"\.")/"_")/' -i Source/Modules/go.cxx
 ./configure --prefix=/usr \
 --without-clisp \
 --without-maximum-compile-warnings
