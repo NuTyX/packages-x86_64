@@ -2,11 +2,12 @@
 # URL: http://www.isc.org/downloads/bind/ 
 # Packager: tnut at nutyx dot org
 # Depends on: kerberos libxml2 
+
 name=bind
-version=9.10.2.p4
+version=9.10.3.p2
 release=1
 
-source=(ftp://ftp.isc.org/isc/bind9/9.10.2-P4/bind-9.10.2-P4.tar.gz)
+source=(ftp://ftp.isc.org/isc/bind9/9.10.3-P3/bind-9.10.3-P2.tar.gz)
 
 build(){
     # blfs-bootscript
@@ -15,7 +16,7 @@ build(){
     tar xvf $scripts-$scriptsversion.tar.bz2
 
     # pkg
-    cd $name-9.10.2-P4
+    cd $name-9.10.3-P2
     ./configure --prefix=/usr \
                 --sysconfdir=/etc \
                 --localstatedir=/var \
