@@ -1,9 +1,9 @@
-# Description: GDB, the GNU Project debugger, allows you to see what is going on “inside” another program while it executes -- or what another program was doing at the moment it crashed. Note that GDB is most effective when tracing programs and libraries that were built with debugging symbols and not stripped.
+# Description: GDB, the GNU Project debugger, allows you to see what is going on “inside” another program while it executes.
 # URL: http://www.sourceware.org/gdb/
 # Packager: tnuttens at gmail dot com
 
 name=gdb
-version=7.10
+version=7.10.1
 release=1
 
 source=(http://ftp.gnu.org/gnu/gdb/$name-$version.tar.xz)
@@ -12,6 +12,7 @@ cd $name-$version
 ./configure --prefix=/usr --with-system-readline
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/include/plugin-api.h
 rm $PKG/usr/share/info/bfd.info
 rm $PKG/usr/include/ansidecl.h
 rm $PKG/usr/include/bfd.h
