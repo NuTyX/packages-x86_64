@@ -4,7 +4,7 @@
 # Depends on: libtasn1 nettle libidn p11-kit
 
 name=gnutls
-version=3.4.4.1
+version=3.4.7
 release=1
 
 source=(ftp://ftp.gnutls.org/gcrypt/$name/v${version:0:3}/$name-$version.tar.xz)
@@ -17,5 +17,5 @@ cd $name-$version
 --disable-guile
 make
 make DESTDIR=$PKG install
-rm $PKG/usr/share/info/dir
+rm -f $PKG/usr/share/info/dir
 }
