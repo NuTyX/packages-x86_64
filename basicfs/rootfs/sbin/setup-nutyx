@@ -1523,6 +1523,9 @@ parse_options() {
 					SETUP_CHECKALL="yes"
 					SETUP_START_SERVICE="yes"
 					;;
+				stop)
+					SETUP_UPGRADE="yes"
+					;;
 				-ok|--check-all)
 					SETUP_CHECKALL="yes"
 					;;
@@ -1657,6 +1660,14 @@ main () {
 		TMP=`mktemp -d`
 		top_loop
 		cleanup
+	fi
+	if [ "$SETUP_UPGRADE" == "yes" ]; then
+		if [ "`cards upgrade --size 2> /dev/null`" != "0" ];then
+			cards upgrade
+		else
+			log_info_msg "System is up to date ..."
+			evaluate_retval
+		fi
 	fi
 }
 

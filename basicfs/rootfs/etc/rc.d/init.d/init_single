@@ -6,7 +6,6 @@ case ${1} in
   start)
          do_mount_virtualfs || exit 1
          do_load_modules || exit 1
-         do_start_localnet || exit 1
          do_start_udev || exit 1
          do_start_checkfs || exit 1
          do_start_mountfs || exit 1
@@ -21,6 +20,8 @@ case ${1} in
    stop)
          do_stop_clock
          do_stop_swap
+         setup-nutyx stop
+         do_stop_network
          do_stop_mountfs
          do_stop_localnet
          ;;
