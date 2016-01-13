@@ -188,6 +188,7 @@ umount ${FOLDER}/sys
 #
 #*******************************************************************************
 setup_chroot() {
+cp /etc/resolv.conf ${FOLDER}/etc/resolv.conf
 mount --bind /dev ${FOLDER}/dev
 mount -t devpts devpts ${FOLDER}/dev/pts
 mount -t proc proc ${FOLDER}/proc
@@ -233,7 +234,7 @@ install_pkg() {
 		wget ${DEPOT_BASE}/${1}/$packagefileToDownload  -O $TMP/$packagefileToDownload > /dev/null 2>&1
 		echo_info
 		# Installing the package
-		$TMP/usr/bin/pkgadd -r $FOLDER $packagefileToDownload || print_error_msg
+		$TMP/usr/bin/pkgadd -r $FOLDER -i $packagefileToDownload || print_error_msg
 		echo_ok	
 	fi
 }
@@ -981,7 +982,7 @@ proftpd:x:46:
 vsftpd:x:47:
 rsyncd:x:48:
 sshd:x:50:
-stunnnel:x:51:
+stunnel:x:51:
 svn:x:56:
 svntest:x:57:
 pulse:x:58:
