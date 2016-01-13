@@ -4,14 +4,17 @@
 # Depends on: libevdev mtdev
 
 name=libinput
-version=1.0.1
+version=1.1.4
 release=1
 
 source=(http://freedesktop.org/software/$name/$name-$version.tar.xz )
 
 build() {
 cd $name-$version
-./configure --prefix=/usr --disable-static
+./configure --prefix=/usr --disable-static \
+--with-udev-dir=/lib/udev
 make
 make DESTDIR=$PKG install
+install -v -dm755 $PKG/usr/share/doc/libinput-$version
+cp -rv doc/html/* $PKG/usr/share/doc/libinput-$version
 }
