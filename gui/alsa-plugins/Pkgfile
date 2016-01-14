@@ -2,8 +2,9 @@
 # URL: http://www.alsa-project.org
 # Packager: pierre at nutyx dot org
 # Depends on: alsa-lib ffmpeg pulseaudio libsamplerate speex 
+
 name=alsa-plugins
-version=1.0.29
+version=1.1.0
 release=1
 
 source=(ftp://ftp.alsa-project.org/pub/plugins/$name-$version.tar.bz2
@@ -11,6 +12,9 @@ source=(ftp://ftp.alsa-project.org/pub/plugins/$name-$version.tar.bz2
 
 build() {
 cd $name-$version
+
+sed -i "/speex_preprocess.h/i#include <stdint.h>" speex/pcm_speex.c
+
 ./configure --prefix=/usr 
 make
 make DESTDIR=$PKG install
