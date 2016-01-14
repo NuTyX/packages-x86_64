@@ -11,7 +11,8 @@ source=(http://mirror.switch.ch/ftp/mirror/X11/pub/individual/lib/libXt-$version
 
 build() {
 cd libXt-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+--with-appdefaultdir=/etc/X11/app-defaults
 make
 make DESTDIR=$PKG install
 }
