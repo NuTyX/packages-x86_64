@@ -2,8 +2,9 @@
 # URL: http://www.ghostscript.com/awki
 # Packager: pierre at nutyx dot org
 # Depends on: glib atk libpng libjpeg-turbo libtiff jasper lcms2 gnutls cups 
+
 name=ghostscript
-version=9.16
+version=9.18
 release=1
 
 source=( http://downloads.ghostscript.com/public/$name-$version.tar.gz
@@ -13,7 +14,7 @@ source=( http://downloads.ghostscript.com/public/$name-$version.tar.gz
 build() {
 cd $name-$version
 sed -i 's/ZLIBDIR=src/ZLIBDIR=$includedir/' configure.ac configure 
-rm -rf expat freetype lcms2 jpeg libpng zlib
+rm -rf freetype lcms2 jpeg libpng zlib
 ./configure --prefix=/usr \
 	--enable-dynamic \
 	--with-system-libtiff \
@@ -27,7 +28,9 @@ mkdir -p $PKG/usr/share/doc/$name-$version
 
 install -v -m644 base/*.h $PKG/usr/include/ghostscript
 ln -v -s ghostscript $PKG/usr/include/ps
+
 ln -sv ../ghostscript/$version/doc \
 $PKG/usr/share/doc/$name-$version
+
 cp -r $SRC/fonts $PKG/usr/share/ghostscript
 }
