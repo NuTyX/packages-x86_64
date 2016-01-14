@@ -4,17 +4,17 @@
 # Depends on: libcap libsecret libassuan
 
 name=pinentry
-version=0.9.6
+version=0.9.7
 release=1
 
 source=(ftp://ftp.gnupg.org/gcrypt/$name/$name-$version.tar.bz2)
 
 build() {
 cd $name-$version
-sed -i 's:ncursesw/::' pinentry/pinentry-curses.c
 ./configure --prefix=/usr \
 	--libexecdir=/usr/lib \
 	--disable-pinentry-qt \
+	--disable-pinentry-qt5 \
 	--disable-pinentry-gtk
 make
 make DESTDIR=$PKG install
