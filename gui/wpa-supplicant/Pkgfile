@@ -4,7 +4,7 @@
 # Depends on: libnl dbus libxml2 
 
 name=wpa-supplicant
-version=2.4
+version=2.5
 release=1
 
 source=(http://hostap.epitest.fi/releases/wpa_supplicant-$version.tar.gz)
@@ -14,6 +14,9 @@ cd wpa_supplicant-$version
 cat > wpa_supplicant/.config << "EOF"
 CONFIG_BACKEND=file
 CONFIG_CTRL_IFACE=y
+CONFIG_DEBUG_FILE=y
+CONFIG_DEBUG_SYSLOG=y
+CONFIG_DEBUG_SYSLOG_FACILITY=LOG_DAEMON
 CONFIG_DRIVER_NL80211=y
 CONFIG_DRIVER_WEXT=y
 CONFIG_DRIVER_WIRED=y
