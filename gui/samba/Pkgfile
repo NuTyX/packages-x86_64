@@ -1,10 +1,10 @@
 # Description: SMB Fileserver and AD Domain server
 # URL: http://www.samba.org
 # Packager: pierre at nutyx dot org
-# Depends on: python acl cups kerberos libcap tdb openldap
+# Depends on: talloc avahi gnutls libgpg-error popt python cups kerberos libcap tdb openldap libxslt
 
 name=samba
-version=4.2.3
+version=4.3.3
 release=1
 
 source=( http://ftp.samba.org/pub/samba/stable/$name-$version.tar.gz tls-use-gnutls_priority_set_direct.patch)
@@ -19,13 +19,13 @@ else
 fi
 cd $name-$version
 
-sed -e 's/.*set_priority.*/\tgnutls_priority_set_direct(tls->session, "NORMAL:+CTYPE-OPENPGP", NULL);/' \
-    -e '/cert_type_priority/d' \
-    -i source4/lib/tls/tls.c &&
-sed -e 's/.*set_priority.*/\tgnutls_priority_set_direct(tlss->tls_session, "NORMAL:+CTYPE-OPENPGP", NULL);/' \
-    -e '/t cert_type_priority/ s:^:/*:' \
-    -e '/t cert_type_priority/{n;N;N;N;s:$:*/:}' \
-    -i source4/lib/tls/tls_tstream.c
+sed -e "/deps='LIBASYNC_REQ'/              \
+       {
+         s/$/,/
+         a\                 install=False
+       }"                                  \
+    -i lib/async_req/wscript_build
+
 ./configure                             \
     --prefix=/usr                       \
     --sysconfdir=/etc                   \
@@ -34,8 +34,11 @@ sed -e 's/.*set_priority.*/\tgnutls_priority_set_direct(tlss->tls_session, "NORM
     --with-pammodulesdir=/lib/security  \
     --enable-fhs                        \
     --without-systemd
+
 make
+
 sed -i "/samba3.blackbox.failure.failure/i \^samba3.raw.eas" selftest/knownfail
+
 make DESTDIR=$PKG install
 
 install -d $PKG/$LIB
@@ -55,9 +58,6 @@ $PKG/etc/openldap/schema
 install -v -m755 examples/LDAP/{get*,ol*} \
 $PKG/etc/openldap/schema
 
-install -v -m755 -d $PKG/usr/share/doc/$name-$version
-install -v -m644 lib/ntdb/doc/design.pdf \
-$PKG/usr/share/doc/$name-$version
 
 #  cups 
 cd $PKG/usr/lib/
