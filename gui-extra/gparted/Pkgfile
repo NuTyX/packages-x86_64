@@ -4,15 +4,16 @@
 # Depends on: gtk2,parted,gtkmm,libsigc++,ntfs-3g,lvm2,docbook-xsl
 
 name=gparted
-version=0.24.0
+version=0.25.0
 release=1
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr \
---disable-doc
+./configure --prefix=/usr    \
+            --disable-doc    \
+            --disable-static
 make
 make DESTDIR=$PKG install
 }
