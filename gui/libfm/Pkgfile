@@ -5,7 +5,7 @@
 
 name=libfm
 version=1.2.3
-release=4
+release=5
 
 source=(http://downloads.sourceforge.net/pcmanfm/${name}-$version.tar.xz)
 
@@ -17,5 +17,8 @@ cd $name-$version
 make 
 make DESTDIR=$PKG install
 # already in libfm-extra
-rm -v $PKG/usr/lib/libfm-extra.*
+rm $PKG/usr/lib/libfm-extra.*
+rm $PKG/usr/lib/pkgconfig/libfm-extra.pc
+rm $PKG/usr/include/libfm
+rm $PKG/usr/include/libfm-1.0/{fm-xml-file.h,fm-extra.h,fm-version.h}
 }
