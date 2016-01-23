@@ -2,11 +2,12 @@
 # Url: https://github.com/NuTyX/cards
 # Maintainer: tnut at nutyx dot org
 # Packager: tnut at nutyx dot org
-# Depends on : xorg-proto fltk1 xorg-libx11 xorg-libext xorg-libfixes xorg-libxft xorg-libxinerama xorg-mesa
+# Depends on : ssh-askpass xorg-proto fltk1 xorg-libx11 xorg-libxext xorg-libxfixes xorg-libxft xorg-libxinerama xorg-mesa
 
+run=(ssh-askpass)
 name=flcards
 version=1.99.2
-release=1
+release=2
 
 source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
 build() {
@@ -20,7 +21,7 @@ Version=1.0
 Name=FlCards Package Manager
 Comment=NuTyX Package Manager
 GenericName=Package Manager
-Exec=flcards
+Exec=sudo -A flcards
 Terminal=false
 Icon=flcards
 Categories=System;
