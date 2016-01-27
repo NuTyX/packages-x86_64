@@ -7,7 +7,7 @@ run=(gstreamer1-plugins-good gstreamer1-plugins-libav)
 
 name=firefox
 version=44.0
-release=1
+release=2
 
 source=(https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.xz)
 
@@ -23,34 +23,47 @@ done
 
 cd $name-$version
 cat > mozconfig << "EOF"
+ac_add_options --enable-system-sqlite
+ac_add_options --with-system-libevent
+ac_add_options --with-system-libvpx
+ac_add_options --with-system-nspr
+ac_add_options --with-system-nss
+ac_add_options --with-system-icu
 ac_add_options --enable-official-branding
 ac_add_options --disable-optimize
 ac_add_options --enable-gstreamer=1.0
+ac_add_options --enable-system-ffi
+ac_add_options --enable-system-pixman
+ac_add_options --with-pthreads
+ac_add_options --with-system-bz2
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-png
+ac_add_options --with-system-zlib
+ac_add_options --prefix=/usr
+ac_add_options --enable-application=browser
+ac_add_options --disable-crashreporter
+ac_add_options --disable-updater
+ac_add_options --disable-tests
+
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 EOF
 
 test $(uname -m) = "i686" && sed -i 's/enable-optimize/disable-optimize/' mozconfig || true
 
-sed -i '/^freetype\/ftcache.h/a freetype\/ftfntfmt.h' config/system-headers
 
-SHELL=/bin/sh  make -f client.mk build
+SHELL=/bin/sh make -f client.mk
 
-make -C firefox-build-dir/browser/installer
+mkdir -pv $PKG/usr/{bin,lib{,/mozilla/plugins}}
 
-rm -rf $PKG/usr/lib/firefox-$version
-mkdir -p $PKG/usr/lib/firefox-$version
-tar -xvf firefox-build-dir/dist/firefox-$version.en-US.linux-$(uname -m).tar.bz2 \
--C $PKG/usr/lib/firefox-$version --strip-components=1
+SHELL=/bin/sh make -f client.mk DESTDIR=$PKG install INSTALL_SDK=
 
-mkdir -pv $PKG/usr/bin
-ln -sfv ../lib/firefox-$version/firefox $PKG/usr/bin
-mkdir -pv $PKG/usr/lib/mozilla/plugins
-ln -sfv ../mozilla/plugins $PKG/usr/lib/firefox-$version
-chown -R -v root:root $PKG/usr/lib/firefox-$version
+chown -R 0:0 $PKG/usr/lib/firefox-$version
+ln -sf ../lib/firefox-$version/firefox $PKG/usr/bin
+ln -sf ../mozilla/plugins $PKG/usr/lib/firefox-$version
 
 # Need for gnash
-mkdir -p $PKG//usr/include/npapi
-cp -v dom/plugins/base/*.h $PKG//usr/include/npapi
+mkdir -p $PKG/usr/include/npapi
+cp -v dom/plugins/base/*.h $PKG/usr/include/npapi
 
 # Launcher 
 mkdir -pv $PKG/usr/share/applications &&
@@ -67,9 +80,7 @@ StartupNotify=true
 Terminal=false
 EOF
 mkdir -pv $PKG/usr/share/pixmaps
-ln -sfv /usr/lib/firefox-$version/browser/icons/mozicon128.png $PKG/usr/share/pixmaps/firefox.png
-mkdir -p $PKG/etc/ld.so.conf.d
-echo "/usr/lib/$name-$version" > $PKG/etc/ld.so.conf.d/firefox.conf
+ln -sf /usr/lib/firefox-$version/browser/icons/mozicon128.png $PKG/usr/share/pixmaps/firefox.png
 
 
 for lang in da de en-US es-ES fi fr it nb-NO nl pt-PT sv-SE
