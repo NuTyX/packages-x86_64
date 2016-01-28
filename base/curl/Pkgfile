@@ -5,7 +5,7 @@
 
 
 name=curl
-version=7.46.0
+version=7.47.0
 release=1
 
 source=(http://curl.haxx.se/download/$name-$version.tar.lzma)
@@ -20,6 +20,15 @@ cd $name-$version
 --enable-threaded-resolver
 make
 make DESTDIR=$PKG install
+
+find docs \( -name Makefile\* \
+          -o -name \*.1       \
+          -o -name \*.3 \)    \
+          -exec rm {} \;
+
+install -v -d -m755 $PKG/usr/share/doc/curl-$version
+cp -v -R docs/* \
+$PKG/usr/share/doc/curl-$version
 
 # reorganise the libs
 mkdir $PKG/lib
