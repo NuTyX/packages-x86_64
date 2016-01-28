@@ -4,11 +4,10 @@
 # Depends on: libjpeg-turbo 
 
 name=v4l-utils
-version=1.6.3
+version=1.10.0
 release=1
 
-source=(http://linuxtv.org/downloads/v4l-utils/$name-$version.tar.bz2
-	http://linuxtv.org/downloads/v4l-utils/$name-$version.tar.bz2.asc)
+source=(http://linuxtv.org/downloads/v4l-utils/$name-$version.tar.bz2)
 
 build() {
 	cd $name-$version
@@ -18,4 +17,3 @@ build() {
   	mv $PKG/lib/udev $PKG/usr/lib/
   	rm -rf $PKG/lib
 }
-
