@@ -1,0 +1,16 @@
+# Description: Library utilities to manage software packages on NuTyX distribution.
+# URL: https://github.com/NuTyX/cards
+# Maintainer: tnut at nutyx dot org
+# Packager: tnut at nutyx dot org
+
+PKGMK_IGNORE_RUNTIMEDEPS="no"
+name=libcards
+version=1.99.5
+release=1
+
+source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
+build () {
+cd cards-$version
+make libs
+make DESTDIR=$PKG install-libs
+}
