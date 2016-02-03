@@ -5,11 +5,11 @@ http://ftp.gnu.org/gnu/gcc/gcc-$version/gcc-$version.tar.bz2 )
 build()
 {
 cd  gcc-$version
-mkdir -pv ../gcc-build
-cd ../gcc-build
+mkdir -pv build
+cd build
 
-../gcc-$version/libstdc++-v3/configure \
-     --host=$LFS_TGT                 \
+../libstdc++-v3/configure           \
+    --host=$LFS_TGT                 \
     --prefix=/tools                 \
     --disable-multilib              \
     --disable-nls                   \

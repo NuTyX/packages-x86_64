@@ -6,13 +6,13 @@ build()
 cd binutils-$version
 
 
-mkdir -v ../binutils-build
-cd ../binutils-build
+mkdir -v build
+cd build
 
 CC=$LFS_TGT-gcc            \
 AR=$LFS_TGT-ar             \
 RANLIB=$LFS_TGT-ranlib     \
-../binutils-$version/configure \
+../configure               \
     --prefix=/tools        \
     --disable-nls          \
     --disable-werror       \

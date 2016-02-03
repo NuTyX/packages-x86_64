@@ -32,14 +32,14 @@ mv -v ../gmp-6.1.0 gmp
 mv -v ../mpc-1.0.3 mpc
 
 
-mkdir -v ../gcc-build
-cd ../gcc-build
+mkdir -v build
+cd build
 
 CC=$LFS_TGT-gcc                                      \
 CXX=$LFS_TGT-g++                                     \
 AR=$LFS_TGT-ar                                       \
 RANLIB=$LFS_TGT-ranlib                               \
-../gcc-$version/configure                            \
+../configure                                         \
     --prefix=/tools                                  \
     --with-local-prefix=/tools                       \
     --with-native-system-header-dir=/tools/include   \

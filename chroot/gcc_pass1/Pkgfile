@@ -26,10 +26,10 @@ do
   touch $file.orig
 done
 
-mkdir -v ../gcc-build
-cd ../gcc-build
+mkdir -v build
+cd build
 
-../gcc-$version/configure         \
+../configure         \
     --target=$LFS_TGT          \
     --prefix=/tools            \
     --with-glibc-version=2.11  \
