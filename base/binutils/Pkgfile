@@ -4,18 +4,20 @@
 # Packager: tnut at nutyx dot org
 name=binutils
 version=2.26
-release=1
+release=2
 
-source=(http://ftp.gnu.org/gnu/binutils/binutils-$version.tar.bz2)
+source=(http://ftp.gnu.org/gnu/binutils/binutils-$version.tar.bz2
+	http://www.linuxfromscratch.org/patches/lfs/development/binutils-$version-upstream_fix-1.patch)
 build()
 {
 cd binutils-$version
 
-mkdir -v ../binutils-build
-cd ../binutils-build
+patch -Np1 -i ../binutils-$version-upstream_fix-1.patch
 
+mkdir -v build
+cd build
 
-../binutils-$version/configure \
+../configure \
 --prefix=/usr --includedir=/usr/include \
 --bindir=/bin --sbindir=/sbin \
 --datarootdir=/usr/share \
@@ -28,15 +30,14 @@ make tooldir=/
 # make tooldir=/usr DESTDIR=$PKG install
 make tooldir=/usr DESTDIR=$PKG install
 
-cp -v ../binutils-$version/include/libiberty.h $PKG/usr/include
 rm -rf $PKG/usr/share/info/dir
 mkdir $PKG/lib
 for lib in libopcodes libbfd
 do
-	mv $PKG/usr/lib/$lib-$version.so \
+	mv $PKG/usr/lib/$lib-$version.20160125.so \
 	$PKG/lib/$lib-$version.so
 	ln -s $lib-$version.so  $PKG/lib/$lib
-	ln -s ../../lib/$lib-$version.so \
+	ln -s ../../lib/$lib-$version.20160125.so \
 	$PKG/usr/lib/$lib-$version.so
 	ln -s ../../lib/$lib-$version.so \
 	$PKG/usr/lib/$lib
