@@ -60,13 +60,13 @@ EOF</kbd></pre>
     <li>And we launch the <b>base-extra</b> collection compilation in the right order</li>
      <pre class="command"><kbd>pass</kbd></pre>
      <pre class="output">=======&gt; PKGMK_INSTALL: install
-=======&gt; PKGMK_WORK_DIR: /root/extra/base-extra/wget/work
-=======&gt; PKGMK_SOURCE_DIR: /root/extra/base-extra/wget
+=======&gt; PKGMK_WORK_DIR: /root/extra/base-extra/dialog/work
+=======&gt; PKGMK_SOURCE_DIR: /root/extra/base-extra/dialog
  ...</pre>
-    <li>The compilation of the <b>base-extra</b> collection must end with the <b>sysvinit</b> package.</li>
-       <pre class="output">ADD: sysvinit2.88dsf, 16 files: 100%
-=======&gt; Installing 'sysvinit1439823127x86_64.cards.tar' succeeded.
-=======&gt; compress sysvinit1439823127x86_64.cards.tar</pre>
+    <li>The compilation of the <b>base-extra</b> collection must end with the <b>kernel</b> package.</li>
+       <pre class="output">ADD: kernel, 6646 files: 100%
+=======&gt; Installing 'kernel1439823127x86_64.cards.tar' succeeded.
+=======&gt; compress kernel1439823127x86_64.cards.tar</pre>
     <li>We add all the necessary files for a working iso</li>
     <pre class="command"><kbd>cp -av /root/current/iso /ISO</kbd></pre>
     <pre class="output">'/root/current/iso' -&gt; '/ISO'
@@ -157,7 +157,7 @@ rsync -a /root/extra/base-extra/ /base-extra/</kbd></pre>
 pkgrm kernel.devel</kbd></pre>
   </ol>
   <hr>
-  <p class="updated">Last updated on 2015-11-09 19:05</p>
+  <p class="updated">Last updated on 2016-02-04 22:40</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

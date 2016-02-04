@@ -123,8 +123,16 @@ bash.fr 4.3.33
      <li>Nous entrons à nouveau dans la NuTyX et finissons le travail:</li>
       <pre class="command"><kbd>chroot "$LFS" /usr/bin/env -i HOME=/root TERM="$TERM" PS1='\u:\w\$ ' \
 /bin/bash --login +h</kbd></pre>
-    Aucune erreur ne doit s'afficher:
-      <pre class="output">/</pre>
+    Quelques erreurs vont s'afficher:
+      <pre class="output">bash: id: command not found
+bash: id: command not found
+bash: date: command not found
+bash: uname: command not found
+bash: uname: command not found
+bash: whoami: command not found
+bash: uname: command not found
+bash: wc: command not found
+/</pre>
      <li>Nous définissons la variable PATH une dernière fois:</li>
       <pre class="command"><kbd>export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin:/root/bin</kbd></pre>
      <li>Nous relançons la compilation des paquets restants:</li>
@@ -172,7 +180,7 @@ source  ~/.bash_profile</kbd></pre>
     </ol>
   <div class="pied_page"><a class="url" href="build-post.html">Une fois la passe 2 terminée, vous pouvez passer à la post-installation et génération de l'iso</a></div>
   <hr>
-  <p class="updated"> Dernière mise à jour 18-10-2015 12:12</p>
+  <p class="updated"> Dernière mise à jour 04-01-2016 22:30</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

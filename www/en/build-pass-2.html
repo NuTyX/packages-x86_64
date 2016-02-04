@@ -122,8 +122,16 @@ bash.de 4.3.33
     <li>We enter again into NuTyX and we finish the job:</li>
     <pre class="command"><kbd>chroot "$LFS" /usr/bin/env -i HOME=/root TERM="$TERM" PS1='\u:\w\$ ' \
 /bin/bash --login +h</kbd></pre>
-      As you can see no more error:
-<pre class="output">/</pre>
+      Few errors stills show up:
+<pre class="output">bash: id: command not found
+bash: id: command not found
+bash: date: command not found
+bash: uname: command not found
+bash: uname: command not found
+bash: whoami: command not found
+bash: uname: command not found
+bash: wc: command not found
+/</pre>
            <li>We redefine AGAIN the PATH variable:</li>
 <pre class="command"><kbd>export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin:/root/bin</kbd></pre>
      <li> We launch AGAIN the compilation of the packages:</li>
@@ -174,7 +182,7 @@ source  ~/.bash_profile</kbd></pre>
   <div class="pied_page"><a class="url" href="build-post.html">One pass 2 is done, you can start the post-construction and generation of the iso</a></div>
 <p>
   <hr>
-  <p class="updated">Last updated on 2015-10-18 12:12</p>
+  <p class="updated">Last updated on 2016-02-04 22:33</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
