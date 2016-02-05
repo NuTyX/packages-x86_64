@@ -7,12 +7,16 @@ name=google-chrome-unstable
 version=50.0.2638.0
 release=1
 
-source=("https://dl.google.com/linux/direct/google-chrome-unstable_current_amd64.deb"
+[ "`uname -m`" == "i686" ] && _arch="i386"
+[ "`uname -m`" == "x86_64" ] && _arch="amd64"
+
+
+source=("https://dl.google.com/linux/direct/google-chrome-unstable_current_${_arch}.deb"
          "https://www.google.com/chrome/intl/en/eula_text.html")
 
 build() {
 
-	bsdtar -xf google-chrome-unstable_current_amd64.deb
+	bsdtar -xf google-chrome-unstable_current_${_arch}.deb
 	bsdtar -xf data.tar.xz -C "$PKG/" 
     
     gzip "$PKG"/usr/share/man/man1/google-chrome-unstable.1
