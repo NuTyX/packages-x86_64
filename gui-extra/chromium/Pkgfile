@@ -4,7 +4,7 @@
 # Depends on: atk nss ninja pciutils gperf yasm xorg-mesa libgnome-keyring elfutils subversion gtk2 dbus-glib nss alsa-lib xdg-utils bzip2 libevent libgcrypt dejavu-ttf opus snappy dbus desktop-file-utils hicolor-icon-theme flac libxml2 pulseaudio xorg-libxscrnsaver xorg-libxtst libexif
 
 name=chromium
-version=47.0.2526.80
+version=48.0.2564.103
 release=1
 
 source=(http://commondatastorage.googleapis.com/chromium-browser-official/$name-$version.tar.xz
@@ -12,8 +12,8 @@ source=(http://commondatastorage.googleapis.com/chromium-browser-official/$name-
         chromium.desktop 
         chromium.default 
         chromium.sh
-        chromium-fix-print-preview-on-en_GB-locale.patch
-        0001-Add-FPDFAPIJPEG_-prefix-to-more-libjpeg-functions.patch)
+	chromium-use-non-versioned-icu-namespace.patch
+        chromium-fix-print-preview-on-en_GB-locale.patch)
 
 _google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
 _google_default_client_id=413772536636.apps.googleusercontent.com
@@ -21,39 +21,25 @@ _google_default_client_secret=0ZChLK6AxeA3Isu96MkwqDR4
 
 build() {
 	export GYP_GENERATORS='ninja'
-
 	cd $name-$version
-
         touch chrome/test/data/webui/i18n_process_css_test.html
-        
-      
-		sed -i "/'target_name': 'libvpx'/s/libvpx/&_new/" build/linux/unbundle/libvpx.gyp
+	sed -i "/'target_name': 'libvpx'/s/libvpx/&_new/" build/linux/unbundle/libvpx.gyp
 
- 
-		patch -Np1 -i ../chromium-fix-print-preview-on-en_GB-locale.patch
-
- 
-		patch -d third_party/pdfium -Np1 <../0001-Add-FPDFAPIJPEG_-prefix-to-more-libjpeg-functions.patch
-        
-             
+	patch -Np1 -i ../chromium-use-non-versioned-icu-namespace.patch
+	patch -Np1 -i ../chromium-fix-print-preview-on-en_GB-locale.patch
   
         sed "s/@WIDEVINE_VERSION@/Pinkie Pie/" ../chromium-widevine.patch | patch -Np1
-
-		find third_party/icu -type f \! -regex '.*\.\(gyp\|gypi\|isolate\)' -delete
-
-	
-		find . -name '*.py' -exec sed -i -r 's|/usr/bin/python$|&2|g' {} +
-		mkdir $SRC/python2-path
-		ln -s /usr/bin/python2 "$SRC/python2-path/python"
-
-  
-		if (( $_build_nacl )); then
+	find third_party/icu -type f \! -regex '.*\.\(gyp\|gypi\|isolate\)' -delete
+	find . -name '*.py' -exec sed -i -r 's|/usr/bin/python$|&2|g' {} +
+	mkdir $SRC/python2-path
+	ln -s /usr/bin/python2 "$SRC/python2-path/python"
+	if (( $_build_nacl )); then
 		python2 build/download_nacl_toolchains.py \
 		--packages nacl_x86_newlib,pnacl_newlib,pnacl_translator \
 		sync --extract
-		fi
+	fi
 
-local _chromium_conf=(
+	local _chromium_conf=(
     -Dgoogle_api_key=$_google_api_key
     -Dgoogle_default_client_id=$_google_default_client_id
     -Dgoogle_default_client_secret=$_google_default_client_secret
@@ -95,8 +81,8 @@ local _chromium_conf=(
     -Ddisable_nacl=1
     -Ddisable_pnacl=1)
 
-    build/linux/unbundle/replace_gyp_files.py "${_chromium_conf[@]}"
-    build/gyp_chromium --depth=. "${_chromium_conf[@]}"
+	build/linux/unbundle/replace_gyp_files.py "${_chromium_conf[@]}"
+	build/gyp_chromium --depth=. "${_chromium_conf[@]}"
 
 	ninja -C out/Release chrome 
         ninja -C out/Release chrome_sandbox 
@@ -109,7 +95,6 @@ local _chromium_conf=(
 
 	cp out/Release/{*.pak,*.bin} $PKG/opt/chromium/
 	cp -a out/Release/locales $PKG/opt/chromium/
-#	cp -a out/Release/icudtl.dat $PKG/opt/chromium/
 	
 	install -Dm644 $SRC/chromium.default $PKG/etc/chromium/default
 
