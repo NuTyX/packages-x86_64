@@ -4,9 +4,9 @@
 # Depends on: python git gnupg subversion bzr python-docutils ca-certificates
 
 name=mercurial
-version=3.6.1	
+version=3.7.1
 release=1
-source=(http://mercurial.selenic.com/release/mercurial-3.6.1.tar.gz hgrc)
+source=(https://www.mercurial-scm.org/release/mercurial-$version.tar.gz)
  
 build() {
 
@@ -19,9 +19,5 @@ make doc
 make DESTDIR=$PKG PREFIX=/usr install-bin
 	
 make DESTDIR=$PKG PREFIX=/usr install-doc
-	
-install -v -d -m755 $PKG/etc/mercurial 
-cp -v $SRC/hgrc $PKG/etc/mercurial/hgrc
-	
 	
 }
