@@ -13,9 +13,11 @@ source=(http://ftp.mozilla.org/pub/mozilla.org/$name/releases/latest/runtimes/$n
 build() {
   mkdir ${PKG}/opt/
   
-  mkdir ${PKG}/opt/bin/ 
+  mkdir ${PKG}/usr/ 
+
+  mkdir ${PKG}/usr/bin/	
 
   cp -R "${SRC}/${name}" "${PKG}/opt/${name}"
  
-  ln -s "/opt/${name}/${name}" "${PKG}/opt/bin/${name}"
+  ln -s "/opt/${name}/${name}" "${PKG}/usr/bin/${name}"
 }
