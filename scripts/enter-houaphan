@@ -1,0 +1,114 @@
+if [ $# -lt 1 ]; then
+	echo "Specify the collection"
+	exit  1
+fi
+
+if [ ! -d $1 ]; then
+        mkdir -p $1/DEPOT
+        mount $1/DEPOT
+        DEVEL="cards.devel" KERNEL="NONE" URL="http://192.168.254.254" LFS="$1" bash /root/bin/install-houaphan
+else
+        mount $1/DEPOT
+fi
+
+[ ! -d $1/sources ] && mkdir -p $1/sources
+
+VERSION=`dirname $1`
+CHROOT=`basename $1`
+COLLECTION="$CHROOT"
+
+echo "CHROOT: $CHROOT"
+if [ "$CHROOT" == "mate" ]; then
+echo "dir /DEPOT/mate-extra
+dir /DEPOT/mate
+dir /DEPOT/gui
+dir /DEPOT/cli
+dir /DEPOT/base
+base /DEPOT/base
+logdir /var/log/pkgbuild" > $1/etc/cards.conf
+fi
+if [ "$CHROOT" == "gnome" ]; then
+	echo "dir /DEPOT/gnome-extra
+dir /DEPOT/gnome
+dir /DEPOT/gui
+dir /DEPOT/cli
+dir /DEPOT/base-extra
+dir /DEPOT/base
+base /DEPOT/base
+logdir /var/log/pkgbuild" > $1/etc/cards.conf
+fi
+if [ "$CHROOT" == "kde5" ]; then
+echo "dir /DEPOT/kde5-extra
+dir /DEPOT/kde5
+dir /DEPOT/gui
+dir /DEPOT/cli
+dir /DEPOT/base
+base /DEPOT/base
+logdir /var/log/pkgbuild" > $1/etc/cards.conf
+fi
+if [ "$CHROOT" == "base" ]; then
+	COLLECTION="houaphan"
+	echo "dir /DEPOT/base
+base /DEPOT/base
+logdir /var/log/pkgbuild" > $1/etc/cards.conf
+
+fi
+if [ "$CHROOT" == "cli" ]; then
+	COLLECTION="houaphan"
+	echo "dir /DEPOT/cli
+dir /DEPOT/base
+base /DEPOT/base
+logdir /var/log/pkgbuild" > $1/etc/cards.conf
+fi
+if [ "$CHROOT" == "gui" ]; then
+	COLLECTION="houaphan"
+	echo "dir /DEPOT/gui
+dir /DEPOT/cli
+dir /DEPOT/base
+base /DEPOT/base
+logdir /var/log/pkgbuild" > $1/etc/cards.conf
+fi
+
+if [ "$CHROOT" == "base-extra" ]; then
+	COLLECTION="extra"
+	echo "dir /DEPOT/base-extra
+dir /DEPOT/base
+base /DEPOT/base" > $1/etc/cards.conf
+fi
+if [ "$CHROOT" == "cli-extra" ]; then
+	COLLECTION="extra"
+	echo "dir /DEPOT/cli-extra
+dir /DEPOT/cli
+dir /DEPOT/base-extra
+dir /DEPOT/base
+base /DEPOT/base
+logdir /var/log/pkgbuild" > $1/etc/cards.conf
+fi
+
+if [ "$CHROOT" == "gui-extra" ]; then
+	COLLECTION="extra"
+	echo "dir /DEPOT/gui-extra
+dir /DEPOT/gui
+dir /DEPOT/cli-extra
+dir /DEPOT/cli
+dir /DEPOT/base-extra
+dir /DEPOT/base
+base /DEPOT/base
+logdir /var/log/pkgbuild" > $1/etc/cards.conf
+fi
+
+echo "COLLECTION: $COLLECTION"
+echo "VERSION: $VERSION"
+
+mount $1/sources
+
+[ ! -d $1/root/$COLLECTION ] && mkdir -p $1/root/$COLLECTION 
+
+mount $1/root/$COLLECTION
+
+LFS=$1 bash /root/bin/install-houaphan -ec
+
+umount $1/sources || exit 1
+umount $1/DEPOT || exit 1
+umount $1/root/$COLLECTION || exit 1
+rm -r $1
