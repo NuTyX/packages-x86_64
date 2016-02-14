@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
      <link rel="shortcut icon" href="../favicon.ico">
      <link rel="stylesheet" href="../css/nutyx.css" />
-    <title>NuTyX - Post-construction et génération de l'iso</title>
+    <title>NuTyX - Post-construction et (en option) génération de l'iso installable</title>
  </head>
  <body>
    <table>
@@ -29,8 +29,23 @@
     </tr>
    </table>
   <hr>
-   <h1>Post-construction et génération de l'iso</h1>
-    <p>Tous les paquets d'un système de base sont désormais disponibles. On peut finaliser et produire une ISO installable de notre NuTyX</p>
+   <h1>Post-construction et (en option) génération de l'iso installable</h1>
+    <h2>Introduction</h2>
+     <p>Si vous avez terminé la passe 2 avec succès, vous avez tous les paquets d'un système de base.</p>
+     <p>On peut maintenant finaliser notre NuTyX et l'adapter à nos besoins. Et enfin, produire une ISO installable.</p>
+     <p>Il s'agit maintenant de décider ce qu'il vous faut, en effet actuellement votre NuTyX:</p>
+      <ol>
+       <li>Ne contient pas de kernel</li>
+       <li>Ne peut pas être amorcée</li>
+       <li>Ne permet pas de formater votre disque dur dans un autre système de fichiers que ext3 ou ext4</li>
+       <li>Ne permet pas la gestion de partitions logiques</li>
+       <li>Ne permet pas de se connecter à un serveur dhcp et donc d'obtenir une adresse IP de façon dynamique</li>
+       <li>Ne contient aucun editeur de texte</li>
+      </ol>
+    <h2>Marche à suivre</h2>
+     <p>Vous l'avez peut-être déjà compris, cette post-construction n'est plus un simple copié-collé.</p>
+     <p>C'est maintenant à vous de savoir ce que vous souhaitez utiliser comme moyen d'amorçage, kernel, système de fichiers, volumes logiques et adresse IP statique ou dynamique</p>
+     <p>Pour mener à bien notre petite expédition, il faudra configurer un minimum le gestionnaire de paquets 'cards' et rapatrier tous les ports contenant les recette de fabrication des paquets NuTyX disponibles.</p>
   <ol>
    <li>On commence par sortir de la NuTyX</li>
 <pre class="command"><kbd>exit</kbd></pre>
@@ -43,31 +58,82 @@
 /bin/bash --login</kbd></pre>
 Aucune erreur ne doit apparaître:
 <pre class="output">root [ / ]# </pre>
-   <li>On commence par adapter le fichier cards.conf. En effet, on utilisera désormais uniquement les recettes issues du projet git. Adaptez si necessaire la langue.</li>
+   <li>On commence par adapter le fichier cards.conf. Adaptez si necessaire la langue.</li>
    <pre class="command"><kbd>cat &gt; /etc/cards.conf &lt;&lt; "EOF"
-dir /root/extra/gui-extra
-dir /root/current/gui
-dir /root/extra/cli-extra
-dir /root/current/cli
-dir /root/extra/base-extra
-dir /root/current/base
-logdir /var/log/pkgbuild
+dir /usr/ports/gui-extra
+dir /usr/ports/gui
+dir /usr/ports/cli-extra
+dir /usr/ports/cli
+dir /usr/ports/base-extra
+dir /usr/ports/base
 locale fr
-base /root/current/base
-base /root/extra/base-extra
+base /usr/ports/base
+base /ust/ports/base-extra
 EOF</kbd></pre>
-   <li>Il ne nous reste plus qu'a complèter la NuTyX de base en compilant les paquets se trouvant dans la collection <b>base-extra</b>. On se rend donc dans le bon dossier:</li>
-    <pre class="command"><kbd>cd /root/extra/base-extra</kbd></pre>
-   <li>Et on lance la compilation des paquets de la collection <b>base-extra</b> dans le bon ordre</li>
-    <pre class="command"><kbd>pass</kbd></pre>
-    <pre class="output">=======&gt; PKGMK_INSTALL: install
-=======&gt; PKGMK_WORK_DIR: /root/extra/base-extra/dialog/work
-=======&gt; PKGMK_SOURCE_DIR: /root/extra/base-extra/dialog
-...</pre>
-   <li>La compilation des paquets <b>base-extra</b> doit se terminer par le paquet <b>kernel</b>.</li>
-      <pre class="output">ADD: kernel, 6646 files: 100%
-=======&gt; Installing 'kernel1439823127x86_64.cards.tar' succeeded.
-=======&gt; compress kernel1439823127x86_64.cards.tar</pre>
+    <li>On peut maintenant rapatrier tous les ports disponibles sous NuTyX et compiler les ports de notre choix (pour autant qu'ils soient configurés dans le fichier 'cards.conf' ci-dessus</li>
+    <pre class="command"><kbd>ports -u</kbd></pre>
+    <pre class="output">...</pre>
+    <p>Nous sommes maintenant prêt pour la finalisation de notre NuTyX.</p>
+   </ol>
+ <h2>Compilation du kernel et des ports optionnels.</h2>
+  <ol>
+   <li>
+    <h3>Mise en place d'un kernel de votre choix</h3>
+   </li>
+    <p>Le seul paquet devant être impérativement installé pour avoir une NuTyX fonctionnelle est donc le kernel. Vous avez le choix entre plusieurs possibilitées:</p>
+     <ol>
+      <li>
+       <h4>Compilation d'un des kernels disponible en ports</h4>
+      </li>
+         <p>Ce choix sera indispensable si vous décidez de produire une ISO installable, c'est également le choix le plus simple:</p>
+         <pre class="command"><kbd>cd /usr/ports/base-extra/kernel-lts
+pkgmk -d -i</kbd></pre>
+         <p>Remplacez le nom du port 'kernel-lts' par 'kernel' si vous préférez le dernier kernel stable</p>
+      <li>
+       <h4>Compilation de son propre kernel</h4>
+      </li>
+        <p>Ce choix implique que la génération d'une ISO installable sera impossible</p>
+        <p>Vous pouvez soit vous inspirez de l'article qui explique comment <a href="build-kernel.html">compiler son propre kernel</a> ou vous trouverez de nombreaux tutos sur la compilation d'un kernel sur le net</p>
+     </ol>
+    <li>
+     <h3>Mise en place de grub, l'outil d'amorçage (en option)</h3>
+    </li>
+     <p>Le paquet grub est uniquement necessaire si vous dédicez de produire une ISO installable ou que vous n'avez pas encore de technique d'amorçage sur votre machine actuelle (peu probable):</p>
+     <pre class="command"><kbd>cards depcreate grub</kbd></pre> 
+     <p>Une fois terminée, vous allez pouvoir utiliser grub en ligne de commande ou via l'ISO générée</p>
+    <li>
+     <h3>Ajout des outils de formatage (en option)</h3>
+    </li>
+     <p>Les possibilitées de formatage sont:</p>
+     <pre class="command"><kbd>cards depcreate btrfs-progs</kbd></pre>
+     <pre class="command"><kbd>cards depcreate xfsprogs</kbd></pre>
+     <pre class="command"><kbd>cards depcreate reiserfsprogs</kbd></pre>
+     <pre class="command"><kbd>cards depcreate jfsutils</kbd></pre>
+     <p>Choisissez le système de fichiers qui vous convient</p>
+    <li>
+     <h3>Ajout des outils de gestion de partitions logiques (en option)</h3>
+    </li>
+     <p>Si vous souhaitez des partition logiques et disques en raid:</p>
+     <pre class="command"><kbd>cards depcreate mdadm</kbd></pre>
+    <li>
+     <h3>Ajout du client dhcp pour pouvoir obtenir une adresse IP dynamiquement (en option)</h3>
+    </li>
+      <p>Si vous ne souhaitez pas utiliser une adresse IP fixe, vous devez donc un client dhcp pour obtenir une adresse IP de façon dynamique</p>
+      <pre class="command"><kbd>cards depcreate dhcpcd</kbd></pre>
+    <li>
+     <h3>Ajout d'un éditeur de texte (en option)</h3>
+    </li>
+     <p>L'installateur utilise la commande 'vi', vous avez donc le choix entre:</p>
+     <pre class="command"><kbd>cards depcreate e3</kbd></pre><p>et</p>
+     <pre class="command"><kbd>cards depcreate vim</kbd></pre> 
+    <li>
+     <h3>Ajout du support NFS (en option)</h3>
+    </li>
+     <p>Si vous n'utilisez pas ou ne connaissez pas <a href="https://fr.wikipedia.org/wiki/Network_File_System">NFS</a>, vous pouvez ignorer cette option:</p>
+     <pre class="command"><kbd>cards depcreate nfs-utils</kbd></pre>
+  </ol>
+ <h2>Option1: Produire une ISO installable.</h2>
+  <ol> 
    <li>On ajoute les fichiers necessaires au fonctionnement de l'iso</li>
    <pre class="command"><kbd>cp -av /root/current/iso /ISO</kbd></pre>
    <pre class="output">'/root/current/iso' -&gt; '/ISO'
@@ -131,17 +197,17 @@ Max brk space used 28000
 165140 extents written (322 MB)</pre>
    <p>Vous avez désormais une ISO qui se trouve dans le dossier $LFS</p>
    <pre class="command"><kbd>ls $LFS/</kbd></pre>
-   <pre class="output">base   bin   etc   lib    NuTyX_x86_64-houaphan-20150725.iso   root  sources  usr
-boot  home  lib64  NuTyX_x86_64-houaphan-20150725.md5sum  run   srv      tmp     var
+   <pre class="output">base   bin   etc   lib    NuTyX_x86_64-houaphan-20160214.iso   root  sources  usr
+boot  home  lib64  NuTyX_x86_64-houaphan-20160214.md5sum  run   srv      tmp     var
 dev   ISO   mnt    proc                                   sbin  sys      tools</pre>
    <li>Il ne vous reste plus qu'à la transférer sur une clé usb et la tester</li>
-   <pre class="command"><kbd>dd if=$LFS/NuTyX_x86_64-houaphan-20150207.iso of=/dev/sdb</kbd></pre>
+   <pre class="command"><kbd>dd if=$LFS/NuTyX_x86_64-houaphan-20160214.iso of=/dev/sdb</kbd></pre>
    <pre class="output">526336+0 enregistrements lus
 526336+0 enregistrements écrits
 269484032 octets (269 MB) copiés, 67.3208 s, 4.0 MB/s</pre>
    </ol>
     <p>Félicitations, vous avez maintenant entre les mains une ISO NuTyX de base prête à être installée sur toutes vos machines.</p>
-   <h2>Options</h2>
+ <h2>Option2: Réduire la taille finale de l'ISO.</h2>
     <ol>
     <li>Si vous souhaitez réduire la taille finale de l'ISO, vous pouvez supprimer les binaires du git et les logs produits, ils ne serviront plus. Si vous souhaitez conserver les binaires, lancez la commande ci-dessus.</li>
 <pre class="command"><kbd>rsync -a /root/current/base/ /base/
@@ -158,10 +224,10 @@ rsync -a /root/extra/base-extra/ /base-extra/</kbd></pre>
 pkgrm kernel.devel</kbd></pre>
    </ol>
    <hr>
-   <p class="updated">Dernière mise à jour 04-02-2016 22:38</p>
+   <p class="updated">Dernière mise à jour 14-02-2016 16:12</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
-        &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+        &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
         <a href="http://www.wtfpl.net/"><img
        src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
        width="80" height="15" alt="WTFPL" /></a></p>
