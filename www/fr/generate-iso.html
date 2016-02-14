@@ -63,6 +63,9 @@ get syslinux</kbd></pre>
      <li>
       <h2>Génération de l'iso</h2>
        <ol>
+	<li>
+	 <h3>Entrer dans la chroot</h3>
+          <pre class="command"><kbd>LFS=/ISO-MINI bash houaphan/scripts/install-houaphan -ec</kbd></pre>
         <li>
          <h3>Mettre le kernel et l'initrd au bon endroit</h3>
           <pre class="command"><kbd>cp -v /boot/kernel-* /ISO/isolinux/kernel
@@ -96,15 +99,15 @@ done</kbd></pre>
         <h2>Conclusion</h2>
          <p>La taille de l'iso ne devrait pas dépasser 300 MB si vous n'avez rien ajouté de plus que les paquets ci-dessus. Vous la trouverez dans le dossier $LFS.</p>
          <pre class="command"><kbd>ls $LFS</kbd></pre>
-         <pre class="output">bin   dev  home  lib  NuTyX_x86_64-houaphan-20150724.iso     proc  run   srv  tmp  var
-boot  etc  ISO   mnt  NuTyX_x86_64-houaphan-20150724.md5sum  root  sbin  sys  usr</pre>
+         <pre class="output">bin   dev  home  lib  NuTyX_x86_64-houaphan-20160214.iso     proc  run   srv  tmp  var
+boot  etc  ISO   mnt  NuTyX_x86_64-houaphan-20160214.md5sum  root  sbin  sys  usr</pre>
        </li>
       </ol>
      <hr>
-     <p class="updated">Dernière mise à jour 15-09-2015 18:03</p>
+     <p class="updated">Dernière mise à jour 14-02-2016 15:12</p>
       <footer>
        <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
-        &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+        &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
     <a href="http://www.wtfpl.net/"><img
        src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
        width="80" height="15" alt="WTFPL" /></a></p>    </footer>
