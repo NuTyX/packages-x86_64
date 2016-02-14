@@ -6,26 +6,13 @@
 
 run=(ssh-askpass)
 name=flcards
-version=1.99.5
+version=1.99.7
 release=1
 
 source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
 build() {
 cd cards-$version
 make flcards
-install -D -m0755 fltk/flcards $PKG/usr/bin/flcards
-mkdir -p $PKG/usr/share/applications/
-cat > $PKG/usr/share/applications/flcards.desktop << "EOF"
-[Desktop Entry]
-Version=1.0
-Name=FlCards Package Manager
-Comment=NuTyX Package Manager
-GenericName=Package Manager
-Exec=sudo -A flcards
-Terminal=false
-Icon=flcards
-Categories=System;
-Type=Application
-StartupNotify=true
-EOF
+cd fltk
+make DESTDIR=$PKG install
 }
