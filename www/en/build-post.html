@@ -4,7 +4,7 @@
 	<!-- En-tête de la page -->
         <meta charset="utf-8" />
         <link rel="stylesheet" href="../css/nutyx.css" />
-        <title>NuTyX - Post-construction and generation of the iso</title>
+        <title>NuTyX - Post-construction and (optional) generation of the iso</title>
     </head>
     <body>
     <table>
@@ -28,45 +28,110 @@
      </tr>
     </table>
  <hr>
-  <h1>Post-construction and generation of the iso</h1>
-   <p>All the packages of a base system are now available. We can finalise and produce an installable ISO of our NuTyX</p>
+  <h1>Post-construction and (optional) generation of the iso</h1>
+   <h2>Introduction</h2>
+    <p>If you're done with pass2 successfully, you have then all the packages needed for a basic system.</p>
+    <p>We can now finalise our NuTyX and adapt it to our needs. And then, we can produce an installable ISO if we want to.</p>
+    <p>It's time to decide what you still need, at this point of progress your NuTyX:</p>
    <ol>
-    <li>We start to exit from the NuTyX</li>
-    <pre class="command"><kbd>exit</kbd></pre>
-    <p>We check if the LFS variable is still set</p>
-    <pre class="command"><kbd>echo $LFS</kbd></pre>
-    <p>It must return something</p>
-    <pre class="output">/mnt/lfs</pre>
-    <li>We can now reenter in the new NuTyX to finalise the job</li>
-    <pre class="command"><kbd>chroot $LFS /usr/bin/env -i HOME=/root TERM="$TERM" PS1='\u: \w\$' \
+    <li>Do not have a kernel</li>
+    <li>Do not contain a boot program</li>
+    <li>Do not contain any other formating tools then the one for ext3, ext4</li>
+    <li>Do not contain any tool for RAID management</li>
+    <li>Can not connect to a dhcp server and get a dynamic address</li>
+    <li>Do not contain a text editor</li>
+   </ol>
+   <h2>How to go on</h2>
+    <p>It's now time for you to decide what you need. A boot system, a kernel, your favorit filesystem, logical volume or RAID and your ip adress dynamic or static</p>
+    <p>Before that we need to configure a minimum the 'cards' package manager and downloads all the ports containing the building receipes of all the available NuTyX packages</p>
+    <ol>
+     <li>We start to exit from the NuTyX</li>
+      <pre class="command"><kbd>exit</kbd></pre>
+      <p>We check if the LFS variable is still set</p>
+      <pre class="command"><kbd>echo $LFS</kbd></pre>
+      <p>It must return something</p>
+      <pre class="output">/mnt/lfs</pre>
+     <li>We can now reenter in the new NuTyX to finalise the job</li>
+      <pre class="command"><kbd>chroot $LFS /usr/bin/env -i HOME=/root TERM="$TERM" PS1='\u: \w\$' \
 /bin/bash --login</kbd></pre>
 No error should be print:
-    <pre class="output">root [ / ]# </pre>
-    <li>We begin by adjusting the cards.conf file. We used from now on only the recept coming from the git project. You need to adapt the language if necessary.</li>
+      <pre class="output">root [ / ]# </pre>
+     <li>We begin by adjusting the cards.conf file. We used from now on only the recept coming from the git project. You need to adapt the language if necessary.</li>
     <pre class="command"><kbd>cat &gt; /etc/cards.conf &lt;&lt; "EOF"
-dir /root/extra/gui-extra
-dir /root/current/gui
-dir /root/extra/cli-extra
-dir /root/current/console
-dir /root/extra/base-extra
-dir /root/current/base
-logdir /var/log/pkgbuild
+dir /usr/ports/gui-extra
+dir /usr/ports/gui
+dir /usr/ports/cli-extra
+dir /usr/ports/cli
+dir /usr/ports/base-extra
+dir /usr/ports/base
 locale de
-base /root/current/base
-base /root/extra/base-extra
+base /usr/ports/base
+base /ust/ports/base-extra
 EOF</kbd></pre>
-    <li>We still need to compile the rest of a Base NuTyX. All the packages included in the <b>base-extra</b> collection will now be compiled:</li>
-     <pre class="command"><kbd>cd /root/extra/base-extra</kbd></pre>
-    <li>And we launch the <b>base-extra</b> collection compilation in the right order</li>
-     <pre class="command"><kbd>pass</kbd></pre>
-     <pre class="output">=======&gt; PKGMK_INSTALL: install
-=======&gt; PKGMK_WORK_DIR: /root/extra/base-extra/dialog/work
-=======&gt; PKGMK_SOURCE_DIR: /root/extra/base-extra/dialog
- ...</pre>
-    <li>The compilation of the <b>base-extra</b> collection must end with the <b>kernel</b> package.</li>
-       <pre class="output">ADD: kernel, 6646 files: 100%
-=======&gt; Installing 'kernel1439823127x86_64.cards.tar' succeeded.
-=======&gt; compress kernel1439823127x86_64.cards.tar</pre>
+     <li>We can now download all the availables ports and compile the receipts we want ( as long the collections are corrected configured in the cards.conf file above )</li>
+      <pre class="command"><kbd>ports -u</kbd></pre>
+      <pre class="output">...</pre>
+      <p>We are now ready to finalise our NuTyX</p>
+     </ol>
+   <h2>The kernel compilation and optional ports compilations</h2>
+    <ol>
+     <li>
+      <h3>Kernel compilation</h3>
+     </li>
+      <p>The kernel will be the only mandatory package, without it your NuTyX will never be able to start and run. You can choose different possibilities:</p>
+       <ol>
+        <li>
+         <h4>Compilation of one of the available ports kernel</h4>
+        </li>
+          <p>This choice is mandatory if you plan to produce an installable ISO. It's also the most simple choice:</p>
+          <pre class="command"><kbd>cd /usr/ports/base-extra/kernel-lts
+pkgmk -d -i</kbd></pre>
+          <p>Replaces the name 'kernel-lts' by 'kernel' if you prefer the latest stable</p>
+        <li>
+         <h4>Compile your own kernel</h4>
+        </li>
+         <p>This choice means that the generation of an installable ISO will be not possible</p>
+         <p>Vous can follow the article explaining how to <a href="build-kernel.html">compile your own kernel</a> or you will find many tutos about kernel compilation on the net</p>
+       </ol>
+     <li>
+      <h3>Add grub the boot process tool (optional)</h3>
+     </li>
+      <p>The grub package is ony need if you decide to produce an installable ISO or if you don't have any boot procedure yet on your machine (most probably you already have one):</p>
+      <pre class="command"><kbd>cards depcreate grub</kbd></pre>
+      <p>Once grub is installed, you will be able to setup your boot process via the command line or later via the generated ISO</p>
+     <li>
+      <h3>Adding other files system supports (optional)</h3>
+     </li>
+      <p>The following files systems are availables:</p>
+      <pre class="command"><kbd>cards depcreate btrfs-progs</kbd></pre>
+      <pre class="command"><kbd>cards depcreate xfsprogs</kbd></pre>
+      <pre class="command"><kbd>cards depcreate reiserfsprogs</kbd></pre>
+      <pre class="command"><kbd>cards depcreate jfsutils</kbd></pre>
+      <p>Choose your favorit one or leave it as ext3 , ext4 </p>
+     <li>
+      <h3>Adding the logical partitons tools and RAID (optional)</h3>
+     </li>
+      <p>If you are using RAID system:</p>
+      <pre class="command"><kbd>cards depcreate mdadm</kbd></pre>
+     <li>
+      <h3>Adding a dhcp client to be able to obtain a dynamic IP adress (optional)</h3>
+     </li>
+      <p>If you don't want to use a fix ip adress, you will need a dhcp client tool:</p>
+      <pre class="command"><kbd>cards depcreate dhcpcd</kbd></pre>
+     <li>
+      <h3>Adding a text editor (optional)</h3>
+     </li>
+      <p>The installeur in the generated ISO use the command 'vi' to edit your grub file, you can choose between:</p>
+      <pre class="command"><kbd>cards depcreate e3</kbd></pre><p>and</p>
+      <pre class="command"><kbd>cards depcreate vim</kbd></pre>
+     <li>
+      <h3>Adding the NFS support (optional)</h3>
+     </li>
+      <p>If you don't use or don't know about <a href="https://en.wikipedia.org/wiki/Network_File_System">NFS</a>, you can ignore this option:</p>
+      <pre class="command"><kbd>cards depcreate nfs-utils</kbd></pre>
+     </ol>
+  <h2>Option1: Produce an installable ISO</h2>
+   <ol>
     <li>We add all the necessary files for a working iso</li>
     <pre class="command"><kbd>cp -av /root/current/iso /ISO</kbd></pre>
     <pre class="output">'/root/current/iso' -&gt; '/ISO'
@@ -130,17 +195,17 @@ Max brk space used 28000
 165140 extents written (322 MB)</pre>
    <p>You have now an ISO located in the $LFS folder</p>
    <pre class="command"><kbd>ls $LFS/</kbd></pre>
-   <pre class="output">bin   etc   lib    NuTyX_x86_64-houaphan-20150725.iso     root  sources  base  usr
-boot  home  lib64  NuTyX_x86_64-houaphan-20150725.md5sum  run   srv      tmp     var
+   <pre class="output">bin   etc   lib    NuTyX_x86_64-houaphan-20160214.iso     root  sources  base  usr
+boot  home  lib64  NuTyX_x86_64-houaphan-20160214.md5sum  run   srv      tmp     var
 dev   ISO   mnt    proc                                   sbin  sys      tools</pre>
    <li>You just need to transfer it to your usb key and test it</li>
-   <pre class="command"><kbd>dd if=$LFS/NuTyX_x86_64-houaphan-20150207.iso of=/dev/sdb</kbd></pre>
+   <pre class="command"><kbd>dd if=$LFS/NuTyX_x86_64-houaphan-20160214.iso of=/dev/sdb</kbd></pre>
    <pre class="output">526336+0 records in
 526336+0 records out
 269484032 bytes (269 MB) copied, 66.4757 s, 4.1 MB/s</pre>
   </ol>
    <p>Congratulations, you have now a new base system NuTyX in your hands ready to be installed on all yours machines.</p>
-  <h2>Options</h2>
+  <h2>Options2: Reduce the size of your final ISO.</h2>
    <ol>
     <li>If you want to reduce the size of the final ISO, you can remove the binaries archives and the logs, they won't be needed. If you want to keep the archives, give the following command</li>
      <pre class="command"><kbd>rsync -a /root/current/base/ /base/
@@ -157,10 +222,10 @@ rsync -a /root/extra/base-extra/ /base-extra/</kbd></pre>
 pkgrm kernel.devel</kbd></pre>
   </ol>
   <hr>
-  <p class="updated">Last updated on 2016-02-04 22:40</p>
+  <p class="updated">Last updated on 2016-02-14 19:23</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
-        &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+        &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
         <a href="http://www.wtfpl.net/"><img
        src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
        width="80" height="15" alt="WTFPL" /></a></p>
