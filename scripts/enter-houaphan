@@ -5,10 +5,10 @@ fi
 
 if [ ! -d $1 ]; then
         mkdir -p $1/DEPOT
-        mount $1/DEPOT
+        mount $1/DEPOT || exit 1
         DEVEL="cards.devel" KERNEL="NONE" LFS="$1" bash /root/bin/install-houaphan
 else
-        mount $1/DEPOT
+        mount $1/DEPOT || exit 1
 fi
 
 [ ! -d $1/sources ] && mkdir -p $1/sources
@@ -109,11 +109,11 @@ fi
 echo "COLLECTION: $COLLECTION"
 echo "VERSION: $VERSION"
 
-mount $1/sources
+mount $1/sources || exit 1
 
 [ ! -d $1/root/$COLLECTION ] && mkdir -p $1/root/$COLLECTION 
 
-mount $1/root/$COLLECTION
+mount $1/root/$COLLECTION || exit 1
 
 LFS=$1 bash /root/bin/install-houaphan -ec
 
