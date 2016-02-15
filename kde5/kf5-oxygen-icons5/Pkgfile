@@ -1,10 +1,10 @@
 # Description : The Oxygen Icon Theme for kf5
 # URL: https://www.kde.org/
-# Packager: pierre at nutyx dot org
+# Packager: pierre at nutyx dot org, tnut at nutyx dot org
 # Depends on: cmake, qt5, kf5-extra-cmake-modules
 
 _name=oxygen-icons5
-release=1
+release=2
 
 source=(http://download.kde.org/stable/frameworks/${version%.*}/${_name}-$version.tar.xz)
 
@@ -18,5 +18,10 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
 
 make
 make DESTDIR=$PKG install
-}
 
+# Thoses icons are in kdepim
+for i in 128 16 22 256 32 48
+do
+  rm $PKG/usr/share/icons/oxygen/${i}x${i}/mimetypes/x-mail-distribution-list.png
+done
+}
