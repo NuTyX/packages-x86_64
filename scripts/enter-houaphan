@@ -82,7 +82,8 @@ if [ "$CHROOT" == "base-extra" ]; then
 	COLLECTION="extra"
 	echo "dir /DEPOT/base-extra
 dir /DEPOT/base
-base /DEPOT/base" > $1/etc/cards.conf
+base /DEPOT/base
+base /DEPOT/base-extra" > $1/etc/cards.conf
 fi
 if [ "$CHROOT" == "cli-extra" ]; then
 	COLLECTION="extra"
@@ -91,6 +92,7 @@ dir /DEPOT/cli
 dir /DEPOT/base-extra
 dir /DEPOT/base
 base /DEPOT/base
+base /DEPOT/base-extra
 logdir /var/log/pkgbuild" > $1/etc/cards.conf
 fi
 
