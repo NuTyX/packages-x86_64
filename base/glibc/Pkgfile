@@ -5,9 +5,10 @@ kernelversion=4.4
 PKGMK_GROUPS=(devel man doc)
 name=glibc
 version=2.22
-release=3
+release=4
 
 source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
+	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-upstream_fixes-1.patch
 	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-largefile-1.patch
 	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
 	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-upstream_i386_fix-1.patch
@@ -28,6 +29,7 @@ cd ../glibc-$version
 patch -Np1 -i ../glibc-$version-fhs-1.patch
 patch -Np1 -i ../glibc-$version-upstream_i386_fix-1.patch
 patch -Np1 -i ../glibc-$version-largefile-1.patch
+patch -Np1 -i ../glibc-$version-upstream_fix-1.patch
 
 mkdir -v ../glibc-build
 cd ../glibc-build
