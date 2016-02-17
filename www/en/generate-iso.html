@@ -33,30 +33,35 @@
      <div class="note"><img alt="[NOTE IMPORTANTE]" src="../graphics/note.gif"/>All the commands should be enter in the root account</div>
      <ol>
       <li>
-       <h2>Installation of a NuTyX</h2>
+       <h2>Installation of a NuTyX system</h2>
        <ol>
         <li>
-         <h3>Get all the tools</h3>
-          <pre class="command"><kbd>git clone git://github.com/NuTyX/houaphan.git</kbd></pre>
+         <h3>The "LFS" variable MUST be defined</h3>
+          <p>The chroot will be in the "/ISO-NuTyX" directory but you may choose another.</p>
+          <pre class="command"><kbd>export LFS=/ISO-NuTyX</kbd></pre>
         </li>
         <li>
-         <h3>Make sure you have cdrkit and syslinux installed, in the worst-case scenario:</h3>
-          <pre class="command"><kbd>get cdrkit
-get syslinux</kbd></pre>
+         <h3>The "NUTYX_TMP" variable SHOULD be defined</h3>
+          <p>A directory where you want to clone a temporary NuTyX repository "/mnt/nutyx_tmp" but you may choose another.</p>
+          <pre class="command"><kbd>export NUTYX_TMP=/mnt/nutyx_tmp</kbd></pre>
         </li>
         <li>
-         <h3>A variable will be used during the all process</h3>
-          <p>The LFS variable MUST be defined</p>
-          <pre class="command"><kbd>export LFS=/ISO-MINI</kbd></pre>
-          <p>The chroot will be in the "/ISO-MINI" directory. Up to you to choose another place.</p>
+         <h3>Make sure you have `git, tar, gawk, wget, cdrkit and syslinux` installed</h3>
+          <p>If you run a NuTyX system you can run:</p>
+          <pre class="command"><kbd>cards install git tar gawk wget cdrkit syslinux</kbd></pre>
         </li>
         <li>
-         <h3>Install the houaphan base system</h3>
-          <pre class="command"><kbd>bash houaphan/scripts/install-houaphan</kbd></pre>
+         <h3>Clone the "NuTyX" git repository</h3>
+          <p>Change to the directory where you want to download a temporary NuTyX repository: e.g. `cd /mnt`</p>
+          <pre class="command"><kbd>git clone git://github.com/NuTyX/houaphan.git $NUTYX_TMP</kbd></pre>
         </li>
         <li>
-         <h3>Copy the files for the iso</h3>
-          <pre class="command"><kbd>cp -av houaphan/iso $LFS/ISO</kbd></pre>
+         <h3>Install the NuTyX base system</h3>
+          <pre class="command"><kbd>bash $NUTYX_TMP/scripts/install-houaphan</kbd></pre>
+        </li>
+        <li>
+         <h3>Copy necessary files for the iso</h3>
+          <pre class="command"><kbd>cp -av $NUTYX_TMP/iso $LFS/ISO</kbd></pre>
         </li>
         </ol>
        </li>
@@ -65,7 +70,7 @@ get syslinux</kbd></pre>
          <ol>
           <li>
            <h3>Enter the chroot</h3>
-            <pre class="command"><kbd>LFS=/ISO-MINI bash houaphan/scripts/install-houaphan -ec</kbd></pre>
+            <pre class="command"><kbd>LFS=/ISO-NuTyX bash $NUTYX_TMP/scripts/install-houaphan -ec</kbd></pre>
           </li>
           <li>
            <h3>Put the kernel and the initrd in the right place</h3>
@@ -92,20 +97,31 @@ done</kbd></pre>
           </li>
           <li>
            <h3>Generate the ISO</h3>
-            <pre class="command"><kbd>bash houaphan/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
+            <pre class="command"><kbd>bash $NUTYX_TMP/scripts/mkiso `date +%Y%m%d`</kbd></pre>
           </li>
          </ol>
         </li>
         <li>
          <h2>Conclusion</h2>
-          <p>The size shoul'nd be bigger then 300 MB if you didn't put anything else then all the packages mentionned above. You will find the iso in the $LFS directory.</p>
+          <p>The size shoul'nd be bigger then 300 MB if you didn't add any optional packages. You will find the iso in the $LFS directory.</p>
           <pre class="command"><kbd>ls $LFS</kbd></pre>
-          <pre class="output">bin   dev  home  lib  NuTyX_x86_64-houaphan-20160214.iso     proc  run   srv  tmp  var
-boot  etc  ISO   mnt  NuTyX_x86_64-houaphan-20160214.md5sum  root  sbin  sys  usr</pre>
+          <pre class="output">bin etc lib NuTyX_x86_64-20160217.iso root srv usr boot 
+home lib64 NuTyX_x86_64-20160217.md5sum
+run sys var dev ISO mnt proc sbin tmp</pre>
+        </li>
+        <li>
+         <h2>Create a bootable USB-Stick</h2>
+          <p>Insert your USB-Stick and check the disk. Run:</p>
+          <pre class="command"><kbd>fdisk -l</kbd></pre>
+          <pre class="output">........
+Disk /dev/sdb: 960.8 MiB ......</pre>
+		  <p>Create a bootable USB-Stick specifying the correct filename and disk (replace sdX with your USB disk)</p>
+		  <p>WARNING: all data will be destroyed.</p>
+		  <pre class="command"><kbd>dd if=$LFS/NuTyX_x86_64-20160217.iso of=/dev/sdX bs=4M; sync</kbd></pre>
         </li>
        </ol>
       <hr>
-      <p class="updated">Last updated 2016-02-14 15:16</p>
+      <p class="updated">Last updated 2016-02-17 15:16</p>
        <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
