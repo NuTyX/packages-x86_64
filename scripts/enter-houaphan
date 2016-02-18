@@ -1,123 +1,165 @@
-if [ $# -lt 1 ]; then
-	echo "Specify the collection"
-	exit  1
-fi
-
-if [ ! -d $1 ]; then
-        mkdir -p $1/DEPOT
-        mount $1/DEPOT || exit 1
-        DEVEL="cards.devel" KERNEL="NONE" LFS="$1" bash /root/bin/install-houaphan
-else
-        mount $1/DEPOT || exit 1
-fi
-
-[ ! -d $1/sources ] && mkdir -p $1/sources
-
-VERSION=`dirname $1`
-CHROOT=`basename $1`
-COLLECTION="$CHROOT"
-
-echo "CHROOT: $CHROOT"
-if [ "$CHROOT" == "xfce4" ]; then
-	echo "dir /DEPOT/xfce4-extra
+setup_collection() {
+	local DIR
+	DIR="/$VERSION/$CHROOT"
+	if [ "$CHROOT" == "xfce4" ]; then
+		echo "dir /DEPOT/xfce4-extra
 dir /DEPOT/xfce4
 dir /DEPOT/gui
 dir /DEPOT/cli
 dir /DEPOT/base
+dir /DEPOT/base-extra
 base /DEPOT/base
-logdir /var/log/pkgbuild" > $1/etc/cards.conf
-fi
-if [ "$CHROOT" == "mate" ]; then
-	echo "dir /DEPOT/mate-extra
+base /DEPOT/cli
+base /DEPOT/gui
+logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+	fi
+	if [ "$CHROOT" == "mate" ]; then
+		echo "dir /DEPOT/mate-extra
 dir /DEPOT/mate
 dir /DEPOT/gui
 dir /DEPOT/cli
 dir /DEPOT/base
+dir /DEPOT/base-extra
 base /DEPOT/base
-logdir /var/log/pkgbuild" > $1/etc/cards.conf
-fi
-if [ "$CHROOT" == "gnome" ]; then
-	echo "dir /DEPOT/gnome-extra
+base /DEPOT/cli
+base /DEPOT/gui
+logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+	fi
+	if [ "$CHROOT" == "gnome" ]; then
+		echo "dir /DEPOT/gnome-extra
 dir /DEPOT/gnome
-dir /DEPOT/gui
-dir /DEPOT/cli
-dir /DEPOT/base-extra
-dir /DEPOT/base
-base /DEPOT/base
-logdir /var/log/pkgbuild" > $1/etc/cards.conf
-fi
-if [ "$CHROOT" == "kde5" ]; then
-	echo "dir /DEPOT/kde5-extra
-dir /DEPOT/kde5
-dir /DEPOT/gui
-dir /DEPOT/cli
-dir /DEPOT/base
-base /DEPOT/base
-logdir /var/log/pkgbuild" > $1/etc/cards.conf
-fi
-if [ "$CHROOT" == "base" ]; then
-	COLLECTION="houaphan"
-	echo "dir /DEPOT/base
-base /DEPOT/base
-logdir /var/log/pkgbuild" > $1/etc/cards.conf
-
-fi
-if [ "$CHROOT" == "cli" ]; then
-	COLLECTION="houaphan"
-	echo "dir /DEPOT/cli
-dir /DEPOT/base
-base /DEPOT/base
-logdir /var/log/pkgbuild" > $1/etc/cards.conf
-fi
-if [ "$CHROOT" == "gui" ]; then
-	COLLECTION="houaphan"
-	echo "dir /DEPOT/gui
-dir /DEPOT/cli
-dir /DEPOT/base
-base /DEPOT/base
-logdir /var/log/pkgbuild" > $1/etc/cards.conf
-fi
-
-if [ "$CHROOT" == "base-extra" ]; then
-	COLLECTION="extra"
-	echo "dir /DEPOT/base-extra
-dir /DEPOT/base
-base /DEPOT/base
-base /DEPOT/base-extra" > $1/etc/cards.conf
-fi
-if [ "$CHROOT" == "cli-extra" ]; then
-	COLLECTION="extra"
-	echo "dir /DEPOT/cli-extra
-dir /DEPOT/cli
-dir /DEPOT/base-extra
-dir /DEPOT/base
-base /DEPOT/base
-base /DEPOT/base-extra
-logdir /var/log/pkgbuild" > $1/etc/cards.conf
-fi
-
-if [ "$CHROOT" == "gui-extra" ]; then
-	COLLECTION="extra"
-	echo "dir /DEPOT/gui-extra
+dir /DEPOT/gui-extra
 dir /DEPOT/gui
 dir /DEPOT/cli-extra
 dir /DEPOT/cli
 dir /DEPOT/base-extra
 dir /DEPOT/base
 base /DEPOT/base
-logdir /var/log/pkgbuild" > $1/etc/cards.conf
+base /DEPOT/cli
+base /DEPOT/gui
+logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+	fi
+	if [ "$CHROOT" == "kde5" ]; then
+		echo "dir /DEPOT/kde5-extra
+dir /DEPOT/kde5
+dir /DEPOT/gui
+dir /DEPOT/cli
+dir /DEPOT/base
+dir /DEPOT/base-extra
+base /DEPOT/base
+base /DEPOT/cli
+base /DEPOT/gui
+logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+	fi
+	if [ "$CHROOT" == "base" ]; then
+		COLLECTION="houaphan"
+		echo "dir /DEPOT/base
+base /DEPOT/base
+logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+
+	fi
+	if [ "$CHROOT" == "cli" ]; then
+		COLLECTION="houaphan"
+		echo "dir /DEPOT/cli
+dir /DEPOT/base
+base /DEPOT/base
+logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+	fi
+	if [ "$CHROOT" == "gui" ]; then
+		COLLECTION="houaphan"
+		echo "dir /DEPOT/gui
+dir /DEPOT/cli
+dir /DEPOT/base
+base /DEPOT/base
+logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+	fi
+	if [ "$CHROOT" == "base-extra" ]; then
+		COLLECTION="extra"
+		echo "dir /DEPOT/base-extra
+dir /DEPOT/base
+base /DEPOT/base
+base /DEPOT/base-extra" > $DIR/etc/cards.conf || exit 1
+	fi
+	if [ "$CHROOT" == "cli-extra" ]; then
+		COLLECTION="extra"
+		echo "dir /DEPOT/cli-extra
+dir /DEPOT/cli
+dir /DEPOT/base-extra
+dir /DEPOT/base
+base /DEPOT/base
+base /DEPOT/base-extra
+logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+	fi
+	if [ "$CHROOT" == "gui-extra" ]; then
+		COLLECTION="extra"
+		echo "dir /DEPOT/gui-extra
+dir /DEPOT/gui
+dir /DEPOT/cli-extra
+dir /DEPOT/cli
+dir /DEPOT/base-extra
+dir /DEPOT/base
+base /DEPOT/base
+logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+	fi
+}
+
+
+if [ $# -lt 1 ]; then
+	echo "Specify the collection"
+	exit  1
 fi
 
+if [ -d $1 ]; then
+	echo "$1 exist ..."
+	exit 1
+fi
+
+VERSION=`dirname $1`
+CHROOT=`basename $1`
+COLLECTION="$CHROOT"
+
+mkdir -p $1/etc || exit 1
+
+if [ "$CHROOT" == "base" ] || [ "$CHROOT" == "cli"  ] || [ "$CHROOT" == "gui"  ]; then
+	setup_collection
+	DEVEL="cards.devel && cd /root/$COLLECTION && bash scripts/$CHROOT -a"
+fi
+
+if [ "$CHROOT" == "base-extra" ] || [ "$CHROOT" == "cli-extra"  ] || [ "$CHROOT" == "gui-extra"  ]; then
+	setup_collection
+	DEVEL="cards.devel && cd /root/$COLLECTION && bash scripts/$CHROOT -a"
+fi
+if [ "$COLLECTION" != "houaphan" ] && [ "$COLLECTION" != "extra"  ]; then
+	setup_collection
+	DEVEL="cards.devel && cd /root/$CHROOT && bash scripts/$COLLECTION -a && bash scripts/$COLLECTION-extra -a"
+fi
+
+export DEVEL
+
+echo "CHROOT: $CHROOT"
 echo "COLLECTION: $COLLECTION"
 echo "VERSION: $VERSION"
+echo "DEVEL: $DEVEL"
 
+echo "OK ?"
+read a
+
+if [ "$a" != "y" ]; then
+	rm -rv $1
+	exit 1
+fi
+
+mkdir -p $1/DEPOT || exit 1
+mount $1/DEPOT || exit 1
+
+
+mkdir -p $1/sources || exit 1
 mount $1/sources || exit 1
 
-[ ! -d $1/root/$COLLECTION ] && mkdir -p $1/root/$COLLECTION 
-
+mkdir -p $1/root/$COLLECTION || exit 1
 mount $1/root/$COLLECTION || exit 1
 
-LFS=$1 bash /root/bin/install-houaphan -ec
+KERNEL="NONE" LFS="$1" bash /root/bin/install-houaphan
 
 umount $1/sources || exit 1
 umount $1/DEPOT || exit 1
