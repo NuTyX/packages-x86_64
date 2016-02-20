@@ -42,6 +42,7 @@
        <li>Ne permet pas de se connecter à un serveur dhcp et donc d'obtenir une adresse IP de façon dynamique</li>
        <li>Ne contient aucun editeur de texte</li>
       </ol>
+     <p>D'autre part votre NuTyX contient certains services dont vous n'avez peut-être pas l'utilitée</p>
     <h2>Marche à suivre</h2>
      <p>Vous l'avez peut-être déjà compris, cette post-construction n'est plus un simple copié-collé.</p>
      <p>C'est maintenant à vous de savoir ce que vous souhaitez utiliser comme moyen d'amorçage, kernel, système de fichiers, volumes logiques et adresse IP statique ou dynamique</p>
@@ -96,6 +97,12 @@ pkgmk -d -i</kbd></pre>
         <p>Vous pouvez soit vous inspirez de l'article qui explique comment <a href="build-kernel.html">compiler son propre kernel</a> ou vous trouverez de nombreaux tutos sur la compilation d'un kernel sur le net</p>
      </ol>
     <li>
+     <h3>Suppression des services indésirables (recommandé)</h3>
+    </li>
+     <p>Lors de la construction de votre NuTyX, les services ssh et rsync ont automatiquement été installés. Si vous n'envisagez pas de mettre en place un service rsync ni un accès à distance de votre machine. Il est vivement recommandé d'arrêter les services rsyncd et sshd. Même si vous ne savez pas ce que c'est, faites:</p>
+     <pre class="command"><kbd>cards remove openssh.service
+cards remove rsync.service</kbd></pre>
+    <li>
      <h3>Mise en place de grub, l'outil d'amorçage (en option)</h3>
     </li>
      <p>Le paquet grub est uniquement necessaire si vous dédicez de produire une ISO installable ou que vous n'avez pas encore de technique d'amorçage sur votre machine actuelle (peu probable):</p>
@@ -131,6 +138,8 @@ pkgmk -d -i</kbd></pre>
     </li>
      <p>Si vous n'utilisez pas ou ne connaissez pas <a href="https://fr.wikipedia.org/wiki/Network_File_System">NFS</a>, vous pouvez ignorer cette option:</p>
      <pre class="command"><kbd>cards depcreate nfs-utils</kbd></pre>
+     <p>Comme pour les services sshd et rsyncd, si vous n'avez pas l'intention de mettre en place un service nfs en place, faites:
+     <pre class="command"><kbd>cards remove nfs-utils.service</kbd></pre>
   </ol>
  <h2>Option1: Produire une ISO installable.</h2>
   <ol> 
@@ -224,7 +233,7 @@ rsync -a /root/extra/base-extra/ /base-extra/</kbd></pre>
 pkgrm kernel.devel</kbd></pre>
    </ol>
    <hr>
-   <p class="updated">Dernière mise à jour 14-02-2016 16:12</p>
+   <p class="updated">Dernière mise à jour 20-02-2016 13:02</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />

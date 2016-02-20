@@ -41,6 +41,7 @@
     <li>Can not connect to a dhcp server and get a dynamic address</li>
     <li>Do not contain a text editor</li>
    </ol>
+    <p>On the other hand your NuTyX contains some services that you most probably will never use.</p> 
    <h2>How to go on</h2>
     <p>It's now time for you to decide what you need. A boot system, a kernel, your favorit filesystem, logical volume or RAID and your ip adress dynamic or static</p>
     <p>Before that we need to configure a minimum the 'cards' package manager and downloads all the ports containing the building receipes of all the available NuTyX packages</p>
@@ -94,6 +95,11 @@ pkgmk -d -i</kbd></pre>
          <p>Vous can follow the article explaining how to <a href="build-kernel.html">compile your own kernel</a> or you will find many tutos about kernel compilation on the net</p>
        </ol>
      <li>
+      <h3>Remove unnecessary services(recommended)</h3>
+     <li>
+      <p>During the construction of your NuTyX, services ssh and rsync have been automatically installed. If you not plan to activate a rsync server or not plan to remote acces your machine, it's strongly recommenended to deactivate thoses services. Even if you don't know what's are they, do:
+      <pre class="command"><kbd>cards remove openssh.service
+cards remove rsync.service</kbd></pre>
       <h3>Add grub the boot process tool (optional)</h3>
      </li>
       <p>The grub package is ony need if you decide to produce an installable ISO or if you don't have any boot procedure yet on your machine (most probably you already have one):</p>
@@ -129,6 +135,8 @@ pkgmk -d -i</kbd></pre>
      </li>
       <p>If you don't use or don't know about <a href="https://en.wikipedia.org/wiki/Network_File_System">NFS</a>, you can ignore this option:</p>
       <pre class="command"><kbd>cards depcreate nfs-utils</kbd></pre>
+      <p>Like for the sshd and rsync services, if you don't need a NFS serveur. do:
+      <pre class="command"><kbd>cards remove nfs-utils.service</kbd></pre>
      </ol>
   <h2>Option1: Produce an installable ISO</h2>
    <ol>
@@ -222,7 +230,7 @@ rsync -a /root/extra/base-extra/ /base-extra/</kbd></pre>
 pkgrm kernel.devel</kbd></pre>
   </ol>
   <hr>
-  <p class="updated">Last updated on 2016-02-14 19:23</p>
+  <p class="updated">Last updated on 2016-02-20 13:12</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
