@@ -54,6 +54,7 @@ logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
 	if [ "$CHROOT" == "base" ]; then
 		COLLECTION="houaphan"
 		echo "dir /DEPOT/base
+dir /DEPOT/base-extra
 base /DEPOT/base
 logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
 
@@ -62,6 +63,7 @@ logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
 		COLLECTION="houaphan"
 		echo "dir /DEPOT/cli
 dir /DEPOT/base
+dir /DEPOT/base-extra
 base /DEPOT/base
 logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
 	fi
@@ -70,6 +72,7 @@ logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
 		echo "dir /DEPOT/gui
 dir /DEPOT/cli
 dir /DEPOT/base
+dir /DEPOT/base-extra
 base /DEPOT/base
 logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
 	fi
@@ -122,16 +125,22 @@ mkdir -p $1/etc || exit 1
 
 if [ "$CHROOT" == "base" ] || [ "$CHROOT" == "cli"  ] || [ "$CHROOT" == "gui"  ]; then
 	setup_collection
-	DEVEL="cards.devel && cd /root/$COLLECTION && bash scripts/$CHROOT -a"
+	DEVEL="cards.devel && cd /root/$COLLECTION && bash scripts/$CHROOT"
 fi
 
 if [ "$CHROOT" == "base-extra" ] || [ "$CHROOT" == "cli-extra"  ] || [ "$CHROOT" == "gui-extra"  ]; then
 	setup_collection
-	DEVEL="cards.devel && cd /root/$COLLECTION && bash scripts/$CHROOT -a"
+	DEVEL="cards.devel && cd /root/$COLLECTION && bash scripts/$CHROOT"
 fi
 if [ "$COLLECTION" != "houaphan" ] && [ "$COLLECTION" != "extra"  ]; then
 	setup_collection
-	DEVEL="cards.devel && cd /root/$CHROOT && bash scripts/$COLLECTION -a && bash scripts/$COLLECTION-extra -a"
+	DEVEL="cards.devel && cd /root/$CHROOT && bash scripts/$COLLECTION -a && bash scripts/$COLLECTION-extra"
+fi
+
+if [ $# -gt 1 ]; then
+	DEVEL="$DEVEL $2"
+else
+	DEVEL="$DEVEL -a"
 fi
 
 export DEVEL
@@ -139,12 +148,13 @@ export DEVEL
 echo "CHROOT: $CHROOT"
 echo "COLLECTION: $COLLECTION"
 echo "VERSION: $VERSION"
-echo "DEVEL: $DEVEL"
+echo -n "DEVEL: $DEVEL "
 
-echo "OK ?"
+echo -n " OK ? (y) "
 read a
 
 if [ "$a" != "y" ]; then
+	echo "Answer should be 'y'"
 	rm -rv $1
 	exit 1
 fi
