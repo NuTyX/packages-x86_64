@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   <!-- En-tête de la page -->
+   <meta charset="utf-8" />
+   <link rel="stylesheet" href="../css/nutyx.css" />
+   <title>NuTyX - How to build a package ? </title>
+  </head>
+  <body>
+    <table>
+     <tr>
+      <td>
+       <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+      </td>
+      <td>
+       <nav>
+        <ul>
+            <li><a href=".">Home</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="http://forums.nutyx.org/index.php?action=recent">Forum</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
+        </ul>
+       </nav>
+      </td>
+     </tr>
+    </table>
+   <hr>
+   <h1><span>How to build a package ?</span></h1>
+    <h2>Introduction</h2>
+     <p>We at NuTyX have the encouraging means for you to <a href="build-pre.html">contribute your own NuTyX LFS system</a>, we have the <a href="bash-basics.html">required Know-how</a>, the <a href="base-commands.html">available base commands</a>, the <a href="recept.html">minimum syntax of instructions</a> and finaly what are the <a href="packages.html">available packages</a> for you to choose from.</p>
+     <p>Come join the many participants, of all ages, male or female, from all over the world, and venture along this exciting road we call NuTyX; filled with promises of rewarding achievement and success as you begin your attempt to build you very first NuTyX system, following our (NuTyX) rules <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />.</p>
+     <p>If you are using a version of the <b>cards</b> command, older then <b>1.1.1</b>, it's time to update your package manager.</p>
+    <h2>Contents</h2>
+     <h3>
+      <a href="#1">Which Scenario development do you want ?</a><br />
+      <a href="#2">Adjust the configuration files according to your scenario</a><br />
+      <a href="#4">Scenario B: A package without dependencies</a><br />
+      <a href="#5">Scenario C: A package with a few dependencies</a><br />
+      <a href="#6">Scenario E: Building inside an Isolated environment construction method call "chroot"</a><br />
+     </h3>
+    <a name='1'></a>
+    <h2>Which Scenario you want ?</h2>
+     <h3>What does the term 'Scenario' <img src="../graphics/confused.gif" alt="" /> means in a NuTyX installation context ?</h3>
+      <p>Don't search Google for "scenario" as Linux terminology (... not just yet anyway?), I suspect my formula doesn't exist yet on other Linux distributions <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />. This is an idea I formulated while I was creating the '<b>cards</b>' package manager.</p>
+      <p>Over the years, I've experienced an extensive and growing target audience desiring to use a distribution similar to what <b>NuTyX</b> offers at present. The same audience indicated to me that they wanted to build their own kernel using their own preferential style and package mix.</p>
+      <p>Most new-comers pursuing the <i>“building infrastructure scenario of NuTyX”</i> are desiring, just like the preceding audience,  to compile their own downloaded packages of choice at their leisure. They want flexibility and options in doing their compilation. So this is where the concept of <i>"<b>scenario</b>"</i> comes to the rescue. Some will find the default packaged collection not suited to their preference and wish to modify it. Some users will want to mix their standard available binary packages with their own ported packages. Others wanting to compile packages in an isolated environment, whereby keeping their original system intact and isolated. These are just some of the different requests for building their system.</p>
+
+      <p>I describe these 5 different options of installation as “<b>scenario's</b>” that is accessible within the framework of <b>NuTyX</b>.</p>
+     <h3>We offer 5 possible installation Scenario's for you to examine.</h3>
+      <ol>
+       <li><a href="#21">Scenario <b>A</b></a>: "I do not want to compile anything, the available binary enough for me" <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />. This option may seem irrelevant or unimportant to talk about it here, howeever a little secret, this scenario allows you to keep your favorite distribution as light-weight as possible.</li>
+       <li><a href="#22">Scenario <b>B</b></a>: "The available packaged Binary are insufficient, I would like to add two or more extra packages".</li>
+       <li><a href="#23">Scenario <b>C</b></a>: "I don't want to use the <b>console</b> and <b>desktop</b> binaries packages collections". "I prefer rather to compile them myself".</li>
+       <li><a href="#24">Scénario <b>D</b></a>: "I want to use the available <b>console</b> and <b>desktop</b> binaries packages collections". "I want my already installed binary dependencies to be used with my personal ports". "Only my personal ports must be compiled".</li>
+       <li><a href="#25">Scénario <b>E</b></a>: "I want to build my <b><i>tarred</i></b> in an isolated environment". "I also want to keep the original system clean and isolated from the development package environment". "I need to install any packages that was compiled in my isolated environment into NuTyX".</li>
+      </ol>
+    <a name='2'></a>
+    <h2>Adjust the configuration files according to your scenario</h2>
+     <h3>Introduction</h3>
+      <p>Let's investigate in details each possible scenario's mentionned above and how best to adjust the configuration files for all of them.</p>
+      <a name='21'></a>
+      <h3>Scenario A</h3>
+       <a name='211'></a>
+       <h4>Introduction</h4>
+        <p>As explained above, you are not wanting to compile anything on your NuTyX. However, if you are wanting other specific packages that are not included in the below “<b>binary-collection</b>”, then you need to reconsider your options . Works perfect if you want to do multiple <b>NuTyX</b> installations, and prefer the system to automatically do the installation on your behalf.</p>
+       <a name='212'></a>
+       <h4>The /etc/cards.conf file</h4>
+        <p>All the below binary collection are activated.</p>
+        <p>The architecture chosen for your machine is correct.</p>
+        <p>The chosen  language(s) for the machine have been selected.</p>
+        <p>The folder defining the base system was created.</p>
+        <p>The contens of a typical <b>/etc/cards.conf</b> file:</p>
+        <pre class="output">
+dir /var/lib/pkg/depotrepo/graphic|http://downloads.nutyx.org/saravane/x86_64/desktop
+dir /var/lib/pkg/depotrepo/console|http://downloads.nutyx.org/saravane/x86_64/console
+dir /var/lib/pkg/depotrepo/base|http://downloads.nutyx.org/saravane/x86_64/base
+arch x86_64
+locale de
+base /var/lib/pkg/depotrepo/base</pre>
+        <p>The 3 standards binaries collections <b>base</b>, <b>console</b> and <b>desktop</b> are activated. The processor is a 64 bits <b>x86_64</b>. The language choose for the installation is german <b>locale de</b>, for english you can ignore this line as per default it will be in english. A <b>cards base -r</b> command is used to <b>return</b> to a base system. The folder containing the base packages is the one of the standard <b>base</b> collection.</p>
+        <pre class="output">base /var/lib/pkg/depotrepo/base</b></pre>
+       <a name='213'></a>
+       <h4>The /etc/pkgmk.conf file</h4>
+        <p>In <b>scenario A</b>, the <b>/etc/pkgmk.conf</b> file is not present since you do not compile. Thus the development tools are not present.</p>
+       <a name='214'></a>
+       <h4>Conclusion</h4>
+        <p>That's all you need to set up your NuTyX. To update your database and check for any available updates, use command:</p>
+        <pre class="command"><kbd>check</kbd></pre>
+        <p>Want to install a Internet browser package, use command:</p>
+        <pre class="command"><kbd>get firefox</kbd></pre>
+        <p>To delete a package:</p>
+        <pre class="command"><kbd>del firefox</kbd></pre>
+        <p>That's all there is to know <img src="../graphics/smiley-tongue-out.gif" alt="Tongue out" title="Tongue out" />. I hope you'll get plenty of enjoyment using <b>NuTyX</b>.</p>
+      <a name='22'></a>
+      <h3>Scenario B</h3>
+       <a name='221'></a>
+       <h4>Introduction</h4>
+        <p>You are happy with your NuTyX installation. However, you desire more packages as part of the system, and you prefer to install and compile them yourself. This is when <b>NuTyX</b> really become interesting and exciting. Get ready for the gusty challenge ahead, tons of self-determination and heaps of patience is required <img src="../graphics/smiley-tongue-out.gif" alt="Tongue out" title="Tongue out" /><img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />. Its a long haul. But very very rewarding and enjoyable all the way through the building processes.</p>
+        <p>Good advice when using <b>Scenario B</b>, avoid at all costs, wanting to compile any external-foreign-builds/packages which will conflict with the NuTyX “base-collection”. If this was your intention, you will be faced with many errors relating to dependency issues when installing the NuTyX “cards-devel” package, which is not installed by default.  If this is still your desire, rather select <b>Scenario C</b>.</p>
+       <a name='222'></a>
+       <h4>The /etc/cards.conf file</h4>
+        <p>A folder containing my personal packages is added, this folder <u>should never</u> be updated by the command <b>cards sync</b>, so we should not specify an associated  downloading URL pointing to this folder.</p>
+        <p>Binary collections are enabled, this will allow me to easily add any missing dependencies ...</p>
+        <p>The arch of the machine is verified, we are 64 bits.</p>
+        <p>The language used on the machine is adjusted</p>
+        <p>The file defines the basic system, in case of return to a basic system is defined.</p>
+        <p>The typical content of your <b>/etc/cards.conf</b> file for <b>Scenario B</b>:</p>
+        <pre class="output">
+dir /usr/ports/personnel
+dir /var/lib/pkg/depotrepo/graphic|http://downloads.nutyx.org/saravane/x86_64/desktop
+dir /var/lib/pkg/depotrepo/console|http://downloads.nutyx.org/saravane/x86_64/console
+dir /var/lib/pkg/depotrepo/base|http://downloads.nutyx.org/saravane/x86_64/base
+arch x86_64
+locale fr
+locale de
+base /var/lib/pkg/depotrepo/base</pre>
+       <a name='223'></a>
+       <h4>Development tools installation</h4>
+        <p>We can now begin to install the Development packages, such as, a compiler, libraries C and C ++ tools autoconf, automake, etc... etc...</p>
+        <pre class="command"><kbd>cards sync</kbd></pre>
+        <pre class="output">/var/lib/pkg/depotrepo/graphic/.PKGREPO
+/var/lib/pkg/depotrepo/console/.PKGREPO
+/var/lib/pkg/depotrepo/base/.PKGREPO</pre>
+        <pre class="command"><kbd>cards install cards.devel</kbd></pre>
+        <pre class="output">Retrieve info about the 66 packages: 100 %
+/var/lib/pkg/depotrepo/base/cards/.PKGREPO
+/var/lib/pkg/depotrepo/base/cards/cards.devel1429192050x86_64.cards.tar.xz
+661020 Bytes - 671821 Bytes/Sec - 100% - 0 Sec remain  remain
+/var/lib/pkg/depotrepo/base/acl/.PKGREPO
+/var/lib/pkg/depotrepo/base/acl/acl.devel1412540285x86_64.cards.tar.xz
+...</pre>
+       <a name='224'></a>
+       <h4>The /etc/pkgmk.conf file</h4>
+        <p>In this scenario, it is good to check some variables:</p>
+        <p>My processor is an 8-core, so much to enjoy with  more speed and power:</p>
+        <pre class="output">export MAKEFLAGS="-j8"</pre>
+        <p>Sources must be stored in the folder containing the packages or in a separate folder. Personally, I prefer to put them together in a separate folder. And why not a folder that will be cleaned at the next boot, I chose the <b>/tmp</b> folder. I hope that the sources are erased once the package is compiled and successfully installed. And finally, I preferred that the working folder is also in the <b>/tmp/work</b> instead of the default folder defined:</p>
+        <pre class="output">PKGMK_SOURCE_DIR="/tmp"
+PKGMK_KEEP_SOURCES="no"
+PKGMK_WORK_DIR="/tmp/work"</pre>
+        <p>I do not want to specify each time the download request sources if not available. A variable lets you do it automatically:</p>
+        <pre class="output">PKGMK_DOWNLOAD="yes"</pre>
+        <p>In this scenario, I do not wish to manage dependencies automatically at compile time and so I did not need the <b>.PKGREPO</b> file .. I only use the <b>pkgmk</b> command.</p>
+        <pre class="output">PKGMK_IGNORE_REPO="yes"
+PKGMK_IGNORE_COLLECTION="yes"</pre>
+        <p>I do not want the <b>pkgmk</b> command split the binary package and sub packages (devel, doc, man, etc). I am happy with the basic package since I compiled it myself. For my locale, I will only use (French) <b>fr</b> and German <b>de</b>.
+        <pre class="output">PKGMK_GROUPS=()
+PKGMK_LOCALES=(fr de)</pre>
+        <p>I do not want that <b>pkgmk</b> compress a package once built and do not wish to keep the archive once installed:
+        <pre class="output">PKGMK_COMPRESSION_PACKAGE="no"
+PKGMK_CLEAN="yes"</pre>
+        <p>Here's what the <b>/etc/pkgmk.conf</b> file looks like for the <b>Scenario B</b>:</p>
+        <pre class="output">export CFLAGS="-O2 -pipe"
+export CXXFLAGS="${CFLAGS}"
+case ${PKGMK_ARCH} in
+    "x86_64"|"")
+       export MAKEFLAGS="-j8"
+       ;;
+    "i686")
+       export CFLAGS="${CFLAGS} -m32"
+       export CXXFLAGS="${CXXFLAGS} -m32"
+       export LDFLAGS="${LDFLAGS} -m32"
+       ;;
+    *)
+       echo "Unknown architecture selected! Exiting."
+       exit 1
+       ;;
+esac
+PKGMK_DOWNLOAD="yes"
+PKGMK_SOURCE_DIR="/tmp"
+PKGMK_KEEP_SOURCES="no"
+PKGMK_WORK_DIR="/tmp/work"
+PKGMK_IGNORE_REPO="yes"
+PKGMK_IGNORE_COLLECTION="yes"
+PKGMK_GROUPS=()
+PKGMK_LOCALES=(fr de)
+PKGMK_COMPRESSION_PACKAGE="no"
+PKGMK_CLEAN="yes"</pre>
+        <p>That's all you need for the <b>/etc/pkgmk.conf</b> configuration file.</p>
+       <a name='225'></a>
+       <h4>Conclusion</h4>
+        <p><a href="#4">We will see later, how to create, compile and install a package</a> <u>without dependencies</u> or with already installed dependencies. For this scenario, the only commands to remember are:</p>
+        <pre class="command"><kbd>pkgmk
+pkgadd</kbd></pre>
+        <p>Theses commands will <u>always</u> be launched in your personal  <b>package</b> folder.</p>
+      <a name='23'></a>
+      <h3>Scenario C</h3>
+       <a name='231'></a>
+       <h4>Introduction</h4>
+        <p>You are ambition to compile, and convinced that this is the best method to manage a NuTyX. You do not want to use the proposed binary.</p>
+        <p>Most packages that you use are not present, and those that are, you want to compile yourself.</p>
+        <p>You want to get updates from available ports</p>
+        <p>And of course, you want the dependencies are compiled automatically.</p>
+        <p>We at NuTyX warn you in advance, this Scenario is very time consuming. If you have already tinkered with similar distributions that use source builds, like CRUX, Gentoo, Exherbo, and Funtoo, then by all means, enjoy our method of installation.</p>
+       <a name='232'></a>
+       <h4>The /etc/cards.conf file</h4>
+        <p>A folder containing my personal packages is added, this folder as well as the standards collections <u>should never</u> be updated by the command <b>cards sync</b>, so it does not specify any URL.</p>
+        <p>Only the <b>base</b> collection must remain active in order to install the development tools.</p>
+        <p>The architecture of the machine is 32 bits.</p>
+        <p>The folder containing the build logs is specified.</p>
+        <p>The folders defining the basic system, when returning to a base system are specified.</p>
+        <p>The typical contents of your <b>/etc/cards.conf</b> file for the <b>Scenario C</b>:</p>
+        <pre class="output">dir /usr/ports/personnel
+dir /usr/ports/gnome
+dir /usr/ports/graphic
+dir /usr/ports/console
+dir /usr/ports/base
+dir /var/lib/pkg/depotrepo/base|http://downloads.nutyx.org/saravane/i686/base
+arch i686
+logdir /var/log/pkgbuild
+locale fr
+locale it
+base /usr/ports/base
+base /usr/ports/aconserver</pre>
+       <a name='233'></a>
+       <h4>Development tools installation</h4>
+        <p>We can now begin to install the development packages, such as, a compiler, libraries C and C ++ tools, autoconf, automake, ...etc ...etc. We start by creating the necessary folders:</p>
+        <pre class="command_user"><kbd>sudo mkdir -p /usr/ports/{personnel,gnome,aconserver}
+sudo mkdir -p /srv/www/sources</kbd></pre>
+        <p>And now we install the tools:</p>
+        <pre class="command_user"><kbd>sudo cards sync</kbd></pre>
+        <pre class="output">/var/lib/pkg/depotrepo/base/.PKGREPO</pre>
+        <pre class="command_user"><kbd>sudo cards install cards.devel</kbd></pre>
+        <pre class="output">Retrieve info about the 66 packages: 100 %
+/var/lib/pkg/depotrepo/base/cards/.PKGREPO
+/var/lib/pkg/depotrepo/base/cards/cards.devel1429192050x86_64.cards.tar.xz
+661020 Bytes - 671821 Bytes/Sec - 100% - 0 Sec remain  remain
+/var/lib/pkg/depotrepo/base/acl/.PKGREPO
+/var/lib/pkg/depotrepo/base/acl/acl.devel1412540285x86_64.cards.tar.xz
+...</pre>
+        <pre class="command_user"><kbd>sudo cards install rsync
+sudo cards install ports</kbd></pre>
+       <a name='234'></a>
+       <h4>The /etc/pkgmk.conf file</h4>
+        <p>For this scenario, it is essential to check all the variables necessary for the proper functioning of the two <b>pkgmk / cards </b> commands:</p>
+        <p>My processor is a 4 cores but instead of using 64bit, I prefer using a 32 bits NuTyX for its agility.</p>
+        <pre class="output">export MAKEFLAGS="-j4"</pre>
+        <p>My sources are stored in a common folder, I do not want them to be deleted. I want the working folder remains in the ports folder, this will allow me to compile possibly multiple ports without losing the work. This I know is very useful as it will allow for checking.</p>
+        <pre class="output">PKGMK_SOURCE_DIR="/srv/www/sources"
+PKGMK_KEEP_SOURCES="yes"
+PKGMK_WORK_DIR="$PWD/work"</pre>
+        <p>In this scenario, I will manage dependencies automatically at compile time and so I need the file <b>.PKGREPO</b> generated in the port file. I wish I could use the <b>cards install</b> or <b>get</b> to be able to reinstall my binaries available. The <b>pkgmk</b> must generate the <b>.PKGREPO</b> of the relevant collection (parent folder). I use the duo <b>cards / pkgmk</b></p>
+        <pre class="output">PKGMK_IGNORE_REPO="no"
+PKGMK_IGNORE_COLLECTION="no"</pre>
+        <p>I do not want <b>pkgmk</b> split the binary package and sub packages (devel, doc, man, etc). I am happy with the basic package since I compiled it myself. For local, if any, I will only the local French and Italian <b>fr</b> and <b>it</b>.</p>
+        <pre class="output">PKGMK_GROUPS=()
+PKGMK_LOCALES=(fr it)</pre>
+        <p>I want the <b>pkgmk</b> to compress my package as a (.gz) file. (The algorithms are faster than .xz) Also, because I find that in the (.gz) format, my packages are easier to maintain and be re-installed later ...if hypothetically, I choose to return to a base system via the <b>cards base -r</b> command.</p>
+        <pre class="output">PKGMK_COMPRESSION_PACKAGE="yes"
+PKGMK_COMPRESSION_MODE="gz"
+PKGMK_CLEAN="no"</pre>
+        <p>Here's is a posssible example of your <b>/etc/pkgmk.conf</b> for the <b>Scenario C</b>:</p>
+        <pre class="output">export CFLAGS="-O2 -pipe"
+export CXXFLAGS="${CFLAGS}"
+case ${PKGMK_ARCH} in
+    "x86_64"|"")
+       export MAKEFLAGS="-j4"
+       ;;
+    "i686")
+       export CFLAGS="${CFLAGS} -m32"
+       export CXXFLAGS="${CXXFLAGS} -m32"
+       export LDFLAGS="${LDFLAGS} -m32"
+       export MAKEFLAGS="-j4"
+       ;;
+    *)
+       echo "Unknown architecture selected! Exiting."
+       exit 1
+       ;;
+esac
+PKGMK_SOURCE_DIR="/srv/www/sources"
+PKGMK_KEEP_SOURCES="yes"
+PKGMK_WORK_DIR="$PWD/work"
+PKGMK_IGNORE_REPO="no"
+PKGMK_IGNORE_COLLECTION="no"
+PKGMK_GROUPS=()
+PKGMK_LOCALES=(fr it)
+PKGMK_COMPRESSION_PACKAGE="yes"
+PKGMK_COMPRESSION_MODE="gz"
+PKGMK_CLEAN="no"</pre>
+       <a name='235'></a>
+       <h4>Conclusion</h4>
+        <p>We can now retrieve the available ports from NuTyX:</p>
+        <pre class="command_user"><kbd>sudo ports -u</kbd></pre>
+        <pre class="output">Updating file list from downloads.nutyx.org::nutyx/ports/saravane/base/
+Updating collection base
+ Checkout ./
+ Checkout aaabasicfs/
+ Checkout aaabasicfs/Pkgfile
+...</pre>
+        <p><a href="#5">We will see later, how to create, compile and install a set of packages</a>. For this scenario, the commands to remember are:</p>
+        <pre class="command"><kbd>ports -u
+ports -d
+cards depends
+cards depcreate
+cards level</kbd></pre>
+      <a name='24'></a>
+      <h3>Scenario D</h3>
+       <a name='241'></a>
+       <h4>Introduction</h4>
+        <p>You do not want to compile everything, you are satisfied with binary available. Your new packages use dependencies from existing binaries. This scenario is probably the longest to implement, but once everything is in place, adding personal packages is done very quickly.</p>
+       <a name='242'></a>
+       <h4>The /etc/cards.conf file</h4>
+        <p>A folder containing my personal packages is added, as well as the collections (downloading folders) <u>should never</u> be updated by the <b>cards sync</b> command. We do not specify an URL.</p>
+        <p>Only the <b>base</b> collection must remain active, this allows the <b>rsync</b> command to be downloaded and installed if not already installed.</p>
+        <p>The architecture of the machine is checked, we are 64 bits.</p>
+        <p>The folder containing the build logs is defined</p>
+        <p>I do not need to specify the locale, they will always installed.</p>
+        <p>Directory folders defining the basic system, when returning to a base system are specified</p>
+        <p>The typical contents of your <b>/etc/cards.conf</b> file for the <b>Scenario D</b>:</p>
+        <pre class="output">dir /srv/www/saravane/personnel
+dir /srv/www/saravane/x86_64/desktop
+dir /srv/www/saravane/x86_64/console
+dir /srv/www/saravane/x86_64/base
+dir /var/lib/pkg/depotrepo/base|http://downloads.nutyx.org/saravane/x86_64/base
+arch x86_64
+logdir /var/log/pkgbuild
+base /srv/www/saravane/x86_64/base
+base /srv/www/saravane/aconserver</pre>
+       <a name='243'></a>
+       <h4>Rsync installation and remove of concerned folder</h4>
+        <p>For this scenario, we will synchronize all binaries available on the mirror NuTyX and will "stick" on the version of them.</p>
+        <p>Let's start with installing the <b>rsync</b> command if it is not yet the case:</p>
+        <pre class="command_user"><kbd>get rsync</kbd></pre>
+        <p>Line pointing to the URL of NuTyX mirror can be removed, so that the <b>cards sync</b> is deactivated.</p>
+        <p>The new <b>/etc/cards.conf</b> file:</p>
+        <pre class="output">dir /srv/www/saravane/personnel
+dir /srv/www/saravane/x86_64/desktop
+dir /srv/www/saravane/x86_64/console
+dir /srv/www/saravane/x86_64/base
+arch x86_64
+logdir /var/log/pkgbuild
+base /srv/www/saravane/x86_64/base
+base /srv/www/saravane/aconserver</pre>
+       <a name='244'></a>
+       <h4>Binaries synchronisation via rsync</h4>
+        <p>This is to repatriate some 11,000 packages available in binary. It can last from several minutes to several hours depending on your connection.</p>
+        <p>Fortunately, this operation takes time only the first session. <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" /> <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" /> <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />.</p>
+        <p>Your next update using rsync will be a lot faster, as only necessary files will be updated according to your system.</p>
+        <p>Note the destination folder, I decided to "move" the binary to the root of http server <img src="../graphics/smiley-tongue-out.gif" alt="Tongue out" title="Tongue out" />.</p>
+        <p>Your next step is to create the following folders</p>
+        <pre class="command_user"><kbd>sudo mkdir -p /srv/www/saravane/{x86_64,personnel,aconserver}</kbd></pre>
+        <p>We can now synchronize all the binaries:</p>
+        <pre class="command_user"><kbd>sudo rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/saravane/x86_64/ \
+/srv/www/saravane/x86_64/</kbd></pre>
+        <p>Go enjoy yourself a large cup of hot medium roasted Java or two,  order yourself your favorite Chinese/pizza take-away, or a tasty burger with some french fries, or whatever suits your palate? Or read a Linux Journal.. <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />, this will take some times...</p>
+       <a name='245'></a>
+       <h4>The /etc/pkgmk.conf file</h4>
+        <p>For this scenario, it is essential to check all the variables necessary for the proper functioning of the two <b>pkgmk</b> and <b>cards</b> commands.</p>
+        <p>My processor is a dual core and I am the 64bits NuTyX.</p>
+        <p>My sources files are stored in a common folder, I do not want them to be deleted.</p>
+        <p>To not overpoluate or lose the work during my command: <b>rsync --delete-after rsync: //downloads.nutyx.org/nutyx/saravane/x86_64/ /srv/www/saravane/x86_64/</b> I prefer to use a temporary working folder:</p>
+        <pre class="output">PKGMK_SOURCE_DIR="/srv/www/sources"
+PKGMK_KEEP_SOURCES="yes"
+PKGMK_WORK_DIR="/tmp/work"</pre>
+        <p>In this scenario, I want to install my dependencies, but they must not be compiled. I need the <b>.PKGREPO</b> file generated in the port folder. I want to use the <b>cards install</b> or <b>get</b> command to be able to reinstall my  available binaries. The <b>pkgmk</b> must generate the <b>.PKGREPO</b> file of my personal collection.</p>
+        <pre class="output">PKGMK_IGNORE_REPO="no"
+PKGMK_IGNORE_COLLECTION="no"</pre>
+        <p>Due to the existing dependencies from the binary and that these binaries are splited. It is best to keep thoses functionality for your personal packages. The Locale produced will number 11 in total, including the local default:</p>
+        <pre class="output">PKGMK_GROUPS=(devel man doc service)
+PKGMK_LOCALES=(fr de it es nl pt da nn sv fi)</pre>
+        <p>We insist all Binary packages must have the same compression format as the official binaries, although this is not an obligation, we want to keep uniformity between all compressed binaries. I do not want to remove my created binary once installed.</p>
+        <pre class="output">PKGMK_COMPRESSION_PACKAGE="yes"
+PKGMK_COMPRESSION_MODE="xz"
+PKGMK_CLEAN="no"</pre>
+        <p>Here's what your <b>/etc/pkgmk.conf</b> file may look like for <b>Scenario D</b>:</p>
+        <pre class="output">export CFLAGS="-O2 -pipe"
+export CXXFLAGS="${CFLAGS}"
+case ${PKGMK_ARCH} in
+    "x86_64"|"")
+       export MAKEFLAGS="-j2"
+       ;;
+    "i686")
+       export CFLAGS="${CFLAGS} -m32"
+       export CXXFLAGS="${CXXFLAGS} -m32"
+       export LDFLAGS="${LDFLAGS} -m32"
+       ;;
+    *)
+       echo "Unknown architecture selected! Exiting."
+       exit 1
+       ;;
+esac
+PKGMK_SOURCE_DIR="/srv/www/sources"
+PKGMK_KEEP_SOURCES="yes"
+PKGMK_WORK_DIR="/tmp/work"
+PKGMK_IGNORE_REPO="no"
+PKGMK_IGNORE_COLLECTION="no"
+PKGMK_GROUPS=(devel man doc service)
+PKGMK_LOCALES=(fr de it es nl pt da nn sv fi)
+PKGMK_COMPRESSION_PACKAGE="yes"
+PKGMK_COMPRESSION_MODE="xz"
+PKGMK_CLEAN="no"</pre>
+       <a name='246'></a>
+       <h4>Conclusion</h4>
+        <p>For this scenario, the commands to remember are:</p>
+        <pre class="command"><kbd>cards level
+cards base -r
+cards create
+rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/saravane/x86_64/ \
+/srv/www/saravane/x86_64/</kbd></pre>
+      <a name='25'></a>
+      <h3>Scenario E</h3>
+       <a name='251'></a>
+       <h4>Introduction</h4>
+        <p>In this Scenario we will have 2 different working Scenario environments. The first, is <b>Scenario A</b> containing the original NuTyX platform, and where you will create a dedicated folder say /MyDownloads in which you will produce your personal packages.</p>
+<p>This scenario is the combination of TWO scenario, one will be ... Scenario A ( <img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" />. The second scenario is that of your isolated environment, whre you create packages from <b>Scenario B, C and D</b>, and this keeps the original NuTyX from becoming corrupted.</p>
+        <p>The correct technical term to gain access to this isolated working environment is chrooting.. From now on the word <b>chroot</b> will refer to the isolated environment.</p>
+        <p>Some small exercise benefits over the previous Scenarios:</p>
+        <ol>
+         <li>As you never install any development packages on your main NuTyX, we will keep this compilation within a reasonable size.</li>
+         <li>You must however, provide some Giga for your <b>chroot</b> environment, the benefit here, it can easily be deleted using:
+         <pre class="command"><kbd>rm -r /&lt;path-of-your-chroot&gt;</kbd></pre> and you are safely back in your  NUTyX without any <b>chroot</b>.</li>
+         <li>All your packages will therefore be compiled in the <b>chroot</b>,preventing any corruption on your main NuTyX system.</li>
+         <li>Benefit here, you can gain access to your <b>chroot</b> via the X graphical interface, allowing for more flexibility. If you access the  chroot environment,  via terminal root, you will be more restricted without having mouse movement and access to your X-desktop.</li>
+        </ol>
+        <p>In this exercice my machine is a 64-bit 4 cores</p>
+       <a name='252'></a>
+       <h4>The /etc/cards.conf files</h4>
+        <u>   *** Main NuTyX ***  </u>
+        <pre class="output">
+dir /chroot/usr/ports/personnel
+dir /var/lib/pkg/depotrepo/graphic|http://downloads.nutyx.org/saravane/x86_64/desktop
+dir /var/lib/pkg/depotrepo/console|http://downloads.nutyx.org/saravane/x86_64/console
+dir /var/lib/pkg/depotrepo/base|http://downloads.nutyx.org/saravane/x86_64/base
+arch x86_64
+locale fr
+base /var/lib/pkg/depotrepo/base</pre>
+        <p>You will notice that I intentionally add the line:</p>
+        <pre class="output">dir /chroot/usr/ports/personnel</pre>
+        <p>Continuing with the process of incorporating /chroot/usr/ports/personnel , we want to install our packages from the <b>chroot</b> into the main NuTyX system.</p>
+        <p>I chose the scenario <b>C</b> for my <b>chroot</b></p>
+        <u>   *** NuTyX chroot     *** Scenario C ***  </u>
+        <pre class="output">
+dir /usr/ports/personnel
+dir /usr/ports/graphic
+dir /usr/ports/console
+dir /usr/ports/base
+dir /var/lib/pkg/depotrepo/base|http://downloads.nutyx.org/saravane/x86_64/base
+arch x86_64
+logdir /var/log/pkgbuild
+locale fr
+base /usr/ports/base
+base /usr/ports/aconserver</pre>
+       <a name='253'></a>
+       <h4>The /etc/pkgmk.conf file</h4>
+        <p>Previously mentioned above, the <b>Scenario A</b> did not require the <b>/etc/pkgmk.conf</b> configuration file. However, as we do need it here to complete our task, the same <b>/etc/pkgmk.conf</b> file can be configured for our <b>chroot</b> environment.</p>
+        <u>   *** NuTyX chroot     *** Scénario C ***  </u>
+        <pre class="output">export CFLAGS="-O2 -pipe"
+export CXXFLAGS="${CFLAGS}"
+case ${PKGMK_ARCH} in
+    "x86_64"|"")
+       export MAKEFLAGS="-j4"
+       ;;
+    "i686")
+       export CFLAGS="${CFLAGS} -m32"
+       export CXXFLAGS="${CXXFLAGS} -m32"
+       export LDFLAGS="${LDFLAGS} -m32"
+       ;;
+    *)
+       echo "Unknown architecture selected! Exiting."
+       exit 1
+       ;;
+esac
+PKGMK_SOURCE_DIR="/srv/www/sources"
+PKGMK_KEEP_SOURCES="yes"
+PKGMK_WORK_DIR="$PWD/work"
+PKGMK_IGNORE_REPO="no"
+PKGMK_IGNORE_COLLECTION="no"
+PKGMK_GROUPS=()
+PKGMK_LOCALES=(fr)
+PKGMK_COMPRESSION_PACKAGE="yes"
+PKGMK_COMPRESSION_MODE="gz"
+PKGMK_CLEAN="no"</pre>
+       <a name='254'></a>
+       <h4>Conclusion</h4>
+        <p>In this scenario, (a little reminder is always good), these are the commands you will using within NuTyX:</p>
+        <pre class="command"><kbd>cards install
+cards install -u
+cards remove</kbd></pre>
+        <p></p>
+        <pre class="command"><kbd>cards depcreate
+cards level
+cards base -r</kbd></pre>
+        <p><a href="#6">We are now ready to go, we can now create, compile and install a package in an isolated environment</a></p>
+     <a name='4'></a>
+     <h2>Scenario B: a package without dependencies</h2>
+      <div class="important"><img src="../graphics/caution.gif" width="10" height="10" alt="!!!" /></div>
+      <p>Let's start by switching to your <b><span style="color: #ff0000;">root account</span></b></p>
+      <pre class="command_user"><kbd>su -</kbd></pre>
+      <pre class="output">Password:</pre>
+      <p>Very important to write down your password, in case you forget, unless its a code burnt into your memory. <img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" />. Note <b>the dash</b>, it is essential for you to perform at root the reading of configuration files.</p>
+      <p>Here we are, you notice that prompt at root level is red</p>
+      <p>If you are reading this, make sure you have completed all the manipulations for this exercice provided by <a href="#22">the example using the scenario <b>B</b></a>.</p>
+      <p>I propose to build the small JOE text editor. The object of this training, although you already have JOE, is to show you how to get hold of a single package <b>without dependencies</b> and compile it.</p>
+      <p>For a package to compiles and installs correctly, it is important for a  folder to be created and named identical to the down-loadable package name. In our case, the folder and package name is: <b>joe</b></p>
+      <a name='41'></a>
+      <h3>Folder creation</h3>
+       <pre class="command"><kbd>mkdir -p /usr/ports/personnel/joe</kbd></pre>
+      <a name='42'></a>
+      <h3>Package creation</h3>
+       <p>I am using the <a href="http://www.linuxfromscratch.org/blfs/view/svn/postlfs/joe.html" title="Lire dans une autre fenêtre" class="external" onclick="window.open(this.href); return false;">BLFS</a> methode, so please type all this text in your main and your chroot <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />, (please make sure their names are correctly spelt) to give deserved credit to those who Maintain and Package the package joe:</p>
+       <pre class="command"><kbd>cat &gt; /usr/ports/personnel/joe/Pkgfile &lt;&lt; "EOF"
+# Description: JOE (Joe's own editor) is a small text editor capable of emulating WordStar, Pico, and Emacs.
+# URL: http://joe-editor.sourceforge.net/
+# Maintainer: JHallen, JJJordan, Marx_sk, shallot
+# Packager: François Perrin
+
+name=joe
+version=3.7
+release=1
+source=( <a href="http://downloads.sourceforge.net/joe-editor/joe-3.7.tar.gz">http://downloads.sourceforge.net/$name-editor/$name-$version.tar.gz)</a>
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make
+  make DESTDIR=$PKG install
+}
+EOF</kbd></pre>
+      <a name='43'></a>
+      <h3>Package compilation</h3>
+       <p>The script is now completed and ready to be used for compiling your new package.<img src="../graphics/yippee.gif" alt="yippee"/></p>
+       <pre class="command"><kbd>cd /usr/ports/personnel/joe
+pkgmk -d</kbd></pre>
+
+    <pre class="output">=======> PKGMK_INSTALL: no
+=======> PKGMK_WORK_DIR: /usr/ports/personnel/joe/work
+=======> PKGMK_SOURCE_DIR: /usr/ports/personnel/joe
+=======> WARNING: CLEAN IGNORED
+=======> WARNING: KEEP SOURCES
+=======> PKGMK_UPDATE_SIGNATURE:
+=======> PKGMK_IGNORE_FOOTPRINT: yes
+=======> PKGMK_IGNORE_MD5SUM: yes
+=======> .PKGREPO file will not be generated
+=======> PKGMK_COMPRESS_PACKAGE: no
+=======> name: joe
+=======> version: 3.7
+=======> Downloading 'http://downloads.sourceforge.net/joe-editor/joe-3.7.tar.gz'.
+...
+...
+Saving to: '/usr/ports/personnel/joe/joe-3.7.tar.gz.partial'
+2014-10-26 22:27:47 (1.01 MB/s) - '/usr/ports/personnel/joe/joe-3.7.tar.gz.partial' saved [696036/696036]
+
+=======> Building '/usr/ports/personnel/joe/joe1414362465x86_64.cards.tar.xz'.
+bsdtar -p -o -C /usr/ports/personnel/joe/work/src -xf /usr/ports/personnel/joe/joe-3.7.tar.gz
++ build
++ cd joe-3.7
++ ./configure --prefix=/usr --sysconfdir=/etc
+...
+...
+make[3]: Leaving directory '/usr/ports/personnel/joe/work/src/joe-3.7'
+make[2]: Leaving directory '/usr/ports/personnel/joe/work/src/joe-3.7'
+make[1]: Leaving directory '/usr/ports/personnel/joe/work/src/joe-3.7'
+=======> WARNING: Footprint ignored.</pre>
+       
+      <a name='44'></a>
+      <h3>Install your package</h3>
+       <p>To install this compiled package, just type the command:</p>
+       <pre class="command"><kbd>pkgadd joe1414362465x86_64.cards.tar</kbd></pre>
+     <a name='5'></a>
+     <h2>Scenario C: a package with a few dependencies</h2>
+      <p>If you are reading this, make sure you have completed all the manipulations for this excercise provided by the <a href="#23">example using Scenario <b>C</b></a>.</p>
+      <p>The package dependencies are often the headache of a packer. Indeed, it is never easy to know exactly what are the necessary dependencies for the package starts compiles without any inherit problem.</p>
+      <p>In addition to the essential dependencies, there is also optional arm that allow for more functionalities. In principle, under NuTyX we try to offer the maximum functionality.</p>
+      <p>The exercise package we are going to build, will certainly not bring much to your NuTyX. But the method used doing it, will bring much in form of power and ease. Thats why its very relevant to show you here, for future builds. We'll take the package <b>clipit</b> which according to the README's</p>
+      <p><i>ClipIt is a lightweight GTK+ clipboard manager.</i></p>
+      <p><i>Project website: http://clipit.rspwn.com/</i></p>
+      <p><i>Requirements:</i></p>
+      <p><i>* gtk+ >= 2.10.0</i></p>
+      <div class="important"><img src="../graphics/caution.gif" width="10" height="10" alt="!!!" />From now on we are in the <b>chroot</b></div>
+      <ol>
+       <a name='51'></a>
+       <li><h3>Folder creation</h3>
+        <pre class="command"><kbd>mkdir -p /usr/ports/personnel/clipit</kbd></pre>
+        </li>
+      <a name='52'></a>
+      <li><h3>Package creation</h3>
+       <p>Complete the <b>/usr/ports/personnel/clipit/Pkgfile</b> file with this:</p>
+       </li>
+       <pre class="command"><kbd># Description: ClipIt is a lightweight GTK+ clipboard manager.
+# URL: http://clipit.rspwn.com/
+# Maintainer: Gilberto Xyhthyx &lt;xyhthyx at gmail dot com&gt;
+# Packager: François Perrin
+# Depends on: gtk
+
+name=clipit
+version=1.4.2
+release=1
+source=(https://github.com/downloads/shantzu/ClipIt/$name-$version.tar.gz)
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr \
+  --sysconfdir=/etc
+  make
+  make DESTDIR=$PKG install
+}</kbd></pre>
+      <a name='53'></a>
+      <li><h3>Package compilation</h3>
+       <pre class="command"><kbd>cards depcreate clipit</kbd></pre>
+       <p>The very powerfull command <b>cards depcreate</b> compile dependencies, install dependencies, compile the final package and installs it.</p></li>
+       <div><img src="../graphics/yippee.gif" alt="yippee"/> That's magical and intelligent programming for you! <img src="../graphics/yippee.gif" alt="yippee"/></div>
+      </ol>
+    <a name='6'></a>
+    <h2>Scenario E: build inside an Isolated environment construction method call "chroot"</h2>
+     <p>This method is not required but highly recommended for it's safety.</p>
+     <p>It makes it possible to avoid "corrupting" the NuTyX we use every day. In an isolated environment, you are sure to keep your original NuTyX version intact, thus avoiding any errors you may make in the chroot, and causing the entire system to crash.</p>
+     <p>We now call this isolated environment: <b>chroot</b>.</p>
+     <p>We will start downloading some good scripts:</p>
+     <pre class="command"><kbd>wget http://downloads.nutyx.org/install-saravane{,.md5sum}
+wget http://downloads.nutyx.org/enter-chroot{,.md5sum}
+md5sum -c install-saravane.md5sum</kbd></pre>
+     <pre class="output">install-saravane: OK</pre>
+     <pre class="command"><kbd>md5sum -c enter-chroot.md5sum</kbd></pre>
+     <pre class="output">enter-chroot: OK</pre>
+     <p>We will now assign a long-term variable "LFS", to an installation folder we define as <b>chroot</b>.</p>
+     <p> As I am a great supporter of rock-solid methods,  I suggest you create the folder ... <b>/chroot</b> as the destination folder, the command is:</p>
+     <pre class="command"><kbd>export LFS=/chroot</kbd></pre>
+     <p>We can now begin the installation with absolute confidence of victory.</p>
+     <pre class="command"><kbd>bash install-saravane</kbd></pre>
+     <p>You can observe your installation beginning.</p>
+     <pre class="output">This installation will be on /chroot                                     [ INFO ]
+*******************************************
+downloads of cards.devel1412543016x86_64.cards.tar.xz
+
+.....
+...
+ADD: cards-0.10.81.3, 9 files: 100 %                                     [  OK  ]
+Downloading ca-certificates...                                           [ INFO ]
+Retrieve info about the 62 packages: 100 %
+pre-install: start
+pre-install: finish
+ADD: ca-certificates-20141001, 323 files: 100 %                          [  OK  ]
+"***************************************************"
+"* Installation finish. Tanks for installing NuTyX *"
+"*                                                 *"
+"* Dont forget to choose a valid kernel before you *"
+"*      want to boot on your install NuTyX         *"
+"*                                                 *"
+"*        For more info, come to visit us:         *"
+"*                                                 *"
+"*              http://www.nutyx.org               *"
+"*                                                 *"
+"***************************************************"</pre>
+     <p>To also work in the <b>chroot</b> environment unimpeded, you need to easily access and exit the <b>chroot</b>. A small but very powerful script below does the job. You must be at root for it to work:</p>
+     <pre class="command"><kbd>bash enter-chroot</kbd></pre>
+     <p>Thats absolutely brilliant :-), try doing that on other LFS installation systems! You will be entering lots of commands each time to do the same!</p>
+     <p>This is very helpful when you wish to power down to take time out.</p>
+     <div class="important"><img src="../graphics/caution.gif" width="10" height="10" alt="!!!" />From now on, you should always use following command to enter your <b>chroot</b>:</div>
+     <pre class="command"><kbd>bash enter-chroot</kbd></pre>
+     <p>The big advantage of working in a chroot is that if you make any errors, it will never be detrimental to your NuTyX.</p>
+     <div class="important"><img src="../graphics/caution.gif" width="10" height="10" alt="!!!" />But if you're not in the chroot, and you type some commands mentioned in this article, I can not guarantee the end result and and perfect operation of your NuTyX.</div>
+     <p><img src="../graphics/yippee.gif" alt="yippee" /> Everything is now in its rightful place, we can now build <a href="#5">a package with some dependencies</a>.</p>
+     <p>Well done on your achievement so far!</p>
+     <p><img src="../graphics/clap.gif" alt="clap" />That's really cool isnt it ? <img src="../graphics/clap.gif" alt="clap" /></p>
+     <p>Your first packet is compiled and installed. The package manager (your chroot) integrated it into its database. Small note, if you followed this tutorial, you probably notice that all terminal commands were made from the root of your chroot ...<img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" />.</p>
+     <p> I trust you have found the experience educationally stimulating and rewarding.</p>
+     <p>Now type the following command which will gather all the relevant info about the clipit package:</p>
+     <pre class="command"><kbd>cards info clipit</kbd></pre>
+     <pre class="output">Retrieve info about the 123 packages: 100 %
+Name           : clipit
+Description    : ClipIt is a lightweight GTK+ clipboard manager.
+Maintainer     : Gilberto Xyhthyx &lt;xyhthyx at gmail dot com&gt;
+Packager       : François Perrin
+Version        : 1.4.2
+Release        : 1
+Build date     : Sun Oct 26 22:27:45 2014
+Size           : 1117696
+Number of Files: 70
+Arch           : x86_64</pre>
+     <a name='61'></a>
+     <h3>Install a package on the host (main) NuTyX</h3>
+      <p><img src="../graphics/wall.gif" alt="wall" />I am looking forward to install a new package called  <b>clipit</b>...</p>
+      <p><img src="../graphics/question.gif" width="16" height="15" alt="?" />But now how do I install it in my host NuTyX... ?</p>
+      <p><img src="../graphics/answer.gif" width="15" height="15" alt="!!" />Easy, with just a few Linux+NuTyX commands!</p>
+      <p>We can now quiet the chroot:</p>
+      <pre class="command"><kbd>exit</kbd></pre>
+      <div class="important"><img src="../graphics/caution.gif" width="10" height="10" alt="!!!" /> From this point, you are back on your host NuTyX.</div>
+      <p>Now enter:</p>
+      <pre class="command"><kbd>cards info -b clipit</kbd></pre>
+      <pre class="output">Name           : clipit
+Description    : ClipIt is a lightweight GTK+ clipboard manager.
+Maintainer     : Gilberto Xyhthyx &lt;xyhthyx at gmail dot com&gt;
+Packager       : François Perrin
+Version        : 1.4.2
+Release        : 1
+Build date     : Sun Oct 26 23:27:45 2014
+Arch           : x86_64
+Url            :
+Local Directory: /chroot/usr/ports/personnel</pre>
+      <div><img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" /><img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" /><img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" /></div>
+      <p>All that remains now, is the installation!</p>
+      <pre class="command_user"><kbd>get clipit</kbd></pre>
+      <pre class="output">Retrieve info about the 622 packages: 100 %
+ADD: clipit-1.4.2, 71 files: 100 %</pre>
+      <p>CONGRATULATIONS! We at NuTyX trust you will continue to remain with us, and to please encourage your friends on line or work place, to investigate and sample the power and wonder of NuTyX.</p>
+     <hr>
+   <p class="updated">Last updated on 2015-07-08 21:33</p>
+    <footer>
+     <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
+     &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+     <a href="http://www.wtfpl.net/"><img
+        src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
+        width="80" height="15" alt="WTFPL" /></a></p>
+    </footer>
+ </body>
+</html>

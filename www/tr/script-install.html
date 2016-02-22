@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <!-- En-tête de la page -->
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="../css/nutyx.css" />
+  <title>NuTyX - Installation depuis le script</title>
+ </head>
+ <body>
+    <header>
+      <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+    </header>
+    <nav>
+        <ul>
+            <li><a href=".">Home</a></li>
+            <li><a href="http://forums.nutyx.org/index.php?action=recent">Forums</a></li>
+            <li><a href="irc.html">IRC channel</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="https://twitter.com/nutyx_linux">Twitter</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
+        </ul>
+    </nav>
+ <h1>Installation depuis le script</h1>
+<div>Quelque soit le moyen utilisé, l'installation de NuTyX se fait toujours par le biais d'un script. Il se faît que si vous le souhaitez vous pouvez directement l'exécuter depuis une NuTyX déjà installée ou depuis une autre distribution.</div>
+<div>Sur les isos, le script d'installation est appel&eacute; par l'installeur  semi-graphique. Il est possible d'installer NuTyX  en utilisant directement ce m&ecirc;me script depuis votre distribution  actuelle. La proc&eacute;dure est assez simple. Cette m&eacute;thode est tr&egrave;s utile et peut &ecirc;tre utilis&eacute;e  pour installer NuTyX sur une partition ou un dossier. Si vous installez  NuTyX dans un dossier, vous pourrez "entrer" dans NuTyX en chroot par  exemple. Le script est un moyen id&eacute;al dans le cas o&ugrave;:
+<ol><li>vous ne souhaitez pas r&eacute;installer votre syst&egrave;me d'exploitation</li>
+<li>vous souhaitez tester NuTyX dans un dossier ou sur une partition disponible.</li>
+<li>vous souhaitez construire vos propres paquets dans un environnement isol&eacute; aussi appel&eacute; "chroot".</li></ol>
+<h4>Conditions &agrave; remplir:</h4>
+<div>Pour pouvoir installer NuTyX via le script, il faut s'assurer que les  conditions suivantes soient remplies:</div>
+<ol>
+ <li>La commande <a href="http://tukaani.org/xz/" title="Lire dans une autre fenêtre" class="external" onclick="window.open(this.href); return false;">xz</a> doit &ecirc;tre disponible sur la distribution utilis&eacute;e</li>
+ <li>Le compte root doit &ecirc;tre utilis&eacute; pour lancer le script</li>
+ <li>L'interpr&eacute;teur de commande doit &ecirc;tre <strong>bash</strong></li>
+ <li>Si vous installez sur une partition, assurez-vous que la partition de  destination est format&eacute;e en ext2, ext3, ext4, reiserfs ou btrfs</li>
+ <li><strong>Le script n'installera pas de gestionnaire d'amor&ccedil;age (grub ou autre), c'est &agrave; vous de l'installer apr&eacute;s ou avant le lancement du script</strong></li>
+ <li>L'installation de NuTyX se fait toujours sur une partition unique, si  vous souhaitez s&eacute;parer certains dossier /home, /var, etc, veuillez le faire apr&egrave;s l'installation de NuTyX</li>
+ <li>Le script ne cr&eacute;e pas d'utilisateur, seul le compte root est activ&eacute;. Vous pouvez utiliser la commande <strong>nu</strong> une fois NuTyX install&eacute;.</li>
+ <li>Pour installer une 64 bits veuilez utiliser une distribution 64 bits et pour une 32 bits, une 32 bits.<br /></li>
+</ol>
+Il est vivement recommand&eacute; d'avoir l'application dialog d'install&eacute;e afin de profiter des menus d'install ci-dessous. Si toutes ces conditions sont remplies, T&eacute;l&eacute;chargez-le &agrave; l'adresse ci-dessous en utilisant le bouton de droite et "sauvegarder sous":
+<p><a href="http://downloads.nutyx.org/install-pakxe.1.ash"><a href="http://downloads.nutyx.org/install-sekong.5.ash" title="Lire dans une autre fenêtre" class="external" onclick="window.open(this.href); return false;">http://downloads.nutyx.org/install-sekong.5.ash</a></a></p>
+<div>Veuillez v&eacute;rifier sa somme md5:</div>
+<a href="http://downloads.nutyx.org/install-pakxe.1.md5sum"><a href="http://downloads.nutyx.org/install-sekong.5.md5sum" title="Lire dans une autre fenêtre" class="external" onclick="window.open(this.href); return false;">http://downloads.nutyx.org/install-sekong.5.md5sum</a></a>
+<h4>Lancement du script</h4>
+Une fois le script t&eacute;l&eacute;charg&eacute;, ouvrez un terminal en root et tapez:
+<pre class="command"><kbd>bash install-sekong.5.ash /dev/sda3 reiserfs fr_FR</kbd></pre>
+L'installation commence directement. Veuillez ajuster la disposition du  clavier au v&ocirc;tre. Si vous installez depuis NuTyX, le clavier peut &ecirc;tre  omis, le script prendra celui d&eacute;fini par la NuTyX host. Si la disposition de votre clavier n'est pas reconnue par le script, vous pouvez utiliser la variable KEYMAP pour le sp&eacute;cifier. Exemple:
+<pre class="command"><kbd>KEYMAP=slovene bash install-sekong.5.ash /dev/sda3 reiserfs</kbd></pre>
+Si vous avez votre propre d&eacute;pot de paquets binaire, vous pouvez  sp&eacute;cifier l'URL du d&eacute;pot en utilisant la variable URL. Le m&ecirc;me miroir  sera utilis&eacute; une fois NuTyX install&eacute;e.
+<pre class="command"><kbd>URL="http://192.168.1.1/NuTyX/" bash install-sekong.5.ash /dev/sda3 reiserfs fr_FR</kbd></pre>
+Il faut savoir que si vous avez un m&eacute;dia ins&eacute;r&eacute; dans le lecteur avec les  d&eacute;pots des paquets NuTyX (par exemple un liveCD ou une iso de base), le  script identifiera le media et l'utilisera comme source de d&eacute;pot. Cela  peut vous para&icirc;tre idiot, mais dans le cas de l'installation d'une chroot&nbsp; c'est &eacute;videment tr&egrave;s pratique car dans ce cas l'installation se fera en moins de 5 minutes. Si toutes les conditions sont remplies, il est temps de passer &agrave; l'installation de NuTyX
+<h4>Installation de NuTyX</h4>
+Une fois le script lanc&eacute;, le premier menu appara&icirc;t, il s'agit de choisir un kernel. Plusieurs versions sont propos&eacute;es en fonction de votre mat&eacute;riel. N'h&eacute;sitez pas &agrave; essayer diff&eacute;rents kernel en cas de probl&egrave;me
+<img src="http://download.tuxfamily.org/nutyx/img/script/install-pakxe.1-1.png" border="0" alt="Figure 1: Choix du kernel" title="Figure 1: Choix du kernel" width="664" height="249" />
+<div>Notez que si vous le souhaitez, vous pouvez ne pas choisir de kernel, il sera alors possible de le compiler soi-m&ecirc;me ou&nbsp; m&ecirc;me de l'installer une fois l'install termin&eacute;e (en chroot)</div>
+<img src="http://download.tuxfamily.org/nutyx/img/script/install-pakxe.1-2.png" border="0" alt="Figure 2: Aucun kernel choisi" title="Figure 2: Aucun kernel choisi" width="577" height="224" />
+<div>Le menu suivant vous propose les diff&eacute;rentes interfaces graphiques. Ici aussi, il est tout &agrave; fait possible de ne rien s&eacute;lectionner dans ce cas vous installez une NuTyX de base.</div>
+<h4>Choix optionnel de linterface graphique</h4>
+<img src="http://download.tuxfamily.org/nutyx/img/script/install-pakxe.1-3.png" border="0" alt="Figure 3: Choix de l'interface graphique" title="Figure 3: Choix de l'interface graphique" width="658" height="236" />
+<div>Une fois l'interface graphique choisie, vous pouvez affiner votre s&eacute;lection en ajoutant les applications disponibles par groupe.</div>
+<img src="http://download.tuxfamily.org/nutyx/img/script/install-pakxe.1-4.png" border="0" alt="Figure 4: Choix des applications suppl&eacute;mentaires" title="Figure 4: Choix des applications suppl&eacute;mentaires" width="687" height="444" />
+<h4>Choix optionnel des applications suppl&eacute;mentaires</h4>
+<div>Dans cet exemple nous avons choisi d'installer xfce, et dans la figure ci-dessous, on peut choisir les applications qui ne sont pas install&eacute;es par d&eacute;faut avec xfce.&nbsp;</div>
+<img src="http://download.tuxfamily.org/nutyx/img/script/install-pakxe.1-5.png" border="0" alt="Figure 5: Applications XFCE non install&eacute;es par d&eacute;faut" title="Figure 5: Applications XFCE non install&eacute;es par d&eacute;faut" width="688" height="389" />
+<div>Une fois le choix termin&eacute;, presser sur &lt;Suivant&gt; pour lancer l'installation de NuTyX</div>
+
+  </div>
+  <div class="pied_page"> ... <img src="../graphics/logo_nutyx_25.png"> ...
+  </div>
+ </body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <!-- En-tête de la page -->
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="../css/nutyx.css" />
+  <title>NuTyX - Quelles sont les connaissances requises ?</title>
+ </head>
+ <body>
+    <header>
+      <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+    </header>
+    <nav>
+        <ul>
+            <li><a href=".">Home</a></li>
+            <li><a href="http://forums.nutyx.org/index.php?action=recent">Forums</a></li>
+            <li><a href="irc.html">IRC channel</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="https://twitter.com/nutyx_linux">Twitter</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
+        </ul>
+    </nav>
+  <h1><span>Quelle sont les connaissances informatiques necessaires pour contribuer ?</span></h1>
+<div class="introduction">Pour pouvoir contribuer il ne faut pas être un programmeur averti. Quelques notions rudimentaires du langage BASH suffisent, si vous n'avez aucune idée du langage BASH cet article vous expliquera les notions de base pour réaliser une recette sans se prendre la tête</div>
+<div class="description"><p>C'est le langage BASH qui est utilis&eacute; pour la r&eacute;daction d'une recette et la g&eacute;n&eacute;ration du paquet qui en d&eacute;coule. Le fait que BASH soit un langage de programmation peut effrayer plus d'un utilisateur potentiel pensant: "Je ne sais pas programmer". Cela ne devrait pas &ecirc;tre le cas pour trois raisons:</p>
+<ul><li>BASH&nbsp; est un langage interpr&eacute;t&eacute; et non compil&eacute; cad que les commandes tap&eacute;s au clavier (ou lues depuis un fichier) sont directement ex&eacute;cut&eacute;es sans qu'il soit necessaire de construire un programme complet.</li></ul>
+<ul><li>La syntaxe de BASH est tr&egrave;s simple et intuitive.&nbsp;</li></ul>
+<ul><li>Et enfin, une recette et la g&eacute;n&eacute;ration du paquet binaire qui en d&eacute;coule utilisent que tr&egrave;s rarement des options compliqu&eacute;s du langage BASH.</li></ul>
+<p>Cet article va vous expliquer quelques notions de base du langage:</p>
+<ul><li>d&eacute;claration d'une variable</li></ul>
+<ul><li>utilisation d'une variable</li></ul>
+<ul><li>variables pr&eacute;d&eacute;finis utilisables dans une recette</li></ul>
+<ul><li>d&eacute;claration d'un tableau</li></ul>
+<ul><li>d&eacute;claration d'une fonction</li></ul>
+<p>C'est tout ce que vous devez savoir si vous souhaitez comprendre la syntaxe d'une recette.</p>
+<p>Alors on y va <img src="/included/tiny_mce/plugins/emotions/img/smiley-wink.gif" border="0" alt="Wink" title="Wink" /> pour un petit cours sur la langage de programmation BASH</p>
+<h5>D&eacute;claration d'une variable</h5>
+<p>D&eacute;clarer une variable se limite &agrave; ceci:</p>
+<pre>name=monpaquet</pre>
+<p>On d&eacute;clare la variable <strong><em>name</em></strong> en utilisant le signe &eacute;gale et la valeur de la variable est &agrave; gauche du signe &eacute;gale: <strong><em>monpaquet</em></strong></p>
+<h5>Utilisation d'une variable</h5>
+<p>On a appris comment d&eacute;clarer une variable, c'est bien joli, mais comment fait-on pour l'utiliser cad r&eacute;cup&eacute;rer son contenu ?</p>
+<p>Pour pouvoir r&eacute;cup&eacute;rer le contenu d'une variable on utilise le sigle dollard ($) et &eacute;ventuellement les accolades. Deux formes sont valides:</p>
+<pre>${name}<br />$name</pre>
+<p>Il est recommand&eacute; d'utiliser la premi&egrave;re forme car si vous utiliser un nom de variable avec des sous-tirets, l'interpr&eacute;tation ne sera pas correcte:</p>
+<pre>name=xorg-libx11<br />_name=libX11<br />$name         # interpr&eacute;tation correcte<br />${_name}   # interpr&eacute;tation correcte<br />$_name       # mauvaise interpr&eacute;tation, ne fonctionnera pas</pre>
+<p>&nbsp;</p>
+<p>Pour voir le r&eacute;sultat de cette commande je vous propose de cr&eacute;er un petit fichier avec ceci, appelez le fichier DeclareVar</p>
+<pre>name=kernel<br />echo "La variable name contient la valeur: ${name}"
+</pre>
+<p>Lancer maintenant la commande:</p>
+<pre class="command" ><kbd>sh DeclareVar</kbd></pre>
+<pre class="output" >La variable name contient la valeur: kernel</pre>
+<h5>Variables pr&eacute;d&eacute;finies utilisables dans une recette</h5>
+Lorsque vous construisez une recette vous aurez &agrave; votre disposition toute une s&eacute;rie de variables pr&eacute;d&eacute;finies.
+<div><strong>PKG</strong>: Sans doute la plus utilis&eacute;e, elle d&eacute;fini le dossier de destination des fichiers compil&eacute;s. C'est donc dans ce dossier que se trouve la structure des fichiers pr&ecirc;te &agrave; &ecirc;tre empaquet&eacute;</div>
+<div><strong>SRC</strong>: Cette variable d&eacute;fini le dossier o&ugrave; tous les sources sont extraites, elle est donc aussi tr&egrave;s utile lorsqu'il faut parcourir des sous-dossiers et revenir &agrave; la fin d'une boucle au dossier de d&eacute;part cad dans le dossier d&eacute;fini par SRC. C'est aussi la variable qui d&eacute;fini le dossier courant dans fonction principale de la recette.</div>
+<div><strong>MAKEFLAGS</strong>: Cette variable n'est pas tr&egrave;s souvent utilis&eacute;e. Elle est initialis&eacute;e dans le fichier de configuration de pkgmk. On verra &ccedil;a en d&eacute;tail dans un autre article, juste savoir pour l'instant qu'elle permet d'influencer la compilation parall&egrave;le.</div>
+<div>Il en existe d'autres mais personnellement je&nbsp; n'en vois pas l'utilit&eacute; dans la construction d'une recette.</div>
+<h5>D&eacute;claration d'un tableau</h5>
+Pour d&eacute;clarer un tableau de cha&icirc;ne (ou autre) on va ajouter des parenth&egrave;ses:
+<pre class="output">source=(firefox.png firefox.desktop)</pre>
+Le tableau <strong>source</strong> contient 2 variables: firefox.png et firefox.desktop. Si on prend le tableau source de la recette du kernel, on a un joli exemple:
+<pre>source=(http://www.broadcom.com/docs/linux_sta/hybrid-portsrc_${BC_ARCH}-v5_100_82_112.tar.gz \
+	http://download.virtualbox.org/virtualbox/${VB_VERSION}/VirtualBox-${VB_VERSION}-${VB_BUILD}-Linux_${VB_ARCH}.run \
+	http://www2.ati.com/drivers/linux/amd-driver-installer-${ATI_VERSION/./-}-x86.x86_64.run \
+	http:.download.nvidia.com/XFree86/Linux-${_ARCH}/${NVIDIA_VERSION}/NVIDIA-Linux-${_ARCH}-${NVIDIA_VERSION}.run\
+	http://www.kernel.org/pub/linux/kernel/v3.0/linux-${_BaseVersion}.tar.bz2 config_64 config\
+	http://www.kernel.org/pub/linux/kernel/v3.0/patch-$version.bz2\
+	http://downloads.nutyx.org/install-${SCRIPT_VERSION}.ash \
+	http://downloads.nutyx.org/files/nutyx-initrd-`uname -m`-${_extra}.tar.bz2\
+	http://downloads.nutyx.org/files/installtools-${_tools}.tar.bz2
+	http://downloads.nutyx.org/files/patchs/$name/linux-3.2.10-wm8994-01.patch\
+	http://downloads.nutyx.org/files/patchs/$name/broadcom-wl-kernel3-01.patch\
+	http://downloads.nutyx.org/files/patchs/$name/3.2.8.patch\
+	http://downloads.nutyx.org/files/patchs/$name/3.4.patch\
+	http://downloads.nutyx.org/files/patchs/$name/makefile_compat.patch\
+	http://downloads.nutyx.org/files/patchs/$name/bc_wl_abiupdate.patch
+	http://downloads.nutyx.org/files/patchs/$name/0005-add-support-for-linux-3.4.0.patch)</pre>
+<p>Chaque ligne est une variable que l'on peut appeler en utilisant la syntax:</p>
+<pre>echo "$(source[1])"</pre>
+Vous noterez que chaque variable peuvent &agrave; leur tour contenir d'autre variables pour autant qu'elles soient d&eacute;finie au pr&eacute;alable
+<h5>D&eacute;claration d'une fonction</h5>
+Pour d&eacute;clarer une fonction, c'est presque aussi simple, on utilise les parenth&egrave;ses pour sp&eacute;cifier le nom de la fonction, la fonction est toujours d&eacute;limit&eacute;e par les accolades { et }. Petit exemple:
+<pre class="output">build() {<br />cd $name-$version<br />./configure --prefix=/usr<br />make<br />make DESTDIR=$PKG install<br />}</pre>
+Comme on peut le voir, c'est belle et bien le contenu d'une recette minimale (sans la d&eacute;claration des variables) . On peut y voir l'utilisation incontournable de la variable PKG.
+  </div>
+  <div class="pied_page"> ... <img src="../graphics/logo_nutyx_25.png"> ...
+  </div>
+ </body>
+</html>

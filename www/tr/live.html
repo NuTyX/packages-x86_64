@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+ <head>
+	<!-- En-tête de la page -->
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../css/nutyx.css" />
+        <title>NuTyX - Générer une NuTyX live à partir d'une NuTyX installée:</title>
+ </head>   
+ <body>
+    <header>
+      <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+    </header>
+    <nav>
+        <ul>
+            <li><a href=".">Home</a></li>
+            <li><a href="http://forums.nutyx.org/index.php?action=recent">Forums</a></li>
+            <li><a href="irc.html">IRC channel</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="https://twitter.com/nutyx_linux">Twitter</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
+        </ul>
+    </nav>
+    <h2>Générer une NuTyX live à partir d'une NuTyX installée</h2>
+    Cet article décrit pas à pas la méthode à suivre pour se créer un media live réinstallable.
+    <h3>Quelques pr&eacute;cautions &agrave; prendre:</h3>
+    <p>Le media peut &ecirc;tre un liveCD, liveDVD ou m&ecirc;me une liveUSB en  fonction de la taille de l'iso produite. Si la taille est sup&eacute;rieue &agrave;  700 MB, il faudra la transf&eacute;rer sur un DVD ou sur une cl&eacute; USB. Tous les  ordinateurs ne supportent pas l'amor&ccedil;age depuis un port USB.Pour gagner  un peu de placer, certains dossiers sont supprim&eacute;s:
+    </p>
+    <pre class="output">/srv/www/htdocs/nutyx/release
+/srv/www/htdocs/nutyx/test
+/tmp</pre>
+    <p>Le live est g&eacute;n&eacute;r&eacute; en utilisant la partition NuTyX cible, et donc il  est important que cette partition aie une taille suffisament grande, en  effet en fonction de la taille de la NuTyX, la taille de l'iso peut  devenir cons&eacute;quente. Un bon moyen de savoir la taille de votre NuTyX est  de taper la commande:
+    </p>
+    <pre class="command"><kbd>dfh</kbd></pre>
+    <pre class="output">Sys. de fichiers Taille&nbsp;&nbsp;&nbsp; Util.&nbsp;&nbsp;&nbsp; Disp.&nbsp;&nbsp;&nbsp; Uti%&nbsp;&nbsp;&nbsp; Mont&eacute; sur
+/dev/sda3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 297G&nbsp;&nbsp;&nbsp; 9,2G&nbsp;&nbsp;&nbsp;&nbsp; 288G&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </pre>
+    <p>Dans cet exemple, la taille totale de la partition est suffisante,  mais la taille utilis&eacute;e est d&eacute;j&agrave; trop grande (9,2G), dans ce cas la  production de l'iso prendra beaucoup de temps.</p>
+    <p>Le principe du live est de partager la m&eacute;moire (pour les fichiers  devant &ecirc;tre modifi&eacute;s) et le m&eacute;dia (pour les fichiers &agrave; lecture seule)  comme syst&egrave;me de fichiers. Les dossiers de la ra&ccedil;ine n&eacute;cessitant une  &eacute;criture seront "mont&eacute;s" en m&eacute;moire et les autres restent sur le m&eacute;dia.  Cela signifie qu'il faut &eacute;galement v&eacute;rifier que les dossiers&nbsp; /srv,  /home et /var ne soient pas trop volumineux, ils seront en effet  int&eacute;gralement copi&eacute; en m&eacute;moire au moment de l'amor&ccedil;age du live. Pour  conna&icirc;tre la taille de ces dossiers, vous faites en root:</p>
+    <pre class="command"><kbd>duh /home</kbd></pre>
+    <pre class="output">6,6G&nbsp;&nbsp;&nbsp; /home/thierry<br />6,6G&nbsp;&nbsp;&nbsp; /home</pre>
+    <p>Dans cet exemple, il n'est &eacute;videment pas recommand&eacute; de se lancer dans  l'aventure, j'ai en effet trop de documents dans mon dossier home.
+    </p>
+    <p>En cons&eacute;quence du point pr&eacute;c&eacute;dent il est vivement recommand&eacute; d'avoir  au moins 1 GB de m&eacute;moire RAM sur la machine qui sera utilis&eacute;e pour tester le live.
+    </p>
+    <p>Et enfin, il faut savoir que le script ne v&eacute;rifiera pas si la taille de la partition est suffisante pour produire le live.
+    </p>
+    <p>Bonne production</p>
+    <h3>Démarrer le système de maintenance</h3>
+    <p>On commence donc par démarrer le système de maintenance qui a été installé avec la NuTyX.</p>
+    <img src="http://download.tuxfamily.org/nutyx/img/pakxe.1/MINI/BootMaintenance.png" border="0" alt="Figure 1: Démarrage du système de maintenance" title="Figure 1: Démarrage du système de maintenance" width="650" height="487" />
+    <p>Si vous avez une partition swap configurée dans votre NuTyX, n'hésitez pas à l'activer, cela ne fera pas de tord.</p>
+    <img src="http://download.tuxfamily.org/nutyx/img/pakxe.1/MINI/UtiliserSwap.png" border="0" alt="Figure 2: Utilisation du swap trouvé" title="Figure 2: Utilisation du swap trouvé" width="600" height="234" />
+    <p>Il est désormais utile de choisir un clavier</p>
+   <img src="http://download.tuxfamily.org/nutyx/img/pakxe.1/MINI/ChoixClavier.png" border="0" alt="Figure 3: Choix du clavier" title="Figure 3: Choix du clavier" width="748" height="426" />
+   <p>Le choix du mirroir ci-dessous n'est pas indispensable</p>
+   <img src="http://download.tuxfamily.org/nutyx/img/pakxe.1/MINI/ChoixMirroir.png" border="0" alt="Figure 4: Choix du mirroir" title="Figure 4: Choix du mirroir" width="683" height="361" />
+   <p>Une fois dans le menu principal, choisissez la ligne "Live Creer un liveCD"</p>
+   <img src="http://download.tuxfamily.org/nutyx/img/pakxe.1/MINI/ChoixLive.png" border="0" alt="Figure 5: Menu principal, choisir Live" title="Figure 5: Menu principal, choisir Live" width="661" height="508" />
+   <h3>Produire une ISO</h3>
+   <p>Il suffit désormais de choisir la partition sur laquelle se trouve la NuTyX à générer en live.</p>
+   <img src="http://download.tuxfamily.org/nutyx/img/pakxe.1/MINI/ChoixPartitionPourIso.png" border="0" alt="Figure 6: Choix de la partition NuTyX" title="Figure 6: Choix de la partition NuTyX" width="485" height="449" />
+   <p>La production du live commence immédiatement et la durée de ce processus dépend de la taille de votre NuTyX installée et de la puissance de votre machine.</p>
+   <img src="http://download.tuxfamily.org/nutyx/img/pakxe.1/MINI/ProductionIsoEnCours.png" border="0" alt="Figure 7: Production du live en cours" title="Figure 7: Production du live en cours" width="600" height="449" />
+   <p>Une fois la production terminée, un message vous informe où se trouve le fichier.</p>
+   <img src="http://download.tuxfamily.org/nutyx/img/pakxe.1/MINI/IsoProduite.png" border="0" alt="Figure 8: Iso produite" title="Figure 8: Iso produite" width="596" height="222" />
+   <h3>Transfert de l'image sur clé usb (ou cd ou encore dvd)<br /></h3>
+   <p>Il est maintenant temps de transférer l'image sur clé usb ou sur CD ou encore sur DVD. Dans le cas de transfer sur clé usb, tapez la commande ci-dessous en root et dans le dossier personnel de root:</p>
+   <img src="http://download.tuxfamily.org/nutyx/img/pakxe.1/MINI/CopieIsoSurCle.png" border="0" alt="Figure 10: Copie de l'image iso sur clé USB" title="Figure 10: Copie de l'image iso sur clé USB" width="600" height="450" />
+   <p>Une fois l'image copié sur une clé USB ou sur un CD vierge. Bootez sur le nouveau liveCD, vous pourrez ensuite le (ré)installer en suivant <a href="usb-key-live-install.html">la documentation.</a></p>
+  <div class="pied_page"> ... <img src="../graphics/logo_nutyx_25.png"> ...
+  </div>
+ </div>
+</body>
+</html>

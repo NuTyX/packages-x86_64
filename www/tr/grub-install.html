@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta charset="utf-8" />
+     <link rel="shortcut icon" href="../favicon.ico">
+     <link rel="stylesheet" href="../css/nutyx.css" />
+  <title>NuTyX - GRUB Setting up</title>
+ </head>
+ <body>
+   <table>
+    <tr>
+     <td width="30%">
+      <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+     </td>
+     <td>
+      <nav>
+       <ul>
+            <li><a href=".">Home</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="http://forums.nutyx.org/index.php?action=recent">Forums</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
+        </ul>
+    </nav>
+   </td>
+  </tr>
+ </table>
+ <hr>    
+ <h1>GRUB Setting up</h1>
+  <p>If you did'nt install GRUB yet ( by mistake or on purpose ), it's not too late. As you will see, it's very simple to install GRUB in a standalone way.</p>
+  <h2>Historique</h2>
+  <h2>To be able to install GRUB</h2>
+   <p>It's not necessary to have any NuTyX installed, you can indeed install GRUB for any other distribution.</p>
+   <p>Restart the PC and boot on the Iso</p>
+   <img src="http://downloads.nutyx.org/img/saravane/install/en/SelectLanguage.png" alt="Figure 1: Iso bootup" title="Figure 1: Iso bootup"/>
+   <p>Once you arrive on the Main men, choose "Boot Configure the boot of the PC (optionnal)" like this:</p>
+   <img src="http://downloads.nutyx.org/img/saravane/install/en/ConfigureBoot.png" alt="Figure 2: Boot Configure the boot of the PC" title="Figure 2: Boot Configure the boot of the PC"/>
+   <p>It's now time to make ...</p>
+  <h2>The selection of the partition</h2>
+   <p>We choose the partition where the GRUB application will be installed. Please note that the destination partition doesnt have to be the first one which in this case will have the chance to choose another harddisk menu.</p>
+   <img src="http://downloads.nutyx.org/img/saravane/install/en/SelectPartitionForBoot.png" alt="Figure 3: Choose of the partition" title="Figure 3: Choose of the partition"/>
+  <h2>Grub is installed</h2>
+   <p>It's now time to edit the <span style="color: #00ff00;"><strong>grub.cfg</strong></span> file.</p>
+   <img src="http://downloads.nutyx.org/img/saravane/install/en/ModifyGrubCfg.png" alt="Figure 4: Modify the configuration file" title="Figure 4: Modify the configuration file"/>
+   <div class="important"><img src="../graphics/caution.gif" alt="caution" /> Be aware of the syntax of the adresssing of disks and partitions. It's a bit special.</div>
+   <img src="http://downloads.nutyx.org/img/saravane/install/DefaultGrubCfg.png" alt="Figure 5: Default configuration" title="Figure 5: Default configuration"/>
+   <p>With grub 2.00, the first harddisc start at <b>0</b> and the first partition start at <b>1</b>, means in the following example:</p>
+   <pre class="output">set root=(hd0,5)</pre>
+   <p>define the fift partition on the first  harddisc</p>
+   <p>In the following example, we can see 3 entries, two of them are NuTyX ones, the first entry will start the NuTyX distribution locate on the <b>/dev/sda2</b> partition. The second entry will start the maintenance of NuTyX locate on the <b>/dev/sda1</b> partition and finally the last entry will start Windows 8 located on the <b>/dev/sda3</b></p>
+   <pre class="output"># Begin grub.cfg
+# By default boot the first menu entry.
+set default 0
+# Allow 5 seconds before booting the default.
+set timeout 5<br />set color_highlight=blue/white
+set color_normal=cyan/black<br />set gfxpayload=1024x768x16
+menuentry "NuTyX  xfs sur /dev/sda2" {
+ set root=(hd0,2)
+ linux /boot/kernel root=/dev/sda2 ro quiet
+ initrd /boot/initrd
+}
+menuentry "Maintenance de NuTyX" {
+  set root=(hd0,1)
+  linux /boot/kernel ro quiet
+  initrd /boot/initrd
+}
+menuentry "Windows 8" {
+ set root=(hd0,3)
+ chainloader (hd0,3)+1
+}
+</pre>
+    <hr>
+    <p class="updated">Last updated on 2015-02-24 21:20</p>
+    <footer>
+        <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
+        &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /> <br />
+        <a href="http://www.wtfpl.net/"><img
+       src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
+       width="80" height="15" alt="WTFPL" /></a></p>
+    </footer>
+ </body>
+</html>
+

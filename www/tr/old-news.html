@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+     <link rel="shortcut icon" href="../favicon.ico">
+     <link rel="stylesheet" href="../css/nutyx.css" />
+     <title>NuTyX - Older news</title>
+ </head>
+ <body>
+   <table>
+     <tr>
+      <td width="30%">
+            <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+      </td>
+      <td>
+       <nav>
+        <ul>
+            <li><a href=".">Home</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="http://forums.nutyx.org/index.php?board=4.0">Forums</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
+        </ul>
+       </nav>
+      </td>
+     </tr>
+    </table>
+ <hr>
+ <h1>On the 2015-05-15</h1>
+   <h2>NuTyX Saravane 15.05 includes cards 1.0</h2>
+    <h3>Introduction for the impatient</h3>
+     <p>After seven months of intensive programming, I am proud to announce the release of  NuTyX Saravane 15.05, which replaces the previous Saravane 14.11 release. Below is a summary of the new features:</p>
+      <ul>
+       <li>glibc 2.21</li>
+       <li>gcc 4.9.2</li>
+       <li>binutils 2.25</li>
+       <li>kernel 3.19.6</li>
+       <li>kernel-lts 3.18.12</li>
+       <li>kernel-iso 3.18.11</li>
+       <li>cards 1.0</li>
+       <li>curl 7.42.1</li>
+       <li>firefox 37.0.2</li>
+       <li>A convenient command line configuration tool (setup-nutyx) for the clock, keyboard, network and language</li>
+       <li>Ready to use <b>User Graphic Interface</b> for easy installation and simple auto log-in: KDE 4.14.3 and 4.10.1 Xfce4</li>
+       <li>New NuTyX ISO 15.05 images for 32 and 64 architectures</li>
+       <li>Finally, a New completely revised version of <b>cards 1.0</b> is available</li>
+       <li>Documentation is completed on the web site</li>
+       <li>Includes installation script of NuTyX Saravane</li>
+       <li>The complete project is available at https://github.com/NuTyX</li>
+      </ul>
+      <p>For full update packages, you can visit:<a href="https://github.com/NuTyX/saravane/commits/master">https://github.com/NuTyX/saravane/commits/master</a></p>
+     <h3>The ISO</h3>
+      <p>If the dedicated partitioning attributes was finalized prior to installation, then you will simply only need to choose “install” from the main menu.</p>
+      <p>The installation of the boot process has also been simplified: If you prefer to install the GRUB <u>BEFORE</u> installing NuTyX, you are still able to choose a NuTyX destination partition after setting up GRUB. If you prefer to install NuTyX immediately and install GRUB later at the end, GRUB will be automatically installed on your NuTyX partition.</p>
+      <p>The kernel used is a 3.19.6. An LTS (Long term support) release is also available in Version 3.18.12.</p>
+      <p>The ISO is now 100% translated in the following languages: Dutch, Finnish, French, German, Norwegian and Swedish.</p>
+      <p>The file system <b>jfs</b> has also been included as a possible choice. Although endorsed by Red-Hat, <b>jfs</b> may run into copyright issues later on, as it was created by IBM. For performance, there is <b>btrfs</b>, for stability and control there is <b>xfs</b>.</p>
+      <p>If you want to install NuTyX on a partition formatted with btrfs (dev/sda2 for exemple), you <u>must</u> create another partition for grub (/dev/sda1 for exemple). For more clarity <b>/dev/sda1</b> will be formatted as <b>ext2</b>, and house GRUB. While <b>/dev/sda2</b> will be formatted as <b>btrfs</b> and house your NuTyX.</p>
+     <h3>The installation script</h3>
+     <p>It is now very easy and possible to install NuTyX from <u>any distribution</u>. The past problems with the <b>BASH</b> interpreter has now been resolved.</p>
+     <p>Two variables are good to know:</p>
+     <pre class="output">LFS
+URL</pre>
+     <p>The <b>LFS</b> variable give the possibility to choose a destination folder. Once defined and "exported", the installation command gets simple as:</p>
+     <pre class="output">bash install-saravane</pre>
+     <p>The <b>URL</b> allows you to define a personal mirror. Once the installation is finish, the <b>cards</b> command will continue to use this mirror.</p>
+    <h3>The web site</h3>
+     <p>All articles have been updated for the new functionalities of the package manager <b>cards 1.0</b>.</p>
+     <p>The article on <b>"building a package"</b> has been completely reviewed. It explains in detail what's a scenario under NuTyX, what's a collection, the dependencies for compilation, the configuration for each scenario, etc.</p>
+     <p>An article about <b>"configuring a firewall"</b> has been written by a user of NuTyX, <b>sh4d0w</b> I warmly thank him. I encourage all users to provide and submit their own. If your article is complete and correct, it will be added to our site.</p>
+    <h3>The source code of Saravane is available on github.com/NuTyX, as well a bug tracker. </h3>
+     <p>You can find all of my work on NuTyX at: https://github.com/NuTyX, you will find the source code of the following list: cards, ports collection base, console and desktop of Saravane, the scripts, the pass 1 and 2 for the NuTyX construction, the files structure that constitutes the basic system NuTyX (the package aaabasicfs), the initrd, the installer and all the html  
+pages from the web site. There are also ports from the collection "extra".</p>
+     <p>It is very easy now to monitor NuTyX, you can instantly submit your wishes and bugs on github platform.</p>
+    <h3>The cards package manager is finaly release in 1.0 version</h3>
+     <p>In its final version, <b>cards</b> is now even faster and easier to use. The most common commands have been simplified:</p>
+     <p>To synchronise information with the default mirror:</p>
+     <pre class="command"><kbd>cards sync</kbd></pre>
+     <p>To know the installed packages:</p>
+     <pre class="command"><kbd>cards list</kbd></pre>
+     <p>For details of an installed package:</p>
+     <pre class="command"><kbd>cards info &lt;name_of_my_package&gt;</kbd></pre>
+     <p>To check the obsolete list of installed packages:</p>
+     <pre class="command"><kbd>cards diff</kbd></pre>
+     <p>For detail of the cards command:</p>
+     <pre class="command"><kbd>man cards</kbd></pre>
+     <p>Some new cards commands:</p>
+     <pre class="command"><kbd>cards query
+cards files
+cards help
+cards purge
+cards depcreate</kbd></pre>
+     <p>As for the packager, new variables have been added:</p>
+     <pre class="output">PKGMK_LOCALES</pre>
+     <p>Default value:</p>
+     <pre class="output">PKGMK_LOCALES=(fr)</pre>
+     <p>Define the locales that we want to keep in the binary, example: PKGMK_LOCALES=(fr nl) will conserve the french and italians locales (if they were available at compile time) in the sub packages <b>&lt;name_package&gt;.fr and &lt;name_package&gt;.it</b></p>
+     <pre class="output">PKGMK_IGNORE_REPO</pre>
+     <p>Default value:</p>
+     <pre class="output">PKGMK_IGNORE_REPO="yes"</pre>
+     <p>If set as <b>"no"</b>, the file <b>.PKGREPO</b> of the collection (means the name of the parent folder of your package) will be regenerated. This file is needed if you wish to installed some packages outside of your chroot</p>
+
+  <h1>On the 2015-04-18</h1>
+   <h2>cards 0.10.90 available</h2>
+    <p>The <b>cards</b> tool has been completely re-worked. The synchronisation now takes a few seconds. The separation between binaries and ports is a lot clearer.</p>
+    <p>News commands added:</p>
+
+<pre class="command"><kbd>cards purge</kbd></pre>
+flush old binaries and other obsolets files.
+
+<pre class="command"><kbd>cards help <file></kbd></pre>
+provide an help about cards.
+
+<pre class="command"><kbd>cards depcreate</kbd></pre>
+Compile a port and its dépendencies in the right order. Similar to the <b>prt-get</b> and <b>depinst</b> commands.
+
+<p>Additional man command: <b>man cards</b> and <b>man cards.conf</b></p>
+
+<p>Note: Following commands altered:</p>
+
+<pre class="command"><kbd>cards sync -i
+cards list -i
+cards info -i <paquet>
+cards diff -b</kbd></pre>
+
+Are now more streamlined and becomes:
+
+<pre class="command"><kbd>cards sync
+cards list
+cards info <paquet>
+cards diff</kbd></pre>
+
+   <h2>Updated the documentation on the site</h2>
+    <p>Articles <a href="recept.html">What's a port</a>, <a href="build-package.html">How to build a package</a>, <a href="generate-iso.html">Produce a customised ISO</a> are review.</p>
+    <h2>New kernels</h2>
+    <p>A new <b>kernel</b> is now available, we have migrated to the improved and more stable version 3.19.4, thus removing all problematic incidences.</p>
+    <p>A new long term support kernel 3.18 is also available. It can be installed in parallel on the standard kernel. It has just two links to adjust in the boot folder. (initrd and kernel)</p>
+    <h2>Next ISO</h2>
+    <p>The openssh service will not be implemented in the ISO anymore for security reasons. Hackers could connect remotely if the password was too weak. Even more so when the router is not doing it's firewall job.</p>
+    <p>We have a new article explaining how to create easilly your own ISO for distribution.</p>
+
+    <h2>The installation script install-saravane is once again available</h2>
+    <p><b>install-saravane</b> is working again. Be aware there are no kernel installed. It checks the minimum requirements: uptodate bash, gawk and wget</p>
+    <h2>Halting  prt-get / pkgutils support</h2>
+    <p>Support of <b>cards</b> and <b>prt-get/pkgutils</b> in parallel has been halted permanently. The ports of crux are compatible with <b>cards</b> but not the other way around. Under NuTyX, we keep the doc, we keep man pages devel in separates sub packages. If we use the ports of NuTyX with <b>pkgutils</b>, we quickly end up with big packages (kernel for ex ) and then the DB of <b>pkgutils</b> get saturated which make <b>pkgutils</b> very slow.</p>
+    <p>The other problem encountered was that the pre-install an post-install are not names similar under <b>cards</b> and <b>pkgutils</b>, under <b>pkgutils</b>, they are named <b>pre-install</b> and <b>post-install</b>. Under <b>cards</b>, they are named <b>&lt;name_of_the_package&gt;.pre-install</b> or <b>&lt;name_of_the_package&gt;.post-install</b>.</p>
+    <h2>News sections</h2>
+    <p>Section  system becomes base</p>
+    <p>Section  server becomes console</p>
+    <p>Section  desktop stays desktop</p>
+  <h1>On the 2015-03-16</h1>
+   <h2>New 32bits and 64 bits iso available</h2>
+    <p>I'm pleased to make available new 32 bits and 64 bits ISO. Click on following down-loadable links :</p>
+    <a href="http://download.nutyx.org/NuTyX_x86_64-saravane-20150315.iso">In 64 bits</a> and <a href="http://download.nutyx.org/NuTyX_i686-saravane-20150315.iso">in 32 bits</a>
+    <p>The installer is made even more simple. From now on if you pre-configure and format the destination partition before launching the installer, the CD <a href="http://nutyx.org/en/install.html#4">ask no questions and the installation will start immediatly</a>within 15 seconds max</p>
+    <p>Openssh service is available from the moment you have installed the base. It means you can connect from a terminal from the host machine if you did an installation in virtualbox (with the network configured as bridge). Also very usefull if you have two PC's on the network</p>
+    <p><b>Wifi</b> should works again after xcfe4 / kde installation</p>
+    <p>About the package:</p>
+
+<li>kernel 3.19.1-NuTyX</li>
+<li>initrd 3.19.1-NuTyX</li>
+<li>glibc 2.21</li>
+<li>gcc 4.9.2</li>
+<li>binutils 2.25</li>
+<li>cards 0.10.82.96a</li>
+<li>curl 7.41.0</li>
+<li>openssh 6.7p1</li>
+<li>openssl  1.0.2</li>
+    <p>New commands:</p>
+
+<pre class="command"><kbd>cards files <package></kbd></pre>
+list the file(s) of the package.
+
+<pre class="command"><kbd>cards query <file></kbd></pre>
+list owner(s) of file(s) matching the query
+
+<pre class="command"><kbd>cards install <file></kbd></pre>
+Can install a file if available on the pc. The file must be a valid downloaded package. The name is irrelevant, cards will check it before install it.
+
+<pre class="command"><kbd>cards install -f &lt;paquet&gt; | &lt;file&gt;</kbd></pre>
+Force installation in case of duplicate files
+
+<p><b>Final reminder:</b></p>
+<p>The Commands:</p>
+
+<pre class="command"><kbd>cards sync -i
+cards list -i
+cards info -i <paquet>
+cards diff -b</kbd></pre>
+
+are now more streamlined and become:
+
+<pre class="command"><kbd>cards sync
+cards list
+cards info <paquet>
+cards diff</kbd></pre>
+
+
+
+<p>The help Menu has been completely re written</p>
+
+<img src="http://downloads.tuxfamily.org/nutyx/archives/cards_0.10.82.96.jpg"  alt="Help summary" title="cards Help summary" width="578"/>
+    <p class="updated">Updated 2015-07-05 13:59</p>
+    <footer>
+        <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
+        &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+    <a href="http://www.wtfpl.net/"><img
+       src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
+       width="80" height="15" alt="WTFPL" /></a></p>
+    </footer>
+ </body>
+</html>

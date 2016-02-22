@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <!-- En-tête de la page -->
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="../css/nutyx.css" />
+  <title>NuTyX - Installation from a LIVE version of NuTyX on USB key</title>
+ </head>
+ <body>
+    <header>
+      <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+    </header>
+    <nav>
+        <ul>
+            <li><a href=".">Home</a></li>
+            <li><a href="http://forums.nutyx.org/index.php?action=recent">Forums</a></li>
+            <li><a href="irc.html">IRC channel</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="https://twitter.com/nutyx_linux">Twitter</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
+        </ul>
+    </nav>
+<h1>Installation from a LIVE version of NuTyX on USB key</h1>
+<div>A usb USB (or a DVD) is able to launch a LIVE NuTyX en live which can be afterwards installed on the harddisk. And all this without the need of an internet connection.</div>
+<h4>Boot Up of the support</h4>
+<div>Once the key copied, boot your  machine on it. Si le m&eacute;dia s'est correctement amorc&eacute;, vous devriez avoir un &eacute;cran comme la Figure 1.</div>
+<img src="http://downloads.tuxfamily.org/nutyx/img/livecd/Boot1.png" border="0" alt="Figure 1: Amor&ccedil;age du m&eacute;dia" title="Figure 1: Amor&ccedil;age du m&eacute;dia" />
+<div>Vous pouvez lire plusieurs infos lors de l'amor&ccedil;age du media:</div>
+<div>il est en effet possible d'utiliser ce media pour installer NuTyX sur votre disque dur OU pour lancer une NuTyX d&eacute;j&agrave; install&eacute; mais n'ayant aucune methode d'amor&ccedil;age. Dans ce deuxi&egrave;me cas tapez simplement le nom et num&eacute;ro de la partition sur laquelle se trouve NuTyX ex: <b>sda3</b> (sans /dev/) sinon tapez simplement "Entr&eacute;e" (Return). Une fois la s&eacute;quence d'amor&ccedil;age du m&eacute;dia termin&eacute;e ( +/- 10 secondes en fonction de votre mat&eacute;riel ), un nouvel &eacute;cran se pr&eacute;sente comme sur la Figure 2.</div>
+<h4>Bienvenue dans l'installateur de NuTyX</h4>
+<img src="http://download.tuxfamily.org/nutyx/img/livecd//Installation1.png" border="0" alt="Figure 2: Bienvenue dans l'installateur de NuTyX" title="Figure 2: Bienvenue dans l'installateur de NuTyX" />
+<div>Il est recommand&eacute; d'avoir la partition de destination d&eacute;j&agrave; format&eacute;e. NuTyX recommande vivement l'utilisation du syst&egrave;me de fichiers <a href="http:.wikipedia.org/wiki/Reiserfs" title="Lire dans une autre fenêtre" class="external" onclick="window.open(this.href); return false;">reiserfs</a> pour sa grande fiabilit&eacute;.&nbsp; Vous pouvez &eacute;galement utiliser un des syst&egrave;mes de fichiers ext2, ext3 ou ext4. Le syst&egrave;me de fichiers btrfs est &eacute;galement support&eacute;, mais si celui-ci est choisi, il faudra sp&eacute;cifier une partition s&eacute;par&eacute;e pour le dossier boot cad pour l'amor&ccedil;age de la machine. GRUB (le syst&egrave;me d'amor&ccedil;age de NuTyX) ne supporte pas encore le syst&egrave;me de fichiers btrfs. Il est &agrave; noter que si vous n'avez pas de partitions format&eacute;es lors du lancement de l'installation, l'installateur propose d'office de formater en reiserfs. Une fois la touche "Entr&eacute;e" valid&eacute;e, un nouvel &eacute;cran se pr&eacute;sente comme la Figure 3.</div>
+<h4>Choix du clavier</h4>
+<img src="http://download.tuxfamily.org/nutyx/img/livecd/ChoixClavier.png" border="0" alt="Figure 3: Choix du clavier" title="Figure 3: Choix du clavier" />
+<div>La premi&egrave;re chose &agrave; choisir est le clavier utilis&eacute;, sur la figure 2, c'est le clavier suisse fran&ccedil;ais qui sera choisi. Il est important de choisir imm&eacute;diatement le bon clavier, le choix du<br />clavier ne sera plus demand&eacute; lors de l'installation de NuTyX et donc la m&ecirc;me disposition de clavier sera utilis&eacute;e dans NuTyX une fois install&eacute;e. D&egrave;s que le<br />clavier sera sp&eacute;cifi&eacute;, si l'image que vous avez t&eacute;l&eacute;charg&eacute;e est un liveCD, vous vous trouverez<br />sur le bureau de XFCE comme il est pr&eacute;sent&eacute; sur la Figure 4.</div>
+<h4>Le bureau de XFCE du liveCD de NuTyX</h4>
+<img src="http://download.tuxfamily.org/nutyx/img/livecd/BureauXFCE.png" border="0" alt="Figure 4: Le bureau de XFCE du liveCD de NuTyX" title="Figure 4: Le bureau de XFCE du liveCD de NuTyX" />
+<div>Vous pouvez d&eacute;sormais cr&eacute;er, r&eacute;organiser, supprimer des partitions pour  l'installation de NuTyX, une fois la (les) partitions pr&ecirc;tes, vous pouvez cliquer sur "Installer NuTyX sur votre disque dur", le mot  de passe du compte root vous sera demand&eacute; comme dans la figure 5.</div>
+<h4>Demande du mot de passe</h4>
+<img src="http://download.tuxfamily.org/nutyx/img/livecd/DemandePassRoot.png" border="0" alt="Figure 5: Demande de pass root" title="Figure 5: Demande de pass root" />
+<div>Une fois l'installateur lanc&eacute;, il est important d'ajuster la date et  l'heure de la machine afin que le syst&egrave;me de fichiers se monte sans  erreur lors de l'amor&ccedil;age de NuTyX. La figure 6. propose l'ajustement de  la date.</div>
+<h4>Ajustement de la date</h4>
+<img src="http://download.tuxfamily.org/nutyx/img/livecd/AjustementDate.png" border="0" alt="Ajustement de la date" title="Ajustement de la date" />
+<div>D&egrave;s que la date et l'heure sont ajust&eacute;es, l'installateur vous demande  sur quelle partition installer NuTyX. Il est toujours possible &agrave; ce  moment d'annuler l'installation en choisissant "Menu principal". Si vous  relancez l'installeur de NuTyX, la date et l'heure ne seront plus demand&eacute;es.</div>
+<img src="http://download.tuxfamily.org/nutyx/img/livecd/InstallerNuTyX.png" border="0" alt="Figure 7: Choix de la partition de destination pour l'installation de NuTyX" title="Figure 7: Choix de la partition de destination pour l'installation de NuTyX" width="525" height="465" />
+<div>Si la partition de destination n'est pas format&eacute;e, l'installateur  proposera de la formater en reiserfs. Une fois la partition choisie, si vous avez choisi le liveCD comme iso, c'est  l'installation du liveCD qui sera choisie. L'installation du liveCD permet d'avoir une NuTyX avec  interface graphique imm&eacute;diatement fonctionnelle. Le mot de passe du compte administrateur root sera demand&eacute; comme sur la figure ci-dessous</div>
+<img src="http://download.tuxfamily.org/nutyx/img/livecd/NouveauPassRoot.png" border="0" alt="Figure 8: Demande du nouveau mot de passe root" title="Figure 8: Demande du nouveau mot de passe root" width="559" height="380" />
+<div>Une fois le mot de passe du compte administrateur root entr&eacute;, l'installateur cr&eacute;e un nouvel utilisateur de votre choix. L'utilisateur habituel est la personne qui utilise la machine le plus  souvent. Le nom d'utilisateur ne peut pas contenir d'espace ni de  majuscules. La description de l'utilisateur peut contenir espace et  majuscules. Le mot de passe peut &ecirc;tre vide, nous recommandons de sp&eacute;cifier un mot de passe, indispensable si un acc&egrave;s &agrave; distance via ssh est configur&eacute;.</div>
+<img src="http://download.tuxfamily.org/nutyx/img/livecd/CreationUtilisateur.png" border="0" alt="Figure 9: Cr&eacute;ation de l'utilisateur habituel de la machine" title="Figure 9: Cr&eacute;ation de l'utilisateur habituel de la machine" width="630" height="210" />
+<div>Une fois le mot de passe valid&eacute;, l'installation de NuTyX est termin&eacute;e</div>
+<img src="http://download.tuxfamily.org/nutyx/img/livecd/InstallationTermine.png" border="0" alt="Figure 10: Installation termin&eacute;e" title="Figure 10: Installation termin&eacute;e" width="530" height="201" /> 
+  </div>
+  <div class="pied_page"> ... <img src="../graphics/logo_nutyx_25.png"> ...
+  </div>
+ </body>
+</html>
