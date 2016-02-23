@@ -5,13 +5,16 @@
 
 name=webkit2gtk3
 version=2.10.7
-release=1
+release=2
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 build() {
 cd webkitgtk-$version
 sed -e 's/“/\"/' -e 's/”/\"/' \
     -i Source/WebCore/xml/XMLViewer.{css,js}
+
+sed -i "s#isnan#std::&#g" \
+	Source/JavaScriptCore/runtime/Options.cpp
 
 mkdir -vp build
 cd        build
