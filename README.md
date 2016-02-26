@@ -112,7 +112,7 @@ First we get this git and the houaphan git localy (step1) as normal user. As we 
 
  It should shows all the packages available.
 
-#### 11. If you want to re build completly one of the 'xxx-extra' collection from the sources
+#### 11. If you want to re build completely one of the 'xxx-extra' collection from the sources
 
     # bash scripts/base-extra -a
     # bash scripts/cli-extra -a
