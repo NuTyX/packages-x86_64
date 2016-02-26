@@ -4,7 +4,7 @@
 # Depends on: talloc avahi gnutls libgpg-error popt python cups kerberos libcap tdb openldap libxslt
 
 name=samba
-version=4.3.3
+version=4.3.5
 release=1
 
 source=( http://ftp.samba.org/pub/samba/stable/$name-$version.tar.gz tls-use-gnutls_priority_set_direct.patch)
@@ -18,13 +18,6 @@ else
         LIB=lib
 fi
 cd $name-$version
-
-sed -e "/deps='LIBASYNC_REQ'/              \
-       {
-         s/$/,/
-         a\                 install=False
-       }"                                  \
-    -i lib/async_req/wscript_build
 
 ./configure                             \
     --prefix=/usr                       \
