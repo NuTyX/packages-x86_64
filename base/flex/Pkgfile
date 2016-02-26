@@ -4,7 +4,7 @@
 # Packager: pierre at nutyx dot org
 
 name=flex
-version=2.5.39
+version=2.6.0
 release=1
 
 source=(http://prdownloads.sourceforge.net/flex/flex-$version.tar.xz)
@@ -24,14 +24,7 @@ make -k check||true
 make DESTDIR=$PKG install
 
 ln -sv libfl.a $PKG/lib/libl.a
-cat > $PKG/bin/lex << "EOF"
-#!/bin/sh
-# Begin /bin/lex
-exec /bin/flex -l "$@"
-# End /bin/lex
-EOF
-
-chmod -v 755 $PKG/bin/lex
+ln -sv flex $PKG/bin/lex
 
 rm -rf $PKG/usr/share/info/dir
 
