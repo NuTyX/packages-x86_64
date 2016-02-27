@@ -637,14 +637,14 @@ build() {
    <p>Elle permet en effet d'éviter de "casser" la NuTyX qu'on utilise tous les jours. Dans un environnement isolé, vous vous assurez de préserver votre NuTyX principale contre toute fausse manoeuvre.</p>
    <p>On appellera désormais notre environnement isolé: <b> chroot</b>.<p>
    <p>On va commencer par récupérer les bon scripts:</p>
-   <pre class="command"><kbd>wget http://downloads.nutyx.org/install-houaphan{,.md5sum}
-md5sum -c install-houaphan.md5sum</kbd></pre>
-   <pre class="output">install-houaphan: Réussi</pre>
+   <pre class="command"><kbd>wget http://downloads.nutyx.org/install-nutyx{,.md5sum}
+md5sum -c install-nutyx.md5sum</kbd></pre>
+   <pre class="output">install-nutyx: Réussi</pre>
    <p>Nous allons définir une fois pour toute la variable LFS, elle définiera le dossier dans lequel sera installée <b>la chroot</b>:</p>
    <p>Comme je suis un grand original, je vous propose de choisir le dossier ...<b>/chroot</b> comme dossier de destination, la commande est donc:</p>
    <pre class="command"><kbd>export LFS=/chroot</kbd></pre>
    <p>On peut maintenant lancer l'installation sans grosse crainte</p>
-   <pre class="command"><kbd>bash install-houaphan</kbd></pre>
+   <pre class="command"><kbd>bash install-nutyx</kbd></pre>
    <p>Et l'installation commence.</p>
    <pre class="output">This installation will be on /chroot                                     [ INFO ]
 *******************************************
@@ -670,10 +670,10 @@ ADD: ca-certificates-20141001, 323 files: 100 %                          [  OK  
 "*                                                 *"
 "***************************************************"</pre>
    <p>Pour pouvoir travailler dans la chroot il est necessaire de pouvoir rentrer (et sortir) facilement de l'environnement, pour ce faire, nous allons utiliser le même script. Vous êtes toujours en root tapez donc ceci dans votre terminal:</p>
-   <pre class="command"><kbd>bash install-houaphan -ec</kbd></pre>
+   <pre class="command"><kbd>bash install-nutyx -ec</kbd></pre>
    <p>Ce script vous permet donc également d'entrer et de sortir très simplement de votre chroot.</p>
    <div class="important"><img src="../graphics/caution.gif" width="10" height="10" alt="!!!" />Désormais pour entrer dans votre chroot, utilisez UNIQUEMENT la commande en root:</div>
-   <pre class="command"><kbd>bash install-houaphan -ec</kbd></pre>
+   <pre class="command"><kbd>bash install-nutyx -ec</kbd></pre>
    <p>Le gros avantage de travailler dans une chroot est que si vous faîtes une manipulation douteuse et comme vous êtes en root, ce ne sera jamais très grave.</p>
    <div class="important"><img src="../graphics/caution.gif" width="10" height="10" alt="!!!" /> En revanche si vous n'êtes pas dans la chroot, et que vous tapez certaines commandes mentionnée dans cet article, je ne peux pas vous garantir le résultat et donc le fonctionnement de votre NuTyX.</div>
    <div><img src="../graphics/yippee.gif" alt="yippee" />Tout est en place, on peut maintenant construire un <a href="#5">un paquet avec quelques dépendances</a>.</div>
@@ -718,10 +718,10 @@ Local Directory: /chroot/usr/ports/personnel</pre>
     <pre class="output">Retrieve info about the 622 packages: 100 %
 ADD: clipit-1.4.2, 71 files: 100 %</pre>
    <hr>
-  <p class="updated">Dernière mise à jour 19-12-2015 22:13</p>
+  <p class="updated">Dernière mise à jour 27-02-2016 16:36</p>
      <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
-        &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+        &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
     <a href="http://www.wtfpl.net/"><img
        src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
        width="80" height="15" alt="WTFPL" /></a></p>
