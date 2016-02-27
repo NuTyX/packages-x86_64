@@ -74,6 +74,7 @@ dir /DEPOT/cli
 dir /DEPOT/base
 dir /DEPOT/base-extra
 base /DEPOT/base
+base /DEPOT/base-extra
 logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
 	fi
 	if [ "$CHROOT" == "base-extra" ]; then
@@ -143,7 +144,7 @@ else
 	DEVEL="$DEVEL -a"
 fi
 
-export DEVEL
+export DEVEL VERSION
 
 echo "CHROOT: $CHROOT"
 echo "COLLECTION: $COLLECTION"
@@ -175,3 +176,4 @@ umount $1/sources || exit 1
 umount $1/DEPOT || exit 1
 umount $1/root/$COLLECTION || exit 1
 rm -r $1
+unset VERSION DEVEL
