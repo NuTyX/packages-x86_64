@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+ <head>
+	<!-- En-tête de la page -->
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../css/nutyx.css" />
+        <title>NuTyX - man sekong</title>
+ </head>
+ <body>
+    <table>
+     <tr>
+      <td width="30%">
+            <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+      </td>
+      <td>
+       <nav>
+        <ul>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="http://forums.nutyx.org/index.php?board=16.0">Forums</a></li>
+        </ul>
+       </nav>
+      </td>
+     </tr>
+    </table>
+ <hr>
+  <h1>Sekong NuTyX manual</h1>
+   <div>This page of manual give you the chance to know all about your GNU/Linux operating system NuTyX. Please refer to the mentionned files to obtain more information.
+   </div>
+   <ol>
+    <div><h3><li>CONFIGURATION</li></h3>
+    </div>
+    <div>The configuration of NuTyX include: the keyboard, the network, mounting of partitions or extra disks, add a swap partition or swap file, create a new user, adjust the clock, the name of the machine, adjust the language used, the region you are located, the booting process, the manual loading of the kernel modules, adjust the file taking care of the boot process.
+    </div>
+    <ol>
+     <div><h4><li>The keyboard</li></h4>
+     </div>
+     <div>
+    The file <b>/etc/sysconfig/console</b> define the configuration of the keyboard in console mode means no graphical mode. Here is an exemple of configuration of the console:
+     </div>
+     <pre class="command"><kbd>cat >  /etc/sysconfig/console << "EOF"
+FONT="lat0-16 -m 8859-15"
+UNICODE="1"
+LOGLEVEL=1
+KEYMAP=fr_CH-latin1.map
+"EOF"</kbd>
+     </pre>
+     <div>The FONT variable define the used font. The UNICODE variable specify the use of utf8 coding. LOGLEVEL define the verbose level of the booting process between 1 and 7. KEYMAP define the configuration the used keyboard. All available keyboard configurations are listed in the folder <b>/lib/kbd/keymaps/i386/</b>. All the available font are listed in the folder  <b>/lib/kbd/consolefonts/ </b>.
+     </div></br>
+     <div>The file <b>/etc/X11/xorg.xonf.d/20-keyboard.conf</b> define the graphical mode of the keyboard. The subjet is so wide, please use the man of Xorg for its configuration. You will find a lot of exemple on internet.
+     </div>
+     <div><h4><li>The network</li></h4>
+     </div>
+     <ul>
+      <li><b>Automatic configuration</b>
+      </li>
+      <div>The variable <b>MANAGER</b> find in the file <b>/etc/sysconfig/network</b> is not specify. The script taking care of the network will adapt by checking which application is installed. If <b>wicd</b> is found, the service wicd will be started, if <b>networkmanager</b> is found, the service networkmanager will be started. If both applications are installed, It will be the service <b>networkmanager</b> started. If none of those  2 is found, the cli script will be started. If you want to chose manually your own configuration mode, read the instructions below.
+      </div></br>
+      <li><b>Manual configuration</b>
+      </li>
+      <div>Each network connection is define in a file ending by the name of the connection. The name of a network card can be named eth0, eth1, etc ou wlan0, wlan1, etc. To know the name of the reconise network cards on the system, check  the content of the folder <b>/sys/class/net</b>. Use the command
+      </div> 
+      <pre class="command"><kbd>ls /sys/class/net</kbd>
+      </pre>. Note that  wlan0, wlan1, etc are in most cases representing  the wireless connections. The card <b>lo</b> don't have to be configured. Exemple: the  file <b>/etc/sysconfig/ifconfig.eth0</b> define the configuration of the <b>eth0</b>. This first exemple define the eth0 card in static address. The content of <b>/etc/sysconfig/ifconfig.eth0</b> will be:
+      <pre class="command"><kbd>cat > /etc/sysconfig/ifconfig.eth0 << "EOF"
+ONBOOT=yes
+SERVICE=ipv4-static
+IP=192.168.1.10
+GATEWAY=192.168.1.1
+PREFIX=255.255.255.0
+BROADCAST=192.168.1.255
+EOF</kbd>
+      </pre>
+      <div>In the case of a static adress configuration, it's necessary to specify the DNS address manually. For exemple, if you wish to use the google DNS servers, put this in the file <b>/etc/resolv.conf</b>:
+      </div>
+      <pre class="command"><kbd>cat > /etc/resolv.conf << "EOF"
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+EOF
+</kbd>
+      </pre>
+      <div>In most of the case, your router is also DNS server, you can in this case specify the adress of your router.
+      </div>
+      <div>The second exemple shows a dynamic address configurationon wlan0, the content of <b>/etc/sysconfig/ifconfig.wlan0</b> will be:
+      </div>
+      <pre class="command"><kbd>cat > /etc/sysconfig/ifconfig.wlan0 << "EOF"
+ONBOOT="yes"
+SERVICE="dhcpcd"
+DHCP_START=""
+DHCP_STOP="-k "
+# Put PRINTIP="yes" so the script will show the IP addresse
+PRINTIP="no"
+# Put PRINTALL="yes" so that the script shows all details
+# of the connection
+PRINTALL="no"
+EOF</kbd>
+      </pre>
+      <li><b>Define a wireless network and  activate the wpa key</b></li></br>
+      <div>If your machine is supportinf the wifi, its necessary to configure it. To know the name of the network card, uses the command in root: 
+      </div>
+      <pre class="command"><kbd>iwconfig</kbd>
+      </pre>
+      If the result show something like:
+      <pre class="output">eth0       no wireless extensions.
+
+eth1       IEEE 802.11abg 
+           Mode:Managed  Frequency:2.417 GHz  Access Point: C4:3D:C7:9F:D0:CF
+           Tx-Power=200 dBm
+           Retry  long limit:7   RTS thr:off   Fragment thr:off
+           Encryption key:off
+           Power Management:off
+      </pre></br>
+      <div>In this exemple above, the eth1 card support the wifi, we just have to provide  the configuration file which will be used by the network connection. <b>ATTENTION</b> it is important to respect the name of the configuration file so that the script can find it. In this exemple, the name of the card will be <b>eth1</b>, the name of the wifi network will be named <b>casabianca</b> and the access key will be <b>Gg6!-@1234</b>. Based on thoses informations, we produces the configuration file like this:
+      </div>
+      <pre class="command"><kbd>wpa_passphrase "<b>casabianca</b>" "<b>Gg6!-@1234</b>" > /etc/wpa_supplicant.conf.eth1</kbd>
+      </pre>
+      <div>Then we add the configuration file as explain in the manual configuration. In this exemple, we have to create the file <b>/etc/sysconfig/ifconfig.eth1</b>. Once, this is done, you can restart the network by restarting the service:
+      </div>
+      <pre class="command"><kbd>/etc/rc.d/init.d/network restart</kbd>
+      </pre>
+      Make shure to adjust the definition of the variable <b>MANAGER</b> define in the file <b>/etc/sysconfig/network</b>. The management of the network service can be done through the command line. The value of the variable is then <b>cli</b>. or if via wicd, put <b>wicd</b> as a value, if via networkmanager means you install the gnome graphical interface, put then <b>networkmanager</b>.
+      </br>
+     </ul>
+     <div><h4><li>Add a partition, a disk or a NFS share folder</li></h4>
+     </div>
+     <div class="note"><img alt="[NOTE IMPORTANTE]" src="../graphics/note.gif"/>If you have allready define the user(s) on this machine and wish to mount the <b>/home</b> folder (which contains then the personnal of the users) on a separate partition/disk/NFS dossier folder, it's important to backup the content of this folder before, they are a lot of methodes, whatever the methode you used make shure you are login as root and the X server is stopped
+     </div>
+     In root type the following commands:
+     <pre class="command"><kbd>init 3
+sync
+cd /home
+tar cf /root/users.tar *</kbd>
+     </pre>
+     <div>If everything went well means no error come out, you can then erase the folders, still in root
+     </div>
+     <pre class="command"><kbd>cd /home
+rm -r *</kbd>
+     </pre>
+     <div>The folder <b>home</b> is now empty and ready to be mounted on the mounting point of your choice.
+     </div>
+     <div>The file <b>/etc/fstab</b> define the mounting points of the various devices when the machine boots. You wish probably want to use a partition or a disk or even a NFS folder to store the personnal datas of the registers users on this machine. In our exemple, GRUB is on the first partition, NuTyX rootfs is on the second partition, the swap partition is the third. The file <b>/etc/fstab</b> of our exemple contains following informations:
+     </div>
+     <pre class="output"># file/device   mountpoint  type      options    dump fsck order
+...
+/dev/sda1       /boot       ext2      defaults     0        0
+/dev/sda2       /           reiserfs  defaults     0        1
+/dev/sda3       swap        swap      pri=1        0        0
+     </pre>
+     <div>We wish to add the <b>second</b> partition format in <b>ext4</b> of the <b>second disk</b> installed on the mounting point <b>/home</b>, we just have to specify the following line:
+     </div>
+     <pre class="command"><kbd>echo "/dev/sdb2  /home  ext4     defaults   0   0" >> /etc/fstab</kbd>
+     </pre>
+     <div>To add a NFS folder <b>/srv</b> located on a remote server with the IP address 192.168.254.254 to the mounting point <b>/server</b>, we add the following line:
+     </div>
+     <pre class="command"><kbd>cat "192.168.254.254:/srv /server  nfs  rw,vers=3,_netdev,rsize=8192,wsize=8192   0   0" \
+>> /etc/fstab</kbd>
+     </pre>
+     <div>Once the configuration done, you can activate the mounting points via the command:
+     </div>
+     <div>The folder <b>/server</b> must be created before on your local machine. The values of rsize and wsize are the one per default. Feel free to experiment your owns. Make shure the package <b>nfs-utils</b> and the associated services are launch. Note that the version 3 of NFS has been choose.
+     </div>
+     <pre class="command"><kbd>mount -a</kbd>
+     </pre>
+     <div>No error message should be printout. You can double check the result by using the command:
+     </div>
+     <pre class="command"><kbd>mount</kbd>
+     </pre>
+it should retun something like this:
+     <pre class="output">...
+/dev/sdb2 on /home type ext4 (rw)
+192.168.254.254:/srv on /serveur type nfs (rw,vers=3,rsize=8192,wsize=8192,addr=192.168.254.254)
+...
+     </pre>
+     <div>It's now time to restore the content of the <b>/home</b> folder.
+     </div>
+     <div>Only necessary if some users are are allready created and you choose to mount the <b>/home</b> folder:
+     </div>
+     <pre class="command"><kbd>cd /home
+tar xf /root/users.tar</kbd>
+     </pre>
+     <div>You can now switch back to graphical mode and login as non root account.
+     </div>
+     <div><h4><li>Add a swap partition or a swap file</li></h4>
+     </div>
+     <div>The command <b>fdisk</b> let you modify the organisation of your(s) disk(s).If you have at least 1 Gigabyte of RAM and you are in 32 bits (or at least 4 Gigabytes in 64 bits), it's highly recommended to create a swap partition. If the disk is completly used, they is still a possibility to create a swap file and mount it automatically at boot. We first create a file big enough (here +/- 500 MegaBytes):
+     </div>
+     <pre class="command"><kbd>dd if=/dev/zero of=/SWAP bs=1024 count=500000</kbd>
+     </pre>
+     <div>A file <b>SWAP</b> of 512Mbytes is created at the root of the filesystem. We going to format it and make it actif:
+     </div>
+     <pre class="command"><kbd>mkswap /SWAP
+swapon /SWAP</kbd>
+     </pre>
+     <div>And add the entry in the <b>/etc/fstab</b>:
+     </div>
+     <pre class="command"><kbd>echo "/SWAP     swap       swap     pri=1       0        0" >> /etc/fstab</kbd>
+     </pre>
+     <div><h4><li>Create a new account</li></h4>
+     </div>
+     <div>The command <b>nu</b> (New User) is a script able to add a new user on your system, the created user will be automatically added to the essentials groups used in NuTyX. If a graphical interface is installed, it will be used and automatic logon by the <b>first</b> register user. If you wish to deactivate this functionnality, edit the file <b>/etc/kdm/kdmrc</b> for kde, <b>/etc/gdm/custom.conf</b> for gnome and <b>/etc/lxdm/lxdm.conf</b> for xfce or lxde. The commands <b>useradd/userdel</b> are used to add/delete users accounts.
+     </div>
+     <div><h4><li>The clock</li></h4>
+     </div>
+     <div>Under NuTyX, the clock can be shown by using 2 methods:
+     </div>
+     <ul>
+      <li>Method 1: UTC=1, Use of the "Universal Time Coordonate". Automatic adjustment of the summer time (if applicable to your region). Consult the wiki page http://en.wikipedia.org/wiki/Coordinated_Universal_Time for more information.
+      </li>
+      <li>Method 2: UTC=0, Consider the local time (the one at the wall) only and ignore the universal time coordonate. This method will not update the time at summer timer.
+      </li>
+     </ul>
+     <div>The installation from the live will configure the clock via the method 1. The installation from the MINI iso will configure the clock via the method 2
+     </div>
+     <div>The file <b>/etc/sysconfig/clock</b> define the method 1 or 2. The file  contains just one variable <b>UTC</b>. If <b>UTC=1</b> it means that the clock of bios MUST be set on the UTC time, and the configuration script will ajust the desktop time depending of your region you choose (Methode 1). Warning, if you choose 1 and you are in multiboot with Windows Microsoft, the time under Windows will be wrong. This OS is not taking care of UTC/LOCAL time. If <b>UTC=0</b>, the bios clock and the desktop clock will shows the local time means the one you see on the wall (Method 2). If you want to know the actual setting of your machine, you can check the bios clock setting. In root, launch the command:
+     </div>
+     <pre class="command"><kbd>hwclock -r</kbd>
+     </pre>
+     This will show the hardware clock. If the time is matching the one of the wall, then the hardware clock is configured on the locale time. You can then confirm it by putting <b>UTC=0</b> in the file <b>/etc/sysconfig/clock</b>. If the output is different then there is a chance that it's sets for UTC. If the command
+     <pre class="command"><kbd>hwclock -ru</kbd></pre>
+     shows the time of the wall then the bios time is correct.
+     <div><h4><li>Nane of the machine</li></h4>
+     </div>
+     <div>The file <b>/etc/sysconfig/network</b> define the name of the machine. It also define which service will be used to configure the network: eather the default script, eather wicd or networkmanager. Exemple of configuration file:
+     </div>
+     <pre class="output"> HOSTNAME='nutyx'        # Le nom de votre machine
+ MANAGER='cli'           # The network manager service (wicd/networkmanager/cli)
+ NETWORKWAIT='no'        # Wait or Not for the network
+ LINKDELAY='15'          # Time delay for Networkmanager init
+ NETWORKDELAY='0'        # Time delay after Networkmanager for nfs mounting process for exemple
+     </pre>
+     <div><h4><li>The used  language</li></h4>
+     </div>
+     <div>The file <b>/etc/profile.d/i18n.sh</b> define the used language.
+     </div>
+     <div><h4><li>The region</li></h4>
+     </div>
+     <div>The link <b>/etc/localtime</b> define the region where you are locate and will the local time base on it. To know the different possibilities of regions for Europe for exemple, used the command:
+     </div>
+     <pre class="command"><kbd>l /usr/share/zoneinfo/Europe</kbd>
+     </pre>
+     Adjust then the link with the closest city of your location. For exemple, the command:
+     <pre class="command"><kbd>sudo ln -sf /usr/share/zoneinfo/Europe/Rome /etc/localtime</kbd>
+     </pre>
+     will define Rome as city of your region.
+     <div><h4><li>The boot of the machine</li></h4>
+     </div>
+     <div>If you use an ISO for the installation of NuTyX and you choose to install GRUB to be able to boot the computer, the configuration file is locate in <b>/boot/grub/grub.cfg</b>. The name of the kernel file of NuTyX is call <b>kernel</b>, and the name of the initrd is <b>nutyx-initrd</b>. Both files are by default locates in the folder <b>/boot</b>. In the following exemple: NuTyX is installed on the first partition of the second harddisk, grub is installed on the first disk. The configuration file will be:
+     </div>
+     <pre class="output">menuentry "NuTyX sekong" {
+  set root=(hd1,1)
+  linux /boot/kernel root=/dev/sdb1 ro quiet 3
+  }
+     </pre>
+     <div>If we want to have an extra entry for the maintenance system, the entry will look like:
+     </div>
+     <pre class="output">menuentry "NuTyX systeme de maintenance" {
+  set root=(hd1,1)
+  linux /boot/kernel ro quiet 3
+  initrd /boot/nutyx-initrd
+  }
+     </pre>
+     <div>Note that this entry doenst have the option <b>root=/dev/sdb1</b>
+     </div>
+     <div>If the boot process <b>grub</b> is not yet installed, (in the case of a installation via the script for exemple). You can install grub by specifying <b>the disk</b> on which which the NuTyX partition is located, in our exemple below, we will used the following command:
+     </div>
+     <pre class="command"><kbd>sudo grub-install /dev/sdb</kbd>
+     </pre>
+     <div>Ajust according your settings
+     </div>
+     <div><h4><li>Manual loading of the kernel modules</li></h4>
+     </div>
+     <div>A module is a piece of code used by the kernel which can be integreted while the machine is running The command:
+     </div>
+     <pre class="command"><kbd>lsmod</kbd>
+     </pre>
+     list the loaded modules by  the kernel. The command:
+     <pre class="command"><kbd>modprobe-v module</kbd>
+     </pre>
+     load manually in memory the charge manuellement the <b>module</b>. The command:
+     <pre class="command"><kbd>rmmod -v module</kbd>
+     </pre>
+     unload the <b>module</b>.
+     <div><b>Blacklist a module</b>
+     </div>
+     <div>The folder <b>/etc/modprobe.conf</b> contains all the files specifying the modules to blacklist. File syntax exemple, the file <b>/etc/modprobe.conf/ati.conf</b> contains: 
+     </div>
+     <pre class="output">blacklist radeon
+     </pre>
+     <div><h4><li>Modify/Create folders/files at booting</li></h4>
+     </div>
+     <div>The file <b>/etc/sysconfig/createfiles</b> specify files / folders to be created or modify when the machine starts.
+     </div>
+    </ol>
+    <div><h3><li>IN CASE OF PROBLEMS</li></h3>
+    </div>
+    <div>They are a lot of log files which can gives very nice informations. The boot information is in the files <b>/var/log/boot.log</b> and <b>/var/log/sys.log</b>. The information about the last start of the X server is in the file <b>/var/log/Xorg.0.log</b>. Most of the services have they own logs.If you have a ssh connection problem, some info will be found in the file <b>/var/log/auth.log</b> of the ssh server. To know the history of the installed binary packages, check the file <b>/var/log/pkg-get.conf</b>. 
+    </div>
+    <div><h3><li>BINARY PACKAGES MANAGEMENT (REMOTE and LOCALE)</li></div>
+    </h3>
+    <ol>
+     <div><h4><li>Configuration of pkg-get</li></h4>
+     </div>
+     <div>The file <b>/etc/pkg-get.conf</b> define the rûles of the command <b>pkg-get</b>. The first line specify the destination directory where are the binary stored and the URL address of the used miror. The second line specify the list of packages included in an installed based NuTyX. This list is used by the command <b>pkg-get base</b>. Up to you to add the packages you want to keep when you execute this command.
+     </div>
+     <div><h4><li>Commands to knows</li></h4>
+     </div>
+The command <b>pkg-get</b> includes a lot of options, following are a few.
+To get a complete help, use the command:
+     <pre class="command"><kbd>pkg-get help</kbd>
+     </pre>
+     <div>The options modifying your installation will be used with the administrator account or via the command <b>sudo</b>.
+     </div>
+synchronisation, to check the available updates.
+     <pre class="command"><kbd>check</kbd></pre>
+or
+     <pre class="command"><kbd>sudo pkg-get sync</kbd></pre>
+Install the X package 
+     <pre class="command"><kbd>get paquetX  [paquetY ...]</kbd></pre>
+or
+     <pre class="command"><kbd>sudo pkg-get depinst paquetX [paquetY ..]</kbd></pre>
+Uninstall the X package AND it's dependencies, used it only if you know what you are doing and knows about the consequences since most of the time the dependencies are shared by various packages. If you want to delete the packageX only, use the command without <b>-r</b>
+     <pre class="command"><kbd>del -r paquetX</kbd></pre>
+or
+     <pre class="command"><kbd>sudo pkg-get remove -r paquetX</kbd></pre>
+Updating of the X package. Note that all the dependencies will also be updated.
+     <pre class="command"><kbd>up paquetX</kbd></pre>
+or
+     <pre class="command"><kbd>sudo pkg-get update -r paquetX</kbd></pre>
+Searching the string1 .. stringN in the name or description of the availables packages.
+     <pre class="command"><kbd>search <string1> .. <stringN></kbd></pre>
+or
+     <pre class="command"><kbd>pkg-get dsearch <string1> .. <stringN></kbd></pre>
+Install the X package WITHOUT its dependencies. A warning message will advise the user if they are missing dependencies.
+     <pre class="command"><kbd>sudo pkg-get install packageX [packageY ...]</kbd></pre>
+Printout the list of out of date packages. It's also shows the packages locked and then which should not be upgraded.
+     <pre class="command"<kbd>pkg-get diff</kbd></pre>
+Printout the README of the <package> if the file README is available.
+     <pre class="command"><kbd>pkg-get readme <package></kbd></pre>
+Search a name through the name and description of the availables packages, you should specify 2 letters minimum.
+     <pre class="command"><kbd>pkg-get dsearch <nameofpackage></kbd></pre>
+    </ol>
+    <div><h3><li>BINARY PACKAGES MANAGEMENT IN LOCAL</li></h3>
+    <div>
+    <div>To manage the binary packages locally, we use the commands <b>pkgadd, pkgrm, et pkginfo</b>. The commands used to modify your installation need root priviledge account.(su -)
+    </div>
+    <ol>
+     <div><h4><li>Configuration of pkgadd</li></h4>
+     </div>
+     <div>The file <b> /etc/pkgadd.conf </b> define the installation and upgrade rules of the binary packages. We found three colons,EVENT, PATTERN and ACTION. The EVENT describes in what kind of situation this rule applies. Currently there are two types of events: UPGRADE and INSTALL. UPGRADE rules are applied when a package is installed over an existing version, and INSTALL rules  are  applied in any case. The pattern is a regular expression. The action applicable to both the UPGRADE and INSTALL event is YES and NO. More than one rule of the same event type is allowed, in which case the first rule will have the lowest priority and the last rule will have the highest priority. Example:
+     </div>
+     <pre class="output">UPGRADE         ^etc/.*$                NO
+UPGRADE         ^var/log/.*$            NO
+UPGRADE         ^etc/X11/.*$            YES
+UPGRADE         ^etc/X11/XF86Config$    NO
+     </pre>
+     <div>The above example will cause pkgadd to never upgrade anything in /etc/ or /var/log/ (subdirectories included), except files in /etc/X11/ (subdirectories included), unless it is the file /etc/X11/XF86Config.  The default rule is to  upgrade/install everything, rules in this file are exceptions to that rule.  (NOTE! A pattern should never contain an initial "/" since you are referring to the files in the package, not the files on the disk.) If pkgadd finds that a specific file should not be upgraded it will install it under <b>/var/lib/pkg/rejected/</b>. The user is then free to examine/use/remove that file manually.
+     </div>
+     <div><h4><li>Commands to knows</li></h4>
+     </div>
+Install a local package
+     <pre class="command"><kbd>sudo pkgadd /path/to/package</kbd></pre>
+Upgrade a local package
+     <pre class="command"><kbd>sudo pkgadd -u /path/to/package</kbd></pre>
+Delete the package silently
+     <pre class="command"><kbd>sudo pkgrm package</kbd></pre>
+List all the installed packages
+     <pre class="command"><kbd>pkginfo -i</kbd></pre>
+List the file list of a package
+     <pre class="command"><kbd>pkginfo -l package</kbd></pre>
+Find out the owner of a filename
+     <pre class="command"><kbd>pkginfo -o FileName</kbd></pre>
+    </ol>
+   <div><h3><li>PORTS MANAGEMENT (advanced mode for the use of recepts)</li></h3>
+   </div>
+   <div>A port is a folder containing information to build a binary package. The file <b>Pkgfile</b> located in the folder describe all the information need for the construction of the package.
+   </div>
+   <ol>
+    <div><h4><li>Ports configuration</li></h4>
+    </div>
+    <div>The folder <b>/etc/ports</b> contains configurations files for the command  <b>ports</b>. Each file take care of it's own ports directory (recepts). The folder <b>/etc/ports/drivers</b> contains various drivers used by the command <b>port</b>
+    </div>
+    <div>Contents of base.rsync
+    </div>
+    <pre class="output">host=downloads.nutyx.org/nutyx
+collection=ports/sekong/base/
+destination=/usr/ports/base
+    </pre>
+    <ul><b>host:</b> specifie the ports address to retrieve
+    </ul>
+    <ul><b>collection:</b> the concern  collection
+    </ul>
+    <ul><b>destination:</b> the local destination directory
+    </ul>
+    <div><h4><li>Commands to knows</li></h4>
+    </div>
+Upgrade the ports tree (/usr/ports/*)
+    <pre class="command"><kbd>sudo ports -u</kbd>
+    </pre>
+List all availables ports
+    <pre class="command"><kbd>ports -l</kbd>
+    </pre>
+Check if an update of a port is available
+    <pre class="command"><kbd>ports -d</kbd>
+    </pre>
+   </ol>
+   <div><h3><li>PACKAGES MANAGEMENT VIA PORTS WITH DEPENDENCIES MANAGEMENT (advanced mode user)</li></h3>
+   </div>
+   <div>The management of the recepts of packages as well the dependencies of thoses is done via the command <b>prt-get</b>. The number of options of the command <b>prt-get</b> is quite big. We will explain here just a few of them.
+   </div>
+   <ol>
+    <div><h4><li>Prt-get configuration</li></h4>
+    </div>
+    <div>The file <b>/etc/prt-get.conf</b> define rules of the command <b>prt-get</b>. The line <b>prtdir /usr/ports/...</b> is very important, the order define which directory will be treated first. Even if the recept is available in two directories. The first one will be the one. Check the man pages of <b>man prt-get.conf</b> and <b>man prt-get</b> to get a complete list of all the options of <b>prt-get</b>.
+    </div>
+    <div><h4><li>Commands to knows</li></h4>
+    </div>
+List dependencies of a package and see if they are installed.
+    <pre class="command"><kbd>prt-get deptree package</kbd></pre>
+Check if package is available
+    <pre class="command"><kbd>prt-get search -v package</kbd></pre>
+Search a package with the description
+    <pre class="command"><kbd>prt-get search -vv package</kbd></pre>
+Search the pass of the port
+    <pre class="command"><kbd>prt-get search --path package</kbd></pre>
+Search in the description of a package
+    <pre class="command"><kbd>prt-get dsearch name_to_find</kbd></pre>
+Search a file in a package
+    <pre class="command"><kbd>prt-get fsearch file</kbd></pre>
+Get informations about a port (deps, packager, path, ...)
+    <pre class="command"><kbd>prt-get info package</kbd></pre>
+List the revert dependencies
+    <pre class="command"><kbd>prt-get dependent package</kbd></pre>
+Build and install a port (need the administratives rights of the account root)
+    <pre class="command"><kbd>cd /usr/ports/extra/paquetX && pkgmk -d -i</kbd></pre>
+Download, build and install the package in one single command
+    <pre class="command"><kbd>sudo prt-get install paquetX</kbd></pre>
+Upgrade of a port package
+    <pre class="command"><kbd>sudo prt-get update paquetX</kbd></pre>
+Upgrade all the out of date packages
+    <pre class="command"><kbd>sudo prt-get update</kbd></pre>
+or
+    <pre class="command"><kbd>prt-get quickdiff</kbd></pre>
+   </ol>
+   <div><h3><li>SERVICES</li></h3>
+   </div>
+   <div>The various services are available under the name service-<nameoftheservice>. The command <b>pkg-get dsearch service-</b> will printout the list of all the packages of availables services. Ones installed, they are available (cups, gdm, sshd, ...) in the directory <b>/etc/rc.d/init.d</b>
+   </div>
+Starting of the Xservice
+   <pre class="command"><kbd>/etc/rc.d/init.d/Xservice start</kbd>
+   </pre>
+Stopping of the Xservice
+   <pre class="command"><kbd>/etc/rc.d/init.d/Xservice stop</kbd>
+   </pre>
+Restarting of the service, this option is not always available.
+   <pre class="command"><kbd>/etc/rc.d/init.d/Xservice restart</b></kbd>
+   </pre>
+   <div><h3><li>ONLINE HELP</li></h3>
+   </div>
+   <div><b>IRC</b> join the chat room <b>#nutyx</b> on the irc.freenode.net (utf-8) network
+   </div>
+   <div><b>WEB site</b>http://www.nutyx.org
+   </div>
+   <div><h3><li>FILES</li></h3>
+   </div>
+   <pre class="output"><b>/etc/pkg-get.conf,
+/etc/prt-get.conf,
+/etc/pkgadd.conf,
+/etc/pkgmk.conf,
+/etc/sysconfig/console,
+/etc/sysconfig/clock,
+/etc/sysconfig/network,
+/etc/wpa_supplicant.conf.*,
+/etc/sysconfig/ifconfig.*,
+/boot/grub/grub.cfg,
+/etc/fstab,
+/etc/profile.d/i18n.sh</b>
+   </pre>
+   <div><h3><li>AUTHORS</li></h3>
+   </div>
+   <div>Write by Frederic Galusik <fred.galusik ~AT~ linuxpedia.fr>, Thierry Nuttens <thierryn1 ~AT~ hispeed.ch> and Pierre Bouchet, english version by Thierry Nuttens
+   </div>
+   <div><h3><li>SEE ALSO</li></h3>
+   </div>
+man pages of
+   <pre class="output">ports(8), 
+prt-get(8), prt-get.conf(5), prt-cache(8), pkgmk(8) pkgadd(8),
+pkg-get(8), pkgrm(8), pkginfo(8), modprobe(8), modprobe.conf(5),
+useradd(8), userdel(8)
+   </pre>
+   <div><h3><li>COPYRIGHT</li></h3>
+   </div>
+   <pre class="output">
+Copyright (C) 2009 - 2010 - 2011 Frederic Galusik
+Copyright (C) 2011 - 2012 - 2013 - 2014 - 2015 Thierry Nuttens - Pierre Bouchet
+
+This free document is publish under the free license WTFPL - Do What The Fuck You Want To Public License.
+( http://www.wtfpl.net/ )
+   </pre>
+  </ol>
+  </div>
+  <hr>
+  <p class="updated">Last updated on 2015-01-18 21:58:10</p>
+    <footer>
+        <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
+        &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+         <a href="http://www.wtfpl.net/"><img
+       src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
+       width="80" height="15" alt="WTFPL" /></a></p>
+    </footer>
+ </body>
+</html>

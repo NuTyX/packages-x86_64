@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+     <link rel="shortcut icon" href="../favicon.ico">
+     <link rel="stylesheet" href="../css/nutyx.css" />
+   <title>NuTyX - Compile and install your own kernel</title>
+ </head>
+ <body>
+    <table>
+     <tr>
+      <td>
+            <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+      </td>
+      <td>
+       <nav>
+        <ul>
+            <li><a href=".">Home</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="http://forums.nutyx.org/index.php?board=18.0">Forums</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
+        </ul>
+       </nav>
+      </td>
+     </tr>
+    </table>
+ <hr>
+  <h1>Compile and install your own kernel</h1>
+   <h2>Introduction</h2>
+    <p>This topic can be apply to any distribution, not only NuTyX.</p>
+    <p>If you decide to compile the kernel yourself, this topic will explain you how to compile and install a cutomize kernel.</p>  
+    <p>They are a lot of raisons to compile your own kernel. One main reason could be to reduce as much as possible it's size and optimize for it's own hardware would be a good reason.</p>
+   <h2>Checking the hardware</h2>
+    <p>We start by checking what kind of hardware we are running on::</p>
+    <pre class="command_user"><kbd>lspci</kbd></pre>
+    <pre class="output">00:00.0 Host bridge: Intel Corporation Atom Processor D2xxx/N2xxx DRAM Controller (rev 03)
+00:02.0 VGA compatible controller: Intel Corporation Atom Processor D2xxx/N2xxx Integrated Graphics Controller (rev 09)
+00:1b.0 Audio device: Intel Corporation NM10/ICH7 Family High Definition Audio Controller (rev 02)
+00:1c.0 PCI bridge: Intel Corporation NM10/ICH7 Family PCI Express Port 1 (rev 02)
+00:1c.1 PCI bridge: Intel Corporation NM10/ICH7 Family PCI Express Port 2 (rev 02)
+00:1c.2 PCI bridge: Intel Corporation NM10/ICH7 Family PCI Express Port 3 (rev 02)
+00:1d.0 USB controller: Intel Corporation NM10/ICH7 Family USB UHCI Controller #1 (rev 02)
+00:1d.1 USB controller: Intel Corporation NM10/ICH7 Family USB UHCI Controller #2 (rev 02)
+00:1d.2 USB controller: Intel Corporation NM10/ICH7 Family USB UHCI Controller #3 (rev 02)
+00:1d.3 USB controller: Intel Corporation NM10/ICH7 Family USB UHCI Controller #4 (rev 02)
+00:1d.7 USB controller: Intel Corporation NM10/ICH7 Family USB2 EHCI Controller (rev 02)
+00:1e.0 PCI bridge: Intel Corporation 82801 Mobile PCI Bridge (rev e2)
+00:1f.0 ISA bridge: Intel Corporation NM10 Family LPC Controller (rev 02)
+00:1f.2 SATA controller: Intel Corporation NM10/ICH7 Family SATA Controller [AHCI mode] (rev 02)
+00:1f.3 SMBus: Intel Corporation NM10/ICH7 Family SMBus Controller (rev 02)
+01:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8101E/RTL8102E PCI Express Fast Ethernet controller (rev 05)                                                       
+02:00.0 Network controller: Broadcom Corporation BCM4313 802.11b/g/n Wireless LAN Controller (rev 01)                                                                              
+03:00.0 Unassigned class [ff00]: Realtek Semiconductor Co., Ltd. RTS5209 PCI Express Card Reader (rev 01)</pre>
+    <p>What we see here:</p>
+     <ul>
+      <li>Processor Atom</li>
+      <li>Audio device Intel</li>
+      <li>SATA Intel controller</li>
+      <li>Network card: Realtek RTL8101E/RTL8102E</li>
+      <li>Graphical card: Intel  Atom Processor D2xxx/N2xxx </li>
+     </ul>
+   <h2>Actions to take</h2>
+    <p>Here is a summary of what we have to do. It's good to know that <b>the steps 4 and 5</b> can be done as many time as we want (in case of a fail boot of the new compiled kernel). So we have to: </p>  
+    <ol>
+     <li>Download the sources of the kernel from the URL  <a href="http://kernel.org" title="Read in another window" class="external" onclick="window.open(this.href); return false;">http://kernel.org</a></li>
+     <li>Extracts the sources from the downloaded kernel</li>
+     <li>Change to the sources directory of the kernel and type in the magics commands to configure the options we want</li>
+     <li>Configure the compilation options</li>
+     <li>Compile the kernel</li>
+     <li>Create a new entry in the grub.cfg or menu.lst file</li>
+    </ol>
+  <h2>Download the sources of the kernel</h2>
+   <p>To be able to compile a kernel, we need the sources of a kernel version.At the writing time of this article, the version 3.17.4 is available. We will then take the chance to compile it...</p>
+   <p>Open a terminal and type the command:</p>
+   <pre class="command_user"><kbd>wget http://www.kernel.org/pub/linux/kernel/v3.x/linux-3.17.4.tar.xz</kbd></pre>
+   <p>The sources are downloading into your personnal folder</p>
+   <pre class="output">--2012-09-01 17:49:53--  http://www.kernel.org/pub/linux/kernel/v3.0/testing/linux-3.17.4.tar.xz
+Résolution de www.kernel.org... 149.20.4.69, 149.20.20.133
+Connexion vers www.kernel.org|149.20.4.69|:80...connecté.
+requête HTTP transmise, en attente de la réponse...200 OK
+Longueur: 82259123 (78M) [application/x-bzip2]
+Sauvegarde en : &laquo;linux-3.17.4.tar.bz2&raquo;
+
+100%[=============================&gt;] 82.259.123  2,55M/s   ds 37s     
+
+2012-09-01 17:50:31 (2,13 MB/s) - &laquo;linux-3.17.4.tar.xz&raquo; sauvegardé [82259123/82259123]</pre>
+     
+  <h2>Extract the sources from the downloaded kernel</h2>
+   <p>We extract the  sources from our new downloaded kernel:</p>
+   <pre class="command_user"><kbd>tar xf linux-3.17.4.tar.xz</kbd></pre>
+   <p>After a few minutes, the prompt will be available and the sources are in place. To be able to compile the kernel, we need to be in the directory of the kernel and then we can type the magics commands. Type in your terminal:</p>
+
+  <h2>Go to the sources directory</h2>
+   <pre class="command_user"><kbd>cd linux-3.17.4</kbd></pre>
+   <p>We are now ready to launch the magics commands</p>
+   <p>As a start, I recommend you to consult all the possible options in the compilation:</p>
+   <pre class="command_user"><kbd>make help|more</kbd></pre>
+   <p>It will give you ALL the possibles options to compile the kernel and it's modules.</p>
+   <pre class="output">Cleaning targets:
+  clean           - Remove most generated files but keep the config and
+                    enough build support to build external modules
+  mrproper        - Remove all generated files + config + various backup files
+  distclean       - mrproper + remove editor backup and patch files
+
+Configuration targets:
+  config          - Update current config utilising a line-oriented program
+  nconfig         - Update current config utilising a ncurses menu based program
+  menuconfig      - Update current config utilising a menu based program
+  xconfig         - Update current config utilising a QT based front-end
+  gconfig         - Update current config utilising a GTK based front-end
+  oldconfig       - Update current config utilising a provided .config as base
+  localmodconfig  - Update current config disabling modules not loaded
+  localyesconfig  - Update current config converting local mods to core
+  silentoldconfig - Same as oldconfig, but quietly, additionally update deps
+  defconfig       - New config with default from ARCH supplied defconfig
+  savedefconfig   - Save current config as ./defconfig (minimal config)
+  allnoconfig     - New config where all options are answered with no
+  allyesconfig    - New config where all options are accepted with yes
+  allmodconfig    - New config selecting modules when possible
+  alldefconfig    - New config with all symbols set to default
+  randconfig      - New config with random answer to all options
+  listnewconfig   - List new options
+  oldnoconfig     - Same as silentoldconfig but sets new symbols to their default value
+
+......
+....</pre>
+    <p>I just did put you the begin <img src="../graphics/smiley-wink.gif" alt="Wink" title="Wink">. Let's start to make shure that the sources are clean and don't contains any already compiled parts in it.</p>
+    <div class="note"><img src="../graphics/note.gif" width="10" height="10" alt="*" /> This command need to be done just once. After the first try of compilation, you can skip this command if you need to recompile the kernel.</div>
+   <pre class="command_user"><kbd>make mrproper</kbd></pre>
+   <p>They should be no message. We will now lanch the configuration tool and activate as less options as possible for a working kernel. I choose the non graphical interface on purpose, so that you can do it in a chroot or in a normal terminal.</p>
+   <h2>Configure the compilations options</h2>
+    <p>The team of LFS recommand to deactivate the variable LC_ALL :</p>
+    <pre class="command_user"><kbd>make LC_ALL= menuconfig</kbd></pre>
+    <p>You are now in the main menu of the configuration tool of the kernel:</p>
+    <img src="http://download.tuxfamily.org/nutyx/img/installer_kernel/menuprincipal.png" alt="Configuration menu principal" title="http://download.tuxfamily.org/nutyx/img/installer_kernel/menuprincipal.png" width="578" height="517" /> 
+    <p>In this article, I choose only the options which are need for a successfull boot. It means that the number of modules will be very small. You have to know that a generic kernel contains more then 3500 modules.</p>
+   <p>Go through all the menus and activate only the options which are recommended below:</p>
+   <h3>General Setup</h3>
+    <table>
+     <tr class="odd"><td>Kernel compression mode (Gzip)</td>
+     </tr>
+     <tr class="even"><td>(NuTyX) Default hostname</td>
+     </tr>
+     <tr class="odd"><td>Support for paging of anonymous memory</td>
+     </tr>
+     <tr class="even"><td>System V IPC</td>
+     </tr>
+     <tr class="odd"><td>POSIX Message Queues</td>
+     </tr>
+     <tr class="even"><td>(18) Kernel log buffer size</td>
+     </tr>
+     <tr class="odd"><td>Namespaces support</td>
+     </tr>
+    </table>
+   <div><h3>Enable loadable module support</h3>
+   </div>
+   <div><h3>Enable the block layer</h3>
+   </div>
+    <table>
+     <tr class="odd"><td style="width:20%;">IO Schedulers ---></td><td>CFQ I/O scheduler</td>
+     </tr>
+     <tr class="even"><td></td><td>Default I/O scheduler (CFQ)</td>
+     </tr>
+    </table>
+   <div><h3>Processor type and features</h3></div>
+    <table>
+     <tr class="odd"><td>Processor family (Atom) Adjust acording to your  microprocessor</td>
+     </tr>
+     <tr class="even"><td>High Memory Support (4GB)</td>
+     </tr>
+     <tr class="odd"><td>Memory model (Flat Memory))</td>
+     </tr>
+     <tr class="even"><td>(4096) Low address space to protect from user allocation</td>
+     </tr>
+     <tr class="odd"><td>(64) Amount of low memory, in kilobytes, to reserve for the BIOS</td>
+     </tr>
+     <tr class="even"><td>(0x2000000) Alignment value to which kernel should be aligned</td>
+     </tr>
+    </table>
+     
+   <h3>Power management and ACPI options</h3>
+   <h3>Bus options (PCI,etc)</h3>
+     
+    <table>
+     <tr class="odd"><td>PCI Support</td><td>PCI access mode (Any)</td>
+     </tr>
+    </table>
+   <div><h3>Executable file formats / Emulations</h3></div>
+    <table>
+     <tr class="odd"><td style="width:35%;">Kernel support for ELF binaries</td>
+     </tr>
+    </table>
+   <div><h3>Networking support</h3></div>
+    <table>
+     <tr class="odd"><td style="width:35%;">Networking options</td><td>Packet socket</td>
+     </tr>
+     <tr class="even"><td></td><td>Unix domain socket</td>
+     </tr>
+     <tr class="odd"><td></td><td>TCP/IP networking</td>
+     </tr>
+    </table>
+   <div><h3>Device Drivers</h3></div>
+    <table>
+     <tr class="odd"><td style="width:20%;">Generic Driver Options</td><td>Maintain a devtmpfs filesystem to mount at /dev</td>
+     </tr>
+     <tr  class="even"><td></td><td>Automount devtmpfs at /dev, after the kernel mounted the rootfs</td>
+     </tr>
+     <tr class="odd"><td></td><td>Userspace firmware loading support</td>
+     </tr>
+     <tr class="even"><td>Block devices</td><td></td>
+     </tr>
+     <tr class="odd"><td>SCSI device support</td><td>SCSI device support</td>
+     </tr>
+     <tr class="even"><td></td><td>legacy /proc/scsi/ support</td>
+     </tr>
+     <tr class="odd"><td></td><td>SCSI disk support</td>
+     </tr>
+     <tr class="even"><td></td><td>SCSI generic support</td>
+     </tr>
+     <tr class="odd"><td>Serial ATA and Parallel ATA Drivers</td><td>ATA ACPI support</td>
+     </tr>
+     <tr class="even"><td></td><td>AHCI SATA support</td>
+     </tr>
+     <tr class="odd"><td>Network device support</td><td>Network core driver support</td>
+     </tr>
+     <tr class="even"><td></td><td>Ethernet driver support</td><td>Realtek devices</td><td>Realtek RTL-8139 C+ PCI Fast Ethernet Adapter support (Adjust according your network card)</td>
+     </tr>
+     <tr class="even"><td></td><td></td><td></td><td>Realtek RTL-8129 PCI Fast Ethernet Adapter support</td>
+     </tr>
+     <tr class="odd"><td>Input device support</td><td>Generic input layer (need for keyboard, mouse ..)</td>
+     </tr>
+     <tr class="even"><td></td><td>Mouse interface</td>
+     </tr>
+     <tr class="odd"><td></td><td>Provide legacy /dev/psaux device</td>
+     </tr>
+     <tr class="even"><td></td><td>(1024) Horizontal screen resolution</td>
+     </tr>
+     <tr class="odd"><td></td><td>(768) Vertical screen resolution</td>
+     </tr>
+     <tr class="even"><td></td><td>Event interface</td>
+     </tr>
+     <tr class="odd"><td></td><td>Keyboards</td><td>AT keyboard</td>
+     </tr>
+     <tr class="even"><td></td><td>Mice</td><td>PS/2 mouse</t>
+     </tr>
+     <tr class="odd"><td></td><td>Miscellaneous devices</td><td>User level driver support</td>
+     </tr>
+     <tr class="even"><td>USB support</td><td>Support for Host-side USB</td>
+     </tr>
+     <tr class="odd"><td></td><td>USB announce new devices</td>
+     </tr>
+     <tr class="even"><td></td><td>Enable USB persist by default</td>
+     </tr>
+     <tr class="odd"><td></td><td>xHCI HCD (USB 3.0) support</td>
+     </tr>
+     <tr class="even"><td></td><td>EHCUI HCD (USB 2.0) support</td>
+     </tr>
+     <tr class="odd"><td></td><td>Root Hub Transaction Translators</td>
+     </tr>
+     <tr class="even"><td></td><td>Improved Transaction Translator scheduling</td>
+     </tr>
+     <tr class="odd"><td></td><td>Generc EHCI driver for a platform device</td>
+     </tr>
+     <tr class="even"><td></td><td>UHCI HCD (most Intel and VIA) support</td>
+     </tr>
+     <tr class="odd"><td></td><td>USB Mass Storage support</td>
+     </tr>
+    </table>
+     
+   <h3>Firmware Drivers</h3>
+   <h3>File systems</h3>
+   
+    <table>
+     <tr class="odd"><td>Reiserfs support (Adjust according your file system)</td>
+     </tr>
+     <tr class="even"><td>Stats in proc/fs/reiserfs</td>
+     </tr>
+     <tr class="odd"><td>ReiserFS extended attributes</td>
+     </tr>
+    </table>
+     
+   <h3>Kernel hacking</h3>
+     
+    <table>
+     <tr class="odd"><td>Early printk</td>
+     </tr>
+    </table>
+     
+   <h3>Security options</h3>
+     
+   <h3>Cryptographic API</h3>
+   
+    <table>
+     <tr class="odd"><td>AES cipher algorithms</td>
+     </tr>
+    </table>
+     
+   <h3>Virtualization</h3>
+   
+   <h3>Library routines</h3>
+   
+    <table>
+     <tr class="odd"><td>CRC32/CRC32c functions</td>
+     </tr>
+    </table> 
+    <p>Once you did all your selections, you choose the option <span style="color: #ff0000;">Exit</span> until you are back at the prompt.</p>
+    <p>A new message will ask you if you want to save your configuration, choose the default option <span style="color: #ff0000;">Yes</span>.</p>
+    <p>A nice message in your terminal will appear and tell you <img src="../graphics/smiley-cool.gif" border="0" alt="Cool" title="Cool" /> :</p>
+   <pre class="output">#
+# configuration written to .config
+#
+
+
+<b>* End of the configuration.
+*</b> Execute 'make' to start the build or try 'make help'</pre>
+
+  <h2>Compile the kernel</h2>
+   <p>The compilation of your kernel can start. Type in your terminal:</p>
+   <pre class="command_user"><kbd>make -j4</kbd></pre>
+   <p>The compilation starts, if you have more or less processors, adjust the value <b>-j4</b> to the number of cores you have</p>
+   <img src="http://download.tuxfamily.org/nutyx/img/installer_kernel/Compile.png" border="0" alt="Compilation en cours" width="578" height="517" />
+   <p>A few minutes (or hours) later, ... You have a kernel ready to used.</p>    
+   <pre class="output">Kernel: arch/x86/boot/bzImage is ready  (#1)</pre>
+
+  <h2>Create a new entry in the grub.cfg or menu.lst file</h2>
+   <p> We just have to add the right entry into the configuration files <b><span style="color: #339966;">grub.cfg</span></b> of grub 2.0 or eventuelly in <b><span style="color: #339966;">menu.lst</span></b> of grub 0.97.</p>    
+   <p>1. /boot/grub/grub.cfg</p>
+   
+   <pre class="output"> ....
+ 
+menuentry "NuTyX avec kernel experimental sur /dev/sda2" {
+  set root=(hd0,2)
+  linux /home/thierry/linux-3.17.4/arch/x86/boot/bzImage root=/dev/sda2 ro quiet
+}
+   </pre>
+
+   <p>2. /boot/grub/menu.lst</p>
+
+   <pre class="output">...
+# (3) NuTyX sur /dev/sda2
+title NuTyX avec kernel experimental sur /dev/sda2
+root (hd0,1)
+kernel /home/thierry/linux-3.17.4/arch/x86/boot/bzImage root=/dev/sda2 ro quiet
+   </pre>
+
+   <p>And that's it, this way, you will be still able to choose at boot time on which kernel your NuTyX should be running.</p>
+   <p>Last but not least, to experiment other options of your working (or not yet) new kernel, it's very simple. You just type again the 4 magic commands:</p>
+  <pre class="command_user"><kbd>cd linux-3.17.4
+make menuconfig
+make -j4
+sudo make modules_install</kbd></pre>
+   <p>And that's all <img src="../graphics/smiley-cool.gif" border="0" alt="Cool" title="Cool" /> </p>
+  <hr>
+  <p class="updated">Last updated 2015-02-26 21:07</p>
+    <footer>
+        <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
+        &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+        <a href="http://www.wtfpl.net/"><img
+       src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
+       width="80" height="15" alt="WTFPL" /></a></p>
+    </footer>
+ </body>
+</html>
+

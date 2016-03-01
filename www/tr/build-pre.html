@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+	<!-- En-tête de la page -->
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../css/nutyx.css" />
+        <title>NuTyX Preparation of the construction</title>
+    </head>
+    <body>
+    <table>
+     <tr>
+      <td width="30%">
+            <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+      </td>
+      <td>
+       <nav>
+        <ul>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="http://forums.nutyx.org/index.php?board=8.0">Forums</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
+        </ul>
+       </nav>
+      </td>
+     </tr>
+    </table>
+  <hr>
+   <h1>Preparation of the construction</h1>
+    <h2>Option</h2>
+    <p>If you did already once the all process, it's necessary to remove the user (and its group it belong) and the home directory of the user lfs</p>
+    <p>So if you need to do it, remove all existing stuff:</p>
+    <pre class="command"><kbd>userdel lfs
+rm -r /home/lfs</kbd></pre>
+    <p>Normally, by remove the user, the group is removed as well. If not shure give a try, it will not hurt</p>
+    <pre class="command"><kbd>groupdel lfs</kbd></pre>
+   <h2>Partition preparation</h2>
+    <p>To be able to start the first pass without major trouble, let's see what's has to be done. It's quite straigtforward.</p>
+    <p>Normaly if we build a linux distribution, it's necessary to plan a partition where to put it's construction. It's actually not a must, as it's possible to build the distribution in a folder and then make a backup of it on a USB key or directly use the command rsync to transfer it on the destination disk or partition.</p>
+    <p>So if you decide to use a dedicate partition, it's time to format it in the file system of your choice and then you mount it on the folder defined by the LFS variable.</p>
+    <p>In all the articles we will used the same folder:</p>
+    <pre class="command"><kbd>/mnt/lfs</kbd></pre>
+    Ones your partition formated, it's time to create the folder and mount your partition on it. In my example, I choose the second partition of the first disk, you should adjust thoses settings to your choice.
+    <pre class="command"><kbd>mkdir /mnt/lfs
+mount /dev/sda2 /mnt/lfs</kbd></pre>
+    <p>Remember to always mount this partition prior to start the pass 1 or 2. Ones the partition is monted, we can start the first pass.</p>
+  <div class="pied_page"><a class="url" href="build-pass-1.html">It's time to begin with the pass 1...</a></div>
+  <hr>
+  <p class="updated">Last updated on 2015-01-16 18:47:00</p>
+    <footer>
+        <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
+        &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+         <a href="http://www.wtfpl.net/"><img
+       src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
+       width="80" height="15" alt="WTFPL" /></a></p>
+    </footer>
+ </body>
+</html>

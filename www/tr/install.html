@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta charset="utf-8" />
+     <link rel="shortcut icon" href="../favicon.ico">
+     <link rel="stylesheet" href="../css/nutyx.css" />
+     <title>NuTyX - Installation</title>
+ </head>
+ <body>
+    <table>
+     <tr>
+      <td width="30%">
+            <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+      </td>
+      <td>
+       <nav>
+        <ul>
+            <li><a href=".">Home</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="http://forums.nutyx.org/index.php?board=12.0">Forums</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
+        </ul>
+       </nav>
+      </td>
+     </tr>
+    </table>
+ <hr>
+  <h1>Typical installation of NuTyX on a single partition</h1>
+   <p>A dedicated single partition of 8 Gigabytes minimum, is needed for a full installation of NuTyX.</p>
+   <p>A minimum of 1 Gigabyte RAM is best suited. You have already burnt the ISO onto a CD. </p>
+   <p>If you prefer instead, prepare a NuTyX bootable USB flash-drive.  Either option will work.</p>
+   <p>You also have a blank hard-drive.</p>
+   <p>Now we begin to use the following  screen-shots, that will show you a typical installation on a single partition:</p>
+   <ol>
+    <li><h2>Boot-up the USB Flash Drive /CD on which you copied/burned the ISO.</h2></li>
+     <table align="center">
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/SelectLanguage.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/HowToProceed.png"></td></tr>
+     </table>
+    <li><h2>Partition creation (optional)</h2></li>
+     <p>The partition creation is optional. <a href="#3">If you already have an empty partition available you can directy go to the format of the partition.</a></p>
+     <table align="center">
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/CreateYoursPartitions.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/PartitionTools.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/PartitionTypeSelection.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/EmptyDisk1.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/PartitionCreate1.png"></td></tr>
+     </table>
+    <a name='3'></a>
+    <li><h2>Format the partition (optional)</h2></li>
+     <p>The format of the partition is optional. If you do have an unformated or you want get rid of everything on it, then just format it. If you still want to keep your personal datas for example, you then need to remove the following directories: <b>opt, bin, etc, root, run, sbin, usr and var</b>. <a href="#4">If you already have an <u>empty</u> formated partition then you can directly got to the installation of NuTyX</a></p>
+     <table align="center">
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/FormatPartition.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/AvailableFileSystems.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/LaunchFormatSda1Xfs.png"></td></tr>
+     </table>
+    <a name='4'></a>
+    <li><h2>Install NuTyX</h2></li>
+     <p>The installation of NuTyX doesn't need an internet. It takes just a few minutes</p>
+     <table align="center">
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/InstallNuTyX.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/InstallInProgress.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/GoodToKnowMBR.png"></td></tr>
+     </table>
+   <li><h2>Configure NuTyX</h2></li>
+    <p>Onces installed, NuTyX automatically start immediatly with its configuration without  having to reboot.</p>
+    <p>The configuration is very straight forward: network cards configuration, date and time configuration and modification of the default password of the administrator account <b>root</b>.</p>
+     <table align="center">
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/Init1.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/ConfigureEth0.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/ConfigureUTC.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/ConfigureDate.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/en/ConfigureTime.png"></td></tr>
+      <tr><td><img src="http://downloads.nutyx.org/img/saravane/install/fr/RequiredChangePasswordAtFirstRootLogin.png"></td></tr>
+     </table>
+     <p>Next, when prompted, use the default password <b><u>nutyx</u></b> to login for the first time. You will be required to change this password with a new password before you can proceed to the prompt.</p>
+   <li><h2>Giving the base commands a trial run-through.</h2></li>
+    <p>I suggest you to discover <a href="base-commands.html">the base commands so that you can for example install a graphical interface. </a></p>
+</ol>
+   <hr>
+   <p class="updated">Last updated 2015-07-05 21:27</p>
+  <footer>
+   <p id="foot"> ... <img src="../graphics/logo_nutyx_25.png" alt="small nutyx logo"> ...<br />
+      &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a>.<br /><br />
+    <a href="http://www.wtfpl.net/"><img
+       src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
+       width="80" height="15" alt="WTFPL" /></a></p>
+  </footer>
+ </body>
+</html>

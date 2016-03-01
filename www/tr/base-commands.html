@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta charset="utf-8" />
+     <link rel="shortcut icon" href="../favicon.ico">
+     <link rel="stylesheet" href="../css/nutyx.css" />
+     <title>NuTyX - The base commands</title>
+  </head>
+  <body>
+    <table>
+     <tr>
+      <td width="30%">
+            <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+      </td>
+      <td>
+       <nav>
+        <ul>
+            <li><a href=".">Home</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="http://forums.nutyx.org/index.php?action=recent">Forums</a></li>
+            <li><a href="http://github.com/NuTyX">Code</a></li>
+        </ul>
+       </nav>
+      </td>
+     </tr>
+    </table>
+ <hr>
+  <h1>The base commands...</h1>
+   <h2>Give a try</h2>
+    <p>To take full advantage of your newly installed NuTyX, here are the MUST commmands that you will have to use everyday. This article explain the essential commands and are NuTyX specifics. We strongly recommand to know them.</p>
+    <p>NuTyX do not have (yet) a graphical interface tool for administration purpose. You will then used the terminal as normal interface. If you are not yet used to it, it's not a big deal, we will explain you the commands to type.</p>
+    <p>Since NuTyX is a linux Operating system, it's important to respect the <a href="http://en.wikipedia.org/wiki/Case_sensitivity">case</a>. So it's important to respect ALL the caracters in <b>lowercase</b>.</p>
+    <p>Let's start to open a terminal. Ready ? Ok then let's go <img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" /></p>
+    <p>In some case a command is made of one single word and without any option. But in most cases, a command can handle many options, we suggest you to use the help option to get an idea of all the options. Here, we will only check the most used one:</p>
+    <pre class="command_user"><kbd>commandname help</kbd></pre> or
+    <pre class="command_user"><kbd>commandname --help</kbd></pre> or
+    <pre class="command_user"><kbd>commandname -h</kbd></pre>
+    <p>the <i>help</i> give the possibility to printout an idea of all the availables options. They are also <i>--help</i> or <i>-h</i> as options to printout the help of the command.</p>
+   <h2>Check if they are any updates available</h2>
+    <p>The command <b>cards sync</b> will check the latest status of the available updates for your system.</p>
+    <p>The command <b>cards diff</b> will show a list of outdated packages</p>
+     <pre class="command"><kbd>cards sync
+cards diff</kbd></pre>
+     <pre class="output">synchronizing /var/lib/pkg/saravane/desktop from http://..<br />/var/lib/pkg/saravane/desktop//MD5SUM<br />..
+Difference between installed packages and the depot of binaries:
+Package                      Installed                   Available in the depot of binaries
+gcc                          4.9.1                       4.9.2
+glibc                        2.20                        2.21</pre>
+   <h2>Updating a package</h2>
+    <p>To update a package, the command <b>cards install -u</b> follow by the package will be used. It's important that the update is available:</p>
+    <pre class="command"><kbd>cards install -u gcc</kbd></pre>
+   <h2>Search a package</h2>
+    <p>To search a package, the command:
+    <pre class="command_user"><kbd>cards search <b>search_string</b></kbd></pre>
+    <p>will return all the packages which have the <b>search_string</b> in the name or in the description. For example, if you want to know what's are the browser available</p>
+    <pre class="command_user"><kbd>cards search browser</kbd></pre>
+    <p>should return something like:</p>
+    <pre class="output">chromium           The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins
+firefox            Standalone web browser from mozilla.org
+...</pre>
+   <h2>Add a package</h2>
+     <p>To add a package, the command <b>cards install</b> followed by the software name to install will be used:</p>
+     <pre class="command"><kbd>cards install xfce4</kbd></pre>
+     <p>The download of the application <b>xfce4</b> starts immediately, once the package is downloads, it's dependencies will be downloads as well. When all done with the download, all the packages will be installed in the right order. In this example, when the commands is done you will have a working <a href="http://www.xfce.org">xfce4</a> desktop installed on your NuTyX.</p>
+   <h2>Add a user</h2>
+    <p>To add a user under NuTyX, it's very simple, the command:</p>
+    <pre class="command"><kbd>nu</kbd></pre>
+    <p>will add a user, it can be used in two forms with or without options, if used without options, they will be two question to answer:</p>
+    <pre class="output">User name: james
+User description: James Bond 007</pre>
+    <p>You should see that the user's name doen't contains certains characters neither space neither capital letters.</p>
+    <p>If you wish to use the command with the options, those hve to be given in the order user description then user name:</p>
+    <pre class="command"><kbd>nu "James Bond 007" james</kbd></pre>
+   <h2>Alias</h2>
+    <div class="note"><img alt="[Note]" src="../graphics/note.gif"> It's good to know that somes commands are actually alias which are simplify command. It's some how a shortcut to the original command. To know all the availables alias, just type in your terminal <b>alias</b></div>
+   <h2>Conclusion</h2>
+     <p>As you can see the only two commands to knows are:
+     </p>
+     <pre class="command"><kbd>nu
+cards</kbd></pre>
+     <p>This last command has a more detail explanation via it's help</p>
+     <pre class="command_user"><kbd>cards help</kbd></pre>
+     <p>I wish you a lot of fun with you newly installed NuTyX.</p>
+    <hr>
+    <p class="updated">Last updated 2015-05-03 14:41</p>
+     <footer>
+      <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
+      &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+    <a href="http://www.wtfpl.net/"><img
+       src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
+       width="80" height="15" alt="WTFPL" /></a></p>
+     </footer>
+ </body>
+</html>
