@@ -29,9 +29,7 @@ cd $name-$version
 make
 mkdir $PKG/sbin
 make DESTDIR=$PKG install
-
 # Services
 cd ../$scripts-$scriptsversion
 make DESTDIR=$PKG install-nfs-server
-
 }
