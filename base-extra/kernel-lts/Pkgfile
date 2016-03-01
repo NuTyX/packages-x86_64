@@ -8,7 +8,7 @@ PKGMK_GROUPS=(devel doc)
 
 name=kernel-lts
 version=3.18.27
-release=1
+release=2
 _version=${version:0:4}
 
 source=(http://www.kernel.org/pub/linux/kernel/v3.x/linux-${_version}.tar.xz
@@ -117,7 +117,7 @@ do rm -rf usr/src/linux-${_version}/arch/$i
 done
 
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
 usr/src/linux-${_version}
 
 rm -r usr
@@ -131,7 +131,7 @@ mv $SRC/linux-${_version}/Documentation \
 usr/share/doc/linux-$version
 
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/$name.doc${PKGMK_BUILDVER}any.cards.tar \
+$PKGMK_PACKAGE_DIR/$name.doc${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
 usr/share/doc/linux-$version
 
 rm -r usr
