@@ -52,7 +52,7 @@ base /DEPOT/gui
 logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
 	fi
 	if [ "$CHROOT" == "base" ]; then
-		COLLECTION="houaphan"
+		COLLECTION="core"
 		echo "dir /DEPOT/base
 dir /DEPOT/base-extra
 base /DEPOT/base
@@ -60,7 +60,7 @@ logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
 
 	fi
 	if [ "$CHROOT" == "cli" ]; then
-		COLLECTION="houaphan"
+		COLLECTION="core"
 		echo "dir /DEPOT/cli
 dir /DEPOT/base
 dir /DEPOT/base-extra
@@ -68,7 +68,7 @@ base /DEPOT/base
 logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
 	fi
 	if [ "$CHROOT" == "gui" ]; then
-		COLLECTION="houaphan"
+		COLLECTION="core"
 		echo "dir /DEPOT/gui
 dir /DEPOT/cli
 dir /DEPOT/base
@@ -133,7 +133,7 @@ if [ "$CHROOT" == "base-extra" ] || [ "$CHROOT" == "cli-extra"  ] || [ "$CHROOT"
 	setup_collection
 	DEVEL="cards.devel && cd /root/$COLLECTION && bash scripts/$CHROOT"
 fi
-if [ "$COLLECTION" != "houaphan" ] && [ "$COLLECTION" != "extra"  ]; then
+if [ "$COLLECTION" != "core" ] && [ "$COLLECTION" != "extra"  ]; then
 	setup_collection
 	DEVEL="cards.devel && cd /root/$CHROOT && bash scripts/$COLLECTION -a && bash scripts/$COLLECTION-extra"
 fi
@@ -149,8 +149,8 @@ export DEVEL VERSION
 echo "CHROOT: $CHROOT"
 echo "COLLECTION: $COLLECTION"
 echo "VERSION: $VERSION"
+echo "The command: KERNEL="NONE" LFS="$1" bash /root/bin/install-nutyx"
 echo -n "DEVEL: $DEVEL "
-
 echo -n " OK ? (y) "
 read a
 
@@ -170,7 +170,7 @@ mount $1/sources || exit 1
 mkdir -p $1/root/$COLLECTION || exit 1
 mount $1/root/$COLLECTION || exit 1
 
-KERNEL="NONE" LFS="$1" bash /root/bin/install-houaphan
+KERNEL="NONE" LFS="$1" bash /root/bin/install-nutyx
 
 umount $1/sources || exit 1
 umount $1/DEPOT || exit 1
