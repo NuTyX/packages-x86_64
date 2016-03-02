@@ -1354,9 +1354,6 @@ check_variables() {
 [ -z $FOLDER ] && FOLDER="/mnt/hd"
 [ -z $KERNEL ] && KERNEL="kernel-lts"
 [ "$KERNEL" == "NONE" ] && KERNEL=""
-if [ ! -z $DEVEL ]; then
-	DEVEL="cards.devel"
-fi
 
 HOMEPAGE="${URL}"                       ## http://downloads.nutyx.org
 INSTALL_BASE="$VERSION/$ARCH"           ## 8.0/x86_64
@@ -1602,7 +1599,7 @@ parse_options() {
 				exit 0;;
 			/*)
 				boot_mesg "
- >>> This methode is depreciate <<<: use '-p $1' instead or adjust the 'LFS' variable"
+ >>> This methode is depreciate <<<: adjust the 'LFS' variable instead"
 				echo_warning
 				echo "
    press any key to continue ...
