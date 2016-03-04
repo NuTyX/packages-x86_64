@@ -1,0 +1,42 @@
+# Description: A set of utilities to manage software packages on NuTyX distribution.
+# URL: https://github.com/NuTyX/cards
+# Maintainer: tnut at nutyx dot org
+# Packager: tnut at nutyx dot org
+
+PKGMK_IGNORE_RUNTIMEDEPS="no"
+PKGMK_GROUPS=(devel doc man)
+name=cards
+version=1.99.5
+release=1
+
+source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
+build () {
+cd $name-$version
+
+cd scripts
+
+cp -vf pkgmk.in pkgmk.in.orig
+sed "s/x86_64/armv7l/" pkgmk.in.orig > pkgmk.in 
+
+cd ..
+
+cp -vf Makefile.inc Makefile.inc.orig
+sed 's/Werror/Wall/' Makefile.inc.orig > Makefile.inc
+
+
+make all
+make DESTDIR=$PKG install
+mkdir -p $PKG/{etc,usr}/ports
+}
+devel()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+usr/bin \
+usr/ports \
+var \
+etc/ports \
+etc/pkgmk.conf.example
+rm -rf var usr/bin usr/ports etc/pkgmk.conf.example etc/ports 
+}
