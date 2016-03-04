@@ -1,0 +1,30 @@
+# Description:	QEMU is a processor emulator using dynamic translation to achieve good emulation speed (PC, PowerPC, PowerMac, sun, Mips, ARM etc...)
+# URL:    		http://www.qemu.org
+# Packager:		berlius at nutyx dot com
+# Depends on: 	gtk2 gtk3 sdl glib-static python vte vte3 xorg-mesa nss lzo cyrus-sasl alsa-lib alsa-plugins alsa-utils curl check bluez ncurses nfs-utils libgcrypt libcap-ng gnutls libusb bzip2 usbutils bridge-utils pcre-static
+ 
+name=qemu-static
+version=2.5.0
+release=2
+source=(http://wiki.qemu.org/download/qemu-$version.tar.bz2)
+
+build() {
+
+    cd qemu-$version
+    
+        
+    mkdir build
+    cd build
+	
+    QEMU_ARCH=arm
+    ../configure --prefix=/opt/nutyx-arm/qemu-static/usr  \
+                 --disable-kvm \
+                 --target-list=arm-linux-user \
+                 --static 
+            
+    make
+    make DESTDIR=$PKG install
+	
+    unset QEMU_ARCH
+	 
+}
