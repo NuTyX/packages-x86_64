@@ -34,14 +34,14 @@
     <div class="important"><img alt="[Important]" src="../graphics/caution.gif" />Il y a une seule mesure de sécurité a toujours respecter sans exception : Il faut absolument exécuter et compiler les programmes ARM dans un "chroot" (toujours commencer par la commande <strong>"nutyx-arm"</strong> voir détail ci-dessous) sans quoi vous vous exposez à de mauvaises surprises surtout si vos manipulations concernent des librairies système et cela peut aller jusqu'à rendre impossible un redémarrage !</div>
     
     <p>Pour cette raison nous installerons tout ce qui concerne ARM dans le dossier particulier "/opt/nutyx-arm". Selon votre configuration, vous pouvez rencontrer le message "impossible de trouver -lpcre ou une autre librairie" lors de la compilation de "qemu-static". C'est parce que vous avez seulement la librairie dynamique sur votre système et pas la statique. Il suffit donc de recompiler cette dernière avec l'option "--enable-static" passée à "configure" puis de relancer la compilation de "qemu".</p>
-    <p >La singularité de cette architecture est le grand nombre d'appareils  différents tous dérivés des microprocesseurs ARM. Chaque fabricant se fournie en modèles de base qu'il personnalise en bridant certaines fonctions. Alors que chez Intel même si de nombreux modèles ont vus le jour au fil des années, il sont tous basés sur des shémas semblables si bien qu'il n'existe vraiment fondamentalement que deux types distincts le "i386" pour le 32 bits et le "x86_64" pour le 64 bits. Il y a bien sûr eu le "i686" et quelques autres mais c'était aussi sur le même shéma. Du coté de chez ARM on est face au contraire à un grand nombre de cibles différentes. Pour pouvoir atteindre le maximum d'entre elles NuTyx a opté pour une distribution généraliste. Ensuite chacun peu obtenir des éxécutables optimisés pour son matériel en passant les paramêtres adéquats à GCC.</p>
-    <p>Une procédure totalement automatisée a été mise en place pour permettre à tous le monde quelque soit son niveau de produire une NuTyx ARM et d'y installer les programmes de son choix. Elle génère : </p> 
+    <p >La singularité de cette architecture est le grand nombre d'appareils  différents tous dérivés des microprocesseurs ARM. Chaque fabricant se fournie en modèles de base qu'il personnalise en bridant certaines fonctions. Alors que chez Intel même si de nombreux modèles ont vus le jour au fil des années, il sont tous basés sur des shémas semblables si bien qu'il n'existe vraiment fondamentalement que deux types distincts le "i386" pour le 32 bits et le "x86_64" pour le 64 bits. Il y a bien sûr eu le "i686" et quelques autres mais c'était aussi sur le même shéma. Du coté de chez ARM on est face au contraire à un grand nombre de cibles différentes. Pour pouvoir atteindre le maximum d'entre elles NuTyX a opté pour une distribution généraliste. Ensuite chacun peu obtenir des éxécutables optimisés pour son matériel en passant les paramêtres adéquats à GCC.</p>
+    <p>Une procédure totalement automatisée a été mise en place pour permettre à tous le monde quelque soit son niveau de produire une NuTyX ARM et d'y installer les programmes de son choix. Elle génère : </p> 
     <ul>
 <li>Une chaîne de compilation croisée (cross-compilation) ARM qui produit :</li>
 <li>Une chaîne de compilation native ARM qui à son tour va faire :</li>
 <li>Une distribution généraliste complète NuTyX avec le bureau de votre choix. </li>
 </ul>
-    <p>L'installation pourrait être sous forme de recette mais cela restreindrait son usage aux utilisateurs de Nutyx. Donc elle a été faite en scripts "bash" qui peuvent être exécutés depuis n'importe quelle distribution Linux. Ceci va permettre de pouvoir étendre l'audience potentielle. Voici la marche à suivre dans le détail. Télécharger les scripts suivants dans le répertoire <strong>vide</strong> de votre choix : </p>
+    <p>L'installation pourrait être sous forme de recette mais cela restreindrait son usage aux utilisateurs de NuTyX. Donc elle a été faite en scripts "bash" qui peuvent être exécutés depuis n'importe quelle distribution Linux. Ceci va permettre de pouvoir étendre l'audience potentielle. Voici la marche à suivre dans le détail. Télécharger les scripts suivants dans le répertoire <strong>vide</strong> de votre choix : </p>
 <ul>
 <li><a href=https://github.com/NuTyX/houaphan/tree/master/scripts/nutyx-arm-1.sh>nutyx-arm-1.sh</a></li>
 <li><a href=https://github.com/NuTyX/houaphan/tree/master/scripts/nutyx-arm-2.sh>nutyx-arm-2.sh</a></li>
@@ -54,39 +54,34 @@
 </ul>
     <p>Pourquoi 4 scripts au lieu d'un seul ? c'est parce qu'ils se lancent pour l'un sous "root" dans x86_64 pour le second sous "clfs" l'autre sous "root" mais dans le "chroot" et le dernier est la commande "nutyx-arm" qui permet d'entrer dans le "chroot". La mise à jour se fait dans le fichier "versions". Il faut d'abord les rendre exécutables : </p>
     
- <pre class="command"><kbd>root [ ~ ]# chmod -v +x ./nutyx-arm-1.sh
+ <pre class="command"><kbd>for FILE in nutyx-arm-1.sh nutyx-arm-2.sh nutyx-arm-3.sh \
+nutyx-arm-4.sh nutyx-arm-image.sh nutyx-arm-kernel.sh nutyx-arm-kernel-vexpress.sh
+do
+chmod -v +x $FILE
+done</kbd></pre>
+<pre class="output">
 root [ ~ ]# le mode de « ./nutyx-arm-1.sh » a été modifié de 0644 (rw-r--r--) en 0755 (rwxr-xr-x)
-root [ ~ ]# chmod -v +x ./nutyx-arm-2.sh
 root [ ~ ]# le mode de « ./nutyx-arm-2.sh » a été modifié de 0644 (rw-r--r--) en 0755 (rwxr-xr-x)
-root [ ~ ]# chmod -v +x ./nutyx-arm-3.sh
 root [ ~ ]# le mode de « ./nutyx-arm-3.sh » a été modifié de 0644 (rw-r--r--) en 0755 (rwxr-xr-x)
-root [ ~ ]# chmod -v +x ./nutyx-arm-4.sh
 root [ ~ ]# le mode de « ./nutyx-arm-4.sh » de 0644 (rw-r--r--) en 0755 (rwxr-xr-x)
-root [ ~ ]# chmod -v +x ./nutyx-arm-image.sh
 root [ ~ ]# le mode de « ./nutyx-arm-image.sh » a été modifié de 0644 (rw-r--r--) en 0755 (rwxr-xr-x)
-root [ ~ ]# chmod -v +x ./nutyx-arm-kernel.sh
 root [ ~ ]# le mode de « ./nutyx-arm-kernel.sh » a été modifié de 0644 (rw-r--r--) en 0755 (rwxr-xr-x)
-root [ ~ ]# chmod -v +x ./nutyx-arm-kernel-vexpress.sh
-root [ ~ ]# le mode de « ./nutyx-arm-kernel-vexpress.sh » a été modifié de 0644 (rw-r--r--) en 0755 (rwxr-xr-x)
-
-</kbd></pre> 
+root [ ~ ]# le mode de « ./nutyx-arm-kernel-vexpress.sh » a été modifié de 0644 (rw-r--r--) en 0755 (rwxr-xr-x)</pre>
    
     
     <p>Commencer par lancer "nutyx-arm-1.sh" :
     
-<pre class="command"><kbd>root [ ~ ]# ./nutyx-arm-1.sh
-</kbd></pre> 
+<pre class="command"><kbd>./nutyx-arm-1.sh</kbd></pre> 
 
     et les autres commandes lorsque le système vous le demande. Par exemple la fin du premier script se termine par : </p>
 
-<pre class="command"><kbd>root [ ~ ]#
+<pre class="output">root [ ~ ]#
 root [ ~ ]# Logged in as user "clfs"  ... 
 root [ ~ ]# Now run "./nutyx-arm-2.sh"
 root [ ~ ]# 
 root [ ~ ]# Connecté comme utilisateur "clfs"  ... 
 root [ ~ ]# Maintenant, exécutez "./nutyx-arm-2.sh"
-clfs:~$
-</kbd></pre> 
+clfs:~$</pre>
 
 	<p>Il faut donc saisir "./nutyx-arm-2.sh" (sans les guillemets) ou encore mieux copier cette commande sur le terminal et la coller. A la fin de l'exécution on lit :</p>
   
@@ -105,7 +100,7 @@ clfs:~$ et ensuite "./nutyx-arm-4.sh" pour continuer
 cards depcreate geany
 </kbd></pre> 
 
-    <p>Pour tester et distribuer notre NuTyx, nous allons créer un fichier image "raw" qui est en fait une suite de "0" et de "1" les deux signes de l'alphabet binaire utilisés et compris par tous les processeurs (intel, arm, etc..). Linux a un périphérique particulier qui s'appelle "/dev/zero" et dont la seule fonction est de générer des zéros. Nous créons donc notre fichier de base de 4G rempli uniquement de zéro ce qui correspond à un formatage et nous allons le traiter comme s'il s'agissait d'une partition montée sur laquelle on souhaite installer NuTyX. Lancer "nutyx-arm-image.sh" après avoir chargé le module cryptoloop : </p>
+    <p>Pour tester et distribuer notre NuTyX, nous allons créer un fichier image "raw" qui est en fait une suite de "0" et de "1" les deux signes de l'alphabet binaire utilisés et compris par tous les processeurs (intel, arm, etc..). Linux a un périphérique particulier qui s'appelle "/dev/zero" et dont la seule fonction est de générer des zéros. Nous créons donc notre fichier de base de 4G rempli uniquement de zéro ce qui correspond à un formatage et nous allons le traiter comme s'il s'agissait d'une partition montée sur laquelle on souhaite installer NuTyX. Lancer "nutyx-arm-image.sh" après avoir chargé le module cryptoloop : </p>
 
 
 <pre class="command"><kbd>modprobe cryptoloop
@@ -236,10 +231,10 @@ losetup -D
     <p>Vous pouvez aussi compiler pour un jeu d'instructions différent comme "armv6" ("-march=armv6") ou "AArch64" ("-march=armv8-a"). D'une manière plus générale, il est possible d'y effectuer toutes les opérations imaginables de la galaxie ARM sans exception. Le sous-dossier "cross-tools" qui contient une chaîne complète est aussi toujours présent si vous voulez faire de la compilation croisée. Pour la mettre en oeuvre, vous pouvez vous inspirer du début des scripts "nutyx-arm-kernel-vexpress.sh" et "nutyx-arm-kernel.sh". Elle se fait bien sûr non pas dans le "chroot" mais dans x86_64.</p>
   <div class="pied_page"><a class="url" href="documentation.html">Retour au menu</a></div>
   <hr>
-  <p class="updated"> Dernière mise à jour 29-02-2016 18:22</p>
+  <p class="updated"> Dernière mise à jour 05-03-2016 20:45</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
-        &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+        &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
     <a href="http://www.wtfpl.net/"><img
        src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
        width="80" height="15" alt="WTFPL" /></a></p>
