@@ -6,12 +6,18 @@
 PKGMK_IGNORE_RUNTIMEDEPS="no"
 PKGMK_GROUPS=(devel doc man)
 name=cards
-version=1.99.5
+version=1.3.3
 release=1
 
 source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
 build () {
 cd $name-$version
+
+
+export LD_LIBRARY_PATH="/lib:/usr/lib"
+export CPATH="/usr/include"
+export LIBRARY_PATH="/usr/lib:/lib"
+
 
 cd scripts
 
