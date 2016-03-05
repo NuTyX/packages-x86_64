@@ -5,12 +5,12 @@
 name=nasm
 version=2.11.06
 release=1
-# http://www.nasm.us/pub/nasm/releasebuilds/$version/$name-$version.tar.xz
-source=( ftp://ftp.debian.org/debian/pool/main/n/nasm/nasm_2.11.06-1really2.11.05.orig.tar.xz
+# 
+source=( http://www.nasm.us/pub/nasm/releasebuilds/$version/$name-$version.tar.xz
  	http://www.nasm.us/pub/nasm/releasebuilds/$version/nasm-$version-xdoc.tar.xz)
 
 build() {
-	cd $name-2.11.05
+	cd $name-2.11.06
 	./configure --prefix=/usr\
 		    --mandir=/usr/share/man
 	make
