@@ -437,6 +437,7 @@ perl -p -e 's@/tools/lib/ld@/lib/ld@g;' \
      
 ###############################################
 
+cp -av /root/houaphan/cli/nettle /root/houaphan/base
 cp -av /root/houaphan/cli/libidn /root/houaphan/base
 cp -av /root/houaphan/cli/openldap /root/houaphan/base
 cp -av /root/extra/base-extra/dhcpcd /root/houaphan/base
@@ -459,7 +460,7 @@ for f in m4 gmp-arm mpfr mpc isl-arm zlib-arm bison flex binutils gcc-arm sed  \
          kbd libpipeline man-db make xz kmod patch libcap psmisc \
          sysklogd sysvinit tar texinfo eudev dhcpcd openssl expat lzo attr acl \
          curl libarchive eudev pciutils nasm lvm2 wget rsync gpm openssh dialog \
-         squashfs libidn openldap ca-certificates cards-arm
+         squashfs libidn nettle openldap ca-certificates cards-arm
             
             
          do
