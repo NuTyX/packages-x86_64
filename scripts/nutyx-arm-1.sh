@@ -57,8 +57,8 @@ cp -v  nutyx-arm-4.sh ${CLFS}/nutyx-arm-4.sh
 cp -v  versions ${CLFS}/versions
 cp -v  glibc.locales.supported ${CLFS}/sources
 mkdir -pv ${CLFS}/etc
-cp -v  blfs-bootscripts ${CLFS}/etc/blfs-bootscripts
-
+echo "scripts=blfs-bootscripts
+scriptsversion=20150924" > ${CLFS}/etc/blfs-bootscripts
 
 chmod 477 /home/clfs/nutyx-arm-2.sh
 chmod 477 /bin/nutyx-arm
