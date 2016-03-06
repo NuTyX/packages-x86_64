@@ -1,0 +1,12 @@
+name=diffutils
+version=3.3
+build() {
+cd $name-$version
+./configure \
+    --prefix=/tools \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET}
+make
+make install
+
+}

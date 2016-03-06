@@ -1,0 +1,11 @@
+name=isl
+version=0.15
+build() {
+cd $name-$version
+LDFLAGS="-Wl,-rpath,/cross-tools/lib" ./configure  \
+   --prefix=/cross-tools  \
+   --disable-static   \
+   --with-gmp-prefix=/cross-tools
+make
+make install
+}

@@ -1,0 +1,12 @@
+name=wget
+version=1.17.1
+build() {
+cd $name-$version
+./configure \
+    --prefix=/tools \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET} \
+    --sysconfdir=/tools/etc
+make
+make install
+}

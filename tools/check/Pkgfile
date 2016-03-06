@@ -1,0 +1,12 @@
+name=check
+version=0.10.0
+build() {
+cd $name-$version
+./configure \
+    --prefix=/tools \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET} 2>&1 | tee -a ${CLFS}/sources/clfs.log
+
+make
+make install
+}

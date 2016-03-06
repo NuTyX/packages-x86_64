@@ -1,0 +1,13 @@
+name=grep
+version=2.22
+build() {
+cd $name-$version
+./configure \
+    --prefix=/tools \
+    --bindir=/tools/bin \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET} \
+    --without-included-regex
+make
+make install
+}

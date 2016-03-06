@@ -1,0 +1,14 @@
+name=curl
+version=7.47.0
+build() {
+cd $name-$version
+./configure \
+    --prefix=/tools \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET} \
+    --enable-static    \
+    --enable-threaded-resolver \
+    --with-gnutls=/tools
+make
+make install
+}

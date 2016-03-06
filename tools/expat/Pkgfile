@@ -1,0 +1,12 @@
+name=expat
+version=2.1.0
+build() {
+cd $name-$version
+./configure \
+    --prefix=/tools \
+    --enable-static \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET}
+make
+make install
+}

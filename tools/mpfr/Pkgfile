@@ -1,0 +1,14 @@
+name=mpfr
+version=3.1.3
+build() {
+cd $name-$version
+patch -Np1 -i ../mpfr-3.1.3-fixes-1.patch
+
+./configure \
+    --prefix=/tools \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET}
+
+make
+make install
+}

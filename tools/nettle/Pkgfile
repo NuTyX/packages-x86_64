@@ -1,0 +1,14 @@
+name=nettle
+version=3.2
+build() {
+cd $name-$version
+./configure \
+    --prefix=/tools \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET} \
+    --enable-static
+
+make
+make install
+chmod -v 755 /tools/lib/libhogweed.so.4.1 /tools/lib/libnettle.so.6.1
+}

@@ -1,0 +1,14 @@
+name=util-linux
+version=2.25.2
+build() {
+cd $name-$version
+./configure \
+    --prefix=/tools \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET} \
+    --disable-makeinstall-chown \
+    --disable-makeinstall-setuid \
+    --without-python
+make
+make install
+}

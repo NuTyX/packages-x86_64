@@ -1,0 +1,11 @@
+name=xz
+version=5.2.2
+build() {
+cd $name-$version
+./configure \
+    --prefix=/tools \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET}
+make
+make install
+}

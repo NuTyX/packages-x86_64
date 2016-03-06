@@ -1,0 +1,11 @@
+name=mpc
+version=1.0.3
+build() {
+cd $name-$version
+./configure \
+    --prefix=/tools \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET}
+make
+make install
+}

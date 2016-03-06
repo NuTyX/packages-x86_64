@@ -1,0 +1,10 @@
+name=file
+version=5.25
+build(){
+cd $name-$version
+./configure  \
+   --prefix=/cross-tools \
+   --enable-shared 2>&1 | tee -a ${CLFS}/sources/clfs.log
+
+make
+}

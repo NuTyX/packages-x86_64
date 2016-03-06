@@ -1,0 +1,20 @@
+name=coreutils
+version=8.23
+build() {
+cd $name-$version
+cat > config.cache << EOF
+fu_cv_sys_stat_statfs2_bsize=yes
+gl_cv_func_working_mkstemp=yes
+EOF
+
+patch -Np1 -i ../coreutils-8.23-noman-1.patch
+
+./configure \
+    --prefix=/tools \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET} \
+    --enable-install-program=hostname \
+    --cache-file=config.cache
+make
+make install
+}

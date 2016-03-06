@@ -1,0 +1,11 @@
+name=gmp
+version=6.0.0a
+build() {
+cd $name-$version
+./configure  \
+   --prefix=/cross-tools \
+   --enable-cxx   \
+   --disable-static
+make
+make install
+}

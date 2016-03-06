@@ -1,0 +1,19 @@
+name=libarchive
+version=3.1.2
+build() {
+cd $name-$version
+patch -Np1 -i ../libarchive-$_libarchive-mtree-fix-line-filename-length-calculation-01.patch
+patch -Np1 -i ../libarchive-$_libarchive-limit-write-requests-to-at-most-INT_MAX-01.patch
+patch -Np1 -i ../libarchive-$_libarchive-acl-01.patch
+patch -Np1 -i ../libarchive-$_libarchive-sparce-mtree-01.patch
+
+./configure --prefix=/tools \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET} \
+    --mandir=/tools/usr/share/man \
+    --bindir=/tools/bin \
+    --without-xml2 \
+    --infodir=/tools/usr/share/info
+make
+make install
+}

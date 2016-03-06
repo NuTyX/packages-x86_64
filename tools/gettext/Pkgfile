@@ -1,0 +1,12 @@
+name=gettext
+version=0.19.6
+build() {
+cd $name-$version
+./configure \
+    --prefix=/tools \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET} \
+    --disable-shared
+make
+make install
+}

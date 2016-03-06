@@ -1,0 +1,22 @@
+name=attr
+version=2.4.47
+build() {
+cd $name-$version
+sed -i -e 's|/@pkg_name@|&-@pkg_version@|' include/builddefs.in
+sed -i -e "/SUBDIRS/s|man2||" man/Makefile
+
+./configure \
+    --prefix=/tools \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET} \
+    --enable-static
+
+make
+make install
+make install-lib
+make install-dev
+
+mv -v /tools/usr/lib/libattr.so.* /tools/lib
+ln -sfv ../../lib/libattr.so.1 /tools/usr/lib/libattr.so
+
+}

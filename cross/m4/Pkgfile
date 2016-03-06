@@ -1,0 +1,9 @@
+name=m4
+version=1.4.17
+build() {
+cd $name-$version
+./configure  \
+   --prefix=/cross-tools
+make
+make install
+}

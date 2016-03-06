@@ -1,0 +1,12 @@
+name=gzip
+version=1.6
+build() {
+cd $name-$version
+./configure \
+    --prefix=/tools \
+    --bindir=/tools/bin \
+    --build=${CLFS_HOST} \
+    --host=${CLFS_TARGET}
+make
+make install
+}
