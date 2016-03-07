@@ -1,5 +1,8 @@
 name=mpc
 version=1.0.3
+
+source=(http://www.multiprecision.org/mpc/download/mpc-$version.tar.gz )
+
 build() {
 cd $name-$version
 LDFLAGS="-Wl,-rpath,/cross-tools/lib" ./configure  \
