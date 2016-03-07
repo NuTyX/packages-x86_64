@@ -18,6 +18,8 @@ export LD_LIBRARY_PATH="/lib:/usr/lib:/tools/lib"
 export CPATH="/usr/include:/tools/include"
 export LIBRARY_PATH="/usr/lib:/lib:/tools/lib"
 
+ln -s /tools/lib/ld-linux.so.3 /lib/ld-linux.so.3
+
 chown -Rv 0:0 /tools
 chown -Rv 0:0 /cross-tools
 
