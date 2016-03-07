@@ -1,5 +1,6 @@
 name=gnutls
 version=3.4.8
+source=(ftp://ftp.gnutls.org/gcrypt/$name/v${version:0:3}/$name-$version.tar.xz)
 build() {
 cd $name-$version
 ./configure --prefix=/tools \

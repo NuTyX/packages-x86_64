@@ -1,5 +1,6 @@
 name=acl
 version=2.2.52
+source=( http://download.savannah.gnu.org/releases/$name/$name-$version.src.tar.gz)
 build() {
 cd $name-$version
 sed -i -e 's|/@pkg_name@|&-@pkg_version@|' include/builddefs.in

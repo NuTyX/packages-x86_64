@@ -1,5 +1,6 @@
 name=findutils
 version=4.4.2
+source=(http://ftp.gnu.org/gnu/findutils/findutils-$version.tar.gz)
 build() {
 cd $name-$version
 echo "gl_cv_func_wcwidth_works=yes" > config.cache

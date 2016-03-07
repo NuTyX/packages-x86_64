@@ -1,5 +1,8 @@
 name=coreutils
 version=8.23
+
+source=(http://ftp.gnu.org/gnu/coreutils/coreutils-$version.tar.xz
+	http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-noman-1.patch)
 build() {
 cd $name-$version
 cat > config.cache << EOF

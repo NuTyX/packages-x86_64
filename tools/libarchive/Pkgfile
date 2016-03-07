@@ -1,5 +1,11 @@
 name=libarchive
 version=3.1.2
+source=(http://www.libarchive.org/downloads/libarchive-$version.tar.gz
+	http://downloads.nutyx.org/files/patchs/$name/$name-$version-mtree-fix-line-filename-length-calculation-01.patch
+	http://downloads.nutyx.org/files/patchs/$name/$name-$version-limit-write-requests-to-at-most-INT_MAX-01.patch
+	http://downloads.nutyx.org/files/patchs/$name/$name-$version-acl-01.patch
+	http://downloads.nutyx.org/files/patchs/$name/$name-$version-sparce-mtree-01.patch
+	)
 build() {
 cd $name-$version
 patch -Np1 -i ../libarchive-$_libarchive-mtree-fix-line-filename-length-calculation-01.patch
