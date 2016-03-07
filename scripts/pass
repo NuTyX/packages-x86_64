@@ -1,4 +1,17 @@
 #!/bin/bash
+#
+# Functions
+#
+
+abort() {
+echo " ===> ERROR: $i"
+exit 1
+}
+
+#
+## Begin
+#
+
 if [ -z "$LOG" ]; then
    PASS=`pwd`
    PASS=`basename $PASS`
@@ -8,10 +21,6 @@ if [ ! -d $LOG ]; then
 	mkdir -p $LOG
 fi
 
-error() {
-echo " Error produced in $i"
-exit 1
-}
 if [ ! -f .list ];then 
 	LIST="$HOME/bin/.list"
 else
@@ -33,9 +42,26 @@ do
    if [ "$BUILD" == "yes" ]; then
       cd $DIR
       case $PASS in
+       cross)
+	PKGMK="pkgmk.passes"
+	$PKGMK -cf ../../../bin/pkgmk.conf.passes -kw 2>&1|tee ${LOG}/$NAME.log || exit 1;;
+       tools)
+	export CC="${CLFS_TARGET}-gcc"
+	export CXX="${CLFS_TARGET}-g++"
+	export AR="${CLFS_TARGET}-ar"
+	export AS="${CLFS_TARGET}-as"
+	export RANLIB="${CLFS_TARGET}-ranlib"
+	export LD="${CLFS_TARGET}-ld"
+	export STRIP="${CLFS_TARGET}-strip"
+        PKGMK="pkgmk.passes"
+	$PKGMK -cf ../../../bin/pkgmk.conf.passes -kw 2>&1|tee ${LOG}/$NAME.log || exit 1;;
+
        chroot)
         PKGMK="pkgmk.passes"
         $PKGMK -cf ../../../bin/pkgmk.conf.passes -kw 2>&1|tee ${LOG}/$NAME.log || exit 1;;
+       base-arm)
+        PKGMK="pkgmk";;
+
        base)
         PKGMK="pkgmk"
         case $NAME in
