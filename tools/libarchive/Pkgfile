@@ -8,10 +8,10 @@ source=(http://www.libarchive.org/downloads/libarchive-$version.tar.gz
 	)
 build() {
 cd $name-$version
-patch -Np1 -i ../libarchive-$_libarchive-mtree-fix-line-filename-length-calculation-01.patch
-patch -Np1 -i ../libarchive-$_libarchive-limit-write-requests-to-at-most-INT_MAX-01.patch
-patch -Np1 -i ../libarchive-$_libarchive-acl-01.patch
-patch -Np1 -i ../libarchive-$_libarchive-sparce-mtree-01.patch
+patch -Np1 -i ../libarchive-$version-fix-line-filename-length-calculation-01.patch
+patch -Np1 -i ../libarchive-$version-limit-write-requests-to-at-most-INT_MAX-01.patch
+patch -Np1 -i ../libarchive-$version-acl-01.patch
+patch -Np1 -i ../libarchive-$version-sparce-mtree-01.patch
 
 ./configure --prefix=/tools \
     --build=${CLFS_HOST} \
