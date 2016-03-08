@@ -37,7 +37,7 @@
     On va commencer par créér les dossiers, les liens et le compte adéquat pour la construction de la première passe.
     </p>
     <p>
-    La première partie des préparatifs se fait en compte root et la deuxième partie en compte LFS. 
+    La première partie des préparatifs se fait en compte root et la deuxième partie en compte CLFS. 
     Le temps de contruction de la première passe varie entre 1 heure (avec un 8 cores) et une nuit (un mono core ).
     </p>
     <p>
@@ -63,10 +63,10 @@ get tar</kbd></pre></p>
     </p>
     <h2>Partie Administrateur:</h2>
      <ol>
-      <li>Création de la variable de configuration LFS:</li>
+      <li>Création de la variable de configuration CLFS:</li>
       <pre class="command"><kbd>export CLFS=/mnt/clfs</kbd></pre>
       <li>Création des dossiers:</li>
-      <pre class="command"><kbd> mkdir -vp $LFS/{tools,cross-tools,sources}</kbd></pre>
+      <pre class="command"><kbd> mkdir -vp $CLFS/{tools,cross-tools,sources}</kbd></pre>
       <li>Ajout des liens necessaires:</li>
       <pre class="command"><kbd>ln -svf $CLFS/tools /
 ln -svf $CLFS/cross-tools
