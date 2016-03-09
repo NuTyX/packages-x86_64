@@ -7,16 +7,18 @@ sed -i 's/CC=gcc//' Makefile
 sed -i 's/AR=ar//' Makefile
 sed -i 's/RANLIB=ranlib//' Makefile
 sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
+cp Makefile{,.orig}
+sed -e "/^all:/s/ test//" Makefile.orig > Makefile
 make -f Makefile-libbz2_so
 make clean
 
 make
-make PREFIX=/tools install
+make PREFIX=/tools/usr install
 
 cp -v bzip2-shared /tools/bin/bzip2
 cp -av libbz2.so* /tools/lib
-ln -sv ../../lib/libbz2.so.1.0 /tools/usr/lib/libbz2.so
+ln -svf ../../lib/libbz2.so.1.0 /tools/usr/lib/libbz2.so
 rm -v /tools/usr/bin/{bunzip2,bzcat,bzip2}
-ln -sv bzip2 /tools/bin/bunzip2
-ln -sv bzip2 /tools/bin/bzcat
+ln -svf bzip2 /tools/bin/bunzip2
+ln -svf bzip2 /tools/bin/bzcat
 }
