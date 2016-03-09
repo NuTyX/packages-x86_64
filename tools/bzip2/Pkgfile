@@ -3,16 +3,13 @@ version=1.0.6
 source=(http://www.bzip.org/$version/bzip2-$version.tar.gz)
 build() {
 cd $name-$version
-sed -i 's/CC=gcc//' Makefile
-sed -i 's/AR=ar//' Makefile
-sed -i 's/RANLIB=ranlib//' Makefile
 sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
 cp Makefile{,.orig}
 sed -e "/^all:/s/ test//" Makefile.orig > Makefile
-make -f Makefile-libbz2_so
+make -f Makefile-libbz2_so CC="${CC}" AR="${AR}" RANLIB="${RANLIB}"
 make clean
 
-make
+make CC="${CC}" AR="${AR}" RANLIB="${RANLIB}"
 make PREFIX=/tools/usr install
 
 cp -v bzip2-shared /tools/bin/bzip2

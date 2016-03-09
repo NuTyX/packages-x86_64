@@ -30,4 +30,7 @@ EOF
 
 make
 make install
+mkdir  $CLFS/bin
+ln -vsf /tools/bin/bash $CLFS/bin/bash
+ln -vsf  bash $CLFS/bin/sh
 }

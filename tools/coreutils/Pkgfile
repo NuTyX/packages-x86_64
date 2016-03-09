@@ -20,4 +20,11 @@ patch -Np1 -i ../coreutils-8.23-noman-1.patch
     --cache-file=config.cache
 make
 make install
+for i in cat echo pwd stty
+do
+        ln -s /tools/bin/$i $CLFS/bin/$i
+done
+
+mkdir -p $CLFS/usr/bin
+ln -s /tools/bin/env $CLFS/usr/bin/env
 }
