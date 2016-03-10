@@ -3,7 +3,7 @@ export CXXFLAGS="${CFLAGS}"
 
 case "`uname -m`" in
         "x86_64"|"")
-		export MAKEFLAGS="-j8"
+		export MAKEFLAGS="-j$(getconf _NPROCESSORS_ONLN)"
                 ;;
         "i686")
 		export MAKEFLAGS="-j2"
