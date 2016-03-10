@@ -61,7 +61,7 @@ echo ':arm:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x2
       <li>On copie resolv.conf depuis la distribution host</li>
        <pre class="command"><kbd>cp -v /etc/resolv.conf $CLFS/etc</kbd></pre>
       <li>On monte les différents dossiers</li>
-        <pre class="command"><kbd>mount -v --bind /dev $LFS/dev
+        <pre class="command"><kbd>mount -v --bind /dev $CLFS/dev
 mount -vt devpts devpts $CLFS/dev/pts -o gid=5,mode=620
 mount -vt proc proc $CLFS/proc
 mount -vt sysfs sysfs $CLFS/sys
