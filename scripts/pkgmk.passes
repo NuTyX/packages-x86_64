@@ -1,10 +1,10 @@
 #!/bin/bash
 #
 #  pkgutils
-# 
+#
 #  Copyright (c) 2000-2005 Per Liden
 #  Copyright (c) 2006-2007 by CRUX team (http://crux.nu)
-# 
+#
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
@@ -17,21 +17,16 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, 
+#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
 #  USA.
 #
 
-info() {
-	echo "=======> $1"
-}
+THIS_SCRIPT_PATH="$(readlink -f "$(type -P $0 || echo $0)")"
+THIS_SCRIPT_DIR="$(dirname "$THIS_SCRIPT_PATH")"
+source $THIS_SCRIPT_DIR/color_messages.sh
+trap "interrupted" SIGHUP SIGINT SIGQUIT SIGTERM
+color_mesg
 
-warning() {
-	info "WARNING: $1" >&2
-}
-
-error() {
-	info "ERROR: $1" >&2
-}
 
 get_filename() {
 	local FILE="`echo $1 | sed 's|^.*://.*/||g'`"
@@ -50,23 +45,20 @@ get_basename() {
 
 check_pkgfile() {
 	if [ "`type -t build`" != "function" ]; then
-		error "Function 'build' not specified in $PKGMK_PKGFILE."
-		exit 1
+        abort "$(gettext "Function 'build' not specified in %s.")" "$PKGMK_PKGFILE"
 	fi
 }
 
 check_directory() {
 	if [ ! -d $1 ]; then
-		error "Directory '$1' does not exist."
-		exit 1
+        abort "$(gettext "Directory '%s' does not exist.")" "$1"
 	elif [ ! -x $1 ] || [ ! -r $1 ]; then
-		error "Directory '$1' not readable."
-		exit 1
+        abort "$(gettext "Directory '%s' is not readable.")" "$1"
 	fi
 }
 unpack_source() {
 	local FILE LOCAL_FILENAME COMMAND
-	
+
 	for FILE in ${source[@]}; do
 		LOCAL_FILENAME=`get_filename $FILE`
 		case $LOCAL_FILENAME in
@@ -84,37 +76,35 @@ unpack_source() {
 			if [ "$PKGMK_KEEP_WORK" = "no" ]; then
 				rm -rf $PKGMK_WORK_DIR
 			fi
-			error "Building '$TARGET' failed."
-			exit 1
+            abort "$(gettext "Building '%s' failed.")" "$TARGET"
 		fi
 	done
 }
 
 build_package() {
 	local BUILD_SUCCESSFUL="no"
-	
+
 	export PKG="/"
 	export SRC="$PKGMK_WORK_DIR/src"
 	umask 022
-	
+
 	cd $PKGMK_ROOT
 	rm -rf $PKGMK_WORK_DIR
 	mkdir -p $SRC
-	
+
 
 	if [ "$UID" == "0" ]; then
-		error "Packages should NOT be built as root."
-		exit 1
+		abort "$(gettext "Packages should NOT be built as root.")"
 	fi
-	
-	info "Building '$TARGET'."
-	
+
+	printf "$(gettext "=======> Building %s\n")" "$TARGET"
+
 	unpack_source
-	
+
 	cd $SRC
 	(set -e -x ; build)
-	
-	
+
+
 	if [ $? = 0 ]; then
 		BUILD_SUCCESSFUL="yes"
 
@@ -122,40 +112,42 @@ build_package() {
         if [ "$PKGMK_KEEP_WORK" = "no" ]; then
                 rm -rf $PKGMK_WORK_DIR
         fi
-	
+
+	if [ "$BUILD_SUCCESSFUL" = "yes" ]; then
+        printf "$(gettext "=======> Building %s succeeded.\n")" "$TARGET"
+	fi
+
 	if [ "$BUILD_SUCCESSFUL" = "yes" ]; then
 		info "Building '$TARGET' succeeded."
 	else
-		error "Building '$TARGET' failed."
-		exit 1
+		abort "$(gettext "Building '%s' failed.")" "$TARGET"
 	fi
 }
 
+
 clean() {
 	local FILE LOCAL_FILENAME
-	
+
 	if [ -f $TARGET ]; then
-		info "Removing $TARGET"
+        msg "$(gettext "Removing %s")" "$TARGET"
 		rm -f $TARGET
 	fi
-	
+
 	for FILE in ${source[@]}; do
 		LOCAL_FILENAME=`get_filename $FILE`
 		if [ -e $LOCAL_FILENAME ] && [ "$LOCAL_FILENAME" != "$FILE" ]; then
-			info "Removing $LOCAL_FILENAME"
+            msg "$(gettext "Removing %s")" "$LOCAL_FILENAME"
 			rm -f $LOCAL_FILENAME
 		fi
 	done
 }
 
+
 interrupted() {
-	echo ""
-	error "Interrupted."
-	
-	if [ "$PKGMK_KEEP_WORK" = "no" ]; then
+	if [ "$PKGMK_KEEP_WORK" == "no" ]; then
 		rm -rf $PKGMK_WORK_DIR
 	fi
-	
+    printf "${RED_MSG}\n==> $(gettext "ERROR:")${ALL_OFF_MSG}${BOLD_MSG} Interrupted${ALL_OFF_MSG}\n" >&2
 	exit 1
 }
 
@@ -174,20 +166,19 @@ parse_options() {
 				PKGMK_KEEP_WORK="yes" ;;
 			-cf|--config-file)
 				if [ ! "$2" ]; then
-					echo "`basename $PKGMK_COMMAND`: option $1 requires an argument"
-					exit 1
+					abort "$(gettext "%s: option %s requires an argument")" "$(basename $PKGMK_COMMAND)" "$1"
 				fi
 				PKGMK_CONFFILE="$2"
 				shift ;;
 			-v|--version)
-				echo "`basename $PKGMK_COMMAND` $PKGMK_VERSION"
+                msg "$(gettext  "%s %s")" "$(basename $PKGMK_COMMAND)" "$PKGMK_VERSION"
 				exit 0 ;;
 			-h|--help)
 				print_help
 				exit 0 ;;
 			*)
-				echo "`basename $PKGMK_COMMAND`: invalid option $1"
-				exit 1 ;;
+                abort "$(gettext "%s:  invalid option %s")" "$(basename $PKGMK_COMMAND)" "$1"
+                ;;
 		esac
 		shift
 	done
@@ -195,34 +186,31 @@ parse_options() {
 
 main() {
 	local FILE TARGET
-	
+
 	parse_options "$@"
-	
+
 	for FILE in $PKGMK_CONFFILE $PKGMK_PKGFILE ; do
 		if [ ! -f $FILE ]; then
-			error "File '$FILE' not found."
-			exit 1
+			abort "$(gettext "File '%s' not found.")" "$FILE"
 		fi
 		. $FILE
 	done
-	
+
 	check_directory "$PKGMK_SOURCE_DIR"
 	check_directory "$PKGMK_PACKAGE_DIR"
 	check_directory "`dirname $PKGMK_WORK_DIR`"
-	
+
 	check_pkgfile
-	
+
 	TARGET="$PKGMK_PACKAGE_DIR/$PKGMK_PKGFILE"
-	
+
 	if [ "$PKGMK_CLEAN" = "yes" ]; then
 		clean
 		exit 0
 	fi
-	build_package
+		build_package
 	exit 0
 }
-
-trap "interrupted" SIGHUP SIGINT SIGQUIT SIGTERM
 
 export LC_ALL=POSIX
 

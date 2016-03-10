@@ -75,6 +75,7 @@ if [ ! -O $LFS/tools ];then
 fi
 if [ ! -d /home/lfs/logs ]; then
    echo "Dossier /home/lfs/logs n'existe pas"
+   rm -rf $HOME/logs
    mkdir -p $HOME/logs
 fi
 echo "Folder /home/lfs/logs: OK"
