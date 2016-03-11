@@ -422,6 +422,13 @@ cd ..
 rm -rf perl-$_perl
 echo | tee -a /sources/clfs.log
 
+cp -av /root/houaphan/cli/nettle /root/houaphan/base
+cp -av /root/houaphan/cli/libidn /root/houaphan/base
+cp -av /root/houaphan/cli/openldap /root/houaphan/base
+cp -av /root/extra/base-extra/dhcpcd /root/houaphan/base
+cp -av /root/houaphan/base-arm/* /root/houaphan/base/
+
+
 ###############################################
 
 cd /root/houaphan/base/glibc-arm
@@ -440,11 +447,6 @@ perl -p -e 's@/tools/lib/ld@/lib/ld@g;' \
      
 ###############################################
 
-cp -av /root/houaphan/cli/nettle /root/houaphan/base
-cp -av /root/houaphan/cli/libidn /root/houaphan/base
-cp -av /root/houaphan/cli/openldap /root/houaphan/base
-cp -av /root/extra/base-extra/dhcpcd /root/houaphan/base
-cp -av /root/houaphan/base-arm/* /root/houaphan/base/
 
 ln -sv /tools/bin/env /usr/bin/env
 ln -sv /tools/bin/install /usr/bin/install
