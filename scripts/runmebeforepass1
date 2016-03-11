@@ -1,107 +1,84 @@
+THIS_SCRIPT_PATH="$(readlink -f "$(type -P $0 || echo $0)")"
+THIS_SCRIPT_DIR="$(dirname "$THIS_SCRIPT_PATH")"
+source $THIS_SCRIPT_DIR/color_messages.sh
+trap "interrupted" SIGHUP SIGINT SIGQUIT SIGTERM
+color_mesg
+
 version="current"
 [ -z "${URL}" ] && URL="http://downloads.nutyx.org"
-echo "Ce script vérifie tout ce qu'il peut pour que vous puissiez commencez"
-echo ""
-echo "Pressez Entrer pour continuer ou ctrl+c pour interrompre"
-echo ""
+echo
+msg "$(gettext "This script will run some pre-checks and")"
+msg "$(gettext "download missing sources...")"
+msg2 "$(gettext "Press 'ENTER' to continue or 'ctrl+c' to exit.")"
+
 read a
 # Checking the current directory
-if [ "`pwd`" != "/home/lfs/$version" ]; then
-	echo "Le script doit être lancé depuis le dossier /home/lfs/$version"
-	exit 1
-fi
-# Checking the variables
-if [ ! -f ~/.bash_profile ]; then
-	echo ".bash_profile n'existe pas"
-	exit 1
-fi
-echo ".bash_profile present: OK"
-if [ -z "${LFS}" ]; then
-	echo "LFS n'existe pas"
-	exit 1
-fi
-echo "LFS: $LFS OK"
-if [ -z "${LFS_TGT}" ]; then
-   echo "LFS_TGT n'existe pas"
-   exit 1
-fi
-echo "LFS_TGT: $LFS_TGT OK"
+[ "`pwd`" == "/home/lfs/$version" ] || abort "$(gettext "The script must be run from: /home/lfs/%s")" "$version"
+
+# Checking variables
+[ -f ~/.bash_profile ] || abort "$(gettext ".bash_profile file not found.")"
+plain "$(gettext "Found .bash_profile file: OK")"
+
+[ -n $LFS ] || abort "$(gettext "LFS path is not set.")"
+plain "$(gettext "LFS path is set: %s: OK")" "$LFS"
+
+[ -n $LFS_TGT ] || abort "$(gettext "LFS_TGT is not set.")"
+plain "$(gettext "LFS_TGT is set: %s: OK")" "$LFS_TGT"
 
 # Checking the user
+[ "$(whoami)" == "lfs" ] || abort "$(gettext "This script MUST be run as 'lfs' user and not as: <%s>")" "$(whoami)"
+plain "$(gettext "User 'lfs': OK")"
 
-if [ "`whoami`" != "lfs" ]; then 
-	echo "Vous n'êtes pas l'utilisateur lfs"
-	exit 1
-else
-	echo "utilisateur lfs: OK"
-fi
-# Checkings Directories
+# Checking Directories
+[ -d $LFS ] || abort "$(gettext "%s directory not found.")" "$LFS"
+plain "$(gettext "Found %s directory: OK")" "$LFS"
+[ -O $LFS ] || abort "$(gettext "%s is not owned by user 'lfs'.")" "$LFS"
 
-if [ ! -d $LFS ]; then
-	echo "$LFS n'existe pas"
-	exit 1
-else
-	echo "Folder $LFS: OK"
-fi
-if [ ! -O $LFS ]; then
-	echo "$LFS n'appartient pas à lfs"
-	exit 1
-fi
-if [ ! -d $LFS/sources ]; then
-   echo "$LFS/sources n'existe pas"
-   exit 1
-else
-	echo "Folder $LFS/sources: OK"
-fi
-if [ ! -O $LFS/sources ]; then
-	echo "$LFS/sources n'appartient pas à lfs"
-	exit 1
-fi
+[ -d $LFS/sources ] || abort "$(gettext "%s/sources directory not found.")" "$LFS"
+plain "$(gettext "Found %s/sources directory: OK")" "$LFS"
+[ -O $LFS/sources ] || abort "$(gettext "%s/sources is not owned by user 'lfs'.")" "$LFS"
 
-if [ ! -L /sources ];then
-        echo "Faites en root:"
-        echo "ln -sv $LFS/sources /sources"
-        exit 1
-fi
-if [ ! -d $LFS/tools ]; then
-	echo "$LFS/tools n'existe pas"
-	exit 1
-else
-	echo "Folder $LFS/tools: OK"
-fi
-if [ ! -O $LFS/tools ];then
-	echo "$LFS/tools n'appartient pas à lfs"
-	exit 1
-fi
+[ -d $LFS/tools ] || abort "$(gettext "%s/tools directory not found.")" "$LFS"
+plain "$(gettext "Found %s/tools directory: OK")" "$LFS"
+[ -O $LFS/tools ] || abort "$(gettext "%s/tools is not owned by user 'lfs'.")" "$LFS"
+
 if [ ! -d /home/lfs/logs ]; then
-   echo "Dossier /home/lfs/logs n'existe pas"
-   rm -rf $HOME/logs
-   mkdir -p $HOME/logs
+    plain "$(gettext "/home/lfs/logs directory not found. Creating it...")"
+    rm -rf $HOME/logs
+    mkdir -p $HOME/logs
 fi
-echo "Folder /home/lfs/logs: OK"
+plain "$(gettext "Directory /home/lfs/logs: OK")" "$LFS"
 
 # Checking Links
+if [ ! -L /sources ]; then
+    error "$(gettext "Missing symbolic link: /sources")"
+    abort "$(gettext "Run as root: %s")" "ln -sv $LFS/sources /sources"
+fi
+plain "$(gettext "Link /sources: OK")"
 
 if [ ! -L /tools ]; then
-	echo "Lien /tools n'existe pas"
-	exit 1
-else
-	echo "Link /tools: OK"
+    error "$(gettext "Missing symbolic link: /tools")"
+    abort "$(gettext "Run as root: %s")" "ln -sv $LFS/tools /tools"
 fi
+plain "$(gettext "Link /tools: OK")"
 
 if [ ! -L /home/lfs/bin ]; then
-	echo "Lien /home/lfs/bin n'existe pas"
-	ln -sv $HOME/$version/scripts $HOME/bin
+    plain "$(gettext "Link /home/lfs/bin not found. Creating it...")"
+	ln -svf $HOME/$version/scripts $HOME/bin
 fi
-echo "link /home/lfs/bin: OK" 
+plain "$(gettext "Link /home/lfs/bin: OK")"
 
-if [ ! -L /home/lfs/config ];then
-   echo "Lien /home/lfs/config n'existe pas"
-   ln -sv $HOME/$version/scripts $HOME/config
+if [ ! -L /home/lfs/config ]; then
+    plain "$(gettext "Link /home/lfs/config not found. Creating it...")"
+	ln -svf $HOME/$version/scripts $HOME/config
 fi
-echo "link /home/lfs/config: OK"
+plain "$(gettext "Link /home/lfs/config: OK")"
 
+# Diverse
 [ -f $LFS/sources/.md5sums ] && rm $LFS/sources/.md5sums
+echo
+msg "$(gettext "Downloading sources...")"
+echo
 
 for i in `cat scripts/wget_nutyx_list|grep -v ^#|sed "s@  @|@"`
 do
@@ -119,16 +96,15 @@ if [ -f $LFS/sources/.md5sums ]; then
 	md5sum -c .md5sums || exit 1
 	cd -
 else
-	echo "$LFS/sources/md5sums pas trouvé, impossible de vérifier les sources"
-	exit 1
+    abort "$(gettext "%s/sources/md5sums not found - impossible to verify sources.")" "$LFS"
 fi
 echo ""
-echo "====> Successfull configured"
+msg "$(gettext "=====> Successfull configured")"
 echo ""
-echo "Si vous lisez ce message, faites:"
+msg "$(gettext "If you read this message you can continue by running:")"
 echo ""
-echo "cd $HOME/$version/chroot"
-echo "pass"
+plain2 "$(gettext "cd $HOME/$version/chroot")"
+plain2 "$(gettext "pass")"
 echo ""
-echo "Admirez le travail ..."
+msg "$(gettext "Well Done!")"
 echo "" 
