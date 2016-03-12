@@ -27,9 +27,6 @@ source $THIS_SCRIPT_DIR/color_messages.sh
 trap "interrupted" SIGHUP SIGINT SIGQUIT SIGTERM
 color_mesg
 
-info() {
-	echo "=======> $1"
-}
 get_filename() {
 	local FILE="`echo $1 | sed 's|^.*://.*/||g'`"
 
@@ -116,11 +113,7 @@ build_package() {
         fi
 
 	if [ "$BUILD_SUCCESSFUL" = "yes" ]; then
-        printf "$(gettext "=======> Building %s succeeded.\n")" "$TARGET"
-	fi
-
-	if [ "$BUILD_SUCCESSFUL" = "yes" ]; then
-		info "Building '$TARGET' succeeded."
+		printf "$(gettext "=======> Building %s succeeded.\n")" "$TARGET"
 	else
 		abort "$(gettext "Building '%s' failed.")" "$TARGET"
 	fi
