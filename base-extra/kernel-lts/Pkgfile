@@ -7,12 +7,12 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-lts
-version=3.18.27
-release=2
+version=4.4.5
+release=1
 _version=${version:0:4}
 
-source=(http://www.kernel.org/pub/linux/kernel/v3.x/linux-${_version}.tar.xz
-	https://www.kernel.org/pub/linux/kernel/v3.x/patch-$version.xz
+source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-${_version}.tar.xz
+	https://www.kernel.org/pub/linux/kernel/v4.x/patch-$version.xz
 	$name.config $name.config_64 )
 
 build(){
