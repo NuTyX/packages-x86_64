@@ -27,7 +27,9 @@ source $THIS_SCRIPT_DIR/color_messages.sh
 trap "interrupted" SIGHUP SIGINT SIGQUIT SIGTERM
 color_mesg
 
-
+info() {
+	echo "=======> $1"
+}
 get_filename() {
 	local FILE="`echo $1 | sed 's|^.*://.*/||g'`"
 
