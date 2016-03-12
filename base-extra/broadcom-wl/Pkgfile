@@ -4,18 +4,17 @@
 # Packager: tnut at nutyx dot org
 
 name=broadcom-wl
-version=6.30.223.248
-release=7
+version=6.30.223.271
+release=1
 [[ "`uname -m`" == "x86_64" ]] && _arch=_64 || _arch=
 source=("http://www.broadcom.com/docs/linux_sta/hybrid-v35${_arch}-nodebug-pcoem-${version//./_}.tar.gz"
-        broadcom-wl.modprobe.d broadcom-wl.license.patch broadcom-wl.linux-recent.patch broadcom-wl.gcc.patch)
+        broadcom-wl.modprobe.d broadcom-wl.license.patch wl_linux.c.patch )
 build() {
 
 KERNELRELEASE=`uname -r`
 
-  patch -p1 -i broadcom-wl.linux-recent.patch
   patch -p1 -i broadcom-wl.license.patch
-  patch -p1 -i broadcom-wl.gcc.patch
+  patch -p1 -i wl_linux.c.patch
 
   sed -e "/BRCM_WLAN_IFNAME/s:eth:wlan:" \
       -i src/wl/sys/wl_linux.c
