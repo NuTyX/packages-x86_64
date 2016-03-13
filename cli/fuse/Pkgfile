@@ -3,14 +3,16 @@
 # Packager: pierre at nutyx dot org
 # Depends on: doxygen
 
+description="Library that makes it possible to implement a filesystem in a userspace program."
 name=fuse
 version=2.9.5
-release=1
+release=2
 
 source=( https://github.com/libfuse/libfuse/releases/download/fuse_2_9_5/fuse-$version.tar.gz)
 
 build() {
 cd $name-$version
+sed -i 's/2:9:4/2:9:5/' lib/Makefile.in
 ./configure --prefix=/usr \
 --disable-static INIT_D_PATH=/tmp/init.d
 make
@@ -20,4 +22,7 @@ mv -v $PKG/usr/lib/libfuse.so.* $PKG/lib
 ln -sfv ../../lib/libfuse.so.$version $PKG/usr/lib/libfuse.so 
 rm -rf $PKG/tmp
 rm $PKG/dev/fuse
+install -v -m755 -d $PKG/usr/share/doc/fuse-$version
+install -v -m644    doc/{how-fuse-works,kernel.txt} \
+	$PKG/usr/share/doc/fuse-$version
 }
