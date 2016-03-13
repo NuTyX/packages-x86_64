@@ -2,7 +2,7 @@
 # URL: http://llvm.org/
 # Maintainers: Chris Lattner <sabre at nondot dot org>
 # Packager: pierre at nutyx dot org, tnut at nutyx dot org
-# Depends on: python 
+# Depends on: python cmake
 
 name=llvm
 version=3.8.0
@@ -18,30 +18,17 @@ cd $name-$version.src
 mv ../compiler-rt-${version}.src projects/compiler-rt
 mv ../cfe-$version.src tools/clang
 
-sed -r "/ifeq.*CompilerTargetArch/s#i386#i686#g" \
-    -i projects/compiler-rt/make/platform/clang_linux.mk
-
-case `uname -m` in
-        x86_64)
-                enable_pic="yes";;
-        i?86)
-                enable_pic="no";;
-esac
-sed -e 's:/docs/llvm:/share/doc/llvm-$version:' \
-    -i Makefile.config.in
-
 mkdir -v build
 cd build
+
 CC=gcc CXX=g++ \
-../configure --prefix=/usr \
-	--datarootdir=/usr/share \
-	--sysconfdir=/etc \
-	--enable-libffi \
-	--enable-optimized \
-	--enable-shared \
-	--enable-targets=host,r600 \
-	--disable-assertions \
-	--docdir=/usr/share/doc/$name-$version
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+	-DLLVM_ENABLE_FFI=ON \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DLLVM_TARGETS_TO_BUILD="host;AMDGPU;" \
+	-DLLVM_BUILD_LLVM_DYLIB=ON \
+	-Wno-dev \
+	..
 make || make -j1
 make DESTDIR=$PKG install || make -j1 DESTDIR=$PKG install
 for file in '$PKG/usr/lib/lib{clang,LLVM,LTO}*.a'
@@ -63,6 +50,7 @@ echo /usr/lib/llvm > $PKG/etc/ld.so.conf.d/llvm.conf
 ln -sfv /usr/bin/clang $PKG/usr/lib/clang-analyzer/scan-build/
 mkdir -p $PKG/usr/share/man/man1
 
-mv -v $PKG/usr/lib/clang-analyzer/scan-build/scan-build.1 $PKG/usr/share/man/man1/
-
+if [ -f $PKG/usr/lib/clang-analyzer/scan-build/scan-build.1 ];then
+	mv -v $PKG/usr/lib/clang-analyzer/scan-build/scan-build.1 $PKG/usr/share/man/man1/
+fi
 }
