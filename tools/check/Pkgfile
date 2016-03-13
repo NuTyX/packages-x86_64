@@ -6,7 +6,7 @@ cd $name-$version
 ./configure \
     --prefix=/tools \
     --build=${CLFS_HOST} \
-    --host=${CLFS_TARGET} 2>&1 | tee -a ${CLFS}/sources/clfs.log
+    --host=${CLFS_TARGET}
 
 make
 make install
