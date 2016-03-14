@@ -1,0 +1,19 @@
+version=5.22.1
+release=1
+source=(http://ftp.funet.fi/pub/CPAN/src/perl-$version.tar.bz2
+	)
+build()
+{
+cd perl-$version
+
+sed -i 's@/usr/include@/tools/include@g' ext/Errno/Errno_pm.PL
+
+./configure.gnu \
+    --prefix=/tools \
+    -Dcc="gcc"
+
+make
+make DESTDIR=$PKG install
+rm -rf $PKG/usr/bin/perl
+ln -s $PKG/tools/bin/perl $PKG/usr/bin
+}

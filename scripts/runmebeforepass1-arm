@@ -118,7 +118,7 @@ echo "link /home/clfs/config: OK"
 
 [ -f $CLFS/sources/.md5sums ] && rm $CLFS/sources/.md5sums
 
-for i in `cat scripts/wget_nutyx_arm_list|grep -v ^#|sed "s@  @|@"`
+for i in `cat scripts/wget_nutyx_list|grep -v ^#|sed "s@  @|@"`
 do
 	FILE=`echo $i|cut -d "|" -f2`
 	MD5SUM=`echo $i|cut -d "|" -f1`
