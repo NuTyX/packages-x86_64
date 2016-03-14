@@ -1200,28 +1200,27 @@ if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
    ${FOLDER}/etc/$FILE
    return
 fi
-echo "## For kde5
-# Comment following 2 lines
-# if you don't want to install kde5
-#
-dir ${DEPOT}/kde5-extra|${URL}
-dir ${DEPOT}/kde5|${URL}
-##
-## For kde (4)
-# Comment following 2 lines
-# if you don't want to install kde (version4)
-#
-
-dir ${DEPOT}/kde-extra|${URL}
-dir ${DEPOT}/kde|${URL}
+echo "## For enlightenment
+# Enlightenment is not yet ready to use
+# Decomment following 2 lines
+# if you want to try enlightenment anyway
+# dir ${DEPOT}/enlightenment-extra|${URL}
+# dir ${DEPOT}/enlightenment|${URL}
 #
 ## For cinnamon
-# Cinnamon is not yet ready to ude
+# Cinnamon is not yet ready to use
 # Decomment following 2 lines
 # if you want to try cinnamon anyway
 #
 # dir ${DEPOT}/cinnamon-extra|${URL}
 # dir ${DEPOT}/cinnamon|${URL}
+#
+## For kde5
+# Comment following 2 lines
+# if you don't want to install kde5
+#
+dir ${DEPOT}/kde5-extra|${URL}
+dir ${DEPOT}/kde5|${URL}
 #
 ## For Gnome
 # Comment following 2 lines
@@ -1237,13 +1236,6 @@ dir ${DEPOT}/gnome|${URL}
 dir ${DEPOT}/mate-extra|${URL}
 dir ${DEPOT}/mate|${URL}
 #
-## For xfce4
-# Comment following 2 lines
-# if you don't want to install xfce4
-#
-dir ${DEPOT}/xfce4-extra|${URL}
-dir ${DEPOT}/xfce4|${URL}
-#
 ## For lxqt
 # Comment following 2 lines
 # if you don't want to install lxqt
@@ -1257,6 +1249,13 @@ dir ${DEPOT}/lxqt|${URL}
 #
 dir ${DEPOT}/lxde-extra|${URL}
 dir ${DEPOT}/lxde|${URL}
+#
+## For xfce4
+# Comment following 2 lines
+# if you don't want to install xfce4
+#
+dir ${DEPOT}/xfce4-extra|${URL}
+dir ${DEPOT}/xfce4|${URL}
 #
 ## Normally everything under this line
 # are needed stuffs
