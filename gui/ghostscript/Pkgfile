@@ -14,11 +14,10 @@ source=( http://downloads.ghostscript.com/public/$name-$version.tar.gz
 build() {
 cd $name-$version
 sed -i 's/ZLIBDIR=src/ZLIBDIR=$includedir/' configure.ac configure 
-rm -rf freetype lcms2 jpeg libpng zlib
+rm -rf freetype lcms2 jpeg libpng
 ./configure --prefix=/usr \
 	--enable-dynamic \
-	--with-system-libtiff \
-	--disable-compile-inits
+	--with-system-libtiff
 make
 make so
 make DESTDIR=$PKG install soinstall
