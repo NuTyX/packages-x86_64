@@ -73,9 +73,19 @@ warning() {
 	printf "${YELLOW_MSG}==> $(gettext "WARNING:")${ALL_OFF_MSG}${BOLD_MSG} ${mesg}${ALL_OFF_MSG}\n" "$@" >&2
 }
 
+warning2() {
+	local mesg=$1; shift
+	printf "${YELLOW_MSG}  -> $(gettext "WARNING:")${ALL_OFF_MSG}${BOLD_MSG} ${mesg}${ALL_OFF_MSG}\n" "$@" >&2
+}
+
 error() {
 	local mesg=$1; shift
 	printf "${RED_MSG}==> $(gettext "ERROR:")${ALL_OFF_MSG}${BOLD_MSG} ${mesg}${ALL_OFF_MSG}\n" "$@" >&2
+}
+
+error2() {
+	local mesg=$1; shift
+	printf "${RED_MSG}  -> $(gettext "ERROR:")${ALL_OFF_MSG}${BOLD_MSG} ${mesg}${ALL_OFF_MSG}\n" "$@" >&2
 }
 
 abort() {
@@ -88,6 +98,16 @@ abort() {
 interrupted() {
     printf "${RED_MSG}\n==> $(gettext "ERROR:")${ALL_OFF_MSG}${BOLD_MSG} Interrupted${ALL_OFF_MSG}\n" >&2
 	exit 1
+}
+
+# helper: call it in the script
+check_have_gettext() {
+    local script_path=$1
+    if [ ! "$(type -p gettext)" ]; then
+        printf "${MAGENTA_MSG}\n====> ABORTING....\n${ALL_OFF_MSG}" >&2
+        printf "${BLUE_MSG}    ->${ALL_OFF_MSG}${BOLD_MSG} Command 'gettext' not found. It is needed to run script: <%s>${ALL_OFF_MSG}\n\n" "$script_path" >&2
+        exit 1
+    fi
 }
 
 # End of file
