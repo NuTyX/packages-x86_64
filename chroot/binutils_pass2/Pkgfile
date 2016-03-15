@@ -11,9 +11,9 @@ patch -Np1 -i ../binutils-$version-upstream_fix-2.patch
 mkdir -v build
 cd build
 
-CC=$LFS_TGT-gcc            \
-AR=$LFS_TGT-ar             \
-RANLIB=$LFS_TGT-ranlib     \
+CC=$LFS_TARGET-gcc         \
+AR=$LFS_TARGET-ar          \
+RANLIB=$LFS_TARGET-ranlib  \
 ../configure               \
     --prefix=/tools        \
     --disable-nls          \

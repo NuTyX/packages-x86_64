@@ -22,8 +22,8 @@ plain "$(gettext "Found .bash_profile file: OK")"
 [ -n $LFS ] || abort "$(gettext "LFS path is not set.")"
 plain "$(gettext "LFS path is set: %s: OK")" "$LFS"
 
-[ -n $LFS_TGT ] || abort "$(gettext "LFS_TGT is not set.")"
-plain "$(gettext "LFS_TGT is set: %s: OK")" "$LFS_TGT"
+[ -n $LFS_TARGET ] || abort "$(gettext "LFS_TARGET is not set.")"
+plain "$(gettext "LFS_TARGET is set: %s: OK")" "$LFS_TARGET"
 
 # Checking the user
 [ "$(whoami)" == "lfs" ] || abort "$(gettext "This script MUST be run as 'lfs' user and not as: <%s>")" "$(whoami)"

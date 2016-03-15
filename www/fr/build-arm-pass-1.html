@@ -92,11 +92,11 @@ EOF</kbd></pre>
 umask 022
 CLFS=$CLFS
 LC_ALL=POSIX
+CLFS_HOST=$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')
+CLFS_TARGET=armv7l-pc-linux-gnu
 PATH=/home/clfs/bin:/cross-tools/bin:/bin:/usr/bin
-export CLFS LC_ALL PATH
-unset CFLAGS CXXFLAGS PKG_CONFIG_PATH
-export CLFS_HOST=$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')
-export CLFS_TARGET=\"arm-none-linux-gnueabi\"" &gt; /home/clfs/.bashrc</kbd></pre>
+export CLFS LC_ALL CLFS_HOST CLFS_TARGET PATH
+unset PKG_CONFIG_PATH" &gt; /home/clfs/.bashrc</kbd></pre>
     </ol>
      Il est temps de passer à la 2ème partie et donc de se connecter en utilisateur clfs:
      <pre class="command"><kbd>su - clfs</kbd></pre>
@@ -136,7 +136,7 @@ pass</kbd></pre>
 /home/clfs/current/tools</pre>
   <div class="pied_page"><a class="url" href="build-arm-pass-2.html">On verra dans un prochain article comment entrer dans la chroot et y construire une NuTyX arm depuis scratch en utilisant une deuxième fois le même script </a></div>
   <hr>
-  <p class="updated">Dernière mise à jour 11-03-2016 18:48</p>
+  <p class="updated">Dernière mise à jour 15-03-2016 19:50</p>
 
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />

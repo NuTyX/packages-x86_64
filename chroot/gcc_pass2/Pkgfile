@@ -10,7 +10,7 @@ build()
 cd  gcc-$version
 
 cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
-  `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
+  `dirname $($LFS_TARGET-gcc -print-libgcc-file-name)`/include-fixed/limits.h
 
 
 for file in \
@@ -35,10 +35,10 @@ mv -v ../mpc-1.0.3 mpc
 mkdir -v build
 cd build
 
-CC=$LFS_TGT-gcc                                      \
-CXX=$LFS_TGT-g++                                     \
-AR=$LFS_TGT-ar                                       \
-RANLIB=$LFS_TGT-ranlib                               \
+CC=$LFS_TARGET-gcc                                   \
+CXX=$LFS_TARGET-g++                                  \
+AR=$LFS_TARGET-ar                                    \
+RANLIB=$LFS_TARGET-ranlib                            \
 ../configure                                         \
     --prefix=/tools                                  \
     --with-local-prefix=/tools                       \
