@@ -4,7 +4,7 @@
 
 description="The Open-source project behind Google Chrome, a safer, faster, and more stable browser"
 name=chromium
-version=48.0.2564.116
+version=49.0.2623.87
 release=1
 
 source=(http://commondatastorage.googleapis.com/chromium-browser-official/$name-$version.tar.xz
@@ -25,8 +25,6 @@ build() {
         touch chrome/test/data/webui/i18n_process_css_test.html
 	sed -i "/'target_name': 'libvpx'/s/libvpx/&_new/" build/linux/unbundle/libvpx.gyp
 
-	patch -Np1 -i ../chromium-use-non-versioned-icu-namespace.patch
-	patch -Np1 -i ../chromium-fix-print-preview-on-en_GB-locale.patch
   
         sed "s/@WIDEVINE_VERSION@/Pinkie Pie/" ../chromium-widevine.patch | patch -Np1
 	find third_party/icu -type f \! -regex '.*\.\(gyp\|gypi\|isolate\)' -delete
