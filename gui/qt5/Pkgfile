@@ -145,3 +145,14 @@ if [ "x\$QT5BINDIR" != "x/usr/bin" ]; then pathprepend $QT5BINDIR; fi
 echo \$PATH
 EOF
 }
+
+devel(){
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
+usr/include \
+usr/lib/pkgconfig \
+usr/mkspecs \
+usr/share/qt5/translations
+rm -r usr/{include,mkspecs,lib/pkgconfig,share/qt5/translations}
+}
