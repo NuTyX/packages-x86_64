@@ -26,7 +26,7 @@ ist für mittlere und fortgeschrittene Linux-Benutzer geeignet.
 
 ---
 
-**FRANÇAIS** [NuTyX](http://www.nutyx.org) est une distribution GNU/Linux pour systèmes 64 bits (x86_64).
+**FRANÇAIS** [NuTyX](http://www.nutyx.org) est une distribution GNU/Linux pour systèmes basés sur diverses architectures.
 Sa construction est basée sur la documentation en ligne disponible sur [Linux From Scratch (LFS)](http://www.linuxfromscratch.org).
 
 L'objectif de NuTyX est de permettre à ses utilisateurs d'être le plus rapidement possible autonomes.
