@@ -1,10 +1,9 @@
-# Description: The Tcl scripting language
 # URL: http://www.tcl.tk/
 # Packager: pierre at nutyx dot org
-# Depends on: 
 
+description="The Tcl scripting language"
 name=tcl
-version=8.6.4
+version=8.6.5
 release=1
 
 source=( http://downloads.sourceforge.net/$name/$name$version-src.tar.gz)
@@ -23,15 +22,15 @@ make
 sed -e "s#$SRCDIR/unix#/usr/lib#" \
     -e "s#$SRCDIR#/usr/include#"  \
     -i tclConfig.sh               
-sed -e "s#$SRCDIR/unix/pkgs/tdbc1.0.3#/usr/lib/tdbc1.0.3#" \
-    -e "s#$SRCDIR/pkgs/tdbc1.0.3/generic#/usr/include#"    \
-    -e "s#$SRCDIR/pkgs/tdbc1.0.3/library#/usr/lib/tcl8.6#" \
-    -e "s#$SRCDIR/pkgs/tdbc1.0.3#/usr/include#"            \
-    -i pkgs/tdbc1.0.3/tdbcConfig.sh                        
-sed -e "s#$SRCDIR/unix/pkgs/itcl4.0.3#/usr/lib/itcl4.0.3#" \
-    -e "s#$SRCDIR/pkgs/itcl4.0.3/generic#/usr/include#"    \
-    -e "s#$SRCDIR/pkgs/itcl4.0.3#/usr/include#"            \
-    -i pkgs/itcl4.0.3/itclConfig.sh                        
+sed -e "s#$SRCDIR/unix/pkgs/tdbc1.0.4#/usr/lib/tdbc1.0.4#" \
+    -e "s#$SRCDIR/pkgs/tdbc1.0.4/generic#/usr/include#"    \
+    -e "s#$SRCDIR/pkgs/tdbc1.0.4/library#/usr/lib/tcl8.6#" \
+    -e "s#$SRCDIR/pkgs/tdbc1.0.4#/usr/include#"            \
+    -i pkgs/tdbc1.0.4/tdbcConfig.sh                        
+sed -e "s#$SRCDIR/unix/pkgs/itcl4.0.4#/usr/lib/itcl4.0.4#" \
+    -e "s#$SRCDIR/pkgs/itcl4.0.4/generic#/usr/include#"    \
+    -e "s#$SRCDIR/pkgs/itcl4.0.4#/usr/include#"            \
+    -i pkgs/itcl4.0.4/itclConfig.sh                        
 unset SRCDIR
 make DESTDIR=$PKG install
 make DESTDIR=$PKG install-private-headers
