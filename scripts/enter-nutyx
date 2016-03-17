@@ -1,6 +1,18 @@
 setup_collection() {
 	local DIR
 	DIR="/$VERSION/$CHROOT"
+	if [ "$CHROOT" == "lxde" ]; then
+		echo "dir /DEPOT/lxde-extra
+dir /DEPOT/lxde
+dir /DEPOT/gui
+dir /DEPOT/cli
+dir /DEPOT/base
+dir /DEPOT/base-extra
+base /DEPOT/base
+base /DEPOT/cli
+base /DEPOT/gui
+logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+	fi
 	if [ "$CHROOT" == "xfce4" ]; then
 		echo "dir /DEPOT/xfce4-extra
 dir /DEPOT/xfce4
