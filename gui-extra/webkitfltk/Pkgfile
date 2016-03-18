@@ -13,6 +13,9 @@ source=()
 build() {
 	git clone https://github.com/clbr/webkitfltk.git
 	cd "${SRC}/${name}"
+	sed -i "s@isnan@std::isnan@g" Source/WebCore/platform/spi/cg/CoreGraphicsSPI.h
+	sed -i "s@isnan@std::isnan@g" Source/WTF/wtf/Stopwatch.h
+	sed -i "s@isnan@std::isnan@g" Source/JavaScriptCore/runtime/Options.cpp
 	make -C Source/WTF/wtf
 	make -C Source/JavaScriptCore gen
 	make -C Source/JavaScriptCore
