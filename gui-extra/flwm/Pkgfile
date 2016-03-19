@@ -2,7 +2,7 @@
 # URL: http://flwm.sourceforge.net/
 # Packager: Chris Farrell, timcowchip at gmail dot com
 # Maintainer: Chris Farrell, timcowchip at gmail dot com
-# Depends on: fltk1
+# Depends on: git fltk1
 name=flwm
 version=git
 release=1
@@ -10,8 +10,8 @@ release=1
 source=(flwm.desktop)
 
 build() {
-  git clone https://github.com/bbidulock/flwm.git $PKGMK_SOURCE_DIR/flwm
-  cp -r $PKGMK_SOURCE_DIR/flwm $SRC/ && cd $SRC/flwm	
+  git clone https://github.com/bbidulock/flwm.git flwm
+  cd flwm
   
   make || return 1
   mkdir -p $PKG/usr/share/xsessions
