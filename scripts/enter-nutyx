@@ -175,6 +175,8 @@ fi
 mkdir -p $1/DEPOT || exit 1
 mount $1/DEPOT || exit 1
 
+mkdir -p $1/var/log/pkgbuild || exit 1
+mount $1/var/log/pkgbuild || exit 1
 
 mkdir -p $1/sources || exit 1
 mount $1/sources || exit 1
@@ -182,8 +184,10 @@ mount $1/sources || exit 1
 mkdir -p $1/root/$COLLECTION || exit 1
 mount $1/root/$COLLECTION || exit 1
 
+
 KERNEL="NONE" LFS="$1" bash /root/bin/install-nutyx
 
+umount $1/var/log/pkgbuild || exit 1
 umount $1/sources || exit 1
 umount $1/DEPOT || exit 1
 umount $1/root/$COLLECTION || exit 1
