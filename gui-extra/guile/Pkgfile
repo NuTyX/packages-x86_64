@@ -5,7 +5,7 @@
 
 name=guile
 version=2.0.11
-release=1
+release=2
 source=(ftp://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
 build() {
@@ -37,6 +37,6 @@ build() {
 		install -v -m644  doc/${DIRNAME}/*.txt \
                     $PKG/usr/share/doc/guile-2.0.11/${DIRNAME}
 		done
-	unset DIRNAME	
-	
+	unset DIRNAME
+	rm -rf $PKG/usr/share/info/dir
 }
