@@ -6,7 +6,7 @@
 run=(desktop-file-utils xdg-utils kio-extras)
 
 _name=plasma-desktop
-release=1
+release=2
 
 build() {
 cd $name-$version
@@ -20,17 +20,4 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
-
-rm $PKG/usr/share/locale/fr/LC_MESSAGES/kactivities5.mo
-rm $PKG/usr/lib/qt5/plugins/kcm_activities.so
-rm $PKG/usr/share/kf5/kactivitymanagerd/workspace/settings/qml/activitiesTab/ActivitiesView.qml
-rm $PKG/usr/share/kf5/kactivitymanagerd/workspace/settings/qml/activitiesTab/main.qml
-rm $PKG/usr/share/kf5/kactivitymanagerd/workspace/settings/qml/activityDialog/GeneralTab.qml
-rm $PKG/usr/share/kf5/kactivitymanagerd/workspace/settings/qml/activityDialog/OtherTab.qml
-rm $PKG/usr/share/kf5/kactivitymanagerd/workspace/settings/qml/activityDialog/components/DialogButtons.qml
-rm $PKG/usr/share/kf5/kactivitymanagerd/workspace/settings/qml/activityDialog/components/IconChooser.qml
-rm $PKG/usr/share/kf5/kactivitymanagerd/workspace/settings/qml/activityDialog/components/LabeledTextField.qml
-rm $PKG/usr/share/kf5/kactivitymanagerd/workspace/settings/qml/activityDialog/components/ShortcutChooser.qml
-rm $PKG/usr/share/kf5/kactivitymanagerd/workspace/settings/qml/privacyTab/BlacklistApplicationView.qml
-rm $PKG/usr/share/kservices5/kcm_activities.desktop
 }
