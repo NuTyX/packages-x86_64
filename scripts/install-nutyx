@@ -961,7 +961,8 @@ lpadmin:x:19:
 named:x:20:
 gdm:x:21:
 fcron:x:22:
-www:x:24:
+systemd-journal:x:23:
+input:x:24:
 apache:x:25:
 smmsp:x:26:
 polkitd:x:27:
@@ -1243,13 +1244,6 @@ echo "## For enlightenment
 # dir ${DEPOT}/lxqt-extra|${URL}
 # dir ${DEPOT}/lxqt|${URL}
 #
-## For lxde
-# Comment following 2 lines
-# if you want to install lxde
-#
-# dir ${DEPOT}/lxde-extra|${URL}
-# dir ${DEPOT}/lxde|${URL}
-#
 ## For kde5
 # Comment following 2 lines
 # if you don't want to install kde5
@@ -1263,6 +1257,13 @@ dir ${DEPOT}/kde5|${URL}
 #
 dir ${DEPOT}/xfce4-extra|${URL}
 dir ${DEPOT}/xfce4|${URL}
+#
+## For lxde
+# Comment following 2 lines
+# if you don't want to install lxde
+#
+dir ${DEPOT}/lxde-extra|${URL}
+dir ${DEPOT}/lxde|${URL}
 #
 ## Normally everything under this line
 # are needed stuffs
@@ -1314,8 +1315,10 @@ install_resolv_conf() {
 successfull_installation () {
 echo "
 ****************************************************
-*      Installation of NuTyX $VERSION finished.         *
-*                                                  *
+      Installation of NuTyX $VERSION finished.
+****************************************************
+
+****************************************************
 * Thanks for installing NuTyX                      *
 *                                                  *
 * Check http://www.nutyx.org/en/documentation.html *
@@ -1355,16 +1358,17 @@ check_tools() {
 check_variables() {
 
 [ -z $URL ] && URL="http://downloads.nutyx.org"
-[ -z $VERSION ] && VERSION="8.1-rc2"
-[ -z $DEPOT ] && DEPOT="/var/lib/pkg/depotrepo"
+[ -z $VERSION ] && VERSION="8.1-rc3"
+[ -z $DEPOT ] && DEPOT="/var/lib/pkg/depot"
 [ -z $FOLDER ] && FOLDER="/mnt/hd"
 [ -z $KERNEL ] && KERNEL="kernel-lts"
 [ "$KERNEL" == "NONE" ] && KERNEL=""
+[ "$KERNEL" == "none" ] && KERNEL=""
 
 HOMEPAGE="${URL}"                       ## http://downloads.nutyx.org
-INSTALL_BASE="$VERSION/$ARCH"           ## 8.0/x86_64
-DEPOT_ROOT="$HOMEPAGE/${INSTALL_BASE}"  ## http://downloads.nutyx.org/8.0/x86_64
-DEPOT_BASE="$DEPOT_ROOT/$BASE"          ## http://downloads.nutyx.org/8.0/x86_64/base
+INSTALL_BASE="$VERSION/$ARCH"           ## 8.1/x86_64
+DEPOT_ROOT="$HOMEPAGE/${INSTALL_BASE}"  ## http://downloads.nutyx.org/8.1/x86_64
+DEPOT_BASE="$DEPOT_ROOT/$BASE"          ## http://downloads.nutyx.org/8.1/x86_64/base
 
 LOCAL_DEPOT_PACKAGES="$DEPOT/$BASE"
 DEPOT_CD="/media/cdrom"
@@ -1561,11 +1565,11 @@ install_configuration_files() {
 print_help() {
 	echo "
 usage: `basename ${INSTALL_COMMAND}` [options] options
-  -p,   --path  <installation-path> will install NuTyX in <installation-path>
+   -p,  --path  <installation-path> will install NuTyX in <installation-path>
   -ec,  --enter-chroot              will enter in the chroot if exist
   -ic,  --install-config            will install all the configuration files only
-  -h,   --help                      print help and exit
-  -v,   --version                   print the version and exit
+   -h,  --help                      print help and exit
+   -v,  --version                   print the version and exit
 "
 
 }
