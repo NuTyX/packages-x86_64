@@ -2,10 +2,11 @@
 # URL: http://www.broadcom.com/support/802.11/linux_sta.php
 # Maintainer: Armin K. <krejzi at email dot com>
 # Packager: tnut at nutyx dot org
+# Depends on: kernel-lts kernel-lts.devel
 
 name=broadcom-wl
 version=6.30.223.271
-release=1
+release=3
 [[ "`uname -m`" == "x86_64" ]] && _arch=_64 || _arch=
 source=("http://www.broadcom.com/docs/linux_sta/hybrid-v35${_arch}-nodebug-pcoem-${version//./_}.tar.gz"
         broadcom-wl.modprobe.d broadcom-wl.license.patch wl_linux.c.patch )
