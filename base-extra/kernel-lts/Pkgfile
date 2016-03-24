@@ -8,7 +8,7 @@ PKGMK_GROUPS=(devel doc)
 
 name=kernel-lts
 version=4.4.6
-release=1
+release=3
 _version=${version:0:3}
 
 source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-${_version}.tar.xz
@@ -28,9 +28,9 @@ fi
 make mrproper
 case `uname -m` in
 	x86_64)
-		cp $SRC/config-generic-$version.x64 ./.config;;
+		cp $SRC/kernel-lts.config_64 ./.config;;
 	i?86)
-		cp $SRC/config-generic-$version ./.config;
+		cp $SRC/kernel-lts.config ./.config;
 esac
 
 # make menuconfig
