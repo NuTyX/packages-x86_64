@@ -8,12 +8,12 @@ PKGMK_GROUPS=(devel doc)
 
 name=kernel-lts
 version=4.4.6
-release=3
+release=4
 _version=${version:0:3}
 
 source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-${_version}.tar.xz
 	https://www.kernel.org/pub/linux/kernel/v4.x/patch-$version.xz
-	config-generic-$version.x64 config-generic-4.4.6 $name.config $name.config_64 )
+	$name.config $name.config_64 )
 
 build(){
 
