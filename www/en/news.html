@@ -79,6 +79,7 @@
        <li>mate 1.12.1</li>
        <li>xfce4-desktop 4.12.3</li>
        <li>openbox 3.6.1</li>
+       <li>virtualbox 5.0.16</li>
        <li>...</li>
       </ul>
       <p>You can consult the <a href="packages.html">Packages list</a> page for a complete list of available packages.</p>
@@ -90,9 +91,9 @@ get xorg gnome gnome-extra lxdm</kbd></pre>
      <p>To install the xfce graphical interface, we will simply replace gnome with xfce4</p>
      <pre class="command"><kbd>check
 get xorg xfce4 xfce4-extra lxdm</kbd></pre>
-     <p>In case you want to install the cinnamon graphical interface, I higly recommend you to install at least the gnome collection:</p>
+     <p>In case you want to install the cinnamon graphical interface, I higly recommend you to install at least the gnome and gnome-extra collections, as cinnamon do not have any terminal (for example):</p>
      <pre class="command"><kbd>check
-get xorg gnome cinnamon cinnamon-extra lxdm</kbd></pre>
+get xorg gnome gnome-extracinnamon cinnamon-extra lxdm</kbd></pre>
      <p>Remember to create at least one user with the command:</p>
      <pre class="command"><kbd>nu</kbd></pre>
      <p>And finaly reboot your machine before trying anything else (it's the easiest way).</p>
@@ -101,17 +102,8 @@ get xorg gnome cinnamon cinnamon-extra lxdm</kbd></pre>
     <h3>The new <b>2.0</b> cards features</h3>
      <p>Cards in <b>2.0</b> version can now make a full upgrade of your installation.
      A lot of internal reorganisation in the code to make cards more easy to maintain.</p>
-     <p>You don't have to specify the architecture of your machine in the cards configuration file. In addition, the URL specifying the download mirror is now made simple.</p>
-     <p>In a package research now also shows the result of the collection or package (s) found (s).</p>
-     <p>The new configuration format is now easier as shown in the example below:</p>
-      <pre class="output">dir /var/lib/pkg/depot/gui|http://downloads.nutyx.org
-dir /var/lib/pkg/depot/xfce4-extra|http://downloads.nutyx.org
-dir /var/lib/pkg/depot/xfce4|http://downloads.nutyx.org
-dir /var/lib/pkg/depot/cli|http://downloads.nutyx.org
-dir /var/lib/pkg/depot/base|http://downloads.nutyx.org
-base /var/lib/pkg/depot/base
-base /var/lib/pkg/depot/base-extra
-locale fr</pre>
+     <p>A big thanks to <a href="https://github.com/peter1000">Peter</a> which made a big work of investigation, and track down a lot of bugs. We had the chance to exchange a lot of experience. Peter even start it's onw fork of cards.</p>
+     <p><a href="https://github.com/NuTyX/cards/blob/master/scripts/pkgmk2.in">Peter</a> has start a pkgmk2 script with support of colors, NLS support, more sources format like git, bazard, svn etc. You are welcome to test this new script</p>
     <h3>The difference between a &lt;nnn&gt; collection and a  &lt;nnn-extra&gt; collection</h3>
      <p>There is a difference between, for example, the collection <b>'cli'</b> and <b>'cli-extra'</b>: The ports and binary in the collection <b><i>'cli'</i></b> are almost frozen in their version at the time of the release of NuTyX version, while ports and binary collections <b><i>-extra</i> </b> can be updated at any time.</p>
      <p>This technique isolates the <b>'central system'</b> (ie collections <b><i>'base'</i></b>, <b><i>'cli'</i></b> and <b><i>'gui'</i></b>) updates that may be on the <i>"peripheral"</i> applications contained in <b><i>-extra </i></b> collections.</p>
@@ -204,10 +196,12 @@ VERSION="current"</pre>
    <h3>The github website and the different projects</h3>
      <p>You can find all the recipes, the installer code, the site, the documentation on the website <a href="https://github.com/NuTyX">github</a></p>
    <h3>The construction of NuTyX</h3>
-     <p>The construction method is now based on sources available at <a href="https://github.com/NuTyX/houaphan">https://github.com/NuTyX/houaphan</a></p>
+     <p>The construction method is now based on sources available at <a href="https://github.com/NuTyX/core">https://github.com/NuTyX/core</a></p>
      <p>The NuTyX construction thus follows the commits on the current branch of houaphan.</p>
-     <p>I would like to thank <b>berlius</b> for his work on the building process of a NuTyX for the arm processor. There are still corners to round, but it's very promissing.</p>
      <p>To ensure the disponibility of the sources of all the packages need for a basic system, they are now available at <a href="http://downloads.nutyx.org/current/sources">sources</a>.</p>
+   <h3>Thanks to all</h3>
+     <p>I would like to thank <b>berlius</b> for his work on the building process of a NuTyX for the arm processor. There are still corners to round, but it's very promissing.</p>
+     <p>Thanks to <a href="https://github.com/peter1000">Peter</a> for his work on cards (pkgmk2) and all his feedback that has permit to improve the quality of cards.</p>
    <p class="updated"><a href="old-news.html">Olders news</a></p>
   <hr>
    <p class="updated">Updated 2016-03-22 20:00</p>
