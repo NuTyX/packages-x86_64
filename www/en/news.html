@@ -118,6 +118,66 @@ get xorg gnome gnome-extracinnamon cinnamon-extra lxdm</kbd></pre>
     <h3>The new <b>2.0</b> cards features</h3>
      <p>Cards in <b>2.0</b> version can now make a full upgrade of your installation.
      A lot of internal reorganisation in the code to make cards more easy to maintain.</p>
+     <p>To be able to reuse (partially) existings ARCHLinux recepts, new variables are now reconised, the <b>3</b> differents valid Pkgfile shows possibles variables:</p>
+     <table width="60%" cellspacing="0" >
+		 <tr>
+			 <td><pre class="output"># Description: My first package
+# URL: http://downloads.nutyx.org
+# Packager: tnut at nutyx dot org
+# Depends on: glibc
+name=mypackage
+version=1.0
+release=1
+source=(http://downloads.nutyx.org/files/$name-$version.tar.xz)
+build() {
+cd ${name}-$version
+./configure --prefix=/usr \
+--disable-static
+make
+make DESTDIR=$PKG install
+}</pre>
+			 </td>
+		</tr>
+		<tr>
+			 <td><pre class="output"># Depends on: glibc
+packager="tnut at nutyx dot org"
+description="My first package"
+url="http://downloads.nutyx.org"
+name=mypackage
+version=1.0
+release=1
+source=($url/files/$name-$version.tar.xz)
+build() {
+cd ${name}-$version
+./configure --prefix=/usr \
+--disable-static
+make
+make DESTDIR=$PKG install
+}
+			 </td>
+		</tr>
+		<tr>
+			 <td><pre class="output"># Packager: tnut at nutyx dot org
+# Depends on: glibc
+pkgdesc="My first package"
+url="http://downloads.nutyx.org"
+pkgname=mypackage
+pkgvers=1.0
+pkgrel=1
+source=($url/files/$name-$version.tar.xz)
+build() {
+cd $pkgname-$pkgver
+./configure --prefix=/usr \
+--disable-static
+make
+}
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+}
+			 </td>
+		</tr>
+     </table>
      <p>A big thanks to <a href="https://github.com/peter1000">Peter</a> which made a big work of investigation, and track down a lot of bugs. We had the chance to exchange a lot of experience. Peter even start it's onw fork of cards.</p>
      <p><a href="https://github.com/NuTyX/cards/blob/master/scripts/pkgmk2.in">Peter</a> has start a pkgmk2 script with support of colors, NLS support, more sources format like git, bazard, svn etc. You are welcome to test this new script</p>
     <h3>The difference between a &lt;nnn&gt; collection and a  &lt;nnn-extra&gt; collection</h3>
@@ -221,7 +281,7 @@ VERSION="current"</pre>
      <p>Thanks to mahmutov for the turkish translation of the web site, NuTyX becomes now really internationnale.</p>
    <p class="updated"><a href="old-news.html">Olders news</a></p>
   <hr>
-   <p class="updated">Updated 2016-03-25 22:30</p>
+   <p class="updated">Updated 2016-03-26 17:59</p>
   <footer>
    <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
