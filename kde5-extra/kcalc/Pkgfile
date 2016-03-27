@@ -4,13 +4,17 @@
 # Depends on: kf5-extra-cmake-modules kf5-kconfig kf5-kconfigwidgets kf5-kdoctools kf5-kguiaddons kf5-ki18n kf5-kinit kf5-knotifications kf5-kxmlgui gmp
 
 name=kcalc
-release=1
+release=2
 version=15.12.3
 
-source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz
+       kcalc-qt5.6.patch)
 
 build() {
 cd $name-$version
+
+patch -p1 -i ../kcalc-qt5.6.patch
+
 mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr             \
