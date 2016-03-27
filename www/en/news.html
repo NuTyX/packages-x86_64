@@ -109,7 +109,7 @@ get xorg gnome gnome-extra lxdm</kbd></pre>
 get xorg xfce4 xfce4-extra lxdm</kbd></pre>
      <p>In case you want to install the cinnamon graphical interface, I higly recommend you to install at least the gnome and gnome-extra collections, as cinnamon do not have any terminal (for example):</p>
      <pre class="command"><kbd>check
-get xorg gnome gnome-extracinnamon cinnamon-extra lxdm</kbd></pre>
+get xorg gnome gnome-extra cinnamon cinnamon-extra lxdm</kbd></pre>
      <p>Remember to create at least one user with the command:</p>
      <pre class="command"><kbd>nu</kbd></pre>
      <p>And finaly reboot your machine before trying anything else (it's the easiest way).</p>    
@@ -118,6 +118,8 @@ get xorg gnome gnome-extracinnamon cinnamon-extra lxdm</kbd></pre>
     <h3>The new <b>2.0</b> cards features</h3>
      <p>Cards in <b>2.0</b> version can now make a full upgrade of your installation.
      A lot of internal reorganisation in the code to make cards more easy to maintain.</p>
+     <p>Together with the new NuTyX 8.1 startup script, <b>cards</b> is now able to make upgrades on its own. If there are some available upgrades, at the shutdown of the computer, <b>cards</b> will downloads and upgrade obsolet versions of your binaries.</p>
+     <p>This new cards version include a API library which will give the possibility to create an "easy" graphical interface. This graphical interface will depends on the <b>libcards</b> library only.</p>
      <p>To be able to reuse (partially) existings ARCHLinux recepts, new variables are now reconised, the <b>3</b> differents valid Pkgfile shows possibles variables:</p>
      <table width="60%" cellspacing="0" >
 		 <tr>
@@ -270,18 +272,19 @@ VERSION="current"</pre>
     <li>Print a help of the script
      <pre class="command"><kbd>bash install-nutyx -h</kbd></pre></li>
    <h3>The github website and the different projects</h3>
-     <p>You can find all the recipes, the installer code, the site, the documentation on the website <a href="https://github.com/NuTyX">github</a></p>
+     <p>You can find all the recipes, the installer code, the site, the documentation on the website <a href="https://github.com/NuTyX">github</a>. You are welcome <a href="https://github.com/nutyx?tab=repositories">to fork them and propose pull request</a> to improve the quality of the distribution</p>
    <h3>The construction of NuTyX</h3>
      <p>The construction method is now based on sources available at <a href="https://github.com/NuTyX/core">https://github.com/NuTyX/core</a></p>
      <p>The NuTyX construction thus follows the commits on the current branch of houaphan.</p>
      <p>To ensure the disponibility of the sources of all the packages need for a basic system, they are now available at <a href="http://downloads.nutyx.org/current/sources">sources</a>.</p>
    <h3>Thanks to all</h3>
+     <p>Thanks to Fanch which have re initiate the <b>lxde, cinnamon, gnome and mate</b> collections. Fanch is very active on some forks of the existing NuTyX collections. You can follow them, fork or/ and do pull requets on any of it's collection found on <a href="https://github.com/fanch?tab=repositories">github</a></p>
      <p>I would like to thank <b>berlius</b> for his work on the building process of a NuTyX for the arm processor. There are still corners to round, but it's very promissing.</p>
      <p>Thanks to <a href="https://github.com/peter1000">Peter</a> for his work on cards (pkgmk2) and all his feedback that has permit to improve the quality of cards.</p>
      <p>Thanks to mahmutov for the turkish translation of the web site, NuTyX becomes now really internationnale.</p>
    <p class="updated"><a href="old-news.html">Olders news</a></p>
   <hr>
-   <p class="updated">Updated 2016-03-26 17:59</p>
+   <p class="updated">Updated 2016-03-27 13:52</p>
   <footer>
    <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
