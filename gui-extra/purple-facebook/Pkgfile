@@ -1,0 +1,16 @@
+# Depends on: glib mercurial json-glib pcre
+description="pidgin facebook plugin"
+name=purple-facebook
+version=92885e04
+release=1
+
+source=(https://github.com/jgeboski/purple-facebook/archive/92885e0456ed.tar.gz)
+build() {
+
+
+cd $name-*
+./autogen.sh
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
