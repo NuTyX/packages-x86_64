@@ -1,10 +1,10 @@
 # Description : Core components for the KDE Activity concept
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: kf5-extra-cmake-modules kf5-kconfig kf5-kdbusaddons kf5-ki18n kf5-kcoreaddons kf5-kwindowsystem kf5-kglobalaccel kf5-kxmlgui kf5-kio
+# Depends on: qt5 kf5-extra-cmake-modules kf5-kconfig kf5-kdbusaddons kf5-ki18n kf5-kcoreaddons kf5-kwindowsystem kf5-kglobalaccel kf5-kxmlgui kf5-kio
 
 _name=kactivitymanagerd
-release=1
+release=2
 
 build() {
 cd ${_name}-$version
@@ -19,4 +19,4 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr         \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
-
+}
