@@ -6,7 +6,7 @@
 run=(desktop-file-utils xdg-utils kio-extras)
 
 _name=plasma-desktop
-release=2
+release=3
 
 build() {
 cd $name-$version
@@ -20,4 +20,8 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
+
+rm -r $PKG/usr/share/locale/*/LC_MESSAGES/kactivities5.mo
+}
+
 }
