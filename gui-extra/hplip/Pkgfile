@@ -6,8 +6,8 @@
 run=(sip avahi python ghostscript foomatic-db foomatic-db-engine usbutils sane cups cups-filters libusb-compat net-snmp dbus-python python-gobject2 python-notify python-pillow python-reportlab python-xml)
 
 name=hplip
-version=3.15.9
-release=2
+version=3.16.3
+release=1
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
@@ -45,16 +45,7 @@ build() {
                 --enable-fax-build \
                 --enable-network-build
         make
-#        make DESTDIR=$PKG install
-    
-        make -j1 rulesdir=/usr/lib/udev/rules.d DESTDIR=$PKG install
-
-	# Sinon n'imprime pas
-	rm -rf $PKG/etc/udev/rules.d
-
-        # hplip ne connait que lfs 6 ...
-        mkdir -pv  $PKG/etc
-        echo "lfs 6" > $PKG/etc/issue
+	make DESTDIR=$PKG install || make -j1 DESTDIR=$PKG install
 
         # remove config provided by sane and autostart of hp-daemon
         rm -rf $PKG/etc/{sane.d,xdg}
