@@ -5,7 +5,7 @@
 
 name=samba
 version=4.3.6
-release=1
+release=2
 
 source=( http://ftp.samba.org/pub/samba/stable/$name-$version.tar.gz)
 
@@ -65,4 +65,7 @@ tar xf $scripts-$scriptsversion.tar.bz2
 cd $SRC/$scripts-$scriptsversion
 make DESTDIR=$PKG install-samba
 make DESTDIR=$PKG install-winbindd
+
+# Doublon
+rm -f $PKG/usr/lib/python2.7/site-packages/talloc.so
 }
