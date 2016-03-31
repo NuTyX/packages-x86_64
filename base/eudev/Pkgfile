@@ -5,7 +5,7 @@
 
 name=eudev
 version=3.1.5
-release=1
+release=2
 
 source=(http://dev.gentoo.org/~blueness/eudev/$name-$version.tar.gz
 	http://anduin.linuxfromscratch.org/sources/other/udev-lfs-20140408.tar.bz2)
@@ -54,4 +54,7 @@ make DESTDIR=$PKG install-man7 install-man8
 
 cd $SRC
 make -j1 -f udev-lfs-20140408/Makefile.lfs DESTDIR=$PKG install
+
+# DB
+$PKG/sbin/udevadm hwdb --update --root=$PKG
 }
