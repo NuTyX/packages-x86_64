@@ -1,0 +1,15 @@
+pkgname=ortp
+pkgver=0.25.0
+pkgrel=1
+pkgdesc="A Real-time Transport Protocol (RTP) library"
+url="http://www.linphone.org/index.php/eng/code_review/ortp"
+source=("http://download.savannah.gnu.org/releases/linphone/$pkgname/sources/$pkgname-$pkgver.tar.gz"{,.sig})
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  ./configure --prefix=/usr \
+    --disable-strict
+  make
+  make DESTDIR="${pkgdir}" install
+}
