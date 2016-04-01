@@ -1216,33 +1216,27 @@ echo "## For enlightenment
 # dir ${DEPOT}/cinnamon-extra|${URL}
 # dir ${DEPOT}/cinnamon|${URL}
 #
-## For kde5
-# Decomment following 2 lines
-# if you want to install kde5
-#
-# dir ${DEPOT}/kde5-extra|${URL}
-# dir ${DEPOT}/kde5|${URL}
-#
-## For Gnome
-# Decomment following 2 lines
-# if you want to install gnome
-#
-# dir ${DEPOT}/gnome-extra|${URL}
-# dir ${DEPOT}/gnome|${URL}
-#
-## For mate
-# Comment following 2 lines
-# if you want to install mate
-#
-# dir ${DEPOT}/mate-extra|${URL}
-# dir ${DEPOT}/mate|${URL}
-#
 ## For lxqt
-# Comment following 2 lines
+## lxqt is not yet ready to use
+# Decomment following 2 lines
 # if you want to install lxqt
 #
 # dir ${DEPOT}/lxqt-extra|${URL}
 # dir ${DEPOT}/lxqt|${URL}
+#
+## For Gnome
+# Comment following 2 lines
+# if you don't want to install gnome
+#
+dir ${DEPOT}/gnome-extra|${URL}
+dir ${DEPOT}/gnome|${URL}
+#
+## For mate
+# Comment following 2 lines
+# if you don't want to install mate
+#
+dir ${DEPOT}/mate-extra|${URL}
+dir ${DEPOT}/mate|${URL}
 #
 ## For kde5
 # Comment following 2 lines
@@ -1358,7 +1352,7 @@ check_tools() {
 check_variables() {
 
 [ -z $URL ] && URL="http://downloads.nutyx.org"
-[ -z $VERSION ] && VERSION="8.1-rc3"
+[ -z $VERSION ] && VERSION="8.1"
 [ -z $DEPOT ] && DEPOT="/var/lib/pkg/depot"
 [ -z $FOLDER ] && FOLDER="/mnt/hd"
 [ -z $KERNEL ] && KERNEL="kernel-lts"
