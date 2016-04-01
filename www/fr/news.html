@@ -34,9 +34,9 @@
     <h3>Introduction pour les plus pressés</h3>
      <p>Six mois après la sortie de la première version de houaphan 8.0, je suis fier de vous annoncer la sortie de la NuTyX 8.1.
      Le nom de code reste <b>houaphan</b>.
-     Pourquoi ce chiffre ? Le temps passe très vite, <b>houaphan</b> est déjà la 8ième version majeur depuis la première version publique de NuTyX en 2007.
+     Le temps passe très vite, <b>houaphan</b> est déjà la 8ième version majeur depuis la première version publique de NuTyX en 2007.
      Cette version <b>8.1</b> est disponible en <b>64 et 32 bits</b>. Les deux versions contiennent un catalogue complèt des paquets.
-    <h3>Quelles les nouveautées</h3>
+    <h3>Quelles sont les nouveautées</h3>
     <p>Le nombre de paquets mis à jour est tellement important que nous avons décidé de recompiler touls les paquets afin de nous assurer qu'ils fonctionnent</p>
     <p>Ceci est donc la deuxième version de NuTyX houaphan dont voici la liste des paquets principaux mis à jour:</p>
       <ul>
@@ -82,10 +82,10 @@
        <li>virtualbox 5.0.16</li>
        <li>...</li>
       </ul>
-      <p>Vous pouvez consulter la <a href="packages.html">liste des paquets</a> complète.</p>
+      <p>Vous pouvez consulter la <a href="packages.html">liste complète des paquets</a>. Celle-ci est continuellement mise à jour.</p>
     <h3>Mise à jour depuis la version 8.0</h3>
-     <p>Une mise à jour est possible: depuist la version 8.0, il est possible de mettre à jour votre NuTyX sans devoir tout réinstaller.</p>
-     <p>Il est cependant vivevement recommandé d'avoir une connection internet filaire et de commencer la mise à jour après une:</p>
+     <p>Une mise à jour est possible: depuis la version 8.0, il est possible de mettre à jour votre NuTyX sans devoir tout réinstaller.</p>
+     <p>Il est cependant vivement recommandé d'avoir une connection internet filaire et de commencer la mise à jour par la commande:</p>
      <pre class="command"><kbd>cards base -r</kbd></pre>
      <p>Une fois fait, vous devez juste informer <b>cards</b> de basculer de la version <i>8.0</i> vers la version <i>8.1</i></p>
      <pre class="command"><kbd>echo "name houaphan
@@ -120,8 +120,8 @@ get xorg xfce4 xfce4-extra lxdm</kbd></pre>
       Il y a eu beaucoup de changement "sous le capot" afin de permettre une meilleur continuitée.</p>
      <p>Avec la nouvelle version des scripts de démarrage de NuTyx 8.1, <b>cards</b> est capable de faire les mise à jour "seul". Si des mise à jour sont disponibles lors du prochain arrêt de la machine, <b>cards</b>
      téléchargera les paquets concernés et les mettera à jour.</p>
-     <p>Cette nouvelle version de cards inclue une librairie qui permettra à l'avenir de crééer "facilement" une interface grahique. Cette interface dépendera de la librairie <b>libcards</b> uniquement.</p>
-     <p>Afin de pouvoir réutiliser partiellement les recettes ARCH-Linux, de nouvelles variables </p>
+     <p>Cette nouvelle version de cards inclue une librairie qui permettra à l'avenir de crééer "facilement" une interface graphique. Cette interface dépendera de la librairie <b>libcards</b> uniquement.</p>
+     <p>Afin de pouvoir réutiliser partiellement les recettes ARCH-Linux, de nouvelles variables sont désormais reconnues par le script de construction <b>pkgmk</b>. Voici trois exemples possibles de recette.</p>
      <table width="60%" cellspacing="0" >
 		 <tr>
 			 <td><pre class="output"># Description: My first package
@@ -191,7 +191,7 @@ make DESTDIR="$pkgdir" install
       <pre class="command"><kbd>bash install-nutyx -p /mnt/lfs</kbd></pre>
       <p>Le script va analyser le contenu du fichier <b>/etc/install-nutyx.conf</b> si il existe et utiliser les variables définies dans ce dernier. Il n'est alors plus nessecaire de spécifier le chemin:
       <pre class="command"><kbd>bash install-houaphan</kbd></pre>
-      <p>Actuellement 4 variables sont configurables: le chemin d'installation défini par la variable <b>LFS</b>, l'adresse url où se trouvent les binaires défini par la variable <b>URL</b>, la version à installée (8.0 ou current) définie par la variable <b>VERSION</b> et enfin le chemin <b>local</b> des binaires téléchargés défini par la variable <b>DEPOT</b>. Voici un exemple complèt du fichier <b>/etc/install-houphan.conf</b>:
+      <p>Actuellement 4 variables sont configurables: le chemin d'installation défini par la variable <b>LFS</b>, l'adresse url où se trouvent les binaires défini par la variable <b>URL</b>, la version à installer (8.1 , stable ou current) définie par la variable <b>VERSION</b> et enfin le chemin <b>local</b> des binaires téléchargés défini par la variable <b>DEPOT</b>. Voici un exemple complèt du fichier <b>/etc/install-nutyx.conf</b>:
       <pre class="output">URL="http://localhost"
 DEPOT="/DEPOT"
 LFS="/mnt/lfs"
@@ -264,7 +264,7 @@ VERSION="current"</pre>
        </tr>
       </table>
      <p></p>
-     <li>Installer uniquement les fichiers de configuration, indispensable si vous souhaitez construire NuTyX depuis rien:
+     <li>Installe uniquement les fichiers de configuration, indispensable si vous souhaitez construire NuTyX depuis rien:
       <pre class="command"><kbd>bash install-nutyx -ic</kbd></pre></li>
      <li>Pour entrer dans une chroot, on utilise l'option <b>-ec</b>
       <pre class="command"><kbd>bash install-nutyx -ec</kbd></pre></li>
