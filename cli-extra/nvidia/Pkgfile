@@ -1,0 +1,41 @@
+# Description: nvidia kernel module
+# URL: http://www.nvidia.com/object/unix.html
+# Packager: tnut at nutyx dot org
+# Depends on: kernel-lts
+
+name=nvidia
+version=361.42
+release=1
+KERNEL_VERSION="`basename $PKG/lib/modules/*`"
+
+[ "$PKGMK_ARCH" == "i686"   ] && _ARCH=x86
+[ "$PKGMK_ARCH" == "x86_64"   ] && _ARCH=x86_64
+source=(http://download.nvidia.com/XFree86/Linux-${_ARCH}/$version/NVIDIA-Linux-${_ARCH}-$version.run)
+
+build() {
+  # Compilation
+  sh NVIDIA-Linux-${_ARCH}-${version}.run --extract-only
+  cd NVIDIA-Linux-${_ARCH}-${version}/kernel
+  SYSSRC=/usr/src/linux-${KERNEL_VERSION%.*} make module
+
+  # Put the module in place
+  for MODULE in nvidia.ko nvidia-modeset.ko
+  do
+    install -m 0644 -D $MODULE \
+    $PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/zzzz/$MODULE
+  done
+  if [ "${_ARCH}" == "x86_64" ]; then
+    install -m 0644 -D nvidia-uvm.ko \
+    $PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/zzzz/nvidia-uvm.ko
+  fi
+
+  # post-install autogen
+  cat > $PKGMK_ROOT/$name.post-install << "EOF"
+. lib/lsb/init-functions
+log_success_msg "update modules population"
+EOF
+echo "depmod $KERNEL_VERSION" >> $PKGMK_ROOT/$name.post-install
+cat >> $PKGMK_ROOT/$name.post-install << "EOF"
+log_warning_msg "${WARNING}Reboot if you want the modules being automatically loaded${NORMAL}"
+EOF
+}
