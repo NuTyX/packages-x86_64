@@ -188,7 +188,7 @@ make DESTDIR="$pkgdir" install
     <h3>Le nouveau script d'installation</h3>
      <p>Le script <b>bash</b> <a href="http://downloads.nutyx.org/install-nutyx">install-nutyx</a> fonctionne désormais comme une véritable application. Il dispose des options suivantes:</p>
      <li>Installer NuTyX dans un dossier
-      <pre class="command"><kbd>bash install-nutyx -p /mnt/lfs</kbd></pre>
+      <pre class="command"><kbd>LFS=/mnt/lfs bash install-nutyx</kbd></pre>
       <p>Le script va analyser le contenu du fichier <b>/etc/install-nutyx.conf</b> si il existe et utiliser les variables définies dans ce dernier. Il n'est alors plus nessecaire de spécifier le chemin:
       <pre class="command"><kbd>bash install-houaphan</kbd></pre>
       <p>Actuellement 4 variables sont configurables: le chemin d'installation défini par la variable <b>LFS</b>, l'adresse url où se trouvent les binaires défini par la variable <b>URL</b>, la version à installer (8.1 , stable ou current) définie par la variable <b>VERSION</b> et enfin le chemin <b>local</b> des binaires téléchargés défini par la variable <b>DEPOT</b>. Voici un exemple complèt du fichier <b>/etc/install-nutyx.conf</b>:
