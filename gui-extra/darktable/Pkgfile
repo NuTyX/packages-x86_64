@@ -1,0 +1,35 @@
+# Depends on: adwaita-icon-theme cmake colord-gtk desktop-file-utils exiv2 graphicsmagick gtk3 intltool json-glib lensfun libgphoto2 librsvg lua openexr pugixml
+
+description="Utility to organize and develop raw images."
+packager="tnut at nutyx dot org"
+url="http://darktable.sf.net/"
+name=darktable
+version=2.0.3
+release=1
+source=(https://github.com/darktable-org/darktable/archive/release-$version.tar.gz)
+
+build() {
+cd $name-release-$version
+mkdir -p build
+  cd build
+  CXXFLAGS+=" -fpermissive"
+  cmake \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBINARY_PACKAGE_BUILD=1 \
+      -DBUILD_USERMANUAL=False \
+      -DUSE_LIBSECRET=On \
+      -DUSE_LUA=On \
+      -DUSE_GNOME_KEYRING=Off \
+      -DUSE_COLORD=On \
+      -DPROJECT_VERSION=$version \
+      ..
+make
+make DESTDIR=$PKG install
+
+cd ../tools/basecurve
+cmake .
+make
+install -m755 dt-curve-tool $PKG/usr/bin/dt-curve-tool
+install -m755 dt-curve-tool-helper $PKG/usr/bin/dt-curve-tool-helper
+}
