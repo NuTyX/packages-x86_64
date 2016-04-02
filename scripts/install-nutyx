@@ -1604,12 +1604,12 @@ parse_options() {
 			/*)
 				boot_mesg "
  >>> This methode is depreciate <<<: adjust the 'LFS' variable instead"
-				echo_warning
 				echo "
    press any key to continue ...
 "
 				read a
-				FOLDER="$1";;
+				exit 1;;
+#				FOLDER="$1";;
 			*)
 				echo "`basename $0`: invalid option $1"
 				exit 1 ;;
