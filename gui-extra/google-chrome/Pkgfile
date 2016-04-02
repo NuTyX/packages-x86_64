@@ -1,12 +1,12 @@
 # Description: Google Chrome Browser, developer preview channel for Linux
 # URL:        http://dev.chromium.org/getting-involved/dev-channel
 # Maintainer:  Chris Farrell, timcowchip at gmail dot com 
-# Depends on: nss gconf libjpeg-turbo freetype cairo libxslt libpng alsa-lib hicolor-icon-theme xdg-utils xorg-libxscrnsaver
+# Depends on: pango xorg-libxcomposite cups atk gtk2 nss gconf libjpeg-turbo freetype cairo libxslt libpng alsa-lib hicolor-icon-theme xdg-utils xorg-libxscrnsaver
 
-run=(nss gconf libjpeg-turbo freetype cairo libxslt libpng alsa-lib hicolor-icon-theme xdg-utils xorg-libxscrnsaver)         
+run=(pango xorg-libxcomposite cups atk gtk2 nss gconf libjpeg-turbo freetype cairo libxslt libpng alsa-lib hicolor-icon-theme xdg-utils xorg-libxscrnsaver)
 name=google-chrome
 version=48.0.2564.103
-release=1
+release=2
 
 [ "`uname -m`" == "i686" ] && _arch="i386"
 [ "`uname -m`" == "x86_64" ] && _arch="amd64"
