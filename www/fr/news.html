@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
      <link rel="shortcut icon" href="../favicon.ico">
      <link rel="stylesheet" href="../css/nutyx.css" />
-     <title>NuTyX - Dernière nouvelle xx-04-2016</title>
+     <title>NuTyX - Dernière nouvelle 03-04-2016</title>
  </head>
  <body>
    <table>
@@ -85,9 +85,10 @@
       <p>Vous pouvez consulter la <a href="packages.html">liste des paquets</a> complète.</p>
     <h3>Mise à jour depuis la version 8.0</h3>
      <p>Une mise à jour est possible depuis la version 8.0 sans devoir tout reconfigurer, mais vous devrez malgrés tout, réinstaller tous vos programmes</p>
-     <p>Il est cependant vivevement recommandé d'avoir une connection internet filaire et de commencer la mise à jour après une:</p>
+     <p>Il est cependant vivevement recommandé d'avoir une connection internet filaire.</p>
+     <p>La commande ci-dessous va supprimer tous les programmes des collections définies dans /etc/cards.conf à l'exception des paquets des collections <b>base</b> et <b>base-extra</b> (ainsi que vos collections définie) set ne touchera pas aux fichiers contenus dans le dossier /home.</p>
+     <p>Donc si vous avez une connection filaire, commencer la mise à jour par:</p>
      <pre class="command"><kbd>cards base -r</kbd></pre>
-     <p> La commande cards base -r supprime tous les programmes des collections définies dans /etc/cards.conf sans intervenir dans /home</p> 
      <p>Une fois fait, vous devez juste informer <b>cards</b> de basculer de la version <i>8.0</i> vers la version <i>8.1</i></p>
      <pre class="command"><kbd>echo "name houaphan
 version 8.1" &gt; /var/lib/pkg/nutyx-version</kbd></pre>
@@ -118,11 +119,11 @@ get xorg xfce4 xfce4-extra lxdm</kbd></pre>
      <p>Si vous souhaitez une autre interface graphique vous allez devoir la compiler vous-même.</p>
     <h3>Les nouveautées de cards</h3>
       <p>Cards dans sa version <b>2.0</b> permet de faire une mise à jour complète de votre NuTyX.
-      Il y a eu beaucoup de changement "sous le capot" afin de permettre une meilleure continuitée.</p>
+      Il y a eu beaucoup de changement "sous le capot" afin de permettre une meilleure continuitée. Vous pouvez toujours consulter <a href="https://github.com/NuTyX/cards/commits/master">le log des changements.</a></p>
      <p>Avec la nouvelle version des scripts de démarrage de NuTyx 8.1, <b>cards</b> est capable de faire les mise à jour "seul". Si des mises à jour sont disponibles lors du prochain arrêt de la machine, <b>cards</b>
      téléchargera les paquets concernés et les mettera à jour.</p>
      <p>Cette nouvelle version de cards inclue une librairie qui permettra à l'avenir de crééer "facilement" une interface grahique. Cette interface dépendera de la librairie <b>libcards</b> uniquement.</p>
-     <p>Afin de pouvoir réutiliser partiellement les recettes ARCH-Linux, de nouvelles variables </p>
+     <p>Afin de pouvoir réutiliser partiellement les recettes ARCH-Linux, de nouvelles variables ont été créés, ci-dessous, 3 exemples différent de recette (fichier Pkgfile) avec les variables et syntaxes possibles. </p>
      <table width="60%" cellspacing="0" >
 		 <tr>
 			 <td><pre class="output"># Description: My first package
@@ -189,9 +190,9 @@ make DESTDIR="$pkgdir" install
     <h3>Le nouveau script d'installation</h3>
      <p>Le script <b>bash</b> <a href="http://downloads.nutyx.org/install-nutyx">install-nutyx</a> fonctionne désormais comme une véritable application. Il dispose des options suivantes:</p>
      <li>Installer NuTyX dans un dossier
-      <pre class="command"><kbd>bash install-nutyx -p /mnt/lfs</kbd></pre>
+      <pre class="command"><kbd>LFS=/mnt/lfs bash install-nutyx</kbd></pre>
       <p>Le script va analyser le contenu du fichier <b>/etc/install-nutyx.conf</b> si il existe et utiliser les variables définies dans ce dernier. Il n'est alors plus nécessaire de spécifier le chemin:
-      <pre class="command"><kbd>bash install-houaphan</kbd></pre>
+      <pre class="command"><kbd>bash install-nutyx</kbd></pre>
       <p>Actuellement 4 variables sont configurables: le chemin d'installation défini par la variable <b>LFS</b>, l'adresse url où se trouvent les binaires défini par la variable <b>URL</b>, la version à installer (8.0 ou current) définie par la variable <b>VERSION</b> et enfin le chemin <b>local</b> des binaires téléchargés défini par la variable <b>DEPOT</b>. Voici un exemple complet du fichier <b>/etc/install-houphan.conf</b>:
       <pre class="output">URL="http://localhost"
 DEPOT="/DEPOT"
@@ -289,7 +290,7 @@ VERSION="current"</pre>
      <p>Merci <b>mahmutov</b> pour la traduction turc du site internet et de l'installateur, NuTyX devient maintenant vraiment international.</p>
   <p class="updated"><a href="old-news.html">Anciennes nouvelles</a></p>
   <hr>  
-   <p class="updated">Le xx-04-2016 20:30</p>
+   <p class="updated">Le 03-04-2016 11:15</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
