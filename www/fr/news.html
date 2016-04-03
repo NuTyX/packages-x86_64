@@ -34,10 +34,10 @@
     <h3>Introduction pour les plus pressés</h3>
      <p>Six mois après la sortie de la première version de houaphan 8.0, je suis fier de vous annoncer la sortie de la NuTyX 8.1.
      Le nom de code reste <b>houaphan</b>.
-     Le temps passe très vite, <b>houaphan</b> est déjà la 8ième version majeur depuis la première version publique de NuTyX en 2007.
+     Pourquoi ce chiffre ? Le temps passe très vite, <b>houaphan</b> est déjà la 8ième version majeure depuis la première version publique de NuTyX en 2007.
      Cette version <b>8.1</b> est disponible en <b>64 et 32 bits</b>. Les deux versions contiennent un catalogue complèt des paquets.
-    <h3>Quelles sont les nouveautées</h3>
-    <p>Le nombre de paquets mis à jour est tellement important que nous avons décidé de recompiler touls les paquets afin de nous assurer qu'ils fonctionnent</p>
+    <h3>Quelles sont les nouveautées ?</h3>
+    <p>Le nombre de paquets mis à jour est tellement important que nous avons décidé de recompiler tous les paquets afin de nous assurer qu'ils fonctionnent</p>
     <p>Ceci est donc la deuxième version de NuTyX houaphan dont voici la liste des paquets principaux mis à jour:</p>
       <ul>
        <li>glibc 2.23</li>
@@ -82,11 +82,12 @@
        <li>virtualbox 5.0.16</li>
        <li>...</li>
       </ul>
-      <p>Vous pouvez consulter la <a href="packages.html">liste complète des paquets</a>. Celle-ci est continuellement mise à jour.</p>
+      <p>Vous pouvez consulter la <a href="packages.html">liste des paquets</a> complète.</p>
     <h3>Mise à jour depuis la version 8.0</h3>
-     <p>Une mise à jour est possible: depuis la version 8.0, il est possible de mettre à jour votre NuTyX sans devoir tout réinstaller.</p>
-     <p>Il est cependant vivement recommandé d'avoir une connection internet filaire et de commencer la mise à jour par la commande:</p>
+     <p>Une mise à jour est possible depuis la version 8.0 sans devoir tout reconfigurer, mais vous devrez malgrés tout, réinstaller tous vos programmes</p>
+     <p>Il est cependant vivevement recommandé d'avoir une connection internet filaire et de commencer la mise à jour après une:</p>
      <pre class="command"><kbd>cards base -r</kbd></pre>
+     <p> La commande cards base -r supprime tous les programmes des collections définies dans /etc/cards.conf sans intervenir dans /home</p> 
      <p>Une fois fait, vous devez juste informer <b>cards</b> de basculer de la version <i>8.0</i> vers la version <i>8.1</i></p>
      <pre class="command"><kbd>echo "name houaphan
 version 8.1" &gt; /var/lib/pkg/nutyx-version</kbd></pre>
@@ -98,10 +99,10 @@ reboot</kbd></pre>
      <p>Avant le processus de redémarrage, votre NuTyX va télécharger tous les paquets du système de base et les mettre à jour, lorsque votre machine sera redémarrée, vous serez sur une <b>NuTyX houaphan 8.1</b></p>
      <p>Dernière chose à faire c'est de mettre à jour les locales:</p>
      <pre class="command"><kbd>setup-nutyx -cl</kbd></pre>
-     <p>Vous allez reconnaître l'écran. Choisissez votre locale et vous êtes prêt pour installer tout ce que vous souhaitez comme pour une installation normale expliqué dans le chapitre suivant</p>
+     <p>Vous allez reconnaître l'écran. Choisissez votre locale et vous êtes prêt pour installer tout ce que vous souhaitez comme pour une installation normale expliquée dans le chapitre suivant</p>
     <h3>Intaller 8.1</h3>
      <p>Il est faut noter que toutes les interfaces graphiques disponibles sont accéssibles depuis le gestionnaire de connection polyvalent <b>lxdm</b>, pensez donc à l'ajouter (ainsi que xorg )
-     dans votre liste de paquets quelque soit l'interface que vous choisissez d'installer.
+     dans votre liste de paquets quelle que soit l'interface que vous choisissez d'installer.
      Un exemple d'installation de gnome avec tous les paquets disponibles à ce jour donnera donc:</p>
      <pre class="command"><kbd>check
 get xorg gnome gnome-extra lxdm</kbd></pre>
@@ -113,15 +114,15 @@ get xorg xfce4 xfce4-extra lxdm</kbd></pre>
      <pre class="command"><kbd>nu</kbd></pre>
      <p>Ensuite, redémarrez la machine avant de tenter de vous loger en mode graphique (c'est la méthode la plus simple)</p>
     <h3>Les nouvelles interfaces graphiques</h3>
-     <p>Sous cette nouvelle version houaphan 8.1, les interfaces graphiques <b>xfce</b>, <b>kde5</b>, <b>gnome</b>, <b>mate</b>, <b>lxde</b>, <b>openbox</b> sont désormais disponible.</p>
+     <p>Sous cette nouvelle version houaphan 8.1, les interfaces graphiques <b>xfce</b>, <b>kde5</b>, <b>gnome</b>, <b>mate</b>, <b>lxde</b>, <b>openbox</b> sont désormais disponibles.</p>
      <p>Si vous souhaitez une autre interface graphique vous allez devoir la compiler vous-même.</p>
     <h3>Les nouveautées de cards</h3>
       <p>Cards dans sa version <b>2.0</b> permet de faire une mise à jour complète de votre NuTyX.
-      Il y a eu beaucoup de changement "sous le capot" afin de permettre une meilleur continuitée.</p>
-     <p>Avec la nouvelle version des scripts de démarrage de NuTyx 8.1, <b>cards</b> est capable de faire les mise à jour "seul". Si des mise à jour sont disponibles lors du prochain arrêt de la machine, <b>cards</b>
+      Il y a eu beaucoup de changement "sous le capot" afin de permettre une meilleure continuitée.</p>
+     <p>Avec la nouvelle version des scripts de démarrage de NuTyx 8.1, <b>cards</b> est capable de faire les mise à jour "seul". Si des mises à jour sont disponibles lors du prochain arrêt de la machine, <b>cards</b>
      téléchargera les paquets concernés et les mettera à jour.</p>
-     <p>Cette nouvelle version de cards inclue une librairie qui permettra à l'avenir de crééer "facilement" une interface graphique. Cette interface dépendera de la librairie <b>libcards</b> uniquement.</p>
-     <p>Afin de pouvoir réutiliser partiellement les recettes ARCH-Linux, de nouvelles variables sont désormais reconnues par le script de construction <b>pkgmk</b>. Voici trois exemples possibles de recette.</p>
+     <p>Cette nouvelle version de cards inclue une librairie qui permettra à l'avenir de crééer "facilement" une interface grahique. Cette interface dépendera de la librairie <b>libcards</b> uniquement.</p>
+     <p>Afin de pouvoir réutiliser partiellement les recettes ARCH-Linux, de nouvelles variables </p>
      <table width="60%" cellspacing="0" >
 		 <tr>
 			 <td><pre class="output"># Description: My first package
@@ -179,7 +180,7 @@ make DESTDIR="$pkgdir" install
 		</tr>
      </table>
      <p>Un grand merci à <a href="https://github.com/peter1000">peter1000</a> qui a fait un énorme travail de recherche, et trouvé de nombreux petits bogues. Nous avons eu la chance d'échanger beaucoup d'expérience. peter1000 a même commencé son propre fork de cards.</p>
-     <p><a href="https://github.com/NuTyX/cards/blob/master/scripts/pkgmk2.in">peter1000</a> a commencé un script <b>pkgmk2</b> avec support de coleurs, NLS, et de nombreux nouveaux formats sources comme  git, bazard, svn etc sont intégrés. N'hésitez pas à tester ce nouveau script.</p>
+     <p><a href="https://github.com/NuTyX/cards/blob/master/scripts/pkgmk2.in">peter1000</a> a commencé un script <b>pkgmk2</b> avec support de couleurs, NLS, et de nombreux nouveaux formats sources comme  git, bazard, svn etc sont intégrés. N'hésitez pas à tester ce nouveau script.</p>
     <h3>La différence entre une collection &lt;nnn&gt; et la collection &lt;nnn-extra&gt;</h3>
      <p>Il y a une différence fondammentale entre, par exemple, la collection <b>'cli'</b> et <b>'cli-extra'</b>: Les ports et binaires contenus dans la collection <b><i>'cli'</i></b> sont quasi figés dans leur version au moment de la sortie de la version NuTyX, alors que les ports et binaires des collections <b><i>-extra</i></b> peuvent être mis à jour à tout moment.</p>
      <p>Cette technique permet d'isoler le <b>'système central'</b> (cad les collections <b><i>'base'</i></b>, <b><i>'cli'</i></b> et <b><i>'gui'</i></b>) des mises à jour qui peuvent l'être sur les applications <i>"périphériques"</i> contenues dans les collections <b><i>-extra</i></b>.</p>
@@ -188,10 +189,10 @@ make DESTDIR="$pkgdir" install
     <h3>Le nouveau script d'installation</h3>
      <p>Le script <b>bash</b> <a href="http://downloads.nutyx.org/install-nutyx">install-nutyx</a> fonctionne désormais comme une véritable application. Il dispose des options suivantes:</p>
      <li>Installer NuTyX dans un dossier
-      <pre class="command"><kbd>LFS=/mnt/lfs bash install-nutyx</kbd></pre>
-      <p>Le script va analyser le contenu du fichier <b>/etc/install-nutyx.conf</b> si il existe et utiliser les variables définies dans ce dernier. Il n'est alors plus nessecaire de spécifier le chemin:
+      <pre class="command"><kbd>bash install-nutyx -p /mnt/lfs</kbd></pre>
+      <p>Le script va analyser le contenu du fichier <b>/etc/install-nutyx.conf</b> si il existe et utiliser les variables définies dans ce dernier. Il n'est alors plus nécessaire de spécifier le chemin:
       <pre class="command"><kbd>bash install-houaphan</kbd></pre>
-      <p>Actuellement 4 variables sont configurables: le chemin d'installation défini par la variable <b>LFS</b>, l'adresse url où se trouvent les binaires défini par la variable <b>URL</b>, la version à installer (8.1 , stable ou current) définie par la variable <b>VERSION</b> et enfin le chemin <b>local</b> des binaires téléchargés défini par la variable <b>DEPOT</b>. Voici un exemple complèt du fichier <b>/etc/install-nutyx.conf</b>:
+      <p>Actuellement 4 variables sont configurables: le chemin d'installation défini par la variable <b>LFS</b>, l'adresse url où se trouvent les binaires défini par la variable <b>URL</b>, la version à installer (8.0 ou current) définie par la variable <b>VERSION</b> et enfin le chemin <b>local</b> des binaires téléchargés défini par la variable <b>DEPOT</b>. Voici un exemple complet du fichier <b>/etc/install-houphan.conf</b>:
       <pre class="output">URL="http://localhost"
 DEPOT="/DEPOT"
 LFS="/mnt/lfs"
@@ -264,7 +265,7 @@ VERSION="current"</pre>
        </tr>
       </table>
      <p></p>
-     <li>Installe uniquement les fichiers de configuration, indispensable si vous souhaitez construire NuTyX depuis rien:
+     <li>Installer uniquement les fichiers de configuration, indispensable si vous souhaitez construire NuTyX depuis rien:
       <pre class="command"><kbd>bash install-nutyx -ic</kbd></pre></li>
      <li>Pour entrer dans une chroot, on utilise l'option <b>-ec</b>
       <pre class="command"><kbd>bash install-nutyx -ec</kbd></pre></li>
@@ -282,7 +283,7 @@ VERSION="current"</pre>
    <h3>Merci à tous</h3>
      <p>Merci Pierre pour ton travail sur <b>kf5 - plasma</b>, personnellement je crois que nous avons la meilleure version kf5 - plasma disponible.</p>
      <p>Merci <a href="https://github.com/fanch">Fanch</a> pour avoir réinitié les collections <b>lxde, cinnamon, gnome, enlightenment et mate</b>. Fanch est très actif sur certains forks des collections existantes de NuTyX.
-     Vous pouvez suivre, copié son travail, soumettre des améliorations sur <a href="https://github.com/fanch?tab=repositories">github</a>.</p>
+     Vous pouvez suivre, copier son travail, soumettre des améliorations sur <a href="https://github.com/fanch?tab=repositories">github</a>.</p>
      <p>Je voudrais remercier <b>berlius</b> pour son énorme travail sur le processus de construction d'une NuTyX pour les processeurs <b>arm</b>. Il y a encore des coins à arrondir, mais c'est très prometeur et l'essentiel est fait.</p>
      <p>Merci <a href="https://github.com/peter1000">peter1000</a> pour son travail sur cards (pkgmk2) et tous ses retours qui ont permis l'amélioration de <b>cards</b>.</p>
      <p>Merci <b>mahmutov</b> pour la traduction turc du site internet et de l'installateur, NuTyX devient maintenant vraiment international.</p>
