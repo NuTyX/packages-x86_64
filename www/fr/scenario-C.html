@@ -61,7 +61,7 @@ base /usr/ports/aconserver</pre>
    <a name='13'></a>
    <h2>Installation des outils de développement</h2>
     <p>On peut maintenant commencer par installer les paquets de développement, cad un compilateur, les librairies C et C++ les outils autoconf, automake, etc etc.. . On commence par créer les dossiers necessaires:</p>
-    <pre class="command_user"><kbd>sudo mkdir -p /usr/ports/{personnel,gnome,aconserver}
+    <pre class="command_user"><kbd>sudo mkdir -p /usr/ports/{personnel,aconserver}
 sudo mkdir -p /srv/www/sources</kbd></pre>
     <p>Et maintenant on installe les outils</p>
     <pre class="command_user"><kbd>sudo cards sync</kbd></pre>
@@ -122,7 +122,13 @@ PKGMK_COMPRESSION_MODE="gz"
 PKGMK_CLEAN="no"</pre>
 
    <p>On peut maintenant récupérer les ports disponibles de NuTyX:</p>
-   <pre class="command_user"><kbd>ports -u</kbd></pre>
+   <pre class="command_user"><kbd>sudo orts -u</kbd></pre>
+  <pre class="output">Updating file list from downloads.nutyx.org::nutyx/ports/8.1/base/
+Updating collection base
+ Checkout ./
+ Checkout aaabasicfs/
+ Checkout aaabasicfs/Pkgfile
+...</pre>
 
   <a name='2'></a>
   <h2>Compiler un paquet avec quelques dépendances</h2>
@@ -179,7 +185,7 @@ cards level</kbd></pre>
 
    <hr>
 
-  <p class="updated">Dernière mise à jour 07-04-2016 00:02</p>
+  <p class="updated">Dernière mise à jour 07-04-2016 21:40</p>
      <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />

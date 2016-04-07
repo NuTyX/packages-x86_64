@@ -76,8 +76,8 @@ base /srv/www/nutyx/aconserver</pre>
     <p>Il faut commencer par créer les dossiers</p>
     <pre class="command_user"><kbd>sudo mkdir -p /srv/www/nutyx/x86_64/{personnel,aconserver}</kbd></pre>
     <p>On peut maintenant synchroniser l'ensemble des binaires:</p>
-    <pre class="command_user"><kbd>for i in base cli gui; do sudo rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/stable/x86_64/$i \
-/srv/www/nutyx/x86_64/$i;done</kbd></pre>
+    <pre class="command_user"><kbd>for i in base cli gui; do sudo rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/stable/x86_64/$i/ \
+/srv/www/nutyx/x86_64/$i/;done</kbd></pre>
     <p>Allez peut-être boire un café, manger une pizza ou un bon paquet de frites <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />, ça peut-être long...</p>
    <a name='15'></a>
    <h2>Le fichier /etc/pkgmk.conf</h2>
@@ -130,10 +130,10 @@ PKGMK_CLEAN="no"</pre>
       <pre class="command"><kbd>cards level
 cards base -r
 cards create
-for i in base cli gui;do rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/stable/x86_64/$i \
-/srv/www/nutyx/x86_64/$i;done</kbd></pre>
+for i in base cli gui;do rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/stable/x86_64/$i/ \
+/srv/www/nutyx/x86_64/$i/;done</kbd></pre>
    <hr>
-  <p class="updated">Dernière mise à jour 07-04-2016 00:37</p>
+  <p class="updated">Dernière mise à jour 07-04-2016 22:03</p>
      <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
