@@ -3,22 +3,22 @@
 # NuTyX package info file (http://nutyx.org)
 # Packager: # NuTyX package info file (http://nutyx.org)
 # Depends on: 
+
 name=json-c
 version=0.12
-release=1
+release=2
 
 source=(
 https://s3.amazonaws.com/${name}_releases/releases/$name-$version.tar.gz)
 
 build(){
     cd $name-$version
-    CFLAGS="$CFLAGS -Wno-error"
+    sed -i s/-Werror// Makefile.in
     ./configure --prefix=/usr \
                 --disable-static
-    make check
+    make -j1
     make DESTDIR=$PKG install    
 }
 
 
 
-# NuTyX Pkgfile (http://nutyx.org)
