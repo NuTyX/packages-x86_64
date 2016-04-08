@@ -33,102 +33,87 @@
     <a name='ID000'></a>
     <h2>Cards</h2>
      <p>Cards which means 'Create, Add, Remove and Download 
-     System'  <a href="#ID005">package</a>s) is a set of 
-     utilities to manage your installed softwares on your NuTyX-linux.</p>
-     <p>Cards can manage <a href="#ID005">dependency</a>s for compilation as well.
-     It can handle runtime <a href="#ID005">dependency</a>s on it's own.
-     It's means that in 95 % of the cases, <a href="#ID005">dependencies</a> for a working app do not need to
+     System'  <a href="#ID005">packages</a>) is a set of 
+     utilities to manage your installed softwares on your NuTyX-Linux.</p>
+     <p>Cards can manage <a href="#ID005">dependencies</a> for compilation as well.
+     It can handle runtime <a href="#ID005">dependencies</a> on it's own.
+     This means that in 95 % of all cases, <a href="#ID005">dependencies</a> for a working app do not need to
      to be specified in the construction <a href="#ID060">recipe</a>.</p>
     <a name='ID005'></a>
     <h2>A package</h2>
      <p>A package is an archive containing a set of files.
      Thoses files can be from various types.
-     We can find libraries, command line applications, graphical users interface commands
+     We can find libraries, command line applications, graphical user interfaces, commands,
      configuration information, etc</p>
-     <p>When the package is installed on your NuTyX, it will be handle by the
-     <a href="#ID005">package</a>s manager <a href="#ID000">cards</a></p>
+     <p>When the package is installed on your NuTyX, it will be handled by the
+     <a href="#ID005">package</a> manager <a href="#ID000">cards</a></p>
     <a name='ID006'></a>
     <h2>A dependency</h2>
      <p>A dependency is a <a href="#ID005">package</a> <b>AAA</b> needed
      for the runtime / for the compilation of another <a href="#ID005">package</a> <b>BBB</b>).</p>
-     <p>A good example of dependency is the <i>gtk3</i> <a href="#ID005">package</a> 
-     which is used by many <a href="#ID005">package</a>s of the <i>gnome</i> <a href="#ID010">collection</a>.</p>
+     <p>A good example of a dependency is the <i>gtk3</i> <a href="#ID005">package</a> 
+     which is used by many <a href="#ID005">packages</a> of the <i>gnome</i> <a href="#ID010">collection</a>.</p>
     <a name='ID010'></a>
     <h2>A collection</h2>
-     <p>A collection is collection all the <a href="#ID005">package</a>s that brings a set of fonctionnalities.</p>
+     <p>A collection is a collection of all the <a href="#ID005">packages</a> that bring a set of functionalities.</p>
      <p>When you install the base system from the MINI ISO or from the <a href="#ID050">script</a>,
      you installed the <i>base</i> <a href="#ID010">collection</a> and partielly the <i>base-extra</i> <a href="#ID010">collection</a> 
      The <i>gui</i> <a href="#ID010">collection</a> for example 
      allows you to install a graphical user interface.
-     On this graphical user interface, we will choose our favorite windows manager.</p> 
-     <p>Under NuTyX, its possible to install <i>kde5</i>, <i>gnome</i>, <i>mate</i>, <i>xfce4</i>, <i>lxde</i>
-     <a href="#ID010">collection</a>s,</p>
+     For such a graphical user interface, we will choose our favorite windows manager.</p> 
+     <p>Under NuTyX, it's possible to install <i>kde5</i>, <i>gnome</i>, <i>mate</i>, <i>xfce4</i>, <i>lxde</i>
+     desktop <a href="#ID010">collections</a>,</p>
     <a name='ID020'></a>
     <h2>A group</h2>
-     <p>Under NuTyX, a group of <a href="#ID005">package</a>s means a 
-     set of <a href="#ID005">package</a>s that the begining of the name is common: 
-     A exemple of group of <a href="#ID005">package</a>s under NuTyX:</p>
+     <p>Under NuTyX, a <b>group</b> defines a set of <a href="#ID005">packages</a> which begin with a common name. 
+     Additional parts are separated by a 'hyphen-minus' (-).</p>
+      <p>An example of a NuTyX package group:</p>
       <li>gstreamer1</li>
       <li>gstreamer1-plugins-bad</li>
       <li>gstreamer1-plugin-good</li>
       <li>gstreamer1-plugin-libav</li>
       <li>gstreamer1-...</li>
-      <p>Normaly, a group of <a href="#ID005">package</a>s will 
-      always be in the same <a href="#ID010">collection</a></p>
+      <p>Normaly, a group of <a href="#ID005">packages</a> will always be in the same <a href="#ID010">collection</a></p>
     <a name='ID030'></a>
     <h2>A category</h2>
-     <p>A category define a set of applications having similar fonctionalities: 
-     A typical example of category is "Internet" which include browsers, irc and mails clients,etc.</p>
+     <p>A category defines a set of applications which have similar functionalities: 
+     A typical example of category is "Internet" which includes browsers, irc and mail clients, etc.</p>
     <a name='ID040'></a>
     <h2>The base system</h2>
-     <p>The base system of NuTyX is made of a set of a minimum number of <a href="#ID005">package</a>s that will never be removed.</p>
-     <p>The list of <a href="#ID005">package</a>s to keep when we want to return to a base system is define in the <i>/etc/cards.conf</i> file. 
+     <p>The NuTyX 'base system' defines the minimum set of <a href="#ID005">packages</a> that will never be removed.</p>
+     <p>The list of <a href="#ID005">packages</a> to keep when we want to return to a base system is defined in the <i>/etc/cards.conf</i> file. 
     The keyword at the begining of the line is: <i>base</i>.</p>
     <a name='ID050'></a>
     <h2>A script</h2>
-     <p>The script is used, like in cinema, to define each action 
-     that have to be executed by the interpreter. In this case, 
-     the script will be then the set of organised actions to do for 
-     the construction of a <a href="#ID005">package</a>.</p>
-     <p>A script can also be used for installing
-     a NuTyX from another linux distribution or from another 
-     already installed NuTyX.</p>
+     <p>The script is used, like in cinema, to define each action that has to be executed by the interpreter. In this case, 
+     the script will be a set of organised actions to be executed for the construction of a <a href="#ID005">package</a>. See <a href="#ID060">recipe</a></p>
+     <p>A script can also be used for installing a NuTyX-Linux from another linux distribution or from another already installed NuTyX-Linux.</p>
     <a name='ID060'></a>
     <h2>A recipe</h2>
-     <p>A recipe define the construction of a <a href="#ID005">package</a>. 
-     Under NuTyX, the recipe of a <a href="#ID005">package</a> is located in 
-     the <a href="#ID080">Pkgfile</a> file.</p> 
+     <p>A recipe is a  <a href="#ID050">script</a> which defines the construction of a <a href="#ID005">package</a>. 
+     Under NuTyX, the recipe of a <a href="#ID005">package</a> is located in the <a href="#ID080">Pkgfile</a> file.</p> 
     <a name='ID070'></a> 
     <h2>A port</h2>
-     <p>In NuTyX, a port is made of a folder including all the necessary files 
-     for the construction of a <a href="#ID005">package</a>. 
-     It will always at least contains a file named <a href="#ID080">Pkgfile</a>.
-     <p>The port can also, in somes cases, contains
-     a pre-install or a post-install  <a href="#ID050">script</a>. 
-     It can also contains a README file describing various options, actions, configurations 
-     of the port.</p>
-     <p>The term <i>port</i> make reference to a remote depot containing <i>ports</i> and
-     use a client programm able to downloads thoses <i>ports</i> from this remote depot.</p>
-     <p>NuTyX use the <i>ports</i> tool for downloading all the <i>ports</i> from
-     this remote depot and locate them in the <i>/usr/ports/&lt;name_of_<a href="#ID010">collection</a>&gt; folder</i></p>
+     <p>In NuTyX, a port is a folder which contains all necessary files for the construction of a <a href="#ID005">package</a>. 
+     It will at least contain a file named <a href="#ID080">Pkgfile</a>.
+     <p>The port can also, in somes cases, contain a 'pre-install' or a 'post-install'  <a href="#ID050">script</a>. 
+     It can also contain additionally a README file describing various options, actions, configurations of the port or other required files e.g. patch files..</p>
+     <p>The term <i>port</i> makes reference to a remote depot containing <i>ports</i> which can be downloaded with a suitable client programm.</p>
+     <p>NuTyX use the <i>ports tool</i> for downloading all the <i>ports</i> from a remote depot and store them by default in the <i>/usr/ports/&lt;name_of_<a href="#ID010">collection</a>&gt; folder</i>. </p>
     <a name='ID080'></a> 
     <h2>The 'Pkgfile' file</h2>
-     <p>Pkgfile is a text file. It contains the 
-     <a href="#ID060">recipe</a> of construction of an application. 
-     The result of the construction will be a <a href="#ID005">package</a> 
-     which can be installed with the
-     <a href="#ID005">package</a>s manager <a href="#ID000">cards</a></p>
-     <p>The contents of this file follow a standard schema and is compose of three parts:</p>
+     <p>A Pkgfile is a <a href="#ID050">script</a> file. It contains the <a href="#ID060">recipe</a> for the construction a <a href="#ID005">package</a> 
+     which can be installed with the <i>package manager</i>  <a href="#ID000">cards</a></p>
+     <p>The content of this file follows a common schema and is compose of three parts:</p>
      <ol>
-      <li>General informations (optionnal but highly recommended) about the
-      <a href="#ID005">package</a>: Description, URL, Developer(s), Packager(s), <a href="#ID006">dependency</a>s</li>
-      <li>Mandatory information for the construction of the <a href="#ID005">package</a>: 
-      Name, version, release</li>
-      <li>The "build" function define the construction itself of the <a href="#ID005">package</a></li>
+      <li>`Pkgfile-Header`: (optional but highly recommended) general information about the <a href="#ID005">package</a>: Description, URL, Developer(s), Packager(s), <a href="#ID006">dependencies</a></li>
+      <li>`Mandatory information`: for the construction of the <a href="#ID005">package</a>: Name, version, release</li>
+      <li>`Required build function`: The "build" function defines the construction itself of the <a href="#ID005">package</a></li>
      </ol>
+     <p><b>NOTE:</b> the above outlines just the most general situation.
      <p>The <a href="#ID080">Pkgfile</a> file must be located in a folder with the same name as the
-     <i>name</i> variable define in this <a href="#ID080">Pkgfile</a> file.</p>
-     <p>Example of a such Pkgfile located in the <i>mypackage</i> folder:</p>
+     <i>name</i> variable defined in the <a href="#ID080">Pkgfile</a>.</p>
+     <p>Example of a Pkgfile located in the <i>mypackage</i> folder:</p>
       <pre class="output"># Depends on: glibc
 description="My first package"
 url="http://downloads.nutyx.org"
@@ -146,10 +131,10 @@ make DESTDIR=$PKG install
 }</pre>     
     <a name='ID090'></a>
     <h2>A scenario</h2>
-     <p>What does the term 'Scenario' <img src="../graphics/confused.gif" alt="" /> means in a NuTyX installation context ?</p>
+     <p>What does the term 'Scenario' <img src="../graphics/confused.gif" alt="" /> mean in a NuTyX installation context ?</p>
      <p>Don't search Google for "scenario" as Linux terminology (... not just yet anyway?), I suspect my formula doesn't exist yet 
      on other Linux distributions <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />.</p>
-     <p>This is an idea I formulated while I was creating the <a href="#ID000">cards</a> <a href="#ID005">package</a>s manager.<p>
+     <p>This is an idea I formulated while I was creating the <a href="#ID000">cards</a> <a href="#ID005">packages</a> manager.<p>
      <p>Over the years, I've experienced an extensive and growing target audience desiring to use a distribution similar to what 
      <b>NuTyX</b> offers at present. The same audience indicated to me that they wanted to build their own kernel 
      using their own preferential style and package mix.</p>
@@ -162,25 +147,21 @@ make DESTDIR=$PKG install
      <p>I describe these different options of installation as “<b>scenario's</b>” that is accessible within the framework of <b>NuTyX</b>.</p>
     <a name='ID100'></a>
     <h2>A chroot</h2>
-     <p>A chroot able to isolate our working environment where 
-     we will be able to build all the <a href="#ID060">recipe</a>s 
+     <p>A chroot is able to isolate our working environment so that we are able to build all the <a href="#ID060">recipes</a>
      coming from various <a href="#ID070">ports</a>.</p>
-     <p>A chroot is needed specialy to assure that none <a href="#ID006">dependency</a>s 
-     will be installed from the host operating system.</p>
+     <p>It is also needed to assure that no <a href="#ID006">dependency</a> will be installed from the host operating system.</p>
     <a name='ID200'></a>
     <h2>Levels</h2>
-     <p>When <a href="#ID000">cards</a> compile a <a href="#ID005">package</a>, 
+     <p>When <a href="#ID000">cards</a> compiles a <a href="#ID005">package</a>, 
      it needs to know the level of compilation of this <a href="#ID005">package</a>.</p>
-     <p>Each <a href="#ID005">package</a> may or may not contains 
-     <a href="#ID006">dependency</a>s.</p>
-     <p>If a <a href="#ID005">package</a> named <i>AAAA</i> do
-     contains any <a href="#ID006">dependency</a>s, it will be at the first level means level 0 (zero).</p>
+     <p>Each <a href="#ID005">package</a> may or may not contains <a href="#ID006">dependencies</a>.</p>
+     <p>If a <a href="#ID005">package</a> named <i>AAAA</i> contains some <a href="#ID006">dependencies</a>, it will be at the first level: level 0 (zero).</p>
      <p>If a package named <i>BBBB</i> contains a <a href="#ID006">dependency</a> named <i>AAAA</i>, this package
-     will be at second level, means level 1.</p>
-     <p>The list of <a href="#ID006">dependency</a>s for the compilation of a <a href="#ID005">package</a> 
-     is define at the line:</p>
+     will be at second level: level 1 (one).</p>
+     <p>The list of <a href="#ID006">dependencies</a> for the compilation of a <a href="#ID005">package</a> 
+     is defined by the line:</p>
 <pre class="output"># Depends on: glib atk pango gtk xorg-libx11</pre>
-     <p>of a <a href="#ID080">Pkgfile</a>.</p> 
+     <p>in a <a href="#ID080">Pkgfile</a>.</p> 
      
    <hr>
   <p class="updated">Last updated on 2016-04-07 20:34</p>
