@@ -5,7 +5,7 @@
 PKGMK_GROUPS=(doc devel)
 
 name=dbus
-version=1.10.6
+version=1.10.8
 release=1
 
 source=(http://dbus.freedesktop.org/releases/dbus/$name-$version.tar.gz \
@@ -17,16 +17,16 @@ build() {
 	tar xvf $scripts-$scriptsversion.tar.bz2
 
 	cd $name-$version
-	./configure --prefix=/usr --with-x \
-		--localstatedir=/var \
-		--disable-doxygen-docs \
-		--disable-xml-docs \
-		--docdir=/usr/share/doc/$name-$version \
-		--sysconfdir=/etc \
-		--with-console-auth-dir=/run/console \
-		--without-systemdsystemunitdir \
-		--disable-systemd --disable-static
-
+	./configure --prefix=/usr             \
+            --sysconfdir=/etc              \
+            --localstatedir=/var           \
+            --disable-doxygen-docs         \
+            --disable-xml-docs             \
+            --disable-static               \
+            --disable-systemd              \
+            --without-systemdsystemunitdir \
+            --with-console-auth-dir=/run/console/ \
+            --docdir=/usr/share/doc/dbus-$version 
 	make
 	make DESTDIR=$PKG install
 	# Adjust some files
