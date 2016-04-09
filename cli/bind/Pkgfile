@@ -4,10 +4,10 @@
 # Depends on: kerberos libxml2 
 
 name=bind
-version=9.10.3.p2
+version=9.10.3-P4
 release=1
 
-source=(ftp://ftp.isc.org/isc/bind9/9.10.3-P3/bind-9.10.3-P2.tar.gz)
+source=(ftp://ftp.isc.org/isc/bind9/$version/$name-$version.tar.gz)
 
 build(){
     # blfs-bootscript
@@ -16,7 +16,7 @@ build(){
     tar xvf $scripts-$scriptsversion.tar.bz2
 
     # pkg
-    cd $name-9.10.3-P2
+    cd $name-$version
     ./configure --prefix=/usr \
                 --sysconfdir=/etc \
                 --localstatedir=/var \
