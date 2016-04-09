@@ -1,0 +1,20 @@
+# Description: A library for passing menus over DBus
+# URL: https://launchpad.net/libdbusmenu
+# Packager: pierre at nutyx dot org, fanch at nutyx dot org, tnut at nutyx dot org
+# Depends on: python gobject-introspection gtk2 gtk3 glib vala gnome-doc-utils atk libepoxy json-glib
+
+name=libdbusmenu-glib
+_name=libdbusmenu
+release=1
+version=12.10.2
+
+source=(http://launchpad.net/dbusmenu/${version%.?}/${version}/+download/${_name}-${version}.tar.gz)
+
+build() {
+  cd libdbusmenu-$version
+  export HAVE_VALGRIND_TRUE='#'
+  export HAVE_VALGRIND_FALSE=''
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --disable-{dumper,static,tests}
+  make
+  make -C libdbusmenu-glib DESTDIR=$PKG install
+}
