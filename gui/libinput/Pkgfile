@@ -4,17 +4,16 @@
 # Depends on: libevdev mtdev libwacom
 
 name=libinput
-version=1.2.1
+version=1.2.2
 release=1
 
-source=(http://freedesktop.org/software/$name/$name-$version.tar.xz )
+source=(http://freedesktop.org/software/$name/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr --disable-static \
---with-udev-dir=/lib/udev
+./configure --prefix=/usr    \
+            --disable-static \
+            --with-udev-dir=/lib/udev
 make
 make DESTDIR=$PKG install
-install -v -dm755 $PKG/usr/share/doc/libinput-$version
-cp -rv doc/html/* $PKG/usr/share/doc/libinput-$version
 }
