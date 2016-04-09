@@ -1,16 +1,16 @@
 # Description: Convert xml to many other formats
 # URL: http://cyberelk.net/tim/software/xmlto/
 # Packager: pierre at nutyx dot org
-# Depends on: libxslt docbook-xsl docbook-xml 
+# Depends on: libxslt docbook-xsl docbook-xml links
 name=xmlto
-version=0.0.26
+version=0.0.28
 release=1
 
 source=(https://fedorahosted.org/releases/x/m/xmlto/$name-$version.tar.bz2)
 
 build() {
-unset MAKEFLAGS	
-cd $name-$version
+unset MAKEFLAGS
+LINKS="/usr/bin/links" cd $name-$version
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
