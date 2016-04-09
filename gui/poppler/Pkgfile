@@ -5,7 +5,7 @@
 
 dataversion=0.4.7
 name=poppler
-version=0.41.0
+version=0.42.0
 release=1
 
 source=(
@@ -15,15 +15,13 @@ http://poppler.freedesktop.org/poppler-data-$dataversion.tar.gz)
 build() {
 cd poppler-$version
  
-./configure --prefix=/usr      \
-	--sysconfdir=/etc      \
-	--disable-static       \
-	--enable-build-type=release \
-	--enable-cmyk               \
-	--disable-poppler-qt4  \
-	--disable-poppler-qt5  \
-	--disable-poppler-glib \
-	--enable-xpdf-headers
+    ./configure --prefix=/usr      \
+            --sysconfdir=/etc      \
+            --disable-static       \
+            --disable-poppler-qt4  \
+            --disable-poppler-qt5  \
+            --disable-poppler-glib \
+            --enable-xpdf-headers
 
 make
 make DESTDIR=$PKG install
