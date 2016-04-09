@@ -5,14 +5,14 @@
 # Depends on: yasm cmake
 
 name=x265
-version=1.8
+version=1.9
 release=1
-source=(https://bitbucket.org/multicoreware/x265/get/$version.tar.bz2
- http://www.linuxfromscratch.org/patches/blfs/svn/x265_1.8-enable_static-1.patch)
+source=( https://bitbucket.org/multicoreware/x265/downloads/${name}_${version}.tar.gz
+ http://www.linuxfromscratch.org/patches/blfs/svn/${name}-${version}-enable_static-1.patch)
 
 build() {
-	cd multicoreware-$name-*
-	patch -Np1 -i ../x265_1.8-enable_static-1.patch
+	cd ${name}_${version}
+	patch -Np1 -i ../${name}-${version}-enable_static-1.patch
 	mkdir bld 
 	cd bld
 	cmake  -DCMAKE_INSTALL_PREFIX=/usr \
