@@ -1,17 +1,20 @@
 # Description: An object oriented GL/GLES Abstraction/Utility Layer
 # URL: http://www.gnome.org/
 # Packager: pierre at nutyx dot org
-# Depends on: xorg-libxrandr gdk-pixbuf xorg-mesa xorg-glu pango gobject-introspection 
+# Depends on: xorg-libxrandr gdk-pixbuf xorg-mesa xorg-glu pango xorg-libdrm gobject-introspection 
 
 name=cogl
 version=1.22.0
-release=1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr 
+./configure --prefix=/usr \
+--enable-gles{1,2} \
+--enable-{kms,wayland}-egl-platform \
+--enable-wayland-egl-server--enable-wayland-egl-server
 make
 make DESTDIR=$PKG install
 }
