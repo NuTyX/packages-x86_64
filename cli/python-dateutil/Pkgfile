@@ -3,8 +3,9 @@
 # NuTyX package info file (http://nutyx.org)
 # Packager: # NuTyX package info file (http://nutyx.org)
 # Depends on: python-six python-setuptools 
+
 name=python-dateutil
-version=2.2
+version=2.4.2
 release=1
 
 source=(
@@ -13,13 +14,9 @@ http://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-$versio
 build() {
     cd $name-$version
     python2 setup.py install --prefix=/usr --root=$PKG
-    # fixes
-    chmod -R a+r $PKG/usr/lib/python2.7/
-    rm $PKG/usr/lib/python2.7/site-packages/dateutil/zoneinfo/zoneinfo--latest.tar.gz
     # check
-    python2 test.py
+    python2 updatezinfo.py
+    python2 setup.py test
 }
 
 
-
-# NuTyX Pkgfile (http://nutyx.org)
