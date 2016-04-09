@@ -1,14 +1,14 @@
 # Description: Comprehensive HTTP client library, supporting many features.
-# URL: URL: http://code.google.com/p/httplib2/
+# URL: https://pypi.python.org/pypi/httplib2
 # NuTyX package info file (http://nutyx.org)
 # Packager: # NuTyX package info file (http://nutyx.org)
 # Depends on: python 
+
 name=python-httplib2
-version=0.9
+version=0.9.2
 release=1
 
-source=(
-https://github.com/jcgregorio/httplib2/archive/v${version}.tar.gz
+source=(https://pypi.python.org/packages/source/h/httplib2/httplib2-$version.tar.gz
 $name.ssl_hostname.patch
 $name.cert.patch)
 
@@ -22,6 +22,3 @@ build() {
     python2 setup.py install --prefix=/usr --root=$PKG
 }
 
-
-
-# NuTyX Pkgfile (http://nutyx.org)
