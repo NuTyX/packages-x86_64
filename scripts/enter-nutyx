@@ -1,6 +1,18 @@
 setup_collection() {
 	local DIR
 	DIR="/$VERSION/$CHROOT"
+	if [ "$CHROOT" == "enlightenment" ]; then
+		echo "dir /DEPOT/enlightenment-extra
+dir /DEPOT/enlightenment
+dir /DEPOT/gui
+dir /DEPOT/cli
+dir /DEPOT/base
+dir /DEPOT/base-extra
+base /DEPOT/base
+base /DEPOT/cli
+base /DEPOT/gui
+logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+	fi
 	if [ "$CHROOT" == "cinnamon" ]; then
 		echo "dir /DEPOT/cinnamon-extra
 dir /DEPOT/cinnamon
