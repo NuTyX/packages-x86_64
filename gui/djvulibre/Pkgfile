@@ -4,15 +4,16 @@
 # Packager: # NuTyX package info file (http://nutyx.org)
 # Depends on: librsvg libtiff libjpeg-turbo hicolor-icon-theme 
 run=( librsvg hicolor-icon-theme )
+
 name=djvulibre
-version=3.5.25.3
+version=3.5.27
 release=1
 
 source=(
 http://downloads.sourceforge.net/djvu/$name-$version.tar.gz)
 
 build(){
-    cd $name-3.5.25
+    cd $name-$version
     ./configure --prefix=/usr \
                 --disable-desktopfiles
     make
@@ -26,4 +27,3 @@ build(){
 
 
 
-# NuTyX Pkgfile (http://nutyx.org)

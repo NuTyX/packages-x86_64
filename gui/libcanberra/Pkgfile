@@ -5,16 +5,18 @@
 
 name=libcanberra
 version=0.30
-release=1
+release=2
 
-source=(http://pkgs.fedoraproject.org/repo/pkgs/libcanberra/libcanberra-0.30.tar.xz/34cb7e4430afaf6f447c4ebdb9b42072/libcanberra-$version.tar.xz )
+source=(http://0pointer.de/lennart/projects/libcanberra/libcanberra-$version.tar.xz)
 
 build() {
 cd $name-$version
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
+--enable-alsa \
+--enable-gstreamer \
+--enable-pulse \
 --disable-oss
 make
-make DESTDIR=$PKG docdir=/usr/share/doc/$name-$version \
-install
-}  
+make -j1 DESTDIR=$PKG install
+}

@@ -5,9 +5,9 @@
 # Depends on: freetype ghostscript lcms libgsf giflib libxml2 openexr libwmf libpng librsvg libwebp djvulibre 
 
 name=imagemagick
-version=6.9.3.0
+version=6.9.3.7
 release=1
-_version=6.9.3-0
+_version=6.9.3-7
 source=(ftp://ftp.imagemagick.org/pub/ImageMagick/releases/ImageMagick-${_version}.tar.xz)
 
 build () {
@@ -41,3 +41,4 @@ build () {
     make DESTDIR=$PKG install
     find  $PKG -name perllocal.pod -exec rm {} \;
 }
+
