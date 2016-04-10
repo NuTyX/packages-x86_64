@@ -1,16 +1,17 @@
-# Description: Qt Cryptographic Architecture (Qt4).
+# Description: provide a API of encryption direct and of platform cross, using of types of data and of conventions Qt.
 # URL: http://delta.affinix.com/qca/
 # Packager: pierre at nutyx dot org
 # Depends on: qt4
 
 name=qca
-version=2.1.0
+version=2.1.1
 release=1
 
-source=(http://delta.affinix.com/download/$name/2.0/$name-$version.tar.gz)
+source=(http://download.kde.org/stable/qca/$version/src/$name-$version.tar.xz)
 
 build() {
 	cd $name-$version
+	sed -i 's/BSD/DEFAULT/' CMakeLists.txt
 	mkdir build
 	cd    build
 	cmake -DCMAKE_INSTALL_PREFIX=$PKG/$QT4DIR \
