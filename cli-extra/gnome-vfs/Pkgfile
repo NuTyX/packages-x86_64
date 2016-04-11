@@ -1,0 +1,37 @@
+# Description: GNOME virtual filesystem package
+# URL: http://www.gnome.org/
+# Packager: fanch at nutyx dor org
+# Depends on: gconf glib gnome-mime-data intltool libxml2 samba gnutls
+
+name=gnome-vfs
+version=2.24.4
+release=2
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/2.24/$name-$version.tar.bz2 enable-deprecated.patch
+gnutls-config.patch
+        gnutls-3.4.0.patch
+        gcrypt-config.patch
+        enable-deprecated.patch)
+
+build() {
+	cd $name-$version
+	patch -Np1 -i ../gnutls-config.patch
+	patch -Np1 -i ../gnutls-3.4.0.patch
+	patch -Np1 -i ../gcrypt-config.patch
+	patch -Np1 -i ../enable-deprecated.patch
+  sed -i -s 's|$(srcdir)/auto-test|auto-test|' test/Makefile.am
+  libtoolize --force
+  gtkdocize
+  aclocal
+  autoconf
+  automake --add-missing
+	CFLAGS="$CFLAGS -fno-strict-aliasing" ./configure \
+      --prefix=/usr --sysconfdir=/etc \
+      --localstatedir=/var --disable-static \
+      --libexecdir=/usr/lib/gnome-vfs-2.0 \
+      --enable-samba --with-samba-includes=/usr/include/samba-4.0 \
+      --disable-hal --enable-avahi --disable-howl \
+      --disable-openssl --enable-gnutls
+	make
+	make  DESTDIR=$PKG install
+}
+

@@ -1,0 +1,20 @@
+# Description: The deprecated GNOME-2 library
+# URL: http://www.gnome.org/
+# Packager: fanch at nutyx dor org
+# Depends on: intltool gnome-vfs libbonobo gconf gvfs libcanberra
+
+name=libgnome
+version=2.32.1
+release=1
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.bz2
+0001-Don-t-use-G_DISABLE_DEPRECATED.patch)
+
+build() {
+	cd $name-$version
+	patch -Np1 -i ../0001-Don-t-use-G_DISABLE_DEPRECATED.patch
+	 autoreconf -fi
+	./configure --prefix=/usr --sysconfdir=/etc \
+      --localstatedir=/var --disable-static --disable-esd 
+	make
+	make DESTDIR=$PKG install
+}

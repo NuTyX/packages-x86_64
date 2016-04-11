@@ -1,0 +1,16 @@
+# Description: P(ortable|ackageable) NaCl-based crypto library.
+# URL: https://github.com/jedisct1/libsodium
+# Packager: fanch at nutyx dot org
+# Depends on: glibc
+
+name=libsodium
+version=1.0.8
+release=1
+source=(http://download.dnscrypt.org/$name/releases/$name-${version}.tar.gz)
+
+build() {
+	cd $name-${version}
+   ./configure --prefix=/usr 
+	make
+	make DESTDIR=$PKG install
+}
