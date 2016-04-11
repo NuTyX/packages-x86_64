@@ -4,12 +4,12 @@
 # Depends on: gtk2 mate-libindicator mate-panel
 
 name=mate-indicator-applet
-version=1.12.1
+version=1.14.0
 release=1
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 build() {
 cd $name-$version
-./autogen.sh --prefix=/usr \
+./configure --prefix=/usr \
         --libexec=/usr/lib/${name} \
         --disable-static
 make
