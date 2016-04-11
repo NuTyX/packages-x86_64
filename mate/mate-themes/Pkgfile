@@ -6,12 +6,12 @@
 
 
 name=mate-themes
-version=1.12.0
-_version=3.18
+version=3.20.5
 release=1
-source=(http://pub.mate-desktop.org/releases/${version%.*}/${name}-gtk${_version}-${version}.tar.xz)
+source=(http://pub.mate-desktop.org/releases/themes/${version%.*}/${name}-${version}.tar.xz)
+
 build() {
-	cd ${name}-gtk${_version}-${version}
+	cd ${name}-${version}
     ./configure \
         --prefix=/usr \
         --enable-all-themes \
