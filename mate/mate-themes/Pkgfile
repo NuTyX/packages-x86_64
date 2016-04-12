@@ -13,10 +13,7 @@ source=(http://pub.mate-desktop.org/releases/themes/${version%.*}/${name}-${vers
 build() {
 	cd ${name}-${version}
     ./configure \
-        --prefix=/usr \
-        --enable-all-themes \
-        --enable-test-themes \
-        --disable-placeholders
+        --prefix=/usr 
 make
 make DESTDIR=$PKG install
 }
