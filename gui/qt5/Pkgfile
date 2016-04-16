@@ -5,19 +5,29 @@
 
 name=qt5
 version=5.6.0
-release=1
+release=2
 
 _name=qt-everywhere-opensource-src-${version}
 
-source=(http://download.qt-project.org/official_releases/qt/${version%.*}/$version/single/${_name}.tar.xz)
+source=(http://download.qt-project.org/official_releases/qt/${version%.*}/$version/single/${_name}.tar.xz
+       qt5.6-alsa1.11.patch
+       qt5.6-bug-51648.patch
+       qt5.6-bug-51649.patch
+       qt5.6-bug-51676.patch)
 
 build() {
 
 QT5PREFIX=/usr
 QT5BINDIR=$QT5PREFIX/lib/qt5/bin
 
+cd ${_name}*/qtbase
 
-cd ${_name}*
+patch -p1 -i $SRC/qt5.6-alsa1.11.patch
+patch -p1 -i $SRC/qt5.6-bug-51648.patch
+patch -p1 -i $SRC/qt5.6-bug-51649.patch
+patch -p1 -i $SRC/qt5.6-bug-51676.patch
+
+cd ../
 
 ./configure -prefix         $QT5PREFIX                  \
             -sysconfdir     /etc/xdg                    \
