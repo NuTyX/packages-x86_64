@@ -126,6 +126,11 @@ do
                 PKGMK="pkgmk -d -i"
                 $PKGMK  2>&1|tee ${LOG}/$NAME.log || exit 1;;
         esac
+	if ( grep "^=======>" ${LOG}/$NAME.log|grep "succeeded"  > /dev/null); then
+	    echo "done"
+	else
+	    exit 1
+	fi
         if ( grep "^=======>" ${LOG}/$NAME.log| tail -1 |grep "ERROR"  > /dev/null); then
             exit 1
         fi
