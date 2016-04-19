@@ -5,21 +5,16 @@
 
 name=smpeg
 version=0.4.5
-release=2
-source=(http://downloads.nutyx.org/archives/smpeg-$version.tar.xz
-	smpeg-mpegaudiosdl.patch
-	smpeg-0.4.4_m4.patch)
+release=3
+source=(http://crux.ster.zone/downloads/$name/$name-$version.tar.xz)
 
 build() {
-	cd smpeg-$version
+	cd $name-$version
 	./configure \
 		--prefix=/usr \
-		--mandir=/usr/share/man \
-		--disable-static \
-		--enable-gtk-player=no
-#	sed -i -e 's|\(libsmpeg_la_LDFLAGS = .*\)|\1 -lstdc++|' Makefile
+		--mandir=/usr/share/man
 	make
 	make install DESTDIR=$PKG
-#	rm $PKG/usr/man/man1/gtv.1
 }
+
 
