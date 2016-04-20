@@ -4,7 +4,7 @@
 # Depends on: pkg-config libtool wayland xorg-libx11 xorg-libdrm xorg-libxext xorg-libxdamage expat llvm elfutils xorg-libxshmfence 
 
 name=xorg-mesa
-version=11.2.0
+version=11.2.1
 release=1
 
 source=(ftp://ftp.freedesktop.org/pub/mesa/${version}/mesa-$version.tar.xz
@@ -12,7 +12,6 @@ source=(ftp://ftp.freedesktop.org/pub/mesa/${version}/mesa-$version.tar.xz
 build() {
 cd mesa-$version
 patch -Np1 -i ../mesa-$version-add_xdemos-1.patch
-
 ./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2'    \
 --prefix=/usr                  \
 --sysconfdir=/etc              \
