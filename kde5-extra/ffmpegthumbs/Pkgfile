@@ -1,17 +1,15 @@
 # Description : FFmpeg-based thumbnail creator for video files
 # URL : https://projects.kde.org/projects/kde/applications/FFmpeg-based thumbnail creator for video files
 # Packager : pierre at nutyx dot org
-# Depends on : kf5-extra-cmake-modules kf5-kdoctools git kf5-kio ffmpeg
+# Depends on : kf5-extra-cmake-modules kf5-kdoctools kf5-kio ffmpeg
 
 name=ffmpegthumbs
-version=20150928
+version=16.04.0
 release=1
 
-source=()
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build() {
-
-git clone -b frameworks git://anongit.kde.org/ffmpegthumbs.git
 
 mkdir -p build
 cd build
