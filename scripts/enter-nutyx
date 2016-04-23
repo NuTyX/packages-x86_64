@@ -16,26 +16,43 @@
 # - mate
 # - enlightenment
 #
-# Notes:
+# IMPORTANTS NOTES:
 # a. We make a difference only for base, cli and gui and they -extra counterparts
-#    Exemple: to compile the all cli-extra collection the syntax will be:
+#    Example: to compile the all cli-extra collection the syntax will be:
 #
-#    bash enter-nutyx /current/cli-extra
+#    bash bin/enter-nutyx /current/cli-extra
 #    As simple as that :)
 #
 # b. Some services are going to be activated (http (port 80), rpcbind (port 111), nfs (port 2049)
 #    If your main router forward some of those ports to your machine. You need to checkit out
 #
-# c. You need about 14 Gbytes of free space for the mirror of NuTyX (/srv/local)
+# c. You need about 10 Gbytes of free space for the mirror of NuTyX (/srv/local)
 #    and another 6 to 8 Gbytes for your (temporary) installed NuTyX. Also aware that
 #    /srv/local/sources will continuously grow up until you delete some sources packages files
 #
+# d. You need to have the install-nutyx script and enter-nutyx in the /root/bin directory, use a link to
+#    your 'core' git
+#
+#    mkdir /root/bin
+#    ln -sv /home/thierry/git/core/scripts/enter-nutyx /root/bin/enter-nutyx
+#    ln -sv /home/thierry/git/core/scripts/install-nutyx /root/bin/enter-nutyx
+#
+#    Adapt "/home/thierry/git/" to your path
+#
+# e. The installed NuTyX should ALWAYS be installed under /current or /stable. It means if you have to use
+#    another (bigger) partition for example, you should use a link to it:
+#    Example:
+#     ln -sv /home/thierry/chroot-64/current /current
+#     ln -sv /home/thierry/chroot-64/stable /stable
+#
+#    In this example the installed NuTyX will always endup in  /home/thierry/chroot-64/stable/xxx or
+#    /home/thierry/chroot-64/current/xxx which is fine because it's another bigger partition (740 Gb about in my case)
 #
 # 2. HOW DOES THIS WORK ?
 #
 #  The script will:
 #
-#  - install a NuTyX current or stable (define by the first argument) into a folder (define in /etc/install-nutyx.conf)
+#  - install a NuTyX current or stable (define by the first part of the first argument) into a folder (define by the first argument)
 #  - install the devel packages
 #  - mount the depot needed for the specific collection (define by the first argument)
 #  - mount the ports needed for the specific collection
@@ -63,7 +80,7 @@
 #  This parameter is optionnal, and specify the specific port you want to build. Currently this option works only with
 #  base, base-extra, cli, cli-extra, gui, gui-extra collections.
 #  Example:
-#   bash enter-nutyx /current/base-extra kernel
+#   bash bin/enter-nutyx /current/base-extra kernel
 #
 #  This example will build (or rebuild) the kernel binaries only
 #
