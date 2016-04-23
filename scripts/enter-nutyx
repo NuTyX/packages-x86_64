@@ -1,4 +1,4 @@
-#*********************************************************************************************
+#***************************************************************************************************************************************************
 # 1. INTRODUCTION
 #
 # This script is able to compile any ports from any official collections that are one of:
@@ -16,12 +16,20 @@
 # - mate
 # - enlightenment
 #
-# Note that only we make a difference only for base, cli and gui and they -extra counterparts
-# Exemple: to compile the all cli-extra collection the syntax will be:
+# Notes:
+# a. We make a difference only for base, cli and gui and they -extra counterparts
+#    Exemple: to compile the all cli-extra collection the syntax will be:
 #
-#  bash enter-nutyx /current/cli-extra
+#    bash enter-nutyx /current/cli-extra
+#    As simple as that :)
 #
-# As simple as that :)
+# b. Some services are going to be activated (http (port 80), rpcbind (port 111), nfs (port 2049)
+#    If your main router forward some of those ports to your machine. You need to checkit out
+#
+# c. You need about 14 Gbytes of free space for the mirror of NuTyX (/srv/local)
+#    and another 6 to 8 Gbytes for your (temporary) installed NuTyX. Also aware that
+#    /srv/local/sources will continuously grow up until you delete some sources packages files
+#
 #
 # 2. HOW DOES THIS WORK ?
 #
@@ -54,6 +62,10 @@
 # Parameter 2:
 #  This parameter is optionnal, and specify the specific port you want to build. Currently this option works only with
 #  base, base-extra, cli, cli-extra, gui, gui-extra collections.
+#  Example:
+#   bash enter-nutyx /current/base-extra kernel
+#
+#  This example will build (or rebuild) the kernel binaries only
 #
 # 3. CONFIGURATION OF THE HOST NuTyX
 #
@@ -77,13 +89,60 @@
 #  localhost:/srv/local/sources /current/cli-extra/sources nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
 #  localhost:/srv/local/current/x86_64 /current/cli-extra/DEPOT nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
 #  localhost:/home/thierry/devel/git/nutyx-current/extra /current/cli-extra/root/extra nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
-#  localhost:/srv/remote/logs/current/x86_64/cli-extra /current/cli-extra/var/log/pkgbuild nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
+#  localhost:/srv/local/logs/current/x86_64/cli-extra /current/cli-extra/var/log/pkgbuild nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
 #
+#  You should add and adapt thoses four lines for every collection you planned to build. Adapts /home/thierry to yours
+#  
 # It means:
 #  localhost should have nfs-serveur running and /srv folder define in /etc/exports file
-#  localhost should have rsync configure to sync all the binaries from a remote server (downloads.nutyx.org)
 #  localhost should have http serveur to save time when installing NuTyX from your localhost
-     
+#  localhost should have a cron task to sync periodically (every hour by default) the depot
+#
+# 4. GET THE DEPOT and setup all the needed folders
+#
+#  To get all the binaries locally and used them (highly recommended) we need to rsync them, following command could do (takes quite a bit of time
+#  the first time)
+#
+#  mkdir -p /srv/local/logs/current/x86_64/{base,cli,gui,base-extra,cli-extra,gui-extra,cinnamon,enlightenment,gnome,lxde,kde5,mate,xfce4}
+#  mkdir -p /srv/local/logs/stable/x86_64/{base,cli,gui,base-extra,cli-extra,gui-extra,cinnamon,enlightenment,gnome,lxde,kde5,mate,xfce4}
+#  rsync -av --delete --exclude=sources --exclude=logs --exclude=*.iso rsync://downloads.nutyx.org/nutyx/ /srv/local/
+#
+# 5. GET ALL the services and tools
+#
+#   get rsync tar wget apache apache.service nfs-utils nfs-utils.service fcron fcron.service
+#
+# Adjust /etc/httpd/httpd.conf
+#
+#   DocumentRoot "/srv/www" -> DocumentRoot "/srv/local"
+#   <Directory "/srv/www"> -> <Directory "/srv/local"> (on the next line)
+#
+# Add following line into /etc/exports file
+#
+#   /srv localhost(rw,no_root_squash,subtree_check,anonuid=99,anongid=99)
+#
+# Create an fcron config file:
+#
+#   fcrontab -e (in root)
+#
+#   0 * * * * rsync -av --delete --exclude=sources --exclude=logs --exclude=*.iso rsync://downloads.nutyx.org/nutyx/ /srv/local/
+#
+#   means we will sync every hour at XX:00:00 up to you to adjust to what ever you like
+#
+#
+# 6. START THE SERVICES
+#
+# /etc/rc.d/init.d/httpd start
+# /etc/rc.d/init.d/fcron start
+# /etc/rc.d/nfs-server start
+#
+# You are now ready to work
+# You can check the log of fcron in /var/log/cron.log
+# You can check the log of apache (http service) in /var/log/httpd/access.log and /var/log/httpd/error.log
+# You can check the log of your builds in http://localhost/logs
+#
+# Enjoy NuTyX :)
+#
+#***************************************************************************************************************************************************
 
 setup_collection() {
 	local DIR
