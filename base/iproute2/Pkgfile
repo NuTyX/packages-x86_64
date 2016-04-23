@@ -1,13 +1,13 @@
-# Description: Programs for basic and advanced network routing.
-# URL: http://linux-net.osdl.org/index.php/Iproute2
 # Packager: pierre at nutyx dot org
+
 PKGMK_GROUPS=(devel man doc)
-
+url="https://www.kernel.org/pub/linux/utils/net/iproute2/"
+description="Programs for basic and advanced network routing."
 name=iproute2
-version=4.4.0
-release=2
+version=4.5.0
+release=1
 
-source=(http://www.kernel.org/pub/linux/utils/net/$name/iproute2-$version.tar.xz)
+source=($url/iproute2-$version.tar.xz)
 
 build()
 {
@@ -15,6 +15,9 @@ cd iproute2-$version
 sed -i /ARPD/d Makefile
 sed -i 's/arpd.8//' man/man8/Makefile
 rm -v doc/arpd.sgml
+
+# disable building one module that requires iptables
+sed -i 's/m_ipt.o//' tc/Makefile
 
 make SBINDIR=/sbin MANDIR=/usr/share/man INFODIR=/usr/share/info \
 	DESTDIR=$PKG 
