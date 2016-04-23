@@ -1,3 +1,90 @@
+#*********************************************************************************************
+# 1. INTRODUCTION
+#
+# This script is able to compile any ports from any official collections that are one of:
+# - base
+# - base-extra
+# - cli
+# - cli-extra
+# - gui
+# - gui-extra
+# - gnome
+# - xfce4
+# - lxde
+# - cinnamon
+# - kde5
+# - mate
+# - enlightenment
+#
+# Note that only we make a difference only for base, cli and gui and they -extra counterparts
+# Exemple: to compile the all cli-extra collection the syntax will be:
+#
+#  bash enter-nutyx /current/cli-extra
+#
+# As simple as that :)
+#
+# 2. HOW DOES THIS WORK ?
+#
+#  The script will:
+#
+#  - install a NuTyX current or stable (define by the first argument) into a folder (define in /etc/install-nutyx.conf)
+#  - install the devel packages
+#  - mount the depot needed for the specific collection (define by the first argument)
+#  - mount the ports needed for the specific collection
+#  - mount the sources and logs folders
+#  - enter (chroot) in the installed NuTyX
+#  - run the script found in /tmp folder which is buildup by collecting info from arguments
+#  - will compile what has to be compile with or without success but in both cases will
+#  - exit the installed NuTyX
+#  - umount the depot, the ports, the sources and logs folders 
+#  - IF NO ERROR OCCUR at umount process will delete the current or stable NuTyX folder
+#
+# 3. ARGUMENTS to the enter-nutyx script.
+#
+# You can pass 1 or 2 arguments:
+#
+# Parameter 1:
+#  It's specify the version we are going to use (currently it can be "stable" or "current"
+#  and it's specify the collection which is one of following possible collection:
+#
+#  base, base-extra, cli, cli-extra, gui, gui-extra, cinnamon, enlightenment, gnome, lxde, kde5, mate, xfce4
+#  You note that even under cinnamon (for example) we have two collection cinnamon and cinnamon-extra, even then
+#  the script will automatically build both
+#
+# Parameter 2:
+#  This parameter is optionnal, and specify the specific port you want to build. Currently this option works only with
+#  base, base-extra, cli, cli-extra, gui, gui-extra collections.
+#
+# 3. CONFIGURATION OF THE HOST NuTyX
+#
+# It's absolutly necessary to configure your NuTyX host machine properly otherwise nothing will works like expected
+#
+# Files that are involve in the configuration process:
+#
+# - /etc/install-nutyx.conf
+# - /etc/fstab
+# - /etc/install-nutyx.conf.d/pkgmk.conf
+#
+# The /etc/install-nutyx.conf file MUST specify 2 variables 
+# DEPOT=/DEPOT
+# URL="localhost"
+#
+# As explain above, we mount a lot of folder, they HAVE TO BE specify in the /etc/fstab
+# As we used predefined folder (/DEPOT, /SOURCES) we can specify them in /etc/fstab
+#
+# Example for the cli-extra collection of the current version specify following lines
+#
+#  localhost:/srv/local/sources /current/cli-extra/sources nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
+#  localhost:/srv/local/current/x86_64 /current/cli-extra/DEPOT nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
+#  localhost:/home/thierry/devel/git/nutyx-current/extra /current/cli-extra/root/extra nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
+#  localhost:/srv/remote/logs/current/x86_64/cli-extra /current/cli-extra/var/log/pkgbuild nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
+#
+# It means:
+#  localhost should have nfs-serveur running and /srv folder define in /etc/exports file
+#  localhost should have rsync configure to sync all the binaries from a remote server (downloads.nutyx.org)
+#  localhost should have http serveur to save time when installing NuTyX from your localhost
+     
+
 setup_collection() {
 	local DIR
 	DIR="/$VERSION/$CHROOT"
