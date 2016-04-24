@@ -134,9 +134,12 @@
 #   DocumentRoot "/srv/www" -> DocumentRoot "/srv/local"
 #   <Directory "/srv/www"> -> <Directory "/srv/local"> (on the next line)
 #
-# Add following line into /etc/exports file
+# Add followings lines into /etc/exports file
 #
 #   /srv localhost(rw,no_root_squash,subtree_check,anonuid=99,anongid=99)
+#   /home/thierry localhost(rw,no_root_squash,subtree_check,anonuid=99,anongid=99)
+#
+# Adjust '/home/thierry' path to your user path
 #
 # Create an fcron config file:
 #
