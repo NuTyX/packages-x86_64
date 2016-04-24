@@ -26,9 +26,10 @@
 # b. Some services are going to be activated (http (port 80), rpcbind (port 111), nfs (port 2049)
 #    If your main router forward some of those ports to your machine. You need to checkit out
 #
-# c. You need about 10 Gbytes of free space for the mirror of NuTyX (/srv/local)
-#    and another 6 to 8 Gbytes for your (temporary) installed NuTyX. Also aware that
-#    /srv/local/sources will continuously grow up until you delete some sources packages files
+# c. You need about 10 Gbytes of free space for the mirror of NuTyX (/srv/local), another
+#    10 Gbytes of free space for the /srv/remote mirror and another 6 to 8 Gbytes for your 
+#    (temporary) installed NuTyX. Also aware that /srv/local/sources will continuously grow up
+#    until you delete some sources packages files
 #
 # d. You need to have the install-nutyx script and enter-nutyx in the /root/bin directory, use a link to
 #    your 'core' git
@@ -99,7 +100,7 @@
 # URL="localhost"
 #
 # As explain above, we mount a lot of folder, they HAVE TO BE specify in the /etc/fstab
-# As we used predefined folder (/DEPOT, /SOURCES) we can specify them in /etc/fstab
+# As we used predefined folder (/DEPOT, /sources) we can specify them in /etc/fstab
 #
 # Example for the cli-extra collection of the current version specify following lines
 #
@@ -122,7 +123,7 @@
 #
 #  mkdir -p /srv/local/logs/current/x86_64/{base,cli,gui,base-extra,cli-extra,gui-extra,cinnamon,enlightenment,gnome,lxde,kde5,mate,xfce4}
 #  mkdir -p /srv/local/logs/stable/x86_64/{base,cli,gui,base-extra,cli-extra,gui-extra,cinnamon,enlightenment,gnome,lxde,kde5,mate,xfce4}
-#  rsync -av --delete --exclude=sources --exclude=logs --exclude=*.iso rsync://downloads.nutyx.org/nutyx/ /srv/local/
+#  rsync -av --delete --exclude=sources --exclude=logs --exclude=*.iso rsync://downloads.nutyx.org/nutyx/ /srv/remote/
 #
 # 5. GET ALL the services and tools
 #
@@ -141,7 +142,7 @@
 #
 #   fcrontab -e (in root)
 #
-#   0 * * * * rsync -av --delete --exclude=sources --exclude=logs --exclude=*.iso rsync://downloads.nutyx.org/nutyx/ /srv/local/
+#   0 * * * * rsync -av --delete --exclude=sources --exclude=logs --exclude=*.iso rsync://downloads.nutyx.org/nutyx/ /srv/remote/
 #
 #   means we will sync every hour at XX:00:00 up to you to adjust to what ever you like
 #
@@ -150,12 +151,22 @@
 #
 # /etc/rc.d/init.d/httpd start
 # /etc/rc.d/init.d/fcron start
-# /etc/rc.d/nfs-server start
+# /etc/rc.d/init.d/nfs-server start
 #
 # You are now ready to work
 # You can check the log of fcron in /var/log/cron.log
 # You can check the log of apache (http service) in /var/log/httpd/access.log and /var/log/httpd/error.log
 # You can check the log of your builds in http://localhost/logs
+#
+# 7. RSYNC the remote depot your local depot
+#
+#   rsync -av --delete --exclude=sources --exclude=logs --exclude=*.iso /srv/remote/
+#
+#   You are now ready to work.
+#
+# 8. DONE
+#
+#   As you are using YOUR COPY of the depot it's up to you to rerun the rsync command from point 7.
 #
 # Enjoy NuTyX :)
 #
