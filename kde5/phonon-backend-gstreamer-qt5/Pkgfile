@@ -4,19 +4,14 @@
 # Depends on: phonon-qt5 gstreamer1 gstreamer1-plugins-base gstreamer1-plugins-good gstreamer1-plugins-bad gstreamer1-plugins-ugly libxml2 pulseaudio
 
 name=phonon-backend-gstreamer-qt5
-release=3
-version=4.8.2
+release=1
+version=4.9.0
 _name=phonon-backend-gstreamer
 
-source=( http://download.kde.org/stable/phonon/${_name}/$version/src/${_name}-$version.tar.xz
-         http://www.linuxfromscratch.org/patches/blfs/svn/${_name}-$version-compatibility-1.patch)
+source=( http://download.kde.org/stable/phonon/${_name}/$version/${_name}-$version.tar.xz)
 
 build() {
-
-cd ${_name}-$version
-
-patch -Np1 -i ../${_name}-$version-compatibility-1.patch
-
+cd phonon-gstreamer-$version
 bash  /usr/bin/setqt5
 
 mkdir build
