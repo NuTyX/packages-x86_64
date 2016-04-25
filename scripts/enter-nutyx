@@ -1,7 +1,7 @@
 #***************************************************************************************************************************************************
 # 1. INTRODUCTION
 #
-# This script is able to compile any ports from any official collections that are one of:
+# This script is able to compile any port from any official collections that are one of:
 # - base
 # - base-extra
 # - cli
@@ -17,7 +17,7 @@
 # - enlightenment
 #
 # IMPORTANTS NOTES:
-# a. We make a difference only for base, cli and gui and they -extra counterparts
+# a. We make a difference only for base, cli and gui and their -extra counterparts
 #    Example: to compile the all cli-extra collection the syntax will be:
 #
 #    bash bin/enter-nutyx /current/cli-extra
@@ -28,8 +28,8 @@
 #
 # c. You need about 10 Gbytes of free space for the mirror of NuTyX (/srv/local), another
 #    10 Gbytes of free space for the /srv/remote mirror and another 6 to 8 Gbytes for your 
-#    (temporary) installed NuTyX. Also aware that /srv/local/sources will continuously grow up
-#    until you delete some sources packages files
+#    (temporary) installed NuTyX. Also be aware that /srv/local/sources will continuously grow
+#    until you delete some sources / package files
 #
 # d. You need to have the install-nutyx script and enter-nutyx in the /root/bin directory, use a link to
 #    your 'core' git
@@ -46,8 +46,8 @@
 #     ln -sv /home/thierry/chroot-64/current /current
 #     ln -sv /home/thierry/chroot-64/stable /stable
 #
-#    In this example the installed NuTyX will always endup in  /home/thierry/chroot-64/stable/xxx or
-#    /home/thierry/chroot-64/current/xxx which is fine because it's another bigger partition (740 Gb about in this case)
+#    In this example the installed NuTyX will always ends up in  /home/thierry/chroot-64/stable/xxx or
+#    /home/thierry/chroot-64/current/xxx, which is fine because it's another bigger partition (about 740 Gb in this case)
 #
 # 2. HOW DOES THIS WORK ?
 #
@@ -87,7 +87,7 @@
 #
 # 3. CONFIGURATION OF THE HOST NuTyX
 #
-# It's absolutly necessary to configure your NuTyX host machine properly otherwise nothing will works like expected
+# It's absolutly necessary to configure your NuTyX host machine properly otherwise nothing will work like expected
 #
 # Files that are involve in the configuration process:
 #
@@ -115,7 +115,7 @@
 #  PKGMK_IGNORE_COLLECTION="no"
 #  PKGMK_IGNORE_RUNTIMEDEPS="no"
 #
-# As explain above, we mount a lot of folder, they HAVE TO BE specify in the /etc/fstab
+# As explained above, we mount a lot of folders, they HAVE TO BE specified in the /etc/fstab
 # As we used predefined folder (/DEPOT, /sources) we can specify them in /etc/fstab:
 #
 # Example for the cli-extra collection of the current version specify following lines
