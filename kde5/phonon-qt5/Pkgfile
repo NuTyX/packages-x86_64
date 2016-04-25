@@ -4,18 +4,16 @@
 # Depends on: cmake kf5-extra-cmake-modules glib qt5 pulseaudio
 
 name=phonon-qt5
-release=3
-version=4.8.3
+release=1
+version=4.9.0
 _name=phonon
-source=(http://download.kde.org/stable/${_name}/$version/src/${_name}-$version.tar.xz
-       phonon-qt5-qt-5.4.2.patch)
+source=(http://download.kde.org/stable/${_name}/$version/${_name}-$version.tar.xz)
 
 build() {
 
 bash  /usr/bin/setqt5
 mkdir build
 cd phonon-$version
-patch -p1 -i ../phonon-qt5-qt-5.4.2.patch
 cd    ../build
 cmake ../phonon-$version           \
     -DCMAKE_BUILD_TYPE=Release     \
