@@ -84,7 +84,7 @@ mkdir -pv $PKG/usr/share/pixmaps
 ln -sf /usr/lib/firefox-$version/browser/icons/mozicon128.png $PKG/usr/share/pixmaps/firefox.png
 
 
-for lang in da de en-US es-ES fi fr it nb-NO nl pt-PT sv-SE
+for lang in da de  es-ES fi fr it nb-NO nl pt-PT sv-SE
 do 
 install -Dm644 $SRC/$lang.xpi \
     $PKG/usr/lib/firefox-$version/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
