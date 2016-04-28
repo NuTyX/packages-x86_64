@@ -51,6 +51,7 @@ description="Here is my first package"</pre>
    <h3>Description</h3>
     <p>Provide a valid url about information of the package or about the sources (if no info). If the variable is choose, it can be used in the source definition below</p>
    <h3>prefered syntax</h3>
+    <pre class="output">url="http:downloads.nutyx.org"</pre>
    <h3>possible syntax</h3>
     <pre class="output"># URL: http:downloads.nutyx.org
 # url: http:downloads.nutyx.org
@@ -59,6 +60,7 @@ url="http:downloads.nutyx.org"</pre>
     <h3>Description</h3>
      <p>The name of the package cannot contains following charaters: [space]_?!</p>
      <p>Only small characters are allows</p>
+     <p>In case you don't specify this variable, the 'name' variable will be create and set automatically by the name of the parent folder.</p>
     <h3>prefered syntax</h3>
      <pre class="output">name=mypackage</pre>
    <h2>The version</h2>
@@ -73,6 +75,12 @@ url="http:downloads.nutyx.org"</pre>
        <pre class="output">release=20160421</pre>
    <h2>The group</h2>
     <h3>Description</h3>
+     <p>A group name is defined by the first serie of characters before the first minus sign. Example:</p>
+     <p>The packages:</p>
+     <pre class="output">gstreamer1</pre>
+     <p>and</p>
+     <pre class="output">gstreamer1-plugins-base</pre>
+     <p>are in the so call same group named 'gstreamer1'</p>
     <h3>possible syntax</h3>
     
   <hr>
