@@ -5,9 +5,10 @@ kernelversion=4.5
 PKGMK_GROUPS=(devel man doc)
 name=glibc
 version=2.23
-release=1
+release=2
 
 source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
+	http://www.linuxfromscratch.org/patches/downloads/glibc/glibc-$version-upstream_fixes-1.patch
 	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
 	http://ftp.gnu.org/gnu/glibc/glibc-$version.tar.xz glibc.locales.supported )
 build() {
@@ -24,6 +25,7 @@ cp -rv dest/include/* $PKG/usr/include
 cd ../glibc-$version
 
 patch -Np1 -i ../glibc-$version-fhs-1.patch
+patch -Np1 -i ../glibc-$version-upstream_fixes-1.patch
 
 mkdir -v ../glibc-build
 cd ../glibc-build
