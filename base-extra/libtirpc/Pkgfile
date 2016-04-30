@@ -4,18 +4,14 @@
 # Packager: pierre at nutyx dot org, tnut at nutyx dot org
 
 name=libtirpc
-version=0.3.2
+version=1.0.1
 release=1
 
-source=(http://downloads.sourceforge.net/project/libtirpc/libtirpc/$version/libtirpc-$version.tar.bz2
-	 http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-api_fixes-1.patch)
+source=(http://downloads.sourceforge.net/project/libtirpc/libtirpc/$version/libtirpc-$version.tar.bz2)
 
 build()
 {
 cd libtirpc-$version
-
-patch -Np1 -i ../libtirpc-$version-api_fixes-1.patch
-
 ./configure --prefix=/usr     \
             --sysconfdir=/etc \
             --disable-static  \
@@ -26,5 +22,5 @@ make pkgconfigdir=/usr/lib/pkgconfig DESTDIR=$PKG install
 chown -R root:root $PKG
 mkdir -p $PKG/lib
 mv -v $PKG/usr/lib/libtirpc.so.* $PKG/lib
-ln -sfv ../../lib/libtirpc.so.1.0.10 $PKG/usr/lib/libtirpc.so
+ln -sfv ../../lib/libtirpc.so.3.0.0 $PKG/usr/lib/libtirpc.so
 }
