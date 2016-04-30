@@ -1,27 +1,19 @@
-# URL: 			http://tidy.sourceforge.net/ 
-# Packager:		berlius at nutyx dot com
-
+# Packager: berlius at nutyx dot com, fanch at nutyx dot org, tnut at nutyx dot
+url="http://tidy.sourceforge.net/"
 description="Tools and libraries used to read HTML, XHTML and XML files and write cleaned up markup"
 name=tidy
-version=20101110
+version=5.1.25
 release=1
-source=(http://anduin.linuxfromscratch.org/BLFS/$name/$name-cvs\_$version.tar.bz2)
+source=(https://github.com/htacg/tidy-html5/archive/$version.tar.gz)
 
 build() {
-
-	cd $name-cvs\_$version
-
-	./configure \
-		--prefix=/usr \
-		--disable-static
-
-	make
-	make DESTDIR=$PKG install
-	
-	install -v -m644 -D htmldoc/tidy.1 \
-                    $PKG/usr/share/man/man1/tidy.1 
-	install -v -m755 -d $PKG/usr/share/doc/tidy-cvs_20101110 
-	install -v -m644    htmldoc/*.{html,gif,css} \
-                    $PKG/usr/share/doc/tidy-cvs_20101110
-
+mkdir build
+cd build
+cmake ../tidy-html5-$version \
+-DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_BUILD_TYPE=Release  \
+-DBUILD_TAB2SPACE=ON        
+make
+make DESTDIR=$PKG install
+install -v -m755 tab2space $PKG/usr/bin
 }
