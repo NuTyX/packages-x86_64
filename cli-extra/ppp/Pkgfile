@@ -1,10 +1,10 @@
 # Description: A daemon which implements the Point-to-Point Protocol for dial-up networking
-# URL: http://samba.org/ppp
+# URL: http://ppp.samba.org/index
 # Packager: pierre at nutyx dot org
 # Depends on: libpcap 
 
 name=ppp
-version=2.4.5
+version=2.4.7
 release=1
 
 source=(http://samba.org/ftp/$name/$name-$version.tar.gz
@@ -20,5 +20,4 @@ build() {
 	make INSTROOT=$PKG install
 	mkdir -p $PKG/etc/rc.d/init.d/
 	install -m755 ../pppd $PKG/etc/rc.d/init.d/
-
 }
