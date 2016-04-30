@@ -6,9 +6,10 @@
 PKGMK_GROUPS=(man)
 name=rpcbind
 version=0.2.3
-release=1
+release=2
 
-source=(http://downloads.sourceforge.net/rpcbind/rpcbind-$version.tar.bz2 )
+source=(http://downloads.sourceforge.net/rpcbind/rpcbind-$version.tar.bz2
+	http://www.linuxfromscratch.org/patches/blfs/svn/rpcbind-0.2.3-tirpc_fix-1.patch)
 
 build() {
     source /etc/blfs-bootscripts
@@ -18,6 +19,7 @@ build() {
 
     cd rpcbind-$version
     sed -i "/servname/s:rpcbind:sunrpc:" src/rpcbind.c
+    patch -Np1 -i ../rpcbind-0.2.3-tirpc_fix-1.patch
 
     ./configure --prefix=/usr \
                 --bindir=/sbin \
