@@ -1,19 +1,18 @@
 # Description: The GRUB package contains the GRand Unified Bootloader.
 # URL: http://www.gnu.org/software/grub/
-# Packager: pierre at nutyx dot org
+# Packager: pierre at nutyx dot org, tnut at nutyx dot org
+
 name=grub
-version=2.00
+version=2.02~beta2
 release=1
 
-source=(ftp://ftp.gnu.org/gnu/grub/grub-2.00.tar.xz\
+source=(http://alpha.gnu.org/gnu/grub/$name-$version.tar.xz\
 	grub.cfg)
 
 PKGMK_GROUPS=(man locale)
 
 build() {
-	cd grub-2.00
-	sed -i -e '/gets is a/d' grub-core/gnulib/stdio.in.h
-	unset CXXFLAGS
+	cd grub-$version
 	./configure --prefix=/usr \
 		--sysconfdir=/etc       \
 		--sbindir=/sbin        \
