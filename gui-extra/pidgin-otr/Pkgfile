@@ -1,0 +1,17 @@
+# Description: Off-the-Record Messaging plugin for Pidgin.
+# URL:  http://www.cypherpunks.ca/otr/
+# Packager: NuTyX core team
+# Depends on: libotr pidgin
+
+name=pidgin-otr
+version=4.0.1
+release=1
+source=(http://www.cypherpunks.ca/otr/${name}-${version}.tar.gz)
+validpgpkeys=(576979E7D0CAB38C7AA3DDBDDED64EBB2BA87C5C)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr  
+make
+make DESTDIR=$PKG install
+}

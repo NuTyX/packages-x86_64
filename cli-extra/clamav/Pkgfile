@@ -4,14 +4,14 @@
 # Depends on: zlib bzip2 gmp curl
 
 name=clamav
-version=0.99.0
+version=0.99.1
 release=1
-source=(http://www.clamav.net/downloads/production/$name-${version%.*}.tar.gz \
+source=(http://www.clamav.net/downloads/production/$name-$version.tar.gz \
 	clamd.conf freshclam.conf clamd freshclam)
 
 build() {
 
-	cd $name-${version%.*}
+	cd $name-$version
 	./configure --prefix=/usr \
 		--sysconfdir=/etc \
 		--enable-id-check \

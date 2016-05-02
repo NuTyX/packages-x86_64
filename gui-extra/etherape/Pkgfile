@@ -1,0 +1,17 @@
+# Description: A graphical network monitor for various OSI layers and protocols.
+# URL: http://etherape.sourceforge.net/
+# Packager: fanch at nutyx dor org
+# Depends on: libgnomeui libpcap gnome-doc-utils
+
+namee=etherape
+version=0.9.13
+release=1
+
+source=(http://downloads.sourceforge.net/${name}/${name}-${version}.tar.gz)
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+            --sysconfdir=/etc
+make
+make DESTDIR=$PKG install
+}

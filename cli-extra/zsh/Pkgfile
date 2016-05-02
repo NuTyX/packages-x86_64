@@ -1,11 +1,9 @@
-# Description: A very advanced and programmable command interpreter (shell) for UNIX
-# URL: URL: http://www.zsh.org 
-# NuTyX package info file (http://nutyx.org)
-# Packager: # NuTyX package info file (http://nutyx.org)
 # Depends on: pcre 
-
+packager="alienus at nutyx dot org, fanch at nutyx dot org, tnut at nutyx dot org"
+description="A very advanced and programmable command interpreter (shell) for UNIX"
+url="http://www.zsh.org"
 name=zsh
-version=5.1.1
+version=5.2
 release=1
 
 source=(http://www.zsh.org/pub/$name-$version.tar.xz)
@@ -27,6 +25,3 @@ build(){
     install -v -m644 Doc/html/* $PKG/usr/share/doc/zsh-$version/html
     install -v -m644 Doc/zsh.{html,txt} $PKG/usr/share/doc/zsh-$version
 }
-
-
-

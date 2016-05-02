@@ -1,0 +1,16 @@
+# Description: OGG encapsulated Theora/Vorbis program to record a desktop session.
+# URL: http://recordmydesktop.sourceforge.net/
+# Packager: fanch at nutyx dot com
+# Depends on: libtheora xorg-libxdamage xorg-libxext xorg-libice xorg-libsm
+
+name=recordmydesktop
+version=0.3.8.1
+release=1
+source=(http://download.sourceforge.net/$name/$name-$version.tar.gz)
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr 
+  make
+  make DESTDIR=$PKG install
+}

@@ -1,0 +1,16 @@
+# Description: X11 Screen Saver extension wire protocol.
+# URL: http://xorg.freedesktop.org/
+# Packager: fanch at nutyx dot org
+# Depends on: xorg-util-macros
+
+name=scrnsaverproto
+version=1.2.2
+release=1
+source=(http://xorg.freedesktop.org/releases/individual/proto/${name}-${version}.tar.bz2)
+
+build() {
+	cd ${name}-${version}
+   ./configure --prefix=/usr 
+	make
+	make DESTDIR=$PKG install
+}

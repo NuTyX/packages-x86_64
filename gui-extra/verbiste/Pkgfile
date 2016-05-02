@@ -1,0 +1,26 @@
+# Description: Apprendre la conjugaison française
+# URL:  http://perso.b2b2c.ca/sarrazip/dev/verbiste.html
+# Maintainer: NuTyX core team
+# Packager: thierryn1 at hispeed dot ch
+# Depends on: libxml2 gtk perl-xml-parser libgnomeui
+
+name=verbiste
+version=0.1.43
+release=1
+group=app
+source=(http://perso.b2b2c.ca/~sarrazip/dev/$name-$version.tar.gz)
+
+build() {
+  cd $SRC/$name-$version
+  ./configure --prefix=/usr --with-gtk-app
+  make
+  make DESTDIR=$PKG install
+
+  # Modify location for .desktop file
+  install -D -m644 $SRC/$name-$version/src/gnome/verbiste.desktop \
+  $PKG/usr/share/applications/verbiste.desktop
+  ( cd $PKG/usr/share/applications/
+  sed -e 's/Exec=verbiste/Exec=verbiste-gtk/g' -i verbiste.desktop )
+}
+ 
+  

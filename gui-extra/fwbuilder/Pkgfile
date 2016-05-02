@@ -1,0 +1,26 @@
+# Description: Object-oriented GUI and set of compilers for various firewall platforms
+# URL: http://www.fwbuilder.org/
+# Packagers: NuTyX core team
+# Depends on: libxslt net-snmp qt4 qt5
+
+name=fwbuilder
+version=5.3.6
+release=1
+
+source=(https://github.com/UNINETT/fwbuilder/archive/v${version}.tar.gz fwbuilder-gcc47.patch fwbuilder.xml)
+build() {
+cd $name-$version
+	patch -p1 -i $SRC/fwbuilder-gcc47.patch
+	echo "#include <QObject>" | tee -a \
+     src/import/IOSImporter.h \
+     src/pflib/RoutingCompiler_openbsd.h \
+     >/dev/null
+	export CXXFLAGS="$CXXFLAGS -fno-var-tracking-assignments"
+	sed -i -e '/dnl.*AM_INIT_AUTOMAKE/d' configure.in || die
+	./autogen.sh
+   	./configure --prefix=/usr --with-qmake=qmake-qt5 
+	make
+	make INSTALL_ROOT=$PKG install
+	echo MimeType=text/x-xml-fwbuilder; >> $PKG/usr/share/applications/${name}.desktop
+	install -Dm644 $SRC/fwbuilder.xml $PKG/usr/share/mime/packages/fwbuilder.xml
+}

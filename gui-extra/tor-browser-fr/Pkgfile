@@ -1,0 +1,45 @@
+# Description: Tor Browser Bundle: Anonymous browsing using firefox and tor
+# URL: https://www.torproject.org/projects/torbrowser.html.en
+# Contributor (French Version): Pierre Schiltz <mysti57155@gmail.com>
+# Packager : NuTyX core team
+# Depends on: pulseaudio,gconf,yasm,sqlite,libvpx,libevent,nss,alsa-lib,gtk2,xorg-app,zip,unzip,gstreamer1,gstreamer1-plugins-base,gstreamer1-plugins-good,gstreamer1-plugins-libav
+
+run=(gstreamer1-plugins-good gstreamer1-plugins-libav)
+
+name=tor-browser-fr
+version=5.5.4
+_language=fr
+release=1
+desc='Tor Browser Bundle: Anonymous browsing using firefox and tor'
+validpgpkeys=('EF6E286DDA85EA2A4BA7DE684E2C6E8793298290')
+
+# Workaround due to different versions depending on CARCH
+if [[ "$CARCH" == 'i686' ]]; then
+	_arch='32'
+else
+	_arch='64'
+fi
+
+source=(https://www.torproject.org/dist/torbrowser/${version}/tor-browser-linux${_arch}-${version}_${_language}.tar.xz
+        https://www.torproject.org/dist/torbrowser/${version}/tor-browser-linux${_arch}-${version}_${_language}.tar.xz.asc
+        ${name}.desktop
+        ${name}.png
+        ${name}.sh)
+        
+build() {
+	cd ${SRC}
+
+	sed -i "s/REPL_NAME/${name}/g"			${name}.sh
+	sed -i "s/REPL_VERSION/${version}/g"	${name}.sh
+	sed -i "s/REPL_LANGUAGE/${_language}/g"		${name}.sh
+
+	sed -i "s/REPL_NAME/${name}/g"			${name}.desktop
+	sed -i "s/REPL_LANGUAGE/${_language}/g"		${name}.desktop
+	sed -i "s/REPL_COMMENT/${desc}/g"		${name}.desktop
+	
+	install -Dm 644 ${name}.desktop	${PKG}/usr/share/applications/${name}.desktop
+	install -Dm 644 ${name}.png		${PKG}/usr/share/pixmaps/${name}.png
+	install -Dm 755 ${name}.sh		${PKG}/usr/bin/${name}
+    wget https://www.torproject.org/dist/torbrowser/${version}/tor-browser-linux${_arch}-${version}_${_language}.tar.xz
+	install -Dm 644 tor-browser-linux${_arch}-${version}_${_language}.tar.xz ${PKG}/opt/${name}/tor-browser-linux${_arch}-${version}_${_language}.tar.xz
+}

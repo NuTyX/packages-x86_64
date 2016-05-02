@@ -1,0 +1,21 @@
+# Description:	Controller GUI for Tor.
+# URL: https://www.torproject.org/vidalia
+# Packager : NuTyX core team
+# Depends on: geoip qt4 tor
+
+name=vidalia
+version=0.2.21
+release=1
+
+source=(https://dist.torproject.org/vidalia/$name-$version.tar.gz)
+validpgpkeys=(8738A680B84B3031A630F2DB416F061063FEE659)
+
+build() {
+  cd $SRC
+  mkdir build
+  cd build
+  cmake -D CMAKE_INSTALL_PREFIX=/usr -DUSE_GEOIP=1 ../$name-$version
+  make
+  make DESTDIR=$PKG/ install
+  install -Dm644 ../$name-$version/doc/vidalia.1 $PKG/usr/share/man/man1/vidalia.1
+}
