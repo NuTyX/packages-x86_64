@@ -1,4 +1,4 @@
-#***************************************************************************************************************************************************
+#********************************************************************************************************************************************
 # 1. INTRODUCTION
 #
 # This script is able to compile any port from any official collections that are one of:
@@ -123,7 +123,7 @@
 #  localhost:/srv/local/sources /current/cli-extra/sources nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
 #  localhost:/srv/local/current/x86_64 /current/cli-extra/DEPOT nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
 #  localhost:/home/thierry/git/extra /current/cli-extra/root/extra nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
-#  localhost:/srv/local/logs/current/x86_64/cli-extra /current/cli-extra/var/log/pkgbuild nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
+#  localhost:/srv/local/logs/current/x86_64/cli-extra /current/cli-extra/LOGS nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
 #
 #  Copy and adapt thoses four lines for every collection you planned to build. Adapt '/home/thierry/git/extra' to your 'extra' git as well.
 #  
@@ -134,8 +134,8 @@
 #
 # 4. GET THE DEPOT and setup all the needed folders
 #
-#  To get all the binaries locally and used them (highly recommended) we need to rsync them, following command could do (takes quite a bit of time
-#  the first time)
+#  To get all the binaries locally and used them (highly recommended) we need to rsync them, following command could do
+#  (takes quite a bit of time the first time)
 #
 #  mkdir -p /srv/local/logs/current/x86_64/{base,cli,gui,base-extra,cli-extra,gui-extra,cinnamon,enlightenment,gnome,lxde,kde5,mate,xfce4}
 #  mkdir -p /srv/local/logs/stable/x86_64/{base,cli,gui,base-extra,cli-extra,gui-extra,cinnamon,enlightenment,gnome,lxde,kde5,mate,xfce4}
@@ -189,7 +189,7 @@
 #
 # Enjoy NuTyX :)
 #
-#***************************************************************************************************************************************************
+#********************************************************************************************************************************************
 
 setup_collection() {
 	local DIR
@@ -204,7 +204,7 @@ dir /DEPOT/base-extra
 base /DEPOT/base
 base /DEPOT/cli
 base /DEPOT/gui
-logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 	fi
 	if [ "$CHROOT" == "cinnamon" ]; then
 		echo "dir /DEPOT/cinnamon-extra
@@ -218,7 +218,7 @@ dir /DEPOT/base-extra
 base /DEPOT/base
 base /DEPOT/cli
 base /DEPOT/gui
-logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 	fi
 	if [ "$CHROOT" == "lxde" ]; then
 		echo "dir /DEPOT/lxde-extra
@@ -230,7 +230,7 @@ dir /DEPOT/base-extra
 base /DEPOT/base
 base /DEPOT/cli
 base /DEPOT/gui
-logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 	fi
 	if [ "$CHROOT" == "xfce4" ]; then
 		echo "dir /DEPOT/xfce4-extra
@@ -242,7 +242,7 @@ dir /DEPOT/base-extra
 base /DEPOT/base
 base /DEPOT/cli
 base /DEPOT/gui
-logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 	fi
 	if [ "$CHROOT" == "mate" ]; then
 		echo "dir /DEPOT/mate-extra
@@ -254,7 +254,7 @@ dir /DEPOT/base-extra
 base /DEPOT/base
 base /DEPOT/cli
 base /DEPOT/gui
-logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 	fi
 	if [ "$CHROOT" == "gnome" ]; then
 		echo "dir /DEPOT/gnome-extra
@@ -268,7 +268,7 @@ dir /DEPOT/base
 base /DEPOT/base
 base /DEPOT/cli
 base /DEPOT/gui
-logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 	fi
 	if [ "$CHROOT" == "kde5" ]; then
 		echo "dir /DEPOT/kde5-extra
@@ -280,14 +280,14 @@ dir /DEPOT/base-extra
 base /DEPOT/base
 base /DEPOT/cli
 base /DEPOT/gui
-logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 	fi
 	if [ "$CHROOT" == "base" ]; then
 		COLLECTION="core"
 		echo "dir /DEPOT/base
 dir /DEPOT/base-extra
 base /DEPOT/base
-logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 
 	fi
 	if [ "$CHROOT" == "cli" ]; then
@@ -296,7 +296,7 @@ logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
 dir /DEPOT/base
 dir /DEPOT/base-extra
 base /DEPOT/base
-logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 	fi
 	if [ "$CHROOT" == "gui" ]; then
 		COLLECTION="core"
@@ -306,7 +306,7 @@ dir /DEPOT/base
 dir /DEPOT/base-extra
 base /DEPOT/base
 base /DEPOT/base-extra
-logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 	fi
 	if [ "$CHROOT" == "base-extra" ]; then
 		COLLECTION="extra"
@@ -323,7 +323,7 @@ dir /DEPOT/base-extra
 dir /DEPOT/base
 base /DEPOT/base
 base /DEPOT/base-extra
-logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 	fi
 	if [ "$CHROOT" == "gui-extra" ]; then
 		COLLECTION="extra"
@@ -334,7 +334,7 @@ dir /DEPOT/cli
 dir /DEPOT/base-extra
 dir /DEPOT/base
 base /DEPOT/base
-logdir /var/log/pkgbuild" > $DIR/etc/cards.conf || exit 1
+logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 	fi
 }
 
@@ -394,8 +394,8 @@ fi
 mkdir -p $1/DEPOT || exit 1
 mount $1/DEPOT || exit 1
 
-mkdir -p $1/var/log/pkgbuild || exit 1
-mount $1/var/log/pkgbuild || exit 1
+mkdir -p $1/LOGS || exit 1
+mount $1/LOGS || exit 1
 
 mkdir -p $1/sources || exit 1
 mount $1/sources || exit 1
@@ -406,7 +406,7 @@ mount $1/root/$COLLECTION || exit 1
 
 KERNEL="NONE" LFS="$1" bash /root/bin/install-nutyx
 
-umount $1/var/log/pkgbuild || exit 1
+umount $1/LOGS || exit 1
 umount $1/sources || exit 1
 umount $1/DEPOT || exit 1
 umount $1/root/$COLLECTION || exit 1
