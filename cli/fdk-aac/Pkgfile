@@ -6,12 +6,13 @@ name=fdk-aac
 version=0.1.4
 release=1
 
-source=( http://downloads.sourceforge.net/opencore-amr/$name-$version.tar.gz )
+source=(http://downloads.sourceforge.net/opencore-amr/$name-$version.tar.gz)
 
 build() {
 
 cd $name-$version
-./configure --prefix=/usr --disable-static
+CXXFLAGS+=' -std=c++11 -Wno-narrowing'
+./configure --prefix=/usr
 make
 
 make DESTDIR=$PKG install
