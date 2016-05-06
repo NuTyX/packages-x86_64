@@ -11,6 +11,7 @@ source=(http://www.libraw.org/data/LibRaw-$version.tar.gz)
 build ()
 {
 cd LibRaw-$version
+CXXFLAGS+=' -std=c++11 -Wno-narrowing'
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
