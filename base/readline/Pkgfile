@@ -24,7 +24,7 @@ sed -i '/{OLDSUFF}/c:' support/shlib-install
 
 make SHLIB_LIBS=-lncurses
 
-make DESTDIR=$PKG install
+make DESTDIR=$PKG SHLIB_LIBS=-lncurses install
 
 mkdir -p $PKG/lib
 
