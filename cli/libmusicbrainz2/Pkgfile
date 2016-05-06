@@ -13,6 +13,7 @@ source=( ftp://ftp.musicbrainz.org/pub/musicbrainz/historical/libmusicbrainz-$ve
 build() {
 cd libmusicbrainz-$version
 patch -Np1 -i ../libmusicbrainz-$version-missing-includes-1.patch
+CXXFLAGS+=' -std=c++11 -Wno-narrowing'
 ./configure --prefix=/usr --disable-static
 make
 cd python
