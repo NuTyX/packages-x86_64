@@ -1,0 +1,26 @@
+# Description : PIM layer, which provides an asynchronous API to access all kind of PIM data 
+# URL : https://projects.kde.org/akonadi
+# Packager : pierre at nutyx dot org
+# Depends on : kf5-extra-cmake-modules boost postgresql shared-mime-info qt5 libxslt mariadb kf5-ki18n kf5-kcodecs sqlite kf5-kitemviews kf5-kio kf5-kdesignerplugin kf5-kitemmodels 
+
+run=(mariadb)
+
+name=akonadi
+version=16.04.0
+release=1
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build() {
+  mkdir -p build
+  cd build
+  cmake ../$name-$version             \
+    -DCMAKE_BUILD_TYPE=Release        \
+    -DCMAKE_INSTALL_PREFIX=/usr       \
+    -DCMAKE_INSTALL_LIBDIR=lib        \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DBUILD_TESTING=OFF               \
+    -Wno-dev
+  make
+  make DESTDIR=$PKG install
+}
