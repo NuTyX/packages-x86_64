@@ -46,6 +46,28 @@
      etc..</p>
      <p>When the package is installed on your NuTyX, it will be handled by the <a href="#ID005">package</a> manager
      <a href="#ID000">cards</a>.</p>
+     <p><b>Package archive name syntax</b></p>
+      <li><b>name</b>: (port-name)</li>
+      <li><b>.group-name</b>: only if it is a group package archive. see configuration: 'PKGMK_GROUPS'</li>
+      <li><b>build-version</b>: 10 digits Unix-timestamp of the package archive build time. see also 'PKGMK_BUILDVER'</li>
+      <li><b>architecture</b>: any or system-architecture: e.g. ("$(uname -m)" x86_64)</li>
+      <li><b>.extension</b>: the predefined package archive reference extension without compression.</li>
+      <li><b>.compression-extension</b>: only if it is a compressed archive. see configuration: 'PKGMK_COMPRESS_PACKAGE'</li>
+     <p>EXAMPLE: Pkgarchive Names Without Compression</p>
+      <pre class="output">
+| Package archive Name                  | Description                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------ |
+| cards1462695664x86_64.cards.tar       | name: cards, no group, buildvers: 1462695664, arch: x86_64, ext: cards.tar     |                                         |
+| cards.devel1462695664x86_64.cards.tar | name: cards, group: devel, buildvers: 1462695664, arch: x86_64, ext: cards.tar |
+| cards.man1462695664any.cards.tar      | name: cards, group: man, buildvers: 1462695664, arch: any, ext: cards.tar      |
+</pre>
+     <p>EXAMPLE: Pkgarchive Names With Compression</p>
+      <pre class="output">
+| Package archive Name             | Description                                                                          |
+| -------------------------------- | ------------------------------------------------------------------------------------ |
+| acl.fr1462707691any.cards.tar.xz | name: acl, group: fr, buildvers: 1462707691, arch: any, ext: cards.tar, compressed   |                                         |
+| acl1462707691x86_64.cards.tar.xz | name: acl, no group, buildvers: 1462707691, arch: x86_64, ext: cards.tar, compressed |                                         |
+</pre>
     <a name='ID006'></a>
     <h2>A dependency</h2>
      <p>A dependency is a <a href="#ID005">package</a> <b>AAA</b> needed
