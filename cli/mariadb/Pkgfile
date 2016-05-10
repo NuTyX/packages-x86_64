@@ -1,13 +1,14 @@
 # Description: MariaDB is a fork and a replacement for the MySQL relational database management system.
 # URL: http://www.mariadb.org/en/about/
 # Packagers: pierre at nutyx dot org, tnut at nutyx dot org
-# Depends on: cmake libevent
+# Depends on: cmake libevent boost lz4 libxml2 cracklib pcre
 
 name=mariadb
-version=10.1.11
+version=10.1.13
 release=1
 
-source=(https://downloads.mariadb.org/interstitial/mariadb-$version/source/mariadb-$version.tar.gz )
+source=(https://downloads.mariadb.org/interstitial/mariadb-$version/source/mariadb-$version.tar.gz
+        mariadb-versioning.patch )
 
 PKGMK_GROUPS=(devel lib man doc service)
 
@@ -20,13 +21,14 @@ cd $name-$version
 
 sed -i "s@data/test@\${INSTALL_MYSQLTESTDIR}@g" sql/CMakeLists.txt
 
+patch -Np0 -i ../mariadb-versioning.patch libmysql/CMakeLists.txt 
+
 mkdir build
 cd build
-
-cmake -DCMAKE_BUILD_TYPE=Release \
+cmake -DCMAKE_BUILD_TYPE=Release                       \
       -DCMAKE_INSTALL_PREFIX=/usr                      \
-      -DINSTALL_DOCDIR=share/doc/$name-$version        \
-      -DINSTALL_DOCREADMEDIR=share/doc/$name-$version  \
+      -DINSTALL_DOCDIR=share/doc/mariadb-10.1.13       \
+      -DINSTALL_DOCREADMEDIR=share/doc/mariadb-10.1.13 \
       -DINSTALL_MANDIR=share/man                       \
       -DINSTALL_MYSQLSHAREDIR=share/mysql              \
       -DINSTALL_MYSQLTESTDIR=share/mysql/test          \
@@ -40,7 +42,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DWITH_EXTRA_CHARSETS=complex                    \
       -DWITH_EMBEDDED_SERVER=ON                        \
       -DTOKUDB_OK=0                                    \
-      ..
+      .. 
 make
 
 make DESTDIR=$PKG install
