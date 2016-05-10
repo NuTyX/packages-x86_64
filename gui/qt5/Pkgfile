@@ -13,7 +13,8 @@ source=(http://download.qt-project.org/official_releases/qt/${version%.*}/$versi
        qt5.6-alsa1.11.patch
        qt5.6-bug-51648.patch
        qt5.6-bug-51649.patch
-       qt5.6-bug-51676.patch)
+       qt5.6-bug-51676.patch
+       qt5.6-bug-45812.patch)
 
 build() {
 
@@ -22,10 +23,14 @@ QT5BINDIR=$QT5PREFIX/lib/qt5/bin
 
 cd ${_name}*/qtbase
 
+# Fix ALSA 1.11 detection
 patch -p1 -i $SRC/qt5.6-alsa1.11.patch
+# Backport fixes for QtDBus deadlocks
 patch -p1 -i $SRC/qt5.6-bug-51648.patch
 patch -p1 -i $SRC/qt5.6-bug-51649.patch
 patch -p1 -i $SRC/qt5.6-bug-51676.patch
+# Fix drag and drop from some applications
+patch -p1 -i $SRC/qt5.6-bug-45812.patch
 
 cd ../
 
