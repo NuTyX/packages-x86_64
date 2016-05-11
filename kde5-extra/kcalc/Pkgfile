@@ -7,14 +7,10 @@ name=kcalc
 release=1
 version=16.04.1
 
-source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz
-       kcalc-qt5.6.patch)
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-
-patch -p1 -i ../kcalc-qt5.6.patch
-
 mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr             \
