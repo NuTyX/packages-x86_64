@@ -5,7 +5,7 @@
 
 name=mariadb
 version=10.1.13
-release=1
+release=2
 
 source=(https://downloads.mariadb.org/interstitial/mariadb-$version/source/mariadb-$version.tar.gz
         mariadb-versioning.patch )
@@ -48,6 +48,8 @@ make
 make DESTDIR=$PKG install
 
 install -v -dm 755 $PKG/etc/mysql
+install -v -dm 755 $PKG/srv/mysql
+touch $PKG/srv/mysql/nutyx.err
 
 cat > $PKG/etc/mysql/my.cnf.example << "EOF"
 # Begin /etc/mysql/my.cnf
@@ -120,12 +122,11 @@ interactive-timeout
 
 # End /etc/mysql/my.cnf
 EOF
+
 # Cleanup
 rm -r $PKG/usr/share/mysql/test
 
-
 # Service
-
 cd $SRC/$scripts-$scriptsversion
 make DESTDIR=$PKG install-mysql
 }
