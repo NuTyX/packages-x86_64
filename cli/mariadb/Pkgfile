@@ -48,8 +48,6 @@ make
 make DESTDIR=$PKG install
 
 install -v -dm 755 $PKG/etc/mysql
-install -v -dm 755 $PKG/srv/mysql
-touch $PKG/srv/mysql/nutyx.err
 
 cat > $PKG/etc/mysql/my.cnf.example << "EOF"
 # Begin /etc/mysql/my.cnf
