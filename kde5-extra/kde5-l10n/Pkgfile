@@ -5,7 +5,7 @@
 
 name=kde5-l10n
 version=16.04.1
-release=1
+release=2
 
 source=()
 
@@ -22,5 +22,7 @@ do
         -DCMAKE_BUILD_TYPE=Release
   make
   make DESTDIR=$PKG install
+
+  rm $PKG/usr/share/locale/$lang/LC_MESSAGES/khelpcenter.mo
 done
 }
