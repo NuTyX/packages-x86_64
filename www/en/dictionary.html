@@ -118,8 +118,19 @@
     <h2>A port</h2>
      <p>In NuTyX, a port is a folder which contains all necessary files for the construction of a <a href="#ID005">package</a>.
      It will at least contain a file named <a href="#ID080">Pkgfile</a>.
-     <p>The port can also, in somes cases, contain a 'pre-install' or a 'post-install'  <a href="#ID050">script</a>.
-     It can also contain additionally a README file describing various options, actions, configurations of the port or other required files e.g. patch files..</p>
+     <p>The port can also contain other required files (e.g. patch files) or port meta files.</p>
+     <p><b>Port Meta Files Syntax</b></p>
+      <li><b>portname.pre-install</b>: TODO add more info: what it does, when is this script executed.</li>
+      <li><b>portname.post-install</b>: TODO add more info: what it does, when is this script executed.</li>
+      <li><b>portname.README</b>: a file describing various options, actions, configurations of the port.</li>
+     <p>EXAMPLE: Meta files port: lxdm</p>
+      <pre class="output">
+| Meta File Name    | 
+| ----------------- |
+| lxdm.pre-install  |
+| lxdm.post-install |
+| lxdm.README       |
+</pre>
      <p>The term <i>port</i> makes reference to a remote depot containing <i>ports</i> which can be downloaded with a suitable client programm.</p>
      <p>NuTyX use the <i>ports tool</i> for downloading all the <i>ports</i> from a remote depot and store them by default in the <i>/usr/ports/&lt;name_of_<a href="#ID010">collection</a>&gt; folder</i>. </p>
     <a name='ID080'></a>
@@ -180,7 +191,7 @@ make DESTDIR=$PKG install
      <p>in a <a href="#ID080">Pkgfile</a>.</p>
 
    <hr>
-  <p class="updated">Last updated on 2016-04-24 11:10</p>
+  <p class="updated">Last updated on 2016-05-13 11:10</p>
      <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2ID007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
