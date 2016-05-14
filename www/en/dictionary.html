@@ -49,6 +49,7 @@
      <p><b>Package archive name syntax</b></p>
       <li><b>name</b>: (port-name)</li>
       <li><b>.group-name</b>: only if it is a group package archive. see configuration: 'PKGMK_GROUPS'</li>
+      <li><b>.locale-name</b>: only if it is a locale package archive. see configuration: 'PKGMK_LOCALES'</li>
       <li><b>build-version</b>: 10 digits Unix-timestamp of the package archive build time. see also 'PKGMK_BUILDVER'</li>
       <li><b>architecture</b>: any or system-architecture: e.g. ("$(uname -m)" x86_64)</li>
       <li><b>.extension</b>: the predefined package archive reference extension without compression.</li>
@@ -120,16 +121,29 @@
      It will at least contain a file named <a href="#ID080">Pkgfile</a>.
      <p>The port can also contain other required files (e.g. patch files) or port meta files.</p>
      <p><b>Port Meta Files Syntax</b></p>
-      <li><b>portname.pre-install</b>: TODO add more info: what it does, when is this script executed.</li>
-      <li><b>portname.post-install</b>: TODO add more info: what it does, when is this script executed.</li>
-      <li><b>portname.README</b>: a file describing various options, actions, configurations of the port.</li>
+      <li><b>name</b>: (port-name)</li>
+      <li><b>.group-name</b>: only if it is a group package archive. see configuration: 'PKGMK_GROUPS'</li>
+      <li><b>.locale-name</b>: only if it is a locale package archive. see configuration: 'PKGMK_LOCALES'</li>
+      <br />
+      Followed by one of these file extentions:
+      <br/><br/>
+      <li><b>.pre-install, or </b>: TODO add more info: what it does, when is this script executed.</li>
+      <li><b>.post-install</b>: TODO add more info: what it does, when is this script executed.</li>
+      <li><b>.README</b>: a file describing various options, actions, configurations of the port.</li>
      <p>EXAMPLE: Meta files port: lxdm</p>
       <pre class="output">
 | Meta File Name    | 
-| ----------------- |
+| ------------------|
 | lxdm.pre-install  |
 | lxdm.post-install |
 | lxdm.README       |
+</pre>
+     <p>EXAMPLE: Meta files port: cards</p>
+      <pre class="output">
+| Meta File Name                | 
+| ------------------------------|
+| cards.devel.post-install      |
+| cards.fr.README               |
 </pre>
      <p>The term <i>port</i> makes reference to a remote depot containing <i>ports</i> which can be downloaded with a suitable client programm.</p>
      <p>NuTyX use the <i>ports tool</i> for downloading all the <i>ports</i> from a remote depot and store them by default in the <i>/usr/ports/&lt;name_of_<a href="#ID010">collection</a>&gt; folder</i>. </p>
