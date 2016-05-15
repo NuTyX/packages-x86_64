@@ -15,13 +15,6 @@ cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DCMAKE_BUILD_TYPE=Release              \
       -Wno-dev ..
-
 make
 make DESTDIR=$PKG install
-
-# Thoses icons are in kdepim
-for i in 128 16 22 256 32 48
-do
-  rm $PKG/usr/share/icons/oxygen/${i}x${i}/mimetypes/x-mail-distribution-list.png
-done
 }
