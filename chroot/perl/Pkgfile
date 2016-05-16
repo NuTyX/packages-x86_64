@@ -9,7 +9,7 @@ sh Configure -des -Dprefix=/tools -Dlibs=-lm
 
 make
 
-cp -v perl cpan/podlators/pod2man /tools/bin
+cp -v perl /tools/bin
 mkdir -pv /tools/lib/perl5/$version
 cp -Rv lib/* /tools/lib/perl5/$version
 ln -s /tools/bin/perl $LFS/usr/bin
