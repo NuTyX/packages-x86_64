@@ -7,8 +7,6 @@ name=kf5-krunner
 _name=krunner
 release=1
 
-source=(http://download.kde.org/stable/frameworks/${version%.*}/portingAids/${_name}-$version.tar.xz)
-
 build() {
 cd ${_name}-$version
 mkdir build
@@ -24,4 +22,3 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
 make
 make DESTDIR=$PKG install
 }
-
