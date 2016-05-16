@@ -1,0 +1,21 @@
+# Description: OGG encapsulated Theora/Vorbis program to record a desktop session.
+# URL: http://recordmydesktop.sourceforge.net/
+# Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
+# Packager: fanch at nutyx dot com
+# Depends on: alsa-lib jack xorg-libsm libtheora libvorbis xorg-libxdamage xorg-libxext zlib 
+
+name=recordmydesktop
+version=0.3.8.1
+release=2
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz
+        ftp://ftp.vim.org/vol/2/vectorlinux/veclinux-7.0/source/abs/ap/recordmydesktop/shmstr-to-shmproto.patch
+        ftp://ftp.vim.org/vol/2/vectorlinux/veclinux-7.0/source/abs/ap/recordmydesktop/recordmydesktop-bitrate.patch)
+#
+build() {
+    cd $name-$version
+    patch -p0 < $SRC/shmstr-to-shmproto.patch
+    patch -p1 < $SRC/recordmydesktop-bitrate.patch
+    ./configure --prefix=/usr
+    make
+    make DESTDIR=$PKG install
+}
