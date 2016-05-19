@@ -5,7 +5,7 @@
 
 name=mariadb
 version=10.1.13
-release=1
+release=2
 
 source=(https://downloads.mariadb.org/interstitial/mariadb-$version/source/mariadb-$version.tar.gz
         mariadb-versioning.patch )
@@ -120,12 +120,11 @@ interactive-timeout
 
 # End /etc/mysql/my.cnf
 EOF
+
 # Cleanup
 rm -r $PKG/usr/share/mysql/test
 
-
 # Service
-
 cd $SRC/$scripts-$scriptsversion
 make DESTDIR=$PKG install-mysql
 }
