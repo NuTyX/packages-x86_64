@@ -44,8 +44,8 @@
     <p>La commande <b>cards sync</b> permet d'obtenir le dernier état des mises à jour disponibles sur votre système.</p>
     <p>La commande <b>cards diff</b> affichera la liste de paquets pouvant être mis à jour</p>
     <p>Essayez les commandes:</p>
-    <pre class="command"><kbd>cards sync
-cards diff</kbd></pre>
+    <pre class="command_user"><kbd>sudo cards sync
+sudo cards diff</kbd></pre>
     <pre class="output">Synchronizing /var/lib/pkg/depot/gui from http://..<br />/var/lib/pkg/depot/cli//MD5SUM<br />..<br />Differences between installed packages and the depot of binaries:<br /><br />Package                        Installed                 Available in the depot of binaries
 
 gcc                             4.9.1                     4.9.2
@@ -53,7 +53,7 @@ glibc                           2.20                      2.21</pre>
 
    <h2>Mettre à jour un paquet</h2>
     <p>Pour mettre à jour un paquet, la commande <b>cards install -u</b> suivi du logiciel sera utilisée. Il faut évidemment que la mise à jour soit possible :</p>
-    <pre class="command"><kbd>cards install -u gcc</kbd></pre>
+    <pre class="command_user"><kbd>sudo cards install -u gcc</kbd></pre>
     <p>Mettra le paquet <b>gcc</b> à jour</p>
    <h2>Recherche d'un paquet</h2>
     <p>Rechercher un paquet sous NuTyX est très simple, la commande :</p>
@@ -66,17 +66,17 @@ firefox            Standalone web browser from mozilla.org
 ...</pre>
    <h2>Ajout d'un paquet</h2>
     <p>Pour ajouter un paquet, la commande <b>cards install</b> suivie du nom du paquet à installer sera utilisée :</p>
-    <pre class="command"><kbd>cards install xfce4</kbd></pre>
+    <pre class="command_user"><kbd>cards install xfce4</kbd></pre>
     <p>Le téléchargement de l'application <b>xfce4</b> commence immédiatement, une fois le paquet téléchargé, ses dépendances seront à leur tour téléchargées. Quand le téléchargement est terminé, tous les paquets seront installés dans le bon ordre. Dans cet exemple, une fois la commande terminée, vous aurez un bureau <a href="http://www.xfce.org">xfce4</a> installé sur votre NuTyX.</p>
    <h2>Ajout d'un utilisateur</h2>
     <p>Pour ajouter un utilisateur sous NuTyX, c'est également très simple, la commande :</p>
-     <pre class="command"><kbd>nu</kbd></pre>
+     <pre class="command_user"><kbd>sudo nu</kbd></pre>
      <p>permet d'ajouter un utilisateur, elle peut être utilisée sous 2 formes avec et sans options, si elle est utilisée sans options, 2 questions vous seront demandées:</p>
 <pre class="output">Nom de l'utilisateur: francois
 Description de l'utilisateur: François Perrin</pre>
      <p>Vous devez bien noter que le nom d'utilisateur ne peut pas contenir certains caractères et ne peut pas contenir d'espace ni de majuscule.</p>
      <p>Si par contre vous souhaitez utiliser la commande avec ses options, ces dernières sont dans l'ordre suivant : la description de l'utilisateur suivi du nom de l'utilisateur:</p>
-     <pre class="command"><kbd>nu "François Perrin" francois</kbd></pre>
+     <pre class="command_user"><kbd>sudo nu "François Perrin" francois</kbd></pre>
     <h2>Les alias</h2>
      <div class="note"><img alt="[Note]" src="../graphics/note.gif"> Il faut savoir que certaines commandes mentionnées dans cet article peuvent être remplacées par des alias, c'est à dire un racourci de la commande originale. Si vous souhaitez connaître la liste des alias, utilisez la commande:
 <pre class="command_user"><kbd>alias</kbd></pre></div>
@@ -113,10 +113,10 @@ cards</kbd></pre>
     <pre class="command_user"><kbd>cards help</kbd></pre>
     <p>Je vous souhaite beaucoup de plaisir avec votre nouvelle NuTyX installée.</p>
     <hr>
-    <p class="updated">Dernière mise à jour 15-09-2015 18:05</p>
+    <p class="updated">Dernière mise à jour 22-05-2016 22:50</p>
      <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
-        &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
+        &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
     <a href="http://www.wtfpl.net/"><img
        src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png"
        width="80" height="15" alt="WTFPL" /></a></p>

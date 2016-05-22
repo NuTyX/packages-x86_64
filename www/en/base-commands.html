@@ -43,8 +43,8 @@
    <h2>Check if they are any updates available</h2>
     <p>The command <b>cards sync</b> will check the latest status of the available updates for your system.</p>
     <p>The command <b>cards diff</b> will show a list of outdated packages</p>
-     <pre class="command"><kbd>cards sync
-cards diff</kbd></pre>
+     <pre class="command_user"><kbd>sudo cards sync
+sudo cards diff</kbd></pre>
      <pre class="output">synchronizing /var/lib/pkg/saravane/desktop from http://..<br />/var/lib/pkg/saravane/desktop//MD5SUM<br />..
 Difference between installed packages and the depot of binaries:
 Package                      Installed                   Available in the depot of binaries
@@ -52,29 +52,29 @@ gcc                          4.9.1                       4.9.2
 glibc                        2.20                        2.21</pre>
    <h2>Updating a package</h2>
     <p>To update a package, the command <b>cards install -u</b> follow by the package will be used. It's important that the update is available:</p>
-    <pre class="command"><kbd>cards install -u gcc</kbd></pre>
+    <pre class="command_user"><kbd>sudo cards install -u gcc</kbd></pre>
    <h2>Search a package</h2>
     <p>To search a package, the command:
-    <pre class="command_user"><kbd>cards search <b>search_string</b></kbd></pre>
+    <pre class="command_user"><kbd>sudo cards search <b>search_string</b></kbd></pre>
     <p>will return all the packages which have the <b>search_string</b> in the name or in the description. For example, if you want to know what's are the browser available</p>
-    <pre class="command_user"><kbd>cards search browser</kbd></pre>
+    <pre class="command_user"><kbd>sudo cards search browser</kbd></pre>
     <p>should return something like:</p>
     <pre class="output">chromium           The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins
 firefox            Standalone web browser from mozilla.org
 ...</pre>
    <h2>Add a package</h2>
      <p>To add a package, the command <b>cards install</b> followed by the software name to install will be used:</p>
-     <pre class="command"><kbd>cards install xfce4</kbd></pre>
+     <pre class="command_user"><kbd>sudo cards install xfce4</kbd></pre>
      <p>The download of the application <b>xfce4</b> starts immediately, once the package is downloads, it's dependencies will be downloads as well. When all done with the download, all the packages will be installed in the right order. In this example, when the commands is done you will have a working <a href="http://www.xfce.org">xfce4</a> desktop installed on your NuTyX.</p>
    <h2>Add a user</h2>
     <p>To add a user under NuTyX, it's very simple, the command:</p>
-    <pre class="command"><kbd>nu</kbd></pre>
+    <pre class="command_user"><kbd>sudo nu</kbd></pre>
     <p>will add a user, it can be used in two forms with or without options, if used without options, they will be two question to answer:</p>
     <pre class="output">User name: james
 User description: James Bond 007</pre>
     <p>You should see that the user's name doen't contains certains characters neither space neither capital letters.</p>
     <p>If you wish to use the command with the options, those hve to be given in the order user description then user name:</p>
-    <pre class="command"><kbd>nu "James Bond 007" james</kbd></pre>
+    <pre class="command_user"><kbd>sudo nu "James Bond 007" james</kbd></pre>
    <h2>Alias</h2>
     <div class="note"><img alt="[Note]" src="../graphics/note.gif"> It's good to know that somes commands are actually alias which are simplify command. It's some how a shortcut to the original command. To know all the availables alias, just type in your terminal <b>alias</b></div>
    <h2>Conclusion</h2>
@@ -86,7 +86,7 @@ cards</kbd></pre>
      <pre class="command_user"><kbd>cards help</kbd></pre>
      <p>I wish you a lot of fun with you newly installed NuTyX.</p>
     <hr>
-    <p class="updated">Last updated 2015-05-03 14:41</p>
+    <p class="updated">Last updated 2016-05-22 23:02</p>
      <footer>
       <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
       &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />
