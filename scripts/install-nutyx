@@ -1353,6 +1353,11 @@ check_variables() {
 
 [ -z $URL ] && URL="http://downloads.nutyx.org"
 [ -z $VERSION ] && VERSION="8.1"
+if [ "$VERSION" == "development" ]; then
+	CODE_NAME="`date +%Y%m%d`"
+else
+	CODE_NAME="stable"
+fi
 [ -z $DEPOT ] && DEPOT="/var/lib/pkg/depot"
 [ -z $FOLDER ] && FOLDER="/mnt/hd"
 [ -z $KERNEL ] && KERNEL="kernel-lts"
@@ -1366,6 +1371,8 @@ DEPOT_BASE="$DEPOT_ROOT/$BASE"          ## http://downloads.nutyx.org/8.1/x86_64
 
 LOCAL_DEPOT_PACKAGES="$DEPOT/$BASE"
 DEPOT_CD="/media/cdrom"
+
+echo "DEPOT_BASE: $DEPOT_BASE"
 
 SETUP_FILE=/tmp/setup
 # Size of the FullInstall in Mbytes
@@ -1662,8 +1669,7 @@ example: LFS=/chroot ${INSTALL_COMMAND}
 	successfull_installation
 }
 
-readonly CODE_NAME="houaphan"
 readonly BASE="base"
-readonly RELEASE=2
+readonly RELEASE=3
 INSTALL_COMMAND="`basename $0`"
 main "$@"

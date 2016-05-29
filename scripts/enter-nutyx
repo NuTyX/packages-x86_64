@@ -377,6 +377,7 @@ if [ -d $1 ]; then
 fi
 
 VERSION=`dirname $1`
+VERSION=`basename $VERSION`
 CHROOT=`basename $1`
 COLLECTION="$CHROOT"
 
