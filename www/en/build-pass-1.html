@@ -83,9 +83,9 @@ export LFS LC_ALL LFS_TARGET PATH" &gt; /home/lfs/.bashrc</kbd></pre>
      <h2>LFS part:</h2>
      <p>From now on, you should type all the commands as lfs user.</p>
      <p>we get the latest version of the source code from git:</p>
-<pre class="command_user"><kbd>git clone git://github.com/NuTyX/core.git current</kbd></pre>
-    <p>Ones this is done, a new folder is created: <b>current</b>. We enter in it and launch the first script:</p>
-<pre class="command_user"><kbd>cd current
+<pre class="command_user"><kbd>git clone git://github.com/NuTyX/core.git development</kbd></pre>
+    <p>Ones this is done, a new folder is created: <b>development</b>. We enter in it and launch the first script:</p>
+<pre class="command_user"><kbd>cd development
 scripts/runmebeforepass1</kbd></pre>
     <p>The script will check a serie of verification and NO error should occur. The downloading of the sources will start automatically. When it's finish you just have to follow instructions.</p>
    
@@ -93,7 +93,7 @@ scripts/runmebeforepass1</kbd></pre>
     <pre class="output">=====&gt; Successfull configured</pre>
 
 If your read this, congratulations you are ready to launch the first pass for the construction of your future NuTyX, do:    
-<pre class="command_user"><kbd>cd /home/lfs/current/chroot
+<pre class="command_user"><kbd>cd /home/lfs/development/chroot
 pass</kbd></pre>
 
 <p>Let's the show begin ... </p>
@@ -103,12 +103,12 @@ mkdir: created directory '/mnt/lfs/var'
 mkdir: created directory '/mnt/lfs/var/lib'
 mkdir: created directory '/mnt/lfs/var/lib/pkg'
 mkdir: created directory '/mnt/lfs/var/lib/pkg/DB'
-=======&gt; Building '/home/lfs/current/chroot/cards/Pkgfile' succeeded.
-/home/lfs/current/chroot</pre>
+=======&gt; Building '/home/lfs/development/chroot/cards/Pkgfile' succeeded.
+/home/lfs/development/chroot</pre>
     <p>Note that you can follow the evolution of the construction and then check that everything goes well by consulting the folder /home/lfs/logs/chroot/ . For each build package is a log corresponding</p>
   <div class="pied_page"><a class="url" href="build-pass-2.html">We will see in a next article how to enter the chroot and to build a NuTyX from scratch by using a second time the same script.</a></div>
   <hr>
-  <p class="updated">Last updated on 2016-01-30 15:18</p>
+  <p class="updated">Last updated on 2016-05-29 18:21</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2015 <a href="http://nutyx.org">NuTyX</a><br /><br />

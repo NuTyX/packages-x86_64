@@ -48,10 +48,10 @@
 <pre class="command"><kbd>chown -R root:root $LFS</kbd></pre>
       <li>We create folders and links to put the recepts in place.</li>
 <pre class="command"><kbd>install -dv -m0750  $LFS/root
-ln -sv current/scripts $LFS/root/bin</kbd></pre>
+ln -sv development/scripts $LFS/root/bin</kbd></pre>
       <li>We move the receipts to the right folder and go in this folder</li>
-<pre class="command"><kbd>mv /home/lfs/current $LFS/root/
-cd $LFS/root/current/base/nutyx</kbd></pre>
+<pre class="command"><kbd>mv /home/lfs/development $LFS/root/
+cd $LFS/root/development/base/nutyx</kbd></pre>
       <li>We compile the first package of NuTyX</li>
 <pre class="command"><kbd>/tools/bin/pkgmk -cf ../../../bin/pkgmk.conf.passes</kbd></pre>
       <li>We install the <b>nutyx</b> package in the NuTyX</li>
@@ -63,7 +63,7 @@ should return
 <pre class="output">nutyx 8.1...
 nutyx.man 8.1...</pre>
       <li>We install all the configuration files in our new NuTyX</li>
-        <pre class="command"><kbd>bash $LFS/root/current/scripts/install-nutyx -ic</kbd></pre>
+        <pre class="command"><kbd>VERSION="development" bash $LFS/root/development/scripts/install-nutyx -ic</kbd></pre>
       <li>We mount all different folders</li>
 <pre class="command"><kbd>mount -v -B /dev $LFS/dev
 mount -vt devpts devpts $LFS/dev/pts
@@ -99,7 +99,7 @@ bash: tput: command not found
      <li>We redefine the PATH variable</li>
 <pre class="command"><kbd>export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin:/root/bin</kbd></pre>
      <li> We launch the compilation of the packages</li>
-<pre class="command"><kbd>cd /root/current/base
+<pre class="command"><kbd>cd /root/development/base
 pass</kbd></pre>
 	return
 <pre class="output">tar -p -o -C /tmp/work/src -xf /sources/linux-3.19.3.tar.xz
@@ -109,7 +109,7 @@ pass</kbd></pre>
     <li>As it's says, the <b>bash</b> packages needs to be installed manually. So let's do it from outside the NuTyX. We got out first:</li>
     <pre class="command"><kbd>exit</kbd></pre>
     <li>Now we go to the right place and install the <b>bash</b> packages:</li>
-    <pre class="command"><kbd>cd $LFS/root/current/base/bash
+    <pre class="command"><kbd>cd $LFS/root/development/base/bash
 for PACK in *.xz; do /tools/bin/pkgadd -r $LFS $PACK;done</kbd></pre>
      <li>We check if it has been added:</li>
      <pre class="command"><kbd>/tools/bin/pkginfo -r $LFS -i|grep bash</kbd></pre>
@@ -134,7 +134,7 @@ bash: wc: command not found
            <li>We redefine AGAIN the PATH variable:</li>
 <pre class="command"><kbd>export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin:/root/bin</kbd></pre>
      <li> We launch AGAIN the compilation of the packages:</li>
-<pre class="command"><kbd>cd /root/current/base
+<pre class="command"><kbd>cd /root/development/base
 pass</kbd></pre>
 <pre class="output">tar -p -o -C /tmp/work/src -xf /sources/bc-1.06.95.tar.bz2
 ....</pre>
@@ -181,7 +181,7 @@ source  ~/.bash_profile</kbd></pre>
   <div class="pied_page"><a class="url" href="build-post.html">One pass 2 is done, you can start the post-construction and generation of the iso</a></div>
 <p>
   <hr>
-  <p class="updated">Last updated on 2016-03-25 17:27</p>
+  <p class="updated">Last updated on 2016-05-29 17:49</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />

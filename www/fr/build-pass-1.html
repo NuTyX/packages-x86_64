@@ -99,9 +99,9 @@ export LFS LC_ALL LFS_TARGET PATH" &gt; /home/lfs/.bashrc</kbd></pre>
      <h2>Partie LFS:</h2>
       <p>A partir de maintenant vous tapez toutes les commandes en compte lfs</p>
       <p>On récupère la dernière version des sources sous git:</p>
-     <pre class="command_user"><kbd>git clone git://github.com/NuTyX/core.git current</kbd></pre>
-    <p>Une fois terminée, un nouveau dossier a été créé: <b>current</b> On y entre et on lance le premier script:</p>
-    <pre class="command_user"><kbd>cd current
+     <pre class="command_user"><kbd>git clone git://github.com/NuTyX/core.git development</kbd></pre>
+    <p>Une fois terminée, un nouveau dossier a été créé: <b>development</b> On y entre et on lance le premier script:</p>
+    <pre class="command_user"><kbd>cd development
 scripts/runmebeforepass1</kbd></pre>
     <p>
     Le script va effectuer toute une série de vérifications et si aucune erreur ne s'est produite, le téléchargement des sources commence automatiquement. Une fois le téléchargement terminé, il suffit de suivre les instructions.
@@ -113,7 +113,7 @@ scripts/runmebeforepass1</kbd></pre>
     <p>    
      Si vous lisez ce message, vous êtes prêt pour lancer la première passe pour la construction de votre future NuTyX,faites:
     </p>
-    <pre class="command_user"><kbd>cd /home/lfs/current/chroot
+    <pre class="command_user"><kbd>cd /home/lfs/development/chroot
 pass</kbd></pre>
     <p>
     Admirez le travail ...
@@ -123,14 +123,14 @@ mkdir: created directory '/mnt/lfs/var'
 mkdir: created directory '/mnt/lfs/var/lib'
 mkdir: created directory '/mnt/lfs/var/lib/pkg'
 mkdir: created directory '/mnt/lfs/var/lib/pkg/DB'
-=======&gt; Building '/home/lfs/current/chroot/cards/Pkgfile' succeeded.
-/home/lfs/current/chroot</pre>
+=======&gt; Building '/home/lfs/development/chroot/cards/Pkgfile' succeeded.
+/home/lfs/development/chroot</pre>
     <p>
     Notez que vous pouvez suivre l'évolution et contrôler la bonne conduite de chaque paquet construit en consultant le dossier /home/lfs/logs/chroot/ . En effet à chaque paquet construit correspond un log.
     </p>
   <div class="pied_page"><a class="url" href="build-pass-2.html">On verra dans un prochain article comment entrer dans la chroot et y construire une NuTyX depuis scratch en utilisant une deuxième fois le même script </a></div>
   <hr>
-  <p class="updated">Dernière mise à jour 25-03-2016 17:29</p>
+  <p class="updated">Dernière mise à jour 29-05-2016 18:22</p>
 
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />

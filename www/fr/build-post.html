@@ -144,13 +144,13 @@ cards remove rsync.service</kbd></pre>
  <h2>Option1: Produire une ISO installable.</h2>
   <ol> 
    <li>On ajoute les fichiers necessaires au fonctionnement de l'iso</li>
-   <pre class="command"><kbd>cp -av /root/current/iso /ISO</kbd></pre>
-   <pre class="output">'/root/current/iso' -&gt; '/ISO'
-'/root/current/iso/isolinux' -&gt; '/ISO/isolinux'
-'/root/current/iso/isolinux/boot.cat' -&gt; '/ISO/isolinux/boot.cat'
-'/root/current/iso/isolinux/boot.msg' -&gt; '/ISO/isolinux/boot.msg'
-'/root/current/iso/isolinux/isolinux.bin' -&gt; '/ISO/isolinux/isolinux.bin'
-'/root/current/iso/isolinux/isolinux.cfg' -&gt; '/ISO/isolinux/isolinux.cfg'</pre>
+   <pre class="command"><kbd>cp -av /root/development/iso /ISO</kbd></pre>
+   <pre class="output">'/root/development/iso' -&gt; '/ISO'
+'/root/development/iso/isolinux' -&gt; '/ISO/isolinux'
+'/root/development/iso/isolinux/boot.cat' -&gt; '/ISO/isolinux/boot.cat'
+'/root/development/iso/isolinux/boot.msg' -&gt; '/ISO/isolinux/boot.msg'
+'/root/development/iso/isolinux/isolinux.bin' -&gt; '/ISO/isolinux/isolinux.bin'
+'/root/development/iso/isolinux/isolinux.cfg' -&gt; '/ISO/isolinux/isolinux.cfg'</pre>
    <pre class="command"><kbd>cp -v /boot/kernel-* /ISO/isolinux/kernel</kbd></pre>
    <pre class="output">'/boot/kernel-3.19.0' -&gt; '/ISO/isolinux/kernel'</pre>
    <pre class="command"><kbd>cp -v /boot/initrd-* /ISO/isolinux/initrd</kbd></pre>
@@ -168,7 +168,7 @@ done</kbd></pre>
    <pre class="command"><kbd>exit</kbd></pre>
    <li>On peut enfin générer notre ISO dont la version est à la date du jour.</li>
    <div class="important"><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" />Avant de lancer la prochaine commande, assurez-vous que vous avez bien la variable <b>LFS</b> configurée et que les commandes <b>mkisofs</b> et <b>isohybrid</b> sont à disposition sur votre linux principale. Elles sont respectivement dans les paquets <b>cdrkit</b> et <b>syslinux</b>.</div>
-    <pre class="command"><kbd>sh $LFS/root/current/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
+    <pre class="command"><kbd>sh $LFS/root/development/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
     <pre class="output">Warning: creating filesystem that does not conform to ISO-9660.
 I: -input-charset not specified, using utf-8 (detected in locale settings)
 Size of boot image is 4 sectors -&gt; No emulation
@@ -219,7 +219,7 @@ dev   ISO   mnt    proc                                   sbin  sys      tools</
  <h2>Option2: Réduire la taille finale de l'ISO.</h2>
     <ol>
     <li>Si vous souhaitez réduire la taille finale de l'ISO, vous pouvez supprimer les binaires du git et les logs produits, ils ne serviront plus. Si vous souhaitez conserver les binaires, lancez la commande ci-dessus.</li>
-<pre class="command"><kbd>rsync -a /root/current/base/ /base/
+<pre class="command"><kbd>rsync -a /root/development/base/ /base/
 rsync -a /root/extra/base-extra/ /base-extra/</kbd></pre>
      <p>Aucune erreur ne doit apparaître</p>
      <p>On peut maintenant effacer les binaires du git</p>
@@ -233,7 +233,7 @@ rsync -a /root/extra/base-extra/ /base-extra/</kbd></pre>
 pkgrm kernel.devel</kbd></pre>
    </ol>
    <hr>
-   <p class="updated">Dernière mise à jour 09-04-2016 22:38</p>
+   <p class="updated">Dernière mise à jour 29-05-2016 18:23</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
