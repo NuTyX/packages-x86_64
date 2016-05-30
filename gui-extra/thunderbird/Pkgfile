@@ -6,7 +6,7 @@
 run=(startup-notification hunspell)
 description="Stand-alone mail/news client based on the Mozilla codebase."
 name=thunderbird
-version=45.0
+version=45.1.0
 release=1
 
 source=(http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.xz
@@ -103,10 +103,6 @@ ac_add_options --with-system-jpeg
 ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 EOF
-
-sed -e '/^ftglyph.h/i ftfntfmt.h'                     \
-    -e '/^freetype\/ftcache.h/a freetype\/ftfntfmt.h' \
-    -i mozilla/config/system-headers
 
 SHELL=/bin/sh make -f client.mk
 SHELL=/bin/sh make -f client.mk DESTDIR=$PKG install INSTALL_SDK=
