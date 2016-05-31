@@ -4,7 +4,7 @@
 # Depends on: ptlib 
 name=opal
 version=3.10.10
-release=1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz
 	 http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-ffmpeg2-1.patch)
@@ -12,7 +12,18 @@ source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$versio
 build() {
 cd $name-$version
 patch -Np1 -i ../$name-$version-ffmpeg2-1.patch
+sed -e 's/CODEC_ID/AV_&/' \
+    -e 's/PIX_FMT_/AV_&/' \
+    -i plugins/video/H.263-1998/h263-1998.cxx \
+       plugins/video/common/dyna.cxx          \
+       plugins/video/H.264/h264-x264.cxx      \
+       plugins/video/MPEG4-ffmpeg/mpeg4.cxx
+
+sed -e '/<< mime.PrintContents/ s/mime/(const std::string\&)&/' \
+        -i src/im/msrp.cxx
+
 ./configure --prefix=/usr
-make 
+CXXFLAGS=-Wno-deprecated-declarations make
 make DESTDIR=$PKG install
+chmod -v 644 $PKG/usr/lib/libopal_s.a
 }
