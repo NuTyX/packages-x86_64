@@ -5,15 +5,16 @@
 
 name=smpeg
 version=0.4.5
-release=3
+release=4
 source=(http://crux.ster.zone/downloads/$name/$name-$version.tar.xz)
 
 build() {
 	cd $name-$version
-	./configure \
+	CXX="g++ -std=c++98" ./configure \
 		--prefix=/usr \
-		--mandir=/usr/share/man
-	make
+		--mandir=/usr/share/man \
+		--disable-static
+	make || make -j1
 	make install DESTDIR=$PKG
 }
 
