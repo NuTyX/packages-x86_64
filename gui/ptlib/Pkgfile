@@ -4,14 +4,14 @@
 # Depends on: alsa-lib expat pulseaudio 
 name=ptlib
 version=2.10.11
-release=1
+release=2
 
 source=(ftp://ftp.gnome.org/pub/GNOME/sources/$name/${version%.*}/$name-$version.tar.xz
-	 http://www.linuxfromscratch.org/patches/blfs/svn/ptlib-$version-bison_fixes-1.patch)
+	 http://www.linuxfromscratch.org/patches/blfs/svn/ptlib-$version-bison_fixes-2.patch)
 
 build() {
 cd $name-$version
-patch -Np1 -i ../ptlib-$version-bison_fixes-1.patch
+patch -Np1 -i ../ptlib-$version-bison_fixes-2.patch
 ./configure --prefix=/usr
 make 
 make DESTDIR=$PKG install
