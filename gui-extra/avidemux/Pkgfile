@@ -1,0 +1,28 @@
+# Depends on: cmake sqlite ffmpeg qt4
+description="A graphical tool to edit video (filter/re-encode/split) - Qt GUI"
+packager="tnut at nutyx dot org"
+maintainer="tnut at nutyx dot org"
+url="http://fixounet.free.fr/avidemux/"
+name=avidemux
+version=2.6.12
+release=1
+source=(http://downloads.nutyx.org/files/avidemux-${PKGMK_ARCH}-2.6.12.tar.gz
+http://downloads.sourceforge.net/project/avidemux/avidemux/2.6.12/avidemux_2.6.12.tar.gz)
+
+build() {
+
+unset MAKEFLAGS
+unset CFLAGS
+unset CXXFLAGS
+
+mv usr $PKG/
+
+mkdir -p $PKG/usr/share/{applications,pixmaps}
+sed "s@avidemux2_gtk@avidemux3_qt4@" avidemux_2.6.12/avidemux2.desktop \
+> $PKG/usr/share/applications/avidemux.desktop
+cp avidemux_2.6.12/avidemux_icon.png \
+$PKG/usr/share/pixmaps/avidemux.png
+
+# sh bootStrap.bash
+# mv install/* $PKG/
+}
