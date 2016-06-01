@@ -5,7 +5,7 @@
 
 name=qt4
 version=4.8.7
-release=6
+release=7
 
 _name=qt-everywhere-opensource-src-${version}
 
@@ -18,8 +18,7 @@ QT4DIR=$QT4PREFIX
 QT4BINDIR=$QT4PREFIX/lib/qt4/bin
 
 cd ${_name}
-
-     ./configure -prefix    $QT4PREFIX           \
+CXX="g++ -std=c++98" ./configure -prefix    $QT4PREFIX           \
             -bindir         $QT4BINDIR           \
             -plugindir      /usr/lib/qt4/plugins \
             -importdir      /usr/lib/qt4/imports \
