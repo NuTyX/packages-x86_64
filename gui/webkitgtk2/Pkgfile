@@ -16,7 +16,7 @@ mkdir -vp build-1
 cp -a Documentation build-1
 
 cd build-1
-../configure --prefix=/usr --with-gtk=2.0 --disable-webkit2
+CXX="g++ -std=c++98" ../configure --prefix=/usr --with-gtk=2.0 --disable-webkit2
 make || make -j1
 make DESTDIR=$PKG install || make -j1 DESTDIR=$PKG install
 }
