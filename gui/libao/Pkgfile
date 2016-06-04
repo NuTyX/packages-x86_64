@@ -1,0 +1,25 @@
+# Description: Cross-platform audio output library and plugins
+# URL: http://xiph.org/ao/
+# Packager: pierre at nutyx dot org
+# Depends on: alsa-lib pulseaudio
+
+name=libao
+version=1.2.0
+release=1
+
+source=(http://downloads.xiph.org/releases/ao/$name-$version.tar.gz)
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr      \
+	      --enable-alsa-mmap 
+  make
+  make DESTDIR=$PKG install
+
+  mkdir -p $PKG/etc/
+
+cat > $PKG/etc/libao.conf << "EOf"
+default_driver=alsa
+dev=default
+EOf
+}
