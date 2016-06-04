@@ -5,12 +5,20 @@
 
 name=xine-lib
 version=1.2.6
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/xine/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
+sed -e 's/avcodec_alloc_frame/av_frame_alloc/'            \
+        -e 's/avcodec_free_frame/av_frame_free/'          \
+        -i src/combined/ffmpeg/ff_{audio,video}_decoder.c \
+           src/dxr3/ffmpeg_encoder.c
+
+sed -e 's|wand/magick_wand.h|MagickWand/MagickWand.h|' \
+    -i src/video_dec/image.c
+
 ./configure  --prefix=/usr \
 --disable-vcd \
 --disable-modplug \
