@@ -4,7 +4,7 @@
 # Packagers: tnut at nutyx dot org
 
 name=e2fsprogs
-version=1.42.13
+version=1.43
 release=1
 
 source=(http://prdownloads.sourceforge.net/$name/$name-$version.tar.gz)
@@ -15,9 +15,7 @@ build()
 {
 cd $name-$version
 
-sed -e '/int.*old_desc_blocks/s/int/blk64_t/' \
-    -e '/if (old_desc_blocks/s/super->s_first_meta_bg/desc_blocks/' \
-    -i lib/ext2fs/closefs.c
+sed -i -e 's:\[\.-\]::' tests/filter.sed
 
 mkdir -v build
 cd build
@@ -28,7 +26,7 @@ PKG_CONFIG_PATH=/tools/lib/pkgconfig \
 --bindir=/bin --sbindir=/sbin \
 --enable-elf-shlibs --disable-libblkid --disable-libuuid --disable-uuidd \
 --disable-fsck
-make
+make || make -j1
 # somes tests may fails
 # make check||true
 make DESTDIR=$PKG install install-libs || make -j1 DESTDIR=$PKG install install-libs
