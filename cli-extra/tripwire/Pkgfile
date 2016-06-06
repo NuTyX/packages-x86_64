@@ -23,7 +23,7 @@ build () {
 	sed -i -e 's/eArchiveOpen e\([^)]*)\)/throw ( eArchiveOpen\1 )/' \
        -e '/throw e;/d' src/core/archive.cpp                             
 
-	./configure --prefix=/usr --sysconfdir=/etc/tripwire 
+	CXX="g++ -std=c++98" ./configure --prefix=/usr --sysconfdir=/etc/tripwire 
                     
 	make
 	
