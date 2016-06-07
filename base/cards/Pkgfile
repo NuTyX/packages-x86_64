@@ -6,7 +6,7 @@
 PKGMK_IGNORE_RUNTIMEDEPS="no"
 PKGMK_GROUPS=(devel doc man)
 name=cards
-version=2.1.80
+version=2.1.81
 release=1
 
 source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
@@ -20,7 +20,7 @@ devel()
 {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/$name.${group}${PKGMK_BUILDVER}${PKGMK_ARCH}.$PKGMK_PACKAGE_EXT \
 usr/bin \
 usr/ports \
 var \
