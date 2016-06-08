@@ -1365,9 +1365,9 @@ fi
 [ "$KERNEL" == "none" ] && KERNEL=""
 
 HOMEPAGE="${URL}"                       ## http://downloads.nutyx.org
-INSTALL_BASE="$VERSION/$ARCH"           ## 8.1/x86_64
-DEPOT_ROOT="$HOMEPAGE/${INSTALL_BASE}"  ## http://downloads.nutyx.org/8.1/x86_64
-DEPOT_BASE="$DEPOT_ROOT/$BASE"          ## http://downloads.nutyx.org/8.1/x86_64/base
+INSTALL_BASE="$ARCH/$VERSION"           ## x86_64/8.2
+DEPOT_ROOT="$HOMEPAGE/${INSTALL_BASE}"  ## http://downloads.nutyx.org/x86_64/8.2
+DEPOT_BASE="$DEPOT_ROOT/$BASE"          ## http://downloads.nutyx.org/x86_64/8.2/base
 
 LOCAL_DEPOT_PACKAGES="$DEPOT/$BASE"
 DEPOT_CD="/media/cdrom"
