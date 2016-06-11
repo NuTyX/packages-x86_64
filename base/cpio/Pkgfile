@@ -6,7 +6,7 @@
 
 name=cpio
 version=2.12
-release=1
+release=2
 
 source=( http://ftp.gnu.org/gnu/$name/$name-$version.tar.bz2\
 )
@@ -27,5 +27,5 @@ build() {
 	if [ -f $PKG/usr/share/info/dir ]; then
 		rm $PKG/usr/share/info/dir
 	fi
-	rm -r $PKG/tmp
+	rm -rf $PKG/tmp
 }
