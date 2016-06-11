@@ -4,7 +4,7 @@
 # Packagers: tnut at nutyx dot org
 
 name=e2fsprogs
-version=1.43
+version=1.43.1
 release=1
 
 source=(http://prdownloads.sourceforge.net/$name/$name-$version.tar.gz)
@@ -41,7 +41,7 @@ install -v -m644 doc/com_err.info $PKG/usr/share/info
 
 rm -rf $PKG/usr/share/info/dir
 
-mkdir $PKG/usr/lib
+mkdir -p $PKG/usr/lib
 mv $PKG/lib/pkgconfig \
 $PKG/usr/lib
 }

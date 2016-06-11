@@ -1352,7 +1352,7 @@ check_tools() {
 check_variables() {
 
 [ -z $URL ] && URL="http://downloads.nutyx.org"
-[ -z $VERSION ] && VERSION="8.1"
+[ -z $VERSION ] && VERSION="8.2"
 if [ "$VERSION" == "development" ]; then
 	CODE_NAME="`date +%Y%m%d`"
 else
@@ -1360,7 +1360,7 @@ else
 fi
 [ -z $DEPOT ] && DEPOT="/var/lib/pkg/depot"
 [ -z $FOLDER ] && FOLDER="/mnt/hd"
-[ -z $KERNEL ] && KERNEL="kernel-lts"
+[ -z $KERNEL ] && KERNEL="kernel-lts linux-firmware reiserfsprogs e3 grub lz4 mdadm jfsutils xfsprogs btrfs-progs dhcpcd"
 [ "$KERNEL" == "NONE" ] && KERNEL=""
 [ "$KERNEL" == "none" ] && KERNEL=""
 
@@ -1515,18 +1515,13 @@ gettext \
 procps-ng \
 psmisc \
 sed \
-reiserfsprogs \
-xfsprogs \
-jfsutils \
-btrfs-progs sudo \
+sudo \
 sysklogd sysvinit \
-dhcpcd grub \
 tzdata iproute2 iana-etc \
 e3 eudev kmod less \
 groff man-db cards.man \
 nutyx.man \
-lvm2 mdadm dialog cpio squashfs \
-linux-firmware \
+lvm2 dialog cpio squashfs \
 $KERNEL \
 ca-certificates \
 $DEVEL
