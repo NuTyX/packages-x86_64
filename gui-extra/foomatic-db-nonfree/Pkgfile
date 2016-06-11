@@ -4,15 +4,14 @@
 # Depends on: cups perl libxml2 
 description="Non-free licenses database extension from manufacturer-supplied PPD files released"
 name=foomatic-db-nonfree
-version=20150819
+version=20160610
 release=1
-_version=20150819
-
+_version=20160610
 source=(http://www.openprinting.org/download/foomatic/$name-${_version}.tar.gz)
-
+#
 build() {
-	cd $name-*
-	./configure --prefix=/usr
-	make
-	make DESTDIR=$PKG install
+    cd $name-*
+    ./configure --prefix=/usr
+    make
+    make DESTDIR=$PKG install
 }

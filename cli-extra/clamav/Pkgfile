@@ -12,7 +12,7 @@ source=(http://www.clamav.net/downloads/production/$name-$version.tar.gz \
 build() {
 
 	cd $name-$version
-	./configure --prefix=/usr \
+	CXX="g++ -std=c++98" ./configure --prefix=/usr \
 		--sysconfdir=/etc \
 		--enable-id-check \
 		--with-libcurl \
