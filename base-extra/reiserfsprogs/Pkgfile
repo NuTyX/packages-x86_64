@@ -2,14 +2,13 @@
 # URL: http://www.kernel.org/pub/linux/utils/fs/reiserfs/
 # Packager: tnut at nutyx dot org
 name=reiserfsprogs
-version=3.6.24
+version=3.6.25
 release=1
 
 source=(http://ftp.kernel.org/pub/linux/kernel/people/jeffm/reiserfsprogs/v${version}/$name-$version.tar.xz)
 
 
 build() {
-	export CFLAGS="$CFLAGS -std=gnu90"
         cd $name-$version
         ./configure --prefix=/usr \
                 --sbindir=/sbin
