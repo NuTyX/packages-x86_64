@@ -61,8 +61,8 @@ cd $LFS/root/development/base/nutyx</kbd></pre>
       <li>On vérifie sa présence</li>
         <pre class="command"><kbd>/tools/bin/pkginfo -r $LFS -i</kbd></pre>
 retourne
-        <pre class="output">nutyx 8.1...
-nutyx.man 8.1...</pre>
+        <pre class="output">(base) nutyx 20160611-1...
+(base) nutyx.man 20160611-1...</pre>
       <li>On installe les fichiers de configurations dans notre nouvelle NuTyX</li>
         <pre class="command"><kbd>VERSION="development" bash $LFS/root/development/scripts/install-nutyx -ic</kbd></pre>
       <li>On monte les différents dossiers</li>
@@ -116,9 +116,9 @@ for PACK in *.xz; do /tools/bin/pkgadd -r $LFS $PACK;done</kbd></pre>
      <li>On vérifie qu'il est bien ajouté:</li>
      <pre class="command"><kbd>/tools/bin/pkginfo -r $LFS -i|grep bash</kbd></pre>
 retourne
-        <pre class="output">bash 4.3.33
-bash.de 4.3.33
-bash.fr 4.3.33
+        <pre class="output">(base) bash 4.3.30
+(base) bash.de 4.3.30
+(base) bash.fr 4.3.30
 ...</pre>
      <li>Nous entrons à nouveau dans la NuTyX et finissons le travail:</li>
       <pre class="command"><kbd>chroot "$LFS" /usr/bin/env -i HOME=/root TERM="$TERM" PS1='\u:\w\$ ' \
@@ -180,7 +180,7 @@ source  ~/.bash_profile</kbd></pre>
     </ol>
   <div class="pied_page"><a class="url" href="build-post.html">Une fois la passe 2 terminée, vous pouvez passer à la post-installation et génération de l'iso</a></div>
   <hr>
-  <p class="updated"> Dernière mise à jour 29-05-2016 17:48</p>
+  <p class="updated"> Dernière mise à jour 11-06-2016 18:20</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
