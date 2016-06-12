@@ -5,10 +5,10 @@
 
 name=bind
 version=9.10.4
-release=1
+release=2
 
 source=(ftp://ftp.isc.org/isc/bind9/$version/$name-$version.tar.gz
-http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-use_iproute2-1.patch)
+http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-P1-use_iproute2-1.patch)
 
 build(){
     # blfs-bootscript
@@ -18,7 +18,7 @@ build(){
 
     # pkg
     cd $name-$version
-    patch -Np1 -i ../$name-$version-use_iproute2-1.patch
+    patch -Np1 -i ../$name-$version-P1-use_iproute2-1.patch
     ./configure --prefix=/usr \
                 --sysconfdir=/etc \
                 --localstatedir=/var \
