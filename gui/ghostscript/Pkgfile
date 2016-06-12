@@ -11,6 +11,8 @@ source=( https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download
          http://ghostscript.googlecode.com/files/ghostscript-fonts-std-8.11.tar.gz
          http://ftp.gnu.org/pub/gnu/ghostscript/gnu-gs-fonts-other-6.0.tar.gz )
 
+unset MAKEFLAGS
+
 build() {
 cd $name-$version
 rm -rf freetype lcms2 jpeg libpng
