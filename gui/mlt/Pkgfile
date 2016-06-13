@@ -19,6 +19,7 @@ build() {
 
   # mlt python bindings
   cd src/swig/python
+  ./build
   mkdir -p $PKG/usr/lib/python2.7/
   install -m755 mlt.py $PKG/usr/lib/python2.7/
   install -m755 _mlt.so $PKG/usr/lib/python2.7/
