@@ -7,33 +7,35 @@
     <title>Mise en place d'un serveur de compilation</title>
  </head>
  <body>
-   <table>
-    <tr>
-     <td width="30%">
-         <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
-     </td>
-     <td>
-      <nav>
-       <ul>
+    <table>
+     <tr>
+      <td width="30%">
+            <a href=".."><img id="logo" src="../graphics/logo_nutyx_120.png" alt="logo nutyx" /></a>
+      </td>
+      <td>
+       <nav>
+        <ul>
             <li><a href=".">Accueil</a></li>
             <li><a href="information.html">Information</a></li>
             <li><a href="documentation.html">Documentation</a></li>
             <li><a href="installation.html">Installation</a></li>
             <li><a href="faq.html">FAQ</a></li>
-            <li><a href="http://forum.nutyx.org/index.php?board=16">Forum</a></li>
             <li><a href="packages.html">Paquets</a></li>
+            <li><a href="http://forum.nutyx.org/index.php?board=18.0">Forum</a></li>
             <li><a href="http://github.com/NuTyX">Code</a></li>
-       </ul>
-      </nav>
-     </td>
-    </tr>
-   </table>
+        </ul>
+       </nav>
+      </td>
+     </tr>
+    </table>
   <hr>
    <h1>Mise en place d'un serveur de compilation</h1>
     <h2>Introduction</h2>
-     <p>Cet article s'adresse à un public qui maîtrise parfaitement sa NuTyX et la construction de binaires.</p>
-     <p>Ne tentez pas de reproduire ce qui est décrit dans cet article si vous ne vous sentez pas à l'aise avec la distibution.</p>
-     <p>Vous voilà prévenus</p>
+     <div class="important"><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" />Cet article s'adresse à un public qui maîtrise parfaitement sa NuTyX et la construction de binaires.</div>
+     <div class="note"><img alt="[Note]" src="../graphics/note.gif" />Dans cet article, le dossier utilisateur est <b>/home/tnut</b>, vous <u>devez</u> le remplacer avec <u>votre</u> dossier personnel.</div>
+     <div class="note"><img alt="[Note]" src="../graphics/note.gif" />Dans cet article, on utilise une machine <b>64 bits</b>, si vous êtes sur une machine <b>32 bits</b>, vous remplacez dans chaque commande concernée le terme <b>x86_64</b> par <b>i686</b>.</div>
+     <div class="note"><img alt="[Note]" src="../graphics/note.gif" />Dans cet article, on choisi la collection <b>kde5</b>, si vous souhaitez compiler <b>mate</b>, <b>enlightenment</b>, <b>lxde</b>, <b>gnome</b> ou <b>xfce4</b>, vous remplacez dans chaque commande concernée le mot <b>kde5</b> par la collection précitée de votre choix.</div>
+     <div class="note"><img alt="[Note]" src="../graphics/note.gif" />Dans cet article, on choisi de compiler sur la branche de développement, cad le git master, si vous souhaitez la branche  stable, remplacer le mot <b>development</b> par <b>stable</b>. Pour le git, vous spécifiez la branche <b>8.1</b> lors du clonage de celui-ci</div>
     <h2>Les étapes</h2>
      <p>On va:</p>
      <ol>
@@ -47,25 +49,28 @@
     <h2>Mise en place</h2>
      <h3>Les outils (paquets à installer)</h3>
       <p>On part du principe que votre NuTyX est vierge de tout paquet de dévelopement. On commence donc par installer les utilitaires:</p>
-      <pre class="command_user"><kbd>get rsync tar wget gawk git nfs-utils nfs-utils.service apache apache.service</kbd></pre>
-     <h3>Les dossiers à crééer</h3>
-      <p>La mise en place d'un serveur de compilation demande beaucoup d'espace disque. Danc l'explication, une partition dédié est utilisée cette partition est montée sur le dossier personnel de l'utilisateur (ici tnut)</p>
+      <pre class="command_user"><kbd>get rsync tar wget gawk git nfs-utils \
+nfs-utils.service apache apache.service</kbd></pre>
+     <h3>Les dossiers à créer</h3>
+      <p>La mise en place d'un serveur de compilation demande beaucoup d'espace disque. Dans l'explication, une partition dédiée est utilisée, cette partition est montée sur le dossier personnel de l'utilisateur.</p>
       <p>Il faut prévoir un bon 40 Gb pour être tranquille</p>
       <p>Tous les dossiers necessaires se trouvent donc dans:
-      <pre class="output">~/NuTyX</pre>
-      <p>On peut maintenant créer les dossiers necessaires, la bonne commande peut créé tous les dossiers:</p>
-      <pre class="command_user"><kbd>mkdir -p ~/NuTyX/{remote,local,git/development,sources,logs/development,chroot/development}</kbd></pre>
+      <pre class="output">/home/tnut/NuTyX</pre>
+      <p>On peut maintenant créer les dossiers necessaires, la bonne commande peut créer tous les dossiers:</p>
+      <pre class="command_user"><kbd>mkdir -pv \
+~/NuTyX/{remote,local/logs/x86_64/development/kde5,git/development,sources,chroot/development}</kbd></pre>
      <h3>Récupération d'une copie des binaires</h3>
       <p>C'est l'opération la plus longue donc on ouvre un nouveau terminal pour pouvoir continuer pendant que celle-ci se déroule. Cela étant fait, dans ce nouveau terminal on tape:</p>
-      <pre class="command_user"><kbd>su -</kbd></pre>
-      <p>Nous voilà donc en root dans ce deuxième terminal</p>
-      <p>Pour la mise en place, nous utilisons l'architecture 64 bits, si vous préférez travaillez en 32 bits, remplacez 'x86_64' par 'i686':</p>
-      <pre class="command"><kbd>rsync -av --delete rsync://downloads.nutyx.org/nutyx/x86_64/ /home/tnut/NuTyX/remote/x86_64/</kbd></pre>
       <p>Cette commande peut prendre un certain temps si votre connection internet n'est pas très rapide</p>
+      <div class="note"><img alt="[Note]" src="../graphics/note.gif" />Tapez cette commande à chaque fois que vous souhaitez mettre à jour votre copie des binaires originaux</div>
+      <pre class="command_user"><kbd>rsync -av --delete rsync://downloads.nutyx.org/nutyx/x86_64/ \
+/home/tnut/NuTyX/remote/x86_64/</kbd></pre>
      <h3>Récupération des ports</h3>
-      <p>De retour dans le premier terminal pour récupérer les ports pour la compilation (dans notre exemple on choisi kde5, libre à vous de choisir une autre collection:</p>
+      <p>De retour dans le premier terminal pour récupérer les ports pour la compilation:</p>
       <pre class="command_user"><kbd>git clone git://github.com/NuTyX/core.git ~/NuTyX/git/development/core
 git clone git://github.com/NuTyX/kde5.git ~/NuTyX/git/development/kde5</kbd></pre>
+      <p>Si vous avez choisi de compiler la branche <b>stable</b>, vous devez ajouter l'option -b 8.1 à la commande ci-dessus:</p>
+     <pre class="command_user"><kbd>git clone git://github.com/NuTyX/kde5.git -b 8.1 ~/NuTyX/git/development/kde5</kbd></pre>
       <p>A partir de maintenant, tout le reste des manipulations se fait dans le compte root:</p>
       <pre class="command_user"><kbd>su -</kbd></pre>
      <h3>Les fichiers de configuration</h3>
@@ -122,14 +127,12 @@ localhost:/home/tnut/NuTyX/git/development/kde5 /development/kde5/root/kde5 nfs 
 localhost:/home/tnut/NuTyX/local/x86_64/development /development/kde5/DEPOT nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0                   
 
 #### LOGS
-localhost:/home/tnut/NuTyX/logs/development/x86_64/kde5 /development/kde5/LOGS nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
+localhost:/home/tnut/NuTyX/local/logs/x86_64/development/kde5 /development/kde5/LOGS nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
 EOF</kbd></pre>
      <h3>Mise en place des liens et lancement des services</h3>
-     <p>Il nous reste à crééer quelques liens pour les différents services et scripts:</p>
-     <pre class="command"><kbd>mkdir /srv/local
-mkdir /root/bin
-ln -sv /home/tnut/NuTyX/local/x86_64 /srv/local/x86_64
-ln -sv /home/tnut/NuTyX/logs /srv/local/logs
+     <p>Il nous reste à créer quelques liens pour les différents services et scripts:</p>
+     <pre class="command"><kbd>mkdir -pv /root/bin
+ln -sv /home/tnut/NuTyX/local /srv/local
 ln -sv /home/tnut/NuTyX/git/development/core/scripts/install-nutyx /root/bin/install-nutyx
 ln -sv /home/tnut/NuTyX/git/development/core/scripts/enter-nutyx /root/bin/enter-nutyx
 ln -sv /home/tnut/NuTyX/chroot/development /development</kbd></pre>
@@ -144,13 +147,13 @@ ln -sv /home/tnut/NuTyX/chroot/development /development</kbd></pre>
       <li>Quand vous cassez votre votre chroot et donc vos binaires</li>
       <li>Quand vous souhaitez revenir sur les binaires originaux</li>
     </ol>
-    <pre class="command"><kbd>rsync -av --delete  /home/tnut/NuTyX/remote/ /home/tnut/NuTyX/local/</kbd></pre>
+    <pre class="command"><kbd>rsync -av --delete  /home/tnut/NuTyX/remote/x86_64/ /home/tnut/NuTyX/local/x86_64/</kbd></pre>
    <h2>Lancement du script</h2>
-    <p>Si vous avez bien suivi ce tuto et compris ce que vous avez fait, vous pouvez maintenant lancer la compilation des ports kde5 (si il ne sont pas encore dispo)</p>
+    <p>Si vous avez bien suivi ce tutoriel, vous pouvez maintenant lancer la compilation de l'ensemble des ports <b>kde5</b> et <b>kde5-extra</b>.</p>
     <pre class="command"><kbd>bash bin/enter-nutyx /development/kde5</kbd></pre>
   <hr>
   <p class="updated">
-       Dernière mise à jour 15-06-2016 22:50
+       Dernière mise à jour 16-06-2016 20:00
   </p>
     <footer>
       <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
