@@ -69,8 +69,9 @@ nfs-utils.service apache apache.service</kbd></pre>
       <p>De retour dans le premier terminal pour récupérer les ports pour la compilation:</p>
       <pre class="command_user"><kbd>git clone git://github.com/NuTyX/core.git ~/NuTyX/git/development/core
 git clone git://github.com/NuTyX/kde5.git ~/NuTyX/git/development/kde5</kbd></pre>
-      <p>Si vous avez choisi de compiler la branche <b>stable</b>, vous devez ajouter l'option -b 8.1 à la commande ci-dessus:</p>
-     <pre class="command_user"><kbd>git clone git://github.com/NuTyX/kde5.git -b 8.1 ~/NuTyX/git/development/kde5</kbd></pre>
+      <div class="note"><img alt="[Note]" src="../graphics/note.gif" />Si vous avez choisi de compiler la branche <b>stable</b>, vous devez ajouter l'option -b 8.1 à la commande ci-dessus:
+      <pre class="command_user"><kbd>git clone git://github.com/NuTyX/kde5.git -b 8.1 ~/NuTyX/git/stable/kde5</kbd></pre>
+</div>
       <p>A partir de maintenant, tout le reste des manipulations se fait dans le compte root:</p>
       <pre class="command_user"><kbd>su -</kbd></pre>
      <h3>Les fichiers de configuration</h3>
@@ -153,7 +154,7 @@ ln -sv /home/tnut/NuTyX/chroot/development /development</kbd></pre>
     <pre class="command"><kbd>bash bin/enter-nutyx /development/kde5</kbd></pre>
   <hr>
   <p class="updated">
-       Dernière mise à jour 16-06-2016 20:00
+       Dernière mise à jour 17-06-2016 18:43
   </p>
     <footer>
       <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
