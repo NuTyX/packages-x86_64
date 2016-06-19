@@ -4,9 +4,9 @@
 # Depends on: 
 
 name=bash-completion
-version=2.1
-release=2
-source=(https://launchpad.net/$name/master/$version/+download/$name-$version.tar.gz)
+version=2.3
+release=1
+source=(https://github.com/scop/bash-completion/releases/download/$version/bash-completion-$version.tar.xz)
 
 build() {
 
@@ -23,11 +23,5 @@ build() {
 
     mv $PKG/etc/bash_completion{.sh,}
     chmod 0755 $PKG/usr/share/$name/bash_completion
-
-    # files allready installed
-    for FILE in cal dmesg eject hexdump hwclock ionice look renice rtcwake
-    do
-      rm $PKG/usr/share/bash-completion/completions/$FILE
-    done
-
+    rm $PKG/usr/share/bash-completion/completions/{u,}mount
 }
