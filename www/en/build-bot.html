@@ -106,16 +106,16 @@ EOF</kbd></pre>
 /srv localhost(rw,no_root_squash,subtree_check,anonuid=99,anongid=99)
 /home/tnut/NuTyX localhost(rw,no_root_squash,subtree_check,anonuid=99,anongid=99)
 EOF</kbd></pre>
-      <h4>/etc/httpd/httpd.conf à adapter</h4>
-      <pre class="command"><kbd>vim /etc/httpd/httpd.conf</kbd></pre>
-      <p>Replace the line</p>
-      <pre class="output">DocumentRoot "/srv"
+      <h4>Adjust /etc/httpd/httpd.conf</h4>
+       <pre class="command"><kbd>vim /etc/httpd/httpd.conf</kbd></pre>
+       <p>Replace the line</p>
+       <pre class="output">DocumentRoot "/srv"
 &lt;Directory "/srv"&gt;</pre>
-      <p>with:</p>
-      <pre class="output">DocumentRoot "/srv/local"
+       <p>with:</p>
+       <pre class="output">DocumentRoot "/srv/local"
 &lt;Directory "/srv/local"&gt;</pre>
-      <h4>/etc/fstab à ajouter</h4>
-      <pre class="command"><kbd>cat &gt;&gt; /etc/fstab &lt;&lt; EOF
+      <h4>Adjust /etc/fstab</h4>
+       <pre class="command"><kbd>cat &gt;&gt; /etc/fstab &lt;&lt; EOF
 ##  KDE5 COLLECTION
 ### DEVELOPMENT
 #### SOURCES
@@ -124,37 +124,37 @@ localhost:/home/tnut/NuTyX/sources /development/kde5/sources nfs noauto,rw,vers=
 #### PORTS
 localhost:/home/tnut/NuTyX/git/development/kde5 /development/kde5/root/kde5 nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
 
-#### BINAIRES
+#### BINARIES
 localhost:/home/tnut/NuTyX/local/x86_64/development /development/kde5/DEPOT nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0                   
 
 #### LOGS
 localhost:/home/tnut/NuTyX/local/logs/x86_64/development/kde5 /development/kde5/LOGS nfs noauto,rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
 EOF</kbd></pre>
      <h3>Launch the necessary services</h3>
-     <p>We just need to put some links in place for the services and scripts:</p>
-     <pre class="command"><kbd>mkdir -pv /root/bin
+      <p>We just need to put some links in place for the services and scripts:</p>
+      <pre class="command"><kbd>mkdir -pv /root/bin
 ln -sv /home/tnut/NuTyX/local /srv/local
 ln -sv /home/tnut/NuTyX/git/development/core/scripts/install-nutyx /root/bin/install-nutyx
 ln -sv /home/tnut/NuTyX/git/development/core/scripts/enter-nutyx /root/bin/enter-nutyx
 ln -sv /home/tnut/NuTyX/chroot/development /development</kbd></pre>
-     <p>We can now launch the services:</p>
-     <pre class="command"><kbd>/etc/rc.d/init.d/httpd start
+      <p>We can now launch the services:</p>
+      <pre class="command"><kbd>/etc/rc.d/init.d/httpd start
 /etc/rc.d/init.d/nfs-server start</kbd></pre>
-     <p>They should be no errors printing out</p>
+      <p>They should be no errors printing out</p>
    <h2>Finalisation and step to reproduce</h2>
-    <p>You're now ready to work with the compilation script. The command below need to be reproduce in three cases:</p>
-    <ol>
-      <li>The first time</li>
-      <li>When you did something wrong with your chroot and then with your own binaries</li>
-      <li>When you want to come back on the officiel binaries from the server</li>
-    </ol>
-    <pre class="command"><kbd>rsync -av --delete  /home/tnut/NuTyX/remote/x86_64/ /home/tnut/NuTyX/local/x86_64/</kbd></pre>
+     <p>You're now ready to work with the compilation script. The command below need to be reproduce in three cases:</p>
+      <ol>
+       <li>The first time</li>
+       <li>When you did something wrong with your chroot and then with your own binaries</li>
+       <li>When you want to come back on the officiel binaries from the server</li>
+      </ol>
+     <pre class="command"><kbd>rsync -av --delete  /home/tnut/NuTyX/remote/x86_64/ /home/tnut/NuTyX/local/x86_64/</kbd></pre>
    <h2>Let's go</h2>
     <p>If you did all the steps correctly, you should be able to start the compilation of your <b>kde5</b> and <b>kde5-extra</b> collections.</p>
     <pre class="command"><kbd>bash bin/enter-nutyx /development/kde5</kbd></pre>
   <hr>
   <p class="updated">
-       Last updated 2016-06-18 12:16
+       Last updated 2016-06-26 19:51
   </p>
     <footer>
       <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
