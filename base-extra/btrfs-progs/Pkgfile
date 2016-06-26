@@ -3,7 +3,7 @@
 # Packagers: alienus at nutyx dot org, tnut at nutyx dot org
 
 name=btrfs-progs
-version=4.1
+version=4.6
 release=1
 
 source=(https://www.kernel.org/pub/linux/kernel/people/kdave/$name/$name-v$version.tar.xz
@@ -11,6 +11,7 @@ source=(https://www.kernel.org/pub/linux/kernel/people/kdave/$name/$name-v$versi
 
 build(){
 cd $name-v$version
+sed -i '1,106 s/\.gz//g' Documentation/Makefile.in
 ./configure --prefix=/usr libdir=/lib \
 bindir=/sbin
 make
