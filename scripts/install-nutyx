@@ -351,11 +351,10 @@ getPackageName() {
 install_base() {
 for i in \
 nutyx acl attr bash bc binutils bzip2 coreutils curl \
-expat gcc gdbm readline  \
-glibc gmp gperf grep gzip inetutils kbd lzo \
+expat gcc gdbm readline \
+glibc gmp grep gzip inetutils kbd lzo \
 libarchive libcap libpipeline mpc mpfr ncurses openssl pam \
-shadow util-linux xz zlib \
-cards
+shadow util-linux xz zlib cards
 do 
 	install_pkg "$i"
 done
@@ -1202,27 +1201,10 @@ if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
    return
 fi
 echo "## For enlightenment
-# Enlightenment is not yet ready to use
-# Decomment following 2 lines
-# if you want to try enlightenment anyway
-# dir ${DEPOT}/enlightenment-extra|${URL}
-# dir ${DEPOT}/enlightenment|${URL}
-#
-## For cinnamon
-# Cinnamon is not yet ready to use
-# Decomment following 2 lines
-# if you want to try cinnamon anyway
-#
-# dir ${DEPOT}/cinnamon-extra|${URL}
-# dir ${DEPOT}/cinnamon|${URL}
-#
-## For lxqt
-## lxqt is not yet ready to use
-# Decomment following 2 lines
-# if you want to install lxqt
-#
-# dir ${DEPOT}/lxqt-extra|${URL}
-# dir ${DEPOT}/lxqt|${URL}
+# Comment following 2 lines
+# if you don't want to install enlightenment
+dir ${DEPOT}/enlightenment-extra|${URL}
+dir ${DEPOT}/enlightenment|${URL}
 #
 ## For Gnome
 # Comment following 2 lines
