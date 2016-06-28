@@ -4,9 +4,11 @@
 # Depends on: python
 
 name=python-polib
-version=1.0.4
+version=1.0.7
 release=1
-source=(https://bitbucket.org/izi/polib/downloads/polib-${version}.tar.gz)
+
+source=(https://pypi.python.org/packages/source/p/polib/polib-$version.tar.gz )
+
 build() {
 cd polib-$version
 python2 setup.py build
