@@ -3,17 +3,15 @@
 # Packager: tnut at nutyx dot org
 # Depends on: 
 name=libzen
-version=0.4.31
+version=0.4.33
 release=1
 
-source=(
-http://downloads.sourceforge.net/zenlib/${name}_${version}.tar.bz2)
+source=(http://mediaarea.net/download/source/libzen/$version/libzen_$version.tar.xz)
 
 build(){
     cd $SRC/ZenLib/Project/GNU/Library
-    sh ./autogen
-    ./configure --prefix=/usr \
-                --enable-shared
+    [ -x configure ] || sh ./autogen.sh
+    [ -f Makefile ] || ./configure --prefix=/usr --enable-shared
     make clean
     make
     make DESTDIR=$PKG install
