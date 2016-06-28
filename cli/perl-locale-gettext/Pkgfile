@@ -4,20 +4,18 @@
 # Packager: # NuTyX package info file (http://nutyx.org)
 # Depends on: gettext 
 run=( perl )
+
 name=perl-locale-gettext
-version=1.05
+version=1.07
 release=1
 
-source=(http://search.cpan.org/CPAN/authors/id/P/PV/PVANDRY/gettext-$version.tar.gz
-perl-locale-gettext.compatibility-with-POSIX-module.patch)
+source=(http://search.cpan.org/CPAN/authors/id/P/PV/PVANDRY/gettext-$version.tar.gz)
 
 build() {
-    cd gettext-$version
-    patch -Np1 -i \
-        ../perl-locale-gettext.compatibility-with-POSIX-module.patch || exit 1
-    perl Makefile.PL
-    make OPTIMIZE="$CFLAGS" || exit 1
-    make install INSTALLDIRS=vendor DESTDIR=$PKG || exit 1
+    cd Locale-gettext-$version
+    PERL_MM_USE_DEFAULT=1 perl Makefile.PL
+    make OPTIMIZE="$CFLAGS" 
+    make install INSTALLDIRS=vendor DESTDIR=$PKG
 
     # Remove perllocal.pod and .packlist if present in the package
     for i in perllocal.pod .packlist; do
