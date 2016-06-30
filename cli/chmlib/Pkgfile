@@ -1,12 +1,13 @@
-# Description: Library for dealing with Microsoft ITSS/CHM format files
-# URL: http://morte.jedrea.com/~jedwin/projects/chmlib/
-# Packager: tnut at nutyx dot org
-# Depends on: 
 name=chmlib
 version=0.40
-release=1
+release=2
 
-source=(http://morte.jedrea.com/~jedwin/projects/$name/$name-$version.tar.bz2)
+description="Library for dealing with Microsoft ITSS/CHM format files"
+maintainer="Matthew T. Russotto's"
+packager="tnut at nutyx dot org"
+url="http://www.jedrea.com/chmlib/"
+
+source=($url/$name-$version.tar.bz2)
 
 build(){
     cd $name-$version
