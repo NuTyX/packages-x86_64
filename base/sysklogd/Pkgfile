@@ -1,11 +1,10 @@
-# Description: For logging system messages, such as those given by the kernel.
-# URL: http://www.infodrom.org/projects/sysklogd/
-# Maintainer: Dr. Greg Wettstein, greg at wind dot enjellic dot com
-# Packager: pierre at nutyx dot org
 name=sysklogd
 version=1.5.1
-release=1
-
+release=2
+url="http://www.infodrom.org/projects/sysklogd/"
+description="Logging system messages, such as those given by the kernel."
+packager="pierre at nutyx dot org, tnut at nutyx dot org"
+maintainer="Dr. Greg Wettstein, greg at wind dot enjellic dot com"
 source=(http://www.infodrom.org/projects/sysklogd/download/sysklogd-$version.tar.gz)
 
 build()
@@ -29,11 +28,10 @@ daemon.* -/var/log/daemon.log
 kern.* -/var/log/kern.log
 mail.* -/var/log/mail.log
 user.* -/var/log/user.log
-local7.* -/var/log/pkg-get.log
+local7.* -/var/log/install.log
 cron.* -/var/log/cron.log
 *.emerg *
 
 # End /etc/syslog.conf
 EOF
 }
-
