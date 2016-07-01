@@ -4,14 +4,14 @@
 # Depends on: qt4 
 
 name=speedcrunch
-version=0.10.1
+version=0.11
 release=1
 
-source=(http://speedcrunch.googlecode.com/files/speedcrunch-$version.tar.gz)
+source=(https://github.com/speedcrunch/SpeedCrunch/archive/$version.tar.gz)
 build ()
 {
-cd speedcrunch-$version/src
-cmake . -DCMAKE_INSTALL_PREFIX=/usr || return 1
+cd SpeedCrunch-$version/src
+cmake . -DCMAKE_INSTALL_PREFIX=/usr
 make
 lrelease-qt4 speedcrunch.pro
 make DESTDIR=$PKG install
