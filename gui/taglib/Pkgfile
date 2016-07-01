@@ -4,7 +4,7 @@
 # Depends on: cmake
 
 name=taglib
-version=1.10
+version=1.11
 release=1
 
 source=( https://taglib.github.io/releases/$name-$version.tar.gz)
@@ -15,7 +15,8 @@ build() {
         cd build
         cmake -DCMAKE_INSTALL_PREFIX=/usr \
               -DCMAKE_BUILD_TYPE=Release  \
-                    ..
+              -DBUILD_SHARED_LIBS=ON      \
+              ..
         make
         make DESTDIR=$PKG install
 }
