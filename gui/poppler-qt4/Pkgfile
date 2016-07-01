@@ -16,6 +16,7 @@ build() {
             --enable-qt4                  \
             --disable-qt5                 \
             --disable-glib                \
+            --enable-cmyk                 \
             --enable-xpdf-headers
     make
     make -C poppler DESTDIR=$PKG install-libLTLIBRARIES

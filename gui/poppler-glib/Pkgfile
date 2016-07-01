@@ -11,9 +11,10 @@ source=(http://poppler.freedesktop.org/poppler-$version.tar.xz)
 build() {
 cd poppler-$version
 
-./configure --prefix=/usr      \
-            --sysconfdir=/etc      \
-            --disable-static       \
+./configure --prefix=/usr         \
+            --sysconfdir=/etc     \
+            --disable-static      \
+            --enable-cmyk         \
             --disable-poppler-qt4  \
             --disable-poppler-qt5  \
             --enable-poppler-glib \

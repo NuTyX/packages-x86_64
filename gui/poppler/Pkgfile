@@ -15,13 +15,12 @@ http://poppler.freedesktop.org/poppler-data-$dataversion.tar.gz)
 build() {
 cd poppler-$version
  
-    ./configure --prefix=/usr      \
-            --sysconfdir=/etc      \
-            --disable-static       \
-            --disable-poppler-qt4  \
-            --disable-poppler-qt5  \
-            --disable-poppler-glib \
-            --enable-xpdf-headers
+./configure --prefix=/usr      \
+	--sysconfdir=/etc      \
+	--disable-static       \
+	--enable-build-type=release \
+	--enable-cmyk               \
+	--enable-xpdf-headers
 
 make
 make DESTDIR=$PKG install
@@ -31,6 +30,7 @@ make prefix=/usr DESTDIR=$PKG install
 
 rm -f $PKG/usr/lib/pkgconfig/poppler-{glib,qt4,qt5}.pc
 rm -f $PKG/usr/lib/poppler-{glib*,qt4*,qt5*}
+rm -f $PKG/usr/lib/libpoppler-{glib*,qt4*,qt5*}
 
 rm -f $PKG/usr/bin/poppler-glib-demo
 rm -rf $PKG/usr/include/poppler/glib/
