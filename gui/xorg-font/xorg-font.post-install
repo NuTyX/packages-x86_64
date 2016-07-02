@@ -1,6 +1,18 @@
 fc-cache -f -s > /dev/null
-for i in 100dpi  75dpi  cyrillic  misc  OTF  TTF  Type1
-do
-        mkfontscale /usr/share/fonts/$i
-        mkfontdir /usr/share/fonts/$i
-done
+
+# Update mkfontscale and mkfontdir:
+if [ -x usr/bin/mkfontdir ]; then
+  for i in 100dpi  75dpi  cyrillic  misc  OTF  TTF  Type1
+  do
+  ( cd usr/share/fonts/$i
+
+    mkfontscale .
+    mkfontdir .
+  )
+  done
+fi
+
+# Update the X font indexes:
+if [ -x usr/bin/fc-cache ]; then
+    usr/bin/fc-cache -f
+fi

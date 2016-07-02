@@ -8,7 +8,7 @@ run=(xorg-fontconfig xorg-app)
 section="font"
 name=xorg-font
 version=7.7
-release=2
+release=3
 
 source=()
 
@@ -76,4 +76,5 @@ usr/share/man/man1/ucs2any.1
 do
   rm $PKG/$FILE
 done
+rm "$PKG/usr/share/fonts/"*/fonts.*
 }
