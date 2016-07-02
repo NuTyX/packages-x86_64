@@ -43,7 +43,7 @@ eeeae1f47d43a33ef0d5c56727410326  xproto-7.0.29.tar.bz2
 EOF
 for package in $(grep -v '^#' list.md5 |cut -d " " -f 3)
 	do
-		wget http://mirror.switch.ch/ftp/mirror/X11/pub/individual/${section}/$package
+		wget  http://ftp.x.org/pub/individual/${section}/$package
 		grep $package list.md5 |md5sum -c -
 		packagedir=$(echo $package | sed 's/.tar.bz2//')
 		tar -xf $package
