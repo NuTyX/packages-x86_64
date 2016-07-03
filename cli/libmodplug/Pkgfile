@@ -1,0 +1,16 @@
+# Description: A MOD playing library
+# URL: http://modplug-xmms.sourceforge.net/
+# Packager: pierre at nutyx dot org
+
+name=libmodplug
+version=0.8.8.5
+release=1
+
+source=( http://downloads.sourceforge.net/modplug-xmms/$name-$version.tar.gz)
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+  make DESTDIR=$PKG install
+}
