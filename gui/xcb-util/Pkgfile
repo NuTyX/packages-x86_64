@@ -5,14 +5,15 @@
 
 name=xcb-util
 version=0.4.0
-release=1
+release=2
 
 source=(http://xcb.freedesktop.org/dist/$name-$version.tar.bz2)
 
 build() {
 	cd $name-$version
 
-	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+	--disable-static
 
 	make
 	make DESTDIR=$PKG install
