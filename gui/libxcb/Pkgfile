@@ -5,7 +5,7 @@
 
 name=libxcb
 version=1.12
-release=1
+release=2
 
 source=(http://xcb.freedesktop.org/dist/$name-$version.tar.bz2)
 
@@ -19,8 +19,7 @@ sed -e "s/pthread-stubs//" -i configure
 	    --localstatedir=/var \
 	    --docdir='${datadir}'/doc/libxcb-$version \
 	    --enable-xinput \
-            --enable-xkb \
-            --disable-static
+            --enable-xkb
 make
 make DESTDIR=$PKG install
 }
