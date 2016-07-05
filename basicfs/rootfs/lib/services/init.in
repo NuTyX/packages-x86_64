@@ -275,7 +275,7 @@ if [ "$root" == "" ]; then
 		sh
 	else
 		if [ "$verbose" == "yes" ]; then
-			echo "/etc/rc.d/init.d/setup-nutyx exit ..."
+			echo "/etc/rc.d/init.d/setup-nutyx exist ..."
 			ls -lt /etc/rc.d/init.d/setup-nutyx
 		fi
 	fi
@@ -287,8 +287,12 @@ if [ "$root" == "" ]; then
 	[ "$verbose" == "no" ] || echo "Wait 5 second ..."
 	[ "$verbose" == "no" ] || sleep 5
 	[ "$verbose" == "no" ]  && clear
+	[ "$verbose" == "no" ] || echo "Start sysklogd ..."
+	/etc/rc.d/init.d/sysklogd start
 	MainLoop
 	root=`cat /root/boot`
+	[ "$verbose" == "no" ] || echo "Stop sysklogd ..."
+	/etc/rc.d/init.d/sysklogd stop
 	[ "$verbose" == "no" ] || echo "Stop udev ..."
 	do_stop_udev
 	killall -w /sbin/udevd
