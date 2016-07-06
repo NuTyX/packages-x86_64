@@ -1,0 +1,24 @@
+# Description : 
+# URL: https://www.kde.org/
+# Packager: pierre at nutyx dot org
+<<<<<<< HEAD
+# Depends on: kf5-extra-cmake-modules kf5-kconfig kf5-kconfigwidgets kf5-ki18n kf5-kiconthemes kf5-kio kf5-knotifications kf5-kwidgetsaddons kf5-kwayland plasma-breeze 
+=======
+# Depends on: kf5-extra-cmake-modules kf5-kconfig kf5-kconfigwidgets kf5-ki18n kf5-kiconthemes kf5-kio kf5-knotifications kf5-kwidgetsaddons kf5-kwayland
+>>>>>>> f3a8853934bc02974b74684ab9eb41a58889f0b7
+
+_name=plasma-integration
+release=2
+
+build() {
+cd ${_name}-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DLIB_INSTALL_DIR=lib       \
+      -DBUILD_TESTING=OFF         \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
