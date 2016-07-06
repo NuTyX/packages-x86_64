@@ -16,13 +16,10 @@ sed -i "s:4.2:4.5:g" cmake/FindDocBookXML4.cmake
 
 mkdir build
 cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr             \
-      -DCMAKE_BUILD_TYPE=Release              \
-      -DLIB_INSTALL_DIR=lib                   \
-      -DBUILD_TESTING=OFF                     \
-      -DQT_PLUGIN_INSTALL_DIR=lib/qt5/plugins \
-      -DQML_INSTALL_DIR=lib/qt5/qml           \
-      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DLIB_INSTALL_DIR=lib       \
+      -DBUILD_TESTING=OFF         \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
