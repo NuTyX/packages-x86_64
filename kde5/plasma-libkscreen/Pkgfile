@@ -1,0 +1,24 @@
+# Description : KDE screen management software 
+# URL: https://www.kde.org/
+# Packager: pierre at nutyx dot org
+<<<<<<< HEAD
+# Depends on: cmake kf5-extra-cmake-modules qt5 kf5-kwayland
+=======
+# Depends on: cmake kf5-extra-cmake-modules qt5 kf5-kwayland 
+>>>>>>> f3a8853934bc02974b74684ab9eb41a58889f0b7
+
+_name=libkscreen
+release=2
+
+build() {
+cd ${_name}-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr  \
+      -DCMAKE_BUILD_TYPE=Release   \
+      -DLIB_INSTALL_DIR=lib        \
+      -DBUILD_TESTING=OFF          \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
