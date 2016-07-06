@@ -5,20 +5,17 @@
 
 name=kaccounts-providers
 version=16.04.2
-release=2
+release=3
 
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build() {
 mkdir build
 cd build
-cmake ../$name-$version                \
-    -DCMAKE_BUILD_TYPE=Release         \
-    -DCMAKE_INSTALL_PREFIX=/usr        \
-    -DLIB_INSTALL_DIR=lib              \
-    -DSYSCONF_INSTALL_DIR=/etc         \
-    -DQML_INSTALL_DIR=/usr/lib/qt5/qml \
-    -DPLUGIN_INSTALL_DIR=/usr/lib/qt5/plugins \
+cmake ../$name-$version         \
+    -DCMAKE_BUILD_TYPE=Release  \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib       \
     -DBUILD_TESTING=OFF 
 make
 make DESTDIR=$PKG install
