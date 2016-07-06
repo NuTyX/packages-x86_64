@@ -1,7 +1,7 @@
 # Description : Provides integration plugins for various KDE frameworks for the wayland windowing system 
 # URL: https://www.kde.org/
 # Packager: pierre at nutyx dot org
-# Depends on: cmake kf5-extra-cmake-modules wayland plasma-kwayland kf5-kwindowsystem kf5-kidletime
+# Depends on: cmake kf5-extra-cmake-modules wayland kf5-kwayland kf5-kwindowsystem kf5-kidletime
 
 _name=kwayland-integration
 release=1
@@ -12,10 +12,9 @@ mkdir build
 cd    build
 cmake -DCMAKE_BUILD_TYPE=Release        \
       -DCMAKE_INSTALL_PREFIX=/usr       \
-      -DLIB_INSTALL_DIR=lib             \
+      -DLIB_INSTALL_DIR=lib \
       -DSYSCONF_INSTALL_DIR=/etc        \
-      -DBUILD_TESTING=OFF               \
-      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+      -DBUILD_TESTING=OFF   \
       -Wno-dev ..
 
 make
