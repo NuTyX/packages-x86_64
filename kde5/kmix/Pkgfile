@@ -16,12 +16,11 @@ sed -e 's|${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR}|${ECM_MODULE_PATH} ${ECM_KDE_
 
 mkdir build
 cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr             \
-      -DCMAKE_BUILD_TYPE=Release              \
-      -DLIB_INSTALL_DIR=lib                   \
-      -DKMIX_KF5_BUILD=ON                     \
-      -DBUILD_TESTING=OFF                     \
-      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DLIB_INSTALL_DIR=lib       \
+      -DKMIX_KF5_BUILD=ON         \
+      -DBUILD_TESTING=OFF         \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
