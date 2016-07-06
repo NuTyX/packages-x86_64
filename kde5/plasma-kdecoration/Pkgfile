@@ -6,14 +6,13 @@ _name=kdecoration
 release=1
 
 build() {
-cd ${_name}-$version
 mkdir build
 cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr             \
-      -DCMAKE_BUILD_TYPE=Release              \
-      -DLIB_INSTALL_DIR=lib                   \
-      -DBUILD_TESTING=OFF                     \
-      -Wno-dev -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ..
+cmake ../${_name}-$version        \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DLIB_INSTALL_DIR=lib       \
+      -DBUILD_TESTING=OFF
 make
 make DESTDIR=$PKG install
 }
