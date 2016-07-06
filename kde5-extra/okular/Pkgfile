@@ -2,10 +2,10 @@
 # URL: http://www.kde.org
 # Packager: pierre at nutyx dot og
 # Depends on : git  kf5-extra-cmake-modules kf5-khtml kf5-threadweaver kf5-kactivities kf5-kdelibs4support kf5-kpty plasma-libkscreen freetype poppler-qt5 libspectre djvulibre qca-qt5 libkexiv2 chmlib  zlib ebook-tools kf5-kdoctoolsphonon-qt5
-               
+   
 name=okular
 version=15.12.1+df0c412
-release=1
+release=2
 
 source=(http://anduin.linuxfromscratch.org/BLFS/okular/okular-15.12.1+df0c412.tar.xz )
 
@@ -18,8 +18,7 @@ build() {
         -DCMAKE_INSTALL_PREFIX=/usr  \
         -DSYSCONF_INSTALL_DIR=/etc   \
         -DPLUGIN_INSTALL_DIR=/usr/lib/qt5/plugins \
-        -DKDE_INSTALL_USE_QT_SYS_PATHS=ON         \
-        -DLIB_INSTALL_DIR=lib                     \
+        -DLIB_INSTALL_DIR=lib         \
         -Wno-dev ..
   make
   make DESTDIR=$PKG install
