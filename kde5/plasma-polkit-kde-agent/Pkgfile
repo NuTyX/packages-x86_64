@@ -12,12 +12,11 @@ build() {
 cd ${_name}-1-$version
 mkdir build
 cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr             \
-      -DCMAKE_BUILD_TYPE=Release              \
-      -DLIB_INSTALL_DIR=lib                   \
-      -DBUILD_TESTING=OFF                     \
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DLIB_INSTALL_DIR=lib       \
+      -DBUILD_TESTING=OFF         \
       -DLIBEXEC_INSTALL_DIR=lib/polkit-kde    \
-      -DKDE_INSTALL_USE_QT_SYS_PATHS=ON       \
       -Wno-dev  ..
 make
 make DESTDIR=$PKG install
