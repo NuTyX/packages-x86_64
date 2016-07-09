@@ -1,15 +1,17 @@
 # Description: Standalone web browser from mozilla.org
 # URL: http://www.mozilla.com/firefox/
 # Packager: pierre at nutyx dot org,tnut at nutyx dot org
-# Depends on: pulseaudio gconf yasm sqlite libvpx libevent nss alsa-lib gtk2 gtk3 xorg-app zip unzip gstreamer1 gstreamer1-plugins-base gstreamer1-plugins-good gstreamer1-plugins-libav
+# Depends on: autoconf2-13 pulseaudio gconf yasm sqlite libvpx libevent nss alsa-lib gtk2 gtk3 xorg-app zip unzip gstreamer1 gstreamer1-plugins-base gstreamer1-plugins-good gstreamer1-plugins-libav
 
 run=(gstreamer1-plugins-good gstreamer1-plugins-libav)
 
 name=firefox
-version=46.0.1
+version=47.0.1
 release=1
 
-source=(https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.xz)
+source=( http://www.linuxfromscratch.org/patches/blfs/svn/firefox-47.0.1-gcc6-1.patch
+	 http://www.linuxfromscratch.org/patches/blfs/svn/firefox-47.0.1-gtk320-1.patch
+	https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.xz)
 
 build() {
 
@@ -49,8 +51,19 @@ ac_add_options --disable-tests
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 EOF
 
+patch -Np1 -i ../firefox-47.0.1-gcc6-1.patch
+
+patch -Np1 -i ../firefox-47.0.1-gtk320-1.patch
+
+
+
+
 test $(uname -m) = "i686" && sed -i 's/enable-optimize/disable-optimize/' mozconfig || true
 
+export CFLAGS=$CFLAGS_HOLD
+export CXXFLAGS_HOLD=$CXXFLAGS
+export CFLAGS+=" -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2"
+export CXXFLAGS+=" -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2"
 
 SHELL=/bin/sh make -f client.mk
 
