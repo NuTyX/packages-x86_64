@@ -1,0 +1,20 @@
+# URL: http://lxde.org/
+# Maintainer: Fred Chien
+# Packager: tnut at nutyx dot org
+# Depends on: intltool vte
+
+description="Terminal emulator without any unnecessary dependencies"
+name=lxde-terminal
+_name=lxterminal
+version=0.2.0
+release=2
+
+source=(http://downloads.sourceforge.net/lxde/lxterminal-$version.tar.gz)
+
+
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr \
+make
+make DESTDIR=$PKG install
+}
