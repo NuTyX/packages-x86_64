@@ -5,15 +5,11 @@
 
 name=kholidays
 version=16.04.2
-release=1
+release=2
 
-source=( http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz
-	kholidays-15.12.3-glib-1.patch)
+source=( http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
 build() {
-
-  cd $name-$version
-  patch -Np1 -i ../kholidays-15.12.3-glib-1.patch
-  cd ..
   mkdir build
   cd build
   cmake ../$name-$version \
