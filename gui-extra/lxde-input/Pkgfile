@@ -1,0 +1,19 @@
+# Description: Mouse and Keyboard config tools for lxde
+# URL: http://lxde.org/
+# Maintainer: Martin Bagge
+# Packager: geantbrun at gmail dot com, tnut at nutyx dot org
+# Depends on: gtk2
+
+name=lxde-input
+_name=lxinput
+version=0.3.5
+release=1
+ 
+source=(http://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz)
+ 
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr 	
+make
+make DESTDIR=$PKG install
+}
