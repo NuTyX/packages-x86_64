@@ -1,0 +1,19 @@
+# URL: http://lxde.org/about.html
+# Maintainer: pcman dot tw at gmail dot com
+# Packager: geantbrun at gmail dot com
+# Depends on:  gtk2
+
+description="Task manager tool for lxde"
+name=lxde-task
+_name=lxtask
+version=0.1.7
+release=1
+source=(http://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz)
+
+build() {
+    cd ${_name}-$version
+    ./configure --prefix=/usr
+    make
+    make DESTDIR=$PKG install
+
+}
