@@ -4,15 +4,18 @@
 # Depends on: glib dbus libidn alsa-lib libmad
 
 name=libvlc
-version=2.2.4
-release=1
+version=3.0.0
+release=20160606
 
-source=( http://download.videolan.org/pub/videolan/vlc/$version/vlc-$version.tar.xz)
+source=( http://anduin.linuxfromscratch.org/BLFS/vlc/vlc-$version-$release.tar.xz)
 	
 build() {
 
-cd vlc-$version
+cd vlc-$version-$release
 
+sed -i '/seems to be moved/s/^/#/' autotools/ltmain.sh
+
+BUILDCC=gcc \
 ./configure --prefix=/usr \
 --disable-swscale \
 --disable-lua \
