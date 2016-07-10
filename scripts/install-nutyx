@@ -352,7 +352,7 @@ install_base() {
 for i in \
 nutyx acl attr bash bc binutils bzip2 coreutils curl \
 expat gcc gdbm readline \
-glibc gmp gperf grep gzip inetutils kbd lzo \
+glibc gmp grep gzip inetutils kbd lzo \
 libarchive libcap libpipeline mpc mpfr ncurses openssl pam \
 shadow util-linux xz zlib cards
 do 
@@ -1334,7 +1334,7 @@ check_tools() {
 check_variables() {
 
 [ -z $URL ] && URL="http://downloads.nutyx.org"
-[ -z $VERSION ] && VERSION="8.2"
+[ -z $VERSION ] && VERSION="8.2-beta"
 if [ "$VERSION" == "development" ]; then
 	CODE_NAME="`date +%Y%m%d`"
 else
@@ -1647,6 +1647,6 @@ example: LFS=/chroot ${INSTALL_COMMAND}
 }
 
 readonly BASE="base"
-readonly RELEASE=3
+readonly RELEASE=1
 INSTALL_COMMAND="`basename $0`"
 main "$@"
