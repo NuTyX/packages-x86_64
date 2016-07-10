@@ -1,0 +1,20 @@
+# Description: Light picture Viewer for lxde. 
+# URL: http://lxde.org/
+# Maintainer: Martin Bagge
+# Packager: geantbrun at gmail dot com, tnut at nutyx dot org
+# Depends on: gtk2
+
+name=lxde-gpicview
+_name=gpicview
+version=0.2.5
+release=1
+ 
+source=(http://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz)
+ 
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr 	
+make
+make DESTDIR=$PKG install
+sed -i 's/Utility;//' $PKG/usr/share/applications/gpicview.desktop  
+}
