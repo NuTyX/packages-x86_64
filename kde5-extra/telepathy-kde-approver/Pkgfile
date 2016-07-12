@@ -1,0 +1,23 @@
+# Description: KDE Channel Approver for Telepathy
+# URL: http://community.kde.org/Real-Time_Communication_and_Collaboration
+# Packager: pierre at nutyx dot org
+# Depends on: kf5-extra-cmake-modules kf5-kdoctools telepathy-qt5 kf5-knotifications kf5-kservice
+
+name=telepathy-kde-approver
+version=16.04.2
+release=1
+
+source=(http://download.kde.org/stable/applications/$version/src/ktp-approver-$version.tar.xz)
+
+build() {
+  mkdir -p build
+  cd build
+  cmake ../ktp-approver-$version \
+    -DCMAKE_INSTALL_PREFIX=/usr  \
+    -DCMAKE_BUILD_TYPE=Release   \
+    -DKDE_INSTALL_LIBDIR=lib     \
+    -DKDE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  make
+  make DESTDIR=$PKG install
+}
