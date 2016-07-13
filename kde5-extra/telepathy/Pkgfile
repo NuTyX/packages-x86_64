@@ -1,0 +1,18 @@
+# Description : This package installs Telepathy packages
+# URL: https://www.kde.org/
+# Packager: pierre at nutyx dot org
+# Depends on: telepathy-kde-accounts-kcm telepathy-kde-approver telepathy-kde-auth-handler telepathy-kde-call-ui telepathy-kde-contact-runner telepathy-kde-contact-list telepathy-kde-desktop-applets telepathy-kde-filetransfer-handler telepathy-kde-integration-module telepathy-kde-send-file telepathy-kde-text-ui telepathy-mission-control telepathy-idle telepathy-logger
+
+run=(telepathy-kde-accounts-kcm telepathy-kde-approver telepathy-kde-auth-handler telepathy-kde-call-ui telepathy-kde-contact-runner telepathy-kde-contact-list telepathy-kde-desktop-applets telepathy-kde-filetransfer-handler telepathy-kde-integration-module telepathy-kde-send-file telepathy-kde-text-ui telepathy-mission-control telepathy-idle telepathy-logger) 
+
+version=16.04.3
+release=1
+#
+if [ ! -z ${_name} ]; then
+	source=(http://download.kde.org/stable/applications/$version/src/${_name}-$version.tar.xz)
+fi
+build() {
+
+mkdir -p $PKG/usr
+
+}
