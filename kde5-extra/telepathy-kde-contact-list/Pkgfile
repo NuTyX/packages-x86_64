@@ -1,0 +1,18 @@
+# Description: KDE Telepathy contact list application 
+# URL: http://community.kde.org/Real-Time_Communication_and_Collaboration
+# Packager: pierre at nutyx dot org
+# Depends on: kf5-extra-cmake-modules kf5-kdoctools telepathy-kde-common-internals 
+
+_name=ktp-contact-list
+release=1
+
+build() {
+  mkdir -p build
+  cd build
+  cmake ../ktp-contact-list-$version \
+    -DCMAKE_INSTALL_PREFIX=/usr  \
+    -DCMAKE_BUILD_TYPE=Release   \
+    -DBUILD_TESTING=OFF
+  make
+  make DESTDIR=$PKG install
+}
