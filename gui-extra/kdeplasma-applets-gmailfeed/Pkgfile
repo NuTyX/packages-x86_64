@@ -1,0 +1,23 @@
+# Description: A Plasma 5 plasmoid showing your Gmail feed
+# URL: https://github.com/anthon38/gmailfeed
+# Packager: pierre at nutyx dot org
+# Depends on: git kf5-extra-cmake-modules kf5-plasma-framework kf5-knotifications hicolor-icon-theme kde5-kl10n
+
+name=kdeplasma-applets-gmailfeed
+basename=gmailfeed
+version=1.1
+release=1
+
+source=(https://github.com/anthon38/gmailfeed/archive/v$version.tar.gz)
+
+build() {
+  mkdir build
+  cd build
+ 
+  cmake ../$basename-$version       \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=Release  \
+        -DLIB_INSTALL_DIR=lib
+  make
+  make DESTDIR=$PKG install
+}
