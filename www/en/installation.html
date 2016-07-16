@@ -30,26 +30,25 @@
     </table>
  <hr>
   <h1>Installation</h1>
-   <p>Make sure you have enough space on your hard disk. A size of 8GiB to 15GiB will be enough.</p>
-    <h2>Download the last version of NuTyX</h2>
-     <p>The actual version of NuTyX is named <b>houaphan 8.1</b>. The available iso can be used to install all the packages from internel. It's also to used it for a minimum of maintenance on your machine before the actual installation of NuTyX.</p>
-     <p>The size of the isos are <b>+- 210 Mb</b> for both ISOs.</p>
-     <p>All the available iso can be download at: <a class="url" href="http://downloads.nutyx.org/?C=M;O=D"  target="_blank" >http://downloads.nutyx.org</a></p>
+   <p>Make sure you have enough space on your hard disk. 8 GiB to 15 GiB should be enough.</p>
+    <h2>Download the latest version of NuTyX</h2>
+     <p>The current release of NuTyX is named <b>houaphan 8.1</b>. The available ISO image can be used to install all the packages from the Internet. It is also used to carry out a minimum of configuration of your machine before the actual installation of NuTyX.</p>
+     <p>Both isos are <b>+- 210 Mb</b>.</p>
+     <p>All the available ISO images can be downloaded at: <a class="url" href="http://downloads.nutyx.org/?C=M;O=D"  target="_blank" >http://downloads.nutyx.org</a></p>
     <h2>Create a bootable USB key</h2>
      <p>If you are currently running GNU/linux on your machine: </p>
-     <div class="important"><img alt="[Important]" src="../graphics/caution.gif" />In root </div>
-     <p>With the help of fdisk, find out where your usb KEY is located:</p>
+     <div class="important"><img alt="[Important]" src="../graphics/caution.gif" />As root </div>
+     <p>With the help of fdisk, find out where your usb key is located:</p>
      <pre class="command"><kbd>fdisk -l</kbd></pre>
      <p>Then by using the command <b>dd</b>, create a bootable key:</p>
      <pre class="command"><kbd>dd if=NuTyX_x86_64-houaphan-8.1.iso of=/dev/sdX </kbd></pre>
-     <p>The <b>sdX</b> value is given by the command:</p>
-     <pre class="command"><kbd>fdisk -l</kbd></pre>
-     <p>If you are under Windows, the easiest way is to burn the ISO on a CD.</p>
+     <p>The <b>sdX</b> value is the one that you have previously found using fdisk.</pre>
+     <p>If you are using Windows, it is easier to burn the ISO image onto a CD.</p>
     <h2>Typical installation of NuTyX on a single partition</h2>
-     <p><a class="url" href="install.html">This topic will explain how to install from scratch the NuTyX distribution on your PC</a></p>
-     <p>The default password is <b>nutyx</b>. Once you have successfully logged in, you're required to change the password.</p>
-    <h2>Installation of the boot process</h2>
-      <p><a class="url" href="grub-install.html">This topic will explain you how to install from scratch the configuration of the boot process of your PC</a></p>
+     <p><a class="url" href="install.html">How to install NuTyX from scratch on your PC</a></p>
+     <p>The default root password is <b>nutyx</b>. Once you have successfully logged in, you will be required to change the password.</p>
+    <h2>Installing a bootloader</h2>
+      <p><a class="url" href="grub-install.html">How to install and configure the bootloader for your PC</a></p>
      <p>If you used the latest grub version 2.XX , the following entry can be added to your grub.cfg:</p>
       <pre class="command"><kbd>menuentry "NuTyX sur /dev/sda1" {
     set root=(hd0,1)

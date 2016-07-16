@@ -29,28 +29,32 @@
     </table>
  <hr>
  <h1><span>Why should you contribute ?</span></h1>
-<div class="introduction">Today NuTyX have about <a href="packages.html" title="Read in another windows" class="external" onclick="window.open(this.href); return false;">1400 applications</a> in binaries available. It's a lot and not because every days are new programs release on the net under open source licence (or not)</div>
-<div class="description"><p>It's clear, you will never have the chance to see all thoses programs ready to be installed on NuTyX. Just with the web site <a href="http://sourceforge.net/">sourceforge.net</a>,  we can find more then 5000 applications for all platforms. If you found the application of yours dreams, you will have in eather way to compile it, install it and make it working on NuTyX. That why we will ask you to contribute a little bit. It's you who will build the package... if you want of course.</p>
-<p>Compiling an application is often something like:</p>
-<ul><li>Find the application that doen't exist on NuTyX</li></ul>
-<ul><li>Download the sources of the application</li></ul>
+<div class="introduction">Today NuTyX has about <a href="packages.html" title="Read in another windows" class="external" onclick="window.open(this.href); return false;">1,400 applications</a> available in binary form. In one sense, that's a lot. But it really isn't when you consider that new programs are released on the net every day, many under open source licences.</div>
+<div class="description"><p>It's clear that you will never see all these programs ready for installation on NuTyX. Just using the <a href="http://sourceforge.net/">sourceforge.net</a> web site, we can find more then 5,000 applications for all platforms. If you find the application of your dreams, you will have compile it yourself, install it and make it work on NuTyX. That why we are asking you to contribute a little bit. It is you who will build the package... if you want to of course.</p>
+<p>Building an application is often something like:</p>
+<ul><li>Find an application not available in NuTyX</li></ul>
+<ul><li>Download the source code of the application</li></ul>
 <ul><li>Check the MD5SUM (strongly recommended but not always possible)</li></ul>
-<ul><li>Extract sources in a working directory</li></ul>
-<ul><li>Enter in this working directory</li></ul>
-<ul><li>Check that all the dependencies exists in NuTyX so that the compilation endup with succes</li></ul>
-<ul><li>Type the three magic commands (not always the case)</li></ul>
+<ul><li>Extract sources into a working directory</li></ul>
+<ul><li>Enter this working directory</li></ul>
+<ul><li>Check that all the dependencies of the package are installed in NuTyX 
+(otherwise the build will not succeed)</li></ul>
+<ul><li>Type the three magic commands (in most cases; there are exceptions)</li></ul>
 <pre class="output">./configure --prefix=/usr
 make
 make install</pre>
-<p>That's it you new program is compiled and install on your NuTyX.</p>
-<p>That's one way to go... but as you can see they are a few disadvantages:</p>
-<li>Impossible to know which files are installed</li>
-<li>Impossible get information about the installed package like name, version, description, etc...<br /></li>
-<li>Impossible to share the application with another installation of NuTyX</li>
-<li>This method is quiete heavy because need to be done again when they will be an update available for example.</li>
-<li>Your NuTyX is not really clean anymore since you have add files that are not track by the package manager.<br /></li>
+<p>The &quot;make install&quot; step must be carried out as root. 
+<p>
+That's it! Your new program is built and installed on your NuTyX system.</p>
+<p>That's one way to go... but as you can see, there are a few disadvantages:</p>
+<li>You do not know what files have been installed</li>
+<li>You cannot easily get information about the installed package such as its 
+name, version, description, etc...<br /></li>
+<li>You cannot share the application with another NuTyX installation</li>
+<li>This method is tedious because it needs to be repeated whenever there is an update available.</li>
+<li>Your NuTyX system is no longer really clean, since you have added files that are not tracked by the package manager.<br /></li>
 <p>&nbsp;</p>
-<p>NuTyX have nice tools to help you greatly the integration of new programs. You will be then able to track them, maintain them. The package manager will treat them like other NuTyX packages.</p></div>
+<p>NuTyX has nice tools to help you with the integration of new programs. You will be then able to track them and maintain them. The package manager will treat them like other NuTyX packages.</p></div>
   </div>
     <hr>
     <p class="updated">Last updated on 2016-03-21 21:30</p>
