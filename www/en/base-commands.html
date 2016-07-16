@@ -30,16 +30,19 @@
     </table>
  <hr>
   <h1>The base commands...</h1>
-   <h2>Give a try</h2>
-    <p>To take full advantage of your newly installed NuTyX, here are the MUST commmands that you will have to use everyday. This article explain the essential commands and are NuTyX specifics. We strongly recommand to know them.</p>
-    <p>NuTyX do not have (yet) a graphical interface tool for administration purpose. You will then used the terminal as normal interface. If you are not yet used to it, it's not a big deal, we will explain you the commands to type.</p>
-    <p>Since NuTyX is a linux Operating system, it's important to respect the <a href="http://en.wikipedia.org/wiki/Case_sensitivity">case</a>. So it's important to respect ALL the caracters in <b>lowercase</b>.</p>
-    <p>Let's start to open a terminal. Ready ? Ok then let's go <img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" /></p>
-    <p>In some case a command is made of one single word and without any option. But in most cases, a command can handle many options, we suggest you to use the help option to get an idea of all the options. Here, we will only check the most used one:</p>
+   <h2>Give it a try</h2>
+    <p>To take full advantage of your newly installed NuTyX, here are the ESSENTIAL commmands that you will have to use every day. This article explain some essential commands that are specific to NuTyX. We strongly recommand that you learn them.</p>
+    <p>NuTyX does not (yet) have a graphical interface tool for administrative purposes. You will need to use the terminal 
+as your normal interface. If you are not yet used to it, that's not a big deal; we will explain the commands you need to type.</p>
+    <p>Since NuTyX is a Linux operating system, it's important to respect the <a href="http://en.wikipedia.org/wiki/Case_sensitivity">case</a> when entering commands. ALL the characters in a command are in <b>lowercase</b>.</p>
+    <p>Let's start by opening a terminal. Ready ? OK, let's go <img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" /></p>
+    <p>In some cases, a command consists of a single word without any options or arguments, but most commands have many 
+options. We suggest that you to use the command's --help option to get an idea of what other options are available. Here, we will only check the commonest ones:</p>
     <pre class="command_user"><kbd>commandname help</kbd></pre> or
     <pre class="command_user"><kbd>commandname --help</kbd></pre> or
     <pre class="command_user"><kbd>commandname -h</kbd></pre>
-    <p>the <i>help</i> give the possibility to printout an idea of all the availables options. They are also <i>--help</i> or <i>-h</i> as options to printout the help of the command.</p>
+    <p>the <i>help</i> makes it possible to print out all the available options. <i>--help</i> or <i>-h</i> are alternative 
+ options for printing out the help text for a command.</p>
    <h2>Check if they are any updates available</h2>
     <p>The command <b>cards sync</b> will check the latest status of the available updates for your system.</p>
     <p>The command <b>cards diff</b> will show a list of outdated packages</p>
@@ -51,38 +54,44 @@ Package                      Installed                   Available in the depot 
 gcc                          4.9.1                       4.9.2
 glibc                        2.20                        2.21</pre>
    <h2>Updating a package</h2>
-    <p>To update a package, the command <b>cards install -u</b> follow by the package will be used. It's important that the update is available:</p>
+    <p>To update a package, the command <b>cards install -u</b> follow by the package will be used. Of course it is necessary
+ that an update is available:</p>
     <pre class="command_user"><kbd>sudo cards install -u gcc</kbd></pre>
    <h2>Search a package</h2>
-    <p>To search a package, the command:
+    <p>To search for a package, the command:
     <pre class="command_user"><kbd>sudo cards search <b>search_string</b></kbd></pre>
-    <p>will return all the packages which have the <b>search_string</b> in the name or in the description. For example, if you want to know what's are the browser available</p>
+    <p>will return all the packages which have the <b>search_string</b> in the name or in the description. For example, if you want to know what browsers are available:</p>
     <pre class="command_user"><kbd>sudo cards search browser</kbd></pre>
     <p>should return something like:</p>
     <pre class="output">chromium           The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins
 firefox            Standalone web browser from mozilla.org
 ...</pre>
    <h2>Add a package</h2>
-     <p>To add a package, the command <b>cards install</b> followed by the software name to install will be used:</p>
+     <p>To add a package, the command <b>cards install</b> is used followed by the name of the software package to install:</p>
      <pre class="command_user"><kbd>sudo cards install xfce4</kbd></pre>
-     <p>The download of the application <b>xfce4</b> starts immediately, once the package is downloads, it's dependencies will be downloads as well. When all done with the download, all the packages will be installed in the right order. In this example, when the commands is done you will have a working <a href="http://www.xfce.org">xfce4</a> desktop installed on your NuTyX.</p>
+     <p>The download of the application <b>xfce4</b> starts immediately. Once the package is downloaded, its dependencies 
+will be downloaded as well. When the download is finished, all these packages will be installed in the right order. In this example, when the command is complete, you will have a working <a href="http://www.xfce.org">xfce4</a> desktop installed on your NuTyX.</p>
    <h2>Add a user</h2>
-    <p>To add a user under NuTyX, it's very simple, the command:</p>
+    <p>To add a user under NuTyX is very simple. The command:</p>
     <pre class="command_user"><kbd>sudo nu</kbd></pre>
-    <p>will add a user, it can be used in two forms with or without options, if used without options, they will be two question to answer:</p>
+    <p>will add a new user; it can be used with or without arguments. If used without arguments, you will be asked two 
+questions:</p>
     <pre class="output">User name: james
 User description: James Bond 007</pre>
-    <p>You should see that the user's name doen't contains certains characters neither space neither capital letters.</p>
-    <p>If you wish to use the command with the options, those hve to be given in the order user description then user name:</p>
+    <p>You should ensure that the user name does not contain any special characters, spaces or capital letters.</p>
+    <p>If you wish to use the command with options, these have to be given in the order "user description" followed by 
+"user name":</p>
     <pre class="command_user"><kbd>sudo nu "James Bond 007" james</kbd></pre>
    <h2>Alias</h2>
-    <div class="note"><img alt="[Note]" src="../graphics/note.gif"> It's good to know that somes commands are actually alias which are simplify command. It's some how a shortcut to the original command. To know all the availables alias, just type in your terminal <b>alias</b></div>
+    <div class="note"><img alt="[Note]" src="../graphics/note.gif"> It is worth knowing that some commands are actually 
+aliases used to simplify things. An alias is a kind of shortcut to the original command. To know all the aliases available to
+you, just type <b>alias</b> in your terminal.</div>
    <h2>Conclusion</h2>
-     <p>As you can see the only two commands to knows are:
+     <p>As you can see the only two commands you really need to know are:
      </p>
      <pre class="command"><kbd>nu
 cards</kbd></pre>
-     <p>This last command has a more detail explanation via it's help</p>
+     <p>This last command has a more detail explanation <i>via</i> its help option</p>
      <pre class="command_user"><kbd>cards help</kbd></pre>
      <p>I wish you a lot of fun with you newly installed NuTyX.</p>
     <hr>

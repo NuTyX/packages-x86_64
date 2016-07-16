@@ -30,17 +30,19 @@
     </table>
  <hr>
   <h1>Frequently asked questions</h1>
-   <h2>The installer doesn't allow to have a separate partition for the /home for example</h2>
-    <div><p>This question have so many time been ask, I will try to bring as much arguments as possible.</p></div>
-    <div><p>Today, a user use very often a lot of data and big amount of data, the size of the personal folder can get very quick big. MP3, photos, videos are normally quite big ones. Imagines that you have a 25' bytes hard disk. You said OK I take 100 G for the system and 150 for my datas. Great you just cut your disk in two pieces and the data partition will be quicker full then if you would have kept one partition. So if we could avoid to have to cut the hard disk in partitions while we could be able to reinstall as much as we want NuTyX without having to think of our datas that would be great. <u>That's exactly the idea of the NuTyX installer</u>.</p></div>
+   <h2>The installer doesn't allow me to specify a separate /home partition</h2>
+    <div><p>This question has been asked many times. I will try to answer it as far as possible.</p></div>
+    <div><p>Modern users often have a lot of data on their computers. The size of the home folder can quickly become very large. MP3 files, photos and videos are big files. <p>
+
+Imagine that you have a 250 GB hard disk. You say &quot;OK, I'll take 100 G for the system and 150 for my personal data.&quot; Great! You just cut your disk into two pieces, and the home partition will fill up more quickly in proportion to its size than if you had retained a single partition. It would be nice if we could reinstall NuTyX when we wanted without having to cut the hard disk into separate partitions to preserve personal data. <u>That's exactly how the NuTyX installer works</u>.</p></div>
     <ul>
-    <li>The installer will never format a partition allready formated without a manual intervention.</li>
-    <li>If you have a distribution (NuTyX or any other) with your personnal datas and the system is on the same partition, during the installation process, the installer will tell you that there is allready a distribution but will not ask for format the partition. You will need to delete the folders <b>  /var,/proc,/sys,/usr,/sbin,/etc </b> but will not touch the other folders like <b>/home, /MP3,</b> etc. So yours datas are untouch.</li>
-    <li>Today it's very easy to configure a file server based on NFS, so users could have their home folders remotly on this server.</li>
-    <li>Let's summarise, we can say that create a partition for your home today is unecessary, at least with NuTyX. We could wonder why the "apple" operating system never recommand this.</li>
+    <li>The installer will never format a partition that is already formated, without manual intervention.</li>
+    <li>If you have a distribution (NuTyX or any other) with personal data and the system on the same partition, the installer will tell you during the installation process that there is already a distribution there but will not offer to format the partition. You will need to delete the <b>  /var, /proc, /sys, /usr, /sbin,</b> and <b>/etc </b> folders, but other folders such as <b>/home</b> and <b>/MP3</b>  will not be touched. So your data are safe.</li> 
+   <li>Today it is very easy to configure a file server based on NFS, so that users could have their home folders on a remote server.</li>
+    <li>To summarise: creating a separate home partition today is unecessary, at least with NuTyX. It's worth asking why Apple's MacOS operating system never recommended this.</li>
     </ul>
-   <h2>Is it possible to upgrade NuTyX (prior to 8.0) to NuTyX 8.1 without reinstalling everything ?</h2>
-    <div><p>No. The number of changes are too big. The package manager has changed, the initrd has changed, the installer has changed, the ports location has changed, etc</p></div>
+   <h2>Is it possible to upgrade NuTyX (prior to 8.0) to NuTyX 8.1 without reinstalling everything?</h2>
+    <div><p>No. The number of changes is too great. The package manager has changed, the initrd has changed, the installer has changed, and the ports location has changed.</p></div>
     <hr>
     <p class="updated">Last updated 2016-04-27 19:17</p>
     <footer>

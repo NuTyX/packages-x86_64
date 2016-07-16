@@ -30,24 +30,24 @@
    </table>
    <hr>
     <h1> Produce a customised ISO</h1>
-     <div class="note"><img alt="[NOTE IMPORTANTE]" src="../graphics/note.gif"/>All the commands should be enter in the root account</div>
+     <div class="note"><img alt="[NOTE IMPORTANTE]" src="../graphics/note.gif"/>All the commands should be entered as root</div>
      <ol>
       <li>
        <h2>Installation of a NuTyX system</h2>
        <ol>
         <li>
          <h3>The "LFS" variable MUST be defined</h3>
-          <p>The chroot will be in the "/ISO-NuTyX" directory but you may choose another.</p>
+          <p>In this demonstration the chroot will be in the &quot;/ISO-NuTyX&quot; directory, but you may choose a different name<p>
           <pre class="command"><kbd>export LFS=/ISO-NuTyX</kbd></pre>
         </li>
         <li>
          <h3>The "NUTYX_TMP" variable SHOULD be defined</h3>
-          <p>A directory where you want to clone a temporary NuTyX repository "/mnt/nutyx_tmp" but you may choose another.</p>
+          <p>It is a directory where you want to clone a temporary NuTyX repository. Here it is &quot;/mnt/nutyx_tmp&quot; but you may choose a different directory.</p>
           <pre class="command"><kbd>export NUTYX_TMP=/mnt/nutyx_tmp</kbd></pre>
         </li>
         <li>
-         <h3>Make sure you have `git, tar, gawk, wget, cdrkit and syslinux` installed</h3>
-          <p>If you run a NuTyX system you can run:</p>
+         <h3>Make sure you have git, tar, gawk, wget, cdrkit and syslinux installed</h3>
+          <p>If you are running a NuTyX system you can use:</p>
           <pre class="command"><kbd>cards install git tar gawk wget cdrkit syslinux</kbd></pre>
         </li>
         <li>
@@ -78,7 +78,7 @@
 cp -v /boot/initrd-* /ISO/isolinux/initrd</kbd></pre>
           </li>
           <li>
-           <h3>Flush the binaries archives</h3>
+           <h3>Flush the binary archives</h3>
             <pre class="command"><kbd>cards purge</kbd></pre>
           </li>
           <li>
@@ -103,7 +103,7 @@ done</kbd></pre>
         </li>
         <li>
          <h2>Conclusion</h2>
-          <p>The size shoul'nd be bigger then 300 MB if you didn't add any optional packages. You will find the iso in the $LFS directory.</p>
+          <p>The size should not be greater than 300 MB if you didn't add any optional packages. You will find the iso image in the $LFS directory.</p>
           <pre class="command"><kbd>ls $LFS</kbd></pre>
           <pre class="output">bin etc lib NuTyX_x86_64-20160217.iso root srv usr boot 
 home lib64 NuTyX_x86_64-20160217.md5sum
