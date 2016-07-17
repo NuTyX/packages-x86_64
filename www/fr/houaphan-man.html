@@ -214,7 +214,7 @@ Désinstalle le paquetX
      <pre class="command"><kbd>del paquetX</kbd></pre>
 ou
      <pre class="command"><kbd>sudo cards remove paquetX</kbd></pre>
-Mise à jour du paquetX. Notez que les dépendances du paquetX ne seront PAS mise à jour.
+Mise à jour du paquetX. Notez que les dépendances du paquetX seront mise à jour si necessaire.
      <pre class="command"><kbd>up paquetX</kbd></pre>
 ou
      <pre class="command"><kbd>sudo cards install -u paquetX</kbd></pre>
@@ -226,8 +226,11 @@ Affiche la liste des paquets pouvant être mis à jour. On trouve aussi dans cet
      <pre class="command"><kbd>cards diff -i</kbd></pre>
     </ol>
 
-   <li><h3>GESTION DES PAQUETS BINAIRES EN LOCAL</h3></li>
+   <li><h3>GESTION DES PAQUETS BINAIRES EN LOCAL (mode utilisateur avancé)</h3></li>
     <div>La gestion des paquets binaires en local se fait via les commandes <b>pkgadd, pkgrm, et pkginfo</b>. Les commandes modifiant votre installation s'utilisent avec votre compte root (su -)</div>
+    <div>Pour avoir accès aux commandes ci-dessous, vous devez installer le paquet <b>cards.devel</b> :
+<pre class="command"><kbd>get cards.devel</kbd></pre>
+    </div>
     <ol>
      <li><h4>Configuration de pkgadd</h4></li>
       <div>Le fichier <b> /etc/pkgadd.conf </b> défini les règles de d'installation et de mise à jour des paquets binaires. On y trouve trois colonnes, EVENEMENT,  ECHANTILLON (PATTERN) et ACTION. L'évennement décrit la situation dans laquelle la règle s'applique. Actuellement les 2 situations sont UPGRADE (pour mise à jour) et INSTALL (pour installation). Les règles UPGRADE s'appliquent donc quand un paquet est mis à jour et INSTALL s'appliquent dans TOUS LES CAS. L'ECHANTILLON (PATTERN) est une expression régulière. L'ACTION s'applique aux EVENEMENT INSTALL ET UPGRADE. Un EVENEMENT peut être YES (oui) ou NO (non). Il peut y avoir plus d'une règle utilisant le même évenement dans tel cas la première règle aura la prioritée la plus basse et la dernière règle aura la prioritée la plus haute. Exemple:</div>
@@ -325,7 +328,7 @@ Ceci est un document libre publié sous licence libre WTFPL - Do What The Fuck Y
 ( http://www.wtfpl.net/ ) </pre>
   </ol>
 <hr>
-  <p class="updated">Dernière mise à jour 18-03-2016 21:22</p>
+  <p class="updated">Dernière mise à jour 17-07-2016 14:41</p>
    <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />

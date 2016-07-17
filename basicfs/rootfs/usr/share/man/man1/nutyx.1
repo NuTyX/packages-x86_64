@@ -1,4 +1,4 @@
-.TH "NuTyX version 8.1" 8 "Mars, 2016" ""
+.TH "NuTyX version 8.2" 8 "Juillet, 2016" ""
 
 
 .SH NuTyX
@@ -249,7 +249,7 @@ installe les paquet1 .. paquetn et leurs dépendances
 désinstalle le paquetX. Si vous souhaitez supprimer le paquetX et ses sous-paquets, utilisez l'option -a ou --all \fBcards remove -a paquetX\fR.
 .TP
   \fBup <paquet>\fR ou \fBsudo cards install -u <paquet>\fR
-mise à jour du paquetX. Notez que seul le <paquet> sera mis à jour
+mise à jour du paquetX. Notez que les dépendances du <paquet> seront mis à jour si necessaire.
 .TP
   \fBsearch <chaîne> ou cards search <chaîne>
 recherche le mots chaine dans le nom et la description des paquets, veuillez spécifier 2 lettres minimums.
@@ -270,7 +270,9 @@ affiche les détails du <paquet>, si il est installé.
   \fBcards info -b <paquet>\fR
 affiche les détails du <paquet> binaire, si il est disponible.
 
-.SH GESTION DES PAQUETS BINAIRES EN LOCAL
+.SH GESTION DES PAQUETS BINAIRES EN LOCAL (mode utilisateur avancé)
+Pour pouvoir utiliser les commandes ci-dessous, vous devez installer le paquet \fBcards.devel\fP.
+
 La gestion des paquets binaires en local se fait via les commandes \fBpkgadd, pkgrm, et pkginfo\fP. Les commandes modifiant votre installation s'utilisent avec votre compte root (su \-)
 .TP
  \fBConfiguration de pkgadd\fR

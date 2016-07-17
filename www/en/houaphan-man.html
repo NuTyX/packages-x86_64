@@ -204,7 +204,7 @@ swapon /SWAP</kbd></pre>
          <li><h4>Commands to know</h4></li></ol>
 The command <b>cards</b> includes a lot of options, following are a few.
 To get a complete help, use the command:
-<pre class="command"><kbd>cards</kbd></pre>
+<pre class="command"><kbd>cards help</kbd></pre>
 <div>The options modifying your installation will be used with the administrator account or via the command <b>sudo</b>.</div>
 synchronisation, to check the available updates.
 <pre class="command"><kbd>check</kbd></pre>
@@ -217,7 +217,7 @@ Uninstall the X package
 <pre class="command"><kbd>del paquetX</kbd></pre>
 or
 <pre class="command"><kbd>sudo cards remove paquetX</kbd></pre>
-Updating of the X package. Note that all the dependencies will NOT be updated.
+Updating of the X package. Note that all the dependencies will be updated if necessary.
 <pre class="command"><kbd>up paquetX</kbd></pre>
 or
 <pre class="command"><kbd>sudo cards install -u paquetX</kbd></pre>
@@ -228,8 +228,11 @@ or
 Printout the list of out of date packages. It's also shows the packages locked and then which should not be upgraded.
 <pre class="command"><kbd>sudo cards diff -i</kbd></pre>
 
-  <li><h3>BINARY PACKAGES MANAGEMENT IN LOCAL</h3></li>
+  <li><h3>BINARY PACKAGES MANAGEMENT IN LOCAL (advanced mode user)</h3></li>
    <div>To manage the binary packages locally, we use the commands <b>pkgadd, pkgrm, et pkginfo</b>. The commands used to modify your installation need root priviledge account.(su -)</div>
+   <div>To get access to thoses commands, you need to install the <b>cards.devel</b> package:
+<pre class="command"><kbd>get cards.devel</kbd></pre>
+   </div>
     <ol><li><h4>Configuration of pkgadd</h4></li>
      <div>The file <b> /etc/pkgadd.conf </b> define the installation and upgrade rules of the binary packages. We found three colons,EVENT, PATTERN and ACTION. The EVENT describes in what kind of situation this rule applies. Currently there are two types of events: UPGRADE and INSTALL. UPGRADE rules are applied when a package is installed over an existing version, and INSTALL rules  are  applied in any case. The pattern is a regular expression. The action applicable to both the UPGRADE and INSTALL event is YES and NO. More than one rule of the same event type is allowed, in which case the first rule will have the lowest priority and the last rule will have the highest priority. Example:</div>
     <pre class="output">UPGRADE         ^etc/.*$                NO
@@ -311,7 +314,7 @@ Copyright (C) 2013 - 2016 Thierry Nuttens
 This free document is publish under the free license WTFPL - Do What The Fuck You Want To Public License.
 ( http://www.wtfpl.net/ ) </pre>
   <hr>
-  <p class="updated">Last updated 2016-03-18 21:23</p>
+  <p class="updated">Last updated 2016-07-17 14:36</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
