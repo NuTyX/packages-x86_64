@@ -6,8 +6,8 @@
 PKGMK_IGNORE_RUNTIMEDEPS="no"
 PKGMK_GROUPS=(devel doc man)
 name=cards
-version=2.1.83
-release=2
+version=2.1.84
+release=1
 
 source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
 build () {
@@ -15,7 +15,6 @@ cd $name-$version
 make all
 make DESTDIR=$PKG install
 mkdir -p $PKG/{etc,usr}/ports
-sed -i "s@gbasename@basename@" $PKG/usr/bin/pkgmk
 }
 devel()
 {

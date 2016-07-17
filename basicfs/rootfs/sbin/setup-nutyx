@@ -44,6 +44,10 @@ is_true()
 {
  [ "$1" = "1" ] || [ "$1" = "yes" ] || [ "$1" = "true" ]
 }
+_zoneinfo(){
+	ln -sf ${1} ${2}
+	$SETUP_LOG "setup-nutyx --config-lang" "ln -sv ${1} ${2}"
+}
 _msgfmt() {
 	local L C
 	L=`echo ${1}|cut -d "_" -f1`
@@ -56,6 +60,7 @@ _msgfmt() {
 		-o $TEXTDOMAINDIR/${L}/LC_MESSAGES/setup-nutyx.mo
 	fi
 	echo "export LANG=${1}.utf-8" > ${LOCALE}
+	$SETUP_LOG "setup-nutyx --config-lang" "variable LANG=${1}.utf-8 saved in ${LOCALE}"
 }
 calc(){
         echo "scale=2;$@"|bc
@@ -70,18 +75,19 @@ exit 1
 }
 
 network_card_found() {
-	if [ `ls /sys/class/net|sed /lo/d|wc -l` == 1 ];then
-		NET_ID=`ls /sys/class/net|sed /lo/d`
-	else
+	local NIC
+	NIC=`ls /sys/class/net`
+	if [  `echo $NIC|wc -w` -gt 1 ];then
 		retval=""
 		touch $TMP/result
 		while [ true ]; do
-			echo  "--backtitle \" $(gettext "Network card") \" \
+			echo  -n "--backtitle \" $(gettext "Network card") \" \
 			--title \" $(gettext "Select the card") \" \
-			--radiolist \" $(gettext "Card to configure") \" 0 0 0 \\" > $TMP/list
-			for i in `ls /sys/class/net/|sed /lo/d`
+			--radiolist \" $(gettext "Card to configure") \" 0 0 0 " > $TMP/list
+			for i in $NIC
 			do
-				echo -n \""$i"\"\  \"`/sbin/udevadm info /sys/class/net/$i|grep MODEL_FROM_DATABASE|cut -d "=" -f2`\" " off "
+				[ "$i" == "lo" ] && continue
+				echo -n \""$i"\"\  \"`/sbin/udevadm info /sys/class/net/$i|grep ID_MODEL_FROM_DATABASE|cut -d "=" -f2`\" " off "
 				done >> $TMP/list
 				dialog --file $TMP/list 2>$TMP/result
 				retval=$?
@@ -97,7 +103,8 @@ network_card_found() {
 						fi;;
 				esac
 		done
-		NET_ID=`cat $TMP/result|sed 's/"//g'`
+		NETWORK_CARD=`cat $TMP/result|sed 's/"//g'`
+		$SETUP_LOG "setup-nutyx --config-net" "Network card found: $NETWORK_CARD"
 	fi
 }
 setup_net() 
@@ -106,7 +113,7 @@ network_card_found
 retval=""
 while [ "$retval" == "" ]; do
 	dialog  \
-	--title " $(gettext "Configuration of") ${NET_ID} " \
+	--title " $(gettext "Configuration of") ${NETWORK_CARD} " \
 	--radiolist "$(gettext "Configuration mode")" \
 	0 0 0 "$(gettext "Auto")" "$(gettext "IP address automatically set from DHCP server")" "on" \
 	"$(gettext "Man")" "$(gettext "Manually specify parameters")" "off" 2> $TMP/result
@@ -122,7 +129,7 @@ while [ "$retval" == "" ]; do
   esac
 done
 if [ "`cat $TMP/result`" == "Auto" ];then
-	cat > /etc/sysconfig/ifconfig.$NET_ID << "EOF"
+	cat > /etc/sysconfig/ifconfig.$NETWORK_CARD << "EOF"
 ONBOOT="yes"
 SERVICE="dhcpcd"
 DHCP_START=""
@@ -133,9 +140,10 @@ PRINTIP="no"
 # de la connection réseau
 PRINTALL="no"
 EOF
+	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD set to Auto DHCP"
 else
 	dialog \
-	--title " $(gettext "Configuration of") ${NET_ID} " \
+	--title " $(gettext "Configuration of") ${NETWORK_CARD} " \
 	--inputbox " $(gettext "Enter an IP address") : " 10 60 "192.168.1.5" 2> $TMP/IP
 
 	if [ "`cat $TMP/IP`" == "" ]; then
@@ -144,7 +152,7 @@ else
 		 IP=$(tail -n 1 $TMP/IP)
 	fi
 	BC_TEMP=$(echo $IP|cut -d . -f 1).$(echo $IP|cut -d . -f 2).$(echo $IP|cut -d . -f 3).255
-	dialog --title " $(gettext "Configuration of") ${NET_ID} " \
+	dialog --title " $(gettext "Configuration of") ${NETWORK_CARD} " \
 	--inputbox " $(gettext "Enter a broadcast address"),\
 	$(gettext "in most cases the current value can be used"): " 10 60 ${BC_TEMP} 2> $TMP/BC
 	if [ "`cat $TMP/BC`" == "" ]; then
@@ -153,7 +161,7 @@ else
 		BROADCAST=$(tail -n 1 $TMP/BC)
 	fi
 	dialog \
-	--title " $(gettext "Configuration of") ${NET_ID} " \
+	--title " $(gettext "Configuration of") ${NETWORK_CARD} " \
 	--inputbox "$(gettext "Enter the subnet mask"),\
 	$(gettext "in most cases the current value can be used"): " 10 60 "255.255.255.0" 2> $TMP/NM
 	if [ "`cat $TMP/NM`" == "" ]; then
@@ -163,32 +171,35 @@ else
 	fi
 	GW_TEMP=$(echo $IP|cut -d . -f 1).$(echo $IP|cut -d . -f 2).$(echo $IP|cut -d . -f 3).1
 	dialog \
-	--title " $(gettext "Configuration of") ${NET_ID} " \
+	--title " $(gettext "Configuration of") ${NETWORK_CARD} " \
 	--inputbox "$(gettext "Enter the gateway address"),\
 	$(gettext "it is normally the address of your router access point"): " 10 60 ${GW_TEMP} 2> $TMP/GW
 	GW=$(tail -n 1 $TMP/GW)
 	dialog \
-	--title " $(gettext "Configuration of") ${NET_ID} " \
+	--title " $(gettext "Configuration of") ${NETWORK_CARD} " \
 	--inputbox "$(gettext "Enter the DNS address"),\
 	$(gettext "it is normally the address of your router access point"): " 10 60 ${GW} 2> $TMP/DNS
 	DNS=$(tail -n 1 $TMP/DNS)
 
-	/sbin/ifconfig ${NET_ID} ${IP} broadcast ${BROADCAST} netmask ${PREFIX}
+	/sbin/ifconfig ${NETWORK_CARD} ${IP} broadcast ${BROADCAST} netmask ${PREFIX}
 
 	if [ -n ${GW} ]; then
 		/bin/ip route add default via ${GW}
 	fi
-	cat > /etc/sysconfig/ifconfig.${NET_ID} << "EOF"
+	cat > /etc/sysconfig/ifconfig.${NETWORK_CARD} << "EOF"
 ONBOOT=yes
 SERVICE=ipv4-static
 EOF
-	echo "IP=${IP}" >> /etc/sysconfig/ifconfig.${NET_ID}
+	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: SERVICE=ipv4-static"
+	echo "IP=${IP}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
 	if [ -n ${GW} ]; then
-		echo "GATEWAY=${GW}" >> /etc/sysconfig/ifconfig.${NET_ID}
+		echo "GATEWAY=${GW}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
+		$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: GATEWAY=${GW}"
 	fi
-	echo "PREFIX=${PREFIX}" >> /etc/sysconfig/ifconfig.${NET_ID}
-	echo "BROADCAST=${BROADCAST}" >> /etc/sysconfig/ifconfig.${NET_ID}
-
+	echo "PREFIX=${PREFIX}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
+	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: PREFIX=${PREFIX}"
+	echo "BROADCAST=${BROADCAST}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
+	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: BROADCAST=${BROADCAST}"
 	if [ -n "${DNS}" ]; then
 		dialog \
 		--title " $(gettext "DNS Search Suffix") " \
@@ -197,8 +208,10 @@ EOF
 		$(gettext "Most of the time it's not need"): " 10 60 2> $TMP/SUFFIX
 		SUFFIX=$(tail -n 1 $TMP/SUFFIX)
 		echo "nameserver ${DNS}" > /etc/resolv.conf
+		$SETUP_LOG "setup-nutyx --config-net" "/etc/resolv.conf: nameserver ${DNS}"
 		if [ -n "${SUFFIX}" ]; then
 			echo "search ${SUFFIX}" >> /etc/resolv.conf
+			$SETUP_LOG "setup-nutyx --config-net" "/etc/resolv.conf: search ${SUFFIX}"
 		fi
 	fi
 fi
@@ -335,244 +348,244 @@ sed -i "/locale/d" /etc/cards.conf
 case ${REPLY} in
  "United Arab Emirates")
 	_msgfmt ar_AE
-	ln -sf ${ZONEINFO}Asia/Dubai ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Dubai ${LOCALTIME};;
  "Agleria")
 	_msgfmt ar_DZ
-	ln -sf ${ZONEINFO}Africa/Addis_Ababa ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Africa/Addis_Ababa ${LOCALTIME};;
  "Egypt")
 	_msgfmt ar_EG
-	ln -sf ${ZONEINFO}Egypt ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Egypt ${LOCALTIME};;
  "India")
 	_msgfmt ar_IN
-	ln -sf ${ZONEINFO}Asia/Kolkata ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Kolkata ${LOCALTIME};;
  "Iraq")
 	_msgfmt ar_IQ
-	ln -sf ${ZONEINFO}Asia/Baghdad ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Baghdad ${LOCALTIME};;
  "Jordan")
 	_msgfmt ar_IQ
-	ln -sf ${ZONEINFO}Asia/Amman ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Amman ${LOCALTIME};;
  "Kuwait")
 	_msgfmt ar_KW
-	ln -sf ${ZONEINFO}Asia/Kuwait ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Kuwait ${LOCALTIME};;
  "Lebanon")
 	_msgfmt ar_LB
-	ln -sf ${ZONEINFO}Asia/Beirut ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Beirut ${LOCALTIME};;
  "Libyan Arab Jamahiriya")
 	_msgfmt ar_LY
-	ln -sf ${ZONEINFO}Africa/Tripoli ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Africa/Tripoli ${LOCALTIME};;
  "Moroco")
 	_msgfmt ar_MA
-	ln -sf ${ZONEINFO}Africa/Casablanca ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Africa/Casablanca ${LOCALTIME};;
  "Oman")
 	_msgfmt ar_OM
-	ln -sf ${ZONEINFO}Asia/Muscat ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Muscat ${LOCALTIME};;
  "Qatar")
 	_msgfmt ar_QA
-	ln -sf ${ZONEINFO}Asia/Qatar ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Qatar ${LOCALTIME};;
  "Saudi Arabia")
 	_msgfmt ar_SA
-	ln -sf ${ZONEINFO}Asia/Riyadh ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Riyadh ${LOCALTIME};;
  "Sudan")
 	_msgfmt ar_SD
-	ln -sf ${ZONEINFO}Africa/Khartoum ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Africa/Khartoum ${LOCALTIME};;
  "South Sudan")
 	_msgfmt ar_SS
-	ln -sf ${ZONEINFO}Africa/Khartoum ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Africa/Khartoum ${LOCALTIME};;
  "Syrian Arab Republic")
 	_msgfmt ar_SY
-	ln -sf ${ZONEINFO}Asia/Damascus ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Damascus ${LOCALTIME};;
  "Tunisia")
 	_msgfmt ar_TN
-	ln -sf ${ZONEINFO}Africa/Tunis ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Africa/Tunis ${LOCALTIME};;
  "Yemen")
 	_msgfmt ar_YE
-	ln -sf ${ZONEINFO}Asia/Aden ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Aden ${LOCALTIME};;
  "Azerbaijan")
 	_msgfmt az_AZ
-	ln -sf ${ZONEINFO}Asia/Baku;;
+	_zoneinfo ${ZONEINFO}Asia/Baku;;
  "Cataluña")
 	_msgfmt ca_ES
-	ln -sf ${ZONEINFO}Europe/Madrid ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Madrid ${LOCALTIME};;
  "Cestina")
 	_msgfmt cs_CZ
-	ln -sf ${ZONEINFO}Europe/Prague ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Prague ${LOCALTIME};;
  "Cymraeg")
 	_msgfmt cy_GB
-	ln -sf ${ZONEINFO}Europe/London ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/London ${LOCALTIME};;
  "Danmark")
 	_msgfmt da_DK
-	ln -sf ${ZONEINFO}Europe/Copenhagen ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Copenhagen ${LOCALTIME};;
  "Deutschland")
 	_msgfmt de_DE
-	ln -sf ${ZONEINFO}Europe/Berlin ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Berlin ${LOCALTIME};;
  "Österreich")
 	_msgfmt de_AT
-	ln -sf ${ZONEINFO}Europe/Vienna ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Vienna ${LOCALTIME};;
  "Schweiz")
 	_msgfmt de_CH
-	ln -sf ${ZONEINFO}Europe/Zurich ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Zurich ${LOCALTIME};;
  "Luxemburg")
 	_msgfmt de_LU
-	ln -sf ${ZONEINFO}Europe/Luxembourg ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Luxembourg ${LOCALTIME};;
  "Belgien")
 	_msgfmt de_BE
-	ln -sf ${ZONEINFO}Europe/Brussels ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Brussels ${LOCALTIME};;
  "Eesti")
 	_msgfmt et_EE
-	ln -sf ${ZONEINFO}Europe/Tallinn ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Tallinn ${LOCALTIME};;
  "Australia")
 	_msgfmt en_AU
-	ln -sf ${ZONEINFO}Australia/Sydney ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Australia/Sydney ${LOCALTIME};;
  "Botwana")
 	_msgfmt en_BW
-	ln -sf ${ZONEINFO}Africa/Gaborone ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Africa/Gaborone ${LOCALTIME};;
  "Canada")
 	_msgfmt en_CA
-	ln -sf ${ZONEINFO}Canada/Central ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Canada/Central ${LOCALTIME};;
  "Denmark")
 	_msgfmt en_DK
-	ln -sf ${ZONEINFO}Europe/Copenhagen ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Copenhagen ${LOCALTIME};;
  "United Kingdom")
 	_msgfmt en_GB
-	ln -sf ${ZONEINFO}Europe/London ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/London ${LOCALTIME};;
  "Hong Kong")
 	_msgfmt en_HK
-	ln -sf ${ZONEINFO}Asia/Hong_Kong ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Hong_Kong ${LOCALTIME};;
  "Ireland")
 	_msgfmt en_IE
-	ln -sf ${ZONEINFO}Europe/Dublin ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Dublin ${LOCALTIME};;
  "India ")
 	_msgfmt en_IN
-	ln -sf ${ZONEINFO}Indian/Maldives ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Indian/Maldives ${LOCALTIME};;
  "Nigeria")
 	_msgfmt en_NG
-	ln -sf ${ZONEINFO}Africa/Lagos ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Africa/Lagos ${LOCALTIME};;
  "New Zealand")
 	_msgfmt en_NZ
-	ln -sf ${ZONEINFO}Pacific/Auckland ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Pacific/Auckland ${LOCALTIME};;
  "Philippines")
 	_msgfmt en_PH
-	ln -sf ${ZONEINFO}Asia/Manila ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Manila ${LOCALTIME};;
  "Singapore")
 	_msgfmt en_SG
-	ln -sf ${ZONEINFO}Asia/Singapore ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Singapore ${LOCALTIME};;
  "United States")
 	_msgfmt en_US
-	ln -sf ${ZONEINFO}America/New_York ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/New_York ${LOCALTIME};;
  "South Africa")
 	_msgfmt en_ZA
-	ln -sf ${ZONEINFO}Africa/Johannesburg ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Africa/Johannesburg ${LOCALTIME};;
  "Zambia")
 	_msgfmt en_ZM
-	ln -sf ${ZONEINFO}Africa/Lusaka ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Africa/Lusaka ${LOCALTIME};;
  "Zimbabwe")
 	_msgfmt en_ZW
-	ln -sf ${ZONEINFO}Africa/Harare ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Africa/Harare ${LOCALTIME};;
  "Argentiña")
 	_msgfmt es_AR
-	ln -sf ${ZONEINFO}America/Buenos_Aires ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Buenos_Aires ${LOCALTIME};;
  "Bolivia")
 	_msgfmt es_BO
-	ln -sf ${ZONEINFO}America/La_paz ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/La_paz ${LOCALTIME};;
  "Chile")
 	_msgfmt es_CL
-	ln -sf ${ZONEINFO}America/Santiago ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Santiago ${LOCALTIME};;
  "Colombia")
 	_msgfmt es_CO
-	ln -sf ${ZONEINFO}America/Bogota ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Bogota ${LOCALTIME};;
  "Costa Ricar")
 	_msgfmt es_CR
-	ln -sf ${ZONEINFO}America/Costa_Rica ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Costa_Rica ${LOCALTIME};;
  "Cuba")
 	_msgfmt es_CU
-	ln -sf ${ZONEINFO}America/Havana ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Havana ${LOCALTIME};;
  "Dominican Republic")
 	_msgfmt es_DO
-	ln -sf ${ZONEINFO}America/Santo_Domingo ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Santo_Domingo ${LOCALTIME};;
  "Ecuador")
 	_msgfmt es_EC
-	ln -sf ${ZONEINFO}America/Guayaquil ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Guayaquil ${LOCALTIME};;
  "España")
 	_msgfmt es_ES
-	ln -sf ${ZONEINFO}Europe/Madrid ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Madrid ${LOCALTIME};;
  "Guatemala")
 	_msgfmt es_GT
-	ln -sf ${ZONEINFO}America/Guatemala ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Guatemala ${LOCALTIME};;
  "Honduras")
 	_msgfmt es_HN
-	ln -sf ${ZONEINFO}America/Tegucigalpa ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Tegucigalpa ${LOCALTIME};;
  "Mexico")
 	_msgfmt es_MX
-	ln -sf ${ZONEINFO}America/Mexico_City ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Mexico_City ${LOCALTIME};;
  "Nicaragua")
 	_msgfmt es_NI
-	ln -sf ${ZONEINFO}America/Managua ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Managua ${LOCALTIME};;
  "Panama")
 	_msgfmt es_PA
-	ln -sf ${ZONEINFO}America/Panama ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Panama ${LOCALTIME};;
  "Peru")
 	_msgfmt es_PE
-	ln -sf ${ZONEINFO}America/Lima ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Lima ${LOCALTIME};;
  "Puerto Rico")
 	_msgfmt es_PR
-	ln -sf ${ZONEINFO}America/Argentina/San_Juan ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Argentina/San_Juan ${LOCALTIME};;
  "Paraguay")
 	_msgfmt es_PY
-	ln -sf ${ZONEINFO}America/Asuncion ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Asuncion ${LOCALTIME};;
  "El Salvador")
 	_msgfmt es_SV
-	ln -sf ${ZONEINFO}America/El_Salvador ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/El_Salvador ${LOCALTIME};;
  "Estados Unidos")
 	_msgfmt es_US
-	ln -sf ${ZONEINFO}America/New_York ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/New_York ${LOCALTIME};;
  "Uruguay")
 	_msgfmt es_UY
-	ln -sf ${ZONEINFO}America/Montevideo ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Montevideo ${LOCALTIME};;
  "Venezuala")
 	_msgfmt es_VE
-	ln -sf ${ZONEINFO}America/Caracas ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Caracas ${LOCALTIME};;
  "Euskera")
 	_msgfmt es_ES
-	ln -sf ${ZONEINFO}Europe/Madrid;;
+	_zoneinfo ${ZONEINFO}Europe/Madrid;;
  "France")
 	_msgfmt fr_FR
-	ln -sf ${ZONEINFO}Europe/Paris ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Paris ${LOCALTIME};;
  "Belgique")
 	_msgfmt fr_BE
-	ln -sf ${ZONEINFO}Europe/Brussels ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Brussels ${LOCALTIME};;
  "Suisse")
 	_msgfmt fr_CH
-	ln -sf ${ZONEINFO}Europe/Zurich ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Zurich ${LOCALTIME};;
  "Luxembourg")
 	_msgfmt fr_LU
-	ln -sf ${ZONEINFO}Europe/Luxembourg ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Luxembourg ${LOCALTIME};;
  "Quebec")
 	_msgfmt fr_CA
-	ln -sf ${ZONEINFO}America/Montreal ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Montreal ${LOCALTIME};;
  "Ελληνικά")
 	_msgfmt el_GR
-	ln -sf ${ZONEINFO}Europe/Athens ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Athens ${LOCALTIME};;
  "Galego")
 	_msgfmt gl_ES
-	ln -sf ${ZONEINFO}Europe/Madrid ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Madrid ${LOCALTIME};;
  "Hrvatska")
 	_msgfmt hr_HR
-	ln -sf ${ZONEINFO}Europe/Zagreb ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Zagreb ${LOCALTIME};;
  "Iceland")
 	_msgfmt is_IS
-	ln -sf ${ZONEINFO}Atlantic/Reykjavik ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Atlantic/Reykjavik ${LOCALTIME};;
  "Ireland")
 	_msgfmt ga_IE
-	ln -sf ${ZONEINFO}Europe/Dublin ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Dublin ${LOCALTIME};;
  "Italia")
 	_msgfmt it_IT
-	ln -sf ${ZONEINFO}Europe/Rome ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Rome ${LOCALTIME};;
  "Svizzera")
 	_msgfmt it_CH
-	ln -sf ${ZONEINFO}Europe/Zurich ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Zurich ${LOCALTIME};;
  "kinyarwanda")
 	_msgfmt rw_RW
-	ln -sf ${ZONEINFO}/Africa/Kigali ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}/Africa/Kigali ${LOCALTIME};;
  "latviešu")
 	_msgfmt lv_LV;;
  "lietuvių")
@@ -581,62 +594,62 @@ case ${REPLY} in
 	_msgfmt hu_HU;;
  "Aruba")
 	_msgfmt nl_AW
-	ln -sf ${ZONEINFO}America/Aruba ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}America/Aruba ${LOCALTIME};;
  "België")
 	_msgfmt nl_BE
-	ln -sf ${ZONEINFO}Europe/Brussels ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Brussels ${LOCALTIME};;
  "The Nederlands")
 	_msgfmt nl_NL
- 	ln -sf ${ZONEINFO}Europe/Amsterdam ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Amsterdam ${LOCALTIME};;
  "Norge")
 	_msgfmt nb_NO
   _msgfmt nn_NO
 	echo "export LANG=nb_NO.utf-8" > ${LOCALE}
-	ln -sf ${ZONEINFO}Europe/Oslo ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Oslo ${LOCALTIME};;
  "Polski")
 	_msgfmt pl_PL
 	echo "export LANG=pl_PL.utf-8" > ${LOCALE}
-	ln -sf ${ZONEINFO}Europe/Warsaw ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Warsaw ${LOCALTIME};;
  "Portugal")
 	_msgfmt pt_PT
 	echo "export LANG=pt_PT.utf-8" > ${LOCALE}
-	ln -sf ${ZONEINFO}Europe/Lisbon ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Lisbon ${LOCALTIME};;
  "Brasil")
 	_msgfmt pt_BR
-	ln -sf ${ZONEINFO}America/Sao_Paulo ${LOCALTIME};;	
+	_zoneinfo ${ZONEINFO}America/Sao_Paulo ${LOCALTIME};;
  "română")
 	_msgfmt ro_RO
-	ln -sf ${ZONEINFO}Europe/Bucharest ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Bucharest ${LOCALTIME};;
  "shqip")
 	_msgfmt sq_MK
-	ln -sf ${ZONEINFO}Europe/Tirane ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Tirane ${LOCALTIME};;
  "slovenčina")
 	_msgfmt sk_SK
-	lb -sf ${ZONEINFO}Europe/Bratislava ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Bratislava ${LOCALTIME};;
  "Slovenščina")
 	_msgfmt sl_SI
-	lb -sf ${ZONEINFO}Europe/Ljubljana ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Ljubljana ${LOCALTIME};;
  "Srbija")
 	_msgfmt sr_RS
-	ln -sf ${ZONEINFO}Europe/Belgrade ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Belgrade ${LOCALTIME};;
  "Suomi")
 	_msgfmt fi_FI
-	ln -sf ${ZONEINFO}Europe/Helsinki ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Helsinki ${LOCALTIME};;
  "Sverige")
 	_msgfmt sv_SE
-	ln -sf ${ZONEINFO}Europe/Stockholm ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Stockholm ${LOCALTIME};;
  "Türkiye")
 	_msgfmt tr_TR
-	ln -sf ${ZONEINFO}Europe/Istanbul ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Istanbul ${LOCALTIME};;
  "Thaïland")
 	_msgfmt th_TH
-	ln -sf ${ZONEINFO}Asia/Bangkok ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Bangkok ${LOCALTIME};;
  "Ukraïna")
 	_msgfmt uk_UA
-	ln -sf ${ZONEINFO}Europe/Kiev ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Europe/Kiev ${LOCALTIME};;
  "Viêt nam")
 	_msgfmt vi_VN
-	ln -sf ${ZONEINFO}Asia/Ho_Chi_Minh ${LOCALTIME};;
+	_zoneinfo ${ZONEINFO}Asia/Ho_Chi_Minh ${LOCALTIME};;
 esac
 . ${LOCALE}
 SETUP_CONFIG_LANGUAGE="no"
@@ -787,6 +800,7 @@ break
 done
 sed -i "/KEYMAP/d" ${CONSOLE}
 echo "KEYMAP=${REPLY}.map" >> ${CONSOLE}
+$SETUP_LOG "setup-nutyx --config-keymap" "KEYMAP=${REPLY}.map saved in ${CONSOLE}"
 loadkeys ${REPLY}.map > /dev/null 2>&1
 case $REPLY in
 	en)
@@ -822,6 +836,7 @@ case $REPLY in
 	tr*) echo '  Option "XkbLayout" "tr"' >> ${XORGKB};;
 esac
 echo "EndSection" >> ${XORGKB}
+$SETUP_LOG "setup-nutyx --config-keymap" "${XORGKB} adjusted"
 SETUP_CONFIG_KEYBOARD="no"
 }
 
@@ -882,6 +897,7 @@ $(gettext "so that the summer/winter time is changed automatically" ) " 0 0
 	date -s "$GOODDATE$USERTIME"
 
 	hwclock --systohc ${CLOCKPARAMS}
+	$SETUP_LOG "setup-nutyx --config-clock" "$(gettext "Date and time settings"): `date -s "$GOODDATE$USERTIME"`"
 
 	SETUP_CONFIG_CLOCK="no"
 }
@@ -1077,24 +1093,31 @@ $(gettext "Are you sure you want to continue ?")" 7 60
 				case $result in
 					ext2)
 						mkfs.ext2 -F $PARTITION > /dev/tty2 || error "mkfs.ext2 $PARTITION"
+						$SETUP_LOG "setup-nutyx" "mkfs.ext2 -F $PARTITION"
 						;;
 					ext3)
 						mkfs.ext3 -F $PARTITION > /dev/tty2 || error "mkfs.ext3 $PARTITION"
+						$SETUP_LOG "setup-nutyx" "mkfs.ext3 -F $PARTITION"
 						;;
 					ext4)
 						mkfs.ext4 -F $PARTITION > /dev/tty2 || error "mkfs.ext4 $PARTITION"
+						$SETUP_LOG "setup-nutyx" "mkfs.ext4 -F $PARTITION"
 						;;
 					reiserfs)
 						mkreiserfs -q $PARTITION > /dev/tty2 || error "mkreiserfs -q $PARTITION"
+						$SETUP_LOG "setup-nutyx" "mkreiserfs -q $PARTITION"
 						;;
 					btrfs)
 						mkfs.btrfs -f $PARTITION > /dev/tty2 || error "mkfs.btrfs -f $PARTITION"
+						$SETUP_LOG "setup-nutyx" "mkfs.btrfs -f $PARTITION"
 						;;
 					xfs)
 						mkfs.xfs -f -m crc=0 $PARTITION > /dev/tty2 || error "mkfs.xfs -f $PARTITION"
+						$SETUP_LOG "setup-nutyx" "mkfs.xfs -f -m crc=0 $PARTITION"
 						;;
 					jfs)
 						mkfs.jfs -f $PARTITION > /dev/tty2 || error "mkfs.jfs -f $PARTITION"
+						$SETUP_LOG "setup-nutyx" "mkfs.jfs -f $PARTITION"
 						;;
 				esac;;
 			1|255)
@@ -1132,7 +1155,6 @@ install_nutyx() {
 	etc/resolv.conf \
 	etc/localtime \
 	etc/network \
-	var/log/install.log \
 	$TEXTDOMAINDIR
 	do
 		if [ -f /$FILE ] || [ -d /$FILE ];then
@@ -1157,6 +1179,10 @@ install_nutyx() {
 	chmod 1777 ${2}/tmp
 	echo "100") |
 	dialog --title "$(gettext "Install NuTyX")" --gauge "$(gettext "Please wait") ..." 6 50
+	$SETUP_LOG "setup-nutyx" "Install NuTyX on ${2} done"
+	if [ -f /var/log/install.log ]; then
+		cp -a /var/log/install.log  ${2}/var/log/install.log
+	fi
 }
 setup_install() {
 	local MF retval
@@ -1676,6 +1702,7 @@ main () {
 # VARIABLES
 readonly COMMAND="$0"
 readonly SETUP_ARCH="`uname -m`"
+SETUP_LOG="setup-nutyx-log"
 CARDS="/etc/cards.conf"
 XORGKB="/etc/X11/xorg.conf.d/20-keyboard.conf"
 CONSOLE="/etc/sysconfig/console"
