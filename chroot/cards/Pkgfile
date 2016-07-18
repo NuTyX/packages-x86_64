@@ -14,13 +14,5 @@ ln -sv pkgadd /tools/bin/pkgrm
 
 sed -i "s/profile/noprofile/" /tools/bin/pkgmk
 
-cat >> /tools/bin/pkgmk.conf << "EOF"
-PKGMK_CLEAN="no"
-PKGMK_COMPRESS_PACKAGE="yes"
-PKGMK_IGNORE_FOOTPRINT="no"
-PKGMK_UPDATE_INDEX="yes"
-PKGMK_KEEP_SOURCES="yes"
-PKGMK_IGNORE_MD5SUM="yes"
-EOF
 mkdir -pv $LFS/var/lib/pkg/DB
 }
