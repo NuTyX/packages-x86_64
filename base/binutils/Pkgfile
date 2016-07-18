@@ -3,16 +3,13 @@
 # Maintainers: Tristan Gingold ( gingold at adacore dot com ),Alan Modra ( amodra at bigpond dot net dot au )
 # Packager: tnut at nutyx dot org
 name=binutils
-version=2.26
-release=3
+version=2.26.1
+release=1
 
-source=(http://ftp.gnu.org/gnu/binutils/binutils-$version.tar.bz2
-	http://www.linuxfromscratch.org/patches/lfs/development/binutils-$version-upstream_fix-2.patch)
+source=(http://ftp.gnu.org/gnu/binutils/binutils-$version.tar.bz2)
 build()
 {
 cd binutils-$version
-
-patch -Np1 -i ../binutils-$version-upstream_fix-2.patch
 
 mkdir -v build
 cd build
@@ -34,10 +31,10 @@ rm -rf $PKG/usr/share/info/dir
 mkdir $PKG/lib
 for lib in libopcodes libbfd
 do
-	mv $PKG/usr/lib/$lib-$version.20160125.so \
+	mv $PKG/usr/lib/$lib-$version.so \
 	$PKG/lib/$lib-$version.so
 	ln -s $lib-$version.so  $PKG/lib/$lib
-	ln -s ../../lib/$lib-$version.20160125.so \
+	ln -s ../../lib/$lib-$version.so \
 	$PKG/usr/lib/$lib-$version.so
 	ln -s ../../lib/$lib-$version.so \
 	$PKG/usr/lib/$lib
