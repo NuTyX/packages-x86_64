@@ -32,17 +32,17 @@
    <h1>Scenario D</h1>
     <a name='11'></a>
     <h2>Introduction</h2>
-     <p>You do not want to compile everything, you are satisfied with binary available.</p>
+     <p>You do not want to compile everything; you are satisfied with binaries available.</p>
      <p>Your new packages use dependencies from existing binaries.</p>
-     <p>This scenario is probably the longest to implement, but once everything is in place, adding personal packages is done very quickly.</p>
+     <p>This scenario is probably the longest to implement, but once everything is in place, personal packages can be added very quickly.</p>
     <a name='12'></a>
     <h2>The /etc/cards.conf file</h2>
-     <p>A folder containing my personal packages is added, as well as the collections (downloading folders) <u>should never</u> be updated by the <b>cards sync</b> command. We do not specify an URL.</p>
+     <p>A folder containing my personal packages is added. Neither this nor the collection folders should be updated by the <b>cards sync</b> command, so we do not specify a URL (updating libraries that you have built packages against could break those packages).</p>
      <p>Only the <b>base</b> collection must remain active, this allows the <b>rsync</b> command to be downloaded and installed if not already installed.</p>
-     <p>The architecture of the machine is checked, we are 64 bits.</p>
+     <p>The architecture of the machine is checked; we are 64_bit.</p>
      <p>The folder containing the build logs is defined</p>
-     <p>I do not need to specify the locale, they will always installed.</p>
-     <p>Directory folders defining the basic system, when returning to a base system are specified</p>
+     <p>I do not need to specify the locales, they will always installed.</p>
+     <p>Directory folders define the basic system, in case a return to a base is required</p>
      <p>The typical contents of your <b>/etc/cards.conf</b> file for the <b>Scenario D</b>:</p>
      <pre class="output">dir /srv/www/nutyx/x86_64/personnal
 dir /srv/www/nutyx/x86_64/gui
@@ -55,11 +55,11 @@ base /srv/www/saravane/x86_64/base
 base /srv/www/saravane/x86_64/base-extra
 base /srv/www/saravane/tokeep</pre>
     <a name='13'></a>
-    <h2>Development tools installation</h2>
-     <p>For this scenario, we will synchronize all binaries available on the mirror NuTyX and will "stick" on the version of them.</p>
-     <p>Let's start to install all the development tools means compiler, C and C++ library, etc</p>
+    <h2>Installing development tools</h2>
+     <p>For this scenario, we will synchronize all binaries available on the NuTyX mirror and will stick to these versions.</p>
+     <p>Let's start by installing all the development tools: C compiler, C and C++ library, etc</p>
      <pre class="command_user"><kbd>get cards.devel</kbd></pre>
-     <p>Line pointing to the URL of NuTyX mirror can be removed, so that the <b>cards sync</b> is deactivated.</p>
+     <p>Lines pointing to the URL of the NuTyX mirror can now be removed, so that <b>cards sync</b> is deactivated.</p>
      <p>The new <b>/etc/cards.conf</b> file:</p>
      <pre class="output">dir /srv/www/nutyx/x86_64/personnal
 dir /srv/www/nutyx/x86_64/gui
@@ -69,33 +69,33 @@ logdir /var/log/pkgbuild
 base /srv/www/saravane/x86_64/base
 base /srv/www/saravane/tokeep</pre>
     <a name='14'></a>
-    <h2>Binaries synchronisation via rsync</h2>
-     <p>This is to repatriate packages available in binary from <b>base,cli and gui</b> collections. It can last from several minutes to several hours depending on your connection.</p>
-     <p>Fortunately, this operation takes time only the first session. <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" /> <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" /> <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />.</p>
+    <h2>Synchronising binaries with rsync</h2>
+     <p>This is to fetch packages available as binaries from the <b>base,cli and gui</b> collections. It can last from several minutes to several hours depending on your connection.</p>
+     <p>Fortunately, this operation only takes so much time the first time you do it. <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" /> <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" /> <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />.</p>
      <p>Your next update using rsync will be a lot faster, as only necessary files will be updated according to your system.</p>
-     <p>Note the destination folder, I decided to "move" the binary to the root of http server <img src="../graphics/smiley-tongue-out.gif" alt="Tongue out" title="Tongue out" />.</p>
+     <p>Note the destination folder, I decided to move the binaries to the root of the http server <img src="../graphics/smiley-tongue-out.gif" alt="Tongue out" title="Tongue out" />.</p>
      <p>Your next step is to create the following folders</p>
-     <pre class="command_user"><kbd>sudo mkdir -p /srv/www/nutyx/{x86_64,personnal,tokeep}</kbd></pre>
+     <pre class="command_user"><kbd>sudo mkdir -p /srv/www/nutyx/{x86_64,personal,tokeep}</kbd></pre>
      <p>We can now synchronize all the binaries:</p>
      <pre class="command_user"><kbd>for i in base cli gui; do sudo rsync -avz --delete-after rsync://downloads.nutyx.org/nutyx/stable/x86_64/$i/ \
 /srv/www/nutyx/x86_64/$i/;done</kbd></pre>
-     <p>Go maybe enjoy yourself a large cup of hot medium roasted Java or two,  order yourself your favorite Chinese/pizza take-away, or a tasty burger with some french fries, or whatever suits your palate? Or read a Linux Journal.. <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />, this will take some times...</p>
+     <p>Go and make a nice big cup of hot medium roasted Java or two, order your favorite Chinese/pizza take-away, or a tasty burger with some french fries, or whatever suits your palate. Or read a Linux Journal.. <img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />. This will take quite some time...</p>
     <a name='15'></a>
     <h2>The /etc/pkgmk.conf file</h2>
-     <p>For this scenario, it is essential to check all the variables necessary for the proper functioning of the two <b>pkgmk</b> and <b>cards</b> commands.</p>
-     <p>My processor is a dual core and I am the 64bits NuTyX.</p>
-     <p>My sources files are stored in a common folder, I do not want them to be deleted.</p>
-     <p>To not overpoluate or lose the work during my command: <b>rsync --delete-after rsync: //downloads.nutyx.org/nutyx/saravane/x86_64/ /srv/www/saravane/x86_64/</b> I prefer to use a temporary working folder:</p>
+     <p>For this scenario, it is essential to check all the variables necessary for the proper functioning of the <b>pkgmk</b> and <b>cards</b> commands.</p>
+     <p>My processor is a dual core and I run 64-bit NuTyX.</p>
+     <p>My source files are stored in a common folder; I do not want them to be deleted.</p>
+     <p>So as not to overpopulate my disk or lose work when running the command: <b>rsync --delete-after rsync: //downloads.nutyx.org/nutyx/saravane/x86_64/ /srv/www/saravane/x86_64/</b> I prefer to use a temporary working folder:</p>
      <pre class="output">PKGMK_SOURCE_DIR="/srv/www/sources"
 PKGMK_KEEP_SOURCES="yes"
 PKGMK_WORK_DIR="/tmp/work"</pre>
-     <p>In this scenario, I want to install my dependencies, but they must not be compiled. I need the <b>.PKGREPO</b> file generated in the port folder. I want to use the <b>cards install</b> or <b>get</b> command to be able to reinstall my  available binaries. The <b>pkgmk</b> must generate the <b>.PKGREPO</b> file of my personal collection.</p>
+     <p>In this scenario, I want to install my dependencies without compiling them locally. I need the <b>.PKGREPO</b> file to be generated in the ports folder. I want to use the <b>cards install</b> or <b>get</b> command to be able to reinstall my  available binaries. The <b>pkgmk</b> must generate the <b>.PKGREPO</b> file of my personal collection.</p>
      <pre class="output">PKGMK_IGNORE_REPO="no"
 PKGMK_IGNORE_COLLECTION="no"</pre>
-     <p>Due to the existing dependencies from the binary and that these binaries are splited. It is best to keep thoses functionality for your personal packages. The Locale produced will number 11 in total, including the local default:</p>
+     <p>Due to existing binary dependencies and the fact that these binary packages are split into parts, it is best to do the same for your personal packages. The locales produced will number 11 in total, including the local default:</p>
      <pre class="output">PKGMK_GROUPS=(devel man doc service)
 PKGMK_LOCALES=(fr de it es nl pt da nn sv fi)</pre>
-     <p>We insist all Binary packages must have the same compression format as the official binaries, although this is not an obligation, we want to keep uniformity between all compressed binaries. I do not want to remove my created binary once installed.</p>
+     <p>We want all binary packages to have the same compression format as the official binaries; this is not obligatory but we want to maintain uniformity between all compressed binaries. I do not want to remove my created binaries after installation.</p>
      <pre class="output">PKGMK_COMPRESSION_PACKAGE="yes"
 PKGMK_COMPRESSION_MODE="xz"
 PKGMK_CLEAN="no"</pre>
