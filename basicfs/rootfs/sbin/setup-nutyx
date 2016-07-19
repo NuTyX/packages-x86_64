@@ -1547,7 +1547,6 @@ parse_options() {
 		while [ "$1" ]; do
 			case "${1}" in
 				start)
-					SETUP_CHECKALL="yes"
 					SETUP_START_SERVICE="yes"
 					;;
 				stop)
@@ -1572,24 +1571,20 @@ parse_options() {
 					echo "show all"
 					;;
 				-cl|--config-lang)
-					SETUP_CONFIG_LANGUAGE="yes"
-					SETUP_START_SERVICE="yes"
+					setup_language
 					;;
 				-sl|--show-locale)
 					echo "show locale"
 					;;
 				-ck|--config-keymap)
 					unset KEYMAP
-					SETUP_CONFIG_KEYBOARD="yes"
-					SETUP_START_SERVICE="yes"
+					setup_keymap
 					;;
 				-cn|--config-net)
-					SETUP_CONFIG_NETWORK="yes"
-					SETUP_START_SERVICE="yes"
+					setup_net
 					;;
 				-cc|--config-clock)
-					SETUP_CONFIG_CLOCK="yes"
-					SETUP_START_SERVICE="yes"
+					setup_clock
 					;;
 				-cu|--create-user)
 					echo "create user"
@@ -1615,19 +1610,13 @@ check_all () {
 		if [ -r ${LOCALE} ]; then
 			. ${LOCALE}
 		else
-			export SETUP_CONFIG_LANGUAGE="yes"
+			SETUP_CONFIG_LANGUAGE="yes"
 		fi
-		[ -r ${LOCALE} ] || export SETUP_CONFIG_LANGUAGE="yes"
+		[ -r ${LOCALE} ] || SETUP_CONFIG_LANGUAGE="yes"
 	fi
-	if [ "$SETUP_CONFIG_KEYBOARD" = "no" ]; then
-		[ -r ${CONSOLE} ] || export SETUP_CONFIG_KEYBOARD="yes"
-	fi
-	if [ "$SETUP_CONFIG_NETWORK" = "no" ]; then
-		[ -z ${NETWORK} ] && export SETUP_CONFIG_NETWORK="yes"
-	fi
-	if [ "$SETUP_CONFIG_CLOCK" = "no" ]; then
-		[ -r ${CLOCK} ] || export SETUP_CONFIG_CLOCK="yes"
-	fi
+	[ -r ${CONSOLE} ] || SETUP_CONFIG_KEYBOARD="yes"
+	[ -z ${NETWORK} ] && SETUP_CONFIG_NETWORK="yes"
+	[ -r ${CLOCK} ] || SETUP_CONFIG_CLOCK="yes"
 
 }
 service_need () {
@@ -1677,16 +1666,21 @@ main () {
 
 	if [ "$SETUP_CHECKALL" == "yes" ]; then
 			log_info_msg "Checking configuration..."			
-			if [ "`check_all`" == "yes" ]; then
+			if [ "`service_need`" == "no" ]; then
 				log_success_msg2
 				exit 0
+			else
+				log_warning_msg
+				exit 1
 			fi
 	fi
 	if [ "$SETUP_START_SERVICE" == "yes" ]; then
 		check_all
+		log_info_msg "Checking configuration..."
 		TMP=`mktemp -d`
 		top_loop
 		cleanup
+		evaluate_retval
 	fi
 	if [ "$SETUP_UPGRADE" == "yes" ]; then
 		if [ "`cards upgrade --size 2> /dev/null`" != "0" ];then
