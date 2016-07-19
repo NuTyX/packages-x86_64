@@ -5,13 +5,14 @@
 
 name=telepathy-idle
 version=0.2.0
-release=1
+release=2
 
 source=(http://${name%-*}.freedesktop.org/releases/$name/$name-$version.tar.gz)
 
 build() {
-cd $name-$version
-./configure --prefix=/usr 
-make
-make DESTDIR=$PKG install
+  cd $name-$version
+  ./configure --prefix=/usr \
+              --libexecdir=/usr/lib/telepathy
+  make
+  make DESTDIR=$PKG install
 }
