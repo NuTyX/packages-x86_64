@@ -40,6 +40,9 @@ error() {
 warning() {
 	info "${WARNING}WARNING: ${NORMAL}$1"
 }
+msgbox () {
+	dialog --msgbox "${1}" 0 0
+}
 is_true()
 {
  [ "$1" = "1" ] || [ "$1" = "yes" ] || [ "$1" = "true" ]
@@ -106,6 +109,73 @@ network_card_found() {
 		NETWORK_CARD=`cat $TMP/result|sed 's/"//g'`
 		$SETUP_LOG "setup-nutyx --config-net" "Network card found: $NETWORK_CARD"
 	fi
+}
+check_user_valid()
+{
+	# Parameters:
+  # $1: user name
+	# $2: user description
+	# Return value:
+	# 0: user and description valid
+	# 1: Invalid name
+  # 2: name already exist
+  # 3: Invalid description
+
+	local desc_test name_test
+
+	name_test=`echo -n "${1}" | sed 's@^[a-z][a-z0-9]*$@@g'`
+	if [ "$name_test" != "" ]; then
+		dialog --msgbox "$(gettext "The name you enter is invalid")" 5 60
+		return 1
+	fi
+
+	if grep "${1}" /etc/passwd > /dev/null; then
+		dialog --msgbox "$(gettext "The name you enter is already register on the system")" 5 60
+		return 2
+	fi
+	desc_test=`echo "${2}" | sed 's@^[[:alnum:]! -.,~_@;%<>?]*$@@ig'`
+	if [ "$desc_test" != "" ]; then
+		dialog --msgbox "$(gettext "The description you enter is invalid")" 5 60
+		return 3
+	fi
+	return 0
+}
+setup_user()
+{
+	local RESULT
+	user_groups=""
+	default_groups=(users disk network floppy fuse video lp tty audio cdrom scanner adm vboxusers wheel)
+	# Avoid spaces troubles :)
+	OLD_IFS=$IFS
+	IFS="|
+"
+	RESULT="user"
+	while [ "$RESULT" == "user" ];
+	do
+		exec 3>&1
+		RESULT=`dialog --title "  $(gettext "Add a new user")  " \
+		--inputbox  "$(gettext "Name of the user:")" 8 60 user 2>&1 1>&3`
+		RESULT="`echo "$RESULT"|sed "s/ //g"`"
+		[ "$RESULT" == "" ] && RESULT="user"
+	done
+	NAME=$RESULT
+	if [ "$RESULT" != "user" ] &&  [ "$RESULT" != "" ];then
+		RESULT="This is the description"
+		while [ "$RESULT" == "This is the description" ];
+		do
+			exec 3>&1
+			RESULT=`dialog --title "  $(gettext "Add a description for the user")  " \
+			--inputbox  "$(gettext "Name or Description of the user:")" 8 60 "This is the description" 2>&1 1>&3`
+			[ "`echo "$RESULT"|sed "s/ //g"`" == "" ] && RESULT="This is the description"
+			[ "$RESULT" == "" ] && RESULT="This is the description"
+		done
+		DESCRIPTION=$RESULT
+	fi
+	check_user_valid $NAME $DESCRIPTION
+	ret=$?
+	while [ $ret -ne 0 ]; do
+		setup_user
+	done
 }
 setup_net() 
 {
@@ -1571,23 +1641,28 @@ parse_options() {
 					echo "show all"
 					;;
 				-cl|--config-lang)
+					check_root
 					setup_language
 					;;
 				-sl|--show-locale)
 					echo "show locale"
 					;;
 				-ck|--config-keymap)
+					check_root
 					unset KEYMAP
 					setup_keymap
 					;;
 				-cn|--config-net)
+					check_root
 					setup_net
 					;;
 				-cc|--config-clock)
+					check_root
 					setup_clock
 					;;
 				-cu|--create-user)
-					echo "create user"
+					check_root
+					setup_user
 					;;
 				-ca|--config-all)
 					echo "config all"
@@ -1617,6 +1692,7 @@ check_all () {
 	[ -r ${CONSOLE} ] || SETUP_CONFIG_KEYBOARD="yes"
 	[ -z ${NETWORK} ] && SETUP_CONFIG_NETWORK="yes"
 	[ -r ${CLOCK} ] || SETUP_CONFIG_CLOCK="yes"
+	[ -d ${USER} ] || SETUP_CONFIG_USER="yes"
 
 }
 service_need () {
@@ -1624,7 +1700,8 @@ service_need () {
 	if [ "$SETUP_CONFIG_LANGUAGE" = "yes" ] ||
 	[ "$SETUP_CONFIG_KEYBOARD" = "yes" ] ||
 	[ "$SETUP_CONFIG_NETWORK" = "yes" ] ||
-	[ "$SETUP_CONFIG_CLOCK" = "yes" ]; then
+	[ "$SETUP_CONFIG_CLOCK" = "yes" ] ||
+	[ "$SETUP_CONFIG_USER" = "yes" ]; then
 		echo "yes"
 	else
 		 echo "no"
@@ -1648,14 +1725,22 @@ top_loop() {
 		while [ "$SETUP_CONFIG_LANGUAGE" = "yes" ] ||
 			[ "$SETUP_CONFIG_KEYBOARD" = "yes" ] ||
 			[ "$SETUP_CONFIG_NETWORK" = "yes" ] ||
-			[ "$SETUP_CONFIG_CLOCK" = "yes" ]; do
+			[ "$SETUP_CONFIG_CLOCK" = "yes" ] ||
+			[ "$SETUP_CONFIG_USER" = "yes" ]; do
 				[ "$SETUP_CONFIG_LANGUAGE" = "yes" ] && LANG=de_CH.utf-8 setup_language
 				[ "$SETUP_CONFIG_KEYBOARD" = "yes" ] && setup_keymap
 				[ "$SETUP_CONFIG_NETWORK" = "yes" ] && setup_net
 				[ "$SETUP_CONFIG_CLOCK" = "yes" ] && setup_clock
+				[ "$SETUP_CONFIG_USER" = "yes" ] && setup_user
 		done
 	fi
 
+}
+check_root () {
+	if [ $UID -ne 0 ]; then
+		echo 1>&2 "$(gettext "Please run this command as root")"
+		exit 1
+	fi
 }
 main () {
 	parse_options "$@"
@@ -1665,12 +1750,9 @@ main () {
 	fi
 
 	if [ "$SETUP_CHECKALL" == "yes" ]; then
-			log_info_msg "Checking configuration..."			
 			if [ "`service_need`" == "no" ]; then
-				log_success_msg2
 				exit 0
 			else
-				log_warning_msg
 				exit 1
 			fi
 	fi
@@ -1705,6 +1787,7 @@ LOCALTIME="/etc/localtime"
 ZONEINFO="/usr/share/zoneinfo/"
 NETWORK="`ls /etc/sysconfig/ifconfig* 2>/dev/null|head -1`"
 CLOCK="/etc/sysconfig/clock"
+USER="/home"
 
 SETUP_INITRD="no"
 SETUP_INSTALL="no"
@@ -1712,10 +1795,15 @@ SETUP_CONFIG_LANGUAGE="no"
 SETUP_CONFIG_KEYBOARD="no"
 SETUP_CONFIG_NETWORK="no"
 SETUP_CONFIG_CLOCK="no"
+SETUP_CONFIG_USER="no"
 
 CHECK_HD_OK="no"
 CHECK_PART_OK="no"
 CHECK_SINGLE_PARTITION="no"
+
+SETUP_KDM_CONFFILE="/etc/kde/kdmrc"
+SETUP_GDM_CONFFILE="/etc/gdm/custom.conf"
+SETUP_LXDM_CONFFILE="/etc/lxdm/lxdm.conf"
 
 main "$@"
 
