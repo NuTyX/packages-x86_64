@@ -145,6 +145,8 @@ setup_user()
 	if [ "`cat /etc/passwd | grep ^root|cut -d ":" -f2`" != "x" ]; then
 		/sbin/pwconv
 		/sbin/grpconv
+		echo -e "nutyx\nnutyx"|passwd
+		chage -d 0 root
 	fi
 	mkdir -p /home
 	local RESULT
@@ -1267,8 +1269,6 @@ install_nutyx() {
 	etc/profile.d/i18n.sh \
 	etc/sysconfig/network \
 	etc/sysconfig/clock \
-	etc/sysconfig/console \
-	etc/X11/xorg.conf.d/20-keyboard.conf \
 	etc/cards.conf \
 	etc/resolv.conf \
 	etc/localtime \
@@ -1290,7 +1290,7 @@ install_nutyx() {
 	if [ -f ${1}/initrd ]; then
 		cp  ${1}/initrd ${2}/boot/initrd
 	fi
-	for DIR in home proc sys dev srv mnt tmp
+	for DIR in proc sys dev srv mnt tmp
 	do
 		[ ! -d ${2}/$DIR ] &&	mkdir ${2}/$DIR
 	done
