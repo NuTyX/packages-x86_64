@@ -142,9 +142,13 @@ check_user_valid()
 }
 setup_user()
 {
+	if [ "`cat /etc/passwd | grep ^root|cut -d ":" -f2`" != "x" ]; then
+		/sbin/pwconv
+		/sbin/grpconv
+	fi
 	local RESULT
-	user_groups=""
-	default_groups=(users disk network floppy fuse video lp tty audio cdrom scanner adm vboxusers wheel)
+	USER_GROUPS=""
+	DEFAULT_GROUPS=(users disk network floppy fuse video lp tty audio cdrom scanner adm vboxusers wheel)
 	# Avoid spaces troubles :)
 	OLD_IFS=$IFS
 	IFS="|
@@ -153,21 +157,21 @@ setup_user()
 	while [ "$RESULT" == "user" ];
 	do
 		exec 3>&1
-		RESULT=`dialog --title "  $(gettext "Add a new user")  " \
-		--inputbox  "$(gettext "Name of the user:")" 8 60 user 2>&1 1>&3`
+		RESULT=`dialog --title "  $(gettext "Add a user to the system")  " \
+		--inputbox  "$(gettext "Name of the user"):" 8 60 user 2>&1 1>&3`
 		RESULT="`echo "$RESULT"|sed "s/ //g"`"
 		[ "$RESULT" == "" ] && RESULT="user"
 	done
 	NAME=$RESULT
 	if [ "$RESULT" != "user" ] &&  [ "$RESULT" != "" ];then
-		RESULT="This is the description"
-		while [ "$RESULT" == "This is the description" ];
+		RESULT="Description"
+		while [ "$RESULT" == "Description" ];
 		do
 			exec 3>&1
 			RESULT=`dialog --title "  $(gettext "Add a description for the user")  " \
-			--inputbox  "$(gettext "Name or Description of the user:")" 8 60 "This is the description" 2>&1 1>&3`
-			[ "`echo "$RESULT"|sed "s/ //g"`" == "" ] && RESULT="This is the description"
-			[ "$RESULT" == "" ] && RESULT="This is the description"
+			--inputbox  "$(gettext "Name or Description of the user"):" 8 60 "Description" 2>&1 1>&3`
+			[ "`echo "$RESULT"|sed "s/ //g"`" == "" ] && RESULT="Description"
+			[ "$RESULT" == "" ] && RESULT="Description"
 		done
 		DESCRIPTION=$RESULT
 	fi
@@ -176,6 +180,48 @@ setup_user()
 	while [ $ret -ne 0 ]; do
 		setup_user
 	done
+
+	for GROUP in ${DEFAULT_GROUPS[@]};
+	do
+		if ! grep "$GROUP" /etc/group > /dev/null ; then
+			continue
+		fi
+		if [ -z "$USER_GROUPS" ]; then
+			USER_GROUPS="$GROUP"
+		else
+			USER_GROUPS="$USER_GROUPS,$GROUP"
+		fi
+	done
+
+	/sbin/useradd -c "${DESCRIPTION}" -G "$USER_GROUPS" -m "${NAME}"
+
+	PASSWORD=""
+	CONFIRM_PASSWORD=""
+
+	RESULT="false"
+	while [ "$RESULT" == "false" ];
+	do
+		exec 3>&1
+		PASSWORD=`dialog --title "  $(gettext "Password") " \
+		--insecure "$@" \
+		--passwordbox "  $(gettext "Enter a new password"):" 8 60  2>&1 1>&3`
+		CONFIRM_PASSWORD=`dialog --title "  $(gettext "Password") " \
+		--insecure "$@" \
+		--passwordbox "$(gettext "Confirm the new password"):" 8 60 2>&1 1>&3`
+
+		if [ "$PASSWORD" == "$CONFIRM_PASSWORD" ]; then
+			RESULT="true"
+		else
+			dialog --msgbox "$(gettext "Passwords are differents, please try again")" 5 60
+		fi
+
+	done
+
+	if [ -d /home/${NAME} ]; then
+		chown -R ${NAME}:${NAME} /home/${NAME}
+	fi
+	echo -e "$PASSWORD\n$CONFIRM_PASSWORD"|passwd "$NAME"
+	# > /dev/null 2&>1
 }
 setup_net() 
 {
@@ -1758,10 +1804,12 @@ main () {
 	fi
 	if [ "$SETUP_START_SERVICE" == "yes" ]; then
 		check_all
+		/etc/rc.d/init.d/sysklogd start
 		log_info_msg "Checking configuration..."
 		TMP=`mktemp -d`
 		top_loop
 		cleanup
+		/etc/rc.d/init.d/sysklogd stop
 		evaluate_retval
 	fi
 	if [ "$SETUP_UPGRADE" == "yes" ]; then
