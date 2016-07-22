@@ -146,6 +146,7 @@ setup_user()
 		/sbin/pwconv
 		/sbin/grpconv
 	fi
+	mkdir -p /home
 	local RESULT
 	USER_GROUPS=""
 	DEFAULT_GROUPS=(users disk network floppy fuse video lp tty audio cdrom scanner adm vboxusers wheel)
@@ -221,7 +222,8 @@ setup_user()
 		chown -R ${NAME}:${NAME} /home/${NAME}
 	fi
 	echo -e "$PASSWORD\n$CONFIRM_PASSWORD"|passwd "$NAME"
-	# > /dev/null 2&>1
+
+	SETUP_CONFIG_USER="no"
 }
 setup_net() 
 {
@@ -1652,7 +1654,6 @@ initrd_only() {
 	else
 		# we are in the initrd
 		SETUP_INITRD="yes"
-		SETUP_CHECKALL="yes"
 		SETUP_START_SERVICE="yes"
 	fi
 }
