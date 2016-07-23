@@ -4,7 +4,7 @@
 # Packager: pierre at nutyx dot org
 name=sysvinit
 version=2.88dsf
-release=2
+release=3
 
 source=(http://ftp.twaren.net/Unix/NonGNU/sysvinit/sysvinit-$version.tar.bz2
 	http://www.linuxfromscratch.org/patches/lfs/development/sysvinit-2.88dsf-consolidated-1.patch)
@@ -28,7 +28,7 @@ mkdir $PKG/etc
 cat > $PKG/etc/inittab << "EOF"
 # Begin /etc/inittab
 # Pour le lancement de la console: id:3 (defaut si installation de base)
-# Pour le lancement de lxdm, sddm ou kdm:  id:5
+# Pour le lancement de lxdm:  id:5
 
 id:3:initdefault:
 
@@ -52,6 +52,8 @@ su:S016:once:/sbin/sulogin
 4:2345:respawn:/sbin/agetty tty4 9600
 5:2345:respawn:/sbin/agetty tty5 9600
 6:2345:respawn:/sbin/agetty tty6 9600
+
+20:5:respawn:/usr/sbin/lxdm >& /dev/null
 
 # End /etc/inittab
 EOF
