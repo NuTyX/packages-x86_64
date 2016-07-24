@@ -1,14 +1,12 @@
-# URL: http://perso.wanadoo.fr/sebastien.godard
-# Packager: berlius at nutyx dot com
-
+# Packager: berlius at nutyx dot com, fanch at nutyx dot org, tnut at nutyx dot org, pierre at nutyx dot org
 description="Utilities to monitor system performance and usage activity."
+url="http://perso.wanadoo.fr/sebastien.godard"
 name=sysstat
-version=11.1.8	
-release=1
-source=(http://perso.wanadoo.fr/sebastien.godard/sysstat-11.1.8.tar.xz)
+version=11.2.2
+release=3
+source=($url/$name-$version.tar.xz)
  
 build() {
-
 cd $name-$version
 	   
 source  /etc/blfs-bootscripts
@@ -21,11 +19,8 @@ conf_dir=/etc/sysconfig   \
 ./configure --prefix=/usr \
             --disable-file-attr 
 make
-
 make DESTDIR=$PKG install
-
 	
 cd $scripts-$scriptsversion
 make DESTDIR=$PKG install-sysstat
-	
 }

@@ -1,10 +1,10 @@
-# URL: 			http://www.postfix.org
-# Packager: 	berlius at nutyx dot com
-# Depends on: 	db cyrus-sasl openssl icu mariadb openldap pcre postgresql sqlite
+# Depends on: db cyrus-sasl openssl icu mariadb openldap pcre postgresql sqlite
 
+packager="berlius at nutyx dot com, fanch at nutyx dot org, tnut at nutyx dot org"
 description="Mail Transport Agent (MTA) for sending email to other users of your host machine"
+url="http://www.postfix.org"
 name=postfix
-version=3.0.3
+version=3.1.1
 release=1
 
 source=(ftp://ftp.porcupine.org/mirrors/postfix-release/official/$name-$version.tar.gz)
@@ -14,25 +14,24 @@ build() {
     cd $name-$version
     
     source  /etc/blfs-bootscripts
-	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-	tar xvf $scripts-$scriptsversion.tar.bz2 
+    wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
+    tar xvf $scripts-$scriptsversion.tar.bz2 
 
 
 
-	make CCARGS="-DUSE_TLS -I/usr/include/openssl/                     \
-            -DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl" \
-			AUXLIBS="-lssl -lcrypto -lsasl2"                              \
-			makefiles 
+make CCARGS="-DUSE_TLS -I/usr/include/openssl/  \
+-DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl" \
+AUXLIBS="-lssl -lcrypto -lsasl2"                              \
+makefiles 
      
-    make
-     
-	sh postfix-install -non-interactive \
-	daemon_directory=$PKG/usr/lib/postfix \
-	manpage_directory=$PKG/usr/share/man \
-	html_directory=$PKG/usr/share/doc/postfix-3.0.3/html \
-	readme_directory=$PKG/usr/share/doc/postfix-3.0.3/readme
-	
-	cd $scripts-$scriptsversion
-	make DESTDIR=$PKG install-postfix
- 
+make
+
+sh postfix-install -non-interactive \
+daemon_directory=$PKG/usr/lib/postfix \
+manpage_directory=$PKG/usr/share/man \
+html_directory=$PKG/usr/share/doc/postfix-$version/html \
+readme_directory=$PKG/usr/share/doc/postfix-$version/readme
+
+cd $scripts-$scriptsversion
+make DESTDIR=$PKG install-postfix 
 }

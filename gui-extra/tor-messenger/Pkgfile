@@ -1,0 +1,44 @@
+# Description: Tor Messenger is +1 for privacy and -1 for mass surveillance
+# URL: https://www.torproject.org/
+# Packager : NuTyX core team
+# Depends on: pulseaudio,gconf,yasm,sqlite,libvpx,libevent,nss,alsa-lib,gtk2,xorg-app,zip,unzip,gstreamer1,gstreamer1-plugins-base,gstreamer1-plugins-good,gstreamer1-plugins-libav
+
+
+run=(gstreamer1-plugins-good gstreamer1-plugins-libav)
+
+name=tor-messenger
+version=0.1.0b5
+_language=en-US
+release=1
+desc='Tor Messenger Bundle: Anonymous and privacy'
+validpgpkeys=('EF6E286DDA85EA2A4BA7DE684E2C6E8793298290')
+
+# Workaround due to different versions depending on CARCH
+if [[ "$CARCH" == 'i686' ]]; then
+	_arch='32'
+else
+	_arch='64'
+fi
+        
+source=(https://dist.torproject.org/tormessenger/${version}/tor-messenger-linux${_arch}-${version}_${_language}.tar.xz
+        ${name}.desktop
+        ${name}.png
+        ${name}.sh)
+        
+build() {
+	cd ${SRC}
+
+	sed -i "s/REPL_NAME/${name}/g"			${name}.sh
+	sed -i "s/REPL_VERSION/${version}/g"	${name}.sh
+	sed -i "s/REPL_LANGUAGE/${_language}/g"		${name}.sh
+
+	sed -i "s/REPL_NAME/${name}/g"			${name}.desktop
+	sed -i "s/REPL_LANGUAGE/${_language}/g"		${name}.desktop
+	sed -i "s/REPL_COMMENT/${desc}/g"		${name}.desktop
+	
+	install -Dm 644 ${name}.desktop	${PKG}/usr/share/applications/${name}.desktop
+	install -Dm 644 ${name}.png		${PKG}/usr/share/pixmaps/${name}.png
+	install -Dm 755 ${name}.sh		${PKG}/usr/bin/${name}
+    wget https://dist.torproject.org/tormessenger/${version}/tor-messenger-linux${_arch}-${version}_${_language}.tar.xz
+	install -Dm 644 tor-messenger-linux${_arch}-${version}_${_language}.tar.xz ${PKG}/opt/${name}/tor-messenger-linux${_arch}-${version}_${_language}.tar.xz
+}

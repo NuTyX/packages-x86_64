@@ -4,17 +4,23 @@
 # Depends on: python python-setuptools lcms libwebp tk sane python-qt4
 
 name=python-pillow
-version=2.4.0
-release=2
+version=3.2.0
+_sanever=2.8.2
+_appname=Pillow
+release=1
 
-source=(
-http://pypi.python.org/packages/source/P/Pillow/Pillow-$version.zip)
+source=(http://pypi.python.org/packages/source/P/Pillow/Pillow-$version.zip
+       https://github.com/python-pillow/Sane/archive/v$_sanever.tar.gz)
 
 build() {
+    cd $SRC
+    sed -i "s|os.path.join|'../libImaging', &|" $SRC/Sane-$_sanever/setup.py
+    cp -r $SRC/Sane-${_sanever} $SRC/${_appname}-$version/Sane
+
     cd Pillow-$version
-    python2 setup.py install --prefix=/usr --root=$PKG
+    python setup.py install --prefix=/usr --root=$PKG
     cd Sane
-    python2 setup.py install --prefix=/usr --root=$PKG
+    python setup.py install --prefix=/usr --root=$PKG
     cd ../libImaging
     install -dm755 $PKG/usr/include/python2.7
     install -m644 -t $PKG/usr/include/python2.7 *.h

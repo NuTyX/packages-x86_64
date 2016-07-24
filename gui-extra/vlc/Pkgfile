@@ -5,27 +5,25 @@
 
 run=(libvlc)
 name=vlc
-version=2.2.1
-release=4
+version=3.0.0
+release=20160606
 
-source=( http://download.videolan.org/pub/videolan/vlc/$version/vlc-$version.tar.xz)
+source=( http://anduin.linuxfromscratch.org/BLFS/$name/$name-$version-$release.tar.xz)
 	
 build() {
 
 source setqt5
 
-cd $name-$version
-sed -i 's:libsmbclient.h:samba-4.0/&:' modules/access/smb.c
+cd $name-$version-$release
 
-sh bootstrap
+sed -i '/seems to be moved/s/^/#/' autotools/ltmain.sh
+
+BUILDCC=gcc \
 ./configure --prefix=/usr 
 
-sed -i 's/luaL_optint/(int)&eger/' modules/lua/libs/{net,osd,volume}.c
-sed -i 's/luaL_checkint(/(int)luaL_checkinteger(/' \
-modules/lua/{demux,libs/{configuration,net,osd,playlist,stream,variables,volume}}.c
 
 make
-make DESTDIR=$PKG docdir=/usr/share/doc/$name-$version install
+make DESTDIR=$PKG docdir=/usr/share/doc/$name-$version-release install
 
 rm -r $PKG/usr/{include,lib/pkgconfig}
 rm $PKG/usr/lib/libvlc*

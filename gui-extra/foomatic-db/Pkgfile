@@ -3,15 +3,15 @@
 # Packager: pierre at nutyx dot org
 # Depends on: libxml2 
 
+PKGMK_KEEP_SOURCES="no"
 name=foomatic-db
-version=4.0.20150819
-release=1
-_version=4.0-20150819
-source=(http://www.openprinting.org/download/foomatic/foomatic-db-${_version}.tar.gz)
+version=4.0
+release="`date +%Y%m%d`"
+source=(http://www.openprinting.org/download/foomatic/$name-$version-$release.tar.xz)
 
 build() {
-	cd $name-*
-	./configure --prefix=/usr
-	make
-	make DESTDIR=$PKG install
+    cd $name-*
+    ./configure --prefix=/usr
+    make
+    make DESTDIR=$PKG install
 }

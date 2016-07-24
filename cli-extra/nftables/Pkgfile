@@ -1,23 +1,19 @@
-# Description: Netfilter nftables userspace tools
-# URL: URL: http://netfilter.org/projects/nftables/ 
-# NuTyX package info file (http://nutyx.org)
-# Packager: # NuTyX package info file (http://nutyx.org)
 # Depends on: docbook2x libmnl libnftnl 
+
+description="Netfilter nftables userspace tools"
+url="http://netfilter.org/projects/nftables/"
+packager="alienus at nutyx dot org, fanch at nutyx dot org, tnut at nutyx dot org"
 name=nftables
-version=0.2
+version=0.6
 release=1
 
-source=(http://netfilter.org/projects/nftables/files/nftables-$version.tar.bz2)
+source=($url/files/nftables-$version.tar.bz2)
 
 build(){
-    cd $name-$version
-    ./configure --prefix=/usr \
-                --sysconfdir=/etc \
-                CONFIG_MAN=y DB2MAN=docbook2man
-    make
-    make DESTDIR=$PKG install    
+cd $name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--mandir=/usr/share/man
+make
+make DESTDIR=$PKG install    
 }
-
-
-
-# NuTyX Pkgfile (http://nutyx.org)

@@ -1,0 +1,18 @@
+# Description:	a modern interactive commandline shell.
+# URL:	http://www.fishshell.com/
+# Packager: fanch at nutyx dot org
+# Depends on: ncurses
+
+name=fish
+version=2.3.0
+release=1
+source=(http://fishshell.com/files/$version/fish-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	autoconf -i
+	./configure --prefix=/usr \
+	--sysconfdir=/etc 
+	make
+	make DESTDIR=$PKG install
+}

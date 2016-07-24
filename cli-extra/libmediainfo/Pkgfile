@@ -1,10 +1,10 @@
 # Description: Shared library for mediainfo.
-# URL: URL: http://mediainfo.sourceforge.net/
-# NuTyX package info file (http://nutyx.org)
-# Packager: # NuTyX package info file (http://nutyx.org)
+# URL: http://mediainfo.sourceforge.net/
+# Packager: alienus at nutyx dot org, fanch at nutyx dot org, tnut at nutyx dot org
 # Depends on: libmms libzen 
+
 name=libmediainfo
-version=0.7.69
+version=0.7.84
 release=1
 
 source=(
@@ -13,7 +13,7 @@ http://downloads.sourceforge.net/mediainfo/${name}_${version}.tar.bz2
 
 build(){
     cd $SRC/MediaInfoLib/Project/GNU/Library
-    sh ./autogen
+    sh ./autogen.sh
     ./configure --prefix=/usr \
                 --enable-shared \
                 --disable-static \
@@ -33,7 +33,3 @@ build(){
     sed -i -e 's|Version: |Version: '$version'|g' \
         $PKG/usr/lib/pkgconfig/libmediainfo.pc
 }
-
-
-
-# NuTyX Pkgfile (http://nutyx.org)

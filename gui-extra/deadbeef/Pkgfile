@@ -6,13 +6,13 @@
 
 name=deadbeef
 version=0.6.1
-release=2
+release=3
 
 source=(http://downloads.sourceforge.net/project/$name/$name-$version.tar.bz2)
 
 build () {
- cd $name-$version
- ./configure --prefix=/usr --disable-ffmpeg --enable-gtk3
+  cd $name-$version
+  CXX="g++ -std=c++98" ./configure --prefix=/usr --disable-ffmpeg --enable-gtk3
   make 
   make DESTDIR=$PKG install
 }
