@@ -1113,11 +1113,13 @@ if [ -f "/etc/bashrc" ] ; then
   source /etc/bashrc
 fi
 if [ $EUID -eq 0 ] ; then
+        alias nu='setup-nutyx -cu'
         alias del='cards remove'
         alias get='cards install'
         alias up='cards install -u'
         alias check='cards sync;cards diff'
 else
+        alias nu='sudo setup-nutyx -cu'
         alias del='sudo cards remove'
         alias get='sudo cards install'
         alias up='sudo cards install -u'
@@ -1328,7 +1330,7 @@ check_tools() {
 check_variables() {
 
 [ -z $URL ] && URL="http://downloads.nutyx.org"
-[ -z $VERSION ] && VERSION="8.2-beta"
+[ -z $VERSION ] && VERSION="8.2-beta-2"
 if [ "$VERSION" == "development" ]; then
 	CODE_NAME="`date +%Y%m%d`"
 else
@@ -1445,7 +1447,7 @@ if [ -d ${FOLDER}/usr/lib/locale ]; then
 fi
 }
 make_directories() {
-mkdir ${FOLDER}/{dev,sys,proc,run,tmp,home,srv,mnt}
+mkdir ${FOLDER}/{dev,sys,proc,run,tmp,srv,mnt}
 mkdir -p ${FOLDER}/var/tmp
 mkdir -p ${FOLDER}/usr/{,local/}lib
 

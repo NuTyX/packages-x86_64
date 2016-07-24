@@ -9,13 +9,10 @@ run=(consolekit2 librsvg)
 
 name=lxdm
 version=0.5.3
-release=1
+release=4
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.xz)
 
 build() {
-source /etc/blfs-bootscripts
-wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-tar xvf $scripts-$scriptsversion.tar.bz2
 
 cd $name-$version
 
@@ -45,7 +42,6 @@ password    required    pam_unix.so
 session     required    pam_unix.so
 EOF
 
-# Service
-cd $SRC/$scripts-$scriptsversion
-make DESTDIR=$PKG install-lxdm
+# lxdm.conf created in post if needed
+rm $PKG/etc/lxdm/lxdm.conf
 }

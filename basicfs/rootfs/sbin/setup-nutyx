@@ -76,7 +76,73 @@ dialog --title " $(gettext "ERROR configuration") " \
 	--msgbox " \n $(gettext "Please try again") " 7 32
 exit 1
 }
+create_lxdm_conf() {
+mkdir -p /etc/lxdm
+echo "[base]
+## uncomment and set autologin username to enable autologin
+autologin=${1}
 
+## uncomment and set timeout to enable timeout autologin,
+## the value should >=5
+# timeout=10
+
+## default session or desktop used when no systemwide config
+session=/usr/bin/startxfce4
+
+## uncomment and set to set numlock on your keyboard
+# numlock=0
+
+## set this if you don't want to put xauth file at ~/.Xauthority
+# xauth_path=/tmp
+
+# not ask password for users who have empty password
+# skip_password=1
+
+## greeter used to welcome the user
+greeter=/usr/libexec/lxdm-greeter-gtk
+
+[server]
+## arg used to start xserver, not fully function
+# arg=/usr/bin/X -background vt1
+arg=/usr/bin/X
+# uncomment this if you really want xserver listen to tcp
+# tcp_listen=1
+# uncoment this if you want reset the xserver after logout
+reset=1
+
+[display]
+## gtk theme used by greeter
+gtk_theme=Clearlooks
+
+## background of the greeter
+#bg=/usr/share/backgrounds/default.png
+
+## if show bottom pane
+bottom_pane=1
+
+## if show language select control
+lang=1
+
+## if show keyboard layout select control
+keyboard=0
+
+## the theme of greeter
+theme=Industrial
+
+[input]
+
+[userlist]
+## if disable the user list control at greeter
+disable=0
+
+## whitelist user
+white=
+
+## blacklist user
+black=" > $SETUP_LXDM_CONFFILE
+chmod 640 $SETUP_LXDM_CONFFILE
+$SETUP_LOG "setup-nutyx --create-user" "$SETUP_LXDM_CONFFILE created"
+}
 network_card_found() {
 	local NIC
 	NIC=`ls /sys/class/net`
@@ -110,16 +176,24 @@ network_card_found() {
 		$SETUP_LOG "setup-nutyx --config-net" "Network card found: $NETWORK_CARD"
 	fi
 }
+check_user_exist()
+{
+	for i in `cat /etc/passwd|cut -d ":" -f1`
+	do
+		[ "${1}" == "${i}" ] && return 1
+	done
+	return 0
+}
 check_user_valid()
 {
 	# Parameters:
-  # $1: user name
+	# $1: user name
 	# $2: user description
 	# Return value:
 	# 0: user and description valid
 	# 1: Invalid name
-  # 2: name already exist
-  # 3: Invalid description
+	# 2: name already exist
+	# 3: Invalid description
 
 	local desc_test name_test
 
@@ -128,10 +202,12 @@ check_user_valid()
 		dialog --msgbox "$(gettext "The name you enter is invalid")" 5 60
 		return 1
 	fi
-
-	if grep "${1}" /etc/passwd > /dev/null; then
-		dialog --msgbox "$(gettext "The name you enter is already register on the system")" 5 60
-		return 2
+	if [ ! "${1}" == "root" ]; then
+		check_user_exist ${1}
+		if [ $? -ne 0 ]; then
+			dialog --msgbox "$(gettext "The name you enter is already register on the system")" 6 60
+			return 2
+		fi
 	fi
 	desc_test=`echo "${2}" | sed 's@^[[:alnum:]! -.,~_@;%<>?]*$@@ig'`
 	if [ "$desc_test" != "" ]; then
@@ -142,9 +218,13 @@ check_user_valid()
 }
 setup_user()
 {
+	/sbin/pwconv
+	/sbin/grpconv
+	local PASSWORD CONFIRM_PASSWORD
+	mkdir -p /home
 	local RESULT
-	user_groups=""
-	default_groups=(users disk network floppy fuse video lp tty audio cdrom scanner adm vboxusers wheel)
+	USER_GROUPS=""
+	DEFAULT_GROUPS=(users disk network floppy fuse video lp tty audio cdrom scanner adm vboxusers wheel)
 	# Avoid spaces troubles :)
 	OLD_IFS=$IFS
 	IFS="|
@@ -153,21 +233,21 @@ setup_user()
 	while [ "$RESULT" == "user" ];
 	do
 		exec 3>&1
-		RESULT=`dialog --title "  $(gettext "Add a new user")  " \
-		--inputbox  "$(gettext "Name of the user:")" 8 60 user 2>&1 1>&3`
+		RESULT=`dialog --title "  $(gettext "Add a user to the system")  " \
+		--inputbox  "$(gettext "Name of the user"):" 8 60 user 2>&1 1>&3`
 		RESULT="`echo "$RESULT"|sed "s/ //g"`"
 		[ "$RESULT" == "" ] && RESULT="user"
 	done
 	NAME=$RESULT
 	if [ "$RESULT" != "user" ] &&  [ "$RESULT" != "" ];then
-		RESULT="This is the description"
-		while [ "$RESULT" == "This is the description" ];
+		RESULT="Description"
+		while [ "$RESULT" == "Description" ];
 		do
 			exec 3>&1
 			RESULT=`dialog --title "  $(gettext "Add a description for the user")  " \
-			--inputbox  "$(gettext "Name or Description of the user:")" 8 60 "This is the description" 2>&1 1>&3`
-			[ "`echo "$RESULT"|sed "s/ //g"`" == "" ] && RESULT="This is the description"
-			[ "$RESULT" == "" ] && RESULT="This is the description"
+			--inputbox  "$(gettext "Name or Description of the user"):" 8 60 "Description" 2>&1 1>&3`
+			[ "`echo "$RESULT"|sed "s/ //g"`" == "" ] && RESULT="Description"
+			[ "$RESULT" == "" ] && RESULT="Description"
 		done
 		DESCRIPTION=$RESULT
 	fi
@@ -176,6 +256,60 @@ setup_user()
 	while [ $ret -ne 0 ]; do
 		setup_user
 	done
+
+	for GROUP in ${DEFAULT_GROUPS[@]};
+	do
+		if ! grep "$GROUP" /etc/group > /dev/null ; then
+			continue
+		fi
+		if [ -z "$USER_GROUPS" ]; then
+			USER_GROUPS="$GROUP"
+		else
+			USER_GROUPS="$USER_GROUPS,$GROUP"
+		fi
+	done
+	unset RESULT
+	[ "$NAME" != "root" ] && RESULT=`/sbin/useradd -c "${DESCRIPTION}" -G "$USER_GROUPS" -m "${NAME}" 2>&1`
+	if [ ! -z "$RESULT" ]; then
+		dialog --msgbox "$RESULT" 6 120
+		exec 3>&1
+		RESULT=`dialog --yesno "$(gettext "Do you want to try again") ?" 5 40 2>&1 1>&3`
+		if [ -z $RESULT ]; then
+			SETUP_CONFIG_USER="yes"
+			rm -d /home
+		fi
+	else
+		$SETUP_LOG "setup-nutyx --create-user" "${DESCRIPTION} -G $USER_GROUPS -m ${NAME}"
+		PASSWORD=""
+		CONFIRM_PASSWORD=""
+
+		RESULT="false"
+		while [ "$RESULT" == "false" ];
+		do
+			exec 3>&1
+			PASSWORD=`dialog --title "  $(gettext "Password") " \
+			--insecure "$@" \
+			--passwordbox "  $(gettext "Enter a new password"):" 8 60  2>&1 1>&3`
+			CONFIRM_PASSWORD=`dialog --title "  $(gettext "Password") " \
+			--insecure "$@" \
+			--passwordbox "$(gettext "Confirm the new password"):" 8 60 2>&1 1>&3`
+
+			if [ "$PASSWORD" == "$CONFIRM_PASSWORD" ]; then
+				RESULT="true"
+			else
+				dialog --msgbox "$(gettext "Passwords are differents, please try again")" 5 60
+			fi
+
+		done
+
+		[ -d /home/${NAME} ] && chown -R ${NAME}:${NAME} /home/${NAME}
+		echo -e "$PASSWORD\n$CONFIRM_PASSWORD"|passwd "$NAME"
+		$SETUP_LOG "setup-nutyx --create-user" "$NAME password changed"
+		if [ "$NAME" != "root" ]; then
+			[ ! -f $SETUP_LXDM_CONFFILE ] && create_lxdm_conf $NAME
+		fi
+		SETUP_CONFIG_USER="no"
+	fi
 }
 setup_net() 
 {
@@ -745,7 +879,7 @@ dialog  \
 "fr_CH-latin1" "QWERTZUIOP" \
 "de_CH-latin1" "QWERTZUIOP" \
 "cf" "AZERTYUIOP" \
-"en" "QWERTYUIOP" \
+"us" "QWERTYUIOP" \
 "de-latin1" "QWERTY" \
 "azerty" "AZERTY" \
 "ANSI-dvorak" "" \
@@ -1219,8 +1353,6 @@ install_nutyx() {
 	etc/profile.d/i18n.sh \
 	etc/sysconfig/network \
 	etc/sysconfig/clock \
-	etc/sysconfig/console \
-	etc/X11/xorg.conf.d/20-keyboard.conf \
 	etc/cards.conf \
 	etc/resolv.conf \
 	etc/localtime \
@@ -1242,14 +1374,14 @@ install_nutyx() {
 	if [ -f ${1}/initrd ]; then
 		cp  ${1}/initrd ${2}/boot/initrd
 	fi
-	for DIR in home proc sys dev srv mnt tmp
+	for DIR in proc sys dev srv mnt tmp
 	do
 		[ ! -d ${2}/$DIR ] &&	mkdir ${2}/$DIR
 	done
 	chmod 1777 ${2}/tmp
 	echo "100") |
 	dialog --title "$(gettext "Install NuTyX")" --gauge "$(gettext "Please wait") ..." 6 50
-	$SETUP_LOG "setup-nutyx" "Install NuTyX on ${2} done"
+	$SETUP_LOG "setup-nutyx" "Install NuTyX on ${PARTITION} done"
 	if [ -f /var/log/install.log ]; then
 		cp -a /var/log/install.log  ${2}/var/log/install.log
 	fi
@@ -1606,7 +1738,6 @@ initrd_only() {
 	else
 		# we are in the initrd
 		SETUP_INITRD="yes"
-		SETUP_CHECKALL="yes"
 		SETUP_START_SERVICE="yes"
 	fi
 }
@@ -1681,6 +1812,8 @@ parse_options() {
 	fi
 }
 check_all () {
+	local RV
+	RV=0
 	if [ "$SETUP_CONFIG_LANGUAGE" = "no" ]; then
 		if [ -r ${LOCALE} ]; then
 			. ${LOCALE}
@@ -1689,23 +1822,23 @@ check_all () {
 		fi
 		[ -r ${LOCALE} ] || SETUP_CONFIG_LANGUAGE="yes"
 	fi
-	[ -r ${CONSOLE} ] || SETUP_CONFIG_KEYBOARD="yes"
-	[ -z ${NETWORK} ] && SETUP_CONFIG_NETWORK="yes"
-	[ -r ${CLOCK} ] || SETUP_CONFIG_CLOCK="yes"
-	[ -d ${USER} ] || SETUP_CONFIG_USER="yes"
-
-}
-service_need () {
-	check_all
-	if [ "$SETUP_CONFIG_LANGUAGE" = "yes" ] ||
-	[ "$SETUP_CONFIG_KEYBOARD" = "yes" ] ||
-	[ "$SETUP_CONFIG_NETWORK" = "yes" ] ||
-	[ "$SETUP_CONFIG_CLOCK" = "yes" ] ||
-	[ "$SETUP_CONFIG_USER" = "yes" ]; then
-		echo "yes"
-	else
-		 echo "no"
+	if [ ! -r ${CONSOLE} ];then
+		SETUP_CONFIG_KEYBOARD="yes"
+		RV=$((RV+1))
 	fi
+	if [ -z ${NETWORK} ];then
+		SETUP_CONFIG_NETWORK="yes"
+		RV=$((RV+2))
+	fi
+	if [ ! -r ${CLOCK} ]; then
+		SETUP_CONFIG_CLOCK="yes"
+		RV=$((RV+4))
+	fi
+	if [ ! -d ${USER} ]; then
+		SETUP_CONFIG_USER="yes"
+		RV=$((RV+8))
+	fi
+	return $RV
 }
 cleanup () {
 	if [ ! -z $TMP ]; then
@@ -1750,18 +1883,19 @@ main () {
 	fi
 
 	if [ "$SETUP_CHECKALL" == "yes" ]; then
-			if [ "`service_need`" == "no" ]; then
-				exit 0
-			else
-				exit 1
-			fi
+		check_all
+		exit $?
 	fi
 	if [ "$SETUP_START_SERVICE" == "yes" ]; then
-		check_all
 		log_info_msg "Checking configuration..."
-		TMP=`mktemp -d`
-		top_loop
-		cleanup
+		check_all
+		if [ $? -ne 0 ]; then
+			/etc/rc.d/init.d/sysklogd start
+			TMP=`mktemp -d`
+			top_loop
+			cleanup
+			/etc/rc.d/init.d/sysklogd stop
+		fi
 		evaluate_retval
 	fi
 	if [ "$SETUP_UPGRADE" == "yes" ]; then
@@ -1801,8 +1935,6 @@ CHECK_HD_OK="no"
 CHECK_PART_OK="no"
 CHECK_SINGLE_PARTITION="no"
 
-SETUP_KDM_CONFFILE="/etc/kde/kdmrc"
-SETUP_GDM_CONFFILE="/etc/gdm/custom.conf"
 SETUP_LXDM_CONFFILE="/etc/lxdm/lxdm.conf"
 
 main "$@"

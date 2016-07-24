@@ -41,12 +41,6 @@ case "${1}" in
       log_info_msg "Starting kernel log daemon..."
       start_daemon /sbin/klogd
       evaluate_retval
-      if [ "`cat /etc/passwd | grep ^root|cut -d ":" -f2`" != "x" ]; then
-         /sbin/pwconv
-         /sbin/grpconv
-	 echo -e "nutyx\nnutyx"|passwd
-	 chage -d 0 root
-      fi
       ;;
 
    stop)
