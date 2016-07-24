@@ -15,15 +15,8 @@ source=("https://dl.google.com/linux/direct/google-chrome-stable_current_${_arch
          "https://www.google.com/chrome/intl/en/eula_text.html")
 
 build() {
-<<<<<<< HEAD
-
-    bsdtar -xf google-chrome-stable_current_${_arch}.deb
-    bsdtar -xf data.tar.xz -C "$PKG/"
-    
-=======
     bsdtar -xf google-chrome-stable_current_${_arch}.deb
     bsdtar -xf data.tar.xz -C "$PKG/" 
->>>>>>> master
     
     for i in 16 22 24 32 48 64 128 256; do
 	install -Dm644 "$PKG"/opt/google/chrome/product_logo_${i}.png \
