@@ -1,6 +1,5 @@
 # Description: Google Chrome Browser, developer preview channel for Linux
-# URL:        http://dev.chromium.org/getting-involved/dev-channel
-# URL Release : http://googlechromereleases.blogspot.fr/search/label/Stable%20updates
+# URL: http://googlechromereleases.blogspot.fr/search/label/Stable%20updates
 # Maintainer:  Chris Farrell, timcowchip at gmail dot com 
 # Depends on: pango xorg-libxcomposite cups atk gtk2 nss gconf libjpeg-turbo freetype cairo libxslt libpng alsa-lib hicolor-icon-theme xdg-utils xorg-libxscrnsaver
 
@@ -16,8 +15,15 @@ source=("https://dl.google.com/linux/direct/google-chrome-stable_current_${_arch
          "https://www.google.com/chrome/intl/en/eula_text.html")
 
 build() {
+<<<<<<< HEAD
+
+    bsdtar -xf google-chrome-stable_current_${_arch}.deb
+    bsdtar -xf data.tar.xz -C "$PKG/"
+    
+=======
     bsdtar -xf google-chrome-stable_current_${_arch}.deb
     bsdtar -xf data.tar.xz -C "$PKG/" 
+>>>>>>> master
     
     for i in 16 22 24 32 48 64 128 256; do
 	install -Dm644 "$PKG"/opt/google/chrome/product_logo_${i}.png \

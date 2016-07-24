@@ -19,9 +19,9 @@ export PYTHON="/usr/bin/python2"
 cd $SRC
 ARCH=`uname -m`
 
-for lang in da de en-US es-ES fi fr it nb-NO nl pt-PT sv-SE
+for lang in da de en-US es-ES fi fr it nb-NO nl pt-PT sv-SE tr
 do 
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$ARCH/xpi/$lang.xpi
+wget  http://download.cdn.mozilla.net/pub/$name/releases/$version/linux-$ARCH/xpi/$lang.xpi
 done
 
 cd $SRC/$name-$version
@@ -44,6 +44,8 @@ ac_add_options --disable-necko-wifi
 # in about:config. If you have GStreamer 1.x.y, comment out this line and
 # uncomment the following one:
 ac_add_options --disable-gstreamer
+
+# or uncomment this line, if you have installed GStreamer 1.x.y
 #ac_add_options --enable-gstreamer=1.0
 
 # Uncomment these lines if you have installed optional dependencies:
