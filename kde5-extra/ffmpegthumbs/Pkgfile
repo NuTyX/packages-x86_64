@@ -4,16 +4,16 @@
 # Depends on : kf5-extra-cmake-modules kf5-kdoctools kf5-kio ffmpeg
 
 name=ffmpegthumbs
-version=16.04.3
+version=16.07.80
 release=1
 
-source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz
+source=(http://download.kde.org/unstable/applications/$version/src/$name-$version.tar.xz
        ffmpegthumbs-ffmpeg3.patch)
 
 build() {
 cd $name-$version
 
-patch -p1 -i ../ffmpegthumbs-ffmpeg3.patch
+#patch -p1 -i ../ffmpegthumbs-ffmpeg3.patch
 
 mkdir build
 cd build
