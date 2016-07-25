@@ -1007,7 +1007,7 @@ echo "KEYMAP=${REPLY}.map" >> ${CONSOLE}
 $SETUP_LOG "setup-nutyx --config-keymap" "KEYMAP=${REPLY}.map saved in ${CONSOLE}"
 loadkeys ${REPLY}.map > /dev/null 2>&1
 case $REPLY in
-	en)
+	us)
 		echo '  Option "XkbLayout" "us"' >> ${XORGKB};;
 	be-latin1|wangbe*)
 		echo '  Option "XkbLayout" "be"' >> ${XORGKB};;
