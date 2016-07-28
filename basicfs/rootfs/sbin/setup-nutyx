@@ -202,12 +202,10 @@ check_user_valid()
 		dialog --msgbox "$(gettext "The name you enter is invalid")" 5 60
 		return 1
 	fi
-	if [ ! "${1}" == "root" ]; then
-		check_user_exist ${1}
-		if [ $? -ne 0 ]; then
-			dialog --msgbox "$(gettext "The name you enter is already register on the system")" 6 60
-			return 2
-		fi
+	check_user_exist ${1}
+	if [ $? -ne 0 ]; then
+		dialog --msgbox "$(gettext "The name you enter is already register on the system")" 6 60
+		return 2
 	fi
 	desc_test=`echo "${2}" | sed 's@^[[:alnum:]! -.,~_@;%<>?]*$@@ig'`
 	if [ "$desc_test" != "" ]; then
@@ -216,11 +214,39 @@ check_user_valid()
 	fi
 	return 0
 }
+setup_password()
+{
+	local PASSWORD CONFIRM_PASSWORD RESULT
+
+	PASSWORD=""
+	CONFIRM_PASSWORD=""
+	RESULT="false"
+
+	while [ "$RESULT" == "false" ];
+	do
+		exec 3>&1
+		PASSWORD=`dialog --title "  $(gettext "Password") " \
+		--insecure "$@" \
+		--passwordbox "  $(gettext "Enter a new password"):" 8 60  2>&1 1>&3`
+		CONFIRM_PASSWORD=`dialog --title "  $(gettext "Password") " \
+		--insecure "$@" \
+		--passwordbox "$(gettext "Confirm the new password"):" 8 60 2>&1 1>&3`
+
+		if [ "$PASSWORD" == "$CONFIRM_PASSWORD" ]; then
+			RESULT="true"
+		else
+			dialog --msgbox "$(gettext "Passwords are differents, please try again")" 5 60
+		fi
+	done
+
+	echo -e "$PASSWORD\n$CONFIRM_PASSWORD"|passwd "$NAME" 2> /dev/null
+	$SETUP_LOG "setup-nutyx --create-user" "$NAME password changed"
+}
 setup_user()
 {
+	
 	/sbin/pwconv
 	/sbin/grpconv
-	local PASSWORD CONFIRM_PASSWORD
 	mkdir -p /home
 	local RESULT
 	USER_GROUPS=""
@@ -239,74 +265,64 @@ setup_user()
 		[ "$RESULT" == "" ] && RESULT="user"
 	done
 	NAME=$RESULT
-	if [ "$RESULT" != "user" ] &&  [ "$RESULT" != "" ];then
-		RESULT="Description"
-		while [ "$RESULT" == "Description" ];
-		do
-			exec 3>&1
-			RESULT=`dialog --title "  $(gettext "Add a description for the user")  " \
-			--inputbox  "$(gettext "Name or Description of the user"):" 8 60 "Description" 2>&1 1>&3`
-			[ "`echo "$RESULT"|sed "s/ //g"`" == "" ] && RESULT="Description"
-			[ "$RESULT" == "" ] && RESULT="Description"
-		done
-		DESCRIPTION=$RESULT
-	fi
-	check_user_valid $NAME $DESCRIPTION
-	ret=$?
-	while [ $ret -ne 0 ]; do
-		setup_user
-	done
-
-	for GROUP in ${DEFAULT_GROUPS[@]};
-	do
-		if ! grep "$GROUP" /etc/group > /dev/null ; then
-			continue
-		fi
-		if [ -z "$USER_GROUPS" ]; then
-			USER_GROUPS="$GROUP"
-		else
-			USER_GROUPS="$USER_GROUPS,$GROUP"
-		fi
-	done
-	unset RESULT
-	[ "$NAME" != "root" ] && RESULT=`/sbin/useradd -c "${DESCRIPTION}" -G "$USER_GROUPS" -m "${NAME}" 2>&1`
-	if [ ! -z "$RESULT" ]; then
-		dialog --msgbox "$RESULT" 6 120
-		exec 3>&1
-		RESULT=`dialog --yesno "$(gettext "Do you want to try again") ?" 5 40 2>&1 1>&3`
-		if [ -z $RESULT ]; then
-			SETUP_CONFIG_USER="yes"
-			rm -d /home
-		fi
+	if [ "$NAME" == "root" ]; then
+		rm -d /home
+		setup_password
 	else
-		$SETUP_LOG "setup-nutyx --create-user" "${DESCRIPTION} -G $USER_GROUPS -m ${NAME}"
-		PASSWORD=""
-		CONFIRM_PASSWORD=""
-
-		RESULT="false"
-		while [ "$RESULT" == "false" ];
+		if [ "$RESULT" != "user" ] &&  [ "$RESULT" != "" ];then
+			RESULT="Description"
+			while [ "$RESULT" == "Description" ];
+			do
+				exec 3>&1
+				RESULT=`dialog --title "  $(gettext "Add a description for the user")  " \
+				--inputbox  "$(gettext "Name or Description of the user"):" 8 60 "Description" 2>&1 1>&3`
+				[ "`echo "$RESULT"|sed "s/ //g"`" == "" ] && RESULT="Description"
+				[ "$RESULT" == "" ] && RESULT="Description"
+			done
+			DESCRIPTION=$RESULT
+		fi
+		check_user_valid $NAME $DESCRIPTION
+		ret=$?
+		while [ $ret -ne 0 ]; do
+			setup_user
+		done
+	
+		for GROUP in ${DEFAULT_GROUPS[@]};
 		do
-			exec 3>&1
-			PASSWORD=`dialog --title "  $(gettext "Password") " \
-			--insecure "$@" \
-			--passwordbox "  $(gettext "Enter a new password"):" 8 60  2>&1 1>&3`
-			CONFIRM_PASSWORD=`dialog --title "  $(gettext "Password") " \
-			--insecure "$@" \
-			--passwordbox "$(gettext "Confirm the new password"):" 8 60 2>&1 1>&3`
-
-			if [ "$PASSWORD" == "$CONFIRM_PASSWORD" ]; then
-				RESULT="true"
-			else
-				dialog --msgbox "$(gettext "Passwords are differents, please try again")" 5 60
+			if ! grep "$GROUP" /etc/group > /dev/null ; then
+				continue
 			fi
-
+			if [ -z "$USER_GROUPS" ]; then
+				USER_GROUPS="$GROUP"
+			else
+				USER_GROUPS="$USER_GROUPS,$GROUP"
+			fi
 		done
 
-		[ -d /home/${NAME} ] && chown -R ${NAME}:${NAME} /home/${NAME}
-		echo -e "$PASSWORD\n$CONFIRM_PASSWORD"|passwd "$NAME"
-		$SETUP_LOG "setup-nutyx --create-user" "$NAME password changed"
-		if [ "$NAME" != "root" ]; then
+		unset RESULT
+
+
+		RESULT=`/sbin/useradd -c "${DESCRIPTION}" -G "$USER_GROUPS" -m "${NAME}" 2>&1`
+		if [ ! -z "$RESULT" ]; then
+			dialog --msgbox "$RESULT" 6 120
+			exec 3>&1
+			dialog --yesno "$(gettext "Do you want to try again") ?" 5 40
+			case $? in
+				0)
+					setup_user;;
+				*)
+					SETUP_CONFIG_USER="yes"
+					rm -d /home;;
+			esac
+		else
+
+			$SETUP_LOG "setup-nutyx --create-user" "${DESCRIPTION} -G $USER_GROUPS -m ${NAME}"
+
+			setup_password
+
+			[ -d /home/${NAME} ] && chown -R ${NAME}:${NAME} /home/${NAME}
 			[ ! -f $SETUP_LXDM_CONFFILE ] && create_lxdm_conf $NAME
+
 		fi
 		SETUP_CONFIG_USER="no"
 	fi
