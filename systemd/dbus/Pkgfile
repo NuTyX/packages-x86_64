@@ -1,0 +1,44 @@
+# Description: Freedesktop.org message bus system
+# URL: http://www.freedesktop.org/wiki/Software/dbus/
+# Packager: fanch at nutyx dot org
+# Depends on: expat systemd
+PKGMK_GROUPS=(doc devel)
+
+name=dbus
+version=1.10.8
+release=1
+
+source=(http://dbus.freedesktop.org/releases/dbus/$name-$version.tar.gz)
+       
+PKGMK_GROUPS=(devel man doc)       
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr \
+                --sysconfdir=/etc \
+                --localstatedir=/var \
+                --with-system-socket=/run/dbus/system_bus_socket \
+                --with-system-pid-file=/run/dbus/pid \
+                --with-dbus-user=dbus \
+                --with-systemdsystemunitdir=/usr/lib/systemd/system \
+ 		--with-console-auth-dir=/run/console \
+                --enable-systemd \
+                --enable-user-session \
+                --enable-inotify \
+                --disable-verbose-mode \
+                --disable-static
+	make
+	make DESTDIR=$PKG install
+mkdir -p $PKG/lib
+mv -v $PKG/usr/lib/libdbus-1.so.* $PKG/lib
+ln -svf ../../lib/libdbus.so.$version $PKG/usr/lib/libdbus-1.so
+mkdir -p $PKG/var/lib	
+ln -sfv /etc/machine-id $PKG/var/lib/dbus
+}
+devel () {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+usr/lib usr/include
+rm -rvf usr/lib usr/include
+}
