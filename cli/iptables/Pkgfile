@@ -4,7 +4,7 @@
 
 name=iptables
 version=1.6.0
-release=1
+release=2
 
 source=( http://www.netfilter.org/projects/iptables/files/$name-$version.tar.bz2)
 build() {
@@ -28,7 +28,7 @@ ln -sfv ../../sbin/xtables-multi $PKG/usr/bin/iptables-xml
 for file in ip4tc ip6tc ipq iptc xtables
 do
    mv -v $PKG/usr/lib/lib${file}.so.* $PKG/lib
-   ln -sfv ../../lib/$(readlink $PKG/usr/lib/lib${file}.so) $PKG/usr/lib/${file}.so
+   ln -sfv ../../lib/$(readlink $PKG/usr/lib/lib${file}.so) $PKG/usr/lib/lib${file}.so
 done
 cd ../$scripts-$scriptsversion
 make DESTDIR=$PKG install-$name
