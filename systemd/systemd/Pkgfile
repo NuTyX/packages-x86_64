@@ -1,0 +1,52 @@
+# Depends on: dbus polkit ca-certificates elfutils gnutls iptables libgcrypt libidn libxkbcommon python3 valgrind
+
+description="system and service manager"
+url="http://www.freedesktop.org/wiki/Software/systemd"
+
+packager="tnut at nutyx dot org"
+
+name=systemd
+version=230
+release=1
+
+PKGMK_GROUPS=(devel doc man lib)
+PKGMK_KEEP_SOURCES="no"
+source=( http://anduin.linuxfromscratch.org/sources/other/systemd/systemd-230.tar.xz)
+
+build() {
+
+cd $name-$version
+
+
+sed -e 's@DRI and frame buffer@DRI@' \
+    -e '/SUBSYSTEM==\"graphics\", KERNEL==\"fb\*\"/d' \
+    -i  src/login/70-uaccess.rules
+
+
+sed -e 's:test/udev-test.pl ::g'  \
+    -e 's:test-copy$(EXEEXT) ::g' \
+    -i Makefile.in
+
+
+cc_cv_CFLAGS__flto=no \
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--with-rootprefix=  \
+--with-rootlibdir=/lib \
+--enable-split-usr  \
+--disable-firstboot \
+--disable-ldconfig \
+--disable-sysusers \
+--with-default-dnssec=no \
+--without-python \
+--docdir=/usr/share/doc/systemd-$version
+make
+
+make DESTDIR=$PKG install
+
+mkdir $PKG/lib
+
+mv -v $PKG/usr/lib/libnss_{myhostname,mymachines,resolve}.so.2 \
+$PKG/lib
+}
