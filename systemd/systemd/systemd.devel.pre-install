@@ -1,0 +1,6 @@
+for package in eudev.devel
+do
+	if [ "`cards info $package|grep Name| cut -d ":" -f2|sed "s/ //g"`" == "$package" ]; then
+		cards remove $package
+	fi
+done

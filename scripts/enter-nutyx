@@ -8,6 +8,7 @@
 # - cli-extra
 # - gui
 # - gui-extra
+# -systemd
 # - gnome
 # - xfce4
 # - lxde
@@ -233,20 +234,6 @@ base /DEPOT/cli
 base /DEPOT/gui
 logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 	fi
-	if [ "$CHROOT" == "cinnamon" ]; then
-		echo "dir /DEPOT/cinnamon-extra
-dir /DEPOT/cinnamon
-dir /DEPOT/gnome-extra
-dir /DEPOT/gnome
-dir /DEPOT/gui
-dir /DEPOT/cli
-dir /DEPOT/base
-dir /DEPOT/base-extra
-base /DEPOT/base
-base /DEPOT/cli
-base /DEPOT/gui
-logdir /LOGS" > $DIR/etc/cards.conf || exit 1
-	fi
 	if [ "$CHROOT" == "lxde" ]; then
 		echo "dir /DEPOT/lxde-extra
 dir /DEPOT/lxde
@@ -332,6 +319,18 @@ base /DEPOT/base
 base /DEPOT/base-extra
 logdir /LOGS" > $DIR/etc/cards.conf || exit 1
 	fi
+	if [ "$CHROOT" == "systemd" ]; then
+		COLLECTION="core"
+		echo "dir /DEPOT/systemd
+dir /DEPOT/gui
+dir /DEPOT/cli
+dir /DEPOT/base
+dir /DEPOT/base-extra
+base /DEPOT/base
+base /DEPOT/cli
+base /DEPOT/gui
+logdir /LOGS" > $DIR/etc/cards.conf || exit 1
+	fi
 	if [ "$CHROOT" == "base-extra" ]; then
 		COLLECTION="extra"
 		echo "dir /DEPOT/base-extra
@@ -380,7 +379,7 @@ COLLECTION="$CHROOT"
 
 mkdir -p $1/etc || exit 1
 
-if [ "$CHROOT" == "base" ] || [ "$CHROOT" == "cli"  ] || [ "$CHROOT" == "gui"  ]; then
+if [ "$CHROOT" == "base" ] || [ "$CHROOT" == "cli"  ] || [ "$CHROOT" == "gui"  ] || [ "$CHROOT" == "systemd"  ]; then
 	setup_collection
 	DEVEL="cards.devel && cd /root/$COLLECTION && bash scripts/$CHROOT"
 fi

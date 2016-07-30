@@ -6,17 +6,19 @@ url="http://www.freedesktop.org/wiki/Software/systemd"
 packager="tnut at nutyx dot org"
 
 name=systemd
-version=230
+version=231
 release=1
 
 PKGMK_GROUPS=(devel doc man lib)
 PKGMK_KEEP_SOURCES="no"
-source=( http://anduin.linuxfromscratch.org/sources/other/systemd/systemd-230.tar.xz)
+source=(https://github.com/systemd/systemd/archive/v${version}.tar.gz)
+# source=( http://anduin.linuxfromscratch.org/sources/other/systemd/systemd-230.tar.xz)
 
 build() {
 
 cd $name-$version
 
+./autogen.sh
 
 sed -e 's@DRI and frame buffer@DRI@' \
     -e '/SUBSYSTEM==\"graphics\", KERNEL==\"fb\*\"/d' \
@@ -45,7 +47,6 @@ make
 
 make DESTDIR=$PKG install
 
-mkdir $PKG/lib
 
 mv -v $PKG/usr/lib/libnss_{myhostname,mymachines,resolve}.so.2 \
 $PKG/lib
