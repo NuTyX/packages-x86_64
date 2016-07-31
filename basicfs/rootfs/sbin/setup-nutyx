@@ -87,7 +87,7 @@ autologin=${1}
 # timeout=10
 
 ## default session or desktop used when no systemwide config
-session=/usr/bin/startxfce4
+# session=/usr/bin/startxfce4
 
 ## uncomment and set to set numlock on your keyboard
 # numlock=0
@@ -175,6 +175,14 @@ network_card_found() {
 		NETWORK_CARD=`cat $TMP/result|sed 's/"//g'`
 		$SETUP_LOG "setup-nutyx --config-net" "Network card found: $NETWORK_CARD"
 	fi
+}
+check_group_exist()
+{
+	for i in `cat /etc/group|cut -d ":" -f1`
+	do
+		[ "${1}" == "${i}" ] && return 1
+	done
+	return 0
 }
 check_user_exist()
 {
@@ -289,7 +297,8 @@ setup_user()
 	
 		for GROUP in ${DEFAULT_GROUPS[@]};
 		do
-			if ! grep "$GROUP" /etc/group > /dev/null ; then
+			check_group_exist $GROUP
+			if [ $? -eq 0 ]; then
 				continue
 			fi
 			if [ -z "$USER_GROUPS" ]; then
