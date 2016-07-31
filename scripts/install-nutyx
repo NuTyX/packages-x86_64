@@ -1524,6 +1524,13 @@ setup_chroot
 chroot ${FOLDER} /bin/bash -c "$SETUP_FILE"
 unmountall
 }
+generate_blfs_systemd_units() {
+[ -f ${FOLDER}/etc/${FOLDER}/etc/blfs-systemd-units ] && return
+[ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+
+echo "units=blfs-systemd-units
+unitsversion=20160415" > ${FOLDER}/etc/blfs-systemd-units
+}
 install_configuration_files() {
 	generate_cards_conf
 	generate_pkgmk_conf
@@ -1550,6 +1557,7 @@ install_configuration_files() {
 	generate_rc_site
 	generate_etc_bashrc
 	generate_blfs_bootscripts
+        generate_blfs_systemd_units
 	generate_nutyx_version
 }
 print_help() {
