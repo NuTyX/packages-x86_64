@@ -1,4 +1,4 @@
-# Depends on: dbus polkit ca-certificates elfutils gnutls iptables libgcrypt libidn libxkbcommon python3 valgrind
+# Depends on: intltool perl-xml-parser dbus polkit ca-certificates elfutils gnutls iptables libgcrypt libidn libxkbcommon python3 valgrind
 
 description="system and service manager"
 url="http://www.freedesktop.org/wiki/Software/systemd"
@@ -7,12 +7,11 @@ packager="tnut at nutyx dot org"
 
 name=systemd
 version=231
-release=1
+release=2
 
 PKGMK_GROUPS=(devel doc man lib)
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/systemd/systemd/archive/v${version}.tar.gz)
-# source=( http://anduin.linuxfromscratch.org/sources/other/systemd/systemd-230.tar.xz)
 
 build() {
 
@@ -50,4 +49,12 @@ make DESTDIR=$PKG install
 
 mv -v $PKG/usr/lib/libnss_{myhostname,mymachines,resolve}.so.2 \
 $PKG/lib
+
+mkdir $PKG/sbin
+
+for tool in runlevel reboot shutdown poweroff halt telinit; do
+     ln -sfv ../bin/systemctl $PKG/sbin/${tool}
+done
+ln -sfv ../lib/systemd/systemd $PKG/sbin/init
+
 }
