@@ -5,7 +5,7 @@
 
 PKGMK_GROUPS=()
 name=sddm
-release=1
+release=2
 version=0.13.0
 
 source=( https://github.com/sddm/sddm/releases/download/v$version/${name}-$version.tar.xz)
@@ -73,4 +73,21 @@ session  required       pam_unix.so
 
 # End /etc/pam.d/sddm-greeter
 EOF
+
+# systemd unit
+install -d -m 755 $PKG/etc/default
+install -d -m 755 $PKG/usr/lib/tmpfiles.d
+install -d -m 755 $PKG/lib/systemd/system
+cat > $PKG/lib/systemd/system/sddm.service << "EOF"
+[Unit]
+Description=SDDM Display Manager
+After=systemd-user-sessions.service
+
+[Service]
+ExecStart=/usr/bin/sddm
+
+[Install]
+Alias=display-manager.service
+EOF
+chmod 644 $PKG/lib/systemd/system/sddm.service
 }
