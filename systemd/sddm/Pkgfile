@@ -6,24 +6,24 @@ PKGMK_GROUPS=()
 run=(consolekit2)
 name=sddm
 release=1
-version=0.12.0
+version=0.13.0
 
 source=( https://github.com/sddm/sddm/releases/download/v$version/${name}-$version.tar.xz)
 
 build() {
-source /etc/blfs-bootscripts
-wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-tar xvf $scripts-$scriptsversion.tar.bz2
+  source /etc/blfs-systemd-units
+  wget  http://www.linuxfromscratch.org/blfs/downloads/svn/$units-$unitsversion.tar.bz2
+  tar xvf $units-$unitsversion.tar.bz2
 
-cd ${name}-$version
-mkdir build
-cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr \
+  cd ${name}-$version
+  mkdir build
+  cd    build
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_BUILD_TYPE=Release  \
       -DENABLE_JOURNALD=OFF       \
       -Wno-dev ..
-make
-make DESTDIR=$PKG install
+  make
+  make DESTDIR=$PKG install
 
 cat > $PKG/etc/pam.d/sddm << "EOF"
 # Begin /etc/pam.d/sddm
@@ -76,6 +76,6 @@ session  required       pam_unix.so
 # End /etc/pam.d/sddm-greeter
 EOF
 # service
-cd $SRC/$scripts-$scriptsversion
-make DESTDIR=$PKG install-sddm
+  cd $SRC/$units-$unitsversion
+  make DESTDIR=$PKG install-sddm
 }
