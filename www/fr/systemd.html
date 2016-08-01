@@ -134,7 +134,8 @@ ax86_64
 cbase" &gt; /var/lib/pkg/DB/eudev/META</kbd></pre>
    <h2>Chargement des modules statiques (virtualbox par exemple)</h2>
     <p>Le dossier a changé:</p>
-     <pre class="command"><kbd>ln -sv /etc/sysconfig/modules.d /etc/modules-load.d</kbd></pre>
+     <pre class="command"><kbd>mkdir -pv /etc/sysconfig/modules.d
+ln -svf /etc/sysconfig/modules.d /etc/modules-load.d</kbd></pre>
    <h2>Les services systemV sont pour la plupart compatibles</h2>
      <p>Faites un reboot pour que systemd créée une unité compatible.</p>
    <h1>Pour revenir sur systemV</h1>
@@ -149,7 +150,7 @@ get sysvinit</kbd></pre>
      <pre class="command"><kbd>flushmem</kbd></pre>
     <h2>Redémarrer la machine en poussant le reset, reboot ne fonctionnera pas</h2>
   <hr>  
-   <p class="updated">Dernière mise à jour 01-08-2016 14:53</p>
+   <p class="updated">Dernière mise à jour 01-08-2016 16:57</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
