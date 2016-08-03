@@ -5,8 +5,10 @@
 
 run=(pango xorg-libxcomposite cups atk gtk2 nss gconf libjpeg-turbo freetype cairo libxslt libpng alsa-lib hicolor-icon-theme xdg-utils xorg-libxscrnsaver)
 name=google-chrome
-version=51.0.2704.79
+version=52.0.2743.85
 release=1
+
+PKGMK_KEEP_SOURCES="no"
 
 [ "`uname -m`" == "i686" ] && _arch="i386"
 [ "`uname -m`" == "x86_64" ] && _arch="amd64"
