@@ -33,14 +33,14 @@
   <h1>Scénario E</h1>
    <a name='11'></a>
    <h2>Introduction</h2>
-    <p>Ce scénario est un peu l'aboutissement de mon travail. Ici on propose un mélange de différents scénarios. On installe une NuTyX dans un dossier dédié dans laquelle on produit nos paquets personnels. Cela signifie que l'on doit parler de DEUX NuTyX</p>
-    <p>Ce scénario est donc la combinaison de DEUX scénario, dont un sera ... le scénario A ( <img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" /> maintenant vous savez pourquoi j'ai tenu à en parler ). Le deuxième scénario qui est celui de votre environnement isolé celui que vous préféré entre les 3 autres (B, C et D). A partir de maintenant on ne parle plus d'environnement isolée mais de la <b>chroot</b>.</p>
+    <p>Ce scénario est un peu l'aboutissement de mon travail. Ici on propose un mélange de différents scénarios. On installe une NuTyX dans un dossier dédié dans lequel on produit nos paquets personnels. Cela signifie que l'on doit parler de DEUX NuTyX</p>
+    <p>Ce scénario est donc la combinaison de DEUX scénarios, dont un sera ... le scénario A ( <img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" /> maintenant vous savez pourquoi j'ai tenu à en parler ). Le deuxième scénario qui est celui de votre environnement isolé celui que vous préféréz entre les 3 autres (B, C et D). A partir de maintenant on ne parle plus d'environnement isolé mais de la <b>chroot</b>.</p>
     <p>Quelques avantages par rapports aux précédents:</p>
     <ol>
-     <li>Comme vous n'installerez jamais de paquets de developpement sur votre NuTyX principale, celle ci gardera une taille raisonnable.</li>
+     <li>Comme vous n'installerez jamais de paquets de developpement sur votre NuTyX principale, celle-ci gardera une taille raisonnable.</li>
      <li>Bien que vous devez prévoir quelques Giga pour votre <b>chroot</b>, sachez que si vous devez la supprimer, un simple:
-     <pre class="command"><kbd>rm -r /&lt;chemin-de-votre-chroot&gt;</kbd></pre> et vous retrouvez votre NuTyX principale.</li>
-     <li>Tous vos paquets seront donc compilé dans la  <b>chroot</b>, ce qui épargne toute fausse manoeuvre sur votre NuTyX principale.</li>
+     <pre class="command"><kbd>rm -r /&lt;chemin-de-votre-chroot&gt;</kbd></pre> et vous retrouverez votre NuTyX principale.</li>
+     <li>Tous vos paquets seront donc compilés dans la  <b>chroot</b>, ce qui épargne toute fausse manoeuvre sur votre NuTyX principale.</li>
      <li>Votre <b>chroot</b> peut être un système de base, c'est même vivement recommandé alors que sur votre principale, vous utilisez très probablement une interface graphique.</li>
     </ol>
    <p>Ma machine est une 64 bits à 4 coeurs</p>
@@ -58,7 +58,7 @@ dir /var/lib/pkg/depotrepo/base-extra|http://downloads.nutyx.org
 locale fr
 base /var/lib/pkg/depotrepo/base
 base /var/lib/pkg/depotrepo/base-extra</pre>
-        <p>Vous noterez que j'ai volontairement ajouter la ligne:</p>
+        <p>Vous noterez que j'ai volontairement ajouté la ligne:</p>
         <pre class="output">dir /chroot/usr/ports/personnel</pre>
         <p>En effet, on veut pouvoir installer les paquets de la <b>chroot</b> dans la principale</p>
         <p>Je choisis le scenario <b>C</b> pour ma <b>chroot</b></p>
@@ -107,14 +107,14 @@ PKGMK_COMPRESSION_MODE="gz"
 PKGMK_CLEAN="no"</pre>
   <a name='2'></a>  
   <h2>Construction dans un environnement isolé aussi appelé "chroot"</h2>
-   <p>Cette methode n'est pas indispensable mais fortement recommandée.</p>
-   <p>Elle permet en effet d'éviter de "casser" la NuTyX qu'on utilise tous les jours. Dans un environnement isolé, vous vous assurez de préserver votre NuTyX principale contre toute fausse manoeuvre.</p>
+   <p>Cette méthode n'est pas indispensable mais fortement recommandée.</p>
+   <p>Elle permet en effet d'éviter de "casser" la NuTyX qu'on utilise tous les jours. Dans un environnement isolé, vous vous assurerez de préserver votre NuTyX principale contre toute fausse manoeuvre.</p>
    <p>On appellera désormais notre environnement isolé: <b> chroot</b>.<p>
-   <p>On va commencer par récupérer les bon scripts:</p>
+   <p>On va commencer par récupérer les bons scripts:</p>
    <pre class="command"><kbd>wget http://downloads.nutyx.org/install-nutyx{,.md5sum}
 md5sum -c install-nutyx.md5sum</kbd></pre>
    <pre class="output">install-nutyx: Réussi</pre>
-   <p>Nous allons définir une fois pour toute la variable LFS, elle définiera le dossier dans lequel sera installée <b>la chroot</b>:</p>
+   <p>Nous allons définir une fois pour toute la variable LFS, elle définira le dossier dans lequel sera installé <b>la chroot</b>:</p>
    <p>Comme je suis un grand original, je vous propose de choisir le dossier ...<b>/chroot</b> comme dossier de destination, la commande est donc:</p>
    <pre class="command"><kbd>export LFS=/chroot</kbd></pre>
    <p>On peut maintenant lancer l'installation sans grosse crainte</p>
@@ -149,10 +149,10 @@ ADD: ca-certificates-20141001, 323 files: 100 %                          [  OK  
    <div class="important"><img src="../graphics/caution.gif" width="10" height="10" alt="!!!" />Désormais pour entrer dans votre chroot, utilisez UNIQUEMENT la commande en root:</div>
    <pre class="command"><kbd>bash install-nutyx -ec</kbd></pre>
    <p>Le gros avantage de travailler dans une chroot est que si vous faîtes une manipulation douteuse et comme vous êtes en root, ce ne sera jamais très grave.</p>
-   <div class="important"><img src="../graphics/caution.gif" width="10" height="10" alt="!!!" /> En revanche si vous n'êtes pas dans la chroot, et que vous tapez certaines commandes mentionnée dans cet article, je ne peux pas vous garantir le résultat et donc le fonctionnement de votre NuTyX.</div>
+   <div class="important"><img src="../graphics/caution.gif" width="10" height="10" alt="!!!" /> En revanche si vous n'êtes pas dans la chroot, et que vous tapez certaines commandes mentionnées dans cet article, je ne peux pas vous garantir le résultat et donc le fonctionnement de votre NuTyX.</div>
    <p><img src="../graphics/yippee.gif" alt="yippee" />Tout est en place, on peut maintenant construire un paquet avec quelques dépendances.</p>
    <p><img src="../graphics/clap.gif" alt="clap" />Ca c'est vraiment cool non <img src="../graphics/clap.gif" alt="clap" /></p>
-   <p>Votre premier paquet est compilé et installé. Le gestionnaire de paquet (de votre chroot) l'a intégré dans sa base de données. Petite remarque, si vous avez suivi ce tuto, vous avez sans doute remarquez que toutes les commandes ont été effectuées depuis la racine de votre chroot ... <img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" />.</p>
+   <p>Votre premier paquet est compilé et installé. Le gestionnaire de paquets (de votre chroot) l'a intégré dans sa base de données. Petite remarque, si vous avez suivi ce tuto, vous avez sans doute remarqué que toutes les commandes ont été effectuées depuis la racine de votre chroot ... <img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" />.</p>
    <p>Tapez maintenant la commande suivante:</p>
    <pre class="command"><kbd>cards info clipit</kbd></pre>
    <pre class="output">Retrieve info about the 123 packages: 100 %
@@ -194,7 +194,7 @@ ADD: clipit-1.4.2, 71 files: 100 %</pre>
 
   <a name='3'></a>      
   <h2>Conclusion</h2>
-      <p>Dans ce scénario, (une petite piqure de rappel ne fait jamais de tord), sur la principale, ce seront les commandes:</p>
+      <p>Dans ce scénario, (une petite piqure de rappel ne fait jamais de tort), sur la principale, ce seront les commandes:</p>
       <pre class="command"><kbd>cards install
 cards install -u
 cards remove</kbd></pre>
