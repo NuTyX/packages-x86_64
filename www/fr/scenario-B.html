@@ -33,14 +33,14 @@
     <h1>Scénario B</h1>
      <a name='111'></a>
      <h2>Introduction</h2>
-      <p>Vous êtes satisfait de votre NuTyX, il y a juste un ou deux paquets qui vous manquent, vous décidez donc de les compilez vous-même.</p>
+      <p>Vous êtes satisfait de votre NuTyX, il y a juste un ou deux paquets qui vous manquent, vous décidez donc de les compiler vous-même.</p>
       <p>Armez-vous de courage et de patience <img src="../graphics/smiley-tongue-out.gif" alt="Tongue out" title="Tongue out" /><img src="../graphics/smiley-laughing.gif" alt="Laughing" title="Laughing" />.</p>
-      <div class="important"><img alt="[Important]" src="../graphics/caution.gif" />Dans ce scénario, évitez à tout prix de compiler des recettes réclamant des dépendances. Si tel est le cas, vous serez confrontez aux nombreuses erreurs liées aux dépendances devel non installées par défaut. Dans un tel cas, préférez le scenario <b>C</b>. Vous voilà averti</div>
+      <div class="important"><img alt="[Important]" src="../graphics/caution.gif" />Dans ce scénario, évitez à tout prix de compiler des recettes réclamant des dépendances. Si tel est le cas, vous serez confronté aux nombreuses erreurs liées aux dépendances devel non installées par défaut. Dans un tel cas, préférez le scenario <b>C</b>. Vous voilà averti</div>
      <a name='112'></a>
      <h2>Le fichier /etc/cards.conf</h2>
-      <p>Un dossier contenant mes recettes personnelles est ajouté, ce dossier ne <u>doit jamais</u> être mis à jour par la commande <b>cards sync</b>, donc on ne doit pas spécifier d'adresse URL associées.</p>
+      <p>Un dossier contenant mes recettes personnelles est ajouté, ce dossier ne <u>doit jamais</u> être mis à jour par la commande <b>cards sync</b>, donc on ne doit pas spécifier d'adresse URL associée.</p>
       <p>Les collections binaires sont activées, cela me permettra d'ajouter facilement les éventuelles dépendances manquantes...</p>
-      <p>La(les) langue(s) utilisée(s) sur la machine est ajustée(s)</p>
+      <p>La(les) langue(s) utilisée(s) sur la machine est(sont) ajustée(s)</p>
       <p>Le dossier définissant le système de base, en cas de retour à un système de base est défini</p>
       <p>Le contenu typique de votre fichier <b>/etc/cards.conf</b> pour le scénario <b>B</b>:</p>
       <pre class="output">
@@ -54,7 +54,7 @@ base /var/lib/pkg/depotrepo/base
 base /var/lib/pkg/depotrepo/base-extra</pre>
      <a name='113'></a>
      <h2>Installation des outils de développement</h2>
-      <p>On peut maintenant commencer par installer les paquets de développement, cad un compilateur, les librairies C et C++ les outils autoconf, automake, etc etc.. Commençons par créer le dossier <b>/usr/ports/personnel</b>.</p>
+      <p>On peut maintenant commencer à installer les paquets de développement, cad un compilateur, les librairies C et C++ les outils autoconf, automake, etc etc.. Commençons par créer le dossier <b>/usr/ports/personnel</b>.</p>
       <pre class="command_user"><kbd>sudo mkdir -p /usr/ports/personnel</kbd></pre>
       <p>Et maintenant on installe les outils:</p>
       <pre class="command_user"><kbd>sudo cards sync</kbd></pre>
@@ -74,16 +74,16 @@ base /var/lib/pkg/depotrepo/base-extra</pre>
       <p>Avant de construire son premier paquet, il est bon de vérifier quelques variables définies dans le fichier de configuration <b>/etc/pkgmk.conf</b>:</p>
       <p>Mon processeur est un 8 coeurs, donc autant en profiter:</p>
       <pre class="output">export MAKEFLAGS="-j8"</pre>
-      <p>Les sources sont sauvegardées dans le dossier contenant la recette ou dans un autre dossier. Personnellement, je préfère les mettre ensemble dans un dossier séparé commun. Et pourquoi pas un dossier qui sera nettoyé au prochain boot, je choisi le dossier <b>/tmp</b>. Je souhaite que les sources soient effacées une fois le paquet compilé et installé avec succès. Et enfin, je préfère que le dossier de travail soit également sous le dossier <b>/tmp/work</b> en lieu du dossier défini par défaut:</p>
+      <p>Les sources sont sauvegardées dans le dossier contenant la recette ou dans un autre dossier. Personnellement, je préfère les mettre ensemble dans un dossier séparé commun. Et pourquoi pas un dossier qui sera nettoyé au prochain boot, je choisis le dossier <b>/tmp</b>. Je souhaite que les sources soient effacées une fois le paquet compilé et installé avec succès. Et enfin, je préfère que le dossier de travail soit également sous le dossier <b>/tmp/work</b> au lieu du dossier défini par défaut:</p>
       <pre class="output">PKGMK_SOURCE_DIR="/tmp"
 PKGMK_KEEP_SOURCES="no"
 PKGMK_WORK_DIR="/tmp/work"</pre>
-      <p>Je n'ai pas envie de spécifier à chaque fois la demande de téléchargement des sources si pas disponible. Une variable permet de le faire automatiquement:</p>
+      <p>Je n'ai pas envie de spécifier à chaque fois la demande de téléchargement des sources indisponibles. Une variable permet de le faire automatiquement:</p>
       <pre class="output">PKGMK_DOWNLOAD="yes"</pre>
       <p>Dans ce scénario, je ne souhaite pas gérer les dépendances de façon automatique lors de la compilation et donc je n'ai pas besoin du fichier <b>.PKGREPO</b>... Je n'utilise que la commande <b>pkgmk</b>:</p>
       <pre class="output">PKGMK_IGNORE_REPO="yes"
 PKGMK_IGNORE_COLLECTION="yes"</pre>
-      <p>Je ne souhaite pas que <b>pkgmk</b> split le binaire en paquet et sous paquets (devel, doc, man, etc). Je me contente du paquet de base puisque je le compile moi-même. Pour les locales, si elles existent, je me contenterai des locale françaises et allemandes <b>fr</b> et <b>de</b>:
+      <p>Je ne souhaite pas que <b>pkgmk</b> scinde le binaire en paquet et sous paquets (devel, doc, man, etc). Je me contente du paquet de base puisque je le compile moi-même. Si les locales existent, je me contenterai des locales françaises et allemandes <b>fr</b> et <b>de</b>:
       <pre class="output">PKGMK_GROUPS=()
 PKGMK_LOCALES=(fr de)</pre>
       <p>Pour gagner du temps, je ne souhaite pas que <b>pkgmk</b> compresse mon paquet une fois construit et pour gagner de la place, je ne souhaite pas le conserver une fois installé:</p>
@@ -119,15 +119,15 @@ PKGMK_CLEAN="yes"</pre>
       <p>Voilà pour ce qui est de la configuration du fichier <b>/etc/pkgmk.conf</b>
       <a name='2'></a>
       <h2>Compiler un paquet sans dépendances</h2>
-        <div class="important"><img src="../graphics/caution.gif" width="10" height="10" alt="!!!" /> A partir de cet instant toutes les commandes que vous allez effectuer DOIVENT se faire via le compte root (administrateur). Soyez très attentif lorsque vous tapez les commandes.</div>
+        <div class="important"><img src="../graphics/caution.gif" width="10" height="10" alt="!!!" /> A partir de cet instant, toutes les commandes que vous allez effectuer DOIVENT se faire par le compte root (administrateur). Soyez très attentif lorsque vous tapez les commandes.</div>
         <p>Commençons donc par basculer en <b><span style="color: #ff0000;">compte root</span></b></p>
         <pre class="command_user"><kbd>su -</kbd></pre>
         <pre class="output">Password:</pre>
         <p>J'espère que vous vous rappelez du mot de passe <img src="../graphics/smiley-cool.gif" alt="Cool" title="Cool" />. Notez bien <b>le tiret</b>, il est indispensable pour que vous exécutiez les fichiers de configuration du compte root.</p>
         <p>Nous voilà donc en root, (la couleur du prompt est passée en rouge)</p>
         <p>Si vous lisez ceci, assurez-vous d'avoir effectué toutes les manipulations pour le scénario concerné, <a href="#22">dans notre exemple il s'agit du scénario <b>B</b></a>.</p>
-        <p>Je vous propose de construire le petit editeur de texte JOE. Vous me direz, il existe déjà, peu importe, l'idée ici est de se faire la main sur un paquet simple.</p>
-        <p>Pour qu'une recette se compile et s'installe correctement il est important de donner au nom du dossier de la recette, le même nom que celui défini par la variable name. Dans notre cas, le nom est: <b>joe</b></p>
+        <p>Je vous propose de construire le petit éditeur de texte JOE. Vous me direz, il existe déjà, peu importe, l'idée ici est de se faire la main sur un paquet simple.</p>
+        <p>Pour qu'une recette se compile et s'installe correctement, il est important de nommer le dossier par le nom de la recette, le même nom que celui défini par la variable name. Dans notre cas, le nom est: <b>joe</b></p>
         <a name='21'></a>
       <h3>Création du dossier</h3>
         <pre class="command"><kbd>mkdir -p /usr/ports/personnel/joe</kbd></pre>
@@ -153,7 +153,7 @@ build() {
 EOF</kbd></pre>
        <a name='23'></a>
       <h3>Compilation de la recette</h3>
-        <p>Ca y est tout est en place pour la compilation de notre nouveau paquet... Oui je l'ai déjà dis celle-là <img src="../graphics/yippee.gif" alt="yippee"/></p>
+        <p>Ca y est tout est en place pour la compilation de notre nouveau paquet... Oui je l'ai déjà dite celle-là <img src="../graphics/yippee.gif" alt="yippee"/></p>
         <pre class="command"><kbd>cd /usr/ports/personnel/joe
 pkgmk -d</kbd></pre>
 
