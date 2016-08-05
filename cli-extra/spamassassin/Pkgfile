@@ -1,12 +1,12 @@
 # Description: A mail filter to identify spam
 # URL: http://search.cpan.org/
 # Packager: pierre at nutyx dot org
-# Depends on: perl openssl zlib re2c perl-net-dns perl-io-socket-ssl perl-libwww perl-mail-spf perl-http-message perl-net-http perl-io-socket-inet6 perl-mail-dkim perl-crypt-ssleay razor perl-dbi 
-run=( re2c perl-net-dns perl-io-socket-ssl perl-libwww perl-mail-spf perl-http-message perl-net-http perl-io-socket-inet6 perl-mail-dkim perl-crypt-ssleay razor perl-dbi )
+# Depends on: perl openssl zlib re2c perl-net-dns perl-io-socket-ssl perl-libwww perl-mail-spf perl-http-message perl-net-http perl-io-socket-inet6 perl-mail-dkim perl-crypt-ssleay razor perl-dbi perl-netaddr-ip perl-html-parser 
+run=( re2c perl-net-dns perl-io-socket-ssl perl-libwww perl-mail-spf perl-http-message perl-net-http perl-io-socket-inet6 perl-mail-dkim perl-crypt-ssleay razor perl-dbi perl-netaddr-ip perl-html-parser)
 
 name=spamassassin
 version=3.4.1
-release=1
+release=2
 
 source=("http://www.us.apache.org/dist/spamassassin/source/Mail-SpamAssassin-$version.tar.gz"{,.asc}
         spamassassin.service 
