@@ -86,7 +86,7 @@ First we get this git and the core git localy (step1) as normal user. As we want
 
 #### 6. Enter now in your chroot
 
-    # bash /home/tnut/houaphan/scripts/install-nutyx -ec
+    # bash /home/tnut/core/scripts/install-nutyx -ec
 
 #### 7. Prepare the first execution of the build script
 
