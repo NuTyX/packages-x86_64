@@ -22,7 +22,7 @@ It will explain you what's a collection, a git, a port, the tools around 'cards'
     $ su -
     # echo "LFS=/mnt/lfs
     DEPOT=/DEPOT
-    VERSION=current" > /etc/install-nutyx.conf
+    VERSION=development" > /etc/install-nutyx.conf
     # mkdir -p /etc/install-nutyx.conf.d
     # cat > /etc/install-nutyx.conf.d/cards.conf << "EOF"
     dir /DEPOT/mate
