@@ -43,7 +43,10 @@
      <li>Sa capacité d'être installée depuis quasi n'importe quelle autre distribution grâce à l'utilisation d'un <a href="dictionary.html#ID050">script</a> qui peut être téléchargé, vérifié et lancé depuis la distribution hôte.
      </li>
      <li>La hiérarchie des <a href="dictionary.html#ID010">collections</a> de <a href="dictionary.html#ID070">ports</a> permet une flexibilitée maximale dans la gestion de ceux-ci. Chaque <a href="dictionary.html#ID010">collection</a> est constituée d'une dite indispensable et d'une extra.<br/>
-Pour comprendre la puissance du concept, imaginez que vous ayez tout installé: la base, kde5, libreoffice, firefox, etc etc. Vous souhaitez utiliser gnome sans toucher au reste de votre installation, il vous suffit de passer en init3 et de lancer: <br/>   del kde5 kde5-extra && get gnome gnome-extra && init 5.<br/> et vous êtes sur gnome, toutes vos autres applications sont là et fonctionnelles et vous n'avez même pas rebooté.
+      Les quelques commandes ci-dessous donne une petite idée de la flexibilitée des <a href="dictionary.html#ID010">collections</a>. Imaginez que vous ayez installé un bureau kde5 avec les applications classiques: libreoffice, firefox, etc etc. Vous souhaitez remplacer l'environnement graphique <b>kde5</b> par l'environnement graphique <b>gnome</b> sans devoir tout réinstaller et sans perdre vos applications classiques:
+     <pre class="command"><kbd>init 3</kbd></pre>
+      Vous vous loguez en console non graphique avec votre compte ou celui de root et tapez:
+     <pre class="command"><kbd>del kde5 kde5-extra &amp;&amp; get gnome gnome-extra &amp;&amp; init 5</kbd></pre> et vous êtes sur gnome, toutes vos autres applications sont là et fonctionnelles et vous n'avez même pas rebooté.
      </li>
      <li>La syntaxe d'une <a href="dictionary.html#ID060">recette</a> d'un <a href="dictionary.html#ID005">paquet</a> est probablement la plus simple que l'on puisse trouver. Elle peux s'écrire dans la plupart des cas en moins de 10 lignes. Les <a href="dictionary.html#ID006">dépendances</a> (si on le souhaite) peuvent également être gérées. Les <a href="dictionary.html#ID005">paquets</a> personnels créés localement peuvent également être gérés par le gestionnaire de <a href="dictionary.html#ID005">paquets</a> <a href="dictionary.html#ID000">cards</a>.
      </li>
@@ -68,7 +71,7 @@ Pour comprendre la puissance du concept, imaginez que vous ayez tout installé: 
   
   <hr>
   <p class="updated">
-     Dernière mise à jour 10-06-2016 09:00
+     Dernière mise à jour 07-08-2016 12:59
   </p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />

@@ -1,6 +1,6 @@
 name=sysklogd
 version=1.5.1
-release=2
+release=3
 url="http://www.infodrom.org/projects/sysklogd/"
 description="Logging system messages, such as those given by the kernel."
 packager="pierre at nutyx dot org, tnut at nutyx dot org"
@@ -12,6 +12,7 @@ build()
 cd sysklogd-$version
 
 sed -i '/Error loading kernel symbols/{n;n;d}' ksym_mod.c
+sed -i 's/union wait/int*/' syslogd.c
 
 mkdir -p $PKG/{/sbin,etc,usr/share/man/man{5,8}}
 
