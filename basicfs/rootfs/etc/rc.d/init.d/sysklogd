@@ -32,58 +32,30 @@
 . /lib/lsb/init-functions
 
 case "${1}" in
-   start)
-      log_info_msg "Starting system log daemon..."
-      parms=${SYSKLOGD_PARMS-'-m 0'}
-      start_daemon /sbin/syslogd $parms
-      evaluate_retval
+	start)
+		do_start_sysklogd
+		;;
+	stop)
+		do_stop_sysklogd
+		;;
+	reload)
+		reload_syslogs
+		;;
+	restart)
+		${0} stop
+		sleep 1
+		${0} start
+		;;
 
-      log_info_msg "Starting kernel log daemon..."
-      start_daemon /sbin/klogd
-      evaluate_retval
-      ;;
-
-   stop)
-      log_info_msg "Stopping kernel log daemon..."
-      killproc /sbin/klogd
-      evaluate_retval
-
-      log_info_msg "Stopping system log daemon..."
-      killproc /sbin/syslogd
-      evaluate_retval
-      log_info_msg "Cleanup logs..."
-      for file in sys daemon kern mail auth user boot cron
-      do
-        if [ -f /var/log/$file.log ]; then
-             mv /var/log/$file.log{,.old}
-             touch /var/log/$file.log
-        fi
-      done
-      mv /var/log/wtmp{,.old}
-      touch /var/log/wtmp
-      evaluate_retval
-      ;;
-
-   reload)
-      log_info_msg "Reloading system log daemon config file..."
-      pid=`pidofproc syslogd`
-      kill -HUP "${pid}"
-      evaluate_retval
-      ;;
-
-   restart)
-      ${0} stop
-      sleep 1
-      ${0} start
-      ;;
-
-   status)
-      statusproc /sbin/syslogd
-      statusproc klogd
-      ;;
+	status)
+		do_status_sysklogd
+		;;
+	cleanup)
+		do_cleanup_syslogs
+		;;
 
    *)
-      echo "Usage: ${0} {start|stop|reload|restart|status}"
+      echo "Usage: ${0} {start|stop|reload|restart|status|cleanup}"
       exit 1
       ;;
 esac

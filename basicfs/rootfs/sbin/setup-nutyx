@@ -1915,11 +1915,9 @@ main () {
 		log_info_msg "Checking configuration..."
 		check_all
 		if [ $? -ne 0 ]; then
-			/etc/rc.d/init.d/sysklogd start
 			TMP=`mktemp -d`
 			top_loop
 			cleanup
-			/etc/rc.d/init.d/sysklogd stop
 		fi
 		evaluate_retval
 	fi

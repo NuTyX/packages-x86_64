@@ -1,0 +1,20 @@
+# gettext initialization
+# 
+export TEXTDOMAIN='setup-nutyx'
+export TEXTDOMAINDIR='/etc/rc.d/init.d/locale'
+. gettext.sh
+
+check_root () {
+	if [ $UID -ne 0 ]; then
+		echo 1>&2 "$(gettext "Please run this command as root")"
+		exit 1
+	fi
+}
+
+check_root
+echo "$(gettext "Sync the HD")"
+sync
+echo "$(gettext "Please wait") ..."
+sleep 3
+echo "$(gettext "Emptying memory")"
+echo 3 > /proc/sys/vm/drop_caches
