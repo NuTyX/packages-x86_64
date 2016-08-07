@@ -3,7 +3,7 @@
 
 description="The Tcl scripting language"
 name=tcl
-version=8.6.5
+version=8.6.6
 release=1
 
 source=( http://downloads.sourceforge.net/$name/$name$version-src.tar.gz)
@@ -19,21 +19,22 @@ else
 fi
 	
 make
-sed -e "s#$SRCDIR/unix#/usr/lib#" \
-    -e "s#$SRCDIR#/usr/include#"  \
+sed -e "s#$PKGMK_ROOT/unix#/usr/lib#" \
+    -e "s#$PKGMK_ROOT#/usr/include#"  \
     -i tclConfig.sh               
-sed -e "s#$SRCDIR/unix/pkgs/tdbc1.0.4#/usr/lib/tdbc1.0.4#" \
-    -e "s#$SRCDIR/pkgs/tdbc1.0.4/generic#/usr/include#"    \
-    -e "s#$SRCDIR/pkgs/tdbc1.0.4/library#/usr/lib/tcl8.6#" \
-    -e "s#$SRCDIR/pkgs/tdbc1.0.4#/usr/include#"            \
+sed -e "s#$PKGMK_ROOT/unix/pkgs/tdbc1.0.4#/usr/lib/tdbc1.0.4#" \
+    -e "s#$PKGMK_ROOT/pkgs/tdbc1.0.4/generic#/usr/include#"    \
+    -e "s#$PKGMK_ROOT/pkgs/tdbc1.0.4/library#/usr/lib/tcl8.6#" \
+    -e "s#$PKGMK_ROOT/pkgs/tdbc1.0.4#/usr/include#"            \
     -i pkgs/tdbc1.0.4/tdbcConfig.sh                        
-sed -e "s#$SRCDIR/unix/pkgs/itcl4.0.4#/usr/lib/itcl4.0.4#" \
-    -e "s#$SRCDIR/pkgs/itcl4.0.4/generic#/usr/include#"    \
-    -e "s#$SRCDIR/pkgs/itcl4.0.4#/usr/include#"            \
-    -i pkgs/itcl4.0.4/itclConfig.sh                        
-unset SRCDIR
+sed -e "s#$PKGMK_ROOT/unix/pkgs/itcl4.0.5#/usr/lib/itcl4.0.4#" \
+    -e "s#$PKGMK_ROOT/pkgs/itcl4.0.5/generic#/usr/include#"    \
+    -e "s#$PKGMK_ROOT/pkgs/itcl4.0.5#/usr/include#"            \
+    -i pkgs/itcl4.0.5/itclConfig.sh                        
+
 make DESTDIR=$PKG install
 make DESTDIR=$PKG install-private-headers
+
 ln -svf tclsh8.6 $PKG/usr/bin/tclsh
 chmod -v 755 $PKG/usr/lib/libtcl8.6.so
 }
