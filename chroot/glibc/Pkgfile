@@ -1,4 +1,4 @@
-version=2.23
+version=2.24
 source=(\
 http://ftp.gnu.org/gnu/glibc/glibc-$version.tar.xz
 http://www.linuxfromscratch.org/patches/lfs/development/glibc-2.23-upstream_fixes-1.patch
@@ -22,7 +22,6 @@ cd build
       --enable-obsolete-rpc              \
       --with-headers=/tools/include      \
       libc_cv_forced_unwind=yes          \
-      libc_cv_ctors_header=yes           \
       libc_cv_c_cleanup=yes
 
 make
