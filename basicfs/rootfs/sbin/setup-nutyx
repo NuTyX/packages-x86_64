@@ -1281,6 +1281,7 @@ setup_partition() {
 		1|2544)
 			break;;
 	esac
+	setup_swap
 	check_available_partition
 }
 setup_format() {
@@ -1372,6 +1373,7 @@ install_nutyx() {
 	chmod 750 ${2}/root
 	mkdir ${2}/boot 2>/dev/null
 	[ "`uname -m`" == "x86_64" ] && ln -svf lib ${2}/lib64
+	echo "$PARTITION   /    $FORMAT  defaults     0    0" >> /etc/fstab
 	for FILE in boot/kernel  \
 	boot/kernel-`uname -r` \
 	boot/initrd \
@@ -1380,6 +1382,7 @@ install_nutyx() {
 	etc/sysconfig/clock \
 	etc/cards.conf \
 	etc/resolv.conf \
+	etc/fstab \
 	etc/localtime \
 	etc/network \
 	$TEXTDOMAINDIR
@@ -1728,6 +1731,24 @@ setup_initrd() {
 		;;
 	esac
 
+}
+setup_swap() {
+local NEWPART
+for i in `cat /proc/partitions|sed "s@[[:space:]]\+@ @g"|sed "s@ @|@g"|cut -d "|" -f3,5`
+do
+	if [ "${i:0:1}" == "1" ];then
+		NEWPART=`echo $i|sed "s@1|@/dev/@"`
+		SWPARTITION="$SWPARTITION $NEWPART"
+	fi
+done
+for i in $SWPARTITION
+do
+	if [ "`print_file_system $i`" == "swap" ]; then
+		$SETUP_LOG "setup-nutyx swap partition $i found and added"
+		echo "$i swap     swap       pri=1             0     0" >> /etc/fstab
+		/sbin/mkswap $i
+	fi
+done
 }
 config_all() {
 	echo "config the system"

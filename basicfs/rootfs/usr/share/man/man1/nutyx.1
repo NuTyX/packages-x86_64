@@ -1,4 +1,4 @@
-.TH "NuTyX version 8.2" 8 "Juillet, 2016" ""
+.TH "NuTyX version 8.2" 8 "Août, 2016" ""
 
 
 .SH NuTyX
@@ -228,7 +228,7 @@ Le fichier \fI/etc/sysconfig/createfiles\fR défini les fichiers / dossiers qui 
  
 .SH EN CAS DE PROBLEMES
 
-Il existe de nombreux fichiers logs qui peuvent afficher de precieuses informations. Les informations de démarrage se trouvent dans les fichiers \fI/var/log/boot.log\fR et \fI/var/log/sys.log\fR. Les informations du dernier lancement du serveur X se trouvent dans le fichier \fI/var/log/Xorg.0.log\fR. La plupart des services disposent également de leur propre log. Si vous avez un problème de connection ssh, une source d'info peut se trouver dans le fichier \fI/var/log/auth.log\fR du serveur ssh\fR. 
+Il existe de nombreux fichiers logs qui peuvent afficher de precieuses informations. Les informations de démarrage se trouvent dans les fichiers \fI/var/log/boot.log\fR et \fI/var/log/sys.log\fR. Les informations du dernier lancement du serveur X se trouvent dans le fichier \fI/var/log/Xorg.0.log\fR. La plupart des services disposent également de leur propre log. Si vous avez un problème de connection ssh, une source d'info peut se trouver dans le fichier \fI/var/log/auth.log\fR du serveur ssh. Pour connaître l'historique de votre installation, consultez le fichier \fI/var/log/install.log\fR.
 
 .SH GESTION DES PAQUETS BINAIRES DISTANTS (ET INSTALLES)
 La gestion des paquets binaires se fait via la commande \fBcards\fP. Elle comprends de nombreuses options dont voici quelques unes. Tapez \fBcards\fP pour une aide sommaire. Les commandes modifiant votre installation s'utilisent avec votre compte root (su \-) ou via la commande \fBsudo\fR.
@@ -369,7 +369,8 @@ http://www.nutyx.org
 /etc/sysconfig/ifconfig.*,
 /boot/grub/grub.cfg,
 /etc/fstab,
-/etc/profile.d/i18n.sh
+/etc/profile.d/i18n.sh,
+/var/log/install.log
 \fR
 
 .SH AUTHEURS
