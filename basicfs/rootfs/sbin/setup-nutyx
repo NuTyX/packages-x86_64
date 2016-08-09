@@ -1733,21 +1733,11 @@ setup_initrd() {
 
 }
 setup_swap() {
-local NEWPART
-for i in `cat /proc/partitions|sed "s@[[:space:]]\+@ @g"|sed "s@ @|@g"|cut -d "|" -f3,5`
+for i in `fdisk -l -o device,type|grep swap|cut -d " " -f1`
 do
-	if [ "${i:0:1}" == "1" ];then
-		NEWPART=`echo $i|sed "s@1|@/dev/@"`
-		SWPARTITION="$SWPARTITION $NEWPART"
-	fi
-done
-for i in $SWPARTITION
-do
-	if [ "`print_file_system $i`" == "swap" ]; then
-		$SETUP_LOG "setup-nutyx swap partition $i found and added"
-		echo "$i swap     swap       pri=1             0     0" >> /etc/fstab
-		/sbin/mkswap $i
-	fi
+	$SETUP_LOG "setup-nutyx swap partition $i found and added"
+	echo "$i swap     swap       pri=1             0     0" >> /etc/fstab
+	/sbin/mkswap $i 2>1 > /dev/tty2
 done
 }
 config_all() {
