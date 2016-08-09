@@ -1281,7 +1281,9 @@ setup_partition() {
 		1|2544)
 			break;;
 	esac
-	setup_swap
+	if [ "$CHECK_SWAP_OK" == "no" ]; then
+		setup_swap
+	fi
 	check_available_partition
 }
 setup_format() {
@@ -1738,6 +1740,7 @@ do
 	$SETUP_LOG "setup-nutyx swap partition $i found and added"
 	echo "$i swap     swap       pri=1             0     0" >> /etc/fstab
 	/sbin/mkswap $i 2>1 > /dev/tty2
+	CHECK_SWAP_OK="yes"
 done
 }
 config_all() {
@@ -1967,6 +1970,7 @@ SETUP_CONFIG_USER="no"
 
 CHECK_HD_OK="no"
 CHECK_PART_OK="no"
+CHECK_SWAP_OK="no"
 CHECK_SINGLE_PARTITION="no"
 
 SETUP_LXDM_CONFFILE="/etc/lxdm/lxdm.conf"
