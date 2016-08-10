@@ -1221,6 +1221,7 @@ check_available_partition() {
 		CHECK_PART_OK="no"
 		setup_partition
 	else
+		check_swap
 		# Only one partition ?
 		if [ "`lsblk -p -n -d -o NAME -e 1,3,7,11|wc -l`" == "1" ]; then
 			# Only one disk
@@ -1281,9 +1282,6 @@ setup_partition() {
 		1|2544)
 			break;;
 	esac
-	if [ "$CHECK_SWAP_OK" == "no" ]; then
-		setup_swap
-	fi
 	check_available_partition
 }
 setup_format() {
@@ -1375,6 +1373,7 @@ install_nutyx() {
 	chmod 750 ${2}/root
 	mkdir ${2}/boot 2>/dev/null
 	[ "`uname -m`" == "x86_64" ] && ln -svf lib ${2}/lib64
+	setup_swap
 	echo "$PARTITION   /    $FORMAT  defaults     0    0" >> /etc/fstab
 	for FILE in boot/kernel  \
 	boot/kernel-`uname -r` \
@@ -1734,10 +1733,18 @@ setup_initrd() {
 	esac
 
 }
+check_swap() {
+	local CHECK
+	CHECK="`fdisk -l -o device,type|grep swap|cut -d " " -f1`"
+	if [ -z "$CHECK" ];then
+		dialog --title "   Hmmmm   " \
+	--msgbox "    $(gettext "Swap partition not found")" 5 38
+	fi
+}
 setup_swap() {
 for i in `fdisk -l -o device,type|grep swap|cut -d " " -f1`
 do
-	$SETUP_LOG "setup-nutyx swap partition $i found and added"
+	$SETUP_LOG "setup-nutyx" "swap partition $i added in /etc/fstab"
 	echo "$i swap     swap       pri=1             0     0" >> /etc/fstab
 	/sbin/mkswap $i 2>1 > /dev/tty2
 	CHECK_SWAP_OK="yes"

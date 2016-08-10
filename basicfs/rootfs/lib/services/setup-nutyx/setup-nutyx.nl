@@ -338,3 +338,48 @@ msgstr "Hulp"
 
 msgid "How to do it"
 msgstr "Hoe ga ik verder"
+
+msgid "The name you enter is invalid"
+msgstr "The name you enter is invalid"
+
+msgid "The name you enter is already register on the system"
+msgstr "The name you enter is already register on the system"
+
+msgid "The description you enter is invalid"
+msgstr "The description you enter is invalid"
+
+msgid "Name of the user"
+msgstr "Name of the user"
+
+msgid "Add a description for the user"
+msgstr "Add a description for the user"
+
+msgid "Name or Description of the user"
+msgstr "Name or Description of the user"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Enter a new password"
+msgstr "Enter a new password"
+
+msgid "Confirm the new password"
+msgstr "Confirm the new password"
+
+msgid "Passwords are differents, please try again"
+msgstr "Passwords are differents, please try again"
+
+msgid "Do you want to try again"
+msgstr "Do you want to try again"
+
+msgid "Please run this command as root"
+msgstr "Please run this command as root"
+
+msgid "Sync the HD"
+msgstr "Sync the HD"
+
+msgid "Emptying memory"
+msgstr "Emptying memory"
+
+msgid "Swap partition not found"
+msgstr "Swap partition not found"

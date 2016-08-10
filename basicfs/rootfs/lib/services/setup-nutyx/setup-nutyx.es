@@ -191,3 +191,200 @@ msgstr "Configurar el arranque de la PC"
 
 msgid "Reboot the PC"
 msgstr "Reinicie el PC"
+
+msgid "Press OK to reboot the computer"
+msgstr "Press OK to reboot the computer"
+
+msgid "optional"
+msgstr "optional"
+
+msgid "Install"
+msgstr "Install"
+
+msgid "Partitioning"
+msgstr "Partitioning"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "Boot"
+msgstr "Boot"
+
+msgid "Keyboard"
+msgstr "Keyboard"
+
+msgid "Network"
+msgstr "Network"
+
+msgid "Clock"
+msgstr "Clock"
+
+msgid "Restart"
+msgstr "Restart"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "Choose the disk you want to use for this operation"
+msgstr "Choose the disk you want to use for this operation"
+
+msgid "Choose the partition you want to use for this operation"
+msgstr "Choose the partition you want to use for this operation"
+
+msgid "Available file systems"
+msgstr "Available file systems"
+
+msgid "Choose the file system you want to use for the partition"
+msgstr "Choose the file system you want to use for the partition"
+
+msgid "High performance journaling file system create by SGI"
+msgstr "High performance journaling file system create by SGI"
+
+msgid "Journaling file system create by IBM"
+msgstr "Journaling file system create by IBM"
+
+msgid "Very stable file system but not maintain anymore"
+msgstr "Very stable file system but not maintain anymore"
+
+msgid "Next generation of Ext3 file system"
+msgstr "Next generation of Ext3 file system"
+
+msgid "Journaling version of Ext2 file system"
+msgstr "Journaling version of Ext2 file system"
+
+msgid "Standard file system Ext2"
+msgstr "Standard file system Ext2"
+
+msgid "New promising file system"
+msgstr "New promising file system"
+
+msgid "Launch the format process ?"
+msgstr "Launch the format process ?"
+
+msgid "The partition"
+msgstr "The partition"
+
+msgid "will be formatted in"
+msgstr "will be formatted in"
+
+msgid "Are you sure you want to continue ?"
+msgstr "Are you sure you want to continue ?"
+
+msgid "No disk available"
+msgstr "No disk available"
+
+msgid "Please stop the PC and install a harddisk"
+msgstr "Please stop the PC and install a harddisk"
+
+msgid "No partition available"
+msgstr "No partition available"
+
+msgid "Please create/modify yours partitions"
+msgstr "Please create/modify yours partitions"
+
+msgid "Choose your favorite tool"
+msgstr "Choose your favorite tool"
+
+msgid "Basic partitioning tool"
+msgstr "Basic partitioning tool"
+
+msgid "Advanced partitioning tool"
+msgstr "Advanced partitioning tool"
+
+msgid "Partitioning of the disk"
+msgstr "Partitioning of the disk"
+
+msgid "Open a console"
+msgstr "Open a console"
+
+msgid "Please wait"
+msgstr "Please wait"
+
+msgid "This is a very basic tool, do not expect too much"
+msgstr "This is a very basic tool, do not expect too much"
+
+msgid "It will ask you on which partition you want to install NuTyX"
+msgstr "It will ask you on which partition you want to install NuTyX"
+
+msgid "If not yet created/formatted, it will prompt you to do so"
+msgstr "If not yet created/formatted, it will prompt you to do so"
+
+msgid "No future plan to make this installer more sophisticated"
+msgstr "No future plan to make this installer more sophisticated"
+
+msgid "NuTyX goes on"
+msgstr "NuTyX goes on"
+
+msgid "only ONE partition"
+msgstr "only ONE partition"
+
+msgid "ONE exception, GRUB can be part of it, installed on a separate partition or not installed at all"
+msgstr "ONE exception, GRUB can be part of it, installed on a separate partition or not installed at all"
+
+msgid "As NuTyX users, we recommand you to install GRUB on a separate partition"
+msgstr "As NuTyX users, we recommand you to install GRUB on a separate partition"
+
+msgid "To do so"
+msgstr "To do so"
+
+msgid "Install GRUB first, then NuTyX"
+msgstr "Install GRUB first, then NuTyX"
+
+msgid "Have fun"
+msgstr "Have fun"
+
+msgid "Thank you for installing NuTyX"
+msgstr "Thank you for installing NuTyX"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "How to do it"
+msgstr "How to do it"
+
+msgid "The name you enter is invalid"
+msgstr "The name you enter is invalid"
+
+msgid "The name you enter is already register on the system"
+msgstr "The name you enter is already register on the system"
+
+msgid "The description you enter is invalid"
+msgstr "The description you enter is invalid"
+
+msgid "Name of the user"
+msgstr "Name of the user"
+
+msgid "Add a description for the user"
+msgstr "Add a description for the user"
+
+msgid "Name or Description of the user"
+msgstr "Name or Description of the user"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Enter a new password"
+msgstr "Enter a new password"
+
+msgid "Confirm the new password"
+msgstr "Confirm the new password"
+
+msgid "Passwords are differents, please try again"
+msgstr "Passwords are differents, please try again"
+
+msgid "Do you want to try again"
+msgstr "Do you want to try again"
+
+msgid "Please run this command as root"
+msgstr "Please run this command as root"
+
+msgid "Sync the HD"
+msgstr "Sync the HD"
+
+msgid "Emptying memory"
+msgstr "Emptying memory"
+
+msgid "Swap partition not found"
+msgstr "Swap partition not found"
+
+
