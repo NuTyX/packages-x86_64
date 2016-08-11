@@ -247,7 +247,9 @@ if [ -n "$rootdelay" ] && [ -f /sbin/mdadm ]; then
   fi
 fi
 if [ -d /lib/modules ]; then
+	[ "$verbose" == "no" ] || echo "Start localnet..."
 	do_start_localnet
+	[ "$verbose" == "no" ] || echo "Start udev..."
 	do_start_udev
 fi
 if [ -n "$rootdelay" ] ; then
@@ -280,19 +282,19 @@ if [ "$root" == "" ]; then
 		fi
 	fi
 #	TODO This doesn't works FIXME
-#	[ "$verbose" == "no" ] || echo "Stop udev ..."
-#	do_stop_udev
-#	 [ "$verbose" == "no" ] || echo "Start udev ..."
-#        do_start_udev
-#	[ "$verbose" == "no" ] || echo "Wait 5 second ..."
-#	[ "$verbose" == "no" ] || sleep 5
+	[ "$verbose" == "no" ] || echo "Stop udev ..."
+	do_stop_udev
+	 [ "$verbose" == "no" ] || echo "Start udev ..."
+        do_start_udev
+	[ "$verbose" == "no" ] || echo "Wait 5 second ..."
+	[ "$verbose" == "no" ] || sleep 5
 	[ "$verbose" == "no" ] || echo "Stsrt sysklogd ..."
 	do_start_sysklogd
 	[ "$verbose" == "no" ]  && clear
 	MainLoop
 	root=`cat /root/boot`
-#	[ "$verbose" == "no" ] || echo "Stop udev ..."
-#	do_stop_udev
+	[ "$verbose" == "no" ] || echo "Stop udev ..."
+	do_stop_udev
 #	killall -w /sbin/udevd
 	[ "$verbose" == "no" ] || echo "Stop sysklogd ..."
 	do_stop_sysklogd
