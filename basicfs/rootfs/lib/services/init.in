@@ -165,7 +165,7 @@ do_mount_in_ram()
 		fi
 	done
 	# RO folders
-	for DIR in usr lib sbin bin opt
+	for DIR in usr lib sbin bin
 	do
 		if [ -f ${1}/$DIR.squashfs ];then
 			mkdir /$DIR > /dev/null 2>&1
@@ -280,19 +280,23 @@ if [ "$root" == "" ]; then
 		fi
 	fi
 #	TODO This doesn't works FIXME
-	[ "$verbose" == "no" ] || echo "Stop udev ..."
-	do_stop_udev
-	 [ "$verbose" == "no" ] || echo "Start udev ..."
-        do_start_udev
-	[ "$verbose" == "no" ] || echo "Wait 5 second ..."
-	[ "$verbose" == "no" ] || sleep 5
+#	[ "$verbose" == "no" ] || echo "Stop udev ..."
+#	do_stop_udev
+#	 [ "$verbose" == "no" ] || echo "Start udev ..."
+#        do_start_udev
+#	[ "$verbose" == "no" ] || echo "Wait 5 second ..."
+#	[ "$verbose" == "no" ] || sleep 5
+	[ "$verbose" == "no" ] || echo "Stsrt sysklogd ..."
+	do_start_sysklogd
 	[ "$verbose" == "no" ]  && clear
 	MainLoop
 	root=`cat /root/boot`
-	[ "$verbose" == "no" ] || echo "Stop udev ..."
-	do_stop_udev
-	killall -w /sbin/udevd
-	for DIR in usr lib sbin bin opt
+#	[ "$verbose" == "no" ] || echo "Stop udev ..."
+#	do_stop_udev
+#	killall -w /sbin/udevd
+	[ "$verbose" == "no" ] || echo "Stop sysklogd ..."
+	do_stop_sysklogd
+	for DIR in usr lib sbin bin
 	do
 		[ "$verbose" == "no" ] || echo "umount /$DIR ..."
 		umount /$DIR > /dev/null 2>&1
@@ -302,11 +306,14 @@ fi
 mkdir /.root
 do_mount_root
 
-if ! [ -d /.root/bin -a -d /.root/dev -a -d /.root/etc -a -d /.root/lib \
-      -a -d /.root/sbin -a -d /.root/tmp -a -d /.root/root  -a -d /.root/proc \
-      -a -d /.root/usr -a -d /.root/var  -a -d /.root/run -a -d /.root/sys ]; then
-  do_install
-fi
+# if ! [ -d /.root/bin -a -d /.root/dev -a -d /.root/etc -a -d /.root/lib \
+#      -a -d /.root/sbin -a -d /.root/tmp -a -d /.root/root  -a -d /.root/proc \
+#      -a -d /.root/usr -a -d /.root/var  -a -d /.root/run -a -d /.root/sys ]; then
+#  do_install
+# fi
+
+[ "$verbose" == "no" ] || echo "Stop udev ..."
 do_stop_udev
+
 cd /.root
 exec switch_root /.root "$init" "$@" > /dev/null 2>&1

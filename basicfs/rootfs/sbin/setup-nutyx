@@ -1738,7 +1738,7 @@ check_swap() {
 	CHECK="`fdisk -l -o device,type|grep swap|cut -d " " -f1`"
 	if [ -z "$CHECK" ];then
 		dialog --title "   Hmmmm   " \
-	--msgbox "    $(gettext "Swap partition not found")" 5 38
+	--msgbox "    $(gettext "Swap partition not found")" 6 60
 	fi
 }
 setup_swap() {
