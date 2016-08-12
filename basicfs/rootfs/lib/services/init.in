@@ -83,66 +83,6 @@ do_mount_root()
    fi
 }
 
-do_install()
-{
-   echo "Start installation on $root "
-
-   umount /.root
-
-   ro="rw"
-
-   mkdir /etc
-   ln -s /proc/self/mounts /etc/mtab
-
-   do_mount_root
-
-   for DIR in home proc sys dev srv mnt
-   do
-     echo -n "."
-     if [ ! -d /.root/$DIR ]; then
-       mkdir /.root/$DIR
-     fi
-   done
-
-   echo -n "."
-   ln -s lib /.root/lib64
-
-   if [ ! -d /.root/tmp ]; then
-      echo -n "."
-      mkdir  /.root/tmp
-      chmod 1777 /.root/tmp
-   fi
-   for DIR in var run usr etc root lib sbin bin opt
-   do
-      echo -n "."
-      if [ -f /.root/boot/$DIR.squashfs ]; then
-         mkdir /DIR
-         mount -o loop -t squashfs /.root/boot/$DIR.squashfs /DIR
-         cp -a /DIR /.root/$DIR
-         umount /DIR
-         rm -r /DIR
-         if [ "$DIR" == "root" ]; then
-            chmod 750 /.root/root
-         fi
-      fi
-   done
-   # We need to check if entry exist in /etc/fstab
-   if [ "`cat /.root/etc/fstab |sed "s/ \+/ /g"|sed "s/\t\+/ /g"|sed "s/ /:/g"|cut -d ":" -f1-2|grep $root|cut -d ":" -f2`" != "/" ]; then
-      # blkid will tell us the file system
-      TYPE=`print_file_system $root`
-      echo -n "."
-      echo "$root   /   $TYPE   defaults     0      1" >> /.root/etc/fstab
-      do_stop_udev
-   fi
-
-   umount /.root
-
-   ro="ro"
-
-   do_mount_root
-   echo "Successfully Installed on device $root" 
-}
-
 do_mount_in_ram()
 {
 	# squasfs files are in ${1} on the initrd
@@ -197,6 +137,10 @@ MainLoop(){
    while [ ! -f /root/boot ];
    do
 	[ "$verbose" == "no" ] || echo "Launch /etc/rc.d/init.d/setup-nutyx ..."
+	if [ "$verbose" == "yes" ]; then
+		echo "Press any key to go on ..."
+		read a
+	fi
 	/etc/rc.d/init.d/setup-nutyx || problem
    done
 }
@@ -236,7 +180,13 @@ for param in $cmdline ; do
   esac
 done
 
+if [ -d /lib/modules ] && [ -n "$rootdelay" ]; then
+        [ "$verbose" == "no" ] || echo "Start udev..."
+        do_start_udev
+fi
+
 if [ -n "$rootdelay" ] && [ -f /sbin/mdadm ]; then 
+
   /sbin/mdadm --auto-detect
   ### First we activate lvm if possible
   if [ -f /sbin/lvm ]; then
@@ -246,16 +196,12 @@ if [ -n "$rootdelay" ] && [ -f /sbin/mdadm ]; then
     fi
   fi
 fi
-if [ -d /lib/modules ]; then
-	[ "$verbose" == "no" ] || echo "Start localnet..."
-	do_start_localnet
-	[ "$verbose" == "no" ] || echo "Start udev..."
-	do_start_udev
-fi
+
 if [ -n "$rootdelay" ] ; then
 	[ "$verbose" == "no" ] || echo "... wait $rootdelay seconds"
 	sleep "$rootdelay"
 fi
+
 if [ "$root" == "" ]; then
 	if [ ! -f /etc/rc.d/init.d/setup-nutyx ]; then
 		find_media
@@ -295,9 +241,10 @@ if [ "$root" == "" ]; then
 	root=`cat /root/boot`
 	[ "$verbose" == "no" ] || echo "Stop udev ..."
 	do_stop_udev
-#	killall -w /sbin/udevd
+
 	[ "$verbose" == "no" ] || echo "Stop sysklogd ..."
 	do_stop_sysklogd
+
 	for DIR in usr lib sbin bin
 	do
 		[ "$verbose" == "no" ] || echo "umount /$DIR ..."
@@ -308,14 +255,10 @@ fi
 mkdir /.root
 do_mount_root
 
-# if ! [ -d /.root/bin -a -d /.root/dev -a -d /.root/etc -a -d /.root/lib \
-#      -a -d /.root/sbin -a -d /.root/tmp -a -d /.root/root  -a -d /.root/proc \
-#      -a -d /.root/usr -a -d /.root/var  -a -d /.root/run -a -d /.root/sys ]; then
-#  do_install
-# fi
-
-[ "$verbose" == "no" ] || echo "Stop udev ..."
-do_stop_udev
+if [ -d /lib/modules ] && [ -n "$rootdelay" ]; then
+	[ "$verbose" == "no" ] || echo "Stop udev ..."
+	do_stop_udev
+fi
 
 cd /.root
 exec switch_root /.root "$init" "$@" > /dev/null 2>&1

@@ -227,7 +227,7 @@ if [ -n "$KERNEL_VERSION" ]; then
   find                                                                              \
      /lib/modules/$KERNEL_VERSION/kernel/{arch,crypto,fs,kernel,lib,mm,security}    \
      /lib/modules/$KERNEL_VERSION/kernel/drivers/{ata,base,block,cdrom,hid,md,firewire} \
-     /lib/modules/$KERNEL_VERSION/kernel/drivers/{scsi,message,pcmcia,virtio,net}   \
+     /lib/modules/$KERNEL_VERSION/kernel/drivers/{scsi,message,virtio}   \
      /lib/modules/$KERNEL_VERSION/kernel/drivers/usb/{core,common,host,storage}     \
      -type f 2> /dev/null | cpio --make-directories -p --quiet $WDIR
 

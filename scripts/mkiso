@@ -1,6 +1,5 @@
 ISODIR=${LFS}/ISO
 VERSION_NUTYX=${1}
-VERSION_KERNEL="3.16.4"
 ARCH=`uname -m`
 ISO=NuTyX_${ARCH}-${VERSION_NUTYX}
 LABEL=nutyxcd
@@ -13,6 +12,11 @@ error()	{
 
 
 main() {
+	if [ -z "${2}" ]; then
+		VERSION_KERNEL=`uname -r`
+	else
+		VERSION_KERNEL=${2}
+	fi
 	cd ${ISODIR} || error "cd ${ISODIR}"
 	sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" isolinux/boot.msg
 	sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" isolinux/boot.msg
