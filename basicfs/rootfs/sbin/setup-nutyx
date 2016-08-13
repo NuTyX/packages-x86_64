@@ -1357,6 +1357,7 @@ $(gettext "Are you sure you want to continue ?")" 7 60
 }
 install_nutyx() {
 	local DIR REAL FILE
+	setup_swap
 	cd ${1}/boot
 	MAX=`ls *squashfs|wc -l`
 	N=0
@@ -1373,7 +1374,6 @@ install_nutyx() {
 	chmod 750 ${2}/root
 	mkdir ${2}/boot 2>/dev/null
 	[ "`uname -m`" == "x86_64" ] && ln -svf lib ${2}/lib64
-	setup_swap
 	echo "$PARTITION   /    $FORMAT  defaults     0    0" >> /etc/fstab
 	for FILE in boot/kernel  \
 	boot/kernel-`uname -r` \
