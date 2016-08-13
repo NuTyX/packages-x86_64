@@ -1745,8 +1745,7 @@ for i in `fdisk -l -o device,type|grep swap|cut -d " " -f1`
 do
 	$SETUP_LOG "setup-nutyx" "swap partition $i added in /etc/fstab"
 	echo "$i swap     swap       pri=1             0     0" >> /etc/fstab
-	/sbin/mkswap $i 2>1 > /dev/tty2
-	CHECK_SWAP_OK="yes"
+	/sbin/mkswap $i 2>1 > /dev/null
 done
 }
 config_all() {
@@ -1976,7 +1975,6 @@ SETUP_CONFIG_USER="no"
 
 CHECK_HD_OK="no"
 CHECK_PART_OK="no"
-CHECK_SWAP_OK="no"
 CHECK_SINGLE_PARTITION="no"
 
 SETUP_LXDM_CONFFILE="/etc/lxdm/lxdm.conf"

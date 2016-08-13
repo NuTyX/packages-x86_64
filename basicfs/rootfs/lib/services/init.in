@@ -143,6 +143,7 @@ MainLoop(){
 	fi
 	/etc/rc.d/init.d/setup-nutyx || problem
    done
+   [ "$verbose" == "no" ] || clear
 }
 
 # **********
@@ -177,6 +178,7 @@ for param in $cmdline ; do
     rw           ) ro="rw"                           ;;
     quiet        ) export verbose="no"               ;;
     testiso      ) export verbose="yes"              ;;
+    testinitrd   ) export verbose="yes"              ;;
   esac
 done
 
@@ -187,11 +189,14 @@ fi
 
 if [ -n "$rootdelay" ] && [ -f /sbin/mdadm ]; then 
 
+  [ "$verbose" == "no" ] || echo "mdadm --auto-detect..."
   /sbin/mdadm --auto-detect
   ### First we activate lvm if possible
   if [ -f /sbin/lvm ]; then
+    [ "$verbose" == "no" ] || echo "/sbin/lvm vgchange --ignorelockingfailure -ay"
     /sbin/lvm vgchange --ignorelockingfailure -ay
     if [ $? = 0 ]; then
+       [ "$verbose" == "no" ] || echo "/sbin/lvm vgscan --ignorelockingfailure --mknodes"
        /sbin/lvm vgscan --ignorelockingfailure --mknodes
     fi
   fi
@@ -228,19 +233,19 @@ if [ "$root" == "" ]; then
 		fi
 	fi
 #	TODO This doesn't works FIXME
-	[ "$verbose" == "no" ] || echo "Stop udev ..."
-	do_stop_udev
-	 [ "$verbose" == "no" ] || echo "Start udev ..."
-        do_start_udev
-	[ "$verbose" == "no" ] || echo "Wait 5 second ..."
-	[ "$verbose" == "no" ] || sleep 5
+#	[ "$verbose" == "no" ] || echo "Stop udev ..."
+#	do_stop_udev
+#	 [ "$verbose" == "no" ] || echo "Start udev ..."
+#        do_start_udev
+#	[ "$verbose" == "no" ] || echo "Wait 5 second ..."
+#	[ "$verbose" == "no" ] || sleep 5
 	[ "$verbose" == "no" ] || echo "Stsrt sysklogd ..."
 	do_start_sysklogd
 	[ "$verbose" == "no" ]  && clear
 	MainLoop
 	root=`cat /root/boot`
-	[ "$verbose" == "no" ] || echo "Stop udev ..."
-	do_stop_udev
+#	[ "$verbose" == "no" ] || echo "Stop udev ..."
+#	do_stop_udev
 
 	[ "$verbose" == "no" ] || echo "Stop sysklogd ..."
 	do_stop_sysklogd
