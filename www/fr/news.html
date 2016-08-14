@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
      <link rel="shortcut icon" href="../favicon.ico">
      <link rel="stylesheet" href="../css/nutyx.css" />
-     <title>NuTyX - Dernière nouvelle 24-07-2016</title>
+     <title>NuTyX - Dernière nouvelle 14-08-2016</title>
  </head>
  <body>
    <table>
@@ -29,40 +29,35 @@
      </tr>
     </table>
  <hr>
-  <h1>Dernière nouvelle 24-07-2016</h1>
-   <h2>NuTyX 8.2-beta-2 disponible avec cards 2.1.84</h2>
-     <p>Ces deux dernières semaines ont été très prolifique au niveau de la future 8.2.</p>
-     <p>Deux <a href="http://downloads.nutyx.org/?C=M;O=D">nouvelles ISO 64bits</a> sont proposées pour cette nouvelle version. La première (1.0G) est une version de kde5 installable kf5 5.24.0 et la deuxième (221M) est une ISO standard MINI.</p>
+  <h1>Dernière nouvelle 14-08-2016</h1>
+   <h2>NuTyX 8.2-beta-3 disponible avec cards 2.1.87</h2>
+     <p>Cette dernière semaine est la dernière ligne droite avant la sortie de la première release candidate de la version 8.2.</p>
+     <p>Une <a href="http://downloads.nutyx.org/?C=M;O=D">nouvelle ISO 64bits MINI</a> est proposée pour cette nouvelle version. Sa taille fait 241M.</p>
      <p>Pensez à vérifier leur somme MD5 avant de les transférer sur clé USB, CD-RW ou DVD-RW</p>
-      <h3>L'installateur</h3>
-       <p>Toutes les actions sont désormées enrégistrées dans le fichier <b>/var/log/install</b>.</p>
-       <p>Une fois NuTyX installée sur votre disque dur, l'installateur vous demandera de créer un nouvel utilisateur. Modifiez les valeurs de défaut <b>user</b> et <b>Description</b> sinon cela ne fonctionnera pas</p>
-      <h3>Les nouveautées de NuTyX</h3>
-       <p>La commande <b>nu</b> est supprimée et remplacée par la commande <b>setup-nutyx</b> avec l'option <b>-cu</b>. Pour ne pas perturber les utilisateurs, un alias est disponible dans le fichier de configuration <b>.bashrc</b>:</p>
+      <h3>Nouveautées pour l'utilisateur</h3>
+         <p>Une fois le disque partitionné, l'installateur vous averti si vous avez oublié de crééer une partion d'échange. Libre à vous d'en créer une, si telle est le cas, elle sera automatiquement ajoutée dans le fichier <b>/etc/fstab</b>.</p>
+         <p>L'ordre des actions dans le menu principale est revu afin de suivre l'ordre logique des actions à executer.</p>
+         <p>Une fois installée, le configurateur vous demande l'ajout d'un utilisateur, si vous avez décidé d'activer le compte root, le configurateur insistera sur la création d'un utilisateur. Ceci n'est pas un bug.</p>
+         <p>La commande <b>nu</b> est supprimée et remplacée par la commande <b>setup-nutyx</b> avec l'option <b>-cu</b>. Pour ne pas perturber les utilisateurs, un alias est disponible dans le fichier de configuration <b>.bashrc</b>:</p>
+         <p>Une première version <a href="systemd.html">systemd</a> est proposée de façon expérimentale.</p>
+      <h3>Nouveautées sous le capot</h3>
+       <p>Toutes les actions d'installation sont désormais enrégistrées dans le fichier <b>/var/log/install</b>.</p>
+       <p>Un alias a été créé pour remplacer la commande <b>nu</b>:</p>
        <pre class="output">alias nu='sudo setup-nutyx -cu'</pre>
-       <p>Le compte root n'est plus activé par défaut. Vous vous connectez désormais directement avec votre compte personnel créé lors de l'installation. Pour activer le compte root, il suffit de passer par la commande <b>setup-nutyx</b> ou <b>nu</b>, choisissez <b>root</b> comme utilisateur et spécifiez un nouveau mot de passe.</p>
-       <p>Tous les paquets ont été recompilés avec la nouvelle version du compilateur <b>gcc 6.1</b> pour assurer une stabilitée maximum.</p>
-       <p>Le fichier <b>/etc/inittab</b> est désormais responsable pour le lancement de lxdm. Avec cette methode. celui-ci se relance automatiquement si il y a une erreur à la première tentative de lancement.</p>
-       <p>Toutes les collections habituelles sont disponibles. Les ports des collections <b>lxde et lxde-extra</b> sont désormais intégrés dans les collections standards <b>gui et gui-extra</b>.</p>
-       <p>Vous pouvez consulter <a href="https://github.com/NuTyX/core/commits/master">le changelog pour connaître les mise à jour sur le système core</a></p>       
-      <h3>Cards 2.1.84</h3>
-       <p>Deux nouveaux scripts sont ajoutés <b>build-port</b> et <b>build-collection</b>, ils permettent donc de construire respectivement un ensemble de ports et un ensemble de collection. Vous trouverez plus d'info sur <a href="https://github.com/NuTyX/cards/commits/master">le projet de cards</a></p>
+       <p>Nombreux bugs des scripts init.in, setup-nutyx ont été corrigés.</p>
+       <p>La configuration du kernel a été revue. En ajoutant quelques options en dur, la taille du kernel est passé de 4.1M à 4.4M mais l'initrd ne doit plus faire appel une première fois à eudev pour découvris les périphériques indispensable au montage du disque dur. L'amorçage de la machine est donc accélérée d' 1s a 3s en fonction de sa configuration.</p>
+       <p>J'attends la sortie de la nouvelle version du compilateur <b>gcc 6.1</b>. Une fois disponible, tous les paquets seront recompilé sur la nouvelle chaîne glibc 2.25, binutils 2.27 et gcc 6.X.X pour assurer une stabilitée maximum.</p>
+       <p>Le point de montage de la racine est à nouveau présent dans le fichier <b>/etc/inittab</b> qui est désormais aussi responsable pour le lancement de lxdm. Avec cette methode. celui-ci se relance automatiquement si il y a une erreur à la première tentative de lancement.</p>
+       <p>Deux nouveaux scripts sont ajoutés <b>build-port</b> et <b>build-collection</b> dans le gestionnaire de paquets <b>cards</b>, ils permettent donc de construire respectivement un ensemble de ports et un ensemble de collection. Vous trouverez plus d'info sur <a href="https://github.com/NuTyX/cards/commits/master">le projet de cards</a></p>
+       <p>Toutes les actions d'installation et de suppression de paquets sont désormais ajoutés dans le fichier log <b>/var/log/install</b>.</p>
        <p><b>cards</b> permet désormais d'effacer une collection complète, une suite de paquets ou un groupe de paquets. La collection d'un paquet installé est également stocké dans la base de données.</p>
        <p><b>cards</b> stocke désormais le nom de la collection, du groupe et de la famille du paquet. Avec ces informations supplémentaires, il est donc possible d'obtenir des informations plus filtrées à l'affichage de la sortie de la commande <b>cards list</b> par exemple.</p>
-    <h3>Le script d'installation</h3>
-      <p>Le script <b>bash</b> <a href="http://downloads.nutyx.org/install-nutyx-8.2-beta-2">install-nutyx-8.2-beta-2</a> permet d'installer NuTyX depuis votre NuTyX 8.1 stable ou depuis n'importe quel autre distribution.</p>
-    <h3>Le site nutyx.org</h3>
-      <p>Hazel Russman a relu les pages anglaises du site. La documentation anglaise est désormais beaucoup plus proche de la version française.</p>
-      <p>Une <a href="build-bot.html">nouvelle page explique</a> comment utiliser le script <b>enter-nutyx</b> (sera renommé en build-collection). Cet article est surtout utile pour les packagers</p>
-    <h3>Remerciements</h3>
-      <p>Merci <a href="https://github.com/littleoldlady?tab=activity>">Hazel Russman</a> pour l'énorme travail de traduction fait en si peu de temps. Impressionnant</p>
-      <p>Merci <a href="https://github.com/pierre-nutyx?tab=activity">Pierre</a> pour le superbe travail effectué sur kde5. NuTyX propose une kde5 très à jour, très stable, très rapide et très fonctionnelle</p>
-      <p>Merci pour tous vos retours de bugs envoyés sur irc, google+, différents forums et github, cela m'a permit d'améliorer la qualitée de NuTyX</p>
+      <p>Le script <b>bash</b> <a href="http://downloads.nutyx.org/install-nutyx-8.2-beta-3">install-nutyx-8.2-beta-3</a> permet d'installer NuTyX depuis votre NuTyX 8.1 stable ou depuis n'importe quel autre distribution.</p>
     <h3>La suite</h3>
-      <p>Si tout se passe comme prévu, cette version beta sera la dernière avant la RC1 qui devrait être dispo ds le courant du mois d'août</p>
+      <p>Dès que la nouvelle version du compilateur sera disponible, la prochaine version RC1 qui devrait être dispo ds le courant du mois de septembre.</p>
   <p class="updated"><a href="old-news.html">Anciennes nouvelles</a></p>
   <hr>  
-   <p class="updated">Le 24-07-2016 13:11</p>
+   <p class="updated">Le 14-08-2016 12:11</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />

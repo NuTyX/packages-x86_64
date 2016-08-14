@@ -56,12 +56,6 @@ del -a sysvinit</kbd></pre>
     <pre class="command"><kbd>cards install systemd</kbd></pre>
    <h2>Créer le fichier /etc/machine-id necessaire à systemd-journald</h2>
     <pre class="command"><kbd>systemd-machine-id-setup</kbd></pre>
-   <h2>Ajuster /etc/fstab</h2>
-    <p>La partition cible de votre NuTyX systemd n'est pas mentionnée dans le fichier <b>/etc/fstab</b>
-    <p>Ajustez <b>sda4</b> et <b>btrfs</b> avec vos réglages</p>
-    <pre class="command"><kbd>cat &gt;&gt; /etc/fstab &lt;&lt; "EOF"
-/dev/sda4      /            btrfs    defaults            0     0
-EOF</kbd></pre>
    <h2>Le réseau</h2>
     <p>le fichier <b>/etc/systemd/network/10-&lt;nom-de-votre-carte-reseau&gt;-dhcp.network</b> se charge du démarrage du réseau dhcp.</p>
     <p>le fichier <b>/etc/systemd/network/10-&lt;nom-de-votre-carte-reseau&gt;-static.network</b> se charge de la mise en place d'une adresse statique pour votre carte réseau.</p>
@@ -140,8 +134,11 @@ ln -svf /etc/sysconfig/modules.d /etc/modules-load.d</kbd></pre>
      <p>Faites un reboot pour que systemd créée une unité compatible.</p>
    <h1>Pour revenir sur systemV</h1>
     <h2>Supprimer la ligne systemd dans /etc/cards.conf</h2>
+      <pre class="command"><kbd>sed -i "/systemd/d" /etc/cards.conf</kbd></pre>
     <h2>Revenir en mode non graphique si ce n'est pas le cas</h2>
+      <pre class="command"><kbd>systemctl stop lxdm.service</kbd></pre>
     <h2>Revenir sur un système de base</h2>
+      <pre class="command"><kbd>cards base -r</kbd></pre>
     <h2>Remettre les paquets supprimés</h2>
      <pre class="command"><kbd>rm /etc/udev/hwdb.bin
 get eudev
@@ -150,7 +147,7 @@ get sysvinit</kbd></pre>
      <pre class="command"><kbd>flushmem</kbd></pre>
     <h2>Redémarrer la machine en poussant le reset, reboot ne fonctionnera pas</h2>
   <hr>  
-   <p class="updated">Dernière mise à jour 01-08-2016 16:57</p>
+   <p class="updated">Dernière mise à jour 14-08-2016 12:27</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />

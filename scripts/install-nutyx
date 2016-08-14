@@ -363,7 +363,7 @@ generate_blfs_bootscripts() {
 [ -f ${FOLDER}/etc/${FOLDER}/etc/blfs-bootscripts ] && return
 [ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
 echo "scripts=blfs-bootscripts
-scriptsversion=20160415" > ${FOLDER}/etc/blfs-bootscripts
+scriptsversion=20160808" > ${FOLDER}/etc/blfs-bootscripts
 }
 generate_etc_bashrc() {
 local FILE
@@ -1346,7 +1346,7 @@ check_tools() {
 check_variables() {
 
 [ -z $URL ] && URL="http://downloads.nutyx.org"
-[ -z $VERSION ] && VERSION="8.2-beta-2"
+[ -z $VERSION ] && VERSION="8.2-beta-3"
 if [ "$VERSION" == "development" ]; then
 	CODE_NAME="`date +%Y%m%d`"
 else

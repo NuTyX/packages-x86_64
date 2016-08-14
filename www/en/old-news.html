@@ -29,6 +29,38 @@
      </tr>
     </table>
  <hr>
+  <h1>Last 2016-07-24</h1>
+   <h2>NuTyX 8.2-beta-2 available with cards 2.1.84</h2>
+     <p>Thoses two weeks have been very efficient for the future 8.2 release.</p>
+     <p>Two <a href="http://downloads.nutyx.org/?C=M;O=D">new 64bits ISO</a> are available for this new version. The first (1000MB) is a installable kde5 kf5 5.24.0 version and the second one (220MB) is a standard MINI ISO.</p>
+     <p>Check the MD5 sum before transfer on USB stick, CD-RW or DVD-RW media.</p>
+      <h3>The installer</h3>
+       <p>All your actions are now recorded in the <b>/var/log/install</b> file.</p>
+       <p>Once NuTyX installed on your harddisk, the installer will ask you to create a new user. You need to modify the default <b>user</b> and <b>Description</b> fields value to proceed.</p>
+      <h3>News about NuTyX</h3>
+       <p>The <b>nu</b> command have been retired and been replaced by the  <b>setup-nutyx -cu</b> command. An alias is created in the configuration file to be able to keep the tiny <b>nu</b> command available:</p>
+       <pre class="output">alias nu='sudo setup-nutyx -cu'</pre>
+       <p>The root account is not activate by default. Means you use your own account created at installation time.To activate the root account, you just need to use the <b>setup-nutyx -cu</b> command, enter <b>root</b> as new user and spécify a new password. You're done, root account is actif</p>
+       <p>All the packages are recompiled against the <b>gcc 6.1</b> compiler to assure a maximum stability of the all system.</p>
+       <p>The <b>/etc/inittab</b> file is now responsible for the lxdm service start. With this method. it will be automatically restart if a failure in the first attempt.</p>
+       <p>All the collections are availables. The <b>lxde and lxde-extra</b> collections are now integrated into the <b>gui and gui-extra</b> standards collections.</p>
+       <p>You can consult the <a href="https://github.com/NuTyX/core/commits/master">changelog to get an idea of all the changes since</a></p>
+
+      <h3>Cards 2.1.84</h3>
+       <p>Two new scripts are added <b>build-port</b> and <b>build-collection</b>, they allow to build respectively a set of ports and a whole collection. You can find more info <a href="https://github.com/NuTyX/cards/commits/master">on the cards project</a>.</p>
+       <p><b>cards</b> is now able to delete a complete collections, a group of packages in one command.</p>
+       <p><b>cards</b> store the collection, the group and the family of the package in the database of the installed packages. With this extra information, it's now possible to have a more filtered info on the result of the <b>cards list</b> commands for example.</p>
+    <h3>The Installation script</h3>
+       <p>The <b>bash</b> <a href="http://downloads.nutyx.org/install-nutyx-8.2-beta-2">install-nutyx-8.2-beta-2</a> script is able to install 8.2-beta-2 NuTyX from your stable 8.1 NuTyX or from any other distribution.</p>
+    <h3>The nutyx.org website </h3>
+      <p>Hazel Russman has review all the english pages. The english version of the documentation is now much more complete.</p>
+      <p>A <a href="build-bot.html">new page explains</a> how to use the <b>enter-nutyx</b> script (will be renammed in build-collection). This topic is mainy usefull for the packagers.</p>
+    <h3>Thanks</h3>
+      <p><a href="https://github.com/littleoldlady?tab=activity>">Hazel Russman</a> for the huge translation work in a such short time. Impressive.</p>
+      <p><a href="https://github.com/pierre-nutyx?tab=activity">Pierre</a> for the great job done on kde5. NuTyX is able to propose a working, up to date, stable and very fast version of kde5.</p>
+      <p>For all yours feedback you've send on irc, google+, various forums and github, thoses have help me to improve the quality of NuTyX</p>
+    <h3>And now</h3>
+      <p>If everything goes as it should be, this beta version should be the last one before the first RC available in the middle of august some time.</p>
   <h1>On the 2016-07-10</h1>
    <h2>NuTyX 8.2-beta available with cards 2.1.83</h2>
     <h3>What's news</h3>

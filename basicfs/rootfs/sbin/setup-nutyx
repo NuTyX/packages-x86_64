@@ -1734,14 +1734,14 @@ setup_initrd() {
 }
 check_swap() {
 	local CHECK
-	CHECK="`fdisk -l -o device,type|grep swap|cut -d " " -f1`"
+	CHECK="`LANG=C fdisk -l -o device,type|grep swap|cut -d " " -f1`"
 	if [ -z "$CHECK" ];then
 		dialog --title "   Hmmmm   " \
 	--msgbox "    $(gettext "Swap partition not found")" 6 60
 	fi
 }
 setup_swap() {
-for i in `fdisk -l -o device,type|grep swap|cut -d " " -f1`
+for i in `LANG=C fdisk -l -o device,type|grep swap|cut -d " " -f1`
 do
 	$SETUP_LOG "setup-nutyx" "swap partition $i added in /etc/fstab"
 	echo "$i swap     swap       pri=1             0     0" >> /etc/fstab

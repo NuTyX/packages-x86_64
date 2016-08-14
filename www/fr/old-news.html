@@ -29,6 +29,37 @@
      </tr>
     </table>
  <hr>
+  <h1>Le 24-07-2016</h1>
+   <h2>NuTyX 8.2-beta-2 disponible avec cards 2.1.84</h2>
+     <p>Ces deux dernières semaines ont été très prolifique au niveau de la future 8.2.</p>
+     <p>Deux <a href="http://downloads.nutyx.org/?C=M;O=D">nouvelles ISO 64bits</a> sont proposées pour cette nouvelle version. La première (1.0G) est une version de kde5 installable kf5 5.24.0 et la deuxième (221M) est une ISO standard MINI.</p>
+     <p>Pensez à vérifier leur somme MD5 avant de les transférer sur clé USB, CD-RW ou DVD-RW</p>
+      <h3>L'installateur</h3>
+       <p>Toutes les actions sont désormées enrégistrées dans le fichier <b>/var/log/install</b>.</p>
+       <p>Une fois NuTyX installée sur votre disque dur, l'installateur vous demandera de créer un nouvel utilisateur. Modifiez les valeurs de défaut <b>user</b> et <b>Description</b> sinon cela ne fonctionnera pas</p>
+      <h3>Les nouveautées de NuTyX</h3>
+       <p>La commande <b>nu</b> est supprimée et remplacée par la commande <b>setup-nutyx</b> avec l'option <b>-cu</b>. Pour ne pas perturber les utilisateurs, un alias est disponible dans le fichier de configuration <b>.bashrc</b>:</p>
+       <pre class="output">alias nu='sudo setup-nutyx -cu'</pre>
+       <p>Le compte root n'est plus activé par défaut. Vous vous connectez désormais directement avec votre compte personnel créé lors de l'installation. Pour activer le compte root, il suffit de passer par la commande <b>setup-nutyx</b> ou <b>nu</b>, choisissez <b>root</b> comme utilisateur et spécifiez un nouveau mot de passe.</p>
+       <p>Tous les paquets ont été recompilés avec la nouvelle version du compilateur <b>gcc 6.1</b> pour assurer une stabilitée maximum.</p>
+       <p>Le fichier <b>/etc/inittab</b> est désormais responsable pour le lancement de lxdm. Avec cette methode. celui-ci se relance automatiquement si il y a une erreur à la première tentative de lancement.</p>
+       <p>Toutes les collections habituelles sont disponibles. Les ports des collections <b>lxde et lxde-extra</b> sont désormais intégrés dans les collections standards <b>gui et gui-extra</b>.</p>
+       <p>Vous pouvez consulter <a href="https://github.com/NuTyX/core/commits/master">le changelog pour connaître les mise à jour sur le système core</a></p>
+      <h3>Cards 2.1.84</h3>
+       <p>Deux nouveaux scripts sont ajoutés <b>build-port</b> et <b>build-collection</b>, ils permettent donc de construire respectivement un ensemble de ports et un ensemble de collection. Vous trouverez plus d'info sur <a href="https://github.com/NuTyX/cards/commits/master">le projet de cards</a></p>
+       <p><b>cards</b> permet désormais d'effacer une collection complète, une suite de paquets ou un groupe de paquets. La collection d'un paquet installé est également stocké dans la base de données.</p>
+       <p><b>cards</b> stocke désormais le nom de la collection, du groupe et de la famille du paquet. Avec ces informations supplémentaires, il est donc possible d'obtenir des informations plus filtrées à l'affichage de la sortie de la commande <b>cards list</b> par exemple.</p>
+    <h3>Le script d'installation</h3>
+      <p>Le script <b>bash</b> <a href="http://downloads.nutyx.org/install-nutyx-8.2-beta-2">install-nutyx-8.2-beta-2</a> permet d'installer NuTyX depuis votre NuTyX 8.1 stable ou depuis n'importe quel autre distribution.</p>
+    <h3>Le site nutyx.org</h3>
+      <p>Hazel Russman a relu les pages anglaises du site. La documentation anglaise est désormais beaucoup plus proche de la version française.</p>
+      <p>Une <a href="build-bot.html">nouvelle page explique</a> comment utiliser le script <b>enter-nutyx</b> (sera renommé en build-collection). Cet article est surtout utile pour les packagers</p>
+    <h3>Remerciements</h3>
+      <p>Merci <a href="https://github.com/littleoldlady?tab=activity>">Hazel Russman</a> pour l'énorme travail de traduction fait en si peu de temps. Impressionnant</p>
+      <p>Merci <a href="https://github.com/pierre-nutyx?tab=activity">Pierre</a> pour le superbe travail effectué sur kde5. NuTyX propose une kde5 très à jour, très stable, très rapide et très fonctionnelle</p>
+      <p>Merci pour tous vos retours de bugs envoyés sur irc, google+, différents forums et github, cela m'a permit d'améliorer la qualitée de NuTyX</p>
+    <h3>La suite</h3>
+      <p>Si tout se passe comme prévu, cette version beta sera la dernière avant la RC1 qui devrait être dispo ds le courant du mois d'août</p>
   <h1>Le 10-07-2016</h1>
    <h2>NuTyX 8.2-beta disponible avec cards 2.1.83</h2>
     <h3>Les nouveautées</h3>

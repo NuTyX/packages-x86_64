@@ -1,13 +1,11 @@
 version=2.24
 source=(\
 http://ftp.gnu.org/gnu/glibc/glibc-$version.tar.xz
-http://www.linuxfromscratch.org/patches/lfs/development/glibc-2.23-upstream_fixes-1.patch
 )
 
 build()
 {
 cd glibc-$version
-patch -Np1 -i ../glibc-$version-upstream_fixes-1.patch
 
 mkdir -v build
 cd build
