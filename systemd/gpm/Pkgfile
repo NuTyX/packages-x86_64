@@ -9,9 +9,6 @@ release=3
 source=(http://www.nico.schottelius.org/software/$name/archives/$name-$version.tar.bz2)
 
 build() {
-	source /etc/blfs-systemd-units
-	wget  http://www.linuxfromscratch.org/blfs/downloads/svn/$units-$unitsversion.tar.bz2
-	tar xvf $units-$unitsversion.tar.bz2
 
 	cd $name-$version
 	./autogen.sh
@@ -25,6 +22,19 @@ build() {
 	ln -sv libgpm.so.2.1.0 $PKG/usr/lib/libgpm.so
 	install -v -m644 conf/gpm-root.conf $PKG/etc
 
-	cd ../$units-$unitsversion
-	make DESTDIR=$PKG install-gpm
+	# unit
+	install -d -m 755 $PKG/etc/default
+	install -d -m 755 $PKG/usr/lib/tmpfiles.d
+	install -d -m 755 $PKG/lib/systemd/system
+	cat > $PKG/lib/systemd/system/gpm.service << "EOF"
+[Unit]
+Description=Virtual console mouse server
+
+[Service]
+Type=forking
+ExecStart=/usr/sbin/gpm -m /dev/input/mice -t imps2
+
+[Install]
+WantedBy=multi-user.target
+EOF
 }
