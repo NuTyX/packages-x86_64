@@ -159,6 +159,8 @@ ro="ro"
 rootflags=
 device=
 verbose="no"
+fromdev=/dev/sdb1
+fromiso=
 
 . /lib/lsb/init-functions
 
@@ -174,6 +176,8 @@ for param in $cmdline ; do
     overlayroot=*) overlayroot=${param#overlayroot=} ;;
     rootfstype=* ) rootfstype=${param#rootfstype=}   ;;
     rootflags=*  ) rootflags=${param#rootflags=}     ;;
+    fromdev=*    ) fromdev=${param#fromdev=}         ;;
+    fromiso=*    ) fromiso=${param#fromiso=}         ;;
     ro           ) ro="ro"                           ;;
     rw           ) ro="rw"                           ;;
     quiet        ) export verbose="no"               ;;
@@ -218,7 +222,16 @@ if [ "$root" == "" ]; then
 		if [ -d /media/cdrom/isolinux/boot ]; then
 			do_mount_in_ram /media/cdrom/isolinux/boot
 		else
-			do_mount_in_ram /boot
+ 			if [ -n "$fromiso" ]; then
+ 				mkdir -p /media/{fromdev,cdrom}
+ 				mount -o ro ${fromdev} /media/fromdev
+ 				modprobe loop
+ 				mount -o loop /media/fromdev${fromiso} /media/cdrom
+ 				do_mount_in_ram /media/cdrom/isolinux/boot
+ 			else
+ 				do_mount_in_ram /boot
+ 			fi
+
 		fi
 	else
 		do_mount_in_ram /boot
