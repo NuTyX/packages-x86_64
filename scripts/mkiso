@@ -1,7 +1,5 @@
 ISODIR=${LFS}/ISO
-VERSION_NUTYX=${1}
 ARCH=`uname -m`
-ISO=NuTyX_${ARCH}-${VERSION_NUTYX}
 LABEL=nutyxcd
 
 
@@ -12,11 +10,30 @@ error()	{
 
 
 main() {
+	if [ "${1}" == "-h" ] || [ "${1}" == "--help" ];then
+		echo "
+USAGE: mkiso [NuTyX-version] [kernel-version]
+
+OPTIONS: 
+
+ Arguments order need to be respected:
+
+   Arg1: [NuTyX-version]   The version of the NuTyX to propose
+   Arg2: [kernel-version]  Ovewrite the kernel version (return of uname -r command)
+"
+	exit 0
+	fi
 	if [ -z "${2}" ]; then
 		VERSION_KERNEL=`uname -r`
 	else
 		VERSION_KERNEL=${2}
 	fi
+	if [ -z "${1}" ]; then
+		VERSION_NUTYX=`date +%Y%m%d`
+	else
+		VERSION_NUTYX=${1}
+	fi
+	ISO=NuTyX_${ARCH}-${VERSION_NUTYX}
 	cd ${ISODIR} || error "cd ${ISODIR}"
 	sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" isolinux/boot.msg
 	sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" isolinux/boot.msg
@@ -30,10 +47,4 @@ main() {
 	md5sum ${ISO}.iso > ${ISO}.md5sum
 }
 
-if [ $# -lt 1 ]; then
-	echo "need to know the version of NuTyX"
-	exit 1
-fi
-
 main "$@"
-
