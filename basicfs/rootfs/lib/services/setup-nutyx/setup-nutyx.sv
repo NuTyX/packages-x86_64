@@ -422,3 +422,10 @@ msgstr "Emptying memory"
 
 msgid "Swap partition not found"
 msgstr "Swap partition not found"
+
+msgid "recommended"
+msgstr "recommended"
+
+msgid "skilled"
+msgstr "skilled"
+

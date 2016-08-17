@@ -87,8 +87,6 @@ do_mount_in_ram()
 {
 	# squasfs files are in ${1} on the initrd
 	# RW folders
-	modprobe squashfs
-	modprobe loop
 	for DIR in var run etc root
 	do
 		if [ -f ${1}/$DIR.squashfs ];then
@@ -136,16 +134,29 @@ find_media() {
 MainLoop(){
    while [ ! -f /root/boot ];
    do
-	[ "$verbose" == "no" ] || echo "Launch /etc/rc.d/init.d/setup-nutyx ..."
 	if [ "$verbose" == "yes" ]; then
-		echo "Press any key to go on ..."
-		read a
+		ListModules
+		echo "Launch /etc/rc.d/init.d/setup-nutyx ..."
 	fi
 	/etc/rc.d/init.d/setup-nutyx || problem
    done
-   [ "$verbose" == "no" ] || clear
+   clear
 }
-
+LoadModules() {
+ for i in dm-mod md-mod ehci-pci uhci-hcd uas sr_mod usb-storage loop squashfs isofs
+ do
+  if [ "$verbose" == "yes" ]; then
+    modprobe -v $i
+  else
+    modprobe $i
+  fi
+ done
+}
+ListModules() {
+  lsmod
+  echo "Press <enter> to continue ..."
+  read a
+}
 # **********
 # Begin here
 # **********
@@ -212,6 +223,7 @@ if [ -n "$rootdelay" ] ; then
 fi
 
 if [ "$root" == "" ]; then
+	LoadModules
 	if [ ! -f /etc/rc.d/init.d/setup-nutyx ]; then
 		find_media
 		if [ ! -L /dev/nutyx-cd ]; then
@@ -225,7 +237,6 @@ if [ "$root" == "" ]; then
  			if [ -n "$fromiso" ]; then
  				mkdir -p /media/{fromdev,cdrom}
  				mount -o ro ${fromdev} /media/fromdev
- 				modprobe loop
  				mount -o loop /media/fromdev${fromiso} /media/cdrom
  				do_mount_in_ram /media/cdrom/isolinux/boot
  			else
@@ -245,20 +256,26 @@ if [ "$root" == "" ]; then
 			ls -lt /etc/rc.d/init.d/setup-nutyx
 		fi
 	fi
-	# Need to restart Eudev for keyboards, screen, usb, etc
-	[ "$verbose" == "no" ] || echo "Stop udev ..."
-	do_stop_udev
-	[ "$verbose" == "no" ] || echo "Wait $rootdelay second(s) ..."
-	sleep $rootdelay
-	
+	if [ -d /lib/modules ] && [ -n "$rootdelay" ]; then
+		[ "$verbose" == "no" ] || ListModules
+		# If Eudev was already started
+		# We need to restart it for loading keyboards, screen, usb needed modules
+		[ "$verbose" == "no" ] || echo "Stop udev..."
+		do_stop_udev
+
+		[ "$verbose" == "no" ] || echo "Wait $rootdelay second(s) ..."
+		sleep $rootdelay
+	fi
 	[ "$verbose" == "no" ] || echo "Start udev ..."
         do_start_udev
+
 	[ "$verbose" == "no" ] || echo "Wait $rootdelay second(s) ..."
 	sleep $rootdelay
 
 	[ "$verbose" == "no" ] || echo "Stsrt sysklogd ..."
 	do_start_sysklogd
 	[ "$verbose" == "no" ]  && clear
+
 	MainLoop
 	root=`cat /root/boot`
 
