@@ -3,6 +3,25 @@
 # written by Alexander E. Patrakov and Jeremy Huntwork.
 # adapted by Thierry Nuttens for NuTyX
 
+copyFirmwares()
+{
+  cp -a /lib/firmware/rtlwifi \
+  $WDIR/lib/firmware > /dev/null 2>&1
+  cp -a /lib/firmware/ath6k \
+  $WDIR/lib/firmware > /dev/null 2>&1
+  cp -a /lib/firmware/RTL8192E \
+  $WDIR/lib/firmware > /dev/null 2>&1
+  cp -a /lib/firmware/bnx2x-* \
+  $WDIR/lib/firmware > /dev/null 2>&1
+  cp -a /lib/firmware/brcm \
+  $WDIR/lib/firmware > /dev/null 2>&1
+  cp -a /lib/firmware/iwlwifi-* \
+  $WDIR/lib/firmware > /dev/null 2>&1
+  cp -a /lib/firmware/radeon \
+  $WDIR/lib/firmware > /dev/null 2>&1
+  cp -a /lib/firmware/ar3k \
+  $WDIR/lib/firmware > /dev/null 2>&1
+}
 copy()
 {
   local file
@@ -35,7 +54,7 @@ if [ -n "$KERNEL_VERSION" ] && [ ! -d "/lib/modules/$1" ] ; then
   exit 1
 fi
 
-printf "Creating $INITRAMFS_FILE... "
+printf "Creating $INITRAMFS_FILE... \n"
 
 binfiles="sh cat clear cut date grep cp dd hostname killall ls mkdir mknod more mount mountpoint chmod"
 binfiles="$binfiles umount stty sed sleep ln rm uname"
@@ -224,34 +243,26 @@ chmod 755 $WDIR/lib/udev/do_start_clock
 
 # Install the kernel modules if requested
 if [ -n "$KERNEL_VERSION" ]; then
-  find                                                                              \
-     /lib/modules/$KERNEL_VERSION/kernel/{arch,crypto,fs,kernel,lib,mm,security}    \
-     /lib/modules/$KERNEL_VERSION/kernel/drivers/{ata,base,block,cdrom,hid,md,firewire} \
-     /lib/modules/$KERNEL_VERSION/kernel/drivers/{scsi,message,virtio}   \
-     /lib/modules/$KERNEL_VERSION/kernel/drivers/usb/{core,common,host,storage}     \
-     -type f 2> /dev/null | cpio --make-directories -p --quiet $WDIR
+  for i in dm-mod md-mod ehci-pci uhci-hcd uas usb-common usb-storage loop sr_mod squashfs isofs
+  do
+    d=`modinfo $i|grep depends|cut -d ":" -f2|sed "s@ @@g"|sed "s@,@ @g"`
+    for j in $d
+    do
+      find /lib/modules/ -type f -name $j* 2> /dev/null | cpio --make-directories -p --quiet $WDIR 2> /dev/null
+    done
+    find /lib/modules/ -type f -name $i* 2> /dev/null | cpio --make-directories -p --quiet $WDIR 2> /dev/null
+  done
 
-  cp /lib/modules/$KERNEL_VERSION/modules.{builtin,order}                     \
-            $WDIR/lib/modules/$KERNEL_VERSION
+  cp /lib/modules/$KERNEL_VERSION/modules.{builtin,order,symbols} \
+  $WDIR/lib/modules/$KERNEL_VERSION
 
   depmod -b $WDIR $KERNEL_VERSION
 
-  cp -a /lib/firmware/rtlwifi \
-  $WDIR/lib/firmware > /dev/null 2>&1
-  cp -a /lib/firmware/ath6k \
-  $WDIR/lib/firmware > /dev/null 2>&1
-  cp -a /lib/firmware/RTL8192E \
-  $WDIR/lib/firmware > /dev/null 2>&1
-  cp -a /lib/firmware/bnx2x-* \
-  $WDIR/lib/firmware > /dev/null 2>&1
-  cp -a /lib/firmware/brcm \
-  $WDIR/lib/firmware > /dev/null 2>&1
-  cp -a /lib/firmware/iwlwifi-* \
-  $WDIR/lib/firmware > /dev/null 2>&1
-  cp -a /lib/firmware/radeon \
-  $WDIR/lib/firmware > /dev/null 2>&1
-  cp -a /lib/firmware/ar3k \
-  $WDIR/lib/firmware > /dev/null 2>&1
+  if [ "${2}" == "-nf" ] ||  [ "${2}" == "--no-firmwares" ];then
+    printf "No firmware copied, it's for an ISO.\n"
+  else
+    copyFirmwares
+  fi
 fi
 rm -f /boot/$INITRAMFS_FILE
 # cp -a /boot $WDIR
