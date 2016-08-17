@@ -1200,21 +1200,22 @@ check_available_disk() {
 		--msgbox " $(gettext "Please stop the PC and install a harddisk") " 6 60
 	else
 		# Only one disk ?
-		if [ "`lsblk -p -n -d -o NAME -e 1,3,7,11|wc -l`" == "1" ]; then
-			DISK=`lsblk -p -n -d -o NAME -e 1,3,7,11`
-			echo "$DISK" > $TMP/disk
+		if [ `echo $DISK_LIST|wc -w` -eq 1 ]; then
+			DISK=$DISK_LIST
+			echo "$DISK_LIST" > $TMP/disk
 		fi
 		CHECK_HD_OK="yes"
 	fi
 }
 check_available_partition() {
 	unset PARTITION_LIST
+	local PARTITION_FULL_LIST
 	if [ "$CHECK_HD_OK" == "no" ]; then
 		check_available_disk
 		 [ "$CHECK_HD_OK" == "no" ] && return
 	fi
-	PARTITION_LIST=(`for i in $DISK_LIST; do  lsblk -p -l -n -o NAME $i| tail -n +2; done`)
-	if [ -z "$PARTITION_LIST" ];then
+	PARTITION_FULL_LIST="`LANG=C fdisk -l -o device,type|grep ^/dev|cut -d " " -f1`"
+	if [ -z "$PARTITION_FULL_LIST" ];then
 		dialog --no-cancel \
 		--title " $(gettext "No partition available") " \
 		--msgbox " $(gettext "Please create/modify yours partitions") " 0 0
@@ -1222,13 +1223,21 @@ check_available_partition() {
 		setup_partition
 	else
 		check_swap
+		for i in ${PARTITION_FULL_LIST}
+		do
+			[ "`lsblk -p -n -d -o LABEL $i`" == "nutyxcd" ] && continue
+			PARTITION_LIST="$PARTITION_LIST $i"
+		done
+		for i in ${SWAP_LIST}
+		do
+			PARTITION_LIST=`echo ${PARTITION_LIST}| sed "s@$i@@"`
+		done
 		# Only one partition ?
-		if [ "`lsblk -p -n -d -o NAME -e 1,3,7,11|wc -l`" == "1" ]; then
+		if [ `echo $PARTITION_LIST|wc -w` -eq 1 ];then
 			# Only one disk
-			DISK=`lsblk -p -n -d -o NAME -e 1,3,7,11`
-			if [ "`lsblk -p -n -l -o NAME -e 1,3,7,11 $DISK|tail -n +2|wc -l`" == "1" ]; then
-				echo "PARTITION=$PARTITION" > /dev/tty2
-				PARTITION=`lsblk -p -n -l -o NAME -e 1,3,7,11 $DISK|tail -1`
+			if [ `echo $DISK_LIST|wc -w` -eq 1 ]; then
+				echo "PARTITION=$PARTITION_LIST" > /dev/tty2
+				PARTITION=$PARTITION_LIST
 				CHECK_SINGLE_PARTITION="yes"
 				echo "CHECK_SINGLE_PARTITION=$CHECK_SINGLE_PARTITION"  > /dev/tty2
 			fi
@@ -1254,11 +1263,12 @@ $(gettext "Thank you for installing NuTyX") \
 " 0 0
 }	
 setup_partition() {
+	unset DISK_LIST
+	unset PARTITION_LIST
+	unset DISK
 	local retval result
-	if [ "$CHECK_HD_OK" == "no" ]; then
-		check_available_disk
-		[ "$CHECK_HD_OK" == "no" ] && return
-	fi
+	check_available_disk
+	[ "$CHECK_HD_OK" == "no" ] && return
 	retval=""
 	if [ -z $DISK ]; then
 		select_disk "$(gettext "Create all your partitions")"
@@ -1303,13 +1313,14 @@ setup_format() {
 	dialog --title " $(gettext "Available file systems") " \
 	--colors --menu " $(gettext "Choose the file system you want to use for the partition") \
 \Zb\Z1$PARTITION\Zn" 0 0 0 \
-		"xfs" "$(gettext "High performance journaling file system create by SGI")" \
-		"jfs" "$(gettext "Journaling file system create by IBM")" \
-		"reiserfs" "$(gettext "Very stable file system but not maintain anymore")" \
-		"ext4" "$(gettext "Next generation of Ext3 file system")" \
+		"btrfs" "$(gettext "New promising file system") ($(gettext "recommended"))" \
+		"ext4" "$(gettext "Next generation of Ext3 file system") ($(gettext "recommended"))" \
 		"ext3" "$(gettext "Journaling version of Ext2 file system")"  \
 		"ext2" "$(gettext "Standard file system Ext2")" \
-		"btrfs" "$(gettext "New promising file system")" 2> $TMP/result
+		"reiserfs" "$(gettext "Very stable file system but not maintain anymore")" \
+		"xfs" "$(gettext "High performance journaling file system create by SGI")" \
+    "jfs" "$(gettext "Journaling file system create by IBM")" \
+		2> $TMP/result
 		result=`cat $TMP/result`
 		if [ ! "$result" == "" ]; then
 			dialog --title " $(gettext "Launch the format process ?") " \
@@ -1370,7 +1381,7 @@ install_nutyx() {
 		echo "$PCT"
 		N=$((N+1))
 	done
-	echo "95"
+	echo "92"
 	chmod 750 ${2}/root
 	mkdir ${2}/boot 2>/dev/null
 	[ "`uname -m`" == "x86_64" ] && ln -svf lib ${2}/lib64
@@ -1386,6 +1397,7 @@ install_nutyx() {
 	etc/fstab \
 	etc/localtime \
 	etc/network \
+  etc/mdadm.conf \
 	$TEXTDOMAINDIR
 	do
 		if [ -f /$FILE ] || [ -d /$FILE ];then
@@ -1407,7 +1419,16 @@ install_nutyx() {
 	do
 		[ ! -d ${2}/$DIR ] &&	mkdir ${2}/$DIR
 	done
+	mknod -m 640 ${2}/dev/console c 5 1
+	mknod -m 664 ${2}/dev/null    c 1 3
 	chmod 1777 ${2}/tmp
+	echo "95"
+	if [ -f /etc/mdadm.conf ]; then
+		mkinitramfs `uname -r` > /dev/null
+		rm ${2}/boot/initrd
+		mv /boot/initrd-`uname -r` ${2}/boot/initrd-`uname
+		ln -sf initrd-`uname -r` ${2}/boot/initrd
+	fi
 	echo "100") |
 	dialog --title "$(gettext "Install NuTyX")" --gauge "$(gettext "Please wait") ..." 6 50
 	$SETUP_LOG "setup-nutyx" "Install NuTyX on ${PARTITION} done"
@@ -1426,10 +1447,6 @@ setup_install() {
     check_available_partition
     [ "$CHECK_PART_OK" == "no" ] && return
   fi
-  if [ -z $DISK ]; then
-		select_disk "$(gettext "Install NuTyX")"
-		[ "$DISK" == "no" ] && return
-	fi
 	echo "PARTITION=$PARTITION" > /dev/tty2
 	echo "CHECK_SINGLE_PARTITION=$CHECK_SINGLE_PARTITION" > /dev/tty2
 	[ "$CHECK_SINGLE_PARTITION" == "no" ] && unset PARTITION
@@ -1671,8 +1688,8 @@ setup_initrd() {
 	"$(gettext "Keyboard")" "$(gettext "Configure the keyboard") ($(gettext "optional"))" \
 	"$(gettext "Partitioning")" "$(gettext "Create all your partitions") ($(gettext "optional"))" \
 	"$(gettext "Format")" "$(gettext "Format a partition") ($(gettext "optional"))" \
+	"$(gettext "Boot")" "$(gettext "Configure the boot of the PC") ($(gettext "optional")) ($(gettext "skilled"))" \
 	"$(gettext "Install")" "$(gettext "Install NuTyX")" \
-	"$(gettext "Boot")" "$(gettext "Configure the boot of the PC") ($(gettext "optional"))" \
 	"$(gettext "Clock")" "$(gettext "Date and time settings") ($(gettext "optional"))" \
 	"$(gettext "Console")" "$(gettext "Open a console")" \
 	"$(gettext "Restart")" "$(gettext "Reboot the PC")" \
@@ -1733,15 +1750,15 @@ setup_initrd() {
 
 }
 check_swap() {
-	local CHECK
-	CHECK="`LANG=C fdisk -l -o device,type|grep swap|cut -d " " -f1`"
-	if [ -z "$CHECK" ];then
+	unset SWAP_LIST
+	SWAP_LIST="`LANG=C fdisk -l -o device,type|grep swap|cut -d " " -f1`"
+	if [ -z "${SWAP_LIST}" ];then
 		dialog --title "   Hmmmm   " \
 	--msgbox "    $(gettext "Swap partition not found")" 6 60
 	fi
 }
 setup_swap() {
-for i in `LANG=C fdisk -l -o device,type|grep swap|cut -d " " -f1`
+for i in ${SWAP_LIST}
 do
 	$SETUP_LOG "setup-nutyx" "swap partition $i added in /etc/fstab"
 	echo "$i swap     swap       pri=1             0     0" >> /etc/fstab
