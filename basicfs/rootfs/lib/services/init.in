@@ -202,10 +202,10 @@ if [ -d /lib/modules ] && [ -n "$rootdelay" ]; then
         do_start_udev
 fi
 
-if [ -n "$rootdelay" ] && [ -f /sbin/mdadm ]; then 
+if [ -f /etc/mdadm.conf ]; then
 
-  [ "$verbose" == "no" ] || echo "mdadm -A -s..."
-  /sbin/mdadm -A -s
+  [ "$verbose" == "no" ] || echo "mdadm -As..."
+  /sbin/mdadm -As
 
   [ "$verbose" == "no" ] || echo "mdadm --auto-detect..."
   /sbin/mdadm --auto-detect
