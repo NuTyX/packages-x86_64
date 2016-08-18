@@ -204,6 +204,9 @@ fi
 
 if [ -n "$rootdelay" ] && [ -f /sbin/mdadm ]; then 
 
+  [ "$verbose" == "no" ] || echo "mdadm -A -s..."
+  /sbin/mdadm -A -s
+
   [ "$verbose" == "no" ] || echo "mdadm --auto-detect..."
   /sbin/mdadm --auto-detect
   ### First we activate lvm if possible
@@ -257,7 +260,6 @@ if [ "$root" == "" ]; then
 		fi
 	fi
 	if [ -d /lib/modules ] && [ -n "$rootdelay" ]; then
-		[ "$verbose" == "no" ] || ListModules
 		# If Eudev was already started
 		# We need to restart it for loading keyboards, screen, usb needed modules
 		[ "$verbose" == "no" ] || echo "Stop udev..."
@@ -279,8 +281,13 @@ if [ "$root" == "" ]; then
 	MainLoop
 	root=`cat /root/boot`
 
+	[ "$verbose" == "no" ] || echo "Stop udev ..."
+	do_stop_udev
+
 	[ "$verbose" == "no" ] || echo "Stop sysklogd ..."
 	do_stop_sysklogd
+
+	cd /
 
 	for DIR in usr lib sbin bin
 	do
