@@ -155,9 +155,9 @@ fi
 # cp -a /lib/firmware $WDIR/lib
 
 # Copy the RAID configureation file if present
-# if [ -f /etc/mdadm.conf ] ; then
-#  cp /etc/mdadm.conf $WDIR/etc
-# fi
+if [ -f /etc/mdadm.conf ] ; then
+  cp /etc/mdadm.conf $WDIR/etc
+fi
 
 # Install the init file
 install -m0755 $DATADIR/$INITIN $WDIR/init
@@ -252,6 +252,9 @@ if [ -n "$KERNEL_VERSION" ]; then
     done
     find /lib/modules/ -type f -name $i* 2> /dev/null | cpio --make-directories -p --quiet $WDIR 2> /dev/null
   done
+  find \
+  /lib/modules/$KERNEL_VERSION/kernel/drivers/md \
+  -type f 2> /dev/null | cpio --make-directories -p --quiet $WDIR 2> /dev/null
 
   cp /lib/modules/$KERNEL_VERSION/modules.{builtin,order,symbols} \
   $WDIR/lib/modules/$KERNEL_VERSION

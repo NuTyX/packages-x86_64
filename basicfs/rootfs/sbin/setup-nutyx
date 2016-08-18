@@ -1166,7 +1166,7 @@ select_partition() {
 		--title " ${1} " \
 		--menu " $(gettext "Choose the partition you want to use for this operation") " \
 		0 0 0 \
-		`for PARTITION in ${PARTITION_LIST[@]}; do  lsblk -p -n -o NAME,SIZE $PARTITION; done`  2>$TMP/part
+		`for PARTITION in ${PARTITION_LIST}; do lsblk -d -p -n -o NAME,SIZE $PARTITION; done`  2>$TMP/part
 		retval=$?
 		result=`cat $TMP/part`
 		case $retval in
@@ -1189,8 +1189,8 @@ select_partition() {
 check_available_disk() {
 	unset DISK_LIST
 	local DISK_FULL_LIST
-	DISK_FULL_LIST=(`lsblk -p -n -d -o NAME -e 1,3,7,11`)
-	for i in ${DISK_FULL_LIST[@]}; do
+	DISK_FULL_LIST=`lsblk -p -n -d -o NAME -e 1,3,7,11`
+	for i in $DISK_FULL_LIST; do
 		[ "`lsblk -p -n -d -o LABEL $i`" == "nutyxcd" ] && continue
 		DISK_LIST="$DISK_LIST $i"
 	done
@@ -1214,8 +1214,8 @@ check_available_partition() {
 		check_available_disk
 		 [ "$CHECK_HD_OK" == "no" ] && return
 	fi
-	PARTITION_FULL_LIST="`LANG=C fdisk -l -o device,type|grep ^/dev|cut -d " " -f1`"
-	if [ -z "$PARTITION_FULL_LIST" ];then
+	PARTITION_LIST=`for i in $DISK_LIST; do lsblk -p -l -n -o NAME $i| tail -n +2; done`
+	if [ -z "$PARTITION_LIST" ];then
 		dialog --no-cancel \
 		--title " $(gettext "No partition available") " \
 		--msgbox " $(gettext "Please create/modify yours partitions") " 0 0
@@ -1223,11 +1223,6 @@ check_available_partition() {
 		setup_partition
 	else
 		check_swap
-		for i in ${PARTITION_FULL_LIST}
-		do
-			[ "`lsblk -p -n -d -o LABEL $i`" == "nutyxcd" ] && continue
-			PARTITION_LIST="$PARTITION_LIST $i"
-		done
 		for i in ${SWAP_LIST}
 		do
 			PARTITION_LIST=`echo ${PARTITION_LIST}| sed "s@$i@@"`
@@ -1424,10 +1419,13 @@ install_nutyx() {
 	chmod 1777 ${2}/tmp
 	echo "95"
 	if [ -f /etc/mdadm.conf ]; then
+		cd /
+		mkdir /boot
 		mkinitramfs `uname -r` > /dev/null
 		rm ${2}/boot/initrd
-		mv /boot/initrd-`uname -r` ${2}/boot/initrd-`uname
+		mv /boot/initrd-`uname -r` ${2}/boot/initrd-`uname -r`
 		ln -sf initrd-`uname -r` ${2}/boot/initrd
+		cd -
 	fi
 	echo "100") |
 	dialog --title "$(gettext "Install NuTyX")" --gauge "$(gettext "Please wait") ..." 6 50
