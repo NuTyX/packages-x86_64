@@ -1,9 +1,11 @@
-# Description: Library for applications dealing with netlink sockets
-# URL: http://people.suug.ch/~tgr/libnl
-# Packager: pierre at nutyx dot org
+description="Collection of Libraries providing APIs to netlink protocol based Linux kernel interfaces"
+
+url="http://people.suug.ch/~tgr/libnl"
+
+packager="pierre at nutyx dot org"
 
 name=libnl
-version=3.2.27
+version=3.2.28
 release=1
 
 source=(https://github.com/thom311/libnl/releases/download/libnl$(echo $version|sed 's/\./_/g')/$name-$version.tar.gz)
@@ -14,4 +16,9 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
+# Doc
+mkdir -p $PKG/usr/share/doc/$name-$version
+wget https://github.com/thom311/libnl/releases/download/libnl$(echo $version|sed 's/\./_/g')/libnl-doc-$version.tar.gz
+tar -xf libnl-doc-$version.tar.gz --strip-components=1 --no-same-owner \
+-C $PKG/usr/share/doc/$name-$version
 }
