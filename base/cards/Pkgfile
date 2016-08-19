@@ -3,17 +3,18 @@ url="https://github.com/NuTyX/cards"
 maintainer="tnut at nutyx dot org"
 packager="tnut at nutyx dot org"
 
+alias=(card)
+
 PKGMK_IGNORE_RUNTIMEDEPS="no"
 PKGMK_GROUPS=(devel doc man)
 name=cards
-version=2.1.87
-release=2
+version=2.1.88
+release=1
 
-source=(http://downloads.nutyx.org/files/cards-$version.tar.gz
-	$name-$version-install-1.patch)
+source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
 build () {
 cd $name-$version
-patch -Np1 -i ../$name-$version-install-1.patch
+
 make all
 make DESTDIR=$PKG install
 mkdir -p $PKG/{etc,usr}/ports
