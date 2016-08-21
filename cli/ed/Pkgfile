@@ -1,0 +1,22 @@
+Description: A POSIX-compliant line-oriented text editor
+URL: http://www.gnu.org/software/ed/ed.html
+Packager: pierre at nutyx dot org
+
+name=ed
+version=1.13
+release=1
+
+source=(https://ftp.gnu.org/gnu/ed/$name-$version.tar.gz)
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/ \
+              --bindir=/usr/bin \
+              --mandir=/usr/share/man \
+              --infodir=/usr/share/info \
+              "CFLAGS=$CFLAGS" \
+              "LDFLAGS=$LDFLAGS"
+
+  make
+  make DESTDIR=$PKG install
+}
