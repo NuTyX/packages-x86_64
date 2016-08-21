@@ -4,8 +4,8 @@
 # Depends on: shared-mime-info gtk2 python-gtk curl libexif xorg-libxmu xorg-libxpm openexr gegl poppler libmng alsa-lib babl 
 
 name=gimp
-version=2.8.16
-release=2
+version=2.8.18
+release=1
 
 source=(http://download.gimp.org/pub/gimp/v2.8/gimp-$version.tar.bz2)
 
@@ -16,6 +16,8 @@ cd $name-$version
 sed -i '/gegl/s/2/3/' configure.ac
 sed -i '70,75 d' app/core/gimpparamspecs-duplicate.c
 autoreconf -fiv
+
+sed -i "/seems to be moved/s/^/#/" ltmain.sh
 
 ./configure --prefix=/usr --sysconfdir=/etc \
 --enable-mp --enable-gimp-console --enable-gimp-remote \
