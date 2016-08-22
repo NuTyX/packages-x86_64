@@ -1,6 +1,6 @@
 # Depends on: kf5-extra-cmake-modules kf5-kdoctools telepathy-kde-common-internals kf5-kidletime 
 
-description="Sits in KDED and takes care of various bits of system integration "
+description="Sits in KDED and takes care of various bits of system integration"
 url="http://community.kde.org/Real-Time_Communication_and_Collaboration"
 packager="pierre at nutyx dot org"
 alias=(ktp-kded-module)
@@ -9,7 +9,7 @@ _name=ktp-kded-module
 release=2
 
 build() {
-  mkdir -p build
+  mkdir build
   cd build
   cmake ../${_name}-$version \
     -DCMAKE_INSTALL_PREFIX=/usr  \
