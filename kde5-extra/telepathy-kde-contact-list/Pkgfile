@@ -1,6 +1,6 @@
 # Depends on: kf5-extra-cmake-modules kf5-kdoctools telepathy-kde-common-internals 
 
-description="KDE Telepathy contact list application "
+description="KDE Telepathy contact list application"
 url="http://community.kde.org/Real-Time_Communication_and_Collaboration"
 packager="pierre at nutyx dot org"
 alias=(ktp-contact-list)
@@ -9,7 +9,7 @@ _name=ktp-contact-list
 release=2
 
 build() {
-  mkdir -p build
+  mkdir build
   cd build
   cmake ../ktp-contact-list-$version \
     -DCMAKE_INSTALL_PREFIX=/usr  \
