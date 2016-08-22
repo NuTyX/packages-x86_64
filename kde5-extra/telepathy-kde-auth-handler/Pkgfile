@@ -12,8 +12,8 @@ build() {
   mkdir -p build
   cd build
   cmake ../ktp-auth-handler-$version \
-    -DCMAKE_INSTALL_PREFIX=/usr  \
-    -DCMAKE_BUILD_TYPE=Release   \
+    -DCMAKE_INSTALL_PREFIX=/usr      \
+    -DCMAKE_BUILD_TYPE=Release       \
     -DBUILD_TESTING=OFF
   make
   make DESTDIR=$PKG install
