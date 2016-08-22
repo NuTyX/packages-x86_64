@@ -1,6 +1,6 @@
 # Depends on: kf5-extra-cmake-modules kf5-kdoctools telepathy-kde-common-internals kf5-kio
 
-description="A File manager plugin to launch a file transfer job with a specified contact "
+description="A File manager plugin to launch a file transfer job with a specified contact"
 url="http://community.kde.org/Real-Time_Communication_and_Collaboration"
 packager="pierre at nutyx dot org"
 alias=(ktp-send-file)
@@ -9,7 +9,7 @@ _name=ktp-send-file
 release=2
 
 build() {
-  mkdir -p build
+  mkdir build
   cd build
   cmake ../ktp-send-file-$version \
     -DCMAKE_INSTALL_PREFIX=/usr  \
