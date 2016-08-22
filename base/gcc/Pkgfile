@@ -3,18 +3,15 @@
 # Packagers: pierre at nutyx dot org, tnut at nutyx dot org
 # Maintainers: Jakub Jelinek (jakub at redhat dot com),Manuel López-Ibáñez (manu at gcc dot gnu.org,Giovanni Bajo,Peter Barada,Gerald Baumgartner and a lot more.
 name=gcc
-version=6.1.0
-release=3
+version=6.2.0
+release=1
 
-source=(http://ftp.gnu.org/gnu/gcc/gcc-$version/gcc-$version.tar.bz2
-	 http://www.linuxfromscratch.org/patches/lfs/development/$name-$version-asan-1.patch)
+source=(http://ftp.gnu.org/gnu/gcc/gcc-$version/gcc-$version.tar.bz2)
 PKGMK_GROUPS=(devel man doc)
 
 build()
 {
 cd gcc-$version
-
-patch -Np1 -i ../$name-$version-asan-1.patch
 
 mkdir -v ../gcc-build
 cd ../gcc-build
