@@ -1,6 +1,6 @@
 # Depends on: kf5-extra-cmake-modules boost telepathy-kde-common-internals qt5-gstreamer
 
-description="Voice/Video Call UI for Telepathy "
+description="Voice/Video Call UI for Telepathy"
 url="http://community.kde.org/Real-Time_Communication_and_Collaboration"
 packager="pierre at nutyx dot org"
 alias=(ktp-call-ui)
@@ -12,8 +12,8 @@ build() {
   mkdir -p build
   cd build
   cmake ../ktp-call-ui-$version \
-    -DCMAKE_INSTALL_PREFIX=/usr  \
-    -DCMAKE_BUILD_TYPE=Release   \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release  \
     -DBUILD_TESTING=OFF
   make
   make DESTDIR=$PKG install
