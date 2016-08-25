@@ -1,14 +1,15 @@
-Description: A POSIX-compliant line-oriented text editor
-URL: http://www.gnu.org/software/ed/ed.html
-Packager: pierre at nutyx dot org
+description="A POSIX-compliant line-oriented text editor"
+url="http://www.gnu.org/software/ed/ed.html"
+Packager="pierre at nutyx dot org"
 
 name=ed
 version=1.13
 release=1
 
-source=(https://ftp.gnu.org/gnu/ed/$name-$version.tar.gz)
+source=(https://ftp.gnu.org/gnu/ed/$name-$version.tar.lz)
 
 build() {
+  bsdtar -xf $name-$version.tar.lz
   cd $name-$version
   ./configure --prefix=/ \
               --bindir=/usr/bin \
