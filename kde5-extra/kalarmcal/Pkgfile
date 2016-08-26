@@ -1,8 +1,9 @@
-# Depends on : kf5-extra-cmake-modules boost kf5-kdoctools kf5-kdelibs4support akonadi kcalcore kholidays kidentitymanagement kdepim
+# Depends on : kf5-extra-cmake-modules boost kf5-kdoctools  akonadi kcalcore kholidays kidentitymanagement
 
 description="Library to provides access and handling of KAlarm calendar data "
 url="https://projects.kde.org/kalarcal"
 packager="pierre at nutyx dot org"
+
 name=kalarmcal
 version=16.08.0
 release=3
@@ -10,7 +11,7 @@ release=3
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build() {
-  mkdir -p build
+  mkdir build
   cd build
   cmake ../$name-$version \
     -DCMAKE_BUILD_TYPE=Release \
