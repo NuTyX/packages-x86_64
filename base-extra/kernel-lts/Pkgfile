@@ -17,7 +17,7 @@ alias=(linux-lts)
 version=4.4.19
 _version=${version:0:3}
 
-release=3
+release=4
 
 # Virtualbox
 vb_version=5.1.4
@@ -97,7 +97,7 @@ sed -e "/BRCM_WLAN_IFNAME/s:eth:wlan:" \
 	-i src/wl/sys/wl_linux.c
 BUILD_NOPEDANTIC=1 make -C $SRC/linux-${_version} M=`pwd`
 install -m 0644 -D wl.ko $PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/zzzz/wl.ko
-install -Dm644 broadcom-wl.modprobe.d $PKG/etc/sysconfigmodprobe.d/broadcom-wl.conf
+install -Dm644 broadcom-wl.modprobe.d $PKG/etc/modprobe.d/broadcom-wl.conf
 
 # Module nvidia
 cd $SRC
