@@ -5,22 +5,31 @@ url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 alias=(qt5webengine)
 
-run=(xorg-xtrans xorg-libfs xorg-libxxf86dga gstreamer cdparanoia gstreamer-plugins-base ruby postgresql gstreamer.fr gstreamer-plugins-base.fr)
+run=(xorg-xtrans xorg-libfs xorg-libxxf86dga gstreamer cdparanoia gstreamer-plugins-base ruby postgresql)
 
 name=qt5-webengine
-release=2
+release=3
 
 _version=${version/-/}
 _name=qtwebengine-opensource-src-${_version}
 _namefqn="${name/5-/}-opensource-src-${_version}"
 
-source=( http://download.qt.io/official_releases/qt/${version%.*}/${_version}/submodules/${_namefqn}.tar.xz )
+source=(http://download.qt.io/official_releases/qt/${version%.*}/${_version}/submodules/${_namefqn}.tar.xz
+        qt5-webengine-fno-delete-null-pointer-checks.patch 
+        qt5-webengine-fno-delete-null-pointer-checks-2.patch)
        
 build() {
   QT5DIR=/usr
   QT5PREFIX=/usr
   QT5BINDIR=/usr/lib/qt5/bin
   SAVEPATH=$PATH
+
+  # Workaround for v8 segfaults with GCC 6
+  cd ${_namefqn}
+  patch -p1 -i $SRC/qt5-webengine-fno-delete-null-pointer-checks.patch
+  cd src/3rdparty
+  patch -p1 -i $SRC/qt5-webengine-fno-delete-null-pointer-checks-2.patch
+  cd $SRC
 
   mkdir build
   cd build
