@@ -1,8 +1,9 @@
 . lib/lsb/init-functions
 VERSION=$(grep version var/lib/pkg/nutyx-version |cut -d " " -f2)
 [ ! -d etc/ports ] && mkdir -p etc/ports
-for i in base cli gui base-extra cli-extra gui-extra xfce4 xfce4-extra kde5 kde5-extra \
-gnome gnome-extra enlightenment enlightenment-extra mate mate-extra
+for i in base cli gui base-extra cli-extra gui-extra \
+xfce4 xfce4-extra kde5 kde5-extra \
+gnome gnome-extra mate mate-extra
 
 do
    if [ ! -f etc/ports/$i.cards ]; then
