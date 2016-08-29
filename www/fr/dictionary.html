@@ -180,8 +180,37 @@ make DESTDIR=$PKG install
      <p>La liste des <a href="#ID006">dépendances</a> de compilation d'un <a href="#ID005">paquet</a> 
      se définie à la ligne:</p>
 <pre class="output"># Depends on: glib atk pango gtk xorg-libx11</pre>
-     <p>du <a href="#ID080">Pkgfile</a>.</p> 
-     
+     <p>du <a href="#ID080">Pkgfile</a>.</p>
+     <a name='ID300'></a>
+    <h2>Les alias</h2>
+     <p>Il faut savoir que certaines commandes mentionnées sur les pages du site peuvent être remplacées par des alias, c'est à dire un racourci de la commande originale. Si vous souhaitez connaître la liste des alias, utilisez la commande:
+<pre class="command_user"><kbd>alias</kbd></pre>
+     </p>
+     <p>Si vous souhaitez modifier les alias définis dans votre NuTyX, vous devez éditer le fichier <b><span style="color: #007a00;">.bashrc</span></b> qui se trouve dans le dossier personnel du compte concerné.</p>
+     <div>Extrait de <b>/root/.bashrc</b>:
+     </div>
+     <pre class="output">if [ -f "/etc/bashrc" ] ; then
+  source /etc/bashrc
+fi
+if [ $EUID -eq 0 ]; then
+         alias del='cards remove'
+         alias get='cards install'
+         alias up='cards install -u'
+         alias check='cards sync;cards diff'
+else
+         alias del='sudo cards remove'
+         alias get='sudo cards install'
+         alias up='sudo cards install -u'
+         alias check='sudo cards sync;sudo cards diff'
+fi
+alias search='cards search'
+alias ll='ls -l'
+alias l='ls -alh'
+alias duh='du -h --max-depth=1'
+alias dfh='df -h'
+alias pkgfind='cards list| grep -i'
+# End ~/.bashrc</pre>
+ 
    <hr>
   <p class="updated">Dernière mise à jour 24-04-2016 11:03</p>
      <footer>

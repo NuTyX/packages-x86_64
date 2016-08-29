@@ -46,10 +46,8 @@
     <p>Essayez les commandes:</p>
     <pre class="command_user"><kbd>sudo cards sync
 sudo cards diff</kbd></pre>
-    <pre class="output">Synchronizing /var/lib/pkg/depot/gui from http://..<br />/var/lib/pkg/depot/cli//MD5SUM<br />..<br />Differences between installed packages and the depot of binaries:<br /><br />Package                        Installed                 Available in the depot of binaries
-
-gcc                             4.9.1                     4.9.2
-glibc                           2.20                      2.21</pre>
+    <pre class="output">Synchronizing /var/lib/pkg/depot/gui from http://..<br />/var/lib/pkg/depot/cli//MD5SUM<br />..<br />gcc
+glibc</pre>
 
    <h2>Mettre à jour un paquet</h2>
     <p>Pour mettre à jour un paquet, la commande <b>cards install -u</b> suivi du logiciel sera utilisée. Il faut évidemment que la mise à jour soit possible :</p>
@@ -61,50 +59,20 @@ glibc                           2.20                      2.21</pre>
     <p>retournera tous les paquets dont le nom ou la description contient la <b>chaîne_à_trouver</b>. Par exemple si vous souhaitez connaître les navigateurs disponibles</p>
     <pre class="command_user"><kbd>cards search browser</kbd></pre>
     <p>devrait retourner quelque chose comme :</p>
-    <pre class="output">chromium           The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser. Include PepperFlash and libpdf plugins
-firefox            Standalone web browser from mozilla.org
+    <pre class="output">(gui-extra) google-chrome Google Chrome Browser, developer preview channel for Linux
+(gui-extra) firefox Standalone web browser from mozilla.org
 ...</pre>
    <h2>Ajout d'un paquet</h2>
     <p>Pour ajouter un paquet, la commande <b>cards install</b> suivie du nom du paquet à installer sera utilisée :</p>
-    <pre class="command_user"><kbd>cards install xfce4</kbd></pre>
+    <pre class="command_user"><kbd>sudo cards install xfce4</kbd></pre>
     <p>Le téléchargement de l'application <b>xfce4</b> commence immédiatement, une fois le paquet téléchargé, ses dépendances seront à leur tour téléchargées. Quand le téléchargement est terminé, tous les paquets seront installés dans le bon ordre. Dans cet exemple, une fois la commande terminée, vous aurez un bureau <a href="http://www.xfce.org">xfce4</a> installé sur votre NuTyX.</p>
    <h2>Ajout d'un utilisateur</h2>
-    <p>Pour ajouter un utilisateur sous NuTyX, c'est également très simple, la commande :</p>
-     <pre class="command_user"><kbd>sudo nu</kbd></pre>
-     <p>permet d'ajouter un utilisateur, elle peut être utilisée sous 2 formes avec et sans options, si elle est utilisée sans options, 2 questions vous seront demandées:</p>
-<pre class="output">Nom de l'utilisateur: francois
-Description de l'utilisateur: François Perrin</pre>
+    <p>Pour ajouter un utilisateur sous NuTyX, c'est également très simple, la commande <b>nu</b> ouvre une fenêtre de dialogue. Vous n'avez qu'a répondre aux questions en remplissant les champs à disposition:</p>
+     <pre class="command_user"><kbd>nu</kbd></pre>
+     <p>permet d'ajouter un utilisateur.</p>
+<pre class="output">Utilisateur: francois
+Description: François Perrin</pre>
      <p>Vous devez bien noter que le nom d'utilisateur ne peut pas contenir certains caractères et ne peut pas contenir d'espace ni de majuscule.</p>
-     <p>Si par contre vous souhaitez utiliser la commande avec ses options, ces dernières sont dans l'ordre suivant : la description de l'utilisateur suivi du nom de l'utilisateur:</p>
-     <pre class="command_user"><kbd>sudo nu "François Perrin" francois</kbd></pre>
-    <h2>Les alias</h2>
-     <div class="note"><img alt="[Note]" src="../graphics/note.gif"> Il faut savoir que certaines commandes mentionnées dans cet article peuvent être remplacées par des alias, c'est à dire un racourci de la commande originale. Si vous souhaitez connaître la liste des alias, utilisez la commande:
-<pre class="command_user"><kbd>alias</kbd></pre></div>
-     <div class="important"><img alt="[Important]" src="../graphics/caution.gif">Bien que ce ne soit absolument pas nécessaire, si vous souhaitez malgré tout modifier les alias définis dans votre NuTyX, vous devez éditer le fichier <b><span style="color: #007a00;">.bashrc</span></b> qui se trouve dans le dossier personnel du compte concerné. Encore une fois, cette opération n'est pas du tout indispensable et il est vivement conseillé de bien connaître le principe avant de modifier les alias prédéfinis</div>
-     <pre class="output">/root/.bashrc</pre>
-     <div>En voici un extrait:
-     </div>
-     <pre class="output">if [ -f "/etc/bashrc" ] ; then
-  source /etc/bashrc
-fi
-if [ $EUID -eq 0 ]; then
-         alias del='cards remove'
-         alias get='cards install'
-         alias up='cards install -u'
-         alias check='cards sync;cards diff'
-else
-         alias del='sudo cards remove'
-         alias get='sudo cards install'
-         alias up='sudo cards install -u'
-         alias check='sudo cards sync;sudo cards diff'
-fi
-alias search='cards search'
-alias ll='ls -l'
-alias l='ls -alh'
-alias duh='du -h --max-depth=1'
-alias dfh='df -h'
-alias pkgfind='cards list| grep -i'
-# End ~/.bashrc</pre>
    <h2>Conclusion</h2>
     <p>Vous l'avez compris, les seules commandes à connaître pour commencer à utiliser NuTyX sont donc les 2 commandes suivantes :</p>
     <pre class="command"><kbd>nu
@@ -113,7 +81,7 @@ cards</kbd></pre>
     <pre class="command_user"><kbd>cards help</kbd></pre>
     <p>Je vous souhaite beaucoup de plaisir avec votre nouvelle NuTyX installée.</p>
     <hr>
-    <p class="updated">Dernière mise à jour 22-05-2016 22:50</p>
+    <p class="updated">Dernière mise à jour 29-08-2016 07:00</p>
      <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
