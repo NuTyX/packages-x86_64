@@ -1,0 +1,88 @@
+diff --git a/scripts/pkgmk.in b/scripts/pkgmk.in
+index 10d5924..6486a73 100644
+--- a/scripts/pkgmk.in
++++ b/scripts/pkgmk.in
+@@ -34,6 +34,7 @@ E_FOOTPRINT=7  # footprint check failure
+ E_BUILD=8      # error while running 'build()'
+ E_INSTALL=9    # error while installing the package via 'pkgadd'
+ E_DEPS=10      # error while searching runtime deps via 'pkginfo -b'
++E_ALIAS=11     # error duplicate alias
+ 
+ info() {
+ 	echo "=======> $1"
+@@ -51,6 +52,19 @@ abort_on_build() {
+ have_function() {
+ 	declare -f "$1" >/dev/null
+ }
++get_collection() {
++	local FILE DIR
++	for FILE in `find .. -name $PKGMK_PKGFILE | sort`; do
++               DIR="`dirname $FILE`/"
++                if [ -d $DIR ]; then
++			if [ -z "$PKGMK_COLLECTION" ]; then
++				PKGMK_COLLECTION="`basename $DIR`"
++			else
++				PKGMK_COLLECTION="$PKGMK_COLLECTION `basename $DIR`"
++			fi
++		fi
++	done
++}
+ get_filename() {
+ 	if [[ $1 =~ ^(http|https|ftp|file)://.*/(.+) ]]; then
+ 		echo "$PKGMK_SOURCE_DIR/${BASH_REMATCH[2]}"
+@@ -128,6 +142,37 @@ check_pkgfile() {
+ 		info "$description <== $SIZE characters"
+ 		exit $E_PKGFILE
+ 	fi
++	if [ ! -z "$alias" ];then
++		_a=$alias
++		_n=$name
++		unset alias
++		get_collection
++		# Check if any alias is already a port name
++		for a in ${_a}
++		do
++			for p in $PKGMK_COLLECTION
++			do
++				[ "$p" == "${_n}" ] && continue
++				if [ "$a" == "$p" ];then
++					error "$a is a port, duplicate alias"
++					exit $E_ALIAS
++				fi
++				. ../$p/$PKGMK_PKGFILE
++				if [ ! -z $alias ];then
++					for ca in ${alias}
++					do
++						if [ "$ca" == "$a" ];then
++							error "$a is a alias of $p, duplicate alias"
++							exit $E_ALIAS
++						fi
++
++					done
++					unset alias name
++				fi
++			done
++		done
++		. $PKGMK_PKGFILE
++	fi
+ }
+ get_package_name() {
+ 	local NAME EXT
+@@ -292,7 +337,7 @@ unpack_source() {
+ 	for FILE in ${source[@]}; do
+ 		LOCAL_FILENAME=`get_filename $FILE`
+ 		case $LOCAL_FILENAME in
+-			*.tar|*.tar.gz|*.tar.Z|*.tgz|*.tar.bz2|*.tbz2|*.tar.xz|*.txz|*.tar.lzma|*.zip|*.rpm)
++			*.tar|*.tar.gz|*.tar.Z|*.tgz|*.tar.bz2|*.tbz2|*.tar.xz|*.txz|*.tar.lzma|*.zip|*.rpm|*.tar.lz)
+ 				if [ "$PKGMK_IGNORE_UNPACK" != "yes" ];then
+ 					COMMAND="bsdtar -p -o -C $SRC -xf $LOCAL_FILENAME"
+ 				else
+@@ -1027,7 +1072,7 @@ build_needed() {
+ update_collection_repo() {
+ 	local HEAD BUILD_DATE VERSION RELEASE DESCRIPTION URL MAINTAINER PACKAGER EXTENSION ALIAS GROUP
+ 	if [ -f $PKGMK_REPO ]; then
+-		for i in `tail -n +3  $PKGMK_REPO`
++		for i in `tail -n +2  $PKGMK_REPO`
+ 		do
+ 			if [ "`echo $i|cut -d "#" -f3`" != "" ];then
+ 				GROUP="`echo $i|cut -d "#" -f2|cut -d "." -f2` $GROUP"
