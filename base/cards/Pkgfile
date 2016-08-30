@@ -9,13 +9,13 @@ PKGMK_IGNORE_RUNTIMEDEPS="no"
 PKGMK_GROUPS=(devel doc man)
 name=cards
 version=2.1.89
-release=3
+release=4
 
 source=(http://downloads.nutyx.org/files/cards-$version.tar.gz
-	cards-$version-pkgmk-2.patch)
+	cards-$version-pkgmk-3.patch)
 build () {
 cd $name-$version
-patch -Np1 -i ../cards-$version-pkgmk-2.patch
+patch -Np1 -i ../cards-$version-pkgmk-3.patch
 
 make all
 make DESTDIR=$PKG install

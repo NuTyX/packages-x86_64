@@ -1,5 +1,5 @@
 diff --git a/scripts/pkgmk.in b/scripts/pkgmk.in
-index 10d5924..6486a73 100644
+index 10d5924..546fe31 100644
 --- a/scripts/pkgmk.in
 +++ b/scripts/pkgmk.in
 @@ -34,6 +34,7 @@ E_FOOTPRINT=7  # footprint check failure
@@ -30,25 +30,23 @@ index 10d5924..6486a73 100644
  get_filename() {
  	if [[ $1 =~ ^(http|https|ftp|file)://.*/(.+) ]]; then
  		echo "$PKGMK_SOURCE_DIR/${BASH_REMATCH[2]}"
-@@ -128,6 +142,37 @@ check_pkgfile() {
+@@ -128,6 +142,34 @@ check_pkgfile() {
  		info "$description <== $SIZE characters"
  		exit $E_PKGFILE
  	fi
 +	if [ ! -z "$alias" ];then
-+		_a=$alias
-+		_n=$name
-+		unset alias
 +		get_collection
 +		# Check if any alias is already a port name
-+		for a in ${_a}
++		for a in ${alias}
 +		do
 +			for p in $PKGMK_COLLECTION
 +			do
-+				[ "$p" == "${_n}" ] && continue
++				[ "$p" == "${name}" ] && continue
 +				if [ "$a" == "$p" ];then
 +					error "$a is a port, duplicate alias"
 +					exit $E_ALIAS
 +				fi
++				( unset alias
 +				. ../$p/$PKGMK_PKGFILE
 +				if [ ! -z $alias ];then
 +					for ca in ${alias}
@@ -59,16 +57,15 @@ index 10d5924..6486a73 100644
 +						fi
 +
 +					done
-+					unset alias name
-+				fi
++					unset alias
++				fi ) || exit $E_ALIAS
 +			done
 +		done
-+		. $PKGMK_PKGFILE
 +	fi
  }
  get_package_name() {
  	local NAME EXT
-@@ -292,7 +337,7 @@ unpack_source() {
+@@ -292,7 +334,7 @@ unpack_source() {
  	for FILE in ${source[@]}; do
  		LOCAL_FILENAME=`get_filename $FILE`
  		case $LOCAL_FILENAME in
@@ -77,7 +74,7 @@ index 10d5924..6486a73 100644
  				if [ "$PKGMK_IGNORE_UNPACK" != "yes" ];then
  					COMMAND="bsdtar -p -o -C $SRC -xf $LOCAL_FILENAME"
  				else
-@@ -1027,7 +1072,7 @@ build_needed() {
+@@ -1027,7 +1069,7 @@ build_needed() {
  update_collection_repo() {
  	local HEAD BUILD_DATE VERSION RELEASE DESCRIPTION URL MAINTAINER PACKAGER EXTENSION ALIAS GROUP
  	if [ -f $PKGMK_REPO ]; then
