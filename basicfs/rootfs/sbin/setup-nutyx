@@ -1178,7 +1178,7 @@ select_partition() {
 				break;;
 		esac
 	done
-	PARTITION=`cat $TMP/part|sed 's/"//g'`
+	PARTITION=`cat $TMP/part|sed 's/"//g'|sed 's/ //g'`
 	if [ -z $PARTITION ];then
 		dialog --no-cancel \
 		--title " $(gettext "No partition available") " \
@@ -1231,8 +1231,8 @@ check_available_partition() {
 		if [ `echo $PARTITION_LIST|wc -w` -eq 1 ];then
 			# Only one disk
 			if [ `echo $DISK_LIST|wc -w` -eq 1 ]; then
-				echo "PARTITION=$PARTITION_LIST" > /dev/tty2
-				PARTITION=$PARTITION_LIST
+				PARTITION=`echo $PARTITION_LIST|sed 's/ //g'`
+				echo "PARTITION=$PARTITION" > /dev/tty2
 				CHECK_SINGLE_PARTITION="yes"
 				echo "CHECK_SINGLE_PARTITION=$CHECK_SINGLE_PARTITION"  > /dev/tty2
 			fi
