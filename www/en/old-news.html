@@ -29,7 +29,29 @@
      </tr>
     </table>
  <hr>
-  <h1>Last 2016-07-24</h1>
+  <h1>On 2016-08-14</h1>
+   <h2>NuTyX 8.2-beta-3 available with cards 2.1.87</h2>
+     <p>This last week is the final stretch before the release of the first release candidate of version 8.2.</p>
+     <p>One <a href="http://downloads.nutyx.org/?C=M;O=D">new 64bits MINI ISO</a> is available for this new version. The size is 246M.</p>
+     <p>Remember to check the MD5 checksum before transferring to USB, CD-RW or DVD-RW.</p>
+      <h3>News for the user</h3>
+         <p>Once the partitions created, the installer warns you if you forgot to reserv an swap partion. You are free to create one, if that is the case, it will be automatically added to the <b>/etc/fstab</b> file.</p>
+         <p>The order of the actions in the main menu is review. It follow's the natural order of actions to be execute.</p>
+         <p>Once installed, the configurator prompts you to add a user, if you have decided to activate the root account, the configurator will insist on creating a user. This is not a bug.</p>
+         <p>The <b>nu</b> command is deleted and replaced with the <b>setup-nutyx -cu</b> command. Not to disturb the users, an alias is available in the configuration file <b>.bashrc</b>.</p>
+         <p>Une first experimental version of <a href="systemd.html">systemd</a> is proposed.</p>
+      <h3>Technicals issues</h3>
+       <p>All installation actions are now stored in the <b>/var/log/install.log</b> file.</p>
+       <p>An alias is created to replace the <b>nu</b> command:</p>
+       <pre class="output">alias nu='sudo setup-nutyx -cu'</pre>
+       <p>Many bugs in the init.in mkiniram and setup-nutyx scripts are corrected.</p>
+       <p>The kernel configuration is review. By adding a few option inside the kernel code, the size has grown 4.1M to 4.4M but the initrd dont' need to call udev anymore. The boot of the machine is in some cases 1 to 3 seconds shorter depending of the configuration.</p>
+       <p>I wait the new release of <b>gcc 6.1</b> compiler. Once available, all the packages will be recompiled on the new tool chain binutils 2.27, glibc 2.25 and gcc 6.X.X to assure a top stability as usual.</p>
+       <p>All the installations et remove actions of packages are now track into the <b>/var/log/install.log</b> log file.</p>
+      <p>The <b>bash</b> <a href="http://downloads.nutyx.org/install-nutyx-8.2-beta-3">install-nutyx-8.2-beta-3</a> script is able to install NuTyX from your 8.1 stable NuTyX or from any other distribution.</p>
+    <h3>What's next</h3>
+      <p>As soon the new version of the gcc compiler will be available, the next RC1 version will be available in the middle of september.</p>
+  <h1>On 2016-07-24</h1>
    <h2>NuTyX 8.2-beta-2 available with cards 2.1.84</h2>
      <p>Thoses two weeks have been very efficient for the future 8.2 release.</p>
      <p>Two <a href="http://downloads.nutyx.org/?C=M;O=D">new 64bits ISO</a> are available for this new version. The first (1000MB) is a installable kde5 kf5 5.24.0 version and the second one (220MB) is a standard MINI ISO.</p>

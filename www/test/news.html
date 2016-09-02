@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
      <link rel="shortcut icon" href="../favicon.ico">
      <link rel="stylesheet" href="../css/nutyx.css" />
-     <title>NuTyX - Dernière nouvelle 02-09-2016</title>
+     <title>NuTyX - Dernière nouvelle 14-08-2016</title>
  </head>
  <body>
    <table>
@@ -29,36 +29,35 @@
      </tr>
     </table>
  <hr>
-  <h1>Dernière nouvelle 02-09-2016</h1>
-   <h2>NuTyX 8.2-beta-4 disponible avec cards 2.1.90</h2>
-     <p>Ces trois dernières semaines furent très intenses. La NuTyX 8.2 beta-4 est la dernière ligne droite avant la sortie de la première release candidate de la version 8.2.</p>
-     <p>Une <a href="http://downloads.nutyx.org/?C=M;O=D">nouvelle ISO 64bits MINI</a> est proposée pour cette nouvelle version. Sa taille fait 216M.</p>
+  <h1>Dernière nouvelle 14-08-2016</h1>
+   <h2>NuTyX 8.2-beta-3 disponible avec cards 2.1.87</h2>
+     <p>Cette dernière semaine est la dernière ligne droite avant la sortie de la première release candidate de la version 8.2.</p>
+     <p>Une <a href="http://downloads.nutyx.org/?C=M;O=D">nouvelle ISO 64bits MINI</a> est proposée pour cette nouvelle version. Sa taille fait 241M.</p>
      <p>Pensez à vérifier leur somme MD5 avant de les transférer sur clé USB, CD-RW ou DVD-RW</p>
       <h3>Nouveautées pour l'utilisateur</h3>
-         <p>La taille de l'iso s'est réduite de près de 20 %. Une réécriture quasi complète du script de démarrage de l'iso en est la cause.</p>
-         <p>Une fois le disque partitionné, l'installateur vous averti si vous avez oublié de crééer une partion d'échange. Libre à vous d'en créer une, si telle est le cas, elle sera automatiquement ajoutée dans le fichier <b>/etc/fstab</b>. L'utilisateur ne dois pas se prèocuper de formater la partition d'échange, elle(s) sera(ont) formatée(s) automatiquement.</p>
-         <p>L'ordre des actions dans le menu principale est revu afin de suivre l'ordre logique des actions à executer. Le choix du système de fichier est désormé recommandé, l'installateur recommande <b>btrfs</b> ou <b>ext4</b>.</p>
-         <p>Une fois installée, le configurateur vous demande l'ajout d'un utilisateur, si vous avez décidé d'activer le compte root, le configurateur demandera un nouveau mot de passe et insistera sur la création d'un utilisateur. Ceci n'est pas un bug.</p>
+         <p>Une fois le disque partitionné, l'installateur vous averti si vous avez oublié de crééer une partion d'échange. Libre à vous d'en créer une, si telle est le cas, elle sera automatiquement ajoutée dans le fichier <b>/etc/fstab</b>.</p>
+         <p>L'ordre des actions dans le menu principale est revu afin de suivre l'ordre logique des actions à executer.</p>
+         <p>Une fois installée, le configurateur vous demande l'ajout d'un utilisateur, si vous avez décidé d'activer le compte root, le configurateur insistera sur la création d'un utilisateur. Ceci n'est pas un bug.</p>
          <p>La commande <b>nu</b> est supprimée et remplacée par la commande <b>setup-nutyx</b> avec l'option <b>-cu</b>. Pour ne pas perturber les utilisateurs, un alias est disponible dans le fichier de configuration <b>.bashrc</b>:</p>
          <p>Une première version <a href="systemd.html">systemd</a> est proposée de façon expérimentale.</p>
       <h3>Nouveautées sous le capot</h3>
-       <p><b>Cards</b> permet désormais l'utilisation d'alias, cad qu'un nom de paquet peut être appelé à l'aide de son synonyme. Exemple, le paquet <b>xorg-mesa</b> peut également s'appeler <b>mesa</b> ou même <b>Mesa</b>.</p>
        <p>Toutes les actions d'installation sont désormais enrégistrées dans le fichier <b>/var/log/install</b>.</p>
        <p>Un alias a été créé pour remplacer la commande <b>nu</b>:</p>
        <pre class="output">alias nu='sudo setup-nutyx -cu'</pre>
        <p>Nombreux bugs des scripts init.in, setup-nutyx ont été corrigés.</p>
-       <p>La configuration du kernel a été revue, celui-ci intègre désormais les modules des cartes NVIDIA, virtualbox et la carte réseau broadcom. Si vous avez choisis <b>btrfs</b> ou <b>ext4</b> comme système de fichiers, vous ne devez plus utilser d'initrd.</p>
-       <p>Comme promis, le compilateur <b>gcc 6.2.0</b> est sortie il y a un peu plus d'une semaine. Tous les paquets sont recompilé sur la nouvelle chaîne glibc 2.25, binutils 2.27 et gcc 6.2.0 pour assurer une stabilitée maximum.</p>
+       <p>La configuration du kernel a été revue. En ajoutant quelques options en dur, la taille du kernel est passé de 4.1M à 4.4M mais l'initrd ne doit plus faire appel une première fois à eudev pour découvris les périphériques indispensable au montage du disque dur. L'amorçage de la machine est donc accélérée d' 1s a 3s en fonction de sa configuration.</p>
+       <p>J'attends la sortie de la nouvelle version du compilateur <b>gcc 6.1</b>. Une fois disponible, tous les paquets seront recompilé sur la nouvelle chaîne glibc 2.25, binutils 2.27 et gcc 6.X.X pour assurer une stabilitée maximum.</p>
+       <p>Le point de montage de la racine est à nouveau présent dans le fichier <b>/etc/inittab</b> qui est désormais aussi responsable pour le lancement de lxdm. Avec cette methode. celui-ci se relance automatiquement si il y a une erreur à la première tentative de lancement.</p>
+       <p>Deux nouveaux scripts sont ajoutés <b>build-port</b> et <b>build-collection</b> dans le gestionnaire de paquets <b>cards</b>, ils permettent donc de construire respectivement un ensemble de ports et un ensemble de collection. Vous trouverez plus d'info sur <a href="https://github.com/NuTyX/cards/commits/master">le projet de cards</a></p>
        <p>Toutes les actions d'installation et de suppression de paquets sont désormais ajoutés dans le fichier log <b>/var/log/install</b>.</p>
        <p><b>cards</b> permet désormais d'effacer une collection complète, une suite de paquets ou un groupe de paquets. La collection d'un paquet installé est également stocké dans la base de données.</p>
        <p><b>cards</b> stocke désormais le nom de la collection, du groupe et de la famille du paquet. Avec ces informations supplémentaires, il est donc possible d'obtenir des informations plus filtrées à l'affichage de la sortie de la commande <b>cards list</b> par exemple.</p>
-       <p><b>cards</b> stocke également le nom des groupes et des locales disponible. Les alias sont également stockés dans la base de données.</p>
-      <p>Le script <b>bash</b> <a href="http://downloads.nutyx.org/install-nutyx-8.2-beta-4">install-nutyx-8.2-beta-4</a> permet d'installer NuTyX depuis votre NuTyX 8.1 stable ou depuis n'importe quel autre distribution.</p>
+      <p>Le script <b>bash</b> <a href="http://downloads.nutyx.org/install-nutyx-8.2-beta-3">install-nutyx-8.2-beta-3</a> permet d'installer NuTyX depuis votre NuTyX 8.1 stable ou depuis n'importe quel autre distribution.</p>
     <h3>La suite</h3>
-      <p>Si aucun problème majeur n'est découvert, la prochaine version RC1 qui devrait être dispo avant fin septembre.</p>
+      <p>Dès que la nouvelle version du compilateur sera disponible, la prochaine version RC1 qui devrait être dispo ds le courant du mois de septembre.</p>
   <p class="updated"><a href="old-news.html">Anciennes nouvelles</a></p>
   <hr>  
-   <p class="updated">Le 02-09-2016 22:24</p>
+   <p class="updated">Le 14-08-2016 12:11</p>
     <footer>
         <p id="foot">... <img src="../graphics/logo_nutyx_25.png" alt="nutyx petit logo"> ...<br />
         &copy; 2007 - 2016 <a href="http://nutyx.org">NuTyX</a><br /><br />
