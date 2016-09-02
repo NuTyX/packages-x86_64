@@ -8,14 +8,12 @@ alias=(card)
 PKGMK_IGNORE_RUNTIMEDEPS="no"
 PKGMK_GROUPS=(devel doc man)
 name=cards
-version=2.1.89
-release=4
+version=2.1.90
+release=1
 
-source=(http://downloads.nutyx.org/files/cards-$version.tar.gz
-	cards-$version-pkgmk-3.patch)
+source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
 build () {
 cd $name-$version
-patch -Np1 -i ../cards-$version-pkgmk-3.patch
 
 make all
 make DESTDIR=$PKG install
