@@ -258,6 +258,26 @@ install_pkg() {
 		error "$PackageFileName not found"
 	fi
 }
+error() {
+	echo ""
+	echo " $1"
+	echo ""
+	rm -rf $TMP
+	exit 1
+}
+end() {
+	if [ "$ERREUR" == "yes" ]; then
+		if [ ! -f $TMP/depot ]; then
+			umount ${FOLDER}/${DEPOT} || rm -r ${FOLDER}/${DEPOT}
+			boot_mesg "Cleaning up temporary files.."
+			boot_mesg "Please correct and start again"
+		fi
+	fi
+	cd ~
+	unmountall $FOLDER > /dev/null 2>&1
+
+	rm -rf $TMP
+}
 #****************************************************************************
 # Function expect
 # 
