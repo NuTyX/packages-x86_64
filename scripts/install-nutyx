@@ -210,6 +210,26 @@ PS1='\u:\w\$ ' \
 /bin/bash --login
 }
 #*******************************************************************************
+# Function - download_pkg()
+#
+# Purpose:      Download the selected package
+#
+# Inputs:       $1 is the package
+#
+# Dependencies: - wget
+#
+# Todo:
+#*******************************************************************************
+download_pkg() {
+	getPackageFileName ${1}
+	if [ ! -f $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName ]; then
+		mkdir -p $FOLDER/$DEPOT/$BASE/${1}
+		boot_mesg "Downloading $1..."
+		wget ${DEPOT_BASE}/${1}/$PackageFileName  -O $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName
+		echo_info
+	fi
+}
+#*******************************************************************************
 # Function - install_pkg()
 #
 # Purpose:      Install the selected package
@@ -225,87 +245,18 @@ PS1='\u:\w\$ ' \
 # Todo:
 #*******************************************************************************
 install_pkg() {
-	if $TMP/usr/bin/pkginfo -r $FOLDER -i| grep "^$1 " > /dev/null; then
+	getPackageFileName ${1}
+	if $TMP/`dirname $PKGADD`/pkginfo -r $FOLDER -i| grep "^$1 " > /dev/null; then
 		boot_mesg "$1 is already install on $DEVICE..."
 		echo_info
-	else
-		packagefileToDownload=`getPackageName ${1}`
-		boot_mesg "Downloading $1..."
-		wget ${DEPOT_BASE}/${1}/$packagefileToDownload  -O $TMP/$packagefileToDownload > /dev/null 2>&1
-		echo_info
+	fi
+	if [ -f $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName ]; then
 		# Installing the package
-		$TMP/usr/bin/pkgadd -r $FOLDER -i $packagefileToDownload || print_error_msg
-		echo_ok	
-	fi
-}
-#*******************************************************************************
-# Function Check_DiskSpace
-#
-# Purpose:      Check the Available space after the using amont
-
-# Inputs:       $1: Mount point
-#	        $2: Amount in Kbytes going to be used
-#
-# Return:       status: 0 when ok
-#	                1 not ok
-# Todo:
-#*******************************************************************************
-check_diskspace() {
-	# df|grep "$1"|awk '{print $4}'
-	let MinSize=$2+100
-	let Amoung=`df|grep $FOLDER |awk '{print $(NF-2)}'`/1024 || exit 1
-	let Amoung=$Amoung-$MinSize
-
-	status="0"
-	if [ $Amoung -lt 0 ]; then
-		echo "Not enough space for the installation"
-		echo_failure
-		status="1"
+		$TMP/$PKGADD -r $FOLDER -i $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName || print_error_msg
+		echo_ok
 	else
-		echo "Space remind after install: $Amoung Mbytes"
-		echo_info
+		error "$PackageFileName not found"
 	fi
-	if [ $status == "1" ]; then
-		check_availablespace $1
-		echo "The installation needs $BaseInstall Mbytes minimum"
-		end
-		exit 1
-	fi
-}
-#*******************************************************************************
-# Function check_availablespace
-#
-# Purpose:      Printout the Available space on the Mount point
-#
-# Inputs:       $1: Mount point
-#
-# Output:       Standard Output
-#
-# Todo:
-#*******************************************************************************
-check_availablespace() {
-	let TotAmoung=`df|grep "$1"|awk '{print $4}'`/1024 || exit 1
-	echo "You have at the moment: ${TotAmoung} Mbytes on the destination disk"
-}
-error() {
-	echo ""
-	echo " $1"
-	echo ""
-	rm -rf $TMP
-	exit 1
-}
-end() {
-	if [ "$ERREUR" == "yes" ]; then
-		if [ ! -f $TMP/depot ]; then
-			umount ${FOLDER}/${DEPOT} || rm -r ${FOLDER}/${DEPOT}
-			boot_mesg "Cleaning up temporary files.."
-			boot_mesg "Please correct and start again"
-		fi
-	fi
-	cd ~
-	unmountall $FOLDER > /dev/null 2>&1
-
-	rm -rf $TMP
 }
 #****************************************************************************
 # Function expect
@@ -328,33 +279,43 @@ while [ "$answer" != "o" ] && [ "$answer" != "n" ]; do
 done
 }
 #****************************************************************************
-# Function getPackageName
+# Function getPackageFileName
 # 
 # Purpose:	Get the fullname of the package
 #		directory
 # Inputs:	$1 is the package name
 #
-# Output:       fullname of the archive without url
-#               something like: cpio1414074943i686.cards.tar.xz
+# Output:       PackageFileName= cpio1414074943i686.cards.tar.xz
+#
 #****************************************************************************
-getPackageName() {
+getPackageFileName() {
 	local BUILD_DATE EXT HEAD
-	wget ${DEPOT_BASE}/${1}/.PKGREPO  -O $TMP/.PKGREPO > /dev/null  2>&1
-	HEAD=`head -1 $TMP/.PKGREPO`
+	if [ ! -f $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO ]; then
+		if ! (`which wget > /dev/null`); then
+			error " Command 'wget' not found, please install wget"
+		fi
+		mkdir -p $FOLDER/$DEPOT/$BASE/${1}
+		wget ${DEPOT_BASE}/${1}/.PKGREPO  -O $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO
+	fi
+	if [ `wc -l $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO|cut -d " " -f1` -eq 0 ]; then
+		error "${DEPOT_BASE}/${1} not reacheable.."
+	fi
+	HEAD=`head -1 $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO`
 	if [ "${HEAD:10:1}" == "#" ]; then
 		BUILD_DATE="`echo $HEAD|cut -d "#" -f1`"
 		EXT="`echo $HEAD|cut -d "#" -f2`"
-		echo "${1}${BUILD_DATE}${ARCH}${EXT}"
+		PackageFileName="${1}${BUILD_DATE}${ARCH}${EXT}"
 	fi
 }
 
+download_base() {
+for i in $CHROOT_LIST
+do
+        download_pkg "$i"
+done
+}
 install_base() {
-for i in \
-nutyx acl attr bash bc binutils bzip2 coreutils curl \
-expat gcc gdbm readline \
-glibc gmp grep gzip inetutils kbd lzo \
-libarchive libcap libpipeline mpc mpfr ncurses openssl pam \
-shadow util-linux xz zlib cards
+for i in $CHROOT_LIST
 do 
 	install_pkg "$i"
 done
@@ -1218,8 +1179,8 @@ if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
    ${FOLDER}/etc/$FILE
    return
 fi
-#
-## For Gnome
+
+echo "## For Gnome
 # Comment following 2 lines
 # if you don't want to install gnome
 #
@@ -1327,21 +1288,14 @@ check_bash() {
 		echo_warning
 	fi
 }
-check_tools() {
-	if ! (`which wget > /dev/null`); then
-		error " Command 'wget' not found, please install wget"
-	fi
-	if ! (`which tar > /dev/null`); then
-		error " Command 'tar' not found, please install tar"
-	fi
-	if ! (`which gawk > /dev/null`); then
-		error " Command 'gawk' not found, please install gawk"
-	fi
-}
 check_variables() {
-
+if [ -z $CHROOT_LIST ]; then
+	CHROOT_LIST="nutyx acl attr bash bzip2 coreutils curl \
+expat gcc readline ncurses lzo glibc gmp xz zlib \
+libarchive mpc mpfr openssl cards"
+fi
 [ -z $URL ] && URL="http://downloads.nutyx.org"
-[ -z $VERSION ] && VERSION="8.2-beta-4"
+[ -z $VERSION ] && VERSION="8.2-beta-5"
 if [ "$VERSION" == "development" ]; then
 	CODE_NAME="`date +%Y%m%d`"
 else
@@ -1349,7 +1303,7 @@ else
 fi
 [ -z $DEPOT ] && DEPOT="/var/lib/pkg/depot"
 [ -z $FOLDER ] && FOLDER="/mnt/hd"
-[ -z $KERNEL ] && KERNEL="kernel-lts sysklogd sysvinit linux-firmware reiserfsprogs e3 grub lz4 mdadm jfsutils xfsprogs btrfs-progs dhcpcd"
+[ -z $KERNEL ] && KERNEL="linux-firmware sysklogd sysvinit reiserfsprogs e3 grub lz4 mdadm jfsutils xfsprogs btrfs-progs dhcpcd kernel-lts"
 [ "$KERNEL" == "NONE" ] && KERNEL=""
 [ "$KERNEL" == "none" ] && KERNEL=""
 
@@ -1360,8 +1314,6 @@ DEPOT_BASE="$DEPOT_ROOT/$BASE"          ## http://downloads.nutyx.org/x86_64/8.2
 
 LOCAL_DEPOT_PACKAGES="$DEPOT/$BASE"
 DEPOT_CD="/media/cdrom"
-
-echo "DEPOT_BASE: $DEPOT_BASE"
 
 SETUP_FILE=/tmp/setup
 # Size of the FullInstall in Mbytes
@@ -1431,10 +1383,6 @@ else
 
         DEVICE=${FOLDER}
 fi
-echo "
-******************************
-Installation path: $DEVICE
-******************************"
 }
 check_mountpoint() {
 [ -z $FOLDER ] && error "Variable FOLDER not define"
@@ -1471,21 +1419,32 @@ mknod -m 600 ${FOLDER}/dev/console c 5 1
 mknod -m 666 ${FOLDER}/dev/null c 1 3
 }
 download_pkgadd() {
-	if [ ! -f $TMP/usr/bin/pkgadd ]; then
-        	cd $TMP
-        	basepackagefile=`getPackageName cards`
-        	if [ "$basepackagefile" == "" ]; then
-                	error "variable 'basepackagefile' is not set"
-        	fi
-        	packagefile=`echo ${basepackagefile}|sed "s|^cards|cards.devel|"`
-        	if  [ ! -f ${packagefile} ]; then
-                	wget ${DEPOT_BASE}/cards/$packagefile || print_error_msg
-                	echo_ok
-        	fi
-        	echo "Extraction of cards.devel ..."
-        	tar -xf ${packagefile} || print_error_msg
-        	echo_ok
+	PKGADD="`which pkgadd`"
+	if [ "$PKGADD" != "" ];then
+		mkdir -pv $TMP/`dirname $PKGADD`
+		cp  $PKGADD $TMP/`dirname $PKGADD`/
+		ln -s $TMP/`dirname $PKGADD`/pkgadd  $TMP/`dirname $PKGADD`/pkginfo
+	else
+		if ! (`which tar > /dev/null`); then
+			error " Command 'tar' not found, please install tar"
+		fi
 
+		PKGADD="/bin/pkgadd"
+
+		getPackageFileName cards
+
+		if [ ! -f $TMP/$PKGADD ]; then
+			cd $TMP
+			PackageFileName=""
+			getPackageFileName cards
+			if [ "$PackageFileName" == "" ]; then
+				error "variable 'PackageFileName' is not set"
+			fi
+			download_pkg cards
+			echo "Extraction of cards ..."
+			tar -xf $FOLDER/$DEPOT/$BASE/${1}/${PackageFileName} || print_error_msg
+			echo_ok
+		fi
 	fi
 }
 check_mountfolder() {
@@ -1495,23 +1454,20 @@ generate_setupfile() {
 echo "#!/bin/bash
 source /etc/profile
 cards sync
-cards install e2fsprogs \
-diffutils \
-file \
-findutils \
-flex \
-gettext \
-procps-ng \
-psmisc \
-sed \
-sudo \
-tzdata iproute2 iana-etc \
-eudev kmod less \
-groff man-db cards.man \
-nutyx.man \
+cards install kbd pam \
+shadow gdbm e2fsprogs \
+gzip binutils \
+diffutils file grep bc \
+libpipeline util-linux \
+findutils flex libcap \
+gettext procps-ng psmisc \
+sed sudo tzdata inetutils \
+iproute2 iana-etc \
+eudev kmod less groff man-db \
+cards.man nutyx.man \
 lvm2 dialog cpio squashfs \
-$KERNEL \
 ca-certificates \
+$KERNEL \
 $DEVEL
 exit" > $FOLDER/$SETUP_FILE
 chmod 177 $FOLDER/$SETUP_FILE
@@ -1619,27 +1575,38 @@ main() {
 		echo "
 *******************************************
 * You didn't specify enough variable      *
-* LFS: Folder destionation                *
+* variable LFS: Folder destination        *
 *                                         *
 * Please re-enter the command with the    *
 * LFS variable set                        *
+*                                         *
+* example:                                *
+* LFS=/chroot bash ${INSTALL_COMMAND}          *
+*                                         *
 *******************************************
-
-example: LFS=/chroot ${INSTALL_COMMAND}
 "
 
 		return
 	fi
+	echo "LFS        : $LFS
+DEVICE     : $DEVICE
+URL        : $URL
+VERSION    : $VERSION
+KERNEL     : $KERNEL
+DEPOT      : $DEPOT
+FOLDER     : $FOLDER
+DEPOT_BASE : $DEPOT_BASE
+DEVEL      : $DEVEL
+CHROOT_LIST: $CHROOT_LIST"
 	check_root
 	check_bash
-	check_tools
 	TMP=`mktemp -d`
 	check_mountfolder
 	check_mountpoint
 
 	download_pkgadd
 	create_database
-
+	download_base
 	install_base
 
 	create_locale_link
