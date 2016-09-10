@@ -224,10 +224,12 @@ PS1='\u:\w\$ ' \
 download_pkg() {
 	getPackageFileName ${1}
 	if [ ! -f $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName ]; then
-		mkdir -p $FOLDER/$DEPOT/$BASE/${1}
 		boot_mesg "Downloading $1..."
-		curl -# ${DEPOT_BASE}/${1}/$PackageFileName  -o $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName
 		echo_info
+		curl -C - -# --create-dirs \
+		${DEPOT_BASE}/${1}/$PackageFileName  -o $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName || \
+		error "Cannot download ${DEPOT_BASE}/${1}/$PackageFileName ..., check URL"
+		echo_ok
 	fi
 }
 #*******************************************************************************
@@ -316,8 +318,9 @@ getPackageFileName() {
 		if ! (`which curl > /dev/null`); then
 			error " Command 'curl' not found, please install curl programm"
 		fi
-		mkdir -p $FOLDER/$DEPOT/$BASE/${1}
-		curl -# ${DEPOT_BASE}/${1}/.PKGREPO -o $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO
+		curl -C - -sS --create-dirs \
+		${DEPOT_BASE}/${1}/.PKGREPO -o $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO || \
+		error "Cannot download ${DEPOT_BASE}/${1}/.PKGREPO ..., check URL"
 	fi
 	if [ `wc -l $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO|cut -d " " -f1` -eq 0 ]; then
 		error "${DEPOT_BASE}/${1} not reacheable.."
