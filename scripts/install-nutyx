@@ -166,9 +166,10 @@ log_warning_msg() {
 #*******************************************************************************
 unmountall() {
 if [ -d "$DEPOT_CD/depot" ]; then
-	umount ${{FOLDER}/${DEPOT}
+	umount ${FOLDER}/${DEPOT}
 	umount  `cat /tmp/depot`
 fi
+[ ! -z $MOUNT ] && umount ${FOLDER}/${DEPOT}
 umount ${FOLDER}/run
 umount ${FOLDER}/dev/pts
 umount ${FOLDER}/dev
@@ -216,7 +217,7 @@ PS1='\u:\w\$ ' \
 #
 # Inputs:       $1 is the package
 #
-# Dependencies: - wget
+# Dependencies: - curl
 #
 # Todo:
 #*******************************************************************************
@@ -225,7 +226,7 @@ download_pkg() {
 	if [ ! -f $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName ]; then
 		mkdir -p $FOLDER/$DEPOT/$BASE/${1}
 		boot_mesg "Downloading $1..."
-		wget ${DEPOT_BASE}/${1}/$PackageFileName  -O $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName
+		curl -# ${DEPOT_BASE}/${1}/$PackageFileName  -o $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName
 		echo_info
 	fi
 }
@@ -239,8 +240,7 @@ download_pkg() {
 #		$3 Option to install, normally nothing except for grub
 # Outputs:      Standard Output
 #
-# Dependencies: - wget
-#               - boot_mesg
+# Dependencies: - boot_mesg
 #               - pkgadd
 # Todo:
 #*******************************************************************************
@@ -305,17 +305,19 @@ done
 #		directory
 # Inputs:	$1 is the package name
 #
+# Dependencies: - curl
+#
 # Output:       PackageFileName= cpio1414074943i686.cards.tar.xz
 #
 #****************************************************************************
 getPackageFileName() {
 	local BUILD_DATE EXT HEAD
 	if [ ! -f $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO ]; then
-		if ! (`which wget > /dev/null`); then
-			error " Command 'wget' not found, please install wget"
+		if ! (`which curl > /dev/null`); then
+			error " Command 'curl' not found, please install curl programm"
 		fi
 		mkdir -p $FOLDER/$DEPOT/$BASE/${1}
-		wget ${DEPOT_BASE}/${1}/.PKGREPO  -O $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO
+		curl -# ${DEPOT_BASE}/${1}/.PKGREPO -o $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO
 	fi
 	if [ `wc -l $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO|cut -d " " -f1` -eq 0 ]; then
 		error "${DEPOT_BASE}/${1} not reacheable.."
@@ -1336,8 +1338,7 @@ LOCAL_DEPOT_PACKAGES="$DEPOT/$BASE"
 DEPOT_CD="/media/cdrom"
 
 SETUP_FILE=/tmp/setup
-# Size of the FullInstall in Mbytes
-let BASE_SIZE=450
+
 }
 config() {
 ARCH=`uname -m`
@@ -1407,6 +1408,12 @@ fi
 check_mountpoint() {
 [ -z $FOLDER ] && error "Variable FOLDER not define"
 }
+mount_depot() {
+if [ ! -z $MOUNT ]; then
+	mkdir -p $FOLDER/$DEPOT
+	mount --bind $MOUNT  $FOLDER/$DEPOT || error "cannot mount $MOUNT on $FOLDER/$DEPOT"
+fi
+}
 check_arch() {
 if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ]; then
 	boot_mesg "
@@ -1441,7 +1448,7 @@ mknod -m 666 ${FOLDER}/dev/null c 1 3
 download_pkgadd() {
 	PKGADD="`which pkgadd`"
 	if [ "$PKGADD" != "" ];then
-		mkdir -pv $TMP/`dirname $PKGADD`
+		mkdir -p $TMP/`dirname $PKGADD`
 		cp  $PKGADD $TMP/`dirname $PKGADD`/
 		ln -s $TMP/`dirname $PKGADD`/pkgadd  $TMP/`dirname $PKGADD`/pkginfo
 	else
@@ -1591,6 +1598,7 @@ main() {
 	parse_options "$@"
 	check_arch
 	check_lfs "$@"
+	mount_depot
 	if [ $# -lt 1 ] && [ -z "$LFS" ] ; then
 		echo "
 *******************************************
@@ -1614,6 +1622,7 @@ URL        : $URL
 VERSION    : $VERSION
 KERNEL     : $KERNEL
 DEPOT      : $DEPOT
+MOUNT      : $MOUNT
 FOLDER     : $FOLDER
 DEPOT_BASE : $DEPOT_BASE
 DEVEL      : $DEVEL
