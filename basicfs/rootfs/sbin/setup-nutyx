@@ -315,8 +315,11 @@ setup_user()
 
 		unset RESULT
 
-
-		RESULT=`/sbin/useradd -c "${DESCRIPTION}" -G "$USER_GROUPS" -m "${NAME}" 2>&1`
+		if [ -d /home/"${NAME}" ];then
+			RESULT=`/sbin/useradd -c "${DESCRIPTION}" -G "$USER_GROUPS" -M "${NAME}" 2>&1`
+		else
+			RESULT=`/sbin/useradd -c "${DESCRIPTION}" -G "$USER_GROUPS" -m "${NAME}" 2>&1`
+		fi
 		if [ ! -z "$RESULT" ]; then
 			dialog --msgbox "$RESULT" 6 120
 			exec 3>&1
@@ -329,12 +332,15 @@ setup_user()
 					rm -d /home;;
 			esac
 		else
-
-			$SETUP_LOG "setup-nutyx --create-user" "${DESCRIPTION} -G $USER_GROUPS -m ${NAME}"
-
+			if [ -d /home/"${NAME}" ];then
+				chown -R ${NAME}:${NAME} /home/${NAME}
+				$SETUP_LOG "setup-nutyx --create-user" "chown -R ${NAME}:${NAME} /home/${NAME}"
+				$SETUP_LOG "setup-nutyx --create-user" "${DESCRIPTION} -G $USER_GROUPS -M ${NAME}"
+			else
+				$SETUP_LOG "setup-nutyx --create-user" "${DESCRIPTION} -G $USER_GROUPS -m ${NAME}"
+			fi
 			setup_password
 
-			[ -d /home/${NAME} ] && chown -R ${NAME}:${NAME} /home/${NAME}
 			[ ! -f $SETUP_LXDM_CONFFILE ] && create_lxdm_conf $NAME
 
 		fi
@@ -1427,16 +1433,23 @@ $(gettext "Are you sure you want to continue ?")" 7 60
 		FORMAT=`print_file_system $PARTITION`
 }
 erase_nutyx() {
-	local DIR
+	local DIR REAL
 	cd ${1}/boot
 	if [ -d ${2}/home ];then
 		mv ${2}/{home,.home}
 	fi
-	for i in *squashfs
+	MAX=`ls *squashfs|wc -l`
+	N=0
+	(for i in *squashfs
 	do
 		DIR=`echo $i|cut -d "." -f1`
 		[ ! -z $DIR ] && rm -rf ${2}/${DIR}
-	done
+		REAL=`calc $N/$MAX *100`
+		PCT=${REAL%.*}
+		echo "$PCT"
+		N=$((N+1))
+	done) |
+  dialog --title "$(gettext "Erase") NuTyX" --gauge "$(gettext "Please wait") ..." 6 50
 }
 install_nutyx() {
 	local DIR REAL FILE
@@ -1491,8 +1504,8 @@ install_nutyx() {
 	do
 		[ ! -d ${2}/$DIR ] &&	mkdir ${2}/$DIR
 	done
-	mknod -m 640 ${2}/dev/console c 5 1
-	mknod -m 664 ${2}/dev/null    c 1 3
+	[ -a ${2}/dev/console ] || mknod -m 640 ${2}/dev/console c 5 1
+	[ -a ${2}/dev/null ] || mknod -m 664 ${2}/dev/null    c 1 3
 	chmod 1777 ${2}/tmp
 	echo "95"
 	cd /
