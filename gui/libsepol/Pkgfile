@@ -1,0 +1,14 @@
+description="SELinux binary policy manipulation library"
+url="http://userspace.selinuxproject.org"
+packager="thierryn1 at hispeed dot ch"
+
+name=libsepol
+version=2.4
+release=2
+
+source=(https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20150202/${name}-${version}.tar.gz)
+build() {
+  cd ${name}-${version}
+  make
+  make DESTDIR=${PKG} LIBDIR=${PKG}/usr/lib SHLIBDIR=${PKG}/usr/lib install
+}
