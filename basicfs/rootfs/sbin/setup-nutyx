@@ -336,6 +336,61 @@ setup_user()
 		SETUP_CONFIG_USER="no"
 	fi
 }
+setup_wireless()
+{
+	local TITLE WPA_FILE returncode WPA_TOOL ESSID KEY
+	WPA_TOOL="`which wpa_passphrase`"
+	IWCONFIG="`which iwconfig`"
+
+	if [ ! -z $IWCONFIG ];then
+		WIFI_NETWORK_CARD="`$IWCONFIG 2>&1|grep IEEE|cut -d " " -f1|tail -1`"
+	fi
+	if [ -z ${WIFI_NETWORK_CARD} ];then
+		network_card_found
+		[ -z ${NETWORK_CARD} ] && return
+		WIFI_NETWORK_CARD=${NETWORK_CARD}
+	fi
+	TITLE="$(gettext "Configuration of a wireless access point for") \Zb\Z1${WIFI_NETWORK_CARD}\Zn"
+
+	ESSID=""
+	while [ "$ESSID" == "" ];
+	do
+		exec 3>&1
+		ESSID=`dialog  --title " $TITLE " \
+		--colors \
+		--inputbox "$(gettext "Enter the Wireless Name") (ESSID) $(gettext "of") $(gettext "the wireless access point")" \
+		8 100 ""	2>&1 1>&3`
+		ESSID="`echo "$ESSID"|sed "s/ //g"`"
+	done
+
+	KEY=""
+	while [ "$KEY" == "" ];
+	do
+		exec 3>&1
+		KEY=`dialog --title " $TITLE " \
+		--colors \
+		--inputbox "$(gettext "Enter the password") (PASSPHRASE) $(gettext "of"): \Zb\Z4$ESSID\Zn" \
+		8 100 ""  2>&1 1>&3`
+		KEY="`echo "$KEY"|sed "s/ //g"`"
+	done
+# Create the wpa file
+
+	WPA_FILE="/etc/wpa_supplicant.conf.${WIFI_NETWORK_CARD}"
+	rm -f $WPA_FILE
+
+	[ -z $WPA_TOOL ] || $WPA_TOOL "$ESSID" "$KEY" > $WPA_FILE
+
+	if [ -f $WPA_FILE ]; then
+		dialog --clear --title " $TITLE " \
+		--colors \
+		--msgbox "$(gettext "File") \Zb\Z4$WPA_FILE\Zn $(gettext "successfully created")" 5 100
+	else
+		dialog  --clear --title " $TITLE " \
+		--colors \
+		--msgbox "\Zb\Z1$(gettext "Cannot create the") $WPA_FILE\Zn" 0 0
+	fi
+	SETUP_CONFIG_WIFI="no"
+}
 setup_net() 
 {
 network_card_found
@@ -1777,6 +1832,7 @@ print_help() {
 	echo "   -cl,   --config-lang   $(gettext "Configure the language")"
 	echo "   -ck,   --config-keymap $(gettext "Configure the keyboard")"
 	echo "   -cn,   --config-net    $(gettext "Configure the network")"
+	echo "   -cw,   --config-wireless $(gettext "Configure the wireless access point")"
 	echo "   -cc,   --config-clock  $(gettext "Date and time settings")"
 	echo "   -cu,   --create-user   $(gettext "Add a user to the system")"
 	echo "   -ca,   --config-all    $(gettext "Configure the system")"
@@ -1844,6 +1900,10 @@ parse_options() {
 					check_root
 					setup_net
 					;;
+				-cw|--config-wireless)
+					check_root
+					setup_wireless
+					;;
 				-cc|--config-clock)
 					check_root
 					setup_clock
@@ -1895,6 +1955,12 @@ check_all () {
 		SETUP_CONFIG_USER="yes"
 		RV=$((RV+8))
 	fi
+	if [ ! -z "$WIFI_NETWORK_CARD" ];then
+		if [ ! -f /etc/wpa_supplicant.conf.$WIFI_NETWORK_CARD ]; then
+			SETUP_CONFIG_WIFI="yes"
+			RV=$((RV+16))
+		fi
+	fi
 	return $RV
 }
 cleanup () {
@@ -1915,11 +1981,13 @@ top_loop() {
 		while [ "$SETUP_CONFIG_LANGUAGE" = "yes" ] ||
 			[ "$SETUP_CONFIG_KEYBOARD" = "yes" ] ||
 			[ "$SETUP_CONFIG_NETWORK" = "yes" ] ||
+			[ "$SETUP_CONFIG_WIFI" = "yes" ] ||
 			[ "$SETUP_CONFIG_CLOCK" = "yes" ] ||
 			[ "$SETUP_CONFIG_USER" = "yes" ]; do
 				[ "$SETUP_CONFIG_LANGUAGE" = "yes" ] && LANG=de_CH.utf-8 setup_language
 				[ "$SETUP_CONFIG_KEYBOARD" = "yes" ] && setup_keymap
 				[ "$SETUP_CONFIG_NETWORK" = "yes" ] && setup_net
+				[ "$SETUP_CONFIG_WIFI" = "yes" ] && setup_wireless
 				[ "$SETUP_CONFIG_CLOCK" = "yes" ] && setup_clock
 				[ "$SETUP_CONFIG_USER" = "yes" ] && setup_user
 		done
@@ -1967,6 +2035,18 @@ main () {
 # VARIABLES
 readonly COMMAND="$0"
 readonly SETUP_ARCH="`uname -m`"
+
+DIALOG_OK=0
+DIALOG_CANCEL=1
+DIALOG_HELP=2
+
+WPA_TOOL="`which wpa_passphrase`"
+IWCONFIG="`which iwconfig`"
+
+if [ ! -z "$IWCONFIG" ];then
+	WIFI_NETWORK_CARD="`$IWCONFIG 2>&1|grep IEEE|cut -d " " -f1|tail -1`"
+fi
+
 SETUP_LOG="setup-nutyx-log"
 CARDS="/etc/cards.conf"
 XORGKB="/etc/X11/xorg.conf.d/20-keyboard.conf"
@@ -1985,6 +2065,7 @@ SETUP_CONFIG_KEYBOARD="no"
 SETUP_CONFIG_NETWORK="no"
 SETUP_CONFIG_CLOCK="no"
 SETUP_CONFIG_USER="no"
+SETUP_CONFIG_WIFI="no"
 
 CHECK_HD_OK="no"
 CHECK_PART_OK="no"
