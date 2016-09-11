@@ -1,0 +1,26 @@
+# Depends on: python3 python3-cairo gobject-introspection xorg-libxxf86vm libffi
+
+description="provides the links of Python 3 for the class GObject of GLib."
+url="https://wiki.gnome.org/action/show/Projects/PyGObject?action=show&redirect=PyGObject"
+packager="fanch at nutyx dot org, tnut at nutyx dot org"
+
+name=python3-gobject
+version=3.20.1
+release=5
+
+source=(http://ftp.gnome.org/pub/gnome/sources/pygobject/${version%.*}/pygobject-$version.tar.xz)
+
+build() {
+  cd pygobject-$version
+  mkdir python3
+  pushd python3
+  ../configure --prefix=/usr \
+               --with-python=/usr/bin/python3
+  make
+  popd
+  make DESTDIR=$PKG -C python3 install
+  
+  rm -rf $PKG/usr/include/
+  rm -rf $PKG/usr/lib/pkgconfig/
+}
+
