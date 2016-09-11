@@ -1,0 +1,22 @@
+# Depends on: dconf iso-codes gobject-introspection gtk2 libnotify vala python3 python-gobject  libxkbcommon dbus-python python-xdg
+
+description="IBus is an Intelligent Input Bus."
+url="http://ibus.googlecode.com"
+packager="thierryn1 at hispeed dot ch"
+
+name=ibus
+version=1.5.14
+release=2
+           
+source=(https://github.com/ibus/ibus/releases/download/$version/$name-$version.tar.gz)
+build() {
+cd $name-$version
+./configure --prefix=/usr           \
+            --sysconfdir=/etc       \
+            --enable-python-library \
+            --with-python=python3   \
+            --enable-gtk-doc        \
+            --disable-emoji-dict
+make
+make DESTDIR=$PKG install
+}
