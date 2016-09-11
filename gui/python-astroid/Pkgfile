@@ -1,0 +1,21 @@
+# Depends on: python python-setuptools python-six
+
+description="Python 2 and 3 Useful miscellaneous modules used by Logilab projects"
+url="https://bitbucket.org/logilab/astroid"
+packager="pierre at nutryx dot org"
+
+name=python-astroid
+version=1.4.5
+release=1
+
+source=(https://pypi.python.org/packages/source/a/astroid/astroid-${version}.tar.gz)
+
+build() {
+    cd astroid-$version
+    python2 setup.py check
+    python2 setup.py install --prefix=/usr --root=$PKG
+}
+
+
+
+
