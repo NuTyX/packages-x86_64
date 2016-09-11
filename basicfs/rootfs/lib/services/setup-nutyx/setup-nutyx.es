@@ -199,7 +199,7 @@ msgid "optional"
 msgstr "optional"
 
 msgid "Install"
-msgstr "Install"
+msgstr "Instalar"
 
 msgid "Partitioning"
 msgstr "Partitioning"
@@ -413,4 +413,7 @@ msgstr "successfully created"
 
 msgid "Cannot create"
 msgstr "Cannot create"
+
+msgid "Erase"
+msgstr "Erase"
 

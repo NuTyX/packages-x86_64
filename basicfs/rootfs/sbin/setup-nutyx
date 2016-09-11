@@ -56,6 +56,7 @@ _msgfmt() {
 	L=`echo ${1}|cut -d "_" -f1`
 	C=`echo ${1}|cut -d "_" -f2`
 	echo "locale ${L}" >> ${CARDS}
+	localedef --delete-from-archive de_CH.utf8
 	localedef -i ${1} -f UTF-8 ${1}.UTF-8
 	if [ -n /lib/services/setup-nutyx/setup-nutyx.${L} ]; then
 		mkdir -p $TEXTDOMAINDIR/${L}/LC_MESSAGES
@@ -255,7 +256,11 @@ setup_user()
 	
 	/sbin/pwconv
 	/sbin/grpconv
-	mkdir -p /home
+	if [ -d /.home ]; then
+		mv /.home /home
+	else
+		mkdir -p /home
+	fi
 	local RESULT
 	USER_GROUPS=""
 	DEFAULT_GROUPS=(users disk network floppy fuse video lp tty audio cdrom scanner adm vboxusers wheel)
@@ -607,6 +612,7 @@ dialog   \
 "The Nederlands" "Nederlands" \
 "Norge" "Norsk bokmål" \
 "Poland" "Polski" \
+"Россия" "Москва" \
 "Brazil" "Português" \
 "Portugal" "Português" \
 "română" "română" \
@@ -894,6 +900,10 @@ case ${REPLY} in
 	_msgfmt pl_PL
 	echo "export LANG=pl_PL.utf-8" > ${LOCALE}
 	_zoneinfo ${ZONEINFO}Europe/Warsaw ${LOCALTIME};;
+ "Россия")
+  _msgfmt ru_RU
+	echo "export LANG=ru_RU.utf-8" > ${LOCALE}
+	_zoneinfo ${ZONEINFO}Europe/Moscow ${LOCALTIME};;
  "Portugal")
 	_msgfmt pt_PT
 	echo "export LANG=pt_PT.utf-8" > ${LOCALE}
@@ -1416,6 +1426,18 @@ $(gettext "Are you sure you want to continue ?")" 7 60
 		esac
 		FORMAT=`print_file_system $PARTITION`
 }
+erase_nutyx() {
+	local DIR
+	cd ${1}/boot
+	if [ -d ${2}/home ];then
+		mv ${2}/{home,.home}
+	fi
+	for i in *squashfs
+	do
+		DIR=`echo $i|cut -d "." -f1`
+		[ ! -z $DIR ] && rm -rf ${2}/${DIR}
+	done
+}
 install_nutyx() {
 	local DIR REAL FILE
 	setup_swap
@@ -1486,6 +1508,36 @@ install_nutyx() {
 	if [ -f /var/log/install.log ]; then
 		cp -a /var/log/install.log  ${2}/var/log/install.log
 	fi
+}
+setup_erase() {
+	local MF retval
+	retval=""
+	if [ "$CHECK_HD_OK" == "no" ]; then
+		check_available_disk
+		[ "$CHECK_HD_OK" == "no" ] && return
+	fi
+	if [ "$CHECK_PART_OK" == "no" ]; then
+		check_available_partition
+		[ "$CHECK_PART_OK" == "no" ] && return
+	fi
+	echo "PARTITION=$PARTITION" > /dev/tty2
+	echo "CHECK_SINGLE_PARTITION=$CHECK_SINGLE_PARTITION" > /dev/tty2
+	[ "$CHECK_SINGLE_PARTITION" == "no" ] && unset PARTITION
+	if [ -z $PARTITION ]; then
+		select_partition "$(gettext "Erase") NuTyX"
+		[ "$PARTITION" == "no" ] && return
+	fi
+	echo "PARTITION=$PARTITION" > /dev/tty2
+	SETUP_INSTALL="no"
+	MF=/mnt/hd
+	mkdir -p $MF
+	mount $PARTITION $MF || error "$(gettext "mounting") $PARTITION"
+	if [ -d /media/cdrom/isolinux/boot ]; then
+		erase_nutyx "/media/cdrom/isolinux" "$MF"
+	else
+		erase_nutyx "/" "$MF"
+	fi
+	umount $PARTITION
 }
 setup_install() {
 	local MF retval
@@ -1743,6 +1795,7 @@ setup_initrd() {
 	"$(gettext "Install")" "$(gettext "Install NuTyX")" \
 	"$(gettext "Clock")" "$(gettext "Date and time settings") ($(gettext "optional"))" \
 	"$(gettext "Console")" "$(gettext "Open a console")" \
+	"$(gettext "Erase")" "$(gettext "Erase") NuTyX" \
 	"$(gettext "Restart")" "$(gettext "Reboot the PC")" \
  	2>$TMP/choix
 	retval=$?
@@ -1785,6 +1838,11 @@ setup_initrd() {
 				/sbin/pwconv
 				/sbin/grpconv
 				sh
+				;;
+			"$(gettext "Erase")")
+				echo "CHECK_SINGLE_PARTITION=$CHECK_SINGLE_PARTITION" > /dev/tty2
+				[ "$CHECK_SINGLE_PARTITION" == "no" ] && unset PARTITION
+				setup_erase
 				;;
 			"$(gettext "Restart")")
 				setup_reboot

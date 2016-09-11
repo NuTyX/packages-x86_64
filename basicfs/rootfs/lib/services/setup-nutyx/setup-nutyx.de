@@ -450,3 +450,6 @@ msgstr "successfully created"
 msgid "Cannot create"
 msgstr "Cannot create"
 
+msgid "Erase"
+msgstr "Erase"
+
