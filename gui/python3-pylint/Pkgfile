@@ -1,0 +1,20 @@
+# Depends on: git python3-astroid python3-setuptools python3-six
+
+description="Analyzes Python code looking for bugs and signs of poor quality."
+url="http://pylint.org"
+maintainer="http://linuxfromscratch.org/"
+packager="thierryn1 at hispeed dot ch"
+alias=(pylint3)
+
+name=python3-pylint
+version=1.6.4
+release=1
+
+#source=(http://pypi.python.org/packages/source/p/pylint/pylint-${version}.tar.gz)
+
+build() {
+    git clone https://github.com/PyCQA/pylint.git
+    cd pylint
+    python3 setup.py check
+    python3 setup.py install --prefix=/usr --root=$PKG
+}
