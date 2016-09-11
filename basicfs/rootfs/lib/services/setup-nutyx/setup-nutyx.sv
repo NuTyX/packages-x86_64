@@ -429,3 +429,24 @@ msgstr "recommended"
 msgid "skilled"
 msgstr "skilled"
 
+msgid "Configure the wireless access point"
+msgstr "Configure the wireless access point"
+
+msgid "Configuration of a wireless access point for"
+msgstr "Configuration of a wireless access point for"
+
+msgid "Enter the name of the wireless access point"
+msgstr "Enter the name of the wireless access point"
+
+msgid "Enter the password of"
+msgstr "Enter the password of"
+
+msgid "File"
+msgstr "File"
+
+msgid "successfully created"
+msgstr "successfully created"
+
+msgid "Cannot create"
+msgstr "Cannot create"
+

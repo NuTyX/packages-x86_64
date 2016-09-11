@@ -358,7 +358,7 @@ setup_wireless()
 		exec 3>&1
 		ESSID=`dialog  --title " $TITLE " \
 		--colors \
-		--inputbox "$(gettext "Enter the Wireless Name") (ESSID) $(gettext "of") $(gettext "the wireless access point")" \
+		--inputbox "$(gettext "Enter the name of the wireless access point") (ESSID)" \
 		8 100 ""	2>&1 1>&3`
 		ESSID="`echo "$ESSID"|sed "s/ //g"`"
 	done
@@ -369,7 +369,7 @@ setup_wireless()
 		exec 3>&1
 		KEY=`dialog --title " $TITLE " \
 		--colors \
-		--inputbox "$(gettext "Enter the password") (PASSPHRASE) $(gettext "of"): \Zb\Z4$ESSID\Zn" \
+		--inputbox "$(gettext "Enter the password of") (PASSPHRASE): \Zb\Z4$ESSID\Zn" \
 		8 100 ""  2>&1 1>&3`
 		KEY="`echo "$KEY"|sed "s/ //g"`"
 	done
@@ -387,7 +387,7 @@ setup_wireless()
 	else
 		dialog  --clear --title " $TITLE " \
 		--colors \
-		--msgbox "\Zb\Z1$(gettext "Cannot create the") $WPA_FILE\Zn" 0 0
+		--msgbox "\Zb\Z1$(gettext "Cannot create") $WPA_FILE\Zn" 0 0
 	fi
 	SETUP_CONFIG_WIFI="no"
 }
