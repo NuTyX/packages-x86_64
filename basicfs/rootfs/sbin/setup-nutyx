@@ -1443,6 +1443,7 @@ erase_nutyx() {
 	(for i in *squashfs
 	do
 		DIR=`echo $i|cut -d "." -f1`
+		[ "$DIR" == "root" ] && continue
 		[ ! -z $DIR ] && rm -rf ${2}/${DIR}
 		REAL=`calc $N/$MAX *100`
 		PCT=${REAL%.*}
