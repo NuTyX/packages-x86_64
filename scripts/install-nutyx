@@ -1455,8 +1455,8 @@ download_pkgadd() {
 		cp  $PKGADD $TMP/`dirname $PKGADD`/
 		ln -s $TMP/`dirname $PKGADD`/pkgadd  $TMP/`dirname $PKGADD`/pkginfo
 	else
-		if ! (`which tar > /dev/null`); then
-			error " Command 'tar' not found, please install tar"
+		if ! (`which bsdtar > /dev/null`); then
+			error " Command 'bsdtar' not found, please install libarchive"
 		fi
 
 		PKGADD="/bin/pkgadd"
@@ -1472,7 +1472,7 @@ download_pkgadd() {
 			fi
 			download_pkg cards
 			echo "Extraction of cards ..."
-			tar -xf $FOLDER/$DEPOT/$BASE/${1}/${PackageFileName} || print_error_msg
+			bsdtar -xf $FOLDER/$DEPOT/$BASE/${1}/${PackageFileName} || print_error_msg
 			echo_ok
 		fi
 	fi
