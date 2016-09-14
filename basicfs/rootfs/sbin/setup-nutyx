@@ -395,6 +395,7 @@ setup_wireless()
 		dialog --clear --title " $TITLE " \
 		--colors \
 		--msgbox "$(gettext "File") \Zb\Z4$WPA_FILE\Zn $(gettext "successfully created")" 5 100
+		$SETUP_LOG "setup-nutyx --config-wireless" "$ESSID configured"
 	else
 		dialog  --clear --title " $TITLE " \
 		--colors \
@@ -1451,6 +1452,7 @@ erase_nutyx() {
 		N=$((N+1))
 	done) |
   dialog --title "$(gettext "Erase") NuTyX" --gauge "$(gettext "Please wait") ..." 6 50
+  $SETUP_LOG "setup-nutyx" "Erase NuTyX on ${PARTITION} done"
 }
 install_nutyx() {
 	local DIR REAL FILE
