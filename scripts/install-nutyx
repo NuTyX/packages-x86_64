@@ -1,9 +1,9 @@
-#*******************************************************************************
+#******************************************************************************
 # Written by Thierry Nuttens
 # Copyright Thierry Nuttens 2010-2011-2012-2013-2014-2015-2016
 # Installation script for the NuTyX system
 # Based on LFS scripts
-#*******************************************************************************
+#******************************************************************************
 # Function - boot_mesg()
 #
 # Purpose:      Sending information from bootup scripts to the console
@@ -17,7 +17,7 @@
 #               - grep for counting string length.
 #
 # Todo:
-#*******************************************************************************
+#******************************************************************************
 boot_mesg() {
         local ECHOPARM=""
 
@@ -50,10 +50,6 @@ boot_mesg_flush() {
         # Reset STRING_LENGTH for next message
         STRING_LENGTH="0"
 }
-boot_log() {
-        # Left in for backwards compatibility
-        :
-}
 echo_ok() {
         ${ECHO} -n -e "${CURS_UP}${SET_COL}${BRACKET}[${SUCCESS}  OK  ${BRACKET}]"
         ${ECHO} -e "${NORMAL}"
@@ -66,11 +62,6 @@ echo_info() {
 }
 echo_failure() {
         ${ECHO} -n -e "${CURS_UP}${SET_COL}${BRACKET}[${FAILURE} FAIL ${BRACKET}]"
-        ${ECHO} -e "${NORMAL}"
-        boot_mesg_flush
-}
-echo_warning() {
-        ${ECHO} -n -e "${CURS_UP}${SET_COL}${BRACKET}[${WARNING} WARN ${BRACKET}]"
         ${ECHO} -e "${NORMAL}"
         boot_mesg_flush
 }
@@ -92,67 +83,7 @@ print_error_msg() {
         end
 	exit 1
 }
-#*******************************************************************************
-# Function - log_success_msg "message"
-#
-# Purpose: Print a success message
-#
-# Inputs: $@ - Message
-#
-# Outputs: Text output to screen
-#
-# Dependencies: echo
-#
-# Todo: logging
-#
-#*******************************************************************************
-log_success_msg() {
-        ${ECHO} -n -e "${BOOTMESG_PREFIX}${@}"
-        ${ECHO} -e "${SET_COL}""${BRACKET}""[""${SUCCESS}""  OK
-""${BRACKET}""]""${NORMAL}"
-        return 0
-}
-#*******************************************************************************
-# Function - log_failure_msg "message"
-#
-# Purpose: Print a failure message
-#
-# Inputs: $@ - Message
-#
-# Outputs: Text output to screen
-#
-# Dependencies: echo
-#
-# Todo: logging
-#
-#*******************************************************************************
-log_failure_msg() {
-        ${ECHO} -n -e "${BOOTMESG_PREFIX}${@}"
-        ${ECHO} -e "${SET_COL}""${BRACKET}""[""${FAILURE}"" FAIL
-""${BRACKET}""]""${NORMAL}"
-        return 0
-}
-#*******************************************************************************
-# Function - log_warning_msg "message"
-#
-# Purpose: print a warning message
-#
-# Inputs: $@ - Message
-#
-# Outputs: Text output to screen
-#
-# Dependencies: echo
-#
-# Todo: logging
-#
-#*******************************************************************************
-log_warning_msg() {
-        ${ECHO} -n -e "${BOOTMESG_PREFIX}${@}"
-        ${ECHO} -e "${SET_COL}""${BRACKET}""[""${WARNING}"" WARN
-""${BRACKET}""]""${NORMAL}"
-        return 0
-}
-#*******************************************************************************
+#******************************************************************************
 # Function - unmountall
 #
 # Purpose:	unmount all the mounted disks and partitions
@@ -163,7 +94,7 @@ log_warning_msg() {
 #
 # Dependencies: chroot
 #
-#*******************************************************************************
+#******************************************************************************
 unmountall() {
 if [ -d "$DEPOT_CD/depot" ]; then
 	umount ${FOLDER}/${DEPOT}
@@ -176,7 +107,7 @@ umount ${FOLDER}/dev
 umount ${FOLDER}/proc
 umount ${FOLDER}/sys
 }
-#*******************************************************************************
+#******************************************************************************
 # Function - setup_chroot
 #
 # Purpose:	Enter the NuTyX Distribution
@@ -187,7 +118,7 @@ umount ${FOLDER}/sys
 #
 # Dependencies: chroot
 #
-#*******************************************************************************
+#******************************************************************************
 setup_chroot() {
 cp /etc/resolv.conf ${FOLDER}/etc/resolv.conf
 mount --bind /dev ${FOLDER}/dev
@@ -210,7 +141,7 @@ TERM="$TERM" \
 PS1='\u:\w\$ ' \
 /bin/bash --login
 }
-#*******************************************************************************
+#******************************************************************************
 # Function - download_pkg()
 #
 # Purpose:      Download the selected package
@@ -220,19 +151,19 @@ PS1='\u:\w\$ ' \
 # Dependencies: - curl
 #
 # Todo:
-#*******************************************************************************
+#******************************************************************************
 download_pkg() {
 	getPackageFileName ${1}
 	if [ ! -f $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName ]; then
 		boot_mesg "Downloading $1..."
 		echo_info
 		curl -C - -# --create-dirs \
-		${DEPOT_BASE}/${1}/$PackageFileName  -o $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName || \
+		${DEPOT_BASE}/${1}/$PackageFileName -o $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName || \
 		error "Cannot download ${DEPOT_BASE}/${1}/$PackageFileName ..., check URL"
 		echo_ok
 	fi
 }
-#*******************************************************************************
+#******************************************************************************
 # Function - install_pkg()
 #
 # Purpose:      Install the selected package
@@ -245,7 +176,7 @@ download_pkg() {
 # Dependencies: - boot_mesg
 #               - pkgadd
 # Todo:
-#*******************************************************************************
+#******************************************************************************
 install_pkg() {
 	getPackageFileName ${1}
 	if $TMP/`dirname $PKGADD`/pkginfo -r $FOLDER -i| grep "^$1 " > /dev/null; then
@@ -280,27 +211,7 @@ end() {
 
 	rm -rf $TMP
 }
-#****************************************************************************
-# Function expect
-# 
-# Purpose:	Check that the answer is nothing else then the supply
-#		arguments
-# Inputs:	$1: answer 1
-#		$2: answer 2
-#		$3: The question to ask
-#
-# Output:	Standard Output
-#
-#****************************************************************************
-expect(){
-# echo -n "$3"
-# read answer
-while [ "$answer" != "o" ] && [ "$answer" != "n" ]; do
-	echo -n "$3"
-	read answer
-done
-}
-#****************************************************************************
+#******************************************************************************
 # Function getPackageFileName
 # 
 # Purpose:	Get the fullname of the package
@@ -311,7 +222,7 @@ done
 #
 # Output:       PackageFileName= cpio1414074943i686.cards.tar.xz
 #
-#****************************************************************************
+#******************************************************************************
 getPackageFileName() {
 	local BUILD_DATE EXT HEAD
 	if [ ! -f $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO ]; then
@@ -441,7 +352,7 @@ if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
   return
 fi
 cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
-# rc.site                                                                            [20:15 i686 3.18.11-NuTyX-iso thierry@nutyx]
+# rc.site
 # Optional parameters for boot scripts.
 
 # Distro Information
@@ -540,7 +451,7 @@ if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
    return
 fi
 cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
-########################################################################
+###############################################################################
 # Begin /etc/sysconfig/udev_retry
 #
 # Description : udev_retry script configuration
@@ -554,7 +465,7 @@ cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 #               listed here are rtc (due to /var/lib/hwclock/adjtime) and sound
 #               (due to both /var/lib/alsa/asound.state and /usr/sbin/alsactl).
 #               Entries are whitespace-separated.
-########################################################################
+###############################################################################
 
 rtc
 
@@ -572,7 +483,7 @@ if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
    return
 fi
 cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
-########################################################################
+###############################################################################
 # Begin /etc/sysconfig/createfiles
 #
 # Description : Createfiles script config file
@@ -600,7 +511,7 @@ cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 #           <minor> fields
 # 		<major> and <minor> are the major and minor numbers used for 
 #     the device.
-########################################################################
+###############################################################################
 
 # End /etc/sysconfig/createfiles
 EOF
@@ -616,7 +527,7 @@ if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
    return
 fi
 cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
-########################################################################
+###############################################################################
 # Begin /etc/sysconfig/modules
 #
 # Description : Module auto-loading configuration
@@ -631,7 +542,7 @@ cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 # Each module should be on its own line, and any options that you want
 # passed to the module should follow it.  The line deliminator is either
 # a space or a tab.
-########################################################################
+###############################################################################
 
 # End /etc/sysconfig/modules
 EOF
@@ -1284,7 +1195,8 @@ install_resolv_conf() {
 successfull_installation () {
 echo "
 ****************************************************
-      Installation of NuTyX $VERSION finished.
+      Installation of NuTyX $VERSION installed
+      in $LFS sucessfully
 ****************************************************
 
 ****************************************************
@@ -1302,17 +1214,6 @@ echo "
 check_root() {
 [ "$UID" != "0" ] && error " You are not root, cannot continue"
 }
-check_bash() {
-	BASH_VERSION=`bash --version|head -n1 | cut -d " " -f4|cut -d "(" -f1|sed "s/\.//g"`
-	if [ -z ${BASH_VERSION} ]; then
-		error " Wrong interpreter, please use 'bash' as interpreter"
-	fi
-	# Checking bash version
-	if [ ${BASH_VERSION} -lt 4333 ]; then
-		boot_mesg " You not use 'bash' version 4.3.33 or newer..."
-		echo_warning
-	fi
-}
 check_variables() {
 if [ -z $CHROOT_LIST ]; then
 	CHROOT_LIST="nutyx acl attr bash bzip2 coreutils curl \
@@ -1328,14 +1229,17 @@ else
 fi
 [ -z $DEPOT ] && DEPOT="/var/lib/pkg/depot"
 [ -z $FOLDER ] && FOLDER="/mnt/hd"
-[ -z $KERNEL ] && KERNEL="linux-firmware sysklogd sysvinit reiserfsprogs e3 grub lz4 mdadm jfsutils xfsprogs btrfs-progs dhcpcd kernel-lts"
+[ -z $KERNEL ] && KERNEL="linux-firmware sysklogd sysvinit reiserfsprogs e3 \
+grub lz4 mdadm jfsutils xfsprogs btrfs-progs dhcpcd kernel-lts"
 [ "$KERNEL" == "NONE" ] && KERNEL=""
 [ "$KERNEL" == "none" ] && KERNEL=""
 
-HOMEPAGE="${URL}"                       ## http://downloads.nutyx.org
-INSTALL_BASE="$ARCH/$VERSION"           ## x86_64/8.2
-DEPOT_ROOT="$HOMEPAGE/${INSTALL_BASE}"  ## http://downloads.nutyx.org/x86_64/8.2
-DEPOT_BASE="$DEPOT_ROOT/$BASE"          ## http://downloads.nutyx.org/x86_64/8.2/base
+[ -z $LFS ] && LFS=$FOLDER
+
+HOMEPAGE="${URL}"                      ## http://downloads.nutyx.org
+INSTALL_BASE="$ARCH/$VERSION"          ## x86_64/8.2
+DEPOT_ROOT="$HOMEPAGE/${INSTALL_BASE}" ## http://downloads.nutyx.org/x86_64/8.2
+DEPOT_BASE="$DEPOT_ROOT/$BASE"         ## http://downloads.nutyx.org/x86_64/8.2/base
 
 LOCAL_DEPOT_PACKAGES="$DEPOT/$BASE"
 DEPOT_CD="/media/cdrom"
@@ -1536,11 +1440,11 @@ install_configuration_files() {
 print_help() {
 	echo "
 usage: `basename ${INSTALL_COMMAND}` [options] options
-   -p,  --path  <installation-path> will install NuTyX in <installation-path>
-  -ec,  --enter-chroot              will enter in the chroot if exist
-  -ic,  --install-config            will install all the configuration files only
-   -h,  --help                      print help and exit
-   -v,  --version                   print the version and exit
+
+  -ec,  --enter-chroot          will enter in the chroot if exist
+  -ic,  --install-config        will install all the configuration files only
+   -h,  --help                  print help and exit
+   -v,  --version               print the version and exit
 "
 
 }
@@ -1568,25 +1472,14 @@ parse_options() {
 				create_locale_link
 				install_configuration_files
 				exit 0;;
-			-p|--path)
-				if [ ! "$2" ]; then
-					echo "`basename $INSTALL_COMMAND`: option $1 requires an argument"
-					exit 1
-				fi
-				FOLDER="$2"
-				shift;;
 			-v|--version)
 				echo "`basename $INSTALL_COMMAND` $VERSION-$RELEASE"
 				exit 0;;
 			/*)
 				boot_mesg "
- >>> This methode is depreciate <<<: adjust the 'LFS' variable instead"
-				echo "
-   press any key to continue ...
+ >>> Do not use arguments anymore ...
 "
-				read a
 				exit 1;;
-#				FOLDER="$1";;
 			*)
 				echo "`basename $0`: invalid option $1"
 				exit 1 ;;
@@ -1596,29 +1489,15 @@ parse_options() {
 }
 main() {
 	config
-	[ -f /etc/`basename $INSTALL_COMMAND`.conf ] && source /etc/`basename $INSTALL_COMMAND`.conf
+	if [ -f /etc/`basename $INSTALL_COMMAND`.conf ]; then
+		source /etc/`basename $INSTALL_COMMAND`.conf
+	fi
 	check_variables  "$@"
 	parse_options "$@"
 	check_arch
 	check_lfs "$@"
 	mount_depot
-	if [ $# -lt 1 ] && [ -z "$LFS" ] ; then
-		echo "
-*******************************************
-* You didn't specify enough variable      *
-* variable LFS: Folder destination        *
-*                                         *
-* Please re-enter the command with the    *
-* LFS variable set                        *
-*                                         *
-* example:                                *
-* LFS=/chroot bash ${INSTALL_COMMAND}          *
-*                                         *
-*******************************************
-"
 
-		return
-	fi
 	echo "LFS        : $LFS
 DEVICE     : $DEVICE
 URL        : $URL
@@ -1631,7 +1510,6 @@ DEPOT_BASE : $DEPOT_BASE
 DEVEL      : $DEVEL
 CHROOT_LIST: $CHROOT_LIST"
 	check_root
-	check_bash
 	TMP=`mktemp -d`
 	check_mountfolder
 	check_mountpoint
