@@ -1376,7 +1376,7 @@ download_pkgadd() {
 			fi
 			download_pkg cards
 			echo "Extraction of cards ..."
-			bsdtar -xf $FOLDER/$DEPOT/$BASE/${1}/${PackageFileName} || print_error_msg
+			bsdtar -xf $FOLDER/$DEPOT/$BASE/cards/${PackageFileName} || print_error_msg
 			echo_ok
 		fi
 	fi
