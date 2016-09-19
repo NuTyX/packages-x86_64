@@ -351,13 +351,14 @@ choose_available_ESSID() {
 [ -z $"WIFI_NETWORK_CARD" ] && WIFI_NETWORK_CARD=`cat $TMP/result|sed 's/"//g'`
 
 DEVTYPE=`/sbin/udevadm info /sys/class/net/$WIFI_NETWORK_CARD | grep DEVTYPE | cut -d"=" -f2`
-if [ "$DEVTYPE" = ".wlan" ]; then
+if [ "$DEVTYPE" = "wlan" ]; then
 	echo -n "--backtitle \" $(gettext "Networks") \" \
 	--title \" $1 \" \
 	--colors \
 	--radiolist \" $(gettext "Choose the name of the wireless access point") (ESSID) \" 0 0 0 " > $TMP/networks
 
 	NETWORKS=`iwlist $WIFI_NETWORK_CARD scanning 2>/dev/null | grep "ESSID:" | cut -d"\"" -f2 | grep -v "\\x00"`
+	[ -z "$NETWORKS" ] && return
 	for i in $NETWORKS; do
 		echo -n \""$i"\" \""$i"\" " off "
 	done >> $TMP/networks
