@@ -1,13 +1,13 @@
 # Description: VirtualBox is a powerfull 32 and 64 bits virtualization product
 # URL: http://virtualbox.org
 # Packager: tnut at nutyx dot org
-# Depends on: virtualbox-cli sdl
+# Depends on: sdl
 
 name=virtualbox
-version=5.1.4
+version=5.1.6
 release=1
 _name=Oracle_VM_VirtualBox_Extension_Pack
-_release=110228
+_release=110634
 
 PKGMK_IGNORE_FOOTPRINT="yes"
 PKGMK_IGNORE_MD5SUM="yes"
@@ -39,6 +39,13 @@ build() {
 	mv $PKG/opt/VirtualBox/virtualbox.desktop $PKG/usr/share/applications/virtualbox.desktop
 	chmod +s $PKG/opt/VirtualBox/{VirtualBox,VBoxSDL,VBoxHeadless}
 
+	mkdir -p $PKG/etc/sysconfig/modules.d
+	cat > $PKG/etc/sysconfig/modules.d/virtualbox.conf << "EOF"
+vboxdrv
+vboxnetadp
+vboxnetflt
+vboxpci
+EOF
 	mkdir -p $PKG/etc/udev/rules.d
 	cp $SRC/virtualbox.60-vboxdrv.rules $PKG/etc/udev/rules.d/60-vboxdrv.rules
 
