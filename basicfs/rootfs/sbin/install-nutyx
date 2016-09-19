@@ -160,6 +160,7 @@ download_pkg() {
 		curl -C - -# --create-dirs \
 		${DEPOT_BASE}/${1}/$PackageFileName -o $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName || \
 		error "Cannot download ${DEPOT_BASE}/${1}/$PackageFileName ..., check URL"
+		chmod -R 755 $FOLDER/$DEPOT
 		echo_ok
 	fi
 }
@@ -232,6 +233,7 @@ getPackageFileName() {
 		curl -C - -sS --create-dirs \
 		${DEPOT_BASE}/${1}/.PKGREPO -o $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO || \
 		error "Cannot download ${DEPOT_BASE}/${1}/.PKGREPO ..., check URL"
+		chmod -R 755 $FOLDER/$DEPOT
 	fi
 	if [ `wc -l $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO|cut -d " " -f1` -eq 0 ]; then
 		error "${DEPOT_BASE}/${1} not reacheable.."

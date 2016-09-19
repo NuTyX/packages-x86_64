@@ -81,7 +81,7 @@ create_lxdm_conf() {
 mkdir -p /etc/lxdm
 echo "[base]
 ## uncomment and set autologin username to enable autologin
-autologin=${1}
+# autologin=${1}
 
 ## uncomment and set timeout to enable timeout autologin,
 ## the value should >=5
@@ -145,37 +145,37 @@ chmod 640 $SETUP_LXDM_CONFFILE
 $SETUP_LOG "setup-nutyx --create-user" "$SETUP_LXDM_CONFFILE created"
 }
 network_card_found() {
-	local NIC
-	NIC=`ls /sys/class/net`
-	if [  `echo $NIC|wc -w` -gt 1 ];then
-		retval=""
-		touch $TMP/result
-		while [ true ]; do
-			echo  -n "--backtitle \" $(gettext "Network card") \" \
-			--title \" $(gettext "Select the card") \" \
-			--radiolist \" $(gettext "Card to configure") \" 0 0 0 " > $TMP/list
-			for i in $NIC
-			do
-				[ "$i" == "lo" ] && continue
-				echo -n \""$i"\"\  \"`/sbin/udevadm info /sys/class/net/$i|grep ID_MODEL_FROM_DATABASE|cut -d "=" -f2`\" " off "
-				done >> $TMP/list
-				dialog --file $TMP/list 2>$TMP/result
-				retval=$?
-				result=`cat $TMP/result`
-				case $retval in
-					0)
-						if [ "$result" != "" ]; then
-							break
-						fi;;
-					1|255)
-						if [ "$result" != "" ]; then
-							break
-						fi;;
-				esac
-		done
-		NETWORK_CARD=`cat $TMP/result|sed 's/"//g'`
-		$SETUP_LOG "setup-nutyx --config-net" "Network card found: $NETWORK_CARD"
-	fi
+local NIC
+NIC=`ls /sys/class/net`
+if [  `echo $NIC|wc -w` -gt 1 ];then
+	retval=""
+	touch $TMP/result
+	while [ true ]; do
+		echo  -n "--backtitle \" $(gettext "Network card") \" \
+		--title \" $(gettext "Select the card") \" \
+		--radiolist \" $(gettext "Card to configure") \" 0 0 0 " > $TMP/list
+		for i in $NIC
+		do
+			[ "$i" == "lo" ] && continue
+			echo -n \""$i"\"\  \"`/sbin/udevadm info /sys/class/net/$i|grep ID_MODEL_FROM_DATABASE|cut -d "=" -f2`\" " off "
+			done >> $TMP/list
+			dialog --file $TMP/list 2>$TMP/result
+			retval=$?
+			result=`cat $TMP/result`
+			case $retval in
+				0)
+					if [ "$result" != "" ]; then
+						break
+					fi;;
+				1|255)
+					if [ "$result" != "" ]; then
+						break
+					fi;;
+			esac
+	done
+	NETWORK_CARD=`cat $TMP/result|sed 's/"//g'`
+	$SETUP_LOG "setup-nutyx --config-net" "Network card found: $NETWORK_CARD"
+fi
 }
 check_group_exist()
 {
@@ -347,6 +347,58 @@ setup_user()
 		SETUP_CONFIG_USER="no"
 	fi
 }
+choose_available_ESSID() {
+[ -z $"WIFI_NETWORK_CARD" ] && WIFI_NETWORK_CARD=`cat $TMP/result|sed 's/"//g'`
+
+DEVTYPE=`/sbin/udevadm info /sys/class/net/$WIFI_NETWORK_CARD | grep DEVTYPE | cut -d"=" -f2`
+if [ "$DEVTYPE" = ".wlan" ]; then
+	echo -n "--backtitle \" $(gettext "Networks") \" \
+	--title \" $1 \" \
+	--colors \
+	--radiolist \" $(gettext "Choose the name of the wireless access point") (ESSID) \" 0 0 0 " > $TMP/networks
+
+	NETWORKS=`iwlist $WIFI_NETWORK_CARD scanning 2>/dev/null | grep "ESSID:" | cut -d"\"" -f2 | grep -v "\\x00"`
+	for i in $NETWORKS; do
+		echo -n \""$i"\" \""$i"\" " off "
+	done >> $TMP/networks
+
+	dialog --file $TMP/networks 2>$TMP/result
+	retval=$?
+	result=`cat $TMP/result`
+	case $retval in
+		0)
+			if [ "$result" != "" ]; then
+				ESSID=`cat $TMP/result`
+				echo -n "--title \" $1 \" \
+				--colors \
+				--passwordbox \" $(gettext "Enter the password of") (PASSPHRASE): \Zb\Z4$ESSID\Zn \" 0 0" > $TMP/passwd
+				dialog --insecure --file $TMP/passwd 2>$TMP/result
+				retval=$?
+				result=`cat $TMP/result`
+				case $retval in
+					0)
+						if [ "$result" != "" ]; then
+							KEY=`cat $TMP/result`
+							WPA_FILE=/etc/wpa_supplicant.conf.${NETWORK_CARD}
+							[ -f $WPA_FILE ] && mv $WPA_FILE ${WPA_FILE}.old
+							wpa_passphrase "$ESSID" "$KEY" > $WPA_FILE
+							chmod 600 ${WPA_FILE}
+						fi ;;
+					1|255)
+						if [ "$result" != "" ]; then
+							break
+						fi ;;
+				esac
+				rm $TMP/result
+			fi ;;
+		1|255)
+			if [ "$result" != "" ]; then
+				break
+			fi ;;
+	esac
+fi
+
+}
 setup_wireless()
 {
 	local TITLE WPA_FILE returncode WPA_TOOL ESSID KEY
@@ -364,37 +416,38 @@ setup_wireless()
 	TITLE="$(gettext "Configuration of a wireless access point for") \Zb\Z1${WIFI_NETWORK_CARD}\Zn"
 
 	ESSID=""
+	KEY=""
+	choose_available_ESSID "$TITLE"
 	while [ "$ESSID" == "" ];
 	do
 		exec 3>&1
 		ESSID=`dialog  --title " $TITLE " \
 		--colors \
 		--inputbox "$(gettext "Enter the name of the wireless access point") (ESSID)" \
-		8 100 ""	2>&1 1>&3`
+		0 0 ""	2>&1 1>&3`
 		ESSID="`echo "$ESSID"|sed "s/ //g"`"
 	done
 
-	KEY=""
 	while [ "$KEY" == "" ];
 	do
 		exec 3>&1
 		KEY=`dialog --title " $TITLE " \
 		--colors \
 		--inputbox "$(gettext "Enter the password of") (PASSPHRASE): \Zb\Z4$ESSID\Zn" \
-		8 100 ""  2>&1 1>&3`
+		0 0 ""  2>&1 1>&3`
 		KEY="`echo "$KEY"|sed "s/ //g"`"
 	done
-# Create the wpa file
 
 	WPA_FILE="/etc/wpa_supplicant.conf.${WIFI_NETWORK_CARD}"
 	rm -f $WPA_FILE
 
 	[ -z $WPA_TOOL ] || $WPA_TOOL "$ESSID" "$KEY" > $WPA_FILE
+	chmod 600 $WPA_FILE
 
 	if [ -f $WPA_FILE ]; then
 		dialog --clear --title " $TITLE " \
 		--colors \
-		--msgbox "$(gettext "File") \Zb\Z4$WPA_FILE\Zn $(gettext "successfully created")" 5 100
+		--msgbox "$(gettext "File") \Zb\Z4$WPA_FILE\Zn $(gettext "successfully created")" 0 0
 		$SETUP_LOG "setup-nutyx --config-wireless" "$ESSID configured"
 	else
 		dialog  --clear --title " $TITLE " \

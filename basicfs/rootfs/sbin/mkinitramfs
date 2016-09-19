@@ -243,13 +243,12 @@ chmod 755 $WDIR/lib/udev/do_start_clock
 
 # Install the kernel modules if requested
 if [ -n "$KERNEL_VERSION" ]; then
-  for i in dm-mod md-mod ehci-pci uhci-hcd uas usb-common usb-storage loop sr_mod squashfs isofs
+  for i in dm-mod md-mod ehci-pci usbcore \
+ehci-hcd uhci-hcd usbcore uas \
+usbcore usb-storage usb-common \
+usb-storage usbcore loop sr_mod \
+cdrom squashfs isofs
   do
-    d=`modinfo $i|grep depends|cut -d ":" -f2|sed "s@ @@g"|sed "s@,@ @g"`
-    for j in $d
-    do
-      find /lib/modules/ -type f -name $j* 2> /dev/null | cpio --make-directories -p --quiet $WDIR 2> /dev/null
-    done
     find /lib/modules/ -type f -name $i* 2> /dev/null | cpio --make-directories -p --quiet $WDIR 2> /dev/null
   done
   find \
