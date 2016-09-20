@@ -1,0 +1,23 @@
+# Depends on: perl-cpan-meta perl-inc-latest
+run=(perl-cpan-meta perl-inc-latest)
+description="Build, test, and install Perl modules"
+url="http://search.cpan.org/dist/Module-Build"
+packager="tnut at nutyx dot org"
+run=( perl )
+name=perl-module-build
+version=0.4220
+release=1
+
+source=(http://search.cpan.org/CPAN/authors/id/L/LE/LEONT/Module-Build-$version.tar.gz)
+
+build() {
+    cd Module-Build-$version
+    perl Build.PL installdirs=vendor
+    perl Build
+    perl Build install destdir="$PKG"
+
+    # Remove perllocal.pod and .packlist if present in the package
+    for i in perllocal.pod .packlist; do
+        find $PKG -name "$i" -exec rm -rf {} \;
+    done
+}
