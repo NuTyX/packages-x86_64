@@ -1,0 +1,21 @@
+description="Run commands simply, with detailed diagnostics"
+url="http://search.cpan.org/dist/IPC-System-Simple"
+packager="tnut at nutyx dot org"
+run=( perl )
+name=perl-ipc-system-simple
+version=1.25
+release=1
+
+source=(http://search.cpan.org/CPAN/authors/id/P/PJ/PJF/IPC-System-Simple-$version.tar.gz)
+
+build() {
+    cd IPC-System-Simple-$version
+    perl Makefile.PL INSTALLDIRS=vendor
+    make
+    make DESTDIR=$PKG install
+
+    # Remove perllocal.pod and .packlist if present in the package
+    for i in perllocal.pod .packlist; do
+        find $PKG -name "$i" -exec rm -rf {} \;
+    done
+}
