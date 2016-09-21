@@ -1,0 +1,33 @@
+# Depends on: python python-setuptools lcms libwebp tk sane python-qt4
+
+description="Python Imaging Library (PIL) fork"
+url="http://python-imaging.github.io/"
+packager="alienus at nutyx dot org"
+
+name=python-pillow
+version=3.2.0
+_sanever=2.8.2
+_appname=Pillow
+release=2
+
+source=(http://pypi.python.org/packages/source/P/Pillow/Pillow-$version.zip
+       https://github.com/python-pillow/Sane/archive/v$_sanever.tar.gz)
+
+build() {
+    cd $SRC
+    sed -i "s|os.path.join|'../libImaging', &|" $SRC/Sane-$_sanever/setup.py
+    cp -r $SRC/Sane-${_sanever} $SRC/${_appname}-$version/Sane
+
+    cd Pillow-$version
+    python setup.py install --prefix=/usr --root=$PKG
+    cd Sane
+    python setup.py install --prefix=/usr --root=$PKG
+    cd ../libImaging
+    install -dm755 $PKG/usr/include/python2.7
+    install -m644 -t $PKG/usr/include/python2.7 *.h
+    # rename /bin/*.py to *
+    cd $PKG/usr/bin
+    for f in *.py; do
+        mv $f "${f%.py}2"
+    done
+}
