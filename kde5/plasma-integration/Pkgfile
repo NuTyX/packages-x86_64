@@ -1,11 +1,11 @@
-# Depends on: kf5-extra-cmake-modules kf5-kconfig kf5-kconfigwidgets kf5-ki18n kf5-kiconthemes kf5-kio kf5-knotifications kf5-kwidgetsaddons kf5-kwayland plasma-breeze
+# Depends on: kf5-extra-cmake-modules kf5-kconfig kf5-kconfigwidgets kf5-ki18n kf5-kiconthemes kf5-kio kf5-knotifications kf5-kwidgetsaddons kf5-kwayland kf5-kwindowsystem plasma-breeze ttf-hack xorg-libxcursor noto-fonts 
 
 description="Qt Platform Theme integration plugins for the Plasma workspaces"
 url="https://www.kde.org/"
 packager="pierre at nutyx dot org"
 
 _name=plasma-integration
-release=1
+release=5
 
 build() {
 cd ${_name}-$version
@@ -15,6 +15,8 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_BUILD_TYPE=Release  \
       -DLIB_INSTALL_DIR=lib       \
       -DBUILD_TESTING=OFF         \
+      -FONTHACK_DIR=/usr/share/fonts/TTF      \
+      -FONTNOTOSANS_DIR=/usr/share/fonts/noto \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
