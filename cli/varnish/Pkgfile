@@ -13,6 +13,8 @@ varnish.service)
 
 build(){
     cd $name-$version
+    # https://github.com/varnish/Varnish-Cache/pull/88
+    [[ $PKGMK_ARCH == i686 ]] && CFLAGS+=' -ffloat-store -fexcess-precision=standard'
     ./configure --prefix=/usr \
                 --sysconfdir=/etc \
                 --localstatedir=/var/lib
