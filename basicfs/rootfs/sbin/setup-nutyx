@@ -424,7 +424,7 @@ setup_wireless()
 		exec 3>&1
 		ESSID=`dialog  --title " $TITLE " \
 		--colors \
-		--inputbox "$(gettext "Enter the name of the wireless access point") (ESSID)" \
+		--inputbox "$(gettext "Choose the name of the wireless access point") (ESSID)" \
 		0 0 ""	2>&1 1>&3`
 		ESSID="`echo "$ESSID"|sed "s/ //g"`"
 	done
