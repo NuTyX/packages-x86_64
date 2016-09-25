@@ -1,4 +1,4 @@
-.TH "NuTyX version 8.2" 8 "Août, 2016" ""
+.TH "NuTyX version 8.2" 8 "Septembre, 2016" ""
 
 
 .SH NuTyX
@@ -72,6 +72,9 @@ Le deuxième exemple défini une configuration d'adresse dynamique sur wlan0, le
 
 .TP
  \fBDéfinir un réseau sans fils et activation de la clé wpa\fR
+
+La commande \fBsetup-nutyx -cw\fP permet de configurer un point d'accès sans fil.
+
 Si votre machine supporte le réseau sans fils, il est necessaire de le configurer. Pour connaître le nom de la carte reseau, utilisez la commande en root \fBiwconfig\fR. Si le resultat de la commande affiche ce genre d'information:
 .P
  eth0      no wireless extensions.
@@ -158,14 +161,18 @@ Et ajouter l'entrée dans \fI/etc/fstab\fR:
 
 .TP
   \fBCréation d'un nouveau compte\fR:
-La commande \fBnu\fP (Nouvel Utilisateur) est un script permettant d'ajouter un nouvel utilisateur sur votre système, il sera automatiquement ajouté aux groupes essentiels de NuTyX. Si une interface graphique a été installée, celle-ci sera lancée et le \fBpremier\fR utilisateur inscrit sera automatiquement logué. Si vous souhaitez déactiver cette fonction, éditez le fichier \fI/etc/kdm/kdmrc\fR pour kde, \fI/etc/gdm/custom.conf\fR pour gnome et \fI/etc/lxdm/lxdm.conf\fR pour xfce et lxde. Les commandes classiques \fBuseradd/userdel\fR permettent d'ajouter/supprimer des comptes utilisateurs
+
+La commande \fBsetup-nutyx -cu\fP permet d'ajouter un nouvel utilisateur sur votre système.
+
+Le nouvel utilisateur sera automatiquement ajouté aux groupes essentiels de NuTyX. Si une interface graphique a été installée, celle-ci sera lancée et le \fBpremier\fR utilisateur inscrit sera automatiquement logué. Si vous souhaitez déactiver cette fonction, éditez le fichier \fI/etc/lxdm/lxdm.conf\fR. Les commandes classiques \fBuseradd/userdel\fR permettent d'ajouter/supprimer des comptes utilisateurs
 .TP
   \fBL'horloge\fR:
+
+La commande \fBsetup-nutyx -cc\fP permet de configurer facilement la date et l'heure
+
 Sous NuTyX, l'affichage de l'horloge peut utiliser 2 methodes: 
  - Methode 1: UTC=1, tenir compte du "Temps universel coordonné". Ajustement automatique heure d'été/hiver. Consultez la page wiki http://fr.wikipedia.org/wiki/Temps_universel_coordonn%C3%A9 pour plus d'informations.
  - Methode 2: UTC=0, tenir compte de l'heure locale (celle de votre poignet) uniquement et ignorer le temps universel coordonné. Cette methode ne mettra pas l'horloge de votre machine à jour aux changements heure été/hiver.
-
-La commande \fBsetup-nutyx -cc\fP permet de configurer facilement la date et l'heure 
 
 Le fichier \fI/etc/sysconfig/clock\fR défini la methode d'affichage de l'horloge sur la machine. Le fichier contient une seule variable \fBUTC\fR. si \fBUTC=1\fR cela signifie que l'horloge du bios DOIT être règlé sur l'horloge de temps universel  coordonné, et le script de configuration ajustera l'heure du bureau en fonction de la région où vous vous trouvez (Methode 1). Attention, si vous utilisez la methode 1 et que vous êtes en multiboot avec windows, l'heure sous windows sera fausse, ce dernier OS ne tient pas compte de cette difförence entre l'horloge bios et l'horloge de l'OS. Si \fBUTC=0\fR, l'horloge du bios et l'horloge du bureau afficheront l'heure locale, cad l'heure qui est à votre poignet (Methode 2). Si vous ne connaîssez pas le réglage actuelle de votre machine, vous pouvez vérifier le réglage de l'horloge de votre bios.  En root, lancez la commande \fBhwclock -r\fR. Ceci affichera l'horloge matérielle. Si l'heure correspond à ce qui vous dit votre montre, alors l'horloge matérielle est configurée sur l'heure locale. Vous pouvez alors confirmer ceci en mettant \fBUTC=0\fR dans le fichier \fI/etc/sysconfig/clock\fR. Si la sortie n'est pas identique à l'heure de votre poignet, il y a des chances qu'elle est été configurée en UTC. Si la commande \fBhwclock -ru\fR affiche l'heure de votre poignet, l'heure du bios de votre machine est alors correcte.
 
