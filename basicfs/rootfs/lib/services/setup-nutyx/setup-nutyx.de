@@ -453,3 +453,8 @@ msgstr "Cannot create"
 msgid "Erase"
 msgstr "Erase"
 
+msgid "Configure automatic update"
+msgstr "Configure automatic update"
+
+msgid "Would you like to enable automatic update"
+msgstr "Would you like to enable automatic update"
