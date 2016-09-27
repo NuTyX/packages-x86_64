@@ -1,13 +1,14 @@
-# Description: Thunderbird is a stand-alone mail/news client based on the Mozilla codebase. It uses the Gecko rendering engine to enable it to display and compose HTML emails. 
-# URL: http://www.mozilla.org/thunderbird
-# Packager: pierre at nutyx dot org, tnut at nutyx dot org
 # Depends on: alsa-lib gtk2 zip unzip libevent libvpx nspr nss yasm dbus-glib doxygen gstreamer-plugins-good gstreamer-plugins-ffmpeg libnotify openjdk startup-notification hunspell sqlite wireless-tools xorg-libx11 xorg-libxt xorg-libxrandr desktop-file-utils hicolor-icon-theme shared-mime-info pulseaudio
 
-run=(startup-notification hunspell)
 description="Stand-alone mail/news client based on the Mozilla codebase."
+url="http://www.mozilla.org/thunderbird"
+packager="pierre at nutyx dot org, tnut at nutyx dot org"
+
+run=(startup-notification hunspell)
+
 name=thunderbird
-version=45.2.0
-release=2
+version=45.3.0
+release=1
 
 source=(http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.xz
 	$name.desktop)
