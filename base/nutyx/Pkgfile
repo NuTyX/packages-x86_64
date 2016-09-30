@@ -7,12 +7,12 @@ packager="tnut at nutyx dot org"
 maintainer="tnut at nutyx dot org"
 
 name=nutyx
-version=20160925
+version=8.2
 release=1
-source=(http://downloads.nutyx.org/files/nutyx-basicfs-$version.tar.bz2)
+source=(http://downloads.nutyx.org/files/$name-$version.tar.gz)
 build () {
-cd nutyx-basicfs/nutyx-houaphan-basicfs/rootfs
-mv * $PKG/
+cd $name-$version
+make DESTDIR=$PKG install
 mkdir -p $PKG/usr/local
 case $(uname -m) in
 x86_64) ln -sv lib $PKG/lib64
