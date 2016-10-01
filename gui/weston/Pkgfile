@@ -1,0 +1,21 @@
+# Depends on: cairo libinput libunwind libjpeg-turbo libxkbcommon xorg-mesa mtdev wayland wayland-protocols xorg-glu pam pango xorg-proto xorg-server colord doxygen libpng lcms
+
+description="Reference implementation of a Wayland compositor"
+url="http://wayland.freedesktop.org/"
+packager="pierre at nutyx dot org"
+
+name=weston
+version=1.12.0
+release=1
+
+source=(http://wayland.freedesktop.org/releases/weston-$version.tar.xz)
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr     \
+              --libdir=/usr/lib \
+              --sysconfdir=/etc \
+              --enable-demo-clients-install
+  make
+  make DESTDIR=$PKG install
+}
