@@ -1,0 +1,21 @@
+# Depends on: xz
+
+description="Portable and efficient C programming interface (API) to determine the call-chain of a program"
+url="http://www.nongnu.org/libunwind/"
+packager="pierre at nutyx dot org"
+
+name=libunwind
+version=1.1
+release=1
+
+source=(http://download.savannah.gnu.org/releases/$name/$name-$version.tar.gz
+        libunwind-001-invalid-dwarf-opcodes-can-cause-references-beyond.patch)
+
+build() {
+  cd $name-$version
+#  patch -p1  < ../libunwind-001-invalid-dwarf-opcodes-can-cause-references-beyond.patch
+  ./configure  --prefix=/usr
+  make
+  make DESTDIR=$PKG install
+}
+  
