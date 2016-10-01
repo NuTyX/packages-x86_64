@@ -1,0 +1,18 @@
+# Depends on: wayland
+
+description="Additional Wayland protocols"
+url=" https://wayland.freedesktop.org/"
+packager="pierre at nutyx dot org"
+
+name=wayland-protocols
+version=1.7
+release=1
+
+source=(https://wayland.freedesktop.org/releases/wayland-protocols-$version.tar.xz)
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+  make DESTDIR=$PKG install
+}
