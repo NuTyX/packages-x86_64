@@ -4,12 +4,11 @@ Packager="pierre at nutyx dot org"
 
 name=ed
 version=1.13
-release=1
+release=2
 
 source=(https://ftp.gnu.org/gnu/ed/$name-$version.tar.lz)
 
 build() {
-  bsdtar -xf $name-$version.tar.lz
   cd $name-$version
   ./configure --prefix=/ \
               --bindir=/usr/bin \
