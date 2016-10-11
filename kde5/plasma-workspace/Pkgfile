@@ -7,7 +7,7 @@ packager="pierre at nutyx dot org"
 run=(consolekit2 pm-utils gvfs)
 
 _name=plasma-workspace
-release=3
+release=1
 
 build() {
 cd $name-$version
@@ -39,4 +39,6 @@ EOF
 
 install -v -dm755 $PKG/usr/share/xsessions
 ln -sfv /usr/share/xsessions/plasma.desktop $PKG/usr/share/xsessions/kf5-plasma.desktop
+
+install -Dm644 plasmawayland.desktop $PKG/usr/share/wayland-sessions/plasmawayland.desktop
 }
