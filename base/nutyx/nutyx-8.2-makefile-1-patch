@@ -1,0 +1,21 @@
+diff --git a/tools/Makefile b/tools/Makefile
+index fbafa0d..e26557c 100644
+--- a/tools/Makefile
++++ b/tools/Makefile
+@@ -32,7 +32,15 @@ create-dirs:
+ 	install -d -m 755 $(VARDIR)/log
+ 	install -d -m 700 $(ROOTDIR)
+ 	install -d -m 755 $(ETCDIR)/X11/xorg.conf.d
+-	install -d -m 755 $(ETCDIR)/rc.d/{init.d,rc{0,1,2,3,4,5,6,S}.d}
++	install -d -m 755 $(ETCDIR)/rc.d/init.d
++	install -d -m 755 $(ETCDIR)/rc.d/rc0.d
++	install -d -m 755 $(ETCDIR)/rc.d/rc1.d
++	install -d -m 755 $(ETCDIR)/rc.d/rc2.d
++	install -d -m 755 $(ETCDIR)/rc.d/rc3.d
++	install -d -m 755 $(ETCDIR)/rc.d/rc4.d
++	install -d -m 755 $(ETCDIR)/rc.d/rc5.d
++	install -d -m 755 $(ETCDIR)/rc.d/rc6.d
++	install -d -m 755 $(ETCDIR)/rc.d/rcS.d
+ 	ln -sf rc.d/init.d $(ETCDIR)/init.d
+ 		
+ 
