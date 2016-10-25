@@ -1,20 +1,19 @@
-# Description: Set of libraries that offers command-line editing and history capabilities.
-# URL: http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html
-# Maintainer: Chet Ramey, chet dot ramey at case dot edu
-# Packager: pierre at nutyx dot org
+description="Set of libraries that offers command-line editing and history capabilities"
+url="http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html"
+maintainer="Chet Ramey, chet dot ramey at case dot edu"
+packager="pierre at nutyx dot org"
+
 name=readline
-version=6.3
+version=7.0
 release=1
 
-source=(http://ftp.gnu.org/gnu/readline/readline-$version.tar.gz
-	http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-upstream_fixes-3.patch)
+source=(http://ftp.gnu.org/gnu/readline/readline-$version.tar.gz)
 
 PKGMK_GROUPS=(devel man doc)
 
 build()
 {
 cd readline-$version
-patch -Np1 -i ../$name-$version-upstream_fixes-3.patch
 
 sed -i '/MV.*old/d' Makefile.in
 sed -i '/{OLDSUFF}/c:' support/shlib-install
@@ -39,10 +38,10 @@ $PKG/usr/share/doc/readline-$version
 
 rm -rv $PKG/usr/bin
 
-ln -sfv ../../lib/libreadline.so.6 \
+ln -sfv ../../lib/libreadline.so.7 \
 $PKG/usr/lib/libreadline.so
 
-ln -sfv ../../lib/libhistory.so.6 \
+ln -sfv ../../lib/libhistory.so.7 \
 $PKG/usr/lib/libhistory.so
 
 }
