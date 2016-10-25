@@ -1,0 +1,17 @@
+description="C++ library for fast, safe, thread-friendly alternative to backtracking regular expression engines"
+url="https://github.com/google/re2"
+packager="pierre at nutyx dot org"
+
+name=re2
+version=2016-09-01
+release=1
+
+source=(https://github.com/google/re2/archive/$version.zip
+        re2-gcc-61-fix.patch)
+
+build() {
+  cd $name-$version
+  patch -p1 < ../re2-gcc-61-fix.patch
+  make prefix=/usr
+  make prefix=/usr DESTDIR=$PKG install
+}
