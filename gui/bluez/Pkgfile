@@ -1,11 +1,12 @@
-# Description: The BlueZ package contains the Bluetooth protocol stack for Linux.
-# URL: http://www.bluez.org/
-# Packager: pierre at nutyx dot org, tnut at nutyx dot org
-# Depends on: libical libvorbis alsa-lib libusb-compat libsndfile cups glib 
+# Depends on: libical libvorbis alsa-lib libusb-compat libsndfile cups glib
+
+description="The BlueZ package contains the Bluetooth protocol stack for Linux."
+url="http://www.bluez.org/"
+packager="pierre at nutyx dot org, tnut at nutyx dot org"
 
 name=bluez
 version=5.40
-release=1
+release=2
 
 source=(http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz
 	http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-obexd_without_systemd-1.patch)
@@ -41,7 +42,7 @@ make DESTDIR=$PKG install
 
 install -v -dm755 $PKG/{etc/bluetooth,usr/sbin}
 
-ln -svf ../libexec/bluetooth/bluetoothd $PKG/usr/sbin
+ln -svf ../../lib/bluetooth/bluetoothd $PKG/usr/sbin
 
 
 cat > $PKG/etc/bluetooth/rfcomm.conf << "EOF"
