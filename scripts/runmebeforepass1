@@ -13,7 +13,7 @@ msg2 "$(gettext "Press 'ENTER' to continue or 'ctrl+c' to exit.")"
 
 read a
 # Checking the current directory
-[ "`pwd`" == "/home/lfs/$version" ] || abort "$(gettext "The script must be run from: /home/lfs/%s")" "$version"
+[ "`pwd`" == "$HOME/$version" ] || abort "$(gettext "The script must be run from: $HOME/%s")" "$version"
 
 # Checking variables
 [ -f ~/.bash_profile ] || abort "$(gettext ".bash_profile file not found.")"
@@ -42,12 +42,12 @@ plain "$(gettext "Found %s/sources directory: OK")" "$LFS"
 plain "$(gettext "Found %s/tools directory: OK")" "$LFS"
 [ -O $LFS/tools ] || abort "$(gettext "%s/tools is not owned by user 'lfs'.")" "$LFS"
 
-if [ ! -d /home/lfs/logs ]; then
-    plain "$(gettext "/home/lfs/logs directory not found. Creating it...")"
+if [ ! -d $HOME/logs ]; then
+    plain "$(gettext "$HOME/logs directory not found. Creating it...")"
     rm -rf $HOME/logs
     mkdir -p $HOME/logs
 fi
-plain "$(gettext "Directory /home/lfs/logs: OK")" "$LFS"
+plain "$(gettext "Directory $HOME/logs: OK")" "$LFS"
 
 # Checking Links
 if [ ! -L /sources ]; then
@@ -62,17 +62,17 @@ if [ ! -L /tools ]; then
 fi
 plain "$(gettext "Link /tools: OK")"
 
-if [ ! -L /home/lfs/bin ]; then
-    plain "$(gettext "Link /home/lfs/bin not found. Creating it...")"
+if [ ! -L $HOME/bin ]; then
+    plain "$(gettext "Link $HOME/bin not found. Creating it...")"
 	ln -svf $HOME/$version/scripts $HOME/bin
 fi
-plain "$(gettext "Link /home/lfs/bin: OK")"
+plain "$(gettext "Link $HOME/bin: OK")"
 
-if [ ! -L /home/lfs/config ]; then
-    plain "$(gettext "Link /home/lfs/config not found. Creating it...")"
+if [ ! -L $HOME/config ]; then
+    plain "$(gettext "Link $HOME/config not found. Creating it...")"
 	ln -svf $HOME/$version/scripts $HOME/config
 fi
-plain "$(gettext "Link /home/lfs/config: OK")"
+plain "$(gettext "Link $HOME/config: OK")"
 
 # Diverse
 [ -f $LFS/sources/.md5sums ] && rm $LFS/sources/.md5sums
