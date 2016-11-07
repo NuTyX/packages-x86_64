@@ -1,13 +1,14 @@
-# Description: Give certain users (or groups) the ability to run some commands as root.
-# URL: http://www.sudo.ws
-# Packagers: pierre at nutyx dot org, tnut at nutyx dot org
 # Depends on: pam
 
+description="Give certain users (or groups) the ability to run some commands as root."
+url="http://www.sudo.ws"
+packager="pierre at nutyx dot org, tnut at nutyx dot org"
+
 name=sudo
-version=1.8.17p1
+version=1.8.18p1
 release=1
 
-source=(http://www.sudo.ws/sudo/dist/$name-$version.tar.gz)
+source=($url/sudo/dist/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
