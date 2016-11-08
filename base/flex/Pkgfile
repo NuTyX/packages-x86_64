@@ -13,6 +13,7 @@ build()
 {
 cd flex-$version
 
+HELP2MAN=/tools/bin/true \
 ./configure --prefix=/usr \
 --libdir=/lib --bindir=/bin --sbindir=/sbin \
 --docdir=/usr/share/doc/flex-$version
