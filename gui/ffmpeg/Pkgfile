@@ -1,16 +1,17 @@
-# Description: Complete and free Internet live audio and video broadcasting solution
-# URL: http://ffmpeg.org/
-# Packager: pierre at nutyx dot org
 # Depends on: yasm opus fdk-aac x264 x265 liba52 libass freetype lame sdl libvorbis libogg xvid faac faad2 libtheora alsa-lib openjpeg libvpx xorg-libxext xorg-libxfixes 
 
+description="Complete and free Internet live audio and video broadcasting solution"
+url="http://ffmpeg.org/"
+packager="pierre at nutyx dot org"
 name=ffmpeg
-version=3.1.2
+version=3.2
 release=1
 
-source=(http://ffmpeg.org/releases/ffmpeg-$version.tar.bz2)
+source=(${url}releases/ffmpeg-$version.tar.bz2)
 
 build() {
 cd ffmpeg-$version
+sed -i 's/-lflite"/-lflite -lasound"/' configure
 ./configure --prefix=/usr      \
             --enable-gpl         \
             --enable-version3    \
