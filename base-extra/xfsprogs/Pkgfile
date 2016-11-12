@@ -1,12 +1,12 @@
-# Description: XFS filesystem utilities
-# URL: http://oss.sgi.com/projects/xfs/
-# Packager: pierre at nutyx dot org
+description="XFS filesystem administration and debugging tools"
+url="http://oss.sgi.com/projects/xfs/"
+packager="pierre at nutyx dot org"
 
 name=xfsprogs
-version=4.7.0
+version=4.8.0
 release=1
 
-source=(ftp://oss.sgi.com/projects/xfs/cmd_tars/$name-$version.tar.gz)
+source=(https://www.kernel.org/pub/linux/utils/fs/xfs/$name/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
