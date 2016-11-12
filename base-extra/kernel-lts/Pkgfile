@@ -14,7 +14,7 @@ PKGMK_GROUPS=(devel doc)
 name=kernel-lts
 alias=(linux-lts)
 
-version=4.4.30
+version=4.4.31
 _version=${version:0:3}
 
 release=1
@@ -68,7 +68,7 @@ case `uname -m` in
 		cp $SRC/kernel-lts.config ./.config;
 esac
 
-make menuconfig
+# make menuconfig
 
 make
 
