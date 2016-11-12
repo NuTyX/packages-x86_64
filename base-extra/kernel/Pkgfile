@@ -9,7 +9,7 @@ alias=(linux)
 url="http://www.kernel.org"
 description="The latest stable kernel version"
 name=kernel
-version=4.8.6
+version=4.8.7
 release=1
 _version=${version%.*}
 
@@ -35,7 +35,7 @@ case `uname -m` in
 		cp $SRC/$name.config ./.config;
 esac
 
-make menuconfig
+# make menuconfig
 
 make || make -j1
 
