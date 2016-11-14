@@ -1,0 +1,24 @@
+# Depends on: pcsclite perl pkg-config
+
+description="A Perl Module for PC/SC SmartCard access"
+url="http://ludovic.rousseau.free.fr/softwares/pcsc-perl/"
+packager="pierre at nutyx dot org"
+
+name=perl-pcsc
+version=1.4.14
+release=1
+
+source=(http://ludovic.rousseau.free.fr/softwares/pcsc-perl/pcsc-perl-$version.tar.bz2)
+
+build() {
+  cd pcsc-perl-$version
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make DESTDIR=$PKG install
+
+  # template start; name=perl-binary-module-dependency; version=1;
+  if [[ $(find "$PKG/usr/lib/perl5/" -name "*.so") ]]; then
+	_perlver_min=$(perl -e '$v = $^V->{version}; print $v->[0].".".($v->[1]);')
+	_perlver_max=$(perl -e '$v = $^V->{version}; print $v->[0].".".($v->[1]+1);')
+	depends+=("perl>=$_perlver_min" "perl<$_perlver_max")
+fi
+}
