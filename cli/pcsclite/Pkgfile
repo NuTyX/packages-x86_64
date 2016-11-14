@@ -1,0 +1,27 @@
+# Depends : python
+
+description="PC/SC Architecture smartcard middleware library"
+url="https://alioth.debian.org/projects/pcsclite/"
+packager="pierre at nutyx dot org"
+
+name=pcsclite
+version=1.8.16
+release=1
+
+source=(https://alioth.debian.org/frs/download.php/file/4164/pcsc-lite-$version.tar.bz2)
+
+build() {
+  cd pcsc-lite-$version
+  ./configure --prefix=/usr \
+              --sbindir=/usr/bin \
+              --enable-libudev \
+              --sysconfdir=/etc \
+              --enable-ipcdir=/run/pcscd \
+              --enable-usbdropdir=/usr/lib/pcsc/drivers \
+              --with-systemdsystemunitdir=/usr/lib/systemd/system
+
+  make
+  make DESTDIR=$PKG install
+
+  install -d $PKG/usr/lib/pcsc/drivers
+}
