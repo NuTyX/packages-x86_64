@@ -31,14 +31,14 @@ build() {
   install -m755 ../pcscd $PKG/etc/rc.d/init.d/pcscd
   for i in 0 1 2 3 4 5 6
   do
-   mkdir -p $PKG/etc/rc.d/rc{$i}.d
+   mkdir -p $PKG/etc/rc.d/rc${i}.d
   done
   for i in 3 4 5
   do
-   ln -sf ../init.d/pcscd $PKG/etc/rc.d/rc{$i}.d/S90pcscd
+   ln -sf ../init.d/pcscd $PKG/etc/rc.d/rc${i}.d/S90pcscd
   done
   for i in 0 1 2 6
   do
-   ln -sf ../init.d/pcscd$PKG/etc/rc.d/rc{$i}.d/K01pcscd
+   ln -sf ../init.d/pcscd$PKG/etc/rc.d/rc${i}.d/K01pcscd
   done
 }
