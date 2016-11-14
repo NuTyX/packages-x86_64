@@ -1,0 +1,57 @@
+#!/bin/sh
+########################################################################
+# Begin pcscd
+#
+# Description : For access a smart card using SCard API (PC/SC).
+#
+# Authors     : tnut at nutyx dot org
+#
+# Version     : NuTyX 8.2.2
+#
+# Notes       :
+#
+########################################################################
+
+### BEGIN INIT INFO
+# Provides:            template
+# Required-Start:
+# Should-Start:
+# Required-Stop:
+# Should-Stop:
+# Default-Start:
+# Default-Stop:
+# Short-Description:
+# Description:
+# X-LFS-Provided-By:
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+   start)
+      log_info_msg "Starting pcscd..."
+      start_daemon /usr/bin/pcscd
+      evaluate_retval
+      ;;
+
+   stop)
+      log_info_msg "Stopping pcscd..."
+      killproc /usr/bin/pcscd
+      evaluate_retval
+      ;;
+
+   restart)
+      ${0} stop
+      sleep 1
+      ${0} start
+      ;;
+
+   *)
+      echo "Usage: ${0} {start|stop|restart}"
+      exit 1
+      ;;
+esac
+
+exit 0
+
+# End scriptname
