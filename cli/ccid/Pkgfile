@@ -1,0 +1,24 @@
+# Depends : pcsclite libusb flex pkg-config
+
+description="A generic USB Chip/Smart Card Interface Devices driver"
+url="http://pcsclite.alioth.debian.org/ccid.html"
+packager="pierre at nutyx dot org"
+
+name=ccid
+version=1.4.25
+release=1
+
+source=(https://alioth.debian.org/frs/download.php/file/4187/$name-$version.tar.bz2)
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr \
+              --sysconfdir=/etc \
+              --enable-twinserial \
+              --enable-serialconfdir=/etc/reader.conf.d
+  make
+  make DESTDIR=$PKG install
+ 
+  mv "$PKG/usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist" "$PKG/etc/libccid_Info.plist"
+  ln -s /etc/libccid_Info.plist $PKG/usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist
+}
