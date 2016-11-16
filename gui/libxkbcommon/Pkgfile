@@ -1,10 +1,11 @@
-# Description: Keymap compiler and support library by the XKB specification
-# URL: http://xkbcommon.org/
-# Packager: pierre at nutyx dot org
-# Depends on: xorg-xkeyboard-config libxcb doxygen xorg-util-macros 
+# Depends on: xorg-xkeyboard-config libxcb doxygen xorg-util-macros
+
+description="Keymap compiler and support library by the XKB specification"
+url="http://xkbcommon.org/"
+packager="pierre at nutyx dot org"
 
 name=libxkbcommon
-version=0.6.1
+version=0.7.0
 release=1
 
 source=(http://xkbcommon.org/download/libxkbcommon-$version.tar.xz)
@@ -12,7 +13,8 @@ source=(http://xkbcommon.org/download/libxkbcommon-$version.tar.xz)
 build() {
 cd $name-$version
 ./configure --prefix=/usr \
-            --disable-static
+            --disable-static \
+	 --docdir=/usr/share/doc/libxkbcommon-$version
 make
 make DESTDIR=$PKG install
 }
