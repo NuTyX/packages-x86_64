@@ -1,12 +1,13 @@
-# Description: Dialog box to grab password for packages requiring administrative privileges to be run
-# URL:  http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/
-# Packager: tnut at nutyx dot org
 # Depend on: gdk-pixbuf gtk2 xorg-libx11
 
+description="Dialog box to grab password for packages requiring administrative privileges to be run"
+url="http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/"
+packager="tnut at nutyx dot org"
+
 name=ssh-askpass
-version=7.1p2
-release=2
-source=(http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-7.1p2.tar.gz)
+version=7.3p1
+release=1
+source=($url/openssh-$version.tar.gz)
 
 build() {
 
