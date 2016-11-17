@@ -3,11 +3,14 @@
 # Packager: tnut at nutyx dot org
 
 name=liblinear
-version=2.1
+version=210
 release=1
 
-source=(http://www.csie.ntu.edu.tw/~cjlin/liblinear/oldfiles/$name-$version.tar.gz)
+source=()
 build() {
+wget -c https://github.com/cjlin1/liblinear/archive/v210.tar.gz \
+     -O $name-$version.tar.gz
+tar xf $name-$version.tar.gz
 cd $name-$version
 make lib
 mkdir -p $PKG/usr/{lib,include}
