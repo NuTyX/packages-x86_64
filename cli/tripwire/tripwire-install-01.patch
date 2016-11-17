@@ -1,0 +1,27 @@
+--- tripwire-open-source-2.4.3.1/install/install.cfg	2016-04-24 04:12:41.000000000 +0200
++++ tripwire-open-source-2.4.3.1-compile/install/install.cfg	2016-11-17 21:41:03.562992368 +0100
+@@ -24,19 +24,19 @@
+ CLOBBER=false
+ 
+ # Tripwire binaries are stored in TWBIN.
+-TWBIN="${prefix}/sbin"
++TWBIN="${PKG}/${prefix}/sbin"
+ 
+ # Tripwire policy files are stored in TWPOLICY.
+-TWPOLICY="${sysconfdir}"
++TWPOLICY="${PKG}/${sysconfdir}"
+ 
+ # Tripwire manual pages are stored in TWMAN.
+-TWMAN="${prefix}/man"
++TWMAN="${PKG}/${prefix}/share/man"
+ 
+ # Tripwire database files are stored in TWDB.
+-TWDB="${prefix}/lib/tripwire"
++TWDB="${PKG}/${prefix}/lib/tripwire"
+ 
+ # Tripwire documents directory
+-TWDOCS="${prefix}/doc/tripwire"
++TWDOCS="${PKG}/${prefix}/share/doc/tripwire-2.4.3.1"
+ 
+ # The Tripwire site key files are stored in TWSITEKEYDIR.
+ TWSITEKEYDIR="${TWPOLICY}"
