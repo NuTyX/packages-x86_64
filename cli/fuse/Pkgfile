@@ -1,18 +1,16 @@
-# Description: A library that makes it possible to implement a filesystem in a userspace program.
-# URL: http://fuse.sourceforge.net/
-# Packager: pierre at nutyx dot org
 # Depends on: doxygen
 
+url="http://fuse.sourceforge.net/"
+packager="pierre at nutyx dot org"
 description="Library that makes it possible to implement a filesystem in a userspace program."
 name=fuse
-version=2.9.5
-release=2
+version=2.9.7
+release=1
 
-source=( https://github.com/libfuse/libfuse/releases/download/fuse_2_9_5/fuse-$version.tar.gz)
+source=( https://github.com/libfuse/libfuse/releases/download/$name-$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
-sed -i 's/2:9:4/2:9:5/' lib/Makefile.in
 ./configure --prefix=/usr \
 --disable-static INIT_D_PATH=/tmp/init.d
 make
