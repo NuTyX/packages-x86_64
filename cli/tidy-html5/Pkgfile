@@ -1,0 +1,24 @@
+# Depends on: cmake
+
+packager="berlius at nutyx dot com, fanch at nutyx dot org, tnut at nutyx dot"
+url="http://tidy.sourceforge.net/"
+description="Tools and libraries used to read HTML, XHTML and XML files and write cleaned up markup"
+name=tidy-html5
+version=5.2.0
+release=1
+source=()
+
+build() {
+wget -c https://github.com/htacg/$name/archive/$version.tar.gz \
+ -O $name-$version.tar.gz
+tar xf $name-$version.tar.gz
+mkdir build
+cd build
+cmake ../$name-$version \
+-DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_BUILD_TYPE=Release  \
+-DBUILD_TAB2SPACE=ON        
+make
+make DESTDIR=$PKG install
+install -v -m755 tab2space $PKG/usr/bin
+}
