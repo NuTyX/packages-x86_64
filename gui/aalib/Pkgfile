@@ -1,16 +1,17 @@
-# Description: AAlib is an portable ascii art GFX library.
-# URL: http://aa-project.sourceforge.net/aalib
-# Packager: pierre at nutyx dot org
-# Depends on: xorg-libx11 
-
+# Depends on: xorg-libx11
+description="AAlib is an portable ascii art GFX library."
+url="http://aa-project.sourceforge.net/aalib"
+packager="pierre at nutyx dot org"
 name=aalib
 version=1.4rc5
-release=2
+release=3
 
 source=(http://downloads.sourceforge.net/aa-project/aalib-1.4rc5.tar.gz)
 
 build() {
 cd aalib-*
+sed -i -e '/AM_PATH_AALIB,/s/AM_PATH_AALIB/[&]/' aalib.m4
+
 ./configure --prefix=/usr \
  --mandir=/usr/share/man \
 --infodir=/usr/share/info --disable-static
