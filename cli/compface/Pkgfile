@@ -1,0 +1,15 @@
+description="Convert from/to X-Face format, 48x48 bitmap used to carry thumbnails of email authors in a mail header."
+url="http://freecode.com/projects/compface"
+packager="tnut at nutyx dot org"
+name=compface
+version=1.5.2
+release=1
+
+source=(http://ftp.xemacs.org/pub/xemacs/aux/compface-$version.tar.gz)
+
+build() {
+./configure --prefix=/usr --mandir=/usr/share/man
+make
+make DESTDIR=$PKG install
+install -m755 -v xbm2xface.pl $PKG/usr/bin
+}
