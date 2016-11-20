@@ -1,19 +1,18 @@
-# Description: Generic Graphics Library
-# URL: http://gegl.org/
-# Packager: pierre at nutyx dot org
 # Depends on: babl gtk2 librsvg libpng ruby lua ffmpeg librsvg openexr exiv2 json-glib
 
+description="Generic Graphics Library"
+url="http://gegl.org/"
+packager="pierre at nutyx dot org"
+
 name=gegl
-version=0.3.8
+version=0.3.10
 release=1
 
 source=(http://ftp.gimp.org/pub/$name/0.3/$name-$version.tar.bz2)
 
-# http://www.linuxfromscratch.org/patches/blfs/7.9/gegl-0.2.0-ffmpeg2-1.patch)
-
 build() {
 cd $name-$version
-# patch -Np1 -i ../gegl-0.2.0-ffmpeg2-1.patch
+sed -i "/seems to be moved/s/^/: #/" ltmain.sh
 ./configure --prefix=/usr --disable-docs
 LC_ALL=en_US make
 make DESTDIR=$PKG install
