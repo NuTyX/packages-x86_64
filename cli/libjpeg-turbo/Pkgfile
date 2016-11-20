@@ -1,18 +1,16 @@
-# Description: Fork of the original IJG libjpeg which uses SIMD to accelerate baseline JPEG
-# URL: http://libjpeg-turbo.virtualgl.org/
-# Packager: pierre at nutyx dot org
-# Depends on: nasm 
+# Depends on: nasm
 
+description="Fork of the original IJG libjpeg which uses SIMD to accelerate baseline JPEG"
+url="http://libjpeg-turbo.virtualgl.org/"
+packager="pierre at nutyx dot org"
 name=libjpeg-turbo
-version=1.4.2
+version=1.5.1
 release=1
 
 source=(http://sourceforge.net/projects/libjpeg-turbo/files/$version/libjpeg-turbo-$version.tar.gz)
 
 build() {
 cd $name-$version
-sed -i -e '/^docdir/ s:$:/libjpeg-turbo-1.4.2:' Makefile.in
-
 ./configure --prefix=/usr \
 --mandir=/usr/share/man \
 --with-jpeg8 --disable-static
