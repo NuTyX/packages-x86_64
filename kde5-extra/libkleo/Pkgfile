@@ -1,15 +1,14 @@
-# Depends on : kf5-extra-cmake-modules boost kpimtextedit gpgmepp
+# Depends on : kf5-extra-cmake-modules boost kpimtextedit qgpgme
 
 description="KDE PIM cryptographic library"
 url="https://community.kde.org/KDE_PIM"
 packager="pierre at nutyx dot org"
-run=(gpgmepp)
 
 name=libkleo
-version=16.08.3
+version=16.11.80
 release=1
 
-source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+source=(http://download.kde.org/unstable/applications/$version/src/$name-$version.tar.xz)
 
 build() {
   mkdir build
