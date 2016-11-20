@@ -1,0 +1,24 @@
+# Depends on : boost kf5-extra-cmake-modules kf5-kdoctools kdepim-apps-libs kdepim-runtime mailcommon kf5-kdesignerplugin
+
+description="Personal alarm scheduler"
+url="https://projects.kde.org/kalarm"
+packager="pierre at nutyx dot org"
+
+name=kalarm
+version=16.11.80
+release=1
+
+source=(http://download.kde.org/unstable/applications/$version/src/$name-$version.tar.xz)
+
+build() {
+  mkdir -p build
+  cd build
+  cmake ../$name-$version \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -Wno-dev
+  make
+  make DESTDIR=$PKG install
+}
