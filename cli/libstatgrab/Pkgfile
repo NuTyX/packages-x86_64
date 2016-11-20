@@ -1,0 +1,19 @@
+description="Provides cross platform access to statistics about the system on which it's run."
+url="https://www.i-scream.org/libstatgrab/"
+packager="tnut at nutyx dot org"
+
+name=libstatgrab
+version=0.91
+release=1
+
+source=(http://www.mirrorservice.org/sites/ftp.i-scream.org/pub/i-scream/$name/$name-$version.tar.gz)
+
+build () {
+
+cd $name-$version
+./configure --prefix=/usr   \
+--disable-static \
+--docdir=/usr/share/doc/$name-$version
+make
+make DESTDIR=$PKG install
+}

@@ -1,0 +1,26 @@
+description="daemon that generates an unpredictable stream of random numbers and feeds the /dev/random device."
+url="https://sourceforge.net/projects/haveged/"
+packager="tnut at nutyx dot org"
+name=haveged
+version=1.9.1
+release=1
+
+source=( http://downloads.sourceforge.net/project/haveged//$name-$version.tar.gz)
+
+build() {
+source /etc/blfs-bootscripts
+wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
+
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+mkdir -p $PKG/usr/share/doc/$name-$version
+cp -v README $PKG/usr/share/doc/$name-$version
+
+# service
+cd ..
+tar xf $scripts-$scriptsversion.tar.bz2
+cd $SRC/$scripts-$scriptsversion
+make DESTDIR=$PKG install-$name
+}

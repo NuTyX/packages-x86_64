@@ -1,10 +1,11 @@
-# Description: Implements Object Exchange Protocol used for binary file transfers between devices. 
-# URL: http://dev.zuckschwerdt.org/openobex/
-# Maintainer: http://dev.zuckschwerdt.org/openobex/wiki/ContactUs
-# Packager: pierre at nutyx dot org
 # Depends on: bluez libusb docbook-xsl
+
+description="Implements Object Exchange Protocol used for binary file transfers between devices."
+url="http://dev.zuckschwerdt.org/openobex/"
+maintainer="http://dev.zuckschwerdt.org/openobex/wiki/ContactUs"
+packager="pierre at nutyx dot org"
 name=openobex
-version=1.7.1
+version=1.7.2
 release=1
 
 source=( http://downloads.sourceforge.net/$name/$name-$version-Source.tar.gz)
@@ -18,4 +19,6 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
       ..
 make
 make DESTDIR=$PKG install
+
+mv -fv $PKG//usr/share/doc/{openobex,openobex-$version}
 }

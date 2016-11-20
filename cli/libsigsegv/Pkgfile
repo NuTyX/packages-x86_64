@@ -1,0 +1,16 @@
+description="For handling page faults in user mode"
+url="https://www.gnu.org/software/libsigsegv/"
+packager="tnut at nutyx dot org"
+name=libsigsegv
+version=2.10
+release=1
+
+source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+enable-shared --disable-static
+make
+make DESTDIR=$PKG install
+}

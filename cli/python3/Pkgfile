@@ -1,18 +1,18 @@
-# Description: Next generation of the python high-level scripting language
-# URL: http://www.python.org
-# Packager: alienus at nutyx dot org, tnut at nutyx dot org
-# Depends on: sqlite expat 
+# Depends on: sqlite expat
+
 PKGMK_GROUPS=(devel man doc)
 
+description="Next generation of the python high-level scripting language"
+url="http://www.python.org"
+packager="alienus at nutyx dot org, tnut at nutyx dot org"
+
 name=python3
-version=3.5.1
+version=3.5.2
 release=1
 
 source=(
 http://www.python.org/ftp/python/$version/Python-$version.tar.xz
 python3.png)
-
-docversion=3.5.0a3
 
 build() {
 	cd Python-$version
@@ -29,22 +29,22 @@ build() {
 
 # Install all HTML Docs files with desktop menu integration
 
-    install -v -dm755 $PKG/usr/share/doc/$name-$docversion/html
+    install -v -dm755 $PKG/usr/share/doc/$name-$version/html
     cd $SRC
-    wget --no-check-certificate -c https://www.python.org/ftp/python/doc/${docversion:0:5}/python-${docversion}-docs-html.tar.bz2 
+    wget --no-check-certificate -c https://www.python.org/ftp/python/doc/${version}/python-${version}-docs-html.tar.bz2 
     tar --strip-components=1 \
         --no-same-owner \
         --no-same-permissions \
-        -C $PKG/usr/share/doc/$name-$docversion/html \
-        -xvf python-$docversion-docs-html.tar.bz2
+        -C $PKG/usr/share/doc/$name-$version/html \
+        -xvf python-$version-docs-html.tar.bz2
 
-    find $PKG/usr/share/doc/$name-$docversion -type d -exec chmod 0755 {} \;
-    find $PKG/usr/share/doc/$name-$docversion -type f -exec chmod 0644 {} \;
+    find $PKG/usr/share/doc/$name-$version -type d -exec chmod 0755 {} \;
+    find $PKG/usr/share/doc/$name-$version -type f -exec chmod 0644 {} \;
 
     mkdir -p $PKG/usr/share/applications
     echo "[Desktop Entry]
 Categories=Development;Documentation
-Exec=xdg-open file:///usr/share/doc/python3-$docversion/html/index.html
+Exec=xdg-open file:///usr/share/doc/python3-$version/html/index.html
 Icon=python3
 StartupNotify=false
 Terminal=false
@@ -59,7 +59,7 @@ cd $PKG
 bsdtar -cf \
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/$name.doc${PKGMK_BUILDVER}any.cards.tar \
-usr/share/doc/$name-$docversion \
+usr/share/doc/$name-$version \
 usr/share/applications/$name.desktop \
 usr/share/icons/hicolor/48x48/apps/$name.png
 
