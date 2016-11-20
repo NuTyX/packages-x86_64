@@ -1,0 +1,20 @@
+# Depends on: libffi
+
+description="The librep package contains a Lisp system."
+url="http://librep.sourceforge.net/"
+packager="pierre at nutyx dot org"
+
+name=librep
+version=0.92.6
+release=1
+
+source=(http://download.tuxfamily.org/$name/${name}_$version.tar.xz)
+
+build() {
+cd ${name}_$version
+./autogen.sh --prefix=/usr \
+--disable-static
+make || make -j1
+make prefix=$PKG/usr install
+rm -rf $PKG/usr/share
+}
