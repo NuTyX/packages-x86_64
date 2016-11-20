@@ -1,13 +1,13 @@
-# Description: An image viewing/manipulation program
-# URL: URL: http://www.imagemagick.org/
-# NuTyX Pkgfile (http://nutyx.org)
-# Packager: # NuTyX Pkgfile (http://nutyx.org)
-# Depends on: freetype ghostscript lcms libgsf giflib libxml2 openexr libwmf libpng librsvg libwebp djvulibre 
+# Depends on: freetype ghostscript lcms libgsf giflib libxml2 openexr libwmf libpng librsvg libwebp djvulibre
+
+description="An image viewing/manipulation program"
+url="http://www.imagemagick.org/"
+packager="tnut at nutyx dot org"
 
 name=imagemagick
-version=7.0.1.10
+version=7.0.3.7
 release=1
-_version=7.0.1-10
+_version=7.0.3-7
 source=(ftp://ftp.imagemagick.org/pub/ImageMagick/releases/ImageMagick-${_version}.tar.xz)
 
 build () {
@@ -41,4 +41,3 @@ build () {
     make DESTDIR=$PKG install
     find  $PKG -name perllocal.pod -exec rm {} \;
 }
-
