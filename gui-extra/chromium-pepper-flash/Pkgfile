@@ -3,7 +3,7 @@
 # Packager : pierre at nutyx dot com
 
 name=chromium-pepper-flash
-version=22.0.0.209
+version=23.0.0.207
 release=1
 
 PKGMK_KEEP_SOURCES="no"
@@ -11,12 +11,11 @@ PKGMK_KEEP_SOURCES="no"
 [ "`uname -m`" == "i686"   ] && _ARCH=i386
 [ "`uname -m`" == "x86_64"   ] && _ARCH=x86_64
 
-source=(http://docs.volcanis.me/.pepper-flash/`uname -m`/libpepflashplayer.so \
-	http://docs.volcanis.me/.pepper-flash/`uname -m`/manifest.json)
+source=(https://fpdownload.adobe.com/pub/flashplayer/pdc/23.0.0.207/flash_player_ppapi_linux.${_ARCH}.tar.gz)
 
 build() {
- install -d $PKG/{usr/lib/PepperFlash,opt/chromium/lib}
- install -m644 $SRC/{libpepflashplayer.so,manifest.json} $PKG/usr/lib/PepperFlash
- ln -sv ../../usr/lib/PepperFlash $PKG/opt/chromium/lib/PepperFlash
+ install -vdm755 $PKG/usr/lib/PepperFlash
+ install -vm755 libpepflashplayer.so $PKG/usr/lib/PepperFlash
+ install -vm644 manifest.json $PKG/usr/lib/PepperFlash
 }
 
