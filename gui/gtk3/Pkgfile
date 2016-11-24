@@ -1,11 +1,12 @@
-# Description: Libraries used for creating graphical user interfaces for applications.
-# URL: http://www.gtk.org/
-# Packager: pierre at nutyx dot org
 # Depends on: adwaita-icon-theme libepoxy xorg-libxinerama,xorg-libxrandr,xorg-libxcursor,at-spi2-atk,cups,colord,xorg-libxi,atk,cairo,pango,pangox-compat,gdk-pixbuf,gtk-update-icon-cache
+
+description="Libraries used for creating graphical user interfaces for applications."
+url="http://www.gtk.org/"
+packager="pierre at nutyx dot org"
 run=(adwaita-icon-theme)
 
 name=gtk3
-version=3.20.9
+version=3.22.1
 release=1
 
 source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
@@ -27,6 +28,13 @@ cat > $PKG/etc/gtk-3.0/settings.ini << "EOF"
 [Settings]
 gtk-theme-name = Adwaita
 gtk-icon-theme-name = gnome
+gtk-font-name = DejaVu Sans 12
+gtk-cursor-theme-size = 18
+gtk-toolbar-style = GTK_TOOLBAR_BOTH_HORIZ
+gtk-xft-antialias = 1
+gtk-xft-hinting = 1
+gtk-xft-hintstyle = hintslight
+gtk-xft-rgba = rgb
 gtk-cursor-theme-name = Adwaita
 EOF
 # Empaqueté ds gtk-update-icon-cache
