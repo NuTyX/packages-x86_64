@@ -8,7 +8,7 @@ url="http://www.libreoffice.org"
 packager="pierre at nutyx dot org, tnut at nutyx dot org"
 
 name=libreoffice
-version=5.2.1.1
+version=5.2.3.3
 release=1
 
 source=(http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-$version.tar.xz
@@ -36,14 +36,14 @@ build() {
 
         sed -e "/distro-install-file-lists/d" -i Makefile.in
 
-	sed -e "/ustrbuf/a #include <algorithm>" \
-	-i svl/source/misc/gridprinter.cxx
+#	sed -e "/ustrbuf/a #include <algorithm>" \
+#	-i svl/source/misc/gridprinter.cxx
 
-	sed -i "s#isnan#std::&#g" xmloff/source/draw/ximp3dscene.cxx
+#	sed -i "s#isnan#std::&#g" xmloff/source/draw/ximp3dscene.cxx
 
         # i686 build broken
-        [ "$PKGMK_ARCH" = "i686" ] && sed -i '/CppunitTest_sw_ooxmlimport/d' sw/Module_sw.mk
-        [ "$PKGMK_ARCH" = "i686" ] && sed -i '/CppunitTest_sw_ooxmlexport7/d' sw/Module_sw.mk
+#        [ "$PKGMK_ARCH" = "i686" ] && sed -i '/CppunitTest_sw_ooxmlimport/d' sw/Module_sw.mk
+#        [ "$PKGMK_ARCH" = "i686" ] && sed -i '/CppunitTest_sw_ooxmlexport7/d' sw/Module_sw.mk
 
 
 	chmod -v +x bin/unpack-sources
@@ -88,7 +88,7 @@ build() {
              --with-system-zlib          \
              --with-parallelism=$(getconf _NPROCESSORS_ONLN)
 
-	make build
+	make build-nocheck
 	make DESTDIR=$PKG distro-pack-install
 
 	install -v -m755 -d $PKG/$LO_PREFIX/share/appdata
