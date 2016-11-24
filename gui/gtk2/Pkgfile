@@ -1,7 +1,8 @@
-# Description: GTK+ is a multi-platform toolkit (version 2)
-# URL: http://www.gtk.org/
-# Packager: pierre at nutyx dot org
 # Depends on: gtk-doc shared-mime-info,xorg-libxinerama,xorg-libxrandr,cairo,pango,pangox-compat,atk,libtiff,cups,gdk-pixbuf,xorg-libxi,xorg-libxcursor,hicolor-icon-theme,gtk-update-icon-cache
+
+description="GTK+ is a multi-platform toolkit (version 2)"
+url="http://www.gtk.org/"
+packager="pierre at nutyx dot org"
 
 # The run variable define the runtime dependencies
 run=(gtk-update-icon-cache)
@@ -15,7 +16,7 @@ run=(gtk-update-icon-cache)
 PKGMK_GROUPS=(devel man doc)
 
 name=gtk2
-version=2.24.30
+version=2.24.31
 release=1
 
 source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
@@ -23,6 +24,7 @@ source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/${version%.*}/gtk+-$version.
 build() {
 cd gtk+-$version
 sed -i 's#l \(gtk-.*\).sgml#& -o \1#' docs/{faq,tutorial}/Makefile.in
+sed -i "/seems to be moved/s/^/#/" ltmain.sh
 ./configure --prefix=/usr \
 --mandir=/usr/share/man \
 --infodir=/usr/share/info \
