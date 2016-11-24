@@ -1,18 +1,18 @@
-# Description: C++ bindings for gtk2
-# URL: http://gtkmm.sourceforge.net/
-# Packager: pierre at nutyx dot org
 # Depends on: gtk2 pangomm cairomm atkmm
 
+description="C++ bindings for gtk2"
+url="http://gtkmm.sourceforge.net/"
+packager="pierre at nutyx dot org"
 name=gtkmm
-version=2.24.4
-release=3
+version=2.24.5
+release=1
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 build() {
 cd $name-$version
-sed -e '/^libdocdir =/ s/$(book_name)/gtkmm-2.24.4/' \
+sed -e '/^libdocdir =/ s/$(book_name)/gtkmm-2.24.5/' \
     -i docs/Makefile.in
-CXXFLAGS="-g -O2 -std=c++11" ./configure --prefix=/usr
+./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
 }
