@@ -5,13 +5,16 @@ url="https://alioth.debian.org/projects/pcsclite/"
 packager="pierre at nutyx dot org"
 
 name=pcsclite
-version=1.8.16
+version=1.8.18
 release=1
 
-source=(https://alioth.debian.org/frs/download.php/file/4164/pcsc-lite-$version.tar.bz2
+PKGMK_KEEP_SOURCES="No"
+
+source=(https://alioth.debian.org/frs/download.php/latestzip/39/pcsclite-latest.zip
 	pcscd)
 
 build() {
+  tar -xf pcsc-lite-$version.tar.bz2
   cd pcsc-lite-$version
   ./configure --prefix=/usr \
               --sbindir=/usr/bin \
