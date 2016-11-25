@@ -1,7 +1,4 @@
-# Depends on: chromium
-
-# chromium n'est pas une dep, mais il faut qu'il soit installé avant pepper-flash
-# le lanceur de chromium+pepper remplace celui de chromium 
+# Depends on: gtk2
 
 description="Google Chrome's Pepper Flash plugin for Chromium" 
 url="http://www.google.com/chrome"
@@ -24,9 +21,29 @@ build() {
  make PREFIX=$PKG/usr/lib/PepperFlash
  make PREFIX=$PKG/usr/lib/PepperFlash install-strip
 
+ mkdir -p $PKG/usr/bin
+ ln -svf /usr/lib/PepperFlash/bin/chromium $PKG/usr/bin/chromium-pepper
+ 
  cd ../
  install -vdm755 $PKG/usr/lib/PepperFlash
  install -vm755 libpepflashplayer.so $PKG/usr/lib/PepperFlash
  install -vm644 manifest.json $PKG/usr/lib/PepperFlash
+
+  mkdir -p $PKG/usr/share/applications
+
+cat > $PKG/usr/share/applications/chromium-pepper.desktop << "EOF"
+[Desktop Entry]
+Encoding=UTF-8
+Name=Chromium Web Browser with pepper flash
+Comment=Access the Internet
+GenericName=Web Browser
+Exec=chromium-pepper %u
+Terminal=false
+Type=Application
+Icon=chromium
+Categories=GTK;Network;WebBrowser;
+MimeType=application/xhtml+xml;text/xml;application/xhtml+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
+EOF
+}
 }
 
