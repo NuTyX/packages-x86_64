@@ -1,0 +1,15 @@
+description="The lmdb package is a fast, compact, key-value embedded data store."
+url="https://github.com/LMDB"
+packager="tnut at nutyx dot org"
+name=lmdb
+version=0.9.18
+release=1
+
+source=( https://github.com/LMDB/lmdb/archive/LMDB_0.9.18.tar.gz )
+
+build() {
+cd  lmdb-LMDB_${version}/libraries/liblmdb
+make
+sed -i 's| liblmdb.a||' Makefile
+make prefix=$PKG/usr install
+}
