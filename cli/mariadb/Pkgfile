@@ -1,10 +1,11 @@
-# Description: MariaDB is a fork and a replacement for the MySQL relational database management system.
-# URL: http://www.mariadb.org/en/about/
-# Packagers: pierre at nutyx dot org, tnut at nutyx dot org
 # Depends on: cmake libevent boost lz4 libxml2 cracklib pcre
 
+description="MariaDB is a fork and a replacement for the MySQL relational database management system."
+url="http://www.mariadb.org/en/about/"
+packager="pierre at nutyx dot org, tnut at nutyx dot org"
+
 name=mariadb
-version=10.1.14
+version=10.1.19
 release=1
 
 source=(https://downloads.mariadb.org/interstitial/mariadb-$version/source/mariadb-$version.tar.gz
@@ -25,23 +26,23 @@ patch -Np0 -i ../mariadb-versioning.patch libmysql/CMakeLists.txt
 
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release                       \
-      -DCMAKE_INSTALL_PREFIX=/usr                      \
-      -DINSTALL_DOCDIR=share/doc/mariadb-10.1.13       \
-      -DINSTALL_DOCREADMEDIR=share/doc/mariadb-10.1.13 \
-      -DINSTALL_MANDIR=share/man                       \
-      -DINSTALL_MYSQLSHAREDIR=share/mysql              \
-      -DINSTALL_MYSQLTESTDIR=share/mysql/test          \
-      -DINSTALL_PLUGINDIR=lib/mysql/plugin             \
-      -DINSTALL_SBINDIR=sbin                           \
-      -DINSTALL_SCRIPTDIR=bin                          \
-      -DINSTALL_SQLBENCHDIR=share/mysql/bench          \
-      -DINSTALL_SUPPORTFILESDIR=share/mysql            \
-      -DMYSQL_DATADIR=/srv/mysql                       \
-      -DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock        \
-      -DWITH_EXTRA_CHARSETS=complex                    \
-      -DWITH_EMBEDDED_SERVER=ON                        \
-      -DTOKUDB_OK=0                                    \
+cmake -DCMAKE_BUILD_TYPE=Release                        \
+      -DCMAKE_INSTALL_PREFIX=/usr                       \
+      -DINSTALL_DOCDIR=share/doc/mariadb-$version       \
+      -DINSTALL_DOCREADMEDIR=share/doc/mariadb-$version \
+      -DINSTALL_MANDIR=share/man                        \
+      -DINSTALL_MYSQLSHAREDIR=share/mysql               \
+      -DINSTALL_MYSQLTESTDIR=share/mysql/test           \
+      -DINSTALL_PLUGINDIR=lib/mysql/plugin              \
+      -DINSTALL_SBINDIR=sbin                            \ 
+      -DINSTALL_SCRIPTDIR=bin                           \
+      -DINSTALL_SQLBENCHDIR=share/mysql/bench           \
+      -DINSTALL_SUPPORTFILESDIR=share/mysql             \
+      -DMYSQL_DATADIR=/srv/mysql                        \
+      -DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock         \
+      -DWITH_EXTRA_CHARSETS=complex                     \
+      -DWITH_EMBEDDED_SERVER=ON                         \
+      -DTOKUDB_OK=0                                     \
       .. 
 make
 
