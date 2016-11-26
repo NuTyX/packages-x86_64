@@ -1,13 +1,14 @@
-# Description: A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard
-# URL: http://www.libsdl.org
-# Packager: pierre at nutyx dot org
-# Depends on: xorg-libxext xorg-libxrender xorg-libx11 xorg-libxcursor alsa-lib xorg-mesa pulseaudio xorg-libxrandr xorg-libxinerama libxkbcommon wayland 
+# Depends on: xorg-libxext xorg-libxrender xorg-libx11 xorg-libxcursor alsa-lib xorg-mesa pulseaudio xorg-libxrandr xorg-libxinerama libxkbcommon wayland
+
+description="A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard"
+url="http://www.libsdl.org"
+packager="pierre at nutyx dot org"
 
 name=sdl2
-version=2.0.4
+version=2.0.5
 release=1
 
-source=(http://www.libsdl.org/release/SDL2-$version.tar.gz)
+source=(${url}/release/SDL2-$version.tar.gz)
 
 build() {
   mkdir build
