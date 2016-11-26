@@ -7,13 +7,11 @@ packager="tnut at nutyx dot org"
 maintainer="tnut at nutyx dot org"
 
 name=nutyx
-version=8.2
-release=2
-source=(http://downloads.nutyx.org/files/$name-$version.tar.gz
-        nutyx-$version-makefile-1-patch)
+version=8.2.91
+release=1
+source=(http://downloads.nutyx.org/files/$name-$version.tar.gz)
 build () {
 cd $name-$version
-patch -Np1 -i ../nutyx-$version-makefile-1-patch
 make DESTDIR=$PKG install
 mkdir -p $PKG/usr/local
 case $(uname -m) in
