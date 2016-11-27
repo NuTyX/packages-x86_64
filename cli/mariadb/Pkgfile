@@ -8,8 +8,7 @@ name=mariadb
 version=10.1.19
 release=1
 
-source=(https://downloads.mariadb.org/interstitial/mariadb-$version/source/mariadb-$version.tar.gz
-        mariadb-versioning.patch )
+source=(https://downloads.mariadb.org/interstitial/mariadb-$version/source/mariadb-$version.tar.gz)
 
 PKGMK_GROUPS=(devel lib man doc service)
 
@@ -22,8 +21,6 @@ cd $name-$version
 
 sed -i "s@data/test@\${INSTALL_MYSQLTESTDIR}@g" sql/CMakeLists.txt
 
-patch -Np0 -i ../mariadb-versioning.patch libmysql/CMakeLists.txt 
-
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release                        \
@@ -34,7 +31,7 @@ cmake -DCMAKE_BUILD_TYPE=Release                        \
       -DINSTALL_MYSQLSHAREDIR=share/mysql               \
       -DINSTALL_MYSQLTESTDIR=share/mysql/test           \
       -DINSTALL_PLUGINDIR=lib/mysql/plugin              \
-      -DINSTALL_SBINDIR=sbin                            \ 
+      -DINSTALL_SBINDIR=sbin                            \
       -DINSTALL_SCRIPTDIR=bin                           \
       -DINSTALL_SQLBENCHDIR=share/mysql/bench           \
       -DINSTALL_SUPPORTFILESDIR=share/mysql             \
