@@ -1,10 +1,10 @@
-# Description: Core library of gphoto2, designed to allow access to digital camera by external programs.
-# URL: http://www.gphoto.org/proj/libgphoto2/
-# Packager: pierre at nutyx dot org
-# Depends on: libjpeg-turbo libexif libusb-compat 
+# Depends on: libjpeg-turbo libexif libusb-compat
 
+description="Core library of gphoto2, designed to allow access to digital camera by external programs."
+url="http://www.gphoto.org/proj/libgphoto2/"
+packager="pierre at nutyx dot org, tnut at nutyx dot org"
 name=libgphoto2
-version=2.5.10
+version=2.5.11
 release=1
 
 source=(http://downloads.sourceforge.net/gphoto/$name-$version.tar.bz2)
@@ -14,5 +14,4 @@ build() {
 	./configure --prefix=/usr --sysconfdir=/etc
 	make
 	make DESTDIR=$PKG install
-	rm -r $PKG/usr/share/doc
 }
