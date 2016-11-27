@@ -13,6 +13,7 @@ source=()
 build() {
 	wget -c https://github.com/uclouvain/openjpeg/archive/v$version.tar.gz \
      -O openjpeg-$version.tar.gz
+	tar xf openjpeg-$version.tar.gz
 	cd openjpeg-$version
 	mkdir -v build
 	cd build
