@@ -10,7 +10,7 @@ source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 build() {
 cd $name-$version
 ./configure --prefix=/usr \
-enable-shared --disable-static
+--enable-shared --disable-static
 make
 make DESTDIR=$PKG install
 }
