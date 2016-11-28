@@ -1,10 +1,12 @@
 # Depends on: libndp libsoup libgudev dbus-glib iptables libnl nss wireless-tools polkit upower vala wpa-supplicant gobject-introspection newt dhcpcd
-
 description="Tools which simplify and make the network more directly manageable."
 url="http://projects.gnome.org/NetworkManager/"
-packager="pierre at nutyx dot org"
+packager="pierre at nutyx dot org, tnut at nutyx dot org"
+
 alias=(NetworkManager)
+
 _name=NetworkManager
+
 name=networkmanager
 version=1.5.2
 release=1
@@ -19,7 +21,8 @@ cd ${_name}-$version
 --localstatedir=/var \
 --with-nmtui \
 --docdir=/usr/share/doc/networkmanager-$version \
---without-systemdsystemunitdir \
+--with-systemdsystemunitdir=no \
+--disable-json-validation \
 --disable-ppp
 make
 make DESTDIR=$PKG install
@@ -34,5 +37,14 @@ install -d $PKG/etc/$_name/VPN
 install -m755 clients/.libs/nm-online -D $PKG/usr/bin/nm-online
 # create keyfile plugin system-settings directory
 install -d $PKG/etc/$_name/system-connections
+
+mkdir -p $PKG/usr/share/polkit-1/rules.d
+cat > $PKG/usr/share/polkit-1/rules.d/org.freedesktop.NetworkManager.rules << "EOF"
+polkit.addRule(function(action, subject) {
+    if (action.id.indexOf("org.freedesktop.NetworkManager.") == 0 && subject.isInGroup("netdev")) {
+        return polkit.Result.YES;
+    }
+});
+EOF
 
 }
