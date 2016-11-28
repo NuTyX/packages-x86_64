@@ -1,0 +1,18 @@
+# Depends on: freetype xorg-proto xorg-xtrans xorg-libfontenc
+
+description="libXfont2, library Xorg"
+url="http://xorg.freedesktop.org"
+packager="pierre at nutyx dot org, tnut at nutyx dot org"
+alias=(libXfont2)
+name=xorg-libxfont2
+version=2.0.1
+release=1
+
+source=(http://ftp.x.org/pub/individual//lib/libXfont2-$version.tar.bz2)
+
+build() {
+cd libXfont2-$version
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+make
+make DESTDIR=$PKG install
+}
