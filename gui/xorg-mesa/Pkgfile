@@ -14,18 +14,15 @@ source=(ftp://ftp.freedesktop.org/pub/mesa/${version}/mesa-$version.tar.xz
 build() {
 cd mesa-$version
 patch -Np1 -i ../mesa-$version-add_xdemos-1.patch
-sed -i "/pthread-stubs/d" configure.ac
+sed -i "/pthread_stubs_possible=/s/yes/no/" configure.ac
 sed -i "/seems to be moved/s/^/: #/" bin/ltmain.sh
 
 ./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2'    \
 --prefix=/usr                  \
 --sysconfdir=/etc              \
 --enable-texture-float         \
---enable-gles1                 \
---enable-gles2                 \
 --enable-osmesa                \
 --enable-xa                    \
---enable-gbm                   \
 --enable-glx-tls               \
 --with-egl-platforms="drm,x11,wayland" \
 --with-gallium-drivers="nouveau,r300,r600,radeonsi,svga,swrast,swr"
