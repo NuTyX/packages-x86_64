@@ -23,7 +23,7 @@ make
 
 make DESTDIR=$PKG install
 
-make DESTDIR=$PKG cert
+sed -i 's@$2/bin/openssl@/bin/openssl@g' tools/makecert.sh
 
 cd ../$scripts-$scriptsversion
 make DESTDIR=$PKG install-stunnel
