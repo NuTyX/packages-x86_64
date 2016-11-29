@@ -7,7 +7,7 @@ section="driver"
 
 name=xorg
 version=7.7
-release=12
+release=13
 
 source=()
 
@@ -56,8 +56,8 @@ for package in $(grep -v '^#' list.md5 |cut -d " " -f 3)
 	done
 
 # Intel is a bit different
-wget  ftp://anduin.linuxfromscratch.org/BLFS/xf86-video-intel/xf86-video-intel-0340718.tar.xz
-tar -xf xf86-video-intel-0340718.tar.xz
+wget  ftp://anduin.linuxfromscratch.org/BLFS/xf86-video-intel/xf86-video-intel-20160902.tar.bz2
+tar -xf xf86-video-intel-20160902.tar.bz2
 cd xf86-video-intel
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
