@@ -1,0 +1,7 @@
+. lib/lsb/init-functions
+if [ ! -f etc/NetworkManager/NetworkManager.conf ]; then
+	echo "[main]
+plugins=keyfile
+rc-manager=file" > etc/NetworkManager/NetworkManager.conf
+	log_success_msg2  "File ${WARNING}/etc/NetworkManager/NetworkManager.conf ${NORMAL} created"
+fi

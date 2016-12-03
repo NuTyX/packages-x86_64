@@ -1,4 +1,4 @@
-# Depends on: libndp libsoup libgudev dbus-glib iptables libnl nss wireless-tools polkit upower vala wpa-supplicant gobject-introspection newt dhcpcd
+# Depends on: libndp libsoup libgudev dbus-glib iptables libnl nss wireless-tools polkit upower vala wpa-supplicant gobject-introspection newt dhcpcd gtk-doc
 description="Tools which simplify and make the network more directly manageable."
 url="http://projects.gnome.org/NetworkManager/"
 packager="pierre at nutyx dot org, tnut at nutyx dot org"
@@ -9,7 +9,7 @@ _name=NetworkManager
 
 name=networkmanager
 version=1.5.2
-release=1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$_name/${version%.*}/$_name-$version.tar.xz)
 
@@ -20,17 +20,13 @@ cd ${_name}-$version
 --sysconfdir=/etc \
 --localstatedir=/var \
 --with-nmtui \
+--enable-gtk-doc \
 --docdir=/usr/share/doc/networkmanager-$version \
 --with-systemdsystemunitdir=no \
 --disable-json-validation \
 --disable-ppp
 make
 make DESTDIR=$PKG install
-
-cat > $PKG/etc/NetworkManager/NetworkManager.conf << EOF
-[main]
-plugins=keyfile
-EOF
 
 # create a VPN directory
 install -d $PKG/etc/$_name/VPN
