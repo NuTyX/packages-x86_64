@@ -11,6 +11,10 @@ source=(http://download.kde.org/unstable/applications/$version/src/$name-$versio
 
 build() {
   mkdir build
+
+  # Workaround gpgme cmake bug
+  sed -e '/find_package.*QGpgme/d' -i $name-$version/CMakeLists.txt
+  sed -e '/qgpgme_version/d' -i $name-$version/mimetreeparser/src/viewer/messagepart.cpp
   cd build
   cmake ../$name-$version \
     -DCMAKE_BUILD_TYPE=Release        \
