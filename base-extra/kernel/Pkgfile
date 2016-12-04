@@ -9,8 +9,8 @@ alias=(linux)
 url="http://www.kernel.org"
 description="The latest stable kernel version"
 name=kernel
-version=4.8.11
-release=1
+version=4.8.12
+release=2
 _version=${version%.*}
 
 source=($url/pub/linux/kernel/v4.x/linux-${_version}.tar.xz
@@ -86,10 +86,10 @@ $SRC/linux-${_version}
 rm -rf $PKG/lib/firmware
 
 # post-install autogen
-INITRD_VERSION="`basename $PKG/lib/modules/*`"
-echo "mkinitramfs $INITRD_VERSION" > $PKGMK_ROOT/$name.post-install
-echo "[ -f boot/initrd ] && rm boot/initrd" >> $PKGMK_ROOT/$name.post-install
-echo "ln -sf initrd-$INITRD_VERSION boot/initrd" >> $PKGMK_ROOT/$name.post-install
+# INITRD_VERSION="`basename $PKG/lib/modules/*`"
+# echo "mkinitramfs $INITRD_VERSION" > $PKGMK_ROOT/$name.post-install
+echo "[ -f boot/initrd ] && rm boot/initrd" > $PKGMK_ROOT/$name.post-install
+# echo "ln -sf initrd-$INITRD_VERSION boot/initrd" >> $PKGMK_ROOT/$name.post-install
 echo "ln -sf $name-$version boot/kernel" >> $PKGMK_ROOT/$name.post-install
 
 #pre-install autogen
