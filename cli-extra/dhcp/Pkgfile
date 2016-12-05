@@ -1,11 +1,10 @@
-# Description: The ISC DHCP package contains both the client and server programs for DHCP.
-# URL: ftp://ftp.isc.org/isc/dhcp
-# Packager: berlius at nutyx dot com, tnut at nutyx dot org
-# Depends on:
+description="The ISC DHCP package contains both the client and server programs for DHCP."
+url="ftp://ftp.isc.org/isc/dhcp"
+packager="berlius at nutyx dot com, tnut at nutyx dot org"
 
 name=dhcp
-version=4.3.4
-release=2
+version=4.3.5
+release=1
 source=(ftp://ftp.isc.org/isc/dhcp/$version/dhcp-$version.tar.gz
 		http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-{client_script,missing_ipv6}-1.patch
 		dhclient.conf dhcpd.conf )
