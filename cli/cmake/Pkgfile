@@ -1,15 +1,15 @@
-# Packager: pierre at nutyx dot org
-
+packager="pierre at nutyx dot org, tnut at nutyx"
 description="Generate Makefiles and aims to be platform- and compiler-independent."
 url="http://www.cmake.org"
 name=cmake
-version=3.6.1
+version=3.7.1
 release=1
 
 source=($url/files/v${version%.*}/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
+sed -i '/CMAKE_USE_LIBUV 1/s/1/0/' CMakeLists.txt
 ./bootstrap --prefix=/usr \
 --mandir=/share/man \
 --system-libs \
