@@ -1,13 +1,13 @@
-# Description: 	IMAP and POP3 server with ssl/ipv6 support, written with security primarily in mind
-# URL:         	http://dovecot.org
-# Packager: 	berlius at nutyx dot com
-# Depends on:  	clucene icu libcap pam mariadb kerberos openldap openssl postgresql sqlite valgrind 
+# Depends on: clucene icu libcap pam mariadb kerberos openldap openssl postgresql sqlite valgrind
 
+description="IMAP and POP3 server with ssl/ipv6 support, written with security primarily in mind"
+url="http://dovecot.org"
+packager="berlius at nutyx dot com, tnut at nutyx dot org"
 name=dovecot
-version=2.2.21
+version=2.2.27
 release=1
 
-source=(http://dovecot.org/releases/2.2/$name-$version.tar.gz local.conf)
+source=(${url}/releases/${version:0:3}/$name-$version.tar.gz local.conf)
 
 build () {
 
