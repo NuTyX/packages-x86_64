@@ -1,13 +1,13 @@
-# Description: Light and fast Bittorent client (GTK Interface)
-# URL: http://www.transmissionbt.com/
-# Packager: alienus at nutyx dot org, tnut at nutyx dot org
 # Depends on: intltool curl libevent gtk3 desktop-file-utils gtk-update-icon-cache
 
+description="Light and fast Bittorent client (GTK Interface)"
+url="http://www.transmissionbt.com/"
+packager="alienus at nutyx dot org, tnut at nutyx dot org"
 name=transmission
-version=2.91
+version=2.92
 release=1
 
-source=(http://download.transmissionbt.com/files/transmission-$version.tar.xz)
+source=(http://transmission.cachefly.net/transmission-$version.tar.xz)
 
 build() {
 	cd transmission-$version
