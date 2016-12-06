@@ -1,12 +1,12 @@
-# Description: Text and graphics mode WWW browser. It includes support for rendering tables and frames
-# URL: http://links.twibright.com/
-# Packager: pierre at nutyx dot org
-# Depends on: gpm libpng libtiff libjpeg-turbo 
-name=links
-version=2.13
-release=1
+# Depends on: gpm libpng libtiff libjpeg-turbo
 
-source=(http://links.twibright.com/download/links-$version.tar.bz2)
+description="Text and graphics mode WWW browser. It includes support for rendering tables and frames"
+url="http://links.twibright.com/"
+packager="pierre at nutyx dot org, tnut at nutyx dot org"
+name=links
+version=2.14
+release=1
+source=(${url}download/links-$version.tar.bz2)
 build() {
 cd $name-$version
 ./configure --prefix=/usr --enable-graphics \
