@@ -1,23 +1,17 @@
-# Description: Powerful and flexible interface to the Internet standard File Transfer Protocol.
-# URL: http://www.ncftp.com/
-# Packager: berlius at nutyx dot com
-# Depends on:
-
+description="Powerful and flexible interface to the Internet standard File Transfer Protocol."
+url="http://www.ncftp.com/"
+packager="berlius at nutyx dot com, tnut at nutyx dot org"
 name=ncftp
-version=3.2.5	
+version=3.2.6	
 release=1
-source=(ftp://ftp.ncftp.com/ncftp/$name-$version-src.tar.bz2)
+source=(ftp://ftp.ncftp.com/ncftp/$name-$version-src.tar.xz)
  
 build() {
 
-cd $name-$version
-	
+cd $name-$version	
 ./configure --prefix=/usr --sysconfdir=/etc 
-make -C libncftp shared 
-	
+make -C libncftp shared
 make
-	
 make -C libncftp soinstall 
 make DESTDIR=$PKG install
-		
 }
