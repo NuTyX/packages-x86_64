@@ -1,12 +1,12 @@
-# Description: Tor is a anonymous network and proxy.
-# URL: http://www.torproject.org/
-# Packager: NuTyX core team
 # Depends on: libevent openssl libseccomp
 
+description="Tor is a anonymous network and proxy."
+url="https://www.torproject.org/"
+packager="tnut at nutyx dot org"
 name=tor
-version=0.2.7.6
+version=0.2.8.10
 release=1
-source=(https://www.torproject.org/dist/tor-$version.tar.gz torrc tor.rc)
+source=(${url}dist/tor-$version.tar.gz torrc tor.rc)
 
 build() {
 	cd $name-$version
