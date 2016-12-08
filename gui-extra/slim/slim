@@ -1,0 +1,42 @@
+#!/bin/sh
+########################################################################
+# Begin slim
+#
+# Description : Simple Login Manager
+#
+# Authors     : Tnuttens tnut at nutyx dot org
+#
+# Version     : NuTyX 8.2.1
+#
+########################################################################
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+   start)
+      log_info_msg "Starting Simple Login manager..."
+      start_daemon /usr/bin/slim -d
+      evaluate_retval
+      ;;
+
+   stop)
+      log_info_msg "Stopping Simple Login manager..."
+      killproc /usr/bin/slim
+      evaluate_retval
+      ;;
+
+   restart)
+      ${0} stop
+      sleep 1
+      ${0} start
+      ;;
+
+   *)
+      echo "Usage: ${0} {start|stop|restart}"
+      exit 1
+      ;;
+esac
+
+exit 0
+
+# End scriptname
