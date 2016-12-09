@@ -1,15 +1,18 @@
-# Description: A cross-platform application and UI framework
-# URL: http://qt-project.org/
-# Packager: pierre at nutyx dot org, tnut at nutyx dot org, fanch at nutyx dot org
-# Depends on:xorg-proto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xorg-libxscrnsaver xorg-libxt xorg-libxmu xorg-libxpm xorg-libxaw xorg-libxfixes xorg-libxcomposite xorg-libxrender xorg-libxcursor xorg-libxdamage xorg-libfontenc xorg-libxfont xorg-libxft xorg-libxi xorg-libxinerama xorg-libxrandr xorg-libxres xorg-libxtst xorg-libxv xorg-libxvmc xorg-libxxf86dga xorg-libxxf86vm xorg-libdmx xorg-libpciaccess xorg-libxkbfile xorg-libxshmfence  xcb-proto xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm alsa-lib ca-certificates cups dbus glib gstreamer-plugins-base icu jasper libjpeg-turbo libmng libpng libtiff libwebp xorg-mesa mtdev openssl pcre sqlite ruby gstreamer1-plugins-base geoclue gtk2 harfbuzz postgresql pulseaudio unixodbc libxkbcommon mariadb
+# Depends on:xorg-proto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xorg-libxscrnsaver xorg-libxt xorg-libxmu xorg-libxpm xorg-libxaw xorg-libxfixes xorg-libxcomposite xorg-libxrender xorg-libxcursor xorg-libxdamage xorg-libfontenc xorg-libxfont xorg-libxft xorg-libxi xorg-libxinerama xorg-libxrandr xorg-libxres xorg-libxtst xorg-libxv xorg-libxvmc xorg-libxxf86dga xorg-libxxf86vm xorg-libdmx xorg-libpciaccess xorg-libxkbfile xorg-libxshmfence  xcb-proto xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm alsa-lib ca-certificates cups dbus glib gstreamer-plugins-base icu jasper libjpeg-turbo libmng libpng libtiff libwebp xorg-mesa mtdev openssl pcre sqlite ruby gstreamer1-plugins-base geoclue gtk2 harfbuzz postgresql pulseaudio unixodbc libxkbcommon mariadb nss pciutils
+
+description="A cross-platform application and UI framework"
+url="http://qt-project.org/"
+packager="pierre at nutyx dot org, tnut at nutyx dot org, fanch at nutyx dot org"
+
 
 name=qt5
 version=5.7.0
-release=2
+release=3
 
 _name=qt-everywhere-opensource-src-${version}
 
-source=(http://download.qt-project.org/official_releases/qt/${version%.*}/$version/single/${_name}.tar.xz)
+source=(http://download.qt-project.org/official_releases/qt/${version%.*}/$version/single/${_name}.tar.xz
+       http://www.linuxfromscratch.org/patches/blfs/svn/qt-5.7.0-qtwebengine_glibc224-1.patch)
 
 build() {
 
@@ -17,6 +20,9 @@ QT5PREFIX=/usr
 QT5BINDIR=$QT5PREFIX/lib/qt5/bin
 
 cd ${_name}*
+
+patch -Np1 -i ../qt-5.7.0-qtwebengine_glibc224-1.patch
+export CXXFLAGS=-fno-delete-null-pointer-checks
 
 ./configure -prefix         $QT5PREFIX                  \
             -sysconfdir     /etc/xdg                    \
@@ -38,7 +44,7 @@ cd ${_name}*
 	    -optimized-qmake  \
             -nomake examples  \
 	    -no-rpath         \
-            -skip qtwebengine 
+            -skip qtwebengine
 
 make
 make INSTALL_ROOT=$PKG install
