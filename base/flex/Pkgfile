@@ -12,8 +12,9 @@ build()
 {
 cd flex-$version
 patch -Np1 -i ../flex-$version-fixes-1.patch
+touch src/scan.*
 
-HELP2MAN=/tools/bin/true \
+HELP2MAN=`which true` \
 ./configure --prefix=/usr \
 --libdir=/lib --bindir=/bin --sbindir=/sbin \
 --docdir=/usr/share/doc/flex-$version
