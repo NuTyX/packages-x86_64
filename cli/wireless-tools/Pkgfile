@@ -1,16 +1,16 @@
-# URL: http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/Tools.html
-# Packager: pierre at nutyx dot org
-# Depends on: 
+description="Driver to expose configuration and statistics specific to common Wireless LANs to user space"
+url="http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/Tools.html"
+packager="pierre at nutyx dot org, tnut at nutyx dot org"
 
 name=wireless-tools
-version=30.pre9
-_version=${version%.pre*}
+version=29
 release=1
 
-source=(  http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/wireless_tools.$version.tar.gz)
-
+source=(  http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/wireless_tools.$version.tar.gz
+	http://www.linuxfromscratch.org/patches/blfs/svn/wireless_tools-29-fix_iwlist_scanning-1.patch)
 build() {
-cd wireless_tools.${_version}
+cd wireless_tools.${version}
+patch -Np1 -i ../wireless_tools-${version}-fix_iwlist_scanning-1.patch
 make
 mkdir -p $PKG/usr/{sbin,lib,include,share/man}
 make PREFIX=$PKG/usr INSTALL_MAN=$PKG/usr/share/man install
