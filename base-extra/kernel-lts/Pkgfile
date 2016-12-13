@@ -14,7 +14,7 @@ PKGMK_GROUPS=(devel doc)
 name=kernel-lts
 alias=(linux-lts)
 
-version=4.4.38
+version=4.9.0
 _version=${version:0:3}
 
 release=1
@@ -40,7 +40,6 @@ wl_version=6.30.223.271
 
 source=(\
 http://www.kernel.org/pub/linux/kernel/v4.x/linux-${_version}.tar.xz
-https://www.kernel.org/pub/linux/kernel/v4.x/patch-$version.xz
 http://download.virtualbox.org/virtualbox/${vb_version}/VirtualBox-${vb_version}-${buildrelease}-Linux_${_VBARCH}.run
 http://download.nvidia.com/XFree86/Linux-${_NVARCH}/${nv_version}/NVIDIA-Linux-${_NVARCH}-${nv_version}.run
 http://www.broadcom.com/docs/linux_sta/hybrid-v35${_wlarch}-nodebug-pcoem-${wl_version//./_}.tar.gz
@@ -88,18 +87,18 @@ make INSTALL_MOD_PATH=$PKG modules_install
 KERNEL_VERSION="${version}-NuTyX-lts"
 
 # Module broadcom is broken on 32 bits machine
-if [ "$PKGMK_ARCH" == "x86_64" ]; then
-  cd $SRC
-  bsdtar xf hybrid-v35${_wlarch}-nodebug-pcoem-${wl_version//./_}.tar.gz
-  patch -p1 -i broadcom-wl.license.patch
-  patch -p1 -i wl_linux.c.patch
+# if [ "$PKGMK_ARCH" == "x86_64" ]; then
+#  cd $SRC
+#  bsdtar xf hybrid-v35${_wlarch}-nodebug-pcoem-${wl_version//./_}.tar.gz
+#  patch -p1 -i broadcom-wl.license.patch
+#  patch -p1 -i wl_linux.c.patch
 
-  sed -e "/BRCM_WLAN_IFNAME/s:eth:wlan:" \
-	-i src/wl/sys/wl_linux.c
-  BUILD_NOPEDANTIC=1 make -C $SRC/linux-${_version} M=`pwd`
-  install -m 0644 -D wl.ko $PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/zzzz/wl.ko
-  install -Dm644 broadcom-wl.modprobe.d $PKG/etc/modprobe.d/broadcom-wl.conf
-fi
+#  sed -e "/BRCM_WLAN_IFNAME/s:eth:wlan:" \
+#	-i src/wl/sys/wl_linux.c
+#  BUILD_NOPEDANTIC=1 make -C $SRC/linux-${_version} M=`pwd`
+#  install -m 0644 -D wl.ko $PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/zzzz/wl.ko
+#  install -Dm644 broadcom-wl.modprobe.d $PKG/etc/modprobe.d/broadcom-wl.conf
+# fi
 
 # Module nvidia
 cd $SRC
