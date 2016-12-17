@@ -12,7 +12,7 @@ source=(ftp://ftp.imagemagick.org/pub/ImageMagick/releases/ImageMagick-${_versio
 
 build () {
     cd ImageMagick-*
-
+    sed -i '/seems to be moved/ s/^/true #/' config/ltmain.sh
     [ "`uname -m`" == "i686"   ] && EXTRAOPTS="--with-gcc-arch=i686"
     [ "`uname -m`" == "x86_64"   ] && EXTRAOPTS="--with-gcc-arch=x86-64"
     
