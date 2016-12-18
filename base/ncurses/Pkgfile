@@ -49,7 +49,6 @@ make distclean
 --with-install-prefix=$PKG
 
 make sources libs
-mkdir $PKG/usr/lib
+mkdir -p $PKG/usr/lib
 cp -av lib/lib*.so.5* $PKG/usr/lib
-
 }
