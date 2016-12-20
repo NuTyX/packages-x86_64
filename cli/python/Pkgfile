@@ -1,17 +1,18 @@
-# Description: Next generation of the python high-level scripting language
-# URL: URL: http://www.python.org
-# Packager: alienus at nutyx dot org
-# Depends on: libffi sqlite 
+# Depends on: libffi sqlite
+
+description="Next generation of the python high-level scripting language"
+url="http://www.python.org"
+packager="alienus at nutyx dot org, tnut at nutyx dot org"
 PKGMK_GROUPS=(devel man doc)
 
 _pybasever=2.7
 
 name=python
-version=2.7.12
+version=2.7.13
 release=1
 
 source=(
-http://www.python.org/ftp/python/$version/Python-$version.tar.xz
+${url}/ftp/python/$version/Python-$version.tar.xz
 python.png)
 
 
