@@ -1,11 +1,11 @@
-# Description: PDF rendering library based on xpdf 3.0
-# URL: URL: http://poppler.freedesktop.org/
-# Packager: alienus at nutyx dot org
 # Depends on: xorg-libxxf86vm libpng xorg-fontconfig libjpeg-turbo cairo libxml2 openjpeg lcms2 
 
+description="PDF rendering library based on xpdf 3.0"
+url="http://poppler.freedesktop.org/"
+packager="alienus at nutyx dot org, tnut at nutyx dot org"
 dataversion=0.4.7
 name=poppler
-version=0.49.0
+version=0.50.0
 release=1
 
 source=(
@@ -14,7 +14,7 @@ http://poppler.freedesktop.org/poppler-data-$dataversion.tar.gz)
 
 build() {
 cd poppler-$version
- 
+sed -i "/was moved/s/^/#/" ltmain.sh 
 ./configure --prefix=/usr      \
 	--sysconfdir=/etc      \
 	--disable-static       \
