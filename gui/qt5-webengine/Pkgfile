@@ -5,24 +5,19 @@ url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 
 name=qt5-webengine
-release=2
+release=1
 
 _version=${version/-/}
 _name=qtwebengine-opensource-src-${_version}
 _namefqn="${name/5-/}-opensource-src-${_version}"
 
-source=(http://download.qt.io/official_releases/qt/${version%.*}/${_version}/submodules/${_namefqn}.tar.xz
-       qt5-webengine-glibc2.24.patch)
+source=(http://download.qt.io/official_releases/qt/${version%.*}/${_version}/submodules/${_namefqn}.tar.xz)
        
 build() {
   QT5DIR=/usr
   QT5PREFIX=/usr
-  QT5BINDIR=/usr/lib/qt5/bin
+  QT5BINDIR=/usr/bin/qt5
   SAVEPATH=$PATH
-
-  cd ${_name}/src/3rdparty
-  patch -p1 -i $SRC/qt5-webengine-glibc2.24.patch
-  cd ../../../
 
   mkdir build
   cd build
