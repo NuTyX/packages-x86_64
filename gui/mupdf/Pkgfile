@@ -1,0 +1,27 @@
+# Depends on: git xorg-libx11 harfbuzz libjpeg-turbo openjpeg
+
+description="MuPDF is a lightweight PDF and XPS viewer."
+url="http://www.mupdf.com/"
+packager="tnut at nutyx dot org"
+name=mupdf
+version=1.10
+release=1
+source=(${url}downloads/archive/$name-$version-source.tar.gz \
+        http://www.linuxfromscratch.org/patches/blfs/svn/mupdf-$version-shared_libs-1.patch)
+build() {
+cd $name-$version-source
+rm -rf thirdparty/curl
+rm -rf thirdparty/freetype
+rm -rf thirdparty/harfbuzz
+rm -rf thirdparty/jpeg
+rm -rf thirdparty/openjpeg
+rm -rf thirdparty/zlib
+sed '/OPJ_STATIC$/d' -i source/fitz/load-jpx.c
+patch -Np1 -i ../mupdf-$version-shared_libs-1.patch
+make build=release
+make DESTDIR=$PKG prefix=/usr \
+ build=release \
+ docdir=/usr/share/doc/$name-$version \
+ install
+ln -sfv mupdf-x11-curl $PKG/usr/bin/mupdf
+}
