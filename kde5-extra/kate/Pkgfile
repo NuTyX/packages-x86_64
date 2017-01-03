@@ -1,4 +1,4 @@
-# Depends on: kf5-extra-cmake-modules kf5-kconfig kf5-kcrash kf5-ki18n kf5-kjobwidgets kf5-kio kf5-kparts kf5-ktexteditor kf5-kwindowsystem kf5-kxmlgui kf5-kiconthemes kf5-kactivities kf5-kdoctools kf5-plasma-framework kf5-knewstuff kf5-threadweaver kf5-kitemmodels
+# Depends on: qt5-svg kf5-extra-cmake-modules kf5-kconfig kf5-kcrash kf5-ki18n kf5-kjobwidgets kf5-kio kf5-kparts kf5-ktexteditor kf5-kwindowsystem kf5-kxmlgui kf5-kiconthemes kf5-kactivities kf5-kdoctools kf5-plasma-framework kf5-knewstuff kf5-threadweaver kf5-kitemmodels kf5-kded hicolor-icon-theme
 
 description="Parts of framework 5"
 url="https://www.kde.org/"
@@ -18,6 +18,8 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DLIB_INSTALL_DIR=lib       \
       -DBUILD_TESTING=OFF         \
       -Wno-dev ..
+
+cd kate/
 make
 make DESTDIR=$PKG install
 }
