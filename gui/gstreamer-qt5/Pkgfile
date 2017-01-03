@@ -1,19 +1,20 @@
-# Description: Qt5 bindings for GStreamer
-# URL: http://gstreamer.freedesktop.org/modules/qt-gstreamer.htm
-# Packager: pierre at nutyx dot org
-# Depends on: cmake boost xorg-mesa doxygen gstreamer1-plugins-good qt5
+# Depends on: qt5-declarative cmake boost xorg-mesa doxygen gstreamer1-plugins-good
 
-name=qt5-gstreamer
+description="Qt5 bindings for GStreamer"
+url="http://gstreamer.freedesktop.org/modules/qt-gstreamer.htm"
+packager="pierre at nutyx dot org"
+
+name=gstreamer-qt5
 version=1.2.0
-release=1
+release=2
 
 source=(http://gstreamer.freedesktop.org/src/qt-gstreamer/qt-gstreamer-$version.tar.xz
-        qt5-gstreamer-1.6.patch)
+        gstreamer-qt5-1.6.patch)
 
 build() {
   mkdir build
   cd qt-gstreamer-$version
-  patch -p1 -i ../qt5-gstreamer-1.6.patch
+  patch -p1 -i ../gstreamer-qt5-1.6.patch
 
   cd ../build
   cmake ../qt-gstreamer-$version \

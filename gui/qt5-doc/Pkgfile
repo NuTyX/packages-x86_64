@@ -1,0 +1,21 @@
+# Depends on: qt5-base qt5-declarative qt5-tools pciutils xorg-libxtst xorg-libxcursor xorg-libxrandr
+
+description="A cross-platform application and UI framework, QtDoc files"
+url="http://qt-project.org/"
+packager="pierre at nutyx dot org"
+
+name=qt5-doc 
+version=5.8.0-rc
+release=1
+
+_name="${name/5-/}-opensource-src-${version}"
+
+source=(https://download.qt.io/development_releases/qt/5.8/$version/submodules/${_name}.tar.xz)
+
+build() {
+export PATH="$SCR/bin:$PATH"
+cd ${_name}
+qmake-qt5
+make docs
+make INSTALL_ROOT=$PKG install_docs
+}
