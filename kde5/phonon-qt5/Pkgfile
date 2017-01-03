@@ -1,21 +1,22 @@
-# Depends on: cmake kf5-extra-cmake-modules glib qt5 pulseaudio
+# Depends on: qt5 kf5-extra-cmake-modules qt5-base pulseaudio
 
 description="API multimedia of KDE. the replaces the old aRts, which is more supported by KDE."
 url="https://www.kde.org/"
 packager="pierre at nutyx dot org"
 
 name=phonon-qt5
-release=2
+release=1
 version=4.9.0
 _name=phonon
 source=(http://download.kde.org/stable/${_name}/$version/${_name}-$version.tar.xz)
 
 build() {
 
-bash  /usr/bin/setqt5
+sed -i '/include/d' $SRC/phonon-4.9.0/phonon/phononconfig_p.h.in
+
 mkdir build
-cd phonon-$version
-cd    ../build
+cd    build
+
 cmake ../phonon-$version           \
     -DCMAKE_BUILD_TYPE=Release     \
     -DCMAKE_SKIP_RPATH=ON          \
@@ -23,7 +24,8 @@ cmake ../phonon-$version           \
     -DPHONON_INSTALL_QT_EXTENSIONS_INTO_SYSTEM_QT=ON \
     -DPHONON_BUILD_PHONON4QT5=ON   \
     -D__KDE_HAVE_GCC_VISIBILITY=NO \
-    -DCMAKE_INSTALL_LIBDIR=lib
+    -DCMAKE_INSTALL_LIBDIR=lib     \
+    -Wno-dev
 make
 make DESTDIR=$PKG install
 }
