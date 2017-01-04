@@ -18,7 +18,7 @@ source=(http://download.qt.io/community_releases/5.8/$version/${_name}.tar.xz
 build() {
   cd ${_name}
   patch -p1 -i ../qt-webkit-default_prf.patch
-  qmake-qt
+  qmake
   make
   make INSTALL_ROOT="$PKG" install
 }
