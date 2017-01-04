@@ -28,9 +28,9 @@ make DESTDIR=$PKG install
 cd ../poppler-data-$dataversion
 make prefix=/usr DESTDIR=$PKG install
 
-rm -f $PKG/usr/lib/pkgconfig/poppler-{glib,qt4,qt5}.pc
-rm -f $PKG/usr/lib/poppler-{glib*,qt4*,qt5*}
-rm -f $PKG/usr/lib/libpoppler-{glib*,qt4*,qt5*}
+rm -f $PKG/usr/lib/pkgconfig/poppler-{glib,qt4,qt}.pc
+rm -f $PKG/usr/lib/poppler-{glib*,qt4*,qt*}
+rm -f $PKG/usr/lib/libpoppler-{glib*,qt4*,qt*}
 
 rm -f $PKG/usr/bin/poppler-glib-demo
 rm -rf $PKG/usr/include/poppler/glib/
@@ -38,7 +38,7 @@ rm -rf $PKG/usr/include/poppler/glib/
 rm -f $PKG/usr/bin/poppler-qt4-demo
 rm -rf $PKG/usr/include/poppler/qt4/
 
-rm -f $PKG/usr/bin/poppler-qt5-demo
-rm -rf $PKG/usr/include/poppler/qt5/
+rm -f $PKG/usr/bin/poppler-qt-demo
+rm -rf $PKG/usr/include/poppler/qt/
 
 }
