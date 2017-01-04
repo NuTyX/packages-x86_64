@@ -1,4 +1,4 @@
-# Depends on: qt5-base lua
+# Depends on: qt-base lua
 
 description="Fast and flexible source code highlighter (CLI version)"
 url="http://www.andre-simon.de/doku/highlight/highlight.html"
@@ -13,6 +13,6 @@ http://www.andre-simon.de/zip/$name-$version.tar.bz2)
 
 build(){
     cd $name-$version
-    make QMAKE=qmake-qt5
-    make DESTDIR=$PKG QMAKE=qmake-qt5 install
+    make QMAKE=qmake-qt
+    make DESTDIR=$PKG QMAKE=qmake-qt install
 }
