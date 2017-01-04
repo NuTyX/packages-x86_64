@@ -6,7 +6,7 @@ packager="pierre at nutyx dot org"
 
 name=libkdcraw
 version=16.12.0
-release=1
+release=2
 
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
@@ -15,7 +15,6 @@ mkdir build
 cd build
 cmake ../$name-$version          \
       -DCMAKE_BUILD_TYPE=Release \
-      -DKDE4_BUILD_TESTS=OFF     \
       -DCMAKE_INSTALL_PREFIX=/usr
 make
 make DESTDIR=$PKG install
