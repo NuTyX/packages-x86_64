@@ -1,10 +1,10 @@
-# Depends on: qt5-base qt5-declarative qt5-graphicaleffects
+# Depends on: qt-base qt-declarative qt-graphicaleffects
 
 description="Next generation user interface controls based on Qt Quick"
 url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 
-name=qt5-quickcontrols2 
+name=qt-quickcontrols2 
 version=5.8.0-rc
 release=1
 
@@ -14,7 +14,7 @@ source=(https://download.qt.io/development_releases/qt/5.8/$version/submodules/$
 
 build() {
 cd ${_name}
-qmake-qt5
+qmake-qt
 make
 make INSTALL_ROOT=$PKG install
 }
