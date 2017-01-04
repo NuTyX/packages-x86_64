@@ -14,7 +14,7 @@ source=(https://download.qt.io/development_releases/qt/5.8/$version/submodules/$
 
 build() {
 cd ${_name}
-qmake-qt CONFIG+="lang-all handwriting"
+qmake CONFIG+="lang-all handwriting"
 make
 make INSTALL_ROOT=$PKG install
 }
