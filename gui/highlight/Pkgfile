@@ -13,6 +13,6 @@ http://www.andre-simon.de/zip/$name-$version.tar.bz2)
 
 build(){
     cd $name-$version
-    make QMAKE=qmake-qt
-    make DESTDIR=$PKG QMAKE=qmake-qt install
+    make QMAKE=qmake
+    make DESTDIR=$PKG QMAKE=qmake install
 }
