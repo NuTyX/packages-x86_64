@@ -1,7 +1,7 @@
 # Description : A D-Bus service which performs user authentication on behalf of its clients
 # URL : https://gitlab.com/accounts-sso/signond/
 # Packager : pierre at nutyx dot org
-# Depends on : qt5-base qt5-tools libproxy doxygen graphviz dejavu-ttf freefont-ttf ttf-liberation noto-fonts
+# Depends on : qt-base qt-tools libproxy doxygen graphviz dejavu-ttf freefont-ttf ttf-liberation noto-fonts
 
 run=(graphviz)
 
@@ -14,9 +14,9 @@ source=(https://gitlab.com/accounts-sso/signond/repository/archive.tar.bz2)
 build() {
 cd $name*
 
-sed -i 's/qdbusxml2cpp/qdbusxml2cpp-qt5/' src/signond/signond.pro
+sed -i 's/qdbusxml2cpp/qdbusxml2cpp-qt/' src/signond/signond.pro
 
-qmake-qt5 CONFIG+=coverage PREFIX=/usr LIBDIR=/usr/lib
+qmake-qt CONFIG+=coverage PREFIX=/usr LIBDIR=/usr/lib
 make
 make INSTALL_ROOT=$PKG install 
 }
