@@ -1,7 +1,7 @@
 # Description: OAuth 2 plugin for signon
 # URL: https://gitlab.com/accounts-sso/signon-plugin-oauth2
 # Packager: pierre at nutyx dot org
-# Depends on: signond qt5-xmlpatterns 
+# Depends on: signond qt-xmlpatterns 
 
 name=signon-plugin-oauth2
 version=0.23
@@ -19,7 +19,7 @@ sed -i '/-Werror/d' common-project-config.pri
 echo 'INSTALLS =' >>tests/tests.pro
 echo 'INSTALLS =' >>example/example.pro
 
-qmake-qt5 PREFIX=/usr LIBDIR=/usr/lib
+qmake-qt PREFIX=/usr LIBDIR=/usr/lib
 make
 make INSTALL_ROOT=$PKG install
 }
