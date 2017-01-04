@@ -1,10 +1,10 @@
-# Depends on: qt5-base 
+# Depends on: qt-base 
 
 description="A cross-platform application and UI framework, QtWebsokets files"
 url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 
-name=qt5-websockets 
+name=qt-websockets 
 version=5.8.0-rc
 release=1
 
@@ -14,7 +14,7 @@ source=(https://download.qt.io/development_releases/qt/5.8/$version/submodules/$
 
 build() {
 cd ${_name}
-qmake-qt5
+qmake-qt
 make
 make INSTALL_ROOT=$PKG install
 }
