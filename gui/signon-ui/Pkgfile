@@ -1,7 +1,7 @@
 # Description : UI component responsible for handling the user interactions during the login process of an online account
 # URL : https://launchpad.net/online-accounts-signon-ui
 # Packager : pierre at nutyx dot org
-# Depends on : qt5-webkit libaccounts-qt5 signond libnotify
+# Depends on : qt-webkit libaccounts-qt signond libnotify
 
 name=signon-ui
 version=0.17+15.10.20150810
@@ -14,7 +14,7 @@ cd $name-$version
 echo 'INSTALLS =' >>tests/unit/tst_inactivity_timer.pro
 echo 'INSTALLS =' >>tests/unit/tst_signon_ui.pro
 
-qmake-qt5 PREFIX=/usr LIBDIR=/usr/lib
+qmake-qt PREFIX=/usr LIBDIR=/usr/lib
 make
 make INSTALL_ROOT=$PKG install
 }
