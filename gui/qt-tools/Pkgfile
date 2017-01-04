@@ -1,10 +1,10 @@
-# Depends on: qt5-base qt5-declarative desktop-file-utils hicolor-icon-theme xdg-utils 
+# Depends on: qt-base qt-declarative desktop-file-utils hicolor-icon-theme xdg-utils 
 
 description="A cross-platform application and UI framework, QtTools files"
 url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 
-name=qt5-tools 
+name=qt-tools 
 version=5.8.0-rc
 release=1
 
@@ -14,36 +14,36 @@ source=(https://download.qt.io/development_releases/qt/5.8/$version/submodules/$
 
 build() {
 cd ${_name}
-qmake-qt5
+qmake-qt
 make
 make INSTALL_ROOT=$PKG install
 
 mkdir -p $PKG/usr/bin
-for i in $PKG/usr/bin/qt5/*; do 
-    ln -sv /usr/bin/qt5/$(basename $i) $PKG/usr/bin/$(basename $i)-qt5
+for i in $PKG/usr/bin/qt/*; do 
+    ln -sv /usr/bin/qt/$(basename $i) $PKG/usr/bin/$(basename $i)
 done
 
 mkdir $PKG/usr/share/applications
 
-cat > $PKG/usr/share/applications/assistant-qt5.desktop << "EOf"
+cat > $PKG/usr/share/applications/assistant-qt.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 Assistant
 comment=Shows Qt5 documentation and examples
-Exec=$QT5BINDIR/assistant-qt5
-icon=assistant-qt5
+Exec=$QT5BINDIR/assistant-qt
+icon=assistant-qt
 Terminal=false
 Encoding=UTf-8
 Type=Application
 categories=Qt;Development;Documentation;
 EOf
 
-cat > $PKG/usr/share/applications/designer-qt5.desktop << "EOf"
+cat > $PKG/usr/share/applications/designer-qt.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 Designer
 GenericName=interface Designer
 comment=Design GUis for Qt5 applications
-Exec=$QT5BINDIR/designer-qt5
-icon=designer-qt5
+Exec=$QT5BINDIR/designer-qt
+icon=designer-qt
 mimeType=application/x-designer;
 Terminal=false
 Encoding=UTf-8
@@ -51,12 +51,12 @@ Type=Application
 categories=Qt;Development;
 EOf
 
-cat > $PKG/usr/share/applications/linguist-qt5.desktop << "EOf"
+cat > $PKG/usr/share/applications/linguist-qt.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 Linguist
 comment=Add translations to Qt5 applications
-Exec=$QT5BINDIR/linguist-qt5
-icon=linguist-qt5
+Exec=$QT5BINDIR/linguist-qt
+icon=linguist-qt
 mimeType=text/vnd.trolltech.linguist;application/x-linguist;
 Terminal=false
 Encoding=UTf-8
@@ -64,13 +64,13 @@ Type=Application
 categories=Qt;Development;
 EOf
 
-cat > $PKG/usr/share/applications/qdbusviewer-qt5.desktop << "EOf"
+cat > $PKG/usr/share/applications/qdbusviewer-qt.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 QDbusviewer
 GenericName=D-Bus Debugger
 comment=Debug D-Bus applications
-Exec=$QT5BINDIR/qdbusviewer-qt5
-icon=qdbusviewer-qt5
+Exec=$QT5BINDIR/qdbusviewer-qt
+icon=qdbusviewer-qt
 Terminal=false
 Encoding=UTf-8
 Type=Application
