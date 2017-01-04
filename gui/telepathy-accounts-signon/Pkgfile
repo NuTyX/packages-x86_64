@@ -14,6 +14,6 @@ source=(https://gitlab.com/accounts-sso/$name/repository/archive.tar.gz)
 build() {
   mkdir -p build 
   cd build
-  qmake-qt ../$name*
+  qmake ../$name*
   make INSTALL_ROOT=$PKG install
 }

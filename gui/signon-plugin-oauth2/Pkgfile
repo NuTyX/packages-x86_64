@@ -19,7 +19,7 @@ sed -i '/-Werror/d' common-project-config.pri
 echo 'INSTALLS =' >>tests/tests.pro
 echo 'INSTALLS =' >>example/example.pro
 
-qmake-qt PREFIX=/usr LIBDIR=/usr/lib
+qmake PREFIX=/usr LIBDIR=/usr/lib
 make
 make INSTALL_ROOT=$PKG install
 }

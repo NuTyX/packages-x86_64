@@ -16,7 +16,7 @@ cd $name*
 
 sed -i 's/qdbusxml2cpp/qdbusxml2cpp-qt/' src/signond/signond.pro
 
-qmake-qt CONFIG+=coverage PREFIX=/usr LIBDIR=/usr/lib
+qmake CONFIG+=coverage PREFIX=/usr LIBDIR=/usr/lib
 make
 make INSTALL_ROOT=$PKG install 
 }
