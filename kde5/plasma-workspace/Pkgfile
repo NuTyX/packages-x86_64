@@ -1,4 +1,4 @@
-# Depends on: iso-codes consolekit2 kf5-baloo kf5-kdesu kf5-kdewebkit kf5-kjsembed kf5-knotifyconfig kf5-krunner plasma-kwin kf5-kxmlrpcclient plasma-libkscreen plasma-libksysguard kf5-networkmanager-qt kf5-ktexteditor kf5-kwayland libdbusmenu-qt5 pm-utils gvfs plasma-kscreenlocker plasma-breeze plasma-kactivitymanagerd kholidays kf5-kpackage kf5-kfilemetadata plasma-workspace-wallpapers plasma-milou plasma-kde-cli-tools plasma-integration  
+# Depends on: iso-codes consolekit2 kf5-baloo kf5-kdesu kf5-kdewebkit kf5-kjsembed kf5-knotifyconfig kf5-krunner plasma-kwin kf5-kxmlrpcclient plasma-libkscreen plasma-libksysguard kf5-networkmanager-qt kf5-ktexteditor kf5-kwayland libdbusmenu-qt pm-utils gvfs plasma-kscreenlocker plasma-breeze plasma-kactivitymanagerd kholidays kf5-kpackage kf5-kfilemetadata plasma-workspace-wallpapers plasma-milou plasma-kde-cli-tools plasma-integration  
 
 description="KDE Plasma Workspace"
 url="https://www.kde.org/"
@@ -22,7 +22,7 @@ make
 make DESTDIR=$PKG install
 
 mkdir -p $PKG/usr/bin/
-sed -i "s:qtpaths:&-qt5:g" $PKG/usr/bin/startkde
+sed -i "s:qtpaths:&-qt:g" $PKG/usr/bin/startkde
 
 mkdir -p $PKG/etc/pam.d
 
