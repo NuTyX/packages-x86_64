@@ -15,7 +15,7 @@ source=(https://download.qt.io/development_releases/qt/5.8/$version/submodules/$
 build() {
 export PATH="$SCR/bin:$PATH"
 cd ${_name}
-qmake-qt
+qmake
 make
 make INSTALL_ROOT=$PKG install
 }
