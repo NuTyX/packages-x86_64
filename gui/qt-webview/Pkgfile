@@ -1,10 +1,10 @@
-# Depends on: qt5-base qt5-webengine 
+# Depends on: qt-base qt-webengine 
 
 description="A cross-platform application and UI framework, QtWebview files"
 url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 
-name=qt5-webview 
+name=qt-webview 
 version=5.8.0-rc
 release=1
 
@@ -14,7 +14,7 @@ source=(https://download.qt.io/development_releases/qt/5.8/$version/submodules/$
 
 build() {
 cd ${_name}
-qmake-qt5
+qmake-qt
 make
 make INSTALL_ROOT=$PKG install
 }
