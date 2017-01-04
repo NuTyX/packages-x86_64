@@ -1,10 +1,10 @@
-# Depends on: xorg kf5 plasma phonon-backend-gstreamer-qt5 oxygen-gtk2 oxygen-gtk3 gnupg kmix alsa-plugins plasma-kwayland-integration plasma-kwallet-pam kf5-oxygen-icons5 kf5-breeze-icons noto-fonts kio-extras
+# Depends on: xorg kf5 plasma phonon-backend-gstreamer-qt oxygen-gtk2 oxygen-gtk3 gnupg kmix alsa-plugins plasma-kwayland-integration plasma-kwallet-pam kf5-oxygen-icons5 kf5-breeze-icons noto-fonts kio-extras
 
 description="This package going install KDE5 and its dependencies"
 url="https://www.kde.org/"
 packager="pierre at nutyx dot org, fanch at nutyx dot org, tnut at nutyx dot org"
 
-run=(xorg kf5 plasma phonon-backend-gstreamer-qt5 oxygen-gtk2 oxygen-gtk3 gnupg kmix alsa-plugins  plasma-kwayland-integration plasma-kwallet-pam kf5-oxygen-icons5 kf5-breeze-icons noto-fonts kio-extras )   
+run=(xorg kf5 plasma phonon-backend-gstreamer-qt oxygen-gtk2 oxygen-gtk3 gnupg kmix alsa-plugins  plasma-kwayland-integration plasma-kwallet-pam kf5-oxygen-icons5 kf5-breeze-icons noto-fonts kio-extras )   
 
 name=kde5
 release=1
@@ -21,11 +21,11 @@ mkdir -pv $PKG/etc/profile.d/
 cat > $PKG/etc/profile.d/kde5.sh << "EOF"
 ### Begin /etc/profile.d/kf5.sh
 #
-source /etc/profile.d/qt5.sh
+source /etc/profile.d/qt.sh
 #
 export KF5_PREFIX=/usr
 #
-pathappend /usr/lib/qt5/plugins    QT_PLUGIN_PATH
+pathappend /usr/lib/qt/plugins    QT_PLUGIN_PATH
 #
 ### End /etc/profile.d/kde5.sh
 EOF
