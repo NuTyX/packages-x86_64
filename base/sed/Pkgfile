@@ -3,10 +3,10 @@
 # Maintainers: Ken Pizzini ken at gnu dot org,Paolo Bonzini bonzini at gnu dot org
 # Packager: pierre at nutyx dot org
 name=sed
-version=4.2.2
+version=4.3
 release=1
 
-source=(http://ftp.gnu.org/gnu/sed/sed-$version.tar.bz2)
+source=(http://ftp.gnu.org/gnu/sed/sed-$version.tar.xz)
 
 build()
 {
@@ -15,8 +15,7 @@ cd sed-$version
 --libdir=/lib --htmldir=/usr/share/doc/sed-$version
 make
 make html
-make check
+make check || true
 make DESTDIR=$PKG install
-make -C doc DESTDIR=$PKG install-html
 rm -rf $PKG/usr/share/info/dir
 }
