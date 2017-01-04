@@ -16,7 +16,7 @@ build() {
   cd ${_name}
   mkdir build
   cd build 
-  qmake-qt WEBENGINE_CONFIG+="use_proprietary_codecs" ../ 
+  qmake WEBENGINE_CONFIG+="use_proprietary_codecs" ../ 
   make
   make INSTALL_ROOT=$PKG install
 }
