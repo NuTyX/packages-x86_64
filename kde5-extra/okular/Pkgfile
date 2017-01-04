@@ -1,4 +1,4 @@
-# Depends on : kf5-extra-cmake-modules kf5-khtml kf5-threadweaver kf5-kactivities kf5-kdelibs4support kf5-kpty plasma-libkscreen freetype poppler-qt5 libspectre djvulibre qca-qt5 libkexiv2 chmlib  zlib ebook-tools kf5-kdoctools phonon-qt5
+# Depends on : kf5-extra-cmake-modules kf5-khtml kf5-threadweaver kf5-kactivities kf5-kdelibs4support kf5-kpty plasma-libkscreen freetype poppler-qt libspectre djvulibre qca-qt libkexiv2 chmlib  zlib ebook-tools kf5-kdoctools phonon-qt
    
 description="Document Viewer"
 url="http://www.kde.org"
@@ -16,7 +16,7 @@ build() {
   cmake -DCMAKE_BUILD_TYPE=Release   \
         -DCMAKE_INSTALL_PREFIX=/usr  \
         -DSYSCONF_INSTALL_DIR=/etc   \
-        -DPLUGIN_INSTALL_DIR=/usr/lib/qt5/plugins \
+        -DPLUGIN_INSTALL_DIR=/usr/lib/qt/plugins \
         -DLIB_INSTALL_DIR=lib         \
         -Wno-dev ..
   make
