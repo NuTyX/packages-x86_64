@@ -1,4 +1,4 @@
-# Depends on: qt5-multimedia qt5-tools qt5-virtualkeyboard kf5-kauth kf5-kcmutils kf5-kcompletion kf5-kconfig kf5-kconfigwidgets kf5-kcoreaddons kf5-kcrash kf5-kdeclarative kf5-kglobalaccel kf5-ki18n kf5-kiconthemes kf5-kinit kf5-kio kf5-knewstuff kf5-knotifications kf5-kpackage kf5-kservice kf5-kwidgetsaddons kf5-kwindowsystem kf5-kxmlgui kf5-plasma-framework plasma-kdecoration libepoxy libxcb xcb-util-cursor xcb-util-image xcb-util-keysyms kf5-kwayland libinput eudev plasma-kde-cli-tools xorg-mesa xdg-utils kf5-kidletime plasma-kscreenlocker plasma-breeze
+# Depends on: qt-multimedia qt-tools qt-virtualkeyboard kf5-kauth kf5-kcmutils kf5-kcompletion kf5-kconfig kf5-kconfigwidgets kf5-kcoreaddons kf5-kcrash kf5-kdeclarative kf5-kglobalaccel kf5-ki18n kf5-kiconthemes kf5-kinit kf5-kio kf5-knewstuff kf5-knotifications kf5-kpackage kf5-kservice kf5-kwidgetsaddons kf5-kwindowsystem kf5-kxmlgui kf5-plasma-framework plasma-kdecoration libepoxy libxcb xcb-util-cursor xcb-util-image xcb-util-keysyms kf5-kwayland libinput eudev plasma-kde-cli-tools xorg-mesa xdg-utils kf5-kidletime plasma-kscreenlocker plasma-breeze
 
 description="KDE Window manager "
 url="https://www.kde.org/"
@@ -12,7 +12,7 @@ release=1
 
 build() {
 
-cat > $SRC/plasma-kwin-qt5.8.patch << "EOf"
+cat > $SRC/plasma-kwin-qt.8.patch << "EOf"
 From 052fa2e4ee329810f62c29e546254fb45bf8a375 Mon Sep 17 00:00:00 2001
 From: Takahiro Hashimoto <kenya888@gmail.com>
 Date: Thu, 27 Oct 2016 09:43:21 +0900
@@ -498,7 +498,7 @@ EOf
 
 cd ${_name}-$version
 
-patch -p1 -i ../plasma-kwin-qt5.8.patch
+patch -p1 -i ../plasma-kwin-qt.8.patch
 
 mkdir build
 cd    build
