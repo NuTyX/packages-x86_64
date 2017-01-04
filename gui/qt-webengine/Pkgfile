@@ -1,10 +1,10 @@
-# Depends on: qt5-base qt5-webchannel qt5-location xorg-libxcomposite xorg-libxrandr pciutils libvpx libevent snappy nss protobuf libxslt minizip ffmpeg git gperf json icu zlib libwebp xorg-libxscrnsaver
+# Depends on: qt-base qt-webchannel qt-location xorg-libxcomposite xorg-libxrandr pciutils libvpx libevent snappy nss protobuf libxslt minizip ffmpeg git gperf json icu zlib libwebp xorg-libxscrnsaver
 
 description="Provides support for web applications using the Chromium browser project"
 url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 
-name=qt5-webengine 
+name=qt-webengine 
 version=5.8.0-rc
 release=1
 
@@ -16,7 +16,7 @@ build() {
   cd ${_name}
   mkdir build
   cd build 
-  qmake-qt5 WEBENGINE_CONFIG+="use_proprietary_codecs" ../ 
+  qmake-qt WEBENGINE_CONFIG+="use_proprietary_codecs" ../ 
   make
   make INSTALL_ROOT=$PKG install
 }
