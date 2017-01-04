@@ -3,16 +3,13 @@ description="A tool for generating text-scanning programs"
 packager="pierre at nutyx dot org"
 url="http://flex.sourceforge.net"
 name=flex
-version=2.6.2
-release=2
+version=2.6.3
+release=1
 
-source=(https://github.com/westes/flex/releases/download/v${version}/flex-$version.tar.gz
-	http://www.linuxfromscratch.org/patches/lfs/development/flex-$version-fixes-1.patch)
+source=(https://github.com/westes/flex/releases/download/v${version}/flex-$version.tar.gz)
 build()
 {
 cd flex-$version
-patch -Np1 -i ../flex-$version-fixes-1.patch
-touch src/scan.*
 
 HELP2MAN=`which true` \
 ./configure --prefix=/usr \
