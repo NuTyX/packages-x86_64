@@ -5,7 +5,7 @@
 
 name=qca-qt
 version=2.1.1
-release=2
+release=3
 
 source=(http://download.kde.org/stable/qca/$version/src/qca-$version.tar.xz)
 build() {
@@ -14,7 +14,7 @@ cd build
 cmake ../qca-$version           \
     -DCMAKE_INSTALL_PREFIX=/usr   \
     -DBUILD_TESTS=OFF             \
-    -DQCA_SUFFIX=qt              \
+    -DQCA_SUFFIX=qt5              \
     -DQCA_INSTALL_IN_QT_PREFIX=ON
 
 make
