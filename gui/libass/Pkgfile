@@ -1,13 +1,11 @@
-# Description: Portable subtitle renderer for Advanced Substation Alpha/Substation Alpha subtitle format
-# URL: https://github.com/libass
-# Packager: tnut at nutyx dot org
 # Depends on: freetype fribidi xorg-fontconfig harfbuzz
-
+description="Portable subtitle renderer for Advanced Substation Alpha/Substation Alpha subtitle format"
+url="https://github.com/libass"
+packager="tnut at nutyx dot org"
 name=libass
-version=0.13.2
+version=0.13.6
 release=1
-source=(https://github.com/$name/$name/releases/download/$version/$name-$version.tar.xz)
-
+source=(${url}/$name/releases/download/$version/$name-$version.tar.xz)
 build() {
 cd $name-$version
 ./configure --prefix=/usr --disable-static
