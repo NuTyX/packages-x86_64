@@ -1,11 +1,10 @@
-# Description: OpenGL Extension Wrangler Library 
-# URL: http://glew.sourceforge.net/
-# Packager: http://glew.sourceforge.net/
-# Depends on: xorg-mesa xorg-libxmu xorg-libxi 
-
+# Depends on: mesa xorg-libxmu xorg-libxi
+description="OpenGL Extension Wrangler Library" 
+url="http://glew.sourceforge.net/"
+packager="tnut at nutyx dot org"
 name=glew
 version=1.13.0
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/project/glew/glew/$version/$name-$version.tgz)
 
@@ -18,4 +17,3 @@ build() {
 	make 
 	make GLEW_DEST=$PKG/usr LIBDIR=$PKG/usr/lib BINDIR=$PKG/usr/bin install install.bin install.lib.mx
 }
-
