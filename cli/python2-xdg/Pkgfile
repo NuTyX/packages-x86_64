@@ -1,0 +1,15 @@
+# Depends on: python2
+description="Python library for accessing FreeDesktop standards"
+url="http://freedesktop.org/wiki/Software/pyxdg"
+packager="geantbrun at gmail dot com, tnut at nutyx dot org"
+
+name=python2-xdg
+version=0.25
+release=1
+
+source=(http://people.freedesktop.org/~takluyver/pyxdg-$version.tar.gz)
+
+build() {
+	cd pyxdg-$version
+	python2 setup.py install --prefix=/usr --root=$PKG
+}
