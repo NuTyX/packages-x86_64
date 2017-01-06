@@ -1,14 +1,13 @@
-# Depends on: git xorg-proto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms xcb-util-renderutil xcb-util xcb-util-image xcb-util-wm xcb-util-cursor glib dbus xorg-fontconfig xorg-libsm xorg-libxrandr xorg-libxv xorg-libxi unixodbc libjpeg-turbo alsa-lib xdg-utils hicolor-icon-theme' desktop-file-utils xorg-mesa xorg-libxcursor xorg-libxrender libpng mariadb icu libglade xorg-libxfixes xorg-libxinerama libxkbcommon libinput harfbuzz mtdev postgresql cups python gperf ruby pulseaudio bluez libtiff libmng openal libxslt xorg-libxcomposite gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad gstreamer1 gstreamer1-plugins-base gstreamer1-plugins-good gstreamer1-plugins-bad pulseaudio speech-dispatcher hunspell wayland ca-certificates openssl pcre gtk2 gtk3 libxkbcommon nss pciutils freetype
+# Depends on: git xorg-proto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms xcb-util-renderutil xcb-util xcb-util-image xcb-util-wm xcb-util-cursor glib dbus xorg-fontconfig xorg-libsm xorg-libxrandr xorg-libxv xorg-libxi unixodbc libjpeg-turbo alsa-lib xdg-utils hicolor-icon-theme desktop-file-utils mesa xorg-libxcursor xorg-libxrender libpng mariadb icu libglade xorg-libxfixes xorg-libxinerama libxkbcommon libinput harfbuzz mtdev postgresql cups python gperf ruby pulseaudio bluez libtiff libmng openal libxslt xorg-libxcomposite gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad gstreamer1 gstreamer1-plugins-base gstreamer1-plugins-good gstreamer1-plugins-bad pulseaudio hunspell wayland ca-certificates openssl pcre gtk2 gtk3 libxkbcommon nss pciutils freetype
 
 description="A cross-platform application and UI framework"
 url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
-
-name=qt-base 
+name=qt
 version=5.8.0-rc
 release=1
 
-_name="${name/-/}-opensource-src-${version}"
+_name="qtbase-opensource-src-${version}"
 
 source=(https://download.qt.io/development_releases/qt/5.8/$version/submodules/${_name}.tar.xz)
 
