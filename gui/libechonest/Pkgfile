@@ -1,11 +1,10 @@
-# Description : C++ library for interfacing with Echo Nest (builds the qt version)
-# URL : https://projects.kde.org/projects/playground/libs/libechonest
-# Packager : pierre at nutyx dot prg
-# Depends on : qt-base
-
+# Depends on : cmake qt-base
+description="C++ library for interfacing with Echo Nest (builds the qt version)"
+url="https://projects.kde.org/projects/playground/libs/libechonest"
+packager="pierre at nutyx dot org"
 name=libechonest
 version=2.3.1
-release=2
+release=3
 
 source=(https://github.com/lfranchi/libechonest/archive/$version.tar.gz)
 
@@ -22,4 +21,3 @@ build() {
   make
   make DESTDIR=$PKG install
 }
-
