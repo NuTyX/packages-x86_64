@@ -1,19 +1,16 @@
-# Depends on: qt
+# Depends on: qt-base
 
 description="A cross-platform application and UI framework, QtXmlpatterns files"
 url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 
 name=qt-xmlpatterns 
-release=1
-
-_name="${name/-/}-opensource-src-${version}"
-
-source=(https://download.qt.io/development_releases/qt/5.8/$version/submodules/${_name}.tar.xz)
-
+release=2
+alias=(qtxmlpatterns)
+_name="${name/-/}-opensource-src"
 build() {
 export PATH="$SCR/bin:$PATH"
-cd ${_name}
+cd ${_name}-${version}
 qmake
 make
 make INSTALL_ROOT=$PKG install
