@@ -5,15 +5,11 @@ url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 
 name=qt-speech 
-version=5.8.0-rc
-release=1
-
-_name="${name/-/}-opensource-src-${version}"
-
-source=(https://download.qt.io/development_releases/qt/5.8/$version/submodules/${_name}.tar.xz)
-
+release=2
+alias=(qtspeech)
+_name="${name/-/}-opensource-src"
 build() {
-cd ${_name}
+cd ${_name}-${version}
 qmake
 make
 make INSTALL_ROOT=$PKG install
