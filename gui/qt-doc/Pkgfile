@@ -4,17 +4,13 @@ description="A cross-platform application and UI framework, QtDoc files"
 url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 
-name=qt-doc 
-version=5.8.0-rc
-release=1
-
-_name="${name/-/}-opensource-src-${version}"
-
-source=(https://download.qt.io/development_releases/qt/5.8/$version/submodules/${_name}.tar.xz)
-
+name=qt-doc
+release=2
+alias=(qtdoc)
+_name="${name/-/}-opensource-src"
 build() {
 export PATH="$SCR/bin:$PATH"
-cd ${_name}
+cd ${_name}-${version}
 qmake
 make docs
 make INSTALL_ROOT=$PKG install_docs
