@@ -1,0 +1,16 @@
+# Depends on: python2
+
+description="Collection of cryptographic algorithms and protocols implemented for use from Python"
+url="http://www.dlitz.net/software/pycrypto/"
+packager="tnut at nutyx dot org"
+name=python-crypto
+version=2.6.1
+release=1
+source=(
+http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-$version.tar.gz)
+
+build() {
+    cd pycrypto-$version
+    python2 setup.py build
+    python2 setup.py install --prefix=/usr --root=$PKG
+}
