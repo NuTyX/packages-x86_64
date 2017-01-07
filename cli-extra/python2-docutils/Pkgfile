@@ -1,0 +1,15 @@
+# Depends on: python2
+
+description="Set of tools for processing plaintext docs into formats such as HTML, XML, or LaTeX"
+url="http://docutils.sourceforge.net"
+packager="tnut at nutyx dot org"
+name=python2-docutils
+version=0.12
+release=1
+
+source=(http://downloads.sourceforge.net/docutils/docutils-$version.tar.gz)
+
+build() {
+    cd docutils-$version
+    python2 setup.py install --root=$PKG
+}
