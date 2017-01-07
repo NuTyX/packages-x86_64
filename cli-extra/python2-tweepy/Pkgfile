@@ -1,0 +1,15 @@
+# Depends on: python2-simplejson
+
+description="A Python library for accessing the entire Twitter API."
+url="http://pypi.python.org/pypi/tweepy/"
+packager="tnut at nutyx dot org"
+name=python2-tweepy
+version=2.2
+release=1
+source=(
+http://pypi.python.org/packages/source/t/tweepy/tweepy-$version.tar.gz)
+
+build() {
+    cd tweepy-$version
+    python2 setup.py install --prefix=/usr --root=$PKG
+}
