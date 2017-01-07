@@ -1,0 +1,16 @@
+# Depends on: python2-setuptools
+
+description="Urwid is a curses-based user interface library for Python."
+url="http://excess.org/urwid/"
+packager="tnut at nutyx dot org"
+name=python2-urwid
+version=1.3.1
+release=1
+
+source=(
+https://pypi.python.org/packages/source/u/urwid/urwid-$version.tar.gz)
+
+build() {
+    cd urwid-$version
+    python2 setup.py install --prefix=/usr --root=$PKG
+}
