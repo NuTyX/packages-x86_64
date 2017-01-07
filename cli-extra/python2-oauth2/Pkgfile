@@ -1,0 +1,15 @@
+# Depends on: python2-httplib2 python2-setuptools
+
+description="A fully tested, abstract interface to creating OAuth 1.0 clients and servers."
+url="https://github.com/simplegeo/python-oauth2"
+packager="tnut at nutyx dot org"
+name=python2-oauth2
+version=1.5.211
+release=1
+source=(
+https://pypi.python.org/packages/source/o/oauth2/oauth2-$version.tar.gz)
+
+build() {
+    cd oauth2-$version
+    python2 setup.py install --prefix=/usr --root=$PKG
+}
