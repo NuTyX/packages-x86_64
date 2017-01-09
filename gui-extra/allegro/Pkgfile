@@ -1,16 +1,15 @@
-# Description: A multi-platform game programming library for C/C++.
-# URL:         http://alleg.sourceforge.net/
-# Packager:    berlius at nutyx dot com
-# Depends on:  flac gtk3 libidn libvorbis xorg-glu openal physfs xorg-libxpm xorg-libxxf86dga
-
+# Depends on:  flac gtk3 libidn libvorbis xorg-glu openal physfs xorg-libxpm xorg-libxxf86dga mesa
+description="A multi-platform game programming library for C/C++."
+url="http://alleg.sourceforge.net/"
+packager="berlius at nutyx dot com, tnut at nutyx dot org"
 name=allegro
-version=5.1.12
+version=5.1.13.1
 release=1
 source=(http://download.gna.org/allegro/allegro-unstable/$version/$name-$version.tar.gz)
 
 build() {
 
-    cd $name-$version.0
+    cd $name-$version
 
     cmake \
 	  -DCMAKE_INSTALL_PREFIX=/usr \
