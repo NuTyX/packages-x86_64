@@ -1,7 +1,7 @@
-# Description: Media player, streamer, and encoder. It can play from many inputs
-# URL:  http://www.slackware.com/~alien/slackbuilds/vlc/
-# Packager: pierre at nutyx dot org
 # Depends on: libvlc qt-base x264 flac libmad glib librsvg alsa-lib xorg-libxinerama xorg-libxpm libvpx libcdio vcdimager live libdvdcss libdvdread libdvdnav libogg libtheora lame faac libvorbis ffmpeg faad2 liba52 libmpeg2 libmpcdec fribidi lua libdv speex 
+description="Media player, streamer, and encoder. It can play from many inputs"
+url="http://www.slackware.com/~alien/slackbuilds/vlc/"
+packager="pierre at nutyx dot org"
 
 run=(libvlc)
 name=vlc
@@ -11,8 +11,6 @@ release=20160606
 source=( http://anduin.linuxfromscratch.org/BLFS/$name/$name-$version-$release.tar.xz)
 	
 build() {
-
-source setqt
 
 cd $name-$version-$release
 
