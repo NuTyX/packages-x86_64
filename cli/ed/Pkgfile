@@ -3,8 +3,8 @@ url="http://www.gnu.org/software/ed/ed.html"
 Packager="pierre at nutyx dot org"
 
 name=ed
-version=1.13
-release=2
+version=1.14.1
+release=1
 
 source=(https://ftp.gnu.org/gnu/ed/$name-$version.tar.lz)
 
@@ -13,9 +13,7 @@ build() {
   ./configure --prefix=/ \
               --bindir=/usr/bin \
               --mandir=/usr/share/man \
-              --infodir=/usr/share/info \
-              "CFLAGS=$CFLAGS" \
-              "LDFLAGS=$LDFLAGS"
+              --infodir=/usr/share/info
 
   make
   make DESTDIR=$PKG install
