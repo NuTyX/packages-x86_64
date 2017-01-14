@@ -1,0 +1,30 @@
+# Depends on: kf5-extra-cmake-modules kf5-kdoctools kf5-kparts kf5-kcmutils kf5-khtml kf5-kdelibs4support kf5-karchive kf5-kcrash kf5-kded kf5-kactivities kf5-kwidgetsaddons kf5-kiconthemes kf5-kdesu kf5-kio kf5-ki18n  keditbookmarks kf56-kguiaddons tidy-html5 qt-webengine qt-speech
+
+description="KDE File Manager & Web Browser"
+url="https://konqueror.org/"
+packager="pierre at nutyx dot org"
+
+name=konqueror
+version=16.12.1
+release=1
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build() {
+  cd $name-$version 
+  sed -i -e 's|#include <buffio.h>|#include <tidybuffio.h>|' plugins/validators/tidy_validator.cpp
+  cd ../
+  mkdir build
+  cd build
+  cmake ../$name-$version       \
+    -DCMAKE_BUILD_TYPE=Release  \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib  \
+    -DBUILD_TESTING=OFF         \
+    -Wno-dev
+  make
+  make DESTDIR=$PKG install
+}
+
+
+
