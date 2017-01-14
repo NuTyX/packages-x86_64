@@ -3,13 +3,16 @@ url="http://www.icu-project.org/"
 packager="pierre at nutyx dot org, tnut at nutyx dot org"
 name=icu
 version=58.2
-release=1
+release=2
 
-source=(http://download.$name-project.org/files/icu4c/$version/icu4c-${version//./_}-src.tgz)
+source=(http://download.$name-project.org/files/icu4c/$version/icu4c-${version//./_}-src.tgz
+	http://www.linuxfromscratch.org/patches/blfs/svn/icu4c-58.2-fix_enumeration-1.patch)
 
 build () {
-cd $name/source
-CXX=g++ ./configure --prefix=/usr
+cd $name
+patch -p1 -i ../icu4c-58.2-fix_enumeration-1.patch
+cd source
+CC=gcc CXX=g++ ./configure --prefix=/usr
 make
 make prefix=$PKG/usr install
 }
