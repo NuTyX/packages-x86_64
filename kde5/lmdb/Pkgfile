@@ -6,14 +6,15 @@ packager="pierre at nutyx dot org"
 alias=(lmdb)
 
 name=lmdb
-version=0.9.18
+version=0.9.19
 release=1
 
-source=(ftp://ftp.debian.org/debian/pool/main/l/lmdb/lmdb_$version.orig.tar.gz)
+source=(https://github.com/LMDB/lmdb/archive/LMDB_$version.tar.gz)
 
 build() {
 cd lmdb-LMDB_$version/libraries/liblmdb/
 make prefix=/usr
+sed -i 's| liblmdb.a||' Makefile
 install -dm755 $PKG/usr/{bin,lib,include,man/man1,share}
 make DESTDIR=$PKG prefix=/usr install
 }
