@@ -1,0 +1,22 @@
+# Depends on: cmake boost
+
+description="Portable Open Source library to import various well-known 3D model formats in an uniform manner"
+url="http://assimp.sourceforge.net/index.html"
+packager="pierre at nutyx dot org"
+
+name=assimp
+version=3.3.1
+release=1
+
+source=(https://github.com/assimp/assimp/archive/v${version}.tar.gz)
+
+build() {
+  cd $name-$version
+  mkdir build && cd build
+  cmake .. \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DCMAKE_BUILD_TYPE=Release \
+     -DASSIMP_BUILD_SAMPLES=OFF
+  make
+  make DESTDIR=$PKG install
+}
