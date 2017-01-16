@@ -1,9 +1,9 @@
-# Description: Utilities for monitoring your system and its processes.
-# URL: http://procps.sourceforge.net/
-# Packager: pierre at nutyx dot org, tnut at nutyx dot org
+description="Utilities for monitoring your system and its processes."
+url="http://procps.sourceforge.net/"
+packager="pierre at nutyx dot org, tnut at nutyx dot org"
 name=procps-ng
 version=3.3.12
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/project/$name/Production/$name-$version.tar.xz )
 
@@ -15,17 +15,14 @@ cd $name-$version
 
 ./configure --prefix=/usr \
 --exec-prefix= \
---libdir=/lib --bindir=/bin --sbindir=/sbin \
+--libdir=/usr/lib \
 --docdir=/usr/share/doc/procps-ng-$version \
 --disable-static \
 --disable-skill \
 --disable-kill
 make
 make DESTDIR=$PKG install
-
-mkdir -p $PKG/usr/lib
-
-mv $PKG/lib/pkgconfig \
-$PKG/usr/lib/
-
+mkdir $PKG/lib
+mv -v $PKG/usr/lib/libprocps.so.* $PKG/lib
+ln -sf ../../lib/libprocps.so.6.0.0 /usr/lib/libprocps.so
 }
