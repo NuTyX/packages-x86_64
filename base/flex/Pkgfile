@@ -4,7 +4,7 @@ packager="pierre at nutyx dot org"
 url="http://flex.sourceforge.net"
 name=flex
 version=2.6.3
-release=1
+release=2
 
 source=(https://github.com/westes/flex/releases/download/v${version}/flex-$version.tar.gz)
 build()
@@ -13,7 +13,6 @@ cd flex-$version
 
 HELP2MAN=`which true` \
 ./configure --prefix=/usr \
---libdir=/lib --bindir=/bin --sbindir=/sbin \
 --docdir=/usr/share/doc/flex-$version
 
 make
@@ -21,8 +20,7 @@ make -k check||true
 
 make DESTDIR=$PKG install
 
-ln -sv libfl.a $PKG/lib/libl.a
-ln -sv flex $PKG/bin/lex
+ln -sv flex $PKG/usr/bin/lex
 
 rm -rf $PKG/usr/share/info/dir
 
