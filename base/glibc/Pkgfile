@@ -1,11 +1,11 @@
-# Description: The Glibc package contains the main C library.
-# URL: https://www.gnu.org/software/libc/
-# Packagers: tnut at nutyx dot org
+description="The Glibc package contains the main C library."
+url="https://www.gnu.org/software/libc/"
+packagers="tnut at nutyx dot org"
 kernelversion=4.9
 PKGMK_GROUPS=(devel man doc)
 name=glibc
 version=2.24
-release=3
+release=4
 
 source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
@@ -25,13 +25,26 @@ cd ../glibc-$version
 
 patch -Np1 -i ../glibc-$version-fhs-1.patch
 
+case $(uname -m) in
+   x86) 
+     mkdir $PKG/lib
+     ln -s ld-linux.so.2 $PKG/lib/ld-lsb.so.3
+   ;;
+   x86_64) 
+     mkdir $PKG/lib64
+     ln -s ../lib/ld-linux-x86-64.so.2 $PKG/lib64
+     ln -s ../lib/ld-linux-x86-64.so.2 $PKG/lib64/ld-lsb-x86-64.so.3
+   ;;
+esac
+
 mkdir -v ../glibc-build
 cd ../glibc-build
 
 ../glibc-$version/configure --prefix=/usr \
 --disable-profile \
 --enable-kernel=2.6.32 \
---enable-obsolete-rpc
+--enable-obsolete-rpc \
+libc_cv_slibdir=/lib
 
 make || make -j1
 
@@ -78,9 +91,7 @@ cat > $PKG/etc/ld.so.conf << "EOF"
 /lib
 /lib64
 /usr/lib
-/usr/lib64
 /usr/local/lib
-/usr/local/lib64
 
 # Add an include directory
 include /etc/ld.so.conf.d/*.conf
