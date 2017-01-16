@@ -14,6 +14,8 @@ build() {
 cd $name-$version
 sed -r -i 's|/usr(/bin/test)|\1|' test/udev-test.pl
 
+sed -i '/keyboard_lookup_key/d' src/udev/udev-builtin-keyboard.c
+
 if [ -d /tools ];then
 	cat > config.cache << "EOF"
 	HAVE_BLKID=1
@@ -22,12 +24,15 @@ if [ -d /tools ];then
 EOF
 fi
 
-./configure --prefix=/usr --bindir=/sbin \
---sbindir=/sbin --libdir=/usr/lib \
---sysconfdir=/etc --libexecdir=/lib \
+./configure --prefix=/usr \
+--bindir=/sbin \
+--sbindir=/sbin \
+--libdir=/usr/lib \
+--sysconfdir=/etc \
+--libexecdir=/lib \
 --with-rootprefix= \
 --with-rootlibdir=/lib \
---enable-split-usr \
+--enable-manpages \
 --enable-hwdb  \
 --disable-introspection \
 --disable-gudev \
