@@ -1,10 +1,10 @@
-# Description: Takes text input, do some operation on it, and outputs the modified text.
-# URL: http://www.gnu.org/software/sed//sed.html
-# Maintainers: Ken Pizzini ken at gnu dot org,Paolo Bonzini bonzini at gnu dot org
-# Packager: pierre at nutyx dot org
+description="Takes text input, do some operation on it, and outputs the modified text."
+url="http://www.gnu.org/software/sed//sed.html"
+maintainer="Ken Pizzini ken at gnu dot org,Paolo Bonzini bonzini at gnu dot org"
+packager="pierre at nutyx dot org"
 name=sed
 version=4.3
-release=1
+release=2
 
 source=(http://ftp.gnu.org/gnu/sed/sed-$version.tar.xz)
 
@@ -17,5 +17,7 @@ make
 make html
 make check || true
 make DESTDIR=$PKG install
+install -d m755 $PKG/usr/share/doc/sed-$version
+install -m644 doc/sed.html $PKG/usr/share/doc/sed-$version
 rm -rf $PKG/usr/share/info/dir
 }
