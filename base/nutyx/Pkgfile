@@ -8,15 +8,10 @@ maintainer="tnut at nutyx dot org"
 
 name=nutyx
 version=8.2.93
-release=1
+release=2
 source=(http://downloads.nutyx.org/files/$name-$version.tar.gz)
 build () {
 cd $name-$version
 make DESTDIR=$PKG install
 mkdir -p $PKG/usr/local
-case $(uname -m) in
-x86_64) ln -sv lib $PKG/lib64
-        ln -sv lib $PKG/usr/lib64
-        ln -sv lib $PKG/usr/local/lib64;;
-esac
 }
