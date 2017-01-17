@@ -1,4 +1,4 @@
-## Ports for constructing the 'base-extra' 'cli-extra and 'gui-extra' collections
+## Ports for constructing the 'cli-extra and 'gui-extra' collections
 
 Contributions are welcome. If you don't know what it all about, please take the time to read the documentation at
 http://www.nutyx.org/en/build-package.html
@@ -7,7 +7,7 @@ http://www.nutyx.org/fr/build-package.html
 
 It will explain you what's a collection, a git, a port, the tools around 'cards' etc
 ### Introduction
-How does this works ? This git contains the 3 "extra" collection of respectively 'base', 'cli' and 'gui'. As those last ones, collections 'base-extra', 'cli-extra' and 'gui-extra' needs to be pickup in the right order. Be aware that the 'extra' git contains the biggest binaries packages in size. Means the synchronisation of all the binaries can be very long if your internet connection is slow (100 Mb/Sec or less)
+How does this works ? This git contains the 2 "extra" collection of respectively 'cli' and 'gui'. As those last ones, collections 'cli-extra' and 'gui-extra' needs to be pickup in the right order. Be aware that the 'extra' git contains the biggest binaries packages in size. Means the synchronisation of all the binaries can be very long if your internet connection is slow (100 Mb/Sec or less)
 ### How does this works:
 First we get this git and the core git localy (step1) as normal user. As we want to install a NuTyX base system in a local directory, we need to become root admin. Before installing the NuTyX in a chroot, we adjust some configuration files (step 2) so that the install-nutyx script pickup during the installation (step 3). Once the chroot is in place, we want to make the 2 git projects visible into the chroot (step 4 and 5). Now we are ready to start, so we can enter into the chroot (step 6). As we installed a minimal set of packages, we first need to install the 'devel' packages and some extra tools (step 6 and 7). One this is done, we have 2 choices. Because all the packages of extra collections will depends on core collections (base,cli or gui) we need to synchronise them (step 8).Either we synchronise ALL the existing binaries, means we just want to update a few packages (case 1). Either we want to build ALL the binaries ourself (case 2). So Case 1, we should use option -s and for case 2 it will be -a
 
@@ -33,9 +33,7 @@ First we get this git and the core git localy (step1) as normal user. As we want
     dir /DEPOT/cli-extra|http://downloads.nutyx.org
     dir /DEPOT/cli|http://downloads.nutyx.org
     dir /DEPOT/base|http://downloads.nutyx.org
-    dir /DEPOT/base-extra|http://downloads.nutyx.org
     base /DEPOT/base
-    base /DEPOT/base-extra
     logdir /var/log/pkgbuild
     EOF
  We need to have a correct pkgmk.conf file as well so, lets create it:
@@ -102,7 +100,6 @@ First we get this git and the core git localy (step1) as normal user. As we want
 #### 9. If everything is OK, synchronize all the 'xxx-extra' collections binaries in case of a few updates 
 
     # cd /root/extra
-    # bash scripts/base-extra -s
     # bash scripts/cli-extra -s
     # bash scripts/gui-extra -s
 
@@ -114,7 +111,6 @@ First we get this git and the core git localy (step1) as normal user. As we want
 
 #### 11. If you want to re build completely one of the 'xxx-extra' collection from the sources
 
-    # bash scripts/base-extra -a
     # bash scripts/cli-extra -a
     # bash scripts/gui-extra -a
 
