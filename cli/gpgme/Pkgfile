@@ -4,12 +4,13 @@ description="A C wrapper library for GnuPG"
 url="http://www.gnupg.org/related_software/gpgme/"
 packager="pierre at nutyx dot org"
 name=gpgme
-version=1.7.1
+version=1.8.0
 release=1
 
 source=(ftp://ftp.gnupg.org/gcrypt/$name/$name-$version.tar.bz2)
 build() {
 cd $name-$version
+sed 's#@libsuffix@#.so#' -i lang/cpp/src/GpgmeppConfig.cmake.in.in
 ./configure --prefix=/usr \
 --disable-fd-passing \
 --disable-gpgsm-test
