@@ -4,14 +4,14 @@ packager="tnut at nutyx dot org"
 
 name=bash
 version=4.4
-release=1
+release=2
 
 source=(http://ftp.gnu.org/gnu/bash/bash-$version.tar.gz)
 
 build()
 {
 cd bash-$version
-./configure --prefix=/usr --bindir=/bin \
+./configure --prefix=/usr \
 --htmldir=/usr/share/doc/bash-$version --without-bash-malloc \
 --with-installed-readline
 make
@@ -20,5 +20,7 @@ make DESTDIR=$PKG install
 
 rm -rf $PKG/usr/share/info/dir
 
+mkdir -p $PKG/bin
+mv -vf $PKG/usr/bin/bash $PKG/bin
 ln -s bash $PKG/bin/sh
 }

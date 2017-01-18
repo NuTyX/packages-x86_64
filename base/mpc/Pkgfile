@@ -1,18 +1,20 @@
-# Description: Library for the arithmetic of complex numbers with arbitrarily high precision.
-# URL: http://www.multiprecision.org/
-# Maintainer: Andreas Enge,Philipe Théveny,Paul Zimmermann
-# Packager: pierre at nutyx dot org
+description="Library for the arithmetic of complex numbers with arbitrarily high precision."
+url="http://www.multiprecision.org/"
+maintainer="Andreas Enge,Philipe Théveny,Paul Zimmermann"
+packager="pierre at nutyx dot org"
 name=mpc
 version=1.0.3
-release=1
+release=2
 
 source=(http://www.multiprecision.org/mpc/download/mpc-$version.tar.gz )
 build()
 {
 cd mpc-$version
-./configure --prefix=/usr --libdir=/lib
+./configure --prefix=/usr
 make
 make check
 make DESTDIR=$PKG install
+make DESTDIR=$PKG install-html
+
 rm -rf $PKG/usr/share/info/dir
 }

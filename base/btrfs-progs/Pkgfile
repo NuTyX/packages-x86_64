@@ -1,0 +1,19 @@
+description="Btrfs filesystem utilities"
+url="http://btrfs.wiki.kernel.org/"
+packager="alienus at nutyx dot org, tnut at nutyx dot org"
+
+name=btrfs-progs
+version=4.8.4
+release=1
+
+source=(https://www.kernel.org/pub/linux/kernel/people/kdave/$name/$name-v$version.tar.xz)
+
+build(){
+cd $name-v$version
+sed -i '1,106 s/\.gz//g' Documentation/Makefile.in
+./configure --prefix=/usr libdir=/lib \
+bindir=/sbin \
+--disable-documentation
+make
+make DESTDIR=$PKG install
+}

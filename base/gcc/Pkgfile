@@ -4,7 +4,7 @@ packager="pierre at nutyx dot org, tnut at nutyx dot org"
 maintainer="Jakub Jelinek (jakub at redhat dot com),Manuel López-Ibáñez (manu at gcc dot gnu.org,Giovanni Bajo,Peter Barada,Gerald Baumgartner and a lot more."
 name=gcc
 version=6.3.0
-release=1
+release=2
 
 source=(http://ftp.gnu.org/gnu/gcc/gcc-$version/gcc-$version.tar.bz2)
 PKGMK_GROUPS=(devel man doc)
@@ -13,13 +13,22 @@ build()
 {
 cd gcc-$version
 
+case $(uname -m) in
+  x86_64)
+    sed -e '/m64=/s/lib64/lib/' \
+    -i.orig gcc/config/i386/t-linux64
+  ;;
+esac
+
 mkdir -v ../gcc-build
 cd ../gcc-build
 
 SED=sed \
 ../gcc-$version/configure --prefix=/usr \
     --enable-languages=c,c++,objc,fortran \
-    --disable-multilib --disable-bootstrap --with-system-zlib
+    --disable-multilib \
+    --disable-bootstrap \
+    --with-system-zlib
 
 make
 
@@ -34,69 +43,15 @@ ln -sv gcc $PKG/usr/bin/cc
 
 install -dm755 $PKG/usr/share/gdb/auto-load/usr/lib
 install -dm755 $PKG/usr/lib/bfd-plugins
-cd $PKG/usr/lib/bfd-plugins
 
-case `uname -m` in
-	i?86) sed -i "s|-L$SRC[^ ]* ||g" \
-		$PKG/usr/lib/{libstdc++.la,libsupc++.la} 
-		mv -v $PKG/usr/lib/*gdb.py \
-		$PKG/usr/share/gdb/auto-load/usr/lib
-		ln -sfv ../../libexec/gcc/i686-pc-linux-gnu/$version/liblto_plugin.so;;
-	x86_64)
-		sed -i "s|-L$SRC[^ ]* ||g" \
-		$PKG/usr/lib64/{libstdc++.la,libsupc++.la} 
-		mv -v $PKG/usr/lib64/*gdb.py \
-		$PKG/usr/share/gdb/auto-load/usr/lib
-		ln -sfv ../../libexec/gcc/x86_64-unknown-linux-gnu/$version/liblto_plugin.so;;
-esac
+cd $PKG/usr/lib/bfd-plugins
+sed -i "s|-L$SRC[^ ]* ||g" \
+$PKG/usr/lib/{libstdc++.la,libsupc++.la}
+mv -v $PKG/usr/lib/*gdb.py \
+$PKG/usr/share/gdb/auto-load/usr/lib
+ln -sfv ../../libexec/gcc/$(gcc -dumpmachine)/$version/liblto_plugin.so
 
 rm -rf $PKG/usr/share/info/dir
-
-
-# Move the needed runtime libraries
-case `uname -m` in
-	i?86) mkdir -pv $PKG/usr/lib
-	mv -v $PKG/usr/lib/libgfortran.{a,la} \
-	$PKG/lib/
-	ln -sv ../../lib/libgfortran.{la,a} $PKG/usr/lib
-	mv -v $PKG/usr/lib/libgfortran.so{,.3,.3.0.0} \
-	$PKG/lib/
-	ln -svf ../../lib/libgfortran.so{,.3,.3.0.0} $PKG/usr/lib
-	mv -v $PKG/usr/lib/libgcc_s.so{,.1} \
-	$PKG/lib
-	ln -sv ../../lib/libgcc_s.so{,.1} $PKG/usr/lib
-	mv -v $PKG/usr/lib/libstdc++.* \
-	$PKG/lib/
-	mv -v $PKG/usr/lib/libsupc++.{la,a} \
-	$PKG/lib
-	ln -sv ../../lib/libstdc++.so{,.6,.6.0.22} \
-	$PKG/usr/lib
-	ln -sv ../../lib/libstdc++.{a,la} \
-	$PKG/usr/lib
-	ln -sv ../../lib/libsupc++.{la,a} \
-	$PKG/usr/lib;;
-	
-	x86_64) mkdir -pv $PKG/usr/lib64
-	mv -v $PKG/usr/lib64/libgfortran.{a,la} \
-	$PKG/lib
-	ln -sv ../../lib/libgfortran.{la,a} $PKG/usr/lib64
-	mv -v $PKG/usr/lib64/libgfortran.so{,.3,.3.0.0} \
-	$PKG/lib
-	ln -sv ../../lib/libgfortran.so{,.3,.3.0.0} $PKG/usr/lib64
-	mv -v $PKG/usr/lib64/libgcc_s.so{,.1} \
-	$PKG/lib
-	ln -sv ../../lib/libgcc_s.so{,.1} $PKG/usr/lib64
-	mv -v $PKG/usr/lib64/libstdc++.* \
-	$PKG/lib
-	mv -v $PKG/usr/lib64/libsupc++.{la,a} \
-	$PKG/lib
-	ln -sv ../../lib/libstdc++.so{,.6,.6.0.22} \
-	$PKG/usr/lib64
-	ln -sv ../../lib/libstdc++.{a,la} \
-	$PKG/usr/lib64
-	ln -sv ../../lib/libsupc++.{la,a} \
-	$PKG/usr/lib64;;
-esac
 
 }
 devel()

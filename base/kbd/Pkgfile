@@ -6,7 +6,7 @@
 
 name=kbd
 version=2.0.3
-release=3
+release=4
 
 source=(http://ftp.altlinux.com/pub/people/legion/kbd/kbd-$version.tar.xz \
 	http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-backspace-1.patch)
@@ -20,8 +20,7 @@ patch -Np1 -i ../$name-$version-backspace-1.patch
 sed -i 's/\(RESIZECONS_PROGS=\)yes/\1no/g' configure
 sed -i 's/resizecons.8 //' docs/man/man8/Makefile.in
 
-PKG_CONFIG_PATH=/tools/lib/pkgconfig ./configure --prefix=/usr  \
---bindir=/bin --datadir=/lib/kbd
+PKG_CONFIG_PATH=/tools/lib/pkgconfig ./configure --prefix=/usr
 
 make
 make check
@@ -31,9 +30,4 @@ mkdir -pv $PKG/usr/share/doc/$name-$version
 cp -R -v docs/doc/* \
 $PKG/usr/share/doc/$name-$version
 
-mkdir -p $PKG/usr/bin
-for i in setfont loadkeys
-do
-  ln -sv ../../bin/$i $PKG/usr/bin/$i
-done
 }

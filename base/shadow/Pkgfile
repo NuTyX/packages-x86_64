@@ -1,10 +1,10 @@
-# Description: The Shadow package contains programs for handling passwords in a secure way.
-# URL: http://shadow.pld.org.pl/
-# Maintainer: pkg-shadow-devel@lists.alioth.debian.org
-# Packager: pierre at nutyx dot org
+description="The Shadow package contains programs for handling passwords in a secure way."
+url="http://shadow.pld.org.pl/"
+maintainer="pkg-shadow-devel@lists.alioth.debian.org"
+packager="pierre at nutyx dot org"
 name=shadow
 version=4.2.1
-release=1
+release=2
 
 source=( http://pkg-shadow.alioth.debian.org/releases/shadow-$version.tar.xz)
 
@@ -20,13 +20,12 @@ sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
 
 sed -i 's/1000/999/' etc/useradd
 
-./configure --sysconfdir=/etc 
+./configure --sysconfdir=/etc --with-group-name-max-length=32
 make
 make DESTDIR=$PKG install
 sed -i 's/yes/no/' $PKG/etc/default/useradd
 sed -i 's/GROUP/# GROUP/' $PKG/etc/default/useradd
-mv -v $PKG/usr/bin/* $PKG/bin
-mv -v $PKG/usr/sbin/* $PKG/sbin
+mv -v $PKG/usr/bin/passwd $PKG/bin
 #
 # Following sed comment appropriate lines in etc/login.defs, and stop login
 # from performing these functions. First backup the etc/login.defs

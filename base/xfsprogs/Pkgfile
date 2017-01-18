@@ -1,0 +1,21 @@
+description="XFS filesystem administration and debugging tools"
+url="http://oss.sgi.com/projects/xfs/"
+packager="pierre at nutyx dot org"
+
+name=xfsprogs
+version=4.9.0
+release=1
+
+source=(https://www.kernel.org/pub/linux/utils/fs/xfs/$name/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+make DEBUG=-DNDEBUG INSTALL_USER=root INSTALL_GROUP=root \
+     LOCAL_CONFIGURE_OPTIONS="--enable-readline"
+
+make DIST_ROOT=$PKG install
+make DIST_ROOT=$PKG install-dev
+rm -rfv $PKG/lib/libhandle.{a,la,so}
+ln -sfv ../../lib/libhandle.so.1 $PKG/usr/lib/libhandle.so
+sed -i "s@libdir='/lib@libdir='/usr/lib@g" $PKG/usr/lib/libhandle.la
+}

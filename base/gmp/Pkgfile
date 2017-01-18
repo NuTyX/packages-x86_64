@@ -4,7 +4,7 @@ paintainer="Torb,Granlund and many more"
 packager="pierre at nutyx dot org, tnut at nutyx dot org"
 name=gmp
 version=6.1.2
-release=1
+release=2
 
 source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz)
 
@@ -13,22 +13,24 @@ build()
 cd gmp-$version
 case `uname -m` in
  i?86)
-	ABI=32 ./configure --build=i686-pc-linux-gnu \
-	--prefix=/usr --enable-cxx --libdir=/lib ;;
+	ABI=32 ./configure \
+	--prefix=/usr \
+	--enable-cxx \
+	--docdir=/usr/share/doc/$name-$version;;
  *)
-	./configure --build=x86_64-unknown-linux-gnu \
-	--prefix=/usr --enable-cxx --libdir=/lib ;;
+	./configure \
+	--prefix=/usr \
+	--enable-cxx \
+	--docdir=/usr/share/doc/$name-$version;;
 esac
 make
+make html
+
 # make check 2>&1 | tee gmp-check-log
 # awk '/tests passed/{total+=$2} ; END{print total}' gmp-check-log
+
 make DESTDIR=$PKG install
+make DESTDIR=$PKG install-html
 
 rm -rf $PKG/usr/share/info/dir
-
-# Documentation
-mkdir -p $PKG/usr/share/doc/gmp-${version}
-
-cp doc/{isa_abi_headache,configuration} doc/*.html \
-$PKG/usr/share/doc/gmp-${version}
 }
