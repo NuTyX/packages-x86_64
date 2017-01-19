@@ -1,19 +1,19 @@
-# Description: A featureful, general-purpose sound server
-# URL: http://www.pulseaudio.org
-# Packager: pierre at nutyx dot org
 # Depends on: fftw intltool json-c libsndfile alsa-lib dbus glib libcap openssl speex libsamplerate 
 
+description="A featureful, general-purpose sound server"
+url="http://www.pulseaudio.org"
+packager="pierre at nutyx dot org"
+
+
 name=pulseaudio
-version=9.0
-release=2
+version=10.0
+release=1
 
 source=(http://freedesktop.org/software/pulseaudio/releases/pulseaudio-$version.tar.xz)
 
 build() {
 unset MAKEFLAGS
 cd pulseaudio-$version
-
-sed -i "/seems to be moved/s/^/#/" build-aux/ltmain.sh
 
 ./configure --prefix=/usr         \
             --sysconfdir=/etc     \
