@@ -8,16 +8,15 @@ name=inkscape
 version=0.92.0
 release=1
 
-source=(https://inkscape.org/en/gallery/item/10552/inkscape-0.92.0.tar.bz2)
+source=(https://inkscape.org/en/gallery/item/10552/inkscape-$version.tar.bz2)
 
 build() {
   cd $name-$version
-  
   ./autogen.sh
   ./configure \
 	--prefix=/usr \
 	--with-python \
-	--with-perl \
+	--with-perl   \
 	--enable-lcms \
 	--enable-poppler-cairo \
 	--disable-strict-build \
