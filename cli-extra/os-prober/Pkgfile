@@ -1,11 +1,13 @@
-# Description: os-prober
-# URL:        https://packages.debian.org/source/sid/os-prober
-# Maintainer:  Chris Farrell, timcowchip at gmail dot com 
-# Depends on:	grub
+# Depends on: grub
+
+description="Can probe disks on the system for other operating systems, and add them to the boot loader"
+url="http://joeyh.name/code/os-prober/"
+maintainer="Joey Hess"
+packager="Chris Farrell, timcowchip at gmail dot com, tnut at nutyx dot org"
 
 name=os-prober
 version=1.71
-release=1
+release=2
 source=(http://ftp.de.debian.org/debian/pool/main/o/os-prober/os-prober_1.71.tar.xz grub)
 
 build() {
