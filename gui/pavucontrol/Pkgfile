@@ -1,0 +1,21 @@
+# Depends on: pulseaudio libcanberra intltool lynx git gtkmm3 libsigc++
+
+description="PulseAudio Volume Control"
+url="http://freedesktop.org/software/pulseaudio/pavucontrol/"
+packager="pierre at nutyx dot org"
+
+name=pavucontrol
+version=3.0
+release=1
+
+source=(http://freedesktop.org/software/pulseaudio/pavucontrol/pavucontrol-$version.tar.xz)
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+  make DESTDIR=$PKG install
+}
+  
+
+

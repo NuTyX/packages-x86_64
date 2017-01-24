@@ -5,17 +5,14 @@ url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 
 name=qt-webkit
-version=5.8.0-beta
-release=2
+version=5.8.0
+release=1
 
 _name="qtwebkit-opensource-src"
-
-source=(http://download.qt.io/community_releases/5.8/$version/${_name}-${version}.tar.xz
-        qt-webkit-default_prf.patch)
+source=(https://download.qt.io/community_releases/5.8/${version}-final/${_name}-${version}.tar.xz)
 
 build() {
   cd ${_name}-${version}
-  patch -p1 -i ../qt-webkit-default_prf.patch
   qmake
   make
   make INSTALL_ROOT="$PKG" install
