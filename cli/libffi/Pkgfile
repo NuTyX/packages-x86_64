@@ -1,15 +1,12 @@
-# Description: Provide a portable, high level programming interface to various calling conventions.
-# URL: http://sourceware.org/libffi/
-# Packager: pierre at nutyx dot org
-# Depends on: 
+description="Provide a portable, high level programming interface to various calling conventions."
+url="http://sourceware.org/libffi/"
+packager="pierre at nutyx dot org"
 PKGMK_GROUPS=(devel man)
-
 name=libffi
 version=3.2.1
-release=1
+release=2
 
 source=( ftp://sourceware.org/pub/$name/$name-$version.tar.gz )
-
 
 build() {
 cd $name-$version
@@ -22,8 +19,4 @@ sed -e '/^includedir/ s:${libdir}/@PACKAGE_NAME@-@PACKAGE_VERSION@/include:@incl
 make
 make DESTDIR=$PKG install
 rm  -f $PKG/usr/share/info/dir
-if [ "`uname -m`" == "x86_64" ];then 
-	mv $PKG/usr/lib64/lib* $PKG/usr/lib
-	rm -r $PKG/usr/lib64
-fi
 }
