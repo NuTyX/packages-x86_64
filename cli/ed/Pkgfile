@@ -4,7 +4,7 @@ Packager="pierre at nutyx dot org"
 
 name=ed
 version=1.14.1
-release=1
+release=2
 
 source=(https://ftp.gnu.org/gnu/ed/$name-$version.tar.lz)
 
@@ -17,4 +17,5 @@ build() {
 
   make
   make DESTDIR=$PKG install
+  rm -f $PKG/usr/share/info/dir
 }
