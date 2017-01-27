@@ -4,7 +4,7 @@ packager="pierre at nutyx dot org, tnut at nutyx dot org"
 maintainer="Jakub Jelinek (jakub at redhat dot com),Manuel López-Ibáñez (manu at gcc dot gnu.org,Giovanni Bajo,Peter Barada,Gerald Baumgartner and a lot more."
 name=gcc
 version=6.3.0
-release=2
+release=3
 
 source=(http://ftp.gnu.org/gnu/gcc/gcc-$version/gcc-$version.tar.bz2)
 PKGMK_GROUPS=(devel man doc)
@@ -25,6 +25,7 @@ cd ../gcc-build
 
 SED=sed \
 ../gcc-$version/configure --prefix=/usr \
+    --libdir=/usr/lib \
     --enable-languages=c,c++,objc,fortran \
     --disable-multilib \
     --disable-bootstrap \
