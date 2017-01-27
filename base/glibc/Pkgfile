@@ -5,7 +5,7 @@ kernelversion=4.9
 PKGMK_GROUPS=(devel man doc)
 name=glibc
 version=2.24
-release=4
+release=5
 
 source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
@@ -88,28 +88,13 @@ EOF
 
 cat > $PKG/etc/ld.so.conf << "EOF"
 # Begin /etc/ld.so.conf
-/lib
-/lib64
-/usr/lib
 /usr/local/lib
+/opt/lib
 
 # Add an include directory
 include /etc/ld.so.conf.d/*.conf
 # End of  /etc/ld.so.conf
 EOF
-
-if [ "`uname -m`" == "i686" ];then
-	cat > $PKG/etc/ld.so.conf << "EOF"
-# Begin /etc/ld.so.conf
-/lib
-/usr/lib
-/usr/local/lib
-
-# Add an include directory
-include /etc/ld.so.conf.d/*.conf
-# End of  /etc/ld.so.conf
-EOF
-fi
 
 mkdir $PKG/etc/ld.so.conf.d
 }
