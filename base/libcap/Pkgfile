@@ -4,7 +4,7 @@
 
 name=libcap
 version=2.25
-release=1
+release=2
 
 source=(  https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-$version.tar.xz)
 
@@ -14,6 +14,7 @@ sed -i 's:LIBDIR:PAM_&:g' pam_cap/Makefile
 sed -i '/install.*STALIBNAME/d' libcap/Makefile
 make
 make RAISE_SETFCAP=no \
+lib=lib \
 prefix=/usr \
 LIBDIR=/usr/lib \
 SBINDIR=/sbin \
@@ -21,9 +22,7 @@ PAM_LIBDIR=/lib \
 DESTDIR=$PKG install
 
 mkdir -p $PKG/lib
-_lib=""
-mv -v $PKG/usr/lib${_lib}/libcap.so.* \
+mv -v $PKG/usr/lib/libcap.so.* \
 $PKG/lib
-ln -sfv ../../lib/libcap.so.2 $PKG/usr/lib${_lib}/libcap.so
+ln -sfv ../../lib/libcap.so.2 $PKG/usr/lib/libcap.so
 }
-  
