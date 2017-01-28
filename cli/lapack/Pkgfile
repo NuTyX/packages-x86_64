@@ -1,10 +1,9 @@
-# Description: Basic Linear Algebra Subprograms
-# URL: http://www.netlib.org/blas
-# Packager: pierre at nutyx dot org
 # Depends on: cmake
-
+description="Basic Linear Algebra Subprograms"
+url="http://www.netlib.org/blas"
+packager="pierre at nutyx dot org"
 name=lapack
-version=3.6.1
+version=3.7.0
 release=1
 
 source=(http://www.netlib.org/$name/$name-$version.tgz )
@@ -18,6 +17,7 @@ cmake .. \
 -DCMAKE_SKIP_RPATH=ON \
 -DBUILD_SHARED_LIBS=ON \
 -DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_INSTALL_LIBDIR=lib \
 -DCMAKE_Fortran_COMPILER=gfortran \
 -DLAPACKE=ON
 make
