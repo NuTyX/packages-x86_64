@@ -5,18 +5,13 @@ url="http://www.samba.org"
 packager="pierre at nutyx dot org, tnut at nutyx dot org"
 name=samba
 version=4.5.4
-release=1
+release=2
 
-source=( http://ftp.samba.org/pub/samba/stable/$name-$version.tar.gz)
+source=( https://download.samba.org/pub/samba/stable/$name-$version.tar.gz)
 
 build() {
 source /etc/blfs-bootscripts
 wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-if [ "`uname -m`" == "x86_64" ]; then
-        LIB=lib64
-else
-        LIB=lib
-fi
 cd $name-$version
 
 
@@ -37,10 +32,10 @@ sed -i "/samba3.blackbox.failure.failure/i \^samba3.raw.eas" selftest/knownfail
 
 make DESTDIR=$PKG install
 
-install -d $PKG/$LIB
-mv -v $PKG/usr/lib/libnss_win{s,bind}.so*   $PKG/$LIB
-ln -v -sf /$LIB/libnss_winbind.so.2 $PKG/usr/lib/libnss_winbind.so
-ln -v -sf /$LIB/libnss_wins.so.2    $PKG/usr/lib/libnss_wins.so
+install -d $PKG/lib
+mv -v $PKG/usr/lib/libnss_win{s,bind}.so*   $PKG/lib
+ln -v -sf /lib/libnss_winbind.so.2 $PKG/usr/lib/libnss_winbind.so
+ln -v -sf /lib/libnss_wins.so.2    $PKG/usr/lib/libnss_wins.so
    
 install -v -m644 examples/smb.conf.default $PKG/etc/samba/smb.conf.default
 
