@@ -5,7 +5,7 @@ url="http://www.ece.uvic.ca/~frodo/jasper/"
 packager="pierre at nutyx dot org"
 name=jasper
 version=2.0.6
-release=1
+release=3
 source=(${url}software/$name-$version.tar.gz)
 
 build() {
@@ -14,6 +14,7 @@ build() {
 	cd BUILD
 
 	cmake -DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_INSTALL_LIBDIR=lib \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_SKIP_INSTALL_RPATH=YES \
       	..
