@@ -4,7 +4,7 @@ packager="pierre at nutyx dot org, tnut at nutyx dot org"
 
 name=nano
 version=2.7.4
-release=1
+release=2
 
 source=(http://www.nano-editor.org/dist/v${version:0:3}/$name-$version.tar.xz)
 
@@ -21,6 +21,5 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 mkdir -p $PKG/etc/nano
-install -v -m644 -D doc/nanorc.sample $PKG/etc/nano/nanorc.sample
 rm $PKG/usr/share/info/dir
 }
