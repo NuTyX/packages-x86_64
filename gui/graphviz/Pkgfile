@@ -7,7 +7,7 @@ packager="pierre at nutyx dot com"
 
 name=graphviz
 version=2.38.0
-release=3
+release=5
 
 source=(http://www.graphviz.org/pub/graphviz/stable/SOURCES/$name-$version.tar.gz
        http://www.linuxfromscratch.org/patches/blfs/svn/graphviz-2.38.0-consolidated_fixes-1.patch)
@@ -16,8 +16,9 @@ build () {
   cd $name-$version
 
   patch -Np1 -i ../graphviz-2.38.0-consolidated_fixes-1.patch
-  autoreconf
+  sed -i '/LIBPOSTFIX="64"/s/64//' configure.ac
 
+  autoreconf
   ./configure --prefix=/usr --disable-php
   make	
   make DESTDIR=$PKG install
