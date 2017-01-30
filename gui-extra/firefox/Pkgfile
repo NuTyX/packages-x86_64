@@ -7,7 +7,7 @@ packager="pierre at nutyx dot org,tnut at nutyx dot org"
 run=(gstreamer1-plugins-good gstreamer1-plugins-libav)
 
 name=firefox
-version=50.1.0
+version=51.0.1
 release=1
 
 source=( https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.xz)
@@ -23,7 +23,6 @@ wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/
 done
 
 cd $name-$version
-
 cat > mozconfig << "EOF"
 # If you have a multicore machine, all cores will be used by default.
 # If desired, you can reduce the number of cores used, e.g. to 1, by
@@ -103,11 +102,9 @@ EOF
 
 test $(uname -m) = "i686" && sed -i 's/enable-optimize/disable-optimize/' mozconfig || true
 
-export CFLAGS=$CFLAGS_HOLD
-export CXXFLAGS_HOLD=$CXXFLAGS
-export CFLAGS+=" -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2"
-export CXXFLAGS+=" -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2"
-
+sed -e 's/256/224/'                           \
+    -i netwerk/protocol/http/Http2Session.cpp
+    
 SHELL=/bin/sh make -f client.mk
 
 mkdir -pv $PKG/usr/{bin,lib{,/mozilla/plugins}}
