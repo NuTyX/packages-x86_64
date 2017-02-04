@@ -1,16 +1,21 @@
+diff --git a/scripts/install-nutyx.in b/scripts/install-nutyx.in
+index f79b73b..ed64cba 100755
+--- a/scripts/install-nutyx.in
++++ b/scripts/install-nutyx.in
+@@ -263,7 +263,7 @@ generate_blfs_bootscripts() {
+ [ -f ${FOLDER}/etc/${FOLDER}/etc/blfs-bootscripts ] && return
+ [ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
+ echo "scripts=blfs-bootscripts
+-scriptsversion=20160902" > ${FOLDER}/etc/blfs-bootscripts
++scriptsversion=20170127" > ${FOLDER}/etc/blfs-bootscripts
+ }
+ generate_etc_bashrc() {
+ local FILE
 diff --git a/tools/lib/init.in b/tools/lib/init.in
-index 41e2d3f..26a90e0 100644
+index 41e2d3f..2ce7b92 100644
 --- a/tools/lib/init.in
 +++ b/tools/lib/init.in
-@@ -3,6 +3,7 @@
- PATH=/bin:/usr/bin:/sbin:/usr/sbin
- export PATH
- 
-+
- problem()
- {
-    printf "Encountered a problem!\n\nDropping you to a shell.\n\n"
-@@ -114,12 +115,18 @@ do_mount_in_ram()
+@@ -114,12 +114,18 @@ do_mount_in_ram()
  }
  
  find_media() {
