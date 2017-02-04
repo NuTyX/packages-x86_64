@@ -4,7 +4,7 @@ url="http://freeglut.sourceforge.net/"
 packager="fanch at nutyx dot org, tnut at nutyx dot org"
 name=freeglut
 version=3.0.0
-release=2
+release=3
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
@@ -15,6 +15,7 @@ cd    build
 
 cmake -DCMAKE_INSTALL_PREFIX=/usr      \
       -DCMAKE_BUILD_TYPE=Release       \
+      -DCMAKE_INSTALL_LIBDIR=lib       \
       -DFREEGLUT_BUILD_DEMOS=OFF       \
       -DFREEGLUT_BUILD_STATIC_LIBS=OFF \
       ..
