@@ -5,7 +5,7 @@ url="http://www.gnome.org/"
 packager="pierre at nutyx dot org, tnut at nutyx dot org"
 name=python2-gobject
 version=3.22.0
-release=1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/pygobject/${version%.*}/pygobject-$version.tar.xz)
 	
@@ -18,4 +18,5 @@ pushd python2
 make
 popd
 make DESTDIR=$PKG -C python2 install
+rm -r $PKG/usr/{lib/pkgconfig,include}
 }  
