@@ -1,12 +1,12 @@
-# Depends on: mate-menus python-gobject gtk-update-icon-cache
+# Depends on: mate-menus python2-gobject python-gobject gtk-update-icon-cache
 
 description="MATE menu editing tool"
 url="http://matsusoft.com.ar/projects/mate"
 packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org"
-run=(python-gobject gtk-update-icon-cache)
+run=(python-gobject python2-gobject gtk-update-icon-cache)
 name=mozo
 version=1.16.0
-release=1
+release=3
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
