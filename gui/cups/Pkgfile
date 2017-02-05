@@ -7,7 +7,7 @@ run=(xdg-utils gtk-update-icon-cache)
 PKGMK_GROUPS=(man devel)
 name=cups
 version=2.2.2
-release=1
+release=2
 run=(xdg-utils)
 source=( https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz)
 
@@ -16,6 +16,7 @@ build() {
 	wget  http://www.linuxfromscratch.org/blfs/downloads/svn/blfs-bootscripts-$scriptsversion.tar.bz2
         tar xvf $scripts-$scriptsversion.tar.bz2
 	cd $name-$version
+	sed -i '/kerberized/,$ d' conf/cupsd.conf.in
 	sed -i 's:555:755:g;s:444:644:g' Makedefs.in
 	sed -i '/MAN.*.EXT/s:.gz::g' \
 	configure config-scripts/cups-manpages.m4
