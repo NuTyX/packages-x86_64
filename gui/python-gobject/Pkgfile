@@ -1,21 +1,21 @@
-# Description: provides the links of Python 2 for the class GObject of GLib.
-# URL: http://www.gnome.org/
-# Packager: pierre at nutyx dot org
-# Depends on: python-cairo gobject-introspection xorg-libxxf86vm libffi 
+# Depends on: python-cairo gobject-introspection xorg-libxxf86vm libffi
 
+description="provides the links of Python 3 for the class GObject of GLib."
+url="http://www.gnome.org/"
+packager="pierre at nutyx dot org, tnut at nutyx dot org"
 name=python-gobject
 version=3.22.0
-release=1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/pygobject/${version%.*}/pygobject-$version.tar.xz)
 
 build() {
 cd pygobject-$version
-mkdir python2
-pushd python2
+mkdir python3
+pushd python3
 ../configure --prefix=/usr \
---with-python=/usr/bin/python2
+--with-python=/usr/bin/python3
 make
 popd
-make DESTDIR=$PKG -C python2 install
+make DESTDIR=$PKG -C python3 install
 }
