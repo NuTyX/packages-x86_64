@@ -1,0 +1,18 @@
+# Depends on: boost qt-base lua
+
+description="Fast and flexible source code highlighter (CLI version)"
+url="http://www.andre-simon.de/doku/highlight/highlight.html"
+packager="pierre at nutyx dot org"
+
+name=highlight
+version=3.34
+release=1
+
+source=(
+http://www.andre-simon.de/zip/$name-$version.tar.bz2)
+
+build(){
+    cd $name-$version
+    make QMAKE=qmake
+    make DESTDIR=$PKG QMAKE=qmake install
+}
