@@ -1,0 +1,16 @@
+# Depends on: python2
+
+description="Backport of the concurrent.futures package from Python 3.2"
+url="https://github.com/agronholm/pythonfutures"
+packager="tnut at nutyx dot org"
+name=python2-futures
+version=3.0.5
+release=1
+_name=futures
+source=(https://pypi.python.org/packages/source/f/${_name}/${_name}-$version.tar.gz)
+
+build() {
+cd ${_name}-$version
+python2 setup.py build
+python2 setup.py install --root=$PKG --optimize=1
+}
