@@ -6,13 +6,11 @@ packager="pierre at nutyx dot org"
 
 name=phonon-qt
 release=1
-version=4.9.0
+version=4.9.1
 _name=phonon
 source=(http://download.kde.org/stable/${_name}/$version/${_name}-$version.tar.xz)
 
 build() {
-
-sed -i '/include/d' $SRC/phonon-4.9.0/phonon/phononconfig_p.h.in
 
 mkdir build
 cd    build
