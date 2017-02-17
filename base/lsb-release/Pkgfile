@@ -1,13 +1,12 @@
-# Description: Provides informations about LSB status (Linux Standards Base) of the distribution. 
-# URL: http://www.linuxbase.org/
-# Maintainer: Sven-Hendrik Haase
-# Packager: geantbrun at gmail dot com
-# Depends on: bash
-
+description="Provides informations about LSB status (Linux Standards Base) of the distribution."
+url="http://www.linuxbase.org/"
+maintainer="Sven-Hendrik Haase"
+packager="geantbrun at gmail dot com, tnut at nutyx dot org"
 name=lsb-release
 version=1.4
 release=1
-source=(http://sourceforge.net/projects/lsb/files/lsb_release/${version}/${name}-${version}.tar.gz)
+alias=(lsb_release)
+source=(http://sourceforge.net/projects/lsb/files/${alias}/${version}/${name}-${version}.tar.gz)
 
 build() {
 cd ${name}-${version}
