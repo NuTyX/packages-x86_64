@@ -4,13 +4,15 @@ packager="tnut at nutyx dot org"
 
 name=bash
 version=4.4
-release=2
+release=3
 
-source=(http://ftp.gnu.org/gnu/bash/bash-$version.tar.gz)
+source=(http://www.linuxfromscratch.org/patches/lfs/development/bash-$version-upstream_fixes-1.patch
+	http://ftp.gnu.org/gnu/bash/bash-$version.tar.gz)
 
 build()
 {
 cd bash-$version
+patch -Np1 -i ../bash-$version-upstream_fixes-1.patch
 ./configure --prefix=/usr \
 --htmldir=/usr/share/doc/bash-$version --without-bash-malloc \
 --with-installed-readline
