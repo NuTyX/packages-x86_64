@@ -1,4 +1,4 @@
-version=2.24
+version=2.25
 source=(\
 http://ftp.gnu.org/gnu/glibc/glibc-$version.tar.xz
 )
@@ -17,13 +17,12 @@ cd build
       --build=$(../scripts/config.guess) \
       --disable-profile                  \
       --enable-kernel=2.6.32             \
-      --enable-obsolete-rpc              \
       --with-headers=/tools/include      \
       libc_cv_forced_unwind=yes          \
       libc_cv_c_cleanup=yes
 
 make
-# Evite le fail de make install
+
 rm -rf /tools/share/info/dir
 
 make install
