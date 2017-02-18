@@ -6,7 +6,7 @@ packager="alienus at nutyx dot org, tnut at nutyx dot org"
 PKGMK_GROUPS=(man)
 name=rpcbind
 version=0.2.4
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/rpcbind/rpcbind-$version.tar.bz2)
 
@@ -29,6 +29,4 @@ build() {
     make DESTDIR=$PKG install-rpcbind
     make DESTDIR=$PKG install-netfs
 
-    # cut is in /bin
-    sed -i "s,usr/bin/cut,bin/cut," $PKG/etc/rc.d/init.d/netfs
 }
