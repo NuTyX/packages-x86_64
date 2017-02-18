@@ -4,8 +4,8 @@ maintainer="Ted Ts'o tytso at mit dot edu,tytso at alum dot mit dot edu"
 packager="tnut at nutyx dot org"
 
 name=e2fsprogs
-version=1.43.3
-release=2
+version=1.43.4
+release=1
 
 source=(http://prdownloads.sourceforge.net/$name/$name-$version.tar.gz)
 
@@ -29,8 +29,6 @@ PKG_CONFIG_PATH=/tools/lib/pkgconfig \
 --disable-uuidd \
 --disable-fsck
 make || make -j1
-# somes tests may fails
-# make check||true
 make DESTDIR=$PKG install install-libs || make -j1 DESTDIR=$PKG install install-libs
 
 chmod -v u+w $PKG/usr/lib/{libcom_err,libe2p,libext2fs,libss}.a
