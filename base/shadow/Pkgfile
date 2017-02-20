@@ -4,7 +4,7 @@ maintainer="pkg-shadow-devel@lists.alioth.debian.org"
 packager="pierre at nutyx dot org"
 name=shadow
 version=4.4
-release=1
+release=2
 
 source=(https://github.com/shadow-maint/shadow/releases/download/$version/shadow-$version.tar.xz) 
 
@@ -19,6 +19,29 @@ find man -name Makefile.in -exec sed -i 's/passwd\.5 / /'   {} \;
 
 sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
        -e 's@/var/spool/mail@/var/mail@' etc/login.defs
+
+# fix a bug that prevents useradd from setting the shell entry in the /etc/passwd file.
+
+echo '--- src/useradd.c   (old)
++++ src/useradd.c   (new)
+@@ -2027,6 +2027,8 @@
+        is_shadow_grp = sgr_file_present ();
+ #endif
+ 
++       get_defaults ();
++
+        process_flags (argc, argv);
+ 
+ #ifdef ENABLE_SUBIDS
+@@ -2036,8 +2038,6 @@
+            (!user_id || (user_id <= uid_max && user_id >= uid_min));
+ #endif                         /* ENABLE_SUBIDS */
+ 
+-       get_defaults ();
+-
+ #ifdef ACCT_TOOLS_SETUID
+ #ifdef USE_PAM
+        {' | patch -p0 -l
 
 sed -i 's/1000/999/' etc/useradd
 
