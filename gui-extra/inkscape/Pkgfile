@@ -5,12 +5,13 @@ url="https://inkscape.org/"
 packager="pierre at nutyx dot org"
 
 name=inkscape
-version=0.92.0
+version=0.92.1
 release=1
 
-source=(https://inkscape.org/en/gallery/item/10552/inkscape-$version.tar.bz2)
+source=(https://inkscape.org/gallery/item/10682/inkscape-0.92.1.tar_XlpI7qT.bz2)
 
 build() {
+  tar -xf inkscape-0.92.1.tar_XlpI7qT.bz2
   cd $name-$version
   ./autogen.sh
   ./configure \
