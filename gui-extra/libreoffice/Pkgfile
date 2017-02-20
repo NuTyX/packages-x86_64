@@ -9,11 +9,10 @@ packager="pierre at nutyx dot org, tnut at nutyx dot org"
 run=(xdg-utils desktop-file-utils) 
 
 name=libreoffice
-version=5.2.5.1
-release=2
+version=5.3.0.3
+release=1
 
-source=(http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-icu_58-1.patch
-	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-$version.tar.xz
+source=(http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-$version.tar.xz
 	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-dictionaries-$version.tar.xz
 	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-help-$version.tar.xz
 	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-translations-$version.tar.xz)
@@ -27,8 +26,6 @@ build() {
 
 	cd $name-$version
 
-	patch -Np1 -i ../$name-$version-icu_58-1.patch
-
 	install -dm755 external/tarballs
 	ln -sv $SRC/$name-dictionaries-$version.tar.xz  external/tarballs/
 	ln -sv $SRC/$name-help-$version.tar.xz          external/tarballs/
@@ -41,15 +38,6 @@ build() {
 
         sed -e "/distro-install-file-lists/d" -i Makefile.in
 
-#	sed -e "/ustrbuf/a #include <algorithm>" \
-#	-i svl/source/misc/gridprinter.cxx
-
-#	sed -i "s#isnan#std::&#g" xmloff/source/draw/ximp3dscene.cxx
-
-        # i686 build broken
-#        [ "$PKGMK_ARCH" = "i686" ] && sed -i '/CppunitTest_sw_ooxmlimport/d' sw/Module_sw.mk
-#        [ "$PKGMK_ARCH" = "i686" ] && sed -i '/CppunitTest_sw_ooxmlexport7/d' sw/Module_sw.mk
-
 
 	chmod -v +x bin/unpack-sources
 
@@ -60,7 +48,7 @@ build() {
              --with-help                 \
              --with-myspell-dicts        \
              --with-alloc=system         \
-             --without-java              \
+             --without-junit             \
              --without-system-dicts      \
              --disable-dconf             \
              --disable-odk               \
@@ -68,13 +56,11 @@ build() {
              --enable-release-build=yes  \
              --enable-python=system      \
              --with-system-apr           \
-             --with-system-boost=yes     \
+             --with-system-boost         \
              --with-system-clucene       \
              --with-system-cairo         \
              --with-system-curl          \
              --with-system-expat         \
-             --with-system-graphite      \
-             --with-system-harfbuzz      \
              --with-system-icu           \
              --with-system-jpeg          \
              --with-system-lcms2         \
@@ -92,9 +78,8 @@ build() {
              --with-system-serf          \
              --with-system-zlib          \
              --with-parallelism=$(getconf _NPROCESSORS_ONLN)
-
-	make build-nocheck
-	make DESTDIR=$PKG distro-pack-install
+	make -i build-nocheck
+	make -i DESTDIR=$PKG distro-pack-install
 
 	install -v -m755 -d $PKG/$LO_PREFIX/share/appdata
 	install -v -m644    sysui/desktop/appstream-appdata/*.xml $PKG/$LO_PREFIX/share/appdata

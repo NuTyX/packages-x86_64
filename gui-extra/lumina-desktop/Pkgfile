@@ -1,0 +1,25 @@
+# Depends on: git qt qt-svg fluxbox kwindowsystem oxygen-icons5 libxcb xcb-proto xcb-util-image xscreensaver desktop-file-utils
+
+description="A Lightweight QT5 Desktop for FreeBSD"
+url="https://github.com/pcbsd/lumina"
+packager="Chris Farrell, timcowchip at gmail dot com"
+maintainer="Chris Farrell, timcowchip at gmail dot com"
+name=lumina-desktop
+version=1.2.0
+release=1
+
+source=()
+
+build(){
+	git clone https://github.com/pcbsd/lumina.git
+	
+    cd $SRC/lumina/
+    
+    qmake QMAKE_CFLAGS_ISYSTEM= PREFIX="/usr" QT5LIBDIR=/usr/lib/qt
+    
+    make
+
+    make INSTALL_ROOT="${PKG}" install    
+    rm -rf ${PKG}/usr/share/doc/
+    rm -rf ${PKG}/usr/share/locale/
+}
