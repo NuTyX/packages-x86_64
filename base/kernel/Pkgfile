@@ -1,4 +1,4 @@
-# The LTS kernel includes the nvidia, virtualbox and broadcom drivers
+# The Latest kernel
 #
 
 ## Variables initialisation
@@ -11,11 +11,11 @@ PKGMK_IGNORE_UNPACK="yes"
 PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
-name=kernel-lts
-alias=(linux-lts)
+name=kernel
+alias=(linux)
 
-version=4.9.11
-_version=${version:0:3}
+version=4.10.0
+_version=${version:0:4}
 
 release=1
 
@@ -40,11 +40,6 @@ wl_version=6.30.223.271
 
 source=(\
 $url/pub/linux/kernel/v4.x/linux-${_version}.tar.xz
-$url/pub/linux/kernel/v4.x/patch-$version.xz
-http://download.virtualbox.org/virtualbox/${vb_version}/VirtualBox-${vb_version}-${buildrelease}-Linux_${_VBARCH}.run
-http://download.nvidia.com/XFree86/Linux-${_NVARCH}/${nv_version}/NVIDIA-Linux-${_NVARCH}-${nv_version}.run
-http://www.broadcom.com/docs/linux_sta/hybrid-v35${_wlarch}-nodebug-pcoem-${wl_version//./_}.tar.gz
-broadcom-wl.modprobe.d broadcom-wl.license.patch wl_linux.c.patch
 $name.config $name.config_64)
 
 ## Time to build everything
@@ -63,9 +58,9 @@ fi
 make mrproper
 case `uname -m` in
 	x86_64)
-		cp $SRC/kernel-lts.config_64 ./.config;;
+		cp $SRC/${name}.config_64 ./.config;;
 	i?86)
-		cp $SRC/kernel-lts.config ./.config;
+		cp $SRC/${name}.config ./.config;;
 esac
 
 # make menuconfig
@@ -74,9 +69,9 @@ make
 
 case `uname -m` in
         x86_64)
-		cp .config $SRC/$name.config_64;;
+		cp .config $SRC/${name}.config_64;;
         i?86)
-		cp .config $SRC/$name.config;;
+		cp .config $SRC/${name}.config;;
 esac
 
 ## Modules
@@ -85,51 +80,7 @@ esac
 cd $SRC/linux-${_version}
 make INSTALL_MOD_PATH=$PKG modules_install
 
-KERNEL_VERSION="${version}-NuTyX-lts"
-
-# Module broadcom is broken on 32 bits machine
-# if [ "$PKGMK_ARCH" == "x86_64" ]; then
-#  cd $SRC
-#  bsdtar xf hybrid-v35${_wlarch}-nodebug-pcoem-${wl_version//./_}.tar.gz
-#  patch -p1 -i broadcom-wl.license.patch
-#  patch -p1 -i wl_linux.c.patch
-
-#  sed -e "/BRCM_WLAN_IFNAME/s:eth:wlan:" \
-#	-i src/wl/sys/wl_linux.c
-#  BUILD_NOPEDANTIC=1 make -C $SRC/linux-${_version} M=`pwd`
-#  install -m 0644 -D wl.ko $PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/zzzz/wl.ko
-#  install -Dm644 broadcom-wl.modprobe.d $PKG/etc/modprobe.d/broadcom-wl.conf
-# fi
-
-# Module nvidia
-cd $SRC
-sh NVIDIA-Linux-${_NVARCH}-${nv_version}.run --extract-only
-cd NVIDIA-Linux-${_NVARCH}-${nv_version}/kernel
-SYSSRC=$SRC/linux-${_version} make module
-for MODULE in nvidia.ko nvidia-modeset.ko
-do
-	install -m 0644 -D $MODULE \
-	$PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/zzzz/$MODULE
-done
-if [ "${_ARCH}" == "x86_64" ]; then
-	install -m 0644 -D nvidia-uvm.ko \
-	$PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/zzzz/nvidia-uvm.ko
-fi
-
-# Module virtualbox
-cd $SRC
-sh VirtualBox-${vb_version}-${buildrelease}-Linux_${_VBARCH}.run --target vb --keep --noexec
-cd vb
-tar xfj VirtualBox.tar.bz2
-cd src/vboxhost/
-KERNELRELEASE=${version}
-KERN_DIR=$SRC/linux-${_version} make
-
-for i in *.ko
-do
-	install -D -m0644 $i \
-	$PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/zzzz/$i
-done
+KERNEL_VERSION="${version}-NuTyX"
 
 # depmod needed
 depmod -b $PKG -a ${KERNEL_VERSION}
@@ -174,9 +125,7 @@ $SRC/linux-${_version}
 rm -rf $PKG/lib/firmware
 
 # post-install autogen
-# echo "mkinitramfs ${KERNEL_VERSION}" > $PKGMK_ROOT/$name.post-install
 echo "[ -f boot/initrd ] && rm boot/initrd" > $PKGMK_ROOT/$name.post-install
-# echo "ln -sf initrd-${KERNEL_VERSION} boot/initrd" >> $PKGMK_ROOT/$name.post-install
 echo "ln -sf kernel-$version boot/kernel" >> $PKGMK_ROOT/$name.post-install
 
 # pre-install autogen
