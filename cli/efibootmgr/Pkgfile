@@ -1,0 +1,18 @@
+# Depends on: efivar pciutils dosfstools
+description="Tool to modify UEFI Firmware Boot Manager Variables"
+url="https://github.com/rhinstaller/efibootmgr"
+packager="tnut at nutyx dot org"
+name=efibootmgr
+version=14
+release=1
+run=(dosfstools)
+source=($url/releases/download/$version/$name-$version.tar.bz2)
+build() {
+cd $name-$version
+make
+install -d ${PKG}/usr/bin
+install -D -m0755 src/efibootmgr ${PKG}/usr/bin/efibootmgr
+install -d ${PKG}/usr/share/man/man8
+install -D -m0644 src/efibootmgr.8 ${PKG}/usr/share/man/man8/efibootmgr.8
+install -D -m0644 src/efibootdump.8 ${PKG}/usr/share/man/man8/efibootdump.8
+}
