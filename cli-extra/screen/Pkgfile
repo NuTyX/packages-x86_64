@@ -20,7 +20,6 @@ cd $name-$version
 sed -i -e "s%/usr/local/etc/screenrc%/etc/screenrc%" {etc,doc}/* &&
 make
 make DESTDIR=$PKG install
-rm $PKG/usr/share/info/dir
 mkdir $PKG/etc
 install -m 644 etc/etcscreenrc \
 $PKG/etc/screenrc
