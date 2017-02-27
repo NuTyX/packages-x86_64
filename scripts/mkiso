@@ -4,7 +4,7 @@ LABEL=nutyxcd
 
 
 error()	{
-	echo "something went wrong with ${1}"
+	echo "something went wrong: ${1}"
 	exit 1
 }
 
@@ -33,15 +33,58 @@ OPTIONS:
 	else
 		VERSION_NUTYX=${1}
 	fi
+
+	[ ! -f /usr/bin/xorriso ] && error "You need to install 'libisoburn'"
+	[ ! -d /usr/lib/grub/x86_64-efi ] && error "You need to install 'grub-efi'"
 	ISO=NuTyX_${ARCH}-${VERSION_NUTYX}
 	cd ${ISODIR} || error "cd ${ISODIR}"
 	sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" isolinux/boot.msg
 	sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" isolinux/boot.msg
 	sed -i "s|#ARCH#|${ARCH}|" isolinux/boot.msg
-	mkisofs -R -l -D -o ${LFS}/${ISO}.iso \
-	-b isolinux/isolinux.bin -c isolinux/boot.cat \
-	-no-emul-boot -boot-load-size 4 -boot-info-table \
-	-V "${LABEL}" .
+	# efi stufs
+	[ -d iso ] && rm -rv iso
+	[ -d boot ] && rm -rv boot
+	mkdir -pv {iso/EFI,boot/grub/x86_64-efi}
+	# grub
+	echo "set prefix=/boot/grub" > iso/grub-early.cfg
+	cp -av /usr/lib/grub/x86_64-efi/*.mod /usr/lib/grub/x86_64-efi/*.lst boot/grub/x86_64-efi
+	cat  > boot/grub/grub.cfg << "EOF"
+set default=0
+set timeout=99
+
+menuentry "NuTyX #VERSION_NUTYX# (UEFI mode)" {
+    insmod efi_uga
+    insmod efi_gop
+    set gfxmode=auto
+    set gfxpayload=keep
+
+    insmod linux
+    linux /boot/kernel ro quiet
+    initrd /boot/initrd
+}
+EOF
+	sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" boot/grub/grub.cfg
+	cp -v isolinux/kernel boot/
+	cp -v isolinux/initrd boot/
+	grub-mkimage -c iso/grub-early.cfg -o iso/EFI/bootx64.efi -O x86_64-efi -p "" iso9660 normal \
+	search search_fs_file
+	# efiboot.img
+	dd if=/dev/zero of=iso/efiboot.img count=4096
+	mkdosfs -n nutyxcd iso/efiboot.img
+	mkdir -pv iso/efiboot
+	mount -o loop iso/efiboot.img iso/efiboot
+	mkdir -pv iso/efiboot/EFI/boot
+	cp -v iso/EFI/bootx64.efi iso/efiboot/EFI/boot
+	umount iso/efiboot
+	# Iso generation
+	xorriso -as mkisofs -R -l -J -o ${LFS}/${ISO}.iso \
+	-A NUTYX \
+	-b isolinux/isolinux.bin \
+	-c isolinux/boot.cat -no-emul-boot -boot-load-size 4 \
+	-boot-info-table \
+	-eltorito-alt-boot -e iso/efiboot.img -no-emul-boot \
+	-input-charset utf-8 -V "${LABEL}" .
+
 	cd ${LFS}
 	isohybrid ${ISO}.iso || error "isohybrid ${ISO}.iso"
 	md5sum ${ISO}.iso > ${ISO}.md5sum
