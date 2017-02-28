@@ -5,7 +5,7 @@ packager="tnut at nutyx dot org"
 
 name=grub-efi
 version=2.02~beta3
-release=1
+release=2
 run=(efivar)
 
 source=(http://alpha.gnu.org/gnu/grub/grub-$version.tar.xz)
@@ -15,12 +15,12 @@ PKGMK_GROUPS=(man locale)
 build() {
  cd grub-$version
  ./configure --prefix=/usr --sysconfdir=/etc \
- --sbindir=/sbin --disable-grub-emu-usb  \
+ --sbindir=/sbin \
  --disable-efiemu --enable-grub-mkfont \
- --with-platform=efi --target=x86_64 \
+ --with-platform=efi --target=$PKGMK_ARCH \
  --program-prefix="" --program-suffix="-efi" \
  --with-bootdir="/boot" \
- --with-grubdir="grub-efi" --disable-werror
+ --with-grubdir="grub-efi"  --disable-werror
 
  make
 
