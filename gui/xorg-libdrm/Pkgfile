@@ -5,15 +5,13 @@ packager="pierre at nutyx dot org, tnut at nutyx dot org"
 
 _name=libdrm
 name=xorg-libdrm
-version=2.4.74
+version=2.4.75
 release=1
 alias=(libdrm)
 source=(http://dri.freedesktop.org/${_name}/${_name}-$version.tar.bz2)
 
 build() {
 cd ${_name}-$version
-sed -e "/pthread-stubs/d" -i configure.ac
-autoreconf -fiv
 ./configure --prefix=/usr \
 --enable-udev \
 --mandir=/usr/share/man \
