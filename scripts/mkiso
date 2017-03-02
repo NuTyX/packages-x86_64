@@ -40,8 +40,9 @@ OPTIONS:
 		VERSION_NUTYX=${1}
 	fi
 
-	[ ! -f `which xorriso` ] && error "You need to install 'libisoburn'"
-	[ ! -f `which isohybrid` ] && error "You need to install 'syslinux'"
+	[ ! -f "`which xorriso`" ] && error "You need to install 'libisoburn'"
+	[ ! -f "`which isohybrid`" ] && error "You need to install 'syslinux'"
+	[ ! -f "`which mkdosfs`" ] && error "You need to install 'dosfstools'"
 	[ ! -d /usr/lib/grub/${GRUB_EFI_ARCH}-efi ] && error "You need to install 'grub-efi'"
 	ISO=NuTyX_${ARCH}-${VERSION_NUTYX}
 	cd ${ISODIR} || error "cd ${ISODIR}"
