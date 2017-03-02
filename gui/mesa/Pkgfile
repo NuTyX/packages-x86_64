@@ -6,7 +6,7 @@ packager="pierre at nutyx dot org, tnut at nutyx dot org"
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=13.0.4
+version=17.0.0
 release=1
 
 source=(ftp://ftp.freedesktop.org/pub/mesa/${version}/mesa-$version.tar.xz
@@ -25,7 +25,7 @@ sed -i "/seems to be moved/s/^/: #/" bin/ltmain.sh
 --enable-xa                    \
 --enable-glx-tls               \
 --with-egl-platforms="drm,x11,wayland" \
---with-gallium-drivers="nouveau,r300,r600,radeonsi,svga,swrast,swr"
+--with-gallium-drivers="nouveau,i915,r600,radeonsi,svga,swrast"
 make
 make -C xdemos DEMOS_PREFIX=/usr
 make DESTDIR=$PKG install
