@@ -4,7 +4,7 @@ description="The Xorg Server is the core of the X Window system."
 url="http://xorg.freedesktop.org"
 packager="pierre at nutyx dot org, tnut at nutyx dot org"
 name=xorg-server
-version=1.19.1
+version=1.19.2
 release=1
 
 source=(http://ftp.x.org/pub/individual/xserver/$name-$version.tar.bz2
@@ -14,8 +14,7 @@ build() {
 cd $name-$version
 
 patch -Np1 -i ../$name-$version-add_prime_support-1.patch
-
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+./autogen.sh --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
 --with-xkb-output=/var/lib/xkb \
 --enable-glamor \
 --with-fontrootdir=/usr/share/fonts \
