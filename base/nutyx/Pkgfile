@@ -8,7 +8,7 @@ maintainer="tnut at nutyx dot org"
 
 name=nutyx
 version=8.2.95
-release=1
+release=2
 source=(http://downloads.nutyx.org/files/$name-$version.tar.gz
 #	$name-$version-init-2.patch
 	)
@@ -16,5 +16,4 @@ build () {
 cd $name-$version
 # patch -Np1 -i ../$name-$version-init-2.patch
 make DESTDIR=$PKG install
-mkdir -p $PKG/usr/local
 }
