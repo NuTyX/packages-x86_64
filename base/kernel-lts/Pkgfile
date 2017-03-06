@@ -17,7 +17,7 @@ alias=(linux-lts)
 version=4.9.13
 _version=${version:0:3}
 
-release=1
+release=2
 
 # Virtualbox
 vb_version=5.1.14
@@ -145,14 +145,14 @@ case `uname -m` in
                 cp  .config    \
                 $PKG/boot/config_64-$version
                 cp  arch/x86_64/boot/bzImage \
-                $PKG/boot/kernel-$version ;;
+                $PKG/boot/kernel-$version-NuTyX-lts ;;
         i?86)
                 cp  System.map \
                 $PKG/boot/System.map-$version
                 cp  .config \
                 $PKG/boot/config-$version
                 cp  arch/i386/boot/bzImage \
-                $PKG/boot/kernel-$version ;;
+                $PKG/boot/kernel-$version-NuTyX-lts ;;
 esac
 
 # Reorgenise the sources
@@ -174,10 +174,20 @@ $SRC/linux-${_version}
 rm -rf $PKG/lib/firmware
 
 # post-install autogen
-# echo "mkinitramfs ${KERNEL_VERSION}" > $PKGMK_ROOT/$name.post-install
-echo "[ -f boot/initrd ] && rm boot/initrd" > $PKGMK_ROOT/$name.post-install
-# echo "ln -sf initrd-${KERNEL_VERSION} boot/initrd" >> $PKGMK_ROOT/$name.post-install
-echo "ln -sf kernel-$version boot/kernel" >> $PKGMK_ROOT/$name.post-install
+echo 'LK="`readlink boot/kernel`"
+if [ "`dirname $LK`" != "." ]; then
+  echo "This is a efi installation"
+  ln -sf $LK boot/kernel
+  if [ -f boot/$LK ]; then' > $PKGMK_ROOT/$name.post-install
+echo "    mv boot/kernel-$version-NuTyX-lts boot/\$LK 2>/dev/null
+    ln -sf \$LK boot/kernel-$version-NuTyX-lts
+  else
+    echo \"EFI Partition not found, mount EFI Partition and re-install the kernel\"
+  fi
+else
+  echo \"This is a bios installation\"
+  ln -sf kernel-$version-NuTyX-lts boot/kernel
+fi" >> $PKGMK_ROOT/$name.post-install
 
 # pre-install autogen
 cd $SRC
