@@ -97,14 +97,14 @@ case `uname -m` in
                 cp  .config    \
                 $PKG/boot/config_64-$version
                 cp  arch/x86_64/boot/bzImage \
-                $PKG/boot/kernel-$version ;;
+                $PKG/boot/kernel-$version-NuTyX ;;
         i?86)
                 cp  System.map \
                 $PKG/boot/System.map-$version
                 cp  .config \
                 $PKG/boot/config-$version
                 cp  arch/i386/boot/bzImage \
-                $PKG/boot/kernel-$version ;;
+                $PKG/boot/kernel-$version-NuTyX ;;
 esac
 
 # Reorgenise the sources
@@ -126,8 +126,21 @@ $SRC/linux-${_version}
 rm -rf $PKG/lib/firmware
 
 # post-install autogen
-echo "[ -f boot/initrd ] && rm boot/initrd" > $PKGMK_ROOT/$name.post-install
-echo "ln -sf kernel-$version boot/kernel" >> $PKGMK_ROOT/$name.post-install
+echo 'LK="."
+[ -L boot/kernel ] && LK="`readlink boot/kernel`"
+if [ "`dirname $LK`" != "." ]; then
+  echo "This is a efi installation"
+  ln -sf $LK boot/kernel
+  if [ -f boot/$LK ]; then' > $PKGMK_ROOT/$name.post-install
+echo "    mv boot/kernel-$version-NuTyX boot/\$LK 2>/dev/null
+    ln -sf \$LK boot/kernel-$version-NuTyX
+  else
+    echo \"EFI Partition not found, mount EFI Partition and re-install the kernel\"
+  fi
+else
+  echo \"This is a bios installation\"
+  ln -sf kernel-$version-NuTyX boot/kernel
+fi" >> $PKGMK_ROOT/$name.post-install
 
 # pre-install autogen
 cd $SRC
