@@ -174,7 +174,8 @@ $SRC/linux-${_version}
 rm -rf $PKG/lib/firmware
 
 # post-install autogen
-echo 'LK="`readlink boot/kernel`"
+echo 'LK="."
+[ -L boot/kernel ] && LK="`readlink boot/kernel`"
 if [ "`dirname $LK`" != "." ]; then
   echo "This is a efi installation"
   ln -sf $LK boot/kernel
