@@ -4,7 +4,7 @@ packager="pierre at nutyx dot org"
 
 name=vim
 version=8.0.069
-release=1
+release=2
 
 source=(ftp://ftp.vim.org/pub/vim/unix/vim-$version.tar.bz2)
 build()
@@ -33,10 +33,13 @@ mkdir $PKG/etc
 
 cat > $PKG/etc/vimrc << "EOF"
 " Begin /etc/vimrc
-set background=dark
+if (&term == "xterm") || (&term == "putty")
+   set background=dark
+fi
 set ruler
 set nocompatible
 set backspace=2
+set mouse=r
 syntax on
 
 " End /etc/vimrc
