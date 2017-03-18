@@ -5,11 +5,12 @@ url="http://www.gnu.org/software/autoconf-archive/"
 packager="tnut at nutyx dot org"
 name=autoconf-archive
 version=2016.09.16
-release=1
+release=2
 source=(http://ftpmirror.gnu.org/$name/$name-$version.tar.xz)
 build() {
   cd $name-$version
   ./configure --prefix=/usr
   make
   make DESTDIR=$PKG/ install
+  rm $PKG/usr/share/info/dir
 }
