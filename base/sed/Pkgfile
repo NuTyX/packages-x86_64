@@ -11,6 +11,11 @@ source=(http://ftp.gnu.org/gnu/sed/sed-$version.tar.xz)
 build()
 {
 cd sed-$version
+if [ -L /tools ];then
+	sed -i 's/usr/tools/'       build-aux/help2man
+fi
+sed -i 's/panic-tests.sh//' Makefile.in
+
 ./configure --prefix=/usr --bindir=/bin \
 --libdir=/lib --htmldir=/usr/share/doc/sed-$version
 make
