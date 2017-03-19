@@ -1,12 +1,13 @@
-# Description: Podcatcher
-# URL: http://gpodder.org/
-# Packager: Chris Farrell, timcowchip at gmail dot com
-# Maintainer: Chris Farrell, timcowchip at gmail dot com
-# Depends on: intltool, python, dbus-python, python-gtk, feedparser, mygpoclient
+# Depends on: intltool, python, dbus-python, python2-gtk, feedparser, mygpoclient
 
+description="Podcatcher"
+url="http://gpodder.org/"
+packager="Chris Farrell, timcowchip at gmail dot com"
+maintainer="Chris Farrell, timcowchip at gmail dot com"
 name=gpodder
 version=3.9.0
-release=6
+release=7
+run=(python2-gtk)
 source=(http://gpodder.org/src/$name-$version.tar.gz)
 
 build(){
