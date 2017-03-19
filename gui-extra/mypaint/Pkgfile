@@ -1,11 +1,12 @@
-# Depends on: lcms2 json-c python-gtk python2-numpy python2-protobuf scons swig
+# Depends on: lcms2 json-c python2-gtk python2-numpy python2-protobuf scons swig
 
 description="A fast and easy painting application for digital painters, with brush dynamics"
 url="http://mypaint.intilinux.com/"
 packager="pierre at nutyx dot org"
 name=mypaint
 version=1.1.0
-release=3
+release=4
+run=( python2-gtk )
 source=(http://download.gna.org/$name/$name-$version.tar.xz)
 
 build ()
