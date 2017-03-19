@@ -1,10 +1,10 @@
-descripion="A free library for arbitrary precision arithmetic."
+description="A free library for arbitrary precision arithmetic."
 url="http://gmplib.org/"
 paintainer="Torb,Granlund and many more"
 packager="pierre at nutyx dot org, tnut at nutyx dot org"
 name=gmp
 version=6.1.2
-release=2
+release=3
 
 source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz)
 
@@ -20,6 +20,7 @@ case `uname -m` in
  *)
 	./configure \
 	--prefix=/usr \
+	--build=x86_64-unknown-linux-gnu \
 	--enable-cxx \
 	--docdir=/usr/share/doc/$name-$version;;
 esac
