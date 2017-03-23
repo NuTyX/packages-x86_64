@@ -1,0 +1,44 @@
+diff --git a/scripts/setup-nutyx.in b/scripts/setup-nutyx.in
+index e52bf84..23c4e89 100755
+--- a/scripts/setup-nutyx.in
++++ b/scripts/setup-nutyx.in
+@@ -1616,6 +1616,10 @@ install_nutyx() {
+ 		cp  ${1}/kernel ${2}/boot/kernel-`uname -r`
+ 		ln -sf kernel-`uname -r` ${2}/boot/kernel
+ 	fi
++	if [ -f ${1}/boot/kernel ]; then
++		cp  ${1}/boot/kernel ${2}/boot/kernel-`uname -r`
++		ln -sf kernel-`uname -r` ${2}/boot/kernel
++	fi
+ 	for DIR in proc sys dev srv mnt tmp
+ 	do
+ 		[ ! -d ${2}/$DIR ] &&	mkdir ${2}/$DIR
+diff --git a/tools/lib/init.in b/tools/lib/init.in
+index 9694161..a5dd8fd 100644
+--- a/tools/lib/init.in
++++ b/tools/lib/init.in
+@@ -132,6 +132,15 @@ find_media() {
+ 	[ "$verbose" == "no" ] || printf "mount -n /dev/nutyx-cd /media/cdrom\n"
+ 	mount -n /dev/nutyx-cd /media/cdrom
+ 	[ -d /media/cdrom/depot ] && echo $DEV > /tmp/depot
++	# If RAM Available > 1Gb (lets say around 1 000 000 kb) we get rid of the key (mounted)
++	[ `cat /proc/meminfo|grep MemAvail|sed "s/[^[:digit:]]*//g"` -gt 1000000 ] || break
++	mkdir /boot
++	for i in `ls /media/cdrom/isolinux/boot/`
++	do
++	  cp  /media/cdrom/isolinux/boot/$i /boot/
++	done
++	cp /media/cdrom/isolinux/kernel /boot/kernel
++	umount /media/cdrom
+ 	break
+       fi
+    done
+@@ -282,7 +291,7 @@ if [ "$root" == "" ]; then
+         do_start_udev
+ 
+ 	[ "$verbose" == "no" ] || printf "Wait %s second(s) ...\n" $rootdelay
+-	sleep $rootdelay
++	[ -n "$rootdelay" ] && sleep $rootdelay
+ 
+ 	[ "$verbose" == "no" ] || printf "Start sysklogd ...\n"
+ 	do_start_sysklogd
