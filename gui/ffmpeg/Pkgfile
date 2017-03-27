@@ -1,11 +1,11 @@
-# Depends on: yasm opus fdk-aac x264 x265 liba52 libass freetype lame sdl libvorbis libogg xvid faac faad2 libtheora alsa-lib openjpeg libvpx xorg-libxext xorg-libxfixes 
+# Depends on: yasm opus fdk-aac pulseaudio x264 x265 liba52 libass freetype lame sdl libvorbis libogg xvid faac faad2 libtheora alsa-lib openjpeg libvpx xorg-libxext xorg-libxfixes 
 
 description="Complete and free Internet live audio and video broadcasting solution"
 url="http://ffmpeg.org/"
 packager="pierre at nutyx dot org"
 name=ffmpeg
 version=3.2.2
-release=2
+release=3
 
 source=(${url}releases/ffmpeg-$version.tar.bz2)
 
@@ -13,6 +13,7 @@ build() {
 cd ffmpeg-$version
 sed -i 's/-lflite"/-lflite -lasound"/' configure
 ./configure --prefix=/usr      \
+	    --enable-libpulse    \
             --enable-gpl         \
             --enable-version3    \
             --enable-nonfree     \
