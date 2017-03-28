@@ -4,14 +4,14 @@ log_success_msg2  "Init default set to 5 in the ${WARNING}/etc/inittab ${NORMAL}
 if [ ! -f etc/lxdm/lxdm.conf ]; then
 	echo "[base]
 ## uncomment and set autologin username to enable autologin
-autologin=guest
+# autologin=guest
 
 ## uncomment and set timeout to enable timeout autologin,
 ## the value should >=5
 # timeout=10
 
 ## default session or desktop used when no systemwide config
-# session=/usr/bin/startlxde
+# session=/usr/bin/startxfce4
 
 ## uncomment and set to set numlock on your keyboard
 # numlock=0
@@ -19,19 +19,27 @@ autologin=guest
 ## set this if you don't want to put xauth file at ~/.Xauthority
 # xauth_path=/tmp
 
+# not ask password for users who have empty password
+# skip_password=1
+
 ## greeter used to welcome the user
-greeter=/usr/lib/lxdm/lxdm-greeter-gtk
+greeter=/usr/libexec/lxdm-greeter-gtk
 
 [server]
 ## arg used to start xserver, not fully function
 # arg=/usr/bin/X -background vt1
+arg=/usr/bin/X
+# uncomment this if you really want xserver listen to tcp
+# tcp_listen=1
+# uncoment this if you want reset the xserver after logout
+reset=1
 
 [display]
 ## gtk theme used by greeter
 gtk_theme=Clearlooks
 
 ## background of the greeter
-bg=/usr/share/backgrounds/default.jpg
+#bg=/usr/share/backgrounds/default.png
 
 ## if show bottom pane
 bottom_pane=1

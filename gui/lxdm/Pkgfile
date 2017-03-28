@@ -10,7 +10,7 @@ run=(consolekit2 librsvg)
 
 name=lxdm
 version=0.5.3
-release=5
+release=6
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.xz)
 
 build() {
@@ -50,5 +50,6 @@ make
   
 make DESTDIR=$PKG install
 # lxdm.conf created in post if needed
-rm $PKG/etc/lxdm/lxdm.conf
+# Let keep it as an example
+mv $PKG/etc/lxdm/lxdm.conf{,.example}
 }
