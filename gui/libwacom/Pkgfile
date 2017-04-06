@@ -1,14 +1,12 @@
-# Description: Library to identify Wacom tablets and their features
-# URL: http://linuxwacom.sourceforge.net/
-# Packager: pierre at nutyx dot org
 # Depends on: glib libgudev
 
+description="Library to identify Wacom tablets and their features"
+url="http://linuxwacom.sourceforge.net/"
+packager="pierre at nutyx dot org"
 name=libwacom
-version=0.18
+version=0.24
 release=1
-
 source=(http://sourceforge.net/projects/linuxwacom/files/libwacom/libwacom-$version.tar.bz2)
-
 build() {
 cd $name-$version
 ./configure --prefix=/usr --disable-static
