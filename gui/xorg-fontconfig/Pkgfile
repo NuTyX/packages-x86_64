@@ -6,9 +6,10 @@ _name=fontconfig
 
 name=xorg-fontconfig
 version=2.12.1
-release=2
+release=3
 
-source=( http://fontconfig.org/release/${_name}-$version.tar.gz)
+source=( http://fontconfig.org/release/${_name}-$version.tar.gz
+	xorg-fontconfig-2.12.1-gperf-1.patch)
 
 
 build() {
@@ -18,6 +19,8 @@ sed -e '/FC_CHAR_WIDTH/s/CHAR_WIDTH/CHARWIDTH/'             \
     -e '/FC_CHARWIDTH/a #define FC_CHAR_WIDTH FC_CHARWIDTH' \
     -i fontconfig/fontconfig.h
 sed 's/CHAR_WIDTH/CHARWIDTH/' -i src/fcobjs.h
+
+[ "$PKGMK_ARCH" == "x86_64" ] && patch -Np1 -i ../xorg-fontconfig-2.12.1-gperf-1.patch
 
 ./configure --prefix=/usr \
 --sysconfdir=/etc \

@@ -1,0 +1,15 @@
+--- fontconfig-2.12.1/src/fcobjs.c	2016-07-11 02:41:06.000000000 +0000
++++ fontconfig-2.12.1/src/fcobjs.c.old	2017-04-06 19:38:59.509999997 +0000
+@@ -25,10 +25,10 @@
+ #include "fcint.h"
+ 
+ static unsigned int
+-FcObjectTypeHash (register const char *str, register unsigned int len);
++FcObjectTypeHash (register const char *str, register size_t len);
+ 
+ static const struct FcObjectTypeInfo *
+-FcObjectTypeLookup (register const char *str, register unsigned int len);
++FcObjectTypeLookup (register const char *str, register size_t len);
+ 
+ #include "fcobjshash.h"
+ 
