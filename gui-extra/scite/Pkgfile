@@ -1,0 +1,17 @@
+# Depends on: setconf gtk2
+
+description="A free source code editing component for Win32, GTK+, and OS X"
+packager="Renaud Chenard"
+url="http://scintilla.org/"
+name=scite
+version=374
+release=1
+source=(${url}$name$version.tgz)
+build() {
+   cd scintilla/gtk
+   make
+   cd ../..
+   cd scite/gtk
+   make
+   make DESTDIR=$PKG install
+}
