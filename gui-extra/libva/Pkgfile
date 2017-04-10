@@ -1,0 +1,23 @@
+# Description: Video Acceleration (VA) API for Linux
+
+# Packager: SipoMatadorduCosmos
+
+# Depends on:libglade xorg-libdrm xorg-libxfixes
+
+url=https://01.org/linuxmedia/vaapi
+
+name=libva
+
+version=1.8.0
+
+release=1
+
+source=https://github.com/01org/libva/releases/download/$version/libva-$version.tar.bz2
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
+
