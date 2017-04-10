@@ -14,7 +14,7 @@ mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_BUILD_TYPE=Release  \
-      -DLIB_INSTALL_DIR=lib       \
+      -DKDE_INSTALL_LIBDIR=lib       \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
