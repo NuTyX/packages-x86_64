@@ -1,0 +1,23 @@
+# Description: Time-stretching and pitch-shifting audio library and utility
+
+# Packager: SipoMatadorduCosmos
+
+# Depends on: ladspa libsamplerate fftw vamp-plugin-sdk
+
+url=http://www.breakfastquay.com/rubberband/
+
+name=rubberband
+
+version=1.8.1
+
+release=1
+
+source=http://code.breakfastquay.com/attachments/download/34/$name-$version.tar.bz2
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
+
