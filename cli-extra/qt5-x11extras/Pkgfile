@@ -1,0 +1,29 @@
+# Depends on: qt-base
+
+description="Provides platform-specific APIs for X11"
+url="http://qt-project.org/"
+packager="SipoMatadorduCosmos"
+name=qtx11extras
+versiondebase=5.8
+version=5.8.0
+
+release=1
+
+source=(http://download.qt.io/official_releases/qt/$versiondebase/$version/submodules/$name-opensource-src-$version.tar.xz)
+
+build() {
+mkdir -p build
+cd build
+qmake ../$name-opensource-src-$version
+make
+make INSTALL_ROOT=$PKG install
+}
+
+
+
+
+
+
+
+
+
