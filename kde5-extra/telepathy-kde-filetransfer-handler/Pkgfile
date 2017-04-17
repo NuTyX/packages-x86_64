@@ -6,7 +6,7 @@ packager="pierre at nutyx dot org"
 alias=(ktp-filetransfer-handler)
 
 _name=ktp-filetransfer-handler
-release=1
+release=2
 
 build() {
   mkdir build
@@ -14,6 +14,7 @@ build() {
   cmake ../ktp-filetransfer-handler-$version \
     -DCMAKE_INSTALL_PREFIX=/usr  \
     -DCMAKE_BUILD_TYPE=Release   \
+    -DKDE_INSTALL_LIBDIR=lib     \
     -DBUILD_TESTING=OFF
   make
   make DESTDIR=$PKG install
