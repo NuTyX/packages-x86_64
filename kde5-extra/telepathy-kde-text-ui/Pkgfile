@@ -6,14 +6,15 @@ packager="pierre at nutyx dot org"
 alias=(ktp-text-ui)
 
 _name=ktp-text-ui
-release=1
+release=2
 
 build() {
   mkdir build
   cd build
-  cmake ../ktp-text-ui-$version \
+  cmake ../ktp-text-ui-$version  \
     -DCMAKE_INSTALL_PREFIX=/usr  \
     -DCMAKE_BUILD_TYPE=Release   \
+    -DKDE_INSTALL_LIBDIR=lib     \
     -DBUILD_TESTING=OFF
   make
   make DESTDIR=$PKG install
