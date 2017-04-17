@@ -7,7 +7,7 @@ run=(desktop-file-utils gtk-update-icon-cache hicolor-icon-theme)
 
 name=midori
 version=0.5.11
-release=2
+release=3
 
 source=(http://www.midori-browser.org/downloads/${name}_${version}_all_.tar.bz2)
 build () {
@@ -17,6 +17,7 @@ cd build
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
  -DCMAKE_BUILD_TYPE=Release  \
  -DHALF_BRO_INCOM_WEBKIT2=ON \
+ -DCMAKE_INSTALL_LIBDIR=lib \
  -DUSE_GTK3=1 \
  -DCMAKE_INSTALL_DOCDIR=/usr/share/doc/$name-$version \
  -DUSE_ZEITGEIST=OFF \
