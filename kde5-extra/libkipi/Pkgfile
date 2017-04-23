@@ -5,7 +5,7 @@ url="https://projects.kde.org/projects/kde/kdegraphics/libs/libkipi"
 packager="pierre at nutyx dot org"
 
 name=libkipi
-version=16.12.3
+version=17.04.0
 release=1
 
 source=(http://download.kde.org/stable/applications/${version}/src/${name}-${version}.tar.xz)
@@ -17,7 +17,7 @@ cmake ../${name}-${version} \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_TESTING=OFF \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib
+    -DKDE_INSTALL_LIBDIR=lib
 make
 make DESTDIR=$PKG install
 }
