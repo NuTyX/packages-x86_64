@@ -7,9 +7,6 @@ diff -Naur blfs-bootscripts-20150304.original/blfs/init.d/sshd blfs-bootscripts-
      start)
 +
          log_info_msg "Starting SSH Server..."
-+	if [ ! -f /etc/ssh/ssh_host_key ]; then
-+        	/usr/bin/ssh-keygen -t rsa1 -N "" -f /etc/ssh/ssh_host_key
-+	fi
 +	if [ ! -f /etc/ssh/ssh_host_rsa_key ]; then
 +        	/usr/bin/ssh-keygen -t rsa -N "" -f /etc/ssh/ssh_host_rsa_key
 +	fi

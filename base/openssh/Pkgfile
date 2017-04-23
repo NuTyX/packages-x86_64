@@ -3,11 +3,11 @@
 description="Free version of the SSH connectivity tools"
 url="http://www.openssh.org/"
 name=openssh
-version=7.4p1
+version=7.5p1
 release=1
 
 source=(http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$name-$version.tar.gz
-	http://downloads.nutyx.org/files/patchs/openssh-server/service-saravane-01.patch)
+	$name-service-01.patch)
 build() {
 source /etc/blfs-bootscripts
 wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
@@ -47,6 +47,6 @@ cd $SRC
 
 tar xf $scripts-$scriptsversion.tar.bz2
 cd $SRC/$scripts-$scriptsversion
-patch -Np1 -i ../service-saravane-01.patch
+patch -Np1 -i ../$name-service-01.patch
 make DESTDIR=$PKG install-sshd
 }
