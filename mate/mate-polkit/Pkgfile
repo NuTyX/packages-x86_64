@@ -4,7 +4,7 @@ description="PolicyKit integration for the MATE desktop"
 url="http://matsusoft.com.ar/projects/mate"
 packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org"
 name=mate-polkit
-version=1.16.0
+version=1.18.0
 release=1
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
@@ -15,7 +15,6 @@ cd $name-$version
         --libexecdir=/usr/lib/${name} \
         --sysconfdir=/etc \
         --localstatedir=/var \
-        --with-gtk=2.0 \
         --enable-introspection \
         --disable-static
 make

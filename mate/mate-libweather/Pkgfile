@@ -1,10 +1,10 @@
-# Depends on: dconf gtk2 libsoup
+# Depends on: dconf gtk3 libsoup
 
 description="Provides access to weather information from the Internet."
 url="http://matsusoft.com.ar/projects/mate"
 packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org"
 name=mate-libweather
-version=1.16.1
+version=1.18.0
 release=1
 _name=libmateweather
 source=(http://pub.mate-desktop.org/releases/${version%.*}/${_name}-$version.tar.xz)
@@ -15,7 +15,7 @@ cd ${_name}-$version
         --prefix=/usr \
         --sysconfdir=/etc \
         --localstatedir=/var \
-        --with-gtk=2.0 \
+        --with-gtk=3.0 \
         --disable-static \
         --disable-python \
         --enable-locations-compression
