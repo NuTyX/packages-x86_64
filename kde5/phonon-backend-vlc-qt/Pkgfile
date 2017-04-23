@@ -15,11 +15,11 @@ build() {
 cd phonon-vlc-$version
 mkdir build
 cd    build
-cmake -DCMAKE_BUILD_TYPE=Release     \
-      -DCMAKE_SKIP_RPATH=ON          \
-      -DCMAKE_INSTALL_PREFIX=/usr    \
-      -DPHONON_BUILD_PHONON4QT5=ON   \
-      -DKDE_INSTALL_LIBDIR=lib     \
+cmake -DCMAKE_BUILD_TYPE=Release    \
+      -DCMAKE_SKIP_RPATH=ON         \
+      -DCMAKE_INSTALL_PREFIX=/usr   \
+      -DPHONON_BUILD_PHONON4QT5=ON  \
+      -DCMAKE_INSTALL_LIBDIR=lib    \
       -Wno-dev ..
 
 make
