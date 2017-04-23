@@ -1,19 +1,20 @@
-# Depends on: caja dconf djvulibre gtk2 libsecret libspectre mate-desktop mate-icon-theme poppler-glib poppler
+# Depends on: caja dconf djvulibre gtk3 libsecret libspectre mate-desktop mate-icon-theme poppler-glib poppler
 
 description="Simply a pdf document viewer"
 url="http://matsusoft.com.ar/projects/mate"
 packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org"
 name=atril
-version=1.16.1
+version=1.18.0
 release=1
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
+sed -i 's|/usr/share/javascript/mathjax|/usr/share/mathjax|' backend/epub/epub-document.c
 ./configure \
         --prefix=/usr \
         --libexecdir=/usr/lib/${name} \
-        --with-gtk=2.0 \
+        --with-gtk=3.0 \
         --enable-gtk-doc \
         --enable-djvu \
         --enable-dvi \
@@ -22,8 +23,7 @@ cd $name-$version
         --enable-pixbuf \
         --enable-comics \
         --enable-xps \
-        --enable-introspection \
-        --disable-static
+        --enable-introspection 
 make
 make DESTDIR=$PKG install
 }

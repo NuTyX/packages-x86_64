@@ -1,17 +1,16 @@
-# Depends on: gtk2 mate-panel libindicator-gtk2
+# Depends on: gtk3 mate-libindicator mate-panel
 
 description="Applet MATE"
 url="http://matsusoft.com.ar/projects/mate"
 packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org"
 name=mate-indicator-applet
-version=1.16.0
-release=2
+version=1.18.0
+release=1
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 build() {
 cd $name-$version
 ./configure --prefix=/usr \
-        --libexec=/usr/lib/${name} \
-        --disable-static
+        --libexec=/usr/lib/${name} 
 make
 make DESTDIR=$PKG install
 }
