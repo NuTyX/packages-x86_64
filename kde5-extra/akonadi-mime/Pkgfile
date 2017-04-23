@@ -4,7 +4,7 @@ description="Akonadi mime "
 url="https://projects.kde.org/kdepimlibs"
 packager="pierre at nutyx dot org"
 name=akonadi-mime
-version=16.12.3
+version=17.04.0
 release=1
 
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
@@ -15,7 +15,7 @@ build() {
   cmake ../$name-$version \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DKDE_INSTALL_LIBDIR=lib \
     -DBUILD_TESTING=OFF
   make
   make DESTDIR=$PKG install
