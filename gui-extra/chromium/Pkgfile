@@ -1,46 +1,51 @@
-# Depends on: ninja gtk2 gtk3 nss alsa-lib xdg-utils bzip2 xorg-libxscrnsaver libexif libgcrypt dbus flac snappy speech-dispatcher pciutils pulseaudio harfbuzz libsecret libvpx perl perl-file-basedir desktop-file-utils libevent re2 kerberos libwebp cups hicolor-icon-theme mesa usbutils yasm ffmpeg icu libjpeg-turbo libpng libxml2 snappy
+# Depends on: ninja nodejs gtk2 gtk3 nss alsa-lib xdg-utils bzip2 xorg-libxscrnsaver libexif libgcrypt dbus flac snappy speech-dispatcher pciutils pulseaudio harfbuzz libsecret libvpx perl perl-file-basedir desktop-file-utils libevent re2 kerberos libwebp cups hicolor-icon-theme mesa usbutils yasm ffmpeg icu libjpeg-turbo libpng libxml2 snappy
 
 description="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser"
 url="http://www.chromium.org/"
 packager="pierre at nutyx dot org"
 
 name=chromium
-version=57.0.2987.133
+version=58.0.3029.81
 release=1
 
 run=(gtk2 gtk3 nss alsa-lib xdg-utils bzip2 xorg-libxscrnsaver libexif libgcrypt dbus flac snappy speech-dispatcher pciutils pulseaudio harfbuzz libsecret libvpx perl perl-file-basedir desktop-file-utils libevent re2) 
 
-source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$version.tar.xz)
+source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$version.tar.xz
+        chromium-system-ffmpeg-r4.patch)
+
+#        http://www.linuxfromscratch.org/patches/blfs/svn/chromium-58.0.3029.81-system_ffmpeg-1.patch)
 
 build() {
    cd chromium-$version
    
-# Fix a build issue on Linux-4.5+   
-#   sed 's/#include <sys\/mman\.h>/&\n\n#if defined(MADV_FREE)\n#undef MADV_FREE\n#endif\n/' \
-#       -i third_party/WebKit/Source/wtf/allocator/PageAllocator.cpp
+   patch -Np1 -i ../chromium-system-ffmpeg-r4.patch
+#chromium-58.0.3029.81-system_ffmpeg-1.patch
 
-# Fix a build issue with GCC-6
-   sed "s/^config(\"compiler\") {/&\ncflags_cc = [ \"-fno-delete-null-pointer-checks\" ]/" \
-       -i build/config/linux/BUILD.gn
+   sed 's/^config("compiler") {/&\ncflags_cc = [ "-fno-delete-null-pointer-checks" ]/' \
+    -i build/config/linux/BUILD.gn
 
-# WideVine plugin, needed for Netflix support
-   sed "s/WIDEVINE_CDM_AVAILABLE/&\n\n#define WIDEVINE_CDM_VERSION_STRING \"Pinkie Pie\"/" \
-       -i third_party/widevine/cdm/stub/widevine_cdm_version.h
+   sed 's/WIDEVINE_CDM_AVAILABLE/&\n\n#define WIDEVINE_CDM_VERSION_STRING "Pinkie Pie"/' \
+    -i third_party/widevine/cdm/stub/widevine_cdm_version.h
 
-   for LIB in flac harfbuzz-ng libwebp libxslt yasm; do
-        find -type f -path "*third_party/$LIB/*" \
-        \! -path "*third_party/$LIB/chromium/*" \
-        \! -path "*third_party/$LIB/google/*" \
+   for LIB in ffmpeg flac harfbuzz-ng libevent libjpeg \
+           libjpeg_turbo libpng libwebp libxslt yasm; do
+    find -type f -path "*third_party/$LIB/*"     \
+        \! -path "*third_party/$LIB/chromium/*"  \
+        \! -path "*third_party/$LIB/google/*"    \
+        \! -path "*base/third_party/libevent/*"  \
         \! -regex '.*\.\(gn\|gni\|isolate\|py\)' \
         -delete
    done 
-   
+
    python build/linux/unbundle/replace_gn_files.py \
-        --system-libraries flac harfbuzz-ng libwebp libxslt yasm
-   
-GN_CONFIG=("google_api_key=\"AIzaSyDxKL42zsPjbke5O8_rPVpVrLrJ8aeE9rQ\""
-"google_default_client_id=\"595013732528-llk8trb03f0ldpqq6nprjp1s79596646.apps.googleusercontent.com\""
-"google_default_client_secret=\"5ntt6GbbkjnTVXx-MSxbmx5e\""
+    --system-libraries ffmpeg flac harfbuzz-ng libevent libjpeg \
+                       libpng libwebp libxslt yasm
+ 
+   python third_party/libaddressinput/chromium/tools/update-strings.py
+
+GN_CONFIG=('google_api_key="AIzaSyDxKL42zsPjbke5O8_rPVpVrLrJ8aeE9rQ"'
+'google_default_client_id="595013732528-llk8trb03f0ldpqq6nprjp1s79596646.apps.googleusercontent.com"'
+'google_default_client_secret="5ntt6GbbkjnTVXx-MSxbmx5e"'
 'clang_use_chrome_plugins=false'
 'enable_hangout_services_extension=true'
 'enable_nacl=false'
@@ -65,11 +70,16 @@ GN_CONFIG=("google_api_key=\"AIzaSyDxKL42zsPjbke5O8_rPVpVrLrJ8aeE9rQ\""
 'use_gtk3=false'
 'use_kerberos=true'
 'use_pulseaudio=true'
-'use_sysroot=false')
+'use_sysroot=false') 
+
+  sed "/internal\.cc',/a\      'base/callback_helpers.cc'," \
+    -i tools/gn/bootstrap/bootstrap.py
 
   python tools/gn/bootstrap/bootstrap.py --gn-gen-args "${GN_CONFIG[*]}"
   out/Release/gn gen out/Release --args="${GN_CONFIG[*]}"
 
+  mkdir -p third_party/node/linux/node-linux-x64/bin
+  ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
   ninja -C out/Release chrome chrome_sandbox chromedriver widevinecdmadapter
 
   install -vDm755  out/Release/chrome $PKG/usr/lib/chromium/chromium
