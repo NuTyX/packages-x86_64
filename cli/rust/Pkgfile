@@ -1,0 +1,24 @@
+# Depends on : libffi perl python2 llvm jemalloc
+description="Language runs fast, prevents segfaults, guarantees thread safety."
+packager="tnut at nutyx dot org"
+url="https://www.rust-lang.org/"
+
+name=rust
+version=1.16.0
+release=1
+source=(liballoc-jemalloc-fix-link.patch
+	https://static.rust-lang.org/dist/rustc-$version-src.tar.gz)
+build() {
+ cd rustc-$version-src
+ patch -Np1 -i ../liballoc-jemalloc-fix-link.patch
+ ./configure \
+ --prefix=/usr \
+ --release-channel=stable \
+ --llvm-root=/usr \
+ --enable-llvm-link-shared \
+ --disable-codegen-tests \
+ --jemalloc-root=/usr/lib
+ export RUSTFLAGS="$RUSTFLAGS -C link-args=-lffi"
+ python2 ./x.py build --verbose
+ make DESTDIR=$PKG install
+}
