@@ -1,6 +1,8 @@
 . lib/lsb/init-functions
 sed -i "s/^id:[3-5]/id:5/" etc/inittab
+sed -i "s@/xdm@/lxdm@" etc/inittab
 log_success_msg2  "Init default set to 5 in the ${WARNING}/etc/inittab ${NORMAL}file"
+log_warning_msg "${WARNING} lxdm replacing xdm in /etc/inittab file${NORMAL}"
 if [ ! -f etc/lxdm/lxdm.conf ]; then
 	echo "[base]
 ## uncomment and set autologin username to enable autologin

@@ -1,0 +1,15 @@
+packager="tnut at nutyx dot org"
+name=jemalloc
+version=4.5.0
+release=1
+description='General-purpose scalable concurrent malloc implementation'
+url='http://www.canonware.com/jemalloc/'
+source=("https://github.com/jemalloc/jemalloc/releases/download/$version/$name-$version.tar.bz2")
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+  make DESTDIR="$pkgdir" install
+  find "$PKG" -name \*.a -type f -exec chmod 644 '{}' \;
+}

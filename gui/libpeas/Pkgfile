@@ -1,0 +1,19 @@
+# Depends on: gdb, gtk3, gjs, vala, gobject-introspection, python2-gobject2, python-gobject, lua, valgrind
+
+description="A GObject-based plugins engine."
+url="https://wiki.gnome.org/Projects/Libpeas"
+packager="fanch at nutyx dot org, tnut at nutyx dot org"
+
+
+name=libpeas
+version=1.20.0
+release=3
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
