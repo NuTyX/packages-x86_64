@@ -1,0 +1,26 @@
+# Depends on: openssl xorg-libxcursor cups alsa-lib xorg-libxext xorg-libxdamage ffmpeg xorg-libxkbfile xorg-libxinerama xorg-libxv pulseaudio xorg-libxkbfile xorg-libxrender xorg-libxfixes gstreamer1-plugins-base kerberos cmake xorg-libxdamage xorg-libxfixes xorg-libxrender xmlto docbook-xsl git
+
+description="Free RDP client"
+url="http://freerdp.sourceforge.net"
+packager="pierre at nutyx dot org"
+
+name=freerdp
+version=1.2.0
+release=1
+
+build() {
+  git clone https://github.com/FreeRDP/FreeRDP.git
+  cd FreeRDP
+  cmake \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_INSTALL_LIBDIR=lib \
+	-DWITH_PULSE=ON \
+	-DWITH_CUPS=ON \
+	-DWITH_CHANNELS=ON \
+	-DWITH_CLIENT_CHANNELS=ON \
+	-DWITH_SERVER_CHANNELS=ON \
+	-DWITH_WAYLAND=ON \
+	.
+  make
+  make DESTDIR=$PKG install
+}
