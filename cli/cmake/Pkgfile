@@ -1,8 +1,9 @@
 packager="pierre at nutyx dot org, tnut at nutyx"
 description="Generate Makefiles and aims to be platform- and compiler-independent."
 url="http://www.cmake.org"
+
 name=cmake
-version=3.7.2
+version=3.8.0
 release=1
 
 source=($url/files/v${version%.*}/$name-$version.tar.gz)
@@ -10,11 +11,16 @@ source=($url/files/v${version%.*}/$name-$version.tar.gz)
 build() {
 cd $name-$version
 sed -i '/CMAKE_USE_LIBUV 1/s/1/0/' CMakeLists.txt
+sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake
+
 ./bootstrap --prefix=/usr \
 --mandir=/share/man \
 --system-libs \
 --no-system-jsoncpp \
+--no-system-librhash \
 --docdir=/share/doc/cmake-$version
+
 make
+
 make DESTDIR=$PKG install
 }
