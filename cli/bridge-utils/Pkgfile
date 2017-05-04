@@ -1,23 +1,26 @@
-# Description: Utilities for configuring the Linux Ethernet bridge
-# URL: http://sourceforge.net/projects/bridge/
-# Packager: pierre at nutyx dot org
-# Depends on: 
+description="Utilities for configuring the Linux Ethernet bridge"
+url="http://sourceforge.net/projects/bridge/"
+packager="pierre at nutyx dot org"
+ 
 name=bridge-utils
-version=1.5
+version=1.6
 release=1
 
-source=( http://sourceforge.net/projects/bridge/files/bridge/$name-$version.tar.gz
-	 http://www.linuxfromscratch.org/patches/blfs/svn/bridge-utils-1.5-linux_3.8_fix-1.patch)
+source=(http://www.kernel.org/pub/linux/utils/net/$name/$name-$version.tar.xz)
+
 build() {
 source /etc/blfs-bootscripts
 wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
 tar xvf $scripts-$scriptsversion.tar.bz2
 
 cd $name-$version
-patch -Np1 -i ../bridge-utils-1.5-linux_3.8_fix-1.patch
-autoconf -o configure configure.in
+
+autoconf
+
 ./configure --prefix=/usr
+
 make
+
 make DESTDIR=$PKG install
 
 # service
