@@ -1,4 +1,4 @@
-# Depends on: babl gtk2 librsvg libpng ruby lua ffmpeg librsvg openexr exiv2 json-glib
+# Depends on: babl gtk2 librsvg libpng ruby lua ffmpeg librsvg openexr exiv2 json-glib gtk-doc
 
 description="Generic Graphics Library"
 url="http://gegl.org/"
@@ -6,19 +6,28 @@ packager="pierre at nutyx dot org"
 
 name=gegl
 version=0.3.14
-release=1
+release=2
 
 source=(http://ftp.gimp.org/pub/$name/0.3/$name-$version.tar.bz2)
 
 build() {
 cd $name-$version
-sed -i "/seems to be moved/s/^/: #/" ltmain.sh
-./configure --prefix=/usr --disable-docs
+
+sed -i /DG_LOG/d configure.ac
+sed -i '/srcdir)\/gegl\/property-types/a\\t-DG_LOG_DOMAIN=\\\"GEGL\\\" \\' \
+    gegl/Makefile.am
+
+./autogen.sh --prefix=/usr --without-vala \
+ --enable-gtk-doc
+
 LC_ALL=en_US make
+
 make DESTDIR=$PKG install
+
 install -d -v -m755 $PKG/usr/share/gtk-doc/html/gegl/images
 install -v -m644 docs/*.{css,html} \
 $PKG/usr/share/gtk-doc/html/gegl
+
 install -v -m644 docs/images/* \
 $PKG/usr/share/gtk-doc/html/gegl/images
 }
