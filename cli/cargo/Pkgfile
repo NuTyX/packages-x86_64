@@ -1,0 +1,32 @@
+# Depends on: cmake rust git openssl
+
+description="Cargo is the Package Manager for Rust"
+url=" https://github.com/rust-lang/cargo/"
+packager="pierre at nutyx dot org"
+
+name=cargo
+version=0.17.0
+release=1
+
+source=(https://github.com/rust-lang/cargo/archive/$version.tar.gz
+        https://static.rust-lang.org/dist/cargo-0.16.0-$(uname -m)-unknown-linux-gnu.tar.gz)
+
+build() {
+  cd $name-$version/src/rust-installer 
+  wget http://anduin.linuxfromscratch.org/BLFS/rust/rust-installer-20161004.tar.xz
+  tar -xf rust-installer-20161004.tar.xz --strip-components=1 
+  cd ../../
+ 
+  ./configure --prefix=/usr      \
+              --sysconfdir=/etc  \
+              --docdir=/usr/share/doc/cargo-0.17.0 \
+              --cargo=$SRC/cargo-nightly*/cargo/bin/cargo 
+  make
+  make DESTDIR=$PKG install
+
+  rm -f $PKG/usr/lib/rustlib/{install.log,manifest-cargo,uninstall.sh,components,rust-installer-version}
+  
+  install -d $PKG/usr/share/bash-completion/completions
+  mv $PKG/usr/etc/bash_completion.d/cargo \
+     $PKG/usr/share/bash-completion/completions/cargo
+} 
