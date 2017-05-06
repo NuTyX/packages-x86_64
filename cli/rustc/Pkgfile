@@ -1,0 +1,19 @@
+# Depends on: cmake curl llvm python2
+
+description="The Rust programming language is designed to be a safe, concurrent, practical language."
+url="http://static.rust-lang.org/"
+packager="pierre at nutyx dot org"
+
+name=rustc
+version=1.16.0
+release=1
+
+source="http://static.rust-lang.org/dist/$name-$version-src.tar.gz"
+
+build() {
+  cd $name-$version-src
+  ./configure --prefix=/usr                      
+  python2 ./x.py build
+  make DESTDIR=$PKG install
+}
+
