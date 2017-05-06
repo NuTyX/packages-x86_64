@@ -6,7 +6,7 @@ packager="pierre at nutyx dot org, tnut at nutyx dot org"
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=17.0.3
+version=17.0.5
 release=1
 
 source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz
@@ -15,7 +15,6 @@ build() {
 cd mesa-$version
 patch -Np1 -i ../mesa-$version-add_xdemos-1.patch
 sed -i "/pthread_stubs_possible=/s/yes/no/" configure.ac
-sed -i "/seems to be moved/s/^/: #/" bin/ltmain.sh
 
 ./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2'    \
 --prefix=/usr                  \
@@ -28,8 +27,12 @@ sed -i "/seems to be moved/s/^/: #/" bin/ltmain.sh
 --with-gallium-drivers="nouveau,i915,r600,radeonsi,svga,swrast"
 make
 make -C xdemos DEMOS_PREFIX=/usr
+
 make DESTDIR=$PKG install
+
 make -C xdemos DEMOS_PREFIX=/usr DESTDIR=$PKG install
+
 install -v -dm755 $PKG/usr/share/doc/mesa-$version
+
 cp -rfv docs/* $PKG/usr/share/doc/mesa-$version
 }

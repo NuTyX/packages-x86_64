@@ -2,9 +2,10 @@
 
 description="A library that read information about processes and the running system"
 url="http://www.gnu.org/directory/libs/LibGTop.html"
-packager="b at juglas dot name"
+packager="b at juglas dot name, tnut at nutyx dot org"
+
 name=libgtop
-version=2.34.2
+version=2.36.0
 release=1
 
 source=(http://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
@@ -12,7 +13,7 @@ source=(http://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar
 build() {
 cd $name-$version
 ./configure --prefix=/usr \
---disable-static
+--disable-static --enable-gtk-doc
 make
 make DESTDIR=$PKG install
 install -v -m755 -d $PKG/usr/lib/libgtop/examples

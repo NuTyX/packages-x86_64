@@ -1,14 +1,15 @@
-# Description : A free C++ class library of cryptographic schemes
-# URL : http://www.cryptopp.com/
-# Packager : pierre at nutyx dot org
-# Depends on : unzip
+# Depends on: unzip
+
+description="A free C++ class library of cryptographic schemes"
+url="https://www.cryptopp.com/"
+packager="pierre at nutyx dot org"
 
 name=crypto++
-version=5.6.3
-_version=563
+version=5.6.5
+_version=565
 release=1
 
-source=(http://www.cryptopp.com/cryptopp${_version}.zip
+source=(${url}cryptopp${_version}.zip
         crypto++-libcrypto++.pc)
 
 build() {
