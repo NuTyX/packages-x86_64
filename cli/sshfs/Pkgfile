@@ -1,0 +1,17 @@
+# Depends on: fuse glib openssh
+description="Contains a filesystem client based on the SSH File Transfer Protocol"
+url="http://fuse.sourceforge.net/sshfs.html"
+packager="tnut at nutyx dot org"
+
+name=sshfs
+version=2.9
+release=1
+
+source=(https://github.com/libfuse/sshfs/archive/sshfs-$version.tar.gz)
+
+build(){
+    cd $name-$version
+    ./configure --prefix=/usr
+    make
+    make DESTDIR=$PKG install    
+}
