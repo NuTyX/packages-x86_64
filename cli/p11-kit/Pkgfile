@@ -1,5 +1,5 @@
 # Depends on: libffi libtasn1
-#
+
 description="Provides a way to load and enumerate PKCS 11 modules."
 url="http://p11-glue.freedesktop.org/p11-kit.html"
 packager="pierre at nutyx dot org"
@@ -8,7 +8,7 @@ name=p11-kit
 version=0.23.5
 release=1
 
-source=(http://p11-glue.freedesktop.org/releases/$name-$version.tar.gz)
+source=( https://github.com/p11-glue/p11-kit/releases/download/$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
