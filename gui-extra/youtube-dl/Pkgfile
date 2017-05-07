@@ -1,10 +1,11 @@
-# Description: A small command-line program to download videos from YouTube.
-# URL: http://youtube-dl.org 
-# Packager: fanch at nutyx dot org
-# Depends on: python python-setuptools ffmpeg 
+# Depends on: python2 python2-setuptools ffmpeg
+
+description="A small command-line program to download videos from YouTube."
+url="http://youtube-dl.org"
+packager="fanch at nutyx dot org, tnut at nutyx dot org"
 
 name=youtube-dl
-version=2016.06.03
+version=2017.05.07
 release=1
 
 source=(http://$name.org/downloads/$version/$name-$version.tar.gz)
@@ -13,7 +14,11 @@ build() {
   cd $name
   sed -i 's|etc/bash_completion.d|share/bash-completion/completions|' setup.py 
   sed -i 's|etc/fish/completions|share/fish/completions|' setup.py 
+
   python setup.py install --root=$PKG --optimize=1
+
   install -Dm644 $name.zsh $PKG/usr/share/zsh/site-functions/_$name
-  mv $PKG/usr/share/bash-completion/completions/$name.bash-completion $PKG/usr/share/bash-completion/completions/$name 
+
+  mv $PKG/usr/share/bash-completion/completions/$name.bash-completion \
+  $PKG/usr/share/bash-completion/completions/$name 
 }
