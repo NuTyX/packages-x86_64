@@ -4,6 +4,8 @@ description="Adjusts the color temperature of your screen according to your surr
 url="http://jonls.dk/redshift/"
 packager="pierre at nutyx dot org"
 
+run=(geoclue2)
+
 name=redshift
 version=1.11
 release=1
@@ -12,7 +14,8 @@ source=(https://github.com/jonls/${name}/releases/download/v${version}/${name}-$
 
 build() {
   cd $name-$version
-  ./configure --prefix=/usr     
+  ./configure --prefix=/usr \
+              --enable-geoclue2    
   make
   make DESTDIR=$PKG install
 }
