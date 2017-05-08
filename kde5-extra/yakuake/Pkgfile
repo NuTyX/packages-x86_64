@@ -1,0 +1,21 @@
+# Depends on: kf5-extra-cmake-modules python konsole kf5-knewstuff kf5-kwayland hicolor-icon-theme
+
+description="A drop-down terminal emulator based on KDE konsole technology"
+url="http://yakuake.kde.org/"
+packager="pierre at nutyx dot org"
+
+name=yakuake
+version=3.0.4
+release=1
+
+source=(http://download.kde.org/stable/$name/$version/src/$name-$version.tar.xz)
+
+build() {
+  mkdir build
+  cd build
+  cmake ../$name-$version      \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make
+  make DESTDIR=$PKG install
+}
