@@ -12,6 +12,7 @@ source=( http://ftp.samba.org/pub/linux-cifs/$name/$name-$version.tar.bz2)
 
 build() {
 cd $name-$version
+autoreconf -fiv
 ./configure --prefix=/usr --disable-systemd
 make
 make DESTDIR=$PKG install
