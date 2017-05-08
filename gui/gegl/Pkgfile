@@ -24,10 +24,11 @@ LC_ALL=en_US make
 
 make DESTDIR=$PKG install
 
-install -d -v -m755 $PKG/usr/share/gtk-doc/html/gegl/images
 install -v -m644 docs/*.{css,html} \
 $PKG/usr/share/gtk-doc/html/gegl
 
-install -v -m644 docs/images/* \
+install -d -v -m755 $PKG/usr/share/gtk-doc/html/gegl/images
+
+install -v -m644 docs/images/*.{png,ico,svg} \
 $PKG/usr/share/gtk-doc/html/gegl/images
 }
