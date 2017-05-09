@@ -23,6 +23,9 @@ wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/
 done
 
 cd $name-$version
+# Locale autodetect
+sed -i '/intl.locale.matchOS/s/false/true/' modules/libpref/init/all.js
+
 cat > mozconfig << "EOF"
 # If you have a multicore machine, all cores will be used by default.
 # If desired, you can reduce the number of cores used, e.g. to 1, by
@@ -136,6 +139,12 @@ EOF
 mkdir -pv $PKG/usr/share/pixmaps
 ln -sf /usr/lib/firefox-$version/browser/icons/mozicon128.png $PKG/usr/share/pixmaps/firefox.png
 
+for i in 16 22 24 32 48 256
+do
+   mkdir -p $PKG/usr/share/icons/hicolor/${i}x${i}/apps
+   cp browser/branding/official/default${i}.png \
+      $PKG/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png
+done
 
 for lang in da de tr es-ES fi fr it nb-NO nl pt-PT sv-SE
 do 
