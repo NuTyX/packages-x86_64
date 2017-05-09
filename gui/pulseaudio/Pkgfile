@@ -1,13 +1,14 @@
-# Depends on: fftw intltool json-c libsndfile alsa-lib dbus glib libcap openssl speex libsamplerate 
+# Depends on: fftw intltool json-c libsndfile alsa-lib dbus glib libcap openssl speex libsamplerate bluez sbc 
 
 description="A featureful, general-purpose sound server"
 url="http://www.pulseaudio.org"
 packager="pierre at nutyx dot org"
 
+run=(bluez sbc)
 
 name=pulseaudio
 version=10.0
-release=1
+release=2
 
 source=(http://freedesktop.org/software/pulseaudio/releases/pulseaudio-$version.tar.xz)
 
