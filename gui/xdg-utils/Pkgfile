@@ -1,19 +1,23 @@
-# Description: Set of command line tools that assist applications with a variety of desktop integration tasks. 
-# URL: http://portland.freedesktop.org/wiki/
-# Packager: pierre at nutyx dot org
 # Depends on: lynx xmlto xorg-app
+
+description="Set of command line tools that assist applications with a variety of desktop integration tasks." 
+url="http://portland.freedesktop.org/wiki/"
+packager="pierre at nutyx dot org"
 
 run=(xorg-app)
 
 name=xdg-utils
-version=1.1.1
+version=1.1.2
 release=1
 source=(http://portland.freedesktop.org/download/$name-$version.tar.gz)
 
 build() {
-cd $name-$version
-./configure --prefix=/usr \
---mandir=/usr/share/man 
-make -j1
-make DESTDIR=$PKG install
+   cd $name-$version
+
+   ./configure --prefix=/usr \
+   --mandir=/usr/share/man 
+
+   make -j1
+
+   make DESTDIR=$PKG install
 }
