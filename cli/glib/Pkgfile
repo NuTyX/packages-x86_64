@@ -7,7 +7,7 @@ packager="tnut at nutyx dot org"
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.52.1
+version=2.52.2
 release=1
 
 source=(http://ftp.gnome.org/pub/gnome/sources/glib/${version:0:4}/$name-$version.tar.xz
@@ -20,6 +20,7 @@ build () {
 
   ./configure --prefix=/usr \
               --with-pcre=system \
+              --with-python=/usr/bin/python3 \
               --disable-fam
   make
   make DESTDIR=$PKG install
