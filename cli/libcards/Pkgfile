@@ -1,9 +1,11 @@
+# Depends on: doxygen
+
 description="Library utilities to manage software packages on NuTyX distribution."
 url="https://github.com/NuTyX/cards"
 maintainer="tnut at nutyx dot org"
 packager="tnut at nutyx dot org"
 name=libcards
-version=2.2.1
+version=2.2.2
 release=1
 
 source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
@@ -11,4 +13,6 @@ build () {
 cd cards-$version
 make libs
 make DESTDIR=$PKG install-libs
+cd documentation
+make DESTDIR=$PKG html install
 }
