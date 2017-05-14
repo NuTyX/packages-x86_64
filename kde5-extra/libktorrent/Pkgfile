@@ -1,0 +1,23 @@
+# Depends on: git python boost kf5-extra-cmake-modules kf5-kdoctools kf5-solid kf5-kio qca-qt 
+
+description="A BitTorrent protocol implementation. (GIT version)"
+url="https://projects.kde.org/projects/extragear/network/libktorrent"
+packager="pierre at nutyx dot org"
+
+name=libktorrent
+version=2.0.1
+release=1
+
+build () {
+  git clone git://anongit.kde.org/libktorrent.git
+  mkdir -p build
+  cd build
+   cmake ../libktorrent         \
+    -DCMAKE_BUILD_TYPE=Release  \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DKDE_INSTALL_LIBDIR=lib    \
+    -DBUILD_TESTING=OFF
+  make
+  make DESTDIR=$PKG install
+}
+
