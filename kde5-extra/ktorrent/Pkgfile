@@ -1,8 +1,10 @@
-# Depends on: libktorrent kf5-knotifyconfig kf5-kcmutils kf5-kdelibs4support extra-cmake-modules kf5-kdoctools git python boost taglib geoip plasma-workspace kf5-kdnssd kf5-kross kf5-kplotting kf5-kdesignerplugin kf5-kdewebkit syndication kf5-kio kf5-solid
+# Depends on: libktorrent kf5-knotifyconfig kf5-kcmutils kf5-kdelibs4support extra-cmake-modules kf5-kdoctools git python boost taglib geoip geoip-database plasma-workspace kf5-kdnssd kf5-kross kf5-kplotting kf5-kdesignerplugin kf5-kdewebkit syndication kf5-kio kf5-solid
 
 description="A powerful BitTorrent client. (GIT version)"
 url="https://projects.kde.org/projects/extragear/network/ktorrent"
 packager="pierre at nutyx dot org"
+
+run=(geoip geoip-database)
 
 name=ktorrent
 version=5.0.1
