@@ -1,0 +1,17 @@
+# Description:	GeoLite country geolocation database compiled by MaxMind
+# URL: http://www.maxmind.com/app/c
+# Packager : NuTyX core team
+
+name=geoip-database
+version=20160706
+release=1
+source=(http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+http://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz)
+
+build() {
+	umask 022
+	install -d $PKG/usr/share/GeoIP
+	for i in GeoIP.dat GeoIPv6.dat; do
+		gzip -dc $i.gz > $PKG/usr/share/GeoIP/$i
+	done
+}
