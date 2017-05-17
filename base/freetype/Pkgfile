@@ -1,9 +1,11 @@
 # Depends on: libpng
+
 description="TrueType font rendering library"
 url="http://www.freetype.org"
 packager="pierre at nutyx dot org"
+
 name=freetype
-version=2.7.1
+version=2.8
 release=1
 
 source=( http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
@@ -20,7 +22,9 @@ sed -r "s:.*(#.*SUBPIXEL_(RENDERING|HINTING 2)) .*:\1:g" \
 ./configure --prefix=/usr --disable-static
 make
 make DESTDIR=$PKG install
+
 cd ..
+
 mkdir docs
 wget http://downloads.sourceforge.net/freetype/freetype-doc-$version.tar.bz2
 tar -xf freetype-doc-$version.tar.bz2 --strip-components=2 -C docs
