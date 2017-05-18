@@ -1,0 +1,21 @@
+# Depends on: atk cogl json-glib gobject-introspection gtk3
+
+description="Toolkit for creating compelling, dynamic and portable GUI"
+url="https://blogs.gnome.org/clutter"
+packager="tnut at nutyx dot org"
+
+name=clutter
+version=1.26.2
+release=1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr     \
+            --sysconfdir=/etc \
+            --enable-backend
+
+make
+make DESTDIR=$PKG install
+}
