@@ -5,19 +5,15 @@ url="http://gegl.org/"
 packager="pierre at nutyx dot org"
 
 name=gegl
-version=0.3.14
-release=2
+version=0.3.16
+release=1
 
 source=(http://ftp.gimp.org/pub/$name/0.3/$name-$version.tar.bz2)
 
 build() {
 cd $name-$version
 
-sed -i /DG_LOG/d configure.ac
-sed -i '/srcdir)\/gegl\/property-types/a\\t-DG_LOG_DOMAIN=\\\"GEGL\\\" \\' \
-    gegl/Makefile.am
-
-./autogen.sh --prefix=/usr --without-vala \
+./configure --prefix=/usr --without-vala \
  --enable-gtk-doc
 
 LC_ALL=en_US make
