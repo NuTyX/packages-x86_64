@@ -1,17 +1,17 @@
-# Depends on: caja python2-gobject2 python-gobject
+# Depends on: caja python-gobject
 
 description="Python for Caja"
-url="http://matsusoft.com.ar/projects/mate"
-packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org"
+url="https://mate-desktop.org/"
+packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org, ayce dot net at gmail dot com"
 name=python-caja
 version=1.18.0
 release=1
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
-cd $name-$version
-./configure \
-        --prefix=/usr 
-make
-make DESTDIR=$PKG install
+  cd $name-$version
+  ./configure \
+          --prefix=/usr
+  make
+  make DESTDIR=$PKG install
 }

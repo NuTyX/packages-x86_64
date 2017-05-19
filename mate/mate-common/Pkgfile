@@ -1,5 +1,5 @@
 description="Common development macros for MATE"
-url="http://matsusoft.com.ar/projects/mate"
+url="https://mate-desktop.org/"
 packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org"
 name=mate-common
 version=1.18.0
@@ -10,6 +10,6 @@ build() {
 	cd $name-$version
    ./configure \
         --prefix=/usr
-make
-make DESTDIR=$PKG install
+	make
+	make DESTDIR=$PKG install
 }

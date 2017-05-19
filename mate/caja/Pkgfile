@@ -1,24 +1,24 @@
 # Depends on: exempi mate-desktop pango gtk3 libexif libxml2 libunique1 desktop-file-utils libnotify
 
-description="File manager for the MATE desktop (GTK2 version)"
-url="http://matsusoft.com.ar/projects/mate"
-packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org"
+description="File manager for the MATE desktop"
+url="https://mate-desktop.org/"
+packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org, jayce dot net at gmail dot com"
 run=(desktop-file-utils)
 name=caja
-version=1.18.2
+version=1.18.3
 release=1
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
-cd $name-$version
-./configure \
-        --prefix=/usr \
-        --libexecdir=/usr/lib/${name} \
-        --with-gtk=3.0 \
-        --enable-unique \
-        --enable-introspection \
-        --disable-static \
-        --disable-update-mimedb
-make
-make DESTDIR=$PKG install
+  cd $name-$version
+  ./configure \
+          --prefix=/usr \
+          --libexecdir=/usr/lib/${name} \
+          --with-gtk=3.0 \
+          --enable-unique \
+          --enable-introspection \
+          --disable-static \
+          --disable-update-mimedb
+  make
+  make DESTDIR=$PKG install
 }
