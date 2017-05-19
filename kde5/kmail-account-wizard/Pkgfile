@@ -1,4 +1,4 @@
-# Depends on : boost kf5-extra-cmake-modules kf5-kdoctools qt-base kf5-knotifyconfig kf5-kross kf5-ktexteditor mailcommon
+# Depends on : kf5-extra-cmake-modules qt-base kf5-kwallet kf5-kcmutils kf5-knotifyconfig kf5-kservice kf5-kdbusaddons kf5-kdoctools kf5-ktexteditor kf5-kcodecs kf5-kcrash kf5-knotifications akonadi kldap libkdepim kmailtransport  kidentitymanagement libkleo pimcommon kmailtransport kimap akonadi-mime kf5-kross kf5-knewstuff shared-mime-info kf5-ki18n
 
 description="KMail account wizard"
 url="https://projects.kde.org/kmail-account-wizard"
@@ -6,18 +6,18 @@ packager="pierre at nutyx dot org"
 
 name=kmail-account-wizard
 version=17.04.1
-release=1
+release=2
 
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build() {
   mkdir -p build
   cd build
-  cmake ../$name-$version \
-    -DCMAKE_BUILD_TYPE=Release \
+  cmake ../$name-$version       \
+    -DCMAKE_BUILD_TYPE=Release  \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DKDE_INSTALL_LIBDIR=lib \
-    -DBUILD_TESTING=OFF \
+    -DKDE_INSTALL_LIBDIR=lib    \
+    -DBUILD_TESTING=OFF         \
     -Wno-dev
   make
   make DESTDIR=$PKG install
