@@ -1,9 +1,8 @@
-# Description: Default themes for MATE desktop
-# URL: http://matsusoft.com.ar/projects/mate
-# Packager: fanchyannmaria at orange dot fr, tnut at nutyx dot org, jayce dot net at gmail dot com
 # Depends on: gtk2
 
-
+description="Default themes for MATE desktop"
+url="https://mate-desktop.org/"
+packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org, jayce dot net at gmail dot com"
 name=mate-themes
 version=3.22.11
 release=1
@@ -12,7 +11,7 @@ source=(http://pub.mate-desktop.org/releases/themes/${version%.*}/${name}-${vers
 build() {
 	cd ${name}-${version}
     ./configure \
-        --prefix=/usr 
-make
-make DESTDIR=$PKG install
+        --prefix=/usr
+	make
+	make DESTDIR=$PKG install
 }

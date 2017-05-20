@@ -1,7 +1,7 @@
 # Depends on: mate-common dconf gtk3 iso-codes xorg-libxklavier
 
 description="MATE keyboard library"
-url="http://matsusoft.com.ar/projects/mate"
+url="https://mate-desktop.org/"
 packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org, jayce dot net at gmail dot com"
 name=mate-libkbd
 version=1.18.2
@@ -11,7 +11,7 @@ source=(http://pub.mate-desktop.org/releases/${version%.*}/${_name}-$version.tar
 
 build() {
 cd ${_name}-$version
-./configure  --prefix=/usr 
+./configure  --prefix=/usr
 make
 make DESTDIR=$PKG install
 }
