@@ -1,14 +1,17 @@
-# Depends on: avahi python gnutls xdg-utils gtk-update-icon-cache
+# Depends on: avahi python gnutls xdg-utils gtk-update-icon-cache libusb dbus colord
 
 description="The Common Unix Printing System (CUPS) is a print spooler and associated utilities"
 url="http://www.cups.org"
 packager="pierre at nutyx dot org"
+
 run=(xdg-utils gtk-update-icon-cache)
+
 PKGMK_GROUPS=(man devel)
+
 name=cups
 version=2.2.2
-release=2
-run=(xdg-utils)
+release=3
+
 source=( https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz)
 
 build() {
