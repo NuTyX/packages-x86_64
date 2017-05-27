@@ -17,11 +17,13 @@ cd ${_name}-${version}
 unset QTDIR
 export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
 
-./configure -prefix         /usr                        \
+./configure -confirm-license -opensource -v             \
+            -prefix         /usr                        \
             -sysconfdir     /etc/xdg                    \
             -bindir         /usr/bin/qt                 \
             -plugindir      /usr/lib/qt/plugins         \
             -importdir      /usr/lib/qt/imports         \
+            -qmldir         /usr/lib/qt/qml             \
             -headerdir      /usr/include/qt             \
             -datadir        /usr/share/qt               \
             -docdir         /usr/share/doc/qt           \
@@ -59,7 +61,11 @@ cat > $PKG/etc/profile.d/qt.sh << EOf
 QT5PREFIX=$QT5PREFIX
 QT5DIR=$QT5PREFIX
 QT5BINDIR=$QT5PREFIX/bin/qt
-export QT5PREFIX QT5BINDIR QT5DIR
+
+QT_PLUGIN_PATH=$QT5PREFIX/lib/qt/plugins
+QML2_IMPORT_PATH=$QT5PREFIX/lib/qt/qml
+
+export QT5PREFIX QT5BINDIR QT5DIR QT_PLUGIN_PATH QML2_IMPORT_PATH
 # End /etc/profile.d/qt.sh
 EOf
 
