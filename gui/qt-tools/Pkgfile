@@ -5,7 +5,7 @@ url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 
 name=qt-tools
-release=3
+release=1
 alias=(qttools)
 _name="${name/-/}-opensource-src"
 build() {
@@ -72,4 +72,8 @@ Encoding=UTf-8
 Type=Application
 categories=Qt;Development;Debugger;
 EOf
+
+# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
+  find "$PKG/usr/lib" -type f -name '*.prl' \
+       -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
 }

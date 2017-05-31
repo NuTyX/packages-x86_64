@@ -1,16 +1,16 @@
-# Depends on : qt-base qt-canvas3d qt-charts qt-connectivity qt-datavis3d qt-declarative qt-doc qt-gamepad qt-graphicaleffects qt-imageformats qt-location qt-multimedia qt-networkauth qt-quickcontrols qt-quickcontrols2 qt-script qt-scxml qt-sensors qt-serialbus qt-serialport qt-speech qt-svg qt-tools qt-translations qt-virtualkeyboard qt-wayland qt-webchannel qt-webengine qt-webkit qt-websockets qt-webview qt-x11extras qt-xmlpatterns
-run=(qt-base qt-canvas3d qt-charts qt-connectivity qt-datavis3d qt-declarative qt-doc qt-gamepad qt-graphicaleffects qt-imageformats qt-location qt-multimedia qt-networkauth qt-quickcontrols qt-quickcontrols2 qt-script qt-scxml qt-sensors qt-serialbus qt-serialport qt-speech qt-svg qt-tools qt-translations qt-virtualkeyboard qt-wayland qt-webchannel qt-webengine qt-webkit qt-websockets qt-webview qt-x11extras qt-xmlpatterns)
+# Depends on : qt-base qt-canvas3d qt-charts qt-connectivity qt-datavis3d qt-declarative qt-doc qt-gamepad qt-graphicaleffects qt-imageformats qt-location qt-multimedia qt-networkauth qt-quickcontrols qt-quickcontrols2 qt-script qt-scxml qt-sensors qt-serialbus qt-serialport qt-speech qt-svg qt-tools qt-translations qt-virtualkeyboard qt-wayland qt-webchannel qt-webengine qt-webkit qt-websockets qt-webview qt-x11extras qt-xmlpatterns qt-remoteobjects
 
+run=(qt-base qt-canvas3d qt-charts qt-connectivity qt-datavis3d qt-declarative qt-doc qt-gamepad qt-graphicaleffects qt-imageformats qt-location qt-multimedia qt-networkauth qt-quickcontrols qt-quickcontrols2 qt-script qt-scxml qt-sensors qt-serialbus qt-serialport qt-speech qt-svg qt-tools qt-translations qt-virtualkeyboard qt-wayland qt-webchannel qt-webengine qt-webkit qt-websockets qt-webview qt-x11extras qt-xmlpatterns qt-remoteobjects)
 
 description="This port install all the qt parts"
 url="http://qt-project.org/"
 packager="pierre at nutyx dot org, tnut at nutyx dot org"
 
 name=qt
-version=5.8.0
-release=2
+version=5.9.0
+release=1
 if [ ! -z ${_name} ]; then
-  source=(https://download.qt.io/official_releases/qt/5.8/$version/submodules/${_name}-${version}.tar.xz)
+  source=(https://download.qt.io/official_releases/qt/5.9/$version/submodules/${_name}-${version}.tar.xz)
 fi
 build() {
 mkdir -p $PKG/usr
