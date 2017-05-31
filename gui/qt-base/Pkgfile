@@ -1,4 +1,4 @@
-# Depends on: git xorg-proto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms xcb-util-renderutil xcb-util xcb-util-image xcb-util-wm xcb-util-cursor glib dbus xorg-fontconfig xorg-libsm xorg-libxrandr xorg-libxv xorg-libxi unixodbc libjpeg-turbo alsa-lib xdg-utils hicolor-icon-theme desktop-file-utils mesa xorg-libxcursor xorg-libxrender libpng mariadb icu libglade xorg-libxfixes xorg-libxinerama libxkbcommon libinput harfbuzz mtdev postgresql cups python gperf ruby pulseaudio bluez libtiff libmng openal libxslt xorg-libxcomposite gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad gstreamer1 gstreamer1-plugins-base gstreamer1-plugins-good gstreamer1-plugins-bad pulseaudio hunspell wayland ca-certificates openssl pcre gtk2 gtk3 libxkbcommon nss pciutils freetype
+# Depends on: git xorg-proto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms xcb-util-renderutil xcb-util xcb-util-image xcb-util-wm xcb-util-cursor glib dbus xorg-fontconfig xorg-libsm xorg-libxrandr xorg-libxv xorg-libxi unixodbc libjpeg-turbo alsa-lib xdg-utils hicolor-icon-theme desktop-file-utils mesa xorg-libxcursor xorg-libxrender libpng mariadb icu libglade xorg-libxfixes xorg-libxinerama libxkbcommon libinput harfbuzz mtdev postgresql cups python gperf ruby pulseaudio bluez libtiff libmng openal libxslt xorg-libxcomposite gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad gstreamer1 gstreamer1-plugins-base gstreamer1-plugins-good gstreamer1-plugins-bad pulseaudio hunspell wayland ca-certificates openssl pcre gtk2 gtk3 libxkbcommon nss pciutils freetype libproxy
 
 description="A cross-platform application and UI framework"
 url="http://qt-project.org/"
@@ -46,7 +46,6 @@ export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
             -system-libpng      \
             -system-xcb         \
             -system-xkbcommon   \
-            -system-pcre        \
             -system-harfbuzz    \
             -system-sqlite      \
             -system-freetype    \
@@ -61,7 +60,9 @@ cat > $PKG/etc/profile.d/qt.sh << EOf
 QT5PREFIX=$QT5PREFIX
 QT5DIR=$QT5PREFIX
 QT5BINDIR=$QT5PREFIX/bin/qt
-export QT5PREFIX QT5BINDIR QT5DIR
+QT_PLUGIN_PATH=/usr/lib/qt/plugins
+QML2_IMPORT_PATH=/usr/lib/qt/qml
+export QT5PREFIX QT5BINDIR QT5DIR QT_PLUGIN_PATH QML2_IMPORT_PATH
 # End /etc/profile.d/qt.sh
 EOf
 
@@ -69,4 +70,12 @@ mkdir -p $PKG/usr/bin
 for i in $PKG/usr/bin/qt/*; do 
     ln -sv /usr/bin/qt/$(basename $i) $PKG/usr/bin/$(basename $i)
 done
+
+# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
+  find "$PKG/usr/lib" -type f -name '*.prl' \
+    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+
+# Fix wrong qmake path in pri file
+  sed -i "s|$SRC/${_name}-$version|/usr|" \
+    $PKG/usr/lib/qt/mkspecs/modules/qt_lib_bootstrap_private.pri
 }
