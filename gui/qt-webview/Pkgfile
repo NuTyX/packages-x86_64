@@ -5,7 +5,7 @@ url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 
 name=qt-webview
-release=2
+release=1
 alias=(qtwebview)
 _name="${name/-/}-opensource-src"
 build() {
@@ -13,4 +13,8 @@ cd ${_name}-${version}
 qmake
 make
 make INSTALL_ROOT=$PKG install
+
+# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
+  find "$PKG/usr/lib" -type f -name '*.prl' \
+       -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
 }
