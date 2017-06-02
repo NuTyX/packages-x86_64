@@ -12,6 +12,6 @@ source=(http://www.lwfinger.com/$name/broadcom-wl-$version.tar.bz2)
 
 build() {
   install -d $PKG/usr/lib/firmware/
-  /usr/bin/b43-fwcutter -w $PKG/usr/lib/firmware/ broadcom-wl-${version}.wl_apsta.o
+  /usr/bin/b43-fwcutter -w $PKG/lib/modules/${uname -r}/kernel/drivers/zzzz/ broadcom-wl-${version}.wl_apsta.o
 }
 
