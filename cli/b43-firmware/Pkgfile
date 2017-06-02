@@ -1,0 +1,17 @@
+# Depends on: b43-fwcutter
+
+description="Firmware for Broadcom B43 wireless networking chips - latest release"
+url="https://wireless.wiki.kernel.org/en/users/Drivers/b43"
+packager="pierre at nutyx dot org"
+
+name=b43-firmware
+version=6.30.163.46
+release=1
+
+source=(http://www.lwfinger.com/$name/broadcom-wl-$version.tar.bz2)
+
+build() {
+  install -d $PKG/usr/lib/firmware/
+  /usr/bin/b43-fwcutter -w $PKG/usr/lib/firmware/ broadcom-wl-${version}.wl_apsta.o
+}
+
