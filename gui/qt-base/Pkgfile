@@ -4,7 +4,7 @@ description="A cross-platform application and UI framework"
 url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 name=qt-base
-release=2
+release=3
 _name="${name/-/}-opensource-src"
 
 build() {
@@ -63,6 +63,7 @@ QT5BINDIR=$QT5PREFIX/bin/qt
 QT_PLUGIN_PATH=/usr/lib/qt/plugins
 QML2_IMPORT_PATH=/usr/lib/qt/qml
 export QT5PREFIX QT5BINDIR QT5DIR QT_PLUGIN_PATH QML2_IMPORT_PATH
+pathappend $QT5DIR/bin/qt
 # End /etc/profile.d/qt.sh
 EOf
 
