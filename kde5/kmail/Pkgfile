@@ -5,15 +5,15 @@ url="https://projects.kde.org/kmail"
 packager="pierre at nutyx dot org"
 
 name=kmail
-version=17.04.1
-release=2
+version=17.04.2
+release=1
 
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build() {
-  mkdir -p build
+  mkdir build
   cd build
-  cmake ../$name-$version \ 
+  cmake ../$name-$version       \
     -DCMAKE_BUILD_TYPE=Release  \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib  \
