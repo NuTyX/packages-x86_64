@@ -5,22 +5,18 @@ url="https://projects.kde.org/kdepim"
 packager="pierre at nutyx dot org"
 
 name=kdepim-runtime
-version=17.04.1
-release=2
+version=17.04.2
+release=1
 
-source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz
-       kdepim-runtime-kdebug-379733.patch)
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build() {
-  cd $name-$version 
-  patch -p1 -i ../kdepim-runtime-kdebug-379733.patch
-  cd ../
   mkdir build
   cd build
   cmake ../$name-$version       \
     -DCMAKE_BUILD_TYPE=Release  \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib  \
+    -DKDE_INSTALL_LIBDIR=lib    \ 
     -DBUILD_TESTING=OFF
   make
   make DESTDIR=$PKG install
