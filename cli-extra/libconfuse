@@ -1,0 +1,24 @@
+# Depends on: 
+
+description="Small configuration file parser library for C."
+url=" https://github.com/martinh/libconfuse"
+packager="SipoMatadorduCosmos"
+
+name=libconfuse
+version=3.2
+release=1
+
+source=(https://github.com/martinh/$name/releases/download/v$version/${name#lib}-$version.tar.xz)
+
+
+build() {
+	cd ${name#lib}-$version
+
+	./configure \
+		--prefix=/usr \
+		--disable-nls
+
+	make
+	make DESTDIR=$PKG install
+
+}
