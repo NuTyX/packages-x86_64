@@ -7,13 +7,16 @@ run=(mariadb)
 
 name=akonadi
 version=17.04.2
-release=1
+release=2
 
-source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz
+       akonadi-kdebug-380182.patch)
 
 build() {
-  mkdir build
-  cd build
+  cd $name-$version
+  patch -p1 -i ../akonadi-kdebug-380182.patch
+  mkdir ../build
+  cd ../build
   cmake ../$name-$version       \
     -DCMAKE_BUILD_TYPE=Release  \
     -DCMAKE_INSTALL_PREFIX=/usr \
