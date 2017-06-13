@@ -5,11 +5,13 @@
 
 name=gconf
 version=3.2.6
-release=2
+release=3
 
-source=(http://ftp.gnome.org/pub/gnome/sources/GConf/${version%.*}/GConf-$version.tar.xz)
+source=(http://ftp.gnome.org/pub/gnome/sources/GConf/${version%.*}/GConf-$version.tar.xz
+		gconf-merge-schema)
 
 build() {
+
 cd GConf-$version
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
@@ -20,4 +22,6 @@ cd GConf-$version
 make 
 make DESTDIR=$PKG install
 ln -s gconf.xml.defaults $PKG/etc/gconf/gconf.xml.system
+cd ..
+install -m755 gconf-merge-schema $PKG/usr/bin/
 }
