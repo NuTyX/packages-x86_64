@@ -6,7 +6,7 @@ packager="SipoMatadorduCosmos"
 
 name=discord
 version=0.0.1
-release=1
+release=2
 
 source=(https://dl.discordapp.net/apps/linux/$version/$name-$version.tar.gz)
 
@@ -22,11 +22,5 @@ install -d $PKG/usr/bin
 ln -s /opt/$name/Discord $PKG/usr/bin/$name
 install -d $PKG/usr/share/pixmaps
 ln -s /opt/$name/discord.png $PKG/usr/share/pixmaps/$name.png
-
+sed -i "s@/usr/share/discord/Discord@/usr/bin/discord@" $PKG/usr/share/applications/discord.desktop
 }
-
-
-
-
-
-
