@@ -1,0 +1,20 @@
+# Depends on: libconfuse vte3 libglade
+
+description="A quake-style popup terminal."
+url="https://github.com/lanoxx/tilda"
+packager="SipoMatadorduCosmos"
+
+name=tilda
+version=1.3.3
+release=1
+
+source=(https://github.com/lanoxx/tilda/archive/$name-$version.tar.gz)
+
+
+build() {
+  cd $name-$name-$version
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+  make DESTDIR=$PKG install
+}
