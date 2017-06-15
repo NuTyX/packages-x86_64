@@ -8,12 +8,10 @@ maintainer="tnut at nutyx dot org"
 
 name=nutyx
 version=9.0
-release=2
-source=(nutyx-9.0-initrd-1.patch
-	http://downloads.nutyx.org/files/$name-$version.tar.gz
-	)
+release=3
+source=(http://downloads.nutyx.org/files/$name-$version-$release.tar.gz)
+
 build () {
 cd $name-$version
-patch -Np1 -i ../nutyx-9.0-initrd-1.patch
 make DESTDIR=$PKG install
 }
