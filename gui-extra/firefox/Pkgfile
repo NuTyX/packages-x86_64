@@ -7,7 +7,7 @@ packager="pierre at nutyx dot org,tnut at nutyx dot org"
 run=(gstreamer1-plugins-good gstreamer1-plugins-libav)
 
 name=firefox
-version=53.0.3
+version=54.0
 release=1
 
 source=( https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.xz)
@@ -17,7 +17,7 @@ build() {
 cd $SRC
 ARCH=`uname -m`
 
-for lang in da de es-ES fi fr it nb-NO nl pt-PT sv-SE tr
+for lang in da de es-ES fi fr it nb-NO nl pt-PT ru sv-SE tr
 do 
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$ARCH/xpi/$lang.xpi
 done
