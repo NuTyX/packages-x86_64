@@ -1,14 +1,13 @@
-# Description: Library for id3 tagging
-# URL: http://www.mars.org/home/rob/proj/mpeg/
-# Packager: pierre at nutyx dot org
-# Depends on: 
+description="Library for id3 tagging"
+url="http://www.mars.org/home/rob/proj/mpeg/"
+packager="pierre at nutyx dot org"
 
 name=libid3tag
 version=0.15.1b
-release=1
+release=2
 
 source=(ftp://ftp.mars.org/pub/mpeg/$name-$version.tar.gz\
-	http://downloads.nutyx.org/files/patchs/$name/id3tag.pc)
+	id3tag.pc)
 
 build() {
 	mkdir -p $PKG/usr/lib/pkgconfig/
