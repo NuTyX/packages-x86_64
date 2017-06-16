@@ -1,0 +1,48 @@
+# Depends on: xorg-fontconfig libpng glib xorg-libsm xorg-libxext xorg-libxrender libxml2 desktop-file-utils shared-mime-info xdg-utils glu xorg-font-util unzip
+
+description="Kingsoft Office (WPS Office) is an office productivity suite"
+url="http://wps-community.org/"
+packager="SipoMatadorduCosmos"
+
+name=wps-office
+version=10.1.0.5672_a21
+_version=10.1.0.5672~a21
+install=$name.install
+_archext=x86_64
+release=1
+
+source=(http://kdl.cc.ksosoft.com/wps-community/download/a21/wps-office_${_version}_x86_64.tar.xz
+		http://wps-community.org/download/dicts/fr_FR.zip
+		)
+
+
+build() {
+ cd wps-office_${_version}_$_archext
+ sed -i 's|/opt/kingsoft/wps-office|/usr/lib|' wps wpp et
+ 
+ install -d $PKG/usr/lib
+ cp -r office6 $PKG/usr/lib
+
+ install -d $PKG/usr/bin
+ install -m755 wps wpp et $PKG/usr/bin
+
+ install -d $PKG/usr/share/applications
+ cp -r resource/applications/* $PKG/usr/share/applications
+
+ install -d $PKG/usr/share/icons
+ cp -r resource/icons/* $PKG/usr/share/icons
+
+ install -d $PKG/usr/share/mime
+ cp -r resource/mime/* $PKG/usr/share/mime
+
+ install -d $PKG/usr/share/fonts/wps-office
+ cp -r fonts/* $PKG/usr/share/fonts/wps-office
+ 
+ cd ..
+ 
+ install -dm755 $PKG/usr/lib/office6/dicts
+ 
+ cp -r fr_FR $PKG/usr/lib/office6/dicts
+ 
+ 
+ }
