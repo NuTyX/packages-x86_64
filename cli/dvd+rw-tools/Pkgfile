@@ -1,14 +1,13 @@
-# Description: DVD+-RW/R tools
-# URL: http://fy.chalmers.se/~appro/linux/DVD+RW/
-# Packager: pierre at nutyx dot org
-# Depends on: 
+description="DVD+-RW/R tools"
+url="http://fy.chalmers.se/~appro/linux/DVD+RW/"
+packager="pierre at nutyx dot org, tnut at nutyx dot org"
 
 name=dvd+rw-tools
 version=7.1
-release=1
+release=2
 
 source=( http://fy.chalmers.se/~appro/linux/DVD+RW/tools/dvd+rw-tools-$version.tar.gz \
-	 http://downloads.nutyx.org/files/patchs/$name/transport.patch)
+	 transport.patch)
 
 build() {
 	cd $name-$version
