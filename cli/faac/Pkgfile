@@ -1,23 +1,23 @@
-# Description: Encoder MPEG-4 de AudioCoding.com
-# URL: http://www.audiocoding.com
-# Packager: tnut at nutyx dot org
-# Depends on: libmp4v2
+description="Encoder MPEG-4 de AudioCoding.com"
+url="http://www.audiocoding.com"
+packager="tnut at nutyx dot org"
 
 name=faac
 version=1.28
 release=2
 
 source=(http://heanet.dl.sourceforge.net/sourceforge/$name/$name-$version.tar.gz 
-altivec.patch mp4v2-1.9.patch mp4v2-2.0.0.patch)
+	http://www.linuxfromscratch.org/patches/blfs/svn/faac-1.28-glibc_fixes-1.patch)
 
 
 build() {
+
 cd $name-$version
-patch -p1 -i ../mp4v2-1.9.patch
-patch -p0 -i ../mp4v2-2.0.0.patch
-patch -p0 -i ../altivec.patch
-find . -type f -print0 | xargs -0 sed -i 's/\r//g'
-./bootstrap
+patch -Np1 -i ../faac-1.28-glibc_fixes-1.patch
+
+sed -i -e '/obj-type/d' -e '/Long Term/d' frontend/main.c
+
+CFLAGS=-std=c99 CXXFLAGS=-std=c++98 \
 ./configure --prefix=/usr 
 make
 make DESTDIR=$PKG install
