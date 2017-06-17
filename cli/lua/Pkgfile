@@ -15,7 +15,7 @@ build() {
 	sed -i '/#define LUA_ROOT/s:/usr/local/:/usr/:' src/luaconf.h
 
     	make linux
-	make INSTALL_TOP=$PKG/usr  TO_LIB="liblua.so liblua.so.5.3 liblua.so.5.3.3" \
+	make INSTALL_TOP=$PKG/usr  TO_LIB="liblua.so liblua.so.5.3 liblua.so.5.3.4" \
 	INSTALL_DATA="cp -d" INSTALL_MAN=$PKG/usr/share/man/man1 install
 	mkdir -pv $PKG/usr/share/doc/$name-$version
 	cp -v doc/*.{html,css,gif,png} $PKG/usr/share/doc/$name-$version
