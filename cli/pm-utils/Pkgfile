@@ -1,18 +1,18 @@
-# Description: Utilities and scripts for suspend and hibernate power management
-# URL: http://pm-utils.freedesktop.org
-# Packager: pierre at nutyx dot org
+description="Utilities and scripts for suspend and hibernate power management"
+url="http://pm-utils.freedesktop.org"
+packager="pierre at nutyx dot org"
 # Depends on: pm-quirks 
 
 
 name=pm-utils
 version=1.4.1
-release=1
+release=2
 
 source=(http://pm-utils.freedesktop.org/releases/pm-utils-${version}.tar.gz
-        http://downloads.nutyx.org/files/patchs/$name/02-logging-append.patch
-        http://downloads.nutyx.org/files/patchs/$name/12-fix-intel-audio-powersave-hook.patch
-        http://downloads.nutyx.org/files/patchs/$name/13-49bluetooth-sync.patch
-        http://downloads.nutyx.org/files/patchs/$name/14-disable-sata-alpm.patch)
+        02-logging-append.patch
+        12-fix-intel-audio-powersave-hook.patch
+        13-49bluetooth-sync.patch
+        14-disable-sata-alpm.patch)
 
 build() {
   	cd $name-$version
@@ -32,5 +32,3 @@ build() {
 
   rm -fr "${PKG}/usr/share/doc"
 }
-
-
