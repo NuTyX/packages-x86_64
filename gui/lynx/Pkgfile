@@ -1,16 +1,17 @@
-# Description: Text-based web browser.
-# URL: http://lynx.isc.org/
-# Maintainer: Danny Rawlins, crux at romster dot me
-# Packager: Mark Rosenstand, mark at borkware dot net
 # Depends on: ncurses openssl zlib
 
+description="Text-based web browser."
+url="http://lynx.isc.org/"
+packager="Danny Rawlins, crux at romster dot me"
+maintainer="Mark Rosenstand, mark at borkware dot net"
+
 name=lynx
-version=2.8.9dev.9
+version=2.8.8rel.2
 release=1
-source=(http://invisible-island.net/datafiles/release/lynx-cur.tar.bz2)
+source=(http://invisible-mirror.net/archives/${name}/tarballs/${name}${version}.tar.bz2)
 
 build() {
-	cd lynx${version//-/.}
+	cd ${name}*
 
 	./configure \
 		--prefix=/usr \
