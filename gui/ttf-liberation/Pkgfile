@@ -1,14 +1,15 @@
-# Description: Red Hats Liberation fonts.
-# URL: https://www.redhat.com/promo/fonts/
-# Packager: alienus at nutyx dot org, tnut at nutyx
 # Depends on: xorg-fontconfig xorg-font-util xorg-encodings fontforge
+
+description="Red Hats Liberation fonts."
+url="https://www.redhat.com/promo/fonts/"
+packager="alienus at nutyx dot org, tnut at nutyx"
+
 run=( xorg-fontconfig xorg-font-util xorg-encodings fontforge )
 name=ttf-liberation
 version=2.00.1
-release=1
+release=2
 
-source=(
-https://fedorahosted.org/releases/l/i/liberation-fonts/liberation-fonts-ttf-$version.tar.gz
+source=(http://sources.openelec.tv/mirror/liberation-fonts-ttf/liberation-fonts-ttf-$version.tar.gz
 ttf-liberation.30-0-liberation-mono.conf
 ttf-liberation.30-0-liberation-sans.conf
 ttf-liberation.30-0-liberation-serif.conf)
