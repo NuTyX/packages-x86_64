@@ -119,7 +119,7 @@ EOF
 
 	cd ${LFS}
 	isohybrid -u ${ISO}.iso || error "isohybrid ${ISO}.iso"
-	md5sum ${ISO}.iso > ${ISO}.md5sum
+	sha256sum ${ISO}.iso > ${ISO}.sha256sum
 }
 
 main "$@"
