@@ -4,7 +4,7 @@ description="A cross-platform application and UI framework"
 url="http://qt-project.org/"
 packager="pierre at nutyx dot org"
 name=qt-base
-release=3
+release=4
 _name="${name/-/}-opensource-src"
 
 build() {
@@ -13,6 +13,9 @@ QT5PREFIX=/usr
 QT5BINDIR=$QT5PREFIX/bin/qt
 
 cd ${_name}-${version}
+
+sed '/qsqlresult_p.h>/a#include <mysql/mysql_version.h>' \
+    -i src/plugins/sqldrivers/mysql/qsql_mysql.cpp
 
 unset QTDIR
 export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
