@@ -80,6 +80,16 @@ menuentry "NuTyX #ARCH# #VERSION_NUTYX# (UEFI mode) debug" {
     linux /boot/kernel ro quiet testiso rootdelay=5
     initrd /boot/initrd
 }
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# (UEFI mode) live" {
+    insmod efi_uga
+    insmod efi_gop
+    set gfxmode=auto
+    set gfxpayload=keep
+
+    insmod linux
+    linux /boot/kernel ro quiet rootdelay=5 fromiso
+    initrd /boot/initrd
+}
 EOF
 	sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" boot/grub/grub.cfg
 	sed -i "s|#ARCH#|${ARCH}|" boot/grub/grub.cfg
