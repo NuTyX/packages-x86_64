@@ -5,11 +5,15 @@ packager="pierre at nutyx dot org, tnut at nutyx dot org"
 description="Word processing similar to MS® Word, suitable for a wide variety of word processing tasks"
 name=abiword
 version=3.0.2
-release=1
+release=2
 
-source=(${url}downloads/$name/$version/source/$name-$version.tar.gz)
+source=(${url}downloads/$name/$version/source/$name-$version.tar.gz
+	abiword-3.0.2-gtk3_22_render_fix-1.patch)
+
 build() {
+cp $SRC/abiword-3.0.2-gtk3_22_render_fix-1.patch $SRC/$name-$version/abiword-3.0.2-gtk3_22_render_fix-1.patch
 cd $name-$version
+patch -Np1 -i abiword-3.0.2-gtk3_22_render_fix-1.patch
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install

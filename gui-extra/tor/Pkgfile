@@ -1,25 +1,27 @@
 # Depends on: libevent openssl libseccomp
 
-description="Tor is a anonymous network and proxy."
 url="https://www.torproject.org/"
 packager="tnut at nutyx dot org"
+description="Anonymizing overlay network."
 name=tor
-version=0.2.8.10
-release=2
-source=(${url}dist/tor-$version.tar.gz torrc tor.rc)
+version=0.3.0.8
+release=1
+
+source=(https://www.torproject.org/dist/$name-$version.tar.gz
+	torrc
+	tor.rc)
+
+
 
 build() {
-	cd $name-$version
-	
-	./configure \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var 
-	make
-	make DESTDIR=$PKG install
-	install -dm0700 -o 43 -g 43 ${PKG}/var/lib/tor
-	mv ${PKG}/etc/tor/torrc.sample ${PKG}/etc/tor/torrc-dist
-	install -Dm0644 ${SRC}/torrc ${PKG}/etc/tor/torrc
-	install -Dm0750 ${SRC}/tor.rc ${PKG}/etc/rc.d/tor
-	install -Dm0644 LICENSE ${PKG}/usr/share/licenses/${name}/LICENSE
+cd $name-$version
+
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+  make
+  make DESTDIR=$PKG install
+  install -dm0700 -o 43 -g 43 $PKG/var/lib/tor
+  mv $PKG/etc/tor/torrc.sample $PKG/etc/tor/torrc-dist
+  install -Dm0644 $SRC/torrc $PKG/etc/tor/torrc
+  install -Dm0644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
+
 }
