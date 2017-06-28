@@ -1,0 +1,21 @@
+# Depends on: popt libgcrypt libgpg-error
+
+description="an utility used to conveniently setup disk encryption based on DMCrypt kernel module."
+url="https://gitlab.com/cryptsetup/cryptsetup/"
+maintainer="NuTyX core team"
+packager=""
+
+name=cryptsetup
+version=1.7.5
+release=1
+source=(https://www.kernel.org/pub/linux/utils/cryptsetup/v1.7/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+        ./configure --prefix=/
+        make
+#	make check
+        make DESTDIR=$PKG install
+}
+
+
