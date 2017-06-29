@@ -1,0 +1,15 @@
+# Depends on: mpv libcaca alsa-utils
+
+url="www.nutyx.org"
+packager="Sipo-Adrien D.-Tnut"
+description="Inutile donc indispensable, délire de potes!"
+name=lucky
+version=0.1
+release=1
+
+source=(http://downloads.nutyx.org/files/l.mp4)
+
+build() {
+mkdir $PKG/tmp
+cp l.mp4 $PKG/tmp
+}
