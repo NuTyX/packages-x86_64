@@ -2,17 +2,22 @@
 
 description="GTK+ implementation of wxWidgets API for GUI"
 url="http://wxwidgets.org"
-packager="pierre at nutyx dot org, tnut at nutyx dot org"
+packager="pierre at nutyx dot org, tnut at nutyx dot org, Sipo"
 name=wxgtk
-version=3.0.2
-release=4
+version=3.0.3.1
+release=1
 
-source=(http://downloads.sourceforge.net/wxwindows/wxWidgets-$version.tar.bz2
-	make-abicheck-non-fatal.patch wxgtk-gcc6.patch)
+source=(https://github.com/wxWidgets/wxWidgets/releases/download/v$version/wxWidgets-$version.tar.bz2
+	make-abicheck-non-fatal.patch 
+	)
+
+
+
 build() {
 cd wxWidgets-$version
 patch -Np1 -i ../make-abicheck-non-fatal.patch
-patch -p1 -i ../wxgtk-gcc6.patch
+
+
 ./configure --prefix=/usr --libdir=/usr/lib --with-gtk=2 --with-opengl --enable-unicode \
 --enable-graphics_ctx  --enable-mediactrl --enable-webview --with-regex=builtin \
 --with-libpng=sys --with-libxpm=sys --with-libjpeg=sys --with-libtiff=sys \
