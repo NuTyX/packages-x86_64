@@ -2,16 +2,40 @@
 
 description="Core library of gphoto2, designed to allow access to digital camera by external programs."
 url="http://www.gphoto.org/proj/libgphoto2/"
-packager="pierre at nutyx dot org, tnut at nutyx dot org"
+packager="Sipo"
 name=libgphoto2
-version=2.5.11
+version=2.5.14
 release=1
 
-source=(http://downloads.sourceforge.net/gphoto/$name-$version.tar.bz2)
+source=(https://github.com/gphoto/$name/archive/libgphoto2-2_5_14-release.tar.gz)
+
+
+prepare() {
+  cd $name-libgphoto2-2_5_14-release
+  autoreconf -fvi
+}
+
+
 
 build() {
-	cd $name-$version
-	./configure --prefix=/usr --sysconfdir=/etc
+	cd $name-libgphoto2-2_5_14-release
+	./configure --prefix=/usr --disable-rpath
+
+  	sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0 /g' -e 's/    if test "$export_dynamic" = yes && test -n "$export_dynamic_flag_spec"; then/      func_append compile_command " -Wl,-O1,--as-needed"\n      func_append finalize_command " -Wl,-O1,--as-needed"\n\0/' libtool
 	make
 	make DESTDIR=$PKG install
+_genudev
 }
+
+
+_genudev() (
+  cd $PKG/usr/lib/libgphoto2
+
+  export LD_LIBRARY_PATH=$PKG/usr/lib${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH
+  export CAMLIBS=$PWD/$version
+
+  ./print-camera-list hwdb \
+    | install -Dm644 /dev/stdin $PKG/etc/udev/hwdb.d/20-gphoto.hwdb
+  ./print-camera-list udev-rules version 201 \
+    | install -Dm644 /dev/stdin $PKG/etc/udev/rules.d/40-gphoto.rules
+)
