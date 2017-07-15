@@ -4,15 +4,14 @@ maintainer="Paul Eggert,Mike Haertel,David Hayes,Len Tower and many more."
 packager="tnut at nutyx dot org"
 
 name=diffutils
-version=3.5
-release=2
+version=3.6
+release=1
 
 source=( http://ftp.gnu.org/gnu/$name/diffutils-$version.tar.xz )
 
 build()
 {
 cd diffutils-$version
-sed -i 's:= @mkdir_p@:= /bin/mkdir -p:' po/Makefile.in.in
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
