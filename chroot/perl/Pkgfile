@@ -1,9 +1,13 @@
-version=5.24.1
+version=5.26.0
 source=(http://ftp.funet.fi/pub/CPAN/src/perl-$version.tar.bz2
 	)
 build()
 {
 cd perl-$version
+
+sed -e '9751 a#ifndef PERL_IN_XSUB_RE' \
+    -e '9808 a#endif'                  \
+    -i regexec.c
 
 sh Configure -des -Dprefix=/tools -Dlibs=-lm
 
