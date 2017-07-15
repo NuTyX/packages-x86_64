@@ -2,9 +2,10 @@ description="Utilities for showing and setting the basic system characteristics"
 url="http://www.gnu.org/software/coreutils/"
 maintainer="Jim Meyering meyering at redhat dot com"
 packager="tnut at nutyx dot org"
+
 name=coreutils
-version=8.26
-release=2
+version=8.27
+release=1
 
 source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-i18n-1.patch
@@ -14,6 +15,8 @@ build()
 cd $name-$version
 
 patch -Np1 -i ../$name-$version-i18n-1.patch
+
+sed -i '/test.lock/s/^/#/' gnulib-tests/gnulib.mk
 
 FORCE_UNSAFE_CONFIGURE=1 ./configure --prefix=/usr \
 --enable-no-install-program=kill,uptime
