@@ -1,0 +1,13 @@
+description="Faba is a sexy and modern icon theme with Tango influences"
+packager="jayce dot net at gmail dot com"
+url="https://github.com/snwh/faba-icon-theme"
+name=faba-icon-theme
+version=1.0.0
+release=1
+build() {
+   git clone https://github.com/snwh/${name}
+   cd $name
+   bash autogen.sh --prefix=/usr
+   make
+   make DESTDIR=$PKG install
+}

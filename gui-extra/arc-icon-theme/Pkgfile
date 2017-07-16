@@ -1,0 +1,13 @@
+# Depends on: moka-icon-theme
+description="Arc icon theme"
+packager="jayce dot net at gmail dot com"
+url="https://github.com/horst3180/arc-icon-theme"
+name=arc-icon-theme
+version=1.0.0
+release=1
+build() {
+   git clone https://github.com/horst3180/${name} --depth 1
+   cd $name
+   ./autogen.sh --prefix=/usr
+   make DESTDIR=$PKG install
+}

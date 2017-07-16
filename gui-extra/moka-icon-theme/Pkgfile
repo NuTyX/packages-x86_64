@@ -1,0 +1,14 @@
+# Depends on: faba-icon-theme faba-mono-icons
+description="Moka is a stylized Linux desktop icon set, designed to be clear, simple and consistent."
+packager="jayce dot net at gmail dot com"
+url="https://github.com/moka-project/moka-icon-theme"
+name=moka-icon-theme
+version=1.0.0
+release=1
+build() {
+   git clone https://github.com/moka-project/${name}
+   cd $name
+   bash autogen.sh --prefix=/usr
+   make
+   make DESTDIR=$PKG install
+}
