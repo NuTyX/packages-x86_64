@@ -1,0 +1,42 @@
+# Depends on: aspell
+description="Various dictionaries for Aspell"
+url="http://aspell.net"
+packager="tnut at nutyx dot org"
+
+name=aspell-dict
+version=0.60.6.1
+release=1
+
+fr_ver=0.50-3
+de_ver=0.50-2
+es_ver=0.50-2
+it_ver=0.53-0
+nl_ver=0.50-2
+pt_ver=0.50-2
+nn_ver=0.50.1-1
+da_ver=0.50.1-0
+fi_ver=0.7-0
+
+source=(ftp://ftp.gnu.org/gnu/aspell/dict/fr/aspell-fr-${fr_ver}.tar.bz2
+	ftp://ftp.gnu.org/gnu/aspell/dict/de/aspell-de-${de_ver}.tar.bz2
+	ftp://ftp.gnu.org/gnu/aspell/dict/es/aspell-es-${es_ver}.tar.bz2
+	ftp://ftp.gnu.org/gnu/aspell/dict/it/aspell-it-${it_ver}.tar.bz2
+	ftp://ftp.gnu.org/gnu/aspell/dict/nl/aspell-nl-${nl_ver}.tar.bz2
+	ftp://ftp.gnu.org/gnu/aspell/dict/pt/aspell-pt-${pt_ver}.tar.bz2
+	ftp://ftp.gnu.org/gnu/aspell/dict/da/aspell-da-${da_ver}.tar.bz2
+	ftp://ftp.gnu.org/gnu/aspell/dict/fi/aspell-fi-${fi_ver}.tar.bz2
+	ftp://ftp.gnu.org/gnu/aspell/dict/sv/aspell-sv-${sv_ver}.tar.bz2
+	)
+
+build() {
+for i in fr de es it nl pt nn da fi sv
+do
+  _version=${i}_ver
+  cd aspell-$i-${_version}
+  ./configure
+  make
+  make DESTDIR=$PKG install
+  cd ..
+done
+}
+
