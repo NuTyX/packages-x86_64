@@ -1,8 +1,10 @@
-# Depends on: udisks shared-mime-info xorg-libxinerama xorg-libxrandr xorg-libxdamage gtk2 menu-cache dbus-glib desktop-file-utils vala
-
-url="http://pcmanfm.sourceforge.net/"
-packager="geantbrun at gmail dot com, tnut at nutyx dot org"
+contributors="geantbrun at gmail dot com, tnut at nutyx dot org"
+packager= "Sipo at nutyx dot org"
 description="Library used to develop file managers providing some file management utilities"
+url="http://pcmanfm.sourceforge.net/"
+
+# Depends on: gtk3 libexif menu-cache 
+
 name=libfm
 version=1.2.5
 release=1
@@ -10,15 +12,31 @@ release=1
 source=(http://downloads.sourceforge.net/pcmanfm/${name}-$version.tar.xz)
 
 build() {
-cd $name-$version
-./configure --prefix=/usr \
-            --sysconfdir=/etc \
-            --disable-static
-make 
-make DESTDIR=$PKG install
-# already in libfm-extra
-rm $PKG/usr/lib/libfm-extra.*
-rm $PKG/usr/lib/pkgconfig/libfm-extra.pc
-rm $PKG/usr/include/libfm
-rm $PKG/usr/include/libfm-1.0/{fm-xml-file.h,fm-extra.h,fm-version.h}
+
+    cd $SRC
+    [ -d gtk3 ] || cp -r $name-$version gtk3
+    cd gtk3
+    ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --with-gnu-ld \
+    --with-gtk=3
+
+  
+    sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+    make
+  
+}
+
+package() {
+
+    cd $SRC/gtk3
+	make DESTDIR=$PKG install
+	   
+    # already in libfm-extra
+	rm $PKG/usr/lib/libfm-extra.*
+	rm $PKG/usr/lib/pkgconfig/libfm-extra.pc
+	rm $PKG/usr/include/libfm
+	rm $PKG/usr/include/libfm-1.0/{fm-xml-file.h,fm-extra.h,fm-version.h}
+	
 }
