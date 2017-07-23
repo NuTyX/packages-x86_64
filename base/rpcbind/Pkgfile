@@ -2,8 +2,11 @@
 
 description="portmap replacement which supports RPC over various protocols"
 url="http://rpcbind.sourceforge.net/"
-packager="alienus at nutyx dot org, tnut at nutyx dot org"
-PKGMK_GROUPS=(man)
+contributors="alienus at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+
+[ "$PKGMK_ARCH"=="x86_64" ] &&  PKGMK_GROUPS=(man)
+
 name=rpcbind
 version=0.2.4
 release=2
