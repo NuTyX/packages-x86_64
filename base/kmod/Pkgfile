@@ -1,8 +1,9 @@
 description="The Kmod package contains libraries and utilities for loading kernel modules."
 url="http://www.kernel.org/pub/linux/kernel/people/rusty/modules"
-packager="pierre at nutyx dot org, tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
-PKGMK_GROUPS=(devel doc man)
+[ "$PKGMK_ARCH"=="x86_64" ] && PKGMK_GROUPS=(devel doc man)
 
 name=kmod
 version=24
