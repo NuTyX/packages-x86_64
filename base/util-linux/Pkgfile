@@ -4,12 +4,12 @@ maintainer="Karel Zak kzak at redhat dot com"
 packager="tnut at nutyx dot org"
 
 name=util-linux
-version=2.30
+version=2.30.1
 release=1
 source=(http://www.kernel.org/pub/linux/utils/util-linux/v${version:0:4}/util-linux-$version.tar.xz
 	)
 
-PKGMK_GROUPS=(devel doc man)
+PKGMK_ARCH="x86_64" && PKGMK_GROUPS=(devel doc man)
 
 build()
 {
