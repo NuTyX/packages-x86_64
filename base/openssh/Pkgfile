@@ -9,6 +9,7 @@ version=7.5p1
 release=1
 
 source=(http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$name-$version.tar.gz
+	 http://www.linuxfromscratch.org/patches/blfs/svn/openssh-$version-openssl-1.1.0-1.patch
 	$name-service-01.patch)
 build() {
 source /etc/blfs-bootscripts
@@ -21,6 +22,7 @@ install -v -m700 -d $PKG/var/lib/sshd
 
 chown -v root:sys $PKG/var/lib/sshd
 
+patch -Np1 -i ../openssh-$version-openssl-1.1.0-1.patch
 ./configure --prefix=/usr \
 --sysconfdir=/etc/ssh \
 --datadir=/usr/share/sshd \
