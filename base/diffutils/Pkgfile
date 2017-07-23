@@ -1,19 +1,10 @@
 description="Programs that show the differences between files or directories."
 url="http://www.gnu.org/software/diffutils/"
 maintainer="Paul Eggert,Mike Haertel,David Hayes,Len Tower and many more."
-packager="tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
 
 name=diffutils
 version=3.6
 release=1
 
 source=( http://ftp.gnu.org/gnu/$name/diffutils-$version.tar.xz )
-
-build()
-{
-cd diffutils-$version
-./configure --prefix=/usr
-make
-make DESTDIR=$PKG install
-rm -rf $PKG/usr/share/info/dir
-}
