@@ -1,7 +1,7 @@
 description="System utilities for handling file systems consoles partitions and messages."
 url="http://freshmeat.net/projects/util-linux/"
 maintainer="Karel Zak kzak at redhat dot com"
-packager="tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
 
 name=util-linux
 version=2.30.1
@@ -9,7 +9,7 @@ release=1
 source=(http://www.kernel.org/pub/linux/utils/util-linux/v${version:0:4}/util-linux-$version.tar.xz
 	)
 
-PKGMK_ARCH="x86_64" && PKGMK_GROUPS=(devel doc man)
+[ "$PKGMK_ARCH"=="x86_64" ] && PKGMK_GROUPS=(devel doc man)
 
 build()
 {
