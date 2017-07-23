@@ -4,12 +4,12 @@ maintainer="Colin Watson cjwatson at debian dot org"
 packager="tnut at nutyx dot org"
 
 name=libpipeline
-version=1.4.1
-release=2
+version=1.4.2
+release=1
 
 source=(http://download.savannah.gnu.org/releases/libpipeline/libpipeline-$version.tar.gz)
 
-PKGMK_GROUPS=(devel man)
+PKGMK_ARCH="x86_64" && PKGMK_GROUPS=(devel man)
 
 build()
 {
