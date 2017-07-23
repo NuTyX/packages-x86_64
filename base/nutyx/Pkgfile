@@ -1,14 +1,14 @@
-PKGMK_GROUPS=(man)
+[ "$PKGMK_ARCH"=="x86_64" ] && PKGMK_GROUPS=(man)
 PKGMK_IGNORE_RUNTIMEDEPS=yes
 
 description="Base system of NuTyX, contains all folders and startup scripts."
 url="https://github.com/nutyx"
-packager="tnut at nutyx dot org"
-maintainer="tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+maintainer="tnut <tnut@nutyx.org>"
 
 name=nutyx
-version=9.0
-release=3
+version=9.0.92
+release=1
 source=(http://downloads.nutyx.org/files/$name-$version-$release.tar.gz)
 
 build () {
