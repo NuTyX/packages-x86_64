@@ -1,13 +1,15 @@
 description="Utilities for monitoring your system and its processes."
 url="http://procps.sourceforge.net/"
-packager="pierre at nutyx dot org, tnut at nutyx dot org"
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+
 name=procps-ng
 version=3.3.12
 release=2
 
 source=(http://downloads.sourceforge.net/project/$name/Production/$name-$version.tar.xz )
 
-PKGMK_GROUPS=(devel man doc)
+[ "$PKGMK_ARCH"=="x86_64" ] && PKGMK_GROUPS=(devel man doc)
 
 build()
 {
