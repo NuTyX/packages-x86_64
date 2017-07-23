@@ -20,24 +20,9 @@ cd $name-$version
 	shared zlib-dynamic
 
 make
-make INSTALL_PREFIX=$PKG MANDIR=/usr/share/man \
+make DESTDIR=$PKG MANDIR=/usr/share/man \
 MANSUFFIX=ssl install
 
-mv $PKG/usr/bin \
-$PKG
-
-mv $PKG/usr/lib* \
-$PKG/lib
-
-mkdir $PKG/usr/lib
-
-mv $PKG/lib/pkgconfig \
-$PKG/usr/lib
-
-for file in libcrypto.pc openssl.pc libssl.pc
-	do
-		sed -i "s/lib64/lib/" $PKG/usr/lib/pkgconfig/$file
-done
 mv -v $PKG/usr/share/doc/openssl{,-$version}
 cp -vfr doc/*     $PKG/usr/share/doc/openssl-$version
 
