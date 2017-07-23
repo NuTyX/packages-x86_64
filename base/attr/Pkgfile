@@ -1,14 +1,17 @@
-# Description: Utilities to administer the extended attributes on filesystem objects
-# URL: http://savannah.nongnu.org/projects/attr
-# Maintainers: Andreas Gruenbacher <agruen>, Brandon Philips <philips>
-# Packagers: pierre at nutyx dot org, tnut at nutyx dot org
+description="Utilities to administer the extended attributes on filesystem objects"
+url="http://savannah.nongnu.org/projects/attr"
+maintainer="Andreas Gruenbacher <agruen>, Brandon Philips <philips>"
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
 
 name=attr
 version=2.4.47
 release=1
 
 source=(http://download.savannah.gnu.org/releases/$name/$name-$version.src.tar.gz)
-PKGMK_GROUPS=(devel man doc)
+
+[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man doc)
+
 build() {
 cd attr-$version
 
