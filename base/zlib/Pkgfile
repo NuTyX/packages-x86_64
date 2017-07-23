@@ -1,14 +1,16 @@
 description="Contains compression and decompression routines used by some programs."
 url="http://www.zlib.net/"
 maintainer="Jean-loup Gailly (compression), Mark Adler (decompression)"
-packager="pierre at nutyx dot org"
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+
 name=zlib
 version=1.2.11
 release=1
 
 source=(${url}zlib-$version.tar.xz)
 
-PKGMK_GROUPS=(devel man)
+[ "$PKGMK_ARCH"=="x86_64" ] && PKGMK_GROUPS=(devel man)
 
 build() {
 # Vérifier si necessaire de faire les verifs du bon fonctionnement de
