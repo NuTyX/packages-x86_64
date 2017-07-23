@@ -1,8 +1,9 @@
-# Description: A system for managing library compile/link flags.
-# URL: http://pkgconfig.freedesktop.org/
-# Maintainer: Tollef Fog Heen tfheen at err dot no
-# Packager: tnut at nutyx dot org
-PKGMK_GROUPS=(man doc)
+description="A system for managing library compile/link flags."
+url="http://pkgconfig.freedesktop.org/"
+maintainer="Tollef Fog Heen tfheen at err dot no"
+packager="tnut <tnut@nutyx.org>"
+
+[ "$PKGMK_ARCH"=="x86_64" ] && PKGMK_GROUPS=(man doc)
 
 name=pkg-config
 version=0.29.1
