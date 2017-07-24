@@ -10,7 +10,7 @@ run=(efivar)
 
 source=(http://alpha.gnu.org/gnu/grub/grub-$version.tar.xz)
 
-[ "$PKGMK_ARCH"=="x86_64" ] && PKGMK_GROUPS=(man locale)
+[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(man locale)
 
 build() {
  cd grub-$version

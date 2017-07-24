@@ -10,7 +10,7 @@ release=1
 source=(http://www.bzip.org/$version/bzip2-$version.tar.gz \
 http://www.linuxfromscratch.org/patches/lfs/development/bzip2-$version-install_docs-1.patch)
 
-[ "$PKGMK_ARCH"=="x86_64" ] && PKGMK_GROUPS=(devel doc man)
+[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel doc man)
 
 build() {
 

@@ -8,7 +8,7 @@ release=1
 
 source=(ftp://ftp.openssl.org/source/$name-$version.tar.gz)
 
-[ "$PKGMK_ARCH"=="x86_64" ] && PKGMK_GROUPS=(devel man doc)
+[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man doc)
 
 build() {
 unset MAKEFLAGS

@@ -11,7 +11,7 @@ url="http://git-scm.com/"
 source=( https://www.kernel.org/pub/software/scm/$name/$name{,-manpages,-htmldocs}-$version.tar.xz)
 run=(openssh)
 
-[ "$PKGMK_ARCH"=="x86_64" ] && PKGMK_GROUPS=(doc man)
+[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(doc man)
 
 build() {
 cd $name-$version
