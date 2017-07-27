@@ -11,6 +11,7 @@ source=(https://www.kernel.org/pub/linux/kernel/people/jeffm/reiserfsprogs/v${ve
 
 build() {
         cd $name-$version
+	autoreconf -fiv
         ./configure --prefix=/usr \
                 --sbindir=/sbin
         make
