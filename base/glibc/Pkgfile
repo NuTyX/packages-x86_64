@@ -9,7 +9,8 @@ name=glibc
 version=2.25+adc7e06
 release=1
 
-source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
+source=(glibc-$version-symbol-1.patch
+	http://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
 	http://anduin.linuxfromscratch.org/LFS/glibc-$version.tar.xz glibc.locales.supported )
 build() {
@@ -24,7 +25,7 @@ mkdir -p $PKG/usr/include
 cp -rv dest/include/* $PKG/usr/include
 
 cd ../glibc-$version
-
+patch -Np1 -i ../glibc-$version-symbol-1.patch
 patch -Np1 -i ../glibc-$version-fhs-1.patch
 
 case $(uname -m) in
