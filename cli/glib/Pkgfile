@@ -2,9 +2,9 @@
 
 description="The GLib package contains a low-level libraries useful for providing data structure handling"
 url="http://www.gtk.org/"
-packager="tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
 
-PKGMK_GROUPS=(man devel doc )
+[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(man devel doc )
 
 name=glib
 version=2.52.3
