@@ -1,12 +1,12 @@
 description="The Kerberos network authentication system"
 url="http://web.mit.edu/kerberos/"
-packager="tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
 
 name=kerberos
-version=1.14.4
+version=1.15.1
 release=1
 
-source=(http://web.mit.edu/$name/dist/krb5/1.14/krb5-$version.tar.gz)
+source=(http://web.mit.edu/$name/dist/krb5/${version:0:4}/krb5-$version.tar.gz)
 
 build()  {
         cd krb5-$version
