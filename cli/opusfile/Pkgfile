@@ -1,17 +1,12 @@
-# Description: Library for opening, seeking, and decoding .opus files
-# URL: http://www.opus-codec.org/
-# Packager: pierre at nutyx dot org
 # Depends on: libogg openssl opus
 
+description="Library for opening, seeking, and decoding .opus files"
+url="http://www.opus-codec.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 name=opusfile
-version=0.7
+version=0.8
 release=1
 
 source=(http://downloads.xiph.org/releases/opus/$name-$version.tar.gz)
-
-build() {
-  cd $name-$version
-  ./configure --prefix=/usr
-   make
-   make DESTDIR=$PKG install
-}
