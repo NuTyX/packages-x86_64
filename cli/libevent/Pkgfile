@@ -1,13 +1,14 @@
-# Description: An event notification library
-# URL: http://www.monkey.org/~provos/libevent/ 
-# Packager: pierre at nutyx dot org
-# Depends on: 
+description="An event notification library"
+url="http://www.monkey.org/~provos/libevent/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 name=libevent
-version=2.0.22
+version=2.1.8
 release=1
 
-source=(http://downloads.sourceforge.net/levent/$name-$version-stable.tar.gz)
+source=(https://github.com/libevent/libevent/releases/download/release-$version-stable/$name-$version-stable.tar.gz)
+
 build() {
 cd $name-$version-stable
 ./configure --prefix=/usr --disable-static
