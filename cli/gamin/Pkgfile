@@ -1,7 +1,9 @@
-# Description: File and directory monitoring system defined to be a subset of the File Alteration Monitor
-# URL:  http://www.gnome.org/~veillard/gamin
-# Packager: pierre at nutyx dot org
-# Depends on: glib python
+# Depends on: python glib
+
+description="File and directory monitoring system defined to be a subset of the File Alteration Monitor"
+url="http://www.gnome.org/~veillard/gamin"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 name=gamin
 version=0.1.10
@@ -24,4 +26,3 @@ sed -i 's/G_CONST_RETURN/const/' server/gam_{node,subscription}.{c,h}
 make
 make DESTDIR=$PKG install
 }
-  
