@@ -1,9 +1,9 @@
-# Description: The GNU Project debugger, allows you to see what is going on “inside” another program while it executes.
-# URL: http://www.sourceware.org/gdb/
-# Packager: tnuttens at gmail dot com
+description="The GNU Project debugger, allows you to see what is going on “inside” another program while it executes."
+url="http://www.sourceware.org/gdb/"
+packager="tnut <tnut@nutyx.org>"
 
 name=gdb
-version=7.12.1
+version=8.0
 release=1
 
 source=(https://ftp.gnu.org/gnu/gdb/$name-$version.tar.xz)
@@ -28,4 +28,3 @@ rm $PKG/usr/lib/libopcodes.la
 rm -r $PKG/usr/share/locale
 rm -f $PKG/usr/share/info/dir
 }
-
