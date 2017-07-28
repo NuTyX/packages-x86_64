@@ -1,11 +1,14 @@
 # Depends on: sqlite expat
 
-PKGMK_GROUPS=(devel man doc)
+[ "$PKGMK_GROUPS" == "x86_64" ] && PKGMK_GROUPS=(devel man doc)
+
 description="Next generation of the python high-level scripting language"
 url="http://www.python.org"
-packager="alienus at nutyx dot org, tnut at nutyx dot org"
+contributors="Alienus"
+packager="tnut <tnut@nutyx.org>"
+
 name=python
-version=3.6.1
+version=3.6.2
 release=1
 alias=(python3 Python)
 source=(
@@ -14,6 +17,7 @@ python.png)
 
 build() {
 	cd Python-$version
+	CXX="/usr/bin/g++" \
 	./configure --prefix=/usr \
                 --enable-shared \
                 --with-system-expat \
