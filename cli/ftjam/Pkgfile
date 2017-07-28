@@ -1,18 +1,10 @@
 description="FT Jam - an enhanced version of the Jam build tool"
 url="http://freetype.org/jam/"
-packager="Chris Farrell, timcowchip at gmail dot com"
+packager="tnut <tnut@nutyx.org>"
+contributors="Chris Farrell"
 
 name=ftjam
 version=2.5.3rc2
-release=2
+release=3
 
 source=(http://david.freetype.org/jam/${name}-${version}.tar.bz2)
-
-
-build() {
-  cd "${SRC}/${name}-${version}"
-  ./configure --prefix=/usr
-  make
-
-  make DESTDIR="${PKG}" install
-}
