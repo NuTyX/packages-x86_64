@@ -2,14 +2,17 @@
 
 description="Cargo is the Package Manager for Rust"
 url=" https://github.com/rust-lang/cargo/"
-packager="pierre at nutyx dot org"
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+
+PKGMK_KEEP_SOURCES="no"
 
 name=cargo
-version=0.17.0
+version=0.20.0
 release=1
 
 source=(https://github.com/rust-lang/cargo/archive/$version.tar.gz
-        https://static.rust-lang.org/dist/cargo-0.16.0-$(uname -m)-unknown-linux-gnu.tar.gz)
+        https://static.rust-lang.org/dist/cargo-0.16.0-${PKGMK_ARCH}-unknown-linux-gnu.tar.gz)
 
 build() {
   cd $name-$version/src/rust-installer 
@@ -19,7 +22,7 @@ build() {
  
   ./configure --prefix=/usr      \
               --sysconfdir=/etc  \
-              --docdir=/usr/share/doc/cargo-0.17.0 \
+              --docdir=/usr/share/doc/$name-$version \
               --cargo=$SRC/cargo-nightly*/cargo/bin/cargo 
   make
   make DESTDIR=$PKG install
