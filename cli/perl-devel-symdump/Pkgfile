@@ -1,11 +1,10 @@
-# Description: Perl symbol table access and dumping
-# URL: URL: http://search.cpan.org/dist/Devel-Symdump
-# NuTyX package info file (http://nutyx.org)
-# Packager: # NuTyX package info file (http://nutyx.org)
-# Depends on: 
+description="Perl symbol table access and dumping"
+url="http://search.cpan.org/dist/Devel-Symdump"
+packager="tnut <tnut@nutyx.org>"
+
 run=( perl )
 name=perl-devel-symdump
-version=2.15
+version=2.18
 release=1
 
 source=(http://www.cpan.org/authors/id/A/AN/ANDK/Devel-Symdump-$version.tar.gz)
@@ -21,6 +20,3 @@ build() {
         find $PKG -name "$i" -exec rm -rf {} \;
     done
 }
-
-
-
