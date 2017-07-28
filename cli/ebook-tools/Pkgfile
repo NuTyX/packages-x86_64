@@ -1,7 +1,9 @@
-# Description: Tools for accessing and converting various ebook file formats
-# URL : http://sourceforge.net/projects/ebook-tools/
-# Packager: pierre at nutyx dot org
-# Depends on : cmake libxml2 libzip
+# Depends on: cmake libxml2 libzip
+
+description="Tools for accessing and converting various ebook file formats"
+url="http://sourceforge.net/projects/ebook-tools/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 name=ebook-tools
 version=0.2.2
@@ -22,4 +24,3 @@ make DESTDIR=$PKG install
 install -Dm644 $SRC/$name-$version/LICENSE \
      $PKG/usr/share/licenses/$name/LICENSE
 }
-
