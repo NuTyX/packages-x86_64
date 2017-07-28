@@ -1,18 +1,22 @@
-# Description: Cyrus saslauthd SASL authentication daemon
-# URL: http://cyrusimap.org/
-# Packager: pierre at nutyx dot org
-# Depends on: db 
+# Depends on: db
+
+description="Cyrus saslauthd SASL authentication daemon"
+url="http://cyrusimap.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 name=cyrus-sasl
 version=2.1.26
-release=1
+release=3
 
 source=(ftp://ftp.cyrusimap.org/cyrus-sasl/$name-$version.tar.gz
+	http://www.linuxfromscratch.org/patches/blfs/svn/cyrus-sasl-$version-openssl-1.1.0-1.patch
 	http://www.linuxfromscratch.org/patches/blfs/svn/cyrus-sasl-$version-fixes-3.patch)
 
 build() {
 	cd $name-$version
 	patch -Np1 -i ../cyrus-sasl-$version-fixes-3.patch
+	patch -Np1 -i ../cyrus-sasl-$version-openssl-1.1.0-1.patch
 	autoreconf -fi 
 	./configure --prefix=/usr \
 		--sysconfdir=/etc \
