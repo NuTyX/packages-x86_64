@@ -1,24 +1,23 @@
 description="Encoder MPEG-4 de AudioCoding.com"
 url="http://www.audiocoding.com"
-packager="tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
 
 name=faac
-version=1.28
-release=3
+version=1.29
+release=1
 
-source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2
-	http://www.linuxfromscratch.org/patches/blfs/svn/faac-1.28-glibc_fixes-1.patch)
-
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
 
 build() {
 
 cd $name-$version
-patch -Np1 -i ../faac-1.28-glibc_fixes-1.patch
 
 sed -i -e '/obj-type/d' -e '/Long Term/d' frontend/main.c
 
+./bootstrap
+
 CFLAGS=-std=c99 CXXFLAGS=-std=c++98 \
-./configure --prefix=/usr 
+./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
 }
