@@ -2,18 +2,15 @@
 
 description="Open Source H265/HEVC video encoder."
 url="https://bitbucket.org/multicoreware/x265/wiki/Home"
-packager="Chris Farrell, timcowchip at gmail dot com, tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contriutors="Chris Farrell"
 
 name=x265
-version=2.4
-release=2
-source=( https://bitbucket.org/multicoreware/x265/downloads/${name}_${version}.tar.gz
- http://www.linuxfromscratch.org/patches/blfs/svn/${name}_${version}-enable_static-1.patch)
-
+version=2.5
+release=1
+source=( https://bitbucket.org/multicoreware/x265/downloads/${name}_${version}.tar.gz)
 build() {
   cd ${name}_${version}
-
-   patch -Np1 -i ../${name}_${version}-enable_static-1.patch
 
    mkdir bld 
    cd bld
