@@ -1,7 +1,8 @@
-# Description: James Clark's implementation of Document Style Semantics and Specification Language
-# URL: http://openjade.sourceforge.net/ 
-# Packager: tnut at nutyx dot org
 # Depends on: opensp
+
+description="James Clark's implementation of Document Style Semantics and Specification Language"
+url="http://openjade.sourceforge.net/"
+packager="tnut <tnut@nutyx.org>"
 
 name=openjade
 version=1.3.2
@@ -9,12 +10,14 @@ release=1
 
 source=(
 http://downloads.sourceforge.net/openjade/openjade-$version.tar.gz
-http://www.linuxfromscratch.org/patches/blfs/7.5/openjade-1.3.2-gcc_4.6-1.patch)
+http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-upstream-1.patch)
 
 build(){
     cd $name-$version
+
     # fix a compilation problem identified in gcc-4.6 and later
-    patch -Np1 -i ../openjade-1.3.2-gcc_4.6-1.patch
+    patch -Np1 -i ../$name-$version-upstream-1.patch
+
     # fix a compilation problem with perl-5.16 and later
     sed -i -e '/getopts/{N;s#&G#g#;s#do .getopts.pl.;##;}' \
                -e '/use POSIX/ause Getopt::Std;' msggen.pl
