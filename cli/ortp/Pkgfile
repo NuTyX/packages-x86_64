@@ -1,9 +1,12 @@
-name=ortp
-version=0.25.0
-release=2
 description="A Real-time Transport Protocol (RTP) library"
 url="http://www.linphone.org/index.php/eng/code_review/ortp"
-source=("http://download.savannah.gnu.org/releases/linphone/$name/sources/$name-$version.tar.gz"{,.sig})
+packager="tnut <tnut@nutyx.org>"
+
+name=ortp
+version=0.27.0
+release=1
+
+source=(http://download.savannah.gnu.org/releases/linphone/$name/sources/$name-$version.tar.gz)
 
 build() {
   cd ${name}-${version}
