@@ -1,12 +1,15 @@
-# Description: High speed download utility with resuming and segmented features.
-# URL:         http://aria2.sourceforge.net/
-# Packager:    berlius at nutyx dot com
-# Depends on:  gnutls gmp libxml2
+description="High speed download utility with resuming and segmented features."
+url="http://aria2.sourceforge.net/"
+contributors="berlius"
+packager="greg<greg@nutyx.org>"
+
+# Depends on:  gnutls gmp libxml2 c-ares libssh
 
 name=aria2
-version=1.24.0
+version=1.32.0
 release=1
-source=(https://github.com/tatsuhiro-t/$name/releases/download/release-$version/$name-$version.tar.bz2)
+
+source=(https://github.com/tatsuhiro-t/aria2/releases/download/release-$version/aria2-$version.tar.xz)
 
 build() {
 
@@ -17,6 +20,20 @@ build() {
 	   --mandir=$PKG/usr/man 
 
     make
-    make prefix=$PKG/usr install
 
+}
+
+
+package() {
+
+    cd $name-$version
+	make prefix=$PKG/usr install
+
+    # add bash completion
+    install -d $PKG/usr/share/bash-completion/completions
+    install -m644 $PKG/usr/share/doc/aria2/bash_completion/aria2c \
+		$PKG/usr/share/bash-completion/completions
+		
+    rm -rf $PKG/usr/share/doc/aria2/bash_completion
+  
 }
