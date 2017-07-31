@@ -1,0 +1,34 @@
+description="bibliotheque C Yubico"
+url="http://www.yubico.com/"
+contributors="tnut"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: libusb asciidoc
+
+name=libyubikey
+version=1.13
+release=1
+
+
+source=(https://github.com/Yubico/yubico-c/archive/libyubikey-$version.tar.gz
+	libyubikey.70-yubikey.rules)
+
+	
+build () {
+
+	cd yubico-c-libyubikey-$version
+	autoreconf --install
+	./configure --prefix=/usr
+	make
+
+
+}
+
+package() {
+
+	cd yubico-c-libyubikey-$version
+
+	make DESTDIR=$PKG install
+	install -D -m0644 "${SRC}/libyubikey.70-yubikey.rules" "${PKG}/lib/udev/rules.d/70-yubikey.rules"
+
+}
