@@ -1,17 +1,29 @@
-# Depends on: git
-
 description="hash-map implementations, including implementations that optimize for space or speed."
 url="http://code.google.com/p/sparsehash"
-packager="fanch at nutyx dot org"
+contributors="fanch"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: git
 
 name=sparsehash
 version=2.0.3
 release=1
 
 build() {
-git clone https://github.com/sparsehash/sparsehash.git sparsehash
-cd sparsehash
-./configure --prefix=/usr 
-make
-make DESTDIR=$PKG install 
+
+	git clone https://github.com/sparsehash/sparsehash.git sparsehash
+
+	cd sparsehash
+	./configure --prefix=/usr 
+	make
+
+
+}
+
+
+package() {
+
+	cd sparsehash
+	make DESTDIR=$PKG install
+
 }
