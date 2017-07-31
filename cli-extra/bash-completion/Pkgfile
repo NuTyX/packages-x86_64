@@ -1,27 +1,32 @@
-# Description: Bash completion functions
-# URL: http://bash-completion.alioth.debian.org/
-# Packager: berlius at nutyx dot com
-# Depends on: 
+description="Bash completion functions"
+url="https://github.com/scop/bash-completion"
+contributors="berlius"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: bash
 
 name=bash-completion
-version=2.3
+version=2.7
 release=1
-source=(https://github.com/scop/bash-completion/releases/download/$version/bash-completion-$version.tar.xz)
+
+source=(https://github.com/scop/$name/releases/download/$version/$name-$version.tar.xz)
 
 build() {
 
+
     cd $name-$version
-
-    sed -i Makefile.* \
-	-e 's|pkgconfigdir = .*|pkgconfigdir = /usr/lib/pkgconfig|g' \
-	-e 's|profiledir = .*|profiledir = /etc|g'
-
+    
     ./configure --prefix=/usr --sysconfdir=/etc
+	make
+	
+	
+}
 
-    make
+
+package() {
+
+	cd $name-$version
     make DESTDIR=$PKG install
-
-    mv $PKG/etc/bash_completion{.sh,}
-    chmod 0755 $PKG/usr/share/$name/bash_completion
-    rm $PKG/usr/share/bash-completion/completions/{u,}mount
+ 
+  
 }
