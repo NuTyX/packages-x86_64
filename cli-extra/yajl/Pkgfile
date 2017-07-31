@@ -1,8 +1,9 @@
-# description : "Yet Another JSON Library."
-# URL: http://www.gnu.org/software/screen/screen.html
-# Packager: pierre at nutyx dot org
-# Depends on: cmake
+description="Yet Another JSON Library."
+url="http://www.gnu.org/software/screen/screen.html"
+contributors="pierre"
+packager="greg<greg@nutyx.org>"
 
+# Depends on: cmake
 
 name=yajl
 version=2.1.0
@@ -11,8 +12,19 @@ release=1
 source=(https://github.com/lloyd/${name}/archive/${version}.tar.gz)
 
 build() {
+
 cd $name-$version
 cmake -DCMAKE_INSTALL_PREFIX=/usr .
+
 make
+
+}
+
+
+
+package() {
+
+cd $name-$version
 make DESTDIR=$PKG install
+
 }
