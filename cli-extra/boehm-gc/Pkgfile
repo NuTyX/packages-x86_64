@@ -1,13 +1,17 @@
-# Description: Garbage collection and memory leak detection for C and C++
-# URL:         http://www.hboehm.info/
-# Packager:    berlius at nutyx dot com
+description="Garbage collection and memory leak detection for C and C++"
+url="http://www.hboehm.info/"
+contributors="berlius"
+packager="greg<greg@nutyx.org>"
+
 # Depends on:  
 
 name=boehm-gc
 version=7.4.4
 release=1
+
 source=(http://www.hboehm.info/gc/gc_source/gc-${version}.tar.gz
         https://github.com/ivmai/libatomic_ops/archive/libatomic_ops-${version//\./_}.tar.gz)
+        
 
 build () {
 
@@ -22,10 +26,15 @@ build () {
         --enable-shared
         
     make
-    make DESTDIR=$PKG install
-
-    install -D -m 644 doc/gc.man $PKG/usr/man/man3/gc.3
+  
 
 }
 
 
+package() {
+
+	cd gc-$version
+    make DESTDIR=$PKG install
+    install -D -m 644 doc/gc.man $PKG/usr/man/man3/gc.3
+  
+}
