@@ -1,0 +1,34 @@
+description="a small C library that is supposed to make it easy to run an HTTP server as part of another application."
+url="http://www.gnu.org/software/libmicrohttpd/"
+contributors="fanch"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: curl file gnutls libgcrypt
+
+name=libmicrohttpd
+version=0.9.55
+release=1
+
+source=(ftp://ftp.gnu.org/gnu/libmicrohttpd/$name-$version.tar.gz)
+
+build() {
+
+  cd $name-$version
+  ./configure --prefix=/usr --disable-dependency-tracking --enable-largefile \
+	--enable-curl --enable-messages --with-pic
+	
+  make
+  
+}
+
+package() {
+
+  cd $name-$version
+  make DESTDIR=$PKG install
+  
+  install -Dm644 $SRC/$name-$version/src/include/platform.h \
+	$PKG/usr/include/$name/platform.h
+  sed -i 's#Cflags: -I${includedir}#Cflags: -I${includedir} -I${includedir}/libmicrohttpd#' \
+	$PKG/usr/lib/pkgconfig/libmicrohttpd.pc
+	
+}
