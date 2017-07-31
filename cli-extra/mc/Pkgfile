@@ -1,20 +1,32 @@
-# Depends on: pcre glib gpm
-
 description="Midnight Commander is a text based filemanager/shell that emulates Norton Commander"
 url="https://www.midnight-commander.org/"
-packager="pierre at nutyx dot org"
+contributors="pierre"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: pcre glib gpm
+
 name=mc
 version=4.8.19
 release=1
 
 source=(${url}downloads/$name-$version.tar.xz)
+
 build() {
-cd $name-$version
-./configure --prefix=/usr \
---enable-charset  \
---disable-static  \
---sysconfdir=/etc \
---with-screen=ncurses
-make
-make DESTDIR=$PKG install
+
+	cd $name-$version
+	./configure --prefix=/usr \
+		--enable-charset  \
+		--disable-static  \
+		--sysconfdir=/etc \
+		--with-screen=ncurses
+	make
+	
+}
+
+
+package() {
+
+	cd $name-$version
+	make DESTDIR=$PKG install
+
 }
