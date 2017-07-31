@@ -1,19 +1,34 @@
-# Description: CenterIM is a powerful communication tool that can be used through SSH.
-# URL: http://www.centerim.org/
-# Packager: pierre at nutyx dot org
-# Depends on: curl 
+description="CenterIM is a powerful communication tool that can be used through SSH."
+url="http://www.centerim.org/"
+contributors="pierre"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: python2 libjpeg-turbo gpgme
 
 name=centerim
 version=4.22.10
 release=1
 
-source=(http://www.centerim.org/download/releases/$name-$version.tar.gz
-	   http://downloads.nutyx.org/files/patchs/centerim/$name-$version-gcc-1.patch)
+source=(http://www.centerim.org/download/releases/$name-$version.tar.gz)
 
 build() {
+
 	cd $name-$version
-	patch -Np1 -i ../$name-$version-gcc-1.patch
-	CXX="g++ -std=c++98" ./configure --prefix=/usr
-	make
+    sed -i 's#python#python2#' misc/CenterIMLog2HTML.py
+    sed -i '1,1i#include <stdio.h>' libicq2000/libicq2000/sigslot.h
+    export CXXFLAGS+=' -std=gnu++98'
+    ./configure --prefix=/usr  \
+                --with-ssl     \
+                --with-openssl \
+                --enable-locales-fix
+  make
+		
+}
+
+
+package() {
+
+	cd $name-$version
 	make DESTDIR=$PKG install
+  
 }
