@@ -1,0 +1,28 @@
+description="An Portable Open Source UPnP Development Kit."
+url="http://pupnp.sourceforge.net/"
+contributors="fanch at nutyx dot org"
+packager="greg<greg@nutyx.org>"
+
+name=libupnp
+version=1.6.21
+release=1
+
+source=(http://downloads.sourceforge.net/sourceforge/pupnp//$name-$version.tar.bz2)
+
+build() {
+
+	cd $name-$version
+
+	./configure \
+		--prefix=/usr 
+	make
+	
+}
+
+
+package() {
+
+	cd $name-$version
+	make DESTDIR=$PKG install
+
+}
