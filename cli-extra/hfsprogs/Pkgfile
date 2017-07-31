@@ -1,24 +1,32 @@
-# Description: HFS/HFS+ user space utils
-# URL: http://www.opensource.apple.com/
-# Maintainer: NuTyX GNOME team
-# Packager: fanch at nutyx dot org
+description="HFS/HFS+ user space utils"
+url="http://www.opensource.apple.com/"
+contributors="fanch"
+packager="greg<greg@nutyx.org>"
+
 # Depends on: libbsd openssl
 
 name=hfsprogs
 version=332.25
 release=1
+
+
 source=(http://ftp.de.debian.org/debian/pool/main/h/hfsprogs/${name}_${version}.orig.tar.gz
         http://ftp.de.debian.org/debian/pool/main/h/hfsprogs/${name}_${version}-11.debian.tar.gz
         license
         makefile.patch)
+        
+        
 
 build() {
+
  cd diskdev_cmds-${version}
   for patch in ../debian/patches/*.patch ../makefile.patch
   do
     patch -Np1 -i ${patch}
   done
+  
   make -f Makefile.lnx
+  
   install -m 755 -d ${PKG}/usr/bin
   install -m 755 -d ${PKG}/usr/share/licenses/${name}
   install -m 755 -d ${PKG}/usr/share/${name}
@@ -33,5 +41,6 @@ build() {
   
   install -m 644 newfs_hfs.tproj/newfs_hfs.8 ${PKG}/usr/share/man/man8/mkfs.hfsplus.8
   install -m 644 fsck_hfs.tproj/fsck_hfs.8 ${PKG}/usr/share/man/man8/fsck.hfsplus.8
+  
 }
 
