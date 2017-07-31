@@ -30,21 +30,6 @@ done
 
 ln -sv ../vim/vim${version/./}/doc $PKG/usr/share/doc/vim-$version
 
-mkdir $PKG/etc
-
-cat > $PKG/etc/vimrc << "EOF"
-" Begin /etc/vimrc
-if (&term == "xterm") || (&term == "putty")
-   set background=dark
-endif
-set ruler
-set nocompatible
-set backspace=2
-set mouse=r
-syntax on
-
-" End /etc/vimrc
-EOF
 rm -rf $PKG/usr/share/applications
 rm -rf $PKG/usr/share/icons
 }
