@@ -1,15 +1,28 @@
-# Depends on: fuse
 description="exfat filesystem utilities"
 url="http://code.google.com/p/exfat/"
-packager="guy at nutyx dot org, tnut at nutyx dot org"
+contributors="guy, tnut"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: fuse
+
 name=fuse-exfat
-version=1.2.4
+version=1.2.7
 release=1
+
 source=(https://github.com/relan/exfat/releases/download/v$version/$name-$version.tar.gz)
 
 build () {
+
    cd $name-$version
    ./configure --prefix=/usr --sbindir=/sbin
    make
-   make DESTDIR=$PKG install
+  
+}
+
+
+package() {
+
+	cd $name-$version
+	make DESTDIR=$PKG install
+
 }
