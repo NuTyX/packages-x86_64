@@ -1,57 +1,55 @@
-# Depends on: grub
-
 description="Can probe disks on the system for other operating systems, and add them to the boot loader"
 url="http://joeyh.name/code/os-prober/"
-maintainer="Joey Hess"
-packager="Chris Farrell, timcowchip at gmail dot com, tnut at nutyx dot org"
+contributors="Chris Farrell,timcowchip,tnut"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: bash
 
 name=os-prober
-version=1.71
-release=2
-source=(http://ftp.de.debian.org/debian/pool/main/o/os-prober/os-prober_1.71.tar.xz grub)
+version=1.76
+release=1
+
+source=(http://ftp.de.debian.org/debian/pool/main/o/os-prober/os-prober_$version.tar.xz)
+
+
+prepare() {
+
+  cd $name-$version
+
+  # adjust lib dir to allow detection of 64-bit distros
+  sed -i -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" os-probes/mounted/common/90linux-distro
+
+  rm -f Makefile
+  
+}
 
 build() {
-	cd $name-$version
 
-	# Compile newns
-	make
+  cd $name-$version
 
-# Create a hierharchy for os-prober package, and copy files into it.
-mkdir -p $PKG/var/lib/$name
+  make newns
+  
+}
 
-mkdir -p $PKG/usr/bin
-cp linux-boot-prober $PKG/usr/bin
-cp os-prober $PKG/usr/bin
 
-mkdir -p $PKG/usr/lib/$name
-cp newns $PKG/usr/lib/$name
 
-mkdir -p $PKG/usr/lib/os-probes
-cp os-probes/common/* $PKG/usr/lib/os-probes
-mkdir -p $PKG/usr/lib/os-probes/mounted
-mkdir -p $PKG/usr/lib/os-probes/mounted/efi
-cp os-probes/mounted/common/* $PKG/usr/lib/os-probes/mounted
-cp os-probes/mounted/x86/efi/* $PKG/usr/lib/os-probes/mounted/efi
-rm -r os-probes/mounted/x86/efi
-cp os-probes/mounted/x86/* $PKG/usr/lib/os-probes/mounted
+package() {
 
-mkdir -p $PKG/usr/lib/os-probes/init
-cp os-probes/init/common/* $PKG/usr/lib/os-probes/init
 
-mkdir -p $PKG/usr/lib/linux-boot-probes
-cp linux-boot-probes/common/* $PKG/usr/lib/linux-boot-probes/
-mkdir $PKG/usr/lib/linux-boot-probes/mounted
-cp linux-boot-probes/mounted/common/* $PKG/usr/lib/linux-boot-probes/mounted
-cp linux-boot-probes/mounted/x86/* $PKG/usr/lib/linux-boot-probes/mounted
+  cd $name-$version
 
-mkdir -p $PKG/etc/default/
-cp $SRC/grub $PKG/etc/default/
+  install -Dm755 linux-boot-prober $PKG/usr/bin/linux-boot-prober
+  install -Dm755 os-prober $PKG/usr/bin/os-prober
+  install -Dm755 newns $PKG/usr/lib/os-prober/newns
+  install -Dm755 common.sh $PKG/usr/share/os-prober/common.sh  
 
-mkdir -p $PKG/usr/share/$name
-cp common.sh $PKG/usr/share/$name
-chmod +x $PKG/usr/share/$name/common.sh
-# End of making os-prober directory hierarchy.
+  for dir in os-probes os-probes/mounted os-probes/init linux-boot-probes linux-boot-probes/mounted; do
+    install -dm755 $PKG/usr/lib/$dir
+    install -m755 -t $PKG/usr/lib/$dir $dir/common/*
+    [[ -d "$dir"/x86 ]] && cp -r "$dir"/x86/* $PKG/usr/lib/$dir
+  done
 
-tar  -cvjf os-prober#1.70.pkg.tar.bz2 $PKG/*
+  install -Dm755 os-probes/mounted/powerpc/20macosx $PKG/usr/lib/os-probes/mounted/20macosx
 
+  install -dm755 $PKG/var/lib/os-prober
 }
