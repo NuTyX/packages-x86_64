@@ -1,19 +1,33 @@
-# Description: C runtime for the ANTLR parsing library
-# URL: http://www.antlr.org/
-# Packager: fanch at nutyx dot com, tnut at nutyx dot org
+description="C runtime for the ANTLR parsing library"
+url="http://www.antlr.org/"
+contributors="fanch, tnut"
+packager="greg<greg@nutyx.org>"
 
 name=libantlr3c
 version=3.4
-release=1
+release=2
+
 source=(http://www.antlr3.org/download/C/${name}-${version}.tar.gz)
+
 build() {
+
 cd $name-$version
+
 if [[ "$PKGMK_ARCH" == 'i686' ]]; then
 	_cfgopt='32' && _cfgopt=
 else
 	_cfgopt='64' && _cfgopt=--enable-64bit
 fi
 ./configure --prefix=/usr --sysconfdir=/etc ${_cfgopt}
+
 make	
-make DESTDIR=$PKG install
+
+}
+
+
+package() {
+
+  cd $name-$version
+  make DESTDIR=$PKG install
+  
 }
