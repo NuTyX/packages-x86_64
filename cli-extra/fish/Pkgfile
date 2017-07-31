@@ -1,18 +1,41 @@
-# Description:	a modern interactive commandline shell.
-# URL:	http://www.fishshell.com/
-# Packager: fanch at nutyx dot org
-# Depends on: ncurses
+description="a modern interactive commandline shell."
+url="http://www.fishshell.com/"
+contributors="fanch"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: ncurses doxygen
+run=(doxygen)
 
 name=fish
-version=2.3.0
+version=2.6.0
 release=1
-source=(http://fishshell.com/files/$version/fish-$version.tar.gz)
+
+source=(https://github.com/fish-shell/fish-shell/archive/$version.tar.gz)
+
+
+prepare() {
+
+  cd fish-shell-$version
+  echo $version > version
+  autoreconf -fiv
+  
+}
+
+
 
 build() {
-	cd $name-$version
-	autoconf -i
-	./configure --prefix=/usr \
-	--sysconfdir=/etc 
-	make
+
+	cd fish-shell-$version
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc
+  make
+	
+}
+
+
+package() {
+
+	cd fish-shell-$version
 	make DESTDIR=$PKG install
+
 }
