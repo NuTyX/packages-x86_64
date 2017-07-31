@@ -1,16 +1,20 @@
-# Depends on: python2
-
 description="Python 2 compatibility utilities."
 url="http://pypi.python.org/pypi/six/"
-packager="tnut at nutyx dot org"
+contributors="tnut"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: python2
+
 name=python2-six
 version=1.10.0
 release=1
-source=(
-http://pypi.python.org/packages/source/s/six/six-$version.tar.gz)
+
+source=(http://pypi.python.org/packages/source/s/six/six-$version.tar.gz)
 
 build() {
+
     cd six-$version
     python2 setup.py check
     python2 setup.py install --prefix=/usr --root=$PKG
+    
 }
