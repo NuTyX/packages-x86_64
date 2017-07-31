@@ -1,9 +1,10 @@
-# Depends on: python2
-
 description="Implementation of ECDSA in Python"
 url="https://github.com/warner/python-ecdsa"
-packager="tnut at nutyx dot org"
- 
+contributors="tnut"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: python2
+
 name=python2-ecdsa
 version=0.13
 release=1
@@ -11,6 +12,8 @@ release=1
 source=(http://pypi.python.org/packages/source/e/ecdsa/ecdsa-$version.tar.gz)
 
 build() {
+
     cd ecdsa-$version
     python2 setup.py install --prefix=/usr --root=$PKG
+    
 }
