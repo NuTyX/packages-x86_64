@@ -1,9 +1,12 @@
 description="Powerful and flexible interface to the Internet standard File Transfer Protocol."
 url="http://www.ncftp.com/"
-packager="berlius at nutyx dot com, tnut at nutyx dot org"
+contributors="berlius tnut"
+packager="greg<greg@nutyx.org>"
+
 name=ncftp
 version=3.2.6	
 release=1
+
 source=(ftp://ftp.ncftp.com/ncftp/$name-$version-src.tar.xz)
  
 build() {
@@ -14,4 +17,13 @@ make -C libncftp shared
 make
 make -C libncftp soinstall 
 make DESTDIR=$PKG install
+
+}
+
+
+package() {
+
+cd $name-$version
+make DESTDIR=$PKG install
+
 }
