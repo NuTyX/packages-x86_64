@@ -1,22 +1,37 @@
-# Depends on: docbook-xsl libxslt python2
 description="Text document format for short documents, articles, books and UNIX man pages"
 url="http://www.methods.co.nz/asciidoc/"
-packager="alienus at nutyx dot org, tnut at nutyx dot org"
+contributors="alienus, tnut"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: docbook-xsl libxslt python2
+
 name=asciidoc
 version=8.6.9
-release=2
+release=3
+
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
+
 build(){
+
     cd $name-$version
     ./configure --prefix=/usr \
                 --sysconfdir=/etc
     make
+
+}
+
+
+package() {
+
+
+	cd $name-$version
     make DESTDIR=$PKG install
 
     install -Dm644 asciidocapi.py \
         $PKG/usr/lib/python2.7/site-packages/asciidocapi.py
     install -Dm644 vim/syntax/asciidoc.vim \
         $PKG/usr/share/vim/vimfiles/syntax/asciidoc.vim
+  
 }
