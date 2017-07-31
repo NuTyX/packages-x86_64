@@ -1,6 +1,8 @@
-# Description: Firmware for wifi IPW2200 Intel Centrino
-# URL: http://ipw2200.sourceforge.net/
-# Packager: pierre at nutyx dot org
+description="Firmware for wifi IPW2200 Intel Centrino"
+url="http://ipw2200.sourceforge.net/"
+contributors="pierre"
+packager="greg<greg@nutyx.org>"
+
 # Depends on: 
 
 name=ipw2200-fw
@@ -10,6 +12,7 @@ release=1
 source=(http://downloads.nutyx.org/files/$name-$version.tgz)
 
 build() {
+
 	cd $name-$version
 	for i in ipw*.fw
 	do
@@ -17,4 +20,5 @@ build() {
 	done
 	# Install firmware licence
  	install -D -m 644 LICENSE.ipw2200-fw $PKG/usr/share/licenses/$name/LICENSE
+ 	
 }
