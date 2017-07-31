@@ -1,29 +1,36 @@
 description="The ISC DHCP package contains both the client and server programs for DHCP."
 url="ftp://ftp.isc.org/isc/dhcp"
-packager="berlius at nutyx dot com, tnut at nutyx dot org"
+contributors="berlius, tnut"
+packager="greg<greg@nutyx.org>"
 
 name=dhcp
 version=4.3.5
+scripts=blfs-bootscripts
+scriptsversion=20170611
+
 release=1
+
 source=(ftp://ftp.isc.org/isc/dhcp/$version/dhcp-$version.tar.gz
 		http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-{client_script,missing_ipv6}-1.patch
 		dhclient.conf dhcpd.conf )
+		
  
 build() {
 
-cd $name-$version
+	cd $name-$version
 	   
-source  /etc/blfs-bootscripts
-wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-tar xvf $scripts-$scriptsversion.tar.bz2
+	source  /etc/blfs-bootscripts
+	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
+	tar xvf $scripts-$scriptsversion.tar.bz2
 
 
-patch -Np1 -i ../$name-$version-missing_ipv6-1.patch
-patch -Np1 -i ../$name-$version-client_script-1.patch
+	patch -Np1 -i ../$name-$version-missing_ipv6-1.patch
+	patch -Np1 -i ../$name-$version-client_script-1.patch
 
-CFLAGS="-D_PATH_DHCLIENT_SCRIPT='\"/sbin/dhclient-script\"' \
--D_PATH_DHCPD_CONF='\"/etc/dhcp/dhcpd.conf\"' \
--D_PATH_DHCLIENT_CONF='\"/etc/dhcp/dhclient.conf\"'" \
+	CFLAGS="-D_PATH_DHCLIENT_SCRIPT='\"/sbin/dhclient-script\"' \
+	-D_PATH_DHCPD_CONF='\"/etc/dhcp/dhcpd.conf\"' \
+	-D_PATH_DHCLIENT_CONF='\"/etc/dhcp/dhclient.conf\"'" \
+	
 	./configure --prefix=/usr                                           \
 	            --sysconfdir=/etc/dhcp                                  \
 	            --localstatedir=/var                                    \
@@ -33,7 +40,15 @@ CFLAGS="-D_PATH_DHCLIENT_SCRIPT='\"/sbin/dhclient-script\"' \
 	            --with-cli6-lease-file=/var/lib/dhclient/dhclient6.leases 
 	make -j1
 
-	make DESTDIR=$PKG install     
+	    
+}
+
+
+package() {
+
+	cd $name-$version
+	
+	make DESTDIR=$PKG install
 	
 	install -v -dm 755 $PKG/sbin
               
@@ -52,4 +67,6 @@ CFLAGS="-D_PATH_DHCLIENT_SCRIPT='\"/sbin/dhclient-script\"' \
 
 	cp -v $SRC/dhcpd.conf $PKG/etc/dhcp/dhcpd.conf 
 	make DESTDIR=$PKG install-dhcpd
+  
 }
+
