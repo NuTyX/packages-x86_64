@@ -1,19 +1,30 @@
-# Depends on: docbook2x libmnl libnftnl 
-
 description="Netfilter nftables userspace tools"
 url="http://netfilter.org/projects/nftables/"
-packager="alienus at nutyx dot org, fanch at nutyx dot org, tnut at nutyx dot org"
+contributors="alienus, fanch, tnut"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: docbook2x libmnl libnftnl 
+
 name=nftables
-version=0.6
+version=0.7
 release=1
 
 source=($url/files/nftables-$version.tar.bz2)
 
 build(){
+
+	cd $name-$version
+	./configure --prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man
+	make
+  
+}
+
+
+package() {
+
 cd $name-$version
-./configure --prefix=/usr \
---sysconfdir=/etc \
---mandir=/usr/share/man
-make
-make DESTDIR=$PKG install    
+make DESTDIR=$PKG install 
+
 }
