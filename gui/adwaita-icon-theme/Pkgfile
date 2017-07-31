@@ -1,8 +1,10 @@
-# Description: Adwaita icon theme. 
-# URL: http://www.gnome.org/
-# Maintainer: http://linuxfromscratch.org/
-# Packager: tnut at nutyx dot org
 # Depends on: intltool gtk-update-icon-cache hicolor-icon-theme icon-naming-utils librsvg
+
+description="Adwaita icon theme."
+url="http://www.gnome.org/"
+maintainer="http://linuxfromscratch.org/"
+packager="tnut <tnut@nuty.org>"
+
 run=(gtk-update-icon-cache librsvg hicolor-icon-theme)
 
 name=adwaita-icon-theme
@@ -15,4 +17,5 @@ cd $name-$version
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
+gtk-update-icon-cache -q -t -f $PKG/usr/share/icons/Adwaita
 }
