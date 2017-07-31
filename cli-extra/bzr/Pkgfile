@@ -1,13 +1,19 @@
-# Depends on: python2 python2-paramiko
 description="A decentralized revision control system (bazaar)"
 url="http://bazaar.canonical.com/en/"
-packager="alienus at nutyx dot org, tnut at nutyx dot org"
+contributors="alienus, tnut"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: python2 python2-paramiko
+
 name=bzr
 version=2.7.0
 release=1
-source=(
-http://launchpad.net/bzr/${version%.*}/$version/+download/bzr-$version.tar.gz)
+
+source=(http://launchpad.net/bzr/${version%.*}/$version/+download/bzr-$version.tar.gz)
+
+
 build() {
+
     cd $name-$version
     sed -i -e 's|man/man1|share/&|' setup.py
     python2 setup.py install --prefix=/usr --root=$PKG
@@ -15,4 +21,5 @@ build() {
     # bash-completion
     install -Dm644 contrib/bash/bzr \
         $PKG/usr/share/bash-completion/completions/bzr
+        
 }
