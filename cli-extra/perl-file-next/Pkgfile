@@ -1,0 +1,56 @@
+description="File-finding iterator"
+url="http://search.cpan.org/dist/File-Next"
+packager="greg<greg@nutyx.org>"
+
+# Depends on:  perl
+
+name=perl-file-next
+version=1.16
+_distdir=File-Next-$version
+
+release=1
+
+source=(http://search.cpan.org/CPAN/authors/id/P/PE/PETDANCE/File-Next-$version.tar.gz)
+
+
+prepare() {
+
+      export PERL_MM_USE_DEFAULT=1 PERL5LIB="" \
+      PERL_AUTOINSTALL=--skipdeps \
+      PERL_MM_OPT="INSTALLDIRS=vendor" \
+      PERL_MB_OPT="--installdirs vendor" \
+      MODULEBUILDRC=/dev/null
+	
+}
+
+
+build() {
+
+
+	cd $_distdir
+	/usr/bin/perl Makefile.PL
+	make
+  
+    
+	export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+	make test
+
+	make DESTDIR=$PKG install
+	find $PKG -name .packlist -o -name perllocal.pod -delete
+
+}
+
+
+package() {
+
+	cd $_distdir
+	make DESTDIR=$PKG install
+	find $PKG -name .packlist -o -name perllocal.pod -delete
+
+}
+
+
+
+
+
+
