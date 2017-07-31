@@ -1,15 +1,18 @@
-# Depends on: git re2c python2
-
 description="Cross-platform IDE focused on Python application development"
 url="http://martine.github.io/ninja/"
-packager="pierre at nutyx dot org"
+contributors="pierre"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: git re2c python2
+
 name=ninja
 version=1.7.2
-release=1
+release=2
 
 source=()
 	
 build() {
+
 	git clone git://github.com/martine/ninja.git
 	cd $name
 	git checkout release
@@ -24,4 +27,5 @@ build() {
     	if [ -x /usr/bin/emacs ] ; then
         	install -m644 -D misc/ninja-mode.elc $PKG/usr/share/emacs/site-lisp/ninja-mode.elc
     	fi
+    	
 }
