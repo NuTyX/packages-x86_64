@@ -1,14 +1,21 @@
-# Packager: berlius at nutyx dot com, fanch at nutyx dot org, tnut at nutyx dot org
 description="A completely flexible, totally extensible daemon for delivering ACPI events."
 url="http://sourceforge.net/projects/acpid2/"
+contributors="berlius, fanch, tnut"
+packager="greg<greg@nutyx.org>"
+
 name=acpid
-version=2.0.27
+version=2.0.28
+scripts=blfs-bootscripts
+scriptsversion=20170611
 release=1
 
-source=(http://downloads.sourceforge.net/acpid2/$name-$version.tar.xz lid lid.sh)
+
+source=(http://downloads.sourceforge.net/acpid2/$name-$version.tar.xz 
+		lid 
+		lid.sh)
 
 
-build() {
+prepare() {
 
 	cd $name-$version
 	
@@ -16,10 +23,25 @@ build() {
 	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
 	tar xvf $scripts-$scriptsversion.tar.bz2 
 	
-	
+}
+
+
+
+build() {
+
+	cd $name-$version
+	 	
 	./configure --prefix=/usr \
 		--docdir=/usr/share/doc/$name-$version 
 	make 
+	
+	}
+	
+	
+package() {
+
+	cd $name-$version
+	
 	make DESTDIR=$PKG install 
 	install -m755 -d $PKG/etc/acpi/events
 	 
