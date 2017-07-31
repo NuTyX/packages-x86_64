@@ -1,16 +1,31 @@
-description="For handling page faults in user mode"
-url="https://www.gnu.org/software/libsigsegv/"
-packager="tnut at nutyx dot org"
+description="Handling page faults in user mode."
+url="http://ftp.debian.org/debian/pool/main/libp/libpaper"
+contributors="berlius"
+packager="greg<greg@nutyx.org>"
+
+# Depends on:  	
+
 name=libsigsegv
-version=2.10
+version=2.11
 release=1
 
-source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
+source=(http://ftp.gnu.org/gnu/libsigsegv/$name-$version.tar.gz)
 
-build() {
-cd $name-$version
-./configure --prefix=/usr \
---enable-shared --disable-static
-make
-make DESTDIR=$PKG install
+build () {
+
+    cd $name-$version
+    
+ 	./configure --prefix=/usr  \
+ 	        --enable-shared \
+            --disable-static                 
+    make
+
+}
+
+
+package() {
+
+	cd $name-$version
+	make DESTDIR=$PKG install
+
 }
