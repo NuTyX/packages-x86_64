@@ -1,0 +1,21 @@
+description="A system and process level monitor."
+url="http://www.atoptool.nl/"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: ncurses zlib
+
+name=atop
+version=2.3.0
+release=1
+
+source=(http://www.atoptool.nl/download/atop-${version/_/-}.tar.gz)
+
+build() {
+  cd $SRC/$name-$version
+  make
+}
+
+package() {
+  cd $SRC/$name-$version
+  make DESTDIR=$PKG sysvinstall SBINPATH=/usr/bin
+}
