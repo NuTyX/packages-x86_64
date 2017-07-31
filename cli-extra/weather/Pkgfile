@@ -1,16 +1,20 @@
-# Description: CLI tool which shows weather forecasts from METAR data
-# URL: http://fungi.yuggoth.org/weather/
-# Maintainer: Chris Farrell timcowchip at gmail dot com
+description="CLI tool which shows weather forecasts from METAR data"
+url="http://fungi.yuggoth.org/weather/"
+contributors="Chris Farrell timcowchip"
+packager="greg<greg@nutyx.org>"
+
 # Depends on: python2
 
 name=weather
-version=2.0
-release=2
+version=2.3
+release=1
 
 source=(http://fungi.yuggoth.org/weather/src/$name-$version.tar.gz)
 
 build() {
-  cd "$name-$version"
+
+  cd $name-$version
+  
   sed -i 's|env python|env python2|' *
 
   # set up correlation sets
@@ -32,6 +36,7 @@ build() {
   install -Dm644 weatherrc.5 "$PKG/usr/share/man/man5/weatherrc.5"
 
   install -Dm644 LICENSE "$PKG/usr/share/licenses/$name/BSD2"
+  
 }
 
 	
