@@ -1,9 +1,11 @@
-# Description: Ensemble d'icônes non évolutifs de différentes tailles et des thèmes. 
-# URL: http://www.gnome.org/
-# Maintainer: git.gnome.org/brownse/gnome-icon-theme/
-# Packager: thierryn1 at hispeed dot ch
 # Depends on: hicolor-icon-theme, gtk-update-icon-cache, icon-naming-utils, intltool
-# Run on: hicolor-icon-theme,gtk-update-icon-cache,icon-naming-utils
+
+description="GNOME Icons Set"
+url="http://www.gnome.org/"
+maintainer="git.gnome.org/brownse/gnome-icon-theme/"
+packager="tnut <tnut@nutyx.org>"
+
+run=(hicolor-icon-theme gtk-update-icon-cache icon-naming-utils)
 
 name=gnome-icon-theme
 version=3.12.0
@@ -15,5 +17,5 @@ cd $name-$version
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
-rm -rf $PKG/usr/share/icons/gnome/icon-theme.cache
+gtk-update-icon-cache -q -t -f $PKG/usr/share/icons/gnome
 }
