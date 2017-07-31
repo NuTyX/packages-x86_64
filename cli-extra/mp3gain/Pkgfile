@@ -1,0 +1,28 @@
+description="Lossless mp3 normalizer with statistical analysis"
+url="http://mp3gain.sourceforge.net"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: glibc
+
+name=mp3gain
+version=1.5.2
+release=1
+
+source=(http://downloads.sourceforge.net/$name/$name-${version//./_}-src.zip
+		build-fix.patch)
+
+prepare() {
+    cd $SRC
+    patch -p0 Makefile < $SRC/build-fix.patch
+}
+
+build() {
+    cd $SRC
+    make OSTYPE=linux
+}
+
+package() {
+    cd $SRC
+    mkdir -p $PKG/usr/bin
+    make OSTYPE=linux INSTALL_PATH=$PKG/usr/bin install
+}
