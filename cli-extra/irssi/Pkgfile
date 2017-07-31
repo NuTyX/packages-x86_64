@@ -1,27 +1,33 @@
-# Description: Irssi is a terminal based IRC client for UNIX systems.
-# URL: http://irssi.org/
-# Packager: pierre at nutyx dot org
-# Depends on: glib 
+description="Irssi is a terminal based IRC client for UNIX systems."
+url="http://irssi.org/"
+contributors="pierre"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: glib openssl
 run=( perl )
+
 name=irssi
-version=0.8.19
+version=1.0.4
 release=1
 
-source=(https://github.com/$name/$name/releases/download/$version/$name-$version.tar.gz)
+source=(https://github.com/irssi/irssi/releases/download/$version/$name-$version.tar.xz)
 
 build() {
-cd $name-$version
-	./configure --prefix=/usr \
-	--sysconfdir=/etc \
-	--enable-ipv6 \
-	--with-textui \
-	--with-proxy
-	make
-	make DESTDIR=$PKG install
 
-find $PKG \
-	-name .packlist -or \
-	-name perllocal.pod -or \
-	-name '*.bs' -or \
-	-name autosplit.ix  | xargs rm
+  cd $name-$version
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --with-proxy \
+    --with-perl-lib=vendor
+    
+  make
+  
+}
+
+package() {
+
+  cd $name-$version
+	make DESTDIR=$PKG install
+	
 }
