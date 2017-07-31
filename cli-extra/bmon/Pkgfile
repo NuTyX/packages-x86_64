@@ -1,23 +1,35 @@
-# Description: Network bandwidth monitor.
-# URL:         http://freshmeat.net/projects/bmon
-# Packager:    berlius at nutyx dot com
-# Depends on:  ncurses
+description="Portable bandwidth monitor and rate estimator"
+url="http://github.com/tgraf/bmon/"
+contributors="berlius"
+packager="greg<greg@nutyx.org>"
+
+# Depends on:  ncurses confuse libnl
+
 
 name=bmon
-version=2.1.0
+version=4.0
 release=1
-source=(http://crux.ster.zone/downloads/$name/$name-$version.tar.gz
-	$name-$version-gcc4.diff)
+
+
+source=(https://github.com/tgraf/$name/archive/v$version.tar.gz)
+
 
 build() {
 
-	cd $name-$version
+	cd $SRC/$name-$version
 	
-	patch -p1 -i $SRC/$name-$version-gcc4.diff
-	./configure --prefix=/usr
+	./autogen.sh
+    ./configure --prefix=/usr --sysconfdir=/etc
+    
+    make
 	
-	make
-	make DESTDIR=$PKG install
 }
 
+
+package() {
+
+    cd $SRC/$name-$version
+	make DESTDIR=$PKG install
+	
+}
 
