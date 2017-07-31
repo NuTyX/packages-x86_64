@@ -1,10 +1,14 @@
-# Depends on: db cyrus-sasl openssl icu mariadb openldap pcre postgresql sqlite
-
-packager="berlius at nutyx dot com, fanch at nutyx dot org, tnut at nutyx dot org"
 description="Mail Transport Agent (MTA) for sending email to other users of your host machine"
 url="http://www.postfix.org"
+contributors="berlius, fanch, tnut"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: db cyrus-sasl openssl icu mariadb openldap pcre postgresql sqlite
+
+scriptsversion=20170611
+scripts=blfs-bootscripts
 name=postfix
-version=3.1.4
+version=3.2.2
 release=1
 
 source=(ftp://ftp.porcupine.org/mirrors/postfix-release/official/$name-$version.tar.gz)
@@ -19,19 +23,26 @@ build() {
     sed -i 's/.\x08//g' README_FILES/*
 
 
-make CCARGS="-DUSE_TLS -I/usr/include/openssl/  \
--DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl" \
-AUXLIBS="-lssl -lcrypto -lsasl2"                              \
-makefiles 
+	make CCARGS="-DUSE_TLS -I/usr/include/openssl/  \
+	-DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl" \
+	AUXLIBS="-lssl -lcrypto -lsasl2"                              \
+	makefiles 
      
-make
+	make
 
-sh postfix-install -non-interactive \
-daemon_directory=$PKG/usr/lib/postfix \
-manpage_directory=$PKG/usr/share/man \
-html_directory=$PKG/usr/share/doc/postfix-$version/html \
-readme_directory=$PKG/usr/share/doc/postfix-$version/readme
+	sh postfix-install -non-interactive \
+	daemon_directory=$PKG/usr/lib/postfix \
+	manpage_directory=$PKG/usr/share/man \
+	html_directory=$PKG/usr/share/doc/postfix-$version/html \
+	readme_directory=$PKG/usr/share/doc/postfix-$version/readme
 
-cd $scripts-$scriptsversion
-make DESTDIR=$PKG install-postfix 
+
+}
+
+
+package () {
+
+	cd $SRC/$name-$version/$scripts-$scriptsversion
+	make DESTDIR=$PKG install-postfix 
+
 }
