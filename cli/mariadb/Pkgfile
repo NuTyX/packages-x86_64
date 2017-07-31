@@ -2,15 +2,17 @@
 
 description="MariaDB is a fork and a replacement for the MySQL relational database management system."
 url="http://www.mariadb.org/en/about/"
-packager="pierre at nutyx dot org, tnut at nutyx dot org"
+packager="tnut <tnu@nutyx.org>"
+contributors="Pierre B"
 
 name=mariadb
-version=10.2.6
+version=10.2.7
 release=1
 
 source=(https://downloads.mariadb.org/interstitial/mariadb-$version/source/mariadb-$version.tar.gz)
 
-PKGMK_GROUPS=(devel lib man doc service)
+[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel lib man doc service)
+[ "$PKGMK_ARCH" == "i686" ] && PKGMK_GROUPS=(lib man doc service)
 
 build() {
 source /etc/blfs-bootscripts

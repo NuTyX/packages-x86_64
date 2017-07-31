@@ -1,16 +1,18 @@
-# Description: The Ntfs-3g package contains a stable, read-write open source driver for NTFS partitions.
-# URL: http://www.ntfs-3g.org
-# Packager: pierre at nutyx dot org
-# Depends on: 
+description="The Ntfs-3g package contains a stable, read-write open source driver for NTFS partitions."
+url="http://www.ntfs-3g.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 name=ntfs-3g
-version=2016.2.22
+version=2017.3.23
 release=1
 
 source=(http://tuxera.com/opensource/${name}_ntfsprogs-$version.tgz)
 build() {
 cd ${name}_ntfsprogs-$version
 ./configure --prefix=/usr \
---disable-static 
+--disable-static \
+--with-fuse-internal
 make
 mkdir $PKG/lib
 make DESTDIR=$PKG install
