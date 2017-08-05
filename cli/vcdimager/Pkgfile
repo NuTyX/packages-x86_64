@@ -1,7 +1,9 @@
-# Description: A full-featured mastering suite for authoring disassembling and analyzing Video CDs
-# URL: http://www.vcdimager.org/
-# Packager: pierre at nutyx dot org
 # Depends on: libcdio libxml2 
+
+description="A full-featured mastering suite for authoring disassembling and analyzing Video CDs"
+url="http://www.vcdimager.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 name=vcdimager
 version=0.7.24
@@ -19,5 +21,3 @@ build() {
 	make DESTDIR=$PKG install
 	rm $PKG/usr/share/info/dir
 }
-  
-
