@@ -1,6 +1,8 @@
 description="libunistring is a library that provides functions for manipulating Unicode strings"
 URL="http://www.gnu.org/software/bison/"
-packager="pierre at nutyx dot org, tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 name=libunistring
 version=0.9.7
 release=1
@@ -9,7 +11,8 @@ source=(ftp://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr -disable-static
+./configure --prefix=/usr \
+-disable-static
 make
 make DESTDIR=$PKG install
 rm -rf $PKG/usr/share/info/dir
