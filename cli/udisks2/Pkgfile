@@ -1,13 +1,15 @@
-# Description: Daemon, tools and libraries to access and manipulate disks and storage devices.
-# URL: http://www.freedesktop.org/wiki/Software/udisks
-# Packager: pierre at nutyx dot org, tnut at nutyx dot org
 # Depends on: acl libgudev expat libatasmart libxslt polkit gobject-introspection docbook-xsl
 
+description="Daemon, tools and libraries to access and manipulate disks and storage devices."
+url="http://www.freedesktop.org/wiki/Software/udisks"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 name=udisks2
-version=2.1.7
+version=2.7.2
 release=1
 
-source=(http://udisks.freedesktop.org/releases/udisks-$version.tar.bz2)
+source=(https://github.com/storaged-project/udisks/releases/download/udisks-$version/udisks-$version.tar.bz2)
 
 build() {
 cd udisks-$version
