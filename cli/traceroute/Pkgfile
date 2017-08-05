@@ -1,8 +1,7 @@
-# Description: Display the network route that packets take to reach a specified host.
-# URL: http://traceroute.sourceforge.net/ 
-# NuTyX package info file (http://nutyx.org)
-# Packager: alienus at nutyx dot org
-# Depends on: 
+description="Display the network route that packets take to reach a specified host."
+url="http://traceroute.sourceforge.net/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus B"
 
 name=traceroute
 version=2.1.0
@@ -15,6 +14,3 @@ build(){
     make
     make prefix=/usr DESTDIR=$PKG install 
 }
-
-
-
