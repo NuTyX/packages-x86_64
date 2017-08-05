@@ -1,9 +1,9 @@
-# Description: Shared library for libmediainfo and mediainfo
-# URL: http://mediainfo.sourceforge.net/
-# Packager: tnut at nutyx dot org
-# Depends on: 
+description="Shared library for libmediainfo and mediainfo"
+url="http://mediainfo.sourceforge.net/"
+packager="tnut <tnut@nutyx.org>"
+
 name=libzen
-version=0.4.33
+version=0.4.35
 release=1
 
 source=(http://mediaarea.net/download/source/libzen/$version/libzen_$version.tar.xz)
@@ -27,5 +27,5 @@ build(){
     install -m644 $SRC/ZenLib/Project/GNU/Library/libzen.pc \
         $PKG/usr/lib/pkgconfig
     sed -i -e 's|Version: |Version: '$version'|g' \
-        $PKG/usr/lib/pkgconfig/libzen.pc
+        PKG/usr/lib/pkgconfig/libzen.pc
 }
