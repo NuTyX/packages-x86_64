@@ -2,8 +2,10 @@
 
 description="Next generation of the python high-level scripting language"
 url="http://www.python.org"
-packager="alienus at nutyx dot org, tnut at nutyx dot org"
-PKGMK_GROUPS=(devel man doc)
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus"
+
+[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man doc)
 
 _pybasever=2.7
 
