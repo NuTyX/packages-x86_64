@@ -2,7 +2,8 @@
 
 description="The librep package contains a Lisp system."
 url="http://librep.sourceforge.net/"
-packager="pierre at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 name=librep
 version=0.92.6
@@ -16,5 +17,4 @@ cd ${name}_$version
 --disable-static
 make || make -j1
 make prefix=$PKG/usr install
-rm -rf $PKG/usr/share
 }
