@@ -6,13 +6,14 @@ kernelversion=4.12
 [ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man doc)
 
 name=glibc
-version=2.25+adc7e06
+version=2.26
 release=1
 
-source=(glibc-$version-symbol-1.patch
-	http://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
-	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
-	http://anduin.linuxfromscratch.org/LFS/glibc-$version.tar.xz glibc.locales.supported )
+source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
+	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-2.25-fhs-1.patch
+	http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz
+	 glibc.locales.supported )
+
 build() {
 
 # Headers
@@ -25,8 +26,7 @@ mkdir -p $PKG/usr/include
 cp -rv dest/include/* $PKG/usr/include
 
 cd ../glibc-$version
-patch -Np1 -i ../glibc-$version-symbol-1.patch
-patch -Np1 -i ../glibc-$version-fhs-1.patch
+patch -Np1 -i ../glibc-2.25-fhs-1.patch
 
 case $(uname -m) in
    x86) 
