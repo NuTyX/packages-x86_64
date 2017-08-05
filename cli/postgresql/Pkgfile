@@ -2,9 +2,11 @@
 
 description="Advanced object-relational database management system (ORDBMS)."
 url="http://www.postgresql.org/docs"
-packager="pierre at nutyx dot org, tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
-PKGMK_GROUPS=(lib doc man devel service)
+[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(lib doc man devel service)
+[ "$PKGMK_ARCH" == "i686" ] && PKGMK_GROUPS=(lib doc man service)
 
 name=postgresql
 version=9.6.3
