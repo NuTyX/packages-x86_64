@@ -1,16 +1,14 @@
-# Description: Library for learning linear classifiers for large scale applications.
-# URL: http://www.csie.ntu.edu.tw/~cjlin/liblinear/
-# Packager: tnut at nutyx dot org
-
+description="Library for learning linear classifiers for large scale applications."
+url="http://www.csie.ntu.edu.tw/~cjlin/liblinear/"
+packager="tnut <tnut@nutyxorg>"
 name=liblinear
-version=210
+version=211
 release=1
 
-source=()
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/cjlin1/liblinear/archive/v${version}.tar.gz)
 build() {
-wget -c https://github.com/cjlin1/liblinear/archive/v210.tar.gz \
-     -O $name-$version.tar.gz
-tar xf $name-$version.tar.gz
 cd $name-$version
 make lib
 mkdir -p $PKG/usr/{lib,include}
