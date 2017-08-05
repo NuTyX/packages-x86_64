@@ -2,10 +2,12 @@
 
 description="A tool that makes it easy to create Python bindings for C and C++ libraries"
 url="http://www.riverbankcomputing.co.uk/software/sip/intro"
-packager="pierre at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 name=sip
-version=4.18
-release=2
+version=4.19.3
+release=1
 
 source=(http://sourceforge.net/projects/pyqt/files/sip/sip-$version/sip-$version.tar.gz )
 
@@ -19,4 +21,3 @@ build() {
 	make DESTDIR=$PKG install
 	chmod 644 $PKG/usr/lib/python2.7/site-packages/sipdistutils.py
 }
-  
