@@ -1,18 +1,10 @@
-# Description: Minimalistic user-space library oriented to Netlink developers
-# URL: http://www.netfilter.org/projects/libmnl/
-# Packager: tnut at nutyx dot org
-# Depends on:
+description="Minimalistic user-space library oriented to Netlink developers"
+url="http://www.netfilter.org/projects/libmnl/"
+packager="tnut <tnut@nutyx.org>"
 
 name=libmnl
-version=1.0.3
+version=1.0.4
 release=1
 
 source=(
 http://www.netfilter.org/projects/$name/files/$name-$version.tar.bz2)
-
-build(){
-    cd $name-$version
-    ./configure --prefix=/usr
-    make
-    make DESTDIR=$PKG install    
-}
