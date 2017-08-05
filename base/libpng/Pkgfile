@@ -3,7 +3,7 @@ url="http://www.libpng.org/pub/png/libpng.html"
 packager="tnut <tnut@nutyx.org>"
 
 name=libpng
-version=1.6.29
+version=1.6.31
 release=1
 
 source=( http://downloads.sourceforge.net/$name/$name-$version.tar.xz \
@@ -12,7 +12,7 @@ source=( http://downloads.sourceforge.net/$name/$name-$version.tar.xz \
 build() {
 cd $name-$version
 gzip -cd ../$name-$version-apng.patch.gz | patch -p0
-./configure --prefix=/usr \
+LIBS=-lpthread ./configure --prefix=/usr \
 --mandir=/usr/share/man \
 --infodir=/usr/share/info \
 --disable-static
