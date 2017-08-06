@@ -17,13 +17,13 @@ readline.devel rsync lvm2.devel libtool texinfo \
 texinfo.devel nasm groff make patch pkg-config \
 glibc.devel gcc.devel libarchive.devel \
 util-linux.devel xz.devel lzo.devel \
-dialog.devel tar wget gpm gpm.devel zlib.devel)
+dialog.devel tar wget zlib.devel)
 fi
 
 if [ "$PKGMK_ARCH" == "i686" ]; then
    run_devel=(autoconf automake bison \
 gawk gperf m4 perl rsync libtool texinfo \
-nasm groff make patch pkg-config tar wget gpm)
+nasm groff make patch pkg-config tar wget)
 fi
 
 PKGMK_GROUPS=(devel doc man)
