@@ -49,6 +49,10 @@ OPTIONS:
 	sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" isolinux/boot.msg
 	sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" isolinux/boot.msg
 	sed -i "s|#ARCH#|${ARCH}|" isolinux/boot.msg
+	if [ "$ARCH" == "i686" ]; then
+		sed -i "/live/d" isolinux/boot.msg
+	fi
+
 	# efi stufs
 	[ -d iso ] && rm -rv iso
 	[ -d boot ] && rm -rv boot
@@ -80,6 +84,9 @@ menuentry "NuTyX #ARCH# #VERSION_NUTYX# (UEFI mode) debug" {
     linux /boot/kernel ro quiet testiso rootdelay=5
     initrd /boot/initrd
 }
+EOF
+if [ "$ARCH" == "x86_64" ]; then
+	cat  >> boot/grub/grub.cfg << "EOF"
 menuentry "NuTyX #ARCH# #VERSION_NUTYX# (UEFI mode) live" {
     insmod efi_uga
     insmod efi_gop
@@ -91,6 +98,7 @@ menuentry "NuTyX #ARCH# #VERSION_NUTYX# (UEFI mode) live" {
     initrd /boot/initrd
 }
 EOF
+fi
 	sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" boot/grub/grub.cfg
 	sed -i "s|#ARCH#|${ARCH}|" boot/grub/grub.cfg
 	cp -v isolinux/kernel boot/
