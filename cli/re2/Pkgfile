@@ -4,15 +4,13 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=re2
-version=2017-07-01
+version=2017-08-01
 release=1
 
-source=(https://github.com/google/re2/archive/$version.zip
-        re2-gcc-61-fix.patch)
+source=(https://github.com/google/re2/archive/$version.zip)
 
 build() {
   cd $name-$version
-  patch -p1 < ../re2-gcc-61-fix.patch
   make prefix=/usr
   make prefix=/usr DESTDIR=$PKG install
 }
