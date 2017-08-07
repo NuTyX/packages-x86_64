@@ -18,6 +18,6 @@ build() {
 		--infodir=/usr/share/info
 	make
 	make DESTDIR=$PKG install
-	chmod -v 755 $PKG/usr/lib/libslang.so.$version \
+	chmod -v 755 $PKG/usr/lib/libslang.so.${version/a/} \
              $PKG/usr/lib/slang/v2/modules/*.so
 }
