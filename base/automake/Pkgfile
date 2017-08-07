@@ -3,16 +3,14 @@ url="http://www.gnu.org/software/automake/"
 packager="tnut <tnut@nutyx.org>"
 
 name=automake
-version=1.15
-release=2
+version=1.15.1
+release=1
 
 source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz)
 build() {
 cd automake-$version
-sed -i 's:/\\\${:/\\\$\\{:' bin/automake.in
 ./configure --prefix=/usr \
 --docdir=$PKG/usr/share/doc/automake-$version
 make
 make prefix=$PKG/usr install
-rm -rf $PKG/usr/share/info/dir
 }
