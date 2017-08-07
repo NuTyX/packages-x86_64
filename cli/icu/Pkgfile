@@ -5,13 +5,15 @@ contributors="Pierre B"
 
 name=icu
 version=59.1
-release=1
+release=2
 
-source=(http://download.$name-project.org/files/icu4c/$version/icu4c-${version//./_}-src.tgz)
+source=(icu-59.1-glibc-2.26-1.patch
+http://download.$name-project.org/files/icu4c/$version/icu4c-${version//./_}-src.tgz)
 
 build () {
-cd $name/source
-
+cd $name
+patch -Np1 -i ../icu-59.1-glibc-2.26-1.patch
+cd source
 CC=gcc CXX=g++ ./configure --prefix=/usr
 
 make

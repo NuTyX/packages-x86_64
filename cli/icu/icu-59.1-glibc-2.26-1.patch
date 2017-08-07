@@ -1,0 +1,15 @@
+diff -Naur icu_orig/source/i18n/digitlst.cpp icu/source/i18n/digitlst.cpp
+--- icu_orig/source/i18n/digitlst.cpp	2017-01-20 01:20:31.000000000 +0100
++++ icu/source/i18n/digitlst.cpp	2017-08-07 09:13:12.189142963 +0200
+@@ -61,11 +61,9 @@
+ #endif
+ 
+ #if U_USE_STRTOD_L
+-# if U_PLATFORM_USES_ONLY_WIN32_API || U_PLATFORM == U_PF_CYGWIN
+ #   include <locale.h>
+ # else
+ #   include <xlocale.h>
+-# endif
+ #endif
+ 
+ // ***************************************************************************
