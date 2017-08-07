@@ -8,7 +8,8 @@ name=nfs-utils
 version=2.1.1
 release=1
 
-source=(http://downloads.sourceforge.net/nfs/$name-$version.tar.bz2)
+source=(nfs-utils-2.1.1-gcc-7.2-1.patch
+	http://downloads.sourceforge.net/nfs/$name-$version.tar.bz2)
 run=(rpcbind)
 
 build() {
@@ -20,6 +21,7 @@ tar xvf $scripts-$scriptsversion.tar.bz2
 # build package
 
 cd $name-$version
+patch -Np1 -i ../nfs-utils-2.1.1-gcc-7.2-1.patch
 ./configure --prefix=/usr     \
 --sysconfdir=/etc \
 --disable-nfsv4   \
