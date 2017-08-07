@@ -27,5 +27,5 @@ build(){
     install -m644 $SRC/ZenLib/Project/GNU/Library/libzen.pc \
         $PKG/usr/lib/pkgconfig
     sed -i -e 's|Version: |Version: '$version'|g' \
-        PKG/usr/lib/pkgconfig/libzen.pc
+        $PKG/usr/lib/pkgconfig/libzen.pc
 }
