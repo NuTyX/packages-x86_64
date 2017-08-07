@@ -8,11 +8,13 @@ name=libtirpc
 version=1.0.2
 release=1
 
-source=(http://downloads.sourceforge.net/project/libtirpc/libtirpc/$version/libtirpc-$version.tar.bz2)
+source=(libtirpc-1.0.2-gcc-7.2-1.patch
+	http://downloads.sourceforge.net/project/libtirpc/libtirpc/$version/libtirpc-$version.tar.bz2)
 
 build()
 {
 cd libtirpc-$version
+patch -Np1 -i ../libtirpc-1.0.2-gcc-7.2-1.patch
 ./configure --prefix=/usr     \
             --sysconfdir=/etc \
             --disable-static  \
