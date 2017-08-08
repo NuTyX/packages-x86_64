@@ -22,6 +22,7 @@ tar xvf $scripts-$scriptsversion.tar.bz2
 cd $name-$version
 
 sed -i "s@data/test@\${INSTALL_MYSQLTESTDIR}@g" sql/CMakeLists.txt
+sed -i '/void..coc_malloc/{s/char ./&x/; s/int/& y/}' mysys_ssl/openssl.c
 
 mkdir build
 cd build
