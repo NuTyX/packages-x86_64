@@ -7,14 +7,19 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=llvm
-version=3.9.1
-release=2
+version=4.0.1
+release=1
 
-source=(${url}releases/$version/$name-$version.src.tar.xz
+source=(llvm-4.0.1-glibc-2.26-1.patch
+	${url}releases/$version/$name-$version.src.tar.xz
 	${url}releases/$version/cfe-$version.src.tar.xz
 	${url}releases/$version/compiler-rt-$version.src.tar.xz)
 
 build() {
+cd compiler-rt-$version.src
+patch -Np1 -i ../llvm-4.0.1-glibc-2.26-1.patch
+cd ..
+
 cd $name-$version.src
 
 mv ../compiler-rt-${version}.src projects/compiler-rt
@@ -27,32 +32,10 @@ CC=gcc CXX=g++ \
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
 	-DLLVM_ENABLE_FFI=ON \
 	-DCMAKE_BUILD_TYPE=Release \
+	-DLLVM_BUILD_LLVM_DYLIB=ON \
 	-DLLVM_TARGETS_TO_BUILD="host;AMDGPU;" \
-	-DBUILD_SHARED_LIBS=ON \
 	-Wno-dev \
 	..
 make || make -j1
 make DESTDIR=$PKG install || make -j1 DESTDIR=$PKG install
-for file in '$PKG/usr/lib/lib{clang,LLVM,LTO}*.a'
-do
-	test -f $file && chmod -v 644 $file
-done
-
-install -v -dm755 $PKG/usr/lib/clang-analyzer
-
-for prog in scan-build scan-view
-do
-	cp -rfv ../tools/clang/tools/$prog $PKG/usr/lib/clang-analyzer/
-	ln -sfv ../lib/clang-analyzer/$prog/$prog $PKG/usr/bin/
-done
-
-install -d $PKG/etc/ld.so.conf.d
-echo /usr/lib/llvm > $PKG/etc/ld.so.conf.d/llvm.conf
-
-ln -sfv /usr/bin/clang $PKG/usr/lib/clang-analyzer/scan-build/
-mkdir -p $PKG/usr/share/man/man1
-
-if [ -f $PKG/usr/lib/clang-analyzer/scan-build/scan-build.1 ];then
-	mv -v $PKG/usr/lib/clang-analyzer/scan-build/scan-build.1 $PKG/usr/share/man/man1/
-fi
 }
