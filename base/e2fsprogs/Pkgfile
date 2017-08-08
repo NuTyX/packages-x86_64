@@ -4,7 +4,7 @@ maintainer="Ted Ts'o tytso at mit dot edu,tytso at alum dot mit dot edu"
 packager="tnut <tnut@nutyx.org>"
 
 name=e2fsprogs
-version=1.43.4
+version=1.43.5
 release=1
 
 source=(http://prdownloads.sourceforge.net/$name/$name-$version.tar.gz)
@@ -38,9 +38,6 @@ gunzip -v $PKG/usr/share/info/libext2fs.info.gz
 makeinfo -o doc/com_err.info ../lib/et/com_err.texinfo
 
 install -v -m644 doc/com_err.info $PKG/usr/share/info
-
-rm -rf $PKG/usr/share/info/dir
-
 }
 devel()
 {
