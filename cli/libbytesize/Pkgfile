@@ -1,0 +1,18 @@
+# Depends on: pcre python
+
+description="Library facilitates the common operations with sizes in bytes."
+url="https://github.com/storaged-project/libblockdev"
+packager="tnut <tnut@nutyx.org>"
+
+name=libbytesize
+version=0.11
+release=1
+
+source=( https://github.com/storaged-project/$name/archive/$name-$version.tar.gz)
+build() {
+cd ${name}-${name}-$version
+sh autogen.sh
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
