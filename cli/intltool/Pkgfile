@@ -12,6 +12,7 @@ source=(http://edge.launchpad.net/intltool/trunk/$version/+download/intltool-$ve
 
 build() {
 cd $name-$version
+sed -i 's:\\\${:\\\$\\{:' intltool-update.in
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
