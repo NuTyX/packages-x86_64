@@ -1,0 +1,17 @@
+# Depends on: libgcrypt nettle nss openssl popt
+
+description="Cryptsetup is used to set up transparent encryption of block devices using the kernel crypto API."
+url="https://www.kernel.org/pub/linux/utils/cryptsetup"
+packager="tnut <tnut@nutyx.org>"
+
+name=cryptsetup
+version=1.7.5
+release=1
+
+source=( https://www.kernel.org/pub/linux/utils/cryptsetup/v1.7/$name-$version.tar.xz)
+build() {
+cd ${name}-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
