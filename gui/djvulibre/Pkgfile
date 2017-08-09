@@ -1,8 +1,10 @@
-# Description: Suite to create, manipulate and view DjVu ('déjà vu') documents
-# URL: URL: http://djvu.sourceforge.net
-# NuTyX package info file (http://nutyx.org)
-# Packager: # NuTyX package info file (http://nutyx.org)
 # Depends on: librsvg libtiff libjpeg-turbo hicolor-icon-theme 
+
+description="Suite to create, manipulate and view DjVu ('déjà vu') documents"
+url="http://djvu.sourceforge.net"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus"
+
 run=( librsvg hicolor-icon-theme )
 
 name=djvulibre
@@ -24,6 +26,3 @@ build(){
             $PKG/usr/share/icons/hicolor/${i}x${i}/mimetypes/image-vnd.djvu.mime.png
     done
 }
-
-
-
