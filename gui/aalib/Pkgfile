@@ -1,7 +1,10 @@
 # Depends on: xorg-libx11
+
 description="AAlib is an portable ascii art GFX library."
 url="http://aa-project.sourceforge.net/aalib"
-packager="pierre at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 name=aalib
 version=1.4rc5
 release=3
@@ -17,5 +20,4 @@ sed -i -e '/AM_PATH_AALIB,/s/AM_PATH_AALIB/[&]/' aalib.m4
 --infodir=/usr/share/info --disable-static
 make
 make  DESTDIR=$PKG install
-rm -f $PKG/usr/share/info/dir
 }
