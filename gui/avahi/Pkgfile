@@ -1,13 +1,15 @@
-# Description: Multicast/unicast DNS-SD framework
-# URL: http://www.avahi.org/
-# Packager: pierre at nutyx dot org
 # Depends on: intltool glib dbus-python gobject-introspection libdaemon 
 
+description="Multicast/unicast DNS-SD framework"
+url="http://www.avahi.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 name=avahi
-version=0.6.32
+version=0.7
 release=1
 
-source=( https://github.com/lathiat/avahi/releases/download/v0.6.32/avahi-$version.tar.gz)
+source=( https://github.com/lathiat/avahi/releases/download/v$version/avahi-$version.tar.gz)
 
 build() {
 cd $name-$version
@@ -21,9 +23,10 @@ cd $name-$version
 --disable-monodoc \
 --disable-gtk \
 --disable-gtk3 \
---disable-doxygen-doc \
 --disable-mono \
---with-distro=none
+--enable-core-docs \
+--with-distro=none \
+--with-systemdsystemunitdir=no
 make
 make DESTDIR=$PKG install
 
