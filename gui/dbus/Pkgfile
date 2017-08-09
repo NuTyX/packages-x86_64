@@ -1,13 +1,14 @@
 # Depends on: expat xorg-libx11 xorg-libsm xorg-libice
 
-PKGMK_GROUPS=(doc devel)
+[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(doc devel)
 
 description="Freedesktop.org message bus system"
 url="http://www.freedesktop.org/wiki/Software/dbus/"
-packager="pierre at nutyx dot org"
+packager="tnut <tnut@nutyx.org"
+contributors="Pierre B"
 
 name=dbus
-version=1.10.18
+version=1.10.20
 release=1
 
 source=(http://dbus.freedesktop.org/releases/dbus/$name-$version.tar.gz \
@@ -25,10 +26,9 @@ build() {
             --disable-doxygen-docs         \
             --disable-xml-docs             \
             --disable-static               \
-            --disable-systemd              \
-            --without-systemdsystemunitdir \
             --with-console-auth-dir=/run/console/ \
-            --docdir=/usr/share/doc/dbus-$version 
+            --docdir=/usr/share/doc/dbus-$version \
+	    --with-system-socket=/run/dbus/system_bus_socket
 	make
 	make DESTDIR=$PKG install
 	# Adjust some files
