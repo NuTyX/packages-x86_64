@@ -1,0 +1,20 @@
+# Depends on: glib gobject-introspection libbytesize lvm2 volume_key parted
+
+description="C library supporting GObject introspection for manipulation of block devices"
+url="https://github.com/storaged-project/libblockdev"
+packager="tnut <tnut@nutyx.org>"
+
+name=libblockdev
+version=2.11.1
+release=1
+
+source=( https://github.com/storaged-project/$name/archive/$name-2.11-1.tar.gz)
+build() {
+cd ${name}-${name}-2.11-1
+sh autogen.sh
+./configure --prefix=/usr \
+--without-dm \
+--sysconfdir=/etc
+make
+make DESTDIR=$PKG install
+}
