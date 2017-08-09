@@ -1,0 +1,19 @@
+# Depends on: cryptsetup glib gpgme swig python2
+
+description="Storage volume encryption keys and storing them separately from volumes to handle forgotten passphrases."
+url="https://releases.pagure.org/"
+packager="tnut <tnut@nutyx.org>"
+
+name=volume_key
+version=0.3.9
+release=1
+
+source=(  https://releases.pagure.org/volume_key/volume_key-$version.tar.xz )
+build() {
+cd ${name}-$version
+sed -i '/config.h/d' lib/libvolume_key.h
+autoreconf -fiv
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
