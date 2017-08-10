@@ -1,7 +1,9 @@
-# Description: libXres, resource extension client library
-# URL: http://xorg.freedesktop.org
-# Packager: pierre at nutyx dot org
 # Depends on: xorg-proto xorg-libx11 xorg-libxext 
+
+description="libXres, resource extension client library"
+url="http://xorg.freedesktop.org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
 
 name=xorg-libxres
 version=1.0.7
@@ -10,8 +12,11 @@ release=1
 source=(http://ftp.x.org/pub/individual//lib/libXres-$version.tar.bz2)
 
 build() {
+
 	cd libXres-$version
 	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+	
 	make
 	make DESTDIR=$PKG install
+	
 }
