@@ -2,17 +2,20 @@
 
 description="xterm is a terminal emulator for the X Window System."
 url="http://invisible-island.net/xorg-term/"
-packager="pierre at nutyx dot org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
+
 _name=xterm
 alias=(xterm)
 name=xorg-term
-version=327
+version=330
 release=1
 
 source=(ftp://invisible-island.net/${_name}/${_name}-$version.tgz
 	$name.list)
 
 build() {
+
 cd ${_name}-*
 
 sed -i '/v0/{n;s/new:/new:kb=^?:/}' termcap &&
@@ -38,4 +41,5 @@ for file in `cat $SRC/$name.list`
 do 
 	rm $PKG/$file
 done
+
 }
