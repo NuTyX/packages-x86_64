@@ -1,18 +1,23 @@
-# Description: Display graphical dialog boxes from shell scripts. 
-# URL: http://www.gnome.org/
-# Maintainer: git.gnome.org/brownse/yelp/
-# Packager: tnut at nutyx dot org
 # Depends on: itstool gtk3 libnotify yelp-tools
 
+description="Display graphical dialog boxes from shell scripts."
+url="http://www.gnome.org/"
+packager="greg <greg@nutyx.org>"
+contributors="tnut"
+
 name=zenity
-version=3.20.0
+version=3.24.0
 release=1
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/3.24/$name-$version.tar.xz)
 
 build() {
+
 cd $name-$version
 ./configure --prefix=/usr --sysconfdir=/etc \
       --localstatedir=/var
 make
 make DESTDIR=$PKG install
+
 }
+
