@@ -1,18 +1,24 @@
-# Description: xorg lib xtrans
-# URL: http://xorg.freedesktop.org
-# Packagers: pierre at nutyx dot org, tnut at nutyx dot org
 # Depends on: libxcb
+
+description="xorg lib xtrans"
+url="http://xorg.freedesktop.org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B, tnut"
  
 _name=xtrans
 name=xorg-xtrans
+alias=(xtrans)
 version=1.3.5
 release=1
 
 source=(http://ftp.x.org/pub/individual//lib/${_name}-$version.tar.bz2)
 
 build() {
+
 cd ${_name}-$version
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+
 make
 make DESTDIR=$PKG install
+
 }
