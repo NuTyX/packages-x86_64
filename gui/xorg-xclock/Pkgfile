@@ -1,18 +1,24 @@
-# Description: clock analog for X mainly pout tester all X
-# URL: http://xorg.freedesktop.org 
-# Packager: pierre at nutyx dot org
 # Depends on: xorg-libxft xorg-server 
-_name=xclock
+
+description="clock analog for X mainly pout tester all X"
+url="http://xorg.freedesktop.org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
 
 name=xorg-xclock
+_name=xclock
+alias=(xclock)
 version=1.0.7
 release=1
 
 source=(http://ftp.x.org/pub/individual//app/${_name}-$version.tar.bz2)
 
 build() {
+
 	cd ${_name}-$version	
 	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+	
 	make
 	make DESTDIR=$PKG install
+	
 }
