@@ -1,20 +1,17 @@
-# Description: GStreamer Multimedia Framework Bad Plugins
-# URL: http://gstreamer.freedesktop.org/modules/gst-plugins-base.html
-# Packager: pierre at nutyx dot org
-# Depends on: gstreamer-plugins-base faac faad2 libmms libpng libvpx xvid jasper 
-name=gstreamer-plugins-bad
-version=0.10.23
-release=1
+# Depends on: gstreamer1-plugins-base libdvdread libdvdnav faac faad2 libexif libmpeg2 mpg123
+description="GStreamer Multimedia Framework Bad Plugins"
+url="http://gstreamer.freedesktop.org/modules/gst-plugins-base.html"
+packager="pierre at nutyx dot org"
+name=gstreamer1-plugins-bad
+release=2
 
-source=(http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-$version.tar.bz2
-	$name-$version-compatibility-1.patch)
+source=(http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-$version.tar.xz )
+
 build() {
-
 cd gst-plugins*
-patch -Np1 -i ../$name-$version-compatibility-1.patch
+
 ./configure --prefix=/usr \
---with-gtk=3.0 \
---disable-examples
+--with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/"
 make
 make DESTDIR=$PKG install
 }
