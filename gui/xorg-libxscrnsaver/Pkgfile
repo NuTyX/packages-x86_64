@@ -1,7 +1,9 @@
-# Description: libXScrnSaver, library X Screen Saver extension client
-# URL: http://xorg.freedesktop.org
-# Packager: pierre at nutyx dot org
 # Depends on: xorg-libx11 xorg-proto xorg-libxext 
+
+description="libXScrnSaver, library X Screen Saver extension client"
+url="http://xorg.freedesktop.org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
 
 name=xorg-libxscrnsaver
 version=1.2.2
@@ -10,8 +12,11 @@ release=1
 source=(http://ftp.x.org/pub/individual//lib/libXScrnSaver-$version.tar.bz2)
 
 build() {
+
 cd libXScrnSaver-$version
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+
 make
 make DESTDIR=$PKG install
+
 }
