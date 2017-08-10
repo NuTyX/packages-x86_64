@@ -2,9 +2,7 @@
 
 description="libXfixes, library Fixes extension client"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
-
+packager="pierre at nutyx dot org"
 name=xorg-libxfixes
 version=5.0.3
 release=1
@@ -12,11 +10,8 @@ release=1
 source=(http://ftp.x.org/pub/individual/lib/libXfixes-$version.tar.bz2)
 
 build() {
-
 cd libXfixes-$version
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-
 make
 make DESTDIR=$PKG install
-
 }
