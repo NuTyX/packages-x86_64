@@ -1,14 +1,15 @@
-# Description: A library that feh uses as a wrapper to imlib2
-# URL: http://www.linuxbrit.co.uk/giblib
-# Packager: pierre at nutyx dot org
 # Depends on: imlib2 freetype 
+
+description="A library that feh uses as a wrapper to imlib2"
+url="http://www.linuxbrit.co.uk/giblib"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 name=giblib
 version=1.2.4
 release=1
 
-source=(https://mirrors.kernel.org/debian/pool/main/${name:0:1}/${name}/${name}_${version}.orig.tar.gz)
-# http://linuxbrit.co.uk/downloads/$name-$version.tar.gz)
+source=(https://mirrors.kernel.org/debian/pool/main/g/giblib/${name}_${version}.orig.tar.gz)
 
 build() {
 cd $name-$version*
