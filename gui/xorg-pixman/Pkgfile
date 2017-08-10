@@ -1,18 +1,24 @@
 # Depends on: libpng
+
 description="library for the manipulation of pixels"
 url="http://xorg.freedesktop.org"
-packager="pierre at nutyx dot org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
+
+
+name=xorg-pixman
 _name=pixman
 alias=(pixman)
-name=xorg-pixman
 version=0.34.0
 release=1
 
 source=(http://ftp.x.org/pub/individual//lib/${_name}-$version.tar.bz2)
 
 build() {
+
 cd ${_name}-$version
 ./configure --prefix=/usr --disable-static
 make
 make DESTDIR=$PKG install
+
 }
