@@ -1,13 +1,14 @@
-# Description:  	An object-oriented UPNP framework
-# URL: http://gupnp.org/
-# Maintainer: NuTyX core team
-# Packager: fanchyannmaria at orange dot fr
-# Depends on: gssdp, util-linux
+# Depends on: gssdp util-linux
+
+description="An object-oriented UPNP framework"
+url="http://gupnp.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanchyannmaria"
 
 name=gupnp
-version=0.20.18
+version=1.0.2
 release=1
-source=(http://ftp.gnome.org/pub/gnome/sources/${name}/${version%.*}/${name}-${version}.tar.xz)
+source=(http://ftp.gnome.org/pub/gnome/sources/gupnp/${version%.*}/${name}-${version}.tar.xz)
 
 build() {
 cd $name-$version
