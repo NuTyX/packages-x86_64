@@ -2,7 +2,8 @@
 
 description="Screen saver and locker for the X Window System"
 url="http://www.jwz.org/xscreensaver/"
-packager="pierre at nutyx dot org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
 
 name=xscreensaver
 version=5.37
@@ -11,11 +12,13 @@ release=1
 source=(http://www.jwz.org/xscreensaver/$name-$version.tar.gz)
 
 build() {
+
 cd $name-$version
 ./configure --prefix=/usr \
 --libexecdir=/usr/lib \
 --without-gnome
 make
+
 make install_prefix=$PKG install
 chmod 755 $PKG/usr/bin/xscreensaver
 mkdir -p $PKG/etc/pam.d
@@ -27,5 +30,5 @@ account	include	system-account
 
 # End /etc/pam.d/xscreensaver
 EOF
+
 }
-  
