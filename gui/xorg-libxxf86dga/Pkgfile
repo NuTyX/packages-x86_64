@@ -1,7 +1,10 @@
-# Description: libXxf86dga, library Xorg
-# URL: http://xorg.freedesktop.org
-# Packager: pierre at nutyx dot org
 # Depends on: xorg-proto xorg-libx11 xorg-libxext 
+
+description="libXxf86dga, library Xorg"
+url="http://xorg.freedesktop.org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
+
 
 name=xorg-libxxf86dga
 version=1.1.4
@@ -10,8 +13,11 @@ release=1
 source=(http://ftp.x.org/pub/individual//lib/libXxf86dga-$version.tar.bz2)
 
 build() {
+
 cd libXxf86dga-$version
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+
 make
 make DESTDIR=$PKG install
+
 }
