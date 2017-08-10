@@ -1,16 +1,22 @@
 # Depends on: pam xorg-libxaw xorg-libxinerama xorg-app xorg-libxft
 
 description="X display Manager"
-packager="tnut at nutyx dot org"
+url="https://xorg.freedesktop.org/"
+packager="greg <greg@nutyx.org>"
+contributors="tnut"
+
 name=xorg-xdm
 version=1.1.11
 release=2
 
-url="https://xorg.freedesktop.org/"
 
 source=($url/releases/individual/app/xdm-$version.tar.bz2
-	git_fixes.diff Xsession-loginshell.patch Xsession-xsm.patch)
+		git_fixes.diff Xsession-loginshell.patch 
+		Xsession-xsm.patch)
+	
+	
 build() {
+
    cd xdm-$version
    patch -Np1 -i ../git_fixes.diff
    patch -Np0 -i ../Xsession-loginshell.patch
@@ -40,4 +46,5 @@ session  include        system-session
 
 # End /etc/pam.d/xdm
 EOF
+
 }
