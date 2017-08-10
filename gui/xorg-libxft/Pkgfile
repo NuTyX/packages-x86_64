@@ -1,7 +1,10 @@
-# Description: libXft, library X are rendering client
-# URL: http://xorg.freedesktop.org/
-# Packager: pierre at nutyx dot org
 # Depends on: xorg-libxrender freetype xorg-fontconfig 
+
+description="libXft, library X are rendering client"
+url="http://xorg.freedesktop.org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
+
 name=xorg-libxft
 version=2.3.2
 release=1
@@ -9,8 +12,11 @@ release=1
 source=(http://ftp.x.org/pub/individual//lib/libXft-$version.tar.bz2)
 
 build() {
+
 cd libXft-$version
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+
 make
 make DESTDIR=$PKG install
+
 }
