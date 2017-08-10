@@ -1,25 +1,21 @@
-# Description: GStreamer Multimedia Framework
-# URL: http://gstreamer.freedesktop.org/
-# Packager: pierre at nutyx dot org
-# Depends on: glib libxml2 gsl gobject-introspection 
+# Depends on: glib libxml2 gsl gobject-introspection
+
+description="GStreamer Multimedia Framework"
+url="http://gstreamer.freedesktop.org/"
+packager="tnut <tnut@nutyx.>"
+contributors=Pierre B"
 
 name=gstreamer
-version=0.10.36
+version=1.12.2
 release=1
 
-source=(http://gstreamer.freedesktop.org/src/gstreamer/$name-$version.tar.bz2)
+source=(http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-$version.tar.xz)
 
 build() {
-cd $name-$version
-sed -i  -e '/YYLEX_PARAM/d' \
-  -e '/parse-param.*scanner/i %lex-param { void *scanner }' \
-     gst/parse/grammar.y
-
+cd gstreamer-$version
 ./configure --prefix=/usr \
---disable-static
+--with-package-name="GStreamer $version BLFS" \
+--with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/"
 make
 make DESTDIR=$PKG install
-rm -rf $PKG/usr/share/gtk-doc
 }
-
-  

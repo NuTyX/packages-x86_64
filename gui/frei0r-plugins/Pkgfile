@@ -5,14 +5,7 @@ url="http://www.piksel.org/frei0r"
 packager="pierre at nutyx dot org"
 
 name=frei0r-plugins
-version=1.4
+version=1.6.1
 release=1
 
 source=(https://files.dyne.org/frei0r/releases/$name-$version.tar.gz)
-
-build() {
-cd $name-$version
-./configure --prefix=/usr
-make
-make DESTDIR=$PKG install
-}

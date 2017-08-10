@@ -1,7 +1,10 @@
 # Depends on: cmake mesa xorg-glu xorg-libxi
+
 description="Provides functionality for small OpenGL programs"
 url="http://freeglut.sourceforge.net/"
-packager="fanch at nutyx dot org, tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 name=freeglut
 version=3.0.0
 release=3
@@ -22,4 +25,3 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr      \
 make
 make DESTDIR=$PKG install
 }
-

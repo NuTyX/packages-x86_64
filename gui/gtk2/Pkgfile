@@ -2,7 +2,8 @@
 
 description="GTK+ is a multi-platform toolkit (version 2)"
 url="http://www.gtk.org/"
-packager="pierre at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 # The run variable define the runtime dependencies
 run=(gtk-update-icon-cache)
@@ -13,7 +14,8 @@ run=(gtk-update-icon-cache)
 # de fichiers binaires n'est pas très important. La variable PKGMK_GROUP redéfini les groupes
 # Ici, le groupe lib ne sera pas construit
 
-PKGMK_GROUPS=(devel man doc)
+[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man doc)
+[ "$PKGMK_ARCH" == "i686" ] && PKGMK_GROUPS=(man doc)
 
 name=gtk2
 version=2.24.31

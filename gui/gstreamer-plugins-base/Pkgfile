@@ -1,20 +1,23 @@
-# Description: GStreamer Multimedia Framework Base Plugins
-# URL: http://gstreamer.freedesktop.org/modules/gst-plugins-base.html
-# Packager: pierre at nutyx dot org
-# Depends on: gstreamer alsa-lib pango cdparanoia libogg libtheora libvorbis xorg-libxv xorg-libxcursor xorg-libxdamage xorg-libxrandr xorg-libxinerama 
+# Depends on: gstreamer alsa-lib gobject-introspection iso-codes libtheora libvorbis pango 
+
+description="GStreamer Multimedia Framework Base Plugins"
+url="http://gstreamer.freedesktop.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+_name=gst-plugins-base 
 
 name=gstreamer-plugins-base
-version=0.10.36
+version=1.12.2
 release=1
 
-source=(http://ftp.gnome.org/pub/gnome/sources/gst-plugins-base/${version%.*}/gst-plugins-base-$version.tar.xz
-	http://www.linuxfromscratch.org/patches/downloads/gst-plugins-base/gst-plugins-base-0.10.36-gcc_4_9_0_i686-1.patch)
+source=(http://gstreamer.freedesktop.org/src/${_name}/${_name}-$version.tar.xz)
 
 build() {
-cd gst-plugins-base-$version
-
-[ "`uname -m`" == "i686" ] && patch -Np1 -i ../gst-plugins-base-0.10.36-gcc_4_9_0_i686-1.patch
-./configure --prefix=/usr
+cd ${_name}-$version
+./configure --prefix=/usr \
+--with-package-name="GStreamer Base Plugins $version BLFS" \
+--with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/"
 make
 make DESTDIR=$PKG install
-}
+} 
