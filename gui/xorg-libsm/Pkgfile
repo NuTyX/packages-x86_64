@@ -1,7 +1,9 @@
-# Description: libSM, library X Session Management client
-# URL: http://xorg.freedesktop.org
-# Packager: pierre at nutyx dot org
 # Depends on: xorg-libice xorg-proto xorg-xtrans 
+
+description="libSM, library X Session Management client"
+url="http://xorg.freedesktop.org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
 
 name=xorg-libsm
 version=1.2.2
@@ -10,8 +12,11 @@ release=1
 source=(http://ftp.x.org/pub/individual//lib/libSM-$version.tar.bz2)
 
 build() {
+
 cd libSM-$version
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+
 make
 make DESTDIR=$PKG install
+
 }
