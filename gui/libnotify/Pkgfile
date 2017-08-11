@@ -2,7 +2,9 @@
 
 description="Desktop notification library"
 url="http://www.galago-project.org/news/index.php"
-packager="pierre at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 name=libnotify
 version=0.7.7
 release=1
@@ -14,5 +16,4 @@ cd $name-$version
 ./configure --prefix=/usr --disable-static
 make
 make DESTDIR=$PKG install
-rm -rf $PKG/usr/share
 }
