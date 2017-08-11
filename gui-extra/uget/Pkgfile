@@ -1,17 +1,18 @@
-# Description: administrator of downloading with importation HTML
-# URL: http://urlget.sourceforge.net/
-# Packager: pierre at nutyx dot org
-# Depends on: libnotify gtk3 gstreamer curl hicolor-icon-theme xdg-utils 
+# Depends on: libnotify gtk3 gstreamer1 curl
+
+description="administrator of downloading with importation HTML"
+url="http://urlget.sourceforge.net/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 name=uget
-version=1.10.3
+version=2.0.9
 release=1
 
 source=(http://downloads.sourceforge.net/urlget/$name-$version.tar.gz)
 build() {
 	cd $name-$version
-	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
-              --disable-appindicator 
+	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
 	make
 	make DESTDIR=$PKG install
 }
