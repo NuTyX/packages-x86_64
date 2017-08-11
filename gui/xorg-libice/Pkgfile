@@ -1,7 +1,10 @@
-# Description: libICE, library Xorg
-# URL: http://xorg.freedesktop.org
-# Packager: pierre at nutyx dot org
-# Depends on: xorg-proto xorg-xtrans 
+# Depends on: xorg-proto xorg-xtrans
+
+description="libICE, library Xorg"
+url="http://xorg.freedesktop.org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
+ 
 name=xorg-libice
 version=1.0.9
 release=1
@@ -9,6 +12,7 @@ release=1
 source=(http://ftp.x.org/pub/individual//lib/libICE-$version.tar.bz2)
 
 build() {
+
 	cd libICE-$version
 
 	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var

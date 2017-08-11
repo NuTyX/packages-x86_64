@@ -2,10 +2,11 @@
 
 description="libXcursor, library Xorg"
 url="http://xorg.freedesktop.org"
-packager="pierre at nutyx dot org"
-alias=(libXcursor libxcursor)
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
 
-name=xorg-libxcursor                                                                                                         
+name=xorg-libxcursor  
+alias=(libXcursor libxcursor)                                                                                                       
 
 version=1.1.14
 release=2
@@ -13,8 +14,11 @@ release=2
 source=(http://ftp.x.org/pub/individual//lib/libXcursor-$version.tar.bz2)
 
 build() {
+
 cd libXcursor-$version
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+
 make	
 make DESTDIR=$PKG install
+
 }

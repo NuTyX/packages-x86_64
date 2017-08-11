@@ -1,7 +1,9 @@
-# Description: libXcomposite, library Composite extension client
-# URL: http://xorg.freedesktop.org
-# Packager: pierre at nutyx dot org
 # Depends on: xorg-libx11 xorg-proto xorg-libxfixes xorg-libxext 
+
+description="libXcomposite, library Composite extension client"
+url="http://xorg.freedesktop.org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
 
 name=xorg-libxcomposite
 version=0.4.4
@@ -10,8 +12,11 @@ release=1
 source=(http://ftp.x.org/pub/individual//lib/libXcomposite-$version.tar.bz2)
 
 build() {
+
 cd libXcomposite-$version
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+
 make
 make DESTDIR=$PKG install
+
 }
