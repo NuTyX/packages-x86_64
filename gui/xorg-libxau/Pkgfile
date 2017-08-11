@@ -1,7 +1,9 @@
-# Description: libxi, X Authorization routines
-# URL: http://xorg.freedesktop.org
-# Packager: pierre at nutyx dot org
 # Depends on: xorg-proto 
+
+description="libxi, X Authorization routines"
+url="http://xorg.freedesktop.org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
 
 name=xorg-libxau
 version=1.0.8
@@ -10,10 +12,12 @@ release=1
 source=(http://ftp.x.org/pub/individual//lib/libXau-$version.tar.bz2)
 
 build() {
+
 	cd libXau-$version
 
 	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
 
 	make
 	make DESTDIR=$PKG install
+	
 }
