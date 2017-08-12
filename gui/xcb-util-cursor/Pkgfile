@@ -1,7 +1,9 @@
-# Description: XCB cursor library
-# URL: http://cgit.freedesktop.org/xcb/util-cursor:
-# Packager: pierre at nutyx dot org
 # Depends on: libxcb  xcb-util-renderutil xcb-util-image
+
+description="XCB cursor library"
+url="http://cgit.freedesktop.org/xcb/util-cursor"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
 
 name=xcb-util-cursor
 version=0.1.3
@@ -10,8 +12,11 @@ release=1
 source=(http://xcb.freedesktop.org/dist/xcb-util-cursor-$version.tar.bz2)
 
 build() {
+
 cd $name-*
 ./configure --prefix=/usr
+
 make
 make DESTDIR=$PKG install
+
 }
