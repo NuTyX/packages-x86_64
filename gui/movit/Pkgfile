@@ -1,17 +1,12 @@
-# Description: The modern video toolkit
-# URL: http://movit.sesse.net/
-# Packager: pierre at nutyx dot org
 # Depends on: eigen3 gtest sdl2 fftw libepoxy
 
+description="The modern video toolkit"
+url="http://movit.sesse.net/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 name=movit
-version=1.3.2
+version=1.5.3
 release=1
 
 source=(https://movit.sesse.net/$name-$version.tar.gz)
-
-build() {
-  cd $name-$version
-  ./configure --prefix=/usr
-  make
-  make DESTDIR=$PKG install
-}
