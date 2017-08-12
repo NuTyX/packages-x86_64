@@ -1,3 +1,4 @@
+
 # Depends on: xorg-fontconfig xorg-encodings xorg-font-util
 
 description="A typeface designed for source code"
@@ -14,4 +15,3 @@ source=(https://github.com/chrissimpkins/Hack/releases/download/v2.$version/Hack
 build() {
   install -Dm644 -t $PKG/usr/share/fonts/TTF $SRC/Hack-*.ttf
 }
-
