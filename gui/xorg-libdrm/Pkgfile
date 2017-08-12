@@ -1,22 +1,28 @@
 # Depends on: docbook-xsl libxslt xorg-util-macros xorg-libpciaccess
 
 description="Provides a userspace library for accessing the DRM, direct rendering manager"
-url="http://dri.freedesktop.org/"
-packager="pierre at nutyx dot org, tnut at nutyx dot org"
+url="http://xorg.freedesktop.org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B, tnut"
 
-_name=libdrm
+
 name=xorg-libdrm
-version=2.4.80
+_name=libdrm
+version=2.4.82
 release=1
 alias=(libdrm)
+
 source=(http://dri.freedesktop.org/${_name}/${_name}-$version.tar.bz2)
 
 build() {
+
 cd ${_name}-$version
 ./configure --prefix=/usr \
 --enable-udev \
 --mandir=/usr/share/man \
 --infodir=/usr/share/info
+
 make
 make DESTDIR=$PKG install
+
 }
