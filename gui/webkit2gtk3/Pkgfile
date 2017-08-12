@@ -1,15 +1,18 @@
 # Depends on: enchant cmake gstreamer1-plugins-base xorg-libxt gtk2 gtk3 hunspell hyphen icu libgudev libsecret libsoup libwebp mesa ruby sqlite enchant geoclue gobject-introspection hicolor-icon-theme llvm harfbuzz gtk-doc libnotify
 
-
 description="engine of made Web free for the browsers web version 3"
 url="http://webkitgtk.org/"
-packager="pierre at nutyx dot org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
+
 name=webkit2gtk3
-version=2.16.4
+version=2.16.6
 release=1
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
+
 build() {
+
 cd webkitgtk-$version
 mkdir -vp build
 cd        build
@@ -31,4 +34,5 @@ install -vm644  ../Documentation/webkit2gtk-4.0/html/* \
 $PKG/usr/share/gtk-doc/html/webkit2gtk-4.0
 install -vm644  ../Documentation/webkitdomgtk-4.0/html/* \
 $PKG/usr/share/gtk-doc/html/webkit2gtk-4.0
+
 }
