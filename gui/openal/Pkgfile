@@ -1,11 +1,13 @@
-# Description: Cross-platform 3D audio.
-# URL: http://connect.creativelabs.com/openal
-# Maintainer: Danny Rawlins, monster dot romster at gmail dot com
-# Packager: pierre at nutyx dot org
-# Depends on: alsa-lib, cmake
+# Depends on: alsa-lib cmake
+
+description="Cross-platform 3D audio."
+url="http://connect.creativelabs.com/openal"
+maintainer="Danny Rawlins, monster dot romster at gmail dot com"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre "
 
 name=openal
-version=1.17.2
+version=1.18.1
 release=1
 
 source=(http://kcat.strangesoft.net/openal-releases/openal-soft-$version.tar.bz2 )
@@ -22,5 +24,3 @@ cmake ../ \
 make
 make DESTDIR=$PKG install
 }
-
-
