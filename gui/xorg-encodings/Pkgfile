@@ -1,20 +1,25 @@
-# Description: Utilities for the polices print of X
-# URL: http://xorg.freedesktop.org
-# Packager: pierre at nutyx dot org
 # Depends on: xorg-util-macros xorg-app 
-_name=encodings
+
+description="Utilities for the polices print of X"
+url="http://xorg.freedesktop.org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
+
 
 name=xorg-encodings
+_name=encodings
 version=1.0.4
 release=1
 
 source=(http://ftp.x.org/pub/individual//font/${_name}-$version.tar.bz2)
 
 build() {
+
 	cd ${_name}-$version
 
 	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
 
 	make
 	make DESTDIR=$PKG install
+	
 }
