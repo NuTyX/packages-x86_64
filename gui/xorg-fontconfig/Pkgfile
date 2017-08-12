@@ -1,26 +1,21 @@
-# Description: fontconfig, library for access and the configuration of polices
-# URL: http://xorg-fontconfig.org/wiki/
-# Packager: pierre at nutyx dot org
 # Depends on: freetype expat libpng 
-_name=fontconfig
+
+description="fontconfig, library for access and the configuration of polices"
+url="http://xorg-fontconfig.org/wiki/"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
 
 name=xorg-fontconfig
-version=2.12.1
-release=3
+_name=fontconfig
+version=2.12.4
+release=1
 
-source=( http://fontconfig.org/release/${_name}-$version.tar.gz
-	xorg-fontconfig-2.12.1-gperf-1.patch)
+source=( https://www.freedesktop.org/software/$_name/release/$_name-$version.tar.gz)
 
 
 build() {
+
 cd ${_name}-$version
-
-sed -e '/FC_CHAR_WIDTH/s/CHAR_WIDTH/CHARWIDTH/'             \
-    -e '/FC_CHARWIDTH/a #define FC_CHAR_WIDTH FC_CHARWIDTH' \
-    -i fontconfig/fontconfig.h
-sed 's/CHAR_WIDTH/CHARWIDTH/' -i src/fcobjs.h
-
-[ "$PKGMK_ARCH" == "x86_64" ] && patch -Np1 -i ../xorg-fontconfig-2.12.1-gperf-1.patch
 
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
@@ -28,7 +23,9 @@ sed 's/CHAR_WIDTH/CHARWIDTH/' -i src/fcobjs.h
 --docdir=/usr/share/doc/$name-$version \
 --disable-docs --disable-static
 make
+
 make DESTDIR=$PKG install
+
 install -v -dm755 \
  $PKG/usr/share/{man/man{1,3,5},doc/fontconfig-$version/fontconfig-devel}
 install -v -m644 fc-*/*.1 $PKG/usr/share/man/man1
@@ -38,4 +35,5 @@ install -v -m644 doc/fontconfig-devel/* \
  $PKG/usr/share/doc/${_name}-$version/fontconfig-devel
 install -v -m644 doc/*.{pdf,sgml,txt,html} \
  $PKG/usr/share/doc/${_name}-$version
+ 
 }

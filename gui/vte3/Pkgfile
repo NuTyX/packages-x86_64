@@ -1,14 +1,19 @@
 # Depends on: pcre2, gtk3, perl-xml-parser, python2-gtk, gobject-introspection
+
 description="Vte is a library (libvte) implementing a terminal emulator widget for GTK+ 3"
 url="http://developer.gnome.org/arch/gnome/widgets/vte.html"
-packager="pierre at nutyx dot org"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
+
 name=vte3
+_name=vte
 version=0.46.1
 release=2
-_name=vte
+
 source=(http://ftp.gnome.org/pub/gnome/sources/${_name}/${version%.*}/${_name}-$version.tar.xz)
 
 build() {
+
 	cd ${_name}-$version
 	sed -i '/Werror/d' configure.ac
 	autoreconf
@@ -17,6 +22,8 @@ build() {
 		--enable-introspection \
 		--with-xft2 \
 		--with-pangox
+		
 	make
 	make DESTDIR=$PKG install
+	
 }
