@@ -1,17 +1,20 @@
 # Depends on: lynx xmlto xorg-app
 
 description="Set of command line tools that assist applications with a variety of desktop integration tasks." 
-url="http://portland.freedesktop.org/wiki/"
-packager="pierre at nutyx dot org"
+url="https://www.freedesktop.org/wiki/Software/xdg-utils/"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
 
 run=(xorg-app)
 
 name=xdg-utils
 version=1.1.2
 release=1
+
 source=(http://portland.freedesktop.org/download/$name-$version.tar.gz)
 
 build() {
+
    cd $name-$version
 
    ./configure --prefix=/usr \
@@ -20,4 +23,5 @@ build() {
    make -j1
 
    make DESTDIR=$PKG install
+   
 }
