@@ -4,20 +4,20 @@
 
 description="Freedesktop.org message bus system"
 url="http://www.freedesktop.org/wiki/Software/dbus/"
-packager="tnut <tnut@nutyx.org"
+packager="tnut <tnut@nutyx.org>, jayce <jayce.net@gmail.com>"
 contributors="Pierre B"
 
 name=dbus
 version=1.10.20
-release=1
+release=2
 
 source=(http://dbus.freedesktop.org/releases/dbus/$name-$version.tar.gz \
        dbus.system-local.conf)
 
 build() {
 	source /etc/blfs-bootscripts
-	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-	tar xvf $scripts-$scriptsversion.tar.bz2
+	wget http://anduin.linuxfromscratch.org/BLFS/blfs-bootscripts/$scripts-$scriptsversion.tar.xz
+	tar xvf $scripts-$scriptsversion.tar.xz
 
 	cd $name-$version
 	./configure --prefix=/usr             \
