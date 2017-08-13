@@ -1,7 +1,8 @@
-# Description: Monitor and display application startup
-# URL: http://freedesktop.org/wiki/Software/startup-notification
-# Packager: pierre at nutyx dot org
 # Depends on: xorg-libx11 xcb-util 
+
+description="Monitor and display application startup"
+url="http://freedesktop.org/wiki/Software/startup-notification"
+packager="Pierre B"
 
 name=startup-notification
 version=0.12
@@ -17,4 +18,3 @@ build() {
 	make
 	make DESTDIR=$PKG install
 }
-  
