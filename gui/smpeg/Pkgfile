@@ -1,7 +1,9 @@
-# Description: A SDL MPEG player library.
-# URL: http://www.lokigames.com/development/smpeg.php3
-# Packager: fanch at nutyx dot org
 # Depends on: sdl
+
+description="A SDL MPEG player library."
+url="http://www.lokigames.com/development/smpeg.php3"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
 
 name=smpeg
 version=0.4.5
@@ -17,5 +19,3 @@ build() {
 	make || make -j1
 	make install DESTDIR=$PKG
 }
-
-
