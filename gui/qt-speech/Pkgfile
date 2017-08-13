@@ -2,12 +2,17 @@
 
 description="A cross-platform application and UI framework, QtSpeech files"
 url="http://qt-project.org/"
-packager="pierre at nutyx dot org"
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
 
-name=qt-speech 
+name=qt-speech
+version=5.9.1
 release=1
 alias=(qtspeech)
 _name="${name/-/}-opensource-src"
+
+source=(https://download.qt.io/official_releases/qt/5.9/$version/submodules/${_name}-${version}.tar.xz)
+
 build() {
 cd ${_name}-${version}
 qmake
