@@ -2,12 +2,12 @@
 
 description="Multicast/unicast DNS-SD framework"
 url="http://www.avahi.org/"
-packager="tnut <tnut@nutyx.org>"
+packager="tnut <tnut@nutyx.org>, jayce"
 contributors="Pierre B"
 
 name=avahi
 version=0.7
-release=1
+release=2
 
 source=( https://github.com/lathiat/avahi/releases/download/v$version/avahi-$version.tar.gz)
 
@@ -30,5 +30,5 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 
-rm -r $PKG/{etc/avahi,var,usr/share/man/man8,usr/sbin}
+rm -fr $PKG/{etc/avahi,var,usr/share/man/man8,usr/sbin}
 }
