@@ -2,13 +2,16 @@
 
 description="A cross-platform application and UI framework, QtImageFormat files"
 url="http://qt-project.org/"
-packager="pierre at nutyx dot org"
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
 
 name=qt-imageformats 
 release=1
 alias=(qtimageformats)
-
 _name="${name/-/}-opensource-src"
+
+source=(https://download.qt.io/official_releases/qt/5.9/$version/submodules/${_name}-${version}.tar.xz)
+
 build() {
 cd ${_name}-${version}
 qmake
