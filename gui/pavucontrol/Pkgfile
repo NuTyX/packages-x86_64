@@ -10,13 +10,3 @@ version=3.0
 release=1
 
 source=(http://freedesktop.org/software/pulseaudio/pavucontrol/pavucontrol-$version.tar.xz)
-
-build() {
-  cd $name-$version
-  ./configure --prefix=/usr
-  make
-  make DESTDIR=$PKG install
-}
-  
-
-
