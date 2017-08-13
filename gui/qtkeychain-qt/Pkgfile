@@ -2,14 +2,14 @@
 
 description="Provides support for secure credentials storage"
 url="https://github.com/frankosterfeld/qtkeychain"
-packager="pierre at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 name=qtkeychain-qt
 version=2016-09-04
 release=3
 
 _name=qtkeychain
-#source=(https://github.com/frankosterfeld/qtkeychain/archive/$version.zip)
 
 build() {
 git clone https://github.com/frankosterfeld/qtkeychain.git
@@ -23,4 +23,3 @@ cmake ../$_name                     \
 make
 make DESTDIR=$PKG install
 }
-
