@@ -1,11 +1,16 @@
-# Depends on: git xorg-proto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms xcb-util-renderutil xcb-util xcb-util-image xcb-util-wm xcb-util-cursor glib dbus xorg-fontconfig xorg-libsm xorg-libxrandr xorg-libxv xorg-libxi unixodbc libjpeg-turbo alsa-lib xdg-utils hicolor-icon-theme desktop-file-utils mesa xorg-libxcursor xorg-libxrender libpng mariadb icu libglade xorg-libxfixes xorg-libxinerama libxkbcommon libinput harfbuzz mtdev postgresql cups python gperf ruby pulseaudio bluez libtiff libmng openal libxslt xorg-libxcomposite gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad gstreamer1 gstreamer1-plugins-base gstreamer1-plugins-good gstreamer1-plugins-bad pulseaudio hunspell wayland ca-certificates openssl pcre gtk2 gtk3 libxkbcommon nss pciutils freetype libproxy
+# Depends on: git xorg-proto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms xcb-util-renderutil xcb-util xcb-util-image xcb-util-wm xcb-util-cursor glib dbus xorg-fontconfig xorg-libsm xorg-libxrandr xorg-libxv xorg-libxi unixodbc libjpeg-turbo alsa-lib xdg-utils hicolor-icon-theme desktop-file-utils mesa xorg-libxcursor xorg-libxrender libpng mariadb icu libglade xorg-libxfixes xorg-libxinerama libxkbcommon libinput harfbuzz mtdev postgresql cups python gperf ruby pulseaudio bluez libtiff libmng openal libxslt xorg-libxcomposite gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad pulseaudio hunspell wayland ca-certificates openssl pcre gtk2 gtk3 libxkbcommon nss pciutils freetype libproxy
 
 description="A cross-platform application and UI framework"
 url="http://qt-project.org/"
-packager="pierre at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 name=qt-base
-release=4
+version=5.9.1
+release=1
 _name="${name/-/}-opensource-src"
+
+source=(https://download.qt.io/official_releases/qt/5.9/$version/submodules/${_name}-${version}.tar.xz)
 
 build() {
 
