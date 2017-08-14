@@ -1,14 +1,15 @@
-# URL: http://tcl.sourceforge.net/
-# Packager: alienus at nutyx dot org
 # Depends on: tcl xorg-fontconfig xorg-libxft xorg-libxscrnsaver 
 
 description="A windowing toolkit for use with tcl"
+url="http://tcl.sourceforge.net/"
+packager="greg <greg@nutyx.org>"
+contributors="alienus"
+
 name=tk
 version=8.6.6
 release=1
 
-source=(
-http://downloads.sourceforge.net/sourceforge/tcl/tk${version}-src.tar.gz)
+source=(http://downloads.sourceforge.net/sourceforge/tcl/tk${version}-src.tar.gz)
 
 build(){
     
@@ -28,4 +29,5 @@ build(){
     sed -e "s#${SRC}/tk${version}/unix#/usr/lib#" \
         -e "s#${SRC}/tk${version}#/usr/include#" \
         -i $PKG/usr/lib/tkConfig.sh
+        
 }
