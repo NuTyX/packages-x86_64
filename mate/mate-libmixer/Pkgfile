@@ -2,20 +2,26 @@
 
 description="Mixer library for MATE Desktop"
 url="https://mate-desktop.org/"
-packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org"
+packager="greg <greg@nutyx.org>"
+contributors="fanch,tnut"
+
 name=mate-libmixer
+_name=libmatemixer
 version=1.18.0
 release=1
-_name=libmatemixer
+
 source=(http://pub.mate-desktop.org/releases/${version%.*}/${_name}-$version.tar.xz)
 
 build() {
+
   cd ${_name}-$version
   ./configure \
           --prefix=/usr \
           --sysconfdir=/etc \
           --localstatedir=/var \
           --disable-static
+          
   make
   make DESTDIR=$PKG install
+  
 }
