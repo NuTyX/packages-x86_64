@@ -1,16 +1,19 @@
-# Description: Additional taglib plugins for KDE
-# URL: http://developer.kde.org/~wheeler/taglib.html
-# Packager: pierre at nutyx dot org
 # Depends on: taglib cmake
+
+description="Additional taglib plugins for KDE"
+url="http://developer.kde.org/~wheeler/taglib.html"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
 
 name=taglib-extras
 version=1.0.1
 release=2
 
 source=(http://downloads.nutyx.org/files/$name-$version.tar.gz
-	taglib-1.10.patch)
+		taglib-1.10.patch)
 
 build() {
+
   cd $name-$version
   patch -p1 -i ../taglib-1.10.patch
   cmake -DCMAKE_INSTALL_PREFIX=/usr \
