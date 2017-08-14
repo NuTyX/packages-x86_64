@@ -1,15 +1,19 @@
-# Description: A simple, small, minimal, C++ XML parser
-# URL:         http://www.grinninglizard.com/tinyxml/
-# Maintainer:  Thomas Penteker, tek at serverop dot de
-# Packager:    fanch at nutyx dot org
+# Depends on:
+
+description="A simple, small, minimal, C++ XML parser"
+url="http://www.grinninglizard.com/tinyxml/"
+packager="greg <greg@nutyx.org>"
+contributors="fanch"
 
 name=tinyxml
 version=2.6.2
 release=1
+
 source=(http://download.sourceforge.net/project/$name/$name/$version/${name}_${version//./_}.zip \
         entity.patch $name-use-stl.patch)
 
 build() {
+
   export CXXFLAGS="${CXXFLAGS} -fPIC"
   cd $name
 
@@ -27,4 +31,5 @@ build() {
   install -m 0644 *.h $PKG/usr/include/
   ln -s lib$name.so.$version $PKG/usr/lib/lib$name.so.${version:0:1}
   ln -s lib$name.so.$version $PKG/usr/lib/lib$name.so
+  
 }
