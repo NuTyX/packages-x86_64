@@ -1,7 +1,7 @@
 # Depends on: mtdev xorg-libxvmc xorg-server xcb-util xorg-xkeyboard-config xorg-twm xorg-term xorg-xclock xorg-xinit libevdev
 
 description="Xorg Keyboard, Mouse and Video drivers"
-packager="tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
 
 run=(xorg-font xorg-xkeyboard-config xorg-server xorg-twm xorg-term xorg-xclock xorg-xinit)
 section="driver"
@@ -9,17 +9,17 @@ section="driver"
 alias=( xf86-input-evdev xf86-input-synaptic xf86-input-vmmouse xf86-input-wacom xf86-video-ati xf86-video-fbdev xf86-video-nouveau xf86-video-nouveau xf86-video-nouveau xf86-video-vesa xf86-video-vmware)
 name=xorg
 version=7.7
-release=15
+release=16
 
 source=()
 
 build() {
 cat > list.md5 << "EOF"
-0f209d13b39427c1a6d38d70059b1e8f  xf86-input-evdev-2.10.4.tar.bz2
+94c2c8354c74ab1cfbbb0a222078b9c6  xf86-input-evdev-2.10.5.tar.bz2
 58e5b7722a402114093bf193962d1e3a  xf86-input-synaptics-1.9.0.tar.bz2
 85e2e464b7219c495ad3a16465c226ed  xf86-input-vmmouse-13.1.0.tar.bz2
-bfc2bb315210f735bcdb9f7887c9d609  xf86-input-wacom-0.34.2.tar.bz2
-f34d04a755e761e03b459155fa3ddcbb  xf86-video-ati-7.8.0.tar.bz2
+cb137465f139bb014883b0d7b0c500b2  xf86-input-wacom-0.35.0.tar.bz2
+bf3dfdae23879bdc0c8a7b955572ad90  xf86-video-ati-7.9.0.tar.bz2
 3931c0e19d441cc576dc088f9eb9fd73  xf86-video-fbdev-0.4.4.tar.bz2
 717203cb87029cddcbccf7398f9ad8c3  xf86-video-nouveau-1.0.15.tar.bz2
 316aaf97eb152eef71dac70c349fb8c7  xf86-video-openchrome-0.5.0.tar.bz2
@@ -58,14 +58,21 @@ for package in $(grep -v '^#' list.md5 |cut -d " " -f 3)
 	done
 
 # Intel is a bit different
-wget  ftp://anduin.linuxfromscratch.org/BLFS/xf86-video-intel/xf86-video-intel-20160902.tar.bz2
-tar -xf xf86-video-intel-20160902.tar.bz2
+wget  ftp://anduin.linuxfromscratch.org/BLFS/xf86-video-intel/xf86-video-intel-20170216.tar.bz2
+tar -xf xf86-video-intel-20170216.tar.bz2
 cd xf86-video-intel
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \
 --enable-kms-only \
---enable-uxa 
+--enable-uxa \
+--mandir=/usr/share/man
 make 
 make DESTDIR=$PKG install
+
+# Rearrange a bit
+mv -v $PKG/usr/share/man/man4/intel-virtual-output.4 \
+      $PKG/usr/share/man/man1/intel-virtual-output.1 &&
+sed -i '/\.TH/s/4/1/' \
+      $PKG/usr/share/man/man1/intel-virtual-output.1
 }
