@@ -1,7 +1,9 @@
-# Description: An IRC connection manager for Telepathy
-# URL: http://telepathy.freedesktop.org/
-# Packager: pierre at nutyx dot org
 # Depends on: telepathy-glib 
+
+description="An IRC connection manager for Telepathy"
+url="http://telepathy.freedesktop.org/"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
 
 name=telepathy-idle
 version=0.2.0
@@ -10,9 +12,11 @@ release=2
 source=(http://${name%-*}.freedesktop.org/releases/$name/$name-$version.tar.gz)
 
 build() {
+
   cd $name-$version
   ./configure --prefix=/usr \
               --libexecdir=/usr/lib/telepathy
   make
   make DESTDIR=$PKG install
+  
 }
