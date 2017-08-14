@@ -1,7 +1,9 @@
-# Description: The Thunar Volume Manager is an extension for the Thunar file manager.
-# URL: http://thunar.xfce.org
-# Packagers: tyrry at nutyx dot org, tnut at nutyx dot org
 # Depends on: libgudev libnotify startup-notification exo xfce4-libui desktop-file-utils gvfs
+
+description="Automatic management of removeable devices in Thunar"
+url="http://goodies.xfce.org/projects/thunar-plugins/thunar-volman"
+packager="greg <greg@nutyx.org>"
+contributors="tyrry,tnut"
 
 run=(desktop-file-utils)
 
@@ -10,10 +12,19 @@ version=0.8.1
 release=2
 
 source=(http://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2 )
+
 build() {
+
 cd $name-$version
+
 ./configure --prefix=/usr \
---sysconfdir=/etc
+	--sysconfdir=/etc \
+	--libexecdir=/usr/lib/xfce4 \
+    --localstatedir=/var \
+    --disable-static \
+    --disable-debug
+    
 make
 make DESTDIR=$PKG install
+
 }
