@@ -1,9 +1,9 @@
-# Depends on: python freetype dbus-glib intltool poppler-glib ffmpegthumbnailer libgsf
+# Depends on: ilibjpeg-turbo libpng freetype gdk-pixbuf dbus-glib intltool gstreamer
 
-description="A D-Bus thumbnailing service based on the thumbnail management D-Bus specification.
-url="http://www.ohloh.net/p/tumbler-xfce"
-packager="tnut <tnut@nutyx.org>"
-contributors="Tyrry"
+description="D-Bus service for applications to request thumbnails"
+url="http://www.xfce.org/"
+packager="greg <greg@nutyx.org>"
+contributors="tyrry"
 
 name=tumbler
 version=0.2.0
@@ -12,9 +12,18 @@ release=1
 source=(http://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2)
 
 build() {
+
 cd $name-$version
-./configure --prefix=/usr \
---sysconfdir=/etc
+
+./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/xfce4 \
+    --disable-static \
+    --disable-debug \
+    --disable-gstreamer-thumbnailer
+    
 make
 make DESTDIR=$PKG install
+
 }
