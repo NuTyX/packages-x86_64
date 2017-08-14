@@ -5,10 +5,10 @@ contributors="Pierre B"
 maintainer="Jakub Jelinek (jakub at redhat dot com),Manuel López-Ibáñez (manu at gcc dot gnu.org,Giovanni Bajo,Peter Barada,Gerald Baumgartner and a lot more."
 
 name=gcc
-version=7.1.1
+version=7.2.0
 release=1
 
-source=(ftp://gcc.gnu.org/pub/gcc/snapshots/$version/gcc-$version.tar.xz)
+source=(http://ftp.gnu.org/gnu/gcc/gcc-$version/gcc-$version.tar.xz)
 [ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man doc)
 
 build()
