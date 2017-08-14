@@ -1,20 +1,21 @@
-# Depends on: xorg-libxres libwnck2 xfce4-libui xfce4-libutil startup-notification 
+# Depends on: xorg-libxres libwnck xfce4-libui xfce4-libutil startup-notification 
 
-description="Xfwm4 is the window manager for Xfce."
-url=http://www.xfce.org/projects/xfwm4/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Tyrry"
-
-_name=xfwm4
+description="Xfce window manager"
+url="http://www.xfce.org/"
+packager="greg <greg@nutyx.org>"
+contributors="tyrry,tnut"
 
 name=xfce4-wm
-version=4.12.3
+_name=xfwm4
+version=4.12.4
 release=1
 
 source=(http://archive.xfce.org/src/xfce/${_name}/${version%.*}/${_name}-$version.tar.bz2)
 
 build() {
+
 cd ${_name}-$version
+
 ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
@@ -26,6 +27,8 @@ cd ${_name}-$version
     --enable-compositor \
     --enable-xsync \
     --disable-debugr
+    
 make
 make DESTDIR=$PKG install
+
 }
