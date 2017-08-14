@@ -2,16 +2,22 @@
 
 description="MATE keyboard library"
 url="https://mate-desktop.org/"
-packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org, jayce dot net at gmail dot com"
+packager="greg <greg@nutyx.org>"
+contributors="fanch,tnut,jayce"
+
 name=mate-libkbd
+_name=libmatekbd
 version=1.18.2
 release=1
-_name=libmatekbd
+
 source=(http://pub.mate-desktop.org/releases/${version%.*}/${_name}-$version.tar.xz)
 
 build() {
+
 cd ${_name}-$version
 ./configure  --prefix=/usr
+
 make
 make DESTDIR=$PKG install
+
 }
