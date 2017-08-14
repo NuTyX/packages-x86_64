@@ -1,18 +1,22 @@
 # Depends on: xfce4-libutil dbus-glib perl-glib
 
-description="Xfconf is the configuration storage system for Xfce."
-url="http://wiki.xfce.org/releng/4.6/general-info"
-packager="tyrry at nutyx dot org, tnut at nutyx dot org"
+description="A simple client-server configuration storage and query system"
+url="http://www.xfce.org/"
+packager="greg <greg@nutyx.org>"
+contributors="tyrry,tnut"
+
+name=xfce4-conf
 alias=(xfconf)
 _name=xfconf
-name=xfce4-conf
 version=4.12.1
 release=1
 
 source=(http://archive.xfce.org/src/xfce/${_name}/${version%.*}/${_name}-$version.tar.bz2)
 
 build() {
+
 cd ${_name}-$version
+
 ./configure \
 	--prefix=/usr \
     --sysconfdir=/etc \
@@ -21,7 +25,10 @@ cd ${_name}-$version
     --disable-static \
     --enable-gtk-doc \
     --disable-debug
+    
 	make
 	make DESTDIR=$PKG install
+	
 find $PKG  -name perllocal.pod -exec rm {} \;
+
 }
