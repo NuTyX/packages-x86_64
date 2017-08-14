@@ -2,14 +2,18 @@
 
 description="Provides access to weather information from the Internet"
 url="https://mate-desktop.org/"
-packager="fanchyannmaria at orange dot fr, tnut at nutyx dot org, jayce dot net at gmail dot com"
+packager="greg <greg@nutyx.org>"
+contributors="fanch,tnut,jayce"
+
 name=mate-libweather
+_name=libmateweather
 version=1.18.1
 release=1
-_name=libmateweather
+
 source=(http://pub.mate-desktop.org/releases/${version%.*}/${_name}-$version.tar.xz)
 
 build() {
+
 	cd ${_name}-$version
 		./configure \
 	        --prefix=/usr \
