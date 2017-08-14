@@ -1,19 +1,25 @@
-# Description: A collection of programs that are useful for adjusting your Xfce preferences.
-# URL: http://wiki.xfce.org/releng/4.10/
-# Packager: tyrry at nutyx dot org, tnut at nutyx dot org
 # Depends on: exo xfce4-libui xfce4-garcon xorg-libxklavier xorg-libxkbfile libcanberra gnome-icon-theme
+
+description="Settings manager for xfce"
+url="http://www.xfce.org/"
+packager="greg <greg@nutyx.org>"
+contributors="tyrry,tnut"
+
 run=(gnome-icon-theme)
 
 name=xfce4-settings
-version=4.12.0
-release=3
+version=4.12.1
+release=1
 
 source=(http://archive.xfce.org/src/xfce/${name}/${version%.*}/$name-$version.tar.bz2 
-default-xsettings-xml.patch)
+		default-xsettings-xml.patch)
 
 build() {
+
 cd $name-$version
+
 patch -Np1 -i $SRC/default-xsettings-xml.patch
+
 ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
@@ -27,6 +33,8 @@ patch -Np1 -i $SRC/default-xsettings-xml.patch
     --enable-sound-settings \
     --disable-upower-glib \
     --disable-debug
+    
   make
-make DESTDIR=$PKG install
+  make DESTDIR=$PKG install
+
 }
