@@ -1,22 +1,26 @@
-# Depends on: exo libwnck2 xfce4-libui thunar xfce4-garcon
+# Depends on: exo libwnck xfce4-libui thunar xfce4-garcon
 
-description="Xfdesktop is a desktop manager for the Xfce Desktop Environment."
+description="A desktop manager for Xfce"
 url="http://www.xfce.org"
-packager="tnut <tnut@nutyx.org>"
+packager="greg <greg@nutyx.org>"
+contributors="tyrry,tnut"
 
-_name=xfdesktop
 run=(gtk-update-icon-cache)
 
 name=xfce4-desktop
-version=4.12.3
-release=2
+_name=xfdesktop
+version=4.12.4
+release=1
 
-source=(http://archive.xfce.org/src/xfce/${_name}/4.12/${_name}-$version.tar.bz2)
-#        http://downloads.nutyx.org/FondsEcrans/150213091432829037.jpg)
+source=(http://archive.xfce.org/src/xfce/${_name}/4.12/${_name}-$version.tar.bz2
+        http://downloads.nutyx.org/WallPapers/150213091432829037.jpg)
 
 build() {
+
 cd ${_name}-$version
-#sed -i "s/xfce-blue.jpg/wall-houaphan.jpg/" common/xfdesktop-common.h
+
+sed -i "s/xfce-blue.jpg/wall-houaphan.jpg/" common/xfdesktop-common.h
+
 ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
@@ -27,8 +31,11 @@ cd ${_name}-$version
     --enable-thunarx \
     --enable-notifications \
     --disable-debug
+    
 make
 make DESTDIR=$PKG install
-#install -D -m644 ../150213091432829037.jpg \
-#$PKG/usr/share/backgrounds/xfce/wall-houaphan.jpg
+
+install -D -m644 ../150213091432829037.jpg \
+$PKG/usr/share/backgrounds/xfce/wall-houaphan.jpg
+
 }
