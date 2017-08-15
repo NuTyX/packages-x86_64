@@ -1,6 +1,7 @@
 # Depends on: exo vte3
+
 url="http://www.os-cillation.com/index.php?id=42&L=5"
-packager="tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
 description="Terminal emulator from Xfce4."
 
 name=xfce4-terminal
@@ -10,7 +11,9 @@ release=1
 source=(http://archive.xfce.org/src/apps/${name}/${version%.*}/$name-$version.tar.bz2 )
 
 build() {
+
 cd $name-$version
+
 ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
@@ -18,6 +21,8 @@ cd $name-$version
     --localstatedir=/var \
     --disable-static \
     --disable-debug
+    
 make
 make DESTDIR=$PKG install
+
 }
