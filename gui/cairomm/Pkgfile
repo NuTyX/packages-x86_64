@@ -7,7 +7,13 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=cairomm
-version=1.15.3
+version=1.12.2
 release=1
 
 source=(http://cairographics.org/releases/$name-$version.tar.gz)
+prepare() {
+cd $name-$version
+sed -e '/^libdocdir =/ s/$(book_name)/cairomm-1.12.2/' \
+    -i docs/Makefile.in
+cd ..
+}
