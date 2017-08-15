@@ -4,18 +4,21 @@ description="Burn CDs and DVDs from files on your computer or ISO images downloa
 url="http://www.xfce.org/projects/xfburn/"
 packager="tnut <tnut@nutyx.org>"
 
-_name=xfburn
+run=(cdrdao)
 
 name=xfce4-burn
+_name=xfburn
 version=0.5.4
 release=3
-ru=(cdrdao)
 
 source=(http://archive.xfce.org/src/apps/xfburn/${version%.*}/xfburn-$version.tar.bz2)
 
 build() {
+
 cd ${_name}-$version	
 ./configure --prefix=/usr
+
 make
 make DESTDIR=$PKG install
+
 }
