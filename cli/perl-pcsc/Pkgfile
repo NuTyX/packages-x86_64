@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=perl-pcsc
 version=1.4.14
-release=1
+release=2
 
 source=(http://ludovic.rousseau.free.fr/softwares/pcsc-perl/pcsc-perl-$version.tar.bz2)
 
@@ -22,4 +22,5 @@ build() {
 	_perlver_max=$(perl -e '$v = $^V->{version}; print $v->[0].".".($v->[1]+1);')
 	depends+=("perl>=$_perlver_min" "perl<$_perlver_max")
 fi
+ rm $PKG/usr/lib/share/perl5/base/perllocal.pod
 }
