@@ -1,4 +1,4 @@
-# Depends on: gtk-doc xorg-libxrandr gdk-pixbuf mesa xorg-glu pango xorg-libdrm gobject-introspection
+# Depends on: xorg-libxrandr gdk-pixbuf mesa xorg-glu pango xorg-libdrm gobject-introspection
 
 description="An object oriented GL/GLES Abstraction/Utility Layer"
 url="http://www.gnome.org/"
@@ -12,12 +12,15 @@ source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$versio
 
 build() {
 unset MAKEFLAGS
+
 cd $name-$version
+
+sed -i 's/^#if COGL/#ifdef COGL/' cogl/winsys/cogl-winsys-egl.c
+
 ./configure --prefix=/usr \
 --enable-gles{1,2} \
 --enable-{kms,wayland,xlib}-egl-platform \
---enable-wayland-egl-server \
---enable-gtk-doc
+--enable-wayland-egl-server
 make
 make DESTDIR=$PKG install
 }
