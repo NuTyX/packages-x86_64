@@ -12,14 +12,18 @@ release=1
 source=(http://archive.xfce.org/src/apps/$name/${version%.*}/$name-$version.tar.bz2)
 
 build() {
-cd $name-$version
+
+	cd $name-$version
+
 	./configure \
     	--prefix=/usr \
-   	 --sysconfdir=/etc \
+		--sysconfdir=/etc \
     	--libexecdir=/usr/lib \
     	--localstatedir=/var \
     	--disable-static \
     	--disable-debug
+    	
 	make
 	make DESTDIR=$PKG install
+	
 }
