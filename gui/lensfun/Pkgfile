@@ -13,6 +13,7 @@ source=(http://sourceforge.net/projects/$name/files/$version/$name-$version.tar.
 	)
 build(){
 cd $name-$version
+mkdir build
 cd build
 cmake .. -DLENSFUN_INSTALL_PREFIX=/usr
 make all
