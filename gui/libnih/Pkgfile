@@ -6,15 +6,8 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
 name=libnih
-version=1.0.4
+version=1.0.3
 release=1
 
 source=(
 http://launchpad.net/libnih/1.0/$version/+download/$name-$version.tar.gz)
-
-build(){
-    cd $name-$version
-    ./configure --prefix=/usr
-    make
-    make DESTDIR=$PKG install    
-}
