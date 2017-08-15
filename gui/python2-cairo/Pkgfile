@@ -2,17 +2,17 @@
 
 description="Connector Python2 for the cairo library"
 url="http://www.cairographics.org/"
-packager="tnut <tnut nutyx.org>"
-contributors="Pierre B"
+packager="jayce <jayce.net@gmail.com>"
+contributors="tnut,Pierre"
 
 name=python2-cairo
 version=1.15.0
-release=1
+release=2
 
-source=(http://cairographics.org/releases/py2cairo-$version.tar.bz2)
+source=(https://github.com/pygobject/pycairo/archive/v$version.tar.gz)
 
 build() {
-	cd py2cairo-$version
+	cd pycairo-$version
 	python2 setup.py build
-	python2 setup.py install optimize=1 --destdir=$PKG
+	python2 setup.py setup install --optimize=1 --destdir=$PKG
 }
