@@ -14,5 +14,5 @@ source=(https://github.com/pygobject/pycairo/releases/download/v$version/pycairo
 build() {
 	cd pycairo-$version
 	python3 setup.py build
-	python3 setup install --optimize=1 --destdir=$PKG
+	python3 setup.py install --optimize=1 --root=$PKG
 }  
