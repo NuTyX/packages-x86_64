@@ -1,13 +1,16 @@
-# Description: Thunar filemanager plugin to deal with archives
-# URL: http://foo-projects.org/~benny/projects/thunar-archive-plugin
-# Maintainer: CRUX Xfce Team, xfce-ports at crux dot nu
-# Packager: Antonio SJ Musumeci, bile at landofbile dot com
 # Depends on: thunar xarchiver
+
+description="Thunar filemanager plugin to deal with archives"
+url="http://foo-projects.org/~benny/projects/thunar-archive-plugin"
+packager="greg <greg@nutyx.org>"
+contributors="Antonio, bile"
+
 # Group: xfce4
 
 name=thunar-archive-plugin
 version=0.3.1
 release=1
+
 source=(http://archive.xfce.org/src/thunar-plugins/$name/${version%.*}/$name-$version.tar.bz2)
 
 ##
@@ -56,5 +59,6 @@ EOF
 
 ##
 chmod 755 $PKG/usr/lib/thunar/thunar-archive-plugin/xarchiver.tap
+
 }
 
