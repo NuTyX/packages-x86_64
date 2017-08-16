@@ -1,23 +1,22 @@
 description="Feature-rich cron implementation"
 url="http://fcron.free.fr"
-contributors="pierre"
-packager="greg<greg@nutyx.org>"
+contributors="Pierre, Greg"
+packager="tnut<tnut@nutyx.org>"
 
 # Depends on: vim 
 
 name=fcron
 version=3.2.1
-scripts=blfs-bootscripts
-scriptsversion=20170611
 
 release=1
 
 source=(http://fcron.free.fr/archives/$name-$version.src.tar.gz )
 
+source /etc/blfs-bootscripts
+
 prepare() {
 
 	unset MAKEFLAGS
-	source /etc/blfs-bootscripts                                                                                                            
 	wget  http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2                                                
 	tar xf $scripts-$scriptsversion.tar.bz2 
 
@@ -57,7 +56,5 @@ package() {
 cd ../$scripts-$scriptsversion
 
 make DESTDIR=$PKG install-fcron
-
-rm -rf $PKG/usr/share/doc
 
 }
