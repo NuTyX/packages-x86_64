@@ -1,28 +1,41 @@
-# Depends on: gtk2 gstreamer1-plugins-base mesa xorg-libsm xorg-libxxf86vm sdl
+# Depends on: gtk2 gstreamer-plugins-base mesa xorg-libsm xorg-libxxf86vm sdl
 
 description="GTK+ implementation of wxWidgets API for GUI"
 url="http://wxwidgets.org"
-packager="pierre at nutyx dot org, tnut at nutyx dot org, Sipo"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B,tnut"
+
 name=wxgtk
 version=3.0.3.1
 release=1
 
 source=(https://github.com/wxWidgets/wxWidgets/releases/download/v$version/wxWidgets-$version.tar.bz2
-	make-abicheck-non-fatal.patch 
-	)
+	    make-abicheck-non-fatal.patch )
 
+prepare() {
 
+	cd wxWidgets-$version
+	patch -Np1 -i ../make-abicheck-non-fatal.patch
+
+}
 
 build() {
-cd wxWidgets-$version
-patch -Np1 -i ../make-abicheck-non-fatal.patch
 
+	cd wxWidgets-$version
 
-./configure --prefix=/usr --libdir=/usr/lib --with-gtk=2 --with-opengl --enable-unicode \
---enable-graphics_ctx  --enable-mediactrl --enable-webview --with-regex=builtin \
---with-libpng=sys --with-libxpm=sys --with-libjpeg=sys --with-libtiff=sys \
---disable-precomp-headers
-make
-make -C locale allmo
-make DESTDIR=$PKG install
+	./configure --prefix=/usr --libdir=/usr/lib --with-gtk=2 --with-opengl --enable-unicode \
+		--enable-graphics_ctx  --enable-mediactrl --enable-webview --with-regex=builtin \
+		--with-libpng=sys --with-libxpm=sys --with-libjpeg=sys --with-libtiff=sys \
+		--disable-precomp-headers
+	make
+	make -C locale allmo
+
 }
+
+package() {
+
+	cd wxWidgets-$version
+	make DESTDIR=$PKG install
+	
+}
+
