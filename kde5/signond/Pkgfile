@@ -1,0 +1,24 @@
+# Depends on : qt-base qt-tools libproxy doxygen graphviz dejavu-ttf freefont-ttf ttf-liberation noto-fonts
+
+description="A D-Bus service which performs user authentication on behalf of its clients"
+url="https://gitlab.com/accounts-sso/signond/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=(graphviz)
+
+name=signond
+version=8.59
+release=1
+
+source=(https://gitlab.com/accounts-sso/signond/repository/archive.tar.bz2)
+
+build() {
+cd $name*
+
+sed -i 's/qdbusxml2cpp/qdbusxml2cpp-qt/' src/signond/signond.pro
+
+qmake CONFIG+=coverage PREFIX=/usr LIBDIR=/usr/lib
+make
+make INSTALL_ROOT=$PKG install 
+}
