@@ -10,8 +10,10 @@ alias=( xf86-input-evdev xf86-input-synaptic xf86-input-vmmouse xf86-input-wacom
 name=xorg
 version=7.7
 release=16
+INTEL_VERSION=20170216
+PKGMK_IGNORE_UNPACK="yes"
 
-source=()
+source=(ftp://anduin.linuxfromscratch.org/BLFS/xf86-video-intel/xf86-video-intel-${INTEL_VERSION}.tar.xz)
 
 build() {
 cat > list.md5 << "EOF"
@@ -58,9 +60,9 @@ for package in $(grep -v '^#' list.md5 |cut -d " " -f 3)
 	done
 
 # Intel is a bit different
-wget  ftp://anduin.linuxfromscratch.org/BLFS/xf86-video-intel/xf86-video-intel-20170216.tar.bz2
-tar -xf xf86-video-intel-20170216.tar.bz2
-cd xf86-video-intel
+cd $SRC
+tar -xf xf86-video-intel-${INTEL_VERSION}.tar.xz
+cd xf86-video-intel-${INTEL_VERSION}
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \
@@ -71,8 +73,9 @@ make
 make DESTDIR=$PKG install
 
 # Rearrange a bit
-mv -v $PKG/usr/share/man/man4/intel-virtual-output.4 \
-      $PKG/usr/share/man/man1/intel-virtual-output.1 &&
+mkdir -p $PKG/usr/share/man/man1
+mv -v $PKG/usr/share/man/man4/intel.4 \
+      $PKG/usr/share/man/man1/intel.1 &&
 sed -i '/\.TH/s/4/1/' \
-      $PKG/usr/share/man/man1/intel-virtual-output.1
+      $PKG/usr/share/man/man1/intel.1
 }
