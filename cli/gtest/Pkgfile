@@ -1,0 +1,61 @@
+# Depends on: python2 cmake
+
+description="Google Test - C++ testing utility"
+url="https://github.com/google/googletest/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=gtest
+version=1.8.0
+release=1
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(gtest.pc.in gtest-pkgconfig.patch gmock-install.patch gmock.pc.in
+	https://github.com/google/googletest/archive/release-${version}.tar.gz)
+
+prepare() {
+  cd googletest-release-${version}
+    (cd googletest
+    autoreconf -fvi
+    cp $SRC/gtest.pc.in .
+    sed -r "s|(Version:) .+|\1 ${pkgver}|" -i gtest.pc.in
+    patch -p1 < "${srcdir}/gtest-pkgconfig.patch"
+    mkdir build
+  )
+
+  patch -p1 < $SRC/gmock-install.patch
+  (cd googlemock
+    cp "${srcdir}/gmock.pc.in" .
+    autoreconf -fvi
+  )
+}
+
+build () {
+  cd googletest-release-${version}
+  (cd googletest
+    # this is odd but needed only to generate gtest-config.
+    ./configure --prefix=/usr
+    cd build
+    cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DBUILD_SHARED_LIBS=ON \
+      -DCMAKE_SKIP_RPATH=ON ..
+    make
+  )
+  (cd googlemock
+    ./configure --prefix=/usr --with-gtest --enable-external-gtest
+    make
+  )
+  cd googletest
+  make -C build DESTDIR=$PKG install
+  install -Dm 755 scripts/gtest-config -t $PKG/usr/bin
+  install -Dm 644 build/libgtest{,_main}.so -t $PKG/usr/lib
+  install -Dm 644 m4/gtest.m4 -t $PKG/usr/share/aclocal
+  install -Dm 644 cmake/* -t $PKG/usr/src/gtest/cmake
+  install -Dm 644 src/* -t $PKG/usr/src/gtest/src
+  install -d $PKG/usr/include
+  cp -r include/gtest -t $PKG/usr/include
+
+  patch -Rp1 < $SRC/gtest-pkgconfig.patch
+  install -Dm 644 CMakeLists.txt -t $SRC/usr/src/gtest
+}
