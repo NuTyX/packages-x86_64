@@ -1,14 +1,28 @@
 # Depends on: gtk3 murrine gnome-icon-theme
+
 description="Arc is a flat theme with transparent elements for GTK 3, GTK 2 and GNOME Shell"
-packager="jayce dot net at gmail dot com"
-url="https://github.com/horst3180/arc-theme"
+packager="greg <greg@nutyx.org>"
+contributors="jayce"
+url="https://github.com/horst3180/"
+
 name=arc-gtk-theme
 _name=arc-theme
-version=1.0.0
+version=20170302
 release=1
+
+source=(https://github.com/horst3180/${_name}/archive/$version.tar.gz)
+
+
 build() {
-   git clone https://github.com/horst3180/${_name} --depth 1
-   cd $_name
-   ./autogen.sh --prefix=/usr
-   make DESTDIR=$PKG install
+
+    cd ${_name}-${version}
+    ./autogen.sh --prefix=/usr
+
 }
+
+package() {
+
+    cd ${_name}-${version}
+    make DESTDIR=$PKG install
+}
+
