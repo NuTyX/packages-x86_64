@@ -9,9 +9,9 @@ name=ghostscript
 version=9.21
 release=1
 
-source=( https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs919/$name-$version.tar.gz
-         https://sourceforge.net/projects/gs-fonts/files/latest/download
-         http://ftp.gnu.org/pub/gnu/ghostscript/gnu-gs-fonts-other-6.0.tar.gz )
+source=( https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${version/./}/$name-$version.tar.gz
+         http://downloads.sourceforge.net/gs-fonts/ghostscript-fonts-std-8.11.tar.gz
+	 http://downloads.sourceforge.net/gs-fonts/gnu-gs-fonts-other-6.0.tar.gz)         
 
 unset MAKEFLAGS
 
