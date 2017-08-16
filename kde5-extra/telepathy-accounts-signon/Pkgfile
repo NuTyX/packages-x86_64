@@ -1,0 +1,23 @@
+# Depends on: qt-base telepathy-mission-control libaccounts-glib libsignon-glib
+
+description="A mission control plugin for Telepathy, integrating with libaccounts and libsignon to provide IM accounts"
+url="https://gitlab.com/accounts-sso/telepathy-accounts-signon"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
+
+name=telepathy-accounts-signon
+version=1.0
+release=3
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://gitlab.com/accounts-sso/$name/repository/archive.tar.gz)
+
+build() {
+
+  mkdir -p build 
+  cd build
+  qmake ../$name*
+  make INSTALL_ROOT=$PKG install
+  
+}
