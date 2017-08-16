@@ -1,26 +1,50 @@
-# Description: apvlv is a PDF/DJVU/UMD/TXT Viewer and its behaviour like Vim.
-# URL: http://github.com/naihe2010/apvlv
-# Packager: alienus at nutyx dot org, tnut at nutyx dot org
 # Depends on: git cmake webkitgtk2 djvulibre poppler-glib gtk2 gtk3 desktop-file-utils
+
+description="apvlv is a PDF/DJVU/UMD/TXT Viewer and its behaviour like Vim."
+url="http://github.com/naihe2010/apvlv"
+packager="greg <greg@nutyx.org>"
+contributors="alienus, tnut"
 
 name=apvlv
 version=0.1.5
 release=1
 
 source=(https://github.com/naihe2010/apvlv/archive/v$version.tar.gz
-        $name.desktop)
+        $name.desktop
+        gcc6.patch)
+
+
+prepare() {
+
+  cd $name-$version
+
+  patch -Np1 -i ../gcc6.patch
+  
+}
+
 
 build(){
-    cd $name-*
+
+    cd $name-$version
     mkdir -p build
+    
     cd build
+    
     CXX="g++ -std=c++98" cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr \
           -DAPVLV_WITH_DJVU=yes -DAPVLV_WITH_TXT=yes \
           -DAPVLV_WITH_UMD=no  ..
     make
-    make DESTDIR=$PKG install
 
-    # desktop integration
-    install -Dm644 $SRC/$name.desktop \
-        $PKG/usr/share/applications/$name.desktop
 }
+
+package() {
+
+	cd $name-$version/build
+	
+	make DESTDIR=$PKG install
+	
+	install -Dm644 $SRC/$name.desktop \
+		$PKG/usr/share/applications/$name.desktop
+        
+ }       
+
