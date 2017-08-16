@@ -2,15 +2,15 @@
 
 Description= "A program that lets you manipulate digital audio waveforms"
 URL: "http://web.audacityteam.org/"
-Packager:"Sipo"
+packager="greg <greg@nutyx.org>"
+contributors=""
 
 name=audacity
 version=2.1.3
 release=1
 
 source=(https://github.com/audacity/audacity/archive/Audacity-$version.zip
-	ffmpeg.patch
-	)
+		ffmpeg.patch)
 
 build() {
   
@@ -19,7 +19,15 @@ build() {
   
 	autoreconf -vi # use system libraries
   	./configure --prefix=/usr --with-libsamplerate
+  	
   make
  
-  make DESTDIR="${PKG}" install
+}
+
+package() {
+
+	cd $SRC/$name-$version
+	
+	make DESTDIR=$PKG install
+	
 }
