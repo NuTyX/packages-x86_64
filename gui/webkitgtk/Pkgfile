@@ -5,7 +5,7 @@ url="http://webkitgtk.org/"
 packager="greg <greg@nutyx.org>"
 contributors="Pierre B"
 
-name=webkit2gtk3
+name=webkitgtk
 version=2.16.6
 release=1
 
@@ -14,9 +14,19 @@ source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 build() {
 
 cd webkitgtk-$version
+
+sed -i 's/unsigned short/char16_t/'            \
+       Source/JavaScriptCore/API/JSStringRef.h \
+       Source/WebKit2/Shared/API/c/WKString.h
+
+sed -i '/stdbool.h/ a#include <uchar.h>' \
+       Source/JavaScriptCore/API/JSBase.h
+
 mkdir -vp build
 cd        build
 
+CFLAGS=-Wno-expansion-to-defined \
+CXXFLAGS=-Wno-expansion-to-defined \
 cmake -DCMAKE_BUILD_TYPE=Release  \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_SKIP_RPATH=ON       \
