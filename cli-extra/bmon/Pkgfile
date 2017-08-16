@@ -1,10 +1,10 @@
+# Depends on: confuse libnl
+
+
 description="Portable bandwidth monitor and rate estimator"
 url="http://github.com/tgraf/bmon/"
-contributors="berlius"
-packager="greg<greg@nutyx.org>"
-
-# Depends on:  ncurses confuse libnl
-
+contributors="Berlius, Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=bmon
 version=4.0
@@ -32,4 +32,3 @@ package() {
 	make DESTDIR=$PKG install
 	
 }
-
