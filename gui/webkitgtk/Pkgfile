@@ -15,13 +15,6 @@ build() {
 
 cd webkitgtk-$version
 
-sed -i 's/unsigned short/char16_t/'            \
-       Source/JavaScriptCore/API/JSStringRef.h \
-       Source/WebKit2/Shared/API/c/WKString.h
-
-sed -i '/stdbool.h/ a#include <uchar.h>' \
-       Source/JavaScriptCore/API/JSBase.h
-
 mkdir -vp build
 cd        build
 
