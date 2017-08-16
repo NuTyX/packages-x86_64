@@ -1,0 +1,19 @@
+# Depends on: git signond libaccounts-qt qt-declarative qt-tools
+
+description="Expose the Online Accounts API to QML applications"
+url="https://gitlab.com/accounts-sso/accounts-qml-module"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=accounts-qml-module
+version=0.7-git
+release=1
+
+build() {
+  git clone https://gitlab.com/accounts-sso/accounts-qml-module.git
+  mkdir build
+  cd build
+  qmake ../$name/$name.pro PREFIX=/usr
+  make
+  make INSTALL_ROOT=$PKG install_subtargets
+}
