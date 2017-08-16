@@ -1,16 +1,20 @@
-# Depends on: cmake sqlite ffmpeg qt4
-description="A graphical tool to edit video (filter/re-encode/split) - Qt GUI"
-packager="tnut at nutyx dot org"
-maintainer="tnut at nutyx dot org"
+# Depends on: cmake sqlite ffmpeg qt
+
+description="Graphical tool to edit video (filter/re-encode/split)"
 url="http://fixounet.free.fr/avidemux/"
+packager="greg <greg@nutyx.org>"
+contributors=""
+
 name=avidemux
-version=2.6.18
+version=2.6.20
 release=1
-source=(
-http://downloads.sourceforge.net/project/avidemux/avidemux/${version}/avidemux_${version}.tar.gz)
+
+source=(https://downloads.sourceforge.net/$name/$name_${pkgver}.tar.gz)
 
 build() {
+
 cd ${name}_$version
+
 unset PKG
 unset MAKEFLAGS
 unset CFLAGS
@@ -20,9 +24,8 @@ PKG=$PKGMK_WORK_DIR/pkg
 mv install/usr \
 $PKG
 
-
 mkdir -p $PKG/usr/share/{applications,pixmaps,man/man1}
-sed "s@avidemux2_gtk@avidemux3_qt4@" avidemux2.desktop \
+sed "s@avidemux2_gtk@avidemux3_qt@" avidemux2.desktop \
 > $PKG/usr/share/applications/avidemux.desktop
 
 install -Dm 644 avidemux_icon.png \
@@ -30,4 +33,5 @@ $PKG/usr/share/pixmaps/avidemux.png
 
 install -Dm 644 man/avidemux.1 -t \
 $PKG/usr/share/man/man1
+
 }
