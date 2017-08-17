@@ -4,7 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=openssl10
 version=1.0.2l
-release=1
+release=2
 source=(https://openssl.org/source/openssl-1.0.2l.tar.gz
 	http://www.linuxfromscratch.org/patches/blfs/svn/openssl-$version-compat_versioned_symbols-1.patch)
 build() {
@@ -39,5 +39,5 @@ sed 's@/include$@/include/openssl-1.0@' -i \
 $PKG/usr/lib/openssl-1.0/pkgconfig/*.pc
 
 #Already in openssl
-rm -r $PKG/{etc,usr/bin}
+rm -r $PKG/{etc,usr/bin,usr/share/man}
 } 
