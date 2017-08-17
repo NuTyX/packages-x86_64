@@ -1,9 +1,9 @@
-# Depends on: exo libwnck xfce4-libui thunar xfce4-garcon
+# Depends on: exo libwnck2 xfce4-libui thunar xfce4-garcon
 
 description="A desktop manager for Xfce"
 url="http://www.xfce.org"
-packager="greg <greg@nutyx.org>"
-contributors="tyrry,tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tyrry, Tnut, Greg"
 
 run=(gtk-update-icon-cache)
 
@@ -35,7 +35,7 @@ sed -i "s/xfce-blue.jpg/wall-houaphan.jpg/" common/xfdesktop-common.h
 make
 make DESTDIR=$PKG install
 
-install -D -m644 ../150213091432829037.jpg \
+install -D -m644 ../xfce_NuTyX.jpg \
 $PKG/usr/share/backgrounds/xfce/wall-houaphan.jpg
 
 }
