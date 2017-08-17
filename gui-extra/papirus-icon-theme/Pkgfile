@@ -1,0 +1,18 @@
+# Depends on:
+
+description=" Papirus icon theme for Linux"
+url="https://github.com/PapirusDevelopmentTeam/papirus-icon-theme"
+packager="DamnKid"
+
+name=papirus-icon-theme
+version=20170804
+release=1
+
+source=(${url}/archive/$version.tar.gz)
+
+build() {
+
+	cd ${name}-$version
+	make DESTDIR=$PKG install
+	
+}
