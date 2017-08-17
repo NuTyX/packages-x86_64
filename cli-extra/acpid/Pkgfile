@@ -1,23 +1,23 @@
 description="A completely flexible, totally extensible daemon for delivering ACPI events."
 url="http://sourceforge.net/projects/acpid2/"
-contributors="berlius, fanch, tnut"
-packager="greg<greg@nutyx.org>"
+contributors="berlius, fanch, tnut, greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=acpid
 version=2.0.28
-release=1
+release=2
 
 
 source=(http://downloads.sourceforge.net/acpid2/$name-$version.tar.xz 
 		lid 
 		lid.sh)
 
+source  /etc/blfs-bootscripts
 
 prepare() {
 
 	cd $name-$version
 	
-	source  /etc/blfs-bootscripts
 	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
 	tar xvf $scripts-$scriptsversion.tar.bz2 
 	
@@ -48,7 +48,7 @@ package() {
 	cp -r $SRC/lid.sh $PKG/etc/acpi
 
 	chmod +x $PKG/etc/acpi/lid.sh
-	
+
 	cd $scripts-$scriptsversion
 	make DESTDIR=$PKG install-acpid
 

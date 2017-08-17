@@ -1,22 +1,22 @@
-description="Mail Transport Agent (MTA) for sending email to other users of your host machine"
-url="http://www.postfix.org"
-contributors="berlius, fanch, tnut"
-packager="greg<greg@nutyx.org>"
-
 # Depends on: db cyrus-sasl openssl icu mariadb openldap pcre postgresql sqlite
 
-scriptsversion=20170611
-scripts=blfs-bootscripts
+description="Mail Transport Agent (MTA) for sending email to other users of your host machine"
+url="http://www.postfix.org"
+contributors="Berlius, Fanch, Tnut, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+
 name=postfix
 version=3.2.2
 release=1
 
 source=(ftp://ftp.porcupine.org/mirrors/postfix-release/official/$name-$version.tar.gz)
 
+source /etc/blfs-bootscripts
+
 build() {
 
     cd $name-$version
-    source  /etc/blfs-bootscripts
     wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
     tar xvf $scripts-$scriptsversion.tar.bz2 
 

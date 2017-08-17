@@ -1,7 +1,7 @@
 description="The ISC DHCP package contains both the client and server programs for DHCP."
 url="ftp://ftp.isc.org/isc/dhcp"
-contributors="berlius, tnut"
-packager="greg<greg@nutyx.org>"
+contributors="berlius, tnut, greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=dhcp
 version=4.3.5
@@ -11,12 +11,11 @@ source=(ftp://ftp.isc.org/isc/dhcp/$version/dhcp-$version.tar.gz
 		http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-{client_script,missing_ipv6}-1.patch
 		dhclient.conf dhcpd.conf )
 		
- 
+source  /etc/blfs-bootscripts
 build() {
 
 	cd $name-$version
 	   
-	source  /etc/blfs-bootscripts
 	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
 	tar xvf $scripts-$scriptsversion.tar.bz2
 

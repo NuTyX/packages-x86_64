@@ -1,26 +1,22 @@
 description="Daemon that generates an unpredictable stream of random numbers and feeds the /dev/random"
 url="http://www.issihosts.com/haveged/"
-contributors="berlius at nutyx dot com"
-packager="greg<greg@nutyx.org>"
-
-# Depends on:  	
+contributors="Berlius, Greg"
+packager="tnut<tnut@nutyx.org>"
 
 name=haveged
 version=1.9.1
-scripts=blfs-bootscripts
-scriptsversion=20170611
 release=1
 
 source=(http://downloads.sourceforge.net/project/haveged/$name-$version.tar.gz)
 
+source /etc/blfs-bootscripts
 
 build () {
 
     cd $name-$version
     
-    source  /etc/blfs-bootscripts
-	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-	tar xvf $scripts-$scriptsversion.tar.bz2 
+    wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
+    tar xvf $scripts-$scriptsversion.tar.bz2 
     
     ./configure --prefix=/usr 
     make
