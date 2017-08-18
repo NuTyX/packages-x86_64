@@ -1,8 +1,9 @@
-# Depends on: xorg-fontconfig libpng glib xorg-libsm xorg-libxext xorg-libxrender libxml2 desktop-file-utils shared-mime-info xdg-utils glu xorg-font-util unzip
+# Depends on: xorg-fontconfig libpng glib xorg-libsm xorg-libxext xorg-libxrender libxml2 desktop-file-utils shared-mime-info xdg-utils xorg-glu xorg-font-util unzip
 
 description="Kingsoft Office (WPS Office) is an office productivity suite"
 url="http://wps-community.org/"
-packager="SipoMatadorduCosmos"
+packager="tnut <tnut@nutyx.org>"
+contritors="Greg"
 
 name=wps-office
 version=10.1.0.5672_a21
@@ -10,6 +11,8 @@ _version=10.1.0.5672~a21
 install=$name.install
 _archext=x86_64
 release=1
+
+run=(desktop-file-utils shared-mime-info xdg-utils xorg-glu libpng glib xorg-libsm xorg-libxext xorg-libxrender )
 
 source=(http://kdl.cc.ksosoft.com/wps-community/download/a21/wps-office_${_version}_x86_64.tar.xz
 		http://wps-community.org/download/dicts/fr_FR.zip
