@@ -2,17 +2,17 @@
 
 description="A cross-platform C libraries that allow you to easily implement VNC server"
 url="https://libvnc.github.io/"
-packager="tnut <tnut@nutyx.org>"
+packager="jayce <jayce.net@gmail.com>"
+contributors="tnut"
 
 name=libvncserver
 version=0.9.11
-release=1
+release=2
 
-source=(https://github.com/LibVNC/libvncserver/archive/LibVNCServer-${version}.tar.gz
-	initialize-libgcrypt.patch)
+source=(https://github.com/LibVNC/libvncserver/archive/LibVNCServer-${version}.tar.gz)
+
 build () {
 cd $name-LibVNCServer-$version
-patch -p1 -i ../initialize-libgcrypt.patch
 ./autogen.sh
 ./configure --prefix=/usr
 make
