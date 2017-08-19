@@ -1,9 +1,9 @@
 # Depends on: libvorbis libmad libid3tag wxgtk lame hicolor-icon-theme ffmpeg shared-mime-info desktop-file-utils redland jack soundtouch cmake zip python2 
 
-Description= "A program that lets you manipulate digital audio waveforms"
-URL: "http://web.audacityteam.org/"
-packager="greg <greg@nutyx.org>"
-contributors=""
+description="A program that lets you manipulate digital audio waveforms"
+url="http://web.audacityteam.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
 
 name=audacity
 version=2.1.3
@@ -26,7 +26,7 @@ build() {
 
 package() {
 
-	cd $SRC/$name-$version
+	cd $SRC/$name-Audacity-$version
 	
 	make DESTDIR=$PKG install
 	
