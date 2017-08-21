@@ -7,7 +7,7 @@ contributors="Alienus"
 
 name=poppler-glib
 version=0.57.0
-release=2
+release=3
 
 source=(http://poppler.freedesktop.org/poppler-$version.tar.xz)
 
@@ -29,6 +29,7 @@ make -C glib DESTDIR=$PKG install
 install -m755 -d $PKG/usr/lib/pkgconfig
 install -m644 poppler-glib.pc $PKG/usr/lib/pkgconfig/
 
-
+# Already in poppler
+rm -r $PKG/usr/share/gtk-doc/html/poppler
 rm -f $PKG/usr/lib/libpoppler.*
 }
