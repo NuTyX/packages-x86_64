@@ -1,0 +1,25 @@
+# Depends on: intltool curl libevent gtk3 desktop-file-utils gtk-update-icon-cache
+
+description="Light and fast Bittorent client (GTK Interface)"
+url="http://www.transmissionbt.com/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus"
+
+name=transmission
+version=2.92
+release=1
+
+source=(http://transmission.cachefly.net/transmission-$version.tar.xz
+	$name-$version-openssl-1.1.0.patch)
+
+build() {
+	cd transmission-$version
+	patch -Np1 -i ../$name-$version-openssl-1.1.0.patch
+	./configure --prefix=/usr \
+                --disable-cli \
+                --disable-daemon \
+                --without-qt \
+                --with-gtk
+	make
+	make DESTDIR=$PKG install
+}
