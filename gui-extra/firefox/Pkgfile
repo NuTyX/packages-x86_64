@@ -1,13 +1,11 @@
-# Depends on: rustc cargo autoconf2-13 pulseaudio gconf yasm sqlite libvpx libevent nss alsa-lib gtk2 xorg-app zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav
+# Depends on: icu libvpx libevent rustc cargo autoconf2-13 pulseaudio gconf yasm sqlite libvpx libevent nss alsa-lib gtk2 gtk3 xorg-app zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav
 
 description="Standalone web browser from mozilla.org"
 url="http://www.mozilla.com/firefox/"
-packager="pierre at nutyx dot org,tnut at nutyx dot org"
-
-run=(gstreamer1-plugins-good gstreamer1-plugins-libav)
+packager="tnut <tnut@nutyx.org>"
 
 name=firefox
-version=54.0
+version=55.0.1
 release=1
 
 source=( https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.xz)
@@ -80,9 +78,8 @@ ac_add_options --disable-crashreporter
 ac_add_options --disable-updater
 ac_add_options --disable-tests
 
-ac_add_options --enable-optimize
 
-ac_add_options --enable-gio
+# ac_add_options --enable-gio
 ac_add_options --enable-official-branding
 ac_add_options --enable-safe-browsing
 ac_add_options --enable-url-classifier
