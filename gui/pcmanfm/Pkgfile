@@ -1,3 +1,5 @@
+# Depends on: libfm lxde-menu-data intltool
+
 contributors="tnut at nutyx dot org"
 packager="Sipo at nutyx dot org"
 description="Extremely fast and lightweight file manager (GTK+ 3 version)"
@@ -7,7 +9,7 @@ url="http://lxde.org/"
 
 name=pcmanfm
 version=1.2.5
-release=2
+release=4
 
 source=(https://downloads.sourceforge.net/$name/$name-$version.tar.xz
 		Fix-CVE-2017-8934.patch
@@ -21,7 +23,7 @@ prepare() {
 build() {
 
 	cd $name-$version
-	./configure --sysconfdir=/etc --prefix=/usr --with-gtk=3
+	./configure --sysconfdir=/etc --prefix=/usr
 	make
 
 	}
