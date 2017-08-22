@@ -6,10 +6,10 @@ packager="tnut <tnu@nutyx.org>"
 contributors="Pierre B"
 
 name=mariadb
-version=10.2.7
+version=10.2.8
 release=1
 
-source=(https://downloads.mariadb.org/interstitial/mariadb-$version/source/mariadb-$version.tar.gz)
+source=(ftp://ftp.osuosl.org/pub/mariadb/$name-$version/source/$name-$version.tar.gz)
 
 [ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel lib man doc service)
 [ "$PKGMK_ARCH" == "i686" ] && PKGMK_GROUPS=(lib man doc service)
