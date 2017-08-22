@@ -2,8 +2,8 @@
 VERSION=$(grep version var/lib/pkg/nutyx-version |cut -d " " -f2)
 [ ! -d etc/ports ] && mkdir -p etc/ports
 for i in base cli gui cli-extra gui-extra \
-xfce4 xfce4-extra kde5 kde5-extra \
-gnome gnome-extra mate mate-extra
+xfce4 xfce4-extra mate mate-extra \
+gnome gnome-extra
 
 do
    if [ ! -f etc/ports/$i.cards ]; then
