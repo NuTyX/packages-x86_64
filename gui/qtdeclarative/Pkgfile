@@ -19,8 +19,8 @@ make
 make INSTALL_ROOT=$PKG install
 
 mkdir -p $PKG/usr/bin
-for file in moc uic rcc qmake lconvert lrelease lupdate; do
-  ln -sfrvn /usr/bin/qt/$file $PKG/usr/bin/$file
+for file in $PKG/usr/bin/qt/*; do
+  ln -sv /usr/bin/qt/$(basename $file) $PKG/usr/bin/$(basename $file)
 done
 
 # Drop QMAKE_PRL_BUILD_DIR because reference the build dir
