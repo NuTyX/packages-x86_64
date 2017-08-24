@@ -1,0 +1,27 @@
+# Depends on: qtsvg kconfig kcoreaddons kdbusaddons ki18n kiconthemes knotifications kservice kwidgetsaddons kwindowsystem libgcrypt gnupg gpgme qgpgme
+
+description="Secure and unified container for user passwords"
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=(libgcrypt gnupg gpgme qgpgme)
+
+name=kwallet
+version=5.37.0
+release=4
+
+source=(http://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
+
+build() {
+mkdir build
+cd    build
+cmake ../$name-$version         \
+    -DCMAKE_BUILD_TYPE=Release  \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DKDE_INSTALL_LIBDIR=lib    \
+    -DBUILD_TESTING=OFF         \
+    -Wno-dev
+make
+make DESTDIR=$PKG install
+}
