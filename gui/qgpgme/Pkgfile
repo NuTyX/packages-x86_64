@@ -1,0 +1,22 @@
+# Depends on: qtbase libgpg-error gnupg gpgme
+
+description="Qt bindings for GPGme"
+url="http://www.gnupg.org/related_software/gpgme/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=qgpgme
+version=1.9.0
+release=1
+
+source=(ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-$version.tar.bz2)
+
+build() {
+ cd gpgme-$version
+ ./configure --prefix=/usr        \
+             --disable-fd-passing \
+             --disable-gpgsm-test 
+ make
+ cd lang/qt
+ make DESTDIR=$PKG install
+}
