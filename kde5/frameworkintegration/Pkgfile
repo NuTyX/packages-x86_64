@@ -1,0 +1,27 @@
+# Depends on: kcompletion kconfig kconfigwidgets kcoreaddons ki18n kiconthemes kio kjobwidgets knotifications kwidgetsaddons kxmlgui qtbase libxcb xorg-libxcursor noto-fonts kpackage knewstuff 
+
+description="Framework providing components to allow applications to integrate with a KDE Workspace"
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=(noto-fonts)
+ 
+name=frameworkintegration
+version=5.37.0
+release=1
+
+source=(https://download.kde.org/stable/frameworks/${version:0:4}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DKDE_INSTALL_LIBDIR=lib    \
+      -DBUILD_TESTING=OFF         \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
