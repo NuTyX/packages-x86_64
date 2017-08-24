@@ -1,0 +1,23 @@
+# Depends on: kf5-kcoreaddons kf5-kwindowsystem
+
+description="Support for application crash analysis and bug report from apps "
+url="https://www.kde.org/"
+packager="pierre at nutyx dot org"
+alias=(kcrash)
+
+_name=kcrash
+release=1
+
+build() {
+cd ${_name}-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DKDE_INSTALL_LIBDIR=lib       \
+      -DBUILD_TESTING=OFF         \
+      -Wno-dev  ..
+make
+make DESTDIR=$PKG install
+}
+
