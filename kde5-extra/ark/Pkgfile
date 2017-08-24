@@ -1,0 +1,26 @@
+# Depends on: extra-cmake-modules karchive kconfig kcrash kdbusaddons kdoctools ki18n kiconthemes kio kservice kparts kpty kwidgetsaddons kitemmodels p7zip zip unzip unrar 
+
+description="Archiving Tool"
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=ark
+version=17.08.0
+release=2
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DKDE_INSTALL_LIBDIR=lib    \
+      -DBUILD_TESTING=OFF         \
+      -Wno-dev ..
+
+make
+make DESTDIR=$PKG install
+}
