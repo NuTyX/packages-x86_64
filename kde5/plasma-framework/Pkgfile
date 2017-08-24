@@ -1,0 +1,25 @@
+# Depends on: kactivities karchive kconfig kconfigwidgets kcoreaddons kdbusaddons kdeclarative kglobalaccel kguiaddons ki18n kiconthemes kio knotifications kpackage kservice kwindowsystem kxmlgui mesa libxcb kwayland
+
+description="Plasma library and runtime components based upon KF5 and Qt5 "
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=plasma-framework
+version=5.37.0
+release=1
+
+source=(http://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
+
+build() {
+cd ${name}-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DKDE_INSTALL_LIBDIR=lib    \
+      -DBUILD_TESTING=OFF         \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
