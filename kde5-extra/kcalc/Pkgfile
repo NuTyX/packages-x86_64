@@ -1,11 +1,13 @@
-# Depends on: kf5-extra-cmake-modules kf5-kconfig kf5-kconfigwidgets kf5-kdoctools kf5-kguiaddons kf5-ki18n kf5-kinit kf5-knotifications kf5-kxmlgui gmp
+# Depends on: extra-cmake-modules kconfig kconfigwidgets kdoctools kguiaddons ki18n kinit knotifications kxmlgui
 
 description="Scientific Calculator"
 url="http://gmplib.org/"
-packager="pierre at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 name=kcalc
 release=1
-version=17.04.2
+version=17.08.0
 
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
@@ -15,10 +17,9 @@ mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_BUILD_TYPE=Release  \
-      -DKDE_INSTALL_LIBDIR=lib       \
+      -DKDE_INSTALL_LIBDIR=lib    \
       -DBUILD_TESTING=OFF         \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
 }
-
