@@ -7,11 +7,13 @@ contributors="Pierre B"
 
 name=plasma-framework
 version=5.37.0
-release=1
+release=2
 
-source=(http://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
+source=(http://downloads.nutyx.org/files/Wall-NuTyX-2017.tar.xz
+	http://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
 
 build() {
+
 cd ${name}-$version
 mkdir build
 cd    build
@@ -22,4 +24,11 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
+
+# NuTyX Wallpaper
+mkdir -p $PKG/usr/share/wallpapers
+cp -a $SRC/NuTyX \
+$PKG/usr/share/wallpapers/NuTyX
+mv $PKG/usr/share/wallpapers/NuTyX/default.metadata.desktop \
+$PKG/usr/share/plasma/desktoptheme/default/metadata.desktop
 }
