@@ -1,0 +1,26 @@
+# Depends on: qtbase karchive kbookmarks kcodecs kconfig kconfigwidgets kcoreaddons kdbusaddons kdelibs4support kdnssd kguiaddons khtml ki18n kiconthemes kio kparts kpty kservice kxmlgui solid libjpeg-turbo exiv2 libmtp phonon-qt samba shared-mime-info kactivities openexr openssh
+
+description="Additional components to increase the functionality of KIO "
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=(shared-mime-info)
+
+name=kio-extras
+version=17.08.0
+release=1
+
+source=(http://download.kde.org/stable/applications/$version/src/kio-extras-$version.tar.xz)
+
+build() {
+mkdir build
+cd    build
+cmake ../$name-$version           \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DKDE_INSTALL_LIBDIR=lib    \
+      -DBUILD_TESTING=OFF
+make
+make DESTDIR=$PKG install
+}
