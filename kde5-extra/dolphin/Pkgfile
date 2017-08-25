@@ -1,0 +1,27 @@
+# Depends on: extra-cmake-modules kdoctools kinit kcmutils knewstuff kcoreaddons ki18n kdbusaddons kbookmarks kconfig kio kparts solid kiconthemes kcompletion ktextwidgets kwindowsystem knotifications kcrash kactivities baloo baloo-widgets kfilemetadata kdelibs4support ffmpegthumbs kdegraphics-thumbnailers kde-cli-tools ruby 
+
+description="File Manager"
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=(ruby)
+
+name=dolphin
+release=1
+version=17.08.0
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build() {
+cd $SRC/$name-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr\
+      -DCMAKE_BUILD_TYPE=Release \
+      -DKDE_INSTALL_LIBDIR=lib   \
+      -DBUILD_TESTING=OFF        \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
