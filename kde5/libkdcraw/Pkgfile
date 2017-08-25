@@ -1,0 +1,23 @@
+# Depends on: qtbase extra-cmake-modules libraw
+
+description="A C++ interface used to decode RAW picture "
+url="http://www.kde.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=libkdcraw
+version=17.08.0
+release=1
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build() {
+mkdir build
+cd build
+cmake ../$name-$version          \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DKDE_INSTALL_LIBDIR=lib   \
+      -DCMAKE_INSTALL_PREFIX=/usr
+make
+make DESTDIR=$PKG install
+}
