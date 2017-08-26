@@ -1,0 +1,24 @@
+# Depends on: polkit qtbase 
+
+description="A library that allows developers to access PolicyKit API with a nice Qt-style API"
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Fanch"
+
+name=polkit-qt
+version=0.112.0
+release=3
+
+source=(http://download.kde.org/stable/apps/KDE4.x/admin/${name}-1-$version.tar.bz2)
+
+build() {
+cd $name-1-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DLIB_DESTINATION=/usr/lib  \
+      .. 
+make
+make DESTDIR=$PKG install
+}
