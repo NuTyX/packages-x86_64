@@ -4,12 +4,12 @@
 
 description="Freedesktop.org message bus system"
 url="http://www.freedesktop.org/wiki/Software/dbus/"
-packager="tnut <tnut@nutyx.org>, jayce <jayce.net@gmail.com>"
-contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Jayce"
 
 name=dbus
 version=1.10.22
-release=1
+release=2
 
 source=(http://dbus.freedesktop.org/releases/dbus/$name-$version.tar.gz \
        dbus.system-local.conf)
@@ -20,14 +20,15 @@ build() {
 	tar xvf $scripts-$scriptsversion.tar.xz
 
 	cd $name-$version
-	./configure --prefix=/usr             \
-            --sysconfdir=/etc              \
-            --localstatedir=/var           \
-            --disable-doxygen-docs         \
-            --disable-xml-docs             \
-            --disable-static               \
-            --with-console-auth-dir=/run/console/ \
+	./configure --prefix=/usr                 \
+            --sysconfdir=/etc                     \
+            --localstatedir=/var                  \
+            --disable-doxygen-docs                \
+            --disable-xml-docs                    \
+            --disable-static                      \
             --docdir=/usr/share/doc/dbus-$version \
+            --with-console-auth-dir=/run/console  \
+            --with-system-pid-file=/run/dbus/pid  \
 	    --with-system-socket=/run/dbus/system_bus_socket
 	make
 	make DESTDIR=$PKG install
