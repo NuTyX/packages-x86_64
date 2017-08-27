@@ -1,0 +1,40 @@
+# Depends on: sane dconf gtk3 colord libgusb
+
+description="Simple scanning utility"
+url="https://launchpad.net/simple-scan"
+packager="greg<greg@nutyx.org>"
+contributors="Pierre B."
+
+name=simple-scan
+version=3.24.1
+release=1
+
+source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+prepare() {
+
+	cd $name-$version
+	touch src/*.vala
+
+}
+
+
+build() {
+
+	cd $name-$version
+
+	./configure \
+		--prefix=/usr \
+		--disable-schemas-compile \
+		--disable-packagekit
+    
+  make
+
+}
+
+package() {
+
+cd $name-$version
+make DESTDIR=$PKG install
+
+}
