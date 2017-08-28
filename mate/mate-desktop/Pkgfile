@@ -2,22 +2,28 @@
 
 description="Library with common API for various MATE modules"
 url="https://mate-desktop.org/"
-packager="greg <greg@nutyx.org>"
-contributors="fanch,tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="fanch,tnut,greg"
 
 name=mate-desktop
 version=1.18.0
-release=1
+release=2
 
-source=(http://pub.mate-desktop.org/releases/${version%.*}/${name}-${version}.tar.xz)
+source=(mate-desktop-1.18.0-schema-1.patch
+        mate-nutyx.png
+	http://pub.mate-desktop.org/releases/${version%.*}/${name}-${version}.tar.xz)
 
 build() {
 
 cd $name-$version
+patch -Np1 -i ../mate-desktop-1.18.0-schema-1.patch
 ./configure \
         --prefix=/usr \
         --disable-schemas-compile
 make
 make DESTDIR=$PKG install
+mkdir -p $PKG/usr/share/backgrounds/mate/desktop
 
+install -D -m644 ../mate-nutyx.png \
+$PKG/usr/share/backgrounds/mate/desktop/mate-nutyx.png
 }
