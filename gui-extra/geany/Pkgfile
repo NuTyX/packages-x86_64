@@ -1,17 +1,23 @@
-# Depends on: atk xorg-fontconfig gtk2 libpng pango xorg-pixman xorg-libxcursor xorg-libxdamage xorg-libxrandr xorg-libxinerama desktop-file-utils
+# Depends on: gtk2 hicolor-icon-theme desktop-file-utils
 
 description="Fast and lightweight IDE"
 url="http://www.geany.org"
-packager="pierre at nutyx dot org, tnut at nutyx dot org"
+contributors="pierre, tnut"
+packager="greg <greg@nutyx.org>"
 
 name=geany
-version=1.30.1
+version=1.31
 release=1
 
 source=(http://download.$name.org/$name-$version.tar.bz2)
+
 build() {
-cd $name-$version
+
+	cd $name-$version
+
 	./configure --prefix=/usr
 	make
 	make DESTDIR=$PKG install
+	
 }
+
