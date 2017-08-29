@@ -3,15 +3,20 @@
 description="Graphical frontend to recordmydesktop."
 url="http://recordmydesktop.sourceforge.net/"
 packager: fanch at nutyx dot com
+
 run=(python2-gtk recordmydesktop)
+
 name=gtk-recordmydesktop
 version=0.3.8
 release=3
+
 source=(http://download.sourceforge.net/recordmydesktop/$name-$version.tar.gz)
 
 build() {
+
   cd $name-$version
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
   make
   make DESTDIR=$PKG install
+  
 }
