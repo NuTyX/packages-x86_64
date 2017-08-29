@@ -1,17 +1,26 @@
-# Description: GTK+ based scientific calculator
-# URL: http://galculator.sourceforge.net/
-# Packager: pierre at nutyx dot org
-# Depends on: gtk3 hicolor-icon-theme gtk-update-icon-cache desktop-file-utils 
+# Depends on: gtk3 
+
+description="GTK+ based scientific calculator"
+url="http://galculator.sourceforge.net/"
+contributors="pierre at nutyx dot org"
+packager="greg <greg@nutyx.org>"
+ 
 name=galculator
-version=2.1.3
+version=2.1.4
 release=1
 
-source=(http://prdownloads.sourceforge.net/galculator/$name-$version.tar.gz)
+source=(http://galculator.mnim.org/downloads/$name-$version.tar.bz2)
 
 build() {
+
 cd $name-$version
-	./configure --prefix=/usr
-	make
-	make DESTDIR=$PKG install
+
+  [ -d gtk3 ] || mkdir gtk3
+  cd gtk3
+  ../configure \
+    --prefix=/usr
+  make
+  
+  make DESTDIR=$PKG install
 
 }
