@@ -1,17 +1,23 @@
-# Description: Partition table rescue/guessing tool.
-# URL: https://github.com/baruch/gpart
-# Packager: pierre at nutyx dot org
 # Depends on: 
 
+description="Partition table rescue/guessing tool."
+url="https://github.com/baruch/gpart"
+contributors="Pierre B."
+packager="greg <greg@nutyx.org>"
+
 name=gpart
-version=0.2.2
+version=0.3
 release=1
 
-source=(https://github.com/baruch/${name}/archive/v${version}.tar.gz)
+source=(https://github.com/baruch/${name}/archive/${version}.tar.gz)
 
 build() {
+
 cd $name-$version
+
 ./autogen.sh
+
 make
+
 make prefix=$PKG/usr sbindir=${PKG}/usr/bin install
 }
