@@ -1,21 +1,26 @@
-# Depends on:  vim, gtk2, xorg-libxt
+# Depends on:  vim, gtk3, xorg-libxt
 
 description="GTK version of the vim editor"
 url="http://www.vim.org/"
-packager="fanch at nutyx dot org, tnut at nutyx"
+contributors="fanch, tnut"
+packager="greg<greg@nutyx.org"
+
 name=gvim
-version=8.0.069
+version=8.0.586
 release=1
+
 run=(vim)
+
 source=(ftp://ftp.vim.org/pub/vim/unix/vim-$version.tar.bz2)
 
 build () {
+
     cd vim80/src
     
     ./configure --prefix=/usr \
                 --with-vim-name=gvim \
                 --with-x=yes \
-                --enable-gui=gtk2 \
+                --enable-gui=gtk3 \
                 --enable-multibyte \
                 --disable-gpm
 
