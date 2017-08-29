@@ -1,18 +1,24 @@
 # Depends on: autoconf-archive iso-codes glib gtk2 lua dbus libnotify libcanberra openssl pciutils python desktop-file-utils
 
 url="https://dl.hexchat.net/hexchat"
-packager="berlius at nutyx dot com, tnut at nutyx dot org"
 description="IRC chat program. It allows you to join multiple IRC channels at the sametime"
+contributors="berlius at nutyx dot com, tnut at nutyx dot org"
+packager="greg<greg@nutyx.org"
+
 name=hexchat
 version=2.12.4
 release=3
+
 run=(desktop-file-utils shared-mime-info)
+
 source=(https://dl.hexchat.net/hexchat/$name-$version.tar.xz)
  
 build() {
+
 cd $name-$version
 ./configure --prefix=/usr \
 --enable-python=python3
+
 make
 make DESTDIR=$PKG install
 }
