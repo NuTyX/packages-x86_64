@@ -2,18 +2,19 @@
 
 description="Professional vector graphics editor"
 url="https://inkscape.org/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="greg<greg@nutyx.org"
+contributors="Pierre B, tnut"
 
 name=inkscape
-version=0.92.1
+version=0.92.2
 release=1
 
-source=(https://inkscape.org/gallery/item/10682/inkscape-0.92.1.tar_XlpI7qT.bz2)
+source=(https://media.inkscape.org/dl/resources/file/$name-$version.tar.bz2)
 
 build() {
-  tar -xf inkscape-0.92.1.tar_XlpI7qT.bz2
+  
   cd $name-$version
+  
   ./autogen.sh
   ./configure \
 	--prefix=/usr \
@@ -23,6 +24,7 @@ build() {
 	--enable-poppler-cairo \
 	--disable-strict-build \
 	--disable-dependency-tracking
+	
    make
    make DESTDIR=$PKG install
 }
