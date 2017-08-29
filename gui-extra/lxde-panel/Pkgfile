@@ -1,22 +1,47 @@
-# Depends on: gtk2 menu-cache alsa-lib libwnck2 wireless-tools keybinder2 libfm lxde-menu-data
-
-url="http://lxde.org/"
-maintainer="Martin Bagge  brother at bsnet dot se"
-packager="tnut <tnut@nutyx.org>"
-contributors="Geantbrun"
+# Depends on: gtk3 menu-cache alsa-lib libwnck wireless-tools keybinder3 libfm lxde-menu-data
 
 description="Ccontains a lightweight X11 desktop panel"
+url="http://lxde.org/"
+packager:"greg<greg@nutyx.org>"
+contributors="geantbrun, tnut"
+
 name=lxde-panel
-_name=lxpanel
-version=0.9.1
-release=1
 alias=(lxpanel)
+_name=lxpanel
+version=0.9.3
+release=1
+
 source=(http://downloads.sourceforge.net/lxde/files/${_name}-$version.tar.xz)
 
+prepare() {
+
+  cd $_name-$version
+  
+  sed -i '/pager.c/d' plugins/Makefile.am
+  sed -i '/STATIC_PAGER/d' src/private.h
+  sed -i 's/libwnck-3.0//' configure.ac
+  
+  autoreconf -fi
+  
+	}
+
 build() {
-cd ${_name}-$version
-./configure --prefix=/usr
-make
-make DESTDIR=$PKG install
-sed -i "s/gnome-terminal/lxterminal/" $PKG/etc/xdg/lxpanel/default/panels/panel
-}
+  cd $_name-$version
+  
+  ./configure \
+    --sysconfdir=/etc \
+    --prefix=/usr \
+    --enable-gtk3
+    
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+  make
+	}
+
+
+package() {
+
+  cd $_name-$version
+  make DESTDIR=$PKG install
+  
+	}
