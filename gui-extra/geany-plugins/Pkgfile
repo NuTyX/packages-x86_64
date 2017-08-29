@@ -2,16 +2,22 @@
 
 description="Many plugins for geany"
 url="http://plugins.geany.org/"
-packager="tnut at nutyx dot org"
+contributors="tnut"
+packager="greg <greg@nutyx.org>"
+
 
 name=geany-plugins
-version=1.30
+version=1.31
 release=1
 
 source=(http://plugins.geany.org/geany-plugins/$name-$version.tar.bz2)
+
 build() {
+
 cd $name-$version
 ./configure --prefix=/usr
 make
+
 make DESTDIR=$PKG install
+
 }
