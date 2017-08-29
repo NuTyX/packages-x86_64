@@ -2,14 +2,19 @@
 
 description="Image processing system."
 url="http://www.graphicsmagick.org/"
-packager="tnut at nutyx dot org"
+contributors="tnut"
+packager="greg <greg@nutyx.org>"
+
 name=graphicsmagick
-version=1.3.23
-release=2
+version=1.3.26
+release=1
+
 source=(http://downloads.sourceforge.net/project/${name}/${name}/${version}/GraphicsMagick-${version}.tar.xz)
 
 build() {
+
 cd GraphicsMagick-$version
+
 ./configure \
 		--prefix=/usr \
 		--enable-shared \
@@ -20,6 +25,7 @@ cd GraphicsMagick-$version
 		--with-threads
 make
 make DESTDIR=$PKG install
+
 cd PerlMagick
 	sed -i -e "s:'LDDLFLAGS'  => \"\(.*\)\":'LDDLFLAGS'  => \"-L${PKG}/usr/lib \1\":" Makefile.PL
 	perl Makefile.PL INSTALLDIRS=vendor PREFIX=/usr DESTDIR=${PKG}
@@ -31,4 +37,5 @@ cd PerlMagick
 	rm -f ${PKG}/usr/lib/share/perl5/base/perllocal.pod
 	rm -rf ${PKG}/usr/lib/perl5/core_perl
 	rm -rf ${PKG}/usr/lib/perl5/vendor_perl/auto/Graphics/Magick/.packlist
+	
 }
