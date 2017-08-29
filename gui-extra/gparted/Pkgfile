@@ -2,11 +2,11 @@
 
 description="Gparted is the Gnome Partition Editor, a Gtk 2 GUI that can create, reorganise or delete disk partitions."
 url="http://gparted.sourceforge.net/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B,tnut"
 
 name=gparted
-version=0.28.1
+version=0.29.0
 release=1
 
 run=(ssh-askpass)
@@ -14,19 +14,25 @@ run=(ssh-askpass)
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
 build() {
+
 cd $name-$version
 ./configure --prefix=/usr    \
             --disable-static
+            
 make
 make DESTDIR=$PKG install
+
 sed -i 's/Exec=/Exec=sudo -A /' \
 $PKG/usr/share/applications/gparted.desktop
 }
+
 doc() {
+
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.doc${PKGMK_BUILDVER}any.cards.tar \
 usr/share/gnome
 
 rm -r usr/share/gnome
+
 }
