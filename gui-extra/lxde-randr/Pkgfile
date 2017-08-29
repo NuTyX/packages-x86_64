@@ -1,21 +1,31 @@
-# URL: http://lxde.org/about.html
-# Maintainer: Martin Bagge brother at bsnet dot se Hong Jen Yee (PCMan) pcman dot tw at gmail dotcom
-# Packager: geantbrun at gmail dot com
-# Depends on:  gtk2, xorg-app
+# Depends on: gtk3 xorg-libxrandr
 
 description="Monitors config tool for lxde"
+url="http://lxde.org/"
+contributors="geantbrun"
+packager="greg <greg@nutyx.org>"
+
 name=lxde-randr
+alias=(lxrandr)
 _name=lxrandr
 version=0.3.1
 release=1
-source=(http://downloads.sourceforge.net/lxde/lxrandr-$version.tar.xz)
 
+source=(http://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz)
+		
 build() {
-    cd ${_name}-$version
-    ./configure --prefix=/usr
-    make
-    make DESTDIR=$PKG install
 
-}
+	cd $SRC
+	[ -d gtk3 ] || cp -r $_name-$version gtk3
+	cd gtk3
+	./configure --sysconfdir=/etc --prefix=/usr --enable-gtk3
+	make
+	
+	}
 
-  
+package() {
+
+    cd gtk3
+	make DESTDIR=$PKG install
+	
+	}
