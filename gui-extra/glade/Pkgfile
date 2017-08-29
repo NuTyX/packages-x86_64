@@ -2,7 +2,10 @@
 
 description="User interface builder for GTK+ and GNOME."
 url="http://glade.gnome.org/"
-packager="pierre at nutyx dot org, tnut at nutyx dot org"
+contributors="pierre, tnut"
+packager="greg <greg@nutyx.org>"
+
+
 name=glade
 version=3.20.0
 release=1
@@ -10,11 +13,14 @@ release=1
 source=(http://ftp.gnome.org/pub/GNOME/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build() {
+
   cd $name-$version
   ./configure --prefix=/usr        \
               --sysconfdir=/etc    \
               --localstatedir=/var \
               --disable-static
   make
+  
   make DESTDIR=$PKG install
+  
 }
