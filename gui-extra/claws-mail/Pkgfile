@@ -1,15 +1,20 @@
-# Depends on: bogofilter enchant aspell libetpan gnupg gpgme gnutls dbus gtk2 libtasn1 enchant
+#Depends on: bogofilter enchant aspell libetpan gnupg gpgme gnutls dbus gtk2 libtasn1 enchant xorg-libsm hicolor-icon-theme desktop-file-utils
 
 description="A GTK+ based e-mail client."
 url="http://www.claws-mail.org"
-packager="pierre at nutyx dot org, tnut at nutyx dot org"
+contributors="Pierre B., tnut"
+packager="greg<greg@nutyx.org>"
+
 name=claws-mail
-version=3.14.1
-release=1
+version=3.15.0
+release=2
 
 source=(${url}/download.php?file=releases/$name-$version.tar.xz)
+		
 build() {
+
 cd $name-$version
+
 ./configure --prefix=/usr --mandir=/usr/share/man \
 --disable-compface --disable-ldap \
 --disable-jpilot --enable-enchant --disable-dillo-viewer-plugin \
@@ -17,5 +22,6 @@ cd $name-$version
 --disable-openssl --enable-gnutls --enable-libetpan \
 --disable-spamassassin-plugin --enable-bogofilter-plugin
 make
+
 make DESTDIR=$PKG install
 }
