@@ -2,15 +2,19 @@
 
 description="Podcatcher"
 url="http://gpodder.org/"
-packager="Chris Farrell, timcowchip at gmail dot com"
-maintainer="Chris Farrell, timcowchip at gmail dot com"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B,tnut"
+
 name=gpodder
-version=3.9.0
-release=7
+version=3.9.3
+release=1
+
 run=(python2-gtk)
+
 source=(http://gpodder.org/src/$name-$version.tar.gz)
 
 build(){
+
 	cd $name-$version
 	PYTHON=python2 DESTDIR=${PKG} make install || return 1
 	mkdir -p $PKG/usr/bin
