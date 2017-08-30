@@ -1,0 +1,78 @@
+From fd247cca0106cba50a650b74f7727cae4f472e8f Mon Sep 17 00:00:00 2001
+From: Paul Cornett <paulcor@users.noreply.github.com>
+Date: Mon, 29 May 2017 00:18:44 -0700
+Subject: [PATCH] Fix building with WebKitGTK+
+
+Duplicate conditionals don't work in bakefiles.
+Broken since support was added for WebKit2GTK+ in ec6e54b
+See #17865
+
+(backport of 33f21c82441738212e598e11359eccbb097bdd32 )
+---
+ Makefile.in               | 14 ++++----------
+ build/bakefiles/files.bkl |  6 ++++--
+ 2 files changed, 8 insertions(+), 12 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index f032587013b..b19f51af147 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -6759,9 +6759,7 @@ COND_TOOLKIT_X11___ADVANCED_PLATFORM_SRC_OBJECTS_1 =  \
+ @COND_PLATFORM_MACOSX_1@__WEBVIEW_SRC_PLATFORM_OBJECTS \
+ @COND_PLATFORM_MACOSX_1@	= monodll_osx_webview_webkit.o
+ @COND_TOOLKIT_GTK@__WEBVIEW_SRC_PLATFORM_OBJECTS = \
+-@COND_TOOLKIT_GTK@	monodll_gtk_webview_webkit.o
+-@COND_TOOLKIT_GTK@__WEBVIEW_SRC_PLATFORM_OBJECTS = \
+-@COND_TOOLKIT_GTK@	monodll_webview_webkit2.o
++@COND_TOOLKIT_GTK@	monodll_gtk_webview_webkit.o monodll_webview_webkit2.o
+ @COND_TOOLKIT_MSW@__WEBVIEW_SRC_PLATFORM_OBJECTS = monodll_webview_ie.o
+ @COND_TOOLKIT_GTK_TOOLKIT_VERSION_2@__AUI_GTK_SRC_OBJECTS \
+ @COND_TOOLKIT_GTK_TOOLKIT_VERSION_2@	= monodll_tabartgtk.o
+@@ -9016,9 +9014,7 @@ COND_TOOLKIT_X11___ADVANCED_PLATFORM_SRC_OBJECTS_3 =  \
+ @COND_PLATFORM_MACOSX_1@__WEBVIEW_SRC_PLATFORM_OBJECTS_1 \
+ @COND_PLATFORM_MACOSX_1@	= monolib_osx_webview_webkit.o
+ @COND_TOOLKIT_GTK@__WEBVIEW_SRC_PLATFORM_OBJECTS_1 = \
+-@COND_TOOLKIT_GTK@	monolib_gtk_webview_webkit.o
+-@COND_TOOLKIT_GTK@__WEBVIEW_SRC_PLATFORM_OBJECTS_1 = \
+-@COND_TOOLKIT_GTK@	monolib_webview_webkit2.o
++@COND_TOOLKIT_GTK@	monolib_gtk_webview_webkit.o monolib_webview_webkit2.o
+ @COND_TOOLKIT_MSW@__WEBVIEW_SRC_PLATFORM_OBJECTS_1 = monolib_webview_ie.o
+ @COND_TOOLKIT_GTK_TOOLKIT_VERSION_2@__AUI_GTK_SRC_OBJECTS_1 \
+ @COND_TOOLKIT_GTK_TOOLKIT_VERSION_2@	= monolib_tabartgtk.o
+@@ -13774,8 +13770,7 @@ COND_USE_SOVERSOLARIS_1___webviewdll___so_symlinks_uninst_cmd = rm -f \
+ @COND_PLATFORM_MACOSX_1@__WEBVIEW_SRC_PLATFORM_OBJECTS_2 \
+ @COND_PLATFORM_MACOSX_1@	= webviewdll_osx_webview_webkit.o
+ @COND_TOOLKIT_GTK@__WEBVIEW_SRC_PLATFORM_OBJECTS_2 = \
+-@COND_TOOLKIT_GTK@	webviewdll_gtk_webview_webkit.o
+-@COND_TOOLKIT_GTK@__WEBVIEW_SRC_PLATFORM_OBJECTS_2 = \
++@COND_TOOLKIT_GTK@	webviewdll_gtk_webview_webkit.o \
+ @COND_TOOLKIT_GTK@	webviewdll_webview_webkit2.o
+ @COND_TOOLKIT_MSW@__WEBVIEW_SRC_PLATFORM_OBJECTS_2 = \
+ @COND_TOOLKIT_MSW@	webviewdll_webview_ie.o
+@@ -13795,8 +13790,7 @@ COND_MONOLITHIC_0_SHARED_0_USE_GUI_1_USE_WEBVIEW_1___webviewlib___depname = \
+ @COND_PLATFORM_MACOSX_1@__WEBVIEW_SRC_PLATFORM_OBJECTS_3 \
+ @COND_PLATFORM_MACOSX_1@	= webviewlib_osx_webview_webkit.o
+ @COND_TOOLKIT_GTK@__WEBVIEW_SRC_PLATFORM_OBJECTS_3 = \
+-@COND_TOOLKIT_GTK@	webviewlib_gtk_webview_webkit.o
+-@COND_TOOLKIT_GTK@__WEBVIEW_SRC_PLATFORM_OBJECTS_3 = \
++@COND_TOOLKIT_GTK@	webviewlib_gtk_webview_webkit.o \
+ @COND_TOOLKIT_GTK@	webviewlib_webview_webkit2.o
+ @COND_TOOLKIT_MSW@__WEBVIEW_SRC_PLATFORM_OBJECTS_3 = \
+ @COND_TOOLKIT_MSW@	webviewlib_webview_ie.o
+diff --git a/build/bakefiles/files.bkl b/build/bakefiles/files.bkl
+index 956a80863b5..c17234a2d4c 100644
+--- a/build/bakefiles/files.bkl
++++ b/build/bakefiles/files.bkl
+@@ -3417,8 +3417,10 @@ IMPORTANT: please read docs/tech/tn0016.txt before modifying this file!
+ 
+ <set var="WEBVIEW_SRC_PLATFORM">
+     <if cond="TOOLKIT=='MSW'">src/msw/webview_ie.cpp</if>
+-    <if cond="TOOLKIT=='GTK'">src/gtk/webview_webkit.cpp</if>
+-    <if cond="TOOLKIT=='GTK'">src/gtk/webview_webkit2.cpp</if>
++    <if cond="TOOLKIT=='GTK'">
++        src/gtk/webview_webkit.cpp
++        src/gtk/webview_webkit2.cpp
++    </if>
+     <if cond="PLATFORM_MACOSX=='1'">src/osx/webview_webkit.mm</if>
+ </set>
+ <set var="WEBVIEW_SRC" hints="files">
