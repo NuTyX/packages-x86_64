@@ -1,15 +1,21 @@
-# Description: Parse RSS and Atom feeds in Python
-# URL: https://code.google.com/p/feedparser/
-# Packager: Chris Farrell, timcowchip at gmail dot com
-# Maintainer: Chris Farrell, timcowchip at gmail dot com
+# Depends on: python2-setuptools
+
+description="Parse RSS and Atom feeds in Python
+url="https://github.com/kurtmckee/feedparser
+packager="greg <greg@nutyx.org>"
+
 # Depends on: python2-setuptools
 
 name=feedparser
-version=5.1.3
-release=2
-source=(http://feedparser.googlecode.com/files/$name-$version.tar.bz2)
+version=5.2.1
+release=1
+
+source=(https://github.com/kurtmckee/feedparser/archive/$version.tar.gz)
 
 build() {
+
   cd $name-$version
-  python setup.py install --root=$PKG
+  /usr/bin/python setup.py build
+  /usr/bin/python setup.py install --prefix=/usr --root=$PKG --optimize=1
+  
 }
