@@ -1,4 +1,4 @@
-# Depends on: enchant cmake gstreamer-plugins-base xorg-libxt gtk2 gtk3 hunspell hyphen icu libgudev libsecret libsoup libwebp mesa ruby sqlite enchant geoclue gobject-introspection hicolor-icon-theme llvm harfbuzz gtk-doc libnotify
+# Depends on: enchant cmake gstreamer-plugins-base xorg-libxt gtk2 gtk3 hunspell hyphen icu libgudev libsecret libsoup libwebp mesa ruby sqlite enchant geoclue gobject-introspection hicolor-icon-theme llvm harfbuzz gtk-doc libnotify wayland
 
 description="engine of made Web free for the browsers web version 3"
 url="http://webkitgtk.org/"
@@ -7,13 +7,22 @@ contributors="Pierre B"
 
 name=webkitgtk
 version=2.16.6
-release=1
+release=2
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 
 build() {
 
 cd webkitgtk-$version
+
+
+# issue with ICU >= 59
+sed -i 's/unsigned short/char16_t/'            \
+       Source/JavaScriptCore/API/JSStringRef.h \
+       Source/WebKit2/Shared/API/c/WKString.h
+
+sed -i '/stdbool.h/ a#include <uchar.h>' \
+       Source/JavaScriptCore/API/JSBase.h
 
 mkdir -vp build
 cd        build
