@@ -8,7 +8,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=glib
 version=2.52.3
-release=2
+release=3
 
 source=(http://ftp.gnome.org/pub/gnome/sources/glib/${version:0:4}/$name-$version.tar.xz
 	http://downloads.nutyx.org/WallPapers/nutyx-9.0.94.jpg
@@ -28,5 +28,5 @@ build () {
 
   # Default NuTyX Wallpaper
   install -D -m644 ../nutyx-9.0.94.jpg \
-  $PKG/usr/share/backgrounds/nutyx/nutyx-9.0.94.jpg
+  $PKG/usr/share/backgrounds/nutyx/nutyx.jpg
 }
