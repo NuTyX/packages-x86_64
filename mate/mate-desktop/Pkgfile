@@ -7,23 +7,20 @@ contributors="fanch,tnut,greg"
 
 name=mate-desktop
 version=1.18.0
-release=2
+release=3
 
-source=(mate-desktop-1.18.0-schema-1.patch
-        mate-nutyx.png
-	http://pub.mate-desktop.org/releases/${version%.*}/${name}-${version}.tar.xz)
+source=(http://pub.mate-desktop.org/releases/${version%.*}/${name}-${version}.tar.xz)
 
 build() {
 
 cd $name-$version
-patch -Np1 -i ../mate-desktop-1.18.0-schema-1.patch
+
+sed -i "s|@datadir@/backgrounds/mate/desktop/Stripes.png|/usr/share/backgrounds/nutyx/nutyx.jpg|" \
+schemas/org.mate.background.gschema.xml.in
+
 ./configure \
         --prefix=/usr \
         --disable-schemas-compile
 make
 make DESTDIR=$PKG install
-mkdir -p $PKG/usr/share/backgrounds/mate/desktop
-
-install -D -m644 ../mate-nutyx.png \
-$PKG/usr/share/backgrounds/mate/desktop/mate-nutyx.png
 }
