@@ -1,12 +1,14 @@
-# Depends on: glib gobject-introspection libbytesize lvm2 volume_key parted
+# Depends on: glib gobject-introspection libbytesize lvm2 volume_key parted gptfdisk
 
 description="C library supporting GObject introspection for manipulation of block devices"
 url="https://github.com/storaged-project/libblockdev"
 packager="tnut <tnut@nutyx.org>"
 
+run=(gptfdisk)
+
 name=libblockdev
 version=2.11.1
-release=1
+release=2
 
 source=( https://github.com/storaged-project/$name/archive/$name-2.11-1.tar.gz)
 build() {
