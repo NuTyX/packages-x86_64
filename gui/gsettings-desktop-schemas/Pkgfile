@@ -8,12 +8,17 @@ contributors="Pierre B"
 run=( glib )
 name=gsettings-desktop-schemas
 version=3.24.0
-release=1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
+
+# NuTyX Background
+sed -i "s@gnome/adwaita-timed.xml@nutyx/nutyx.jpg@" \
+schemas/org.gnome.desktop.background.gschema.xml.in
+
 sed -i -r 's:"(/system):"/org/gnome\1:' schemas/*.in
 ./configure --prefix=/usr
 make
