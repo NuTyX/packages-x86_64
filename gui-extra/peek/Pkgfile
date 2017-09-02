@@ -1,0 +1,33 @@
+# Depends on: gtk3 keybinder3 ffmpeg imagemagick gstreamer-plugins-good gstreamer-plugins-ugly
+
+description="Simple screen recorder with an easy to use interface"
+url="https://github.com/phw/peek"
+packager="greg <greg@nutyx.org>"
+contributors=""
+
+name=peek
+version=1.0.3
+release=1
+
+source=(https://github.com/phw/peek/archive/v$version.tar.gz)
+
+
+prepare() {
+  mkdir -p build
+}
+
+build() {
+  cd build
+  cmake $SRC/${name}-${version} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_TESTS=ON \
+    -DGSETTINGS_COMPILE=OFF
+  make
+}
+
+
+package() {
+
+  cd build
+  make DESTDIR=$PKG install
+}
