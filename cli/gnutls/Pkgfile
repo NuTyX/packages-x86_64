@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=gnutls
 version=3.5.14
-release=1
+release=2
 
 source=(ftp://ftp.gnutls.org/gcrypt/$name/v${version:0:3}/$name-$version.tar.xz)
 
@@ -19,5 +19,4 @@ cd $name-$version
 --disable-guile
 make
 make DESTDIR=$PKG install
-rm $PKG/usr/share/info/dir
 }
