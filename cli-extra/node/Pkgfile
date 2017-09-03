@@ -1,0 +1,38 @@
+# Depends on: openssl10 python2 c-ares icu zlib 
+
+description="Evented I/O for V8 JavaScript"
+url="http://nodejs.org/"
+packager="greg <greg@nutyx.org>"
+contributors="Alienus, tnut"
+
+name=node
+alias=(nodejs node-js)
+version=8.4.0
+release=1
+
+source=(https://nodejs.org/dist/v$version/node-v$version.tar.xz)
+
+build() {
+
+	cd node-v$version
+
+	./configure \
+		--prefix=/usr \
+		--without-npm \
+		--shared-zlib
+
+	make
+	make DESTDIR=$PKG install
+
+	rm -r $PKG/usr/share/doc
+
+	# clean up
+	find $PKG -type f \( \
+		-name 'README.md' -o \
+		-name 'AUTHORS.md' -o \
+		-name 'INSTALL.md' -o \
+		-name 'TODO.org' -o \
+		-name 'ChangeLog' -o \
+		-name 'NEWS' \) -delete
+
+}
