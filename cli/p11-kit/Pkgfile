@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=p11-kit
 version=0.23.8
-release=1
+release=3
 
 source=( https://github.com/p11-glue/p11-kit/releases/download/$version/$name-$version.tar.gz)
 
@@ -17,7 +17,6 @@ cd $name-$version
 --sysconfdir=/etc --with-trust-paths=/etc/pki/anchors
 make
 make DESTDIR=$PKG install
-rm -r $PKG/usr/share
 if [ -f $PKG/etc/pkcs11/pkcs11.conf.example ]; then
 	mv $PKG/etc/pkcs11/pkcs11.conf{.example,}
 fi
