@@ -75,45 +75,45 @@ GN_CONFIG=('google_api_key="AIzaSyDxKL42zsPjbke5O8_rPVpVrLrJ8aeE9rQ"'
 'use_pulseaudio=true'
 'use_sysroot=false')
 
-python tools/gn/bootstrap/bootstrap.py --gn-gen-args "${GN_CONFIG[*]}" &&
+python tools/gn/bootstrap/bootstrap.py --gn-gen-args "${GN_CONFIG[*]}" 
 out/Release/gn gen out/Release --args="${GN_CONFIG[*]}"
 
-mkdir -p third_party/node/linux/node-linux-x64/bin &&
-ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/ &&
+mkdir -p third_party/node/linux/node-linux-x64/bin 
+ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/ 
 ninja -C out/Release chrome chrome_sandbox chromedriver widevinecdmadapter
 
 install -vDm755  out/Release/chrome \
-                 /usr/lib/chromium/chromium                   &&
+                 $PKG/usr/lib/chromium/chromium                   
 install -vDm4755 out/Release/chrome_sandbox \
-                 /usr/lib/chromium/chrome-sandbox             &&
+                 $PKG/usr/lib/chromium/chrome-sandbox             
 install -vDm755  out/Release/chromedriver \
-                 /usr/lib/chromium/chromedriver               &&
-ln -svf /usr/lib/chromium/chromium /usr/bin                   &&
-ln -svf /usr/lib/chromium/chromedriver /usr/bin/              &&
+                 $PKG/usr/lib/chromium/chromedriver               
+ln -svf /usr/lib/chromium/chromium $PKG/usr/bin                   
+ln -svf /usr/lib/chromium/chromedriver $PKG/usr/bin/              
 
-install -vm644  out/Release/icudtl.dat /usr/lib/chromium/     &&
+install -vm644  out/Release/icudtl.dat $PKG/usr/lib/chromium/     
 install -vDm644 out/Release/gen/content/content_resources.pak \
-                /usr/lib/chromium/                            &&
+                $PKG/usr/lib/chromium/                            
 install -vm644  out/Release/{*.pak,*.bin} \
-                /usr/lib/chromium/                            &&
+                $PKG/usr/lib/chromium/                            
 
-cp -av out/Release/locales /usr/lib/chromium/                 &&
-chown -Rv root:root /usr/lib/chromium/locales                 &&
+cp -av out/Release/locales $PKG/usr/lib/chromium/                 
+chown -Rv root:root $PKG/usr/lib/chromium/locales                 
 
 install -vDm644 out/Release/chrome.1 \
-                /usr/share/man/man1/chromium.1
+                $PKG/usr/share/man/man1/chromium.1
                 
 
 for size in 16 32; do
     install -vDm644 \
         "chrome/app/theme/default_100_percent/chromium/product_logo_$size.png" \
-        "/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
-done &&
+        "$PKG/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+done 
 
 for size in 22 24 48 64 128 256; do
     install -vDm644 "chrome/app/theme/chromium/product_logo_$size.png" \
-        "/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
-done &&
+        "$PKG/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+done 
 
   mkdir -p $PKG/usr/share/applications
   
