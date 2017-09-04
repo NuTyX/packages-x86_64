@@ -1,0 +1,139 @@
+# Depends on:  ninja gtk3 nss alsa-lib xdg-utils bzip2 xorg-libxscrnsaver libexif libgcrypt dbus flac snappy speech-dispatcher pciutils pulseaudio libsecret libvpx desktop-file-utils libevent re2 kerberos libwebp cups hicolor-icon-theme mesa usbutils yasm ffmpeg icu libjpeg-turbo libpng libxml2 node
+
+description="Open source version of Google Chrome web browser."
+url="http://chromium.org/"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B."
+
+
+name=chromium
+version=60.0.3112.113
+release=1
+
+source=(https://commondatastorage.googleapis.com/$name-browser-official/$name-$version.tar.xz
+		chromium-60.0.3112.101-gcc7-1.patch
+		chromium-60.0.3112.101-glibc-2.26-1.patch)
+
+build() {
+
+cd chromium-$version
+
+patch -Np1 -i ../chromium-60.0.3112.101-gcc7-1.patch
+
+patch -Np1 -i ../chromium-60.0.3112.101-glibc-2.26-1.patch
+
+sed 's/WIDEVINE_CDM_AVAILABLE/&\n\n#define WIDEVINE_CDM_VERSION_STRING "Pinkie Pie"/' \
+    -i third_party/widevine/cdm/stub/widevine_cdm_version.h
+
+sed "/delayed_task_manager.cc/a\      'base/task_scheduler/environment_config.cc'," \
+    -i tools/gn/bootstrap/bootstrap.py
+    
+for LIB in ffmpeg flac harfbuzz-ng libjpeg \
+           libjpeg_turbo libpng libwebp libxslt yasm; do
+    find -type f -path "*third_party/$LIB/*"     \
+        \! -path "*third_party/$LIB/chromium/*"  \
+        \! -path "*third_party/$LIB/google/*"    \
+        \! -path "*base/third_party/icu/*"       \
+        \! -path "*base/third_party/libevent/*"  \
+        \! -regex '.*\.\(gn\|gni\|isolate\|py\)' \
+        -delete
+done &&
+
+python build/linux/unbundle/replace_gn_files.py \
+    --system-libraries ffmpeg flac harfbuzz-ng libjpeg \
+                       libpng libwebp libxslt yasm &&
+                       
+python third_party/libaddressinput/chromium/tools/update-strings.py
+
+GN_CONFIG=('google_api_key="AIzaSyDxKL42zsPjbke5O8_rPVpVrLrJ8aeE9rQ"'
+'google_default_client_id="595013732528-llk8trb03f0ldpqq6nprjp1s79596646.apps.googleusercontent.com"'
+'google_default_client_secret="5ntt6GbbkjnTVXx-MSxbmx5e"'
+'clang_use_chrome_plugins=false'
+'enable_hangout_services_extension=true'
+'enable_nacl=false'
+'enable_nacl_nonsfi=false'
+'enable_swiftshader=false'
+'enable_widevine=true'
+'fatal_linker_warnings=false'
+'ffmpeg_branding="Chrome"'
+'fieldtrial_testing_like_official_build=true'
+'is_debug=false'
+'is_clang=false'
+'link_pulseaudio=true'
+'linux_use_bundled_binutils=false'
+'proprietary_codecs=true'
+'remove_webcore_debug_symbols=true'
+'symbol_level=0'
+'treat_warnings_as_errors=false'
+'use_allocator="none"'
+'use_cups=true'
+'use_gconf=false'
+'use_gnome_keyring=false'
+'use_gold=false'
+'use_gtk3=true'
+'use_kerberos=true'
+'use_pulseaudio=true'
+'use_sysroot=false')
+
+python tools/gn/bootstrap/bootstrap.py --gn-gen-args "${GN_CONFIG[*]}" &&
+out/Release/gn gen out/Release --args="${GN_CONFIG[*]}"
+
+mkdir -p third_party/node/linux/node-linux-x64/bin &&
+ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/ &&
+ninja -C out/Release chrome chrome_sandbox chromedriver widevinecdmadapter
+
+install -vDm755  out/Release/chrome \
+                 /usr/lib/chromium/chromium                   &&
+install -vDm4755 out/Release/chrome_sandbox \
+                 /usr/lib/chromium/chrome-sandbox             &&
+install -vDm755  out/Release/chromedriver \
+                 /usr/lib/chromium/chromedriver               &&
+ln -svf /usr/lib/chromium/chromium /usr/bin                   &&
+ln -svf /usr/lib/chromium/chromedriver /usr/bin/              &&
+
+install -vm644  out/Release/icudtl.dat /usr/lib/chromium/     &&
+install -vDm644 out/Release/gen/content/content_resources.pak \
+                /usr/lib/chromium/                            &&
+install -vm644  out/Release/{*.pak,*.bin} \
+                /usr/lib/chromium/                            &&
+
+cp -av out/Release/locales /usr/lib/chromium/                 &&
+chown -Rv root:root /usr/lib/chromium/locales                 &&
+
+install -vDm644 out/Release/chrome.1 \
+                /usr/share/man/man1/chromium.1
+                
+
+for size in 16 32; do
+    install -vDm644 \
+        "chrome/app/theme/default_100_percent/chromium/product_logo_$size.png" \
+        "/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+done &&
+
+for size in 22 24 48 64 128 256; do
+    install -vDm644 "chrome/app/theme/chromium/product_logo_$size.png" \
+        "/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+done &&
+
+  mkdir -p $PKG/usr/share/applications
+  
+cat > $PKG/usr/share/applications/chromium.desktop << "EOF"
+[Desktop Entry]
+Encoding=UTF-8
+Name=Chromium Web Browser
+Comment=Access the Internet
+GenericName=Web Browser
+Exec=chromium %u
+Terminal=false
+Type=Application
+Icon=chromium
+Categories=GTK;Network;WebBrowser;
+MimeType=application/xhtml+xml;text/xml;application/xhtml+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
+EOF
+
+}
+
+
+
+
+

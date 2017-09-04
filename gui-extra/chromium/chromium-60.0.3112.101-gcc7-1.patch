@@ -1,0 +1,158 @@
+Submitted By:            DJ Lucas <dj_AT_linuxfromscratch_DOT_org>
+Date:                    2017-06-25
+Initial Package Version: 59.0.3071.109
+Upstream Status:         Committed
+Origin:                  Arch Linux (Rediffed from Arch PKGBUILD)
+Description:             Allows building with GCC-7.1.0.
+
+diff -Naurp chromium-59.0.3071.109-orig/third_party/WebKit/Source/platform/graphics/gpu/SharedGpuContext.h chromium-59.0.3071.109/third_party/WebKit/Source/platform/graphics/gpu/SharedGpuContext.h
+--- chromium-59.0.3071.109-orig/third_party/WebKit/Source/platform/graphics/gpu/SharedGpuContext.h	2017-06-23 23:24:46.243527971 -0500
++++ chromium-59.0.3071.109/third_party/WebKit/Source/platform/graphics/gpu/SharedGpuContext.h	2017-06-23 23:25:00.423540078 -0500
+@@ -5,6 +5,7 @@
+ #include "platform/PlatformExport.h"
+ #include "platform/wtf/ThreadSpecific.h"
+ 
++#include <functional>
+ #include <memory>
+ 
+ namespace gpu {
+diff -Naurp chromium-59.0.3071.109-orig/third_party/WebKit/Source/platform/wtf/LinkedHashSet.h chromium-59.0.3071.109/third_party/WebKit/Source/platform/wtf/LinkedHashSet.h
+--- chromium-59.0.3071.109-orig/third_party/WebKit/Source/platform/wtf/LinkedHashSet.h	2017-06-23 23:24:46.290194679 -0500
++++ chromium-59.0.3071.109/third_party/WebKit/Source/platform/wtf/LinkedHashSet.h	2017-06-23 23:25:00.423540078 -0500
+@@ -685,6 +685,31 @@ inline LinkedHashSet<T, U, V, W>& Linked
+   return *this;
+ }
+ 
++inline void SwapAnchor(LinkedHashSetNodeBase& a, LinkedHashSetNodeBase& b) {
++  DCHECK(a.prev_);
++  DCHECK(a.next_);
++  DCHECK(b.prev_);
++  DCHECK(b.next_);
++  swap(a.prev_, b.prev_);
++  swap(a.next_, b.next_);
++  if (b.next_ == &a) {
++    DCHECK_EQ(b.prev_, &a);
++    b.next_ = &b;
++    b.prev_ = &b;
++  } else {
++    b.next_->prev_ = &b;
++    b.prev_->next_ = &b;
++  }
++  if (a.next_ == &b) {
++    DCHECK_EQ(a.prev_, &b);
++    a.next_ = &a;
++    a.prev_ = &a;
++  } else {
++    a.next_->prev_ = &a;
++    a.prev_->next_ = &a;
++  }
++}
++
+ template <typename T, typename U, typename V, typename W>
+ inline void LinkedHashSet<T, U, V, W>::Swap(LinkedHashSet& other) {
+   impl_.Swap(other.impl_);
+@@ -877,31 +902,6 @@ inline void LinkedHashSet<T, U, V, W>::e
+   erase(Find(value));
+ }
+ 
+-inline void SwapAnchor(LinkedHashSetNodeBase& a, LinkedHashSetNodeBase& b) {
+-  DCHECK(a.prev_);
+-  DCHECK(a.next_);
+-  DCHECK(b.prev_);
+-  DCHECK(b.next_);
+-  swap(a.prev_, b.prev_);
+-  swap(a.next_, b.next_);
+-  if (b.next_ == &a) {
+-    DCHECK_EQ(b.prev_, &a);
+-    b.next_ = &b;
+-    b.prev_ = &b;
+-  } else {
+-    b.next_->prev_ = &b;
+-    b.prev_->next_ = &b;
+-  }
+-  if (a.next_ == &b) {
+-    DCHECK_EQ(a.prev_, &b);
+-    a.next_ = &a;
+-    a.prev_ = &a;
+-  } else {
+-    a.next_->prev_ = &a;
+-    a.prev_->next_ = &a;
+-  }
+-}
+-
+ inline void swap(LinkedHashSetNodeBase& a, LinkedHashSetNodeBase& b) {
+   DCHECK_NE(a.next_, &a);
+   DCHECK_NE(b.next_, &b);
+diff -Naurp chromium-59.0.3071.109-orig/v8/src/objects/hash-table.h chromium-59.0.3071.109/v8/src/objects/hash-table.h
+--- chromium-59.0.3071.109-orig/v8/src/objects/hash-table.h	2017-06-23 23:24:36.936852720 -0500
++++ chromium-59.0.3071.109/v8/src/objects/hash-table.h	2017-06-23 23:25:08.363546353 -0500
+@@ -135,22 +135,10 @@ class HashTable : public HashTableBase {
+  public:
+   typedef Shape ShapeT;
+ 
+-  // Wrapper methods
+-  inline uint32_t Hash(Key key) {
+-    if (Shape::UsesSeed) {
+-      return Shape::SeededHash(key, GetHeap()->HashSeed());
+-    } else {
+-      return Shape::Hash(key);
+-    }
+-  }
+-
+-  inline uint32_t HashForObject(Key key, Object* object) {
+-    if (Shape::UsesSeed) {
+-      return Shape::SeededHashForObject(key, GetHeap()->HashSeed(), object);
+-    } else {
+-      return Shape::HashForObject(key, object);
+-    }
+-  }
++  // Wrapper methods.  Defined in src/objects-inl.h
++  // to break a cycle with src/heap/heap.h.
++  inline uint32_t Hash(Key key);
++  inline uint32_t HashForObject(Key key, Object* object);
+ 
+   // Returns a new HashTable object.
+   MUST_USE_RESULT static Handle<Derived> New(
+diff -Naurp chromium-59.0.3071.109-orig/v8/src/objects-body-descriptors.h chromium-59.0.3071.109/v8/src/objects-body-descriptors.h
+--- chromium-59.0.3071.109-orig/v8/src/objects-body-descriptors.h	2017-06-23 23:24:36.936852720 -0500
++++ chromium-59.0.3071.109/v8/src/objects-body-descriptors.h	2017-06-23 23:25:08.363546353 -0500
+@@ -99,7 +99,7 @@ class FixedBodyDescriptor final : public
+ 
+   template <typename StaticVisitor>
+   static inline void IterateBody(HeapObject* obj, int object_size) {
+-    IterateBody(obj);
++    IterateBody<StaticVisitor>(obj);
+   }
+ };
+ 
+diff -Naurp chromium-59.0.3071.109-orig/v8/src/objects-inl.h chromium-59.0.3071.109/v8/src/objects-inl.h
+--- chromium-59.0.3071.109-orig/v8/src/objects-inl.h	2017-06-23 23:24:36.943519393 -0500
++++ chromium-59.0.3071.109/v8/src/objects-inl.h	2017-06-23 23:25:08.363546353 -0500
+@@ -46,6 +46,27 @@
+ namespace v8 {
+ namespace internal {
+ 
++template <typename Derived, typename Shape, typename Key>
++uint32_t HashTable<Derived, Shape, Key>::Hash(Key key) {
++  if (Shape::UsesSeed) {
++    return Shape::SeededHash(key, GetHeap()->HashSeed());
++  } else {
++    return Shape::Hash(key);
++  }
++}
++
++
++template <typename Derived, typename Shape, typename Key>
++uint32_t HashTable<Derived, Shape, Key>::HashForObject(Key key,
++                                                       Object* object) {
++  if (Shape::UsesSeed) {
++    return Shape::SeededHashForObject(key, GetHeap()->HashSeed(), object);
++  } else {
++    return Shape::HashForObject(key, object);
++  }
++}
++
++
+ PropertyDetails::PropertyDetails(Smi* smi) {
+   value_ = smi->value();
+ }
