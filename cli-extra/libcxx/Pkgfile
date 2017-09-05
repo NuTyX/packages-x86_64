@@ -1,0 +1,23 @@
+# Depends on: llvm subversion cmake
+
+description="llvm C++ lib"
+url="https://libcxx.llvm.org/"
+packager="tnut <tnut@nutyx.org>"
+
+name=libcxx
+version=svn
+release=1
+
+build()
+{
+svn co http://llvm.org/svn/llvm-project/libcxx/trunk libcxx
+cd libcxx
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_BUILD_TYPE=Release -Wno-dev \
+..
+
+make
+make DESTDIR=$PKG install
+}
