@@ -88,6 +88,9 @@ install -vDm4755 out/Release/chrome_sandbox \
                  $PKG/usr/lib/chromium/chrome-sandbox             
 install -vDm755  out/Release/chromedriver \
                  $PKG/usr/lib/chromium/chromedriver               
+
+mkdir -p $PKG/usr/{bin,share/{icons/hicolor,man/man1,applications}}
+
 ln -svf /usr/lib/chromium/chromium $PKG/usr/bin                   
 ln -svf /usr/lib/chromium/chromedriver $PKG/usr/bin/              
 
@@ -115,8 +118,6 @@ for size in 22 24 48 64 128 256; do
         "$PKG/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
 done 
 
-  mkdir -p $PKG/usr/share/applications
-  
 cat > $PKG/usr/share/applications/chromium.desktop << "EOF"
 [Desktop Entry]
 Encoding=UTF-8
