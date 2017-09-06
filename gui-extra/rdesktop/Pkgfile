@@ -1,0 +1,28 @@
+# Depends on: xorg-libx11
+
+description="Allows access the terminal windows"
+url="http://www.rdesktop.org/"
+packager="Jayce <jayce.net@gmail.com>"
+contributors="Pierre"
+
+name=rdesktop
+version=1.8.3
+release=2
+
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz
+	rdesktop-send_physical_buttons.diff
+	openssl.patch
+	openssl-crash.patch
+)
+
+build() {
+	cd $name-$version
+ 	patch -i $SRC/rdesktop-send_physical_buttons.diff 
+	patch -Np1 -i $SRC/openssl.patch 
+	patch -Np1 -i $SRC/openssl-crash.patch
+        ./configure --prefix=/usr \
+		--disable-credssp \
+		--disable-smartcard
+	make
+	make DESTDIR=$PKG install
+}
