@@ -1,0 +1,31 @@
+# Depends on: cmake lua51
+
+description="Tool to integrate C/C++ code with Lua"
+url="https://github.com/LuaDist/toluapp"
+packager="greg<greg@nutyx.org"
+contributors="tnut"
+
+name=tolua++
+version=1.0.93
+release=1
+
+source=(https://github.com/LuaDist/toluapp/archive/$version.tar.gz)
+       
+build() {
+
+    cd toluapp-$version
+
+    rm -rf build && mkdir build
+    cd build
+
+    cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+
+}
+
+package() {
+
+    cd toluapp-$version/build
+
+    make DESTDIR=$PKG install
+
+}
