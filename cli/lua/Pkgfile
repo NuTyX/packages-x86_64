@@ -5,7 +5,7 @@ contributors="Pierre B"
 
 name=lua
 version=5.3.4
-release=1
+release=2
 _majorver=${version%.*}
 
 source=(http://www.lua.org/ftp/$name-$version.tar.gz lua.pc
@@ -21,6 +21,10 @@ build() {
 	mkdir -pv $PKG/usr/share/doc/$name-$version
 	cp -v doc/*.{html,css,gif,png} $PKG/usr/share/doc/$name-$version
 	mkdir -p $PKG/usr/lib/pkgconfig
-	sed "s/%VER%/$_majorver/g;s/%REL%/$pkgver/g" ../lua.pc \
-> $PKG/usr/lib/pkgconfig/lua.pc
+	sed "s/%VER%/$_majorver/g;s/%REL%/$version/g" ../lua.pc \
+	> lua.pc
+
+	install -Dm644 lua.pc $PKG/usr/lib/pkgconfig/${name}53.pc
+	ln -sf /usr/lib/pkgconfig/${name}53.pc \
+	$PKG/usr/lib/pkgconfig/$name.pc
 }
