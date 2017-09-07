@@ -5,17 +5,16 @@ url="http://www.php.net"
 packager="jayce <jayce.net@gmail.com>"
 contributors="berlius"
 
-name=php7
-_name=php
+name=php
 version=7.1.9
 release=2
 
-source=(http://php.net/distributions/${_name}-$version.tar.xz
+source=(http://php.net/distributions/$name-$version.tar.xz
  http://mirror.internode.on.net/pub/php/manual/php_manual_fr.tar.gz)
 
 build () {
 
-    cd ${_name}-$version
+    cd $name-$version
 
     ./configure --prefix=/usr            \
             --sysconfdir=/etc            \
