@@ -1,0 +1,39 @@
+# Depends on: git cmake wireless-tools glib lua cairo curl imlib2 docbook2x xorg-libxdamage xorg-libxft pulseaudio xorg-libxscrnsaver
+
+description="Lightweight system monitor for X"
+url="http://conky.sourceforge.net"
+packager="tnut <tnut@nutyx.org>"
+contributors="Geantbrun, Greg"
+
+PKGMK_KEEP_SOURCES="no"
+
+name=conky
+version=1.10.6
+release=1
+
+source=(https://github.com/brndnmtthws/conky/archive/v${version}.tar.gz
+	lua53.patch)
+
+build() {
+cd $name-$version
+
+# Needed for gcc 7 and lua 53
+patch -Np1 -i ../lua53.patch
+
+cmake -D CMAKE_BUILD_TYPE=Release  \
+      -D MAINTAINER_MODE=ON        \
+      -D BUILD_WLAN=ON             \
+      -D BUILD_IMLIB2=ON           \
+      -D BUILD_CURL=ON             \
+      -D BUILD_NCURSES=OFF         \
+      -D BUILD_RSS=ON              \
+      -D BUILD_WEATHER_METAR=ON    \
+      -D BUILD_WEATHER_XOAP=ON     \
+      -D BUILD_PULSEAUDIO=ON       \
+      -D CMAKE_INSTALL_PREFIX=/usr \
+      -Wno-dev                     \
+      .
+make
+make DESTDIR=$PKG install
+}
+  
