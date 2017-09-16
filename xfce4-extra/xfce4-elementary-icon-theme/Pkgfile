@@ -1,12 +1,13 @@
-# Depends on: 
+# Depends on: gtk-update-icon-cache
 
 description="Elementary lefty icons theme"
 url="https://github.com/shimmerproject/elementary-xfce"
-packager="greg <greg@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributor="Greg"
 
 name=xfce4-elementary-icon-theme
 version=0.8
-release=1
+release=2
 
 source=(https://github.com/shimmerproject/elementary-xfce/archive/v$version.tar.gz)
 
@@ -15,4 +16,8 @@ build() {
 install -d -m 0755 $PKG//usr/share/icons
 mv elementary-xfce-$version/elementary-xfce{,-dark,-darker} $PKG//usr/share/icons
 
+# Update iconcache
+gtk-update-icon-cache -q -t -f $PKG/usr/share/icons/elementary-xfce
+gtk-update-icon-cache -q -t -f $PKG/usr/share/icons/elementary-xfce-dark
+gtk-update-icon-cache -q -t -f $PKG/usr/share/icons/elementary-xfce-darker
 }
