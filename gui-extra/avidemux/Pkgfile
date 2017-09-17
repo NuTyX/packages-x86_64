@@ -1,0 +1,37 @@
+# Depends on: cmake sqlite ffmpeg qtbase qtx11extras qttools
+
+description="Graphical tool to edit video (filter/re-encode/split)"
+url="http://fixounet.free.fr/avidemux/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+name=avidemux
+version=2.7.0
+release=1
+
+source=(https://downloads.sourceforge.net/$name/${name}_${version}.tar.gz)
+
+build() {
+
+cd ${name}_$version
+
+unset PKG
+unset MAKEFLAGS
+unset CFLAGS
+unset CXXFLAGS
+bash bootStrap.bash
+PKG=$PKGMK_WORK_DIR/pkg
+mv install/usr \
+$PKG
+
+mkdir -p $PKG/usr/share/{applications,pixmaps,man/man1}
+sed "s@avidemux2_gtk@avidemux3_qt@" avidemux2.desktop \
+> $PKG/usr/share/applications/avidemux.desktop
+
+install -Dm 644 avidemux_icon.png \
+$PKG/usr/share/pixmaps/avidemux.png
+
+install -Dm 644 man/avidemux.1 -t \
+$PKG/usr/share/man/man1
+
+}
