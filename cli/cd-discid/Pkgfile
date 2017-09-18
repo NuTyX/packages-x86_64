@@ -1,0 +1,28 @@
+# Depends on:
+
+description="Backend utility to get cddb information"
+url="http://lly.org/~rcw/cd-discid/"
+packager="greg<greg@nutyx.org>"
+
+name=cd-discid
+version=0.9
+release=1
+
+source=(http://lly.org/~rcw/$name/${name}_$version.orig.tar.gz)
+
+build () {
+
+    cd $name-$version
+    make
+ 
+	}
+
+package () {
+
+cd $name-$version
+make DESTDIR=$PKG \
+        PREFIX=/usr \
+        mandir=$PKG/usr/man/man1 \
+        install
+       } 
+        
