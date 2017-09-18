@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=breeze-icons
 version=5.38.0
-release=2
+release=1
 
 run=(gtk-update-icon-cache)
 
@@ -24,6 +24,4 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
 make
 make DESTDIR=$PKG install
 
-gtk-update-icon-cache $PKG/usr/share/icons/breeze/
-gtk-update-icon-cache $PKG/usr/share/icons/breeze-dark/
 }
