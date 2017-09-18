@@ -1,4 +1,4 @@
-# Depends on: cmake qtbase extra-cmake-modules kiconthemes kconfig
+# Depends on: gtk-update-icon-cache cmake qtbase extra-cmake-modules kiconthemes kconfig
 
 description="The Breeze Icon Theme for kf5"
 url="https://www.kde.org/"
@@ -7,7 +7,9 @@ contributors="Pierre B"
 
 name=breeze-icons
 version=5.38.0
-release=1
+release=2
+
+run=(gtk-update-icon-cache)
 
 source=(http://download.kde.org/stable/frameworks/${version%.*}/$name-$version.tar.xz)
 
@@ -21,4 +23,7 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
 
 make
 make DESTDIR=$PKG install
+
+gtk-update-icon-cache $PKG/usr/share/icons/breeze/
+gtk-update-icon-cache $PKG/usr/share/icons/breeze-dark/
 }
