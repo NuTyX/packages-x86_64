@@ -4,16 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=hicolor-icon-theme
-version=0.15
+version=0.17
 release=1
 
 source=(  http://icon-theme.freedesktop.org/releases/$name-$version.tar.xz)
-
-build() {
-	cd $name-$version
-	./configure --prefix=/usr \
-	--mandir=/usr/share/man \
-	--infodir=/usr/share/info
-	make
-	make DESTDIR=$PKG install
-}
