@@ -5,13 +5,27 @@ contributors="Pierre B"
 
 name=smartmontools
 version=6.5
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/sourceforge/$name/$name-$version.tar.gz )
 
 build() {
+
+	source /etc/blfs-bootscripts
+	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
+
 	cd $name-$version
-	./configure --prefix=/usr
+	./configure --prefix=/usr \
+	--sysconfdir=/etc         \
+	--with-initscriptdir=no   \
+	--docdir=/usr/share/doc/smartmontools-$version
 	make
 	make DESTDIR=$PKG install
+
+	# Service
+	cd $SRC
+	tar xf $scripts-$scriptsversion.tar.bz2
+	cd $SRC/$scripts-$scriptsversion
+	make DESTDIR=$PKG install-smartd
+
 }
