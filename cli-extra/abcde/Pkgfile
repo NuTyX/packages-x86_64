@@ -1,0 +1,29 @@
+# Depends on: bash cd-discid wget libvorbis
+
+description="a better cd encoder"
+url="http://code.google.com/p/abcde"
+packager="greg<greg@nutyx.org>
+
+name=abcde
+version=2.5.4
+release=1
+
+source=(http://$name.googlecode.com/files/$name-$version.tar.gz)
+
+build () {
+
+    cd $name-$version
+    make
+ 
+	}
+
+package () {
+
+cd $name-$version
+    make DESTDIR=$PKG \
+        PREFIX=/usr \
+	mandir=$PKG/usr/man/man1 \
+        install
+
+       } 
+        
