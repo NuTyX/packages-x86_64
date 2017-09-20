@@ -7,17 +7,17 @@ packager="tnut <tnut@nutyx.org>"
 [ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.52.3
-release=3
+version=2.54.0
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/glib/${version:0:4}/$name-$version.tar.xz
-	http://downloads.nutyx.org/WallPapers/nutyx-9.0.94.jpg
-        glib-revert-warn-glib-compile-schemas.patch)
+	http://downloads.nutyx.org/WallPapers/nutyx-9.0.95.jpg
+	glib-revert-warn-glib-compile-schemas.patch)
 
 build () {
   cd $name-$version
 
-  patch -Rp1 -i ../glib-revert-warn-glib-compile-schemas.patch
+  patch -Np1 -i ../glib-revert-warn-glib-compile-schemas.patch
 
   ./configure --prefix=/usr \
               --with-pcre=system \
@@ -27,6 +27,6 @@ build () {
   make DESTDIR=$PKG install
 
   # Default NuTyX Wallpaper
-  install -D -m644 ../nutyx-9.0.94.jpg \
+  install -D -m644 ../nutyx-9.0.95.jpg \
   $PKG/usr/share/backgrounds/nutyx/nutyx.jpg
 }

@@ -114,6 +114,13 @@ fi
 	mount -o loop iso/efiboot.img iso/efiboot
 	mkdir -pv iso/efiboot/EFI/boot
 	cp -v iso/EFI/${GRUB_EFI_IMG} iso/efiboot/EFI/boot
+if [ "$ARCH" == "x86_64" ]; then
+   # required to boot some tablets with 32-bits UEFI and 64-bits processor
+   mkdir -pv boot/grub/i386-efi
+   cp -av $LFS/ia32/grub/i386-efi/*.mod boot/grub/i386-efi || error "grub/i386-efi"
+   cp -v $LFS/ia32/bootia32.efi iso/EFI/ || error "bootia32.efi"
+   cp -v iso/EFI/bootia32.efi iso/efiboot/EFI/boot
+fi
 	umount iso/efiboot
 
 	# Iso generation
