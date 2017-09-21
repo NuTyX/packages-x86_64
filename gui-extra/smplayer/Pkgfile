@@ -1,0 +1,32 @@
+# Depends on: qtscript mpv hicolor-icon-theme qttools
+
+description="Media player with built-in codecs that can play virtually all video and audio formats"
+url="http://smplayer.sourceforge.net/"
+packager="greg<greg@nutyx.org>"
+
+name=smplayer
+version=17.9.0
+release=1
+
+
+source=(https://downloads.sourceforge.net/${name}/${name}-${version}.tar.bz2)
+
+
+build() {
+
+    cd ${name}-${version}
+    make PREFIX=/usr \
+    DOC_PATH="\\\"/usr/share/doc/smplayer\\\"" \
+    QMAKE_OPTS=DEFINES+=NO_DEBUG_ON_CONSOLE
+}
+
+
+package() {
+
+  cd ${name}-${version}
+  make DOC_PATH=/usr/share/doc/smplayer \
+  DESTDIR=$PKG PREFIX=/usr install
+
+}
+
+ 
