@@ -2,19 +2,11 @@
 
 description="Monitor and display application startup"
 url="http://freedesktop.org/wiki/Software/startup-notification"
-packager="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 name=startup-notification
 version=0.12
-release=1
+release=2
 
 source=(http://www.freedesktop.org/software/$name/releases/$name-$version.tar.gz)
-
-build() {
-	cd $name-$version
-	./configure --prefix=/usr \
-		--infodir=/usr/share/info \
-		--mandir=/usr/share/man
-	make
-	make DESTDIR=$PKG install
-}
