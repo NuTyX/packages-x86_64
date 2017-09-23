@@ -1,0 +1,46 @@
+# Depends on: 
+
+description="Gives a fake chroot environment"
+url="https://github.com/dex4er/fakechroot/wiki"
+packager="greg <greg@nutyx.org>"
+contributors=""
+
+name=fakechroot
+version=2.19
+release=1
+install=fakechroot.install
+
+source=(https://github.com/dex4er/fakechroot/archive/$version.tar.gz)
+
+
+build () {
+
+  cd $name-$version
+  ./configure --prefix=/usr --sbindir=/usr/bin \
+    --libdir=/usr/lib/libfakeroot --sysconfdir=/etc
+  make
+
+}
+
+check() {
+  cd $name-$version
+
+  make -k check || true
+}
+
+check
+
+package() {
+
+  cd $name-$version
+  make DESTDIR=$PKG install
+  
+  install -dm755 $PKG/etc/ld.so.conf.d/
+  echo '/usr/lib/libfakeroot/fakechroot/' > $PKG/etc/ld.so.conf.d/fakechroot.conf
+
+}
+
+
+ 
+ 
+ 
