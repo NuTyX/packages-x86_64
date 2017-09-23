@@ -1,21 +1,20 @@
-# Description: MS-Explorer or Commander like file manager for X.
-# URL: http://roland65.free.fr/xfe
-# Maintainer: <roland65 at free dot fr>
-# Packager: pierre at nutyx dot org, tnut at nutyx dot org
 # Depends on: freetype fox libpng libjpeg-turbo libtiff expat intltool
 
+description="MS-Explorer or Commander like file manager for X."
+url="http://roland65.free.fr/xfe"
+maintainer="<roland65 at free dot fr>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 name=xfe
-version=1.41
+version=1.42
 release=1
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
-build() {
+prepare() {
 cd $name-$version
 export CFLAGS="$CFLAGS `pkg-config --cflags freetype2`"
 aclocal
 automake --add-missing
 autoreconf
-./configure --prefix=/usr
-make
-make DESTDIR=$PKG install
 }

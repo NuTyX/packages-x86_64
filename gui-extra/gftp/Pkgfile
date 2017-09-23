@@ -2,20 +2,11 @@
 
 description="A multithreaded ftp client for X Windows"
 url="http://gftp.seul.org/"
-contributors="pierre at nutyx dot org"
+contributors="Pierre B"
 packager="greg <greg@nutyx.org>"
 
 name=gftp
 version=2.0.19
-release=2
+release=3
 
 source=(http://www.gftp.org/$name-$version.tar.bz2)
-
-build() {
-
-cd $name-$version
-./configure --prefix=/usr 
-make
-make DESTDIR=$PKG install
-
-}
