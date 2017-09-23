@@ -1,16 +1,16 @@
-
 # Depends on: xorg-fontconfig xorg-encodings xorg-font-util
 
 description="A typeface designed for source code"
 url="http://sourcefoundry.org/hack/"
-maintener="chrissimpkins (https://github.com/chrissimpkins/Hack/graphs/contributors)"
-packager="pierre at nutyx doty org"
+maintainer="chrissimpkins (https://github.com/chrissimpkins/Hack/graphs/contributors)"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 name=ttf-hack
-version=020
+version=2.020
 release=1
 
-source=(https://github.com/chrissimpkins/Hack/releases/download/v2.$version/Hack-v2_$version-ttf.zip)
+source=(https://github.com/source-foundry/Hack/releases/download/v${version}/Hack-v${version/./_}-ttf.tar.xz)
 
 build() {
   install -Dm644 -t $PKG/usr/share/fonts/TTF $SRC/Hack-*.ttf

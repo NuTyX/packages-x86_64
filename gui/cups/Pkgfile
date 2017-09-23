@@ -2,13 +2,20 @@
 
 description="The Common Unix Printing System (CUPS) is a print spooler and associated utilities"
 url="http://www.cups.org"
-packager="pierre at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
 run=(xdg-utils gtk-update-icon-cache)
-PKGMK_GROUPS=(man devel)
+
+[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man)
+[ "$PKGMK_ARCH" == "i686" ] && PKGMK_GROUPS=(man)
+
 name=cups
 version=2.2.4
-release=2
-run=(xdg-utils)
+release=3
+
+run=(xdg-utils gtk-update-icon-cache)
+
 source=( https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
 	99-printer.rules)
 
