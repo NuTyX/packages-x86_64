@@ -2,19 +2,19 @@
 
 description="Stand-alone mail/news client based on the Mozilla codebase."
 url="http://www.mozilla.org/thunderbird"
-packager="pierre at nutyx dot org, tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
 
 run=(startup-notification hunspell)
 
 name=thunderbird
-version=52.2.1
+version=52.3.0
 release=1
 
 source=(http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.xz
 	$name.desktop)
 
 build() {
-export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/thunderbird"
 export PYTHON="/usr/bin/python2"
 
 cd $SRC
@@ -44,9 +44,6 @@ ac_add_options --disable-necko-wifi
 ac_add_options --enable-system-hunspell
 ac_add_options --enable-startup-notification
 
-# Comment out following option if you have PulseAudio installed
-#ac_add_options --disable-pulseaudio
-
 # Comment out following option if you have gconf installed
 ac_add_options --disable-gconf
 
@@ -63,10 +60,6 @@ ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
 ac_add_options --with-system-icu
 
-# Set CFLAGS and CXXFLAGS to prevent segfaults due to agressive
-# optimizations in GCC-6:
-export CFLAGS+=" -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2"
-export CXXFLAGS+=" -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2"
 
 # The BLFS editors recommend not changing anything below this line:
 ac_add_options --prefix=/usr
@@ -77,7 +70,7 @@ ac_add_options --disable-updater
 ac_add_options --disable-debug
 ac_add_options --disable-tests
 
-ac_add_options --enable-optimize
+ac_add_options --enable-optimize=-O2
 ac_add_options --enable-strip
 ac_add_options --enable-install-strip
 
