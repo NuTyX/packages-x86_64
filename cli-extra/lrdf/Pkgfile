@@ -1,0 +1,36 @@
+# Depends on: raptor ladspa
+
+description="A library for the manipulation of RDF file in LADSPA plugins"
+url=""
+packager="greg <greg@nutyx.org>"
+contributors="https://github.com/swh/LRDF"
+
+name=lrdf
+_name=LRDF
+version=0.6.1
+release=1
+
+source=(https://github.com/swh/LRDF/archive/v$version.tar.gz)
+
+
+
+build () {
+  cd $SRC/$_name-$version
+  autoreconf -vfi
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+
+  cd $SRC/$_name-$version
+  make DESTDIR=$PKG install
+}
+
+
+
+
+
+ 
+ 
+ 
