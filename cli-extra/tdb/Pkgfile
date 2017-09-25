@@ -1,0 +1,23 @@
+# Depends on: python,libxslt,docbook-xsl
+
+description="A Trivial Database similar to GDBM but allows simultaneous commits"
+url="http://tdb.samba.org/"
+packager="greg <greg@nutyx.org>"
+contributors="tnut"
+
+name=tdb
+version=1.3.15
+release=1
+
+source=(http://samba.org/ftp/${name}/${name}-${version}.tar.gz)
+
+build() {
+
+	cd $name-$version
+	./configure --prefix=/usr \
+               --localstatedir=/var \
+               --sysconfdir=/etc/samba
+	make
+	make DESTDIR=$PKG install
+
+}
