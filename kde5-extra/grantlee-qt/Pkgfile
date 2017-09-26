@@ -1,0 +1,23 @@
+# Depends on: qtscript cmake doxygen
+
+description="A string template engine based on the Django template system and written in Qt5"
+url="https://www.gitorious.org/grantlee/pages/Home"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=grantlee-qt
+version=5.1.0
+
+source=(http://downloads.grantlee.org/grantlee-$version.tar.gz)
+
+build() {
+  mkdir build
+  cd build
+
+  cmake ../grantlee-$version \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_TESTS=OFF
+  make
+  make DESTDIR=$PKG install
+}
