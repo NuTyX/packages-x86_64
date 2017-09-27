@@ -1,4 +1,4 @@
-# Depends on: talloc tevent avahi gnutls libgpg-error popt python2 cups kerberos libcap openldap libxslt
+# Depends on: talloc tevent avahi gnutls libgpg-error popt python2 cups kerberos libcap openldap libxslt tdb ldb
 
 description="SMB Fileserver and AD Domain server"
 url="http://www.samba.org"
@@ -7,7 +7,7 @@ contributors="Pierre B, Tnut"
 
 name=samba
 version=4.7.0
-release=2
+release=3
 
 source=( https://download.samba.org/pub/samba/stable/$name-$version.tar.gz)
 
@@ -26,7 +26,7 @@ cd $name-$version
     --without-ad-dc                     \
     --enable-fhs                        \
     --without-systemd                   \
-    --bundled-libraries=!talloc,!pytalloc-util,!tevent,!popt
+    --bundled-libraries=!talloc,!pytalloc-util,!tevent,!popt,!tdb,!ldb
 
 make
 
