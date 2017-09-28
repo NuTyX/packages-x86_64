@@ -1,0 +1,36 @@
+# Depends on: alsa-lib xorg-libx11 libftdi libusb-compat help2man alsa-lib xorg-libx11 libxslt python python-setuptools
+
+description="Linux Infrared Remote Control utilities"
+url="http://www.lirc.org/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+name=lirc
+version=0.10.1
+release=1
+
+source=(http://prdownloads.sourceforge.net/${name}/${name}-${version}.tar.bz2
+	lirc.logrotate
+	lirc.tmpfiles)
+
+
+
+build() {
+
+	cd $SRC/$name-$version
+
+  HAVE_UINPUT=1 ./configure --prefix=/usr --sbindir=/usr/bin --sysconfdir=/etc --localstatedir=/var
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+
+}
+
+package() {
+
+	cd $SRC/$name-$version
+	make DESTDIR=$PKG -j1 install
+
+  install -Dm644 $SRC/lirc.tmpfiles $PKG/usr/lib/tmpfiles.d/lirc.conf
+  install -Dm644 $SRC/lirc.logrotate $PKG/etc/logrotate.d/lirc
+
+}
