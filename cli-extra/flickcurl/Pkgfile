@@ -1,0 +1,30 @@
+# Depends on: raptor curl
+
+description="C library for the Flickr API"
+url="http://librdf.org/flickcurl/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+name=flickcurl
+version=1.26
+release=1
+
+source=(http://download.dajobe.org/flickcurl/flickcurl-$version.tar.gz
+	https://github.com/dajobe/flickcurl/commit/a5cc2a5d2fc7074f50fbaa772232b6e0fea7ce89.patch)
+
+prepare() {
+cd $SRC/$name-$version
+  patch -p1 < $SRC/a5cc2a5d2fc7074f50fbaa772232b6e0fea7ce89.patch
+}
+
+build() {
+cd $SRC/$name-$version
+  sed -i 's|#include <curl/types.h>||' src/flickcurl_internal.h
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+cd $SRC/$name-$version
+make DESTDIR=$PKG/ install
+}
