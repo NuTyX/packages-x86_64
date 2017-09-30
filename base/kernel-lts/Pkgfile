@@ -1,4 +1,4 @@
-# The LTS kernel includes the nvidia, virtualbox and broadcom drivers
+# The LTS kernel includes the virtualbox drivers
 #
 
 ## Variables initialisation
@@ -15,26 +15,14 @@ PKGMK_GROUPS=(devel doc)
 name=kernel-lts
 alias=(linux-lts)
 
-version=4.9.52
+version=4.9.53
 _version=${version:0:3}
-
-release=1
 
 # Virtualbox
 vb_version=5.1.28
 buildrelease=117968
 [ "`uname -m`" == "i686"   ] && _VBARCH=x86
 [ "`uname -m`" == "x86_64"   ] && _VBARCH=amd64
-
-# nvidia
-nv_version=384.59
-[ "$PKGMK_ARCH" == "i686"   ] && _NVARCH=x86
-[ "$PKGMK_ARCH" == "x86_64"   ] && _NVARCH=x86_64
-
-
-# Broadcom
-wl_version=6.30.223.271
-[ "`uname -m`" == "x86_64" ] && _wlarch=_64
 
 ## Download all the sources
 #
@@ -43,9 +31,6 @@ source=(\
 $url/pub/linux/kernel/v4.x/linux-${_version}.tar.xz
 $url/pub/linux/kernel/v4.x/patch-$version.xz
 http://download.virtualbox.org/virtualbox/${vb_version}/VirtualBox-${vb_version}-${buildrelease}-Linux_${_VBARCH}.run
-http://download.nvidia.com/XFree86/Linux-${_NVARCH}/${nv_version}/NVIDIA-Linux-${_NVARCH}-${nv_version}.run
-http://www.broadcom.com/docs/linux_sta/hybrid-v35${_wlarch}-nodebug-pcoem-${wl_version//./_}.tar.gz
-broadcom-wl.modprobe.d broadcom-wl.license.patch wl_linux.c.patch
 $name.config $name.config_64)
 
 ## Time to build everything
@@ -87,35 +72,6 @@ cd $SRC/linux-${_version}
 make INSTALL_MOD_PATH=$PKG modules_install
 
 KERNEL_VERSION="${version}-NuTyX-lts"
-
-# Module broadcom is broken on 32 bits machine
-# if [ "$PKGMK_ARCH" == "x86_64" ]; then
-#  cd $SRC
-#  bsdtar xf hybrid-v35${_wlarch}-nodebug-pcoem-${wl_version//./_}.tar.gz
-#  patch -p1 -i broadcom-wl.license.patch
-#  patch -p1 -i wl_linux.c.patch
-
-#  sed -e "/BRCM_WLAN_IFNAME/s:eth:wlan:" \
-#	-i src/wl/sys/wl_linux.c
-#  BUILD_NOPEDANTIC=1 make -C $SRC/linux-${_version} M=`pwd`
-#  install -m 0644 -D wl.ko $PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/zzzz/wl.ko
-#  install -Dm644 broadcom-wl.modprobe.d $PKG/etc/modprobe.d/broadcom-wl.conf
-# fi
-
-# Module nvidia
-# cd $SRC
-# sh NVIDIA-Linux-${_NVARCH}-${nv_version}.run --extract-only
-# cd NVIDIA-Linux-${_NVARCH}-${nv_version}/kernel
-# SYSSRC=$SRC/linux-${_version} make module
-# for MODULE in nvidia.ko nvidia-modeset.ko
-# do
-#	install -m 0644 -D $MODULE \
-#	$PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/zzzz/$MODULE
-# done
-# if [ "${_ARCH}" == "x86_64" ]; then
-# 	install -m 0644 -D nvidia-uvm.ko \
-#	$PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/zzzz/nvidia-uvm.ko
-# fi
 
 # Module virtualbox
 cd $SRC
@@ -188,6 +144,10 @@ echo "    mv boot/kernel-$version-NuTyX-lts boot/\$LK 2>/dev/null
   fi
 else
   echo \"This is a bios installation\"
+  if [ -L boot/initrd ]; then
+    mkinitramfs $version-NuTyX-lts
+    ln -sf initrd-$version-NuTyX-lts boot/initrd
+  fi
   ln -sf kernel-$version-NuTyX-lts boot/kernel
 fi" >> $PKGMK_ROOT/$name.post-install
 
