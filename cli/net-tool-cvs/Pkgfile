@@ -1,0 +1,22 @@
+# Depends on: glibc
+
+desescription="The Net-tools package is a collection of programs for controlling the network subsystem of the Linux kernel"
+url="http://net-tools.sourceforge.net/"
+packager="jayce <jayce.net@gmail.com>"
+contributors="Tnut"
+
+name=net-tool-cvs
+version=20101030
+release=3
+
+source=(http://anduin.linuxfromscratch.org/sources/BLFS/svn/n/net-tools-CVS_20101030.tar.gz
+net-tools-CVS_20101030-remove_dups-1.patch)
+
+build() {
+cd net-tools-CVS_20101030
+patch -Np1 -i ../net-tools-CVS_20101030-remove_dups-1.patch 
+sed -i '/#include <netinet\/ip.h>/d'  iptunnel.c
+yes "" | make config 
+make
+make update DESTDIR=$PKG install
+}
