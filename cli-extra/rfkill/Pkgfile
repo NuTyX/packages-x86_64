@@ -9,11 +9,14 @@ name=rfkill
 version=0.5
 
 source=(https://www.kernel.org/pub/software/network/$name/$name-$version.tar.gz
-	rules.d)
+	    rules.d)
 
 build() {
 
   cd $SRC/${name}-${version}
+  
+  
+  
   make
 
 }
@@ -21,6 +24,7 @@ build() {
 package() {
 
    cd $SRC/${name}-${version}
+   make SBINDIR=/usr/bin DESTDIR=$PKG install
    install -Dm644 ../rules.d $PKG/lib/udev/rules.d/60-rfkill.rules
 
 }
