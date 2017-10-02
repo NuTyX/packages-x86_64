@@ -1,0 +1,31 @@
+#Depends on: lzo
+
+description="VPN client"
+packager="Graknu"
+url="http://www.openvpn.net"
+
+name=openvpn
+version=2.4.3
+release=1
+
+source=(http://swupdate.openvpn.net/community/releases/$name-$version.tar.gz)
+
+build(){
+    cd $name-$version
+
+    # Enable pam plugin if available
+    if [ -f /usr/include/security/pam_appl.h ]; then
+        pam=y
+    else
+        pam=n
+    fi
+
+    
+    ./configure \
+        --prefix=/usr \
+        --enable-iproute2 \
+        "$([ $pam = n ] && echo --disable-plugin-auth-pam)"
+
+    make
+    make DESTDIR=$PKG install
+}
