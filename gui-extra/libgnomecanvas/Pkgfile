@@ -1,0 +1,29 @@
+# Depends on: libglade libart-lgpl
+
+description="The GNOME Canvas library"
+url="http://www.gnome.org"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+name=libgnomecanvas
+version=2.30.3
+release=1
+
+source=(https://download.gnome.org/sources/${name}/2.30/${name}-${version}.tar.bz2)
+
+
+build() {
+
+cd $SRC/${name}-${version}
+  ./configure --prefix=/usr --disable-static \
+      --enable-glade
+  make
+
+}
+
+package() {
+
+cd $SRC/${name}-${version}
+
+make DESTDIR=$PKG install
+}
