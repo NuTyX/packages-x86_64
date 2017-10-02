@@ -1,0 +1,15 @@
+# Depends on : extra-cmake-modules postgresql kdesignerplugin qttools boost kio kitemmodels mariadb 
+
+description="PIM layer, which provides an asynchronous API to access all kind of PIM data "
+url="https://projects.kde.org/akonadi"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=(mariadb)
+
+name=akonadi
+version=17.08.1
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build=kde5
