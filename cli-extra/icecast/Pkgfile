@@ -1,0 +1,22 @@
+# Depends on: libshout libogg libvorbis libxslt
+
+description="Free server software for streaming multimedia"
+maintainer="icecast"
+url="http://icecast.org"
+packager="Graknu <erondror@orange.fr>"
+
+name=icecast
+version=2.4.3
+
+source=(http://downloads.xiph.org/releases/$name/$name-$version.tar.gz
+icecast)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+install -d -m 0750 -g users $PKG/var/log/icecast
+install -D -m 755 $SRC/icecast $PKG/etc/rc.d/icecast
+
+}
