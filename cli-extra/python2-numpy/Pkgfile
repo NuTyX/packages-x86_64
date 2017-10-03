@@ -1,0 +1,27 @@
+description="Scientific tools for Python"
+url="http://numpy.scipy.org/"
+contributors="pierre"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: python2 lapack python2-setuptools
+
+name=python2-numpy
+version=1.11.2
+
+source=(http://sourceforge.net/projects/numpy/files/NumPy/$version/numpy-$version.tar.gz)
+
+build() {
+
+cd numpy-$version
+
+sed -i "s@xlocale.h@locale.h@" numpy/core/src/multiarray/numpyos.c
+
+export Atlas=None
+export LDFLAGS="$LDFLAGS -shared"
+
+python2 setup.py config_fc --fcompiler=gnu95 build
+python2 setup.py config_fc --fcompiler=gnu95 install --prefix=/usr --root=$PKG --optimize=1
+
+install -D -m644 LICENSE.txt $PKG/usr/share/licenses/$name/LICENSE
+
+}
