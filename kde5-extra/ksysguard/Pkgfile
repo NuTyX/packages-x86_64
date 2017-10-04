@@ -1,0 +1,14 @@
+# Depends on: libksysguard kcompletion kconfig kconfigwidgets kcoreaddons kdbusaddons kdelibs4support ki18n kiconthemes kio kitemviews knewstuff knotifications kwidgetsaddons kwindowsystem kxmlgui lm-sensors desktop-file-utils xdg-utils
+
+description="Track and control the processes running in your system "
+url="https://www.kde.org/"
+packager="pierre at nutyx dot org"
+
+run=(lm-sensors desktop-file-utils xdg-utils) 
+
+name=ksysguard
+version=5.10.5
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build=kde5
