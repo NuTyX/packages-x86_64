@@ -1,17 +1,30 @@
-# Description: Audio files converter
-# URL: http://download.tuxfamily.org/xcfaudio
-# Packager: fanch at nutyx dot org
-# Depends on: gtk2 vte taglib curl dvd+rw-tools alsa-lib xorg-libxcursor xorg-libxdamage xorg-libxrandr xorg-libxinerama
+# Depends on: taglib alsa-lib curl vte3
+
+description="X Convert File Audio"
+url="http://www.xcfa.tuxfamily.org/"
+packager="greg<greg@nutyx.org>"
+contributors=""
 
 name=xcfa
-version=4.3.4
-release=2
+version=5.0.2
+release=1
 
-source=(http://download.tuxfamily.org/xcfaudio/xcfa_download/src/$name-$version.tar.gz)
+source=(http://download.tuxfamily.org/xcfaudio/xcfa_download/src/${name}-${version}.tar.gz)
 
 build() {
-cd $name-$version
-./configure --prefix=/usr
-make
-make DESTDIR=$PKG install
+  cd ${SRC}/${name}-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+check() {
+  cd ${SRC}/${name}-${version}
+  make check
+}
+
+check
+
+package(){
+  cd ${SRC}/${name}-${version}
+  make DESTDIR=$PKG install
 }
