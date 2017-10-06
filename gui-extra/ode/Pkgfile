@@ -1,18 +1,30 @@
-# Depends on: mesa
+# Depends on:
 
-description="The Open Dynamics Engine physics SDK."
-url="http://www.ode.org/"
-packager="fanch at nutyx dot org, tnut at nutyx dot org"
+description="An open source, high performance library for simulating rigid body dynamics"
+url="https://bitbucket.org/odedevs/ode/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
 name=ode
-version=0.11.1
+version=0.15.1
 release=1
-source=(http://download.sourceforge.net/opende/$name-$version.tar.bz2)
+
+source=(https://bitbucket.org/odedevs/${name}/downloads/${name}-${version}.tar.gz)
 
 build() {
-  cd $name-$version
+  cd ${SRC}/${name}-${version}
+
+  ./bootstrap
   ./configure --prefix=/usr \
-              --disable-static \
-              --disable-debug
+              --enable-shared \
+              --enable-libccd \
+              --enable-double-precision
   make
-  make DESTDIR=$PKG install
+}
+
+package() {
+  cd ${SRC}/${name}-${version}
+
+  make DESTDIR=${PKG}/ install
+
 }
