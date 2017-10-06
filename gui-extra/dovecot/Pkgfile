@@ -1,40 +1,48 @@
-# Depends on: clucene icu libcap pam mariadb kerberos openldap openssl postgresql sqlite valgrind
+# Depends on: libtirpc clucene icu libcap pam mariadb kerberos openldap openssl postgresql sqlite valgrind zlib 
 
 description="IMAP and POP3 server with ssl/ipv6 support, written with security primarily in mind"
 url="http://dovecot.org"
-packager="berlius at nutyx dot com, tnut at nutyx dot org"
+contributors="berlius, tnut"
+packager="greg<greg@nutyx.org>"
 
 name=dovecot
-version=2.2.29.1
+version=2.2.32
 release=1
 
-source=(${url}/releases/${version:0:3}/$name-$version.tar.gz local.conf)
+source=(https://dovecot.org/releases/2.2/$name-$version.tar.gz 
+        dovecot)
+        
+
 
 build () {
 
     cd $name-$version
+
     
-    source  /etc/blfs-bootscripts
-	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-	tar xvf $scripts-$scriptsversion.tar.bz2 
-	
 
     ./configure --prefix=/usr \
-            --sysconfdir=/etc \
-            --localstatedir=/var \
-            --docdir=/usr/share/doc/dovecot-$version \
-            --disable-static \
-            --with-ssl=openssl
- 
+                --libexecdir=/usr/lib \
+                --sysconfdir=/etc \
+                --localstatedir=/var \
+                --with-moduledir=/usr/lib/dovecot/modules \
+                --with-ssl=openssl \
+                --without-libwrap
 
     make
     make DESTDIR=$PKG install
 
-    cp -r $SRC/$name-$version/doc/example-config/* $PKG/etc/dovecot
-	sed -i '/^\!include / s/^/#/' $PKG/etc/dovecot/dovecot.conf 
-    cp -r $SRC/local.conf $PKG/etc/dovecot
-    
-    cd $scripts-$scriptsversion
-	make DESTDIR=$PKG install-dovecot
- 
+    cp -r $PKG/usr/share/doc/dovecot/example-config/* $PKG/etc/dovecot
+    install -D -m 755 $SRC/dovecot $PKG/etc/rc.d/dovecot
+
+    rm -r $PKG/usr/share/doc
+    rm $PKG/etc/dovecot/README
+
+    install -d $PKG/etc/ssl/{certs,keys}
+    touch $PKG/etc/ssl/certs/dovecot.crt
+    touch $PKG/etc/ssl/keys/dovecot.key
+    chmod 0600 $PKG/etc/ssl/{keys/dovecot.key,certs/dovecot.crt}
+
+    install -d -m 0750 $PKG/var/lib/dovecot
+    install -d -m 0755 $PKG/var/run/dovecot
+    install -d -m 0750 -o root -g dovecot $PKG/var/run/dovecot/login
 }

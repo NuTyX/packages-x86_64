@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# /etc/rc.d/dovecot: start/stop dovecot IMAP/POP3 daemon
+#
+
+SSD=/sbin/start-stop-daemon
+PROG=/usr/sbin/dovecot
+PID=/var/run/dovecot/master.pid
+KEY=/etc/ssl/keys/dovecot.key
+CRT=/etc/ssl/certs/dovecot.crt
+
+case $1 in
+start)
+	if [ ! -s $KEY -o ! -s $CRT ]; then
+		/usr/bin/mksslcert $KEY $CRT
+	fi
+
+	$SSD --start --pidfile $PID --exec $PROG
+	;;
+stop)
+	$SSD --stop --retry 10 --pidfile $PID
+	;;
+restart)
+	$0 stop
+	$0 start
+	;;
+reload)
+	$SSD --stop --signal HUP --pidfile $PID
+	;;
+status)
+	$SSD --status --pidfile $PID
+	case $? in
+	0) echo "$PROG is running with pid $(cat $PID)" ;;
+	1) echo "$PROG is not running but the pid file $PID exists" ;;
+	3) echo "$PROG is not running" ;;
+	4) echo "Unable to determine the program status" ;;
+	esac
+	;;
+*)
+	echo "usage: $0 [start|stop|restart|reload|status]"
+	;;
+esac
+
+# End of file
