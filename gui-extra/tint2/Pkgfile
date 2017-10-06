@@ -1,27 +1,33 @@
-# Description: task bar for wm light
-# URL: http://code.google.com/p/tint2/
-# Maintainer: Chris Farrell timcowchip at gmail dot com
-# Packager: geantbrun at gmail dot com, tnut at nutyx dot com, timcowchip at gmail dot com
-# Depends on: git cmake gtk2 librsvg startup-notification xorg-libxrandr xorg-libxinerama xorg-libxdamage xorg-libxcomposite pango imlib2 cairo
+# Depends on: cmake startup-notification ninja setconf xorg-libxrandr librsvg gtk2 imlib2
 
+description="Basic, good-looking task manager for WMs"
+url="https://gitlab.com/o9000/tint2"
+packager="greg<greg@nutyx.org>"
+contributors=""
 
 name=tint2
-version=0.12.2
+version=15.0
 release=1
- 
-source=(clock.patch)
- 
+
+source=(http://crux.ster.zone/downloads/$name/$name-$version.tar.bz2)
+
+
+
 build() {
-git clone https://gitlab.com/o9000/tint2.git
-cd $name
+	cd $name-$version-*
 
-git checkout 0.12.2
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DENABLE_TINT2CONF=OFF \
+		-G Ninja
 
-patch -Np1 -i $SRC/clock.patch
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/usr ../ \
--DENABLE_TINT2CONF=1
-make
-make DESTDIR=$PKG install
+	ninja
+}
+
+package() {
+
+	cd $name-$version-*
+	DESTDIR=$PKG ninja install
+	rm -r $PKG/{etc,usr/share/doc}
 }
