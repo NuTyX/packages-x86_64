@@ -1,45 +1,29 @@
 description="Gives a fake root environment."
 url="http://packages.debian.org/fakeroot"
-contributors="alienus"
-packager="greg<greg@nutyx.org>"
+contributors="alienus, greg"
+packager="tnut <tnut@nutyx.org>"
 
 # Depends on: 
 
 name=fakeroot
 version=1.22
 
-release=1
+release=2
 
 
 source=(http://ftp.debian.org/debian/pool/main/f/$name/${name}_${version}.orig.tar.bz2
 		silence-dlerror.patch)
-
-
-
 build() {
+	cd $name-$version
+	patch -Np1 -i ../silence-dlerror.patch
+	./configure --prefix=/usr \
+	--disable-static \
+	--with-ipc=sysv
 
-    cd $name-$version
-    
-  ./bootstrap 
-   
-  ./configure --prefix=/usr \
-    --libdir=/usr/lib/libfakeroot \
-    --disable-static \
-    --with-ipc=sysv
-
-  make
-
-    
+	make
 }
-
-
 package() {
-
-  cd $name-$version
-  make DESTDIR=$PKG install
-
-  install -dm755 $PKG/etc/ld.so.conf.d/
-  echo '/usr/lib/libfakeroot' > $PKG/etc/ld.so.conf.d/fakeroot.conf
-  
+	cd $name-$version
+	make DESTDIR=$PKG install
+	read a
 }
-
