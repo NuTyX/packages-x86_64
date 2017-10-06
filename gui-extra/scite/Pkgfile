@@ -1,17 +1,36 @@
 # Depends on: setconf gtk2
 
 description="A free source code editing component for Win32, GTK+, and OS X"
-packager="Renaud Chenard"
+packager="greg <greg@nutyx.org>"
+contributors="Renaud Chenard"
 url="http://scintilla.org/"
+
 name=scite
-version=374
+version=4.0.0
 release=1
-source=(${url}$name$version.tgz)
-build() {
-   cd scintilla/gtk
-   make
-   cd ../..
-   cd scite/gtk
-   make
-   make DESTDIR=$PKG install
+
+source=(http://downloads.sourceforge.net/project/scintilla/SciTE/$version/$name${version//./}.tgz)
+
+
+
+build () {
+    cd scintilla/gtk
+    sed -i "s/-Os/$CXXFLAGS/" makefile
+    make
+
+    cd $SRC/$name/gtk
+    sed -i "s/-Os/$CXXFLAGS/" makefile
+    make prefix=/usr
+    make DESTDIR=$PKG install
+
+    sed -i '/^#buffers/s/#//
+            /^#save.recent/s/#//
+            /^#tabbar.hide.one/s/#//' \
+           $PKG/usr/share/scite/SciTEGlobal.properties
+
+    chmod -x $PKG/usr/share/{applications,scite}/*
+    sed -ri '/\[.+\]=/d' $PKG/usr/share/applications/*.desktop
+    rm -r $PKG/usr/share/scite/*.html
+    install -D -m 644 ../doc/scite.1 $PKG/usr/share/man/man1/scite.1
+    ln -s SciTE $PKG/usr/bin/scite
 }
