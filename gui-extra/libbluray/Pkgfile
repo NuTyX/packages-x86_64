@@ -1,15 +1,18 @@
-# Description: Blu-Ray access library.
-# URL: http://www.videolan.org/developers/libbluray.html
-# Maintainer: Danny Rawlins, crux at romster dot me
-# Packager: Danny Rawlins, crux at romster dot me
 # Depends on: libxml2 freetype xorg-fontconfig apache-ant
 
+description="Blu-Ray access library."
+url="http://www.videolan.org/developers/libbluray.html"
+packager="greg<greg@nutyx.org>"
+
+
 name=libbluray
-version=0.9.3
+version=1.0.1
 release=1
+
 source=(ftp://ftp.videolan.org/pub/videolan/libbluray/$version/libbluray-$version.tar.bz2)
 
 build() {
+
 	cd $name-$version
 
 	./configure \
