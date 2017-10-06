@@ -1,10 +1,12 @@
 # Depends on: gtk3 desktop-file-utils libjpeg-turbo giflib libpng librsvg libtiff dbus alsa-lib gnutls gsettings-desktop-schemas
 
-url="https://www.gnu.org/software/emacs/"
-packager="berlius at nutyx dot com, tnut at nutyx dot org"
 description="An extensible, customizable, self-documenting real-time display editor."
+url="https://www.gnu.org/software/emacs/"
+contributors="berlius, tnut"
+packager="greg<greg@nutyx.org>"
+
 name=emacs
-version=25.2
+version=25.3
 release=1
 
 source=(https://ftp.gnu.org/pub/gnu/emacs/$name-$version.tar.xz)
@@ -18,4 +20,5 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 chown -v -R root:root $PKG/usr/share/emacs/$version
+
 }
