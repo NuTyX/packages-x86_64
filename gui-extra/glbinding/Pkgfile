@@ -1,4 +1,4 @@
-# Depends on: cmake doxygen mesa
+# Depends on: cmake doxygen mesa libglade
 
 description="A C++ binding for the OpenGL API, generated using the gl.xml specification." 
 url="http://www.glbinding.org"
@@ -7,19 +7,40 @@ packager="greg <greg@nutyx.org>"
 
 
 name=glbinding
-version=1.1.0
-release=2
+version=2.1.3
+release=1
 
-source=(https://github.com/cginternals/$name/archive/master.zip)
+source=(https://github.com/cginternals/$name/archive/v$version.tar.gz)
  
+
+prepare() {
+  cd $name-$version
+
+  rm -rf build
+  mkdir build
+}
+
 build() {
+  cd $name-$version/build
 
-cd $name-master
+  cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release \
+    -DOPTION_BUILD_TESTS=OFF
+  make
+}
 
-cmake -DCMAKE_INSTALL_PREFIX=/usr .
-    
-make
-	
-make DESTDIR=$PKG install
+check() {
+  cd $name-$version/build
+
+  cmake .. -DOPTION_BUILD_TESTS=ON
+  make
+  make test
+}
+
+check
+
+package() {
+  cd $name-$version
+
+  make -C build DESTDIR=$PKG/ install
 
 }
