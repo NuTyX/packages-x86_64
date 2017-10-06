@@ -1,25 +1,27 @@
-# Description: Simple X hotkey daemon
-# URL: https://github.com/baskerville/sxhkd
-# Maintainer: Chris Farrell timcowchip at gmail dot com
-# Depends on: libxcb xcb-util xcb-util-wm xcb-util-keysyms git
+# Depends on: libxcb xcb-util xcb-util-wm xcb-util-keysyms 
+
+description="Simple X hotkey daemon"
+url="https://github.com/baskerville/sxhkd"
+packager="greg<greg@nutyx.org>"
 
 name=sxhkd
-version=0.5.5
+version=0.5.8
 release=1
 
-source=()
+source=(https://github.com/baskerville/$name/archive/$version.tar.gz)
+
 
 build() {
+cd $name-$version
 
-  git clone https://github.com/baskerville/sxhkd.git
-  
-  cd $name
-  
-  make PREFIX=/usr
+	make PREFIX=/usr
+	make DESTDIR=$PKG \
+		PREFIX=/usr \
+		install
 
-  make PREFIX=/usr DESTDIR="$PKG" install
+	# write access only for root
+	chmod 644 $PKG/usr/share/man/man1/sxhkd.1
 
 }
 
-	
 	
