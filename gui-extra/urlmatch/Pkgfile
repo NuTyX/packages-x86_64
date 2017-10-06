@@ -1,19 +1,27 @@
-# Description: A fast URL matcher library
-# URL: https://github.com/clbr/${_name}
-# Packager: Chris Farrell, timcowchip at gmail dot com
-# Maintainer: Chris Farrell, timcowchip at gmail dot com
 # Depends on: git
 
+description="A fast URL matcher library"
+url="https://github.com/clbr/"
+packager="greg<greg@nutyx.org>"
+
 name=urlmatch
-version=222
+alias=(liburlmatch)
+version=1.0
 release=1
 
-source=()
+source=(https://github.com/clbr/urlmatch/archive/v$version.tar.gz)
 	
 build() {
-	git clone https://github.com/clbr/urlmatch.git
-	cd "${SRC}/${name}"
-	make
 
-	make install DESTDIR="${PKG}"
+cd urlmatch-$version
+make
+
+
+}
+
+package() {
+
+cd urlmatch-$version
+make install DESTDIR=$PKG
+
 }
