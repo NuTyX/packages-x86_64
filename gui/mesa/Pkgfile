@@ -1,4 +1,4 @@
-# Depends on: pkg-config libtool wayland xorg-libx11 xorg-libdrm xorg-libxext xorg-libxdamage expat llvm elfutils xorg-libxshmfence 
+# Depends on: pkg-config libtool wayland wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext xorg-libxdamage expat llvm elfutils xorg-libxshmfence 
 
 description="Mesa is an OpenGL compatible 3D graphics library."
 url="http://www.xorg-mesa3d.org"
@@ -7,17 +7,15 @@ contributors="Pierre B"
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=17.1.6
-release=1
+version=17.2.1
 
 source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/mesa/mesa-$version-add_xdemos-1.patch)
 build() {
 cd mesa-$version
 patch -Np1 -i ../mesa-$version-add_xdemos-1.patch
-sed -i "/pthread_stubs_possible=/s/yes/no/" configure.ac
 
-./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2'    \
+./configure                    \
 --prefix=/usr                  \
 --sysconfdir=/etc              \
 --enable-texture-float         \
