@@ -27,6 +27,24 @@ OPTIONS:
 "
 	exit 0
 	fi
+
+for param in "$@"; do
+  case $param in
+     --bootia32)
+       bootia32=y
+       i686iso=NuTyX_i686-9.1.iso
+       ;;
+     -bootia32=*)
+       bootia32=y
+       i686iso=${param#bootia32=}
+       ;;
+     *)
+       newCmdLn=${newCmdLn}" "$param
+       ;;
+  esac
+done
+[ "$bootia32" == "y" ] && set -- $newCmdLn
+
 	[ $UID -ne 0 ] && error "Run this command as root"
 	[ -z "$LFS" ] && error "The LFS variable is not set"
 	if [ -z "${2}" ]; then
@@ -111,16 +129,12 @@ fi
 	dd if=/dev/zero of=iso/efiboot.img count=4096
 	mkdosfs -n nutyxcd iso/efiboot.img || error "mkdosfs"
 	mkdir -pv iso/efiboot
-	mount -o loop iso/efiboot.img iso/efiboot
+	mount -o loop iso/efiboot.img iso/efiboot || error "mount efiboot.img"
 	mkdir -pv iso/efiboot/EFI/boot
 	cp -v iso/EFI/${GRUB_EFI_IMG} iso/efiboot/EFI/boot
-if [ "$ARCH" == "x86_64" ]; then
-   # required to boot some tablets with 32-bits UEFI and 64-bits processor
-   mkdir -pv boot/grub/i386-efi
-   cp -av $LFS/ia32/grub/i386-efi/*.mod boot/grub/i386-efi || error "grub/i386-efi"
-   cp -v $LFS/ia32/bootia32.efi iso/EFI/ || error "bootia32.efi"
-   cp -v iso/EFI/bootia32.efi iso/efiboot/EFI/boot
-fi
+
+  [ "$bootia32" == "y" ] && ia32
+
 	umount iso/efiboot
 
 	# Iso generation
@@ -136,5 +150,25 @@ fi
 	isohybrid -u ${ISO}.iso || error "isohybrid ${ISO}.iso"
 	sha256sum ${ISO}.iso > ${ISO}.sha256sum
 }
+
+ia32() {
+   # to boot some tablets with 32-bits UEFI and 64-bits processor
+   if [ "$ARCH" == "x86_64" ]; then
+      if [ ! -f iso/EFI/bootia32.efi ]; then
+         [ -f /usr/bin/iso-read ] || error "please install libcdio"
+         [ -d $LFS/WORK ] || mkdir -pv $LFS/WORK
+         [ -f $LFS/WORK/${i686iso} ] || wget http://downloads.nutyx.org/${i686iso} -O $LFS/WORK/${i686iso}
+         iso-read -e /iso/EFI/bootia32.efi $LFS/WORK/${i686iso} -o iso/EFI/bootia32.efi
+      fi
+      cp -v iso/EFI/bootia32.efi iso/efiboot/EFI/boot
+      TS=`wget http://downloads.nutyx.org/i686/development/base/grub-efi/.PKGREPO -O - | head -n 1 | cut -d'#' -f1`
+      GE=grub-efi${TS}i686.cards.tar.xz
+      mkdir -p $LFS/WORK
+      [ -f $LFS/WORK/$GE ] || wget http://downloads.nutyx.org/i686/development/base/grub-efi/$GE -O $LFS/WORK/$GE || error "wget grub-efi i686"
+      tar -C boot -xvf $LFS/WORK/$GE --strip-components=2 --wildcards *.mod || error "tar -C boot $GE"
+   else
+      error "--bootia32 option is not available for $ARCH architecture"
+   fi
+} 
 
 main "$@"
