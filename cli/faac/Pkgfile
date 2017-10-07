@@ -3,21 +3,8 @@ url="http://www.audiocoding.com"
 packager="tnut <tnut@nutyx.org>"
 
 name=faac
-version=1.29.3
-release=1
+version=1.29.7.7
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
-build() {
-
-cd $name-$version
-
-sed -i -e '/obj-type/d' -e '/Long Term/d' frontend/main.c
-
-./bootstrap
-
-CFLAGS=-std=c99 CXXFLAGS=-std=c++98 \
-./configure --prefix=/usr
-make
-make DESTDIR=$PKG install
-}
+build=autotools
