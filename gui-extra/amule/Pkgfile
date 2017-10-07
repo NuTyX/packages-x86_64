@@ -1,0 +1,30 @@
+# Depends on: crypto++ util-linux wxgtk
+
+description=" An all-platform Edonkey client."
+url="http://www.amule.org"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+name=amule
+version=2.3.2
+release=1
+
+source=(https://downloads.sourceforge.net/project/amule/aMule/$version/aMule-$version.tar.bz2)
+
+
+build() {
+   cd aMule-$version
+
+	./configure \
+		--prefix=/usr \
+		--disable-nls
+
+	make
+}
+
+package() {
+
+    cd aMule-$version
+	make install DESTDIR=$PKG
+	
+}
