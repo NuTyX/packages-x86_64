@@ -41,3 +41,12 @@ EOF
 # Empaqueté ds gtk-update-icon-cache
 rm $PKG/{usr/bin/gtk-update-icon-cache,usr/share/man/man1/gtk-update-icon-cache.1}
 }
+uptodate(){
+local latest lastversion url
+url="http://ftp.gnome.org/pub/gnome/sources/gtk+"
+latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep [0-9]/$|head -1`"
+lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$latest/?C=N\;O=D|grep LATEST|grep [0-9]$|cut -d "-" -f3`"
+echo "$lastversion"
+}
