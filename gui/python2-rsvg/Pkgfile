@@ -19,3 +19,12 @@ make -C rsvg install DESTDIR=$PKG
 install -m755 -d $PKG/usr/share/pygtk/2.0/defs
 install -m644 rsvg/rsvg.defs $PKG/usr/share/pygtk/2.0/defs/
 }
+uptodate(){
+local latest lastversion url
+url="http://ftp.gnome.org/pub/gnome/sources/${_name}"
+latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep [0-9]/$|head -1`"
+lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$latest/?C=N\;O=D|grep LATEST|grep [0-9]$|cut -d "-" -f5`"
+echo "$lastversion"
+}
