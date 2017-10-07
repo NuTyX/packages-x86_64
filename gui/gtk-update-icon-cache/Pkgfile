@@ -24,3 +24,9 @@ make gtk-update-icon-cache
 mkdir -p $PKG/usr/{bin,share/man/man1}
 install -c gtk-update-icon-cache $PKG/usr/bin/gtk-update-icon-cache
 }
+uptodate(){
+local lastversion
+lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+http://ftp.gnome.org/pub/gnome/sources/gtk+/${version:0:4}/?C=N\;O=D|grep LATEST|grep [0-9]$|cut -d "-" -f3`"
+echo "$lastversion"
+}
