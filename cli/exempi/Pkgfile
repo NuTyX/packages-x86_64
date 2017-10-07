@@ -20,3 +20,10 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 }
+uptodate() {
+local url latestversion
+url="http://libopenraw.freedesktop.org/download/"
+latestversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=M\;O=D|grep $name|grep tar.bz2$|head -1| cut -d "-" -f2|sed "s/.tar.bz2//"`"
+echo $latestversion
+}
