@@ -1,0 +1,18 @@
+#Depends on : python python-setuptools lcms libwebp
+
+description=
+url=
+packager="Hugo <hugo@nutyx.org>"
+
+name=python-pillow
+version=4.3.0
+
+source=(
+https://pypi.python.org/packages/e0/82/ec499c78bfe4ecaa91c2f3000040451d187ed0a816d58b8543e29c48827f/Pillow-$version.tar.gz
+)
+
+build(){
+cd Pillow-$version
+python3 setup.py build
+python3 setup.py install --prefix=/usr --root=$PKG
+}
