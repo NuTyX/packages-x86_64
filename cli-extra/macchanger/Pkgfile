@@ -1,0 +1,33 @@
+# Depends on:
+
+description="Utility for viewing/manipulating the MAC address of network interfaces"
+url="http://www.gnu.org/software/macchanger"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+name=macchanger
+version=1.7.0
+release=1
+
+source=(https://github.com/alobbs/macchanger/archive/$version.tar.gz)
+
+build () {
+
+  cd $name-$version
+  
+  ./autogen.sh
+  
+  ./configure --prefix=/usr \
+              --mandir=/usr/share/man \
+              --infodir=/usr/share/info
+
+  make
+
+}
+
+package() {
+
+  cd $name-$version
+  make DESTDIR=$PKG install
+ 
+}
