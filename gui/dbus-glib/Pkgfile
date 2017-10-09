@@ -18,3 +18,10 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 }
+uptodate() {
+local url ext
+ext=".tar.gz"
+url="https://dbus.freedesktop.org/releases/dbus-glib"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep $name-[0-9]|grep $ext$|head -1|sed "s@$url/$name-@@"|sed "s/$ext//"
+}
