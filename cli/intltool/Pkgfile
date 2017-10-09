@@ -20,3 +20,10 @@ mkdir -p $PKG/usr/share/doc/intltool-$version
 install -v -Dm644 doc/I18N-HOWTO \
 $PKG/usr/share/doc/intltool-$version/I18N-HOWTO
 }
+uptodate() {
+local url ext
+ext=".tar.gz"
+url="https://launchpad.net/$name/trunk"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep $ext$|head -1|sed "s@$url/@@"|sed "s/$ext//"|sed "s/$name-//"|cut -d "/" -f3
+}
