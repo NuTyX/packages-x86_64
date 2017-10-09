@@ -1,0 +1,31 @@
+# Depends on:
+
+description="Free library for arbitrary precision arithmetic"
+url="http://gmplib.org/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+name=libgmp
+version=6.1.2
+release=1
+
+source=(http://gmplib.org/download/gmp/gmp-$version.tar.xz
+		gmp.h)
+
+
+build() {
+    cd gmp-$version
+    ./configure --prefix=/usr \
+                --enable-cxx \
+                --build=x86_64-unknown-linux-gnu
+    make
+}
+
+package() {
+
+    cd gmp-$version
+	make DESTDIR=$PKG install
+    mv $PKG/usr/include/gmp{,-64}.h
+    install -m 0644 $SRC/gmp.h $PKG/usr/include/
+
+}
