@@ -13,3 +13,10 @@ build() {
 	install -m755 -d "${PKG}/usr/lib/pm-utils/video-quirks"
 	install -m644 video-quirks/*.quirkdb "${PKG}/usr/lib/pm-utils/video-quirks/"
 }
+uptodate() {
+local url ext
+ext=".tar.gz"
+url="https://pm-utils.freedesktop.org/releases/"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=M\;O=D|grep $name|grep $ext$|head -1|sed "s@$url/$name-@@"|sed "s/$ext//"
+}
