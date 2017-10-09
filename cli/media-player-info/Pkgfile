@@ -19,3 +19,11 @@ build() {
   	LANG="en_US.UTF-8" make
 	make DESTDIR=$PKG install
 }
+
+uptodate() {
+local url ext
+ext=".tar.gz"
+url="https://www.freedesktop.org/software/$name/"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=M\;O=D|grep $ext$|head -1|sed "s@$url/$name-@@"|sed "s/$ext//"
+}
