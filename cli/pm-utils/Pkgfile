@@ -33,3 +33,10 @@ build() {
 
   rm -fr "${PKG}/usr/share/doc"
 }
+uptodate() {
+local url ext
+ext=".tar.gz"
+url="https://pm-utils.freedesktop.org/releases/"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep $name|grep $ext$|head -1|sed "s@$url/$name-@@"|sed "s/$ext//"
+}
