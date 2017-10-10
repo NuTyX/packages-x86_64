@@ -5,8 +5,7 @@ url="http://httpd.apache.org/ABOUT_APACHE.html"
 packager="tnut <tnut@nutyx.org>"
 
 name=apache
-version=2.4.27
-release=1
+version=2.4.28
 
 source=(http://archive.apache.org/dist/httpd/httpd-$version.tar.bz2
 	 http://www.linuxfromscratch.org/patches/blfs/svn/httpd-$version-blfs_layout-1.patch)
@@ -46,4 +45,16 @@ tar xf $scripts-$scriptsversion.tar.bz2
 cd $SRC/$scripts-$scriptsversion
 make DESTDIR=$PKG install-httpd
 mv $PKG/etc/httpd/httpd.conf{,.example}
+}
+
+uptodate() {
+local url ext name
+
+name="httpd"
+url="http://archive.apache.org/dist/httpd/"
+ext=".tar.bz2"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|grep $name-[0-9]|grep [0-9].$ext$| \
+sed "s@$url$name-@@"|sed "s@$ext@@"| \
+sort|tail -1
 }
