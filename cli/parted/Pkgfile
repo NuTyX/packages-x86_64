@@ -30,3 +30,11 @@ $PKG/usr/share/doc/parted-$version/html
 install -v -m644 doc/{FAT,API,parted.{txt,html}} \
 $PKG/usr/share/doc/parted-$version
 }
+uptodate() {
+local url ext
+url="https://ftp.gnu.org/gnu/$name/"
+ext=".tar.xz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
+sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
+}
