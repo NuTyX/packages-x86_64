@@ -21,3 +21,11 @@ rm -rf -v doc/{gdoc,idn.1,stamp-vti,man,texi}
 mkdir -p /usr/share/doc/$name-$version
 cp -r -v doc/* /usr/share/doc/$name-$version
 }
+uptodate() {
+local url ext
+url="https://ftp.gnu.org/gnu/$name/"
+ext=".tar.gz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
+sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
+}
