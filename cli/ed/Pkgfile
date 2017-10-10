@@ -20,3 +20,12 @@ build() {
   make DESTDIR=$PKG install
   rm -f $PKG/usr/share/info/dir
 }
+uptodate() {
+local url ext
+url="https://ftp.gnu.org/gnu/$name/"
+ext=".tar.lz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
+sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
+
+}
