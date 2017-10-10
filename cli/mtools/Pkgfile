@@ -24,3 +24,11 @@ build() {
 	
 	install -Dm644 mtools.conf $PKG/etc/mtools.conf
 }
+uptodate() {
+local url ext
+url="https://ftp.gnu.org/gnu/$name/"
+ext=".tar.bz2"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
+sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
+}
