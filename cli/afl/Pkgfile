@@ -25,4 +25,11 @@ package () {
   rm -r $PKG/usr/share/doc
   rm $PKG/usr/share/afl/testcases/README.testcases
 
-       } 
+       }
+uptodate() {
+local url ext
+ext=".tgz"
+url="http://lcamtuf.coredump.cx/afl/releases/"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|grep $name-[0-9]|sort|tail -1|sed "s@$url$name-@@"|sed "s@$ext@@"
+}
