@@ -20,3 +20,12 @@ install -v -d -m755 $PKG/usr/share/doc/$name-$version/html
 cp -a doc/doxygen/html/* $PKG/usr/share/doc/$name-$version/html
 chmod 644 $PKG/usr/share/doc/$name-$version/html/*
 }
+uptodate() {
+local url ext
+
+url="ftp://ftp.alsa-project.org/pub/lib/"
+ext=".tar.bz2"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|grep $name-[0-9]|sed "s@$url$name-@@"|sed "s@$ext@@"|\
+sort|tail -1
+}
