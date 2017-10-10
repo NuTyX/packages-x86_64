@@ -19,11 +19,9 @@ build() {
     pod2man $PKG/usr/bin/$name > $PKG/usr/share/man/man1/$name.1
 
 }
-
-
-
-
-
-
-
-
+uptodate() {
+local url
+url="https://beyondgrep.com/"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/install/?C=M\;O=D|grep single-file$|head -1|sed "s@$url$name-@@"|sed "s@-single-file@@"
+}
