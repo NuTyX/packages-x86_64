@@ -21,3 +21,15 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 }
+
+uptodate() {
+local url ext name
+name="apr"
+url="http://archive.apache.org/dist/$name/"
+ext=".tar.bz2"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|grep $name-util-[0-9]|grep [0-9]$ext$| \
+sed "s@$url$name-util-@@"|sed "s@$ext@@"| \
+sort|tail -1
+
+}
