@@ -3,8 +3,7 @@ url="http://www.sourceware.org/gdb/"
 packager="tnut <tnut@nutyx.org>"
 
 name=gdb
-version=8.0
-release=1
+version=8.0.1
 
 source=(https://ftp.gnu.org/gnu/gdb/$name-$version.tar.xz)
 build() {
@@ -26,5 +25,13 @@ rm $PKG/usr/lib/libopcodes.la
 
 # Most of the locale are allready present from binnutils, beter get rid of all of them
 rm -r $PKG/usr/share/locale
-rm -f $PKG/usr/share/info/dir
+}
+
+uptodate() {
+local url ext
+url="https://ftp.gnu.org/gnu/$name/"
+ext=".tar.xz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
+sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
 }
