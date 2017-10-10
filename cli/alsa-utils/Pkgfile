@@ -31,3 +31,12 @@ make DESTDIR=$PKG install
 cd ../$scripts-$scriptsversion
 make DESTDIR=$PKG install-alsa
 }
+uptodate() {
+local url ext
+
+url="ftp://ftp.alsa-project.org/pub/utils/"
+ext=".tar.bz2"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|grep $name-[0-9]|sed "s@$url$name-@@"|sed "s@$ext@@"|\
+sort|tail -1
+}
