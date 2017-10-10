@@ -18,3 +18,11 @@ build() {
         install -v -m644 *.ttf $PKG/usr/share/fonts/freefont/
 
 }
+uptodate() {
+local url ext
+url="http://ftp.gnu.org/gnu/freefont/"
+ext=".zip"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
+sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
+}
