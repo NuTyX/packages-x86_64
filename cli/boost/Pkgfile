@@ -17,3 +17,6 @@ sed -e '/using python/ s@;@: /usr/include/python${PYTHON_VERSION/3*/${PYTHON_VER
 ./b2 stage --stagedir=$PKG/usr threading=multi link=shared
 ./b2 install --prefix=$PKG/usr threading=multi link=shared
 }
+uptodate() {
+lynx -dump http://www.boost.org/users/download/|grep 'Current Release'|tail -n 1 | sed 's/.*]\(.*\) -.*/\1/'
+}
