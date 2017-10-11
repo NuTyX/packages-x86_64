@@ -13,4 +13,13 @@ build() {
    cd $name-$version
    make
    install -D -m755 b43-fwcutter $PKG/usr/bin/b43-fwcutter
-}      
+}
+uptodate() {
+local url ext name
+name=fwcutter
+ext=".tar.bz2"
+url="http://www.bues.ch/b43/$name"
+
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=M\;O=D|grep [0-9]$ext$|head -1|sed "s@$url/b43-$name-@@"|sed "s@$ext@@"
+}  
