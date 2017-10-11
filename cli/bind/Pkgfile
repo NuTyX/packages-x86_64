@@ -42,3 +42,11 @@ build(){
     cd $SRC/$scripts-$scriptsversion
     make DESTDIR=$PKG install-bind
 }
+uptodate() {
+local url ext
+ext=".tar.bz2"
+url="https://ftp.isc.org/isc/bind9/"
+
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=D|sed "s@$url@@"|grep [0-9]/$|head -1|sed "s@/\$@@"
+}
