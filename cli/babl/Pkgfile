@@ -1,12 +1,11 @@
 description="Dynamic, any to any, pixel format conversion library"
 url="http://gegl.org/babl"
 maintainer="http://gegl.org/babl/#Authors"
-contributors="Pierre B, tnut"
-packager="greg <greg@nutyx.org>"
+contributors="Pierre B, tnut, greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=babl
-version=0.1.30
-release=1
+version=0.1.34
 
 source=(http://download.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.bz2)
 
@@ -21,4 +20,14 @@ install -v -m644 docs/*.{css,html} \
 $PKG/usr/share/gtk-doc/html/babl
 install -v -m644 docs/graphics/*.{html,png,svg} \
 $PKG/usr/share/gtk-doc/html/babl/graphics
+}
+uptodate() {
+local last url ext
+ext=".tar.bz2"
+url="https://download.gimp.org/pub/$name"
+
+last="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep [0-9]/|head -1`"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$last/?C=M\;O=D|grep $ext$|head -1|sed "s@$last/$name-@@"|sed "s@$ext@@"
 }
