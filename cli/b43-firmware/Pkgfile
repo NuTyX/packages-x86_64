@@ -15,3 +15,11 @@ build() {
   install -d $PKG/lib/firmware/
   /usr/bin/b43-fwcutter -w $PKG/lib/firmware/ broadcom-wl-${version}.wl_apsta.o
 }
+uptodate() {
+local url ext
+ext=".tar.bz2"
+url="http://www.lwfinger.com/$name"
+
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=M\;O=D|grep [0-9].$ext$|head -1|sed "s@$url/broadcom-wl-@@"|sed "s@$ext@@"
+}
