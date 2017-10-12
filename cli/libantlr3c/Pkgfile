@@ -31,3 +31,10 @@ package() {
   make DESTDIR=$PKG install
   
 }
+uptodate() {
+local url ext
+ext=".tar.gz"
+url="http://www.antlr3.org/download/C"
+lynx -dump -listonly --nonumbers $url|\
+tail -1|sed s@http://www.antlr3.org/download/C/$name-@@|sed s@$ext@@
+}
