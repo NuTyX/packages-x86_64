@@ -22,3 +22,10 @@ build(){
     install -Dm644 README \
         $PKG/usr/share/doc/$name-$version/README
 }
+uptodate() {
+local url ext
+url="https://www.kernel.org/pub/software/web/$name/"
+ext=".tar.xz"
+lynx -read_timeout=20 -dump -listonly -nonumbers $url|grep $ext$|tail -1|\
+sed "s@$url$name-@@"|sed "s@$ext@@"
+}
