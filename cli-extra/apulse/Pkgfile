@@ -1,0 +1,40 @@
+# Depends on: glib alsa-lib cmake
+
+description="PulseAudio emulation for ALSA."
+url="https://github.com/i-rinat/apulse"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=apulse
+version=0.1.10
+release=1
+
+source=(https://github.com/i-rinat/$name/archive/v$version.tar.gz
+)
+
+prepare() {
+echo "Fonction vide, normal..."
+}
+
+build() {
+cd $name-$version
+cmake \
+-DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_BUILD_TYPE=Release 
+make
+make DESTDIR=$PKG install
+}
+
+package() {
+echo "Fonction  vide, normal..." 
+}
+
+uptodate() {
+echo "Fonction  vide, normal..." 
+}
+
+# Recette editee le 13/10/17 a 20:58:52
