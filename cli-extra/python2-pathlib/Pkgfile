@@ -1,0 +1,37 @@
+# Depends on: python2 python2-setuptools
+
+description="This module offers a set of classes featuring all the common operations"
+url="http://pathlib.readthedocs.org/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=python2-pathlib
+version=1.0.1
+release=1
+
+source=(http://pypi.python.org/packages/source/p/pathlib/pathlib-${version}.tar.gz
+)
+
+prepare() {
+echo "Fonction vide, normal..."
+}
+
+build() {
+cd $SRC/pathlib-$version
+python2 setup.py install --prefix=/usr --root=$PKG
+
+}
+
+package() {
+echo "Fonction  vide, normal..." 
+}
+
+uptodate() {
+echo "Fonction  vide, normal..." 
+}
+
+# Recette editee le 13/10/17 a 10:45:00
