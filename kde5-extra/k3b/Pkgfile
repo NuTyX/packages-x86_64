@@ -9,19 +9,8 @@ contributors="Pierre B"
 run=(cdrdao dvd+rw-tools cdrkit libburn)
 
 name=k3b
-version=17.08.1
-release=2
+version=17.08.2
 
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
-build() {
-   mkdir build
-   cd build
-   cmake ../$name-$version       \
-     -DCMAKE_BUILD_TYPE=Release  \
-     -DCMAKE_INSTALL_PREFIX=/usr \
-     -DKDE_INSTALL_LIBDIR=lib    \
-     -DBUILD_TESTING=OFF
-   make
-   make DESTDIR=$PKG install
-}
+build=kde5
