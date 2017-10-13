@@ -1,0 +1,40 @@
+# Depends on: fuse2
+
+description="An automounter implemented with FUSE."
+url="https://github.com/pcarrier/afuse/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=afuse
+version=0.4.1
+release=1
+
+source=(https://github.com/pcarrier/afuse/archive/v$version.tar.gz
+)
+
+prepare() {
+echo "Fonction vide, normal..."
+}
+
+build() {
+cd $name-$version
+./autogen.sh
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+
+}
+
+package() {
+echo "Fonction  vide, normal..." 
+}
+
+uptodate() {
+echo "Fonction  vide, normal..." 
+}
+
+# Recette editee le 13/10/17 a 20:54:48
