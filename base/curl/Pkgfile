@@ -5,8 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 
 
 name=curl
-version=7.55.1
-release=1
+version=7.56.0
 
 source=(http://curl.haxx.se/download/$name-$version.tar.xz)
 
@@ -32,17 +31,17 @@ $PKG/usr/share/doc/curl-$version
 
 # reorganise the libs
 mkdir $PKG/lib
-mv $PKG/usr/lib/libcurl.so.4.4.0 \
+mv $PKG/usr/lib/libcurl.so.4.5.0 \
 $PKG/lib/
 for LIB in libcurl.so{,.4}
 	do 
-		ln -sv libcurl.so.4.4.0 $PKG/lib/$LIB
+		ln -sv libcurl.so.4.5.0 $PKG/lib/$LIB
 		rm $PKG/usr/lib/$LIB
-		ln -sv ../../lib/libcurl.so.4.4.0 \
+		ln -sv ../../lib/libcurl.so.4.5.0 \
 		$PKG/usr/lib/$LIB
 done
 
-ln -sv ../../lib/libcurl.so.4.4.0 \
-$PKG/usr/lib/libcurl.so.4.4.0
+ln -sv ../../lib/libcurl.so.4.5.0 \
+$PKG/usr/lib/libcurl.so.4.5.0
 
 }
