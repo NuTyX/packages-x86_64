@@ -6,14 +6,30 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=rustc
-version=1.16.0
-release=1
+version=1.19.0
 
 source="http://static.rust-lang.org/dist/$name-$version-src.tar.gz"
 
+prepare() {
+   cd $name-$version-src
+   cat <<EOF > config.toml
+# see src/bootstrap/config.toml.example for more possible options
+[llvm]
+targets = "X86"
+
+[build]
+# install cargo as well as rust
+extended = true
+
+[install]
+prefix = "/usr"
+docdir = "share/doc/rustc-1.19.0"
+channel = "stable"
+EOF
+}
+
 build() {
   cd $name-$version-src
-  ./configure --prefix=/usr                      
   python2 ./x.py build
-  make DESTDIR=$PKG install
+  DESTDIR=$PKG python2 ./x.py install
 }
