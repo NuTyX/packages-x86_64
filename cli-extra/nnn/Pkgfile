@@ -1,0 +1,37 @@
+# Depends on: 
+
+description="The missing terminal file browser for X."
+url="https://github.com/jarun/nnn"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=nnn
+version=1.5
+release=1
+
+source=(https://github.com/jarun/$name/archive/v$version.tar.gz
+)
+
+prepare() {
+echo "Fonction vide, normal..."
+}
+
+build() {
+cd $name-$version
+make PREFIX=/usr
+make PREFIX=/usr DESTDIR=$PKG install
+}
+
+package() {
+echo "Fonction  vide, normal..." 
+}
+
+uptodate() {
+echo "Fonction  vide, normal..." 
+}
+
+# Recette editee le 13/10/17 a 19:41:52
