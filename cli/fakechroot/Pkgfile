@@ -7,7 +7,8 @@ contributors=""
 
 name=fakechroot
 version=2.19
-release=1
+release=2
+
 install=fakechroot.install
 
 source=(https://github.com/dex4er/fakechroot/archive/$version.tar.gz)
@@ -19,16 +20,7 @@ build () {
   ./configure --prefix=/usr --sbindir=/usr/bin \
     --libdir=/usr/lib/libfakeroot --sysconfdir=/etc
   make
-
 }
-
-check() {
-  cd $name-$version
-
-  make -k check || true
-}
-
-check
 
 package() {
 
