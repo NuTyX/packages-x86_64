@@ -7,7 +7,7 @@ contributors=""
 
 name=cmocka
 version=1.1.1
-release=1
+release=2
 
 source=(https://cmocka.org/files/1.1/cmocka-${version}.tar.xz)
 
@@ -23,14 +23,8 @@ build () {
 		-DCMAKE_BUILD_TYPE=Release \
 		-DUNIT_TESTING=ON
 	make
+	make test
 }
-
-check() {
-  cd ${name}-${version}/build
-  make test
-}
-
-check
 
 package() {
 
