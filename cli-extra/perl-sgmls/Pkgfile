@@ -1,0 +1,43 @@
+# Depends on: perl
+
+description="A Post-Processor for SGMLS and NSGMLS"
+url="http://search.cpan.org/dist/SGMLSpm"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+name=perl-sgmls
+_cpanname=SGMLSpm
+version=1.1
+release=1
+
+source=(http://search.cpan.org/CPAN/authors/id/R/RA/RAAB/SGMLSpm-$version.tar.gz)
+
+prepare() {
+cd $SRC/$_cpanname-$version
+find . -type f -exec chmod 0644 {} \;
+}
+
+prepareEnvironment() {
+cd $SRC/$_cpanname-$version
+export \
+PERL_MM_USE_DEFAULT=1 \
+PERL_AUTOINSTALL=--skipdeps \
+PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$PKG'" \
+PERL_MB_OPT="--installdirs vendor --destdir '$PKG'" \
+MODULEBUILDRC=/dev/null
+}
+
+
+build() {
+prepareEnvironment
+/usr/bin/perl Makefile.PL
+make
+}
+
+
+package() {
+prepareEnvironment
+make install
+find $PKG -name .packlist -o -name perllocal.pod -delete
+ln -sv /usr/bin/vendor_perl/sgmlspl.pl $PKG/usr/bin/sgmlspl
+}
