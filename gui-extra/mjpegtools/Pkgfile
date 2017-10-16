@@ -1,0 +1,22 @@
+# Depends on: v4l-utils libdv libjpeg-turbo sdl gtk2
+
+url="http://mjpeg.sourceforge.net/"
+packager="tnut <tnut@nutyx.org>"
+description="Set of tools that can do recording of videos and playback, simple cut-and-paste editing"
+
+name=mjpegtools
+version=2.1.0
+
+source=(http://downloads.sourceforge.net/sourceforge/mjpeg/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+sed -i -e '/ARCHFLAGS=/s:=.*:=:' configure
+
+./configure --prefix=/usr --enable-largefile
+make
+
+make DESTDIR=$PKG install
+install -m644 mpeg2enc/mpeg2syntaxcodes.h $PKG/usr/include/mjpegtools/mpeg2enc/
+
+}
