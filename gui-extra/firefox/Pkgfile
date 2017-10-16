@@ -1,4 +1,4 @@
-# Depends on: icu libvpx libevent rustc cargo autoconf2-13 pulseaudio gconf yasm sqlite libvpx libevent nss alsa-lib gtk2 gtk3 xorg-app zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav
+# Depends on: icu libvpx libevent rustc autoconf2-13 pulseaudio gconf yasm sqlite libvpx libevent nss alsa-lib gtk2 gtk3 xorg-app zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav
 
 description="Standalone web browser from mozilla.org"
 url="http://www.mozilla.com/firefox/"
@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=firefox
-version=55.0.3
-release=1
+version=56.0.1
 
 source=( https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.xz)
 
@@ -52,6 +51,13 @@ ac_add_options --disable-necko-wifi
 # If you have installed GConf, comment out this line
 ac_add_options --disable-gconf
 
+# Stylo is the new CSS code, including the rust 'style'
+# package. It is enabled by default, but cannot find the
+# headers for system nspr, pixman. If you enable stylo you
+# must comment out system-nspr system-pixman and
+# system-cairo, and you must also have installed clang.
+ac_add_options --disable-stylo
+
 # Comment out following options if you have not installed
 # recommended dependencies:
 ac_add_options --enable-system-sqlite
@@ -79,15 +85,17 @@ ac_add_options --disable-crashreporter
 ac_add_options --disable-updater
 ac_add_options --disable-tests
 
+# Optimization for size is broken with gcc7
+ac_add_options --enable-optimize="-O2"
 
-# ac_add_options --enable-gio
+
 ac_add_options --enable-official-branding
 ac_add_options --enable-safe-browsing
 ac_add_options --enable-url-classifier
 
 # From firefox-40, using system cairo causes firefox to crash
 # frequently when it is doing background rendering in a tab.
-#ac_add_options --enable-system-cairo
+ac_add_options --enable-system-cairo
 ac_add_options --enable-system-ffi
 ac_add_options --enable-system-pixman
 
@@ -101,11 +109,6 @@ ac_add_options --with-system-zlib
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 EOF
 
-test $(uname -m) = "i686" && sed -i 's/enable-optimize/disable-optimize/' mozconfig || true
-
-sed -e 's/256/224/'                           \
-    -i netwerk/protocol/http/Http2Session.cpp
-    
 SHELL=/bin/sh make -f client.mk
 
 mkdir -pv $PKG/usr/{bin,lib{,/mozilla/plugins}}

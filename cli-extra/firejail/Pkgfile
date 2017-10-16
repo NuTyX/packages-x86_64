@@ -1,0 +1,16 @@
+description="Linux namespaces sandbox program"
+url="https://l3net.wordpress.com/projects/firejail/"
+packager="Hugo <hugo@nutyx.org>"
+
+name=firejail
+version=0.9.50
+
+source=(
+https://sourceforge.net/projects/firejail/files/$name/$name-$version.tar.xz)
+
+build(){
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
