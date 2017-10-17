@@ -1,33 +1,38 @@
-# Depends on:  ninja gtk3 nss alsa-lib xdg-utils bzip2 xorg-libxscrnsaver libexif libgcrypt dbus flac snappy speech-dispatcher pciutils pulseaudio libsecret libvpx desktop-file-utils libevent re2 kerberos libwebp cups hicolor-icon-theme mesa usbutils yasm ffmpeg icu libjpeg-turbo libpng libxml2 node
+# Depends on:  ninja gtk3 nss alsa-lib xdg-utils bzip2 xorg-libxscrnsaver libexif libgcrypt dbus flac snappy speech-dispatcher pciutils pulseaudio libsecret libvpx desktop-file-utils libevent re2 kerberos libwebp cups hicolor-icon-theme mesa usbutils yasm ffmpeg icu libjpeg-turbo libpng libxml2 node perl-file-basedir python2
+
 
 description="Open source version of Google Chrome web browser."
 url="http://chromium.org/"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B."
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B., Greg"
 
 
 name=chromium
-version=60.0.3112.113
+version=61.0.3163.100
 release=1
 
 source=(https://commondatastorage.googleapis.com/$name-browser-official/$name-$version.tar.xz
-		chromium-60.0.3112.101-gcc7-1.patch
-		chromium-60.0.3112.101-glibc-2.26-1.patch)
+	http://www.linuxfromscratch.org/patches/blfs/svn/chromium-$version-gcc7-1.patch
+	http://www.linuxfromscratch.org/patches/blfs/svn/chromium-$version-glibc-2.26-1.patch)
 
 build() {
 
 cd chromium-$version
 
-patch -Np1 -i ../chromium-60.0.3112.101-gcc7-1.patch
+patch -Np1 -i ../chromium-$version-gcc7-1.patch
 
-patch -Np1 -i ../chromium-60.0.3112.101-glibc-2.26-1.patch
+patch -Np1 -i ../chromium-$version-glibc-2.26-1.patch
 
 sed 's/WIDEVINE_CDM_AVAILABLE/&\n\n#define WIDEVINE_CDM_VERSION_STRING "Pinkie Pie"/' \
     -i third_party/widevine/cdm/stub/widevine_cdm_version.h
 
-sed "/delayed_task_manager.cc/a\      'base/task_scheduler/environment_config.cc'," \
+sed -e "/histogram_samples.cc/a\      'base/metrics/histogram_snapshot_manager.cc'," \
+    -e "/heap_profiler_event_writer.cc/s/event_/heap_dump_/" \
     -i tools/gn/bootstrap/bootstrap.py
-    
+
+sed '/atk_state_set_add_state/s@atk_state_set,@state_set,@' \
+    -i content/browser/accessibility/browser_accessibility_auralinux.cc
+
 for LIB in ffmpeg flac harfbuzz-ng libjpeg \
            libjpeg_turbo libpng libwebp libxslt yasm; do
     find -type f -path "*third_party/$LIB/*"     \
@@ -133,8 +138,3 @@ MimeType=application/xhtml+xml;text/xml;application/xhtml+xml;text/mml;x-scheme-
 EOF
 
 }
-
-
-
-
-
