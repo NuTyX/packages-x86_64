@@ -11,3 +11,16 @@ source=(http://download.kde.org/stable/frameworks/${version%.*}/${name}-$version
 
 
 build=kde5
+
+
+uptodate() {
+feed=https://github.com/KDE/kirigami/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

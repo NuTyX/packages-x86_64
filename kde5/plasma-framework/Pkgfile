@@ -32,3 +32,15 @@ $PKG/usr/share/wallpapers/NuTyX
 mv $PKG/usr/share/wallpapers/NuTyX/default.metadata.desktop \
 $PKG/usr/share/plasma/desktoptheme/default/metadata.desktop
 }
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
