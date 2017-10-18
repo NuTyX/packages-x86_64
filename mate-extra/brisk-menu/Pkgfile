@@ -17,7 +17,7 @@ ligne=1 # nombre de notification ? afficher
 $exec $feed | grep title | \
 sed "s@<title>@@" | \
 sed "s@</title>@@" | \
-sed "s@Brisk Menu @@" | \
+sed "s@Brisk Menu @@" | sed "s@ @@g" | \
 head -n $(($ligne+1 )) | \
 tail -n $(($ligne)) 
 }
