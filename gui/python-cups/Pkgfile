@@ -1,4 +1,4 @@
-# Depends on: cups python
+# Depends on: cups python python-requests
 
 description="Python CUPS Bindings"
 url="http://cyberelk.net/tim/software/pycups/"
@@ -7,12 +7,14 @@ contributors="Alienus"
 
 name=python-cups
 version=1.9.73
-release=1
+release=2
+
+run=(python-requests)
 
 source=(
 http://cyberelk.net/tim/data/pycups/pycups-$version.tar.bz2)
 
 build() {
     cd pycups-$version
-    python2 setup.py install --prefix=/usr --root=$PKG
+    python3 setup.py install --prefix=/usr --root=$PKG
 }
