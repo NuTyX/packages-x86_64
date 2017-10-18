@@ -1,12 +1,15 @@
-#Depends on : python python-setuptools
+#Depends on : python python-setuptools python-urllib3 python-chardet python-certifi python-idna
 
 description="Python HTTP for Humans"
 url="https://pypi.python.org/pypi/requests"
-packager="Hugo <hugo@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Hugo"
 
 name=python-requests
 version=2.18.4
+release=2
 
+run=(python-urllib3 python-chardet python-certifi python-idna)
 
 source=(
 https://pypi.python.org/packages/b0/e1/eab4fc3752e3d240468a8c0b284607899d2fbfb236a56b7377a329aa8d09/requests-$version.tar.gz
@@ -17,4 +20,3 @@ cd requests-$version
 python3 setup.py build
 python3 setup.py install --prefix=/usr --root=$PKG
 }
-
