@@ -26,3 +26,15 @@ make DESTDIR=$PKG install
 rm -f  $PKG/usr/share/applications/mimeinfo.cache
 
 }
+
+uptodate() {
+feed=https://github.com/mate-desktop/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
