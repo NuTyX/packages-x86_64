@@ -35,6 +35,7 @@ $exec $feed | grep title | \
 sed "s@<title>@@" | \
 sed "s@</title>@@" | \
 sed "s@v@@" | \
+sed "s@ @@g" | \
 head -n $(($ligne+1 )) | \
 tail -n $(($ligne))
 }
