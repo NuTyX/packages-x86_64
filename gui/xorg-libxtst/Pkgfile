@@ -20,3 +20,11 @@ make
 make DESTDIR=$PKG install
 
 }
+uptodate() {
+local ext url name LINX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.bz2"
+url="https://ftp.x.org/archive//individual//lib"
+name="libXtst-"
+$LYNX $url/?C=M\;O=D|grep "$ext$"|grep "$url/$name"|sed "s@$ext\$@@"|sed "s@$url/$name@@"|head -1
+}
