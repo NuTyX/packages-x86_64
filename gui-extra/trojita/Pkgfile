@@ -1,0 +1,46 @@
+# Depends on: cmake qttools pinentry hicolor-icon-theme qtwebkit qtkeychain qtsvg qgpgme mimetic
+
+description="A Qt IMAP email client"
+url="https://github.com/KDE/trojita/releases"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+name=trojita
+version=0.7
+release=1
+
+source=(https://downloads.sourceforge.net/$name/$name-$version.tar.xz
+trojita-gpgme.patch)
+
+prepare() {
+mkdir -p build
+cd $name-$version
+patch -p1 -i ../trojita-gpgme.patch
+}
+
+build() {
+cd build
+cmake ../$name-$version \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_INSTALL_PREFIX=/usr \
+-DWITH_TESTS=OFF
+make
+}
+
+package() {
+cd build
+make DESTDIR=$PKG install
+}
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 
+$exec $feed | grep title | \
+sed "s@<title>@@" | sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
