@@ -1,0 +1,20 @@
+--- cinelerra-7-original/thirdparty/speech_tools/siod/siod.cc	2015-08-12 19:48:00.000000000 +0200
++++ cinelerra-7/thirdparty/speech_tools/siod/siod.cc	2017-10-18 15:52:31.403301932 +0200
+@@ -459,7 +459,7 @@
+     matches = walloc(char *,siod_llength(lmatches)+1);
+     for (l=lmatches,i=0; l; l=cdr(l),i++)
+ 	matches[i] = wstrdup(PNAME(car(l)));
+-    matches[i] = '\0';
++    matches[i] = NULL;
+ 
+     return matches;
+ }
+@@ -498,7 +498,7 @@
+     matches = walloc(char *,siod_llength(lmatches)+1);
+     for (l=lmatches,i=0; l; l=cdr(l),i++)
+ 	matches[i] = wstrdup(PNAME(car(l)));
+-    matches[i] = '\0';
++    matches[i] = NULL;
+ 
+     return matches;
+ }

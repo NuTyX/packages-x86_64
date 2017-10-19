@@ -1,0 +1,45 @@
+diff -Naur cinelerra-7-original/cinelerra/filejpeg.C cinelerra-7/cinelerra/filejpeg.C
+--- cinelerra-7-original/cinelerra/filejpeg.C	2017-09-14 07:58:14.000000000 +0200
++++ cinelerra-7/cinelerra/filejpeg.C	2017-10-18 21:15:00.619954262 +0200
+@@ -34,7 +34,7 @@
+ 
+ 
+ #include <errno.h>
+-
++#include <string.h>
+ 
+ FileJPEG::FileJPEG(Asset *asset, File *file)
+  : FileList(asset, file, "JPEGLIST", ".jpg", FILE_JPEG, FILE_JPEG_LIST)
+diff -Naur cinelerra-7-original/cinelerra/filemov.C cinelerra-7/cinelerra/filemov.C
+--- cinelerra-7-original/cinelerra/filemov.C	2017-09-14 07:58:14.000000000 +0200
++++ cinelerra-7/cinelerra/filemov.C	2017-10-18 22:02:29.816607572 +0200
+@@ -36,6 +36,7 @@
+ #include "videodevice.inc"
+ 
+ #include <unistd.h>
++#include <string.h>
+ 
+ #if 0
+ N_("MPEG-4")
+diff -Naur cinelerra-7-original/cinelerra/filepng.C cinelerra-7/cinelerra/filepng.C
+--- cinelerra-7-original/cinelerra/filepng.C	2015-08-12 19:47:55.000000000 +0200
++++ cinelerra-7/cinelerra/filepng.C	2017-10-18 22:47:27.753261590 +0200
+@@ -30,6 +30,7 @@
+ #include "videodevice.inc"
+ 
+ #include <png.h>
++#include <string.h>
+ 
+ FilePNG::FilePNG(Asset *asset, File *file)
+  : FileList(asset, file, "PNGLIST", ".png", FILE_PNG, FILE_PNG_LIST)
+diff -Naur cinelerra-7-original/cinelerra/videodevice.C cinelerra-7/cinelerra/videodevice.C
+--- cinelerra-7-original/cinelerra/videodevice.C	2017-01-04 03:00:00.000000000 +0100
++++ cinelerra-7/cinelerra/videodevice.C	2017-10-18 22:49:12.569927767 +0200
+@@ -50,6 +50,7 @@
+ 
+ #include <unistd.h>
+ #include <fcntl.h>
++#include <string.h>
+ 
+ KeepaliveThread::KeepaliveThread(VideoDevice *device)
+  : Thread()
