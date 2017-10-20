@@ -1,0 +1,42 @@
+# Depends on: qtbase cmake qttools
+
+description="Provides support for secure credentials storage"
+url="https://github.com/frankosterfeld/qtkeychain"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+name=qtkeychain
+version=0.8.0
+release=1
+
+source=(https://github.com/frankosterfeld/qtkeychain/archive/v$version.tar.gz)
+
+prepare() {
+mkdir -p build
+}
+
+build() {
+cd build
+cmake ../$name-$version \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_INSTALL_PREFIX=/usr
+make
+}
+
+package() {
+cd build
+make DESTDIR=$PKG install
+}
+
+uptodate() {
+feed=https://github.com/frankosterfeld/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 
+$exec $feed | grep title | \
+sed "s@<title>@@" | sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
