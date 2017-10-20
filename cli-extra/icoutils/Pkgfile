@@ -1,0 +1,40 @@
+# Depends on: libpng perl-libwww
+
+description="Extracts and converts images in MS Windows(R) icon and cursor files."
+url="http://www.nongnu.org/icoutils/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=icoutils
+version=0.31.3
+release=1
+
+source=(https://savannah.nongnu.org/download/${name}/${name}-${version}.tar.bz2
+)
+
+prepare() {
+echo "Fonction prepare sans objet"
+}
+
+build() {
+cd $name-$version
+./configure \
+--prefix=/usr \
+--mandir=/usr/share/man
+make
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+}
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+}
+
+
