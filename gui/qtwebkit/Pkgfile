@@ -1,0 +1,47 @@
+# Depends on: ruby icu gperf python2 qtdoc qttools cmake qtlocation qtsensors qtwebchannel libwebp libxslt xorg-libxcomposite hyphen gstreamer-plugins-base
+
+description="Classes for a WebKit2 based implementation and a new QML API"
+url="http://qt-project.org/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+name=qtwebkit
+version=5.212.0-alpha2
+release=1
+
+source=(https://github.com/annulen/webkit/archive/$name-$version.tar.gz
+qt5-webkit-gcc7.patch)
+
+prepare() {
+mkdir -p build
+cd webkit-qtwebkit-$version
+patch -p1 -i ../qt5-webkit-gcc7.patch
+}
+
+build() {
+cd build
+cmake ../webkit-qtwebkit-$version \
+-DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_BUILD_TYPE=Release \
+-DPORT=Qt \
+-DENABLE_TOOLS=OFF
+ make
+}
+
+package() {
+cd build
+make DESTDIR=$PKG install
+}
+
+uptodate() {
+feed=https://github.com/annulen/webkit/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 
+$exec $feed | grep title | \
+sed "s@<title>@@" | sed "s@</title>@@" | \
+sed "s@QtWebKit @@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
