@@ -1,0 +1,24 @@
+description="C library that performs DNS requests and name resolves asynchronously"
+url="https://c-ares.haxx.se/"
+packager="greg<greg@nutyx.org>"
+
+name=c-ares
+version=1.13.0
+release=1
+
+source=(https://c-ares.haxx.se/download/$name-$version.tar.gz)
+
+build() {
+
+	cd $name-$version
+	./configure --prefix=/usr --enable-shared
+  make
+
+}
+
+package() {
+
+	cd $name-$version
+	make DESTDIR=$PKG install
+
+}
