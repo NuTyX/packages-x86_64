@@ -1,0 +1,44 @@
+# Depends on: gtk3
+
+description="Light picture Viewer for lxde."
+url="http://lxde.org/"
+contributors="geantbrun at gmail dot com, tnut at nutyx dot org"
+packager="greg<greg@nutyx.org>"
+
+
+name=lxde-gpicview
+alias=(gpicview)
+_name=gpicview
+version=0.2.5
+release=1
+ 
+source=(http://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz
+		0001-Fix-displaying-images-with-GTK3.patch)
+		
+		
+prepare() {
+
+  cd $_name-$version
+
+  patch -Np1 -i ../0001-Fix-displaying-images-with-GTK3.patch
+  sed -i '/^Categories=/ s/Utility;//' gpicview.desktop.in
+  
+}
+
+build() {
+
+  cd $SRC
+  [ -d gtk3 ] || cp -r $_name-$version gtk3
+  cd gtk3
+  ./configure --sysconfdir=/etc --prefix=/usr --enable-gtk3
+  make
+  
+}
+
+package() {
+
+  cd gtk3
+  make DESTDIR=$PKG install
+  
+}
+
