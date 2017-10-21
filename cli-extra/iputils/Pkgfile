@@ -1,0 +1,45 @@
+# Depends on: libcap libidnp erl-sgmls openssl sysfsutils
+
+description="Basic networking applet"
+url="https://github.com/iputils/iputils/releases"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=iputils
+version=s20151218
+release=1
+
+source=(http://www.skbuff.net/iputils/$name-$version.tar.bz2
+)
+
+prepare() {
+echo "Fonction prepare sans objet"
+}
+
+build() {
+cd $SRC/$name-$version
+make USE_GCRYPT=no USE_GNUTLS=no CCOPTOPT="$CFLAGS"
+}
+
+package() {
+cd $SRC/$name-$version
+install -dm755 $PKG/usr/bin
+install -m755 arping clockdiff ping rarpd rdisc tftpd tracepath $PKG/usr/bin/
+}
+
+uptodate() {
+feed=$url.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | sed "s@</title>@@" | \
+sed "s@s@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
+
+
