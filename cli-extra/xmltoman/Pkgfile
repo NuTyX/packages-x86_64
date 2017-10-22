@@ -1,0 +1,34 @@
+# Depends on: perl-xml-parser
+
+description="Convert xml to man pages in groff format or html"
+url="http://xmltoman.sourceforge.net/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=xmltoman
+version=0.4
+release=1
+
+source=(https://downloads.sourceforge.net/project/$name/$name/$name-$version.tar.gz/$name-$version.tar.gz
+)
+
+build() {
+cd $SRC/$name-$version
+make PREFIX=/usr
+}
+
+package() {
+cd $SRC/$name-$version
+make install PREFIX=/usr DESTDIR=$PKG
+}
+
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+}
+
+
