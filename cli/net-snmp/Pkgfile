@@ -1,0 +1,46 @@
+description="Widely used protocol for monitoring the health and welfare of network equipment."
+url="http://www.net-snmp.org/"
+contributors="pierre"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: python2 python2-setuptools libnl openssl pciutils
+
+name=net-snmp
+version=5.7.3
+release=5
+
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz{,.asc}
+       net-snmp-5.7.3-perl-5.24.patch fix-openssl-build-errors.patch)
+
+
+build() {
+cd $name-$version
+
+patch -Np1 -i ../fix-openssl-build-errors.patch
+patch -p1 -i ../net-snmp-5.7.3-perl-5.24.patch
+autoreconf -i
+
+PYTHONPROG=/usr/bin/python2 ./configure --prefix=/usr \
+    --sysconfdir=/etc --sbindir=/usr/bin \
+    --mandir=/usr/share/man \
+    --enable-ucd-snmp-compatibility \
+    --enable-ipv6 \
+    --with-python-modules \
+    --with-default-snmp-version="3" \
+    --with-sys-contact="root@localhost" \
+    --with-sys-location="Unknown" \
+    --with-logfile="/var/log/snmpd.log" \
+    --with-mib-modules="host misc/ipfwacc ucd-snmp/diskio tunnel ucd-snmp/dlmod" \
+    --with-persistent-directory="/var/net-snmp"
+
+make NETSNMP_DONT_CHECK_VERSION=1
+
+sed -i -e "s:install --basedir=\$\$dir:install --basedir=\$\$dir --root=$PKG:" Makefile
+
+make DESTDIR=$PKG INSTALL_PREFIX=$PKG INSTALLDIRS=vendor install
+# Remove perllocal.pod and .packlist if present in the package
+for i in perllocal.pod .packlist; do
+   find $PKG -name "$i" -exec rm -rf {} \;
+done
+
+}
