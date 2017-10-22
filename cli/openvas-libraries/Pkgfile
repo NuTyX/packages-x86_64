@@ -1,0 +1,42 @@
+# Depends on: gnutls libpcap gpgme libssh glib openldap hiredis cmake doxygen
+
+description="The OpenVAS libraries"
+url="http://www.openvas.org/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=openvas-libraries
+version=8.0.9
+release=1
+
+source=(http://wald.intevation.org/frs/download.php/2433/$name-${version}.tar.gz
+http://wald.intevation.org/frs/download.php/2434/$name-${version}.tar.gz
+)
+
+prepare() {
+echo "Fonction prepare sans objet"
+}
+
+build() {
+cd $name-$version
+LDFLAGS+=" -Wl,--no-as-needed"
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr \
+-DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DLOCALSTATEDIR=/var .
+make
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG/ install
+rmdir $PKG/var/run
+}
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+}
+
+
