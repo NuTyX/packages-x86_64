@@ -1,0 +1,33 @@
+# Depends on: glibc 
+
+description="Minimalistic C client library for Redis"
+url="https://github.com/redis/hiredis/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=hiredis
+version=0.13.3
+release=1
+
+source=(https://github.com/redis/$name/archive/v$version/hiredis-$version.tar.gz
+)
+
+build() {
+cd $name-$version
+make PREFIX=/usr
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG PREFIX=/usr install
+}
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+}
+
+
