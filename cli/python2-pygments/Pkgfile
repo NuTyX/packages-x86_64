@@ -1,0 +1,20 @@
+description="Python syntax highlighter"
+url="http://pypi.python.org/"
+contributors="tnut"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: python2-setuptools
+
+name=python2-pygments
+version=2.2.0
+release=1
+
+source=(https://pypi.python.org/packages/71/2a/2e4e77803a8bd6408a2903340ac498cb0a2181811af7c9ec92cb70b0308a/Pygments-2.2.0.tar.gz)
+
+build() {
+
+    cd Pygments-$version
+    python2 setup.py install --prefix=/usr --root=$PKG
+    
+}
+
