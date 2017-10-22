@@ -1,0 +1,39 @@
+# Depends on: libnet libpcap glib
+
+description="An implementation of an E-component of Network Intrusion Detection System."
+url="http://libnids.sourceforge.net/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=libnids
+version=1.24
+release=1
+
+source=(https://downloads.sourceforge.net/$name/$name-$version.tar.gz
+)
+
+prepare() {
+echo "Fonction prepare sans objet"
+}
+
+build() {
+cd $SRC/$name-$version
+./configure --prefix=/usr --man=/usr/share/man --enable-shared
+make
+}
+
+package() {
+cd $SRC/$name-$version
+make install_prefix=$PKG install
+ln -s libnids.so.1.24 $PKG/usr/lib/libnids.so.1
+}
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+}
+
+
