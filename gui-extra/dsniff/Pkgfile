@@ -1,0 +1,49 @@
+# Depends on: openldap openssl xorg-libxmu glib libnet libnids
+
+description="Collection of tools for network auditing and penetration testing"
+url="http://www.monkey.org/~dugsong/dsniff/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=dsniff
+version=2.4b1
+release=1
+
+source=(https://www.monkey.org/~dugsong/$name/beta/$name-$version.tar.gz
+http://ftp.de.debian.org/debian/pool/main/d/${name}/${name}_2.4b1+debian-22.1.debian.tar.gz
+dsniff-openssl-1.1.patch
+)
+
+prepare() {
+cd $SRC/$name-2.4
+for i in $(cat ../debian/patches/series); do
+patch -N < "../debian/patches/$i"
+done
+sed -i 's|${CC-cc} -E|${CC-cc} -O2 -E|g' configure
+patch -p1 -i ../dsniff-openssl-1.1.patch
+}
+
+build() {
+cd $SRC/$name-2.4
+LDFLAGS="-lresolv -lglib-2.0 -lgthread-2.0 $LDFLAGS" ./configure \
+--prefix=/usr --sbindir=/usr/bin
+make -j1
+}
+
+package() {
+cd $SRC/$name-2.4
+make install_prefix=$PKG install
+install -D -m0644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
+install -d $PKG/usr/share
+mv $PKG/usr/man $PKG/usr/share/
+}
+
+uptodate() {
+echo "Fonction package sans objet"
+}
+
+
