@@ -1,0 +1,28 @@
+description="C library for encoding, decoding and manipulating JSON data."
+url="http://www.digip.org/jansson/"
+contributors="Alan Mizrahi, alan mizrahi"
+packager="greg<greg@nutyx.org>"
+
+# Depends on:
+
+name=jansson
+version=2.10
+release=1
+
+source=(http://www.digip.org/$name/releases/$name-$version.tar.bz2)
+
+build() {
+
+  cd $SRC/$name-$version
+  ./configure --prefix=/usr
+  make
+  
+}
+
+package() {
+
+  cd $SRC/$name-$version
+  make DESTDIR=$pkgdir install
+  install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
+  
+}
