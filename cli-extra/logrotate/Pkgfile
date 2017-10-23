@@ -1,0 +1,58 @@
+# Depends on: popt gzip acl
+
+description="Rotates system logs automatically"
+url="https://github.com/logrotate/logrotate"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=logrotate
+version=3.12.3
+release=1
+
+source=(https://github.com/logrotate/logrotate/releases/download/$version/$name-$version.tar.xz
+logrotate.conf
+)
+
+prepare() {
+echo "Fonction prepare sans objet"
+}
+
+build() {
+cd $SRC/$name-$version
+./configure \
+--prefix=/usr \
+--sbindir=/usr/bin \
+--mandir=/usr/share/man \
+--with-compress-command=/usr/bin/gzip \
+--with-uncompress-command=/usr/bin/gunzip \
+--with-default-mail-command=/usr/bin/mail \
+--with-acl
+make
+}
+
+package() {
+cd $SRC/$name-$version
+make DESTDIR=$PKG install
+mkdir -p $PKG/etc/$name.d
+mkdir -p $PKG/var/state/logrotate
+install -D -m 750 examples/$name.cron $PKG/etc/cron/hourly/$name
+install -D -m 640 $SRC/$name.conf $PKG/etc/$name.conf
+}
+
+uptodate() {
+feed=https://github.com/$name/$name/releases/.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@logrotate-@@" | \
+head -n $(($ligne+1)) | \
+tail -n $(($ligne))
+}
+
+
