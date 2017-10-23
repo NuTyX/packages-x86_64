@@ -1,0 +1,21 @@
+# Depends on : git libcards ssh-askpass xorg-proto fltk xorg-libx11 xorg-libxext xorg-libxfixes xorg-libxft xorg-libxinerama xorg-mesa
+
+description="Graphical version of the NuTyX cards package manager"
+url="https://github.com/NuTyX/cards"
+maintainer="tnut at nutyx dot org, Artemia76 at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+
+run=(ssh-askpass)
+name=flcards
+version=git
+
+source=()
+build() {
+
+git clone https://github.com/NuTyX/cards.git
+
+cd cards
+make flcards
+cd fltk
+make DESTDIR=$PKG install
+}
