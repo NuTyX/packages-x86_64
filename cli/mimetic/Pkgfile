@@ -1,0 +1,38 @@
+# Depends on: 
+
+description="A free, MIT licensed, Email library (MIME) written in C++"
+url="http://www.codesink.org/mimetic_mime_library.html"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=mimetic
+version=0.9.8
+release=1
+
+source=(http://www.codesink.org/download/$name-$version.tar.gz)
+)
+
+prepare() {
+echo "Fonction prepare sans objet"
+}
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+}
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+}
+
+
