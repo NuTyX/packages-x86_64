@@ -1,0 +1,38 @@
+# Depends on: perl
+
+description="Perl/CPAN Module Parse::Yapp : Generates OO LALR parser modules"
+url="http://search.cpan.org/dist/Parse-Yapp"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=perl-parse-yapp
+version=1.05
+release=1
+
+source=(http://www.cpan.org/authors/id/F/FD/FDESAR/Parse-Yapp-$version.tar.gz
+)
+
+prepare() {
+echo "Fonction prepare sans objet"
+}
+
+build() {
+cd $SRC/Parse-Yapp-$version
+PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+make
+}
+
+package() {
+cd $SRC/Parse-Yapp-$version
+make install DESTDIR=$PKG
+}
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+}
+
+
