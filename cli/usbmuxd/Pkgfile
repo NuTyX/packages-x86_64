@@ -1,0 +1,38 @@
+# Depends on: libimobiledevice git
+
+description="USB Multiplex Daemon"
+url="http://marcansoft.com/blog/iphonelinux/usbmuxd/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=usbmuxd
+version=1.1.0
+release=1
+
+source=(http://www.libimobiledevice.org/downloads/usbmuxd-$version.tar.bz2
+)
+
+prepare() {
+echo "Fonction prepare sans objet"
+}
+
+build() {
+cd usbmuxd-$version
+./configure --prefix=/usr --sbindir=/usr/bin
+make
+}
+
+package() {
+cd usbmuxd-$version
+make DESTDIR=$PKG install
+}
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+}
+
+
