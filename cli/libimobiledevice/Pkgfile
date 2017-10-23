@@ -1,0 +1,57 @@
+# Depends on: python2 cython libplist autoconf-archive gnutls libusbmuxd libgcrypt
+
+description="Library that talks the protocols to support iPhone and iPod Touch devices on Linux"
+url="http://libimobiledevice.org/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=libimobiledevice
+version=1.2.0
+release=1
+
+source=(http://libimobiledevice.org/downloads/$name-$version.tar.bz2
+0001-Fix-installation_proxy-when-using-GnuTLS-instead-of-.patch
+CVE-2016-5104.patch
+0001-Add-new-function-to-get-the-underlying-file-descript.patch
+0001-Updated-gnutls-certificate-callback-to-new-API-backw.patch
+0001-idevice-Update-GnuTLS-code-to-support-iOS-10.patch
+0001-userpref-GnuTLS-Fix-pairing-record-generation-and-im.patch
+)
+
+prepare() {
+cd $name-$version
+patch -Np1 -i ../0001-Fix-installation_proxy-when-using-GnuTLS-instead-of-.patch
+patch -Np1 -i ../CVE-2016-5104.patch
+patch -Np1 -i ../0001-Add-new-function-to-get-the-underlying-file-descript.patch
+patch -Np1 -i ../0001-Updated-gnutls-certificate-callback-to-new-API-backw.patch
+patch -Np1 -i ../0001-idevice-Update-GnuTLS-code-to-support-iOS-10.patch
+patch -Np1 -i ../0001-userpref-GnuTLS-Fix-pairing-record-generation-and-im.patch
+sed -e 's/AC_PYTHON_DEVEL/AX_PYTHON_DEVEL/' -i m4/cython_python.m4
+autoreconf -fi
+}
+
+build() {
+mkdir build-py2
+pushd build-py2
+PYTHON=/usr/bin/python2 CYTHON=/usr/bin/cython ../$name-$version/configure --prefix=/usr --disable-openssl
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+make
+popd
+}
+
+package() {
+pushd build-py2
+make DESTDIR=$PKG install
+popd
+}
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+
+}
+
+

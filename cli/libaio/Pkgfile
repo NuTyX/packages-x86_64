@@ -1,0 +1,39 @@
+# Depends on: 
+
+description="The Linux-native asynchronous I/O facility (aio) library"
+url="http://lse.sourceforge.net/io/aio.html"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=libaio
+version=0.3.110
+release=1
+CARCH=x86_64
+
+source=(http://ftp.de.debian.org/debian/pool/main/liba/$name/${name}_${version}.orig.tar.gz
+)
+
+prepare() {
+echo "Fonction prepare sans objet"
+}
+
+build() {
+cd $SRC/$name-$version
+CFLAGS="-march=${CARCH/_/-} -mtune=generic -O2 -pipe"
+make
+}
+
+package() {
+cd $SRC/$name-$version
+make prefix=$PKG/usr install
+}
+
+uptodate() {
+echo "Fonction package sans objet"
+}
+
+

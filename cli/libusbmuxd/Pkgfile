@@ -1,0 +1,40 @@
+# Depends on: libusb libplist
+
+description="USB Multiplex Daemon"
+url="http://marcansoft.com/blog/iphonelinux/usbmuxd/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=libusbmuxd
+version=1.0.10
+release=1
+
+source=(http://www.libimobiledevice.org/downloads/libusbmuxd-$version.tar.bz2
+CVE-2016-5104.patch
+)
+
+prepare() {
+cd libusbmuxd-$version
+patch -Np1 -i ../CVE-2016-5104.patch
+}
+
+build() {
+cd libusbmuxd-$version
+./configure --prefix=/usr
+make
+}
+
+package() {
+cd libusbmuxd-$version
+make DESTDIR=$PKG install
+}
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+}
+
+
