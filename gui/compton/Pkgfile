@@ -1,0 +1,26 @@
+# Depends on: dbus libconfig pcre mesa xorg-libxcomposite xorg-libxinerama xorg-libxrandr xorg-libxdamage freeglut
+
+description="A compositor for X, and a fork of xcompmgr-dana."
+url="http://github.com/chjj/compton"
+packager="tnut <tnut@nutyx.org>"
+contributors="greg <greg@nutyx.org>"
+
+name=compton
+version=0.1_beta2
+release=1
+
+source=(https://github.com/chjj/compton/releases/download/v$version/compton-git-v$version-2013-10-21.tar.xz
+		compton.conf)
+
+run=(libconfig)
+
+build() {
+
+	cd compton-git-v0.1_beta2-2013-10-21
+
+	CFG='-DCONFIG_LIBCONFIG' make
+	make DESTDIR=$PKG install
+	
+	install -Dm644 $SRC/compton.conf $PKG/etc/xdg/compton.conf
+	
+}
