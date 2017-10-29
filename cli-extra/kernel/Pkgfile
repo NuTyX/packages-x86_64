@@ -15,26 +15,9 @@ PKGMK_GROUPS=(devel doc)
 name=kernel
 alias=(linux)
 
-version=4.13.9
+version=4.13.10
 _version=${version:0:4}
 
-release=1
-
-# Virtualbox
-vb_version=5.1.14
-buildrelease=112924
-[ "`uname -m`" == "i686"   ] && _VBARCH=x86
-[ "`uname -m`" == "x86_64"   ] && _VBARCH=amd64
-
-# nvidia
-nv_version=378.13
-[ "$PKGMK_ARCH" == "i686"   ] && _NVARCH=x86
-[ "$PKGMK_ARCH" == "x86_64"   ] && _NVARCH=x86_64
-
-
-# Broadcom
-wl_version=6.30.223.271
-[ "`uname -m`" == "x86_64" ] && _wlarch=_64
 
 ## Download all the sources
 #
