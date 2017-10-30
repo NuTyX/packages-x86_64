@@ -7,7 +7,7 @@ contributors="Pierre B, Tnut"
 
 name=samba
 version=4.7.0
-release=3
+release=4
 
 source=( https://download.samba.org/pub/samba/stable/$name-$version.tar.gz)
 
@@ -66,5 +66,14 @@ make DESTDIR=$PKG install-samba
 make DESTDIR=$PKG install-winbindd
 
 # Doublon
-rm -f $PKG/usr/lib/python2.7/site-packages/talloc.so
+rm  $PKG/usr/lib/python2.7/site-packages/talloc.so
+rm  $PKG/usr/lib/share/perl5/vendor/Parse/Yapp
+}
+uptodate() {
+local ext url name LINX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.gz"
+url="https://download.samba.org/pub/samba/stable"
+name="samba-"
+$LYNX $url/?C=N\;O=A|grep "$ext$"|grep "$url/$name"|sed "s@$ext\$@@"|sed "s@$url/$name@@"|tail -1
 }
