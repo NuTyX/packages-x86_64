@@ -1,0 +1,33 @@
+# Depends on: xorg-libfontenc
+
+description="Filter that can be run between an arbitrary application and UTF8 emulator."
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+PKGMK_GROUPS=(doc man)
+url="http://xorg.freedesktop.org"
+
+name=xorg-luit
+version=1.1.1
+_name=${name/xorg-/}
+
+source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
+
+build=xorg
+prepare() {
+	cd ${_name}-$version
+	line1="#ifdef _XOPEN_SOURCE"
+	line2="#  undef _XOPEN_SOURCE"
+	line3="#  define _XOPEN_SOURCE 600"
+	line4="#endif"
+	sed -i -e "s@#ifdef HAVE_CONFIG_H@$line1\n$line2\n$line3\n$line4\n\n&@" sys.c
+	unset line1 line2 line3 line4
+}
+
+uptodate() {
+local ext url name LINX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.bz2"
+url="https://ftp.x.org/archive//individual//app"
+$LYNX $url/?C=M\;O=D|grep "$ext$"|grep "$url/${_name}-"|sed "s@$ext\$@@"|sed "s@$url/${_name}-@@"|head -1
+}
