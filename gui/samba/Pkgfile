@@ -65,9 +65,8 @@ cd $SRC/$scripts-$scriptsversion
 make DESTDIR=$PKG install-samba
 make DESTDIR=$PKG install-winbindd
 
-# Doublon
-rm  $PKG/usr/lib/python2.7/site-packages/talloc.so
-rm  $PKG/usr/lib/share/perl5/vendor/Parse/Yapp
+#  Doublon
+rm -rv $PKG/usr/lib/share/perl5/vendor/Parse/Yapp
 }
 uptodate() {
 local ext url name LINX
