@@ -1,0 +1,23 @@
+description="Xorg Header files which allow to build against the installed X Window system."
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+PKGMK_GROUPS=(doc man)
+url="http://xorg.freedesktop.org"
+
+name=dri2proto
+version=2.8
+_name=$name
+
+
+source=(http://ftp.x.org/pub/individual/proto/$name-$version.tar.bz2)
+
+build=xorg
+
+uptodate() {
+local ext url name LINX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.bz2"
+url="https://ftp.x.org/archive//individual//proto"
+$LYNX $url/?C=M\;O=D|grep "$ext$"|grep "$url/$name-"|sed "s@$ext\$@@"|sed "s@$url/$name-@@"|head -1
+}
