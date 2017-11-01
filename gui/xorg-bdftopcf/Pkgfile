@@ -1,0 +1,24 @@
+# Depends on: xorg-libxfont xproto
+
+description="Convert X font from Bitmap Distribution Format to Portable Compiled Format."
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+PKGMK_GROUPS=(doc man)
+url="http://xorg.freedesktop.org"
+
+name=xorg-bdftopcf
+version=1.0.5
+_name=${name/xorg-/}
+
+source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
+
+build=xorg
+
+uptodate() {
+local ext url name LINX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.bz2"
+url="https://ftp.x.org/archive//individual//app"
+$LYNX $url/?C=M\;O=D|grep "$ext$"|grep "$url/${_name}-"|sed "s@$ext\$@@"|sed "s@$url/${_name}-@@"|head -1
+}
