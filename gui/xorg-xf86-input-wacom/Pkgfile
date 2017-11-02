@@ -1,0 +1,20 @@
+# Depends on: xorg-libxi xorg-libxinerama xorg-libxrandr xorg-server
+
+description="Xorg Wacom tablet driver."
+packager="tnut <tnut@nutyx.org>"
+name=xorg-xf86-input-wacom
+version=0.35.0
+_name=${name/xorg-/}
+
+source=(https://downloads.sourceforge.net/project/linuxwacom/${_name}/${_name}-$version.tar.bz2)
+
+build() {
+	cd ${_name}-$version
+	./configure --prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--with-systemd-unit-dir=no
+
+	make
+	make DESTDIR=$PKG install
+}
