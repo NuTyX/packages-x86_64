@@ -1,0 +1,29 @@
+# Depends on: xorg-mkfontdir xorg-fontconfig xorg-font-util xorg-font-alias xorg-encodings
+
+description="Xorg Luxi Truetype fonts."
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+PKGMK_GROUPS=(doc man)
+url="http://xorg.freedesktop.org"
+
+name=font-bh-ttf
+version=1.0.3
+
+source=(http://ftp.x.org/pub/individual/font/$name-$version.tar.bz2)
+
+build() {
+	cd $name-$version	
+	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+	--with-fontrootdir=/usr/share/fonts
+	make
+	make DESTDIR=$PKG install
+}
+
+uptodate() {
+local ext url name LINX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.bz2"
+url="https://ftp.x.org/archive//individual//font"
+$LYNX $url/?C=M\;O=D|grep "$ext$"|grep "$url/$name-"|sed "s@$ext\$@@"|sed "s@$url/$name-@@"|head -1
+}
