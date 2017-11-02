@@ -1,0 +1,20 @@
+# Depends on: rpcsvc-proto libtirpc
+
+description="Contains the public client interface for NIS(YP) and NIS+."
+name=libnsl
+version=1.1.0
+
+source=(https://github.com/thkukuk/libnsl/archive/$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+autoreconf -fi
+./configure --sysconfdir=/etc \
+--disable-static
+make
+make DESTDIR=$PKG install
+mkdir $PKG/lib
+mv $PKG/usr/lib/libnsl.so.2* \
+$PKG/lib
+ln -sfv ../../lib/libnsl.so.2.0.0 $PKG/usr/lib/libnsl.so
+}
