@@ -1,0 +1,19 @@
+# Depends on: libevdev xorg-libxtst xorg-libx11 xorg-libxi xorg-server 
+
+description="Xorg Synaptics drivers for notebook touchpads."
+packager="tnut <tnut@nutyx.org>"
+name=xorg-xf86-input-synaptics
+version=1.9.0
+_name=${name/xorg-/}
+
+source=(http://ftp.x.org/pub/individual//driver/${_name}-$version.tar.bz2)
+
+build=xorg
+
+uptodate() {
+local ext url name LINX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.bz2"
+url="https://ftp.x.org/archive//individual//driver"
+$LYNX $url/?C=M\;O=D|grep "$ext$"|grep "$url/${_name}-"|sed "s@$ext\$@@"|sed "s@$url/${_name}-@@"|head -1
+}
