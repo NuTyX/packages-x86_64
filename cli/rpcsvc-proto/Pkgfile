@@ -1,0 +1,13 @@
+description="Contains the rcpsvc protocol.x files and headers"
+name=rpcsvc-proto
+version=1.2
+
+source=(https://github.com/thkukuk/rpcsvc-proto/archive/$name-$version.tar.gz)
+build() {
+cd $name-$name-$version
+autoreconf -fi
+./configure --sysconfdir=/etc
+make
+make DESTDIR=$PKG install
+}
+
