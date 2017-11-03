@@ -1,13 +1,13 @@
-# Depends on: db cyrus-sasl openssl icu mariadb openldap pcre postgresql sqlite
+# Depends on: libnsl db cyrus-sasl openssl icu mariadb openldap pcre postgresql sqlite
 
 description="Mail Transport Agent (MTA) for sending email to other users of your host machine"
 url="http://www.postfix.org"
 contributors="Berlius, Fanch, Tnut, Greg"
-packager="greg <greg@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 
 
 name=postfix
-version=3.2.3
+version=3.2.4
 release=1
 
 source=(ftp://ftp.porcupine.org/mirrors/postfix-release/official/$name-$version.tar.gz)
@@ -23,9 +23,9 @@ build() {
     sed -i 's/.\x08//g' README_FILES/*
 
 
-	make CCARGS="-DUSE_TLS -I/usr/include/openssl/  \
+	make CCARGS="-DUSE_TLS -I/usr/include/openssl/        \
 	-DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl" \
-	AUXLIBS="-lssl -lcrypto -lsasl2"                              \
+	AUXLIBS="-lssl -lcrypto -lsasl2"                      \
 	makefiles 
      
 	make
