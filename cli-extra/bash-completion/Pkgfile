@@ -28,6 +28,5 @@ package() {
     make DESTDIR=$PKG install
 
     #Already present on system
-    rm $PKG/usr/share/bash-completion/completions/{,u}mount
-  
+    rm $PKG/usr/share/bash-completion/completions/{{,u}mount,rfkill}
 }
