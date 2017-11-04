@@ -1,4 +1,4 @@
-# Depends on: xfce4-libutil dbus-glib perl-glib
+# Depends on: xfce4-libutil dbus-glib perl-glib gtk-doc
 
 description="A simple client-server configuration storage and query system"
 url="http://www.xfce.org/"
@@ -28,7 +28,4 @@ cd ${_name}-$version
     
 	make
 	make DESTDIR=$PKG install
-	
-find $PKG  -name perllocal.pod -exec rm {} \;
-
 }
