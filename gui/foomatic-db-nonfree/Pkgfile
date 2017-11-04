@@ -1,0 +1,18 @@
+# Depends on: cups perl libxml2 
+
+PKGMK_KEEP_SOURCES="no"
+description="Non-free licenses database extension from manufacturer-supplied PPD files released"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+url="http://www.linuxprinting.org/foomatic.html"
+name=foomatic-db-nonfree
+version=4.0
+release="`date +%Y%m%d`"
+source=(http://www.openprinting.org/download/foomatic/$name-$release.tar.gz)
+
+build() {
+    cd $name-*
+    ./configure --prefix=/usr
+    make
+    make DESTDIR=$PKG install
+}
