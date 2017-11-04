@@ -1,0 +1,19 @@
+# Depends on: libxml2 cups
+ 
+PKGMK_KEEP_SOURCES="no"
+description="PPD files from the data in Foomatic's XML database."
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+url="http://www.linuxprinting.org/foomatic.html"
+
+name=foomatic-db-engine
+version=4.0
+release="`date +%Y%m%d`"
+source=(http://www.openprinting.org/download/foomatic/$name-$version-$release.tar.gz)
+
+build() {
+    cd $name-*
+    ./configure --prefix=/usr
+    make
+    make DESTDIR=$PKG install
+}
