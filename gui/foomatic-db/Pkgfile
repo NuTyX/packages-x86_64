@@ -1,0 +1,19 @@
+# Depends on: libxml2
+
+description="The collected knowledge about printers, drivers, and driver options in XML files"
+url="http://www.linuxprinting.org/foomatic.html"
+packager="tnut <tnut@nutyx.org"
+contributors="Pierre B"
+
+PKGMK_KEEP_SOURCES="no"
+name=foomatic-db
+version=4.0
+release="`date +%Y%m%d`"
+source=(http://www.openprinting.org/download/foomatic/$name-$version-$release.tar.xz)
+
+build() {
+    cd $name-*
+    ./configure --prefix=/usr
+    make
+    make DESTDIR=$PKG install
+}
