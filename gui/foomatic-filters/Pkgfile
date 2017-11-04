@@ -1,0 +1,23 @@
+# Depends on: libxml2 cups cups-filters 
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+url="http://www.linuxprinting.org/foomatic.html"
+description="Filter scripts used by the printer spoolers to convert the incoming PostScript data"
+name=foomatic-filters
+version=4.0
+release=20160212
+
+source=(http://www.openprinting.org/download/foomatic/$name-${version}-${release}.tar.gz)
+
+build() {
+cd $name-*
+autoreconf
+./configure --prefix=/usr \
+--sysconfdir=/etc
+make
+make DESTDIR=$PKG install
+rm $PKG/{usr/lib/cups/backend/beh,\
+usr/bin/foomatic-rip,usr/lib/cups/filter/foomatic-rip,\
+usr/share/man/man1/foomatic-rip.1}
+}
