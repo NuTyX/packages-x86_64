@@ -1,4 +1,4 @@
-# Depends on: gtk2 gtk3 startup-notification xfce4-conf gtk-doc
+# Depends on: gtk2 gtk3 startup-notification xfce4-conf
 
 description="Commonly used Xfce widgets among Xfce applications"
 url="http://www.xfce.org/"
@@ -16,13 +16,12 @@ build() {
 
 cd ${_name}-$version
 
-	./configure \
-    	--prefix=/usr \
-    	--sysconfdir=/etc \
+	./configure           \
+    	--prefix=/usr         \
+    	--sysconfdir=/etc     \
     	--libexecdir=/usr/lib \
-   	    --localstatedir=/var \
-   	    --disable-static \
-   	    --enable-gtk-doc \
+	--localstatedir=/var  \
+	--disable-static      \
     	--disable-debug
     	
 	make
