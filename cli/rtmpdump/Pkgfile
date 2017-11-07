@@ -1,0 +1,23 @@
+# Depends on: git gnutls
+
+description="Tool to download rtmp streams"
+url="https://rtmpdump.mplayerhq.hu/"
+packager="tnut <tnut@nutyx.org>"
+
+name=rtmpdump
+version=2.4
+
+source=()
+
+build() {
+	git clone https://git.ffmpeg.org/rtmpdump.git
+	cd rtmpdump
+	sed -e 's/^CRYPTO=OPENSSL/#CRYPTO=OPENSSL/' -e 's/#CRYPTO=GNUTLS/CRYPTO=GNUTLS/' -i Makefile -i librtmp/Makefile
+
+	make  OPT="$CFLAGS" XLDFLAGS="$LDFLAGS"
+
+	mkdir -pv $PKG/usr/{bin,lib/pkgconfig}
+	make prefix=/usr mandir=/usr/share/man DESTDIR=$PKG install
+
+	
+}
