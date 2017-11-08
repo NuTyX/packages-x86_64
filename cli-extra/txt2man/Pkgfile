@@ -1,0 +1,34 @@
+# Depends on: 
+
+description="Converts flat ASCII text to man page format"
+url="https://github.com/mvertes/txt2man"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=txt2man
+version=1.6.0
+release=1
+
+source=(https://github.com/mvertes/txt2man/archive/txt2man-$version.tar.gz
+)
+
+prepare() {
+echo "Fonction prepare sans objet"
+}
+
+build() {
+cd $SRC/txt2man-txt2man-$version
+  PATH=./:$PATH make prefix=$PKG/usr install
+}
+
+package() {
+echo "Fonction package sans objet"
+}
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+}
