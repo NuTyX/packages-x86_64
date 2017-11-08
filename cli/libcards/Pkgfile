@@ -6,6 +6,7 @@ maintainer="tnut at nutyx dot org"
 packager="tnut <tnut@nutyx dot org>"
 name=libcards
 version=2.3.99
+release=2
 
 source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
 build () {
@@ -14,4 +15,11 @@ make libs
 make DESTDIR=$PKG install-libs
 cd documentation
 make DESTDIR=$PKG html install
+}
+doc() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.doc${PKGMK_BUILDVER}any.cards.tar \
+usr/share
+rm -r usr/share
 }
