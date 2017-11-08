@@ -1,0 +1,38 @@
+# Depends on: 
+
+description="P(ortable|ackageable) NaCl-based crypto library"
+url="https://github.com/jedisct1/libsodium"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=libsodium
+version=1.0.15
+release=1
+
+source=(https://download.libsodium.org/libsodium/releases/libsodium-$version.tar.gz
+)
+
+prepare() {
+echo "Fonction vide, normal..."
+}
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+}
+
+uptodate() {
+echo "Fonction  vide, normal..." 
+}
+
+# Recette editee le 13/10/17 a 10:31:33
