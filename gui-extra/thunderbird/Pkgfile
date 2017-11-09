@@ -8,8 +8,7 @@ contributors="Pierre B"
 run=(startup-notification hunspell)
 
 name=thunderbird
-version=52.3.0
-release=1
+version=52.4.0
 
 source=(http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.xz
 	$name.desktop)
@@ -52,7 +51,6 @@ ac_add_options --enable-calendar
 
 # Comment out following options if you have not installed
 # recommended dependencies:
-# Do not use system SQLite for Thunderbird 45.x
 ac_add_options --enable-system-sqlite
 ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
