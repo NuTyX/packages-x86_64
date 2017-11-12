@@ -4,14 +4,13 @@ packager="tnut <tnut@nutyx.org>"
 
 name=haveged
 version=1.9.1
-release=1
+release=2
+nutyx_version=9.91
 
-source=( http://downloads.sourceforge.net/project/haveged/$name-$version.tar.gz)
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	http://downloads.sourceforge.net/project/haveged/$name-$version.tar.gz)
 
 build() {
-source /etc/blfs-bootscripts
-wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-
 cd $name-$version
 ./configure --prefix=/usr
 make
@@ -20,8 +19,6 @@ mkdir -p $PKG/usr/share/doc/$name-$version
 cp -v README $PKG/usr/share/doc/$name-$version
 
 # service
-cd ..
-tar xf $scripts-$scriptsversion.tar.bz2
-cd $SRC/$scripts-$scriptsversion
+cd ../nutyx-${nutyx_version}
 make DESTDIR=$PKG install-$name
 }
