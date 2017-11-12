@@ -1,0 +1,20 @@
+description="A fully tested, abstract interface to creating OAuth 1.0 clients and servers."
+url="https://github.com/simplegeo/python-oauth2"
+contributors="tnut"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: python2-httplib2 python2-setuptools
+
+name=python2-oauth2
+version=1.9.0
+release=1
+
+source=(https://pypi.python.org/packages/64/19/8b9066e94088e8d06d649e10319349bfca961e87768a525aba4a2627c986/oauth2-1.9.0.post1.tar.gz)
+
+build() {
+
+    cd oauth2-$version.post1
+    python2 setup.py install --prefix=/usr --root=$PKG
+    
+}
+
