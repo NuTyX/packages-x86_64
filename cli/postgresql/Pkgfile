@@ -5,20 +5,17 @@ url="http://www.postgresql.org/docs"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(lib doc man devel service)
-[ "$PKGMK_ARCH" == "i686" ] && PKGMK_GROUPS=(lib doc man service)
+PKGMK_GROUPS=(lib doc man devel service)
 
 name=postgresql
 version=9.6.5
+release=2
+nutyx_version=9.91
 
-source=( http://ftp.postgresql.org/pub/source/v$version/$name-$version.tar.bz2)
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	http://ftp.postgresql.org/pub/source/v$version/$name-$version.tar.bz2)
+
 build() {
-# service
-source /etc/blfs-bootscripts
-wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-tar xvf $scripts-$scriptsversion.tar.bz2
-
-
 cd $name-$version
 # prepare
 sed -i '/DEFAULT_PGSOCKET_DIR/s@/tmp@/run/postgresql@' src/include/pg_config_manual.h
@@ -36,8 +33,8 @@ make
 make DESTDIR=$PKG install
 make DESTDIR=$PKG install-docs
 
-# install service
+# service
 
-cd $SRC/$scripts-$scriptsversion
+cd ../nutyx-${nutyx_version}
 make DESTDIR=$PKG install-$name
 }
