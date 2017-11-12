@@ -5,25 +5,12 @@ packager="tnut <tnut@nutyx.org>"
 
 name=acpid
 version=2.0.28
-release=2
+release=3
+nutyx_version=9.91
 
-
-source=(http://downloads.sourceforge.net/acpid2/$name-$version.tar.xz 
-		lid 
-		lid.sh)
-
-source  /etc/blfs-bootscripts
-
-prepare() {
-
-	cd $name-$version
-	
-	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-	tar xvf $scripts-$scriptsversion.tar.bz2 
-	
-}
-
-
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	http://downloads.sourceforge.net/acpid2/$name-$version.tar.xz 
+	lid lid.sh)
 
 build() {
 
@@ -48,8 +35,8 @@ package() {
 	cp -r $SRC/lid.sh $PKG/etc/acpi
 
 	chmod +x $PKG/etc/acpi/lid.sh
-
-	cd $scripts-$scriptsversion
+	# Service
+	cd $SRC/nutyx-${nutyx_version}
 	make DESTDIR=$PKG install-acpid
 
 }
