@@ -1,0 +1,36 @@
+# Depends on: python2  python2-setuptools 
+
+description="A Python module and program for processing information about mp3 files"
+url="http://eyed3.nicfit.net/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=python2-eyed3
+version=0.8
+release=1
+
+source=(http://eyed3.nicfit.net/releases/eyeD3-$version.tar.gz
+)
+
+prepare() {
+echo "Fonction vide, normal..."
+}
+
+build() {
+cd $SRC/eyeD3-$version
+python2 setup.py install --prefix=/usr --root=$PKG
+}
+
+package() {
+echo "Fonction  vide, normal..." 
+}
+
+uptodate() {
+echo "Fonction  vide, normal..." 
+}
+
+# Recette editee le 13/10/17 a 10:31:33
