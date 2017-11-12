@@ -1,0 +1,23 @@
+description="Comprehensive HTTP client library, supporting many features."
+url="https://pypi.python.org/pypi/httplib2"
+contributors="tnut"
+packager="greg<greg@nutyx.org>"
+
+
+# Depends on: python2
+
+name=python2-httplib2
+version=0.10.3
+release=1
+
+source=(https://pypi.python.org/packages/e4/2e/a7e27d2c36076efeb8c0e519758968b20389adf57a9ce3af139891af2696/httplib2-0.10.3.tar.gz)
+
+build() {
+
+    cd httplib2-$version
+   
+    python2 setup.py install --prefix=/usr --root=$PKG
+    
+}
+
+
