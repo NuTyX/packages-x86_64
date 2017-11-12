@@ -5,14 +5,13 @@ contributors="Pierre B"
 
 name=smartmontools
 version=6.5
-release=2
+release=3
+nutyx_version=9.91
 
-source=(http://downloads.sourceforge.net/sourceforge/$name/$name-$version.tar.gz )
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	http://downloads.sourceforge.net/sourceforge/$name/$name-$version.tar.gz )
 
 build() {
-
-	source /etc/blfs-bootscripts
-	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
 
 	cd $name-$version
 	./configure --prefix=/usr \
@@ -23,9 +22,6 @@ build() {
 	make DESTDIR=$PKG install
 
 	# Service
-	cd $SRC
-	tar xf $scripts-$scriptsversion.tar.bz2
-	cd $SRC/$scripts-$scriptsversion
+	cd ../nutyx-${nutyx_version}
 	make DESTDIR=$PKG install-smartd
-
 }
