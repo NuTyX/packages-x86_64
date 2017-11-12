@@ -1,0 +1,19 @@
+description="Simple, fast, extensible JSON encoder/decoder for Python."
+url="http://undefined.org/python/#simplejson"
+contributors="tnut"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: python2-setuptools
+
+name=python2-simplejson
+version=3.11.1
+release=1
+
+source=(https://pypi.python.org/packages/08/48/c97b668d6da7d7bebe7ea1817a6f76394b0ec959cb04214ca833c34359df/simplejson-3.11.1.tar.gz)
+
+build() {
+
+    cd simplejson-$version
+    python2 setup.py install --prefix=/usr --root=$PKG
+}
+
