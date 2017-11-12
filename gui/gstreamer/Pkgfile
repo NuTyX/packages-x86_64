@@ -6,16 +6,15 @@ packager="tnut <tnut@nutyx.>"
 contributors="Pierre B"
 
 name=gstreamer
-version=1.12.2
-release=2
+version=1.12.3
 
 source=(http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-$version.tar.xz)
 
 build() {
 cd gstreamer-$version
 ./configure --prefix=/usr \
---with-package-name="GStreamer $version BLFS" \
---with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/"
+--with-package-name="GStreamer $version NuTyX" \
+--with-package-origin="http://downloads.nutyx.org/"
 make
 make DESTDIR=$PKG install
 }
