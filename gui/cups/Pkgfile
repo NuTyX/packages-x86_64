@@ -7,21 +7,19 @@ contributors="Pierre B"
 
 run=(xdg-utils gtk-update-icon-cache)
 
-[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man)
-[ "$PKGMK_ARCH" == "i686" ] && PKGMK_GROUPS=(man)
+PKGMK_GROUPS=(devel man)
 
 name=cups
 version=2.2.5
-
+release=2
+nutyx_version=9.91
 run=(xdg-utils gtk-update-icon-cache)
 
-source=( https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
 	99-printer.rules)
 
 build() {
-	source /etc/blfs-bootscripts
-	wget  http://www.linuxfromscratch.org/blfs/downloads/svn/blfs-bootscripts-$scriptsversion.tar.bz2
-        tar xvf $scripts-$scriptsversion.tar.bz2
 	cd $name-$version
 	sed -i '/kerberized/,$ d' conf/cupsd.conf.in
 	sed -i 's:555:755:g;s:444:644:g' Makedefs.in
@@ -50,8 +48,8 @@ build() {
 		install -m644 desktop/cups.desktop \
 		$PKG/usr/share/applications/cups.desktop
 	fi
-	# Startup Script 
-	cd ../$scripts-$scriptsversion
+	# Service
+	cd ../nutyx-${nutyx_version}
 	make DESTDIR=$PKG install-$name
 
 	# Supprimer les filtres faisant parti de cups-filters
