@@ -6,13 +6,13 @@ packager="tnut <tnut@nutyx.org>"
 
 name=apache
 version=2.4.28
+release=2
+nutyx_version=9.91
 
-source=(http://archive.apache.org/dist/httpd/httpd-$version.tar.bz2
-	 http://www.linuxfromscratch.org/patches/blfs/svn/httpd-$version-blfs_layout-1.patch)
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	http://archive.apache.org/dist/httpd/httpd-$version.tar.bz2
+	http://www.linuxfromscratch.org/patches/blfs/svn/httpd-$version-blfs_layout-1.patch)
 build(){
-
-source /etc/blfs-bootscripts
-wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
 
 cd httpd-$version
 
@@ -40,9 +40,9 @@ chmod 4754 $PKG/usr/lib/httpd/suexec
 
 chown -v -R apache:apache $PKG/srv/www
 rm -f $PKG/srv/www/htdocs/index.html
-cd $SRC
-tar xf $scripts-$scriptsversion.tar.bz2
-cd $SRC/$scripts-$scriptsversion
+
+# Service
+cd $SRC/nutyx-${nutyx_version}
 make DESTDIR=$PKG install-httpd
 mv $PKG/etc/httpd/httpd.conf{,.example}
 }
