@@ -6,17 +6,13 @@ packager="tnut at nutyx dot org"
 
 name=bind
 version=9.11.2
-release=1
+release=2
+nutyx_version=9.91
 
-source=(ftp://ftp.isc.org/isc/bind9/$version/$name-$version.tar.gz)
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	ftp://ftp.isc.org/isc/bind9/$version/$name-$version.tar.gz)
 
 build(){
-    # blfs-bootscript
-    source /etc/blfs-bootscripts
-    wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-    tar xvf $scripts-$scriptsversion.tar.bz2
-
-    # pkg
     cd $name-$version
     ./configure --prefix=/usr \
                 --sysconfdir=/etc \
@@ -38,8 +34,8 @@ build(){
         doc/misc/{dnssec,ipv6,migrat*,options,rfc-compliance,roadmap,sdb} \
             $PKG/usr/share/doc/bind-$version/misc
 
-    # init script
-    cd $SRC/$scripts-$scriptsversion
+    # service
+    cd $SRC/nutyx-${nutyx_version}
     make DESTDIR=$PKG install-bind
 }
 uptodate() {
