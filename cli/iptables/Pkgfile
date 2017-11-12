@@ -5,13 +5,13 @@ contributors="Pierre B"
 
 name=iptables
 version=1.6.1
-release=1
+release=2
+nutyx_version=9.91
 
-source=( http://www.netfilter.org/projects/iptables/files/$name-$version.tar.bz2)
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	http://www.netfilter.org/projects/iptables/files/$name-$version.tar.bz2)
+
 build() {
-source /etc/blfs-bootscripts
-wget  http://www.linuxfromscratch.org/blfs/downloads/svn/blfs-bootscripts-$scriptsversion.tar.bz2
-tar xvf $scripts-$scriptsversion.tar.bz2
 
 cd $name-$version
 
@@ -31,6 +31,7 @@ do
    mv -v $PKG/usr/lib/lib${file}.so.* $PKG/lib
    ln -sfv ../../lib/$(readlink $PKG/usr/lib/lib${file}.so) $PKG/usr/lib/lib${file}.so
 done
-cd ../$scripts-$scriptsversion
+# service
+cd ../nutyx-${nutyx_version}
 make DESTDIR=$PKG install-$name
 }
