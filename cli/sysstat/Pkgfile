@@ -5,15 +5,14 @@ contributors="Fanch, Pierre B"
 
 name=sysstat
 version=11.5.7
-release=1
-source=($url/$name-$version.tar.xz)
- 
+release=2
+nutyx_version=9.91
+
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	$url/$name-$version.tar.xz)
 build() {
+
 cd $name-$version
-	   
-source  /etc/blfs-bootscripts
-wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-tar xvf $scripts-$scriptsversion.tar.bz2 
 
 sa_lib_dir=/usr/lib/sa    \
 sa_dir=/var/log/sa        \
@@ -22,7 +21,8 @@ conf_dir=/etc/sysconfig   \
             --disable-file-attr 
 make
 make DESTDIR=$PKG install
-	
-cd $scripts-$scriptsversion
+
+# Service
+cd ../nutyx-${nutyx_version}
 make DESTDIR=$PKG install-sysstat
 }
