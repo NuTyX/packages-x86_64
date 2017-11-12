@@ -8,15 +8,14 @@ contributors="Pierre B"
 run=(wget)
 name=ntp
 version=4.2.8p10
-release=1
+release=2
+nutyx_version=9.91
 
-source=(https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/$name-4.2/$name-$version.tar.gz)
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/$name-4.2/$name-$version.tar.gz)
 
 
 build() {
-source /etc/blfs-bootscripts
-wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-tar xvf $scripts-$scriptsversion.tar.bz2
 
 cd $name-$version
 ./configure --prefix=/usr \
@@ -70,6 +69,6 @@ restrict 127.0.0.1
 restrict ::1
 EOF
 # service
-cd ../$scripts-$scriptsversion
+cd ../nutyx-${nutyx_version}
 make DESTDIR=$PKG install-ntpd
 }
