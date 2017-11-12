@@ -7,11 +7,20 @@ contributors="Pierre B"
 
 name=dejavu-ttf
 version=2.37
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/dejavu/dejavu-fonts-ttf-$version.tar.bz2)
 build() {
-	cd dejavu-fonts-ttf-$version/ttf
+	cd dejavu-fonts-ttf-$version
+
+	install -v -d -m755 $PKG/etc/fonts/{conf.avail,conf.d}
 	install -v -d -m755 $PKG/usr/share/fonts/dejavu
-	install -v -m644 *.ttf $PKG/usr/share/fonts/dejavu
+	install -v -m644 fontconfig/*.conf $PKG/etc/fonts/conf.avail/
+	install -v -m644 ttf/*.ttf $PKG/usr/share/fonts/dejavu
+
+	cd $PKG/etc/fonts/conf.avail
+	for i in *
+	do
+		ln -sf ../conf.avail/$i ../conf.d/$i
+	done
 }
