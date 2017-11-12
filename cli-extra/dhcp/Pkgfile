@@ -5,18 +5,16 @@ packager="tnut <tnut@nutyx.org>"
 
 name=dhcp
 version=4.3.6
-release=1
+release=2
+nutyx_version=9.91
 
-source=(ftp://ftp.isc.org/isc/dhcp/$version/dhcp-$version.tar.gz
-		dhclient.conf dhcpd.conf )
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	ftp://ftp.isc.org/isc/dhcp/$version/dhcp-$version.tar.gz
+	dhclient.conf dhcpd.conf )
 		
-source  /etc/blfs-bootscripts
 build() {
 
 	cd $name-$version
-	   
-	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-	tar xvf $scripts-$scriptsversion.tar.bz2
 
 	CFLAGS="-D_PATH_DHCLIENT_SCRIPT='\"/sbin/dhclient-script\"' \
 	-D_PATH_DHCPD_CONF='\"/etc/dhcp/dhcpd.conf\"' \
@@ -49,9 +47,10 @@ package() {
 	cp -v $SRC/dhclient.conf $PKG/etc/dhcp/dhclient.conf
 	
 	install -v -dm 755 $PKG/var/lib/dhclient
-	install -v -dm 755 $PKG/etc/sysconfig	
-	
-	cd $scripts-$scriptsversion
+	install -v -dm 755 $PKG/etc/sysconfig
+
+	# Service	
+	cd $SRC/nutyx-${nutyx_version}
 	make DESTDIR=$PKG install-service-dhclient
 	
 	install -v -dm 755 $PKG/var/lib/dhcpd
@@ -60,4 +59,3 @@ package() {
 	make DESTDIR=$PKG install-dhcpd
   
 }
-
