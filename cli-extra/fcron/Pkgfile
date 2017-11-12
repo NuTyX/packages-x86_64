@@ -7,19 +7,16 @@ packager="tnut<tnut@nutyx.org>"
 
 name=fcron
 version=3.2.1
+release=2
+nutyx_version=9.91
 
-release=1
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	http://fcron.free.fr/archives/$name-$version.src.tar.gz )
 
-source=(http://fcron.free.fr/archives/$name-$version.src.tar.gz )
-
-source /etc/blfs-bootscripts
 
 prepare() {
 
 	unset MAKEFLAGS
-	wget  http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2                                                
-	tar xf $scripts-$scriptsversion.tar.bz2 
-
 }
 
 
@@ -52,9 +49,8 @@ package() {
 	
 	done
 
-# Install the script
-cd ../$scripts-$scriptsversion
-
+# Service
+cd ../nutyx-${nutyx_version}
 make DESTDIR=$PKG install-fcron
 
 }
