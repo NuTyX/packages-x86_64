@@ -7,13 +7,13 @@ contributors="Pierre B, Tnut"
 
 name=samba
 version=4.7.0
-release=4
+release=5
+nutyx_version=9.91
 
-source=( https://download.samba.org/pub/samba/stable/$name-$version.tar.gz)
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	https://download.samba.org/pub/samba/stable/$name-$version.tar.gz)
 
 build() {
-source /etc/blfs-bootscripts
-wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
 cd $name-$version
 
 
@@ -58,10 +58,7 @@ install -d cups/backend
 ln -v -sf $PKG/usr/bin/smbspool $PKG/usr/lib/cups/backend/smb
 
 # service
-cd $SRC
-
-tar xf $scripts-$scriptsversion.tar.bz2
-cd $SRC/$scripts-$scriptsversion
+cd $SRC/nutyx-${nutyx_version}
 make DESTDIR=$PKG install-samba
 make DESTDIR=$PKG install-winbindd
 
