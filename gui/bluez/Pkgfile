@@ -7,15 +7,13 @@ contributors="Pierre B"
 
 name=bluez
 version=5.46
-release=1
+release=2
+nutyx_version=9.91
 
-source=(http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz
 	http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-obexd_without_systemd-1.patch)
 build() {
-source /etc/blfs-bootscripts
-wget   http://www.linuxfromscratch.org/blfs/downloads/svn/blfs-bootscripts-$scriptsversion.tar.bz2
-tar xvf $scripts-$scriptsversion.tar.bz2
-
 cd $name-$version
 patch -Np1 -i ../$name-$version-obexd_without_systemd-1.patch
 
@@ -72,7 +70,7 @@ install -m644 profiles/network/network.conf \
 install -v -dm755 $PKG/usr/share/doc/$name-$version
 install -v -m644 doc/*.txt $PKG/usr/share/doc/$name-$version
 
-# Startup Script 
-cd ../$scripts-$scriptsversion
+# Service
+cd ../nutyx-${nutyx_version}
 make DESTDIR=$PKG install-bluetooth
 }
