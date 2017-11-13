@@ -9,13 +9,15 @@ contributors="Pierre B, tnut, Greg"
 name=xorg-twm
 _name=twm
 version=1.0.9
-release=1
+release=2
 
-source=(http://ftp.x.org/pub/individual//app/${_name}-$version.tar.bz2)
+source=(system-twm-01.patch
+	http://ftp.x.org/pub/individual//app/${_name}-$version.tar.bz2)
 
 build() {
 
 	cd ${_name}-$version
+	patch -Np1 -i ../system-twm-01.patch
 	sed -i -e '/^rcdir =/s,^\(rcdir = \).*,\1/etc/X11/app-defaults,' src/Makefile.in
 	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
 	

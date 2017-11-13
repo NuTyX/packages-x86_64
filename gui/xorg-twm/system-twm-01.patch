@@ -1,0 +1,24 @@
+diff -Naur twm-1.0.9-original/src/Makefile.in twm-1.0.9/src/Makefile.in
+--- twm-1.0.9-original/src/Makefile.in	2015-04-17 05:36:44.000000000 +0000
++++ twm-1.0.9/src/Makefile.in	2017-11-13 18:55:24.309151455 +0000
+@@ -356,7 +356,7 @@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ AM_YFLAGS = -d
+-rcdir = ${datadir}/X11/twm
++rcdir = /etc/X11/app-defaults
+ dist_rc_DATA = system.twmrc
+ AM_CPPFLAGS = \
+ 	-DXVENDORNAME=\"The\ X.Org\ Foundation\"		\
+diff -Naur twm-1.0.9-original/src/system.twmrc twm-1.0.9/src/system.twmrc
+--- twm-1.0.9-original/src/system.twmrc	2015-04-17 05:36:39.000000000 +0000
++++ twm-1.0.9/src/system.twmrc	2017-11-13 18:50:22.490859332 +0000
+@@ -80,6 +80,8 @@
+ "Show Iconmgr"	f.showiconmgr
+ "Hide Iconmgr"	f.hideiconmgr
+ ""		f.nop
++"Cards"		f.exec "exec sudo flcards &"
++""		f.nop
+ "Xterm"		f.exec "exec xterm &"
+ ""		f.nop
+ "Kill"		f.destroy
