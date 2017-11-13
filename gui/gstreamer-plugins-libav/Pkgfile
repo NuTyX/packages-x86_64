@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=gstreamer-plugins-libav
-version=1.12.2
-release=1
+version=1.12.3
 
 source=(http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-$version.tar.xz )
 
@@ -15,8 +14,8 @@ build() {
 cd gst-*
 
 ./configure --prefix=/usr \
---with-package-name="GStreamer Libav Plugins $version BLFS" \
---with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/"
+--with-package-name="GStreamer Libav Plugins $version NuTyX" \
+--with-package-origin="http://downloads.nutyx.org/"
 make
 make DESTDIR=$PKG install
 }
