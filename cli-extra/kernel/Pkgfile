@@ -15,7 +15,7 @@ PKGMK_GROUPS=(devel doc)
 name=kernel
 alias=(linux)
 
-version=4.13.12
+version=4.14.0
 _version=${version:0:4}
 
 
@@ -24,7 +24,7 @@ _version=${version:0:4}
 
 source=(\
 $url/pub/linux/kernel/v4.x/linux-${_version}.tar.xz
-$url/pub/linux/kernel/v4.x/patch-$version.xz
+# $url/pub/linux/kernel/v4.x/patch-$version.xz
 $name.config $name.config_64)
 
 ## Time to build everything
@@ -65,7 +65,7 @@ esac
 cd $SRC/linux-${_version}
 make INSTALL_MOD_PATH=$PKG modules_install
 
-KERNEL_VERSION="${version}-NuTyX"
+KERNEL_VERSION="${version}-NuTyX-LTS"
 
 # depmod needed
 depmod -b $PKG -a ${KERNEL_VERSION}
@@ -81,14 +81,14 @@ case `uname -m` in
                 cp  .config    \
                 $PKG/boot/config_64-$version
                 cp  arch/x86_64/boot/bzImage \
-                $PKG/boot/kernel-$version-NuTyX ;;
+                $PKG/boot/kernel-$version-NuTyX-LTS ;;
         i?86)
                 cp  System.map \
                 $PKG/boot/System.map-$version
                 cp  .config \
                 $PKG/boot/config-$version
                 cp  arch/i386/boot/bzImage \
-                $PKG/boot/kernel-$version-NuTyX ;;
+                $PKG/boot/kernel-$version-NuTyX-LTS ;;
 esac
 
 # Reorgenise the sources
@@ -116,18 +116,18 @@ if [ "`dirname $LK`" != "." ]; then
   echo "This is a efi installation"
   ln -sf $LK boot/kernel
   if [ -f boot/$LK ]; then' > $PKGMK_ROOT/$name.post-install
-echo "    mv boot/kernel-$version-NuTyX boot/\$LK 2>/dev/null
-    ln -sf \$LK boot/kernel-$version-NuTyX
+echo "    mv boot/kernel-$version-NuTyX-LTS boot/\$LK 2>/dev/null
+    ln -sf \$LK boot/kernel-$version-NuTyX-LTS
   else
     echo \"EFI Partition not found, mount EFI Partition and re-install the kernel\"
   fi
 else
   echo \"This is a bios installation\"
   if [ -L boot/initrd ]; then
-    mkinitramfs $version-NuTyX
-    ln -sf initrd-$version-NuTyX boot/initrd
+    mkinitramfs $version-NuTyX-LTS
+    ln -sf initrd-$version-NuTyX-LTS boot/initrd
   fi
-  ln -sf kernel-$version-NuTyX boot/kernel
+  ln -sf kernel-$version-NuTyX-LTS boot/kernel
 fi" >> $PKGMK_ROOT/$name.post-install
 
 }
