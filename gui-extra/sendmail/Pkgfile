@@ -1,22 +1,21 @@
-# Description: 	The sendmail package contains a Mail Transport Agent (MTA).
-# URL: 			ftp://ftp.sendmail.org/pub/sendmail/
-# Packager: 	berlius at nutyx dot com
-# Depends on: 	ghostscript cyrus-sasl openssl procmail openldap 
+# Depends on: ghostscript cyrus-sasl openssl procmail openldap 
+description="The sendmail package contains a Mail Transport Agent (MTA)."
+url="ftp://ftp.sendmail.org/pub/sendmail/"
+packager="tnut <tnut@nutyx.org>"
+contributors="berlius"
 
 name=sendmail
 version=8.15.2
-release=1
+release=3
+nutyx_version=9.91
 
-source=(ftp://ftp.sendmail.org/pub/$name/$name.$version.tar.gz site.config.m4)
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	ftp://ftp.sendmail.org/pub/$name/$name.$version.tar.gz site.config.m4)
 
 build() {
 
-    cd $name-$version
+	cd $name-$version
     
-    source  /etc/blfs-bootscripts
-	wget http://www.linuxfromscratch.org/blfs/downloads/svn/$scripts-$scriptsversion.tar.bz2
-	tar xvf $scripts-$scriptsversion.tar.bz2 
-
 	cp -v $SRC/site.config.m4 devtools/Site
 
 	sed -i 's|/usr/man/man|/usr/share/man/man|' \
@@ -67,7 +66,8 @@ build() {
 	install -v -m644 op.ps op.txt op.pdf $PKG/usr/share/doc/sendmail-8.15.2 
 	cd ../..
 
-	cd $scripts-$scriptsversion
+	# Service
+	cd $SRC/nutyx-${nutyx_version}
 	make DESTDIR=$PKG install-sendmail
 
 	# Dirty but needed
