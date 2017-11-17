@@ -1,0 +1,23 @@
+# Depends on: luajit giflib librsvg libraw libjpeg-turbo xorg-libxrender xorg-fontconfig gstreamer-plugins-base fribidi poppler pulseaudio xorg-libxp libspectre xorg-libxscrnsaver bullet
+
+description="Enlightenment Foundatation Libraries"
+url="https://www.enlightenment.org"
+packager="tnut <tnut@nutyx.org>"
+
+name=efl
+version=1.20.5
+source=(https://download.enlightenment.org/rel/libs/$name/$name-$version.tar.xz)
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--disable-systemd
+make
+make DESTDIR=$PKG install
+}
+uptodate() {
+local ext url LYNX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.xz"
+url="https://download.enlightenment.org/rel/libs/$name"
+$LYNX $url/?C=M\;O=D|grep "$ext$"|grep "$url/$name-"|sed "s@$ext\$@@"|sed "s@$url/$name-@@"|head -1
+}
