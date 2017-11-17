@@ -1,0 +1,32 @@
+# Depends on: xcb-util xorg-libxss xorg-libxtst xorg-libxrandr xorg-libxinerama xorg-libxcursor xorg-libx11 xorg-libxtst xorg-libxvmc mesa xorg-server
+
+description="Xorg intel video driver."
+packager="tnut <tnut@nutyx.org>"
+name=xorg-xf86-video-intel
+version=20170826
+_name=${name/xorg-/}
+
+source=(http://anduin.linuxfromscratch.org/BLFS/${_name}/${_name}-$version.tar.xz)
+
+build() {
+cd ${_name}-$version
+
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--enable-kms-only \
+--enable-uxa      \
+--mandir=/usr/share/man
+
+make
+
+make DESTDIR=$PKG install
+
+}
+uptodate() {
+local ext url LYNX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.xz"
+url="http://anduin.linuxfromscratch.org/BLFS/${_name}"
+$LYNX $url/|grep "$ext$"|grep "$url/${_name}-"|sed "s@$ext\$@@"|sed "s@$url/${_name}-@@"|tail -1
+}
