@@ -1,0 +1,20 @@
+# Depends on: efl  python-efl xcb-util-keysyms
+
+description="Enlightenment window manager"
+url="http://www.enlightenment.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Berlius, Sh4d0w"
+
+run=(efl python-efl)
+
+name=enlightenment
+version=0.22.0
+
+source=(https://download.enlightenment.org/rel/apps/enlightenment/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
