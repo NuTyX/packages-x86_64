@@ -1,0 +1,16 @@
+# Depends on: python python2 cython efl dbus-python
+description="Python (2 and 3) bindings for efl"
+url="http://www.enlightenment.org/"
+packager="tnut <tnut@nutyx.org>"
+
+name=python-efl
+version=1.20.0
+
+source=(https://download.enlightenment.org/rel/bindings/python/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+/usr/bin/python setup.py build
+/usr/bin/python setup.py install --prefix=/usr --root=$PKG
+/usr/bin/python3 setup.py install --prefix=/usr --root=$PKG
+}
