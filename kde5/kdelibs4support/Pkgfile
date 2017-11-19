@@ -8,12 +8,10 @@ contributors="Pierre B"
 name=kdelibs4support
 version=5.40.0
 
-source=(kdelibs4support-openssl-1.1.patch
-	http://download.kde.org/stable/frameworks/${version%.*}/portingAids/$name-$version.tar.xz)
+source=(http://download.kde.org/stable/frameworks/${version%.*}/portingAids/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-patch -Np1 -i ../kdelibs4support-openssl-1.1.patch
 
 sed -i "s:4.2:4.5:g" cmake/FindDocBookXML4.cmake
 
