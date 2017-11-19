@@ -1,11 +1,10 @@
 description="A simple text editor which aims to replace Pico, the default editor in the Pine package."
 url="http://www.nano-editor.org/"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B, Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Tnut, Greg"
 
 name=nano
-version=2.8.7
-release=1
+version=2.9.0
 
 source=(http://www.nano-editor.org/dist/v${version:0:3}/$name-$version.tar.xz)
 
@@ -23,6 +22,4 @@ make
 make DESTDIR=$PKG install
 
 mkdir -p $PKG/etc/nano
-
-rm $PKG/usr/share/info/dir
 }
