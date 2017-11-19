@@ -7,14 +7,16 @@ packager="tnut <tnut@nutyx.org>"
 run=( startup-notification dbus )
 name=openbox
 version=3.6.1
-release=2
+release=3
 
 source=(http://openbox.org/dist/openbox/$name-$version.tar.gz \
-        openbox.xinitrc)
+        openbox.xinitrc openbox-3.6.1-flcards-1.patch)
 
 build()
 {
    cd $name-$version
+   patch -Np1 -i ../openbox-3.6.1-flcards-1.patch
+
    ./configure --prefix=/usr \
 	--sysconfdir=/etc \
 	--docdir=/usr/share/doc/$name-$version

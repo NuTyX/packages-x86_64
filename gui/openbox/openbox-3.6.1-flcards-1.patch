@@ -1,0 +1,19 @@
+diff -Naur openbox-3.6.1/data/menu.xml openbox-3.6.1-new/data/menu.xml
+--- openbox-3.6.1/data/menu.xml	2009-12-18 19:49:32.000000000 +0100
++++ openbox-3.6.1-new/data/menu.xml	2017-11-19 20:27:49.666604467 +0100
+@@ -365,6 +365,15 @@
+       </startupnotify>
+     </action>
+   </item>
++  <item label="NuTyX Package Manager">
++   <action name="Execute">
++     <command>sudo flcards</command>
++     <startupnotify>
++      <enable>no</enable>
++      <icon>flcards</icon>
++     </startupnotify>
++   </action>
++  </item>
+   <separator />
+   <item label="Reconfigure Openbox">
+     <action name="Reconfigure" />
