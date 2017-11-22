@@ -1,0 +1,15 @@
+description="A full-featured and high-performance event loop"
+url="http://software.schmorp.de/pkg/libev.html"
+
+name=libev
+version=4.24
+
+source=(http://dist.schmorp.de/$name/$name-$version.tar.gz)
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+
+rm $PKG/usr/include/event.h
+}
