@@ -1,4 +1,4 @@
-# Depends on: efl  python-efl xcb-util-keysyms
+# Depends on: efl python-efl xcb-util-keysyms
 
 description="Enlightenment window manager"
 url="http://www.enlightenment.org/"
@@ -8,7 +8,7 @@ contributors="Berlius, Sh4d0w"
 run=(efl python-efl)
 
 name=enlightenment
-version=0.22.0
+version=0.22.1
 
 source=(https://download.enlightenment.org/rel/apps/enlightenment/$name-$version.tar.xz)
 
@@ -17,4 +17,11 @@ cd $name-$version
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
+}
+uptodate() {
+local ext url LYNX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.xz"
+url="https://download.enlightenment.org/rel/apps/$name"
+$LYNX $url/?C=M\;O=D|grep "$ext$"|grep "$url/$name-"|sed "s@$ext\$@@"|sed "s@$url/$name-@@"|head -1
 }
