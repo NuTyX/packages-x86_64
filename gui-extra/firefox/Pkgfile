@@ -7,8 +7,7 @@ contributors="Pierre B"
 
 run=(icu libvpx libevent pulseaudio gconf sqlite libvpx nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav)
 name=firefox
-version=56.0.2
-release=2
+version=57.0
 
 source=( https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.xz)
 
@@ -92,8 +91,6 @@ ac_add_options --enable-optimize="-O2"
 
 
 ac_add_options --enable-official-branding
-ac_add_options --enable-safe-browsing
-ac_add_options --enable-url-classifier
 
 # From firefox-40, using system cairo causes firefox to crash
 # frequently when it is doing background rendering in a tab.
