@@ -6,18 +6,18 @@ contributors="pierre, tnut"
 packager="greg <greg@nutyx.org>"
 
 name=geany
-version=1.31
+version=1.32
 release=1
 
 source=(http://download.$name.org/$name-$version.tar.bz2)
 
 build() {
-
-	cd $name-$version
-
-	./configure --prefix=/usr
-	make
-	make DESTDIR=$PKG install
-	
+cd $name-$version
+./configure --prefix=/usr
+make
 }
 
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+}
