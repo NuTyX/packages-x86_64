@@ -1,14 +1,15 @@
 # Depends on: gtk3 libpcap pcre hicolor-icon-theme
 
-description="Network Sniffer with nice GTK+ UI"
+description="Network Sniffer with nice GTK3 UI"
 url="http://www.wireshark.org"
-packager="fanch,tnut"
+packager="greg<greg@nutyx.org>"
+contributors="fanch,tnut"
 
 name=wireshark
-version=2.2.7
+version=2.4.2
 release=1
 
-source=(https://www.$name.org/download/src/all-versions/$name-$version.tar.bz2)
+source=(https://1.eu.dl.wireshark.org/src/wireshark-$version.tar.xz)
 
 build() {
   cd $name-$version
@@ -16,7 +17,8 @@ build() {
   ./configure --prefix=/usr \
               --with-plugins=/usr/lib/$name/plugins \
               --without-krb5 \
-              --with-qt=no
+              --with-qt=no \
+              --with-gtk=yes
 
   make
   make DESTDIR=$PKG install
