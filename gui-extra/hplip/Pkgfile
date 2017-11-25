@@ -10,10 +10,30 @@ source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
 
 name=hplip
-version=3.17.9
+version=3.17.10
 release=1
 
-source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz
+0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
+disable_upgrade.patch
+)
+
+
+prepare() {
+ cd $name-$version
+ patch -Np0 -i $SRC/disable_upgrade.patch
+ patch -Np1 -i $SRC/0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
+	local i
+	for i in ppd/hpijs/*.ppd.gz ; do
+		rm -f ${i}.temp
+		gunzip -c ${i} | sed 's/foomatic-rip-hplip/foomatic-rip/g' | \
+			gzip > ${i}.temp || return 1
+		mv ${i}.temp ${i}
+	done
+   
+ export AUTOMAKE='automake --foreign'
+ autoreconf --force --install
+}
 
 
 build() {
