@@ -9,15 +9,18 @@ run=(python2-gtk recordmydesktop)
 
 name=gtk-recordmydesktop
 version=0.3.8
-release=3
+release=1
 
-source=(http://download.sourceforge.net/recordmydesktop/$name-$version.tar.gz)
+source=(https://downloads.sourceforge.net/sourceforge/recordmydesktop/$name-$version.tar.gz)
 
 build() {
+cd $name-$version
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+make
+}
 
-  cd $name-$version
-  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-  make
-  make DESTDIR=$PKG install
-  
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+sed -i 's#/usr/bin/python#/usr/bin/python2#' $PKG/usr/bin/gtk-recordMyDesktop
 }
