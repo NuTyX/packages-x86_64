@@ -11,7 +11,7 @@ version=2.54.2
 release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/glib/${version:0:4}/$name-$version.tar.xz
-	http://downloads.nutyx.org/WallPapers/NuTyX-9.91-2.jpg
+	http://downloads.nutyx.org/WallPapers/NuTyX-9.92.jpg
 	glib-revert-warn-glib-compile-schemas.patch)
 
 build () {
@@ -27,7 +27,7 @@ build () {
   make DESTDIR=$PKG install
 
   # Default NuTyX Wallpaper
-  install -D -m644 ../NuTyX-9.91-2.jpg \
+  install -D -m644 ../NuTyX-9.92.jpg \
   $PKG/usr/share/backgrounds/nutyx/nutyx.jpg
 }
 uptodate(){
