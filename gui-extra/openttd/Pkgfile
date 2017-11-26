@@ -8,15 +8,14 @@ packager="greg<greg@nutyx.org>"
 
 
 name=openttd
-version=1.7.0
+version=1.7.1
 release=1
 
 source=(http://binaries.openttd.org/releases/${version}/${name}-${version}-source.tar.xz
-       openttd-1.5.3-gcc6.patch)
+)
 
 build() {
   cd ${name}-${version} 
-  patch -Np1 -i ../openttd-1.5.3-gcc6.patch
  ./configure \
     --prefix-dir=/usr \
     --binary-name=${name} \
@@ -26,7 +25,10 @@ build() {
     --doc-dir=share/doc/${name} \
     --menu-name="OpenTTD" \
     --personal-dir=.${name}    
+make
+}
 
-  make
-  make DESTDIR=$PKG install
+package() {
+cd ${name}-${version}
+make DESTDIR=$PKG install
 }
