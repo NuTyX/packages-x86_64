@@ -1,4 +1,4 @@
-# Depends on: gtk3 keybinder3 ffmpeg imagemagick gstreamer-plugins-good gstreamer-plugins-ugly
+# Depends on: gtk3 keybinder3 ffmpeg imagemagick gstreamer-plugins-good gstreamer-plugins-ugly cmake vala txt2man
 
 description="Simple screen recorder with an easy to use interface"
 url="https://github.com/phw/peek"
@@ -6,10 +6,10 @@ packager="greg <greg@nutyx.org>"
 contributors=""
 
 name=peek
-version=1.0.3
+version=1.2.0
 release=1
 
-source=(https://github.com/phw/peek/archive/v$version.tar.gz)
+source=(https://github.com/phw/$name/archive/$version.tar.gz)
 
 
 prepare() {
@@ -21,7 +21,9 @@ build() {
   cmake $SRC/${name}-${version} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_TESTS=ON \
-    -DGSETTINGS_COMPILE=OFF
+    -DCMAKE_BUILD_TYPE=Release \
+    -DGSETTINGS_COMPILE=OFF \
+    -DENABLE_FILECHOOSERNATIVE=ON
   make
 }
 
