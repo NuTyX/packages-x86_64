@@ -1,13 +1,15 @@
-# Depends on: extra-cmake-modules kdoctools libkdegames knotifyconfig xdg-utils ki18n
+# Depends on: shared-mime-info extra-cmake-modules kdoctools libkdegames knotifyconfig xdg-utils ki18n
 
 description="Offers a selection of solitaire card games"
 url="http://kde.org/applications/games/kpatience/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
-run=(xdg-utils)
+
+run=(shared-mime-info xdg-utils)
 
 name=kpat
 version=17.08.3
+release=2
 
 source=(http://download.kde.org/stable/applications/${version}/src/${name}-${version}.tar.xz)
 
