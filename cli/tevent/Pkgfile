@@ -6,8 +6,8 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=tevent
-version=0.9.33
-release=1
+version=0.9.34
+
 source=(https://www.samba.org/ftp/$name/$name-$version.tar.gz)
 
 build() {
@@ -17,4 +17,11 @@ cd $name-$version
 --builtin-libraries=replace
 make
 make DESTDIR=$PKG install
+}
+uptodate() {
+local ext url LYNX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.gz"
+url="https://www.samba.org/ftp/$name"
+$LYNX $url/?C=M\;O=D|grep "$ext$"|grep "$url/$name-"|sed "s@$ext\$@@"|sed "s@$url/$name-@@"|head -1
 }
