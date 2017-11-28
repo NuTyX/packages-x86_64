@@ -1,4 +1,4 @@
-# Depends on: sane dconf gtk3 colord libgusb
+# Depends on: sane dconf gtk3 colord libgusb ninja meson yelp-tools
 
 description="Simple scanning utility"
 url="https://launchpad.net/simple-scan"
@@ -6,35 +6,29 @@ packager="greg<greg@nutyx.org>"
 contributors="Pierre B."
 
 name=simple-scan
-version=3.24.1
+version=3.26.2
 release=1
 
 source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 prepare() {
 
-	cd $name-$version
-	touch src/*.vala
+mkdir $SRC/build
 
 }
 
 
 build() {
 
-	cd $name-$version
-
-	./configure \
-		--prefix=/usr \
-		--disable-schemas-compile \
-		--disable-packagekit
-    
-  make
-
+	cd $SRC/build
+	nutyx-meson ../$name-$version
+	ninja 
+	
 }
 
 package() {
 
-cd $name-$version
-make DESTDIR=$PKG install
+	cd $SRC/build
+	DESTDIR=$PKG ninja install
 
 }
