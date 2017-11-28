@@ -1,13 +1,15 @@
-# Depends on: gtk3 libpcap pcre hicolor-icon-theme
+# Depends on: shared-mime-info gtk3 libpcap pcre hicolor-icon-theme
 
 description="Network Sniffer with nice GTK3 UI"
 url="http://www.wireshark.org"
-packager="greg<greg@nutyx.org>"
-contributors="fanch,tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="fanch,tnut,Greg"
 
 name=wireshark
 version=2.4.2
-release=1
+release=2
+
+run=(shared-mime-info)
 
 source=(https://1.eu.dl.wireshark.org/src/wireshark-$version.tar.xz)
 
