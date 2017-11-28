@@ -1,4 +1,4 @@
-# Depends on: sane dconf gtk3 colord libgusb ninja meson
+# Depends on: sane dconf gtk3 colord libgusb
 
 description="Simple scanning utility"
 url="https://launchpad.net/simple-scan"
@@ -6,30 +6,35 @@ packager="greg<greg@nutyx.org>"
 contributors="Pierre B."
 
 name=simple-scan
-version=3.26.2
+version=3.24.1
 release=1
 
 source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 prepare() {
-	
-  mkdir build
-  cd $name-$version
-  
+
+	cd $name-$version
+	touch src/*.vala
+
 }
 
 
 build() {
 
-	cd build
-	meson ../$name-$version
-	ninja
+	cd $name-$version
+
+	./configure \
+		--prefix=/usr \
+		--disable-schemas-compile \
+		--disable-packagekit
+    
+  make
 
 }
 
 package() {
 
-	cd build
-	DESTDIR=$PKG ninja install
+cd $name-$version
+make DESTDIR=$PKG install
 
 }
