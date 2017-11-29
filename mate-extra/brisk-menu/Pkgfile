@@ -1,16 +1,36 @@
-# Depends on: mate-desktop mate-menus mate-panel
+# Depends on: mate-desktop mate-menus mate-panel meson ninja python gettext
 
 description="Brisk menu an efficient menu for the MATE"
 url="https://github.com/solus-project/brisk-menu"
-packager="jayce <jayce.net@gmail.com>"
+packager="greg <greg@nutyx.org>"
+contributors="jayce"
 
 name=brisk-menu
-version=0.4.5
+version=0.5.0
 release=1
 
-source=(https://github.com/solus-project/$name/releases/download/v$version/$name-$version.tar.xz)
+source=(https://github.com/solus-project/$name/archive/v$version.tar.gz)
+
+build() {
+	cd $name-$version
+	mkdir build
+	meson build \
+		--prefix=/usr \
+		--bindir=/usr/bin \
+		--libexecdir=/usr/lib/$name-$version
+	ninja -C build
+}
+
+
+package() {
+	
+	cd $name-$version/build
+	DESTDIR=$PKG ninja install
+}
+
 
 uptodate() {
+	
 feed=https://github.com/solus-project/$name/releases.atom 
 exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
 ligne=1 # nombre de notification ? afficher
@@ -19,5 +39,6 @@ sed "s@<title>@@" | \
 sed "s@</title>@@" | \
 sed "s@Brisk Menu @@" | sed "s@ @@g" | \
 head -n $(($ligne+1 )) | \
-tail -n $(($ligne)) 
+tail -n $(($ligne))
+ 
 }
