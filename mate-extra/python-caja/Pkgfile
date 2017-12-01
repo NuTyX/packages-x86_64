@@ -7,7 +7,7 @@ contributors="fanch,tnut,jayce"
 
 name=python-caja
 version=1.18.1
-release=1
+release=2
 
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
@@ -18,6 +18,7 @@ build() {
           --prefix=/usr
           
   make
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make DESTDIR=$PKG install
   
 }
