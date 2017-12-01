@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 run=(icu libvpx libevent pulseaudio gconf sqlite libvpx nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav)
 name=firefox
-version=57.0
+version=57.0.1
 
 source=( https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.xz)
 
@@ -16,7 +16,7 @@ build() {
 cd $SRC
 ARCH=`uname -m`
 
-for lang in da de es-ES fi fr it nb-NO nl pt-PT ru sv-SE tr
+for lang in ar da de es-ES fi fr it nb-NO nl pt-PT ru sv-SE tr
 do 
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$ARCH/xpi/$lang.xpi
 done
@@ -146,7 +146,7 @@ do
       $PKG/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png
 done
 
-for lang in da de tr es-ES fi fr it nb-NO nl pt-PT sv-SE
+for lang in ar da de tr es-ES fi fr it nb-NO nl pt-PT ru sv-SE tr
 do 
 install -Dm644 $SRC/$lang.xpi \
     $PKG/usr/lib/firefox-$version/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
