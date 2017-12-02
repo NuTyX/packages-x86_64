@@ -1,0 +1,29 @@
+# Depends on: python2-setuptools python2
+
+description="USB access on Python"
+url="https://github.com/pyusb/pyusb"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+name=python2-pyusb
+_name=pyusb
+version=1.0.2
+release=1
+
+source=(https://pypi.org/packages/source/p/${_name}/${_name}-${version}.tar.gz
+)
+
+prepare() {
+
+	cp -r ${_name}-${version} python2-${_name}-${version}
+
+}
+
+build() {
+
+	cd $SRC/python2-${_name}-${version}
+	python2 setup.py install --root=$PKG --optimize=1
+  
+}
+
+        
