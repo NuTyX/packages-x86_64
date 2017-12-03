@@ -1,0 +1,29 @@
+#Depends on: cups ghostscript
+
+description="A virtual printer for cups to produce PDF files."
+url="http://www.ciups-pdf.de/"
+packager="Hugo <hugo@nutyx.org>"
+
+name=cups-pdf
+version=3.0.1
+release=1
+
+source=(http://www.cups-pdf.de/src/cups-pdf_$version.tar.gz)
+
+build(){
+ cd $name-$version/src
+ gcc $CFLAGS -s cups-pdf.c -o cups-pdf -lcups
+
+ cd ../extra
+ install -D -m644 CUPS-PDF_noopt.ppd $PKG/usr/share/cups/model/CUPS-PDF_noopt.ppd
+ install -D -m644 CUPS-PDF_opt.ppd $PKG/usr/share/cups/model/CUPS-PDF_opt.ppd
+
+ # Install config file
+ install -D -m644 cups-pdf.conf $PKG/etc/cups/cups-pdf.conf
+
+ # Install docs
+ install -D -m 644 ../README $PKG/usr/share/doc/$name/README
+  
+ # use lp group from cups pkg FS#36769
+ chgrp -R lp $PKG/etc/cups
+}
