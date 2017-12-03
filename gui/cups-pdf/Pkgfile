@@ -22,7 +22,7 @@ build(){
  install -D -m644 cups-pdf.conf $PKG/etc/cups/cups-pdf.conf
 
  # Install docs
- install -D -m 644 ../README $PKG/usr/share/doc/$pkgname/README
+ install -D -m 644 ../README $PKG/usr/share/doc/$name/README
   
  # use lp group from cups pkg FS#36769
  chgrp -R lp $PKG/etc/cups
