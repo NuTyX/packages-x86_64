@@ -1,0 +1,40 @@
+# Depends on: python2-setuptools enchant python2
+
+description=""
+url="https://pypi.python.org/pypi/pyenchant"
+packager="greg<greg@nutyx.org"
+
+name=python2-pyenchant
+version=1.6.11
+release=1
+
+run=(python2-setuptools python2)
+
+source=(https://pypi.python.org/packages/f3/00/c04496277b1e681d0f500baf7ac8f3c7f1d21b9ea97ed951ed4ac5635fda/pyenchant-1.6.11.tar.gz
+0001-Add-enchant-2-compatibility.patch
+)
+
+prepare() {
+
+	cd pyenchant-$version
+	patch -Np1 -i $SRC/0001-Add-enchant-2-compatibility.patch
+
+}
+
+
+build() {
+
+	cp -r  pyenchant-${version} pyenchant2-${version}
+	cd $SRC/pyenchant2-${version}
+	python2 setup.py build
+
+}
+
+
+package() {
+
+	cd $SRC/pyenchant2-${version} 
+	python2 setup.py install --root=$PKG --optimize=1
+	
+}
+
