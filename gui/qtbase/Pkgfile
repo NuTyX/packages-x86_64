@@ -6,11 +6,12 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=qtbase
-version=5.9.3
+version=5.10.0
+release=2
 
-_name="${name}-opensource-src"
+_name="${name}-everywhere-src"
 
-source=(https://download.qt.io/official_releases/qt/5.9/$version/submodules/${_name}-${version}.tar.xz)
+source=(https://download.qt.io/official_releases/qt/5.10/$version/submodules/${_name}-${version}.tar.xz)
 
 
 build() {
@@ -19,10 +20,6 @@ QT5PREFIX=/usr
 QT5BINDIR=$QT5PREFIX/bin/qt
 
 cd ${_name}-${version}
-
-echo "INCLUDEPATH += /usr/include/openssl-1.0" >> \
-	src/network/network.pro
-export OPENSSL_LIBS='-L/usr/lib/openssl-1.0 -lssl -lcrypto'
 
 ./configure -prefix         /usr                        \
             -sysconfdir     /etc/xdg                    \
@@ -57,11 +54,6 @@ export OPENSSL_LIBS='-L/usr/lib/openssl-1.0 -lssl -lcrypto'
             -system-sqlite      \
             -system-freetype    \
 	    -no-rpath
-for FILE in src/network/ssl/*.h src/network/ssl/*.cpp
-do
-   sed -i "s@<openssl/@<openssl-1.0/@" $FILE
-done
-
 make
 make INSTALL_ROOT=$PKG install
 
