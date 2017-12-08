@@ -1,0 +1,21 @@
+contributors="Greg"
+packager="remy <remy@nutyx.org>"
+description="Cross-platform asynchronous I/O"
+url="https://github.com/"
+
+name=libuv
+version=1.18.0
+
+source=($url$name/$name/archive/v$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+
+sh autogen.sh
+./configure --prefix=/usr \
+            --disable-static
+            
+make
+
+make DESTDIR=$PKG install
+}
