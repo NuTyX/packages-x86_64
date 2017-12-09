@@ -6,23 +6,27 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
 name=poppler-qt
-version=0.57.0
-release=1
+version=0.62.0
 
 source=(http://poppler.freedesktop.org/poppler-$version.tar.xz)
 
 build() {
     cd poppler-$version
-    ./configure --prefix=/usr             \
-            --sysconfdir=/etc             \
-            --disable-static              \
-            --enable-cmyk                 \
-            --enable-qt                  \
-            --disable-qt4                 \
-            --disable-glib                \
-            --enable-xpdf-headers
+
+    mkdir build
+    cd    build
+
+cmake   -DCMAKE_BUILD_TYPE=Release   \
+        -DCMAKE_INSTALL_PREFIX=/usr  \
+        -DTESTDATADIR=$PWD/testfiles \
+        -DENABLE_XPDF_HEADER=OFF     \
+	-DENABLE_QT=ON               \
+	-DENABLE_QT4=OFF             \
+	-DENABLE_GLIB=OFF            \
+	-DENABLE_GTK_DOC=OFF         \
+        ..
+
     make
-    make -C poppler DESTDIR=$PKG install-libLTLIBRARIES
     make -C qt5 DESTDIR=$PKG install
 
     mkdir -p $PKG/usr/lib/pkgconfig
