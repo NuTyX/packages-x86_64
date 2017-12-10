@@ -1,0 +1,37 @@
+# Depends on: desktop-file-utils gstreamer gstreamer-plugins-ugly gstreamer-plugins-bad gtk3 gobject-introspection gstreamer-plugins-base gstreamer-plugins-good json-glib gnome-common meson gettext appstream-glib vala yelp-tools ninja
+
+description="A GTK3 app for finding and listening to internet radio stations"
+url="https://github.com/haecker-felix/gradio"
+packager="greg<greg@nutyx.org"
+
+name=gradio
+version=6.0.2
+release=1
+
+run=()
+
+source=(https://github.com/haecker-felix/$name/archive/v$version.tar.gz
+)
+
+prepare() {
+
+cd $SRC/$name-$version
+
+}
+
+
+build() {
+
+cd $SRC/$name-$version
+meson builddir --prefix=/usr
+
+}
+
+
+package() {
+
+cd $SRC/$name-$version 
+DESTDIR=$PKG ninja -C builddir install
+	
+}
+
