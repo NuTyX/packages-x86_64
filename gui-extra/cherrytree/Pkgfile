@@ -1,0 +1,24 @@
+# Depends on: python2-gtksourceview2 dbus-python p7zip python2 python2-gtk 
+
+description="Prise de note" 
+url="https://www.giuspen.com/cherrytree/" 
+packager="indoo@nutyx.org" 
+contributors="indoo"
+
+name=cherrytree 
+version=0.38.3 
+run=( python2-gtksourceview2 dbus-python p7zip python2 python2-gtk)
+release=1
+
+source=(https://github.com/giuspen/$name/archive/$version.tar.gz )
+
+build() { 
+cd $name-$version 
+sed -r -e '/\bupdate-desktop-database\b/d' -i -- 'setup.py' || die 
+python2 setup.py build 
+}
+ 
+package() { 
+cd $name-$version 
+python2 setup.py install --root=$PKG --optimize=1 
+}
