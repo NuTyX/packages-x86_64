@@ -1,0 +1,39 @@
+# Depends on: sdl-net zlib sdl-mixer libglade libpng alsa-lib xorg-glu
+
+description="Emulator with builtin DOS for running DOS Games"
+url="http://dosbox.sourceforge.net/"
+packager="greg<greg@nutyx.org"
+
+name=dosbox
+version=0.74
+release=1
+
+run=()
+
+source=(http://download.sourceforge.net/$name/$name-$version.tar.gz
+)
+
+prepare() {
+
+cd $name-$version
+
+}
+
+
+build() {
+
+cd $name-$version
+./configure --prefix=/usr --mandir=/usr/man
+sed -i '23a#include <cstddef>' include/dos_inc.h
+make
+
+}
+
+
+package() {
+
+cd $name-$version
+make DESTDIR=$PKG install
+	
+}
+
