@@ -1,0 +1,24 @@
+# Depends on: gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache gconf gtk3 guile libcanberra librsvg yelp-tools                                                             
+
+description="A gnome card patience game" 
+url="https://www.gnome.org/"
+contributors=""
+packager="remy<remy@nutyx.org>"
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache guile)
+name=aisleriot
+version=3.22.4
+release=1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+
+cd $name-$version
+
+./configure --prefix=/usr \
+            --with-card-theme-formats=svg
+
+
+make
+make DESTDIR=$PKG install
+}
