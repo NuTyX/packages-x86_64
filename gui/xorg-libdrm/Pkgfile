@@ -2,13 +2,13 @@
 
 description="Provides a userspace library for accessing the DRM, direct rendering manager"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, tnut"
 
 
 name=xorg-libdrm
 _name=libdrm
-version=2.4.84
+version=2.4.88
 
 alias=(libdrm)
 
@@ -25,4 +25,12 @@ cd ${_name}-$version
 make
 make DESTDIR=$PKG install
 
+}
+uptodate() {
+local ext url name LINX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.gz"
+url="https://dri.freedesktop.org/${_name}/"
+name="libdrm-"
+$LYNX $url/?C=N\;O=A|grep "$ext$"|grep "$url/$name"|sed "s@$ext\$@@"|sed "s@$url/$name@@"|tail -1
 }
