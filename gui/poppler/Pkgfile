@@ -1,4 +1,4 @@
-# Depends on: xorg-libxxf86vm libpng xorg-fontconfig libjpeg-turbo cairo libxml2 openjpeg lcms2 
+# Depends on: cmake xorg-libxxf86vm libpng xorg-fontconfig libjpeg-turbo cairo libxml2 openjpeg2 lcms2 
 
 description="PDF rendering library based on xpdf 3.0"
 url="http://poppler.freedesktop.org/"
@@ -7,8 +7,7 @@ contributors="Alienus"
 
 dataversion=0.4.8
 name=poppler
-version=0.57.0
-release=2
+version=0.62.0
 
 source=(
 http://poppler.freedesktop.org/$name-$version.tar.xz
@@ -16,18 +15,19 @@ http://poppler.freedesktop.org/poppler-data-$dataversion.tar.gz)
 
 build() {
 cd poppler-$version
-sed -i "/was moved/s/^/#/" ltmain.sh 
-./configure --prefix=/usr      \
-	--sysconfdir=/etc      \
-	--disable-static       \
-	--enable-build-type=release \
-	--enable-cmyk               \
-	--enable-xpdf-headers
+mkdir build
+cd    build
+
+cmake   -DCMAKE_BUILD_TYPE=Release   \
+	-DCMAKE_INSTALL_PREFIX=/usr  \
+	-DTESTDATADIR=$PWD/testfiles \
+	-DENABLE_XPDF_HEADER=ON      \
+	..
 
 make
 make DESTDIR=$PKG install
 
-cd ../poppler-data-$dataversion
+cd ../../poppler-data-$dataversion
 make prefix=/usr DESTDIR=$PKG install
 
 rm -f $PKG/usr/lib/pkgconfig/poppler-{glib,qt4,qt}.pc

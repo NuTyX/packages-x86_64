@@ -1,16 +1,29 @@
-contributors="Pierre B, Tnut, Greg"
-packager="tnut <tnut@nutyx.org>"
-description="Generate Makefiles and aims to be platform- and compiler-independent."
-url="http://www.cmake.org"
+# Depends on: libuv
+
+description="A cross-platform open-source make system"
+url="http://www.cmake.org/"
+packager="greg<greg@nutyx.org"
 
 name=cmake
-version=3.9.4
+version=3.10.0
+release=1
 
-source=($url/files/v${version%.*}/$name-$version.tar.gz)
+run=()
+
+source=($url/files/v${version%.*}/$name-$version.tar.gz
+)
+
+prepare() {
+
+    cd cmake-3.10.0
+    # Traitement en amont de la construction
+
+}
+
 
 build() {
+
 cd $name-$version
-sed -i '/CMAKE_USE_LIBUV 1/s/1/0/' CMakeLists.txt
 sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake
 
 ./bootstrap --prefix=/usr \
@@ -22,5 +35,14 @@ sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake
 
 make
 
-make DESTDIR=$PKG install
+
 }
+
+
+package() {
+
+    cd $name-$version
+	make DESTDIR=$PKG install   
+	
+}
+
