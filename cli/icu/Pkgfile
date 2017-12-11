@@ -1,20 +1,18 @@
 description="The International Components for Unicode (ICU) package is a mature, widely used set of C/C++ libraries"
 url="http://www.icu-project.org/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="remy <remy@nutyx.org>"
+contributors="Pierre B, tnut"
 
 name=icu
-version=59.1
-release=2
+version=60.1
+release=1
 
-source=(icu-59.1-glibc-2.26-1.patch
-http://download.$name-project.org/files/icu4c/$version/icu4c-${version//./_}-src.tgz)
+source=(http://download.$name-project.org/files/icu4c/$version/icu4c-${version//./_}-src.tgz)
 
 build () {
 cd $name
-patch -Np1 -i ../icu-59.1-glibc-2.26-1.patch
 cd source
-CC=gcc CXX=g++ ./configure --prefix=/usr
+./configure --prefix=/usr
 
 make
 
