@@ -1,4 +1,4 @@
-# Depends on: cmake lcms2 libpng libtiff
+# Depends on: cmake lcms2 libpng libtiff doxygen
 
 description="OpenJPEG is an open-source implementation of the JPEG-2000 standard."
 url="http://www.ijg.org/"
@@ -6,21 +6,21 @@ packager="tnut <tnut@nutyx.org>"
 
 _name=openjpeg
 name=openjpeg2
-version=2.1.2
-release=1
+version=2.3.0
 
-source=()
+PKGKMK_KEEP_SOURCES="no"
+
+source=(https://github.com/uclouvain/openjpeg/archive/v$version/${_name}-$version.tar.gz)
 
 build() {
-	wget -c https://github.com/uclouvain/openjpeg/archive/v$version.tar.gz \
-     -O openjpeg-$version.tar.gz
-	tar xf openjpeg-$version.tar.gz
-	cd openjpeg-$version
-	mkdir -v build
-	cd build
-	cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
-	make
-	make DESTDIR=$PKG install
+cd openjpeg-$version
+
+mkdir -v build
+cd build
+
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
+make
+make DESTDIR=$PKG install
 	pushd ../doc
 	for man in man/man?/* ; do
 		install -v -D -m 644 $man $PKG/usr/share/$man
