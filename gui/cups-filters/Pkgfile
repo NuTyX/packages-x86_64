@@ -1,4 +1,4 @@
-# Depends on: bc cups lcms2 poppler qpdf libjpeg-turbo libpng libtiff ghostscript avahi ijs harfbuzz 
+# Depends on: glib cups lcms2 poppler mupdf qpdf libjpeg-turbo libpng libtiff ghostscript avahi ijs harfbuzz 
 
 description="OpenPrinting CUPS Filters"
 url="http://www.cups.org"
@@ -6,19 +6,17 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=cups-filters
-version=1.11.3
-release=1
+version=1.17.9
 
 source=( http://www.openprinting.org/download/$name/$name-$version.tar.xz)
 build() {
+unset MAKEFLAGS
 cd $name-$version
 ./configure --prefix=/usr                   \
             --sysconfdir=/etc               \
             --localstatedir=/var            \
             --without-rcdir                 \
             --disable-static                \
-            --with-gs-path=/usr/bin/gs      \
-            --with-pdftops-path=/usr/bin/gs \
             --docdir=/usr/share/doc/$name-$version
 make
 make DESTDIR=$PKG install
