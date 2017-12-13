@@ -1,4 +1,4 @@
-# Depends on: cmake xorg-libxxf86vm libpng xorg-fontconfig libjpeg-turbo cairo libxml2 openjpeg2 lcms2 
+# Depends on: nss cmake xorg-libxxf86vm libpng xorg-fontconfig libjpeg-turbo cairo libxml2 lcms2 gobject-introspection gtk3 openjpeg2
 
 description="PDF rendering library based on xpdf 3.0"
 url="http://poppler.freedesktop.org/"
@@ -8,6 +8,7 @@ contributors="Alienus"
 dataversion=0.4.8
 name=poppler
 version=0.62.0
+release=2
 
 source=(
 http://poppler.freedesktop.org/$name-$version.tar.xz
@@ -21,7 +22,7 @@ cd    build
 cmake   -DCMAKE_BUILD_TYPE=Release   \
 	-DCMAKE_INSTALL_PREFIX=/usr  \
 	-DTESTDATADIR=$PWD/testfiles \
-	-DENABLE_XPDF_HEADER=ON      \
+	-DENABLE_XPDF_HEADERS=ON      \
 	..
 
 make
