@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=ghostscript
-version=9.21
-release=1
+version=9.22
 
 source=( https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${version/./}/$name-$version.tar.gz
          http://downloads.sourceforge.net/gs-fonts/ghostscript-fonts-std-8.11.tar.gz
@@ -17,9 +16,10 @@ unset MAKEFLAGS
 
 build() {
 cd $name-$version
-rm -rf freetype lcms2 jpeg libpng
+rm -rf freetype lcms2 jpeg libpng zlib
 ./configure --prefix=/usr \
 	--enable-dynamic \
+	--disable-compile-inits \
 	--with-system-libtiff
 make
 make so
