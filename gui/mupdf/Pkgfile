@@ -1,0 +1,34 @@
+# Depends on: harfbuzz libjpeg-turbo openjpeg2 xorg-libx11 xorg-libxcursor xorg-libxext xorg-libxrandr xorg-libxinerama
+
+description="Lightweight PDF and XPS viewer"
+url="http://www.mupdf.com"
+packager="tnut <tnut@nutyx.org>"
+
+name=mupdf
+version=1.11
+
+source=(http://www.mupdf.com/downloads/archive/$name-$version-source.tar.gz
+	http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-shared_libs-1.patch
+	http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-openjpeg-3.patch)
+
+build() {
+unset MAKEFLAGS
+cd $name-$version-source
+
+for i in curl freetype harfbuzz jpeg libjpeg openjpeg zlib
+do
+   rm -rf thirdparty/$i
+done
+
+patch -Np1 -i ../$name-$version-openjpeg-3.patch
+patch -Np1 -i ../$name-$version-shared_libs-1.patch
+
+
+make build=release
+
+make prefix=$PKG/usr build=release \
+docdir=$PKG/usr/share/doc/$name-$version \
+install
+
+ln -svf mupdf-x11-curl $PKG/usr/bin/mupdf
+}
