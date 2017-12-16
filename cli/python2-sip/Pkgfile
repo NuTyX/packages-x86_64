@@ -5,14 +5,13 @@ url="http://www.riverbankcomputing.co.uk/software/sip/intro"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-name=sip
-version=4.19.3
-release=1
+name=python2-sip
+version=4.19.6
 
 source=(http://sourceforge.net/projects/pyqt/files/sip/sip-$version/sip-$version.tar.gz )
 
 build() {
-	cd $name-$version
+	cd sip-$version
 	python configure.py -b /usr/bin \
 	-d /usr/lib/python2.7/site-packages \
 	-e /usr/include/python2.7 \
