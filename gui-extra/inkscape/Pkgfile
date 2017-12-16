@@ -7,24 +7,27 @@ contributors="Pierre B, tnut"
 
 name=inkscape
 version=0.92.2
-release=1
+release=2
 
-source=(https://media.inkscape.org/dl/resources/file/$name-$version.tar.bz2)
+source=(https://media.inkscape.org/dl/resources/file/$name-$version.tar.bz2
+	http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-use_versioned_ImageMagick6-1.patch
+	http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-poppler-1.patch)
 
 build() {
   
   cd $name-$version
-  
-  ./autogen.sh
-  ./configure \
-	--prefix=/usr \
-	--with-python \
-	--with-perl   \
-	--enable-lcms \
-	--enable-poppler-cairo \
-	--disable-strict-build \
-	--disable-dependency-tracking
-	
+
+  patch -Np1 -i ../$name-$version-use_versioned_ImageMagick6-1.patch
+  patch -Np1 -i ../$name-$version-poppler-1.patch
+
+  sed -i 's| abs(| std::fabs(|g' src/ui/tools/flood-tool.cpp
+
+  mkdir build
+  cd build
+
+  cmake -DMAKE_INSTALL_PREFIX=/usr \
+	-DMAKE_BUILD_TYPE=Release  \
+ 	..
    make
    make DESTDIR=$PKG install
 }
