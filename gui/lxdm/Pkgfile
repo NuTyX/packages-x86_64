@@ -11,11 +11,13 @@ run=(consolekit2 librsvg)
 name=lxdm
 version=0.5.3
 release=7
-source=(http://downloads.sourceforge.net/$name/$name-$version.tar.xz)
+source=(lxdm-0.5.3-sessions-1.patch login.png nutyx.svg
+	http://downloads.sourceforge.net/$name/$name-$version.tar.xz)
 
 build() {
 
 cd $name-$version
+patch -Np1 -i ../lxdm-0.5.3-sessions-1.patch
 cat > pam/lxdm << "EOF"
 # Begin /etc/pam.d/lxdm
 
@@ -49,6 +51,13 @@ sed -e 's/^bg/#&/'        \
 make
   
 make DESTDIR=$PKG install
+for i in nutyx.svg login.png
+do
+   cp ../$i \
+   $PKG/usr/share/lxdm/themes/Industrial/$i
+done
+
+
 # lxdm.conf created in post if needed
 # Let keep it as an example
 mv $PKG/etc/lxdm/lxdm.conf{,.example}
