@@ -8,10 +8,10 @@ packager="tnut <tnut@nutyx.org>"
 
 name=glib
 version=2.54.2
-release=2
+release=3
 
 source=(http://ftp.gnome.org/pub/gnome/sources/glib/${version:0:4}/$name-$version.tar.xz
-	http://downloads.nutyx.org/WallPapers/NuTyX-9.92.jpg
+	http://downloads.nutyx.org/WallPapers/NuTyX-vide.jpg
 	glib-revert-warn-glib-compile-schemas.patch)
 
 build () {
@@ -27,7 +27,7 @@ build () {
   make DESTDIR=$PKG install
 
   # Default NuTyX Wallpaper
-  install -D -m644 ../NuTyX-9.92.jpg \
+  install -D -m644 ../NuTyX-vide.jpg \
   $PKG/usr/share/backgrounds/nutyx/nutyx.jpg
 }
 uptodate(){
