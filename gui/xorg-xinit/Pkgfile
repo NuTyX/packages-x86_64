@@ -1,4 +1,4 @@
-# Depends on: xorg-server xorg-xauth xorg-xrdb xorg-xmodmap
+# Depends on: xorg-server xorg-xauth xorg-xrdb xorg-xmodmap xorg-twm xorg-term xorg-xclock
 
 description="The xinit package contains a usable script to start the xserver."
 url="https://xorg.freedesktop.org/"
@@ -6,11 +6,11 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 _name=xinit
-run=(xorg-xauth xorg-xrdb xorg-xmodmap)
+run=(xorg-xauth xorg-xrdb xorg-xmodmap xorg-twm xorg-term xorg-xclock)
 
 name=xorg-xinit
 version=1.3.4
-release=3
+release=4
 
 source=(http://ftp.x.org/pub/individual//app/${_name}-$version.tar.bz2)
 
@@ -18,7 +18,7 @@ build() {
 
 	cd ${_name}-$version
 	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
-	--with-xorg-xinitdir=/etc/X11/app-defaults
+	--with-xinitdir=/etc/X11/app-defaults
 	
 	make
 	make DESTDIR=$PKG install
