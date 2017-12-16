@@ -1,0 +1,25 @@
+# Depends on: dbus-python python2-sip qtbase
+
+description="connector python for qt"
+url="http://www.riverbankcomputing.co.uk/software/pyqt/intro"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=python2-qt
+version=5.9.2
+
+source=(http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-$version/PyQt5_gpl-$version.tar.gz)
+build() {
+cd PyQt5_gpl-$version
+
+python configure.py   \
+     -v /usr/share/sip \
+     -q /usr/bin/qmake \
+     --confirm-license \
+     --qsci-api
+
+find -name 'Makefile' | xargs sed -i 's|-Wl,-rpath,/usr/lib||g;s|-Wl,-rpath,.* ||g'
+make
+make DESTDIR=$PKG INSTALL_ROOT=$PKG install
+
+}
