@@ -8,31 +8,28 @@ contributors=""
 run=()
 
 name=qtwebkit
-version=5.212.0-alpha2
+version=5.9.0
 release=1
 
-source=(https://github.com/annulen/webkit/archive/$name-$version.tar.gz
-qt5-webkit-gcc7.patch)
-
-prepare() {
-mkdir -p build
-cd webkit-qtwebkit-$version
-patch -p1 -i ../qt5-webkit-gcc7.patch
-}
+source=(https://download.qt.io/community_releases/5.9/$version-final/$name-opensource-src-$version.tar.xz
+	http://www.linuxfromscratch.org/patches/blfs/svn/qtwebkit-5.9.0-icu_59-1.patch)
 
 build() {
-cd build
-cmake ../webkit-qtwebkit-$version \
--DCMAKE_INSTALL_PREFIX=/usr \
--DCMAKE_BUILD_TYPE=Release \
--DPORT=Qt \
--DENABLE_TOOLS=OFF
- make
-}
 
-package() {
+cd $name-opensource-src-$version
+
+patch -p1 -i ../qtwebkit-5.9.0-icu_59-1.patch
+sed -e '/CONFIG/a QMAKE_CXXFLAGS += -Wno-expansion-to-defined' \
+-i Tools/qmake/mkspecs/features/unix/default_pre.prf
+
+mkdir build
 cd build
-make DESTDIR=$PKG install
+
+qmake ../WebKit.pro
+make
+
+make INSTALL_ROOT=$PKG install 
+
 }
 
 uptodate() {
