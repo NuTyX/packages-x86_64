@@ -1,17 +1,17 @@
-# Depends on: sip avahi python ghostscript foomatic-db foomatic-db-engine usbutils sane cups cups-filters libusb-compat net-snmp dbus-python python2-gobject2 python2-notify
+# Depends on: python2-sip avahi python ghostscript foomatic-db foomatic-db-engine usbutils sane cups cups-filters libusb-compat net-snmp dbus-python python2-gobject2 python2-notify python2-qt python2-qt4
 
 description="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet"
 url="http://hplipopensource.com"
 contributors="tnut"
 packager="greg<greg@nutyx.org>"
 
+run=(python2-sip dbus-python python2-qt python2-gobject2 python2-notify python2-qt4)
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
 
 name=hplip
-version=3.17.10
-release=1
+version=3.17.11
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz
 0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
@@ -19,42 +19,19 @@ disable_upgrade.patch
 )
 
 
-prepare() {
- cd $name-$version
- patch -Np0 -i $SRC/disable_upgrade.patch
- patch -Np1 -i $SRC/0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
-	local i
-	for i in ppd/hpijs/*.ppd.gz ; do
-		rm -f ${i}.temp
-		gunzip -c ${i} | sed 's/foomatic-rip-hplip/foomatic-rip/g' | \
-			gzip > ${i}.temp || return 1
-		mv ${i}.temp ${i}
-	done
-   
- export AUTOMAKE='automake --foreign'
- autoreconf --force --install
-}
-
-
 build() {
 
         cd $name-$version
-
-        # Use system foomatic-rip for hpijs driver instead of foomatic-rip-hplip
-        # The hpcups driver does not use foomatic-rip
-        local i
-        for i in ppd/hpijs/*.ppd.gz ; do
-                rm -f ${i}.temp
-                gunzip -c ${i} | sed 's/foomatic-rip-hplip/foomatic-rip/g' | \
-                        gzip > ${i}.temp || return 1
-                mv ${i}.temp ${i}
-        done
+ 
+	patch -Np0 -i $SRC/disable_upgrade.patch
+	patch -Np1 -i $SRC/0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
 
         export AUTOMAKE='automake --foreign'
         autoreconf --force --install
 
         ./configure --prefix=/usr \
-                --enable-qt5 \
+                --enable-qt5  \
+		--disable-qt4 \
                 --disable-foomatic-rip-hplip-install \
                 --enable-foomatic-ppd-install \
                 --enable-hpcups-install \
@@ -64,7 +41,6 @@ build() {
                 --enable-hpijs-install \
                 --enable-foomatic-drv-install \
                 --enable-pp-build \
-                --enable-udev-acl-rules \
                 --enable-dbus-build  \
                 --enable-scan-build \
                 --enable-fax-build \
