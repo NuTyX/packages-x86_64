@@ -1,4 +1,4 @@
-# Depends on: gtk-doc shared-mime-info,xorg-libxinerama,xorg-libxrandr,cairo,pango,atk,libtiff,cups,gdk-pixbuf,xorg-libxi,xorg-libxcursor,hicolor-icon-theme,gtk-update-icon-cache
+# Depends on: gtk-doc shared-mime-info,xorg-libxinerama,xorg-libxrandr,cairo,pango,atk,libtiff,cups,gdk-pixbuf,xorg-libxi,xorg-libxcursor,hicolor-icon-theme,gtk-update-icon-cache,desktop-file-utils
 
 description="GTK+ is a multi-platform toolkit (version 2)"
 url="http://www.gtk.org/"
@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 # The run variable define the runtime dependencies
-run=(gtk-update-icon-cache)
+run=(gtk-update-icon-cache shared-mime-info desktop-file-utils)
 
 
 
@@ -14,12 +14,9 @@ run=(gtk-update-icon-cache)
 # de fichiers binaires n'est pas très important. La variable PKGMK_GROUP redéfini les groupes
 # Ici, le groupe lib ne sera pas construit
 
-[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man doc)
-[ "$PKGMK_ARCH" == "i686" ] && PKGMK_GROUPS=(man doc)
-
 name=gtk2
 version=2.24.31
-release=2
+release=3
 
 source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
 
