@@ -1,0 +1,48 @@
+# Depends on: libgcrypt zlib cmake cmocka doxygen
+
+description="Library for accessing ssh client services through C libraries"
+url="http://www.libssh.org/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+name=libssh
+version=0.7.5
+release=1
+
+source=(https://red.libssh.org/attachments/download/218/$name-$version.tar.xz
+https://red.libssh.org/attachments/download/217/$name-$version.tar.asc
+libssh-fix-read-config.patch
+)
+
+prepare() {
+sed 's/unit_test(torture_path_expand_tilde_unix),//' -i libssh-${version}/tests/unittests/torture_misc.c
+mkdir -p build
+cd $name-$version
+# Fix reading SSH configuration files
+patch -p1 -i ../libssh-fix-read-config.patch
+}
+
+build() {
+cd build
+cmake ../$name-$version \
+-DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_BUILD_TYPE=Release \
+-DWITH_GSSAPI=OFF \
+-DWITH_GCRYPT=ON \
+-DWITH_TESTING=ON
+make
+
+}
+
+package() {
+cd build
+make DESTDIR=$PKG install
+}
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+}
+
+
