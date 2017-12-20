@@ -1,23 +1,34 @@
-# Depends on: python2-setuptools
+# Depends on: python2 python2-setuptools
 
 description="The PyPA recommended tool for installing Python packages"
 url="https://pip.pypa.io/"
+packager="greg@nutyx.org"
 contributors="Tnut, Greg"
-packager="tnut<tnut@nutyx.org>"
 
 name=python2-pip
 version=9.0.1
-release=2
+release=3
 
-source=(
-https://pypi.io/packages/source/p/pip/pip-$version.tar.gz)
+run=(python2 python2-setuptools)
+
+source=(https://pypi.io/packages/source/p/pip/pip-$version.tar.gz
+)
+
 
 build() {
 
-    cd pip-$version
-    python2 setup.py build
-    python2 setup.py install --prefix=/usr --root=$PKG
+cd $SRC/pip-$version
+python2 setup.py build
+python2 setup.py install --prefix=/usr --root=$PKG
+mv $PKG/usr/bin/pip $PKG/usr/bin/pip2
+sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python2|" \
+$PKG/usr/lib/python2.7/site-packages/pip/__init__.py
+python2 -m compileall $PKG/usr/lib/python2.7/site-packages/pip/__init__.py
 
-    # Conflict with prefered python-pip
-    rm $PKG/usr/bin/pip
+install -dm755 $PKG/usr/share/bash-completion/completions
+PYTHONPATH=$PKG/usr/lib/python2.7/site-packages $PKG/usr/bin/pip2 completion --bash > $PKG/usr/share/bash-completion/completions/pip2
+sed -i 's/pip/pip2/g' $PKG/usr/share/bash-completion/completions/pip2
+
 }
+
+
