@@ -1,0 +1,40 @@
+# Depends on: python2-setuptools python2
+
+description="A CSS Cascading Style Sheets library for Python"
+url="http://cthedot.de/cssutils/"
+packager="greg@nutyx.org"
+
+name=python2-cssutils
+version=1.0.2
+release=1
+
+run=(python2-setuptools python2)
+
+source=(https://pypi.python.org/packages/5c/0b/c5f29d29c037e97043770b5e7c740b6252993e4b57f029b3cd03c78ddfec/cssutils-1.0.2.tar.gz
+)
+
+prepare() {
+
+cd $SRC
+cp -a cssutils-$version cssutils-py2-$version
+cd $SRC/cssutils-py2-$version
+find . -maxdepth 2 -mindepth 1 -type f -iname '*.py' -exec sed -i -e 's:#!/usr/bin/env python:#!/usr/bin/env python2:g' '{}' \;
+
+}
+
+
+build() {
+
+cd $SRC/cssutils-py2-$version
+python2 setup.py install --root=$PKG/ --optimize=1
+rm -rf $PKG/usr/lib/python2.7/site-packages/tests
+
+}
+
+
+package() {
+
+cd $SRC
+	
+}
+
