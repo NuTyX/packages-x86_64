@@ -1,0 +1,36 @@
+# Depends on: python2-setuptools python2
+
+description="A DNS toolkit for Python"
+url="http://www.dnspython.org"
+packager="greg@nutyx.org"
+
+name=python2-dnspython
+version=1.15.0
+release=1
+
+run=(python2-setuptools python2)
+
+source=(http://www.dnspython.org/kits/$version/dnspython-$version.tar.gz
+)
+
+prepare() {
+
+cd $SRC/dnspython-$version
+
+}
+
+
+build() {
+
+cd $SRC/dnspython-$version
+python2 setup.py install --root=$PKG
+
+}
+
+
+package() {
+
+cd $SRC/dnspython-$version  
+	
+}
+
