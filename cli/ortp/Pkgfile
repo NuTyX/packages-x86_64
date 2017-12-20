@@ -1,0 +1,40 @@
+# Depends on: bctoolbox
+
+description="A Real-time Transport Protocol (RTP) library"
+url="https://github.com/BelledonneCommunications/ortp"
+packager="greg@nutyx.org"
+
+name=ortp
+version=1.0.2
+release=1
+
+run=()
+
+source=(https://github.com/BelledonneCommunications/ortp/archive/$version.tar.gz
+)
+
+prepare() {
+
+cd $name-$version
+
+}
+
+
+build() {
+
+cd $name-$version
+[ -x ./configure ] || ./autogen.sh
+./configure --prefix=/usr \
+--disable-strict
+make
+
+}
+
+
+package() {
+
+cd $name-$version
+make DESTDIR=$PKG install
+	
+}
+
