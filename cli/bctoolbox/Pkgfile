@@ -1,0 +1,39 @@
+# Depends on: mbedtls bcunit
+
+description="A library written in C that allows you to create and run audio and video streams"
+url="https://github.com/BelledonneCommunications/bctoolbox"
+packager="greg@nutyx.org"
+
+name=bctoolbox
+version=0.6.0
+release=1
+
+run=()
+
+source=(https://github.com/BelledonneCommunications/bctoolbox/archive/$version.tar.gz
+)
+
+prepare() {
+
+cd $name-$version
+
+}
+
+
+build() {
+
+cd $name-$version
+[ -x ./configure ] || ./autogen.sh
+./configure --prefix=/usr
+make
+
+}
+
+
+package() {
+
+cd $name-$version 
+make DESTDIR="${pkgdir}" install
+
+}
+
