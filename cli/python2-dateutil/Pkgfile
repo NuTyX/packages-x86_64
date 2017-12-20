@@ -1,0 +1,32 @@
+# Depends on: python2-setuptools python2-six python2
+
+description="Provides powerful extensions to the standard datetime module"
+url="https://github.com/dateutil/dateutil"
+packager="greg@nutyx.org"
+
+name=python2-dateutil
+version=2.6.1
+release=1
+
+run=(python2-setuptools python2-six python2)
+
+source=(https://github.com/dateutil/dateutil/archive/$version.tar.gz
+)
+
+prepare() {
+
+cd $SRC
+cp -r  dateutil-$version python2-dateutil-$version
+
+}
+
+
+build() {
+
+cd $SRC/python2-dateutil-$version
+python2 setup.py install --root=$PKG --optimize=1
+
+}
+
+
+
