@@ -1,0 +1,40 @@
+# Depends on: 
+
+description="Portable cryptographic and SSL/TLS library, aka polarssl"
+url="https://tls.mbed.org"
+packager="greg@nutyx.org"
+
+name=mbedtls
+version=2.6.0
+release=1
+
+run=()
+
+source=(https://tls.mbed.org/download/mbedtls-$version-gpl.tgz
+)
+
+prepare() {
+
+cd $name-$version
+sed -i 's|//\(#define MBEDTLS_THREADING_C\)|\1|' include/mbedtls/config.h
+sed -i 's|//\(#define MBEDTLS_THREADING_PTHREAD\)|\1|' include/mbedtls/config.h
+sed -i 's|<time.h>|"platform.h"|' include/mbedtls/ssl.h
+
+}
+
+
+build() {
+
+cd $name-$version
+LDFLAGS+=" -I../include " make SHARED=1 no_test
+
+}
+
+
+package() {
+
+cd $name-$version  
+make DESTDIR=$PKG/usr install
+	
+}
+
