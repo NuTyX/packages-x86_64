@@ -1,0 +1,35 @@
+# Depends on: python2
+
+description="Python wrapper for SQLite"
+url="https://github.com/rogerbinns/apsw"
+packager="greg@nutyx.org"
+
+name=python2-apsw
+version=3.15.2
+release=1
+
+run=(python2)
+
+source=(https://github.com/rogerbinns/apsw/archive/$version-r1.tar.gz
+)
+
+
+build() {
+
+cp -rf apsw-${version}-r1 apsw2
+
+  cd apsw-${version}-r1
+  python setup.py build --enable=load_extension
+  cd $SRC/apsw2
+  python2 setup.py build --enable=load_extension
+
+}
+
+
+package() {
+
+cd $SRC/apsw2
+python2 setup.py install --root=$PKG/  
+	
+}
+
