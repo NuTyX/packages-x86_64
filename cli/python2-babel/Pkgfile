@@ -1,0 +1,31 @@
+# Depends on: python2-setuptools python2-pytz
+
+description="A collection of tools for internationalizing Python applications"
+url="http://babel.pocoo.org/"
+packager="greg@nutyx.org"
+
+name=python2-babel
+version=2.5.1
+release=1
+
+run=(python2 python2-setuptools python2-pytz)
+
+source=(https://github.com/python-babel/babel/archive/v$version.tar.gz
+)
+
+prepare() {
+
+cd "$SRC"/babel-${version}
+
+}
+
+
+build() {
+
+cd "$SRC"/babel-${version}
+python2 setup.py import_cldr
+python2 setup.py install --root="$PKG"
+mv "$PKG"/usr/bin/pybabel "$PKG"/usr/bin/pybabel2
+
+}
+
