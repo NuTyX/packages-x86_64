@@ -1,0 +1,37 @@
+# Depends on: python2
+
+description="Cross platform time zone library for Python"
+url="http://pypi.python.org/pypi/pytz"
+packager="greg@nutyx.org"
+
+name=python2-pytz
+version=2017.3
+release=1
+
+run=(python2)
+
+source=(https://pypi.python.org/packages/60/88/d3152c234da4b2a1f7a989f89609ea488225eaea015bc16fbde2b3fdfefa/pytz-2017.3.zip
+)
+
+prepare() {
+
+cd $SRC
+
+}
+
+
+build() {
+
+cd $SRC
+cp -rf pytz-$version pytz2-$version
+
+}
+
+
+package() {
+
+cd $SRC/pytz2-$version
+python2 setup.py install --root="$PKG/" 
+	
+}
+
