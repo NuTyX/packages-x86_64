@@ -1,0 +1,33 @@
+# Depends on: python2-setuptools python2
+
+description="Python2 module for character encoding auto-detection"
+url="https://github.com/chardet/chardet"
+packager="greg@nutyx.org"
+
+name=python2-chardet
+version=3.0.4
+release=1
+
+run=(python2-setuptools python2)
+
+source=(https://pypi.io/packages/source/c/chardet/chardet-${version}.tar.gz
+)
+
+prepare() {
+
+cp -a chardet-$version{,-py2}
+
+}
+
+
+build() {
+
+cd chardet-$version-py2
+python2 setup.py install --root="$PKG" --optimize=1
+# To avoid file conflict with the python3 version
+mv "$PKG"/usr/bin/chardetect{,-py2}
+
+}
+
+
+
