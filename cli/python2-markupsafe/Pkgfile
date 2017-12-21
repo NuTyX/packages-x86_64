@@ -1,0 +1,38 @@
+# Depends on: python2-setuptools python2
+
+description="Implements a XML/HTML/XHTML Markup safe string for Python"
+url="http://pypi.python.org/pypi/MarkupSafe"
+packager="greg@nutyx.org"
+
+name=python2-markupsafe
+version=1.0
+release=1
+
+run=(python2-setuptools python2)
+
+source=(https://pypi.io/packages/source/M/MarkupSafe/MarkupSafe-${version}.tar.gz
+)
+
+prepare() {
+
+cp -a MarkupSafe-$version{,-py2}
+
+}
+
+
+build() {
+
+cd "$SRC"/MarkupSafe-$version-py2
+python2 setup.py build
+
+}
+
+
+package() {
+
+cd MarkupSafe-$version-py2
+python2 setup.py install --root="$PKG" --optimize=1
+
+	
+}
+
