@@ -1,0 +1,60 @@
+# Depends on: python2-setuptools python2 unzip llvm
+
+description="Protocol Buffers - Google's data interchange format"
+url="https://developers.google.com/protocol-buffers/"
+packager="greg@nutyx.org"
+
+name=python2-protobuf
+_name=protobuf
+version=3.5.0.1
+_gtestver=1.8.0
+release=1
+
+run=(python2-setuptools python2)
+
+source=(https://github.com/google/${_name}/archive/v${version}.tar.gz
+https://github.com/google/googletest/archive/release-${_gtestver}.tar.gz
+)
+
+prepare() {
+
+cd "$_name-$version"
+
+  rm -rf gmock && cp -r "$SRC/googletest-release-${_gtestver}/googlemock" gmock
+  rm -rf googletest && cp -r "$SRC/googletest-release-${_gtestver}/googletest" googletest
+  ln -sf ../googletest gmock/gtest
+
+  sed -r 's|/usr/bin/env python|/usr/bin/env python2|' -i googletest/scripts/*.py
+
+}
+
+
+build() {
+
+  export CC=/usr/bin/clang CXX=/usr/bin/clang++
+
+  cd "$SRC/$_name-$version"
+  ./autogen.sh
+
+  cd "$SRC/$_name-$version/googletest"
+  ./configure
+  make
+
+  cd "$SRC/$_name-$version/gmock"
+  ./configure
+  make
+
+  cd "$SRC/$_name-$version"
+  ./configure --prefix=/usr
+  make
+
+}
+
+
+package() {
+
+  cd "$SRC/$_name-$version/python"
+  python2 setup.py install --root="$PKG" 
+	
+}
+
