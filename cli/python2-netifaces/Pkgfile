@@ -1,0 +1,32 @@
+# Depends on: python2-setuptools python2
+
+description="Portable module to access network interface information in Python"
+url="http://alastairs-place.net/netifaces/"
+packager="greg@nutyx.org"
+
+name=python2-netifaces
+version=0.10.6
+release=1
+
+run=(python2-setuptools python2)
+
+source=(https://pypi.io/packages/source/n/netifaces/netifaces-$version.tar.gz
+)
+
+prepare() {
+
+cp -a "$SRC/netifaces-$version"{,-py2}
+
+}
+
+
+build() {
+
+cd $SRC/netifaces-$version-py2
+  python2 setup.py install --root ${pkgdir}
+
+
+}
+
+
+
