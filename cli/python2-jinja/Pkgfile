@@ -1,0 +1,43 @@
+# Depends on: python2-setuptools python2-markupsafe python2
+
+description="A simple pythonic template language written in Python"
+url="http://jinja.pocoo.org/"
+packager="greg@nutyx.org"
+
+name=python2-jinja
+version=2.10
+release=1
+
+run=(python2-setuptools python2-markupsafe python2)
+
+source=(https://pypi.org/packages/source/J/Jinja2/Jinja2-$version.tar.gz
+)
+
+prepare() {
+
+cd "$SRC"
+
+}
+
+
+build() {
+
+cd "$SRC"
+rm -rf python{2,3}-build
+for builddir in python{2,3}-build; do
+cp -r Jinja2-$version $builddir
+pushd $builddir
+python2 setup.py build
+popd
+done
+
+}
+
+
+package() {
+
+cd "$SRC/python2-build"
+python2 setup.py install --root="$PKG" -O1
+	
+}
+
