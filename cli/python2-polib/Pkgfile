@@ -1,0 +1,32 @@
+# Depends on: python2
+
+description="A library to manipulate gettext files"
+url="https://pypi.python.org/pypi/polib"
+packager="greg@nutyx.org"
+
+name=python2-polib
+_name=polib
+version=1.0.8
+release=1
+
+run=(python2)
+
+source=(https://pypi.io/packages/source/p/${_name}/${_name}-${version}.tar.gz
+)
+
+
+build() {
+
+cd "${SRC}/${_name}-${version}"
+  python setup.py build
+
+}
+
+
+package() {
+
+  cd "${SRC}/${_name}-${version}"
+  python2 setup.py install --root="${PKG}" --optimize=1
+	
+}
+
