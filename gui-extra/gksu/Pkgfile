@@ -1,0 +1,43 @@
+# Depends on: xorg-libxau libgksu gtk-doc intltool gtk2
+
+description="A graphical frontend for su"
+url=http://www.nongnu.org/gksu/index.html
+packager="greg@nutyx.org"
+
+name=gksu
+version=2.0.2
+release=1
+
+run=()
+
+source=(http://people.debian.org/~kov/gksu/$name-$version.tar.gz
+)
+
+prepare() {
+
+cd ${SRC}/${name}-${version}
+
+}
+
+
+build() {
+
+cd ${SRC}/${name}-${version}
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static \
+    --disable-nautilus-extension
+  make
+
+}
+
+
+package() {
+
+  cd ${SRC}/${name}-${version}
+  make DESTDIR=${PKG} install
+  rm -rf ${PKG}/usr/share/applications/
+	
+}
+
