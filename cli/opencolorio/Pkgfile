@@ -1,0 +1,22 @@
+# Depends on: python cmake
+
+description="A color management framework for visual effects and animation"
+url="http://opencolorio.org"
+maintainer="tnut at nutyx dot org"
+
+name=opencolorio
+version=1.0.9
+release=2
+
+PKGMK_KEEP_SOURCES="no"
+source=(https://github.com/imageworks/OpenColorIO/archive/v$version.tar.gz)
+
+build() {
+cd OpenColorIO-$version
+mkdir build
+cd build
+
+cmake  -DCMAKE_INSTALL_PREFIX=/usr ..
+make
+make DESTDIR="$PKG" install
+}
