@@ -9,6 +9,7 @@ run=(bluez sbc)
 
 name=pulseaudio
 version=11.1
+release=2
 
 source=(http://freedesktop.org/software/pulseaudio/releases/pulseaudio-$version.tar.xz)
 
@@ -21,7 +22,7 @@ cd pulseaudio-$version
             --localstatedir=/var  \
             --disable-bluez4      \
             --disable-rpath       \
-            --with-module-dir=/usr/lib/pulse/modules
+            --with-udev-rules-dir=/usr/lib/udev/rules.d
 make
 make DESTDIR=$PKG install
 mkdir -p $PKG/usr/share/icons/hicolor/scalable/devices
