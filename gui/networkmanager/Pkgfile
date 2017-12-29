@@ -1,4 +1,4 @@
-# Depends on: libndp libsoup libgudev dbus-glib iptables libnl nss wireless-tools polkit upower vala wpa-supplicant gobject-introspection newt dhcpcd python2-gobject gtk-doc
+# Depends on: libndp libsoup libgudev dbus-glib iptables libnl nss wireless-tools polkit upower vala wpa-supplicant-dbus gobject-introspection newt dhcpcd python2-gobject gtk-doc
 
 description="Tools which simplify and make the network more directly manageable."
 url="http://projects.gnome.org/NetworkManager/"
@@ -11,6 +11,9 @@ _name=NetworkManager
 
 name=networkmanager
 version=1.10.2
+release=3
+
+run=(wpa-supplicant wpa-supplicant-dbus)
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$_name/${version%.*}/$_name-$version.tar.xz)
 
