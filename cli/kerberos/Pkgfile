@@ -3,22 +3,12 @@ url="http://web.mit.edu/kerberos/"
 packager="tnut <tnut@nutyx.org>"
 
 name=kerberos
-version=1.15.1
-release=1
+version=1.16
 
 source=(http://web.mit.edu/$name/dist/krb5/${version:0:4}/krb5-$version.tar.gz)
 
 build()  {
-        cd krb5-$version
-        cd src
-        sed -e "s@python2.5/Python.h@& python2.7/Python.h@g" \
-    	-e "s@-lpython2.5]@&,\n  AC_CHECK_LIB(python2.7,main,[PYTHON_LIB=-lpython2.7])@g" \
-    	-i configure.in
-
-	sed -e 's@\^u}@^u cols 300}@' \
-    	-i tests/dejagnu/config/default.exp 
-
-autoconf
+cd krb5-$version/src
 
 ./configure --prefix=/usr            \
             --sysconfdir=/etc        \
@@ -35,18 +25,6 @@ for LIBRARY in gssapi_krb5 gssrpc k5crypto kadm5clnt_mit kadm5srv_mit kdb5 krb5 
 done
 
 unset LIBRARY
-
-mkdir -p $PKG/{bin,lib}
-mv -v $PKG/usr/lib/libkrb5.so.3* $PKG/lib
-mv -v $PKG/usr/lib/libk5crypto.so.3* $PKG/lib
-mv -v $PKG/usr/lib/libkrb5support.so.0* $PKG/lib
-
-ln -v -sf ../../lib/libkrb5.so.3.3        $PKG/usr/lib/libkrb5.so
-ln -v -sf ../../lib/libk5crypto.so.3.1    $PKG/usr/lib/libk5crypto.so
-ln -v -sf ../../lib/libkrb5support.so.0.1 $PKG/usr/lib/libkrb5support.so
-
-mv -v $PKG/usr/bin/ksu $PKG/bin
-chmod -v 755 $PKG/bin/ksu 
 
 install -v -dm755 $PKG/usr/share/doc/krb5-$version
 cp -vfr ../doc/*  $PKG/usr/share/doc/krb5-$version
