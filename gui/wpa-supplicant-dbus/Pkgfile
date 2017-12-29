@@ -1,11 +1,11 @@
-# Depends on: libnl dbus libxml2
+# Depends on: wpa-supplicant libnl dbus libxml2
 
 description="A utility providing key negotiation for WPA wireless networks"
 url="http://hostap.epitest.fi/wpa_supplicant"
 packager="tnut tnut@nutyx.org>"
 contributors="Pierre B, tnut, greg"
 
-name=wpa-supplicant
+name=wpa-supplicant-dbus
 version=2.6
 release=2
 
@@ -47,11 +47,9 @@ CONFIG_CTRL_IFACE_DBUS_INTRO=y
 EOF
 patch -p1 -i ../wpa_supplicant-$version-upstream_fixes-1.patch
 cd wpa_supplicant &&
-make BINDIR=/sbin LIBDIR=/lib
-mkdir -p $PKG/{etc/dbus-1/system.d,sbin,usr/share/{dbus-1/system-services,man/man{5,8}}}
-install -v -m755 wpa_{cli,passphrase,supplicant} $PKG/sbin
-install -v -m644 doc/docbook/wpa_supplicant.conf.5 $PKG/usr/share/man/man5
-install -v -m644 doc/docbook/wpa_{cli,passphrase,supplicant}.8 $PKG/usr/share/man/man8
+make BINDIR=/usr/sbin LIBDIR=/usr/lib
+mkdir -p $PKG/{etc/dbus-1/system.d,usr/{sbin,share/dbus-1/system-services}}
+install -v -m755 wpa_supplicant $PKG/usr/sbin
 install -v -m644 dbus/fi.{epitest.hostap.WPASupplicant,w1.wpa_supplicant1}.service \
 $PKG/usr/share/dbus-1/system-services
 install -v -m644 dbus/dbus-wpa_supplicant.conf \
