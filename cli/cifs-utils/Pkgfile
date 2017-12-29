@@ -1,0 +1,27 @@
+# Depends on: keyutils talloc
+
+description="CIFS filesystem user-space tools"
+url="http://www.samba.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=cifs-utils
+version=6.7
+release=2
+
+source=( http://ftp.samba.org/pub/linux-cifs/$name/$name-$version.tar.bz2)
+
+
+build() {
+cd $name-$version
+autoreconf -fiv
+./configure --prefix=/usr \
+--disable-systemd \
+--bindir=/usr/bin \
+--sbindir=/usr/sbin
+
+make
+make DESTDIR=$PKG install
+mv $PKG/sbin/mount.cifs $PKG/usr/sbin
+rm -d $PKG/sbin
+}
