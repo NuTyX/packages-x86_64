@@ -7,7 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=gptfdisk
 version=1.0.3
-release=2
+release=3
 
 
 source=(http://downloads.sourceforge.net/project/$name/$name/$version/$name-$version.tar.gz 
@@ -26,6 +26,7 @@ build () {
 package() {
 
 	cd $name-$version
-	make DESTDIR=$PKG POPT=1 ICU=1 install
-
+	install -d $PKG/usr/{bin,share/man/man8}
+	install -t $PKG/usr/bin {,c,s}gdisk fixparts
+	install -m644 -t $PKG/usr/share/man/man8 {{,c,s}gdisk,fixparts}.8
 }
