@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=pcsclite
-version=1.8.22
-release=1
+version=1.8.23
 
 PKGMK_KEEP_SOURCES="No"
 
@@ -20,6 +19,7 @@ build() {
   ./configure --prefix=/usr \
               --sbindir=/usr/bin \
               --enable-libudev \
+              --disable-libsystemd \
               --sysconfdir=/etc \
               --enable-ipcdir=/run/pcscd \
               --enable-usbdropdir=/usr/lib/pcsc/drivers \
