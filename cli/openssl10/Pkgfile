@@ -3,15 +3,15 @@ url="https://www.openssl.org/"
 packager="tnut <tnut@nutyx.org>"
 
 name=openssl10
-version=1.0.2l
-release=3
-source=(https://openssl.org/source/openssl-1.0.2l.tar.gz
+version=1.0.2n
+
+source=(https://openssl.org/source/openssl-$version.tar.gz
 	http://www.linuxfromscratch.org/patches/blfs/svn/openssl-$version-compat_versioned_symbols-1.patch)
 build() {
 unset MAKEFLAGS
 
 cd openssl-$version
-patch -Np1 -i ../openssl-1.0.2l-compat_versioned_symbols-1.patch
+patch -Np1 -i ../openssl-$version-compat_versioned_symbols-1.patch
 
 ./config --prefix=/usr            \
          --openssldir=/etc/ssl    \
