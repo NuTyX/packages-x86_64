@@ -1,4 +1,4 @@
-# Depends on: libusb-compat libjpeg-turbo libtiff gtk2 libexif cups
+# Depends on: libusb-compat libjpeg-turbo libtiff gtk2 libexif cups net-snmp avahi
 
 description="Scanner Access Now Easy"
 url="http://www.sane-project.org/"
@@ -7,18 +7,21 @@ contributors="Pierre B"
 
 name=sane
 version=1.0.27
-release=1
+release=2
 
-source=(http://fossies.org/linux/misc//sane-backends-$version.tar.gz)
+source=(network.patch
+	http://fossies.org/linux/misc//sane-backends-$version.tar.gz)
 
 build() {
 	cd $name-backends-$version
+	patch -Np1 -i ../network.patch
 
 	./configure --prefix=/usr \
 		--localstatedir=/var \
 		--sysconfdir=/etc \
 		--with-docdir=/usr/share/doc/sane-backend-$version \
 		--enable-libusb_1_0 \
+		--enable-avahi \
 		--with-group=scanner
 	make
 	make DESTDIR=$PKG install
@@ -26,6 +29,9 @@ build() {
 	install -d $PKG/etc/udev/rules.d
 	install -m 644 -v tools/udev/libsane.rules \
 		$PKG/etc/udev/rules.d/65-scanner.rules
+
+	 # fix hp officejets
+	echo "#hpaio" >> $PKG/etc/sane.d/dll.conf
 
 	install -v -m644 doc/sane.png doc/sane-logo.png \
 		$PKG/usr/share/sane
