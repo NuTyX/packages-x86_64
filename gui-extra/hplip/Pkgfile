@@ -1,21 +1,21 @@
-# Depends on: python2-sip avahi python ghostscript foomatic-db foomatic-db-engine usbutils sane cups cups-filters libusb-compat net-snmp dbus-python python2-gobject2 python2-notify python2-qt python2-qt4
+# Depends on: python2-sip avahi python ghostscript foomatic-db foomatic-db-engine usbutils sane cups cups-filters libusb-compat net-snmp dbus-python python2-gobject2 python2-notify python2-qt python2-qt4 openssl10
 
 description="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet"
 url="http://hplipopensource.com"
-contributors="tnut"
-packager="greg<greg@nutyx.org>"
+contributors="tnut, Greg"
+packager="tnut<tnut@nutyx.org>"
 
-run=(python2-sip dbus-python python2-qt python2-gobject2 python2-notify python2-qt4)
+run=(python2-sip dbus-python python2-qt python2-gobject2 python2-notify python2-qt4 openssl10)
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
 
 name=hplip
 version=3.17.11
+release=2
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz
 0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
-disable_upgrade.patch
 )
 
 
@@ -23,7 +23,6 @@ build() {
 
         cd $name-$version
  
-	patch -Np0 -i $SRC/disable_upgrade.patch
 	patch -Np1 -i $SRC/0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
 
         export AUTOMAKE='automake --foreign'
@@ -41,10 +40,11 @@ build() {
                 --enable-hpijs-install \
                 --enable-foomatic-drv-install \
                 --enable-pp-build \
+		--enable-udev-acl-rules \
                 --enable-dbus-build  \
                 --enable-scan-build \
                 --enable-fax-build \
-                --disable-network-build
+                --enable-network-build
         make
 	make DESTDIR=$PKG install || make -j1 DESTDIR=$PKG install
 
