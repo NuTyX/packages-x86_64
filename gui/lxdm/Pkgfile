@@ -1,4 +1,4 @@
-# Depends on: iso-codes librsvg xorg-libxinerama xorg-libxrandr xorg-libxcursor xorg-libxdamage gtk2 consolekit2
+# Depends on: iso-codes librsvg xorg-libxinerama xorg-libxrandr xorg-libxcursor xorg-libxdamage gtk2 consolekit2 xorg-xinit
 
 description="Lightweight X11 Display Manager based on Gtk"
 url="http://wiki.lxde.org/en/LXDM"
@@ -6,12 +6,12 @@ maintainer="dgod dot osa at gmail dot com"
 packager="tnut <tnut@nutyx.org>"
 
 PKGMK_GROUPS=()
-run=(consolekit2 librsvg)
+run=(consolekit2 librsvg xorg-xinit)
 
 name=lxdm
 version=0.5.3
-release=7
-source=(lxdm-0.5.3-sessions-1.patch login.png nutyx.svg
+release=8
+source=(lxdm-0.5.3-sessions-1.patch login.png nutyx.jpg
 	http://downloads.sourceforge.net/$name/$name-$version.tar.xz)
 
 build() {
@@ -51,12 +51,14 @@ sed -e 's/^bg/#&/'        \
 make
   
 make DESTDIR=$PKG install
-for i in nutyx.svg login.png
+for i in nutyx.jpg login.png
 do
    cp ../$i \
    $PKG/usr/share/lxdm/themes/Industrial/$i
 done
 
+sed -i "s@000000@ffffff@" \
+$PKG/usr/share/lxdm/themes/Industrial/gtkrc
 
 # lxdm.conf created in post if needed
 # Let keep it as an example
