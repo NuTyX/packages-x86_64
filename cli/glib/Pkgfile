@@ -4,14 +4,13 @@ description="The GLib package contains a low-level libraries useful for providin
 url="http://www.gtk.org/"
 packager="tnut <tnut@nutyx.org>"
 
-[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(man devel doc )
+PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.54.2
-release=3
+version=2.54.3
 
 source=(http://ftp.gnome.org/pub/gnome/sources/glib/${version:0:4}/$name-$version.tar.xz
-	http://downloads.nutyx.org/WallPapers/NuTyX-vide.jpg
+	http://downloads.nutyx.org/WallPapers/nutyx-10.0.jpg
 	glib-revert-warn-glib-compile-schemas.patch)
 
 build () {
@@ -27,7 +26,7 @@ build () {
   make DESTDIR=$PKG install
 
   # Default NuTyX Wallpaper
-  install -D -m644 ../NuTyX-vide.jpg \
+  install -D -m644 ../nutyx-10.0.jpg \
   $PKG/usr/share/backgrounds/nutyx/nutyx.jpg
 }
 uptodate(){
