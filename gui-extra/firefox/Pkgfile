@@ -1,4 +1,4 @@
-# Depends on: icu libvpx libevent rustc autoconf2-13 pulseaudio gconf yasm sqlite libvpx libevent nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav
+# Depends on: icu libvpx nspr libevent rustc autoconf2-13 pulseaudio gconf yasm sqlite libvpx libevent nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav
 
 description="Standalone web browser from mozilla.org"
 url="http://www.mozilla.com/firefox/"
@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 run=(icu libvpx libevent pulseaudio gconf sqlite libvpx nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav)
 name=firefox
-version=57.0.4
+version=58.0
 
 source=( https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.xz)
 
@@ -64,8 +64,8 @@ ac_add_options --disable-stylo
 ac_add_options --enable-system-sqlite
 ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
-ac_add_options --with-system-nspr
-ac_add_options --with-system-nss
+#ac_add_options --with-system-nss
+#ac_add_options --with-system-nspr
 ac_add_options --with-system-icu
 
 # If you are going to apply the patch for system graphite
@@ -102,17 +102,18 @@ ac_add_options --with-pthreads
 
 ac_add_options --with-system-bz2
 ac_add_options --with-system-jpeg
-ac_add_options --with-system-png
+#ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 EOF
 
-SHELL=/bin/sh make -f client.mk
+SHELL=/bin/sh ./mach build
+SHELL=/bin/sh ./mach buildsymbols
 
 mkdir -pv $PKG/usr/{bin,lib{,/mozilla/plugins}}
 
-SHELL=/bin/sh make -f client.mk DESTDIR=$PKG install INSTALL_SDK=
+SHELL=/bin/sh DESTDIR=$PKG ./mach install
 
 chown -R 0:0 $PKG/usr/lib/firefox-$version
 ln -sf ../lib/firefox-$version/firefox $PKG/usr/bin
