@@ -1,0 +1,24 @@
+# Depends on:  intltool python2 yasm wget cmake bzip2 gcc-libs zlib libnotify gstreamer-plugins-base gtk3 dbus-glib libass lame libxml2 opus libvorbis libtheora libsamplerate x264 jansson librsvg libgudev
+
+description="Multithreaded video transcoder"
+url="https://handbrake.fr"
+contributors=""
+packager="remy <remy@nutyx.org>"
+ 
+name=handbrake
+version=1.0.7
+
+
+source=(https://download2.handbrake.fr/1.0.7/HandBrake-1.0.7.tar.bz2)
+
+build() {
+
+cd HandBrake-$version
+
+./configure --prefix=/usr
+
+make -C build
+
+cd build
+make DESTDIR="$PKG" install
+}
