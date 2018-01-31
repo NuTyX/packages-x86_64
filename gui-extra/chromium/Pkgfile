@@ -92,8 +92,8 @@ install -vDm4755 out/Release/chrome_sandbox \
 install -vDm755  out/Release/chromedriver \
                  $PKG/usr/lib/chromium/chromedriver               
 
-ln -svf $PKG/usr/lib/chromium/chromium     $PKG/usr/bin 
-ln -svf $PKG/usr/lib/chromium/chromedriver $PKG/usr/bin
+ln -svf /usr/lib/chromium/chromium     $PKG/usr/bin 
+ln -svf /usr/lib/chromium/chromedriver $PKG/usr/bin
 
 install -vm644  out/Release/icudtl.dat \
                 $PKG/usr/lib/chromium/icudtl.dat     
