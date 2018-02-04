@@ -1,0 +1,24 @@
+# Depends on: desktop-file-utils fftw glibmm gtk3 gtkmm hicolor-icon-theme lcms2 lensfun cmake libcanberra libiptcdata
+description="A powerful cross-platform raw image processing program" 
+url="http://www.rawtherapee.com/" 
+packager="remy <remy@nutyx.org>" 
+contributors="indootime"
+
+name=rawtherapee
+version=5.3
+release=2
+
+source=("http://rawtherapee.com/shared/source/$name-$version.tar.xz" )
+
+build() { 
+mkdir -p "$SRC/$name-build"
+  cd "$SRC/$name-build"
+
+  cmake "$SRC/$name-$version" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCACHE_NAME_SUFFIX=""
+
+  make
+  make DESTDIR=$PKG/ install
+}
