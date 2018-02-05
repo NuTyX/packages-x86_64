@@ -1,0 +1,19 @@
+# Depends on: python-setuptools qtbase qtx11extras qttools qtsvg mlt sdl sdl-image libsrvg mplayer sox 
+
+description="an open-source, non-linear video editor for Linux based on MLT framework"
+url="http://www.openshotvideo.com"
+packager="tnut <tnut@nutyx.org>"
+
+name=openshot
+version=2.4.1
+release=1
+
+# PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/OpenShot/openshot-qt/archive/v$version.tar.gz)
+
+build() {
+
+	cd openshot-qt-$version
+	python3 setup.py install --root=$PKG/ --optimize=1
+}
