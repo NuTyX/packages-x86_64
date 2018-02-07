@@ -1,4 +1,4 @@
-# Depends on: intltool curl libevent gtk3 desktop-file-utils gtk-update-icon-cache
+# Depends on: curl libevent openssl gtk3 desktop-file-utils gtk-update-icon-cache doxygen gdb
 
 description="Light and fast Bittorent client (GTK Interface)"
 url="http://www.transmissionbt.com/"
@@ -6,20 +6,17 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
 name=transmission
-version=2.92
+version=2.93
 release=1
 
-source=(http://transmission.cachefly.net/transmission-$version.tar.xz
-	$name-$version-openssl-1.1.0.patch)
+source=(https://raw.githubusercontent.com/transmission/transmission-releases/master/$name-$version.tar.xz)
 
 build() {
-	cd transmission-$version
-	patch -Np1 -i ../$name-$version-openssl-1.1.0.patch
-	./configure --prefix=/usr \
+cd $name-$version
+./configure --prefix=/usr \
                 --disable-cli \
                 --disable-daemon \
-                --without-qt \
-                --with-gtk
-	make
-	make DESTDIR=$PKG install
+                --without-qt               
+make
+make DESTDIR=$PKG install
 }
