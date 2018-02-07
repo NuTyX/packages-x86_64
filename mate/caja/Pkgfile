@@ -8,16 +8,14 @@ contributors="fanch,tnut,jayce,greg"
 run=(shared-mime-info desktop-file-utils)
 
 name=caja
-version=1.18.5
+version=1.20.0
 release=6
 
-source=(caja-1.18.3-hide-mounted-volumes-01.patch
-	http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
+source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
 
   cd $name-$version
-  patch -Np1 -i ../caja-1.18.3-hide-mounted-volumes-01.patch
   ./configure \
           --prefix=/usr \
           --libexecdir=/usr/lib/${name} \
