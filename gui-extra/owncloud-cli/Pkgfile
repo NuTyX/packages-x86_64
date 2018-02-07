@@ -1,12 +1,15 @@
-# Description : ownCloud client based on mirall
-# URL: http://owncloud.org/
-packager="remy <remy@nutyx.org>"
-contributor="pierre at nutyx dot org"
 # Depends on: cmake extra-cmake-modules sqlite qtbase qtkeychain qtwebkit
 
+description="ownCloud client based on mirall"
+url="http://owncloud.org/"
+packager="remy <remy@nutyx.org>"
+contributors="Pierre, Tnut"
+
 name=owncloud-cli
-release=2
+>>>>>>> current
 version=2.4.0
+release=2
+
 _name=owncloudclient
 
 source=(https://download.owncloud.com/desktop/stable/${_name}-$version.tar.xz)
@@ -25,4 +28,3 @@ cmake ../$_name-$version            \
 make
 make DESTDIR=$PKG install
 }
-
