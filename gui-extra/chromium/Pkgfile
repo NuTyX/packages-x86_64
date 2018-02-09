@@ -9,6 +9,7 @@ run=(ca-certificates upower)
 
 name=chromium
 version=64.0.3282.140
+release=2
 
 source=(https://commondatastorage.googleapis.com/$name-browser-official/$name-$version.tar.xz
 	http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_64.0.3282.119-1_amd64.deb
@@ -146,19 +147,4 @@ esac
 tar -xf data.tar.xz
 install -vm755 ../out/Release/libwidevinecdmadapter.so $PKG/usr/lib/chromium/
 install -vm755 opt/google/chrome/libwidevinecdm.so  $PKG/usr/lib/chromium/
-
-cat > $PKG/usr/share/applications/chromium.desktop << "EOF"
-[Desktop Entry]
-Encoding=UTF-8
-Name=Chromium Web Browser
-Comment=Access the Internet
-GenericName=Web Browser
-Exec=chromium %u
-Terminal=false
-Type=Application
-Icon=chromium
-Categories=GTK;Network;WebBrowser;
-MimeType=application/xhtml+xml;text/xml;application/xhtml+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
-EOF
-
 }
