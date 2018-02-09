@@ -1,12 +1,13 @@
-# Depends on: yasm opus fdk-aac pulseaudio x264 x265 liba52 libass freetype lame sdl libvorbis libogg xvid faac faad2 libtheora alsa-lib openjpeg libvpx xorg-libxext xorg-libxfixes 
+# Depends on: alsa-lib bzip2 fribidi gmp gnutls gsm jack ladspa lame libavc1394 libiec61883 libmodplug libraw1394 libssh libtheora libwebp libxcb libxml2 opencore-amr openjpeg openjpeg2 v4l-utils xz xorg-fontconfig xorg-libx11 yasm opus fdk-aac pulseaudio x264 x265 liba52 libass freetype sdl libbluray sdl2 speex libvorbis libogg xvid faac faad2 libvpx xorg-libxext xorg-libxfixes zlib
 
 description="Complete and free Internet live audio and video broadcasting solution"
 url="http://ffmpeg.org/"
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+contributors="Pierre B, remy"
 
 name=ffmpeg
 version=3.4.1
+release=2
 
 source=(${url}releases/ffmpeg-$version.tar.xz)
 
@@ -21,16 +22,37 @@ sed -i 's/-lflite"/-lflite -lasound"/' configure
             --disable-static     \
             --enable-shared      \
             --disable-debug      \
+	    --enable-avisynth    \
+	    --enable-avresample  \
+	    --enable-fontconfig  \
+	    --enable-gmp         \
+	    --enable-gnutls      \
+	    --enable-ladspa      \
 	    --enable-libass      \
+	    --enable-libbluray   \
             --enable-libfdk-aac  \
             --enable-libfreetype \
+            --enable-libfribidi  \
+            --enable-libgsm      \
+            --enable-libiec61883 \
+            --enable-libmodplug  \
             --enable-libmp3lame  \
+            --enable-libopencore_amrnb \
+            --enable-libopencore_amrwb \
+            --enable-libopenjpeg \
 	    --enable-libopus     \
+	    --enable-libspeex    \
+	    --enable-libssh      \
             --enable-libtheora   \
+            --enable-libv4l2     \
             --enable-libvorbis   \
             --enable-libvpx      \
+            --enable-libwebp     \
             --enable-libx264     \
 	    --enable-libx265     \
+	    --enable-libxcb      \
+	    --enable-libxml2     \
+	    --enable-libxvid     \
 	    --enable-openssl     \
             --docdir=/usr/share/doc/$name-$version
 make
