@@ -2,11 +2,11 @@
 
 description="Video Acceleration (VA) API for Linux"
 url="https://01.org/linuxmedia/vaapi"
-packager="greg<greg@nutyx.org>"
-contributors="SipoMatadorduCosmos"
+packager="remy <remy@nutyx.org>"
+contributors="greg"
 
 name=libva
-version=1.8.3
+version=2.0.0
 release=1
 
 source=(https://github.com/01org/libva/releases/download/$version/$name-$version.tar.bz2)
@@ -17,5 +17,4 @@ cd $name-$version
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
-
 }
