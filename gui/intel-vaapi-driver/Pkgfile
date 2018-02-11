@@ -1,0 +1,22 @@
+# Depends on: xorg-libdrm libva doxygen wayland
+
+description="Intel VA-API driver"
+url="http://www.intel.com"
+packager="remy <remy@nutyx.org>"
+contributors=""
+
+name=intel-vaapi-driver
+version=2.0.0
+release=1
+
+source=(https://github.com/01org/$name/releases/download/$version/$name-$version.tar.bz2)
+
+build() {
+
+cd $name-$version
+
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+            --disable-static
+make
+make DESTDIR=$PKG install
+}
