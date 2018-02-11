@@ -1,0 +1,27 @@
+# Depends on: cmake ffmpeg libvdpau libva doxygen graphviz texlive mesa
+
+description="Video Acceleration vdpau for Linux"
+url="https://01.org/linuxmedia/vaapi"
+packager="remy <remy@nutyx.org>"
+contributors=""
+run=(mesa)
+
+name=libvdpau-va-gl
+version=0.4.0
+release=1
+
+source=(https://github.com/i-rinat/$name/archive/v$version/$name-$version.tar.gz)
+
+build() {
+
+cd $name-$version
+
+mkdir -v build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$XORG_PREFIX ../
+
+make
+make DESTDIR=$PKG install
+
+}
+echo "echo "export VDPAU_DRIVER=va_gl" >> /etc/profile.d/xorg.sh" >> libvdpau-va-gl.post-install
