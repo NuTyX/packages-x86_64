@@ -2,12 +2,11 @@
 
 description="Light and fast Bittorent client (GTK Interface)"
 url="http://www.transmissionbt.com/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Alienus"
+packager="remy <remy@nutyx.org>"
+contributors="Alienus, Tnut"
 
 name=transmission
 version=2.93
-release=1
 
 source=(https://raw.githubusercontent.com/transmission/transmission-releases/master/$name-$version.tar.xz)
 
@@ -16,7 +15,7 @@ cd $name-$version
 ./configure --prefix=/usr \
                 --disable-cli \
                 --disable-daemon \
-                --without-qt               
+                --without-qt
 make
 make DESTDIR=$PKG install
 }
