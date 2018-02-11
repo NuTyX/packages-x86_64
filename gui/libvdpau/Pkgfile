@@ -1,0 +1,22 @@
+# Depends on: xorg-libxfixes doxygen graphviz texlive mesa
+
+description="Video Acceleration vdpau for Linux"
+url="https://01.org/linuxmedia/vaapi"
+packager="remy<remy@nutyx.org>"
+contributors=""
+run=(mesa)
+
+name=libvdpau
+version=1.1.1
+release=1
+
+source=(https://people.freedesktop.org/~aplattner/vdpau/$name-$version.tar.bz2)
+
+build() {
+
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+
+}
