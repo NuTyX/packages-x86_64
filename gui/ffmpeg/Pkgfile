@@ -54,6 +54,7 @@ sed -i 's/-lflite"/-lflite -lasound"/' configure
 	    --enable-libxml2     \
 	    --enable-libxvid     \
 	    --enable-openssl     \
+            --enable-sdl2        \
             --docdir=/usr/share/doc/$name-$version
 make
 gcc tools/qt-faststart.c -o tools/qt-faststart
