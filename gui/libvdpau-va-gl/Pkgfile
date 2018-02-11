@@ -1,4 +1,4 @@
-# Depends on: cmake ffmpeg libvdpau libva doxygen graphviz texlive mesa
+# Depends on: cmake ffmpeg libvdpau libva doxygen graphviz mesa
 
 description="Video Acceleration vdpau for Linux"
 url="https://01.org/linuxmedia/vaapi"
@@ -8,7 +8,7 @@ run=(mesa)
 
 name=libvdpau-va-gl
 version=0.4.0
-release=1
+release=2
 
 source=(https://github.com/i-rinat/$name/archive/v$version/$name-$version.tar.gz)
 
@@ -18,7 +18,7 @@ cd $name-$version
 
 mkdir -v build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$XORG_PREFIX ../
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ../
 
 make
 make DESTDIR=$PKG install
