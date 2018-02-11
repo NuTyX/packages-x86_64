@@ -1,4 +1,4 @@
-# Depends on: qtbase x264 flac libmad glib librsvg alsa-lib xorg-libxinerama xorg-libxpm libvpx libcdio vcdimager live libdvdcss libdvdread libdvdnav libogg libtheora lame faac libvorbis ffmpeg faad2 liba52 libmpeg2 libmpcdec fribidi lua libdv speex 
+# Depends on: qtbase qtsvg qtx11extras x264 flac libmad glib librsvg alsa-lib xorg-libxinerama xorg-libxpm libvpx libcdio vcdimager live libdvdcss libdvdread libdvdnav libogg libtheora lame faac libvorbis ffmpeg faad2 liba52 libmpcdec fribidi lua libdv speex samba libupnp nfs-utils libshout libnotify speex sdl-image libcaca chromaprint libmtp taglib libsecret libva libvdpau
 
 description="Media player, streamer, and encoder. It can play from many inputs"
 url="http://www.slackware.com/~alien/slackbuilds/vlc/"
@@ -6,23 +6,35 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=vlc
-version=2.2.8
+version=3.0.0
 
-source=(http://www.linuxfromscratch.org/patches/blfs/svn/vlc-$version-ffmpeg3-1.patch
-	 https://download.videolan.org/$name/$version/$name-$version.tar.xz)
-	
+source=(https://download.videolan.org/$name/$version/$name-$version.tar.xz
+	lua53_compat.patch
+	update-vlc-plugin-cache.hook)
 build() {
 
 cd $name-$version
 
-patch -Np1 -i ../vlc-$version-ffmpeg3-1.patch
+patch -p1 -i ../lua53_compat.patch
 
-sed -i 's/error-implicit-function-declaration//' configure
+./bootstrap
 
-./configure --prefix=/usr  --disable-atmo
-
+BUILDCC="/usr/bin/gcc -std=c99" ./configure --prefix=/usr \
+            --disable-rpath \
+            --sysconfdir=/etc \
+            --disable-ncurses \
+            --enable-aa \
+            --enable-upnp \
+            --enable-opus \
+            --enable-bluray
 
 make
+
 make DESTDIR=$PKG docdir=/usr/share/doc/$name-$version-release install
 
+for res in 16 32 48 128; do
+    install -D -m644 "$SRC/vlc-$version/share/icons/${res}x${res}/vlc.png" \
+    "$PKG/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png"
+done
+install -Dm 644 $SRC/update-vlc-plugin-cache.hook -t $PKG/usr/share/libalpm/hooks
 }
