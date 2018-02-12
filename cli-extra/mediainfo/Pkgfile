@@ -1,19 +1,19 @@
+# Depends on: libmediainfo
+
 description="Show technical and tag informations about video or audio file."
 url="https://mediaarea.net/"
-contributors="NuTyX Team"
-packager="greg<greg@nutyx.org>"
-
-# Depends on: libmediainfo 
+packager="remy <remy@nutyx.org>"
+contributors="greg"
 
 name=mediainfo
-version=0.7.99
+version=17.12
 release=1
 
-source=(https://mediaarea.net/download/source/mediainfo/$version/mediainfo_$version.tar.bz2)
+source=(https://mediaarea.net/download/source/mediainfo/$version/mediainfo_$version.tar.xz)
 
 build() {
 
-  cd $SRC/MediaInfo/Project/GNU/CLI
+  cd MediaInfo/Project/GNU/CLI
   sh ./autogen.sh
   ./configure --prefix=/usr
   make
@@ -24,7 +24,7 @@ build() {
 package() {
 
 
-  cd $SRC/MediaInfo/Project/GNU/CLI
+  cd MediaInfo/Project/GNU/CLI
   make DESTDIR=$PKG install
   
   
