@@ -2,36 +2,33 @@
 
 description="Session management in a clean and simple way."
 url="http://brain-dump.org/projects/abduco/"
-packager="greg<greg@nutyx.org>"
-contributors=""
-
-run=()
-
-
+packager="remy<remy@nutyx.org>"
+contributors="Greg"
 
 name=abduco
 version=0.6
-release=1
+release=2
 
-source=(http://brain-dump.org/projects/abduco/abduco-$version.tar.gz
-)
+source=(http://brain-dump.org/projects/$name/$name-$version.tar.gz config.h)
 
 prepare() {
-echo "Fonction vide, normal..."
+cd $name-$version
+cp "${srcdir}/config.h" .
 }
 
 build() {
 cd $name-$version
-make
-make DESTDIR=$PKG PREFIX=/usr install
+make all
 }
 
 package() {
-echo "Fonction  vide, normal..." 
+cd $name-$version
+make DESTDIR=$PKG PREFIX=/usr install
+ 
 }
 
 uptodate() {
 echo "Fonction  vide, normal..." 
 }
 
-# Recette editee le 13/10/17 a 20:54:48
+# Recette editee le 12/02/18 a 18:00
