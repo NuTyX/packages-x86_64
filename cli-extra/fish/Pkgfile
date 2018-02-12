@@ -1,13 +1,13 @@
+# Depends on: ncurses doxygen inetutils
 description="a modern interactive commandline shell."
 url="http://www.fishshell.com/"
-contributors="fanch"
-packager="greg<greg@nutyx.org>"
+packager="remy <remy@nutyx.org>"
+contributors="greg, fanch"
 
-# Depends on: ncurses doxygen
 run=(doxygen)
 
 name=fish
-version=2.6.0
+version=2.7.1
 release=1
 
 source=(https://github.com/fish-shell/fish-shell/archive/$version.tar.gz)
@@ -25,7 +25,7 @@ prepare() {
 
 build() {
 
-	cd fish-shell-$version
+  cd fish-shell-$version
   ./configure --prefix=/usr \
     --sysconfdir=/etc
   make
