@@ -2,27 +2,26 @@
 
 description="Rotates system logs automatically"
 url="https://github.com/logrotate/logrotate"
-packager="greg<greg@nutyx.org>"
-contributors=""
+packager="remy <remy@nutyx.org>"
+contributors="greg"
 
 run=()
 
 
 
 name=logrotate
-version=3.12.3
+version=3.13.0
 release=1
 
 source=(https://github.com/logrotate/logrotate/releases/download/$version/$name-$version.tar.xz
-logrotate.conf
-)
+        logrotate.conf)
 
 prepare() {
 echo "Fonction prepare sans objet"
 }
 
 build() {
-cd $SRC/$name-$version
+cd $name-$version
 ./configure \
 --prefix=/usr \
 --sbindir=/usr/bin \
@@ -35,7 +34,7 @@ make
 }
 
 package() {
-cd $SRC/$name-$version
+cd $name-$version
 make DESTDIR=$PKG install
 mkdir -p $PKG/etc/$name.d
 mkdir -p $PKG/var/state/logrotate
