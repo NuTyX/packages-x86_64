@@ -1,12 +1,12 @@
+# Depends on: git ncurses asciidoc xmlto
+
 description="Text-mode interface for Git."
 url="http://jonas.nitro.dk/tig/"
-contributors="tnut"
-packager="greg<greg@nutyx.org>"
-
-# Depends on: asciidoc xmlto
+contributors="tnut, greg"
+packager="remy <remy@nutyx.org>"
 
 name=tig
-version=2.2.2
+version=2.3.2
 release=1
 
 source=(https://github.com/jonas/$name/releases/download/$name-$version/$name-$version.tar.gz)
@@ -24,5 +24,5 @@ package() {
 
 	cd $name-$version
 	make DESTDIR=$PKG install install-doc-man
-
+	install -Dm0644 contrib/tig-completion.bash "$PKG/usr/share/bash-completion/completions/tig"
 }
