@@ -1,12 +1,12 @@
 description="A configuration editing tool that parses config files and transforms them into a tree"
 url="http://augeas.net"
-contributors="berlius"
-packager="greg<greg@nutyx.org>"
+contributors="berlius, Greg"
+packager="remy <remy@nutyx.org>"
 
 # Depends on: libxml2
 
 name=augeas
-version=1.8.1
+version=1.10.1
 release=1
 
 source=(http://download.augeas.net/$name-$version.tar.gz)
@@ -15,12 +15,8 @@ source=(http://download.augeas.net/$name-$version.tar.gz)
 build() {
 
     cd $name-$version
-	sed -i 's|Requires:.*|Requires: libxml-2.0|' augeas.pc.in
     ./configure --prefix=/usr 
-
     make
-    make DESTDIR=$PKG install
-
 }
 
 
