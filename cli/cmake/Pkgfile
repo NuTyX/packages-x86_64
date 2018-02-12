@@ -2,24 +2,15 @@
 
 description="A cross-platform open-source make system"
 url="http://www.cmake.org/"
-packager="greg<greg@nutyx.org"
+packager="tnut <tnut@nutyx.org"
+contributors="Greg"
 
 name=cmake
-version=3.10.0
-release=1
+version=3.10.2
 
-run=()
 
 source=($url/files/v${version%.*}/$name-$version.tar.gz
 )
-
-prepare() {
-
-    cd cmake-3.10.0
-    # Traitement en amont de la construction
-
-}
-
 
 build() {
 
@@ -35,14 +26,5 @@ sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake
 
 make
 
-
+make DESTDIR=$PKG install
 }
-
-
-package() {
-
-    cd $name-$version
-	make DESTDIR=$PKG install   
-	
-}
-
