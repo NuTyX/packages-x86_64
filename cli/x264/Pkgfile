@@ -1,15 +1,15 @@
-# Depends on: yasm
+# Depends on: yasm l-smash
 
 description="Library for encoding H264/AVC video streams"
 url="http://www.videolan.org/developers/x264.html"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="greg <greg@nutyx.org>"
+contributors="PierreB Tnut"
 
 name=x264
-version=20170212.2245
+version=20180205-2245
 release=1
 
-source=(http://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${version/./-}-stable.tar.bz2)
+source=(http://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20180205-2245-stable.tar.bz2)
 
 build() {
 cd x264-snapshot-${version/./-}-stable

@@ -1,20 +1,40 @@
-# Depends on: cairo glib icu freetype
+# Depends on: glib graphite2 cairo glib icu freetype gobject-introspection git gtk-doc
 
 description="OpenType text shaping engine"
 url="http://www.freedesktop.org/software/harfbuzz"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="remy <remy@nutyx.org>"
+contributors="Pierre B, tnut"
 
 name=harfbuzz
-version=1.4.8
+version=1.7.5
 release=1
 
-source=(http://www.freedesktop.org/software/$name/release/$name-$version.tar.bz2)
+source=(https://github.com/$name/$name/archive/$name.tar.gz)
+
+prepare() {
+    cd $name-$version
+    NOCONFIGURE=1 ./autogen.sh
+}
 
 build() {
 cd $name-$version
+
 ./configure --prefix=/usr \
---with-gobject
+            --with-cairo  \
+            --with-freetype \
+            --with-glib   \
+            --with-gobject \
+            --with-graphite2 \
+            --with-icu \
+            --enable-gtk-doc
+            
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
 make
+}
+
+package() {
+
 make DESTDIR=$PKG install
+
 }

@@ -1,0 +1,23 @@
+# Depends on: cmake
+
+description="Lightweight unit testing framework for C++"
+url="https://github.com/unittest-cpp/unittest-cpp/"
+packager="remy <remy@nutyx.org>"
+
+name=unittestpp
+version=2.0.0
+release=1
+
+source=(https://github.com/unittest-cpp/unittest-cpp/archive/v$version.tar.gz)
+
+build() {
+
+cd unittest-cpp-$version
+
+mkdir -pv build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release
+make all
+make DESTDIR=$PKG install
+}

@@ -1,0 +1,18 @@
+# Depends on: python-setuptools
+
+description="Parse RSS and Atom feeds in Python"
+url="https://github.com/kurtmckee/feedparser"
+packager="remy <remy@nutyx.org>"
+
+name=python-mutagen
+version=1.39
+release=1
+
+source=(https://github.com/quodlibet/mutagen/releases/download/release-$version/mutagen-$version.tar.gz)
+
+build() {
+
+cd mutagen-$version
+python3 setup.py install --root=$PKG
+rm -r $PKG/usr/{bin,share}
+}

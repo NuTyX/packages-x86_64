@@ -1,0 +1,36 @@
+# Depends on: gcc doxygen graphviz python python2 meson
+
+description="C++ library for interacting with JSON"
+url="https://github.com/open-source-parsers/jsoncpp"
+packager="remy <remy@nutyx.org>"
+
+name=json-cpp
+version=1.8.4
+release=1
+
+source=(https://github.com/open-source-parsers/jsoncpp/archive/$version.tar.gz)
+
+build() {
+cd jsoncpp-$version
+mkdir -pv build
+
+python3 doxybuild.py \
+--doxygen="$(which doxygen)" \
+--with-dot
+
+meson --default-library shared build
+ninja -C build
+
+ninja -C build test
+  cd test
+  python2 runjsontests.py ../build/jsontestrunner
+  python2 rununittests.py ../build/jsoncpp_test  
+}
+
+package() {
+
+cd jsoncpp-$version
+
+DESTDIR=$PKG ninja -C build install
+install -Dm 644 README.md -t $PKG/usr/share/doc/$name
+}

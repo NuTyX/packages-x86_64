@@ -1,0 +1,25 @@
+# Depends on: python-setuptools libxml2 python-sgmllib
+
+description="Parse RSS and Atom feeds in Python
+url="https://github.com/kurtmckee/feedparser
+packager="remy <remy@nutyx.org>"
+
+name=python-feedparser
+version=5.2.1
+release=1
+
+run=(python-setuptools python-sgmllib)
+
+source=(https://github.com/kurtmckee/feedparser/archive/$version.tar.gz)
+
+prepare() {
+cd feedparser-$version; 2to3 -w feedparser/feedparser.py feedparser/feedparsertest.py
+}
+
+build() {
+
+  cd feedparser-$version
+  /usr/bin/python3 setup.py build
+  /usr/bin/python3 setup.py install --prefix=/usr --root=$PKG
+  
+}
