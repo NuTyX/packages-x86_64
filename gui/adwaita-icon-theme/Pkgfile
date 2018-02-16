@@ -5,10 +5,10 @@ url="http://www.gnome.org/"
 maintainer="http://linuxfromscratch.org/"
 packager="tnut <tnut@nuty.org>"
 
-run=(librsvg hicolor-icon-theme)
+run=(librsvg hicolor-icon-theme gtk-update-icon-cache)
 
 name=adwaita-icon-theme
-version=3.26.0
+version=3.26.1
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build() {
@@ -16,7 +16,6 @@ cd $name-$version
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
-gtk-update-icon-cache -q -t -f $PKG/usr/share/icons/Adwaita
 }
 uptodate(){
 local latest lastversion url
