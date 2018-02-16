@@ -1,0 +1,35 @@
+# Depends on: docbook-xsl libxslt python2
+
+description="Text document format for short documents, articles, books and UNIX man pages"
+url="http://www.methods.co.nz/asciidoc/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus, Remy"
+
+PKGMK_KEEP_SOURCES="no"
+
+name=asciidoc
+version=8.6.10
+
+
+source=(https://github.com/$name/$name/archive/$version.tar.gz)
+
+
+build(){
+
+    cd $name-$version
+    sed -i -e 's#python a2x.py#python2 a2x.py#' Makefile.in
+    autoconf
+    ./configure --prefix=/usr \
+                --sysconfdir=/etc
+    make
+}
+
+
+package() {
+
+  cd $name-$version
+    make DESTDIR=$PKG install
+    make docs DESTDIR=$PKG
+    install -Dm644 asciidocapi.py \
+    ${pkgdir}/usr/lib/python2.7/site-packages/asciidocapi.py  
+}
