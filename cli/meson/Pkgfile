@@ -1,30 +1,17 @@
-# Depends on: ninja python python-setuptools
+# Depends on: ninja
 
 description="Meson is an open source build system meant to be both extremely fast, as user friendly as possible"
 url="http://mesonbuild.com/"
-contributors="jayce <jayce.net@gmail.com>"
-packager-"greg <greg@nutyx.org>"
+contributors="Jayce, Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=meson
-version=0.43.0
-release=1
+version=0.44.0
 
-source=(https://github.com/mesonbuild/meson/releases/download/$version/$name-$version.tar.gz
-fix-tests.diff
-nutyx-meson)
+source=(https://github.com/mesonbuild/$name/releases/download/$version/$name-$version.tar.gz)
 
-prepare() {
-  cd $name-$version
-  patch -Np1 -i ../fix-tests.diff
-}
-	
 build() {
   cd $name-$version
   python3 setup.py build
   python3 setup.py install --root=$PKG --optimize=1 --skip-build
-  install -Dm 644 syntax-highlighting/vim/ftdetect/meson.vim -t $PKG/usr/share/vim/vimfiles/ftdetect
-  install -Dm 644 syntax-highlighting/vim/indent/meson.vim -t $PKG/usr/share/vim/vimfiles/indent
-  install -Dm 644 syntax-highlighting/vim/syntax/meson.vim -t $PKG/usr/share/vim/vimfiles/syntax
-  install -D ../nutyx-meson -t $PKG/usr/bin
 }
-
