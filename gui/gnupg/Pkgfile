@@ -13,11 +13,9 @@ source=(ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-$version.tar.bz2)
 build() {
 cd gnupg-$version
 
-sed -e 's|\(GNUPGHOME\)=\$(abs_builddir)|\1=`/bin/pwd`|' \
-    -i tests/openpgp/Makefile.in
-
 ./configure --prefix=/usr \
---enable-symcryptrun \
+--enable-symcryptrun      \
+--enable-maintainer-mode  \
 --docdir=/usr/share/doc/gnupg-$version
 make
 
