@@ -1,0 +1,20 @@
+# Depends on: alsa-lib freetype xorg-libxcursor xorg-libxinerama xorg-libxrandr doxygen
+
+description="A high-quality audio editing and playback library used by libopenshot"
+url="http://www.openshotvideo.com"
+packager="remy <tnut@nutyx.org>"
+
+name=libopenshot-audio
+version=0.1.5
+release=1
+
+source=(https://github.com/OpenShot/libopenshot-audio/archive/v$version.tar.gz)
+
+build() {
+cd $name-$version
+mkdir -v build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+make
+make DESTDIR=$PKG install
+}
