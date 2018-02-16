@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libassuan
-version=2.4.3
-release=1
+version=2.5.1
 
 source=( ftp://ftp.gnupg.org/gcrypt/$name/$name-$version.tar.bz2)
 build() {
@@ -17,5 +16,4 @@ cd $name-$version
 --infodir=/usr/share/info
 make
 make DESTDIR=$PKG install
-rm $PKG/usr/share/info/dir
 }
