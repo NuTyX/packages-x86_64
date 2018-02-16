@@ -1,0 +1,22 @@
+# Depends on: python
+
+description="Port of sgmllib to Python3"
+url="https://github.com/kurtmckee/feedparser"
+packager="remy <remy@nutyx.org>"
+
+name=python-sgmllib
+version=5.2.1
+release=1
+
+source=(https://github.com/kurtmckee/feedparser/archive/$version.tar.gz)
+
+build() {
+
+  cd feedparser-$version
+python3 /usr/lib/python3.6/compileall.py feedparser/sgmllib3.py
+install -Dm644 feedparser/sgmllib3.py \
+    "$PKG/usr/lib/python3.6/site-packages/sgmllib.py"
+install -Dm644 feedparser/__pycache__/sgmllib3.cpython-36.pyc \
+    "$PKG/usr/lib/python3.6/site-packages/__pycache__/sgmllib.cpython-36.pyc"
+  
+}
