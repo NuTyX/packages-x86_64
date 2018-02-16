@@ -7,7 +7,7 @@ contributors="Pierre B"
  
 name=xorg-libice
 version=1.0.9
-release=1
+release=2
 
 source=(http://ftp.x.org/pub/individual//lib/libICE-$version.tar.bz2)
 
@@ -15,7 +15,8 @@ build() {
 
 	cd libICE-$version
 
-	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+	ICE_LIBS=-lpthread
 
 	make
 	make DESTDIR=$PKG install
