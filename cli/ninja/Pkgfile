@@ -1,31 +1,22 @@
+# Depends on: python
+
 description="Cross-platform IDE focused on Python application development"
 url="http://martine.github.io/ninja/"
-contributors="pierre"
-packager="greg<greg@nutyx.org>"
+contributors="Pierre, Greg"
+packager="tnut <tnut@nutyx.org>"
 
-# Depends on: git re2c python2
 
 name=ninja
-version=1.7.2
-release=2
+version=1.8.2
 
-source=()
+source=(https://github.com/ninja-build/$name/archive/v$version/$name-$version.tar.gz)
 	
 build() {
 
-	git clone git://github.com/martine/ninja.git
-	cd $name
-	git checkout release
-	python bootstrap.py
-	if [ -x /usr/bin/emacs ] ; then
-           emacs -Q --batch -f batch-byte-compile misc/ninja-mode.el
-    	fi
-
+	cd $name-$version
+	python3 configure.py --bootstrap
+	
 	install -m755 -D ninja $PKG/usr/bin/ninja
 	install -m644 -D misc/bash-completion $PKG/usr/share/bash-completion/completions/ninja
-	install -m644 -D misc/ninja-mode.el $PKG/usr/share/emacs/site-lisp/ninja-mode.el
-    	if [ -x /usr/bin/emacs ] ; then
-        	install -m644 -D misc/ninja-mode.elc $PKG/usr/share/emacs/site-lisp/ninja-mode.elc
-    	fi
-    	
+	install -m644 -D misc/zsh-completion  $PKG/usr/share/zsh/site-functions/_ninja
 }
