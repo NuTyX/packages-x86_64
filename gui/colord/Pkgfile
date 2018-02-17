@@ -1,4 +1,4 @@
-# Depends on: libgudev sqlite polkit lcms2 gobject-introspection libusb dbus vala libgusb
+# Depends on: meson libgudev sqlite polkit lcms2 gobject-introspection libusb dbus vala libgusb
 
 description="System daemon for managing color devices"
 url="http://www.freedesktop.org/software/colord/"
@@ -12,18 +12,21 @@ source=(http://www.freedesktop.org/software/$name/releases/$name-$version.tar.xz
 
 build() {
 cd $name-$version
-./configure --prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---with-daemon-user=colord \
---enable-vala \
---enable-systemd-login=no \
---disable-argyllcms-sensor \
---disable-static \
---with-systemdsystemunitdir=no \
---disable-bash-completion
-make
-make DESTDIR=$PKG install
+mkdir build
+cd    build
+meson --prefix=/usr                     \
+	--sysconfdir=/etc               \
+	--localstatedir=/var            \
+	-Dwith-daemon-user=colord       \
+	-Denable-vala=true              \
+	-Denable-systemd=false          \
+	-Denable-libcolordcompat=true   \
+	-Denable-argyllcms-sensor=false \
+	-Denable-bash-completion=false  \
+	-Denable-docs=false             \
+	-Denable-man=false ..
+ninja
+DESTDIR=$PKG ninja install
 }
 uptodate() {
 local url ext
