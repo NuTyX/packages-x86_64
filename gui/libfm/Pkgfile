@@ -1,4 +1,4 @@
-# Depends on: shared-mime-info gtk3 libexif menu-cache
+# Depends on: shared-mime-info gtk3 libexif menu-cache gtk-doc
 
 description="Library used to develop file managers providing some file management utilities"
 url="http://pcmanfm.sourceforge.net/"
@@ -23,9 +23,6 @@ build() {
     --sysconfdir=/etc \
     --with-gnu-ld \
     --with-gtk=3
-
-  
-    sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
     make
   
