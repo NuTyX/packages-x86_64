@@ -5,38 +5,36 @@ url="http://www.isc.org/downloads/bind/"
 packager="tnut at nutyx dot org"
 
 name=bind
-version=9.11.2
-release=2
-nutyx_version=9.92
+version=9.12.0
+nutyx_version=10.0.1
 
 source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
 	ftp://ftp.isc.org/isc/bind9/$version/$name-$version.tar.gz)
 
 build(){
     cd $name-$version
-    ./configure --prefix=/usr \
-                --sysconfdir=/etc \
-                --localstatedir=/var \
-                --mandir=/usr/share/man
+    ./configure --prefix=/usr
+
 	make -C lib/dns
 	make -C lib/isc
 	make -C lib/bind9
 	make -C lib/isccfg
-	make -C lib/lwres
+	make -C lib/irs
 	make -C bin/dig
+
 	make DESTDIR=$PKG -C bin/dig install
 
     # doc
-    install -v -m755 -d $PKG/usr/share/doc/bind-$version/{arm,misc}
-    install -v -m644 doc/arm/*.html \
-        $PKG/usr/share/doc/bind-$version/arm
-    install -v -m644 \
-        doc/misc/{dnssec,ipv6,migrat*,options,rfc-compliance,roadmap,sdb} \
-            $PKG/usr/share/doc/bind-$version/misc
+	install -v -m755 -d $PKG/usr/share/doc/bind-$version/{arm,misc}
+	install -v -m644 doc/arm/*.html \
+	$PKG/usr/share/doc/bind-$version/arm
+	install -v -m644 \
+	doc/misc/{dnssec,ipv6,migrat*,options,rfc-compliance,roadmap,sdb} \
+	$PKG/usr/share/doc/bind-$version/misc
 
     # service
-    cd $SRC/nutyx-${nutyx_version}
-    make DESTDIR=$PKG install-bind
+	cd $SRC/nutyx-${nutyx_version}
+	make DESTDIR=$PKG install-bind
 }
 uptodate() {
 local url ext
