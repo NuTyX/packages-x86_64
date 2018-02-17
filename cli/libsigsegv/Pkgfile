@@ -1,33 +1,22 @@
 description="Handling page faults in user mode."
 url="http://ftp.debian.org/debian/pool/main/libp/libpaper"
-contributors="berlius"
-packager="greg<greg@nutyx.org>"
-
-# Depends on:  	
+contributors="Berlius, Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=libsigsegv
-version=2.11
-release=1
+version=2.12
 
 source=(http://ftp.gnu.org/gnu/libsigsegv/$name-$version.tar.gz)
 
 build () {
 
-    cd $name-$version
-    
- 	./configure --prefix=/usr  \
- 	        --enable-shared \
-            --disable-static                 
-    make
-
-}
-
-
-package() {
-
 	cd $name-$version
-	make DESTDIR=$PKG install
+	./configure --prefix=/usr \
+	--enable-shared --disable-static
 
+	make
+
+	make DESTDIR=$PKG install
 }
 uptodate() {
 local url ext
