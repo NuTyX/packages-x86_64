@@ -4,15 +4,12 @@ packager="tnut<tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libatomic-ops
-version=7.4.4
-release=1
+version=7.6.2
 
 source=(http://www.ivmaisoft.com/_bin/atomic_ops//libatomic_ops-$version.tar.gz)
 
 build() {
 cd libatomic_ops-$version
-sed -i 's#pkgdata#doc#' doc/Makefile.am 
-autoreconf -fi
 ./configure --prefix=/usr    \
             --enable-shared  \
             --disable-static \
