@@ -9,13 +9,17 @@ run=(bluez sbc)
 
 name=pulseaudio
 version=11.1
-release=2
+release=3
 
-source=(http://freedesktop.org/software/pulseaudio/releases/pulseaudio-$version.tar.xz)
-
+source=(http://freedesktop.org/software/pulseaudio/releases/pulseaudio-$version.tar.xz
+	http://www.linuxfromscratch.org/patches/blfs/svn/pulseaudio-$version-glibc_2.27_fix-1.patch)
 build() {
 unset MAKEFLAGS
 cd pulseaudio-$version
+
+patch -Np1 -i ../pulseaudio-$version-glibc_2.27_fix-1.patch
+
+AUTOPOINT='intltoolize --automake --copy' autoreconf -fiv
 
 ./configure --prefix=/usr         \
             --sysconfdir=/etc     \
