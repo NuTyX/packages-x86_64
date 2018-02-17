@@ -3,19 +3,12 @@
 description="OpenType text shaping engine"
 url="http://www.freedesktop.org/software/harfbuzz"
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, Remy"
-
-PKGMK_KEEP_SOURCES="no"
+contributors="Pierre B, Remy, Tnut"
 
 name=harfbuzz
 version=1.7.5
 
-source=(https://github.com/$name/$name/archive/$name.tar.gz)
-
-prepare() {
-    cd $name-$version
-    NOCONFIGURE=1 ./autogen.sh
-}
+source=(https://www.freedesktop.org/software/$name/release/$name-$version.tar.bz2)
 
 build() {
 cd $name-$version
@@ -25,17 +18,9 @@ cd $name-$version
             --with-freetype \
             --with-glib   \
             --with-gobject \
-            --with-graphite2 \
             --with-icu \
             --enable-gtk-doc
-            
-sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
 make
-}
-
-package() {
-
 make DESTDIR=$PKG install
-
 }
