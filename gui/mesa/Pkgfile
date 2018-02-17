@@ -7,7 +7,7 @@ contributors="Pierre B"
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=17.2.6
+version=17.3.4
 
 source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/mesa/mesa-$version-add_xdemos-1.patch)
@@ -15,7 +15,7 @@ build() {
 cd mesa-$version
 patch -Np1 -i ../mesa-$version-add_xdemos-1.patch
 
-./configure                    \
+./configure CFLAGS='-O2' CXXFLAGS='-O2' LDFLAGS=-lLLVM \
 --prefix=/usr                  \
 --sysconfdir=/etc              \
 --enable-texture-float         \
