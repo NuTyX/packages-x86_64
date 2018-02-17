@@ -1,4 +1,4 @@
-# Depends on: talloc tevent avahi gnutls libgpg-error popt python2 cups kerberos libcap openldap libxslt tdb ldb
+# Depends on: libtirpc talloc tevent avahi gnutls libgpg-error popt python2 cups kerberos libcap openldap libxslt tdb
 
 description="SMB Fileserver and AD Domain server"
 url="http://www.samba.org"
@@ -6,8 +6,8 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
 
 name=samba
-version=4.7.3
-nutyx_version=9.92
+version=4.7.5
+nutyx_version=10.0.1
 
 source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
 	https://download.samba.org/pub/samba/stable/$name-$version.tar.gz)
@@ -25,7 +25,7 @@ cd $name-$version
     --without-ad-dc                     \
     --enable-fhs                        \
     --without-systemd                   \
-    --bundled-libraries=!talloc,!pytalloc-util,!tevent,!popt,!tdb,!ldb
+    --bundled-libraries=!talloc,!pytalloc-util,!tevent,!popt,!tdb
 
 make
 
