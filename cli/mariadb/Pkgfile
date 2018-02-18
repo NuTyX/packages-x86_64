@@ -1,4 +1,4 @@
-# Depends on: cmake libevent boost lz4 libxml2 cracklib pcre
+# Depends on: cmake libevent boost libxml2 cracklib pcre ruby
 
 description="MariaDB is a fork and a replacement for the MySQL relational database management system."
 url="http://www.mariadb.org/en/about/"
@@ -6,8 +6,8 @@ packager="tnut <tnu@nutyx.org>"
 contributors="Pierre B"
 
 name=mariadb
-version=10.2.10
-nutyx_version=9.92
+version=10.2.13
+nutyx_version=10.0.1
 
 source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
 	ftp://ftp.osuosl.org/pub/mariadb/$name-$version/source/$name-$version.tar.gz)
@@ -19,7 +19,6 @@ build() {
 cd $name-$version
 
 sed -i "s@data/test@\${INSTALL_MYSQLTESTDIR}@g" sql/CMakeLists.txt
-sed -i '/void..coc_malloc/{s/char ./&x/; s/int/& y/}' mysys_ssl/openssl.c
 
 mkdir build
 cd build
@@ -39,6 +38,7 @@ cmake -DCMAKE_BUILD_TYPE=Release                        \
       -DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock         \
       -DWITH_EXTRA_CHARSETS=complex                     \
       -DWITH_EMBEDDED_SERVER=ON                         \
+      -DSKIP_TESTS=ON                                   \
       -DTOKUDB_OK=0                                     \
       .. 
 make
