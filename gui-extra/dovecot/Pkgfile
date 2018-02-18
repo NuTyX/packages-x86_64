@@ -2,21 +2,18 @@
 
 description="IMAP and POP3 server with ssl/ipv6 support, written with security primarily in mind"
 url="http://dovecot.org"
-contributors="berlius, tnut"
-packager="greg<greg@nutyx.org>"
+contributors="Berlius, Tnut, Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=dovecot
-version=2.2.33.2
-release=1
+version=2.3.0
 
-source=(https://dovecot.org/releases/2.2/$name-$version.tar.gz 
+source=(https://dovecot.org/releases/2.3/$name-$version.tar.gz 
         dovecot
         dovecot-config.patch)
-        
-
 
 build () {
-cd $name-$version
+cd $name-ce-$version
 patch -p1 -i $SRC/$name-config.patch
 ./configure --prefix=/usr \
 --libexecdir=/usr/lib \
@@ -26,11 +23,7 @@ patch -p1 -i $SRC/$name-config.patch
 --with-ssl=openssl \
 --without-libwrap
 make
-}
 
-
-package () {
-cd $name-$version
 make DESTDIR=$PKG install
 cp -r $PKG/usr/share/doc/dovecot/example-config/* $PKG/etc/dovecot
 install -D -m 755 $SRC/dovecot $PKG/etc/rc.d/dovecot
