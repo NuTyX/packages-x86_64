@@ -1,20 +1,21 @@
-# Depends on: expat
-
 description="Exif and Iptc metadata manipulation library and tools"
 url="http://www.exiv2.org/index.html"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=exiv2
-version=0.25
-release=1
+version=0.26
 
-source=(http://www.exiv2.org/$name-$version.tar.gz)
+source=(http://www.exiv2.org/builds/$name-$version-trunk.tar.gz)
 
 build() {
-cd $name-$version
-	./configure --prefix=/usr \
-		 --disable-static 
-	make
-	make DESTDIR=$PKG install
+cd $name-trunk
+./configure --prefix=/usr \
+	--enable-video \
+	--enable-webready \
+	--without-ssh \
+	--disable-static 
+make
+make DESTDIR=$PKG install
+chmod -v 755 $PKG/usr/lib/libexiv2.so
 }
