@@ -6,10 +6,9 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=nmap
-version=7.40
-release=1
+version=7.60
 
-source=(http://nmap.org/dist/$name-$version.tar.bz2)
+source=(http://download.insecure.org/nmap/dist/$name-$version.tgz)
 
 build() {
 cd $name-$version
@@ -21,5 +20,4 @@ cd $name-$version
 --infodir=/usr/share/info
 make || make -j1
 make DESTDIR=$PKG install
-rm -rf $PKG/usr/share/info/dir
 }
