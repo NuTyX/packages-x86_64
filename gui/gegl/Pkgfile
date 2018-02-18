@@ -1,4 +1,4 @@
-# Depends on: babl gtk2 librsvg libpng ruby lua ffmpeg librsvg openexr exiv2 json-glib gtk-doc
+# Depends on: asciidoc babl gtk2 librsvg ruby lua ffmpeg librsvg openexr exiv2 graphviz libjpeg-turbo libwebp python2 sdl gobject-introspection vala json-glib gtk-doc
 
 description="Generic Graphics Library"
 url="http://gegl.org/"
@@ -6,21 +6,21 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=gegl
-version=0.3.18
-release=1
+version=0.3.28
 
 source=(http://ftp.gimp.org/pub/$name/0.3/$name-$version.tar.bz2)
 
 build() {
 cd $name-$version
 
-./configure --prefix=/usr --without-vala \
- --enable-gtk-doc
+./configure --prefix=/usr --disable-docs
 
-LC_ALL=en_US make
+make
 
 make DESTDIR=$PKG install
 
+# Available documentation
+install -d -v -m755 $PKG/usr/share/gtk-doc/html/gegl/
 install -v -m644 docs/*.{css,html} \
 $PKG/usr/share/gtk-doc/html/gegl
 
