@@ -4,15 +4,16 @@ PKGMK_GROUPS=(man)
 
 name=slim
 version=1.3.6
-release=2
+release=3
 
 description="Desktop-independent graphical login manager for X11"
 url="http://sourceforge.net/projects/slim.berlios/"
 
 run=(xorg-xinit consolekit2)
 
-source=(https://downloads.sourceforge.net/project/slim.berlios/$name-$version.tar.gz
-        slim-1.3.6-conglo-1.patch slim background.jpg panel.png)
+source=(http://downloads.tuxfamily.org/nutyx/files/slim-nutyx-10.0.jpg
+	https://downloads.sourceforge.net/project/slim.berlios/$name-$version.tar.gz
+        slim-1.3.6-conglo-1.patch slim panel.png)
 build() {
   cd $name-$version
 
@@ -54,8 +55,9 @@ EOF
    ln -s ../init.d/slim $PKG/etc/rc.d/rc$i.d/K01slim
   done
   install -m 754 $SRC/slim $PKG/etc/rc.d/init.d/slim
-  for i in background.jpg panel.png
+  for i in panel.png
   do
    install -m 644 $SRC/$i $PKG/usr/share/slim/themes/default/$i
   done
+  install -m 644 $SRC/slim-nutyx-10.0.jpg $PKG/usr/share/slim/themes/default/background.jpg
 }
