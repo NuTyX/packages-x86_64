@@ -1,31 +1,27 @@
-# Depends on: 
+# Depends on: python llvm
 
 description="security-oriented fuzzer with compile-time instrumentation"
 url="http://lcamtuf.coredump.cx/afl/releases/"
-packager="greg<greg@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
 
 name=afl
-version=2.51b
-release=1
+version=2.52b
 
 source=(http://lcamtuf.coredump.cx/afl/releases/$name-$version.tgz)
 
 build () {
 
-    cd $name-$version
-    make
- 
-	}
+cd $name-$version
 
-package () {
+make PREFIX=/usr
+make -C llvm_mode PREFIX=/usr
 
-	cd $name-$version
-  make PREFIX=/usr DESTDIR=$PKG install
+make PREFIX=/usr DESTDIR=$PKG install
 
-  rm -r $PKG/usr/share/doc
-  rm $PKG/usr/share/afl/testcases/README.testcases
-
-       }
+rm $PKG/usr/share/afl/testcases/README.testcases
+install -Dm 644 llvm_mode/README.llvm -t $PKG/usr/share/doc/$name
+}
 uptodate() {
 local url ext
 ext=".tgz"
