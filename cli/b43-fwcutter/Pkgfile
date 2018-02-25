@@ -1,11 +1,11 @@
 description="firmware extractor for the b43 kernel module"
 url="http://wireless.kernel.org/en/users/Drivers/b43"
-contributors="Pierre B"
+contributors="Pierre B, Greg"
 packager="tnut <tnut@nutyx.org>"
 
 name=b43-fwcutter
 version=019
-release=1
+release=2
 
 source=(http://bues.ch/b43/fwcutter/${name}-${version}.tar.bz2)
 
@@ -13,6 +13,7 @@ build() {
    cd $name-$version
    make
    install -D -m755 b43-fwcutter $PKG/usr/bin/b43-fwcutter
+   install -D -m644 b43-fwcutter.1 $PKG/usr/share/man/man1/b43-fwcutter.1
 }
 uptodate() {
 local url ext name
