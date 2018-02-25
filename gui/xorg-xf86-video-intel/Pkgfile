@@ -3,7 +3,7 @@
 description="Xorg intel video driver."
 packager="tnut <tnut@nutyx.org>"
 name=xorg-xf86-video-intel
-version=20170826
+version=20180223
 _name=${name/xorg-/}
 
 source=(http://anduin.linuxfromscratch.org/BLFS/${_name}/${_name}-$version.tar.xz)
@@ -11,7 +11,7 @@ source=(http://anduin.linuxfromscratch.org/BLFS/${_name}/${_name}-$version.tar.x
 build() {
 cd ${_name}-$version
 
-./configure --prefix=/usr \
+./autogen.sh --prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \
 --enable-kms-only \
@@ -22,6 +22,17 @@ make
 
 make DESTDIR=$PKG install
 
+mkdir -p $PKG/etc/X11/xorg.conf.d
+
+cat >> $PKG/etc/X11/xorg.conf.d/20-intel.conf << "EOF"
+Section   "Device"
+        Identifier "Intel Graphics"
+        Driver     "intel"
+        #Option     "DRI" "2"            # DRI3 is default
+        #Option     "AccelMethod"  "sna" # default
+        #Option     "AccelMethod"  "uxa" # fallback
+EndSection
+EOF
 }
 uptodate() {
 local ext url LYNX
