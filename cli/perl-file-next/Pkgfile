@@ -1,0 +1,20 @@
+# Depends on: perl
+
+description="Lightweight,taint-safe file finding module"
+url="http://search.cpan.org/dist/File-Next/"
+packager="tnut <tnut@nutyx.org>"
+contributor="Greg"
+
+run=( perl )
+
+name=perl-file-next
+version=1.16
+
+source=(http://search.cpan.org/CPAN/authors/id/P/PE/PETDANCE/File-Next-$version.tar.gz)
+
+build() {
+    cd File-Next-$version
+    perl Makefile.PL INSTALLDIRS=vendor
+    make
+    make DESTDIR=$PKG install
+}
