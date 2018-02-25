@@ -4,10 +4,9 @@ description="Boost provides a set of free peer-reviewed portable C++ source libr
 url="http://boost.sourceforge.net/"
 packager="tnut at nutyx dot org"
 name=boost
-version=1.64.0
-release=1
+version=1.66.0
 
-source=(http://downloads.sourceforge.net/$name/${name}_${version//./_}.tar.bz2)
+source=(https://dl.bintray.com/boostorg/release/$version/source/${name}_${version//./_}.tar.bz2)
 build() {
 cd ${name}_${version//./_}
 sed -e '/using python/ s@;@: /usr/include/python${PYTHON_VERSION/3*/${PYTHON_VERSION}m} ;@' \
