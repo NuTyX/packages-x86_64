@@ -3,18 +3,18 @@
 description="X11 image viewer aimed mostly at console users. It is controlled via commandline arguments"
 contributors="geantbrun, tnut"
 url="https://feh.finalrewind.org/"
-packager="greg <greg@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
 
 name=feh
-version=2.23
-release=1
+version=2.23.2
 
 source=(http://feh.finalrewind.org/$name-$version.tar.bz2)
 
 build() {
 
-        cd $name-$version
-		make PREFIX=/usr exif=1 help=1 stat64=1
-        make DESTDIR=$PKG PREFIX=/usr install
-        
+cd $name-$version
+sed -i "s:doc/feh:&-2.23.2:" config.mk
+make PREFIX=/usr exif=1 help=1 stat64=1
+make DESTDIR=$PKG PREFIX=/usr install        
 }
