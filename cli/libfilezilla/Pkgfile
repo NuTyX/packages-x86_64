@@ -2,29 +2,19 @@
 
 description="Small and modern C++ library for Filezilla" 
 url="https://lib.filezilla-project.org/"
-packager="greg <greg@nutyx.org>"
-contributors=""
-
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
 
 name=libfilezilla
-version=0.11.1
-release=1
+version=0.11.2
 
 source=(http://download.filezilla-project.org/libfilezilla/libfilezilla-$version.tar.bz2)
 
 build() {
-    cd $SRC/$name-$version
-  ./configure \
-    --prefix=/usr \
-    --disable-static
-  make
-  
-  
-}
 
- package() {
- 
-  cd $SRC/$name-$version
-  make DESTDIR=$PKG install
-  
+cd $SRC/$name-$version
+./configure --prefix=/usr \
+--disable-static
+make
+make DESTDIR=$PKG install
 }
