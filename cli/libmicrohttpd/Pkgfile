@@ -6,8 +6,7 @@ contributors="Fanch, Greg"
 packager="tnut<tnut@nutyx.org>"
 
 name=libmicrohttpd
-version=0.9.55
-release=2
+version=0.9.58
 
 source=(ftp://ftp.gnu.org/gnu/libmicrohttpd/$name-$version.tar.gz)
 
@@ -15,22 +14,15 @@ build() {
 
   cd $name-$version
   ./configure --prefix=/usr --disable-dependency-tracking --enable-largefile \
-	--enable-curl --enable-messages --with-pic
-	
+	--enable-curl --enable-messages --with-pic --enable-https --disable-examples
+
   make
-  
-}
-
-package() {
-
-  cd $name-$version
   make DESTDIR=$PKG install
-  
+
   install -Dm644 $SRC/$name-$version/src/include/platform.h \
 	$PKG/usr/include/$name/platform.h
   sed -i 's#Cflags: -I${includedir}#Cflags: -I${includedir} -I${includedir}/libmicrohttpd#' \
 	$PKG/usr/lib/pkgconfig/libmicrohttpd.pc
-	
 }
 uptodate() {
 local url ext
