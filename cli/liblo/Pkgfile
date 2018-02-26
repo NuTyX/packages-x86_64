@@ -1,13 +1,20 @@
-# Depends on:
+# Depends on: doxygen
 
 description="A lightweight OSC (Open Sound Control) implementation"
 url="http://liblo.sourceforge.net/"
-packager="greg<greg@nutyx.org>"
-contributors=""
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
 
 name=liblo
-version=0.28
-release=1
+version=0.29
 
-source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
+source=(https://github.com/radarsat1/$name/releases/download/$version/$name-$version.tar.gz)
 
+package() {
+  cd $name-$version
+  mkdir -p $PKG/usr/share/{man/man3,doc/$name/{html,latex},$name/examples}
+  install -Dm 644 doc/html/* $PKG/usr/share/doc/$name/html
+  install -Dm 644 doc/latex/* $PKG/usr/share/doc/$name/latex
+  install -Dm 644 doc/man/man3/*.3 $PKG/usr/share/man/man3
+  install -Dm 644 examples/*.{cpp,c} $PKG/usr/share/$name/examples
+}
