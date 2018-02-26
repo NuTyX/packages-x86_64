@@ -1,11 +1,13 @@
 description="C/C++ configuration file library
 url="http://www.hyperrealm.com/libconfig/
-contributors="berlius"
-packager="greg<greg@nutyx.org>"
+contributors="berlius, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+PKGMK_KEEP_SOURCES="no"
 
 name=libconfig
 version=1.6
-release=1
+release=2
 
 source=(https://github.com/hyperrealm/libconfig/archive/v$version.tar.gz)
 
@@ -15,23 +17,5 @@ prepare() {
 
 # See: https://github.com/hyperrealm/libconfig/issues/47
   rm lib/scanner.c
-  
-}
-
-build() {
-
-  cd $name-$version
-
-  ./configure --prefix=/usr
-  make
-  
-}
-
-package() {
-
-  cd $name-$version
-
-  make DESTDIR=$PKG install
-  rm $PKG/usr/share/info/dir
   
 }
