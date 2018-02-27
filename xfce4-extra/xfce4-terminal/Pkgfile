@@ -5,10 +5,9 @@ packager="tnut <tnut@nutyx.org>"
 description="Terminal emulator from Xfce4."
 
 name=xfce4-terminal
-version=0.8.6
-release=1
+version=0.8.7.1
 
-source=(http://archive.xfce.org/src/apps/${name}/${version%.*}/$name-$version.tar.bz2 )
+source=(http://archive.xfce.org/src/apps/${name}/${version:0:3}/$name-$version.tar.bz2 )
 
 build() {
 
