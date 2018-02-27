@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libcdio
-version=0.94
-release=1
+version=2.0.0
 
 source=( http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
@@ -16,7 +15,6 @@ build() {
 	./configure --prefix=/usr --disable-static 
 	make
 	make DESTDIR=$PKG install
-	rm -rf $PKG/usr/share/info/dir
 }
 uptodate() {
 local url ext
