@@ -1,0 +1,35 @@
+# Depends on: doxygen mesa xorg-libxvmc libxcb faad2 speex libmng libvorbis flac libtheora sdl ffmpeg samba librsvg imagemagick 
+
+description="contains the library xine"
+url="http://xine-project.org/home"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=xine-lib
+version=1.2.9
+
+source=(http://downloads.sourceforge.net/xine/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+
+sed -e 's|wand/magick_wand.h|MagickWand/MagickWand.h|' \
+    -i src/video_dec/image.c
+
+sed -e 's/\(xcb-shape >= 1.0\)/xcb \1/' \
+    -i m4/video_out.m4
+
+./configure  --prefix=/usr \
+--disable-vcd \
+--with-external-dvdnav \
+--docdir=/usr/share/doc/$name-$version
+make
+
+doxygen doc/Doxyfile
+
+make DESTDIR=$PKG install
+
+install -v -m755 -d $PKG/usr/share/doc/$name-$version/api
+install -v -m644    doc/api/* \
+  $PKG/usr/share/doc/$name-$version/api
+}
