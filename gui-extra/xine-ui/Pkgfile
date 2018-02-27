@@ -1,0 +1,20 @@
+# Depends on: xine-lib curl aalib xdg-utils shared-mime-info hicolor-icon-theme desktop-file-utils
+
+description="A free video player for Unix"
+url="http://www.xine-project.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=xine-ui
+version=0.99.10
+
+source=(http://downloads.sourceforge.net/xine/$name-$version.tar.xz)
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr          \
+             --mandir=/usr/share/man \
+             --disable-lirc
+  make
+  make DESTDIR=$PKG docdir=/usr/share/doc/$name-$version install
+}
