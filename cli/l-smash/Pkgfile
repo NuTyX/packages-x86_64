@@ -1,36 +1,26 @@
-#Depends on : glibc 
-
-
 description="MP4 muxer and other tools"
 url="https://github.com/l-smash/l-smash"
-packager="greg<greg@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
-
-run=()
 
 name=l-smash
 version=2.9.1
-release=1
+release=2
+PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/l-smash/l-smash/archive/v2.9.1.tar.gz)
+source=(https://github.com/l-smash/l-smash/archive/v$version.tar.gz)
 
 build(){
-  cd l-smash-${version}
+  cd l-smash-$version
 
   ./configure \
     --prefix='/usr' \
     --enable-shared \
     --disable-static
   make
+
+  make DESTDIR=$PKG install
+
+  install -dm 755 $PKG/usr/share/licenses/l-smash
+  install -m 644 LICENSE $PKG/usr/share/licenses/l-smash/
 }
-
-package() {
-  cd l-smash-${version}
-
-  make DESTDIR="${PKG}" install
-
-  install -dm 755 "${PKG}"/usr/share/licenses/l-smash
-  install -m 644 LICENSE "${PKG}"/usr/share/licenses/l-smash/
-}
-
-
