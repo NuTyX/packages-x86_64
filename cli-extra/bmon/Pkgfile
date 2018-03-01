@@ -8,27 +8,19 @@ packager="tnut <tnut@nutyx.org>"
 
 name=bmon
 version=4.0
-release=1
+release=2
 
+PKGMK_KEEP_SOURCES="no"
 
 source=(https://github.com/tgraf/$name/archive/v$version.tar.gz)
 
 
 build() {
 
-	cd $SRC/$name-$version
-	
-	./autogen.sh
+    cd $SRC/$name-$version	
+    ./autogen.sh
     ./configure --prefix=/usr --sysconfdir=/etc
-    
+ 
     make
-	
-}
-
-
-package() {
-
-    cd $SRC/$name-$version
-	make DESTDIR=$PKG install
-	
+    make DESTDIR=$PKG install	
 }
