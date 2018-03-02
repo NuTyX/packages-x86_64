@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=bash-completion
 version=2.7
-release=2
+release=3
 
 source=(https://github.com/scop/$name/releases/download/$version/$name-$version.tar.xz)
 
@@ -24,6 +24,4 @@ rm $PKG/usr/share/bash-completion/completions/{{,u}mount,rfkill}
 # remove Slackware's makepkg completion
 rm $PKG/usr/share/bash-completion/completions/makepkg
 
-# bash-completion is sourced in /etc/bash.bashrc so that non-bash shell don't source it
-rm $PKG/etc/profile.d/bash_completion.sh
 }
