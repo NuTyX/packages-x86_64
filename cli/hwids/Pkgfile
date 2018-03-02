@@ -1,0 +1,19 @@
+# Depends on: git
+
+description="Hardware Identification Databases"
+url="https://github.com/gentoo/hwids"
+packager="tnut <tnut@nutyx.org>"
+
+name=hwids
+version="20171003"
+
+build() {
+git clone git://github.com/gentoo/$name.git
+cd $name
+git checkout $name-$version
+for i in pci.ids usb.ids
+do
+    install -Dm644 $i \
+    $PKG/usr/share/hwdata/$i
+done
+}
