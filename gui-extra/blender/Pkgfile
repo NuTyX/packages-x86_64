@@ -8,16 +8,15 @@ contributors="tnut"
 run=(python)
 
 name=blender
-version=2.79
-release=1
+version=2.79a
 
 source=(http://download.blender.org/source/blender-$version.tar.gz)
 
 build() {
 
   cd $name-$version
-  [[ -d build ]] && rm -rf build
-  mkdir build && cd build
+  mkdir build
+  cd    build
 
   export CFLAGS="${CFLAGS} -DOPENVDB_3_ABI_COMPATIBLE"
   export CXXFLAGS="${CXXFLAGS} -DOPENVDB_3_ABI_COMPATIBLE"
@@ -39,12 +38,6 @@ build() {
 		-DPYTHON_INCLUDE_DIRS=/usr/include/python3.6m
 
 	make
-
-}
-
-package() {
-
-	cd $name-$version/build
 
 	make DESTDIR=$PKG install
 
