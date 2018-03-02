@@ -1,15 +1,14 @@
-# Depends on: cmake qt4 python2 boost mesa openexr jasper glew libtiff opencolorio freetype xorg-fontconfig xorg-libxrender python
+# Depends on: cmake qtbase boost mesa openexr jasper glew libtiff opencolorio freetype xorg-fontconfig xorg-libxrender python
 
 description="For reading and writing images, including classes, utilities, and applications"
 url="http://www.openimageio.org/"
-packager="greg<greg@nutyx.org>"
-contributors="tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
 
-run=(python2 python)
+run=(python)
 
 name=openimageio
-version=1.7.17
-release=1
+version=1.8.9
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -19,25 +18,19 @@ build() {
 
 cd oiio-Release-$version
 
-  [[ -d build ]] && rm -r build
-  mkdir build && cd build
+  mkdir build
+  cd    build
 
   cmake .. \
-      -DUSE_PYTHON=ON \
+      -DUSE_PYTHON=OFF \
       -DUSE_PYTHON3=ON \
       -DUSE_OPENSSL=ON \
       -DCMAKE_INSTALL_PREFIX=/usr \
-      -DPYLIB_INSTALL_DIR=lib/python2.7/site-packages \
       -DPYLIB3_INSTALL_DIR=lib/python3.6/site-packages \
       -DOIIO_BUILD_TESTS=ON \
       -DOIIO_BUILD_TOOLS=ON \
       -DSTOP_ON_WARNING=OFF
   make
-
-}
-
-package() {
-  cd oiio-Release-$version/build
 
   make DESTDIR=$PKG install
 
