@@ -1,4 +1,4 @@
-# Depends on: talloc python
+# Depends on: talloc python libtirpc libxslt
 
 description="Event system based on the talloc memory management library"
 url="https://tevent.samba.org"
@@ -6,12 +6,13 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=tevent
-version=0.9.34
+version=0.9.36
 
 source=(https://www.samba.org/ftp/$name/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
+CLFAGS="-I/usr/include/tirpc -ltirpc"  \
 ./configure --prefix=/usr \
 --bundled-libraries=NONE \
 --builtin-libraries=replace
