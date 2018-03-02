@@ -2,11 +2,14 @@
 
 description="Mount and unmount without password"
 url="http://ignorantguru.github.com/udevil"
-packager="greg<greg@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
 
 name=udevil
 version=0.4.4
-release=1
+release=2
+
+PKGMK_KEEP_SOURCES="no"
 
 source=(https://github.com/IgnorantGuru/udevil/archive/$version.tar.gz)
 
@@ -14,9 +17,5 @@ build() {
     cd $name-$version
     ./configure --prefix=/usr
     make
-}
-
-package() {
-    cd $name-$version
     make DESTDIR=$PKG install
 }
