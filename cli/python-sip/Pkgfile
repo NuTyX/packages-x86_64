@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=python-sip
-version=4.19.6
+version=4.19.7
 
 source=(http://sourceforge.net/projects/pyqt/files/sip/sip-$version/sip-$version.tar.gz )
 
@@ -14,7 +14,6 @@ build() {
 	cd sip-$version
 	python3 configure.py -b /usr/bin \
 	-d /usr/lib/python3.6/site-packages \
-	-e /usr/include/python3.6 \
 	-v /usr/share/sip
 	make
 	make DESTDIR=$PKG install
