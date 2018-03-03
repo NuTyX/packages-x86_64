@@ -1,0 +1,28 @@
+# Depends on: dbus-python python-sip qtbase qtconnectivity qtmultimedia qttools qtserialport qtsvg qtx11extras qtnetworkauth qtwebengine qtwebkit qtwebsockets
+
+description="connector python for qt"
+url="http://www.riverbankcomputing.co.uk/software/pyqt/intro"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=python-qt
+version=5.10.1
+
+source=(http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-$version/PyQt5_gpl-$version.tar.gz)
+build() {
+
+cd PyQt5_gpl-$version
+
+sed -i '/target_config.dbus_inc_dirs = \[\]/d' configure.py
+
+python3 configure.py   \
+     --no-sip-files \
+     -q /usr/bin/qmake \
+     --confirm-license \
+     --qsci-api
+
+find -name 'Makefile' | xargs sed -i 's|-Wl,-rpath,/usr/lib||g;s|-Wl,-rpath,.* ||g'
+make
+make DESTDIR=$PKG INSTALL_ROOT=$PKG install
+
+}
