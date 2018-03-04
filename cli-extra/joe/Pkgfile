@@ -1,27 +1,25 @@
 description="Joe's own editor"
 url="http://joe-editor.sourceforge.net/"
-contributors="berlius, tnut"
-packager="greg<greg@nutyx.org>"
+contributors="Berlius, Tnut, Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=joe
-version=4.4
-release=1
+version=4.6
 
-source=(http://downloads.sourceforge.net/joe-editor/$name-$version.tar.gz)
+source=(https://downloads.sourceforge.net/joe-editor/$name-$version.tar.gz)
 
 build() {
 
   cd $SRC/$name-$version
 
-  ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man
+  ./configure --prefix=/usr \
+	--sysconfdir=/etc \
+	--mandir=/usr/share/man \
+	--docdir=/usr/share/doc/$name-$version
   make
-  
-}
-
-package() {
-
-  cd $SRC/$name-$version
-
   make DESTDIR=$PKG install
+
+  install -vm 755 joe/util/{stringify,termidx,uniproc} \
+  $PKG/usr/bin
   
 }
