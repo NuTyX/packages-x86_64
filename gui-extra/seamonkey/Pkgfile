@@ -6,6 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=seamonkey
 version=2.49.2
+release=2
 
 source=( https://archive.mozilla.org/pub/$name/releases/$version/source/$name-$version.source.tar.xz )
 
@@ -97,5 +98,17 @@ chown -R 0:0 $PKG/usr/lib/$name-$version
 
 mkdir -p $PKG/usr/share/man/man1
 cp -v $(find -name seamonkey.1 | head -n1) $PKG/usr/share/man/man1
+
+install -Dm644 suite/branding/nightly/icons/gtk/seamonkey.png \
+$PKG/usr/share/pixmaps/seamonkey.png
+
+install -Dm644 mozilla/toolkit/mozapps/installer/linux/rpm/mozilla.desktop \
+$PKG/usr/share/applications/seamonkey.desktop
+
+sed -i 's/@MOZ_APP_DISPLAYNAME@/SeaMonkey internet suite/' \
+$PKG/usr/share/applications/seamonkey.desktop
+
+sed -i 's/@MOZ_APP_NAME@/seamonkey/' \
+$PKG/usr/share/applications/seamonkey.desktop
 
 }
