@@ -1,0 +1,25 @@
+# Depends on: python ffmpeg x264 json-cpp qtmultimedia cmake swig doxygen libopenshot-audio zeromq unittestpp
+
+description="A high quality, open-source video library for C++ and Python"
+url="http://openshot.org/"
+packager="tnut <tnut@nutyx.org>"
+
+name=libopenshot
+version=0.1.9
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/OpenShot/$name/archive/v$version.tar.gz)
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+cmake \
+ -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+ -DMAGICKCORE_QUANTUM_DEPTH=16    \
+ -DUSE_SYSTEM_JSONCPP=ON          \
+ -DENABLE_RUBY=OFF ..
+
+make
+make DESTDIR=$PKG install
+}
