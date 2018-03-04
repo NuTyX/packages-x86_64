@@ -1,0 +1,15 @@
+# Depends on: zeromq python
+
+description="Python bindings for zeromq, written in Cython"
+url="http://www.zeromq.org/bindings:python"
+packager="tnut <tnut@nutyx.org>"
+
+name=python-zmq
+version=16.0.3
+
+source=(https://files.pythonhosted.org/packages/source/p/pyzmq/pyzmq-$version.tar.gz)
+
+build() {
+cd pyzmq-$version
+python3 setup.py install --root=$PKG --optimize=0
+}
