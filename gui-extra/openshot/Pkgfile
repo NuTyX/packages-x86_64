@@ -1,4 +1,4 @@
-# Depends on: python-setuptools qtbase qtx11extras qttools qtsvg mlt sdl sdl-image librsvg mplayer sox 
+# Depends on: python-sip python-zmq python-requests python-setuptools qtbase qtx11extras qttools qtsvg mlt sdl sdl-image librsvg mplayer sox python-qt libopenshot
 
 description="an open-source, non-linear video editor for Linux based on MLT framework"
 url="http://www.openshotvideo.com"
@@ -7,8 +7,9 @@ contributors="Remy"
 
 name=openshot
 version=2.4.1
-release=2
+release=3
 
+run=( python-setuptools python-qt python-sip python-zmq python-requests libopenshot )
 PKGMK_KEEP_SOURCES="no"
 
 source=(https://github.com/OpenShot/openshot-qt/archive/v$version.tar.gz)
