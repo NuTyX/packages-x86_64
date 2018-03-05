@@ -1,13 +1,16 @@
-# Depends on:
+# Depends on: gtk-update-icon-cache
 
 description=" Papirus icon theme for Linux"
 url="https://github.com/PapirusDevelopmentTeam/papirus-icon-theme"
-packager="greg<greg@nutyx.org"
-contributors="DamnKid"
+packager="tnut <tnut@nutyx.org"
+contributors="DamnKid, Greg"
 
 name=papirus-icon-theme
-version=20171223
-release=1
+version=20180214
+
+PKGMK_KEEP_SOURCES="no"
+
+run=(gtk-update-icon-cache)
 
 source=(${url}/archive/$version.tar.gz)
 
