@@ -1,0 +1,49 @@
+# Depends on : ffmpeg lcms2 libcdio-paranoia libglade xorg-libxscrnsaver xorg-libxinerama xorg-libxv libxkbcommon libva wayland libcaca desktop-file-utils hicolor-icon-theme xdg-utils lua libdvdnav xorg-libxrandr jack rubberband uchardet libarchive mesa python2-docutils ladspa
+
+
+description="a free, open source, and cross-platform media player"
+url="https://mpv.io/"
+packager="sipo<sipo@linuxnutyx.fr>"
+contributors="Tnut"
+
+name=mpv
+_waf_version=1.9.8
+version=0.27.2
+release=1
+
+source=(https://github.com/mpv-player/mpv/archive/v0.27.2.tar.gz 0001-opengl-backend-support-multiple-backends.patch 0002-vaapi-Use-libva2-message-callbacks.patch 0003-demux_lavf-return-AVERROR_EOF-on-file-end.patch https://waf.io/waf-1.9.8)
+
+prepare(){
+  cd ${name}-${version}
+
+  patch -Np1 < "${SRC}"/0001-opengl-backend-support-multiple-backends.patch
+  patch -Np1 < "${SRC}"/0002-vaapi-Use-libva2-message-callbacks.patch
+  patch -Np1 < "${SRC}"/0003-demux_lavf-return-AVERROR_EOF-on-file-end.patch
+
+  install -m755 "${SRC}"/waf-${_waf_version} waf
+}
+
+build() {
+  cd ${name}-${version}
+
+  ./waf configure --prefix=/usr \
+    --confdir=/etc/mpv \
+    --enable-cdda \
+    --enable-dvb \
+    --enable-dvdnav \
+    --enable-encoding \
+    --enable-libarchive \
+    --enable-libmpv-shared \
+    --enable-zsh-comp
+
+  ./waf build
+}
+
+package() {
+  cd ${name}-${version}
+
+  ./waf install --destdir="$PKG"
+
+  install -m644 DOCS/{encoding.rst,tech-overview.txt} \
+    "$PKG"/usr/share/doc/mpv
+}

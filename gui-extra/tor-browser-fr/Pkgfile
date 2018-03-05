@@ -1,0 +1,38 @@
+# Depends on : gtk2 xorg-libxt startup-notification dbus-glib alsa-lib desktop-file-utils hicolor-icon-theme libvpx icu libevent nss hunspell sqlite 
+
+
+description="Tor Browser Bundle: Anonymous browsing using firefox and tor"
+url="https://www.torproject.org/projects/torbrowser.html.en"
+packager="sipo@<sipo@linuxnutyx.fr>"
+contributors="Sipo"
+
+run=()
+
+PKGMK_IGNORE_UNPACK="yes"
+
+_language='fr'
+name=tor-browser-fr
+version=7.5
+release=1
+
+source=(https://dist.torproject.org/torbrowser/${version}/tor-browser-linux64-${version}_${_language}.tar.xz tor-browser-fr.desktop tor-browser-fr.png tor-browser-fr.sh)
+
+build(){
+
+   cd "${SRC}"
+
+   sed -i "s/REPL_NAME/${name}/g"       ${name}.sh
+   sed -i "s/REPL_VERSION/${version}/g"	    ${name}.sh
+   sed -i "s/REPL_LANGUAGE/${_language}/g" ${name}.sh
+
+   sed -i "s/REPL_NAME/${name}/g"       ${name}.desktop
+   sed -i "s/REPL_LANGUAGE/${_language}/g" ${name}.desktop
+   sed -i "s/REPL_COMMENT/${description}/g"    ${name}.desktop
+
+   install -Dm 644 ${name}.desktop      ${PKG}/usr/share/applications/${name}.desktop
+   install -Dm 644 ${name}.png          ${PKG}/usr/share/pixmaps/${name}.png
+   install -Dm 755 ${name}.sh           ${PKG}/usr/bin/${name}
+   
+   install -Dm 644 tor-browser-linux64-${version}_${_language}.tar.xz ${PKG}/opt/${name}/tor-browser-linux64-${version}_${_language}.tar.xz
+
+}
