@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=tor
-version=0.3.2.9
+version=0.3.2.10
 
 source=(https://www.torproject.org/dist/tor-$version.tar.gz
 	tor.rc
@@ -30,11 +30,6 @@ build() {
 		--sysconfdir=/etc
 
 	make
-}
-
-package() {
-	cd $name-$version
-
 	make DESTDIR=$PKG install
 	
 	install -d $PKG/usr/var/lib/tor
@@ -59,7 +54,4 @@ package() {
 	find $PKG/var/log/tor/ -type f -exec chown root:root {} \; -execdir chmod 0640 {} \;
 
 	install -m 0750 -D $SRC/tor.rc $PKG/etc/rc.d/tor
-
-	rm -r $PKG/usr/share/doc
 }
-
