@@ -1,0 +1,18 @@
+diff -Naur xterm-327/charproc.c xterm-327-new/charproc.c
+--- xterm-327/charproc.c	2016-10-07 21:14:54.000000000 +0000
++++ xterm-327-new/charproc.c	2018-03-10 15:58:37.879993920 +0000
+@@ -7813,11 +7813,11 @@
+ #define MyWhitePixel(dpy) WhitePixel(dpy,DefaultScreen(dpy))
+ 
+     if (request->misc.re_verse) {
+-	wnew->dft_foreground = MyWhitePixel(TScreenOf(wnew)->display);
+-	wnew->dft_background = MyBlackPixel(TScreenOf(wnew)->display);
+-    } else {
+ 	wnew->dft_foreground = MyBlackPixel(TScreenOf(wnew)->display);
+ 	wnew->dft_background = MyWhitePixel(TScreenOf(wnew)->display);
++    } else {
++	wnew->dft_foreground = MyWhitePixel(TScreenOf(wnew)->display);
++	wnew->dft_background = MyBlackPixel(TScreenOf(wnew)->display);
+     }
+ 
+     init_Tres(TEXT_FG);

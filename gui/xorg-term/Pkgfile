@@ -8,16 +8,19 @@ contributors="Pierre B"
 alias=(xterm)
 name=xorg-term
 version=327
+release=2
+
+run=(xorg-luit)
 
 _name=xterm
 
 source=(ftp://invisible-island.net/${_name}/${_name}-$version.tgz
-	$name.list)
+	$name.list xorg-term-327-color-1.patch)
 
 build() {
 
 cd ${_name}-*
-
+patch -Np1 -i ../xorg-term-327-color-1.patch
 sed -i '/v0/{n;s/new:/new:kb=^?:/}' termcap &&
 printf '\tkbs=\\177,\n' >> terminfo
 
