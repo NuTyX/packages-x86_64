@@ -1,0 +1,22 @@
+# Depends on: git cmake gtest libmtp qtbase extra-cmake-modules qtscript qtsvg qtdeclarative solid karchive kcmutils kcodecs kcompletion kconfig kconfigwidgets kcoreaddons kdbusaddons kdeclarative kdnssd  kglobalaccel kguiaddons ki18n kiconthemes kio kirigami2 kitemviews knewstuff knotifyconfig knotifications kpackage kservice ktexteditor ktextwidgets kwidgetsaddons kwindowsystem kxmlgui threadweaver qca-qt ffmpeg mariadb taglib-extras gstreamer-plugins-libav
+
+description="The KDE Music player suite"
+url="http://amarok.kde.org"
+packager="tnut <tnut@nutyx.org>"
+
+name=amarok
+version=2.9.0-21e93
+
+build() {
+   git clone git://anongit.kde.org/amarok.git $name-$version
+   cd $name-$version
+   git checkout ${version/*-/}
+   mkdir  build
+   cd     build
+   cmake  -DKDE4_BUILD_TESTS=OFF \
+          -DCMAKE_INSTALL_PREFIX=/usr \
+          ..
+   cmake
+
+   make DESTDIR=$PKG install
+}
