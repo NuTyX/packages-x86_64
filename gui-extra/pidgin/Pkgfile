@@ -1,4 +1,4 @@
-# Depends on: desktop-file-utils gtk2 gstreamer libxml2 perl-xml-parser gnutls nss nspr xorg-libxscrnsaver xorg-libxrandr xorg-libxinerama xorg-libsm xscreensaver startup-notification hicolor-icon-theme libidn dbus networkmanager
+# Depends on: cyrus-sasl desktop-file-utils gtk2 gstreamer libxml2 perl-xml-parser gnutls nss nspr xorg-libxscrnsaver xorg-libxrandr xorg-libxinerama xorg-libsm xscreensaver startup-notification hicolor-icon-theme libidn dbus networkmanager
 
 description="Instant messaging client that can connect with a wide range of networks"
 url="http://www.pidgin.im"
@@ -8,6 +8,7 @@ run=(desktop-file-utils)
 
 name=pidgin
 version=2.13.0
+release=2
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
 
@@ -27,6 +28,7 @@ cd $name-$version
 --disable-nm \
 --disable-tcl \
 --disable-schemas-install \
+--enable-cyrus-sasl \
 --enable-gnutls=yes
  
 make
