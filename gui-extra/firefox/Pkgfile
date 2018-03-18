@@ -1,4 +1,4 @@
-# Depends on: icu libvpx nspr libevent rustc autoconf2-13 pulseaudio gconf yasm sqlite libvpx libevent nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav shared-mime-info
+# Depends on: icu libvpx nspr libevent rustc dbus-glib autoconf2-13 pulseaudio gconf libnotify yasm sqlite nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav shared-mime-info
 
 description="Standalone web browser from mozilla.org"
 url="http://www.mozilla.com/firefox/"
@@ -7,14 +7,15 @@ contributors="Pierre B, remy"
 
 run=(shared-mime-info icu libvpx libevent pulseaudio gconf sqlite libvpx nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav)
 name=firefox
-version=58.0.2
-release=3
+version=59.0.1
+release=1
 
-source=( https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$version/source/firefox-$version.source.tar.xz)
+source=(https://hg.mozilla.org/releases/mozilla-release/archive/FIREFOX_59_0_1_RELEASE.tar.bz2)
 
 build() {
 
 cd $SRC
+
 ARCH=`uname -m`
 
 for lang in ar da de es-ES fi fr it nb-NO nl pt-PT ru sv-SE tr
@@ -22,7 +23,7 @@ do
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$ARCH/xpi/$lang.xpi
 done
 
-cd $name-$version
+cd mozilla-release-FIREFOX_59_0_1_RELEASE
 # Locale autodetect
 sed -i '/intl.locale.matchOS/s/false/true/' modules/libpref/init/all.js
 
@@ -33,7 +34,7 @@ cat > mozconfig << "EOF"
 #mk_add_options MOZ_MAKE_FLAGS="-j1"
 
 # If you have installed dbus-glib, comment out this line:
-ac_add_options --disable-dbus
+#ac_add_options --disable-dbus
 
 # If you have installed dbus-glib, and you have installed (or will install)
 # wireless-tools, and you wish to use geolocation web services, comment out
@@ -95,7 +96,7 @@ ac_add_options --enable-official-branding
 
 # From firefox-40, using system cairo causes firefox to crash
 # frequently when it is doing background rendering in a tab.
-ac_add_options --enable-system-cairo
+#ac_add_options --enable-system-cairo
 ac_add_options --enable-system-ffi
 ac_add_options --enable-system-pixman
 
@@ -116,9 +117,7 @@ mkdir -pv $PKG/usr/{bin,lib{,/mozilla/plugins}}
 
 SHELL=/bin/sh DESTDIR=$PKG ./mach install
 
-chown -R 0:0 $PKG/usr/lib/firefox-$version
-ln -sf ../lib/firefox-$version/firefox $PKG/usr/bin
-ln -sf ../mozilla/plugins $PKG/usr/lib/firefox-$version
+ln -svf ../mozilla/plugins $PKG/usr/lib/firefox/browser/
 
 # Need for gnash
 mkdir -p $PKG/usr/include/npapi
@@ -140,6 +139,7 @@ Categories=GNOME;GTK;Network;WebBrowser;
 MimeType=application/xhtml+xml;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
 StartupNotify=true
 EOF
+mkdir -pv $PKG/usr/share/applications
 mkdir -pv $PKG/usr/share/pixmaps
 ln -sf /usr/lib/firefox-$version/browser/icons/mozicon128.png $PKG/usr/share/pixmaps/firefox.png
 
@@ -153,18 +153,11 @@ done
 for lang in ar da de tr es-ES fi fr it nb-NO nl pt-PT ru sv-SE tr
 do 
 install -Dm644 $SRC/$lang.xpi \
-    $PKG/usr/lib/firefox-$version/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+    $PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
 done
-
-cat > $PKG/usr/lib/firefox-$version/defaults/pref/vendor.js << "EOF"
+install -Dm644 /dev/stdin $PKG/usr/lib/firefox/browser/defaults/preferences/vendor.js <<END
 // Use LANG environment variable to choose locale
-pref("intl.locale.matchOS", true);
+pref("intl.locale.requested", "");
+END
 
-// Disable default browser checking.
-pref("browser.shell.checkDefaultBrowser", false);
-
-// Don't disable our bundled extensions in the application directory
-pref("extensions.autoDisableScopes", 11);
-pref("extensions.shownSelectionUI", true);
-EOF
 }
