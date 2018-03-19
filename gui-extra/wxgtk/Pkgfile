@@ -1,33 +1,22 @@
-# Depends on: gtk2 gtk3 gstreamer-plugins-base mesa xorg-libsm xorg-libxxf86vm sdl webkitgtk
+# Depends on: gtk2 gtk3 gstreamer-plugins-base libnotify xorg-libsm xorg-libxxf86vm xorg-glu gconf webkitgtk
 
 description="GTK+ implementation of wxWidgets API for GUI"
 url="http://wxwidgets.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B,tnut"
+packager="remy <remy@nutyx.org>"
+contributors="Pierre B,tnut,greg"
 
 name=wxgtk
-version=3.0.3.1
-release=2
+version=3.0.4
+release=1
 
 source=(https://github.com/wxWidgets/wxWidgets/releases/download/v$version/wxWidgets-$version.tar.bz2
-	    make-abicheck-non-fatal.patch
-	    wxgtk-webkit2gtk.patch 
-	    wxgtk2-fix-webview.patch)
+	    make-abicheck-non-fatal.patch)
 
 prepare() {
 
   cd wxWidgets-${version}
 
   patch -Np1 -i ../make-abicheck-non-fatal.patch
-
-  sed -e 's|setup0.h|setup.h|g' -i ../wxgtk-webkit2gtk.patch
-  patch -p1 -i ../wxgtk-webkit2gtk.patch
-
-  patch -p1 -i ../wxgtk2-fix-webview.patch
-
-  cd ..
-  
-  cp -r wxWidgets-${version} wxWidgets-${version}-gtk3
   
 }
 
@@ -35,21 +24,12 @@ build() {
 
   cd wxWidgets-${version}
   ./autogen.sh
-  ./configure --prefix=/usr --libdir=/usr/lib --with-gtk=2 --with-opengl --enable-unicode \
+  ./configure --prefix=/usr --libdir=/usr/lib --with-gtk=3 --with-opengl --enable-unicode \
     --enable-graphics_ctx --enable-mediactrl --with-regex=builtin \
     --with-libpng=sys --with-libxpm=sys --with-libjpeg=sys --with-libtiff=sys \
     --disable-precomp-headers
   make
   make -C locale allmo
-
-  cd ../wxWidgets-${version}-gtk3
-  ./autogen.sh
-  ./configure --prefix=/usr --libdir=/usr/lib --with-gtk=3 --with-opengl --enable-unicode \
-    --enable-graphics_ctx --enable-mediactrl --enable-webview --with-regex=builtin \
-    --with-libpng=sys --with-libxpm=sys --with-libjpeg=sys --with-libtiff=sys \
-    --disable-precomp-headers
-  make
-
 }
 
 package() {
@@ -58,22 +38,3 @@ package() {
 	make DESTDIR=$PKG install
 	
 }
-
-package_wxgtk2() {
-
-  cd wxWidgets-${version}
-  make DESTDIR=$PKG install
-  rm -r $PKG/usr/{include,share,lib/libwx_base*,bin/wxrc*}
-  
-}
-
-package_wxgtk3() {
-
-
-  cd wxWidgets-${version}-gtk3
-  make DESTDIR=$PKG install  
-  rm -r $PKG/usr/{include,share,lib/libwx_base*,bin/wxrc*}
-  mv $PKG/usr/bin/wx-config{,-gtk3}
-   
-}
-
