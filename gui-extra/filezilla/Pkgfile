@@ -6,7 +6,7 @@ packager="remy<remy@nutyx.org>"
 contributors="fanch at nutyx dot org, tnut at nutyx dot org, greg"
 
 name=filezilla
-version=3.30.0
+version=3.31.0
 release=1
 
 source=(http://downloads.sourceforge.net/project/$name/FileZilla_Client/$version/FileZilla_${version}_src.tar.bz2)
@@ -17,8 +17,10 @@ cd $name-$version
 --prefix=/usr \
 --disable-manualupdatecheck \
 --disable-autoupdatecheck \
+--with-pugixml=builtin \
 --disable-static \
---disable-dependency-tracking
+--disable-dependency-tracking \
+
 make
 }
 
