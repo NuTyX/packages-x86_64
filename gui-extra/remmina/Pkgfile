@@ -1,13 +1,13 @@
-# Depends on: gtk3 zlib libjpeg-turbo libssh avahi vte3 libgcrypt xorg-libxdmcp libsecret webkitgtk intltool pkg-config cmake libgnome-keyring xorg-libxkbfile freerdp telepathy-glib libvncserver 
+# Depends on: gtk3 zlib libjpeg-turbo libssh avahi vte3 libgcrypt xorg-libxdmcp libsecret webkitgtk intltool pkg-config cmake libgnome-keyring xorg-libxkbfile freerdp telepathy-glib libvncserver json-glib
 
 description="Remote desktop client written in GTK+"
 url="https://github.com/FreeRDP/Remmina/"
-contributors="Remy"
-packager="tnut <tnut@nutyx.org>"
+contributors="tnut"
+packager="remy <remy@nutyx.org>"
  
 name=remmina
-version=1.2.0-rcgit.26
-release=2
+version=1.2.0-rcgit.27
+release=1
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -24,7 +24,11 @@ cmake \
     -DWITH_APPINDICATOR=OFF .
 
   make
-  
+}
+
+package() {
+
+  cd Remmina-$version   
   make DESTDIR=$PKG install
-rm -rf "$PKG"/build
+  rm -rf "$PKG"/build
 }
