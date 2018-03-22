@@ -1,4 +1,4 @@
-# Depends on: cairo libthai freetype xorg-libxft gobject-introspection harfbuzz xorg-libxxf86vm gtk-doc
+# Depends on: ninja meson cairo libthai freetype xorg-libxft gobject-introspection harfbuzz xorg-libxxf86vm gtk-doc fribidi
 
 description="Library for layout and rendering of text"
 url="http://www.pango.org/"
@@ -6,18 +6,21 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=pango
-version=1.40.14
+version=1.42.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-./autogen.sh --prefix=/usr \
---mandir=/usr/share/man \
---infodir=/usr/share/info \
---sysconfdir=/etc 
-make
-make DESTDIR=$PKG install
+
+mkdir build
+cd    build
+
+meson --prefix=/usr
+
+ninja
+
+DESTDIR=$PKG ninja install
 }
 uptodate(){
 local latest lastversion url
