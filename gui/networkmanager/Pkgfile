@@ -10,7 +10,7 @@ alias=(NetworkManager)
 _name=NetworkManager
 
 name=networkmanager
-version=1.10.4
+version=1.10.6
 
 run=(wpa-supplicant wpa-supplicant-dbus)
 
@@ -28,7 +28,8 @@ cd ${_name}-$version
 --with-systemdsystemunitdir=no \
 --disable-json-validation \
 --disable-ovs \
---disable-ppp
+--disable-ppp \
+--docdir=/usr/share/doc/$name-$version
 make
 make DESTDIR=$PKG install
 
