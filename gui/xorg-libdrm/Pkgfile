@@ -18,17 +18,10 @@ build() {
 
 cd ${_name}-$version
 
-mkdir build
-cd    build
+./configure --prefix=/usr --enable-udev
 
-meson --prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
--Dudev=true
-
-ninja
-
-DESTDIR=$PKG ninja install
+make
+make DESTDIR=$PKG install
 }
 uptodate() {
 local ext url name LINX
