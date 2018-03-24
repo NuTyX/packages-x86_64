@@ -1,0 +1,12 @@
+# Depends on: mesa xorg-server
+
+description="Xorg AMDGPU video driver."
+packager="remy <remy@nutyx.org>"
+name=xorg-xf86-video-amdgpu
+version=1.4.0
+_name=${name/xorg-/}
+
+source=(http://ftp.x.org/pub/individual//driver/${_name}-$version.tar.bz2)
+
+build=xorg
+
