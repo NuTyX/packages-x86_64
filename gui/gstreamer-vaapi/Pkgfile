@@ -1,0 +1,18 @@
+# Depends on: gstreamer-plugins-base gstreamer-plugins-bad libva
+
+description="GStreamer Multimedia Framework"
+url="http://gstreamer.freedesktop.org/"
+packager="remy <remy@nutyx.>"
+contributors=""
+
+name=gstreamer-vaapi
+version=1.14.0
+
+source=(http://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
