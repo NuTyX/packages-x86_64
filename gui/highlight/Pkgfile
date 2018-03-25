@@ -1,19 +1,23 @@
-# Depends on: boost lua
+# Depends on: boost lua qtbase
 
 description="Fast and flexible source code highlighter (CLI version)"
 url="http://www.andre-simon.de/doku/highlight/highlight.html"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="remy <remy@nutyx.org>"
+contributors="Pierre B,tnut"
 
 name=highlight
-version=3.39
+version=3.42
 release=1
 
-source=(
-http://www.andre-simon.de/zip/$name-$version.tar.bz2)
+source=(http://www.andre-simon.de/zip/$name-$version.tar.bz2)
 
 build(){
     cd $name-$version
-    make QMAKE=qmake
-    make DESTDIR=$PKG QMAKE=qmake install
+    make 
+    make gui
+}
+package(){
+    cd $name-$version
+    make DESTDIR=$PKG install
+    make DESTDIR=$PKG install-gui
 }
