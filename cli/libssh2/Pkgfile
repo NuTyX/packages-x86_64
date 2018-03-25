@@ -1,0 +1,33 @@
+# Depends on: openssl zlib
+
+description="A library implementing the SSH2 protocol as defined by Internet Drafts"
+url="http://www.libssh2.org/"
+packager="remy <remy@nutyx.org>"
+contributors=""
+
+run=()
+
+name=libssh2
+version=1.8.0
+release=1
+
+source=(https://www.libssh2.org/download/$name-$version.tar.gz)
+
+build() {
+
+cd $name-$version
+	./configure --prefix=/usr
+	make
+
+}
+
+package() {
+cd $name-$version
+	make DESTDIR=$PKG install
+}
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+}
+
+
