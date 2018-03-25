@@ -1,9 +1,9 @@
-# Depends on: qtbase qtsvg qtx11extras x264 flac libmad glib librsvg alsa-lib xorg-libxinerama xorg-libxpm libvpx libcdio vcdimager live libdvdcss libdvdread libdvdnav libogg libtheora lame faac libvorbis ffmpeg faad2 liba52 libmpcdec fribidi lua libdv speex samba libupnp nfs-utils libshout libnotify speex sdl-image libcaca chromaprint libmtp taglib libsecret libva libvdpau
+# Depends on: qtbase qtsvg qtx11extras x264 flac libmad glib librsvg alsa-lib xorg-libxinerama xorg-libxpm libvpx libcdio vcdimager live libdvdcss libdvdread libdvdnav libogg libtheora lame faac libvorbis ffmpeg faad2 liba52 libmpcdec fribidi lua libdv speex samba libupnp nfs-utils libshout libnotify speex sdl-image libcaca chromaprint libmtp taglib libsecret libva libvdpau libdvbpsi
 
 description="Media player, streamer, and encoder. It can play from many inputs"
 url="http://www.slackware.com/~alien/slackbuilds/vlc/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="remy <remy@nutyx.org>"
+contributors="Pierre B, tnut"
 
 name=vlc
 version=3.0.1
@@ -26,6 +26,13 @@ BUILDCC="/usr/bin/gcc -std=c99" ./configure --prefix=/usr \
             --enable-aa \
             --enable-upnp \
             --enable-opus \
+            --enable-dvbpsi \
+            --enable-x264 \
+            --enable-x265 \
+            --enable-vdpau \
+            --enable-sdl-image \
+            --enable-fribidi \
+            --enable-gnutls \
             --enable-bluray
 
 make
