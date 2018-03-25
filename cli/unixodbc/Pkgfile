@@ -1,22 +1,26 @@
 description="Providing application developers a predictable API with which to access Data Sources"
 url="http://www.unixodbc.org/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="remy <remy@nutyx.org>"
+contributors="Pierre B,tnut"
 
 name=unixodbc
-version=2.3.4
+version=2.3.6
 release=1
 
 source=(ftp://ftp.unixodbc.org/pub/unixODBC/unixODBC-$version.tar.gz)
+
 build() { 
 cd unixODBC-$version
 ./configure --prefix=/usr --sysconfdir=/etc/unixODBC \
 --enable-gui=no
 make
+}
+package() {
+cd unixODBC-$version
 make DESTDIR=$PKG install
 find doc -name "Makefile*" -delete
 chmod 644 doc/{lst,ProgrammerManual/Tutorial}/*
 
-install -m755 -d /usr/share/doc/unixODBC-$version
-cp -R doc/* /usr/share/doc/unixODBC-$version
+install -vm755 -d /usr/share/doc/unixODBC-$version
+cp -vR doc/* /usr/share/doc/unixODBC-$version
 }
