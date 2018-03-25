@@ -1,0 +1,22 @@
+# Depends on: git cmake
+
+description="Brotli compression library"
+url="https://github.com/google/brotli"
+
+contributors="Fanch"
+packager="tnut <tnut@nutyx.org>"
+name=brotli
+version=1.0.2
+release=2
+
+source=()
+
+build(){
+  git clone https://github.com/google/brotli.git $name
+   cd $name
+   mkdir  build
+   cd     build
+  cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib ..
+  cmake 
+  make DESTDIR=$PKG install
+}
