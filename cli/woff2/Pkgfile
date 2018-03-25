@@ -1,0 +1,22 @@
+# Depends on: brotli git cmake ninja
+description="Web Open Font Format 2 reference implementation"
+url="https://github.com/google/woff2"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
+
+name=woff2
+version=1.0.2
+release=2
+
+source=()
+
+
+build() {
+  git clone https://github.com/google/woff2.git woff2
+  cd $name
+  sed -i 's/NOT BUILD_SHARED_LIBS/TRUE/' CMakeLists.txt
+  cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib .
+  ninja 
+  DESTDIR=$PKG ninja install
+}
+
