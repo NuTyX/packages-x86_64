@@ -1,13 +1,13 @@
 description="Client-side application which queries directory service"
 url="http://ftp.debian.org/debian/pool/main/w/whois"
-packager="tnut <tnut@nutyx.org>"
-contributors="Alienus"
+packager="remy <remy@nutyx.org>"
+contributors="Alienus,tnut"
 
 name=whois
-version=5.2.17
+version=5.2.20
 release=1
 
-source=(ftp://ftp.debian.org/debian/pool/main/w/$name/${name}_$version.tar.xz)
+source=(https://github.com/rfc1036/$name/archive/v$version/$name-$version.tar.gz)
 
 
 build() {
