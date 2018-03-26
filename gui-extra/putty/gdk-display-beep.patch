@@ -1,0 +1,69 @@
+From bf3242bb3502fb2c2af76f40b880ea480ef18b4c Mon Sep 17 00:00:00 2001
+From: Simon Tatham <anakin@pobox.com>
+Date: Sat, 3 Mar 2018 18:20:04 +0000
+Subject: Use gdk_display_beep() in place of obsolete gdk_beep().
+
+Except in GTK1 (which doesn't have the former), via a gtkcompat.h
+workaround.
+
+Up-to-date GTK3 has deprecated gdk_beep(), causing build failures due
+to the default -Werror setting.
+
+Origin: backport, https://git.tartarus.org/?p=simon/putty.git;a=commitdiff;h=97a248b463d49a47418532cd5797f6ea7773a4cf
+Bug-Debian: https://bugs.debian.org/891519
+Last-Update: 2018-03-04
+
+Patch-Name: gdk-display-beep.patch
+---
+ unix/gtkcompat.h | 1 +
+ unix/gtkdlg.c    | 4 ++--
+ unix/gtkwin.c    | 2 +-
+ 3 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/unix/gtkcompat.h b/unix/gtkcompat.h
+index a218598d..9aada3f5 100644
+--- a/unix/gtkcompat.h
++++ b/unix/gtkcompat.h
+@@ -65,6 +65,7 @@
+ #define gtk_adjustment_set_page_increment(a, val) ((a)->page_increment = (val))
+ #define gtk_adjustment_set_step_increment(a, val) ((a)->step_increment = (val))
+ #define gtk_adjustment_get_value(a) ((a)->value)
++#define gdk_display_beep(disp) gdk_beep()
+ 
+ #define gtk_widget_set_has_window(w, b)                 \
+     gtk1_widget_set_unset_flag(w, GTK_NO_WINDOW, !(b))
+diff --git a/unix/gtkdlg.c b/unix/gtkdlg.c
+index f1611948..e7f5ae8c 100644
+--- a/unix/gtkdlg.c
++++ b/unix/gtkdlg.c
+@@ -1037,7 +1037,7 @@ void dlg_set_focus(union control *ctrl, void *dlg)
+  */
+ void dlg_beep(void *dlg)
+ {
+-    gdk_beep();
++    gdk_display_beep(gdk_display_get_default());
+ }
+ 
+ #if !GTK_CHECK_VERSION(3,0,0)
+@@ -1491,7 +1491,7 @@ static void draglist_move(struct dlgparam *dp, struct uctrl *uc, int direction)
+     if ((index < 0) ||
+ 	(index == 0 && direction < 0) ||
+ 	(index == g_list_length(children)-1 && direction > 0)) {
+-	gdk_beep();
++	gdk_display_beep(gdk_display_get_default());
+ 	return;
+     }
+ 
+diff --git a/unix/gtkwin.c b/unix/gtkwin.c
+index 9e73181e..a283d9d6 100644
+--- a/unix/gtkwin.c
++++ b/unix/gtkwin.c
+@@ -2921,7 +2921,7 @@ void sys_cursor(void *frontend, int x, int y)
+ void do_beep(void *frontend, int mode)
+ {
+     if (mode == BELL_DEFAULT)
+-	gdk_beep();
++        gdk_display_beep(gdk_display_get_default());
+ }
+ 
+ int char_width(Context ctx, int uc)
