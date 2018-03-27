@@ -17,11 +17,17 @@ source=(http://dri.freedesktop.org/${_name}/${_name}-$version.tar.bz2)
 build() {
 
 cd ${_name}-$version
+mkdir build
+cd    build
+ 
+meson --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+-Dudev=true
 
-./configure --prefix=/usr --enable-udev
+ninja
 
-make
-make DESTDIR=$PKG install
+DESTDIR=$PKG ninja install
 }
 uptodate() {
 local ext url name LINX
