@@ -7,20 +7,14 @@ contributors="Pierre B"
  
 name=xorg-libpciaccess
 _name=libpciaccess
-version=0.13.5
-release=1
+version=0.14
 
 source=(http://ftp.x.org/pub/individual//lib/${_name}-$version.tar.bz2)
 
-build() {
+build=xorg
 
-	cd ${_name}-$version
-
-	./configure --prefix=/usr
-
-	make
-	make DESTDIR=$PKG install
-	
+package() {
+rm $PKG/usr/lib/libpciaccess.la
 }
 uptodate() {
 local ext url name LINX
