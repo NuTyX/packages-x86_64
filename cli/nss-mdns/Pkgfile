@@ -1,0 +1,31 @@
+# Depends on: 
+
+description="glibc plugin providing host name resolution via mDNS"
+url="http://0pointer.de/lennart/projects/nss-mdns/"
+contributors=""
+packager="remy <remy@nutyx.org>"
+ 
+name=nss-mdns
+version=0.10
+release=1
+
+source=(http://0pointer.de/lennart/projects/nss-mdns/nss-mdns-0.10.tar.gz)
+
+build() {
+
+cd $name-$version
+
+./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-lynx
+
+  make
+}
+
+package() {
+
+  cd $name-$version   
+  make DESTDIR=$PKG install
+}
