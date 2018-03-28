@@ -1,0 +1,27 @@
+# Depends on: cmake
+
+description="Platform support library used by libCEC and binary add-ons for Kodi"
+url="https://github.com/Pulse-Eight/platform"
+packager="remy <remy@nutyx.org>"
+contributors=""
+
+name=p8-platform
+version=2.1.0.1
+
+source=(https://github.com/Pulse-Eight/platform/archive/$name-$version.tar.gz)
+
+build() {
+cd platform-$name-$version
+cmake . \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=1 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DCMAKE_INSTALL_LIBDIR_NOARCH=/usr/lib
+make
+}
+
+package() {
+cd platform-$name-$version
+make DESTDIR=$PKG install
+}
