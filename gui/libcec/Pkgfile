@@ -1,0 +1,29 @@
+# Depends on: cmake p8-platform xorg-libxrandr
+
+description="Pulse-Eight's libcec for the Pulse-Eight USB-CEC adapter"
+url="http://libcec.pulse-eight.com/"
+packager="remy <remy@nutyx.org>"
+contributors=""
+
+name=libcec
+version=4.0.2
+
+source=(https://github.com/Pulse-Eight/$name/archive/$name-$version.tar.gz)
+
+build() {
+cd $name-$name-$version
+mkdir build
+cd build
+cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=1 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DCMAKE_INSTALL_LIBDIR_NOARCH=/usr/lib
+make
+}
+
+package() {
+cd $name-$name-$version/build
+make DESTDIR=$PKG install
+}
