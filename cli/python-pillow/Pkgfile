@@ -1,18 +1,19 @@
-#Depends on : python python-setuptools lcms libwebp
+#Depends on : python-setuptools lcms2 libtiff freetype openjpeg2 libwebp
 
-description="Python Imaging Library"
+description="Python 2 Imaging Library"
 url="https://pypi.python.org/pypi/Pillow"
-packager="Hugo <hugo@nutyx.org>"
+packager="remy <remy@nutyx.org>"
+contributors="hugo"
+
+run=(python-setuptools)
 
 name=python-pillow
-version=4.3.0
+version=5.0.0
 
-source=(
-https://pypi.python.org/packages/e0/82/ec499c78bfe4ecaa91c2f3000040451d187ed0a816d58b8543e29c48827f/Pillow-$version.tar.gz
-)
+source=(https://files.pythonhosted.org/packages/source/P/Pillow/Pillow-$version.tar.gz)
 
 build(){
 cd Pillow-$version
 python3 setup.py build
-python3 setup.py install --prefix=/usr --root=$PKG
+python3 setup.py install --root=$PKG --optimize=1
 }
