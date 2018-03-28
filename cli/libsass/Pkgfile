@@ -1,0 +1,19 @@
+# Depends on: 
+
+description="C implementation of Sass CSS preprocessor (library)."
+url="http://libsass.org/"
+packager="fanch <fanch@nutyx.org>"
+contributors="Fanch"
+
+name=libsass
+version=3.5.1
+release=1
+source=(http://rsync.nutyx.org/sources/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+autoreconf -i
+	./configure --prefix=/usr
+	make
+	make DESTDIR=$PKG install
+}
