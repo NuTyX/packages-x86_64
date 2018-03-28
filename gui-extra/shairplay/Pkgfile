@@ -1,0 +1,28 @@
+# Depends on: libao avahi git
+
+description="Apple airplay and raop protocol server"
+url="https://github.com/juhovh/shairplay"
+contributors=""
+packager="remy <remy@nutyx.org>"
+
+name=shairplay
+version=20160101
+release=1
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/juhovh/shairplay/archive/ce80e00.tar.gz)
+
+build() {
+
+cd $name-*
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+
+  cd $name-*   
+  make DESTDIR=$PKG install
+}
