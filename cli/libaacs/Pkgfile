@@ -1,0 +1,24 @@
+# Depend on: libgcrypt
+
+description="Advanced Access Content System"
+url="http://www.videolan.org/developers/libaacs.html"
+packager="remy <remy@nutyx.org>"
+contributors=""
+
+name=libaacs
+version=0.9.0
+source=(ftp://ftp.videolan.org/pub/videolan/$name/$version/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+./bootstrap
+./configure --prefix=/usr
+make
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+install -Dm644 KEYDB.cfg "$PKG/usr/share/doc/$name"/KEYDB.cfg
+install -Dm644 README.txt "$PKG/usr/share/doc/$name"/README.txt
+}
