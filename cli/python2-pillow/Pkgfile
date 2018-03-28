@@ -1,0 +1,18 @@
+#Depends on : python2-setuptools lcms2 libtiff freetype openjpeg2 libwebp
+
+description="Python 2 Imaging Library"
+url="https://pypi.python.org/pypi/Pillow"
+packager="remy <remy@nutyx.org>"
+
+run=(python2-setuptools)
+
+name=python2-pillow
+version=5.0.0
+
+source=(https://files.pythonhosted.org/packages/source/P/Pillow/Pillow-$version.tar.gz)
+
+build(){
+cd Pillow-$version
+python setup.py build
+python setup.py install --root=$PKG --optimize=1
+}
