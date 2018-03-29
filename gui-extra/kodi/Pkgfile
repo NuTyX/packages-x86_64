@@ -7,7 +7,7 @@ packager="remy <remy@nutyx.org>"
 
 name=kodi
 version=17.6
-release=1
+release=2
 
 run=(hicolor-icon-theme libaacs bluez python2-bluez libplist libcec lsb-release pulseaudio shairplay unrar unzip upower libva libvdpau libssh desktop-file-utils samba xorg-xdpyinfo taglib speex fribidi xorg-libxrandr)
 
@@ -52,6 +52,9 @@ cd kodi-build
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_INSTALL_LIBDIR=/usr/lib \
       -DENABLE_EVENTCLIENTS=ON \
+      -DENABLE_INTERNAL_FFMPEG=ON \
+      -DWITH_FFMPEG="yes" \
+      -DENABLE_BLUETOOTH=ON \
       -DLIRC_DEVICE=/run/lirc/lircd \
       ../"xbmc-$version-Krypton"/project/cmake
 
