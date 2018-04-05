@@ -7,7 +7,7 @@ contributors="Fanch"
 
 name=smpeg
 version=0.4.5
-release=4
+release=5
 source=(http://crux.ster.zone/downloads/$name/$name-$version.tar.xz)
 
 build() {
@@ -18,4 +18,6 @@ build() {
 		--disable-static
 	make || make -j1
 	make install DESTDIR=$PKG
+
+rm $PKG/usr/lib/libsmpeg.la
 }
