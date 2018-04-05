@@ -8,18 +8,17 @@ contributors="Pierre B"
 name=xorg-libxv
 alias=(libXv)
 version=1.0.11
-release=1
+release=2
+_name=libXv
 
-source=(http://ftp.x.org/pub/individual//lib/libXv-$version.tar.bz2)
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
-build() {
+build=xorg
 
-cd libXv-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-make
-make DESTDIR=$PKG install
-
+package() {
+rm $PKG/usr/lib/${_name}.la
 }
+
 uptodate() {
 local ext url name LINX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
