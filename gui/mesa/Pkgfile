@@ -7,7 +7,7 @@ contributors="Pierre B"
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=17.3.6
+version=17.3.7
 
 source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/mesa/mesa-$version-add_xdemos-1.patch)
@@ -34,4 +34,6 @@ make -C xdemos DEMOS_PREFIX=/usr DESTDIR=$PKG install
 install -v -dm755 $PKG/usr/share/doc/mesa-$version
 
 cp -rfv docs/* $PKG/usr/share/doc/mesa-$version
+
+rm $PKG/usr/lib/{libEGL,libGL,libGLESv1_CM,libGLESv2,libOSMesa,libgbm,libglapi,libwayland-egl,libxatracker}.la
 }
