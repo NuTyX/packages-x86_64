@@ -3,13 +3,15 @@
 description="Xorg vesa video driver."
 packager="tnut <tnut@nutyx.org>"
 name=xorg-xf86-video-vesa
-version=2.3.4
+version=2.4.0
 _name=${name/xorg-/}
 
 source=(http://ftp.x.org/pub/individual//driver/${_name}-$version.tar.bz2)
 
 build=xorg
-
+package() {
+rm $PKG/usr/lib/xorg/modules/drivers/vesa_drv.la
+}
 uptodate() {
 local ext url name LINX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
