@@ -4,7 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libunistring
-version=0.9.8
+version=0.9.9
 
 source=(ftp://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
@@ -15,6 +15,7 @@ cd $name-$version
 --docdir=/usr/share/doc/libunistring-$version
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/libunistring.la
 }
 uptodate() {
 local url ext
