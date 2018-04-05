@@ -7,6 +7,7 @@ contributors="Pierre B, Greg"
 
 name=xorg-server
 version=1.19.6
+release=2
 
 source=(http://ftp.x.org/pub/individual/xserver/$name-$version.tar.bz2)
 
@@ -24,5 +25,7 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 rm -rf $PKG/var
-
+rm $PKG/usr/lib/xorg/modules/{libexa,libfb,libfbdevhw,libglamoregl,libint10,libshadow,libshadowfb,libvbe,libvgahw,libwfb}.la
+rm $PKG/usr/lib/xorg/modules/drivers/modesetting_drv.la
+rm $PKG/usr/lib/xorg/modules/extensions/libglx.la
 }
