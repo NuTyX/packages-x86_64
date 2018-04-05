@@ -2,25 +2,22 @@
 
 description="libx11, library for client X"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, tnut, Greg"
 
 name=xorg-libx11
 alias=(libX11)
 version=1.6.5
-release=1
+release=2
+_name=libX11
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
-source=(http://ftp.x.org/pub/individual//lib/libX11-$version.tar.bz2)
+build=xorg
 
-build() {
-
-cd libX11-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-
-make
-make DESTDIR=$PKG install
-
+package() {
+rm $PKG/usr/lib/${_name}{,-xcb}.la
 }
+
 uptodate() {
 local ext url name LINX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
