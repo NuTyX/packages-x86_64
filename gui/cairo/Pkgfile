@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=cairo
 version=1.14.12
+release=2
 
 source=( http://cairographics.org/releases/$name-$version.tar.xz)
 
@@ -17,4 +18,6 @@ cd $name-$version
 	    --enable-tee
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/*.la
+rm $PKG/usr/lib/cairo/*.la
 } 
