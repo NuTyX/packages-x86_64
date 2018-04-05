@@ -2,23 +2,19 @@
 
 description="xorg lib libxshmfence"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
 
 name=xorg-libxshmfence
-version=1.2
-release=2
+version=1.3
+_name=libxshmfence
 
 source=(http://ftp.x.org/pub/individual//lib/libxshmfence-$version.tar.bz2)
 
-build() {
+build=xorg
 
-cd libxshmfence-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
-CFLAGS="$CFLAGS -D_GNU_SOURCE"
-make
-make DESTDIR=$PKG install
-
+package() {
+rm $PKG/usr/lib/libxshmfence.la
 }
 uptodate() {
 local ext url name LINX
