@@ -2,23 +2,19 @@
 
 description="libFS, library X Font Service client"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
  
 name=xorg-libfs
 version=1.0.7
-release=1
+release=2
+_name=libFS
 
 source=(http://ftp.x.org/pub/individual//lib/libFS-$version.tar.bz2)
 
-build() {
-
-cd libFS-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-
-make
-make DESTDIR=$PKG install
-
+build=xorg
+package() {
+rm $PKG/usr/lib/libFS.la
 }
 uptodate() {
 local ext url name LINX
