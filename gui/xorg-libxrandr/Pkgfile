@@ -2,24 +2,21 @@
 
 description="Library libXrandr, resize and rotate extension client library"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
 
 name=xorg-libxrandr
 alias=(libXrandr)
 version=1.5.1
-release=1
+release=2
+_name=libXrandr
 
-source=(http://ftp.x.org/pub/individual//lib/libXrandr-$version.tar.bz2)
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
-build() {
+build=xorg
 
-cd libXrandr-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-
-make
-make DESTDIR=$PKG install
-
+package() {
+rm $PKG/usr/lib/${_name}.la
 }
 uptodate() {
 local ext url name LINX
