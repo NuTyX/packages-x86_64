@@ -2,25 +2,23 @@
 
 description="Library libXp, X print client library"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, Greg"
 
 
 name=xorg-libxp
 version=1.0.3
-release=1
+release=2
+_name=libXp
 
-source=(http://ftp.x.org/pub/individual//lib/libXp-$version.tar.bz2)
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
-build() {
+build=xorg
 
-cd libXp-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-
-make
-make DESTDIR=$PKG install
-
+package() {
+rm $PKG/usr/lib/${_name}.la
 }
+
 uptodate() {
 local ext url name LINX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
