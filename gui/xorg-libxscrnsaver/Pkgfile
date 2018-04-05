@@ -2,23 +2,20 @@
 
 description="libXScrnSaver, library X Screen Saver extension client"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
 
 name=xorg-libxscrnsaver
 version=1.2.2
-release=1
+release=2
+_name=libXScrnSaver
 
 source=(http://ftp.x.org/pub/individual//lib/libXScrnSaver-$version.tar.bz2)
 
-build() {
+build=xorg
 
-cd libXScrnSaver-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-
-make
-make DESTDIR=$PKG install
-
+package() {
+rm $PKG/usr/lib/libXss.la
 }
 uptodate() {
 local ext url name LINX
