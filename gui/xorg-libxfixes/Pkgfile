@@ -7,16 +7,17 @@ contributors="Pierre B"
 
 name=xorg-libxfixes
 version=5.0.3
-release=2
+release=3
+_name=libXfixes
 
 source=(http://ftp.x.org/pub/individual/lib/libXfixes-$version.tar.bz2)
 
-build() {
-cd libXfixes-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-make
-make DESTDIR=$PKG install
+build=xorg
+
+package() {
+rm $PKG/usr/lib/${_name}.la
 }
+
 uptodate() {
 local ext url name LINX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
