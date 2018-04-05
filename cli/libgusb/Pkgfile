@@ -1,4 +1,4 @@
-# Depends on: libusb gperf glib gobject-introspection libgudev vala
+# Depends on: ninja meson libusb gperf glib gobject-introspection libgudev vala
 
 description="The libgusb package contains the GObject wrappers for libusb-1.0"
 url="https://gitorious.org/gusb/"
@@ -6,18 +6,12 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libgusb
-version=0.2.11
-release=1
+version=0.3.0
 
 source=(http://people.freedesktop.org/~hughsient/releases/$name-$version.tar.xz)
 
-build() {
-cd $name-$version
-./configure --prefix=/usr \
---disable-static
-make
-make DESTDIR=$PKG install
-}
+build=meson
+
 uptodate() {
 local url ext
 ext=".tar.xz"
