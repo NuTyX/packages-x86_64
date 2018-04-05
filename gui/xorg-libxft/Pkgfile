@@ -2,24 +2,22 @@
 
 description="libXft, library X are rendering client"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
 
 name=xorg-libxft
 version=2.3.2
-release=1
+release=2
+_name=libXft
 
-source=(http://ftp.x.org/pub/individual//lib/libXft-$version.tar.bz2)
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
-build() {
+build=xorg
 
-cd libXft-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-
-make
-make DESTDIR=$PKG install
-
+package() {
+rm $PKG/usr/lib/${_name}.la
 }
+
 uptodate() {
 local ext url name LINX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
