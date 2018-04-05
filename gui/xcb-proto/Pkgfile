@@ -2,33 +2,15 @@
 
 description="XCB X protocol descriptions"
 url="http://xcb.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, tnut, Greg"
 
 PKGMK_GROUPS=()
 
 name=xcb-proto
-version=1.12
-release=1
+version=1.13
+_name=$name
 
-source=(http://xcb.freedesktop.org/dist/xcb-proto-$version.tar.bz2
-		python-35x-fixes.patch)
+source=(http://xcb.freedesktop.org/dist/xcb-proto-$version.tar.bz2)
 
-
-prepare() {
-
-  cd xcb-proto-$version
-  patch -Np1 -i ../python-35x-fixes.patch
-  
-}
-
-
-build() {
-
-	cd xcb-proto-$version
-
-	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-
-	make
-	make DESTDIR=$PKG install
-}
+build=xorg
