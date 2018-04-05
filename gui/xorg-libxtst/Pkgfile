@@ -8,18 +8,17 @@ contributors="Pierre B"
 name=xorg-libxtst
 alias=(libXtst)
 version=1.2.3
-release=1
+release=2
+_name=libXtst
 
-source=(http://ftp.x.org/pub/individual//lib/libXtst-$version.tar.bz2)
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
-build() {
+build=xorg
 
-cd libXtst-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-make
-make DESTDIR=$PKG install
-
+package() {
+rm $PKG/usr/lib/${_name}.la
 }
+
 uptodate() {
 local ext url name LINX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
