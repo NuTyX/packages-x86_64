@@ -2,24 +2,24 @@
 
 description="libXres, resource extension client library"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
 
 name=xorg-libxres
 version=1.2.0
+release=2
+_name=libXres
 
-source=(http://ftp.x.org/pub/individual//lib/libXres-$version.tar.bz2)
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
-build() {
+build=xorg
 
-	cd libXres-$version
-	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-	
-	make
-	make DESTDIR=$PKG install
-	
+package() {
+rm $PKG/usr/lib/libXRes.la
 }
-uptodate() {
+
+
+ptodate() {
 local ext url name LINX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
 ext=".tar.bz2"
