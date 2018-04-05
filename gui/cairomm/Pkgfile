@@ -8,11 +8,15 @@ contributors="Pierre B"
 
 name=cairomm
 version=1.12.2
-release=2
+release=3
 
 source=(http://cairographics.org/releases/$name-$version.tar.gz)
 prepare() {
 cd $name-$version
 sed -e '/^libdocdir =/ s/$(book_name)/cairomm-1.12.2/' \
     -i docs/Makefile.in
+}
+
+package() {
+rm $PKG/usr/lib/libcairomm-1.0.la
 }
