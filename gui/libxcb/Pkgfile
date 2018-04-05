@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libxcb
-version=1.12
-release=2
+version=1.13
 
 source=(http://xcb.freedesktop.org/dist/$name-$version.tar.bz2)
 
@@ -19,9 +18,12 @@ sed -e "s/pthread-stubs//" -i configure
 ./configure --prefix=/usr \
 	    --sysconfdir=/etc \
 	    --localstatedir=/var \
+            --disable-static \
 	    --docdir='${datadir}'/doc/libxcb-$version \
 	    --enable-xinput \
             --enable-xkb
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/*.la
 }
+
