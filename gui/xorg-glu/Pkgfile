@@ -8,7 +8,7 @@ contributors="Pierre B"
 name=xorg-glu
 _name=glu
 version=9.0.0
-release=2
+release=3
 
 source=(ftp://ftp.freedesktop.org/pub/mesa/${_name}/${_name}-$version.tar.bz2)
 
@@ -18,5 +18,7 @@ cd ${_name}-$version
 ./configure --prefix=/usr --disable-static
 
 make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/libGLU.la
 
 }
