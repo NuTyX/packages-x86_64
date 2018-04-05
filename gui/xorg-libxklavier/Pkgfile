@@ -2,13 +2,13 @@
 
 description="libxklavier, library for the keyboard under X"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
 
 name=xorg-libxklavier
 _name=libxklavier
 version=5.4
-release=1
+release=2
 
 source=(http://pkgs.fedoraproject.org/repo/pkgs/libxklavier/${_name}-$version.tar.bz2/13af74dcb6011ecedf1e3ed122bd31fa/${_name}-$version.tar.bz2)
 
@@ -21,6 +21,7 @@ cd ${_name}-$version
 
 make
 make DESTDIR=$PKG install
-rm -rf $PKG/usr/share/gtk-doc
-
-} 
+}
+package() {
+rm $PKG/usr/lib/${_name}.la
+}
