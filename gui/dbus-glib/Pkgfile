@@ -5,8 +5,7 @@ url="http://www.freedesktop.org/wiki/Software/DBusBindings"
 packager="tnut <tnut@nutyx.org>"
 
 name=dbus-glib
-version=0.108
-release=1
+version=0.110
 
 source=(http://dbus.freedesktop.org/releases/$name/$name-$version.tar.gz)
 
@@ -17,6 +16,7 @@ cd $name-$version
 --sysconfdir=/etc
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/libdbus-glib-1.la
 }
 uptodate() {
 local url ext
