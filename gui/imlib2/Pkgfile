@@ -1,15 +1,14 @@
 # Depends on: aalib giflib xorg-libxext libtiff freetype xorg-libsm libpng libjpeg-turbo libid3tag 
 
-url="library for the management d'images of way more effective that imlib"
+description="library for the management d'images of way more effective that imlib"
 url="http://sourceforge.net/projects/enlightenment"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=imlib2
-version=1.4.10
-release=1
+version=1.5.1
 
-source=(http://downloads.sourceforge.net/enlightenment/$name-$version.tar.gz)
+source=(http://downloads.sourceforge.net/enlightenment/$name-$version.tar.bz2)
 build() {
 cd $name-$version
 case $(uname -m) in 
@@ -23,4 +22,6 @@ esac
 $EXTRAOPTS
 make
 make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/libImlib2.la
 }
