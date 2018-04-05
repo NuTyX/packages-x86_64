@@ -2,24 +2,19 @@
 
 description="libICE, library Xorg"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
  
 name=xorg-libice
 version=1.0.9
-release=2
+release=3
+_name=libICE
 
-source=(http://ftp.x.org/pub/individual//lib/libICE-$version.tar.bz2)
+source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
-build() {
-
-	cd libICE-$version
-
-	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
-	ICE_LIBS=-lpthread
-
-	make
-	make DESTDIR=$PKG install
+build=xorg
+package() {
+rm $PKG/usr/lib/${_name}.la
 }
 uptodate() {
 local ext url name LINX
