@@ -3,10 +3,10 @@ url="http://www.sqlite.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Remy"
 
-_amalgamationver=3220000
+_amalgamationver=3230000
 
 name=sqlite
-version=3.22.0
+version=3.23.0
 
 source=(http://www.sqlite.org/2018/sqlite-autoconf-${_amalgamationver}.tar.gz
 	http://www.sqlite.org/2018/sqlite-doc-${_amalgamationver}.zip )
@@ -27,6 +27,8 @@ build() {
   make -j1
 
   make DESTDIR=$PKG install
+
+  rm $PKG/usr/lib/libsqlite3.la
 
   install -v -m755 -d $PKG/usr/share/doc/$name-$version
 
