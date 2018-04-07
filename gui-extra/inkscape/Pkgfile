@@ -6,19 +6,16 @@ packager="greg<greg@nutyx.org"
 contributors="Pierre B, tnut"
 
 name=inkscape
-version=0.92.2
-release=2
+version=0.92.3
 
 source=(https://media.inkscape.org/dl/resources/file/$name-$version.tar.bz2
-	http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-use_versioned_ImageMagick6-1.patch
-	http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-poppler-1.patch)
+	http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-use_versioned_ImageMagick6-1.patch)
 
 build() {
   
   cd $name-$version
 
   patch -Np1 -i ../$name-$version-use_versioned_ImageMagick6-1.patch
-  patch -Np1 -i ../$name-$version-poppler-1.patch
 
   sed -i 's| abs(| std::fabs(|g' src/ui/tools/flood-tool.cpp
 
@@ -30,4 +27,6 @@ build() {
  	..
    make
    make DESTDIR=$PKG install
+
+   rm $PKG/usr/lib/inkscape/lib*_LIB.a
 }
