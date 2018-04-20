@@ -4,8 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=openldap
-version=2.4.45
-release=1
+version=2.4.46
 
 source=(ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/$name-$version.tgz
 	 http://www.linuxfromscratch.org/patches/downloads/openldap/openldap-$version-consolidated-1.patch)
@@ -21,5 +20,8 @@ autoconf
             --disable-slapd
 make depend
 make
-make DESTDIR=$PKG install   
+make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/libldap{,_r}.la
+rm $PKG/usr/lib/liblber.la
 }
