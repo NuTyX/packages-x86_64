@@ -1,0 +1,17 @@
+# Depends on: python python-beaker python-markupsafe
+
+description="Implements hyperfast and lightweight templating for the Python platform."
+url="https://pypi.org/project/Mako/"
+packager="tnut <tnut@nutyx.org>"
+
+name=python-mako
+version=1.0.7
+
+source=(https://files.pythonhosted.org/packages/source/M/Mako/Mako-$version.tar.gz)
+
+build() {
+
+cd Mako-$version
+sed -i "s:mako-render:&3:g" setup.py
+python3 setup.py install --root=$PKG
+}
