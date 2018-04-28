@@ -2,24 +2,23 @@
 
 description="Media player, streamer, and encoder. It can play from many inputs"
 url="http://www.slackware.com/~alien/slackbuilds/vlc/"
-packager="remy <remy@nutyx.org>"
-contributors="Pierre B, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, tnut, Remy"
 
 name=vlc
-version=3.0.1
+version=3.0.2
 
-source=(https://download.videolan.org/$name/$version/$name-$version.tar.xz
-	lua53_compat.patch
-	update-vlc-plugin-cache.hook)
+source=(https://download.videolan.org/$name/$version/$name-$version.tar.xz)
+
 build() {
 
 cd $name-$version
 
-patch -p1 -i ../lua53_compat.patch
+sed -i '/vlc_demux.h/a #define LUA_COMPAT_APIINTCASTS' modules/lua/vlc.h
+sed -i '/DEPRECATED/s:^://:'  modules/text_renderer/freetype/text_layout.c
 
-./bootstrap
 
-BUILDCC="/usr/bin/gcc -std=c99" ./configure --prefix=/usr \
+BUILDCC=gcc ./configure --prefix=/usr \
             --disable-rpath \
             --sysconfdir=/etc \
             --disable-ncurses \
@@ -43,5 +42,4 @@ for res in 16 32 48 128; do
     install -D -m644 "$SRC/vlc-$version/share/icons/${res}x${res}/vlc.png" \
     "$PKG/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png"
 done
-install -Dm 644 $SRC/update-vlc-plugin-cache.hook -t $PKG/usr/share/libalpm/hooks
 }
