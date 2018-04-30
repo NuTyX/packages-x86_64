@@ -2,15 +2,14 @@
 
 description="Standalone web browser from mozilla.org"
 url="http://www.mozilla.com/firefox/"
-packager="remy <remy@nutyx.org>"
-contributors="Pierre B, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, tnut, Remy"
 
 run=(shared-mime-info icu libvpx libevent pulseaudio gconf sqlite libvpx nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav)
 name=firefox
-version=59.0.2
-release=1
+version=59.0.3
 
-source=(https://hg.mozilla.org/releases/mozilla-release/archive/FIREFOX_59_0_2_RELEASE.tar.bz2)
+source=(https://hg.mozilla.org/releases/mozilla-release/archive/FIREFOX_59_0_3_RELEASE.tar.bz2)
 
 build() {
 
@@ -23,7 +22,7 @@ do
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$ARCH/xpi/$lang.xpi
 done
 
-cd mozilla-release-FIREFOX_59_0_2_RELEASE
+cd mozilla-release-FIREFOX_59_0_3_RELEASE
 # Locale autodetect
 sed -i '/intl.locale.matchOS/s/false/true/' modules/libpref/init/all.js
 
