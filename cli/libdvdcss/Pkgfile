@@ -15,4 +15,5 @@ cd $name-$version
 --docdir=/usr/share/doc/libdvdcss-$version
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/$name.la
 }
