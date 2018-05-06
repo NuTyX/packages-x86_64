@@ -4,8 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=pcre
-version=8.41
-release=2
+version=8.42
 
 source=( ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/$name-$version.tar.bz2 )
 
@@ -25,4 +24,11 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
+
+mkdir $PKG/lib
+mv -v $PKG/usr/lib/libpcre.so.* $PKG/lib
+ln -sfv ../../lib/$(readlink $PKG/usr/lib/libpcre.so) $PKG/usr/lib/libpcre.so
+
+rm $PKG/usr/lib/libpcre{,16,32}.la
+rm $PKG/usr/lib/libpcre{posix,cpp}.la
 }
