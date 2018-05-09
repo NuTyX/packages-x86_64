@@ -1,16 +1,18 @@
-description="boot loaders that boot from FAT, ext2/3/4 and btrfs filesystems, from CDs and via PXE"
-url="http://syslinux.org"
-contributors="pierre"
-packager="greg<greg@nutyx.org>"
+# Depends on: mtools nasm
 
-# Depends on: mtools nasm 
+description="Bootloaders that can boot from FAT, ext2/3/4 or btrfs filesystems, from CDs and via PXE"
+url="http://syslinux.org"
+contributors="Pierre B, Greg"
+packager="tnut <tnut@nutyx.org>"
+
 run=(mtools)
 
 name=syslinux
 version=6.03
-release=2
+release=3
 
-source=(http://www.kernel.org/pub/linux/utils/boot/syslinux/$name-$version.tar.xz)
+source=(http://downloads.tuxfamily.org/nutyx/files/splash-10.2.png
+	http://www.kernel.org/pub/linux/utils/boot/syslinux/$name-$version.tar.xz)
 
 build() {
 
@@ -18,5 +20,5 @@ build() {
 	sed -i "s|win32/syslinux.exe||g" Makefile
 	make || true
 	make SBINDIR=$PKG/usr/sbin BINDIR=$PKG/usr/bin INCDIR=$PKG/usr/include MANDIR=$PKG/usr/share/man AUXDIR=$PKG/usr/lib/syslinux install
-	
+	install -m644 ../splash-10.2.png $PKG/usr/lib/syslinux/splash.png
 }
