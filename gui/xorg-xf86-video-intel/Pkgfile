@@ -5,6 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 name=xorg-xf86-video-intel
 version=20180223
 _name=${name/xorg-/}
+release=2
 
 source=(http://anduin.linuxfromscratch.org/BLFS/${_name}/${_name}-$version.tar.xz)
 
@@ -22,17 +23,7 @@ make
 
 make DESTDIR=$PKG install
 
-mkdir -p $PKG/etc/X11/xorg.conf.d
-
-cat >> $PKG/etc/X11/xorg.conf.d/20-intel.conf << "EOF"
-Section   "Device"
-        Identifier "Intel Graphics"
-        Driver     "intel"
-        #Option     "DRI" "2"            # DRI3 is default
-        #Option     "AccelMethod"  "sna" # default
-        #Option     "AccelMethod"  "uxa" # fallback
-EndSection
-EOF
+rm $PKG/usr/lib/xorg/modules/drivers/intel_drv.la
 }
 uptodate() {
 local ext url LYNX
