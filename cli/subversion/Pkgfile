@@ -12,6 +12,7 @@ version=1.10.0
 source=(http://archive.apache.org/dist/$name/$name-$version.tar.bz2)
 
 build() {
+	unset MAKEFLAGS
 
 	cd $name-$version
 	./configure --prefix=/usr \
