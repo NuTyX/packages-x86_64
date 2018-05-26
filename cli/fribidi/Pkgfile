@@ -6,6 +6,10 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=fribidi
-version=1.0.1
+version=1.0.3
 
 source=( https://github.com/$name/$name/releases/download/v$version/$name-$version.tar.bz2)
+
+package() {
+rm $PKG/usr/lib/libfribidi.la
+}
