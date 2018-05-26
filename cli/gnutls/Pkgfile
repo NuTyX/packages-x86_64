@@ -18,4 +18,5 @@ cd $name-$version
 --disable-guile
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/libgnutls{,xx}.la
 }
