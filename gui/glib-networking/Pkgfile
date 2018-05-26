@@ -1,4 +1,4 @@
-# Depends on: glib dbus gnutls libgcrypt gsettings-desktop-schemas p11-kit 
+# Depends on: meson ninja glib dbus gnutls libgcrypt gsettings-desktop-schemas p11-kit 
 
 description="Network-related giomodules for glib"
 url="http://www.gnome.org/"
@@ -8,17 +8,21 @@ contributors="Pierre B"
 run=( gsettings-desktop-schemas )
 
 name=glib-networking
-version=2.54.1
+version=2.56.1
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build () {
+
 cd $name-$version
-./configure --prefix=/usr \
---without-ca-certificates \
---disable-static
-make
-make DESTDIR=$PKG install
+mkdir build
+cd    build
+
+meson --prefix=/usr            \
+      -Dlibproxy_support=false \
+      -Dca_certificates_path=/etc/ssl/ca-bundle.crt
+ninja
+DESTDIR=$PKG ninja install
 }
 uptodate(){
 local latest lastversion url
