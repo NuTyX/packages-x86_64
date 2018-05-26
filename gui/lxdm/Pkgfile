@@ -10,15 +10,15 @@ run=(consolekit2 librsvg xorg-xinit)
 
 name=lxdm
 version=0.5.3
-release=10
-source=(lxdm-0.5.3-sessions-1.patch login.png
+release=11
+source=(lxdm-$version-nutyx-1.patch login.png
 	http://downloads.tuxfamily.org/nutyx/files/lxdm-nutyx-10.0.jpg
 	http://downloads.sourceforge.net/$name/$name-$version.tar.xz)
 
 build() {
 
 cd $name-$version
-patch -Np1 -i ../lxdm-0.5.3-sessions-1.patch
+patch -Np1 -i ../lxdm-$version-nutyx-1.patch
 cat > pam/lxdm << "EOF"
 # Begin /etc/pam.d/lxdm
 
@@ -36,14 +36,6 @@ session  include        system-session
 # End /etc/pam.d/lxdm
 EOF
 
-sed -i 's:sysconfig/i18n:profile.d/i18n.sh:g' data/lxdm.in
-sed -i 's:/etc/xprofile:/etc/profile:g' data/Xsession
-sed -e 's/^bg/#&/'        \
-    -e '/reset=1/ s/# //' \
-    -e 's/logou$/logout/' \
-    -e "/arg=/a arg=/usr/bin/X" \
-    -i data/lxdm.conf.in
-
 ./configure --sysconfdir=/etc \
 	--prefix=/usr \
 	--with-pam \
@@ -60,9 +52,6 @@ done
 
 cp ../lxdm-nutyx-10.0.jpg \
 $PKG/usr/share/lxdm/themes/Industrial/nutyx.jpg
-
-sed -i "s@000000@ffffff@" \
-$PKG/usr/share/lxdm/themes/Industrial/gtkrc
 
 # lxdm.conf created in post if needed
 # Let keep it as an example

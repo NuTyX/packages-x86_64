@@ -1,0 +1,155 @@
+diff -Naur a/data/Xsession b/data/Xsession
+--- a/data/Xsession	2013-04-29 04:24:50.000000000 +0000
++++ b/data/Xsession	2018-05-26 17:17:58.674666570 +0000
+@@ -9,7 +9,7 @@
+ 	LXSESSION=/usr/bin/startlxde
+ fi
+ 
+-[ -f /etc/xprofile ] && . /etc/xprofile
++[ -f /etc/profile ] && . /etc/profile
+ [ -f ~/.xprofile ] && . ~/.xprofile
+ 
+ if [ -f /etc/X11/xinit/xinitrc-common ]; then
+diff -Naur a/data/lxdm.conf.in b/data/lxdm.conf.in
+--- a/data/lxdm.conf.in	2014-11-23 09:56:36.000000000 +0000
++++ b/data/lxdm.conf.in	2018-05-26 17:18:00.181328769 +0000
+@@ -24,17 +24,18 @@
+ [server]
+ ## arg used to start xserver, not fully function
+ # arg=/usr/bin/X -background vt1
++arg=/usr/bin/X
+ # uncomment this if you really want xserver listen to tcp
+ # tcp_listen=1
+-# uncoment this if you want reset the xserver after logou
+-# reset=1
++# uncoment this if you want reset the xserver after logout
++reset=1
+ 
+ [display]
+ ## gtk theme used by greeter
+ gtk_theme=Clearlooks
+ 
+ ## background of the greeter
+-bg=/usr/share/backgrounds/default.png
++#bg=/usr/share/backgrounds/default.png
+ 
+ ## if show bottom pane
+ bottom_pane=1
+diff -Naur a/data/lxdm.in b/data/lxdm.in
+--- a/data/lxdm.in	2011-11-03 12:52:31.000000000 +0000
++++ b/data/lxdm.in	2018-05-26 17:17:58.601333459 +0000
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-[ -f /etc/sysconfig/i18n ] && . /etc/sysconfig/i18n
++[ -f /etc/profile.d/i18n.sh ] && . /etc/profile.d/i18n.sh
+ 
+ if [ -z "$LANG" -a -e /etc/sysconfig/language ]; then
+ 	. /etc/sysconfig/language
+diff -Naur a/data/themes/Industrial/greeter.ui b/data/themes/Industrial/greeter.ui
+--- a/data/themes/Industrial/greeter.ui	2013-03-27 12:11:40.000000000 +0000
++++ b/data/themes/Industrial/greeter.ui	2018-05-26 17:21:47.344666939 +0000
+@@ -34,7 +34,7 @@
+                   <object class="GtkImage" id="image1">
+                     <property name="visible">True</property>
+                     <property name="pixbuf">login.png</property>
+-                    <property name="yalign">0.8</property>
++                    <property name="yalign">1</property>
+                   </object>
+                   <packing>
+                     <property name="position">0</property>
+diff -Naur a/data/themes/Industrial/gtkrc b/data/themes/Industrial/gtkrc
+--- a/data/themes/Industrial/gtkrc	2012-05-29 11:31:02.000000000 +0000
++++ b/data/themes/Industrial/gtkrc	2018-05-26 17:22:09.354719323 +0000
+@@ -7,7 +7,7 @@
+ 			function = FLAT_BOX
+ 			shadow=NONE
+ 			state = NORMAL
+-			file="wave.svg"
++			file="nutyx.jpg"
+ 			stretch=TRUE
+ 			detail = "base"
+ 		}
+@@ -22,7 +22,7 @@
+ 
+ style "prompt"
+ {
+-	fg[NORMAL]="#000000"
++	fg[NORMAL]="#ffffff"
+ 	font_name="Sans Bold 14"
+ }
+ 
+diff -Naur a/src/greeter.c b/src/greeter.c
+--- a/src/greeter.c	2015-08-04 11:57:07.000000000 +0000
++++ b/src/greeter.c	2018-05-26 19:18:11.143802173 +0000
+@@ -55,7 +55,7 @@
+     N_LANG_COLS
+ };
+ 
+-#define XKB_SYMBOL_DIR		"/usr/share/X11/xkb/symbols.dir"
++#define XKB_SYMBOL_DIR		"/usr/share/X11/xkb/symbols"
+ 
+ static GtkBuilder* builder;
+ static GKeyFile *config;
+@@ -245,6 +245,7 @@
+ 
+ static void load_sessions()
+ {
++	GtkWidget* w;
+ 	GtkListStore* list;
+ 	GtkTreeIter it, active_it = {0};
+ 	char* last;
+@@ -258,6 +259,7 @@
+ 
+ 	list = gtk_list_store_new(N_SESSION_COLS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+ 	kf = g_key_file_new();
++	unsigned int nfound=0;
+ 	while( ( file_name = (char*)g_dir_read_name(dir) ) != NULL )
+ 	{
+ 		path = g_build_filename(XSESSIONS_DIR, file_name, NULL);
+@@ -279,13 +281,13 @@
+ 				g_free(path);
+ 				continue;
+ 			}
++			nfound++;
+ 			g_free(exec); /* we just test it, and not use it */
+             exec=g_strdup(path);
+-
+-            if( !strcmp(name, "LXDE") )
+-                gtk_list_store_prepend(list, &it);
++            if( !strcmp(name, "Openbox") )
++                  gtk_list_store_append(list, &it);
+             else
+-                gtk_list_store_append(list, &it);
++                  gtk_list_store_prepend(list,&it);
+             gtk_list_store_set(list, &it,
+                                COL_SESSION_NAME, name,
+                                COL_SESSION_EXEC, exec,
+@@ -302,15 +304,21 @@
+     }
+ 	g_dir_close(dir);
+ 	g_key_file_free(kf);
+-
+-	gtk_list_store_prepend(list, &it);
+-	gtk_list_store_set(list, &it,
++	if (nfound==0)
++	{
++		gtk_list_store_append(list, &it);
++		gtk_list_store_set(list, &it,
+ 					   COL_SESSION_NAME, _("Default"),
+ 					   COL_SESSION_EXEC, "",
+ 					   COL_SESSION_DESKTOP_FILE, "__default__", -1);
+-	if( last && g_strcmp0("__default__", last) == 0 )
+-		active_it = it;
+-
++		if( last && g_strcmp0("__default__", last) == 0 )
++			active_it = it;
++	}
++	if (nfound==1)
++	{
++		w = (GtkWidget*)gtk_builder_get_object(builder, "sessions_box");
++		if(w) gtk_widget_hide(w);
++	}
+ 	g_free(last);
+ 	gtk_combo_box_set_model( GTK_COMBO_BOX(sessions), GTK_TREE_MODEL(list) );
+ #if GTK_CHECK_VERSION(2,24,0)
