@@ -1,3 +1,6 @@
+# Depends on: pcre glib gpm slang
+
+
 description="Midnight Commander is a text based filemanager/shell that emulates Norton Commander"
 url="https://www.midnight-commander.org/"
 contributors="pierre, Greg"
@@ -7,6 +10,7 @@ packager="tnut<tnut@nutyx.org>"
 
 name=mc
 version=4.8.20
+release=2
 
 source=(${url}downloads/$name-$version.tar.xz)
 
@@ -17,7 +21,7 @@ build() {
 		--enable-charset  \
 		--disable-static  \
 		--sysconfdir=/etc \
-		--with-screen=ncurses
+		--with-screen=slang
 	make
 	
 }
