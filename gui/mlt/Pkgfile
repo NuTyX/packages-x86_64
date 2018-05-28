@@ -5,18 +5,16 @@ url="http://www.mltframework.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 name=mlt
-version=6.6.0
+version=6.8.0
 
 
 source=(https://github.com/mltframework/mlt/releases/download/v$version/mlt-$version.tar.gz)
 
 build() {
   cd $name-$version
-  sed -i "s@xlocale.h@locale.h@" src/framework/mlt_property.h
-  ./configure --prefix=/usr        \
-	--avformat-swscale         \
-	--enable-gpl --enable-gpl3 \
-	--qt-libdir=/usr/lib --qt-includedir=/usr/include/qt
+  ./configure --prefix=/usr --avformat-swscale \
+  --enable-gpl --enable-gpl3 --enable-opengl \
+  --qt-libdir=/usr/lib --qt-includedir=/usr/include/qt
   make
   make DESTDIR=$PKG install
 
