@@ -2,13 +2,12 @@
 
 description="Video Acceleration vdpau for Linux"
 url="https://01.org/linuxmedia/vaapi"
-packager="remy <remy@nutyx.org>"
-contributors=""
+packager="tnut <tnut@nutyx.org>"
+contributors="Remy"
 run=(mesa)
 
 name=libvdpau-va-gl
-version=0.4.0
-release=2
+version=0.4.2
 
 source=(https://github.com/i-rinat/$name/archive/v$version/$name-$version.tar.gz)
 
@@ -24,4 +23,3 @@ make
 make DESTDIR=$PKG install
 
 }
-echo "echo "export VDPAU_DRIVER=va_gl" >> /etc/profile.d/xorg.sh" >> libvdpau-va-gl.post-install
