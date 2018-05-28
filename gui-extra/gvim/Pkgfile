@@ -2,12 +2,11 @@
 
 description="GTK version of the vim editor"
 url="http://www.vim.org/"
-contributors="fanch, tnut"
-packager="greg<greg@nutyx.org"
+contributors="fanch, tnut, greg"
+packager="tnut <tnut@nutyx.org"
 
 name=gvim
-version=8.0.586
-release=1
+version=8.1
 
 run=(vim)
 
@@ -15,7 +14,7 @@ source=(ftp://ftp.vim.org/pub/vim/unix/vim-$version.tar.bz2)
 
 build () {
 
-    cd vim80/src
+    cd vim81/src
     
     ./configure --prefix=/usr \
                 --with-vim-name=gvim \
