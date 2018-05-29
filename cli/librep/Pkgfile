@@ -6,15 +6,15 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=librep
-version=0.92.6
-release=1
+version=0.92.7
 
 source=(http://download.tuxfamily.org/$name/${name}_$version.tar.xz)
 
 build() {
 cd ${name}_$version
-./autogen.sh --prefix=/usr \
+./configure --prefix=/usr \
 --disable-static
 make || make -j1
 make prefix=$PKG/usr install
+find $PKG/usr/lib/rep -name "*.la" -exec rm -v {} \;
 }
