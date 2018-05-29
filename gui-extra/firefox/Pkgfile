@@ -1,4 +1,4 @@
-# Depends on: icu libvpx nspr libevent rustc dbus-glib autoconf2-13 pulseaudio gconf libnotify yasm sqlite nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav shared-mime-info
+# Depends on: icu libvpx nspr nss libevent rustc dbus-glib autoconf2-13 pulseaudio gconf libnotify yasm sqlite nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav shared-mime-info
 
 description="Standalone web browser from mozilla.org"
 url="http://www.mozilla.com/firefox/"
@@ -7,9 +7,10 @@ contributors="Pierre B, tnut, Remy"
 
 run=(shared-mime-info icu libvpx libevent pulseaudio gconf sqlite libvpx nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav)
 name=firefox
-version=59.0.3
+version=60.0.1
 
-source=(https://hg.mozilla.org/releases/mozilla-release/archive/FIREFOX_59_0_3_RELEASE.tar.bz2)
+source=(firefox.desktop
+	https://archive.mozilla.org/pub/firefox/releases/$version/source/$name-$version.source.tar.xz)
 
 build() {
 
@@ -17,12 +18,12 @@ cd $SRC
 
 ARCH=`uname -m`
 
-for lang in ar da de es-ES fi fr it nb-NO nl pt-PT ru sv-SE tr
+for lang in ar da de es-ES fi fr it nb-NO nl pt-PT ru sv-SE tr ja zh-CN hi-IN
 do 
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$ARCH/xpi/$lang.xpi
 done
 
-cd mozilla-release-FIREFOX_59_0_3_RELEASE
+cd $name-$version
 # Locale autodetect
 sed -i '/intl.locale.matchOS/s/false/true/' modules/libpref/init/all.js
 
@@ -40,8 +41,13 @@ cat > mozconfig << "EOF"
 # this line
 ac_add_options --disable-necko-wifi
 
-# Uncomment this option if you wish to build with gtk+-2
-#ac_add_options --enable-default-toolkit=cairo-gtk2
+# API Keys for geolocation APIs - necko-wifi (above) is required for MLS
+# Uncomment the following line if you wish to use Mozilla Location Service
+#ac_add_options --with-mozilla-api-keyfile=$PWD/mozilla-key
+
+# Uncomment the following line if you wish to use Google's geolocaton API
+# (needed for use with saved maps with Google Maps)
+#ac_add_options --with-google-api-keyfile=$PWD/google-key
 
 # Uncomment these lines if you have installed optional dependencies:
 #ac_add_options --enable-system-hunspell
@@ -65,8 +71,8 @@ ac_add_options --disable-stylo
 ac_add_options --enable-system-sqlite
 ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
-#ac_add_options --with-system-nss
-#ac_add_options --with-system-nspr
+ac_add_options --with-system-nss
+ac_add_options --with-system-nspr
 ac_add_options --with-system-icu
 
 # If you are going to apply the patch for system graphite
@@ -123,22 +129,9 @@ mkdir -p $PKG/usr/include/npapi
 cp -v dom/plugins/base/*.h $PKG/usr/include/npapi
 
 # Launcher 
-mkdir -pv $PKG/usr/share/applications &&
-cat > $PKG/usr/share/applications/firefox.desktop << "EOF" &&
-[Desktop Entry]
-Encoding=UTF-8
-Name=Firefox Web Browser
-Comment=Browse the World Wide Web
-GenericName=Web Browser
-Exec=firefox %u
-Terminal=false
-Type=Application
-Icon=firefox
-Categories=GNOME;GTK;Network;WebBrowser;
-MimeType=application/xhtml+xml;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
-StartupNotify=true
-EOF
 mkdir -pv $PKG/usr/share/applications
+install -Dm644 $SRC/firefox.desktop $PKG/usr/share/applications/firefox.desktop
+
 mkdir -pv $PKG/usr/share/pixmaps
 ln -sf /usr/lib/firefox-$version/browser/icons/mozicon128.png $PKG/usr/share/pixmaps/firefox.png
 
@@ -149,7 +142,8 @@ do
       $PKG/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png
 done
 
-for lang in ar da de tr es-ES fi fr it nb-NO nl pt-PT ru sv-SE tr
+for lang in ar da de tr es-ES fi fr it nb-NO nl pt-PT ru sv-SE tr ja zh-CN hi-IN
+
 do 
 install -Dm644 $SRC/$lang.xpi \
     $PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
