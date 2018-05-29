@@ -2,36 +2,29 @@
  
 description="A feature-rich screen recorder that supports X11 and OpenGL"
 url="http://www.maartenbaert.be/simplescreenrecorder/"
-packager="remy <remy@nutyx.org>"
-contributors="Greg"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg, Remy"
 
 PKGMK_KEEP_SOURCES="no"
 
 name=simplescreenrecorder
-version=0.3.10
-release=1
-source=(https://github.com/MaartenBaert/ssr/archive/$version.tar.gz)
+version=0.3.11
 
-prepare() {
-cd ssr-$version
-mkdir -pv build
-}
+source=(https://github.com/MaartenBaert/ssr/archive/$version.tar.gz)
 
 build() {
 
-cd ssr-$version/build
+cd ssr-$version
 
-cmake -DCMAKE_INSTALL_PREFIX="/usr" -DCMAKE_BUILD_TYPE=Release \
-  -DWITH_QT5=on \
-  -DCMAKE_INSTALL_LIBDIR='lib' ../
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX="/usr" \
+	-DCMAKE_BUILD_TYPE=Release  \
+	-DWITH_QT5=on               \
+	-DCMAKE_INSTALL_LIBDIR='lib'\
+	..
 make
 
-
-}
-
-package() {
-	
-  cd ssr-$version/build
-  make DESTDIR=$PKG install
-  
+make DESTDIR=$PKG install  
 }
