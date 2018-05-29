@@ -3,11 +3,12 @@
 description="Low Level Virtual Machine, collection of modular and reusable compiler and toolchain."
 url="http://llvm.org/"
 maintainer="Chris Lattner <sabre at nondot dot org>"
-packager="remy <remy@nutyx.org>"
-contributors="Pierre B, tnut, Remy"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Tnut, Remy"
 
 name=llvm
 version=6.0.0
+release=2
 
 source=(
 	${url}releases/$version/$name-$version.src.tar.xz
@@ -25,10 +26,11 @@ mkdir -v build
 cd build
 
 CC=gcc CXX=g++ \
-cmake -DCMAKE_INSTALL_PREFIX=/usr \
-	-DLLVM_ENABLE_FFI=ON \
+cmake -DCMAKE_INSTALL_PREFIX=/usr  \
+	-DLLVM_ENABLE_FFI=ON       \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DLLVM_BUILD_LLVM_DYLIB=ON \
+	-DLLVM_LINK_LLVM_DYLIB=ON  \
 	-DLLVM_TARGETS_TO_BUILD="host;AMDGPU;" \
 	-Wno-dev \
 	..
