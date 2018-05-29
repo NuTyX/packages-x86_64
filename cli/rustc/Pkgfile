@@ -2,11 +2,11 @@
 
 description="The Rust programming language is designed to be a safe, concurrent, practical language."
 url="http://static.rust-lang.org/"
-packager="remy <remy@nutyx.org>"
-contributors="Pierre B, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, tnut, Remy"
 
 name=rustc
-version=1.22.1
+version=1.25.0
 
 source="http://static.rust-lang.org/dist/$name-$version-src.tar.gz"
 
@@ -23,16 +23,31 @@ extended = true
 
 [install]
 prefix = "/usr"
-docdir = "share/doc/rustc-1.22.1"
+docdir = "share/doc/rustc-1.25.0"
 
 [rust]
 channel = "stable"
 rpath = false
+
+# get reasonably clean output from the test harness
+quiet-tests = true
+
+# BLFS does not install the FileCheck executable from llvm,
+# so disable codegen tests
+codegen-tests = false
+
+[target.x86_64-unknown-linux-gnu]
+# delete this *section* if you are not using system llvm.
+# NB the output of llvm-config (i.e. help options) may be
+# dumped to the screen when config.toml is parsed.
+llvm-config = "/usr/bin/llvm-config"
+
 EOF
 }
 
 build() {
   cd $name-$version-src
-  python2 ./x.py build
-  DESTDIR=$PKG python2 ./x.py install
+  export RUSTFLAGS="$RUSTFLAGS -C link-args=-lffi"
+  ./x.py build
+  DESTDIR=$PKG ./x.py install
 }
