@@ -2,12 +2,11 @@
 
 description="A computer display server protocol"
 url="http://wayland.freedesktop.org/"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Tnut, Greg"
 
 name=wayland
-release=1
-version=1.14.0
+version=1.15.0
 
 source=( http://wayland.freedesktop.org/releases/$name-$version.tar.xz)
 
@@ -18,4 +17,6 @@ build() {
               --disable-documentation
   make
   make DESTDIR=$PKG install
+
+  rm $PKG/usr/lib/libwayland-{client,cursor,server}.la
 }
