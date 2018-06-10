@@ -3,8 +3,7 @@
 description="Xorg vmware video driver."
 packager="tnut <tnut@nutyx.org>"
 name=xorg-xf86-video-vmware
-version=13.2.1
-release=3
+version=13.3.0
 
 _name=${name/xorg-/}
 
@@ -16,7 +15,7 @@ package() {
 rm $PKG/usr/lib/xorg/modules/drivers/vmware_drv.la
 }
 uptodate() {
-local ext url name LINX
+local ext url LINX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
 ext=".tar.bz2"
 url="https://ftp.x.org/archive//individual//driver"
