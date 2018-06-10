@@ -1,4 +1,4 @@
-# Depends on: glproto dri2proto pkg-config libtool wayland wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext xorg-libxdamage expat llvm elfutils xorg-libxshmfence 
+# Depends on: xorgproto pkg-config libtool wayland wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext xorg-libxdamage expat llvm elfutils xorg-libxshmfence 
 
 description="Mesa is an OpenGL compatible 3D graphics library."
 url="http://www.xorg-mesa3d.org"
@@ -7,7 +7,8 @@ contributors="Pierre B"
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=18.0.3
+version=18.1.1
+release=2
 
 source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/mesa/mesa-$version-add_xdemos-1.patch)
@@ -36,4 +37,7 @@ install -v -dm755 $PKG/usr/share/doc/mesa-$version
 cp -rfv docs/* $PKG/usr/share/doc/mesa-$version
 
 rm $PKG/usr/lib/{libEGL,libGL,libGLESv1_CM,libGLESv2,libOSMesa,libgbm,libglapi,libwayland-egl,libxatracker}.la
+# part of wayland
+rm $PKG/usr/lib/pkgconfig/wayland-egl.pc
+rm $PKG/usr/lib/libwayland-egl.so*
 }
