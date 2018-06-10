@@ -1,4 +1,4 @@
-# Depends on: git xproto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms xcb-util-renderutil xcb-util xcb-util-image xcb-util-wm xcb-util-cursor glib dbus xorg-fontconfig xorg-libsm xorg-libxrandr xorg-libxv xorg-libxi unixodbc libjpeg-turbo alsa-lib xdg-utils hicolor-icon-theme desktop-file-utils mesa xorg-libxcursor xorg-libxrender libpng mariadb icu libglade xorg-libxfixes xorg-libxinerama libxkbcommon harfbuzz mtdev postgresql cups python gperf ruby pulseaudio bluez libtiff libmng openal libxslt xorg-libxcomposite gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad pulseaudio hunspell wayland ca-certificates openssl10 pcre gtk2 gtk3 libxkbcommon nss pciutils freetype
+# Depends on: git xorgproto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms xcb-util-renderutil xcb-util xcb-util-image xcb-util-wm xcb-util-cursor glib dbus xorg-fontconfig xorg-libsm xorg-libxrandr xorg-libxv xorg-libxi unixodbc libjpeg-turbo alsa-lib xdg-utils hicolor-icon-theme desktop-file-utils mesa xorg-libxcursor xorg-libxrender libpng mariadb icu libglade xorg-libxfixes xorg-libxinerama libxkbcommon harfbuzz mtdev postgresql cups python gperf ruby pulseaudio bluez libtiff libmng openal libxslt xorg-libxcomposite gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad pulseaudio hunspell wayland ca-certificates openssl10 pcre gtk2 gtk3 libxkbcommon nss pciutils freetype
 
 description="A cross-platform application and UI framework"
 url="http://qt-project.org/"
@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=qtbase
 version=5.11.0
+release=2
 
 _name="${name}-everywhere-src"
 
@@ -81,4 +82,6 @@ done
 # Fix wrong qmake path in pri file
   sed -i "s|$SRC/${_name}-$version|/usr|" \
     $PKG/usr/lib/qt/mkspecs/modules/qt_lib_bootstrap_private.pri
+
+rm $PKG/usr/lib/*.la
 }
