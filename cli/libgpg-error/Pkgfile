@@ -4,8 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libgpg-error
-version=1.27
-release=1
+version=1.31
 
 source=(ftp://ftp.gnupg.org/gcrypt/$name/$name-$version.tar.bz2)
 
@@ -16,5 +15,5 @@ make
 make DESTDIR=$PKG install
 install -v -m644 -D README \
 $PKG/usr/share/doc/$name-$version/README
-rm -f $PKG/usr/share/info/dir
+rm -f $PKG/usr/lib/$name.la
 }
