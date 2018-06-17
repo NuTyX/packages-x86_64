@@ -2,12 +2,11 @@
 
 description="Fast and lightweight IDE"
 url="http://www.geany.org"
-contributors="pierre, tnut"
-packager="greg <greg@nutyx.org>"
+contributors="Pierre, Tnut, Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=geany
-version=1.32
-release=1
+version=1.33
 
 source=(http://download.$name.org/$name-$version.tar.bz2)
 
@@ -15,9 +14,5 @@ build() {
 cd $name-$version
 ./configure --prefix=/usr
 make
-}
-
-package() {
-cd $name-$version
 make DESTDIR=$PKG install
 }
