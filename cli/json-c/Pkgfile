@@ -3,17 +3,15 @@ url="https://github.com/json-c/json-c/wiki"
 packager="tnut <tnut@nutyx.org>"
 
 name=json-c
-version=0.12.1
-release=1
+version=0.13.1
 
 source=(
 https://s3.amazonaws.com/${name}_releases/releases/$name-$version.tar.gz)
 
 build(){
     cd $name-$version
-    sed -i s/-Werror// Makefile.in
     ./configure --prefix=/usr \
                 --disable-static
-    make -j1
+    make || make -j1
     make DESTDIR=$PKG install    
 }
