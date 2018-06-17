@@ -1,4 +1,4 @@
-# Depends on: doxygen
+# Depends on: meson ninja doxygen
 
 url="http://fuse.sourceforge.net/"
 packager="tnut <tnut@nutyx.org>"
@@ -6,17 +6,19 @@ contributors="Pierre B"
 description="Library that makes it possible to implement a filesystem in a userspace program."
 
 name=fuse
-version=3.1.1
-release=1
+version=3.2.3
 
 source=( https://github.com/libfuse/libfuse/releases/download/$name-$version/$name-$version.tar.gz)
 
-build() {
-cd $name-$version
-./configure --prefix=/usr \
---disable-static INIT_D_PATH=/tmp/init.d
-make
-make DESTDIR=$PKG install
+prepare() {
+
+sed -i '/^udev/,$ s/^/#/' $name-$version/util/meson.build
+
+}
+
+build=meson
+
+package() {
 mkdir -p $PKG/lib
 mv -v $PKG/usr/lib/libfuse3.so.* $PKG/lib
 ln -sfv ../../lib/libfuse3.so.$version $PKG/usr/lib/libfuse3.so 
