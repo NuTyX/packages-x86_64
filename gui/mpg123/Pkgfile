@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=mpg123
-version=1.23.6
-release=1
+version=1.25.10
 
 source=( http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
 build() {
@@ -15,4 +14,6 @@ cd $name-$version
 ./configure --prefix=/usr --with-module-suffix=.so
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/libout123.la
+rm $PKG/usr/lib/mpg123/output_{dummy,alsa,oss}.la
 }
