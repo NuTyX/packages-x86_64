@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libxkbcommon
-version=0.7.2
-release=1
+version=0.8.0
 
 source=(http://xkbcommon.org/download/libxkbcommon-$version.tar.xz)
 
@@ -18,4 +17,5 @@ cd $name-$version
 	 --docdir=/usr/share/doc/libxkbcommon-$version
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/libxkbcommon.la
 }
