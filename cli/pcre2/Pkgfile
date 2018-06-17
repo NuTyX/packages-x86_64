@@ -3,12 +3,9 @@ url="http://www.pcre.org/"
 packager="tnut <tnut@nutyx.org>"
 
 name=pcre2
-version=10.23
-release=1
+version=10.31
 
 source=( ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/$name-$version.tar.bz2 )
-[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man doc)
-[ "$PKGMK_ARCH" == "i686" ] && PKGMK_GROUPS=(man doc)
 
 build() {
 cd $name-$version
