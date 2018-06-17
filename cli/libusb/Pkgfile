@@ -4,8 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libusb
-version=1.0.21
-release=1
+version=1.0.22
 
 source=( https://github.com//libusb/libusb/releases/download/v$version/libusb-$version.tar.bz2)
 
@@ -17,4 +16,5 @@ build() {
           --infodir=/usr/share/info
   make -j1
   make DESTDIR=$PKG install
+  rm $PKG/usr/lib/libusb-1.0.la
 }
