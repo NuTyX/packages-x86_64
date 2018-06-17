@@ -7,7 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 run=(gptfdisk)
 
 name=libblockdev
-version=2.16
+version=2.17
 
 source=( https://github.com/storaged-project/$name/releases/download/$version-1/$name-$version.tar.gz)
 build() {
@@ -18,4 +18,5 @@ cd $name-$version
 --sysconfdir=/etc
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/*.la
 }
