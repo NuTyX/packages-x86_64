@@ -15,6 +15,7 @@ cd $name-$version
 ./configure --prefix=/usr \
 --with-python3 \
 --without-dm   \
+--without-nvdimm \
 --sysconfdir=/etc
 make
 make DESTDIR=$PKG install
