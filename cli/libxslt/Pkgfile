@@ -6,7 +6,11 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libxslt
-version=1.1.29
-release=1
+version=1.1.32
 
 source=( ftp://xmlsoft.org/libxml2/$name-$version.tar.gz)
+
+package() {
+rm $PKG/usr/lib/lib{e,}xslt.la
+rm $PKG/usr/lib/python2.7/site-packages/libxsltmod.la
+}
