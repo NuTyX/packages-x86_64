@@ -7,7 +7,7 @@ contributors="Fanch, Tnut, Jayce, Greg, Remy"
 
 name=mate-libkbd
 _name=libmatekbd
-version=1.20.1
+version=1.20.2
 
 source=(http://pub.mate-desktop.org/releases/${version%.*}/${_name}-$version.tar.xz)
 
@@ -20,6 +20,7 @@ make
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 make DESTDIR=$PKG install
 
+rm $PKG/usr/lib/libmatekbd.la
 }
 uptodate() {
 feed=https://github.com/mate-desktop/$_name/releases.atom 
