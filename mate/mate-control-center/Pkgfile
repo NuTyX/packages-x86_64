@@ -8,7 +8,7 @@ contributors="Fanch, Tnut, Jayce, Greg"
 run=(shared-mime-info murrine)
 
 name=mate-control-center
-version=1.20.2
+version=1.20.3
 
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
@@ -28,7 +28,9 @@ make
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 make DESTDIR=$PKG install
 rm -f  $PKG/usr/share/applications/mimeinfo.cache
-
+rm $PKG/usr/lib/libmate-window-settings.la
+rm $PKG/usr/lib/libmate-slab.la
+rm $PKG/usr/lib/window-manager-settings/libmarco.la
 }
 
 uptodate() {
