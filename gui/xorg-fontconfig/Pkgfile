@@ -7,7 +7,7 @@ contributors="Pierre B, Greg"
 
 name=xorg-fontconfig
 _name=fontconfig
-version=2.12.6
+version=2.13.0
 
 source=( https://www.freedesktop.org/software/$_name/release/$_name-$version.tar.gz)
 
@@ -34,5 +34,6 @@ install -v -m644 doc/fontconfig-devel/* \
  $PKG/usr/share/doc/${_name}-$version/fontconfig-devel
 install -v -m644 doc/*.{pdf,sgml,txt,html} \
  $PKG/usr/share/doc/${_name}-$version
- 
+
+rm $PKG/usr/lib/libfontconfig.la 
 }
