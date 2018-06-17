@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libtiff
-version=4.0.8
-release=1
+version=4.0.9
 
 source=(http://download.osgeo.org/libtiff/tiff-$version.tar.gz)
 
@@ -20,4 +19,6 @@ cd tiff-$version
 --disable-static
 make
 make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/libtiff.la
 } 
