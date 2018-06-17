@@ -5,7 +5,7 @@ url="https://github.com/storaged-project/libblockdev"
 packager="tnut <tnut@nutyx.org>"
 
 name=libbytesize
-version=1.2
+version=1.3
 
 source=( https://github.com/storaged-project/$name/releases/download/$version/$name-$version.tar.gz)
 build() {
@@ -13,4 +13,5 @@ cd ${name}-$version
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/libbytesize.la
 }
