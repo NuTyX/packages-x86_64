@@ -4,8 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libidn
-version=1.33
-release=1
+version=1.35
 
 source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 build() {
@@ -20,6 +19,7 @@ find doc -name "Makefile*" -delete
 rm -rf -v doc/{gdoc,idn.1,stamp-vti,man,texi}
 mkdir -p /usr/share/doc/$name-$version
 cp -r -v doc/* /usr/share/doc/$name-$version
+rm $PKG/usr/lib/libidn.la
 }
 uptodate() {
 local url ext
