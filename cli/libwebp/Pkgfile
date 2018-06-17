@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libwebp
-version=0.6.0
-release=1
+version=1.0.0
 
 source=(http://downloads.webmproject.org/releases/webp/$name-$version.tar.gz)
 
@@ -22,4 +21,5 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/libwebp.la
 }
