@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=yaml
-version=0.1.6
-release=1
+version=0.1.7
 
 source=(http://pyyaml.org/download/libyaml/yaml-$version.tar.gz)
 
@@ -15,4 +14,5 @@ build() {
 cd yaml-$version
 ./configure --prefix=/usr --disable-static 
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/libyaml.la
 } 
