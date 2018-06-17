@@ -5,13 +5,12 @@ url="http://www.libraw.org/"
 packager="tnut<tnut@nutyx.org>"
 
 name=libraw
-version=0.18.7
+version=0.18.11
 
 source=(http://www.libraw.org/data/LibRaw-$version.tar.gz)
 build ()
 {
 cd LibRaw-$version
-sed -i "s#powf64#dc_&#g" internal/dcraw_common.cpp
 ./configure --prefix=/usr \
  --enable-jpeg \
  --enable-jasper \
@@ -20,4 +19,6 @@ sed -i "s#powf64#dc_&#g" internal/dcraw_common.cpp
  --docdir=/usr/share/doc/libraw-$version
 make
 make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/libraw.la
 }
