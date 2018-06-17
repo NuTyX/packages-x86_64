@@ -6,15 +6,17 @@ packager="greg <greg@nutyx.org>"
 contributors="Pierre B, Tnut"
 
 name=qpdf
-version=7.0.0
+version=8.0.2
 
-source=(https://downloads.sourceforge.net/$name/$name/$name-$version.tar.gz)
+source=( https://github.com/qpdf/qpdf/releases/download/release-$name-$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
 ./configure --prefix=/usr    \
             --disable-static \
-            
+            --docdir=/usr/share/doc/$name-$version
 make 
 make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/libqpdf.la
 }
