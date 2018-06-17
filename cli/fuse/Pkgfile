@@ -8,7 +8,7 @@ description="Library that makes it possible to implement a filesystem in a users
 name=fuse
 version=3.2.3
 
-source=( https://github.com/libfuse/libfuse/releases/download/$name-$version/$name-$version.tar.gz)
+source=( https://github.com/libfuse/libfuse/releases/download/$name-$version/$name-$version.tar.xz)
 
 prepare() {
 
@@ -23,10 +23,5 @@ mkdir -p $PKG/lib
 mv -v $PKG/usr/lib/libfuse3.so.* $PKG/lib
 ln -sfv ../../lib/libfuse3.so.$version $PKG/usr/lib/libfuse3.so 
 rm -rf $PKG/tmp
-rm $PKG/dev/fuse
-install -v -m755 -d $PKG/usr/share/doc/fuse-$version
-install -v -m644    doc/{README.NFS,kernel.txt} \
-	$PKG/usr/share/doc/fuse-$version
-cp -Rv doc/html \
-	$PKG/usr/share/doc/fuse-$version
+
 }
