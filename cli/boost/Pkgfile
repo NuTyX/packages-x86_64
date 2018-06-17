@@ -4,16 +4,13 @@ description="Boost provides a set of free peer-reviewed portable C++ source libr
 url="http://boost.sourceforge.net/"
 packager="tnut at nutyx dot org"
 name=boost
-version=1.66.0
-release=2
+version=1.67.0
 
 source=(https://dl.bintray.com/boostorg/release/$version/source/${name}_${version//./_}.tar.bz2)
 build() {
 cd ${name}_${version//./_}
-sed -e '/using python/ s@;@: /usr/include/python${PYTHON_VERSION/3*/${PYTHON_VERSION}m} ;@' \
-    -i bootstrap.sh
 
-./bootstrap.sh --prefix=/usr --with-python=python3 &&
+./bootstrap.sh --prefix=/usr
 ./b2 stage --stagedir=$PKG/usr threading=multi link=shared
 ./b2 install --prefix=$PKG/usr threading=multi link=shared
 }
