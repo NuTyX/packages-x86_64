@@ -3,8 +3,7 @@ url="http://oligarchy.co.uk/xapian.html"
 packager="tnut <tnut@nutyx.org>"
 
 name=xapian
-version=1.4.4
-release=1
+version=1.4.5
 
 source=( http://oligarchy.co.uk/xapian/$version/xapian-core-$version.tar.xz)
 build() {
@@ -14,4 +13,6 @@ cd $name-core-$version
 --docdir=/usr/share/doc/xapian-core-$version
 make
 make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/libxapian.la
 }
