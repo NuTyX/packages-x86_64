@@ -18,6 +18,14 @@ cp $SRC/abiword-3.0.2-gtk3_22_render_fix-1.patch $SRC/$name-$version/abiword-3.0
 cd $name-$version
 patch -Np1 -i abiword-3.0.2-gtk3_22_render_fix-1.patch
 
+sed -e "s/free_suggestions/free_string_list/" \
+    -e "s/_to_personal//"                     \
+    -e "s/in_session/added/"                  \
+    -i src/af/xap/xp/enchant_checker.cpp      &&
+
+sed -e "/icaltime_from_timet/{s/timet/&_with_zone/;s/0/0, 0/}" \
+    -i src/text/ptbl/xp/pd_DocumentRDF.cpp
+
 }
 
 build() {
@@ -25,14 +33,7 @@ build() {
 cd $name-$version
 
 ./configure --prefix=/usr \
-    --enable-shared \
-    --disable-static \
-
-}
-
-package() {
-
-cd $name-$version
+    --disable-static
 make DESTDIR=$PKG install
 
 }
