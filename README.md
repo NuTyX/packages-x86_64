@@ -10,4 +10,4 @@ If you want to participate, please send me your motivation and your public key.
 
 when accepted, you can get a write copy via the command:
 
-    # git clone ssh://extra@git.nutyx.org/home/extra/extra.git 
+    # git clone ssh://core@git.nutyx.org/home/core/core.git 
