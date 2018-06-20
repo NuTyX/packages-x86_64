@@ -1,19 +1,19 @@
-# Depends on: fuse glib openssh
+# Depends on: fuse glib openssh meson ninja
 
 description="Contains a filesystem client based on the SSH File Transfer Protocol"
 url="http://fuse.sourceforge.net/sshfs.html"
 packager="tnut <tnut@nutyx.org>"
 
 name=sshfs
-version=3.0.0
-release=2
+version=3.3.2
 
 source=(https://github.com/libfuse/$name/releases/download/$name-$version/$name-$version.tar.gz)
 
-build(){
+prepare(){
     cd $name-$version
     [ "$PKGMK_ARCH" == "i686" ] &&  export CFLAGS="-D_FILE_OFFSET_BITS=64 -m32"
     ./configure --prefix=/usr
     make
     make DESTDIR=$PKG install    
 }
+build=meson
