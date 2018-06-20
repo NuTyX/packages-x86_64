@@ -1,4 +1,4 @@
-# Depends on: glib js38 gobject-introspection intltool libxslt docbook-xsl
+# Depends on: glib js52 gobject-introspection intltool libxslt docbook-xsl
 
 description="Application development toolkit for controlling system-wide privileges"
 url="http://hal.freedesktop.org/docs/polkit"
@@ -6,13 +6,16 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=polkit
-version=0.113+git_2919920+js38
-release=2
+version=0.114
 
-source=(http://anduin.linuxfromscratch.org/BLFS/$name/$name-$version.tar.xz)
+source=(http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
+
+sed -e '/JS_ReportWarningUTF8/s/,/, "%s",/'  \
+        -i  src/polkitbackend/polkitbackendjsauthority.cpp
+
 
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
