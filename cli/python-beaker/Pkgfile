@@ -6,11 +6,12 @@ packager="tnut <tnut@nutyx.org>"
 
 name=python-beaker
 version=1.9.1
+release=2
 
 source=(https://files.pythonhosted.org/packages/source/B/Beaker/Beaker-$version.tar.gz)
 
 build() {
 
 cd Beaker-$version
-python3 setup.py install --root=$PKG --optimize=1
+python setup.py install --root=$PKG --optimize=1
 }
