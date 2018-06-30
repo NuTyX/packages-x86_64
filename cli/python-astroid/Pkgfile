@@ -3,16 +3,16 @@
 description="Python 3 Useful miscellaneous modules used by Logilab projects."
 url="https://bitbucket.org/logilab/astroid"
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre "
+contributors="Pierre B."
 
 name=python-astroid
 version=1.4.5
-release=1
+release=2
 
 source=(https://pypi.python.org/packages/source/a/astroid/astroid-${version}.tar.gz)
 
 build() {
     cd astroid-$version
-    python3 setup.py check
-    python3 setup.py install --prefix=/usr --root=$PKG
+    python setup.py check
+    python setup.py install --prefix=/usr --root=$PKG
 }
