@@ -8,7 +8,7 @@ contributors="Alienus"
 packager="tnut <tnut@nutyx.org>"
 
 name=python
-version=3.6.5
+version=3.7.0
 alias=(python3 Python)
 source=(
 http://www.python.org/ftp/python/$version/Python-$version.tar.xz
@@ -16,6 +16,8 @@ python.png)
 
 build() {
 	cd Python-$version
+	sed -i "s@lib/python3.7@lib/python3@" Makefile.pre.in
+        sed -i "s@^VERSION=3.7@VERSION=3@" configure
 	CXX="/usr/bin/g++" \
 	./configure --prefix=/usr \
                 --enable-shared \
@@ -25,7 +27,19 @@ build() {
 	make
 	make DESTDIR=$PKG install
 
-	chmod -v 755 $PKG/usr/lib/libpython3.6m.so
+	rm $PKG/usr/bin/python3
+	cp python $PKG/usr/bin/python3
+	for i in 2to3 pyvenv
+	do
+		ln -svf ${i}-3.7 $PKG/usr/bin/$i
+	done
+	for i in idle pydoc
+	do
+		ln -svf ${i}3.7 $PKG/usr/bin/$i
+		ln -svf ${i}3.7 $PKG/usr/bin/${i}3
+	done
+	ln -svf python3 $PKG/usr/bin/python
+	chmod -v 755 $PKG/usr/lib/libpython3m.so
 	chmod -v 755 $PKG//usr/lib/libpython3.so
 
 # Install all HTML Docs files with desktop menu integration
