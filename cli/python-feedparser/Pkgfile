@@ -6,7 +6,7 @@ packager="remy <remy@nutyx.org>"
 
 name=python-feedparser
 version=5.2.1
-release=1
+release=2
 
 run=(python-setuptools python-sgmllib)
 
@@ -19,7 +19,7 @@ cd feedparser-$version; 2to3 -w feedparser/feedparser.py feedparser/feedparserte
 build() {
 
   cd feedparser-$version
-  /usr/bin/python3 setup.py build
-  /usr/bin/python3 setup.py install --prefix=/usr --root=$PKG
+  /usr/bin/python setup.py build
+  /usr/bin/python setup.py install --prefix=/usr --root=$PKG
   
 }
