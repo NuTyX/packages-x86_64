@@ -5,8 +5,19 @@ url="http://pycurl.io/"
 packager="tnut <tnut@nutyx.org>"
 
 name=python-curl
-version=7.43.0
+version=7.43.0.2
 
 _name=pycurl
 source=(https://dl.bintray.com/pycurl/pycurl/pycurl-$version.tar.gz)
-build=python3
+
+prepare() {
+
+cd ${_name}-$version
+find . -name '*.py' -exec sed -i -e "s|#! /usr/bin/env python|#!/usr/bin/env python3|" {} +
+}
+build() {
+cd ${_name}-$version
+make
+python3 setup.py build --with-ssl
+python setup.py install -O1 --root="$pkgdir"
+}
