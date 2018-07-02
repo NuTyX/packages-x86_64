@@ -19,7 +19,7 @@ cd feedparser-$version; 2to3 -w feedparser/feedparser.py feedparser/feedparserte
 build() {
 
   cd feedparser-$version
-  /usr/bin/python setup.py build
-  /usr/bin/python setup.py install --prefix=/usr --root=$PKG
+  /usr/bin/python3 setup.py build
+  /usr/bin/python3 setup.py install --prefix=/usr --root=$PKG
   
 }
