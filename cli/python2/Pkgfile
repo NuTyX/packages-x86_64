@@ -1,7 +1,7 @@
 # Depends on: libffi sqlite
 
 description="Next generation of the python high-level scripting language"
-url="https://www.python.org"
+url="http://www.python.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
@@ -11,7 +11,6 @@ _pybasever=2.7
 
 name=python2
 version=2.7.15
-release=2
 
 source=(
 ${url}/ftp/python/$version/Python-$version.tar.xz
@@ -30,7 +29,7 @@ build() {
     chmod -v 755 $PKG/usr/lib/libpython2.7.so.1.0
 
     # Part of python3
-    rm $PKG/usr/bin/{2to3,idle,pydoc,python}
+    rm $PKG/usr/bin/2to3
 
     # Install all HTML Docs files with desktop menu integration
 
