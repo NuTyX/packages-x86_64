@@ -1,4 +1,4 @@
-# Depends on: sqlite expat
+# Depends on: sqlite expat libffi
 
 PKGMK_GROUPS=(devel man doc)
 
@@ -9,7 +9,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=python
 version=3.7.0
-release=3
+release=4
 
 alias=(python3 Python)
 source=(
@@ -19,6 +19,7 @@ python.png)
 build() {
 	cd Python-$version
 	rm -r Modules/expat
+	rm -r Modules/_ctypes/{darwin,libffi}*
 	CXX="/usr/bin/g++" \
 	./configure --prefix=/usr \
                 --enable-shared \
