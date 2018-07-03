@@ -22,7 +22,8 @@ sed -e '/JS_ReportWarningUTF8/s/,/, "%s",/'  \
 --mandir=/usr/share/man \
 --localstatedir=/var \
 --enable-libsystemd-login=no \
---disable-static
+--disable-static \
+--enable-libelogind=no
 
 make||make -j1
 
