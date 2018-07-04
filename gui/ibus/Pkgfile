@@ -5,11 +5,15 @@ url="http://ibus.googlecode.com"
 packager="tnut <tnut@nutyx.org>"
 
 name=ibus
-version=1.5.18
+version=1.5.17
 
-source=(https://github.com/ibus/ibus/releases/download/$version/$name-$version.tar.gz)
+source=(
+# ibus-1.5.18-consolidate-1.patch
+	https://github.com/ibus/ibus/releases/download/$version/$name-$version.tar.gz)
 build() {
 cd $name-$version
+
+# patch -Np1 -i ../ibus-1.5.18-consolidate-1.patch
 
 sed -i 's@/desktop/ibus@/org/freedesktop/ibus@g' \
     data/ibus.schemas.in \

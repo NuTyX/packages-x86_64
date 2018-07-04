@@ -1,0 +1,28 @@
+From 5788be80685f397c3db3bdf4e672d67cfb9b3433 Mon Sep 17 00:00:00 2001
+From: Jeremy Bicha <jbicha@ubuntu.com>
+Date: Fri, 30 Mar 2018 12:37:27 +0900
+Subject: [PATCH] Fix ucd directory override
+
+BUG=https://github.com/ibus/ibus/pull/1995
+R=Shawn.P.Huang@gmail.com
+
+Review URL: https://codereview.appspot.com/339450043
+
+Patch from Jeremy Bicha <jbicha@ubuntu.com>.
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 6c00803f..d19aa874 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -666,7 +666,7 @@ AC_ARG_WITH(ucd-dir,
+     AS_HELP_STRING([--with-ucd-dir[=DIR]],
+         [Set the directory of UCD (Unicode Character Database) files.
+          (default: "/usr/share/unicode/ucd")]),
+-    UCD_DIR=$with_emoji_annotation_dir,
++    UCD_DIR=$with_ucd_dir,
+     UCD_DIR="/usr/share/unicode/ucd"
+ )
+ AC_SUBST(UCD_DIR)
