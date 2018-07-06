@@ -7,8 +7,7 @@ contributors="Pierre B, tnut, Remy"
 
 run=(shared-mime-info icu libvpx libevent pulseaudio gconf sqlite libvpx nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav)
 name=firefox
-version=60.0.2
-release=2
+version=61.0.1
 
 source=(firefox.desktop
 	https://archive.mozilla.org/pub/firefox/releases/$version/source/$name-$version.source.tar.xz)
@@ -60,12 +59,7 @@ ac_add_options --disable-necko-wifi
 # If you have installed GConf, comment out this line
 ac_add_options --disable-gconf
 
-# Stylo is the new CSS code, including the rust 'style'
-# package. It is enabled by default, but cannot find the
-# headers for system nspr, pixman. If you enable stylo you
-# must comment out system-nspr system-pixman and
-# system-cairo, and you must also have installed clang.
-ac_add_options --disable-stylo
+# From firefox 61 Stylo is needed
 
 # Comment out following options if you have not installed
 # recommended dependencies:
@@ -110,7 +104,7 @@ ac_add_options --with-pthreads
 
 ac_add_options --with-system-bz2
 ac_add_options --with-system-jpeg
-#ac_add_options --with-system-png
+ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
