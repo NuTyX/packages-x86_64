@@ -1,0 +1,20 @@
+# Depends on: meson ninja exiv2 vala gobject-introspection python-gobject
+
+description="GObject-based Wrapper around Exiv2 library."
+url="http://www.exiv2.org/index.html"
+packager="tnut <tnut@nutyx.org>"
+contributor="Jayce"
+
+name=libgexiv2
+version=0.10.8
+
+source=(http://ftp.gnome.org/pub/gnome/sources/${name/lib/}/${version%.*}/${name/lib/}-$version.tar.xz)
+
+build() {
+cd gexiv2-$version
+mkdir build
+cd    build
+meson --prefix=/usr
+ninja
+DESTDIR=$PKG ninja install
+}
