@@ -1,33 +1,24 @@
-# Depends on: shared-mime-info gtk2 python2-gtk curl libexif xorg-libxmu xorg-libxpm openexr gegl poppler libmng alsa-lib babl
+# Depends on: shared-mime-info gtk2 python2-gtk curl libexif xorg-libxmu xorg-libxpm openexr gegl poppler-glib glib-networking libmng alsa-lib babl libmypaint mypaint-brushes lcms2 gexiv2 harfbuzz libjpeg-turbo librsvg libtiff libxml2
 
 description="GNU Image Manipulation Program"
 url="http://www.gimp.org/"
-contributors="Pierre B."
-packager="greg <greg@nutyx.org>"
+contributors="Pierre B., Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=gimp
-version=2.8.22
-release=2
+version=2.10.4
 
 run=(python2-gtk)
 
-source=(http://download.gimp.org/pub/gimp/v2.8/gimp-$version.tar.bz2)
+source=(http://download.gimp.org/pub/gimp/v2.10/gimp-$version.tar.bz2)
 
 
 build() {
 
 cd $name-$version
 
-sed -i '/gegl/s/2/3/' configure.ac
-sed -i '70,75 d' app/core/gimpparamspecs-duplicate.c
-autoreconf -fiv
 
-sed -i "/seems to be moved/s/^/#/" ltmain.sh
-
-./configure --prefix=/usr --sysconfdir=/etc \
---enable-mp --enable-gimp-console --enable-gimp-remote \
---enable-python --with-gif-compression=lzw --with-libcurl \
- --without-aa --without-hal --without-gvfs --without-gnomevfs
+./configure --prefix=/usr --sysconfdir=/etc
 make
 
 make DESTDIR=$PKG install
