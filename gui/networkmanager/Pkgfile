@@ -11,6 +11,7 @@ _name=NetworkManager
 
 name=networkmanager
 version=1.12.0
+release=2
 
 run=(wpa-supplicant wpa-supplicant-dbus)
 
@@ -23,6 +24,7 @@ cd ${_name}-$version
 --sysconfdir=/etc \
 --localstatedir=/var \
 --with-nmtui \
+--with-libnm-glib \
 --enable-gtk-doc \
 --docdir=/usr/share/doc/networkmanager-$version \
 --with-systemdsystemunitdir=no \
