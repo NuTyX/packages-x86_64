@@ -1,4 +1,4 @@
-# Depends on: git cmake webkitgtk djvulibre poppler-glib gtk2 gtk3 desktop-file-utils
+# Depends on: cmake djvulibre poppler-glib gtk2 gtk3 desktop-file-utils
 
 description="apvlv is a PDF/DJVU/UMD/TXT Viewer and its behaviour like Vim."
 url="http://github.com/naihe2010/apvlv"
@@ -6,28 +6,22 @@ packager="tnut <tnut@nutyx.org>"
 contributors="alienus, tnut, greg"
 
 PKGMK_KEEP_SOURCES="no"
+PKGMK_GROUPS=(man)
 
 name=apvlv
 version=0.1.5
-release=2
+release=3
 
 source=(https://github.com/naihe2010/apvlv/archive/v$version.tar.gz
-        $name.desktop
-        gcc6.patch)
+        $name.desktop gcc6.patch)
 
 
-prepare() {
-
-  cd $name-$version
-
-  patch -Np1 -i ../gcc6.patch
-  
-}
-
-
-build(){
+build() {
 
     cd $name-$version
+
+    patch -Np1 -i ../gcc6.patch
+  
     mkdir -p build
     
     cd build
@@ -37,16 +31,9 @@ build(){
           -DAPVLV_WITH_UMD=no  ..
     make
 
-}
-
-package() {
-
-	cd $name-$version/build
+    make DESTDIR=$PKG install
 	
-	make DESTDIR=$PKG install
-	
-	install -Dm644 $SRC/$name.desktop \
-		$PKG/usr/share/applications/$name.desktop
+    install -Dm644 $SRC/$name.desktop \
+    $PKG/usr/share/applications/$name.desktop
         
- }       
-
+ }
