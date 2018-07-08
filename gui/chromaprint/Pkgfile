@@ -6,12 +6,11 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=chromaprint
-version=1.4.2
-release=1
+version=1.4.3
 
-source=(https://bitbucket.org/acoustid/${name}/downloads/${name}-${version}.tar.gz)
+source=(https://github.com/acoustid/${name}/releases/download/v$version/${name}-${version}.tar.gz)
 build() {
-cd $name-$version
+cd $name-v$version
 cmake \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_BUILD_TYPE=Release \
