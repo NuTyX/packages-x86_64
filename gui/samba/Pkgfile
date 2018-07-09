@@ -1,4 +1,4 @@
-# Depends on: rpcsvc-proto libtirpc talloc tevent avahi gnutls libgpg-error popt python2 cups kerberos libcap openldap libxslt tdb ldb
+# Depends on: rpcsvc-proto libtirpc docbook-xsl talloc tevent avahi gnutls libgpg-error popt python2 cups kerberos libcap openldap tdb ldb
 
 description="SMB Fileserver and AD Domain server"
 url="http://www.samba.org"
@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
 
 name=samba
-version=4.8.2
+version=4.8.3
 nutyx_version=10.2
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
@@ -15,7 +15,10 @@ source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 build() {
 cd $name-$version
 
-CLFAGS="-I/usr/include/tirpc -ltirpc"   \
+echo "^samba4.rpc.echo.*on.*ncacn_np.*with.*object.*nt4_dc" >> selftest/knownfail
+
+CFLAGS+=" -I/usr/include/tirpc"           \
+LDFLAGS+=" -ltirpc"                       \
 ./configure                             \
     --prefix=/usr                       \
     --sysconfdir=/etc                   \
@@ -25,11 +28,10 @@ CLFAGS="-I/usr/include/tirpc -ltirpc"   \
     --without-ad-dc                     \
     --enable-fhs                        \
     --without-systemd                   \
+    --enable-selftest                   \
     --bundled-libraries=!talloc,!pytalloc-util,!tevent,!popt,!tdb,!ldb
 
 make
-
-sed -i "/samba3.blackbox.failure.failure/i \^samba3.raw.eas" selftest/knownfail
 
 make DESTDIR=$PKG install
 
