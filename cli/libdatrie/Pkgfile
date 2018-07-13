@@ -5,7 +5,7 @@ contributors="Pierre B"
 
 name=libdatrie
 version=0.2.10
-release=1
+release=2
 
 source=(
 http://linux.thai.net/pub/thailinux/software/libthai/$name-$version.tar.xz)
@@ -17,4 +17,5 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/$name.la
 }
