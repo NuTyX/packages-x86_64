@@ -1,102 +1,56 @@
-# Depends on: tar apache-ant avahi bluez openldap python cups curl dbus-glib dconf libatomic-ops gperf gtk2 gtk3 perl-archive-zip perl-xml-parser boost expat gstreamer-plugins-base gnutls sane valgrind libgsf libjpeg-turbo librsvg libxml2 libxslt neon nss postgresql redland icu mesa hunspell gsfonts dejavu-ttf p7zip neon npapi-sdk clucene serf unixodbc xdg-utils xorg-glu desktop-file-utils shared-mime-info
-
-PKGMK_IGNORE_UNPACK="yes"
-
-description="Office suite. It is largely compatible with Microsoft Office (fork from OpenOffice.org)."
-url="http://www.libreoffice.org"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, Tnut, Greg"
-
-run=(shared-mime-info xdg-utils desktop-file-utils) 
+# Description: full featured cross platform office suite (binary)
+# URL:         http://www.libreoffice.org
+# Maintainer:  Thomas Penteker, tek at serverop dot de
+# Packager:    Bartlomiej Palmowski, rotwang at crux dot org dot pl
+# Depends on:  cups dbus-glib desktop-file-utils xorg-glu gtk2 kerberos shared-mime-info xorg-libxaw xorg-libxi
 
 name=libreoffice
-version=6.0.5.1
-release=2
+version=6.0.5
+release=1
+source=(http://download.documentfoundation.org/$name/stable/$version/rpm/x86_64/LibreOffice_${version}_Linux_x86-64_rpm.tar.gz)
 
-source=(http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-$version.tar.xz
-	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-dictionaries-$version.tar.xz
-	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-help-$version.tar.xz
-	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-translations-$version.tar.xz)
-
-prepare() {
-        unset ACLOCAL
-        export LO_PREFIX="/usr"
-
-        cd $SRC
-        tar -xf $name-$version.tar.xz --no-overwrite-dir
-
-        cd $name-$version
-        install -dm755 external/tarballs
-
-        ln -sv $SRC/$name-dictionaries-$version.tar.xz  external/tarballs/
-        ln -sv $SRC/$name-help-$version.tar.xz          external/tarballs/
-        ln -sv $SRC/$name-translations-$version.tar.xz  external/tarballs/
-
-        sed -e "/gzip -f/d"   \
-            -e "s|.1.gz|.1|g" \
-            -i bin/distro-install-desktop-integration
-
-        sed -e "/distro-install-file-lists/d" -i Makefile.in
-
-        chmod -v +x bin/unpack-sources                                                                                                                                    
-}
 
 build() {
-export LO_PREFIX="/usr"
-cd $name-$version
+    local workd="$SRC/tmp_work"
+    mkdir $workd
 
-./autogen.sh --prefix=${LO_PREFIX} \
-             --sysconfdir=/etc \
-             --with-vendor="NuTyX" \
-             --with-lang="ar es de fr it pt fi nb nl da sv tr ru pl"   \
-             --with-help \
-             --without-fonts \
-             --with-myspell-dicts \
-             --with-alloc=system \
-             --without-junit \
-             --without-system-dicts \
-             --enable-gstreamer-1-0 \
-             --disable-dconf \
-             --disable-odk \
-             --disable-firebird-sdbc \
-             --enable-release-build=yes \
-             --enable-python=system \
-             --enable-dbus \
-             --with-system-apr \
-             --with-system-boost \
-             --with-system-clucene \
-             --with-system-cairo \
-             --with-system-curl \
-             --with-system-expat \
-             --with-system-icu \
-             --with-system-jpeg \
-             --with-system-lcms2 \
-             --with-system-libatomic_ops \
-             --with-system-libpng \
-             --with-system-libxml \
-             --enable-gtk3 \
-             --with-system-neon \
-             --with-system-nss \
-             --with-system-odbc \
-             --with-system-openldap \
-             --with-system-openssl \
-             --with-system-postgresql \
-             --with-system-redland \
-             --with-system-serf \
-             --with-system-zlib \
-             --with-parallelism=$(getconf _NPROCESSORS_ONLN)
+    cd LibreOffice_${version}*/RPMS
+    for rpm in *.rpm; do
+        bsdtar -p -o -C $workd -xf $rpm
+    done
 
- CPPFLAGS='-DU_USE_ICU_NAMESPACE=1' make -i build-nocheck
- make -i DESTDIR=$PKG distro-pack-install
+    bsdtar -p -o -C $workd -xf \
+        $name${version%.*}-freedesktop-menus-${version%.*}*.noarch.rpm
 
-	# Dictionaries installation
-	chown -cR 0:0 dictionaries/ 
-	for lang in en fr_FR es de it_IT pt_PT no nl_NL sv_SE da_DK ru_RU
-	do
-	  mkdir -pv $PKG/${LO_PREFIX}/lib/libreoffice/share/extensions/dict-$lang
-	  cp -R dictionaries/$lang/* $PKG/${LO_PREFIX}/lib/libreoffice/share/extensions/dict-$lang
-	done
-        
-	# Nettoyage
-	rm -rf $PKG/gid*
+    cd $workd
+    mkdir -p $PKG/usr/lib/$name
+    mv opt/$name*/* $PKG/usr/lib/$name
+
+    cd $PKG/usr/lib/$name
+    ln -sf basis${version%.*} basis-link
+
+    mkdir -p $PKG/usr/bin
+    local programs=(sbase scalc sdraw simpress smath soffice swriter)
+    for program in ${programs[@]}; do
+        ln -sf /usr/lib/$name/program/$program $PKG/usr/bin/$program
+    done
+
+    mkdir -p $PKG/usr/share/applications
+    cd $PKG/usr/lib/$name/share/xdg/
+
+    for desktop in *.desktop; do
+       sed -i '/^Exec=/s/libreoffice[^ ]*/soffice/' $desktop
+       ln -sf /usr/lib/$name/share/xdg/$desktop $PKG/usr/share/applications/$desktop 
+    done
+
+    mv $workd/usr/share/{mime,icons} $PKG/usr/share
+
+    find $PKG \(\
+        -iname '*readme*' -o \
+        -iname '*changelog*' -o \
+        -name '*TODO*' -o \
+        -iname '*news*' -o \
+        -iname '*license*' -o \
+        -iname '*credits*' \
+     \) -exec rm -rf '{}' \; || true
 }
