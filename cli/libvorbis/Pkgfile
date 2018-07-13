@@ -17,4 +17,5 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 install -v -m644 doc/Vorbis* $PKG/usr/share/doc/libvorbis-$version
+rm $PKG/usr/lib/$name.la
 }
