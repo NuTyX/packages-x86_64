@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=librep
 version=0.92.7
+release=2
 
 source=(http://download.tuxfamily.org/$name/${name}_$version.tar.xz)
 
@@ -17,4 +18,5 @@ cd ${name}_$version
 make || make -j1
 make prefix=$PKG/usr install
 find $PKG/usr/lib/rep -name "*.la" -exec rm -v {} \;
+rm $PKG/usr/lib/$name.la
 }
