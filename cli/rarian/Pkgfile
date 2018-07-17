@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=rarian
 version=0.8.1
-release=1
+release=2
 
 source=( http://ftp.gnome.org/pub/gnome/sources/rarian/${version%.*}/$name-$version.tar.bz2)
 build() {
@@ -16,6 +16,7 @@ cd $name-$version
 --localstatedir=/var
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/librarian.la
 }
 uptodate(){
 local latest lastversion url
