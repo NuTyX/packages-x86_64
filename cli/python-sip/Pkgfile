@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=python-sip
-version=4.19.8
+version=4.19.12
 
 source=(http://sourceforge.net/projects/pyqt/files/sip/sip-$version/sip-$version.tar.gz )
 
@@ -18,4 +18,6 @@ build() {
 	make
 	make DESTDIR=$PKG install
 	chmod 644 $PKG/usr/lib/python3.6/site-packages/sipdistutils.py
+	# Part of sip package
+	rm -r $PKG/usr/{bin,include}
 }
