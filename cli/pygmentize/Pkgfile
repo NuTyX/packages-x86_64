@@ -1,0 +1,17 @@
+# Depends on: python python-setuptools
+
+description="Python 3 syntax highlighter"
+url="http://pygments.org"
+packager="tnut <tnut@nutyx.org>"
+
+name=pygmentize
+version=2.2.0
+
+source=(https://pypi.org/packages/source/P/Pygments/Pygments-${version}.tar.gz)
+
+build() {
+    cd Pygments-$version
+    python3 setup.py install --root=$PKG -O1
+    # Remove everything exept the binary
+    find $PKG -type f -not -name pygmentize -delete
+}
