@@ -1,0 +1,19 @@
+# Depends on: python
+
+description="A tool that makes it easy to create Python bindings for C and C++ libraries"
+url="http://www.riverbankcomputing.co.uk/software/sip/intro"
+packager="tnut <tnut@nutyx.org>"
+
+name=sip
+version=4.19.12
+
+source=(http://sourceforge.net/projects/pyqt/files/sip/sip-$version/sip-$version.tar.gz )
+
+build() {
+	cd sip-$version
+	mkdir build
+	cd build
+        python3 ../configure.py CFLAGS="$CFLAGS" LFLAGS="$LDFLAGS"
+        make DESTDIR=$PKG install -C sipgen
+	install -Dm644 ../siplib/sip.h -t $PKG/usr/include
+}
