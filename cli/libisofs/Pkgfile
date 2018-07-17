@@ -5,6 +5,7 @@ contributors="Pierre B"
 
 name=libisofs
 version=1.4.8
+release=2
 
 source=(http://files.libburnia-project.org/releases/$name-$version.tar.gz)
 
@@ -13,4 +14,5 @@ cd $name-$version
 ./configure --prefix=/usr --disable-static
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/$name.la
 }
