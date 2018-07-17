@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=python2-sip
-version=4.19.6
+version=4.19.12
 
 source=(http://sourceforge.net/projects/pyqt/files/sip/sip-$version/sip-$version.tar.gz )
 
@@ -19,4 +19,6 @@ build() {
 	make
 	make DESTDIR=$PKG install
 	chmod 644 $PKG/usr/lib/python2.7/site-packages/sipdistutils.py
+	# Part of sip package
+	rm -r $PKG/usr/{bin,include}
 }
