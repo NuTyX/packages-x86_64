@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=libjpeg-turbo
 version=1.5.3
+release=2
 
 source=(http://sourceforge.net/projects/libjpeg-turbo/files/$version/libjpeg-turbo-$version.tar.gz)
 
@@ -17,4 +18,5 @@ cd $name-$version
 --with-jpeg8 --disable-static
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/lib{turbo,}jpeg.la
 }
