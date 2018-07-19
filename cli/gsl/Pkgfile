@@ -5,7 +5,7 @@ contributors="Pierre B"
 
 name=gsl
 version=2.4
-release=1
+release=2
 
 source=(http://ftp.gnu.org/pub/gnu/$name/$name-$version.tar.gz)
 
@@ -15,7 +15,7 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
-rm -f $PKG/usr/share/info/dir
+rm $PKG/usr/lib/libgsl{,cblas}.la
 }
 uptodate() {
 local url ext
