@@ -9,7 +9,8 @@ contributors="Geantbrun"
 name=libfm-extra
 _name=libfm
 version=1.2.5
-release=1
+release=2
+
 source=(http://downloads.sourceforge.net/pcmanfm/${_name}-$version.tar.xz)
 
 build() {
@@ -21,4 +22,5 @@ cd ${_name}-$version
             --disable-static
 make 
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/$name.la
 }
