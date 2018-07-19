@@ -5,7 +5,7 @@ contributors="Pierre B"
 
 name=wavpack
 version=5.1.0
-release=1
+release=2
 
 source=(http://www.wavpack.com/$name-$version.tar.bz2)
 
@@ -16,4 +16,6 @@ cd $name-$version
 --enable-static=no 
 make
 make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/libwavpack.la
 }
