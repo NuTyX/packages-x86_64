@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=libxml2
 version=2.9.8
-release=1
+release=2
 
 source=(ftp://xmlsoft.org/libxml2/$name-$version.tar.gz  http://www.linuxfromscratch.org/patches/blfs/svn/libxml2-2.9.8-python3_hack-1.patch)
 
@@ -21,4 +21,5 @@ sed -i '/_PyVerify_fd/,+1d' python/types.c
             --with-python=/usr/bin/python3
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/$name.la
 }
