@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=v4l-utils
 version=1.12.5
-release=1
+release=2
 
 source=(http://linuxtv.org/downloads/v4l-utils/$name-$version.tar.bz2)
 
@@ -18,4 +18,6 @@ build() {
 	rm -f $PKG/usr/bin/ivtv-ctl
   	mv $PKG/lib/udev $PKG/usr/lib/
   	rm -rf $PKG/lib
+	# Remove la files
+	find $PKG -name '*.la' | xargs rm -v
 }
