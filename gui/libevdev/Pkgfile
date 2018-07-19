@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=libevdev
 version=1.5.7
-release=1
+release=2
 
 source=( http://www.freedesktop.org/software/libevdev/$name-$version.tar.xz)
 
@@ -15,4 +15,5 @@ cd $name-$version
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/$name.la
 }
