@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=avahi
 version=0.7
-release=2
+release=3
 
 source=( https://github.com/lathiat/avahi/releases/download/v$version/avahi-$version.tar.gz)
 
@@ -31,4 +31,5 @@ make
 make DESTDIR=$PKG install
 
 rm -fr $PKG/{etc/avahi,var,usr/share/man/man8,usr/sbin}
+rm $PKG/usr/lib/libavahi-{common,core,client,glib,gobject}.la
 }
