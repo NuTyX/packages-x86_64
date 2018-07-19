@@ -4,7 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=fdk-aac
 version=0.1.5
-release=2
+release=3
 
 source=(http://downloads.sourceforge.net/opencore-amr/$name-$version.tar.gz)
 
@@ -16,4 +16,6 @@ CXXFLAGS+=' -std=c++11 -Wno-narrowing'
 make
 
 make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/libfdk-aac.la
 }
