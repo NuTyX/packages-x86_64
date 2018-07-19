@@ -4,7 +4,12 @@ packager="tnut <tnut@nutyx.org>"
 
 name=faac
 version=1.29.7.7
+release=2
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
 build=autotools
+
+package() {
+rm $PKG/usr/lib/libfaac.la
+}
