@@ -4,7 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 name=cracklib
 version=2.9.6
-release=2
+release=3
 
 source=(https://github.com/cracklib/cracklib/releases/download/$name-$version/$name-$version.tar.gz
 	https://github.com/cracklib/cracklib/releases/download/$name-$version/$name-words-2.9.6.gz)
@@ -29,4 +29,6 @@ gunzip -v $PKG/usr/share/dict/cracklib-words.gz
 ln -v -sf cracklib-words $PKG/usr/share/dict/words
 echo $(hostname) >> $PKG/usr/share/dict/cracklib-extra-words
 install -v -m755 -d  $PKG/lib/cracklib
+
+rm $PKG/usr/lib/libcrack.la
 }
