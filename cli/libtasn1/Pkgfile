@@ -5,6 +5,7 @@ contributors="Pierre B"
 
 name=libtasn1
 version=4.13
+release=2
 
 source=( http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
@@ -16,7 +17,7 @@ cd $name-$version
 --infodir=/usr/share/info
 make
 make DESTDIR=$PKG install
-rm -rf $PKG/usr/share/info/dir
+rm $PKG/usr/lib/$name.la
 }
 uptodate() {
 local url ext
