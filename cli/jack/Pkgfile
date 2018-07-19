@@ -8,7 +8,7 @@ _longname=jack-audio-connection-kit
 
 name=jack
 version=0.124.1
-release=1
+release=2
 
 source=(http://jackaudio.org/downloads/${_longname}-$version.tar.gz
         jack-99-audio.conf
@@ -25,4 +25,8 @@ install -Dm644 $SRC/jack-99-audio.conf \
 
 install -Dm644 $SRC/jack-40-hpet-permissions.rules \
     $PKG/etc/udev/rules.d/40-hpet-permissions.rules
+
+# Remove la files
+rm $PKG/usr/lib/libjack{,server}.la
+rm $PKG/usr/lib/jack/{inprocess,intime,jack_{alsa{,_midi},dummy,net,oss}}.la
 }
