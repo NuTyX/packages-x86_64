@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=speex
 version=1.2rc2
-release=1
+release=2
 
 source=(  http://downloads.us.xiph.org/releases/$name/$name-$version.tar.gz)
 
@@ -19,4 +19,6 @@ cd $name-$version
 --docdir=/usr/share/doc/speex-$version
 make
 make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/libspeex.la
 }  
