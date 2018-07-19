@@ -5,7 +5,7 @@ contributors="Fanch"
 
 name=hyphen
 version=2.8.8
-release=1
+release=2
 
 source=( http://downloads.sourceforge.net/hunspell/$name-$version.tar.gz)
 
@@ -15,4 +15,6 @@ build() {
 		    --disable-static 
         make
         make DESTDIR=$PKG install
+
+        rm $PKG/usr/lib/libhyphen.la
 }
