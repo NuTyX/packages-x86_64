@@ -1,6 +1,6 @@
 name=chmlib
 version=0.40
-release=2
+release=3
 
 description="Library for dealing with Microsoft ITSS/CHM format files"
 maintainer="Matthew T. Russotto's"
@@ -15,4 +15,6 @@ build(){
                 --enable-examples=yes
     make
     make DESTDIR=$PKG install
+
+    rm $PKG/usr/lib/libchm.la
 }
