@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=celt
 version=0.11.3
-release=1
+release=2
 
 source=(http://downloads.us.xiph.org/releases/celt/celt-$version.tar.gz)
 
@@ -18,4 +18,5 @@ make
 make DESTDIR=$PKG install
 
 install -Dm644 COPYING $PKG/usr/share/licenses/celt/LICENSE
+rm $PKG/usr/lib/libcelt0.la
 }
