@@ -4,7 +4,7 @@ packager="tnut at nutyx dot org"
 
 name=aspell
 version=0.60.6.1
-release=2
+release=3
 
 source=( http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
@@ -21,7 +21,8 @@ make
 make DESTDIR=$PKG install
 install -v -m 755 scripts/ispell $PKG/usr/bin/
 install -v -m 755 scripts/spell $PKG/usr/bin/
-rm $PKG/usr/share/info/dir
+rm $PKG/usr/lib/lib{a,p}spell.la
+rm $PKG/usr/lib/aspell-0.60/{context,email,nroff,sgml,tex,texinfo}-filter.la
 }
 
 uptodate() {
