@@ -2,7 +2,7 @@ description="A C library for parsing configuration files"
 url="https://github.com/williamh/dotconf"
 name=dotconf
 version=1.3
-release=2
+release=3
 packager="tnut <tnut@nutyx.org>"
 
 PKGMK_KEEP_SOURCES="no"
@@ -15,4 +15,6 @@ cd williamh-$name-4cd7b3a
 autoreconf -i
 ./configure --prefix=/usr
 make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/libdotconf.la
 }
