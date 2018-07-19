@@ -2,11 +2,12 @@ description="Provide a portable, high level programming interface to various cal
 url="http://sourceware.org/libffi/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
-[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man)
-[ "$PKGMK_ARCH" == "i686" ] && PKGMK_GROUPS=(man)
+
+PKGMK_GROUPS=(devel man)
+
 name=libffi
 version=3.2.1
-release=2
+release=3
 
 source=( ftp://sourceware.org/pub/$name/$name-$version.tar.gz )
 
@@ -20,5 +21,5 @@ sed -e '/^includedir/ s:${libdir}/@PACKAGE_NAME@-@PACKAGE_VERSION@/include:@incl
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
-rm  -f $PKG/usr/share/info/dir
+rm  $PKG/usr/lib/$name.la
 }
