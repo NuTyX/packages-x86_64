@@ -54,4 +54,7 @@ session         include         system-login
 password        include         system-login
 session         optional        pam_ck_connector.so nox11
 EOF
+
+rm $PKG/usr/lib/libck-connector.la
+rm $PKG/lib/security/pam_ck_connector.la
 }
