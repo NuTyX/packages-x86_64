@@ -4,7 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Fanch V"
 
 name=enca
-release=1
+release=2
 version=1.19
 source=(http://dl.cihar.com/${name}/${name}-${version}.tar.xz)
 
@@ -17,4 +17,6 @@ cd $name-$version
               --enable-external      
 make
 make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/libenca.la
 }
