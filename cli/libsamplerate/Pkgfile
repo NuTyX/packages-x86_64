@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=libsamplerate
 version=0.1.9
-release=1
+release=2
 
 source=(http://www.mega-nerd.com/SRC/$name-$version.tar.gz)
 
@@ -16,5 +16,7 @@ cd $name-$version
 ./configure --prefix=/usr
 make
 make htmldocdir=/usr/share/doc/libsamplerate-$version \
- DESTDIR=$PKG install
+DESTDIR=$PKG install
+
+rm $PKG/usr/lib/$name.la
 }
