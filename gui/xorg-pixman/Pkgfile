@@ -10,7 +10,7 @@ name=xorg-pixman
 _name=pixman
 alias=(pixman)
 version=0.34.0
-release=1
+release=2
 
 source=(http://ftp.x.org/pub/individual//lib/${_name}-$version.tar.bz2)
 
@@ -20,5 +20,5 @@ cd ${_name}-$version
 ./configure --prefix=/usr --disable-static
 make
 make DESTDIR=$PKG install
-
+rm $PKG/usr/lib/libpixman-1.la
 }
