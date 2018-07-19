@@ -7,6 +7,7 @@ contributors="Pierre B, Tnut, Greg"
 
 name=wayland
 version=1.15.0
+release=2
 
 source=( http://wayland.freedesktop.org/releases/$name-$version.tar.xz)
 
@@ -18,5 +19,5 @@ build() {
   make
   make DESTDIR=$PKG install
 
-  rm $PKG/usr/lib/libwayland-{client,cursor,server}.la
+  rm $PKG/usr/lib/libwayland-{client,cursor,server,egl}.la
 }
