@@ -4,7 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=confuse
 version=3.2
-release=1
+release=2
 
 source=(https://github.com/martinh/libconfuse/releases/download/v$version/$name-$version.tar.gz)
 
@@ -16,4 +16,6 @@ build() {
   make
 
   make DESTDIR=$PKG install
+
+  rm $PKG/usr/lib/libconfuse.la
 }
