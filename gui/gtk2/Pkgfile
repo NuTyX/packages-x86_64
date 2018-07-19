@@ -16,6 +16,7 @@ run=(gtk-update-icon-cache shared-mime-info desktop-file-utils)
 
 name=gtk2
 version=2.24.32
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
 
@@ -35,6 +36,9 @@ echo 'gtk-fallback-icon-theme = "Tango"' > $PKG/etc/gtk-2.0/gtkrc
 # Construit dans gtk-update-icon-cache
 rm -f $PKG/usr/bin/gtk-update-icon-cache
 rm -f $PKG/usr/share/man/man1/gtk-update-icon-cache.1
+
+# Suppression des fichiers la
+find $PKG -name '*.la' | xargs rm -v
 }
 doc () {
 # Chaque fonction produisant un groupe doit suivre les règles suivantes
