@@ -7,13 +7,14 @@ contributors="Pierre B"
 
 name=xmlto
 version=0.0.28
-release=2
+release=3
 
 source=(http://anduin.linuxfromscratch.org/BLFS/$name/$name-$version.tar.bz2)
 
 build() {
+cd $name-$version
 unset MAKEFLAGS
-LINKS="/usr/bin/links" cd $name-$version
+LINKS="/usr/bin/links" \
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
