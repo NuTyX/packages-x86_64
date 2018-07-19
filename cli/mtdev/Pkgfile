@@ -5,7 +5,7 @@ contributors="Pierre B"
 
 name=mtdev
 version=1.1.5
-release=1
+release=2
 
 source=(http://bitmath.org/code/mtdev/mtdev-$version.tar.bz2)
 
@@ -16,4 +16,5 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/lib/libmtdev.la
 }
