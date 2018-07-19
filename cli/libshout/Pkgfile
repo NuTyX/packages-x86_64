@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=libshout
 version=2.4.1
-release=1
+release=2
 
 source=(http://downloads.xiph.org/releases/$name/$name-$version.tar.gz)
 
@@ -19,4 +19,6 @@ sed -e 's/SSLeay_add_all_algorithms/OpenSSL_add_all_algorithms/g' \
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
 make
 make DESTDIR=$PKG install
+
+rm $PKG/usr/lib/$name.la
 }
