@@ -7,6 +7,7 @@ description="Library that makes it possible to implement a filesystem in a users
 
 name=fuse
 version=3.2.3
+release=2
 
 source=( https://github.com/libfuse/libfuse/releases/download/$name-$version/$name-$version.tar.xz)
 
@@ -24,4 +25,11 @@ mv -v $PKG/usr/lib/libfuse3.so.* $PKG/lib
 ln -sfv ../../lib/libfuse3.so.$version $PKG/usr/lib/libfuse3.so 
 rm -rf $PKG/tmp
 
+mkdir $PKG/{,s}bin
+mv -vf $PKG/usr/bin/fusermount3  $PKG/bin
+mv -vf $PKG/usr/sbin/mount.fuse3 $PKG/sbin
+
+rm -d $PKG/usr/{,s}bin
+
+chmod u+s $PKG/bin/fusermount3
 }
