@@ -1,0 +1,27 @@
+# Depends on: libgtop libwnck gobject-introspection python2-lxml vala
+
+description="Application matching framework"
+url="https://launchpad.net/bamf"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=bamf
+version=0.5.3
+
+source=(https://launchpad.net/bamf/${version%.*}/$version/+download/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+
+export CFLAGS+=" -Wno-deprecated-declarations"
+
+ ./configure --prefix=/usr --libexecdir=/usr/lib \
+ --localstatedir=/var --sysconfdir=/etc \
+ --disable-static --disable-webapps
+
+ sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+ make
+
+ make DESTDIR=$PKG install
+}
