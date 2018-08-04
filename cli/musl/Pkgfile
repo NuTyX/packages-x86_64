@@ -1,0 +1,18 @@
+description="Lightweight, fast, simple, free, and strives to be correct libc"
+
+url="http://www.musl-libc.org/"
+packager="tnut <tnut@nutyx.org>"
+
+name=musl
+version=1.1.19
+
+source=(https://www.musl-libc.org/releases/musl-$version.tar.gz)
+build() {
+cd $name-$version
+ ./configure --prefix=/usr/lib/musl \
+--exec-prefix=/usr \
+--enable-wrapper=all \
+--includedir=/usr/include/musl
+make
+make DESTDIR=$PKG install
+}
