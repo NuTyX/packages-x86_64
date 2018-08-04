@@ -5,8 +5,22 @@ packager="tnut <tnut@nutyx.org>"
 
 name=musl
 version=1.1.19
+release=2
 
-source=(https://www.musl-libc.org/releases/musl-$version.tar.gz)
+linux_version=4.14
+
+source=(https://www.kernel.org/pub/linux/kernel/v4.x/linux-${linux_version}.tar.xz
+	https://www.musl-libc.org/releases/musl-$version.tar.gz)
+
+prepare() {
+
+cd linux-${linux_version}
+make mrproper
+make headers_check
+make INSTALL_HDR_PATH=dest headers_install
+mkdir -p $PKG/usr/include/musl
+cp -rv dest/include/* $PKG/usr/include/musl
+}
 build() {
 cd $name-$version
  ./configure --prefix=/usr/lib/musl \
