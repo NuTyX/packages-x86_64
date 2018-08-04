@@ -2,12 +2,11 @@
 
 description="lftp is a sophisticated ftp/http client."
 url="http://lftp.yar.ru"
-packager="greg<greg@nutyx.org>"
-contributors="alienus, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="alienus, tnut, Greg"
 
 name=lftp
-version=4.8.3
-release=1
+version=4.8.4
 
 source=(${url}/ftp/$name-$version.tar.xz)
 
@@ -20,12 +19,6 @@ cd $name-$version
 --without-included-regex \
 --disable-static
 make
-
-}
-
-package() {
-
-cd $name-$version
 make DESTDIR=$PKG install
 
 }
