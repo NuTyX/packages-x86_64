@@ -1,39 +1,20 @@
+# Depends on: popt libgcrypt libgpg-error json-c
+
 description="an utility used to conveniently setup disk encryption based on DMCrypt kernel module."
 url="https://gitlab.com/cryptsetup/cryptsetup/"
-packager="greg<greg@nutyx.org>"
-
-# Depends on: popt libgcrypt libgpg-error
+contributors="Guy, Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=cryptsetup
-version=1.7.5
-release=2
+version=2.0.3
 
-source=(https://www.kernel.org/pub/linux/utils/cryptsetup/v1.7/$name-$version.tar.xz
-		encrypt_hook
-		encrypt_install
-		sd-encrypt)
-		
+source=(https://www.kernel.org/pub/linux/utils/cryptsetup/v2.0/$name-$version.tar.xz)
 
 build() {
 
 	cd $name-$version
-    ./configure --prefix=/usr --sbindir=/usr/bin --disable-static --enable-cryptsetup-reencrypt
-        
-    make
-
-}
-
-
-package() {
-
-
-  cd $name-$version
-  make DESTDIR=$PKG install
-  
-  # install hook
-  install -D -m644 "${srcdir}"/encrypt_hook "${pkgdir}"/usr/lib/initcpio/hooks/encrypt
-  install -D -m644 "${srcdir}"/encrypt_install "${pkgdir}"/usr/lib/initcpio/install/encrypt
-  install -D -m644 "${srcdir}"/sd-encrypt "${pkgdir}"/usr/lib/initcpio/install/sd-encrypt
-  
-  
+	./configure --prefix=/usr --sbindir=/sbin --with-crypto_backend=openssl
+        make
+	make DESTDIR=$PKG install
+	rm $PKG/usr/lib/libcryptsetup.la
 }
