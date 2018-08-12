@@ -8,7 +8,7 @@ contributors="Pierre B"
 run=(startup-notification hunspell)
 
 name=thunderbird
-version=52.9.1
+version=60.0
 
 source=(http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.xz
 	$name.desktop)
@@ -46,80 +46,72 @@ ac_add_options --enable-startup-notification
 # Comment out following option if you have gconf installed
 ac_add_options --disable-gconf
 
-# If you want to compile the Mozilla Calendar, uncomment this line:
-ac_add_options --enable-calendar
-
 # Comment out following options if you have not installed
 # recommended dependencies:
 ac_add_options --enable-system-sqlite
+ac_add_options --enable-system-ffi
 ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
 ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
 ac_add_options --with-system-icu
+ac_add_options --with-system-bz2
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-png
+ac_add_options --with-system-zlib
 
 
 # The BLFS editors recommend not changing anything below this line:
 ac_add_options --prefix=/usr
-ac_add_options --enable-application=mail
+ac_add_options --enable-application=comm/mail
+ac_add_options --enable-calendar
+
 
 ac_add_options --disable-crashreporter
 ac_add_options --disable-updater
 ac_add_options --disable-debug
 ac_add_options --disable-tests
+ac_add_options --disable-jack
+
 
 ac_add_options --enable-optimize=-O2
 ac_add_options --enable-strip
 ac_add_options --enable-install-strip
 
-ac_add_options --enable-gio
 ac_add_options --enable-official-branding
-ac_add_options --enable-safe-browsing
-ac_add_options --enable-url-classifier
 
-# Use internal cairo due to reports of unstable execution with
-# system cairo
-#ac_add_options --enable-system-cairo
-ac_add_options --enable-system-ffi
-ac_add_options --enable-system-pixman
-
-ac_add_options --with-pthreads
-
-ac_add_options --with-system-bz2
-ac_add_options --with-system-jpeg
-ac_add_options --with-system-png
-ac_add_options --with-system-zlib
 EOF
 
-SHELL=/bin/sh make -f client.mk
-SHELL=/bin/sh make -f client.mk DESTDIR=$PKG install INSTALL_SDK=
-	
-chown -R 0:0 $PKG/usr/lib/thunderbird-$version
+./mach configure
+./mach build
+./mach buildsymbols
+DESTDIR=$PKG ./mach install
 
 mkdir -pv $PKG/usr/bin
-ln -sfv ../lib/$name-$version/thunderbird $PKG/usr/bin
+ln -sfv ../lib/$name/thunderbird $PKG/usr/bin
 
 mkdir -pv $PKG/usr/share/applications 
 install -Dm644 $SRC/thunderbird.desktop \
 $PKG/usr/share/applications/thunderbird.desktop
 
-for i in 16 22 24 32 48 256; do
-   install -Dm644 other-licenses/branding/thunderbird/mailicon$i.png \
+for i in 16 22 24 32 48 128 256; do
+   install -Dm644 comm/mail/branding/thunderbird/default${i}.png \
       $PKG/usr/share/icons/hicolor/${i}x${i}/apps/thunderbird.png
 done
-
+install -Dm644 comm/mail/branding/thunderbird/TB-symbolic.svg \
+$PKG/usr/share/icons/hicolor/symbolic/apps/thunderbird-symbolic.svg
 
 mkdir -p $PKG/etc/ld.so.conf.d
-echo "/usr/lib/$name-$version" > $PKG/etc/ld.so.conf.d/$name.conf
-cat > $PKG/usr/lib/thunderbird-$version/defaults/pref/vendor.js << "EOF"
+echo "/usr/lib/$name" > $PKG/etc/ld.so.conf.d/$name.conf
+cat > $PKG/usr/lib/thunderbird/defaults/pref/vendor.js << "EOF"
 // Use LANG environment variable to choose locale
-pref("intl.locale.matchOS", true);
+pref("intl.locale.requested", "");
 EOF
 
 for lang in da de en-US es-ES fi fr it nb-NO nl pt-PT sv-SE
 do  
     install -Dm644 $SRC/$lang.xpi \
-    $PKG/usr/lib/thunderbird-$version/extensions/langpack-$lang@thunderbird.mozilla.org.xpi
+    $PKG/usr/lib/thunderbird/extensions/langpack-$lang@thunderbird.mozilla.org.xpi
 done
-chown -R 0:0 $PKG/usr/lib/$name-$version
+chown -R 0:0 $PKG/usr/lib/$name
 }
