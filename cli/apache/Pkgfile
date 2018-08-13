@@ -5,15 +5,17 @@ url="http://httpd.apache.org/ABOUT_APACHE.html"
 packager="tnut <tnut@nutyx.org>"
 
 name=apache
-version=2.4.33
-nutyx_version=10.1
+version=2.4.34
+nutyx_version=10.3
 
-source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	http://archive.apache.org/dist/httpd/httpd-$version.tar.bz2
 	http://www.linuxfromscratch.org/patches/blfs/svn/httpd-$version-blfs_layout-1.patch)
 build(){
 
 cd httpd-$version
+
+unset MAKEFLAGS
 
 patch -Np1 -i ../httpd-$version-blfs_layout-1.patch
 sed '/dir.*CFG_PREFIX/s@^@#@' -i support/apxs.in
