@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=libtiff
 version=4.0.9
+release=2
 
 source=(http://download.osgeo.org/libtiff/tiff-$version.tar.gz)
 
@@ -20,5 +21,5 @@ cd tiff-$version
 make
 make DESTDIR=$PKG install
 
-rm $PKG/usr/lib/libtiff.la
+rm $PKG/usr/lib/libtiff{,xx}.la
 } 
