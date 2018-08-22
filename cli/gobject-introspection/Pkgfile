@@ -7,6 +7,7 @@ contributors="Fanch"
 
 name=gobject-introspection
 version=1.56.1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
@@ -15,6 +16,10 @@ cd $name-$version
 ./configure --prefix=/usr --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/gobject-introspection/giscanner/_giscanner.la
+rm $PKG/usr/lib/libgirepository-1.0.la
 }
 uptodate(){
 local latest lastversion url
