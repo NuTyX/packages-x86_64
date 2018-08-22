@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Remy, Tnut"
 
 name=harfbuzz
-version=1.7.6
+version=1.8.6
 
 source=(https://www.freedesktop.org/software/$name/release/$name-$version.tar.bz2)
 
@@ -23,4 +23,8 @@ cd $name-$version
 
 make
 make DESTDIR=$PKG install
+
+#Obsolets libs
+rm $PKG/usr/lib/libharfbuzz{,-{icu,gobject,subset}}.la
+
 }
