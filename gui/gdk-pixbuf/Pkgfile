@@ -7,6 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=gdk-pixbuf
 version=2.36.12
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
@@ -27,6 +28,9 @@ package() {
 	cd $name-$version
 	make DESTDIR=$PKG install
 	mkdir -p $PKG/etc/gtk-2.0
+
+# Obsolets libs
+find $PKG/usr/lib/ -name "*.la" | xargs rm -v
 
 }
 uptodate(){
