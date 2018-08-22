@@ -3,8 +3,9 @@
 description="Boost provides a set of free peer-reviewed portable C++ source libraries."
 url="http://boost.sourceforge.net/"
 packager="tnut at nutyx dot org"
+
 name=boost
-version=1.67.0
+version=1.68.0
 
 source=(https://dl.bintray.com/boostorg/release/$version/source/${name}_${version//./_}.tar.bz2)
 build() {
@@ -13,6 +14,8 @@ cd ${name}_${version//./_}
 ./bootstrap.sh --prefix=/usr
 ./b2 stage --stagedir=$PKG/usr threading=multi link=shared
 ./b2 install --prefix=$PKG/usr threading=multi link=shared
+
+ln -svf detail/sha1.hpp $PKG/usr/include/boost/uuid/sha1.hpp
 }
 uptodate() {
 lynx -dump http://www.boost.org/users/download/|grep 'Current Release'|tail -n 1 | sed 's/.*]\(.*\) -.*/\1/'
