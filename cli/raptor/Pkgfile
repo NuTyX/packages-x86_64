@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=raptor
 version=2.0.15
-release=3
+release=4
 
 source=(http://librdf.org/dist/source/raptor2-$version.tar.gz)
 build() {
@@ -17,4 +17,7 @@ cd raptor2-$version
 --with-icu-config=/usr/bin/icu-config
 make
 make DESTDIR=$PKG install
+
+# Obsolets lib
+rm $PKG/usr/lib/libraptor2.la
 }
