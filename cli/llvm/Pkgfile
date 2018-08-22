@@ -1,4 +1,4 @@
-# Depends on: libffi python2 cmake 
+# Depends on: libffi python2 cmake ninja
 
 description="Low Level Virtual Machine, collection of modular and reusable compiler and toolchain."
 url="http://llvm.org/"
@@ -7,8 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Remy"
 
 name=llvm
-version=6.0.0
-release=2
+version=6.0.1
 
 source=(
 	${url}releases/$version/$name-$version.src.tar.xz
@@ -22,8 +21,8 @@ cd $name-$version.src
 mv ../compiler-rt-${version}.src projects/compiler-rt
 mv ../cfe-$version.src tools/clang
 
-mkdir -v build
-cd build
+mkdir build
+cd    build
 
 CC=gcc CXX=g++ \
 cmake -DCMAKE_INSTALL_PREFIX=/usr  \
@@ -32,9 +31,9 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr  \
 	-DLLVM_BUILD_LLVM_DYLIB=ON \
 	-DLLVM_LINK_LLVM_DYLIB=ON  \
 	-DLLVM_TARGETS_TO_BUILD="host;AMDGPU;" \
-	-Wno-dev \
-	..
-make || make -j1
-make DESTDIR=$PKG install || make -j1 DESTDIR=$PKG install
-}
+	-Wno-dev -G Ninja ..
 
+ninja
+
+DESTDIR=$PKG ninja install
+}
