@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=p11-kit
-version=0.23.12
+version=0.23.13
 
 source=( https://github.com/p11-glue/p11-kit/releases/download/$version/$name-$version.tar.gz)
 
@@ -19,4 +19,8 @@ make DESTDIR=$PKG install
 if [ -f $PKG/etc/pkcs11/pkcs11.conf.example ]; then
 	mv $PKG/etc/pkcs11/pkcs11.conf{.example,}
 fi
+
+# Obsolets libs
+rm $PKG/usr/lib/libp11-kit.la
+rm $PKG/usr/lib/pkcs11/p11-kit-{client,trust}.la
 }
