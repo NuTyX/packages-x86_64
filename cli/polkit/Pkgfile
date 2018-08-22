@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=polkit
 version=0.114
+release=2
 
 source=(http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
 
@@ -28,6 +29,10 @@ sed -e '/JS_ReportWarningUTF8/s/,/, "%s",/'  \
 make||make -j1
 
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libpolkit-{agent,gobject}-1.la
+
 mkdir -p $PKG/etc/pam.d
 cat > $PKG/etc/pam.d/polkit-1 << "EOF"
 # Begin /etc/pam.d/polkit-1
