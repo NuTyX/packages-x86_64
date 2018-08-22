@@ -2,12 +2,12 @@
 
 description="Libraries and utilities used for parsing XML files."
 url="http://xmlsoft.org/"
-packager="fanch <fanch@nutyx.org>"
-contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Fanch"
 
 name=libxml2
 version=2.9.8
-release=2
+release=3
 
 source=(ftp://xmlsoft.org/libxml2/$name-$version.tar.gz  http://www.linuxfromscratch.org/patches/blfs/svn/libxml2-2.9.8-python3_hack-1.patch)
 
@@ -22,4 +22,5 @@ sed -i '/_PyVerify_fd/,+1d' python/types.c
 make
 make DESTDIR=$PKG install
 rm $PKG/usr/lib/$name.la
+rm $PKG/usr/lib/python2.7/site-packages/libxml2mod.la
 }
