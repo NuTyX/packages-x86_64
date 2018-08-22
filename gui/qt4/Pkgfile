@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=qt4
 version=4.8.7
-release=2
+release=3
 
 _name=qt-everywhere-opensource-src-${version}
 
@@ -172,4 +172,9 @@ if [ "x\$QT5BINDIR" != "x/usr/bin" ] && [ "x\$QT5BINDIR" != "x" ]; then pathremo
 if [ "x\$QT4BINDIR" != "x/usr/bin" ]; then pathprepend $QT4BINDIR; fi
 echo \$PATH
 EOF
+
+# Obsolets libs
+find $PKG/usr/lib/ -name "*.la" | xargs rm -v
+
+
 }
