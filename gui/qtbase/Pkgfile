@@ -7,10 +7,12 @@ contributors="Pierre B"
 
 name=qtbase
 version=5.11.1
+release=2
 
 _name="${name}-everywhere-src"
 
-source=(https://download.qt.io/official_releases/qt/5.11/$version/submodules/${_name}-${version}.tar.xz)
+source=(qtbase-5.11.1-glibc-2.28-1.patch
+	https://download.qt.io/official_releases/qt/5.11/$version/submodules/${_name}-${version}.tar.xz)
 
 
 build() {
@@ -19,6 +21,7 @@ QT5PREFIX=/usr
 QT5BINDIR=$QT5PREFIX/bin/qt
 
 cd ${_name}-${version}
+patch -Np1 -i ../qtbase-5.11.1-glibc-2.28-1.patch
 
 ./configure -prefix         /usr                        \
             -sysconfdir     /etc/xdg                    \
