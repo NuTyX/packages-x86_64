@@ -5,7 +5,7 @@ contributors="Pierre B, tnut, greg"
 packager="tnut <tnut@nutyx.org>"
 
 name=babl
-version=0.1.52
+version=0.1.56
 
 source=(http://download.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.bz2)
 
@@ -26,7 +26,7 @@ install -v -m644 docs/graphics/*.{html,png,svg} \
 $PKG/usr/share/gtk-doc/html/babl/graphics
 
 rm $PKG/usr/lib/babl-0.1/*.la
-
+rm $PKG/usr/lib/libbabl-0.1.la
 }
 uptodate() {
 local last url ext
