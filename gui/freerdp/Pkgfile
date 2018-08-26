@@ -2,21 +2,14 @@
 
 description="Free RDP client"
 url="http://freerdp.sourceforge.net"
-packager="remy <remy@nutyx.org>"
-contributors="Pierre B, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, tnut, Rémy"
 
 name=freerdp
-version=2.0.0-rc1
-release=1
+version=2.0.0-rc3
 
 PKGMK_KEEP_SOURCES="no"
-source=(https://github.com/FreeRDP/FreeRDP/archive/$version.tar.gz
-        fix_nla-8cd156a-backport.patch)
-
-prepare() {
-  cd FreeRDP-$version
-   patch -Np1 -i $SRC/fix_nla-8cd156a-backport.patch
-}
+source=(https://github.com/FreeRDP/FreeRDP/archive/$version.tar.gz)
 
 build() {
   cd FreeRDP-$version
