@@ -1,12 +1,10 @@
-# Depends on: 
-
 description="Small and modern C++ library for Filezilla" 
 url="https://lib.filezilla-project.org/"
 packager="tnut <tnut@nutyx.org>"
-contributors="Greg"
+contributors="Greg, Rémy"
 
 name=libfilezilla
-version=0.12.1
+version=0.13.0
 
 source=(http://download.filezilla-project.org/libfilezilla/libfilezilla-$version.tar.bz2)
 
@@ -17,4 +15,6 @@ cd $SRC/$name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
+# Obsolets libs
+rm $PKG/usr/lib/libfilezilla.la
 }
