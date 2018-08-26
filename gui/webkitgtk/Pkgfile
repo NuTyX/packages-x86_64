@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Greg"
 
 name=webkitgtk
-version=2.20.2
+version=2.20.5
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 
@@ -26,6 +26,7 @@ cmake -G Ninja \
       -DLIB_INSTALL_DIR=/usr/lib  \
       -DUSE_LIBHYPHEN=OFF         \
       -DENABLE_MINIBROWSER=ON     \
+      -DUSE_WOFF2=OFF             \
       -Wno-dev ..
 ninja || ninja -j1
 DESTDIR=$PKG ninja install || DESTDIR=$PKG ninja -j1 install
