@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=gegl
-version=0.4.4
+version=0.4.8
 
 source=(http://ftp.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.bz2)
 
@@ -28,4 +28,8 @@ install -d -v -m755 $PKG/usr/share/gtk-doc/html/gegl/images
 
 install -v -m644 docs/images/*.{png,ico,svg} \
 $PKG/usr/share/gtk-doc/html/gegl/images
+
+# Obsolets libs
+find $PKG/usr/lib/ -name "*.la" | xargs rm -v
+
 }
