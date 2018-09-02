@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=cups-filters
-version=1.17.9
+version=1.21.1
 
 source=( http://www.openprinting.org/download/$name/$name-$version.tar.xz)
 build() {
@@ -20,4 +20,6 @@ cd $name-$version
             --docdir=/usr/share/doc/$name-$version
 make
 make DESTDIR=$PKG install
+# Obsolets libs
+rm $PKG/usr/lib/lib{cupsfilters,fontembed}.la
 }
