@@ -1,11 +1,10 @@
 description="Can generate a customized initrams image which contains only whatever is necessary to boot"
 url="https://www.kernel.org/pub/linux/utils/boot/dracut/dracut.html"
-contributors="tnut"
-packager="greg<greg@nutyx.org>"
+contributors="Tnut, Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=dracut
-version=044
-release=2
+version=048
 
 source=(http://kernel.org/pub/linux/utils/boot/dracut/$name-$version.tar.xz)
 
@@ -14,13 +13,6 @@ build() {
 	cd $name-$version
 	./configure --prefix=/usr
 	make
-
-}
-
-
-package() {
-
-	cd $name-$version
 	make DESTDIR=$PKG install
   
 }
