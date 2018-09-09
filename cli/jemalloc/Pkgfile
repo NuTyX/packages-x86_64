@@ -1,7 +1,9 @@
+
 packager="tnut <tnut@nutyx.org>"
+contributors="Rémy"
+
 name=jemalloc
-version=4.5.0
-release=1
+version=5.1.0
 
 description='General-purpose scalable concurrent malloc implementation'
 
@@ -11,7 +13,7 @@ source=("https://github.com/jemalloc/jemalloc/releases/download/$version/$name-$
 
 build() {
   cd $name-$version
-  ./configure --prefix=/usr
+  ./configure --prefix=/usr --enable-autogen
   make
   make DESTDIR="$pkgdir" install
   find "$PKG" -name \*.a -type f -exec chmod 644 '{}' \;
