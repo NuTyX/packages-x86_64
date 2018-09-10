@@ -1,4 +1,4 @@
-# Depends on: libffi pcre python elfutils
+# Depends on: libffi pcre python elfutils meson ninja libxslt docbook-xsl
 
 description="The GLib package contains a low-level libraries useful for providing data structure handling"
 url="http://www.gtk.org/"
@@ -8,31 +8,30 @@ contributors="Tnut, Fanch"
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.56.1
-release=2
+version=2.58.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/glib/${version:0:4}/$name-$version.tar.xz
 	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-10.0.jpg
-	glib-2.56.0-skip_warnings-1.patch)
+	glib-$version-skip_warnings-1.patch)
 
 build () {
   cd $name-$version
 
-  patch -Np1 -i ../glib-2.56.0-skip_warnings-1.patch
+  patch -Np1 -i ../glib-$version-skip_warnings-1.patch
 
-  ./configure --prefix=/usr \
-              --with-pcre=system \
-              --with-python=/usr/bin/python3 \
-              --disable-fam
-  make
-  make DESTDIR=$PKG install
+  mkdir build-glib
+  cd    build-glib
+
+  meson --prefix=/usr -Dman=true -Dselinux=false ..
+  ninja
+
+  DESTDIR=$PKG ninja install
+
 
   # Default NuTyX Wallpaper
-  install -D -m644 ../nutyx-10.0.jpg \
+  install -D -m644 ../../nutyx-10.0.jpg \
   $PKG/usr/share/backgrounds/nutyx/nutyx.jpg
 
-  # Remove la files
-  rm $PKG/usr/lib/lib{gio,glib,gmodule,gobject,gthread}-2.0.la
 }
 uptodate(){
 local latest lastversion url
