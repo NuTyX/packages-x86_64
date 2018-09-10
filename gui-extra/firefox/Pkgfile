@@ -7,15 +7,13 @@ contributors="Pierre B, tnut, Remy"
 
 run=(shared-mime-info icu libvpx libevent pulseaudio gconf sqlite libvpx nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav)
 name=firefox
-version=61.0.2
-release=2
+version=62.0
 
 source=(firefox.desktop
+	http://www.linuxfromscratch.org/patches/blfs/svn/firefox-$version-system_graphite2_harfbuzz-1.patch
 	https://archive.mozilla.org/pub/firefox/releases/$version/source/$name-$version.source.tar.xz)
 
 build() {
-
-cd $SRC
 
 ARCH=`uname -m`
 
@@ -101,7 +99,6 @@ ac_add_options --enable-official-branding
 ac_add_options --enable-system-ffi
 ac_add_options --enable-system-pixman
 
-ac_add_options --with-pthreads
 
 ac_add_options --with-system-bz2
 ac_add_options --with-system-jpeg
@@ -110,6 +107,8 @@ ac_add_options --with-system-zlib
 
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 EOF
+
+patch -Np1 -i ../firefox-$version-system_graphite2_harfbuzz-1.patch
 
 SHELL=/bin/sh ./mach build
 SHELL=/bin/sh ./mach buildsymbols
