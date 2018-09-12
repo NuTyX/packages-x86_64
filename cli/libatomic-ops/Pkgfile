@@ -4,9 +4,9 @@ packager="tnut<tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libatomic-ops
-version=7.6.4
+version=7.6.6
 
-source=(http://www.ivmaisoft.com/_bin/atomic_ops//libatomic_ops-$version.tar.gz)
+source=(http://www.ivmaisoft.com/_bin/atomic_ops/libatomic_ops-$version.tar.gz)
 
 build() {
 cd libatomic_ops-$version
@@ -18,4 +18,13 @@ make
 make DESTDIR=$PKG install
 rm -vrf $PKG/usr/share/libatomic_ops
 rm $PKG/usr/lib/libatomic_ops_gpl.la
+}
+uptodate() {
+local url ext name
+name=libatomic_ops
+url="http://www.ivmaisoft.com/_bin/atomic_ops/"
+ext=".tar.gz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
+sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
 }
