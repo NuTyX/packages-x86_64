@@ -1,18 +1,16 @@
 # Depends on: libgcrypt zlib cmake cmocka doxygen
 
 description="Library for accessing ssh client services through C libraries"
-url="http://www.libssh.org/"
-packager="greg<greg@nutyx.org>"
-contributors=""
+url="https://www.libssh.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="greg"
 
 run=()
 
 name=libssh
-version=0.7.5
-release=1
+version=0.8.2
 
-source=(https://red.libssh.org/attachments/download/218/$name-$version.tar.xz
-https://red.libssh.org/attachments/download/217/$name-$version.tar.asc
+source=($url/files/0.8/$name-$version.tar.xz
 libssh-fix-read-config.patch
 )
 
@@ -21,7 +19,7 @@ sed 's/unit_test(torture_path_expand_tilde_unix),//' -i libssh-${version}/tests/
 mkdir -p build
 cd $name-$version
 # Fix reading SSH configuration files
-patch -p1 -i ../libssh-fix-read-config.patch
+# patch -p1 -i ../libssh-fix-read-config.patch
 }
 
 build() {
@@ -33,16 +31,17 @@ cmake ../$name-$version \
 -DWITH_GCRYPT=ON \
 -DWITH_TESTING=ON
 make
-
-}
-
-package() {
-cd build
 make DESTDIR=$PKG install
 }
 
 uptodate() {
-echo "Fonction uptodate sans objet"
+local url ext
+url="https://www.libssh.org/files/"
+ext=".tar.xz"
+latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=D|grep [0-9]/$|head -1`"
+
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$latest?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
+sed "s@$latest$name-@@"|sed "s@$ext@@"|tail -1
 }
-
-
