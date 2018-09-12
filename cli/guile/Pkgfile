@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Berlius"
 
 name=guile
-version=2.2.2
-release=1
+version=2.2.4
 
 source=(ftp://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
@@ -43,8 +42,10 @@ build() {
       $PKG/usr/share/doc/guile-$version/${DIRNAME}
     done
     unset DIRNAME
+# Obsolets libs
+rm $PKG/usr/lib/guile/2.2/extensions/guile-readline.la
+rm $PKG/usr/lib/libguile-2.2.la
 
-    rm -rf $PKG/usr/share/info/dir
 }
 uptodate() {
 local url ext
