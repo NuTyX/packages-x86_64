@@ -2,32 +2,24 @@
 
 description="A library implementing the SSH2 protocol as defined by Internet Drafts"
 url="http://www.libssh2.org/"
-packager="remy <remy@nutyx.org>"
-contributors=""
-
-run=()
+packager="tnut <tnut@nutyx.org>"
+contributors="Remy, Greg"
 
 name=libssh2
 version=1.8.0
-release=1
+release=2
 
 source=(https://www.libssh2.org/download/$name-$version.tar.gz)
 
-build() {
-
-cd $name-$version
-	./configure --prefix=/usr
-	make
-
-}
-
 package() {
-cd $name-$version
-	make DESTDIR=$PKG install
+rm $PKG/usr/lib/libssh2.la
 }
 
 uptodate() {
-echo "Fonction uptodate sans objet"
+local url ext
+url="https://www.libssh2.org/download/"
+ext=".tar.gz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
+sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
 }
-
-
