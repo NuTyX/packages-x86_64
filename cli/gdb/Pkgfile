@@ -3,7 +3,7 @@ url="http://www.sourceware.org/gdb/"
 packager="tnut <tnut@nutyx.org>"
 
 name=gdb
-version=8.1
+version=8.2
 
 source=(https://ftp.gnu.org/gnu/gdb/$name-$version.tar.xz)
 build() {
@@ -25,6 +25,7 @@ rm $PKG/usr/lib/libopcodes.la
 
 # Most of the locale are allready present from binnutils, beter get rid of all of them
 rm -r $PKG/usr/share/locale
+rm $PKG/usr/include/diagnostics.h
 }
 
 uptodate() {
