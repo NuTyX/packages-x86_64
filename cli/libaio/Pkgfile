@@ -1,39 +1,32 @@
-# Depends on: 
-
 description="The Linux-native asynchronous I/O facility (aio) library"
 url="http://lse.sourceforge.net/io/aio.html"
-packager="greg<greg@nutyx.org>"
-contributors=""
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
 
 run=()
 
 
 
 name=libaio
-version=0.3.110
+version=0.3.111
 release=1
 CARCH=x86_64
 
 source=(http://ftp.de.debian.org/debian/pool/main/liba/$name/${name}_${version}.orig.tar.gz
 )
 
-prepare() {
-echo "Fonction prepare sans objet"
-}
-
 build() {
 cd $SRC/$name-$version
 CFLAGS="-march=${CARCH/_/-} -mtune=generic -O2 -pipe"
 make
-}
-
-package() {
-cd $SRC/$name-$version
 make prefix=$PKG/usr install
 }
 
 uptodate() {
-echo "Fonction package sans objet"
+local url ext
+url="http://ftp.de.debian.org/debian/pool/main/liba/$name/"
+ext=".orig.tar.gz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=A|grep ${name}_[0-9]|grep [0-9]$ext$| \
+sed "s@$url${name}_@@"|sed "s@$ext@@"|tail -1
 }
-
-
