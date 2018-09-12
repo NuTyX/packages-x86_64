@@ -4,8 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libdatrie
-version=0.2.10
-release=2
+version=0.2.12
 
 source=(
 http://linux.thai.net/pub/thailinux/software/libthai/$name-$version.tar.xz)
@@ -18,4 +17,12 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 rm $PKG/usr/lib/$name.la
+}
+uptodate() {
+local url ext
+
+url="https://linux.thai.net/pub/thailinux/software/libthai/"
+ext=".tar.xz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|grep $name-[0-9]|grep $ext$|sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
 }
