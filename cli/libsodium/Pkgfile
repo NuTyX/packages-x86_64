@@ -1,38 +1,23 @@
-# Depends on: 
-
 description="P(ortable|ackageable) NaCl-based crypto library"
 url="https://github.com/jedisct1/libsodium"
-packager="greg<greg@nutyx.org>"
-contributors=""
-
-run=()
-
-
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
 
 name=libsodium
-version=1.0.15
-release=1
+version=1.0.16
 
 source=(https://download.libsodium.org/libsodium/releases/libsodium-$version.tar.gz
 )
 
-prepare() {
-echo "Fonction vide, normal..."
-}
-
-build() {
-cd $name-$version
-./configure --prefix=/usr
-make
-}
-
 package() {
-cd $name-$version
-make DESTDIR=$PKG install
+rm $PKG/usr/lib/libsodium.la
 }
 
 uptodate() {
-echo "Fonction  vide, normal..." 
+local url ext
+url="https://download.$name.org/$name/releases/"
+ext=".tar.gz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
+sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
 }
-
-# Recette editee le 13/10/17 a 10:31:33
