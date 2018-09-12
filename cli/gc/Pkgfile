@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=gc
-version=7.6.0
-release=1
+version=7.6.4
 
 source=(http://www.hboehm.info/gc/gc_source/gc-$version.tar.gz)
 
@@ -22,5 +21,12 @@ sed -i 's#pkgdata#doc#' doc/doc.am && autoreconf &&
 install -D -m 644 doc/gc.man $PKG/usr/share/man/man3/gc.3 
 make
 make DESTDIR=$PKG install
-rm -r $PKG/usr/share/doc
+}
+uptodate() {
+local url ext
+url="http://www.hboehm.info/gc/gc_source/"
+ext=".tar.gz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
+sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
 }
