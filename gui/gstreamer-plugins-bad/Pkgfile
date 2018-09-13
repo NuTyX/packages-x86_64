@@ -6,9 +6,9 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=gstreamer-plugins-bad
-version=1.14.1
+version=1.14.2
 
-source=(http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-$version.tar.xz )
+source=(https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-$version.tar.xz )
 
 build() {
 cd gst-plugins*
@@ -17,4 +17,12 @@ cd gst-plugins*
 --with-package-origin="http://downloads.nutyx.org/"
 make
 make DESTDIR=$PKG install
+}
+uptodate() {
+local url ext
+name=gst-plugins-bad
+url="https://gstreamer.freedesktop.org/src/$name/"
+ext=".tar.xz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|grep $name-[0-9]|grep $ext$|sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
 }
