@@ -1,4 +1,4 @@
-# Depends on: intltool at-spi2-core atk
+# Depends on: intltool at-spi2-core atk meson ninja
 
 description="A GTK+ module that bridges ATK to D-Bus at-spi"
 url="http://www.gtk.org/"
@@ -6,9 +6,11 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=at-spi2-atk
-version=2.26.2
+version=2.30.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build=meson
 
 uptodate(){
 local latest lastversion url
