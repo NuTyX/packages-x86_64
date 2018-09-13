@@ -1,4 +1,4 @@
-# Depends on: glib-networking libxml2 gobject-introspection vala sqlite 
+# Depends on: glib-networking libxml2 gobject-introspection vala sqlite ninja meson libpsl kerberos
 
 description="HTTP client/server library for GNOME"
 url="https://wiki,gnome.org/Projects/libsoup"
@@ -7,19 +7,17 @@ contributors="Pierre B, Tnut, Remy"
 
 run=( glib-networking )
 name=libsoup
-version=2.62.3
-release=2
+version=2.64.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr \
---disable-static	
-make
-make DESTDIR=$PKG install
-# Obsolets libs
-rm $PKG/usr/lib/libsoup-{,gnome-}2.4.la
+mkdir build
+cd    build
+meson --prefix=/usr -Dvapi=true
+ninja
+DESTDIR=$PKG ninja install
 }
 uptodate(){
 local latest lastversion url
