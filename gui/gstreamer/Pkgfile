@@ -6,9 +6,9 @@ packager="tnut <tnut@nutyx.>"
 contributors="Pierre B"
 
 name=gstreamer
-version=1.14.1
+version=1.14.2
 
-source=(http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-$version.tar.xz)
+source=(https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-$version.tar.xz)
 
 build() {
 cd gstreamer-$version
@@ -17,4 +17,12 @@ cd gstreamer-$version
 --with-package-origin="http://downloads.nutyx.org/"
 make
 make DESTDIR=$PKG install
+}
+uptodate() {
+local url ext
+
+url="https://gstreamer.freedesktop.org/src/$name/"
+ext=".tar.xz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|grep $name-[0-9]|grep $ext$|sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
 }
