@@ -6,7 +6,7 @@ packager="tnut <tnut2nutyx.org>"
 contributors="Pierre B"
 
 name=gnupg
-version=2.2.8
+version=2.2.10
 
 source=(ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-$version.tar.bz2)
 
@@ -32,4 +32,12 @@ if [ -f doc/gnupg_nochunks.html ];then
 fi
 install -v -m644 doc/*.texi doc/gnupg.txt \
 $PKG/usr/share/doc/gnupg-$version
+}
+uptodate() {
+local url ext
+
+url="https://gnupg.org/download/index.html"
+ext=".tar.bz2"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|sort|grep /$name-[0-9]|grep $ext$|sed "s@$url$name-@@"|sed "s@$ext@@"
 }
