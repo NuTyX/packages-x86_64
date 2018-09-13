@@ -19,13 +19,14 @@ source=(http://ftp.gnome.org/pub/gnome/sources/$_name/${version%.*}/$_name-$vers
 build() {
 
 cd ${_name}-$version
+sed -i 's/1,12,2/1,12.2/' libnm-core/nm-version.h
+CXXFLAGS+=" -fPIC"
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \
 --with-nmtui \
 --with-libnm-glib \
 --enable-gtk-doc \
---docdir=/usr/share/doc/networkmanager-$version \
 --with-systemdsystemunitdir=no \
 --disable-json-validation \
 --disable-ovs \
