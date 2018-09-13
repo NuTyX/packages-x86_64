@@ -1,0 +1,21 @@
+# Depends on: ninja meson libusb gperf glib gobject-introspection libgudev vala
+
+description="The libgusb package contains the GObject wrappers for libusb-1.0"
+url="https://gitorious.org/gusb/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=libgusb
+version=0.3.0
+
+source=(http://people.freedesktop.org/~hughsient/releases/$name-$version.tar.xz)
+
+build=meson
+
+uptodate() {
+local url ext
+ext=".tar.xz"
+url="https://people.freedesktop.org/~hughsient/releases/"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep $name|grep $ext$|head -1|sed "s@$url/$name-@@"|sed "s/$ext//"
+}
