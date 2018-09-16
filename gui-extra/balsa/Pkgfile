@@ -2,24 +2,14 @@
 
 description="The Balsa package contains a GNOME based mail client."
 url="https://pawsa.fedorapeople.org/balsa/"
-packager="greg <greg@nutyx.org>"
-contributors="Berlius, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Berlius, tnut, Greg"
 
 name=balsa
-version=2.5.3	
-release=1
-source=(http://pawsa.fedorapeople.org/balsa/$name-$version.tar.bz2
-		balsa-openssl-1.1.patch)
+version=2.5.6
+
+source=(http://pawsa.fedorapeople.org/balsa/$name-$version.tar.bz2)
  
-prepare() {
-
-  cd $SRC/$name-$version
-  
-  patch -p1 -i ../balsa-openssl-1.1.patch
-  
-}
-
-
 build() {
 
 	cd $SRC/$name-$version
@@ -33,15 +23,7 @@ build() {
 	            --without-libnotify      \
 	            --without-gtkspell       
 	make
-		
-}
 
-package() {
-
-	cd $SRC/$name-$version
-	
 	make DESTDIR=$PKG install
-	
+
 }
-
-
