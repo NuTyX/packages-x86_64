@@ -2,51 +2,23 @@
 
 description="A window manager for X11"
 url="http://blackboxwm.sourceforge.net"
-packager="greg <greg@nutyx.org>"
-contributors="berlius"
+packager="tnut <tnut@nutyx.org>"
+contributors="Berlius, Tnut"
 
 name=blackbox
-version=0.70.1
-release=1
+version=0.73
 
-source=(http://download.sourceforge.net/blackboxwm/$name-$version.tar.bz2
-        gcc4.3.patch
-		bbdock.patch
-		bsetbg-feh.patch
-		textpropertytostring-unconditional.patch
-        blackbox-0.70.1-asneeded.patch)
-        
-        
- prepare() {
+PKGMK_KEEP_SOURCE="no"
 
-    cd $SRC/$name-$version
-  
-    patch -Np1 -i ../gcc4.3.patch
-    patch -Np0 -i ../bbdock.patch
-    patch -Np0 -i ../bsetbg-feh.patch
-    patch -Np1 -i ../textpropertytostring-unconditional.patch
-    patch -Np0 -i ../blackbox-0.70.1-asneeded.patch
-
-  autoreconf -fi
-  
-}       
- 
+source=(https://github.com/bbidulock/blackboxwm/archive/0.73.tar.gz)
 
 build () {
 
-    cd $SRC/$name-$version
-    ./configure --prefix=/usr
-    
+    cd $SRC/blackboxwm-$version
+    sed -e '/AC_DISABLE_SHARED/d' -i configure.ac # Build shared library
+    ./autogen.sh
+
+    ./configure --prefix=/usr --mandir=/usr/share/man
     make
-
-}
-
-
-
-package() {
-
-	cd $SRC/$name-$version
-	
-	make DESTDIR=$PKG install
-	
+    make DESTDIR=$PKG install	
 }
