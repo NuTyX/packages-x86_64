@@ -1,4 +1,4 @@
-# Depends on: efl
+# Depends on: efl meson ninja
 
 description="Terminal emulator for enlightenment"
 url="http://www.enlightenment.org"
@@ -6,8 +6,12 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Berlius"
 
 name=terminology
-version=1.1.1
+version=1.2.1
+
 source=(http://download.enlightenment.org/rel/apps/terminology/$name-$version.tar.xz)
+
+build=meson
+
 uptodate() {
 local ext url LYNX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
