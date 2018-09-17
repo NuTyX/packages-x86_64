@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, tnut, Remy"
 
 name=vlc
-version=3.0.3
-release=2
+version=3.0.4
 
 source=(https://download.videolan.org/$name/$version/$name-$version.tar.xz)
 
@@ -44,4 +43,9 @@ for res in 16 32 48 128; do
     install -D -m644 "$SRC/vlc-$version/share/icons/${res}x${res}/vlc.png" \
     "$PKG/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png"
 done
+
+# Obsolets libs
+rm $PKG/usr/lib/libvlc{,core}.la
+rm $PKG/usr/lib/vlc/libcompat.la
+rm $PKG/usr/lib/vlc/libvlc{_pulse,_vdpau,_xcb_events}.la
 }
