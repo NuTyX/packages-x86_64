@@ -2,35 +2,20 @@
 
 description="VNC server for real X displays"
 url="https://github.com/LibVNC/x11vnc"
-packager="greg<greg@nutyx.org"
+packager="tnut <tnut@nutyx.org"
+contributors="Greg"
 
 name=x11vnc
-version=0.9.14
-release=1
+version=0.9.15
 
-run=()
+PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/LibVNC/x11vnc/archive/${version}.tar.gz
-fix-buffer-overflows.patch
-openssl-detect.patch
-openssl-support.patch
-cursor.patch)
-
-prepare() {
-
-cd $SRC/$name-$version
-patch -p1 -i ../fix-buffer-overflows.patch
-patch -p1 -i ../openssl-detect.patch
-patch -p1 -i ../openssl-support.patch
-patch -p1 -i ../cursor.patch
-autoreconf -fi
-
-}
-
+source=(https://github.com/LibVNC/x11vnc/archive/${version}.tar.gz)
 
 build() {
 
-cd $SRC/$name-$version
+cd $name-$version
+autoreconf -fi
 ./configure --prefix=/usr --mandir=/usr/share/man
 make
 
@@ -42,6 +27,5 @@ package() {
 cd $SRC/$name-$version
 make DESTDIR=$PKG install
 install misc/{rx11vnc,Xdummy} $PKG/usr/bin
-	
-}
 
+}
