@@ -8,17 +8,12 @@ contributors="Geantbrun, Greg"
 PKGMK_KEEP_SOURCES="no"
 
 name=conky
-version=1.10.6
-release=1
+version=1.10.8
 
-source=(https://github.com/brndnmtthws/conky/archive/v${version}.tar.gz
-	lua53.patch)
-
+source=(https://github.com/brndnmtthws/conky/archive/v${version}.tar.gz)
 build() {
 cd $name-$version
 
-# Needed for gcc 7 and lua 53
-patch -Np1 -i ../lua53.patch
 
 cmake -D CMAKE_BUILD_TYPE=Release  \
       -D MAINTAINER_MODE=ON        \
