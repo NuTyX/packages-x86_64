@@ -2,38 +2,20 @@
 
 description="Emulator with builtin DOS for running DOS Games"
 url="http://dosbox.sourceforge.net/"
-packager="greg<greg@nutyx.org"
+packager="tnut <tnut@nutyx.org"
+contributors="Greg"
 
 name=dosbox
-version=0.74
-release=1
+version=0.74.2
 
-run=()
-
-source=(http://download.sourceforge.net/$name/$name-$version.tar.gz
+source=(http://download.sourceforge.net/$name/$name-0.74-2.tar.gz
 )
 
-prepare() {
-
-cd $name-$version
-
-}
-
-
 build() {
-
-cd $name-$version
+cd $name-0.74-2
 ./configure --prefix=/usr --mandir=/usr/man
 sed -i '23a#include <cstddef>' include/dos_inc.h
 make
 
-}
-
-
-package() {
-
-cd $name-$version
 make DESTDIR=$PKG install
-	
 }
-
