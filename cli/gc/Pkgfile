@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=gc
-version=7.6.4
+version=8.0.0
 
 source=(http://www.hboehm.info/gc/gc_source/gc-$version.tar.gz)
 
@@ -21,6 +21,8 @@ sed -i 's#pkgdata#doc#' doc/doc.am && autoreconf &&
 install -D -m 644 doc/gc.man $PKG/usr/share/man/man3/gc.3 
 make
 make DESTDIR=$PKG install
+# rm obsolets libs
+rm $PKG/usr/lib/lib{gc{,cpp},cord}.la
 }
 uptodate() {
 local url ext
