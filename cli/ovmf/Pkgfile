@@ -1,0 +1,41 @@
+# Depends on: git python acpica nasm subversion perl-libwww
+
+description="Tianocore UEFI firmware for Qemu"
+url="http://sourceforge.net/apps/mediawiki/tianocore/index.php?title=EDK2"
+contributors="tnut"
+packager="Rems <rems@nutyx.org>"
+ 
+name=ovmf
+version=git
+_openssl_ver=1.1.0h
+_toolchain_opt=GCC5
+
+source=(https://www.openssl.org/source/openssl-${_openssl_ver}.tar.gz)
+
+build() {
+
+git clone https://github.com/tianocore/edk2.git
+mkdir -pv bin
+  ln -sf /usr/bin/python2 bin/python
+  rm -rf $SRC/edk2/CryptoPkg/Library/OpensslLib/openssl
+  ln -sf $SRC/openssl-$_openssl_ver $SRC/edk2/CryptoPkg/Library/OpensslLib/openssl
+
+  if [ "$(uname -m)" != "x86_64" ]; then
+      echo "This package must be built under the x86_64 architecture."
+      false
+  fi
+  export PATH="${SRC}/bin:$PATH"
+  cd "${SRC}/"edk2
+  make -C BaseTools
+
+  export EDK_TOOLS_PATH="${SRC}"/edk2/BaseTools
+
+  . edksetup.sh BaseTools
+
+  ./BaseTools/BinWrappers/PosixLike/build -t $_toolchain_opt -a X64 -p OvmfPkg/OvmfPkgX64.dsc -n $(nproc) -b RELEASE -D FD_SIZE_2MB -D NETWORK_IP6_ENABLE -D TPM2_ENABLE -D SECURE_BOOT_ENABLE -D HTTP_BOOT_ENABLE -D TLS_ENABLE
+
+  install -D -m644 $SRC/edk2/Build/OvmfX64/RELEASE_${_toolchain_opt}/FV/OVMF_CODE.fd \
+  $PKG/usr/share/ovmf/x64/OVMF_CODE.fd
+  install -D -m644 $SRC/edk2/Build/OvmfX64/RELEASE_${_toolchain_opt}/FV/OVMF_VARS.fd \
+  $PKG/usr/share/ovmf/x64/OVMF_VARS.fd
+}
