@@ -1,0 +1,19 @@
+# Depends on: flex bison
+
+description="ACPI tools, including Intel ACPI Source Language compiler"
+url="https://acpica.org"
+contributors=""
+packager="Rems <rems@nutyx.org>"
+ 
+name=acpica
+version=20180810
+
+source=(https://acpica.org/sites/$name/files/$name-unix-${version}.tar.gz)
+
+build() {
+
+cd $name-unix-${version}
+
+  make
+  make DESTDIR=$PKG install
+}
