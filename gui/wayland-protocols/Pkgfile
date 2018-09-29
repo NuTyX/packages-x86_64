@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
 
 name=wayland-protocols
-version=1.14
+version=1.16
 
 source=(https://wayland.freedesktop.org/releases/wayland-protocols-$version.tar.xz)
 
@@ -18,4 +18,12 @@ build() {
   make
   make DESTDIR=$PKG install
   
+}
+uptodate() {
+local url ext
+
+url="https://wayland.freedesktop.org/releases"
+ext=".tar.xz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url.html|grep $name|head -1|sed "s@$url/$name-@@"|sed "s@$ext@@"
 }
