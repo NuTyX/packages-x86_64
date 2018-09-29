@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
 
 name=wayland
-version=1.15.0
-release=2
+version=1.16.0
 
 source=( http://wayland.freedesktop.org/releases/$name-$version.tar.xz)
 
@@ -20,4 +19,12 @@ build() {
   make DESTDIR=$PKG install
 
   rm $PKG/usr/lib/libwayland-{client,cursor,server,egl}.la
+}
+uptodate() {
+local url ext
+
+url="https://wayland.freedesktop.org/releases"
+ext=".tar.xz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url.html|grep $name-|head -1|sed "s@$url/$name-@@"|sed "s@$ext@@"
 }
