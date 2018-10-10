@@ -20,3 +20,11 @@ build() {
 
   rm $PKG/usr/lib/libwayland-{client,cursor,server,egl}.la
 }
+uptodate() {
+local url ext
+
+url="https://wayland.freedesktop.org/releases"
+ext=".tar.xz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url.html|grep $name-|head -1|sed "s@$url/$name-@@"|sed "s@$ext@@"
+}
