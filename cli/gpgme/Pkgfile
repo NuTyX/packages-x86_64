@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=gpgme
-version=1.11.1
+version=1.12.0
 
 source=(https://www.gnupg.org/ftp/gcrypt/$name/$name-$version.tar.bz2)
 build() {
@@ -16,5 +16,13 @@ sed 's#@libsuffix@#.so#' -i lang/cpp/src/GpgmeppConfig.cmake.in.in
 --disable-gpg-test
 make
 make DESTDIR=$PKG install
-rm $PKG/usr/lib/libgpgme.la
-}  
+rm $PKG/usr/lib/libgpgme{,pp}.la
+}
+uptodate() {
+local url ext
+
+url="https://www.gnupg.org/ftp/gcrypt/$name"
+ext=".tar.bz2"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|grep $name-|head -1|sed "s@$url/$name-@@"|sed "s@$ext@@"
+}
