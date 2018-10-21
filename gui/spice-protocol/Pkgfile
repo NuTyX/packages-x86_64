@@ -1,0 +1,20 @@
+# Depends on: 
+
+description="Headers for SPICE protocol"
+url="http://www.spice-space.org"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+name=spice-protocol
+version=0.12.14
+release=1
+
+
+source=(https://www.spice-space.org/download/releases/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --datadir=/usr/lib
+make
+make DESTDIR=$PKG install  
+}
