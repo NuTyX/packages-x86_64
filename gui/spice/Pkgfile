@@ -1,0 +1,25 @@
+# Depends on: glib libjpeg-turbo cyrus-sasl lz4 opus xorg-pixman git libcacard python2-pyparsing python2-six spice-protocol
+
+description="A spice server"
+url="https://www.spice-space.org/"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+name=spice
+version=0.14.1
+release=1
+
+source=(https://www.spice-space.org/download/releases/$name-server/$name-$version.tar.bz2)
+
+build() {
+
+cd $name-$version
+PYTHON=python2 ./configure --prefix=/usr \
+                           --disable-static \
+                           --enable-smartcard \
+                           --enable-client \
+                           --disable-werror \
+                           --disable-celt051
+make
+make DESTDIR=$PKG install
+}
