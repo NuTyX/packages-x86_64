@@ -1,0 +1,22 @@
+# Depends on: gtk3 libcacard spice-protocol libjpeg-turbo pulseaudio opus usbredir gobject-introspection usbutils vala gstreamer-plugins-bad gstreamer-plugins-good cyrus-sasl
+
+description="GTK+ client library for SPICE"
+url="https://www.spice-space.org/"
+contributors=""
+packager="rems <rems@nutyx.org>"
+ 
+name=spice-gtk
+version=0.35
+
+source=(https://www.spice-space.org/download/gtk/$name-$version.tar.bz2)
+
+build() {
+
+cd $name-$version
+
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+            --enable-vala --with-coroutine=gthread
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+  make DESTDIR=$PKG install
+}
