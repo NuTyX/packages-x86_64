@@ -1,0 +1,20 @@
+# Depends on: xorg-server xorgproto spice python2 git libcacard
+
+description="Xorg X11 qxl video driver"
+packager="rems <rems@nutyx.org>"
+name=xorg-xf86-video-qxl
+version=0.1.5
+
+source=(https://xorg.freedesktop.org/releases/individual/driver/xf86-video-qxl-$version.tar.bz2)
+
+build () {
+cd xf86-video-qxl-$version
+# this is python 2.x
+	sed -i '1c #!/usr/bin/python2' scripts/Xspice
+autoreconf -fi
+./configure --prefix=/usr \
+            --enable-xspice
+make
+make DESTDIR=$PKG install
+install -v -D -m0755 scripts/Xspice "${PKG}"/usr/bin/Xspice
+}
