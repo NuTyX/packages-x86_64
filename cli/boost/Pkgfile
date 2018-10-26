@@ -1,19 +1,32 @@
-# Depends on: icu python
+# Depends on: icu python python2
 
 description="Boost provides a set of free peer-reviewed portable C++ source libraries."
 url="http://boost.sourceforge.net/"
-packager="tnut at nutyx dot org"
-
+packager="rems at nutyx dot org"
+contributors="tnut"
 name=boost
 version=1.68.0
+release=2
 
 source=(https://dl.bintray.com/boostorg/release/$version/source/${name}_${version//./_}.tar.bz2)
+
 build() {
 cd ${name}_${version//./_}
 
-./bootstrap.sh --prefix=/usr
+./bootstrap.sh --prefix=/usr --with-python=/usr/bin/python2
 ./b2 stage --stagedir=$PKG/usr threading=multi link=shared
-./b2 install --prefix=$PKG/usr threading=multi link=shared
+./b2 install --prefix=$PKG/usr threading=multi link=shared --build-dir=py2build
+
+sed -e '/using python/ s@;@: /usr/include/python${PYTHON_VERSION/3*/${PYTHON_VERSION}m} ;@' \
+      -i bootstrap.sh
+./bootstrap.sh --prefix=$PKG/usr --with-python=/usr/bin/python3 --with-libraries=python
+
+./b2 clean
+./b2 install \
+link=shared \
+python=3.7 \
+--build-dir=py3build \
+--with-python
 
 ln -svf detail/sha1.hpp $PKG/usr/include/boost/uuid/sha1.hpp
 }
