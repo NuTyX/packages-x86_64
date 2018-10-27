@@ -1,12 +1,13 @@
-# Depends on: lzo libpng glib xorg-pixman xorg-fontconfig xcb-util xorg-libxrender mesa xorg-glu xorg-libxxf86vm
+# Depends on: lzo libpng glib xorg-pixman xorg-fontconfig xcb-util xorg-libxrender xorg-libxxf86vm
 
 description="Cairo is a 2D graphics library with support for multiple output devices."
 url="http://www.cairographics.org/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="rems <rems@nutyx.org>"
+contributors="Pierre B,tnut"
 
 name=cairo
 version=1.14.12
+release=2
 
 source=( http://cairographics.org/releases/$name-$version.tar.xz)
 
@@ -14,7 +15,8 @@ build() {
 cd $name-$version
 ./configure --prefix=/usr \
             --disable-static \
-	    --enable-tee
+	    --enable-tee \
+	    --disable-gl
 make
 make DESTDIR=$PKG install
 rm $PKG/usr/lib/*.la
