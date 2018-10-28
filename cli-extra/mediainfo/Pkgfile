@@ -6,15 +6,14 @@ packager="remy <remy@nutyx.org>"
 contributors="greg"
 
 name=mediainfo
-version=17.12
-release=1
+version=18.08.1
 
-source=(https://mediaarea.net/download/source/mediainfo/$version/mediainfo_$version.tar.xz)
+source=(https://mediaarea.net/download/source/$name/$version/"${name}"_$version.tar.xz)
 
 build() {
 
   cd MediaInfo/Project/GNU/CLI
-  sh ./autogen.sh
+  ./autogen.sh
   ./configure --prefix=/usr
   make
   
