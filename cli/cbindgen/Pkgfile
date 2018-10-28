@@ -5,6 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=cbindgen
 version=0.6.6
+release=2
 
 source=( https://github.com/eqrion/cbindgen/archive/v$version/cbindgen-$version.tar.gz )
 
@@ -14,5 +15,5 @@ cd $name-$version
 cargo build --release
 mkdir -p $PKG/usr/bin
 
-install -Dm755 target/release/$name /usr/bin/$name
+install -Dm755 target/release/$name $PKG/usr/bin/$name
 }
