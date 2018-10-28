@@ -1,13 +1,14 @@
-# Depends on: xorgproto pkg-config libtool xorg-xrandr wayland wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext xorg-libxdamage expat llvm elfutils xorg-libxshmfence 
+# Depends on: xorgproto pkg-config libtool xorg-xrandr wayland wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext xorg-libxdamage expat llvm elfutils xorg-libxshmfence libva libvdpau
 
 description="Mesa is an OpenGL compatible 3D graphics library."
 url="http://www.xorg-mesa3d.org"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="rems <rems@nutyx.org>"
+contributors="Pierre B, tnut"
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
 version=18.2.2
+release=2
 
 source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/mesa/mesa-$version-add_xdemos-1.patch)
@@ -18,12 +19,13 @@ patch -Np1 -i ../mesa-$version-add_xdemos-1.patch
 ./configure CFLAGS='-O2' CXXFLAGS='-O2' LDFLAGS=-lLLVM \
 --prefix=/usr                  \
 --sysconfdir=/etc              \
---enable-texture-float         \
 --enable-osmesa                \
 --enable-xa                    \
 --enable-glx-tls               \
---with-egl-platforms="drm,x11,wayland" \
---with-gallium-drivers="nouveau,i915,r600,radeonsi,svga,swrast"
+--enable-gles2                 \
+--with-platforms="drm,x11,wayland" \
+--with-dri-drivers="i915,i965,nouveau,r200" \
+--with-gallium-drivers="nouveau,virgl,r300,r600,radeonsi,svga,swrast"
 make
 make -C xdemos DEMOS_PREFIX=/usr
 

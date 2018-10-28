@@ -3,15 +3,15 @@ url="http://mediainfo.sourceforge.net/"
 packager="tnut <tnut@nutyx.org>"
 
 name=libzen
-version=0.4.35
+version=0.4.37
 release=1
 
-source=(http://mediaarea.net/download/source/libzen/$version/libzen_$version.tar.xz)
+source=(http://mediaarea.net/download/source/$name/$version/"${name}"_$version.tar.xz)
 
 build(){
-    cd $SRC/ZenLib/Project/GNU/Library
-    [ -x configure ] || sh ./autogen.sh
-    [ -f Makefile ] || ./configure --prefix=/usr --enable-shared
+    cd ZenLib/Project/GNU/Library
+    ./autogen.sh
+    ./configure --prefix=/usr --enable-shared
     make clean
     make
     make DESTDIR=$PKG install
