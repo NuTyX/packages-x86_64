@@ -2,12 +2,12 @@
 
 description="A spice server"
 url="https://www.spice-space.org/"
-packager="rems <rems@nutyx.org>"
-contributors=""
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
 
 name=spice
 version=0.14.1
-release=1
+release=2
 
 source=(https://www.spice-space.org/download/releases/$name-server/$name-$version.tar.bz2)
 
@@ -22,4 +22,7 @@ PYTHON=python2 ./configure --prefix=/usr \
                            --disable-celt051
 make
 make DESTDIR=$PKG install
+# Obsolet lib
+
+rm $PKG/usr/lib/libspice-server.la
 }
