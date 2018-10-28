@@ -1,4 +1,4 @@
-# Depends on: icu libvpx nspr nss libevent rustc dbus-glib autoconf2-13 pulseaudio gconf libnotify yasm sqlite nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav shared-mime-info
+# Depends on: cbindgen icu libvpx nspr nss libevent rustc dbus-glib autoconf2-13 pulseaudio gconf libnotify yasm sqlite nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav shared-mime-info
 
 description="Standalone web browser from mozilla.org"
 url="http://www.mozilla.com/firefox/"
@@ -7,7 +7,7 @@ contributors="Pierre B, tnut, Remy"
 
 run=(shared-mime-info icu libvpx libevent pulseaudio gconf sqlite libvpx nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav)
 name=firefox
-version=62.0.3
+version=63.0
 
 source=(firefox.desktop
 	http://www.linuxfromscratch.org/patches/blfs/svn/firefox-$version-system_graphite2_harfbuzz-1.patch
@@ -58,7 +58,8 @@ ac_add_options --disable-necko-wifi
 # If you have installed GConf, comment out this line
 ac_add_options --disable-gconf
 
-# From firefox 61 Stylo is needed
+# From firefox 64 will be required
+ac_add_options --disable-nodejs
 
 # Comment out following options if you have not installed
 # recommended dependencies:
@@ -93,9 +94,7 @@ ac_add_options --enable-optimize="-O2"
 
 ac_add_options --enable-official-branding
 
-# From firefox-40, using system cairo causes firefox to crash
-# frequently when it is doing background rendering in a tab.
-#ac_add_options --enable-system-cairo
+# From firefox-61, system cairo is not supported
 ac_add_options --enable-system-ffi
 ac_add_options --enable-system-pixman
 
