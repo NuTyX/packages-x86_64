@@ -2,15 +2,15 @@
 
 description="A small command-line program to download videos from YouTube."
 url="http://youtube-dl.org"
-packager="fanch at nutyx dot org, tnut at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
 
 name=youtube-dl
-version=2017.12.23
-release=1
+version=2018.10.29
 
 run=(python2 python2-setuptools)
 
-source=(http://$name.org/downloads/$version/$name-$version.tar.gz)
+source=(https://github.com/rg3/$name/releases/download/$version/$name-$version.tar.gz)
 
 build() {
   cd $name
