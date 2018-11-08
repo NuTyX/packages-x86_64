@@ -1,0 +1,19 @@
+# Depends on: rustc
+description="Cbindgen can be used to generate C bindings for Rust code."
+url="https://github.com/eqrion/cbindgen/blob/master/README.md"
+packager="tnut <tnut@nutyx.org>"
+
+name=cbindgen
+version=0.6.6
+release=2
+
+source=( https://github.com/eqrion/cbindgen/archive/v$version/cbindgen-$version.tar.gz )
+
+build() {
+
+cd $name-$version
+cargo build --release
+mkdir -p $PKG/usr/bin
+
+install -Dm755 target/release/$name $PKG/usr/bin/$name
+}

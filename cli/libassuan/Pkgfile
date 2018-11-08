@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=libassuan
 version=2.5.1
+release=2
 
 source=( ftp://ftp.gnupg.org/gcrypt/$name/$name-$version.tar.bz2)
 build() {
@@ -16,4 +17,14 @@ cd $name-$version
 --infodir=/usr/share/info
 make
 make DESTDIR=$PKG install
+# Obsolet lib
+rm $PKG/usr/lib/libassuan.la
+}
+uptodate() {
+local url ext
+
+url="https://www.gnupg.org/ftp/gcrypt/$name"
+ext=".tar.bz2"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|grep $name-|head -1|sed "s@$url/$name-@@"|sed "s@$ext@@"
 }
