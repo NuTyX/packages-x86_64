@@ -1,0 +1,22 @@
+# Depends on: python2-enum34 dbus-python python-sip qtbase qtconnectivity qtmultimedia qttools qtserialport qtsvg qtx11extras qtnetworkauth qtwebengine qtwebkit qtwebsockets
+
+description="connector python for qt"
+url="http://www.riverbankcomputing.co.uk/software/pyqt/intro"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=python-qt
+version=5.11.3
+
+source=(http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-$version/PyQt5_gpl-$version.tar.gz)
+build() {
+cd PyQt5_gpl-$version
+
+python3 configure.py   \
+     --no-sip-files \
+     --confirm-license \
+     --qsci-api
+make
+make DESTDIR=$PKG INSTALL_ROOT=$PKG install -j1
+
+}
