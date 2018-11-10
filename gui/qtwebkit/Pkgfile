@@ -1,0 +1,55 @@
+# Depends on: ruby icu gperf python2 qtdoc qttools cmake qtlocation qtsensors qtwebchannel libwebp libxslt xorg-libxcomposite hyphen gstreamer-plugins-base
+
+description="Classes for a WebKit2 based implementation and a new QML API"
+url="http://qt-project.org/"
+packager="rems <rems@nutyx.org>"
+contributors="greg"
+
+run=()
+
+name=qtwebkit
+version=5.212.0alpha2
+release=1
+
+source=(https://github.com/annulen/webkit/releases/download/qtwebkit-5.212.0-alpha2/qtwebkit-5.212.0-alpha2.tar.xz
+        qtwebkit-gcc7.patch
+        qtwebkit-null-pointer-dereference.patch
+        f51554bf.patch)
+
+build() {
+
+cd qtwebkit-5.212.0-alpha2
+patch -p1 -i ../qtwebkit-gcc7.patch
+patch -p1 -i ../qtwebkit-null-pointer-dereference.patch
+patch -p1 -i ../f51554bf.patch
+
+cd ..
+
+mkdir build
+cd build
+
+cmake ../qtwebkit-5.212.0-alpha2 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DPORT=Qt \
+    -DENABLE_TOOLS=OFF
+make
+
+make DESTDIR=$PKG install
+# Fix pkgconfig files
+  sed -e 's|qt/Qt5WebKit|qt/QtWebKit|' -i "$pkgdir"/usr/lib/pkgconfig/Qt5WebKit.pc
+  sed -e 's|qt/Qt5WebKitWidgets|qt/QtWebKitWidgets|' -i "$pkgdir"/usr/lib/pkgconfig/Qt5WebKitWidgets.pc
+  sed -e '/Name/a Description: Qt WebKit module' -i "$pkgdir"/usr/lib/pkgconfig/Qt5WebKit.pc
+  sed -e '/Name/a Description: Qt WebKitWidgets module' -i "$pkgdir"/usr/lib/pkgconfig/Qt5WebKitWidgets.pc
+}
+
+uptodate() {
+feed=https://github.com/annulen/webkit/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 
+$exec $feed | grep title | \
+sed "s@<title>@@" | sed "s@</title>@@" | \
+sed "s@QtWebKit @@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
