@@ -1,0 +1,46 @@
+# Depends on: gtk3 libgcrypt pam pcre gobject-introspection xorg-libxklavier vala
+
+description="Lightweight X11 Display Manager based on Gtk"
+url="https://en.wikipedia.org/wiki/LightDM"
+packager="dania@nutyx.org"
+contributors="Rems, Tnut"
+
+name=lightdm
+version=1.28.0
+nutyx_version=20181111
+
+source=(https://github.com/CanonicalLtd/$name/releases/download/$version/$name-$version.tar.xz
+        http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz)
+
+ build() {
+ 
+ cd $name-$version 
+ 
+ ./configure \
+     --prefix=/usr \
+     --libexecdir=/usr/lib/lightdm \
+     --localstatedir=/var \
+     --sbindir=/usr/bin \
+     --sysconfdir=/etc \
+     --disable-static \
+     --disable-tests \
+     --with-greeter-user=$name \
+     --with-greeter-session=lightdm-gtk-greeter \
+     --docdir=/usr/share/doc/$name-$version
+
+make
+make DESTDIR=$PKG install
+
+cp tests/src/lightdm-session $PKG/usr/bin
+sed -i "1 s/sh/bash –login/" $PKG/usr/bin/lightdm-session
+rm -rf $PKG/etc/init
+install -v -dm755 -o lightdm -g lightdm $PKG/var/lib/lightdm
+install -v -dm755 -o lightdm -g lightdm $PKG/var/lib/lightdm-data
+install -v -dm755 -o lightdm -g lightdm $PKG/var/cache/lightdm
+install -v -dm770 -o lightdm -g lightdm $PKG/var/log/lightdm
+
+#Service
+cd $SRC/nutyx-${nutyx_version}
+make DESTDIR=$PKG install-lightdm
+}
+
