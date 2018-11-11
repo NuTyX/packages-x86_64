@@ -1,0 +1,34 @@
+# Depends on: lightdm exo gobject-introspection
+
+description="Gtk greeter for lightdm"
+url="https://en.wikipedia.org/wiki/LightDM"
+packager="dania dania@nutyx.org"
+contributor="rems"
+
+name=lightdm-gtk-greeter
+version=2.0.6
+
+source=(https://launchpad.net/lightdm-gtk-greeter/"${version:0:3}"/$version/+download/$name-$version.tar.gz)
+
+build() {
+
+cd $name-$version
+OUR_CFLAGS="-Wno-declaration-after-statement \
+-Wno-error=deprecated-declarations"
+CFLAGS="$CFLAGS $OUR_CFLAGS" \
+HAVE_EXO_CSOURCE=yes ./configure \
+             --prefix=/usr \
+             --libexecdir=/usr/lib/lightdm \
+             --sbindir=/usr/bin \
+             --sysconfdir=/etc \
+             --with-libxklavier \
+             --enable-kill-on-sigterm \
+             --disable-libido \
+             --disable-libindicator \
+             --disable-static \
+             --docdir=/usr/share/doc/lightdm-gtk-greeter-$version
+
+make
+make DESTDIR=$PKG install
+}
+
