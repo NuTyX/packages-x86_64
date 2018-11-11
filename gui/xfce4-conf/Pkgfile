@@ -1,0 +1,31 @@
+# Depends on: xfce4-libutil dbus-glib perl-glib gtk-doc
+
+description="A simple client-server configuration storage and query system"
+url="http://www.xfce.org/"
+packager="greg <greg@nutyx.org>"
+contributors="tyrry,tnut"
+
+name=xfce4-conf
+alias=(xfconf)
+_name=xfconf
+version=4.12.1
+release=1
+
+source=(http://archive.xfce.org/src/xfce/${_name}/${version%.*}/${_name}-$version.tar.bz2)
+
+build() {
+
+cd ${_name}-$version
+
+./configure \
+	--prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/xfce4 \
+    --localstatedir=/var \
+    --disable-static \
+    --enable-gtk-doc \
+    --disable-debug
+    
+	make
+	make DESTDIR=$PKG install
+}
