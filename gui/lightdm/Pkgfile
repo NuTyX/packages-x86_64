@@ -8,6 +8,7 @@ contributors="Rems, Tnut"
 name=lightdm
 version=1.28.0
 nutyx_version=20181111
+release=2
 
 source=(https://github.com/CanonicalLtd/$name/releases/download/$version/$name-$version.tar.xz
         http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz)
@@ -32,7 +33,9 @@ make
 make DESTDIR=$PKG install
 
 cp tests/src/lightdm-session $PKG/usr/bin
-sed -i "1 s/sh/bash –login/" $PKG/usr/bin/lightdm-session
+
+sed -i '1 s/sh/bash --login/' $PKG/usr/bin/lightdm-session
+
 rm -rf $PKG/etc/init
 install -v -dm755 -o lightdm -g lightdm $PKG/var/lib/lightdm
 install -v -dm755 -o lightdm -g lightdm $PKG/var/lib/lightdm-data
