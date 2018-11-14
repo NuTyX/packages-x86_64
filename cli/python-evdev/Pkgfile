@@ -1,0 +1,35 @@
+# Depends on: python python2 git
+
+description="Python bindings for the Linux input subsystem"
+url="https://python-evdev.readthedocs.io/en/latest/"
+contributors=""
+packager="rems <rems@nutyx.org>"
+ 
+name=python-evdev
+version=1.1.2-git
+
+source=()
+
+prepare() {
+git clone https://github.com/gvalkov/python-evdev.git $name
+}
+
+build() {
+cp -a $name $name-py2
+cp -a $name $name-py3
+cd "$name-py3"
+echo -e "Building python3"
+python3 setup.py build
+cd ..
+cd "$name-py2"
+echo -e "Building python2"
+python2 setup.py build
+}
+
+package() {
+cd "$name-py3"
+python3 setup.py install --prefix=/usr --root="${PKG}" -O1 --skip-build
+cd ..
+cd "$name-py2"
+python2 setup.py install --prefix=/usr --root="${PKG}" -O1 --skip-build
+}
