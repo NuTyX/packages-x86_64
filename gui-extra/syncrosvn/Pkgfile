@@ -1,0 +1,21 @@
+# Depends on: openjdk
+
+description="Syncro SVN Client is a simple svn client."
+packager="liberodark"
+url="http://www.syncrosvnclient.com/"
+
+name=syncrosvn
+version=10.1
+
+run=(openjdk)
+
+source=(http://www.syncrosvnclient.com/InstData/All/syncroSVNClient.tar.gz $name.desktop $name.png)
+
+build() {
+
+cd $SRC
+mkdir -p $PKG/opt/syncrosvn/
+cp -r "syncroSVNClient/."  $PKG/opt/syncrosvn/
+install -vDm644 $SRC/$name.desktop $PKG/usr/share/applications/$name.desktop
+install -vDm644 $SRC/$name.png $PKG/usr/share/pixmaps/$name.png
+}
