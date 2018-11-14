@@ -1,0 +1,18 @@
+# Depends on: python-setuptools python-gobject python-yaml python-evdev gtk3 glib psmisc unrar unzip p7zip curl xorg-xrandr
+
+description="Lutris is an open gaming platform for Linux."
+packager="liberodark"
+url="https://lutris.net"
+
+name=lutris
+version=0.4.23
+
+source=($url/releases/${name}_$version.tar.xz)
+
+run=(python-gobject python-yaml python-evdev)
+
+build() {
+cd $name
+python3 setup.py build
+python3 setup.py install --root="$PKG" --optimize=1 --skip-build
+}
