@@ -1,0 +1,28 @@
+# Depends on: gnome-autoar libnotify gnome-desktop tracker shared-mime-info gobject-introspection exempi libexif libgexiv2 gvfs gtk-update-icon-cache desktop-file-utils libselinux desktop-file-utils meson gtk-doc
+
+description="GNOME file manager"
+url="http://live.gnome.org/Nautilus"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch, Tnut, jayce, Remy"
+run=(desktop-file-utils gtk-update-icon-cache)
+
+name=nautilus
+version=3.30.3
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+  cd $name-$version
+  mkdir -p build
+  cd build
+  meson --prefix=/usr  \
+    --sysconfdir=/etc \
+    -Denable-packagekit=false \
+    -Denable-exif=true \
+    -Denable-xmp=true \
+    -Denable-gtk-doc=true \
+    -Denable-selinux=false \
+    -Denable-nst-extension=false 
+  ninja
+  DESTDIR=$PKG ninja install
+}
