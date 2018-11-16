@@ -1,0 +1,25 @@
+# Depends on: json-glib icu networkmanager python2 sqlite upower libsoup vala gtk-doc desktop-file-utils gtk-update-icon-cache libseccomp
+
+description="Semantic data storage"
+url="http://www.gnome.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, Jayce"
+run=(desktop-file-utils gtk-update-icon-cache)
+
+name=tracker
+version=2.1.5
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build(){
+	cd $name-$version
+	./configure --prefix=/usr             \
+        	    --sysconfdir=/etc         \
+	            --disable-static          \
+        	    --disable-unit-tests      \
+	            --disable-miner-evolution \
+        	    --disable-miner-firefox   \
+	            --disable-miner-thunderbird
+   make
+   make DESTDIR=$PKG install
+}
