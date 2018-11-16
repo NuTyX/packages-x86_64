@@ -1,0 +1,34 @@
+# Depends on: gcr kerberos libgnome-keyring libnotify librest libsecret json-glib docbook-xsl gobject-introspection webkitgtk telepathy-glib gtk-update-icon-cache
+
+description="GNOME service to access online accounts"
+url="http://www.gnome.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch, Tnut, Jayce, Remy"
+run=(gtk-update-icon-cache)
+
+name=gnome-online-accounts
+version=3.30.0
+
+source=(http://ftp.gnome.org/pub/gnome/sources/${name}/${version%.*}/${name}-$version.tar.xz) 
+
+build() {
+cd $name-$version
+./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib \
+    --disable-static \
+    --enable-google \
+    --enable-kerberos \
+    --enable-flickr \
+    --enable-telepathy \
+    --enable-facebook \
+    --disable-static \
+    --enable-exchange  \
+    --enable-imap-smtp \
+    --enable-owncloud \
+    --enable-windows-live \
+    --disable-twitter \
+    --enable-yahoo
+make
+make -j1 DESTDIR=$PKG install
+}
