@@ -1,0 +1,21 @@
+# Depends on: gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache  gtk3 libcryptui dbus-glib gnome-keyring gconf gnupg gpgme nautilus libnotify seahorse
+
+description="PGP encryption and signing for nautilus"
+url="http://www.gnome.org/"
+packager="jayce <jayce.net@gmail.com>"
+contributors="Tnut"
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+
+name=seahorse-nautilus
+version=3.11.92
+release=3
+
+source=(http://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+	cd $name-$version
+	sed -i "s@1.2 1.4 2.0@1.2 1.4 2.0 2.1 2.2@" configure
+	 ./configure --prefix=/usr
+	make
+	make DESTDIR=$PKG install
+}
