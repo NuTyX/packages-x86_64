@@ -1,0 +1,31 @@
+# Depends on: gstreamer-plugins-libav gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad gstreamer-plugins-ugly clutter-gst clutter-gtk
+
+description="Powerful media player with a minimalistic interface"
+url="https://wiki.gnome.org/Apps/Snappy"
+contributors=""
+packager="rems <rems@nutyx.org>"
+ 
+name=snappy-player
+version=1.0
+
+source=(https://download.gnome.org/sources/snappy/$version/snappy-$version.tar.xz
+        0001-Set-windowing-backend-to-X11.patch
+        clutter-gst3.patch)
+
+prepare() {
+cd snappy-$version
+# Fix compatibility with Clutter 1.22
+  patch -Np1 -i ../0001-Set-windowing-backend-to-X11.patch
+# Port to clutter-gst 3.0
+  patch -Np1 -i ../clutter-gst3.patch
+
+autoreconf -fiv
+}
+
+build() {
+
+cd snappy-$version
+./configure --prefix=/usr
+  make
+  make DESTDIR=$PKG install
+}
