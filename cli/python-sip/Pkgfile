@@ -6,18 +6,15 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=python-sip
-version=4.19.12
+version=4.19.13
 
 source=(http://sourceforge.net/projects/pyqt/files/sip/sip-$version/sip-$version.tar.gz )
 
 build() {
 	cd sip-$version
-	python3 configure.py -b /usr/bin \
-	-d /usr/lib/python3.6/site-packages \
-	-v /usr/share/sip
+	python3 configure.py CFLAGS="$CFLAGS" LFLAGS="$LDFLAGS"
 	make
 	make DESTDIR=$PKG install
-	chmod 644 $PKG/usr/lib/python3.6/site-packages/sipdistutils.py
 	# Part of sip package
 	rm -r $PKG/usr/{bin,include}
 }
