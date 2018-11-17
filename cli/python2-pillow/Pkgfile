@@ -7,12 +7,12 @@ packager="remy <remy@nutyx.org>"
 run=(python2-setuptools)
 
 name=python2-pillow
-version=5.0.0
+version=5.3.0
 
 source=(https://files.pythonhosted.org/packages/source/P/Pillow/Pillow-$version.tar.gz)
 
 build(){
 cd Pillow-$version
-python setup.py build
-python setup.py install --root=$PKG --optimize=1
+python2 setup.py build
+python2 setup.py install --root=$PKG --optimize=1
 }
