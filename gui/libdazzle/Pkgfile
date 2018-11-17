@@ -1,0 +1,20 @@
+# Depends on: gtk3
+
+description="A library to delight your users with fancy features"
+url="http://www.gnome.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, Fanch"
+run=(meson vala gobject-introspection)
+
+name=libdazzle
+version=3.30.1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+build() {
+cd $name-$version
+mkdir build
+cd    build
+meson --prefix=/usr 
+ninja
+DESTDIR=$PKG ninja install
+}

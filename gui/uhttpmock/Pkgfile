@@ -1,0 +1,27 @@
+# Depends on: libsoup gobject-introspection vala gtk-doc
+
+description="The uhttpmock package contains a library for mocking web service APIs which use HTTP or HTTPS"
+url="https://github.com/Distrotech/uhttpmock"
+packager="jayce <jayce.net@gmail.com>"
+contributors="Tnut"
+
+name=uhttpmock
+version=0.5.1
+release=3
+
+source=(http://tecnocode.co.uk/downloads/$name/$name-$version.tar.xz)
+
+build() {
+	cd ${name}-$version
+	./configure --prefix=/usr     \
+            --disable-static
+	make
+	make DESTDIR=$PKG install
+}
+uptodate() {
+local url ext
+ext=".tar.xz"
+url="http://tecnocode.co.uk/downloads/uhttpmock"
+lynx -dump -listonly --nonumbers $url/?C=M\;O=A|\
+grep $ext$|tail -1|sed s@$url/$name-@@|sed s@$ext@@
+}
