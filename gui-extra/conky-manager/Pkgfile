@@ -1,0 +1,22 @@
+# Depends on: cairo conky desktop-files-utils gtk3 imagemagick json-glib libgee p7zip rsync vala
+
+description="Remote desktop client written in GTK+"
+url="https://launchpad.net/conky-manager"
+contributors=""
+packager="rems <rems@nutyx.org>"
+ 
+name=conky-manager
+version=2.4
+_version=~136~ubuntu16.04.1
+
+source=(https://launchpad.net/~teejee2008/+archive/ubuntu/ppa/+files/${name}_${version}${_version}.tar.xz
+        makefile-roundup.patch)
+
+build() {
+
+cd $name-$version${_version}
+patch -Np0 < ../makefile-roundup.patch
+
+  make
+  make DESTDIR=$PKG install
+}
