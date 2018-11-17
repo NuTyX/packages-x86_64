@@ -1,0 +1,18 @@
+# Depends on: python
+ 
+description="A tool that makes it easy to create Python bindings for C and C++ libraries QT5 version"
+url="http://www.riverbankcomputing.co.uk/software/sip/intro"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+name=python-sip-qt5
+version=4.19.13
+
+source=(http://sourceforge.net/projects/pyqt/files/sip/sip-$version/sip-$version.tar.gz )
+
+build() {
+	cd sip-$version
+	python3 configure.py CFLAGS="$CFLAGS" LFLAGS="$LDFLAGS" --sip-module PyQt5.sip --no-tools
+	make
+	make DESTDIR=$PKG install
+}
