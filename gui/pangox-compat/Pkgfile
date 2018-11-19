@@ -1,0 +1,26 @@
+# Depends on : pango
+
+description="X Window System font support for Pango"
+url="http://www.pango.org/"
+packager="Greg"
+
+name=pangox-compat
+version=0.0.2+2+gedb9e09
+_version=0.0.2
+
+source=(http://download.gnome.org/sources/$name/${_version:0:3}/$name-$_version.tar.xz)
+
+
+build() {
+  cd $name-$_version
+
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+package() {
+  cd $name-$_version
+  make -j1 DESTDIR=$PKG install
+}
