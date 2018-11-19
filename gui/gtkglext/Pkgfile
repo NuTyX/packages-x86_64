@@ -1,0 +1,33 @@
+# Depends on : gtk2 xorg-glu xorg-libxmu pangox-compat python
+
+description="opengl extensions for gtk2"
+url="http://gtkglext.sourceforge.net/"
+packager="Greg"
+
+name=gtkglext
+version=1.2.0
+
+source=(http://downloads.sourceforge.net/sourceforge/gtkglext/$name-$version.tar.bz2 gtk2.20.patch gtkglext-gcc8.patch)
+
+prepare(){
+  cd $name-$version
+
+  patch -Np1 -i ../gtk2.20.patch
+  sed '/AC_PATH_XTRA/d' -i configure.in  
+  patch -p1 -i ../gtkglext-gcc8.patch # Fix build with GCC 8
+
+  autoreconf -vi
+}
+  
+build() {
+  cd $name-$version
+
+  ./configure --prefix=/usr \
+              --disable-static
+  make
+}
+
+package() {
+  cd $name-$version
+  make DESTDIR=$PKG install
+}
