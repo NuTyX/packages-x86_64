@@ -1,0 +1,32 @@
+# Depends on : qt4 udisks2 xdg-su
+
+description="A graphical utility for writing raw disk images & hybrid isos to USB keys"
+url="https://github.com/mbarringer/imagewriter"
+packager="Greg"
+contributors="Tnut"
+
+name=imagewriter
+version=1.10.1432200249.1d253d9
+
+source=(http://download.opensuse.org/tumbleweed/repo/src-oss/src/imagewriter-1.10.1432200249.1d253d9-1.2.src.rpm)
+
+prepare() {
+	cd $SRC
+	tar xvf $name-$version.tar.xz
+	if [ -e /usr/bin/kdesu ]
+	  then sed 's/\/usr\/bin\/xdg-su -c \/usr\/bin\//kdesu /' -i $name-$version/$name.desktop
+	  else sed 's/\/usr\/bin\/xdg-su -c \/usr\/bin\//xdg-su -s /' -i $name-$version/$name.desktop
+	fi
+}
+
+build() {
+	cd "$SRC/$name-$version"
+	CFLAGS="$CFLAGS -DKIOSKHACK"
+	qmake-qt4 PREFIX="$PKG/usr" DEFINES=USEUDISKS2 $name.pro
+	make
+}
+
+package() {
+	cd "$SRC/$name-$version"
+	make DESTDIR="$PKG/" install
+}
