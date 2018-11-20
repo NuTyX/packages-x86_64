@@ -1,0 +1,23 @@
+# Depends on : links xmlto docbook-xsl
+
+description="Run a program as root with the most environment appropriate available graphical authentication agent"
+url="https://github.com/tarakbumba/xdg-su"
+packager="Greg"
+contributors="Tnut"
+
+name=xdg-su
+version=1.2.3
+
+source=(https://github.com/tarakbumba/$name/archive/$name-$version.tar.gz)
+
+build() {
+  cd "${SRC}/${name}-${name}-${version}"
+  ./configure --prefix=/usr --mandir=/usr/share/man
+  make
+}
+
+package(){
+  cd "${SRC}/${name}-${name}-${version}"
+  make DESTDIR="${PKG}" install
+  install -D -m644 LICENSE "${PKG}/usr/share/licenses/${name}/LICENSE"
+}
