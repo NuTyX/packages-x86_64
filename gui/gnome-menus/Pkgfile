@@ -1,0 +1,20 @@
+# Depends on: intltool glib gobject-introspection
+
+description="GNOME menu specifications."
+url="http://www.gnome.org/"
+packager="jayce <jayce.net@gmail.com>"
+contributors="Tnut"
+
+name=gnome-menus
+version=3.13.3
+release=2
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure  --prefix=/usr --sysconfdir=/etc \
+      --disable-static
+make
+make DESTDIR=$PKG install
+}
