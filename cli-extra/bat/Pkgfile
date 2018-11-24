@@ -1,0 +1,21 @@
+# Depends on: libssh2 cmake rustc
+
+packager="Rems"
+contributors="Greg"
+description="Cat clone with syntax highlighting and git integration"
+url="https://github.com/sharkdp/bat"
+
+name=bat
+version=0.9.0
+
+PKGMK_KEEP_SOURCES='NO'
+
+source=(https://github.com/sharkdp/bat/archive/v${version}.tar.gz)
+
+build() {
+
+cd $name-$version
+cargo build --release
+install -Dm755 target/release/$name "$PKG/usr/bin/$name"
+install -Dm644 doc/bat.1 "$PKG/usr/share/man/man1/bat.1"
+}
