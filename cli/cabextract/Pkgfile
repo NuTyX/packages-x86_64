@@ -1,0 +1,20 @@
+# Depends on: 
+
+description="A program to extract Microsoft cabinet (.CAB) files"
+url="http://www.cabextract.org.uk/"
+contributors=""
+packager="rems <rems@nutyx.org>"
+ 
+name=cabextract
+version=1.6
+
+source=(https://cabextract.org.uk/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+            --sysconfdir=/etc \
+            --mandir=/usr/share/man
+make
+make DESTDIR="$PKG" install
+}
