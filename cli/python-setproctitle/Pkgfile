@@ -1,0 +1,21 @@
+# Depends on: python python2
+
+description="Allows a python process to change its process title"
+url="https://github.com/dvarrazzo/py-setproctitle"
+packager="tnut <tnut@nutyx.org>"
+
+name=python-setproctitle
+version=1.1.10
+
+source=(https://files.pythonhosted.org/packages/source/s/setproctitle/setproctitle-$version.tar.gz)
+
+build() {
+
+cp -a setproctitle-$version setproctitle2
+cd setproctitle-$version
+python3 setup.py build 
+python3 setup.py install --skip-build -O1 --root=$PKG
+cd ../setproctitle2
+python2 setup.py build
+python2 setup.py install --skip-build -O1 --root=$PKG
+}
