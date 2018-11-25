@@ -1,0 +1,33 @@
+# Depends on: python2 python lapack python2-setuptools python-setuptools cython
+
+description="Scientific tools for Python"
+url="http://numpy.scipy.org/"
+contributors="pierre,greg"
+packager="rems <rems@nutyx.org>"
+
+name=python-numpy
+version=1.15.4
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/numpy/numpy/archive/v$version.tar.gz)
+
+prepare() {
+  cp -a numpy-$version{,-py2}
+  cd numpy-$version-py2
+  sed -e "s|#![ ]*/usr/bin/python$|#!/usr/bin/python2|" \
+      -e "s|#![ ]*/usr/bin/env python$|#!/usr/bin/env python2|" \
+      -e "s|#![ ]*/bin/env python$|#!/usr/bin/env python2|" \
+      -i $(find . -name '*.py')
+}
+
+build() {
+
+cd numpy-$version-py2
+python2 setup.py build
+python2 setup.py install --prefix=/usr --root="${PKG}" --optimize=1
+cd ..
+cd numpy-$version
+python setup.py build
+python setup.py install --prefix=/usr --root="${PKG}" --optimize=1
+}
