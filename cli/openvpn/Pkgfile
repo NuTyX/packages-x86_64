@@ -1,0 +1,22 @@
+#Depends on: lzo
+
+description="VPN client"
+url="http://www.openvpn.net"
+contributor="Graknu, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+name=openvpn
+version=2.4.6
+
+source=(http://swupdate.openvpn.net/community/releases/$name-$version.tar.gz)
+
+build(){
+    cd $name-$version
+
+    ./configure \
+        --prefix=/usr \
+        --enable-iproute2
+
+    make
+    make DESTDIR=$PKG install
+}
