@@ -6,10 +6,9 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=lapack
-version=3.7.0
-release=1
+version=3.8.0
 
-source=(http://www.netlib.org/$name/$name-$version.tgz )
+source=(http://www.netlib.org/$name/$name-$version.tar.gz )
 
 build() {
 cd $name-$version
@@ -22,7 +21,11 @@ cmake .. \
 -DCMAKE_INSTALL_PREFIX=/usr \
 -DCMAKE_INSTALL_LIBDIR=lib \
 -DCMAKE_Fortran_COMPILER=gfortran \
--DLAPACKE=ON
+-DLAPACKE=ON \
+-DCBLAS=ON \
+-DLAPACKE_WITH_TMG=ON \
+-DBUILD_TESTING=OFF
+
 make
 make DESTDIR=$PKG install
 }
