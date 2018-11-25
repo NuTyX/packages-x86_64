@@ -1,0 +1,20 @@
+ # Depends on: gdk-pixbuf ruby-bundler
+
+description="A flat and light theme with a modern look"
+packager="Rems"
+url="http://numixproject.org/"
+
+name=numix-gtk-theme
+version=2.6.7
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/numixproject/numix-gtk-theme/archive/$version.tar.gz
+        Gemfile)
+
+build() {
+  cd numix-gtk-theme-${version}
+bundle install --path .
+  make SASS="bundle exec sass"
+  make SASS="bundle exec sass" DESTDIR="${PKG}" install
+}
