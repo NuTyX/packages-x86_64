@@ -1,0 +1,27 @@
+# Depends on :  llvm libxslt qtxmlpatterns python
+
+description="Generates bindings for C++ libraries using CPython source code"
+url="http://qt-project.org/"
+packager="Greg"
+contributors=(rems)
+name=shiboken2
+version=5.11.2
+_qtver=5.11.2
+_pkgfqn=pyside-setup-everywhere-src-${_qtver}
+
+source=(http://download.qt.io/official_releases/QtForPython/pyside2/PySide2-$version-src/${_pkgfqn}.tar.xz)
+
+build() {
+mkdir -pv build
+  cd build
+  cmake ../${_pkgfqn}/sources/shiboken2 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_TESTS=OFF \
+    -DUSE_PYTHON_VERSION=3
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="$PKG" install
+}
