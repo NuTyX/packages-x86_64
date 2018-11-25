@@ -1,0 +1,33 @@
+#Depends on: qtwebengine qtx11extras qtsvg extra-cmake-modules qttools libgnome-keyring shiboken2
+
+packager="Greg"
+contributors="Rems"
+
+description="Cross-platform QtWebEngine browser"
+url="https://www.falkon.org/"
+
+name=falkon
+version=3.0.1
+
+source=(https://download.kde.org/stable/$name/$version/$name-$version.tar.xz
+        falkon-webinspector.patch)
+
+prepare(){
+  cd $name-$version
+patch -p1 -i ../falkon-webinspector.patch # Fix WebInspector with Qt 5.11
+  rm -rf po/
+  cd ..
+  mkdir -p build
+}
+
+build() {
+  cd build
+  cmake ../$name-$version \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DBUILD_TESTING=OFF         \
+      ..
+
+make
+make DESTDIR="$PKG" install
+}
