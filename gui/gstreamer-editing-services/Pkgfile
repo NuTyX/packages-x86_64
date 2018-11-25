@@ -1,0 +1,20 @@
+# Depends on: bash-completion gobject-introspection gtk-doc python-gobject gstreamer-plugins-base
+
+description="GStreamer library for creating audio/video editors"
+url="https://gstreamer.freedesktop.org/modules/gst-editing-services.html"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+name=gstreamer-editing-services
+version=1.14.4
+
+source=(https://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --enable-gtk-doc \
+            --with-package-name="GStreamer (NuTyX)" \
+            --with-package-origin="http://www.nutyx.org/
+make
+make DESTDIR=$PKG install
+}
