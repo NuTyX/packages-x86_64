@@ -1,4 +1,4 @@
-# Depends on: ninja meson libcdio-paranoia avahi dbus-glib intltool libsecret gtk3 libsoup udisks2 obexd fuse2 libarchive samba bluez gcr
+# Depends on: ninja meson libcdio-paranoia avahi dbus-glib intltool libsecret gtk3 libsoup udisks2 obexd fuse2 libarchive libmtp samba bluez gcr
 
 description="Userspace virtual filesystem implemented as a pluggable module for gio"
 url="http://www.gnome.org/"
@@ -7,6 +7,7 @@ contributors="Tyrry"
 
 name=gvfs
 version=1.36.2
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
@@ -18,13 +19,10 @@ cd    build &&
 
 meson --prefix=/usr     \
       --sysconfdir=/etc \
-      -Dfuse=false      \
       -Dgphoto2=false   \
       -Dafc=false       \
       -Dbluray=false    \
       -Dnfs=false       \
-      -Dmtp=false       \
-      -Dsmb=false       \
       -Dtmpfilesdir=no  \
       -Dlogind=false    \
       -Ddnssd=false     \
