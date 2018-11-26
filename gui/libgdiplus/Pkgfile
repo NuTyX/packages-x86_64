@@ -6,24 +6,21 @@ packager="greg<greg@nutyx.org>"
 contributors=""
 
 name=libgdiplus
-version=4.2
-release=1
+version=5.6
 
-source=(http://download.mono-project.com/sources/${name}/${name}-${version}.tar.gz)
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/mono/libgdiplus/archive/$version.tar.gz)
 
 prepare() {
-  cd ${name}-${version}
-  sed -i -e 's/-L\${libjpeg_prefix}\/lib -ljpeg/-ljpeg/' configure
+  cd $name-$version
+  autoreconf -fiv
 }
 
 build() {
-  cd ${name}-${version}
+  cd $name-$version
   ./configure --prefix=/usr --with-cairo=system
 
   make
-}
-
-package() {
-  cd ${name}-${version}
   make DESTDIR=$PKG install
 }
