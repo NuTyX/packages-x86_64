@@ -1,3 +1,4 @@
+# Depends on: gcc
 description="A library for computing the discrete Fourier transform (DFT)"
 url="http://www.fftw.org/"
 packager="tnut <tnut@nutyx.org>"
@@ -5,13 +6,31 @@ contributors="Pierre B"
 
 name=fftw
 version=3.3.8
+release=2
 
 source=(http://www.fftw.org/$name-$version.tar.gz)
 
-build() {
+prepare(){
+cp -a $name-$version $name-$version-double
+cp -a $name-$version $name-$version-long-double
+}
 
-  cd $name-$version
-  ./configure --prefix=/usr  --enable-shared --enable-threads
-  make
-  make DESTDIR=$PKG install
+build() {
+CFLAGS+=" -O3 -fomit-frame-pointer -malign-double -fstrict-aliasing -ffast-math"
+CONFIGURE="./configure F77=gfortran --prefix=/usr \
+                                    --enable-shared --enable-threads \
+                                    --enable-openmp"
+
+cd $name-$version-double
+     $CONFIGURE --enable-sse2 --enable-avx
+     make
+     make DESTDIR=$PKG install
+cd ../$name-$version-long-double
+    $CONFIGURE --enable-long-double
+    make
+    make DESTDIR=$PKG install
+cd ../$name-$version
+    $CONFIGURE --enable-float --enable-sse --enable-avx
+    make
+    make DESTDIR=$PKG install
 }
