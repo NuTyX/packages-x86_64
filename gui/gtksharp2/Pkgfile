@@ -1,0 +1,19 @@
+# Depends on: mono gtk2 libglade
+
+description="Gtk2 bindings for C#"
+url="http://www.mono-project.com/docs/gui/gtksharp/"
+contributors=""
+packager="rems <rems@nutyx.org>"
+ 
+name=gtksharp2
+version=2.12.45
+
+source=(https://download.mono-project.com/sources/gtk-sharp212/gtk-sharp-$version.tar.gz)
+
+build() {
+cd gtk-sharp-$version
+./configure --prefix=/usr --sysconfdir=/etc --disable-static
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+make
+make DESTDIR=$PKG install
+}
