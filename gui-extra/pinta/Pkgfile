@@ -1,0 +1,25 @@
+# Depends on: mono-addins gtksharp2 intltool
+
+description="Drawing/editing program in C#"
+url="https://pinta-project.com/"
+contributors=""
+packager="rems <rems@nutyx.org>"
+ 
+name=pinta
+version=1.6
+
+source=(https://github.com/PintaProject/Pinta/releases/download/$version/$name-$version.tar.gz)
+
+prepare() {
+cd $name-$version
+# update the project and solution files for mono4 (taken from Fedora)
+   find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+   find . \( -name "*.csproj" -o -name "*.proj" \) -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g; s#Mono.Posix, Version.*"#Mono.Posix"#g' {} \;
+}
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+make
+make DESTDIR=$PKG install
+}
