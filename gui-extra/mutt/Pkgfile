@@ -6,7 +6,7 @@ contributors="Berlius, Tnut, Greg"
 
 description="MailUserAgent, useful for reading, writing, replying to, saving, and deleting your email."
 name=mutt
-version=1.10.1
+version=1.11.0
 
 source=(ftp://ftp.mutt.org/pub/mutt/$name-$version.tar.gz)
  
@@ -21,8 +21,10 @@ cp -v doc/manual.txt{,.shipped}
             --enable-pop      \
             --enable-imap     \
             --enable-hcache   \
+            --enable-sidebar  \
             --without-qdbm    \
             --with-gdbm       \
+            --with-ssl        \
             --without-bdb     \
             --without-tokyocabinet 
 make 
