@@ -3,18 +3,19 @@
 description="Midori is a lightweight web browser that uses WebKitGTK+."
 url="http://www.midori-browser.org"
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre, Tnut"
+contributors="Pierre, Tnut, Dania"
 
 run=(desktop-file-utils gtk-update-icon-cache hicolor-icon-theme)
 
 name=midori
-version=6.0
+version=7.0
 
 source=(https://github.com/midori-browser/core/releases/download/v${version:0:1}/$name-v$version.tar.gz)
 
 build () {
+cd $name-v$version
+
 mkdir build
-sed -i -e 's:libsoup-gnome:libsoup:' CMakeLists.txt
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
  -DCMAKE_INSTALL_LIBDIR=lib \
