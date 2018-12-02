@@ -1,4 +1,4 @@
-# Depends on: libtasn1 nettle libidn p11-kit libunistring
+# Depends on: libtasn1 nettle libidn p11-kit libunistring ca-certificates
 
 description="Libraries and userspace tools which provide a secure layer over a reliable transport layer." 
 url="http://www.gnu.org/software/gnutls/"
@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=gnutls
-version=3.5.18
-release=2
+version=3.5.19
 
 source=(ftp://ftp.gnutls.org/gcrypt/$name/v${version:0:3}/$name-$version.tar.xz)
 
@@ -15,7 +14,7 @@ build() {
 cd $name-$version
 ./configure --prefix=/usr \
 --with-zlib \
---with-default-trust-store-file=/etc/ssl/ca-bundle.crt \
+--with-default-trust-store-file="pkcs11:" \
 --disable-guile
 make
 make DESTDIR=$PKG install
