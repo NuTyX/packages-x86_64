@@ -1,0 +1,17 @@
+# Depends on: gnutls
+description="A mini smtp client"
+packager="Rocket"
+url="https://marlam.de/msmtp/"
+name=msmtp
+version=1.8.0
+source=(https://marlam.de/$name/releases/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+   ./configure --prefix=/usr \
+               --sysconfdir=/etc \
+               --with-libgsasl \
+               --with-tls=gnutls
+make
+make DESTDIR="$PKG" install
+}
