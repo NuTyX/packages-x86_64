@@ -1,4 +1,4 @@
-# Depends on: libffi libtasn1
+# Depends on: libffi libtasn1 gtk-doc libxslt
 
 description="Provides a way to load and enumerate PKCS 11 modules."
 url="http://p11-glue.freedesktop.org/p11-kit.html"
@@ -6,14 +6,16 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=p11-kit
-version=0.23.13
+version=0.23.14
 
 source=( https://github.com/p11-glue/p11-kit/releases/download/$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
 ./configure --prefix=/usr \
---sysconfdir=/etc --with-trust-paths=/etc/pki/anchors
+            --sysconfdir=/etc \
+            --with-trust-paths=/etc/pki/anchors \
+            --enable-doc
 make
 make DESTDIR=$PKG install
 if [ -f $PKG/etc/pkcs11/pkcs11.conf.example ]; then
