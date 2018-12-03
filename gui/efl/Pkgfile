@@ -6,6 +6,8 @@ packager="tnut <tnut@nutyx.org>"
 
 name=efl
 version=1.21.1
+release=2
+
 run=(shared-mime-info)
 
 source=(https://download.enlightenment.org/rel/libs/$name/$name-$version.tar.xz)
@@ -16,7 +18,8 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 # Obsolets libs
-rm $PKG/usr/lib/lib*.la
+find $PKG ! -type d -name "*.la" -delete
+
 }
 uptodate() {
 local ext url LYNX
