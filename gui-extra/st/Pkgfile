@@ -5,8 +5,7 @@ url="http://st.suckless.org/"
 contributors="alienus, tnut"
 
 name=st
-version=0.7
-release=1
+version=0.8.1
 
 source=(http://dl.suckless.org/st/$name-$version.tar.gz
 		config.h)
@@ -19,14 +18,14 @@ prepare() {
 }
 
 build() {
-
   cd $SRC/$name-$version
-  make X11INC=/usr/include/X11 X11LIB=/usr/lib/X11
+CC=/usr/bin/gcc make X11INC=/usr/include/X11 X11LIB=/usr/lib/X11
 }
 
 package() {
 
   cd $SRC/$name-$version
   make PREFIX=/usr DESTDIR=$PKG TERMINFO=$PKG/usr/share/terminfo install
-
+# Conflict in /usr/share/terminfo
+rm -v $PKG/usr/share/terminfo/s/st{,-256color}
 }
