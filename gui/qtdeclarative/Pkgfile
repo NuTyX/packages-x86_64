@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=qtdeclarative 
 version=5.11.3
-
+release=2
 _name="${name}-everywhere-src"
 
 source=(https://download.qt.io/official_releases/qt/5.11/$version/submodules/${_name}-${version}.tar.xz)
@@ -26,4 +26,14 @@ done
 # Drop QMAKE_PRL_BUILD_DIR because reference the build dir
   find "$PKG/usr/lib" -type f -name '*.prl' \
        -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+# Obsolets libs:
+rm $PKG/usr/lib/libQt5PacketProtocol.la
+rm $PKG/usr/lib/libQt5Qml.la
+rm $PKG/usr/lib/libQt5QmlDebug.la
+rm $PKG/usr/lib/libQt5QmlDevTools.la
+rm $PKG/usr/lib/libQt5Quick.la
+rm $PKG/usr/lib/libQt5QuickParticles.la
+rm $PKG/usr/lib/libQt5QuickTest.la
+rm $PKG/usr/lib/libQt5QuickWidgets.la
+
 }
