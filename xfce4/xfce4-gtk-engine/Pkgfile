@@ -8,7 +8,7 @@ contributors="Tyrry, Tnut, Greg"
 name=xfce4-gtk-engine
 _name=gtk-xfce-engine
 version=2.10.1
-release=1
+release=2
 
 source=(http://archive.xfce.org/src/xfce/${_name}/${version%.*}/${_name}-$version.tar.bz2)
 
@@ -32,6 +32,7 @@ cd ${_name}-$version
 
   cd ${_name}-$version
   make DESTDIR=$PKG install
-  
-	
+
+  # Obsolet lib
+  rm $PKG//usr/lib/gtk-2.0/2.10.0/engines/libxfce.la
 }
