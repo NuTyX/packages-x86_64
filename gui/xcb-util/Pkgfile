@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=xcb-util
 version=0.4.0
-release=2
+release=3
 
 source=(http://xcb.freedesktop.org/dist/$name-$version.tar.bz2)
 
@@ -20,4 +20,6 @@ build() {
 
 	make
 	make DESTDIR=$PKG install
+# Obsolet lib
+rm $PKG/usr/lib/libxcb-util.la
 }
