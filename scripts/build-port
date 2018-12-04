@@ -326,8 +326,6 @@ version 8.0
 	fi
 }
 sync_binaries () {
-	local ARCH
-	ARCH=`uname -m`
 	check_tools
 	check_config_file
 	check_collection_exist
@@ -347,7 +345,7 @@ build_binaries () {
 	for i in `cards level -I |grep ${BINARY_BASE}/|cut -d " " -f2`
 	do
 		NAME=`basename $i`
-		if [ !  -z "`ls ${BINARY_BASE}/$NAME/*x86_64.cards.tar.xz 2>/dev/null `" ];then
+		if [ !  -z "`ls ${BINARY_BASE}/$NAME/*$ARCH.cards.tar.xz 2>/dev/null `" ];then
 			if [ ! -f ${BINARY_BASE}/$NAME/.PKGREPO ]; then
 				bash scripts/$COLLECTION $NAME|| exit 1
 			else
@@ -405,6 +403,7 @@ main() {
 	cards create -r $1
 
 }
+ARCH=`uname -m`
 RSYNC_SERVER="rsync://downloads.nutyx.org/nutyx"
 COLLECTION="`basename $0`"
 GIT=`pwd`
