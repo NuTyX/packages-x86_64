@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=qtsvg
 version=5.11.3
+release=2
 
 _name="${name}-everywhere-src"
 
@@ -21,4 +22,6 @@ make INSTALL_ROOT=$PKG install
 # Drop QMAKE_PRL_BUILD_DIR because reference the build dir
   find "$PKG/usr/lib" -type f -name '*.prl' \
        -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+# Obsolet lib
+rm $PKG/usr/lib/libQt5Svg.la
 }
