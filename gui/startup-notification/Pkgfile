@@ -7,6 +7,14 @@ contributors="Pierre B"
 
 name=startup-notification
 version=0.12
-release=2
+release=3
 
 source=(http://www.freedesktop.org/software/$name/releases/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --disable-static
+make
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/libstartup-notification-1.la
+}
