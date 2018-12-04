@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=qtwayland
-version=5.11.2
+version=5.11.3
 
 _name="${name}-everywhere-src"
 
@@ -21,4 +21,6 @@ make INSTALL_ROOT=$PKG install
 # Drop QMAKE_PRL_BUILD_DIR because reference the build dir
   find "$PKG/usr/lib" -type f -name '*.prl' \
        -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+# Obsolets Libs
+rm $PKG/usr/lib/libQt5Wayland{Client,Compositor}.la
 }
