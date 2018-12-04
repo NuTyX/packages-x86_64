@@ -3,7 +3,7 @@
 
 usage() {
 echo "
-How to proceed:
+Recommended use:
 
 You should mount the '$PROJECT' git as bind option (--bind) in your personnal account
 
@@ -49,6 +49,7 @@ print_help()
 	echo "  -s,   --sync                synchronise binaries from rsync server location"
 	echo "  -c,   --config              printout the configuration"
 	echo "  -h,   --help                print help and exit"
+	echo "  -u,   --usage               print the recommended way of using the '$COLLECTION' script"
 }
 list_ports() {
 	cd $PORT_BASE && find . -name Pkgfile -follow -printf "%h\n" | sed 's|^./||g' | sort
@@ -71,8 +72,8 @@ check_binaries()
 				echo "'$DIR' should be removed and delete from the .PKGREPO file"
 				rm -vr $DIR
 				[ -f .PKGREPO ] && sed -i "/#$DIR#/d" .PKGREPO
-			else
-				rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/	
+#			else
+#				rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/	
 			fi
 		fi
 	done
@@ -94,8 +95,8 @@ check_ports()
 		if [ ! -d ${BINARY_BASE}/$DIR ] || [ ! -f ${BINARY_BASE}/$DIR/Pkgfile ]; then
 			echo "'$DIR' should be added"
 			rsync -av --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/
-		else
-			rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/
+#		else
+#			rsync -au  --exclude="*cards.tar*" --exclude=".PKGREPO" --delete ${PORT_BASE}/$DIR/ ${BINARY_BASE}/$DIR/
 		fi
 		if [ ! -f ${BINARY_BASE}/$DIR/.PKGREPO ];then
 			echo "$DIR should be build"
@@ -190,10 +191,13 @@ parse_options() {
 				exit 0
 				;;
 			-cd|--check-diff)
+				check_tools
 				check_diff
 				exit 0
 				;;
 			-ru|--remove-url)
+				check_root
+				check_tools
 				check_config_file
 				remove_url
 				exit 0
@@ -202,17 +206,21 @@ parse_options() {
 				sync_binaries
 				exit 0;;
 			-c|--config)
+				check_root
+				check_tools
 				check_config_file
 				echo "Your config is:
-
-version you are using: $RSYNC_NUTYX_VERSION
-BINARY_BASE          : $BINARY_BASE
-PORT_BASE            : $PORT_BASE
+NuTyX name    : $RSYNC_NUTYX_NAME
+NuTyX version : $RSYNC_NUTYX_VERSION
+BINARY_BASE   : $BINARY_BASE
+PORT_BASE     : $PORT_BASE
 "
 				exit 0;;
 
 			-h|--help)
 				print_help
+				exit 0;;
+			-u|--usage)
 				usage
 				exit 0;;
 
@@ -225,12 +233,26 @@ PORT_BASE            : $PORT_BASE
 	done
 }
 check_tools () {
+	if ! (`which cards > /dev/null`); then
+		echo "'cards' not available"
+		exit 1
+	fi
+	if ! (`which pkgmk > /dev/null`); then
+		echo "'cards.devel' not available"
+		exit 1
+	fi
 	if ! (`which rsync > /dev/null`); then
 		echo "'rsync' not available"
 		exit 1
 	fi
-	if ! (`which git > /dev/null`); then
-		echo "'git' not available"
+	if ! (`which gawk > /dev/null`); then
+		echo "'gawk' not available"
+		exit 1
+	fi
+}
+check_root () {
+	if [ ! "$UID" == "0" ]; then
+		echo "You are not 'root'"
 		exit 1
 	fi
 }
@@ -283,7 +305,8 @@ I quit for now
 		exit 1
 	fi
 	if [ -f /var/lib/pkg/nutyx-version ]; then
-		RSYNC_NUTYX_VERSION=`cat /var/lib/pkg/nutyx-version|grep name|sed "s/name //"| sed "s/ //g"`
+		RSYNC_NUTYX_VERSION=`cat /var/lib/pkg/nutyx-version|grep version|sed "s/version //"| sed "s/ //g"`
+		RSYNC_NUTYX_NAME=`cat /var/lib/pkg/nutyx-version|grep name|sed "s/name //"| sed "s/ //g"`
 	else
 		echo "/var/lib/pkg/nutyx-version file not exist
 I quit for now
@@ -295,15 +318,14 @@ I quit for now
 Check the /var/lib/pkg/nutyx-version, should have a
 line like:
 
-name current
+name houaphan
+version 8.0
 
 "
 		exit 1
 	fi
 }
 sync_binaries () {
-	local ARCH
-	ARCH=`uname -m`
 	check_tools
 	check_config_file
 	check_collection_exist
@@ -319,9 +341,42 @@ remove_url () {
 	fi
 }
 build_binaries () {
+	local NAME
 	for i in `cards level -I |grep ${BINARY_BASE}/|cut -d " " -f2`
 	do
-		bash scripts/$COLLECTION `basename $i`|| exit 1
+		NAME=`basename $i`
+		if [ !  -z "`ls ${BINARY_BASE}/$NAME/*$ARCH.cards.tar.xz 2>/dev/null `" ];then
+			if [ ! -f ${BINARY_BASE}/$NAME/.PKGREPO ]; then
+				bash scripts/$COLLECTION $NAME|| exit 1
+			else
+				if [ ! -z "`diff ${BINARY_BASE}/$NAME/Pkgfile ${PORT_BASE}/$NAME/Pkgfile`" ]; then
+					echo "
+$NAME is changed
+
+${BINARY_BASE}/$NAME/Pkgfile
+${PORT_BASE}/$NAME/Pkgfile
+are different ...
+
+WILL BUILD $NAME NEW..
+
+"
+					read a
+					bash scripts/$COLLECTION $NAME || exit 1
+
+				else
+
+					echo "
+Some package(s) from '$NAME' are already available.
+
+WILL NOT BUILD '$NAME' AGAIN..
+
+"
+					read a
+				fi
+			fi
+		else
+			bash scripts/$COLLECTION $NAME|| exit 1
+		fi
 	done
 }
 list_binaries () {
@@ -335,9 +390,6 @@ main() {
 	check_config_file
 	check_collection_exist
 	if [ $# -lt 1 ]; then
-#		check_Binaries
-#		check_ports
-#		check_diff
 		print_help
 		usage
 		exit 0
@@ -351,6 +403,7 @@ main() {
 	cards create -r $1
 
 }
+ARCH=`uname -m`
 RSYNC_SERVER="rsync://downloads.nutyx.org/nutyx"
 COLLECTION="`basename $0`"
 GIT=`pwd`
