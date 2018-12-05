@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=liboauth
 version=1.0.3
-release=1
+release=2
 
 source=( http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-openssl-1.1.0-2.patch
 	http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
@@ -20,4 +20,7 @@ patch -Np1 -i ../liboauth-1.0.3-openssl-1.1.0-2.patch
 --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/liboauth.la
 }
