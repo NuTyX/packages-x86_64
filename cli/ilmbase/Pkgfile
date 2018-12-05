@@ -5,6 +5,7 @@ contributors="Pierre B"
 
 name=ilmbase
 version=2.2.1
+release=2
 
 source=( http://download.savannah.nongnu.org/releases/openexr/$name-$version.tar.gz)
 
@@ -17,6 +18,14 @@ cd $name-$version
 --infodir=/usr/share/info
 make
 make DESTDIR=$PKG install
+
+# Obsolet libs
+rm $PKG/usr/lib/libHalf.la
+rm $PKG/usr/lib/libIex.la
+rm $PKG/usr/lib/libIexMath.la
+rm $PKG/usr/lib/libIlmThread.la
+rm $PKG/usr/lib/libImath.la
+
 }
 uptodate() {
 local url ext
