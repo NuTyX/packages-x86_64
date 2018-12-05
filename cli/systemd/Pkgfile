@@ -1,0 +1,44 @@
+# Depends on: python meson
+
+description="system and service manager"
+url="http://www.freedesktop.org/wiki/Software/systemd"
+packager="tnut at nutyx dot org"
+
+name=systemd
+version=239
+
+source=(http://anduin.linuxfromscratch.org/LFS/systemd-$version-6b4878d.tar.xz)
+
+build() {
+
+  cd $name-$version-6b4878d
+  sed '166,$ d' -i src/resolve/meson.build
+
+  sed -i 's/GROUP="render", //' rules/50-udev-default.rules.in
+
+  mkdir build
+  cd    build
+
+  meson --prefix=/usr              \
+      --sysconfdir=/etc            \
+      --localstatedir=/var         \
+      -Dblkid=true                 \
+      -Dbuildtype=release          \
+      -Ddefault-dnssec=no          \
+      -Dfirstboot=false            \
+      -Dinstall-tests=false        \
+      -Dkill-path=/bin/kill        \
+      -Dkmod-path=/bin/kmod        \
+      -Dldconfig=false             \
+      -Dmount-path=/bin/mount      \
+      -Drootprefix=                \
+      -Drootlibdir=/lib            \
+      -Dsplit-usr=true             \
+      -Dsulogin-path=/sbin/sulogin \
+      -Dsysusers=false             \
+      -Dumount-path=/bin/umount    \
+      -Db_lto=false                \
+      ..
+  LANG="en_US.utf8" ninja
+  DESTDIR=$PKG LANG="en_US.utf8" ninja install
+}
