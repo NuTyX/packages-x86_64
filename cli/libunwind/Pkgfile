@@ -7,6 +7,15 @@ contributors="Pierre B"
 
 name=libunwind
 version=1.2.1
-release=1
+release=2
 
 source=(http://download.savannah.gnu.org/releases/$name/$name-$version.tar.gz)
+
+package() {
+# Obsolet libs
+rm $PKG/usr/lib/libunwind-coredump.la
+rm $PKG/usr/lib/libunwind-ptrace.la
+rm $PKG/usr/lib/libunwind-setjmp.la
+rm $PKG/usr/lib/libunwind-x86_64.la
+rm $PKG/usr/lib/libunwind.la
+}
