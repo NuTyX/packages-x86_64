@@ -1,20 +1,25 @@
+# Depends on: cmake
+
 description="A C library for reading, creating, and modifying zip archives"
 url="http://www.nih.at/libzip/index.html"
 packager="tnut <tnut@nutyx.org>"
 contribributors="Pierre B"
 
 name=libzip
-version=1.2.0
-release=1
+version=1.5.1
 
 source=(http://www.nih.at/$name/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_INSTALL_LIBDIR=lib \
+..
 make
 make DESTDIR=$PKG install
 
-ln -s /usr/lib/libzip/include/zipconf.h $PKG/usr/include/zipconf.h
-install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
+
 }
