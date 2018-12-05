@@ -8,6 +8,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=subversion
 version=1.10.3
+release=2
 
 source=(http://archive.apache.org/dist/$name/$name-$version.tar.bz2)
 
@@ -22,5 +23,21 @@ build() {
 	make
 
 	make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libsvn_client-1.la
+rm $PKG/usr/lib/libsvn_delta-1.la
+rm $PKG/usr/lib/libsvn_diff-1.la
+rm $PKG/usr/lib/libsvn_fs-1.la
+rm $PKG/usr/lib/libsvn_fs_fs-1.la
+rm $PKG/usr/lib/libsvn_fs_util-1.la
+rm $PKG/usr/lib/libsvn_fs_x-1.la
+rm $PKG/usr/lib/libsvn_ra-1.la
+rm $PKG/usr/lib/libsvn_ra_local-1.la
+rm $PKG/usr/lib/libsvn_ra_serf-1.la
+rm $PKG/usr/lib/libsvn_ra_svn-1.la
+rm $PKG/usr/lib/libsvn_repos-1.la
+rm $PKG/usr/lib/libsvn_subr-1.la
+rm $PKG/usr/lib/libsvn_wc-1.la
 
 }
