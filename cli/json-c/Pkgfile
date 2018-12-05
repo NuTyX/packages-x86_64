@@ -4,6 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=json-c
 version=0.13.1
+release=2
 
 source=(
 https://s3.amazonaws.com/${name}_releases/releases/$name-$version.tar.gz)
@@ -14,4 +15,6 @@ build(){
                 --disable-static
     make || make -j1
     make DESTDIR=$PKG install    
+# Obsolet lib
+rm $PKG/usr/lib/libjson-c.la
 }
