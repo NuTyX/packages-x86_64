@@ -6,7 +6,7 @@ contributors="Pierre B"
 
 name=fftw
 version=3.3.8
-release=2
+release=3
 
 source=(http://www.fftw.org/$name-$version.tar.gz)
 
@@ -33,4 +33,15 @@ cd ../$name-$version
     $CONFIGURE --enable-float --enable-sse --enable-avx
     make
     make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libfftw3.la
+rm $PKG/usr/lib/libfftw3_omp.la
+rm $PKG/usr/lib/libfftw3_threads.la
+rm $PKG/usr/lib/libfftw3f.la
+rm $PKG/usr/lib/libfftw3f_omp.la
+rm $PKG/usr/lib/libfftw3f_threads.la
+rm $PKG/usr/lib/libfftw3l.la
+rm $PKG/usr/lib/libfftw3l_omp.la
+rm $PKG/usr/lib/libfftw3l_threads.la
 }
