@@ -4,6 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=pcre2
 version=10.31
+release=2
 
 source=( ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/$name-$version.tar.bz2 )
 
@@ -23,4 +24,10 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libpcre2-16.la
+rm $PKG/usr/lib/libpcre2-32.la
+rm $PKG/usr/lib/libpcre2-8.la
+rm $PKG/usr/lib/libpcre2-posix.la
 }
