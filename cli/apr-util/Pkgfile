@@ -7,6 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=apr-util
 version=1.6.1
+release=2
 
 source=(http://archive.apache.org/dist/apr/$name-$version.tar.bz2)
 
@@ -19,6 +20,13 @@ cd $name-$version
 --with-crypto
 make
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/apr-util-1/apr_crypto_openssl.la
+rm $PKG/usr/lib/apr-util-1/apr_dbd_sqlite3.la
+rm $PKG/usr/lib/apr-util-1/apr_dbm_gdbm.la
+rm $PKG/usr/lib/libaprutil-1.la
+
 }
 
 uptodate() {
