@@ -6,7 +6,7 @@ contributors="Jmilot, Greg"
 packager="tnut <tnut@nutyx.org>"
 
 name=apr
-version=1.6.3
+version=1.6.5
 
 source=(http://archive.apache.org/dist/$name/$name-$version.tar.bz2)
 
@@ -16,6 +16,9 @@ cd $name-$version
 --with-installbuilddir=/usr/share/apr-1/build
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libapr-1.la
 }
 
 uptodate() {
