@@ -5,8 +5,12 @@ packager="tnut <tnut@nutyx.org>"
 
 name=jansson
 version=2.11
+release=2
 
 source=(http://www.digip.org/$name/releases/$name-$version.tar.bz2)
 package() {
   install -Dm644 $name-$version/LICENSE $PKG/usr/share/licenses/$name/LICENSE
+
+  # Obsolet lib
+  rm $PKG/usr/lib/libjansson.la
 }
