@@ -7,7 +7,7 @@ PKGMK_KEEP_SOURCES="no"
 
 name=libconfig
 version=1.6
-release=2
+release=3
 
 source=(https://github.com/hyperrealm/libconfig/archive/v$version.tar.gz)
 
@@ -17,5 +17,9 @@ prepare() {
 
 # See: https://github.com/hyperrealm/libconfig/issues/47
   rm lib/scanner.c
-  
+}
+package() {
+  # Obsolets libs
+  rm $PKG/usr/lib/libconfig++.la
+  rm $PKG/usr/lib/libconfig.la  
 }
