@@ -5,6 +5,11 @@ conttibutors="Pierre B"
 
 name=libcddb
 version=1.3.2
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/sourceforge/${name}/${name}-${version}.tar.bz2)
+
+package() {
+# Obsolet lib
+rm $PKG/usr/lib/libcddb.la
+}
