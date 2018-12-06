@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=neon
 version=0.30.2
-release=1
+release=2
 
 source=( http://www.webdav.org/neon/$name-$version.tar.gz)
 
@@ -22,4 +22,7 @@ cd $name-$version
 --infodir=/usr/share/info
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libneon.la
 }
