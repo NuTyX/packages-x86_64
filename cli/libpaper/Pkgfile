@@ -7,34 +7,28 @@ packager="greg<greg@nutyx.org>"
 
 name=libpaper
 version=1.1.24
-release=1
+release=2
 
 source=(http://ftp.debian.org/debian/pool/main/libp/libpaper/$name\_$version+nmu4.tar.gz
 		run-parts)
 
 build () {
 
-    cd $name-$version+nmu4
-    
- 	./configure --prefix=/usr  \
- 	        --sysconfdir=/etc \
-            --disable-static                 
-    make
-	make DESTDIR=$PKG install
+  cd $name-$version+nmu4  
+  ./configure --prefix=/usr  \
+  --sysconfdir=/etc \
+  --disable-static                 
+  make
+  make DESTDIR=$PKG install
 	
-	cp -v $SRC/run-parts $PKG/usr/bin/
-	chmod -v 755 $PKG/usr/bin/run-parts
+  cp -v $SRC/run-parts $PKG/usr/bin/
+  chmod -v 755 $PKG/usr/bin/run-parts
 
-}
-
-
-package() {
-
-    cd $name-$version+nmu4
-    
-	make DESTDIR=$PKG install
+  make DESTDIR=$PKG install
 	
-	cp -v $SRC/run-parts $PKG/usr/bin/
-	chmod -v 755 $PKG/usr/bin/run-parts
-     
+  cp -v $SRC/run-parts $PKG/usr/bin/
+  chmod -v 755 $PKG/usr/bin/run-parts
+
+  # Obsolet libs
+  rm $PKG/usr/lib/libpaper.la   
 }
