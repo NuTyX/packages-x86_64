@@ -5,7 +5,7 @@ packager="greg<greg@nutyx.org>"
 
 name=libantlr3c
 version=3.4
-release=2
+release=3
 
 source=(http://www.antlr3.org/download/C/${name}-${version}.tar.gz)
 
@@ -29,7 +29,9 @@ package() {
 
   cd $name-$version
   make DESTDIR=$PKG install
-  
+
+  # Obsolet lib
+  rm $PKG/usr/lib/libantlr3c.la
 }
 uptodate() {
 local url ext
