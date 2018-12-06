@@ -7,7 +7,7 @@ packager="tnut<tnut@nutyx.org>"
 
 name=libmicrohttpd
 version=0.9.59
-
+release=2
 source=(ftp://ftp.gnu.org/gnu/libmicrohttpd/$name-$version.tar.gz)
 
 build() {
@@ -23,6 +23,9 @@ build() {
 	$PKG/usr/include/$name/platform.h
   sed -i 's#Cflags: -I${includedir}#Cflags: -I${includedir} -I${includedir}/libmicrohttpd#' \
 	$PKG/usr/lib/pkgconfig/libmicrohttpd.pc
+
+  # Obsolet lib
+  rm $PKG/usr/lib/libmicrohttpd.la
 }
 uptodate() {
 local url ext
