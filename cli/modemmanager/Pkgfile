@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=modemmanager
 version=1.6.12
-release=2
+release=3
 
 source=(http://www.freedesktop.org/software/ModemManager/ModemManager-$version.tar.xz)
 build() {
@@ -18,6 +18,10 @@ cd ModemManager-$version
             --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolet libs
+rm $PKG/usr/lib/ModemManager/*.la
+rm $PKG/usr/lib/libmm-glib.la
 }
 uptodate() {
 local url ext name
