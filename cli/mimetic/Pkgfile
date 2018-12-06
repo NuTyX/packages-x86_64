@@ -5,13 +5,9 @@ url="http://www.codesink.org/mimetic_mime_library.html"
 packager="greg<greg@nutyx.org>"
 contributors=""
 
-run=()
-
-
-
 name=mimetic
 version=0.9.8
-release=1
+release=2
 
 source=(http://www.codesink.org/download/$name-$version.tar.gz)
 
@@ -23,15 +19,8 @@ build() {
 cd $name-$version
 ./configure --prefix=/usr
 make
-}
-
-package() {
-cd $name-$version
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libmimetic.la
 }
-
-uptodate() {
-echo "Fonction uptodate sans objet"
-}
-
-
