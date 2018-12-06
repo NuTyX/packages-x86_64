@@ -7,7 +7,7 @@ description="Library that makes it possible to implement a filesystem in a users
 
 name=fuse2
 version=2.9.7
-release=1
+release=2
 
 source=( https://github.com/libfuse/libfuse/releases/download/fuse-$version/fuse-$version.tar.gz)
 
@@ -33,4 +33,7 @@ install -v -m644    doc/kernel.txt \
 	$PKG/usr/share/doc/fuse-$version
 cp -Rv doc/html \
 	$PKG/usr/share/doc/fuse-$version
+
+# Obsolets libs
+rm $PKG/usr/lib/lib{fuse,ulockmgr}.la
 }
