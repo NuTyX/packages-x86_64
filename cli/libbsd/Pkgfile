@@ -5,9 +5,13 @@ contributors="Pierre B"
 
 name=libbsd
 version=0.9.1
+release=2
 
 source=(http://libbsd.freedesktop.org/releases/$name-$version.tar.xz)
 
+package() {
+rm $PKG/usr/lib/libbsd.la
+}
 uptodate() {
 local url ext
 ext=".tar.xz"
