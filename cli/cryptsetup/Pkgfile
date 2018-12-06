@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=cryptsetup
 version=1.7.5
-release=1
+release=2
 
 source=( https://www.kernel.org/pub/linux/utils/cryptsetup/v1.7/$name-$version.tar.xz)
 build() {
@@ -14,4 +14,7 @@ cd ${name}-$version
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libcryptsetup.la
 }
