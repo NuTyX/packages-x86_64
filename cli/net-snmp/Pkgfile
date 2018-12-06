@@ -7,7 +7,7 @@ packager="greg<greg@nutyx.org>"
 
 name=net-snmp
 version=5.7.3
-release=5
+release=6
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz{,.asc}
        net-snmp-5.7.3-perl-5.24.patch fix-openssl-build-errors.patch)
@@ -42,5 +42,13 @@ make DESTDIR=$PKG INSTALL_PREFIX=$PKG INSTALLDIRS=vendor install
 for i in perllocal.pod .packlist; do
    find $PKG -name "$i" -exec rm -rf {} \;
 done
+
+# Obsolets libs
+rm $PKG/usr/lib/libnetsnmp.la
+rm $PKG/usr/lib/libnetsnmpagent.la
+rm $PKG/usr/lib/libnetsnmphelpers.la
+rm $PKG/usr/lib/libnetsnmpmibs.la
+rm $PKG/usr/lib/libnetsnmptrapd.la
+rm $PKG/usr/lib/libsnmp.la
 
 }
