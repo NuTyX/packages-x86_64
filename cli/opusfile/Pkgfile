@@ -7,6 +7,11 @@ contributors="Pierre B"
 
 name=opusfile
 version=0.8
-release=1
+release=2
 
 source=(http://downloads.xiph.org/releases/opus/$name-$version.tar.gz)
+
+package() {
+# Obsolet lib
+rm $PKG/usr/lib/libopus{file,url}.la
+}
