@@ -6,6 +6,7 @@ packager="Sipo"
 name=libgphoto2
 version=2.5.16
 _version="${version//./_}"
+release=2
 
 source=(https://github.com/gphoto/$name/archive/libgphoto2-${_version}-release.tar.gz)
 
@@ -29,4 +30,12 @@ export CAMLIBS=$PWD/$version
 | install -Dm644 /dev/stdin $PKG/etc/udev/hwdb.d/20-gphoto.hwdb
 ./print-camera-list udev-rules version 201 \
 | install -Dm644 /dev/stdin $PKG/etc/udev/rules.d/40-gphoto.rules
+
+# Obsolets libs
+
+rm $PKG/usr/lib/libgphoto2.la
+rm $PKG/usr/lib/libgphoto2/2.5.16/*.la
+rm $PKG/usr/lib/libgphoto2_port.la
+rm $PKG/usr/lib/libgphoto2_port/0.12.0/*.la
+
 }
