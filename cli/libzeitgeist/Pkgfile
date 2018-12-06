@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=libzeitgeist
 version=0.3.18
-release=1
+release=2
 
 source=(http://launchpad.net/$name/${version%.*}/$version/+download/$name-$version.tar.gz)
 
@@ -17,4 +17,6 @@ cd $name-$version
 --disable-static	
 make
 make DESTDIR=$PKG install
+# Obsolet lib
+rm $PKG/usr/lib/libzeitgeist-1.0.la
 }
