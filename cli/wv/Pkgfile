@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=wv
 version=1.2.9
-release=1
+release=2
 
 source=(http://www.abiword.com/downloads/$name/$version/$name-$version.tar.gz)
 build() {
@@ -15,4 +15,7 @@ cd $name-$version
 ./configure --prefix=/usr --mandir=/usr/share/man
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libwv.la
 }
