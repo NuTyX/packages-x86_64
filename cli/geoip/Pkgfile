@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=geoip
 version=1.6.11
-release=1
+release=2
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -23,4 +23,7 @@ build() {
 		--mandir=/usr/man
 	make
 	make DESTDIR=$PKG install
+
+        # Obsolet lib
+        rm $PKG/usr/lib/libGeoIP.la
 }
