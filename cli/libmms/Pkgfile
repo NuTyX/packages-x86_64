@@ -5,7 +5,7 @@ contributors="Alienus"
 
 name=libmms
 version=0.6.4
-release=1
+release=2
 
 source=(
 http://download.sourceforge.net/libmms/$name-$version.tar.gz)
@@ -15,4 +15,7 @@ build(){
     ./configure --prefix=/usr
     make
     make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libmms.la
 }
