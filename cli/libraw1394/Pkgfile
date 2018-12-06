@@ -7,7 +7,7 @@ packager="greg<greg@nutyx.org>"
 
 name=libraw1394
 version=2.1.2
-release=1
+release=2
 
 source=(https://www.kernel.org/pub/linux/libs/ieee1394/$name-$version.tar.xz)
 
@@ -16,12 +16,8 @@ build() {
    cd $SRC/$name-$version
    ./configure --prefix=/usr 
    make
-   
-}
+   make DESTDIR=$PKG install
 
-package () {
-
-	cd $SRC/$name-$version
-    make DESTDIR=$PKG install
-   
+   # Obsolet lib
+   rm $PKG/usr/lib/libraw1394.la 
 }
