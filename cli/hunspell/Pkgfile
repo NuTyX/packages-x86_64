@@ -7,7 +7,7 @@ PKGMK_KEEP_SOURCES="no"
 
 name=hunspell
 version=1.6.1
-release=2
+release=3
 
 source=(https://github.com/hunspell/hunspell/archive/v$version.tar.gz )
 
@@ -21,4 +21,7 @@ build() {
 		    --with-experimental
         make
         make DESTDIR=$PKG install
+
+        # Obsolet lib
+        rm $PKG/usr/lib/libhunspell-1.6.la
 }
