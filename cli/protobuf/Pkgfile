@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=protobuf
 version=2.6.1
-release=3
+release=4
 
 source=(https://github.com/google/protobuf/releases/download/v$version/protobuf-$version.tar.bz2)
 build () 
@@ -16,4 +16,7 @@ cd ${name}-$version
 ./autogen.sh
 ./configure --prefix=/usr --disable-static
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libproto{buf,buf-lite,c}.la
 }
