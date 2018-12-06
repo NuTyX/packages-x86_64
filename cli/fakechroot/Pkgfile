@@ -7,7 +7,7 @@ contributors=""
 
 name=fakechroot
 version=2.19
-release=2
+release=3
 
 install=fakechroot.install
 
@@ -30,6 +30,8 @@ package() {
   install -dm755 $PKG/etc/ld.so.conf.d/
   echo '/usr/lib/libfakeroot/fakechroot/' > $PKG/etc/ld.so.conf.d/fakechroot.conf
 
+  # Obsolet lib
+  rm $PKG/usr/lib/libfakeroot/fakechroot/libfakechroot.la
 }
 
 
