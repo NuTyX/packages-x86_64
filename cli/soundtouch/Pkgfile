@@ -5,7 +5,8 @@ packager="tnut <tnut@nutyx.org>"
 
 name=soundtouch
 version=1.9.2
-release=1
+release=2
+
 source=(http://www.surina.net/soundtouch/$name-$version.tar.gz)
 build() {
 cd $name
@@ -14,4 +15,7 @@ cd $name
 --docdir=/usr/share/doc/$name-$version
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libSoundTouch.la
 }
