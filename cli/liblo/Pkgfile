@@ -7,6 +7,7 @@ contributors="Greg"
 
 name=liblo
 version=0.29
+release=2
 
 source=(https://github.com/radarsat1/$name/releases/download/$version/$name-$version.tar.gz)
 
@@ -17,4 +18,7 @@ package() {
   install -Dm 644 doc/latex/* $PKG/usr/share/doc/$name/latex
   install -Dm 644 doc/man/man3/*.3 $PKG/usr/share/man/man3
   install -Dm 644 examples/*.{cpp,c} $PKG/usr/share/$name/examples
+
+# Obsolet lib
+rm $PKG/usr/lib/liblo.la
 }
