@@ -6,6 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=libpgm
 version=5.2.122
+release=2
 
 source=(https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/openpgm/$name-$version.tar.gz)
 
@@ -14,4 +15,7 @@ cd $name-$version/openpgm/pgm
 ./configure --prefix=/usr
 make
 make prefix=$PKG/usr install
+
+# Obsolet lib
+rm $PKG/usr/lib/libpgm.la
 }
