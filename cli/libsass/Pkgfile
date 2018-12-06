@@ -7,7 +7,7 @@ contributors="Fanch"
 
 name=libsass
 version=3.5.1
-release=1
+release=2
 source=(http://rsync.nutyx.org/sources/$name-$version.tar.bz2)
 
 build() {
@@ -16,4 +16,7 @@ autoreconf -i
 	./configure --prefix=/usr
 	make
 	make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libsass.la
 }
