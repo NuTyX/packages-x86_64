@@ -5,7 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=libndp
 version=1.6
-release=1
+release=2
 
 source=(http://libndp.org/files/$name-$version.tar.gz)
 build() {
@@ -16,4 +16,7 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolet libs
+rm $PKG/usr/lib/libndp.la
 }
