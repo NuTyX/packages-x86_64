@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=rasqal
 version=0.9.33
-release=1
+release=2
 
 source=(http://download.librdf.org/source/$name-$version.tar.gz)
 
@@ -17,4 +17,7 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/librasqal.la
 }
