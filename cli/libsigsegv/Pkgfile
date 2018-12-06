@@ -5,6 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=libsigsegv
 version=2.12
+release=2
 
 source=(http://ftp.gnu.org/gnu/libsigsegv/$name-$version.tar.gz)
 
@@ -17,6 +18,9 @@ build () {
 	make
 
 	make DESTDIR=$PKG install
+
+	# Obsolet lib
+	rm $PKG/usr/lib/libsigsegv.la
 }
 uptodate() {
 local url ext
