@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=opensp
 version=1.5.2
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/openjade/OpenSP-$version.tar.gz)
 
@@ -35,8 +35,7 @@ build(){
     ln -v -sf osx sgml2xml
     cd $PKG/usr/lib
     ln -v -sf libosp.so libsp.so
+
+    # Obsolet lib
+    rm $PKG/usr/lib/libosp.la
 }
-
-
-
-# NuTyX Pkgfile (http://nutyx.org)
