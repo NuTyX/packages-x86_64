@@ -4,5 +4,10 @@ packager="tnut <tnut@nutyx.org>"
 
 name=libseccomp
 version=2.3.3
+release=2
 
 source=(https://github.com/seccomp/$name/releases/download/v$version/$name-$version.tar.gz)
+
+package() {
+rm $PKG/usr/lib/libseccomp.la
+}
