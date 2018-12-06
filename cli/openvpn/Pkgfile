@@ -7,6 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=openvpn
 version=2.4.6
+release=2
 
 source=(http://swupdate.openvpn.net/community/releases/$name-$version.tar.gz)
 
@@ -19,4 +20,8 @@ build(){
 
     make
     make DESTDIR=$PKG install
+
+    # Obsolets libs
+    rm $PKG/usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.la
+    rm $PKG/usr/lib/openvpn/plugins/openvpn-plugin-down-root.la
 }
