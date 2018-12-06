@@ -5,7 +5,7 @@ contributors="Pierre B"
 
 name=libmikmod
 version=3.3.11.1
-release=1
+release=2
 
 source=( http://downloads.sourceforge.net/mikmod/$name-$version.tar.gz)
 
@@ -18,5 +18,7 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
-rm -f $PKG/usr/share/info/dir
+
+# Obsolet lib
+rm $PKG/usr/lib/libmikmod.la
 }
