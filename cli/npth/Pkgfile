@@ -5,7 +5,7 @@ contributors="Pierre B"
 
 name=npth
 version=1.5
-release=1
+release=2
 
 source=(ftp://ftp.gnupg.org/gcrypt/$name/$name-$version.tar.bz2)
 
@@ -16,4 +16,7 @@ cd $name-$version
 --disable-static 
 make 
 make -j1 DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libnpth.la
 }
