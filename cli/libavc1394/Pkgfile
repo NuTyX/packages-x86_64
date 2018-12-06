@@ -7,24 +7,20 @@ packager="greg<greg@nutyx.org>"
 
 name=libavc1394
 version=0.5.4
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/sourceforge/libavc1394/${name}-${version}.tar.gz)
 
 build() {
 
-	cd $SRC/$name-$version
-	./configure \
-		--prefix=/usr \
-		--mandir=/usr/share/man \
-		--disable-static
-	make
+   cd $SRC/$name-$version
+   ./configure --prefix=/usr \
+   --mandir=/usr/share/man \
+   --disable-static
+   make
 
-}
+   make DESTDIR=$PKG install
 
-package () {
-
-	cd $SRC/$name-$version
-    make DESTDIR=$PKG install
-   
+   # Obsolet libs
+   rm $PKG/usr/lib/lib{avc,rom}1394.la
 }
