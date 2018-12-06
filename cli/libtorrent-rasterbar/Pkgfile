@@ -8,6 +8,8 @@ contributors=""
 name=libtorrent-rasterbar
 version=1.1.11
 _version=${version//./_}
+release=2
+
 source=(https://github.com/arvidn/libtorrent/archive/libtorrent_"${_version}".tar.gz)
 
 build() {
@@ -45,4 +47,7 @@ CXXFLAGS="$CXXFLAGS -std=c++11" \
   --with-boost-python=$_boost
 make DESTDIR="$PKG" install
 rm "$PKG"/usr/bin/{*_test,*_tester,simple_client,stats_counters}
+
+# Obsolet lib
+rm $PKG/usr/lib/libtorrent-rasterbar.la
 }
