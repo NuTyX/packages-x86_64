@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=openjpeg
 version=1.5.2
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/openjpeg.mirror/$name-$version.tar.gz )
 
@@ -19,4 +19,7 @@ build() {
 	make
 	make DESTDIR=$PKG install
 	ln -s openjpeg-1.5/openjpeg.h $PKG/usr/include
+
+	# Obsolet lib
+	rm $PKG/usr/lib/libopenjpeg.la
 }
