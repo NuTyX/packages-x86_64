@@ -6,7 +6,7 @@ contributors="Pierre B"
 
 name=lcms
 version=1.19
-release=3
+release=4
 
 source=( http://downloads.sourceforge.net/$name/$name-$version.tar.gz
 	 http://www.linuxfromscratch.org/patches/blfs/svn/lcms-1.19-cve_2013_4276-1.patch)
@@ -19,4 +19,7 @@ patch -Np1 -i ../lcms-1.19-cve_2013_4276-1.patch
 --infodir=/usr/share/info
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/liblcms.la
 }
