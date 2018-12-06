@@ -5,7 +5,7 @@ contributors="Pierre B"
 
 name=libdaemon
 version=0.14
-release=1
+release=2
 
 source=( http://pkgs.fedoraproject.org/repo/pkgs/libdaemon/libdaemon-0.14.tar.gz/509dc27107c21bcd9fbf2f95f5669563/$name-$version.tar.gz)
 
@@ -16,4 +16,7 @@ build() {
 		--disable-lynx
 	make
 	make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libdaemon.la
 }
