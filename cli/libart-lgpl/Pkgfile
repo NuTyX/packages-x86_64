@@ -4,7 +4,7 @@ packager="SipoMatadorduCosmos"
 
 name=libart-lgpl
 version=2.3.21
-release=1
+release=2
 
 source=(http://ftp.gnome.org/pub/GNOME/sources/libart_lgpl/2.3/libart_lgpl-$version.tar.bz2)
 
@@ -12,6 +12,9 @@ build() {
   cd libart_lgpl-$version
   ./configure --prefix=/usr --disable-static
   make install DESTDIR=$PKG
+
+  # Obsolet lib
+  rm $PKG/usr/lib/libart_lgpl_2.la
 }
 uptodate(){
 local latest lastversion url
