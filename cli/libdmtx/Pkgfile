@@ -4,5 +4,11 @@ packager="tnut <tnut@nutyx.org>"
 
 name=libdmtx
 version=0.7.4
+release=2
 
 source=(https://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
+
+package() {
+# Obsolet lib
+rm $PKG/usr/lib/libdmtx.la
+}
