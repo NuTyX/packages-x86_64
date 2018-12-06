@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=openjade
 version=1.3.2
-release=1
+release=2
 
 source=(
 http://downloads.sourceforge.net/openjade/openjade-$version.tar.gz
@@ -45,8 +45,10 @@ build(){
     install -v -m644 dsssl/catalog $PKG/usr/share/sgml/openjade-$version
     install -v -m644 dsssl/*.{dtd,dsl,sgm} \
         $PKG/usr/share/sgml/openjade-$version
+
+
+    # Obsolet libs
+    rm $PKG/usr/lib/libogrove.la
+    rm $PKG/usr/lib/libospgrove.la
+    rm $PKG/usr/lib/libostyle.la
 }
-
-
-
-# NuTyX Pkgfile (http://nutyx.org)
