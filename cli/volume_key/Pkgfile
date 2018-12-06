@@ -6,6 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=volume_key
 version=0.3.10
+release=2
 
 source=(  https://releases.pagure.org/volume_key/volume_key-$version.tar.xz )
 build() {
@@ -14,4 +15,8 @@ cd ${name}-$version
 make
 make DESTDIR=$PKG install
 sed -i '/config.h/d' $PKG/usr/include/volume_key/libvolume_key.h
+
+# Obsolet lib
+rm $PKG/usr/lib/libvolume_key.la
+rm $PKG/usr/lib/python2.7/site-packages/_volume_key.la
 }
