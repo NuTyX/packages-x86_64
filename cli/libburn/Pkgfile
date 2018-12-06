@@ -4,6 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=libburn
 version=1.4.8
+release=2
 
 source=(http://files.libburnia-project.org/releases/$name-$version.tar.gz)
 
@@ -12,4 +13,7 @@ cd $name-$version
 ./configure --prefix=/usr --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libburn.la
 }
