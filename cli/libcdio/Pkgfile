@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=libcdio
 version=2.0.0
+release=2
 
 source=( http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
@@ -15,7 +16,13 @@ build() {
 	./configure --prefix=/usr --disable-static 
 	make
 	make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libcdio{,++}.la
+rm $PKG/usr/lib/libiso9660{,++}.la
+rm $PKG/usr/lib/libudf.la
 }
+
 uptodate() {
 local url ext
 url="https://ftp.gnu.org/gnu/$name/"
