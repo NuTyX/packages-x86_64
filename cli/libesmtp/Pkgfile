@@ -5,7 +5,7 @@ contributors="Pierre B"
 
 name=libesmtp
 version=1.0.6
-release=1
+release=2
 
 source=(http://pkgs.fedoraproject.org/repo/pkgs/$name/$name-$version.tar.bz2/bf3915e627fd8f35524a8fdfeed979c8/$name-$version.tar.bz2)
 
@@ -16,4 +16,9 @@ build() {
 		--infodir=/usr/share/info
 	make
 	make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/esmtp-plugins/sasl-{login,plain,cram-md5}.la
+rm $PKG/usr/lib/libesmtp.la
+
 }
