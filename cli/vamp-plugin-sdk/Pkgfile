@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=vamp-plugin-sdk
 version=2.6
-release=1
+release=2
 
 source=(https://code.soundsoftware.ac.uk/attachments/download/1520/$name-$version.tar.gz)
 
@@ -18,4 +18,7 @@ make
 make DESTDIR=$PKG install
 
 install -Dm644 COPYING $PKG/usr/share/licenses/$pkgname/COPYING
+
+# Obsolets libs
+rm $PKG/usr/lib/libvamp-{,host}sdk.la
 }
