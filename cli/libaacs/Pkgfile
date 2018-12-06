@@ -7,6 +7,8 @@ contributors=""
 
 name=libaacs
 version=0.9.0
+release=2
+
 source=(ftp://ftp.videolan.org/pub/videolan/$name/$version/$name-$version.tar.bz2)
 
 build() {
@@ -21,4 +23,7 @@ cd $name-$version
 make DESTDIR=$PKG install
 install -Dm644 KEYDB.cfg "$PKG/usr/share/doc/$name"/KEYDB.cfg
 install -Dm644 README.txt "$PKG/usr/share/doc/$name"/README.txt
+
+# Obsolet lib
+rm $PKG/usr/lib/libaacs.la
 }
