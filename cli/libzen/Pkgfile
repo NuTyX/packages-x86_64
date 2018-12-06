@@ -4,7 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=libzen
 version=0.4.37
-release=1
+release=2
 
 source=(http://mediaarea.net/download/source/$name/$version/"${name}"_$version.tar.xz)
 
@@ -28,4 +28,6 @@ build(){
         $PKG/usr/lib/pkgconfig
     sed -i -e 's|Version: |Version: '$version'|g' \
         $PKG/usr/lib/pkgconfig/libzen.pc
+    # Obsolet lib
+    rm $PKG/usr/lib/libzen.la
 }
