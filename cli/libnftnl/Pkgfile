@@ -7,7 +7,7 @@ contributors="Alienus"
 
 name=libnftnl
 version=1.0.7
-release=1
+release=2
 
 source=(http://netfilter.org/projects/libnftnl/files/libnftnl-$version.tar.bz2)
 
@@ -17,4 +17,7 @@ build(){
     make
     make check
     make DESTDIR=$PKG install    
+
+    # Obsolet lib
+    rm $PKG/usr/lib/libnftnl.la
 }
