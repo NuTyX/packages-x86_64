@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=libusb-compat
 version=0.1.5
-release=1
+release=2
 
 source=( http://sourceforge.net/projects/libusb/files/libusb-compat-0.1/libusb-compat-$version/$name-$version.tar.bz2)
 
@@ -18,4 +18,7 @@ cd $name-$version
 --infodir=/usr/share/info
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libusb.la
 }
