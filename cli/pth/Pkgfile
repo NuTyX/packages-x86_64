@@ -5,7 +5,7 @@ contributors="Pierre B"
 
 name=pth
 version=2.0.7
-release=1
+release=2
 
 source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
@@ -17,6 +17,9 @@ sed -i 's#$(LOBJS): Makefile#$(LOBJS): pth_p.h Makefile#' Makefile.in
 --disable-static 
 make 
 make -j1 DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libpth.la
 }
 uptodate() {
 local url ext
