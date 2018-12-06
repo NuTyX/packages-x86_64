@@ -5,6 +5,7 @@ contributors="Pierre B"
 
 name=libdvdread
 version=6.0.0
+release=2
 
 source=(http://download.videolan.org/videolan/$name/$version/$name-$version.tar.bz2)
 build() {
@@ -14,4 +15,7 @@ cd $name-$version
 --docdir=/usr/share/libdvdread-$version
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/$name.la
 }
