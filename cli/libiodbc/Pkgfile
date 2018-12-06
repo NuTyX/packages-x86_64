@@ -5,7 +5,7 @@ contributors="Pierre B"
 
 name=libiodbc
 version=3.52.12
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/sourceforge/iodbc/$name-$version.tar.gz)
 build() {
@@ -18,4 +18,7 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 rm -rf $PKG/usr/share/libiodbc/
+
+# Obsolets libs
+rm $PKG/usr/lib/libiodbc{,inst}.la
 }
