@@ -6,7 +6,7 @@ contributors="Pierre B"
 
 name=libatasmart
 version=0.19
-release=1
+release=2
 
 source=(http://0pointer.de/public/$name-$version.tar.xz)
 
@@ -16,4 +16,7 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG docdir=/usr/share/doc/libatasmart-$version install
+
+#Obsolet lib
+rm $PKG/usr/lib/libatasmart.la
 }
