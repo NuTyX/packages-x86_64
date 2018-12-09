@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=python2-notify
 version=0.1.1
-release=2
+release=3
 
 source=(http://www.galago-project.org/files/releases/source/notify-python/notify-python-$version.tar.gz
 	python-notify-0.1.1-fix-gtk-symbols-1.patch libnotify07.patch)
@@ -19,5 +19,7 @@ build() {
 	PYTHON=/usr/bin/python2 ./configure --prefix=/usr
 	make
 	make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/python2.7/site-packages/gtk-2.0/pynotify/_pynotify.la
 }
-  
