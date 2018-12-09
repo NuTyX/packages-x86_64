@@ -5,6 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 name=xorg-xf86-input-wacom
 version=0.35.0
 _name=${name/xorg-/}
+release=2
 
 source=(https://downloads.sourceforge.net/project/linuxwacom/${_name}/${_name}-$version.tar.bz2)
 
@@ -17,4 +18,7 @@ build() {
 
 	make
 	make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/xorg/modules/input/wacom_drv.la
 }
