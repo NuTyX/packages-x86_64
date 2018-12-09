@@ -7,7 +7,8 @@ contributors="Fanch"
 
 name=sdl-mixer
 version=1.2.12
-release=2
+release=3
+
 source=(http://www.libsdl.org/projects/SDL_mixer/release/SDL_mixer-$version.tar.gz)
 
 build() {
@@ -16,4 +17,7 @@ build() {
 	./configure --prefix=/usr
 	make 
 	make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libSDL_mixer.la
 }
