@@ -7,6 +7,7 @@ packager="Greg"
 name=pangox-compat
 version=0.0.2+2+gedb9e09
 _version=0.0.2
+release=2
 
 source=(http://download.gnome.org/sources/$name/${_version:0:3}/$name-$_version.tar.xz)
 
@@ -23,4 +24,8 @@ build() {
 package() {
   cd $name-$_version
   make -j1 DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libpangox-1.0.la
+
 }
