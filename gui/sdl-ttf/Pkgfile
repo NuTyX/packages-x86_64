@@ -8,7 +8,8 @@ contributors="Tnut, Fanch"
 
 name=sdl-ttf
 version=2.0.11
-release=1
+release=2
+
 source=(http://www.libsdl.org/projects/SDL_ttf/release/SDL_ttf-$version.tar.gz)
 
 build() {
@@ -20,4 +21,7 @@ build() {
 
 	make 
 	make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libSDL_ttf.la
 }
