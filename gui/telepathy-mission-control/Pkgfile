@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=telepathy-mission-control
 version=5.16.4
-release=1
+release=2
 
 source=(http://${name%-*-*}.freedesktop.org/releases/$name/$name-$version.tar.gz)
 
@@ -22,5 +22,6 @@ cd $name-$version
             --disable-schemas-compile
 make
 make DESTDIR=$PKG install
-
+# Obsolet lib
+rm $PKG/usr/lib/libmission-control-plugins.la
 }
