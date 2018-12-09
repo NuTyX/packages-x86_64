@@ -9,7 +9,7 @@ run=( python2-gobject2 python2-cairo )
 
 name=python2-gtk
 version=2.24.0
-release=1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/pygtk/${version%.*}/pygtk-$version.tar.bz2)
 	
@@ -19,6 +19,13 @@ cd pygtk-$version
 make
 make DESTDIR=$PKG install
 
+# Obsolets libs
+rm $PKG/usr/lib/python2.7/site-packages/gtk-2.0/atk.la
+rm $PKG/usr/lib/python2.7/site-packages/gtk-2.0/gtk/_gtk.la
+rm $PKG/usr/lib/python2.7/site-packages/gtk-2.0/gtk/glade.la
+rm $PKG/usr/lib/python2.7/site-packages/gtk-2.0/gtkunixprint.la
+rm $PKG/usr/lib/python2.7/site-packages/gtk-2.0/pango.la
+rm $PKG/usr/lib/python2.7/site-packages/gtk-2.0/pangocairo.la
 }
 uptodate(){
 local latest lastversion url
