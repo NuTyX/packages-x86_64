@@ -7,7 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 run=( startup-notification dbus )
 name=openbox
 version=3.6.1
-release=3
+release=4
 
 source=(http://openbox.org/dist/openbox/$name-$version.tar.gz \
         openbox.xinitrc openbox-3.6.1-flcards-1.patch)
@@ -27,4 +27,9 @@ build()
    # Thoses are obsolet launchers
    rm $PKG/usr/share/xsessions/openbox-{gnome,kde}.desktop
    rm -r $PKG/usr/share/gnome-session
+
+   # Obsolets libs
+   rm $PKG/usr/lib/libobrender.la
+   rm $PKG/usr/lib/libobt.la
+
 } 
