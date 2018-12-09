@@ -7,7 +7,7 @@ contributors="Pierre B, tnut"
 
 name=sdl2
 version=2.0.8
-release=2
+release=3
 
 source=(${url}/release/SDL2-$version.tar.gz)
 
@@ -26,4 +26,11 @@ package() {
   cd build
   make DESTDIR=$PKG install
   install -Dm644 ../SDL2-$version/COPYING.txt $PKG/usr/share/licenses/$name/LICENSE
+
+  # Obsolet lib
+  rm $PKG/usr/lib/libSDL2.la
+  rm $PKG/usr/lib/libSDL2_test.la
+  rm $PKG/usr/lib/libSDL2main.la
+
+
 }
