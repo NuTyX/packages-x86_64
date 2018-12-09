@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=sox
 version=14.4.2
-release=2
+release=3
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2
        sox-dynamic.patch) 
@@ -26,4 +26,30 @@ build() {
   make
   make bindir=. installcheck
   make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libsox.la
+rm $PKG/usr/lib/sox/libsox_fmt_alsa.la
+rm $PKG/usr/lib/sox/libsox_fmt_amr_nb.la
+rm $PKG/usr/lib/sox/libsox_fmt_amr_wb.la
+rm $PKG/usr/lib/sox/libsox_fmt_ao.la
+rm $PKG/usr/lib/sox/libsox_fmt_caf.la
+rm $PKG/usr/lib/sox/libsox_fmt_fap.la
+rm $PKG/usr/lib/sox/libsox_fmt_flac.la
+rm $PKG/usr/lib/sox/libsox_fmt_gsm.la
+rm $PKG/usr/lib/sox/libsox_fmt_lpc10.la
+rm $PKG/usr/lib/sox/libsox_fmt_mat4.la
+rm $PKG/usr/lib/sox/libsox_fmt_mat5.la
+rm $PKG/usr/lib/sox/libsox_fmt_mp3.la
+rm $PKG/usr/lib/sox/libsox_fmt_opus.la
+rm $PKG/usr/lib/sox/libsox_fmt_oss.la
+rm $PKG/usr/lib/sox/libsox_fmt_paf.la
+rm $PKG/usr/lib/sox/libsox_fmt_pulseaudio.la
+rm $PKG/usr/lib/sox/libsox_fmt_pvf.la
+rm $PKG/usr/lib/sox/libsox_fmt_sd2.la
+rm $PKG/usr/lib/sox/libsox_fmt_sndfile.la
+rm $PKG/usr/lib/sox/libsox_fmt_vorbis.la
+rm $PKG/usr/lib/sox/libsox_fmt_w64.la
+rm $PKG/usr/lib/sox/libsox_fmt_wavpack.la
+rm $PKG/usr/lib/sox/libsox_fmt_xi.la
 }
