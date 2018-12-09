@@ -97,3 +97,31 @@ index 1e4c48e..f4fab35 100644
  PKGMK_COMPRESS_PACKAGE="no"
  
  PKGMK_INSTALL="no"
+diff --git a/src/compile_dependencies_utils.h b/src/compile_dependencies_utils.h
+index 65fa9f6..54771dd 100644
+--- a/src/compile_dependencies_utils.h
++++ b/src/compile_dependencies_utils.h
+@@ -22,9 +22,7 @@
+ #ifndef COMPILE_DEPENDENCIES_UTILS_H
+ #define COMPILE_DEPENDENCIES_UTILS_H
+ 
+-#include "string_utils.h"
+ #include "file_utils.h"
+-#include "cards_argument_parser.h"
+ 
+ #include <iostream>
+ #include <cstdlib>
+diff --git a/src/pkgadd.conf b/src/pkgadd.conf
+index e07f137..1635d72 100644
+--- a/src/pkgadd.conf
++++ b/src/pkgadd.conf
+@@ -33,7 +33,8 @@ INSTALL         ^usr/share/fonts/[^/]*/fonts.scale  NO
+ INSTALL         ^usr/share/fonts/[^/]*/fonts.dir  NO
+ # Was required to make meson packages compiling fine.
+ # Today as 10.4 most of the critical packages are clean up
+-#INSTALL         ^usr/lib/.*.la$          NO
++# But Still this one is needed
++INSTALL         ^usr/lib/.*.la$          NO
+ 
+ # Post-install triggers
+ 
