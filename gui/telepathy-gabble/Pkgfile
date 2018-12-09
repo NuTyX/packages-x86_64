@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=telepathy-gabble
 version=0.18.4
-release=1
+release=2
 
 source=(http://telepathy.freedesktop.org/releases/$name/$name-$version.tar.gz)
 
@@ -19,5 +19,10 @@ build() {
               --libexecdir=/usr/lib/telepathy
   make
   make DESTDIR=$PKG install
-  
+
+# Obsolets libs
+rm $PKG/usr/lib/telepathy/gabble-0/lib/libgabble-plugins.la
+rm $PKG/usr/lib/telepathy/gabble-0/lib/libwocky.la
+rm $PKG/usr/lib/telepathy/gabble-0/plugins/libconsole.la
+rm $PKG/usr/lib/telepathy/gabble-0/plugins/libgateways.la 
 }
