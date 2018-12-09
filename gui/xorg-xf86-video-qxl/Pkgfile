@@ -4,6 +4,7 @@ description="Xorg X11 qxl video driver"
 packager="rems <rems@nutyx.org>"
 name=xorg-xf86-video-qxl
 version=0.1.5
+release=2
 
 source=(https://xorg.freedesktop.org/releases/individual/driver/xf86-video-qxl-$version.tar.bz2)
 
@@ -17,4 +18,8 @@ autoreconf -fi
 make
 make DESTDIR=$PKG install
 install -v -D -m0755 scripts/Xspice "${PKG}"/usr/bin/Xspice
+
+# Obsolets libs
+rm $PKG/usr/lib/xorg/modules/drivers/qxl_drv.la
+rm $PKG/usr/lib/xorg/modules/drivers/spiceqxl_drv.la
 }
