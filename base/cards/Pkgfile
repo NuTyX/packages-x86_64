@@ -22,13 +22,13 @@ PKGMK_GROUPS=(devel doc man)
 
 name=cards
 version=2.4.82
-release=3
+release=4
 
-source=(cards-$version-upstream-2.patch
+source=(cards-$version-upstream-3.patch
 	http://downloads.tuxfamily.org/nutyx/files/cards-$version.tar.gz)
 build () {
 cd $name-$version
-patch -Np1 -i ../cards-$version-upstream-2.patch
+patch -Np1 -i ../cards-$version-upstream-3.patch
 make all
 make DESTDIR=$PKG install
 mkdir -p $PKG/{etc,usr}/ports
