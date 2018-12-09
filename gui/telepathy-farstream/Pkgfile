@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=telepathy-farstream
 version=0.6.2
-release=2
+release=3
 
 source=(http://${name%-*}.freedesktop.org/releases/$name/$name-$version.tar.gz)
 
@@ -19,5 +19,7 @@ build() {
               --disable-static
   make
   make DESTDIR=$PKG install
-  
+
+# Obsolet lib
+rm $PKG/usr/lib/libtelepathy-farstream.la
 }
