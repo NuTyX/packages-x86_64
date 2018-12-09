@@ -7,6 +7,7 @@ contributors=""
 
 name=networkmanager-openvpn
 version=1.8.8
+release=2
 source=(https://gitlab.gnome.org/GNOME/NetworkManager-openvpn/-/archive/$version/NetworkManager-openvpn-$version.tar.gz)
 
 build() {
@@ -17,4 +18,9 @@ NOCONFIGURE=1 ./autogen.sh
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 make
 make DESTDIR="$PKG" install
+
+# Obsolets libs
+rm $PKG/usr/lib/NetworkManager/libnm-openvpn-properties.la
+rm $PKG/usr/lib/NetworkManager/libnm-vpn-plugin-openvpn-editor.la
+rm $PKG/usr/lib/NetworkManager/libnm-vpn-plugin-openvpn.la
 }
