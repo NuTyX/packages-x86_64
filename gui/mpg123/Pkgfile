@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=mpg123
 version=1.25.10
+release=2
 
 source=( http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
 build() {
@@ -14,5 +15,7 @@ cd $name-$version
 ./configure --prefix=/usr --with-module-suffix=.so
 make
 make DESTDIR=$PKG install
+# Obsolets
 rm $PKG/usr/lib/libout123.la
+rm $PKG/usr/lib/libmpg123.la
 }
