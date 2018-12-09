@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=telepathy-logger
 version=0.8.2
-release=1
+release=2
 
 source=(http://${name%-*}.freedesktop.org/releases/$name/$name-$version.tar.bz2)
 
@@ -20,4 +20,6 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 
+# Obsolet lib
+rm $PKG/usr/lib/libtelepathy-logger.la
 }
