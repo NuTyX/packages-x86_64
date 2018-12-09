@@ -8,7 +8,7 @@ contributors="tyrry"
 name=xfce4-libui
 _name=libxfce4ui
 version=4.12.1
-release=2
+release=3
 
 source=(http://archive.xfce.org/src/xfce/${_name}/${version%.*}/${_name}-$version.tar.bz2)
 
@@ -30,5 +30,10 @@ cd ${_name}-$version
 for i in usr/bin/xfce4-about usr/share/applications/xfce4-about.desktop usr/share/icons/hicolor/48x48/apps/xfce4-logo.png
 do rm $PKG/$i
 done
-
+# Obsolets libs
+rm $PKG/usr/lib/libxfce4kbd-private-2.la
+rm $PKG/usr/lib/libxfce4kbd-private-3.la
+rm $PKG/usr/lib/libxfce4ui-1.la
+rm $PKG/usr/lib/libxfce4ui-2.la
+ 
 }
