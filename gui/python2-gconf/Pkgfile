@@ -9,7 +9,7 @@ _name=gnome-python
 
 name=python2-gconf
 version=2.28.1
-release=2
+release=3
 
 source=(http://download.gnome.org/sources/$_name/${version%.*}/$_name-$version.tar.bz2)
 
@@ -22,4 +22,7 @@ build() {
 	make
 	make DESTDIR=$PKG install
 	rm -rf $PKG/usr/lib/pkgconfig
+
+# Obsolets libs
+rm $PKG/usr/lib/python2.7/site-packages/gtk-2.0/gconf.la
 }
