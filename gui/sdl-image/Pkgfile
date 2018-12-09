@@ -7,7 +7,7 @@ contributors="Berlius"
 
 name=sdl-image
 version=1.2.12
-release=1
+release=2
 
 source=(http://www.libsdl.org/projects/SDL_image/release/SDL_image-$version.tar.gz)
 
@@ -21,4 +21,6 @@ cd SDL_image-$version
 make
 make DESTDIR=$PKG install
 
+# Obsolet lib
+rm $PKG/usr/lib/libSDL_image.la
 }
