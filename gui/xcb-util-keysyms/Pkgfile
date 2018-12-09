@@ -8,7 +8,7 @@ contributors="Pierre B, tnut"
 
 name=xcb-util-keysyms
 version=0.4.0
-release=1
+release=2
 
 source=(http://xcb.freedesktop.org/dist/$name-$version.tar.bz2)
 
@@ -17,5 +17,8 @@ build() {
         ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
         make
         make DESTDIR=$PKG install
+
+# Obsolet lib
+
+rm $PKG/usr/lib/libxcb-keysyms.la  
 }
-  
