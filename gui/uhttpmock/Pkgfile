@@ -7,7 +7,7 @@ contributors="Tnut"
 
 name=uhttpmock
 version=0.5.1
-release=3
+release=4
 
 source=(http://tecnocode.co.uk/downloads/$name/$name-$version.tar.xz)
 
@@ -17,6 +17,9 @@ build() {
             --disable-static
 	make
 	make DESTDIR=$PKG install
+
+# Obsolet libs
+rm $PKG/usr/lib/libuhttpmock-0.0.la
 }
 uptodate() {
 local url ext
