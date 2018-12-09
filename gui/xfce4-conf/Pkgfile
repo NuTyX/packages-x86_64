@@ -9,7 +9,7 @@ name=xfce4-conf
 alias=(xfconf)
 _name=xfconf
 version=4.12.1
-release=1
+release=2
 
 source=(http://archive.xfce.org/src/xfce/${_name}/${version%.*}/${_name}-$version.tar.bz2)
 
@@ -28,4 +28,7 @@ cd ${_name}-$version
     
 	make
 	make DESTDIR=$PKG install
+
+# Obsolet libs
+rm $PKG/usr/lib/libxfconf-0.la
 }
