@@ -4,13 +4,18 @@ description="Xorg VirtualBox video driver."
 packager="tnut <tnut@nutyx.org>"
 name=xorg-xf86-video-vboxvideo
 version=1.0.0
-release=2
+release=3
 
 _name=${name/xorg-/}
 
 source=(http://ftp.x.org/pub/individual//driver/${_name}-$version.tar.bz2)
 
 build=xorg
+
+package() {
+# Obsolet lib
+rm $PKG/usr/lib/xorg/modules/drivers/vboxvideo_drv.la
+}
 
 uptodate() {
 local ext url name LINX
