@@ -1,0 +1,407 @@
+.TH "NuTyX version #VERSION#" 8 "Mars, 2017" ""
+
+
+.SH NuTyX
+
+.P
+Cette page de manuel vous permet de prendre connaissance du minimum vital pour pouvoir utiliser votre système d'exploitation NuTyX GNU/Linux. Veuillez consulter les fichiers mentionnés pour obtenir plus d'information.
+
+.SH CONFIGURATION
+
+.P
+La configuration de NuTyX comprend: le réglage du clavier, le réglage du réseau, le montage de partitions ou disques supplémentaires, l'ajout d'une partition ou fichier d'échange, la création d'un nouveau compte utilisateur (utilisatrice), le réglage de l'heure, le nom de la machine, le réglage de la langue de la machine, le réglage de la région qui détermine le fuseau horaire, le réglage de l'amorçage de la machine, le chargement manuel des modules, la modification des fichiers au démarrage de la machine.
+
+.TP
+  \fBLe clavier\fR:
+
+La commande \fBsetup-nutyx -ck\fP permet de configurer facilement le clavier à utiliser.
+
+Le fichier \fI/etc/sysconfig/console\fR défini la configuration du clavier en mode console cad non graphique. Un exemple de configuration de la console:
+.P
+
+ FONT="lat0-16 -m 8859-15"
+ UNICODE="1"
+ LOGLEVEL=1
+ KEYMAP=fr_CH-latin1.map
+
+La variable FONT défini la police utilisée. La variable UNICODE spécifie l'usage de l'encodage utf8. LOGLEVEL défini le niveau verbale de l'amorçage de la machine entre 1 et 7. KEYMAP définit la configuration du clavier utilisé. Toutes les dispositions de clavier sont listés dans le dossier \fI/lib/kbd/keymaps/i386/\fR. Toutes les polices disponibles sont listés dans le dossier \fI/lib/kbd/consolefonts/\fR.
+
+Le fichier \fI/etc/X11/xorg.xonf.d/20-keyboard.conf\fR défini la configuration du clavier en mode graphique. Le sujet étant tellement vaste, veuillez vous rapportez au manuel de Xorg pour sa configuration.
+.TP
+  \fBLe réseau\fR:
+
+La commande \fBsetup-nutyx -cn\fP permet de configurer facilement le réseau.
+
+.P
+ CONFIGURATION AUTOMATIQUE:
+
+Le variable \fBMANAGER\fR se trouvant dans le fichier \fI/etc/sysconfig/network\fR n'est pas définie. Le script s'occupant du réseau s'adaptera en fonction de l'application installée. Si \fBwicd\fR est trouvé, le service wicd sera lancé, si \fBnetworkmanager\fR est trouvé, le service networkmanager sera lancé. Si les 2 applications sont installées, c'est le service networkmanager qui sera lancé. Si aucune des 2 n'est trouvée, ce sera le script en ligne de commande qui sera lancé. Si vous souhaitez choisir votre propre mode de configuration, suivez les instructions ci-dessous.
+.P
+ CONFIGURATION MANUELLE:
+
+Chaque connection réseau est définie dans un fichier se terminant par le nom de la connection. Le nom d'une carte réseau peut s'appeller soit eth0, eth1, etc ou wlan0, wlan1, etc. Pour connaître le nom des cartes réseaux reconnues sur la machine, vérifiez le contenu du dossier \fI/sys/class/net\fR. Utilisez la commande \fBls /sys/class/net\fR. Notez que wlan0, wlan1, etc représentent dans la plupart des cas la connection wifi. La carte \fBlo\fR ne doit pas être configurée. Exemple: le fichier \fI/etc/sysconfig/ifconfig.eth0\fR défini la configuration de la connection de \fBeth0\fP. Ce premier exemple défini la carte eth0 en adresse statique, le contenu de \fI/etc/sysconfig/ifconfig.eth0\fR sera:
+
+.P
+ ONBOOT=yes
+ SERVICE=ipv4-static
+ IP=192.168.1.10
+ GATEWAY=192.168.1.1
+ PREFIX=255.255.255.0
+ BROADCAST=192.168.1.255
+
+Dans le cas d'utilisation d'une adresse statique, il est necessaire de spécifier la (les) adtresse(s) IP du (des) serveurs de noms de domaine (DNS). Par exemple, si vous souhaitez utiliser les serveurs de google. Mettez ceci dans le fichier \fI/etc/resolv.conf\fR:
+
+.P
+ 
+ nameserver 8.8.8.8
+ nameserver 8.8.4.4
+
+Dans la plupart du temps, votre routeur fait également office de serveurs de noms de domaine. Vous pouvez donc dans ce cas y mettre l'adresse IP de votre routeur.
+
+Le deuxième exemple défini une configuration d'adresse dynamique sur wlan0, le contenu de \fI/etc/sysconfig/ifconfig.wlan0\fR sera:
+.P
+ ONBOOT="yes"
+ SERVICE="dhcpcd"
+ DHCP_START=""
+ DHCP_STOP="-k "
+ # Mettez PRINTIP="yes" pour que le script affiche l'addresse IP
+ PRINTIP="no"
+ # Mettez PRINTALL="yes" pour que le script affiche tous le détails
+ # de la connection réseau
+ PRINTALL="no"
+
+.TP
+ \fBDéfinir un réseau sans fils et activation de la clé wpa\fR
+
+La commande \fBsetup-nutyx -cw\fP permet de configurer un point d'accès sans fil.
+
+Si votre machine supporte le réseau sans fils, il est necessaire de le configurer. Pour connaître le nom de la carte reseau, utilisez la commande en root \fBiwconfig\fR. Si le resultat de la commande affiche ce genre d'information:
+.P
+ eth0      no wireless extensions.
+
+ eth1      IEEE 802.11abg 
+           Mode:Managed  Frequency:2.417 GHz  Access Point: C4:3D:C7:9F:D0:CF
+           Tx-Power=200 dBm
+           Retry  long limit:7   RTS thr:off   Fragment thr:off
+           Encryption key:off
+           Power Management:off
+
+Dans l'exemple ci-dessus, la carte eth1 supporte le wifi, il suffit donc de produire le fichier de configuration qui sera utilisée pour la connection réseau. ATTENTION il est important de respecter le nom du fichier de configuration afin que le script puisse le retrouver: Dans cet exemple, le nom de la carte sera \fBeth1\fR, le nom du reseau wifi s'appellera \fBcasabianca\fR et la clé d'accès \fBGg6!-@1234\fR. Sur base de ces infos, produisez le fichier de configuration:
+.P
+ wpa_passphrase "\fBcasabianca\fR" "\fBGg6!-@1234\fR" > /etc/wpa_supplicant.conf.\fBeth1\fR
+
+Ajoutez également le fichier de configuration du réseau comme expliqué plus haut. Dans cet exemple il s'agit de créer le fichier \fI/etc/sysconfig/ifconfig.eth1\fR. Une fois terminé, vous pouvez relancer le réseau de votre machine à l'aide de la commande \fB/etc/rc.d/init.d/network restart\fR. Veuillez également vérifier la définition de la variable \fBMANAGER\fR qui est définie dans le fichier \fI/etc/sysconfig/network\fR. La gestion du service réseau peut se faire soit depuis la ligne de commande (expliqué ci-avant) la valeur de la variable est alors \fBcli\fR. soit via wicd, mettez \fBwicd\fR comme valeur, soit networkmanager si vous avez installé l'interface graphique gnome, mettez alors \fBnetworkmanager\fR.
+.TP
+ \fBAjout d'une partition, d'un disque ou d'un dossier NFS\fR:
+
+.P
+ NOTE IMPORTANTE: 
+
+Si vous avez déjà créer le(s) utilisateur(s) et que vous souhaitez monter le dossier \fI/home\fR (qui contient donc les données personnels des utilisateurs) sur une partition/disque/dossier NFS séparé, il est important de sauvegarder son contenue avant de procéder, il existe plusieurs methodes, quelque soit la methode choisie, assurez-vous d'être en root et le serveur X arrêté:
+
+.P
+ En root tapez les commandes suivantes:
+ # init 3
+ # sync
+ # cd /
+ # tar cf /root/users.tar home/*
+
+Si tout s'est bien passé et qu'aucune erreur ne s'est produite, vous pouvez supprimez les dossiers:
+.P
+ Toujours en root:
+ # cd /
+ # rm -r /home/*
+ Le dossier \fI/home\fR est maintenant vide et prêt pour pouvoir être monté sur le point de montage de votre choix.
+
+Le fichier \fI/etc/fstab\fR défini les points de montage des différents périphériques lors de l'amorçage de la machine. Vous souhaitez probablement utiliser une partition ou un disque oumême un dossier NFS pour stocker les données personnelles des utilisateurs enrégistrés sur la machine. Dans notre exemple, GRUB est sur la première partition, NuTyX sur la deuxième partition, les données d'échange mémoire virtuelle sur la troisième partition. Le fichier \fI/etc/fstab\fR de notre exemple contient les informations suivantes:
+.P
+ # file/device   mountpoint  type      options    dump fsck order
+ ...
+ /dev/sda1       /boot       ext2      defaults     0        0
+ /dev/sda2       /           reiserfs  defaults     0        1
+ /dev/sda3       swap        swap      pri=1        0        0
+ 
+Nous souhaitons ajouter la \fBdeuxième\fR partition formatée en \fBext4\fR du \fBdeuxième disque\fR installé sur le point de montage \fI/home\fR, il suffit d'ajouter la ligne suivante:
+.P
+ /dev/sd\fBb2  /home  ext4\fR     defaults   0   0
+
+Pour ajouter un dossier NFS \fI/srv\fR se trouvant donc sur un serveur distant dont l'adresse IP est 192.168.254.254 sur le point de montage \fI/serveur\fR, on ajoute la ligne suivante:
+.P
+ 192.168.254.254:/srv /serveur  nfs  rw,_netdev,rsize=8192,wsize=8192   0   0
+
+Le dossier \fI/serveur\fR doit être créé au préalable sur votre machine locale. Les valeurs de rsize et wsize sont celle utilisées par défaut, libre à vous d'expérimenter d'autres valeurs pour rsize et wsize. Assurez-vous d'avoir installé le paquet \fBnfs-utils\fR et que les services associés soient lancés. En cas de problèmes de performance, une solution radicale consiste à utiliser la version 3 de NFS en ajoutant l'option vers=3 dans le champ options de la ligne ajoutée.
+
+Une fois votre configuration terminée, vous pouvez activer les montages avec la commande:
+.P
+ \fBmount -a\fR
+
+Aucun message d'erreur ne doit apparaître. Vous pouvez vérifier que le résultat en utilisant la commande \fB mount\fR. Il suffit maintenant de restaurer le contenu du dossier \fI/home\fR:
+.P
+
+ A faire uniquement si des utilisateurs sont déjà créés et que vous avez choisi de monter le dossier \fI/home\fR:
+ # cd /
+ # tar xf /root/users.tar
+
+Vous pouvez repasser en mode graphique et vous connectez en non root.
+
+.TP
+ \fBAjout d'une partition ou fichier d'échange\fR:
+La commange \fBfdisk\fP permet de modifier la répartition de votre(vos) disque(s). Si vous avez moins de 1 GigaOctets de RAM et que vous êtes en 32 bits (ou moins de 2 GigaOctets en 64 bits), il est vivement recommandé de créer une partition d'échange. Si tout le disque est occupé, il est encore possible de créer un fichier d'échange et de le monter automatiquement à l'amorçage de la machine. On commence par créer un fichier d'une taille suffisante (ici +/- 500 MegaOctets):
+.P
+ # dd if=/dev/zero of=/SWAP bs=1024 count=500000
+
+Un fichier \fISWAP\fR de 512Moctets est créé à la racine. On va le formater et le rendre actif:
+.P
+ # mkswap /SWAP
+ # swapon /SWAP
+
+Et ajouter l'entrée dans \fI/etc/fstab\fR:
+.P
+  /SWAP     swap       swap     pri=1       0        0
+
+.TP
+  \fBCréation d'un nouveau compte\fR:
+
+La commande \fBsetup-nutyx -cu\fP permet d'ajouter un nouvel utilisateur sur votre système.
+
+Le nouvel utilisateur sera automatiquement ajouté aux groupes essentiels de NuTyX. Si une interface graphique a été installée, celle-ci sera lancée et le \fBpremier\fR utilisateur inscrit sera automatiquement logué. Si vous souhaitez déactiver cette fonction, éditez le fichier \fI/etc/lxdm/lxdm.conf\fR. Les commandes classiques \fBuseradd/userdel\fR permettent d'ajouter/supprimer des comptes utilisateurs
+.TP
+  \fBL'horloge\fR:
+
+La commande \fBsetup-nutyx -cc\fP permet de configurer facilement la date et l'heure
+
+Sous NuTyX, l'affichage de l'horloge peut utiliser 2 methodes: 
+ - Methode 1: UTC=1, tenir compte du "Temps universel coordonné". Ajustement automatique heure d'été/hiver. Consultez la page wiki http://fr.wikipedia.org/wiki/Temps_universel_coordonn%C3%A9 pour plus d'informations.
+ - Methode 2: UTC=0, tenir compte de l'heure locale (celle de votre poignet) uniquement et ignorer le temps universel coordonné. Cette methode ne mettra pas l'horloge de votre machine à jour aux changements heure été/hiver.
+
+Le fichier \fI/etc/sysconfig/clock\fR défini la methode d'affichage de l'horloge sur la machine. Le fichier contient une seule variable \fBUTC\fR. si \fBUTC=1\fR cela signifie que l'horloge du bios DOIT être règlé sur l'horloge de temps universel  coordonné, et le script de configuration ajustera l'heure du bureau en fonction de la région où vous vous trouvez (Methode 1). Attention, si vous utilisez la methode 1 et que vous êtes en multiboot avec windows, l'heure sous windows sera fausse, ce dernier OS ne tient pas compte de cette difförence entre l'horloge bios et l'horloge de l'OS. Si \fBUTC=0\fR, l'horloge du bios et l'horloge du bureau afficheront l'heure locale, cad l'heure qui est à votre poignet (Methode 2). Si vous ne connaîssez pas le réglage actuelle de votre machine, vous pouvez vérifier le réglage de l'horloge de votre bios.  En root, lancez la commande \fBhwclock -r\fR. Ceci affichera l'horloge matérielle. Si l'heure correspond à ce qui vous dit votre montre, alors l'horloge matérielle est configurée sur l'heure locale. Vous pouvez alors confirmer ceci en mettant \fBUTC=0\fR dans le fichier \fI/etc/sysconfig/clock\fR. Si la sortie n'est pas identique à l'heure de votre poignet, il y a des chances qu'elle est été configurée en UTC. Si la commande \fBhwclock -ru\fR affiche l'heure de votre poignet, l'heure du bios de votre machine est alors correcte.
+
+.TP
+  \fBNom de la machine\fR:
+Le fichier \fI/etc/sysconfig/network\fR défini le nom de la machine. Il défini également quelle service sera utilisé pour configurer le réseau: soit le script de défaut, wicd ou networkmanager. Exemple de fichier de configuration:
+.P
+ HOSTNAME='nutyx'        # Le nom de votre machine
+ MANAGER='cli'           # Le gestionnaire de réseau (wicd/networkmanager/cli)
+ NETWORKWAIT='no'        # Attendre ou non le réseau
+ LINKDELAY='15'          # Délai d'initialisation de Networkmanager                         
+ NETWORKDELAY='0'        # Délai d'attente après l'initialisation de Networkmanager pour les montage nfs par exemple
+
+.TP
+  \fBLa langue utilisée\fR:
+Le fichier \fI/etc/profile.d/i18n.sh\fR défini la langue utilisée. La commande \fBsetup-nutyx -cl\fP permet de configurer facilement la langue et la région à utiliser.
+.TP
+  \fBLa région\fR:
+Le lien \fI/etc/localtime\fR défini la région où vous vous trouvez et ajustera le fuseau horaire en conséquence. Pour connaître le choix possible des différentes régions pour l'Europe par exemple, utilisez la commande: \fBl /usr/share/zoneinfo/Europe\fR. Ensuite ajustez le lien avec votre ville la plus proche, par exemple la commande: \fBsudo ln -sf /usr/share/zoneinfo/Europe/Rome /etc/localtime\fR défini Rome comme ville de votre région. La commande \fBsetup-nutyx -cl\fP permet de configurer facilement la langue et la région à utiliser.
+.TP
+  \fBL'amorçage de la machine\fR:
+Si vous avez utilisez une iso pour l'installation de NuTyX et que vous avez choisi d'installer l'amorçage de la machine, le fichier de configuration de l'amorçage se trouve dans \fI/boot/grub/grub.cfg\fR. Le nom du fichier du kernel de NuTyX s'appelle \fBkernel\fR, et le nom de l'initrd s'appelle \fBnutyx-initrd\fR. Les deux  fichiers se trouvent par défaut dans le dossier \fB/boot\fR. Dans l'exemple qui suit: NuTyX est installée sur la première partition du deuxième disque, grub est installé sur le premier disque. Le fichier de configurations sera:
+.P
+menuentry "NuTyX houaphan" {
+  set root=(hd1,1)
+  linux /boot/kernel root=/dev/sdb1 ro quiet 3
+  initrd /boot/initrd
+}
+
+Si l'on souhaite avoir une entrée supplémentaire pour lancer le système de maintenance, quand celle-ci sera disponible:
+.P
+menuentry "NuTyX systeme de maintenance" {
+  set root=(hd1,1)
+  linux /boot/kernel ro quiet 3
+  initrd /boot/initrd
+}
+
+Notez que l'option \fBroot=/dev/sdb1\fR est supprimée.
+
+Si l'amorce de \fBgrub\fR n'est pas encore installé, (dans le cas d'une installation depuis le script par exemple). Vous pouvez installer grub en spécifiant \fBle disque\fR sur
+lequel la partition de NuTyX sekong se trouve, dans notre exemple ci-dessus, on utilisera la commande suivante:
+.P
+sudo grub-install /dev/sdb
+
+Ajustez en fonction de votre partition.
+
+.TP
+  \fBChargement manuel des modules du kernel\fR:
+Un module est une partie du noyau qui peut être intégrée pendant le fonctionnement de la machine. La commande \fBlsmod\fR liste les différents modules chargés par le noyau. La commande \fBmodprobe \-v moduleX\fR charge manuellement en mémoire le \fBmoduleX\fP. La commande \fBrmmod \-v moduleX\fR décharge le \fBmoduleX\fR.
+
+.TP
+  \fBDéactiver le chargement (blacklister) d'un module\fP:
+Le dossier \fI/etc/modprobe.d\fR contient tous les fichiers définissant les modules à "blacklister". Exemple de syntaxe de fichier, le fichier \fI/etc/modprobe.d/blacklist.conf\fR contient: 
+
+blacklist radeon
+
+.TP
+  \fBModification/création de fichiers/dossier au démarrage de la machine\fP:
+Le fichier \fI/etc/sysconfig/createfiles\fR défini les fichiers / dossiers qui doivent être créés lors de l'amorçage de la machine.
+ 
+.SH EN CAS DE PROBLEMES
+
+Il existe de nombreux fichiers logs qui peuvent afficher de precieuses informations. Les informations de démarrage se trouvent dans les fichiers \fI/var/log/boot.log\fR et \fI/var/log/sys.log\fR. Les informations du dernier lancement du serveur X se trouvent dans le fichier \fI/var/log/Xorg.0.log\fR. La plupart des services disposent également de leur propre log. Si vous avez un problème de connection ssh, une source d'info peut se trouver dans le fichier \fI/var/log/auth.log\fR du serveur ssh. Pour connaître l'historique de votre installation, consultez le fichier \fI/var/log/install.log\fR.
+
+.SH GESTION DES PAQUETS BINAIRES DISTANTS (ET INSTALLES)
+La gestion des paquets binaires se fait via la commande \fBcards\fP. Elle comprends de nombreuses options dont voici quelques unes. Tapez \fBcards\fP pour une aide sommaire. Les commandes modifiant votre installation s'utilisent avec votre compte root (su \-) ou via la commande \fBsudo\fR.
+
+.TP
+  \fBConfiguration de cards\fR
+
+Le fichier \fI/etc/cards.conf\fR définit les règles de fonctionnement de la commande \fBcards\fR. Les lignes commençant par dir définis les dossiers où sont stockés les paquets binaires et l'adresse URL du mirroir utilisé. Les lignes commençant par base définies la liste des paquets que contient une NuTyX de base dans le cas de la commande \fBcards base\fR. Libre à vous d'ajouter les paquets que vous souhaitez garder lors de l'exécution de cette commande. Pour cela, vous ajoutez les dossiers concernés dans un des dossiers specifiés à cette ligne.
+
+.TP
+  \fBcheck\fR ou \fBsudo cards sync && cards diff\fR
+synchronisation, voir les mises à jour disponibles
+.TP
+  \fBget <paquet1> .. <paquetn>\fR  ou \fBsudo cards install <paquet>\fR
+installe les paquet1 .. paquetn et leurs dépendances
+.TP
+  \fBdel paquetX\fR ou \fBsudo cards remove paquetX\fR
+désinstalle le paquetX. Si vous souhaitez supprimer le paquetX et ses sous-paquets, utilisez l'option -a ou --all \fBcards remove -a paquetX\fR.
+.TP
+  \fBup <paquet>\fR ou \fBsudo cards install -u <paquet>\fR
+mise à jour du paquetX. Notez que les dépendances du <paquet> seront mis à jour si necessaire.
+.TP
+  \fBsearch <chaîne> ou cards search <chaîne>
+recherche le mots chaine dans le nom et la description des paquets, veuillez spécifier 2 lettres minimums.
+
+.TP
+  \fBcards diff \fR
+affiche la liste des paquets pouvant être mis à jour. La comparaison se fait avec les binaires diponibles.
+
+.TP
+  \fBcards diff -p\fR
+affiche la liste des paquets pouvant être mis à jour. La comparaison se fait avec les ports diponibles. Elle n'affiche rien si aucun port n'est rapatrié.
+
+.TP
+  \fBcards info <paquet>\fR
+affiche les détails du <paquet>, si il est installé.
+
+.TP
+  \fBcards info -b <paquet>\fR
+affiche les détails du <paquet> binaire, si il est disponible.
+
+.SH GESTION DES PAQUETS BINAIRES EN LOCAL (mode utilisateur avancé)
+Pour pouvoir utiliser les commandes ci-dessous, vous devez installer le paquet \fBcards.devel\fP.
+
+La gestion des paquets binaires en local se fait via les commandes \fBpkgadd, pkgrm, et pkginfo\fP. Les commandes modifiant votre installation s'utilisent avec votre compte root (su \-)
+.TP
+ \fBConfiguration de pkgadd\fR
+
+Le fichier \fI/etc/pkgadd.conf\fP défini les règles de d'installation et de mise à jour des paquets binaires. On y trouve trois colonnes, EVENEMENT,  ECHANTILLON (PATTERN) et ACTION. L'évennement décrit la situation dans laquelle la règle s'applique. Actuellement les 2 situations sont UPGRADE (pour mise à jour) et INSTALL (pour installation). Les règles UPGRADE s'appliquent donc quand un paquet est mis à jour et INSTALL s'appliquent dans TOUS LES CAS. L'ECHANTILLON (PATTERN) est une expression régulière. L'ACTION s'applique aux EVENEMENT INSTALL ET UPGRADE. Un EVENEMENT peut être YES (oui) ou NO (non). Il peut y avoir plus d'une règle utilisant le même évenement dans tel cas la première règle aura la prioritée la plus basse et la dernière règle aura la prioritée la plus haute. Exemple:
+
+.nf
+UPGRADE         ^etc/.*$                NO
+UPGRADE         ^var/log/.*$            NO
+UPGRADE         ^etc/X11/.*$            YES
+UPGRADE         ^etc/X11/XF86Config$    NO
+.fi
+
+L'exemple ci-dessus signale pkgadd de ne jamais mettre à jour les fichiers se trouvant dans /etc/ ou /var/log (sous-dossiers compris), à l'exeption des fichiers /etc/X11 (sous-dossiers compris), à l'exeption du fichier /etc/X11/XF86Config. La règle de défaut est mettre à jour / installer tous les paquets, autrement dis, les règles dans ce fichier sont les exceptions à cette règle. IMPORTANT: Un ECHANTILLON ne doit jamais contenir un "/" initial car on fait référence aux fichiers contenus dans le paquet et non ceux installés sur le disque. Si pkgadd trouve un fichier spécifique qui ne doit pas être mis à jour, celui-ci sera installer dans \fI/var/lib/pkg/rejected/\fP. C'est à l'utilisateur de l'examiner et d'en prendre la décision.
+
+.TP
+  \fBsudo pkgadd /chemin/vers/paquetX\fR
+installation d'un paquet local
+.TP
+  \fBsudo pkgadd \-u /chemin/vers/paquetX\fR
+mise à jour d'un paquet local
+.TP
+  \fBsudo pkgrm paquetX\fR
+supprime le paquetX silencieusement
+.TP
+  \fBpkginfo \-i\fR
+liste les paquets installés
+.TP
+  \fBpkginfo \-l paquetX\fR
+lister les fichiers contenus dans un paquet
+.TP
+  \fBpkginfo \-o NomDuFichier\fR
+connaître l'appartenance d'un fichier
+
+.SH GESTION DES PAQUETS VIA LES PORTS AVEC LA GESTION DES DEPENDANCES (mode utilisateur avancé)
+
+.P
+La gestion des recettes des paquets ainsi que les dépendances de ceux-ci se fait via la commande \fBcards\fP.
+.TP
+  \fBConfiguration de cards\fR
+Le fichier \fI/etc/cards.conf\fR définit les règles de fonctionnement de la commande \fBcards\fR. Les lignes \fBdir /var/lib/pkg/...\fR sont très importantes, l'ordre défini dans quel dossier la recette sera choisie si le port est en double.
+
+.TP
+  \fBcards deptree paquetX\fR
+lister les dépendances d'un paquet et voir si elles sont installées ou pas
+.TP
+  \fBcards search paquetX\fR
+voir si paquetX est disponible
+.TP
+  \fBcards info -p paquetX\fR
+obtenir des infos sur un port (deps, paquetr, chemin, ...)
+.TP
+  \fBcards depends <paquet>\fR
+lister les dépendances de compilation du <paquet>
+.TP
+  \fBcd /var/lib/pkg/saravane/server/paquetX && pkgmk \-d \-i\fR
+builder et installer un port (necessite les droits du compte root)
+.TP
+  \fBsudo cards create paquetX\fR
+télécharge, builde et installe paquetX en une seule commande
+
+.SH SERVICES
+
+.P
+Les différents services sont disponible sous le nom  <nom_du_paquet_de_base>.service. La commande \fBcards search service\fP affichera la liste des paquets de service disponible. Une fois installé, ils sont disponibles (cups, gdm, sshd, ...) dans le dossier \fI/etc/rc.d/init.d\fR
+
+.TP
+  \fB/etc/rc.d/init.d/serviceX start\fR
+mise en route du serviceX
+.TP
+  \fB/etc/rc.d/init.d/serviceX stop\fR
+arrêt du serviceX
+.TP
+  \fB/etc/rc.d/init.d/serviceX restart\fR
+redémarrage du serviceX, cette option n'est pas toujours valable.
+
+.SH AIDE EN LIGNE
+
+.TP
+  \fBIRC\fR
+rejoindre le canal \fI#nutyx\fR sur le réseau irc.freenode.net (utf\-8)
+.TP
+  \fBSite des utilisateurs\fR
+http://www.nutyx.org
+
+.SH FICHIERS
+\fI/etc/cards.conf,
+/etc/pkgadd.conf,
+/etc/pkgmk.conf,
+/etc/sysconfig/console,
+/etc/sysconfig/clock,
+/etc/sysconfig/network,
+/etc/wpa_supplicant.conf.*,
+/etc/sysconfig/ifconfig.*,
+/boot/grub/grub.cfg,
+/etc/fstab,
+/etc/profile.d/i18n.sh,
+/var/log/install.log
+\fR
+
+.SH AUTHEURS
+
+.P
+Ecrit par Frederic Galusik <fred.galusik ~AT~ linuxpedia.fr> et Thierry Nuttens <thierryn1 ~AT~ hispeed.ch>
+
+.SH VOIR AUSSI les pages man de
+
+.P
+pkgmk(8), pkgadd(8), pkgrm(8), pkginfo(8), 
+modprobe(8), modprobe.conf(5),
+useradd(8), userdel(8)
+
+.SH COPYRIGHT
+
+.P
+Copyright (C) 2009 \- 2010 \- 2011 Frederic Galusik
+Copyright (C) 2011 \- 2012 \- 2013 \- 2014 \- 2016 Thierry Nuttens
+
+.P
+Ceci est un document libre publié sous licence libre WTFPL \-
+Do What The Fuck You Want To Public License.
+( http://www.wtfpl.net/ )
+
+.\" man code generated by txt2tags 2.6 (http://txt2tags.org)
+.\" cmdline: txt2tags -t man -i nutyx.t2t.pakxe -o nutyx.1
