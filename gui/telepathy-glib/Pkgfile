@@ -9,7 +9,7 @@ run=(gobject-introspection vala)
 
 name=telepathy-glib
 version=0.24.1
-release=3
+release=4
 
 source=(http://${name%-*}.freedesktop.org/releases/$name/$name-$version.tar.gz)
 
@@ -23,4 +23,6 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 
+# Obsolet lib
+rm $PKG/usr/lib/libtelepathy-glib.la
 }
