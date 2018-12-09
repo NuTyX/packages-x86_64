@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=qgpgme
 version=1.9.0
-release=1
+release=2
 
 source=(ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-$version.tar.bz2)
 
@@ -19,4 +19,7 @@ build() {
  make
  cd lang/qt
  make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libqgpgme.la
 }
