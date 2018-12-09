@@ -8,6 +8,7 @@ run=(desktop-file-utils gtk-update-icon-cache)
 
 name=tracker
 version=2.1.5
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
@@ -22,4 +23,11 @@ build(){
 	            --disable-miner-thunderbird
    make
    make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libtracker-control-2.0.la
+rm $PKG/usr/lib/libtracker-miner-2.0.la
+rm $PKG/usr/lib/libtracker-sparql-2.0.la
+rm $PKG/usr/lib/tracker-2.0/libtracker-common.la
+rm $PKG/usr/lib/tracker-2.0/libtracker-data.la
 }
