@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=xcb-util-wm
 version=0.4.1
-release=1
+release=2
 
 source=(http://xcb.freedesktop.org/dist/$name-$version.tar.bz2)
 
@@ -18,6 +18,9 @@ build() {
         
         make
         make DESTDIR=$PKG install
-        
-}
 
+	# Obsolet lib
+	rm $PKG/usr/lib/libxcb-ewmh.la
+	rm $PKG/usr/lib/libxcb-icccm.la
+
+}
