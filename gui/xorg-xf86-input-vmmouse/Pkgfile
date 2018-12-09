@@ -5,6 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 name=xorg-xf86-input-vmmouse
 version=13.1.0
 _name=${name/xorg-/}
+release=2
 
 source=(http://ftp.x.org/pub/individual//driver/${_name}-$version.tar.bz2)
 
@@ -20,6 +21,8 @@ build() {
 	make
 	make DESTDIR=$PKG install
 
+	# Obsolet lib
+	rm $PKG/usr/lib/xorg/modules/input/vmmouse_drv.la
 }
 uptodate() {
 local ext url name LINX
