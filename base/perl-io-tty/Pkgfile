@@ -1,0 +1,22 @@
+# Depends on: perl
+
+description="Provide an interface to TTYs and PTYs"
+url="https://metacpan.org/pod/IO::Tty"
+packager="tnut <tnut@nutyx.org>"
+
+run=( perl )
+
+name=perl-io-tty
+version=1.12
+
+source=(http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/IO-Tty-$version.tar.gz)
+
+build() {
+    cd IO-Tty-$version
+    perl Makefile.PL
+    make OPTIMIZE="$CFLAGS"
+    make install INSTALLDIRS=vendor DESTDIR=$PKG
+
+    # Remove .packlist if present in the package
+    find $PKG -name '.packlist' -delete 
+}

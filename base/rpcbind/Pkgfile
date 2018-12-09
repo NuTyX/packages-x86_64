@@ -1,0 +1,34 @@
+# Depends on: libtirpc systemd
+
+description="portmap replacement which supports RPC over various protocols"
+url="http://rpcbind.sourceforge.net/"
+contributors="alienus at nutyx dot org"
+packager="tnut <tnut@nutyx.org>"
+
+PKGMK_GROUPS=(man)
+
+name=rpcbind
+version=1.2.5
+nutyx_version=11
+
+source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.bz2
+	http://downloads.sourceforge.net/rpcbind/rpcbind-$version.tar.bz2
+	http://www.linuxfromscratch.org/patches/blfs/svn/rpcbind-$version-vulnerability_fixes-1.patch)
+
+build() {
+    cd rpcbind-$version
+    sed -i "/servname/s:rpcbind:sunrpc:" src/rpcbind.c
+
+    patch -Np1 -i ../rpcbind-$version-vulnerability_fixes-1.patch
+    ./configure --prefix=/usr       \
+                --bindir=/sbin      \
+		--sbindir=/sbin      \
+                --with-rpcuser=rpc \
+		--enable-warmstarts
+    make
+    make DESTDIR=$PKG install
+
+    cd ../nutyx-${nutyx_version}
+    make DESTDIR=$PKG install-rpcbind
+
+}

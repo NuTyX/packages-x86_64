@@ -1,0 +1,28 @@
+# Depends on: perl perl-encode-locale perl-html-parser perl-http-date perl-lwp-mediatypes perl-uri 
+
+description="HTTP style messages"
+url="https://metacpan.org/pod/HTTP::Message"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=( perl )
+
+name=perl-http-message
+version=6.18
+
+source=(http://search.cpan.org/CPAN/authors/id/O/OA/OALDERS/HTTP-Message-$version.tar.gz)
+
+build() {
+( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""  \
+      PERL_AUTOINSTALL=--skipdeps           \
+      PERL_MM_OPT="INSTALLDIRS=vendor"      \
+      PERL_MB_OPT="--installdirs vendor"    \
+      MODULEBUILDRC=/dev/null)
+
+cd HTTP-Message-$version
+perl Makefile.PL
+make
+make DESTDIR=$PKG install
+find $PKG -name '*.bs' -or \
+-name '.packlist' -delete
+}

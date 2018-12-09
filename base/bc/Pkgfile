@@ -1,0 +1,36 @@
+description="The Bc package contains an arbitrary precision numeric processing language."
+url="http://ftp.gnu.org/gnu/bc/"
+packager="tnut <tnut@nutyx.org>"
+name=bc
+version=1.07.1
+
+source=(http://ftp.gnu.org/gnu/bc/bc-$version.tar.gz)
+
+build() {
+cd $name-$version
+cat > bc/fix-libmath_h << "EOF"
+#! /bin/bash
+sed -e '1   s/^/{"/' \
+    -e     's/$/",/' \
+    -e '2,$ s/^/"/'  \
+    -e   '$ d'       \
+    -i libmath.h
+
+sed -e '$ s/$/0}/' \
+    -i libmath.h
+EOF
+
+if [ -L /tools ]; then
+   ln -sv /tools/lib/libncursesw.so.6 /usr/lib/libncursesw.so.6
+   ln -sfv libncurses.so.6 /usr/lib/libncurses.so
+fi
+
+sed -i -e '/flex/s/as_fn_error/: ;; # &/' configure
+
+./configure --prefix=/usr \
+--with-readline \
+--mandir=/usr/share/man \
+--infodir=/usr/share/info
+make
+make DESTDIR=$PKG install
+}

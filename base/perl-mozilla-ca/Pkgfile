@@ -1,0 +1,25 @@
+# Depends on: perl
+
+description="Mozilla's CA cert bundle in PEM format"
+url="https://metacpan.org/pod/Mozilla::CA"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=( perl )
+
+name=perl-mozilla-ca
+version=20180117
+
+source=(http://search.cpan.org/CPAN/authors/id/A/AB/ABH/Mozilla-CA-$version.tar.gz)
+
+build() {
+export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
+unset PERL5LIB PERL_MM_OPT
+
+cd Mozilla-CA-$version
+perl Makefile.PL
+make
+make install INSTALLDIRS=vendor DESTDIR=$PKG
+find $PKG -name '*.bs' -or \
+-name '.packlist' -delete
+}

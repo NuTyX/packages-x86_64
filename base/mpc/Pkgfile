@@ -1,0 +1,21 @@
+description="Library for the arithmetic of complex numbers with arbitrarily high precision."
+url="http://www.multiprecision.org/"
+maintainer="Andreas Enge,Philipe Théveny,Paul Zimmermann"
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+
+name=mpc
+version=1.1.0
+
+source=(https://ftp.gnu.org/gnu/mpc/mpc-$version.tar.gz )
+build()
+{
+cd mpc-$version
+./configure --prefix=/usr \
+--disable-static \
+--docdir=/usr/share/doc/$name-$version
+make
+make check
+make DESTDIR=$PKG install
+make DESTDIR=$PKG install-html
+}

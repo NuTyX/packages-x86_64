@@ -1,0 +1,28 @@
+maintainer="Will Estes,John Millaway,Aaron Stone,Vern Paxson,Van Jacobson,Jef Poskanzer,Kevin Gong,Vern Paxson"
+description="A tool for generating text-scanning programs"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+url="http://flex.sourceforge.net"
+name=flex
+version=2.6.4
+
+source=(https://github.com/westes/flex/releases/download/v${version}/flex-$version.tar.gz)
+build()
+{
+cd flex-$version
+
+sed -i "/math.h/a #include <malloc.h>" src/flexdef.h
+
+HELP2MAN=`which true` \
+./configure --prefix=/usr \
+--docdir=/usr/share/doc/flex-$version
+
+make
+make -k check||true
+
+make DESTDIR=$PKG install
+
+ln -sv flex $PKG/usr/bin/lex
+
+}

@@ -1,0 +1,24 @@
+# Depends on: gettext perl
+
+description="Permits access from Perl to the gettext() family of functions"
+url="https://metacpan.org/pod/Locale::gettext"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus"
+
+run=( perl )
+
+name=perl-locale-gettext
+version=1.07
+release=1
+
+source=(http://search.cpan.org/CPAN/authors/id/P/PV/PVANDRY/gettext-$version.tar.gz)
+
+build() {
+    cd Locale-gettext-$version
+    PERL_MM_USE_DEFAULT=1 perl Makefile.PL
+    make OPTIMIZE="$CFLAGS" 
+    make install INSTALLDIRS=vendor DESTDIR=$PKG
+
+    # Remove .packlist if present in the package
+    find $PKG -name .packlist -delete
+}

@@ -1,0 +1,17 @@
+description="The Make package contains a program for compiling packages."
+url="http://www.gnu.org/software/make/"
+maintainer="Paul D. Smith psmith at gnu dot org,Boris Kolpackov boris at kolpackov dot net"
+packager="tnut <tnut@nutyx.org>"
+
+PKGMK_GROUPS=(man locale)
+
+name=make
+version=4.2.1
+release=1
+
+source=(http://ftp.gnu.org/gnu/make/make-$version.tar.bz2)
+prepare()
+{
+cd $name-$version
+sed -i '211,217 d; 219,229 d; 232 d' glob/glob.c
+}

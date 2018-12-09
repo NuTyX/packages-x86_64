@@ -1,0 +1,21 @@
+description="A GNU tool for automatically configuring source code (Legacy 2.1x version)"
+url="http://www.gnu.org/software/autoconf/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=autoconf2-13
+version=2.13
+
+source=(http://ftpmirror.gnu.org/autoconf/autoconf-$version.tar.gz)
+
+build() {
+  cd $SRC/autoconf-$version
+  ./configure --prefix=/usr \
+              --infodir=/usr/share/info \
+              --program-suffix=-2.13
+  make
+  make prefix="$PKG/usr" infodir="$PKG/usr/share/info" install
+
+  mv $PKG/usr/share/info/autoconf{,-2.13}.info
+  mv $PKG/usr/share/info/standards{,-2.13}.info
+}

@@ -1,0 +1,41 @@
+description="A free library for arbitrary precision arithmetic."
+url="http://gmplib.org/"
+paintainer="Torb,Granlund and many more"
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+
+name=gmp
+version=6.1.2
+release=3
+
+source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz)
+
+build()
+{
+cd gmp-$version
+cp -v configfsf.guess config.guess
+cp -v configfsf.sub   config.sub
+
+case `uname -m` in
+ i?86)
+	ABI=32 ./configure \
+	--prefix=/usr \
+	--enable-cxx \
+	--docdir=/usr/share/doc/$name-$version;;
+ *)
+	./configure \
+	--prefix=/usr \
+	--build=x86_64-unknown-linux-gnu \
+	--enable-cxx \
+	--docdir=/usr/share/doc/$name-$version;;
+esac
+make
+make html
+
+# make check 2>&1 | tee gmp-check-log
+# awk '/tests passed/{total+=$2} ; END{print total}' gmp-check-log
+
+make DESTDIR=$PKG install
+make DESTDIR=$PKG install-html
+
+}

@@ -1,0 +1,62 @@
+description="Init system to control boot, execution and halt of a linux system"
+url="http://www.freedesktop.org/wiki/Software/systemd/"
+packager="tnut <tnut@nutyx.org>"
+maintainer="tnut <tnut@nutyx.org>"
+
+name=systemd
+version=239-6b4878d
+
+PKGMK_IGNORE_UNPACK="yes"
+
+source=(https://github.com/systemd/systemd/archive/v${version:0:3}/systemd-$version.tar.xz
+        http://anduin.linuxfromscratch.org/LFS/systemd-man-pages-$version.tar.xz)
+
+build () {
+tar -xf systemd-$version.tar.xz
+cd $name-$version
+ln -sf /tools/bin/true /usr/bin/xsltproc
+sed '166,$ d' -i src/resolve/meson.build
+sed -i 's/GROUP="render", //' rules/50-udev-default.rules.in
+
+for file in /tools/lib/lib{blkid,mount,uuid}*; do
+    ln -sf $file /usr/lib/
+done
+
+tar -xvf ../systemd-man-pages-$version.tar.xz
+
+mkdir -p build
+cd       build
+
+PKG_CONFIG_PATH="/usr/lib/pkgconfig:/tools/lib/pkgconfig" \
+LANG="en_US.UTF-8"                  \
+meson --prefix=/usr                \
+      --sysconfdir=/etc            \
+      --localstatedir=/var         \
+      -Dblkid=true                 \
+      -Dbuildtype=release          \
+      -Ddefault-dnssec=no          \
+      -Dfirstboot=false            \
+      -Dinstall-tests=false        \
+      -Dkill-path=/bin/kill        \
+      -Dkmod-path=/bin/kmod        \
+      -Dldconfig=false             \
+      -Dmount-path=/bin/mount      \
+      -Drootprefix=                \
+      -Drootlibdir=/lib            \
+      -Dsplit-usr=true             \
+      -Dsulogin-path=/sbin/sulogin \
+      -Dsysusers=false             \
+      -Dumount-path=/bin/umount    \
+      -Db_lto=false                \
+      ..
+
+LANG=en_US.UTF-8 ninja
+DESTDIR=$PKG LANG="en_US.UTF-8" ninja install
+rm -rfv $PKG/usr/lib/rpm
+rm -f /usr/bin/xsltproc
+cat > $PKG/lib/systemd/systemd-user-sessions << "EOF"
+#!/bin/bash
+rm -f /run/nologin
+EOF
+chmod 755 $PKG/lib/systemd/systemd-user-sessions
+}

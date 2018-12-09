@@ -1,0 +1,23 @@
+# Depends on: perl
+
+description="Perl/CPAN Error module - Error/exception handling in an OO-ish way"
+url="https://metacpan.org/pod/Error"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=( perl )
+
+name=perl-error
+version=0.17026
+
+source=(http://search.cpan.org/CPAN/authors/id/S/SH/SHLOMIF/Error-$version.tar.gz)
+
+build() {
+cd Error-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+find $PKG \
+         -name '*.bs' -or \
+         -name '.packlist' | xargs rm
+}

@@ -1,0 +1,41 @@
+description="The Open Source toolkit for Secure Sockets Layer and Transport Layer Security."
+url="http://www.openssl.org/"
+packager="tnut <tnut@nutyx.org>"
+
+name=openssl
+version=1.1.1a
+release=2
+
+source=(ftp://ftp.openssl.org/source/$name-$version.tar.gz)
+
+PKGMK_GROUPS=(devel man doc)
+
+build() {
+unset MAKEFLAGS
+
+cd $name-$version
+
+./config --prefix=/usr \
+	--openssldir=/etc/ssl \
+	shared zlib-dynamic
+
+make
+
+# sed -i '/INSTALL_LIBS/s/libcrypto.a libssl.a//' Makefile
+
+make DESTDIR=$PKG MANDIR=/usr/share/man \
+MANSUFFIX=ssl install
+
+mv -v $PKG/usr/share/doc/openssl{,-$version}
+cp -vfr doc/*     $PKG/usr/share/doc/openssl-$version
+
+}
+devel()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/pkgconfig usr/include
+
+rm -r usr/lib/pkgconfig usr/include
+}

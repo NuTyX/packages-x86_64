@@ -1,0 +1,99 @@
+diff --git a/fltk/cards_client.cxx b/fltk/cards_client.cxx
+index 8ea8220..69b97cf 100644
+--- a/fltk/cards_client.cxx
++++ b/fltk/cards_client.cxx
+@@ -82,6 +82,9 @@ namespace cards
+             {
+                 m_upgrade=0;
+             }
++            // We don't want to have trouble with conflict files,
++            // lets flcards force the installation by default
++            m_force=true;
+             run();
+         }
+     }
+diff --git a/scripts/pkgmk.conf b/scripts/pkgmk.conf
+index 0b18b81..55cefe0 100644
+--- a/scripts/pkgmk.conf
++++ b/scripts/pkgmk.conf
+@@ -35,6 +35,7 @@ esac
+ # PKGMK_KEEP_SOURCES="no"
+ # PKGMK_SOURCE_DIR="$PWD"
+ # PKGMK_WORK_DIR="$PWD/work"
++# PKGMK_COMPRESSION_OPTS="-9 --threads=$(getconf _NPROCESSORS_ONLN)"
+ # PKGMK_IGNORE_REPO="yes"
+ # PKGMK_IGNORE_COLLECTION="yes"
+ # PKGMK_IGNORE_RUNTIMEDEPS="yes"
+@@ -49,7 +50,7 @@ esac
+ # PKGMK_WORK_DIR="/tmp/work"
+ # PKGMK_COMPRESS_PACKAGE="yes"
+ # PKGMK_COMPRESSION_MODE="xz"
+-# PKGMK_COMPRESSION_OPTS="-9 ---threads=$(getconf _NPROCESSORS_ONLN)"
++# PKGMK_COMPRESSION_OPTS="-9 --threads=$(getconf _NPROCESSORS_ONLN)"
+ # PKGMK_IGNORE_REPO="no"
+ # PKGMK_IGNORE_COLLECTION="no"
+ # PKGMK_IGNORE_RUNTIMEDEPS="no"
+diff --git a/scripts/pkgmk.in b/scripts/pkgmk.in
+index 1e4c48e..f4fab35 100644
+--- a/scripts/pkgmk.in
++++ b/scripts/pkgmk.in
+@@ -98,7 +98,7 @@ get_variables() {
+ 	done < $PKGMK_ROOT/$PKGMK_PKGFILE
+ }
+ check_pkgfile() {
+-	local SIZE NAME_TEST RELEASE_TEST
++	local SIZE NAME_TEST RELEASE_TEST DESC_TEST
+ 	if [ "${name}" == "" ]; then
+ 		error "Variable 'name' not initiated or not found in $PKGMK_PKGFILE."
+ 		exit $E_PKGFILE
+@@ -133,6 +133,12 @@ check_pkgfile() {
+ 		error "Variable 'release' outside limit which is '99999999'"
+ 		exit $E_PKGFILE
+ 	fi
++	DESC_TEST=`echo "${description}" | grep '#'`
++	if [ "$DESC_TEST" != "" ]; then
++		error "Variable 'description' contains the '#' illegal character"
++		exit $E_PKGFILE
++	fi
++
+ 	if [ "${description}" == "" ]; then
+ 		warning "Variable 'description' not initiated or not found in $PKGMK_PKGFILE."
+ 	fi
+@@ -866,7 +872,7 @@ compress_archive() {
+ 	case $PKGMK_COMPRESSION_MODE in
+ 		gz) gzip -9 $1;;
+ 		bz2) bzip2 -9  $1;;
+-		xz)  xz -z -9 $1;;
++		xz)  xz -z $PKGMK_COMPRESSION_OPTS $1;;
+ 	esac
+ }
+ build_package() {
+@@ -1230,16 +1236,14 @@ check_sources_uptodate() {
+ }
+ check_build() {
+ 	local LIST
+-	cd $PKG
+-	LIST=`find . ! -type d -name "*.la"`
+-	if [ ! -z $LIST ];then
+-		warning "following files should be removed"
++	LIST=`find $PKG ! -type d -name "*.la"`
++	if [ ! -z "$LIST" ]; then
++		warning "following files should be removed:"
+ 		for i in $LIST
+ 		do
+ 			echo $i
+ 		done
+ 	fi
+-	cd -
+ }
+ interrupted() {
+ 	echo ""
+@@ -1697,7 +1701,7 @@ PKGMK_IGNORE_RUNTIMEDEPS="yes"
+ PKGMK_NO_STRIP="no"
+ 
+ PKGMK_COMPRESSION_MODE="xz"
+-
++PKGMK_COMPRESSION_OPTS="-9 --threads=$(getconf _NPROCESSORS_ONLN)"
+ PKGMK_COMPRESS_PACKAGE="no"
+ 
+ PKGMK_INSTALL="no"

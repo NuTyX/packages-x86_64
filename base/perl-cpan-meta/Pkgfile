@@ -1,0 +1,27 @@
+# Depends on: perl
+
+description="the distribution metadata for a CPAN dist"
+url="https://metacpan.org/pod/CPAN::Meta"
+packager="tnut <tnut@nutyx.org>"
+
+run=( perl )
+name=perl-cpan-meta
+version=2.150010
+
+source=(http://search.cpan.org/CPAN/authors/id/D/DA/DAGOLDEN/CPAN-Meta-$version.tar.gz)
+
+build() {
+    cd CPAN-Meta-$version
+    export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
+    unset PERL5LIB PERL_MM_OPT
+    perl Makefile.PL
+    make
+    make install INSTALLDIRS=vendor DESTDIR="$PKG"
+
+    # Remove .packlist if present in the package
+    for i in .packlist; do
+        find $PKG -name "$i" -exec rm -rf {} \;
+    done
+    # Part of perl
+    rm -r $PKG/usr/share/man
+}

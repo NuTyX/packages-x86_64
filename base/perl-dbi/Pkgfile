@@ -1,0 +1,22 @@
+# Depends on: perl
+
+description="Database independent interface for Perl"
+url="https://metacpan.org/pod/DBI"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=( perl )
+name=perl-dbi
+version=1.641
+
+source=(http://www.cpan.org/authors/id/T/TI/TIMB/DBI-$version.tar.gz)
+
+build() {
+cd DBI-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+find $PKG \
+        -name '*.bs' -or \
+        -name .packlist | xargs rm
+}

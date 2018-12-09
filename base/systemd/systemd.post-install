@@ -1,0 +1,38 @@
+if [ ! -e /etc/machine-id ]; then
+systemd-machine-id-setup
+else
+echo "/etc/machine-id already exists, nothing to do"
+fi
+
+if [ $(cat /etc/pam.d/system-session | grep -i pam_systemd.so | wc -l) -eq 1 ];then
+echo "pam conf for systemd present, nothing to do"
+else
+cat >> /etc/pam.d/system-session << "EOF"
+# Begin Systemd addition
+    
+session   required    pam_loginuid.so
+session   optional    pam_systemd.so
+
+# End Systemd addition
+EOF
+fi
+
+if [ ! -e /etc/pam.d/systemd-user ];then
+cat > /etc/pam.d/systemd-user << "EOF"
+# Begin /etc/pam.d/systemd-user
+
+account  required pam_access.so
+account  include  system-account
+
+session  required pam_env.so
+session  required pam_limits.so
+session  include  system-session
+
+auth     required pam_deny.so
+password required pam_deny.so
+
+# End /etc/pam.d/systemd-user
+EOF
+else
+echo "systemd conf with pam present, nothing to do"
+fi

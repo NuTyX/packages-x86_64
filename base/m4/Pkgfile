@@ -1,0 +1,23 @@
+description="The M4 package contains a macro processor"
+url="http://www.seindal.dk/rene/gnu/"
+maintainer="Tim Rice, tim at multitalents dot net"
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+
+name=m4
+version=1.4.18
+
+source=(http://ftp.gnu.org/gnu/m4/m4-$version.tar.xz)
+
+build()
+{
+cd m4-$version
+
+sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' lib/*.c
+echo "#define _IO_IN_BACKUP 0x100" >> lib/stdio-impl.h
+
+./configure --prefix=/usr
+make
+make check || true
+make DESTDIR=$PKG install
+}

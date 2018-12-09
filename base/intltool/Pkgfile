@@ -1,0 +1,20 @@
+description="Base system of NuTyX, contains all folders and startup scripts."
+url="https://github.com/nutyx"
+packager="tnut <tnut@nutyx.org>"
+maintainer="tnut <tnut@nutyx.org>"
+
+name=intltool
+version=0.51.0
+
+source=(http://launchpad.net/$name/trunk/$version/+download/$name-$version.tar.gz)
+
+build () {
+cd $name-$version
+sed -i 's:\\\${:\\\$\\{:' intltool-update.in
+./configure --prefix=/usr
+make
+make check || true
+make DESTDIR=$PKG install
+mkdir -pv $PKG/usr/share/doc/$name-$version
+install -v -Dm644 doc/I18N-HOWTO $PKG/usr/share/doc/$name-$version/I18N-HOWTO
+}

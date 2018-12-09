@@ -1,0 +1,47 @@
+description="Utilities for showing and setting the basic system characteristics"
+url="http://www.gnu.org/software/coreutils/"
+maintainer="Jim Meyering meyering at redhat dot com"
+packager="tnut <tnut@nutyx.org>"
+
+name=coreutils
+version=8.30
+
+source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz
+	http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-i18n-1.patch
+	)
+build()
+{
+cd $name-$version
+
+patch -Np1 -i ../$name-$version-i18n-1.patch
+
+sed -i '/test.lock/s/^/#/' gnulib-tests/gnulib.mk
+
+autoreconf -fiv
+FORCE_UNSAFE_CONFIGURE=1 ./configure --prefix=/usr \
+--enable-no-install-program=kill,uptime
+
+FORCE_UNSAFE_CONFIGURE=1 make || FORCE_UNSAFE_CONFIGURE=1 make -j1
+if [ -f /tools/bin/su ];then
+	make NON_ROOT_USERNAME=nobody check-root
+
+	echo "dummy:x:1000:nobody" >> /etc/group
+	chown -Rv nobody .
+
+	su-tools nobody -s /bin/bash -c "make -k RUN_EXPENSIVE_TESTS=yes check"||true
+
+	sed -i '/dummy/d' /etc/group
+fi
+make DESTDIR=$PKG install
+
+mkdir -p $PKG/{bin,usr/sbin}
+mv -v $PKG/usr/bin/{cat,chgrp,chmod,chown,cp,date,dd,df,echo} $PKG/bin
+mv -v $PKG/usr/bin/{false,ln,ls,mkdir,mknod,mv,pwd,rm} $PKG/bin
+mv -v $PKG/usr/bin/{rmdir,stty,sync,true,uname} $PKG/bin
+mv -v $PKG/usr/bin/chroot $PKG/usr/sbin
+mkdir -p $PKG/usr/share/man/man8
+mv -v $PKG/usr/share/man/man1/chroot.1 $PKG/usr/share/man/man8/chroot.8
+sed -i s/\"1\"/\"8\"/1 $PKG/usr/share/man/man8/chroot.8
+
+mv -v $PKG/usr/bin/{head,sleep,nice,touch,[} $PKG/bin
+}	

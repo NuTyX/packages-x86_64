@@ -1,0 +1,24 @@
+# Depends on: perl perl-io-socket-ssl perl-mozilla-ca perl-net-http perl-libwww 
+
+description="Provide https support for LWP::UserAgent"
+url="https://metacpan.org/pod/LWP::Protocol::https"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=( perl )
+
+name=perl-lwp-protocol-https
+version=6.07
+release=1
+
+source=(http://search.cpan.org/CPAN/authors/id/O/OA/OALDERS/LWP-Protocol-https-$version.tar.gz)
+
+build() {
+cd LWP-Protocol-https-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+
+find $PKG -name '*.bs' -or \
+-name '.packlist' -delete
+}

@@ -1,0 +1,29 @@
+# Depends on: systemd expat
+description="Bus message system"
+url="http://dbus.freedesktop.org/releases/dbus"
+packager="tnut <tnut@nutyx.org>"
+maintainer="tnut <tnut@nutyx.org>"
+
+name=dbus
+version=1.12.10
+
+source=(http://dbus.freedesktop.org/releases/dbus/dbus-$version.tar.gz)
+
+build () {
+cd $name-$version
+./configure --prefix=/usr                        \
+            --sysconfdir=/etc                    \
+            --localstatedir=/var                 \
+            --disable-doxygen-docs               \
+            --disable-xml-docs                   \
+            --disable-static                     \
+            --docdir=/usr/share/doc/dbus-$version \
+            --with-console-auth-dir=/run/console \
+
+make
+make DESTDIR=$PKG install
+mkdir -pv $PKG/lib
+mv -v $PKG/usr/lib/libdbus-1.so.* $PKG/lib
+ln -sfv ../../lib/$(readlink $PKG/usr/lib/libdbus-1.so) $PKG/usr/lib/libdbus-1.so
+ln -sv $PKG/etc/machine-id $PKG/var/lib/dbus
+}

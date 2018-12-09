@@ -1,0 +1,33 @@
+url="http://savannah.nongnu.org/projects/acl"
+description="Commands for Manipulating POSIX Access Control Lists."
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+name=acl
+version=2.2.53
+
+source=( http://download.savannah.gnu.org/releases/$name/$name-$version.tar.gz)
+
+build() {
+cd acl-*
+
+INSTALL_USER=root  \
+INSTALL_GROUP=root \
+./configure --prefix=/usr --libexecdir=/usr/lib \
+            --bindir=/bin \
+            --docdir=/usr/share/doc/$name-$version
+make
+make DESTDIR=$PKG install
+chmod -v 755 $PKG/usr/lib/libacl.so
+mkdir $PKG/lib
+mv -v $PKG/usr/lib/libacl.so.* $PKG/lib
+ln -sfv ../../lib/libacl.so.1 \
+$PKG/usr/lib/libacl.so
+}
+
+devel () {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+usr/lib usr/include
+rm -rvf usr/lib usr/include
+}

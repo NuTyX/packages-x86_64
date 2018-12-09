@@ -1,0 +1,23 @@
+# Depends on: perl
+
+description="A getaddrinfo/getnameinfo support module"
+url="https://metacpan.org/pod/Socket6"
+packager="tnut <tnut@nutyx.org>"
+
+run=( perl )
+
+name=perl-socket6
+version=0.28
+release=2
+
+source=(http://search.cpan.org/CPAN/authors/id/U/UM/UMEMOTO/Socket6-$version.tar.gz)
+
+build() {
+cd Socket6-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+find $PKG \
+         -name '*.bs' -or \
+         -name '.packlist' | xargs rm
+}

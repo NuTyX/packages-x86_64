@@ -1,0 +1,22 @@
+description="Connect your computer to a network which uses DHCP to assign network addresses."
+url="http://roy.marples.name/projects/dhcpcd"
+maintainer="Roy Marples"
+packager="tnut <tnut@nutyx.org>"
+
+name=dhcpcd
+version=7.0.8
+nutyx_version=11
+
+source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.bz2
+        http://roy.marples.name/downloads/$name/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix= \
+--libexecdir=/lib/dhcpcd \
+--dbdir=/var/lib/dhcpcd
+make
+make DESTDIR=$PKG install
+cd ../nutyx-${nutyx_version}
+make install-dhcpcd
+}

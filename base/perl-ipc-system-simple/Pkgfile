@@ -1,0 +1,22 @@
+# Depends on: perl
+
+description="Run commands simply, with detailed diagnostics"
+url="https://metacpan.org/pod/IPC::System::Simple"
+packager="tnut <tnut@nutyx.org>"
+
+run=( perl )
+
+name=perl-ipc-system-simple
+version=1.25
+
+source=(http://search.cpan.org/CPAN/authors/id/P/PJ/PJF/IPC-System-Simple-$version.tar.gz)
+
+build() {
+    cd IPC-System-Simple-$version
+    perl Makefile.PL INSTALLDIRS=vendor
+    make
+    make DESTDIR=$PKG install
+
+    # Remove .packlist if present in the package
+    find $PKG -name '.packlist' -delete
+}

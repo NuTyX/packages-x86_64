@@ -1,0 +1,22 @@
+# Depends on: perl perl-http-date perl-http-message
+
+description="HTTP cookie jars"
+url="https://metacpan.org/pod/HTTP::Cookies"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=( perl )
+
+name=perl-http-cookies
+version=6.04
+
+source=(http://search.cpan.org/CPAN/authors/id/O/OA/OALDERS/HTTP-Cookies-$version.tar.gz)
+
+build() {
+cd HTTP-Cookies-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+find $PKG -name '*.bs' -or \
+-name '.packlist' -delete
+}

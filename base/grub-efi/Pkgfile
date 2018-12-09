@@ -1,0 +1,33 @@
+# Depends on: efibootmgr efivar freetype
+description="The GRUB package contains the GRand Unified Bootloader, EFI version"
+url="http://www.gnu.org/software/grub/"
+packager="tnut <tnut@nutyx.org>"
+
+name=grub-efi
+version=2.02
+run=(efivar)
+
+source=(http://downloads.tuxfamily.org/nutyx/files/unicode.pf2
+	http://alpha.gnu.org/gnu/grub/grub-$version.tar.xz)
+
+PKGMK_GROUPS=(man locale)
+
+build() {
+ cd grub-$version
+ ./configure --prefix=/usr --sysconfdir=/etc \
+ --sbindir=/sbin \
+ --disable-efiemu --enable-grub-mkfont \
+ --with-platform=efi --target=$PKGMK_ARCH \
+ --program-prefix="" --program-suffix="-efi" \
+ --with-bootdir="/boot" \
+ --with-grubdir="grub-efi"  --disable-werror
+
+ make
+
+ make DESTDIR=$PKG install
+
+ mv $PKG/etc/bash_completion.d/grub{,-efi}
+ mv $PKG/etc/grub.d/README{,-efi}
+ mv $PKG/usr/share/grub/grub{,-efi}-mkconfig_lib
+ cp ../unicode.pf2 $PKG/usr/share/grub/
+}

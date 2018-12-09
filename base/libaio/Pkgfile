@@ -1,0 +1,16 @@
+description="The Linux-native asynchronous I/O facility (aio) library"
+url="http://lse.sourceforge.net/io/aio.html"
+contributors="Greg, tnut"
+packager="rems <rems@nutyx.org>"
+
+name=libaio
+version=0.3.111
+
+source=(http://ftp.de.debian.org/debian/pool/main/liba/$name/${name}_${version}.orig.tar.gz)
+
+build() {
+cd $name-$version
+sed '/install.*libaio.a/s/^/#/' src/Makefile
+make
+make prefix=$PKG/usr install
+}

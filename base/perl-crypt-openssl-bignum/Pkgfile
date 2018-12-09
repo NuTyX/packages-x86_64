@@ -1,0 +1,21 @@
+# Depends on: perl openssl
+
+description="OpenSSL's multiprecision integer arithmetic"
+url="https://metacpan.org/pod/Crypt::OpenSSL::Bignum"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+run=( perl )
+
+name=perl-crypt-openssl-bignum
+version=0.09
+
+source=(http://search.cpan.org/CPAN/authors/id/K/KM/KMX/Crypt-OpenSSL-Bignum-$version.tar.gz)
+
+build() {
+cd Crypt-OpenSSL-Bignum-$version
+PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+make
+make pure_install doc_install DESTDIR=$PKG
+
+find $PKG -name '.packlist' -delete
+}

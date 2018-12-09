@@ -1,0 +1,22 @@
+# Depends on: perl
+
+description="Uniform Resource Identifiers Perl (absolute and relative)"
+url="https://metacpan.org/pod/URI"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=( perl )
+name=perl-uri
+version=1.74
+
+source=(http://www.cpan.org/authors/id/E/ET/ETHER/URI-$version.tar.gz)
+
+build() {
+cd URI-$version
+	perl Makefile.PL
+	make
+	make DESTDIR=$PKG install
+find $PKG \
+         -name '*.bs' -or \
+         -name '.packlist' | xargs rm
+}

@@ -1,0 +1,18 @@
+description="Elf librairy"
+url="https://sourceware.org/ftp/elfutils"
+packager="tnut <tnut@nutyx.org>"
+name=libelf
+version=0.175
+release=1
+
+source=(https://sourceware.org/ftp/elfutils/0.170/elfutils-$version.tar.bz2)
+
+build() {
+cd elfutils-$version
+./configure --prefix=/usr
+make
+make check || true
+make -C libelf DESTDIR=$PKG install
+mkdir -pv $PKG/usr/lib/pkgconfig
+install -vm644 config/libelf.pc $PKG/usr/lib/pkgconfig/
+}

@@ -1,0 +1,62 @@
+description="Set of libraries that offers command-line editing and history capabilities"
+url="http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html"
+maintainer="Chet Ramey, chet dot ramey at case dot edu"
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+
+name=readline
+version=7.0
+release=1
+
+source=(http://ftp.gnu.org/gnu/readline/readline-$version.tar.gz)
+
+PKGMK_GROUPS=(devel man doc)
+
+build()
+{
+cd readline-$version
+
+sed -i '/MV.*old/d' Makefile.in
+sed -i '/{OLDSUFF}/c:' support/shlib-install
+
+./configure --prefix=/usr \
+--docdir=/usr/share/doc/readline-$version
+
+if [ -L /bin/pwd ]; then
+	make SHLIB_LIBS="-L/tools/lib -lncursesw"
+	make DESTDIR=$PKG SHLIB_LIBS="-L/tools/lib -lncurses" install
+
+else
+	make SHLIB_LIBS=-lncurses
+	make DESTDIR=$PKG SHLIB_LIBS=-lncurses install
+fi
+
+mkdir -p $PKG/lib
+
+mv -v $PKG/usr/lib/lib{readline,history}.so.* \
+$PKG/lib
+
+
+mkdir -p $PKG/usr/share/doc/readline-$version
+install -v -m644 doc/*.{ps,pdf,html,dvi} \
+$PKG/usr/share/doc/readline-$version
+
+rm -rv $PKG/usr/bin
+
+ln -sfv ../../lib/libreadline.so.7 \
+$PKG/usr/lib/libreadline.so
+
+ln -sfv ../../lib/libhistory.so.7 \
+$PKG/usr/lib/libhistory.so
+
+}
+devel()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libhistory.a usr/lib/libreadline.a usr/include usr/share/readline \
+usr/lib/libhistory.so usr/lib/libreadline.so
+rm -r usr/lib/libhistory.a usr/lib/libreadline.a usr/include usr/share/readline \
+usr/lib/libhistory.so usr/lib/libreadline.so
+}
