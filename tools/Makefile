@@ -41,7 +41,8 @@ files: create-dirs
 $(SERVICEDIR)/setup-nutyx/setup-nutyx.$${EXT}; \
 	done
 
-links: 	ln -sf ../proc/self/mounts $(ETCDIR)/mtab
+links: files
+	ln -sf ../proc/self/mounts $(ETCDIR)/mtab
 	ln -sf /usr/share/X11/xorg.conf.d/50-synaptics.conf $(ETCDIR)/X11/xorg.conf.d/50-synaptics.conf
 	ln -sf ../etc/bashrc $(ROOTDIR)/bashrc
 	ln -sf ../etc/fstab $(ROOTDIR)/fstab

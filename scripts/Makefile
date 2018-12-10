@@ -33,8 +33,6 @@ install: all
 	install -D -m0755 install-nutyx $(SBINDIR)/install-nutyx
 	install -D -m0755 setup-nutyx $(SBINDIR)/setup-nutyx
 	install -D -m0755 flushmem $(SBINDIR)/flushmem
-	install -D -m0755 ifup $(SBINDIR)/ifup
-	install -D -m0755 ifdown  $(SBINDIR)/ifdown
 	install -D -m0755 mkinitramfs $(SBINDIR)/mkinitramfs
 	install -D -m0755 which $(BINDIR)/which
 
@@ -42,8 +40,6 @@ clean:
 	rm -f install-nutyx
 	rm -f setup-nutyx
 	rm -f flushmem
-	rm -f ifup
-	rm -f ifdown
 	rm -f which
 	rm -f mkinitramfs
 
