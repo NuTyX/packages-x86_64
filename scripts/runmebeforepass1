@@ -5,7 +5,7 @@ trap "interrupted" SIGHUP SIGINT SIGQUIT SIGTERM
 color_mesg
 
 version="development"
-[ -z "${URL}" ] && URL="http://rems.techozor.fr/isonutyx/"
+[ -z "${URL}" ] && URL="http://downloads.tuxfamily.org/nutyx"
 echo
 msg "$(gettext "This script will run some pre-checks and")"
 msg "$(gettext "download missing sources...")"
@@ -85,7 +85,7 @@ do
 	FILE=`echo $i|cut -d "|" -f2`
 	MD5SUM=`echo $i|cut -d "|" -f1`
 	if [ ! -f $LFS/sources/$FILE ]; then
-		wget --no-check-certificate $URL/sources/$FILE -P $LFS/sources
+		wget --no-check-certificate $URL/sources/$version/$FILE -P $LFS/sources
 	fi
 	if [ "$MD5SUM" != "skip" ]; then
 		echo "$MD5SUM  $FILE" >> $LFS/sources/.md5sums
