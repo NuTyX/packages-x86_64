@@ -6,6 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=nasm
 version=2.14
+release=2
 
 source=( http://www.nasm.us/pub/nasm/releasebuilds/$version/$name-$version.tar.xz
  	http://www.nasm.us/pub/nasm/releasebuilds/$version/nasm-$version-xdoc.tar.xz)
@@ -17,7 +18,7 @@ build() {
 	make
 	mkdir -p $PKG/usr/bin 
 	mkdir -p $PKG/usr/share/man/man1
-	make INSTALLROOT=$PKG  install
+	make DESTDIR=$PKG  install
 
 mkdir -pv $PKG/usr/share/doc/nasm-$version/html
 cd ../$name-$version
