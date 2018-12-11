@@ -6,10 +6,8 @@ packager="tnut <tnut@nutyx.org>"
 name=bridge-utils
 version=1.6
 release=3
-nutyx_version=10.91
 
-source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	http://www.kernel.org/pub/linux/utils/net/$name/$name-$version.tar.xz)
+source=(http://www.kernel.org/pub/linux/utils/net/$name/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
@@ -23,8 +21,4 @@ make
 make DESTDIR=$PKG install
 
 mv $PKG/usr/sbin $PKG/sbin
-
-# service
-cd ../nutyx-${nutyx_version}
-make DESTDIR=$PKG install-service-bridge
 }
