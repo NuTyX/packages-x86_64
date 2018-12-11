@@ -1242,7 +1242,7 @@ fi
 
 [ -z $INIT ] && INIT="eudev sysklogd sysvinit"
 [ "$INIT" = "sysv" ] && INIT="eudev sysklogd sysvinit"
-[ "$INIT" = "sysd" ] && INIT="libelf systemd"
+[ "$INIT" = "sysd" ] && INIT="systemd"
 
 if [ -z "$KERNEL" ]; then
    if [ "$ARCH" = "i686" -a "$HOST_ARCH" = "x86_64" ]; then
