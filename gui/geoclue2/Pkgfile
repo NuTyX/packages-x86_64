@@ -8,7 +8,7 @@ contributors="Fanch"
 
 name=geoclue2
 version=2.4.7
-release=1
+release=2
 
 source=(http://freedesktop.org/software/geoclue/releases/${version:0:3}/geoclue-$version.tar.xz)
 
@@ -23,4 +23,7 @@ build() {
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make
   make DESTDIR=$PKG install
-} 
+
+# Obsolet lib
+rm $PKG/usr/lib/libgeoclue-2.la
+}
