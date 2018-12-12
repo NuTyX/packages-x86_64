@@ -7,6 +7,7 @@ contributors="Fanch, Tnut"
 
 name=gnome-keyring
 version=3.28.2
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
@@ -21,4 +22,13 @@ cd $name-$version
     --disable-schemas-compile
 make
 make DESTDIR=$PKG install
+
+
+# Obsolets libs
+rm $PKG/usr/lib/gnome-keyring/devel/gkm-gnome2-store-standalone.la
+rm $PKG/usr/lib/gnome-keyring/devel/gkm-secret-store-standalone.la
+rm $PKG/usr/lib/gnome-keyring/devel/gkm-ssh-store-standalone.la
+rm $PKG/usr/lib/gnome-keyring/devel/gkm-xdg-store-standalone.la
+rm $PKG/usr/lib/pkcs11/gnome-keyring-pkcs11.la
+rm $PKG/usr/lib/security/pam_gnome_keyring.la
 }
