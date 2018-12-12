@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=libnotify
 version=0.7.7
-release=1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
@@ -16,6 +16,9 @@ cd $name-$version
 ./configure --prefix=/usr --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libnotify.la
 }
 uptodate(){
 local latest lastversion url
