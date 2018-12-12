@@ -8,6 +8,7 @@ run=(adwaita-icon-theme)
 
 name=gtk3
 version=3.24.1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
 
@@ -24,8 +25,13 @@ cd gtk+-$version
 make || make -j1
 make DESTDIR=$PKG install
 
+# Obsolets libs
 rm $PKG/usr/lib/{libgailutil-3,libgdk-3,libgtk-3}.la
 rm $PKG/usr/lib/gtk-3.0/3.0.0/immodules/*.la
+rm $PKG/usr/lib/gtk-3.0/3.0.0/printbackends/libprintbackend-cups.la
+rm $PKG/usr/lib/gtk-3.0/3.0.0/printbackends/libprintbackend-file.la
+rm $PKG/usr/lib/gtk-3.0/3.0.0/printbackends/libprintbackend-lpr.la
+
 
 cat > $PKG/etc/gtk-3.0/settings.ini << "EOF"
 [Settings]
