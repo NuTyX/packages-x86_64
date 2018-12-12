@@ -2,7 +2,7 @@
 
 name=keybinder2
 version=0.3.0
-release=4
+release=5
 
 url="https://github.com/engla/keybinder"
 description="Library for registering global keyboard shortcuta"
@@ -17,4 +17,8 @@ cd keybinder-$version
 ./configure --prefix=/usr --disable-lua
 make 
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libkeybinder.la
+rm $PKG/usr/lib/python2.7/site-packages/keybinder/_keybinder.la
 }
