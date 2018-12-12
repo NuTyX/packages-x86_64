@@ -7,7 +7,7 @@ packager="greg<greg@nutyx.org>"
 
 name=libbluray
 version=1.0.1
-release=1
+release=2
 
 source=(ftp://ftp.videolan.org/pub/videolan/libbluray/$version/libbluray-$version.tar.bz2)
 
@@ -21,4 +21,7 @@ build() {
 
 	make
 	make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libbluray.la
 }
