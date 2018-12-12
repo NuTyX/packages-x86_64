@@ -8,6 +8,7 @@ name=imagemagick
 version=7.0.7.24
 _version=7.0.7-24
 source=(ftp://ftp.imagemagick.org/pub/ImageMagick/releases/ImageMagick-${_version}.tar.xz)
+release=2
 
 build () {
     cd ImageMagick-*
@@ -32,4 +33,130 @@ build () {
     make
     make DESTDIR=$PKG install
     find  $PKG -name perllocal.pod -exec rm {} \;
+
+# Obsolets libs
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/aai.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/art.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/avs.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/bgr.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/bmp.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/braille.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/cals.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/caption.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/cin.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/cip.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/clip.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/cmyk.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/cut.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/dcm.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/dds.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/debug.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/dib.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/djvu.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/dng.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/dot.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/dpx.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/ept.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/exr.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/fax.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/fd.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/fits.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/gif.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/gradient.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/gray.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/hald.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/hdr.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/histogram.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/hrz.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/html.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/icon.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/info.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/inline.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/ipl.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/jnx.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/jpeg.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/json.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/label.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/mac.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/magick.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/map.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/mask.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/mat.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/matte.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/meta.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/miff.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/mono.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/mpc.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/mpeg.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/mpr.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/msl.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/mtv.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/mvg.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/null.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/otb.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/palm.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/pango.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/pattern.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/pcd.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/pcl.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/pcx.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/pdb.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/pdf.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/pes.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/pgx.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/pict.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/pix.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/plasma.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/png.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/pnm.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/ps.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/ps2.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/ps3.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/psd.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/pwp.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/raw.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/rgb.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/rgf.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/rla.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/rle.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/scr.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/sct.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/sfw.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/sgi.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/sixel.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/stegano.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/sun.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/svg.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/tga.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/thumbnail.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/tiff.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/tile.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/tim.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/ttf.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/txt.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/uil.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/url.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/uyvy.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/vicar.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/vid.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/viff.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/vips.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/wbmp.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/webp.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/wmf.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/wpg.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/x.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/xbm.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/xc.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/xcf.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/xpm.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/xps.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/xtrn.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/xwd.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/ycbcr.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/coders/yuv.la
+rm $PKG/usr/lib/ImageMagick-7.0.7/modules-Q16HDRI/filters/analyze.la
+rm $PKG/usr/lib/libMagick++-7.Q16HDRI.la
+rm $PKG/usr/lib/libMagickCore-7.Q16HDRI.la
+rm $PKG/usr/lib/libMagickWand-7.Q16HDRI.la
 }
