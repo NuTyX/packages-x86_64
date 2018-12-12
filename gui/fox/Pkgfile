@@ -8,7 +8,7 @@ contributors="Pierre B"
 
 name=fox
 version=1.6.57
-
+release=2
 source=(ftp://ftp.fox-toolkit.org/pub/$name-$version.tar.gz)
 
 build() {
@@ -19,4 +19,8 @@ build() {
 	--with-opengl=yes
 	make
 	make DESTDIR=$PKG install
+# Obsolets libs
+rm $PKG/usr/lib/libCHART-1.6.la
+rm $PKG/usr/lib/libFOX-1.6.la
+
 }
