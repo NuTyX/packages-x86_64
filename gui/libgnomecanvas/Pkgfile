@@ -7,7 +7,7 @@ contributors=""
 
 name=libgnomecanvas
 version=2.30.3
-release=1
+release=3
 
 source=(https://download.gnome.org/sources/${name}/2.30/${name}-${version}.tar.bz2)
 
@@ -17,13 +17,11 @@ build() {
 cd $SRC/${name}-${version}
   ./configure --prefix=/usr --disable-static \
       --enable-glade
-  make
-
-}
-
-package() {
-
-cd $SRC/${name}-${version}
-
+make
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libglade/2.0/libcanvas.la
+rm $PKG/usr/lib/libgnomecanvas-2.la
+
 }
