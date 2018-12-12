@@ -6,5 +6,10 @@ packager="tnut <tnut@nutyx.org>"
 
 name=gspell
 version=1.8.1
-
+release=2
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+package() {
+# Obsolet lib
+rm $PKG/usr/lib/libgspell-1.la
+}
