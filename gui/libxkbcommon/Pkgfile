@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=libxkbcommon
 version=0.8.0
+release=2
 
 source=(http://xkbcommon.org/download/libxkbcommon-$version.tar.xz)
 
@@ -17,5 +18,8 @@ cd $name-$version
 	 --docdir=/usr/share/doc/libxkbcommon-$version
 make
 make DESTDIR=$PKG install
+
+# Obsolets libs
 rm $PKG/usr/lib/libxkbcommon.la
+rm $PKG/usr/lib/libxkbcommon-x11.la
 }
