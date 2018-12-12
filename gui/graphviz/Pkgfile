@@ -8,7 +8,7 @@ contributors="Pierre B,tnut"
 
 name=graphviz
 version=2.40.1
-release=2
+release=3
 
 source=(http://$name.gitlab.io/pub/$name/stable/SOURCES/$name.tar.gz)
 
@@ -28,4 +28,33 @@ build () {
   install -v -m755 -d $PKG/usr/share/doc/graphviz-$version
   ln -v -s $PKG/usr/share/graphviz/doc \
            $PKG/usr/share/doc/graphviz-$version
+
+# Obsolets libs
+rm $PKG/usr/lib/graphviz/guile/libgv_guile.la
+rm $PKG/usr/lib/graphviz/libgvplugin_core.la
+rm $PKG/usr/lib/graphviz/libgvplugin_dot_layout.la
+rm $PKG/usr/lib/graphviz/libgvplugin_gdk.la
+rm $PKG/usr/lib/graphviz/libgvplugin_gs.la
+rm $PKG/usr/lib/graphviz/libgvplugin_gtk.la
+rm $PKG/usr/lib/graphviz/libgvplugin_neato_layout.la
+rm $PKG/usr/lib/graphviz/libgvplugin_pango.la
+rm $PKG/usr/lib/graphviz/libgvplugin_xlib.la
+rm $PKG/usr/lib/graphviz/lua/libgv_lua.la
+rm $PKG/usr/lib/graphviz/perl/libgv_perl.la
+rm $PKG/usr/lib/graphviz/python/libgv_python.la
+rm $PKG/usr/lib/graphviz/tcl/libgv_tcl.la
+rm $PKG/usr/lib/graphviz/tcl/libtcldot.la
+rm $PKG/usr/lib/graphviz/tcl/libtcldot_builtin.la
+rm $PKG/usr/lib/graphviz/tcl/libtclplan.la
+rm $PKG/usr/lib/libcdt.la
+rm $PKG/usr/lib/libcgraph.la
+rm $PKG/usr/lib/libgvc.la
+rm $PKG/usr/lib/libgvpr.la
+rm $PKG/usr/lib/liblab_gamut.la
+rm $PKG/usr/lib/libpathplan.la
+rm $PKG/usr/lib/libxdot.la
+rm $PKG/usr/lib/tcl8.6/graphviz/libgv_tcl.la
+rm $PKG/usr/lib/tcl8.6/graphviz/libtcldot.la
+rm $PKG/usr/lib/tcl8.6/graphviz/libtcldot_builtin.la
+rm $PKG/usr/lib/tcl8.6/graphviz/libtclplan.la
 }
