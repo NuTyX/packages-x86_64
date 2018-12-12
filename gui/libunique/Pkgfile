@@ -7,9 +7,14 @@ contributors="Pierre B"
 
 name=libunique
 version=3.0.2
-release=1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.bz2)
+
+package() {
+# Obsolet lib
+rm $PKG/usr/lib/libunique-3.0.la
+}
 
 uptodate(){
 local latest lastversion url
