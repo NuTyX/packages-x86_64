@@ -6,6 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=enchant
 version=2.2.3
+release=2
 
 source=(https://github.com/AbiWord/$name/releases/download/v$version/$name-$version.tar.gz)
 
@@ -25,4 +26,9 @@ build() {
 	ln -sfv enchant-2 $PKG/usr/bin/enchant
 	ln -sfv libenchant-2.so $PKG/usr/lib/libenchant.so
 	ln -sfv enchant-2.pc $PKG/usr/lib/pkgconfig/enchant.pc
+
+# Obsolets libs
+rm $PKG/usr/lib/enchant-2/enchant_aspell.la
+rm $PKG/usr/lib/libenchant-2.la
+
 }
