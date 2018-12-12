@@ -6,6 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=ibus
 version=1.5.17
+release=2
 
 source=(
 # ibus-1.5.18-consolidate-1.patch
@@ -26,4 +27,9 @@ sed -i 's@/desktop/ibus@/org/freedesktop/ibus@g' \
 rm -f tools/main.c
 make
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/gtk-2.0/2.10.0/immodules/im-ibus.la
+rm $PKG/usr/lib/gtk-3.0/3.0.0/immodules/im-ibus.la
+rm $PKG/usr/lib/libibus-1.0.la
 }
