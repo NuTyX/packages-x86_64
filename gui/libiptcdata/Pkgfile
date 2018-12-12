@@ -6,7 +6,7 @@ contributors=""
 
 name=libiptcdata
 version=1.0.4
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/sourceforge/libiptcdata/$name-$version.tar.gz )
 
@@ -19,5 +19,8 @@ cd "$SRC/$name-$version"
  
 package() { 
 cd "$SRC/$name-$version"
-  make DESTDIR=$PKG install
+make DESTDIR=$PKG install
+
+# Obsolet libs
+rm $PKG/usr/lib/libiptcdata.la
 }
