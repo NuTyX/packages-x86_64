@@ -7,7 +7,13 @@ contributors="Alienus"
 
 name=libnih
 version=1.0.3
-release=1
+release=2
 
 source=(
 http://launchpad.net/libnih/1.0/$version/+download/$name-$version.tar.gz)
+
+package() {
+# Obsolets libs
+rm $PKG/usr/lib/libnih-dbus.la
+rm $PKG/usr/lib/libnih.la
+}
