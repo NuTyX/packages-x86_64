@@ -8,7 +8,7 @@ contributors="Rems, Tnut"
 name=lightdm
 version=1.28.0
 nutyx_version=20181111
-release=2
+release=3
 
 source=(https://github.com/CanonicalLtd/$name/releases/download/$version/$name-$version.tar.xz
         http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz)
@@ -45,5 +45,7 @@ install -v -dm770 -o lightdm -g lightdm $PKG/var/log/lightdm
 #Service
 cd $SRC/nutyx-${nutyx_version}
 make DESTDIR=$PKG install-lightdm
-}
 
+# Obsolets libs
+rm $PKG/usr/lib/liblightdm-gobject-1.la
+}
