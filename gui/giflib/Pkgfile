@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=giflib
 version=5.1.4
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/giflib/giflib-$version.tar.bz2 )
 build() {
@@ -18,4 +18,7 @@ make DESTDIR=$PKG install
 install -v -dm755 $PKG/usr/share/doc/giflib-$version/html
 install -v -m644 doc/*.html \
 $PKG/usr/share/doc/giflib-$version/html
+
+# Obsolet lib
+rm $PKG/usr/lib/libgif.la
 }
