@@ -7,6 +7,7 @@ contributors=""
 
 name=gstreamer-editing-services
 version=1.14.4
+release=2
 
 source=(https://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
 
@@ -17,4 +18,8 @@ cd $name-$version
             --with-package-origin="http://www.nutyx.org/
 make
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/gstreamer-1.0/libgstnle.la
+rm $PKG/usr/lib/libges-1.0.la
 }
