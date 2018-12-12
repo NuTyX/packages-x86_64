@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=libdv
 version=1.0.0
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/libdv/libdv-1.0.0.tar.gz)
 build() {
@@ -16,4 +16,7 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libdv.la
 }
