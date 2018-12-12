@@ -4,7 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=libcap-ng
 version=0.7.7
-release=1
+release=2
 
 source=(http://people.redhat.com/sgrubb/$name/$name-$version.tar.gz)
 
@@ -15,4 +15,7 @@ cd $name-$version
 --without-python
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libcap-ng.la
 }
