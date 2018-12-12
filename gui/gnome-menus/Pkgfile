@@ -7,7 +7,7 @@ contributors="Tnut"
 
 name=gnome-menus
 version=3.13.3
-release=2
+release=3
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
@@ -17,4 +17,7 @@ cd $name-$version
       --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libgnome-menu-3.la
 }
