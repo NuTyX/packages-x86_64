@@ -9,7 +9,8 @@ name=redland
 version=1.0.17
 release=4
 
-source=(http://download.librdf.org/source/$name-$version.tar.gz)
+source=(rpath.diff
+	http://download.librdf.org/source/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
@@ -17,7 +18,9 @@ cd $name-$version
 ./configure --prefix=/usr \
 	--disable-static
  
+patch -Np0 -i ../rpath.diff
 make
+
 make DESTDIR=$PKG install
 
 # Obsolets libs
