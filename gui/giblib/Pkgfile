@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=giblib
 version=1.2.4
-release=1
+release=2
 
 source=(https://mirrors.kernel.org/debian/pool/main/g/giblib/${name}_${version}.orig.tar.gz)
 
@@ -16,4 +16,7 @@ cd $name-$version*
         ./configure --prefix=/usr
         make
         make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libgiblib.la
 }
