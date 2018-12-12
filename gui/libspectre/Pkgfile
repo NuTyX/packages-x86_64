@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=libspectre
 version=0.2.8
-release=1
+release=2
 
 source=(http://libspectre.freedesktop.org/releases/$name-$version.tar.gz)
 
@@ -17,4 +17,7 @@ cd $name-$version
 	--disable-static
 	make
 	make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libspectre.la
 }
