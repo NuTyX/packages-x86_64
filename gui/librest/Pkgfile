@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=librest
 version=0.8.1
-release=1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/rest/${version%.*}/rest-$version.tar.xz)
 
@@ -19,6 +19,10 @@ cd rest-$version
     --with-ca-certificates=/etc/ssl/certs
 make
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/librest-0.7.la
+rm $PKG/usr/lib/librest-extras-0.7.la
 }
 uptodate(){
 local latest lastversion url
