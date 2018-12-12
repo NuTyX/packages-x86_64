@@ -8,6 +8,7 @@ contributors="Pierre B"
 
 name=libsecret
 version=0.18.6
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
@@ -16,6 +17,9 @@ cd $name-$version
 ./configure --prefix=/usr --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libsecret-1.la
 }
 uptodate(){
 local latest lastversion url
