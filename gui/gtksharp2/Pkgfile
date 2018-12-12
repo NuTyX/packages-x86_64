@@ -7,6 +7,7 @@ packager="rems <rems@nutyx.org>"
  
 name=gtksharp2
 version=2.12.45
+release=2
 
 source=(https://download.mono-project.com/sources/gtk-sharp212/gtk-sharp-$version.tar.gz)
 
@@ -16,4 +17,13 @@ cd gtk-sharp-$version
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 make
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libatksharpglue-2.la
+rm $PKG/usr/lib/libgdksharpglue-2.la
+rm $PKG/usr/lib/libgladesharpglue-2.la
+rm $PKG/usr/lib/libglibsharpglue-2.la
+rm $PKG/usr/lib/libgtksharpglue-2.la
+rm $PKG/usr/lib/libpangosharpglue-2.la
+
 }
