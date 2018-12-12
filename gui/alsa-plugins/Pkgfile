@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=alsa-plugins
 version=1.1.7
+release=2
 
 source=(ftp://ftp.alsa-project.org/pub/plugins/$name-$version.tar.bz2
 	$name.conf)
@@ -19,4 +20,20 @@ make
 make DESTDIR=$PKG install
 
 install -Dm644 $SRC/$name.conf $PKG/etc/asound.conf
+
+# Obsolets libs
+rm $PKG/usr/lib/alsa-lib/libasound_module_conf_pulse.la
+rm $PKG/usr/lib/alsa-lib/libasound_module_ctl_arcam_av.la
+rm $PKG/usr/lib/alsa-lib/libasound_module_ctl_oss.la
+rm $PKG/usr/lib/alsa-lib/libasound_module_ctl_pulse.la
+rm $PKG/usr/lib/alsa-lib/libasound_module_pcm_a52.la
+rm $PKG/usr/lib/alsa-lib/libasound_module_pcm_jack.la
+rm $PKG/usr/lib/alsa-lib/libasound_module_pcm_oss.la
+rm $PKG/usr/lib/alsa-lib/libasound_module_pcm_pulse.la
+rm $PKG/usr/lib/alsa-lib/libasound_module_pcm_upmix.la
+rm $PKG/usr/lib/alsa-lib/libasound_module_pcm_usb_stream.la
+rm $PKG/usr/lib/alsa-lib/libasound_module_pcm_vdownmix.la
+rm $PKG/usr/lib/alsa-lib/libasound_module_rate_lavrate.la
+rm $PKG/usr/lib/alsa-lib/libasound_module_rate_samplerate.la
+rm $PKG/usr/lib/alsa-lib/libasound_module_rate_speexrate.la
 }
