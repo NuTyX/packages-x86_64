@@ -7,6 +7,11 @@ contributors="Fanch, Tnut, Jayce"
 
 name=clutter-gtk
 version=1.8.4
-release=5
+release=6
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+package() {
+# Obsolet lib
+rm $PKG/usr/lib/libclutter-gtk-1.0.la
+}
