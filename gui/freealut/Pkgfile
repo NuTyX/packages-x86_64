@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=freealut
 version=1.1.0
-release=1
+release=2
 
 description="OpenAL Utility Toolkit (ALUT)"
 url="http://www.openal.org"
@@ -20,4 +20,7 @@ build() {
   ./configure --prefix=/usr  --disable-static
   make
   make DESTDIR=$pkgdir install
+
+# Obsolet lib
+rm $PKG/usr/lib/libalut.la
 }
