@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=aalib
 version=1.4rc5
-release=3
+release=4
 
 source=(http://downloads.sourceforge.net/aa-project/aalib-1.4rc5.tar.gz)
 
@@ -20,4 +20,6 @@ sed -i -e '/AM_PATH_AALIB,/s/AM_PATH_AALIB/[&]/' aalib.m4
 --infodir=/usr/share/info --disable-static
 make
 make  DESTDIR=$PKG install
+# Obsolet lib
+rm $PKG/usr/lib/libaa.la
 }
