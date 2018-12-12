@@ -7,6 +7,7 @@ contributors="greg, remy"
 
 name=libva
 version=2.2.0
+release=2
 
 source=(https://github.com/01org/libva/releases/download/$version/$name-$version.tar.bz2)
 
@@ -18,4 +19,9 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libva-drm.la
+rm $PKG/usr/lib/libva-x11.la
+rm $PKG/usr/lib/libva.la
 }
