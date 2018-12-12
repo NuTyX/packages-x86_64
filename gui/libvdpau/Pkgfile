@@ -7,7 +7,7 @@ contributors=""
 
 name=libvdpau
 version=1.1.1
-release=3
+release=4
 
 source=(https://people.freedesktop.org/~aplattner/vdpau/$name-$version.tar.bz2)
 
@@ -18,4 +18,7 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 
+# Obsolets libs
+rm $PKG/usr/lib/libvdpau.la
+rm $PKG/usr/lib/vdpau/libvdpau_trace.la
 }
