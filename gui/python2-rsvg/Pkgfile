@@ -9,7 +9,7 @@ _name=gnome-python-desktop
 
 name=python2-rsvg
 version=2.32.0
-release=1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/${_name}/${version%.*}/${_name}-$version.tar.bz2)
 build() {
@@ -18,6 +18,9 @@ cd ${_name}-$version
 make -C rsvg install DESTDIR=$PKG
 install -m755 -d $PKG/usr/share/pygtk/2.0/defs
 install -m644 rsvg/rsvg.defs $PKG/usr/share/pygtk/2.0/defs/
+
+# Obsolet lib
+rm $PKG/usr/lib/python2.7/site-packages/gtk-2.0/rsvg.la
 }
 uptodate(){
 local latest lastversion url
