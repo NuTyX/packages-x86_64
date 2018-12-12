@@ -7,10 +7,22 @@ contributors="Pierre B"
 
 name=libgnome-keyring
 version=3.12.0
-release=1
+release=2
 
 source=( http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
+build() {
+cd $name-$version
+./configure --prefix=/usr --sysconfdir=/etc \
+--localstatedir=/var --disable-static \
+--libexecdir=/usr/lib/gnome-keyring --enable-vala=no
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+make
+make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libgnome-keyring.la
+}
 uptodate(){
 local latest lastversion url
 url="http://ftp.gnome.org/pub/gnome/sources/$name"
