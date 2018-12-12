@@ -8,7 +8,7 @@ contributors="Pierre B"
 
 name=libfakekey
 version=0.1
-release=1
+release=2
 
 source=(http://downloads.yoctoproject.org/releases/matchbox/$name/$version/$name-$version.tar.bz2)
 
@@ -20,4 +20,7 @@ cd $name-$version
             --disable-static
 make AM_LDFLAGS=-lX11
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libfakekey.la
 }
