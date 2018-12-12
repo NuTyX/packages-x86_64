@@ -7,7 +7,7 @@ contributors="Alienus"
 
 name=libwmf
 version=0.2.8.4
-release=2
+release=3
 
 source=(
 http://downloads.sourceforge.net/sourceforge/wvware/$name-$version.tar.gz
@@ -26,4 +26,9 @@ build(){
     make DESTDIR=$PKG install
     # rm fonts already in gsfonts packages
     rm -rf $PKG/usr/share/fonts
+
+# Obsolets libs
+rm $PKG/usr/lib/gtk-2.0/2.10.0/loaders/io-wmf.la
+rm $PKG/usr/lib/libwmf.la
+rm $PKG/usr/lib/libwmflite.la
 }
