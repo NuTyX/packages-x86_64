@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=gconf
 version=3.2.6
-release=5
+release=6
 
 source=(http://ftp.gnome.org/pub/gnome/sources/GConf/${version%.*}/GConf-$version.tar.xz
 		gconf-merge-schema)
@@ -26,6 +26,13 @@ make DESTDIR=$PKG install
 ln -s gconf.xml.defaults $PKG/etc/gconf/gconf.xml.system
 cd ..
 install -m755 gconf-merge-schema $PKG/usr/bin/
+
+# Obsolets libs
+rm $PKG/usr/lib/GConf/2/libgconfbackend-oldxml.la
+rm $PKG/usr/lib/GConf/2/libgconfbackend-xml.la
+rm $PKG/usr/lib/gio/modules/libgsettingsgconfbackend.la
+rm $PKG/usr/lib/libgconf-2.la
+
 }
 uptodate(){
 local latest lastversion url
