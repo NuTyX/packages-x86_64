@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=gstreamer
 version=1.14.4
+release=2
 
 source=(https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-$version.tar.xz)
 
@@ -17,6 +18,15 @@ cd gstreamer-$version
 --with-package-origin="http://downloads.nutyx.org/"
 make
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/gstreamer-1.0/libgstcoreelements.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstcoretracers.la
+rm $PKG/usr/lib/libgstbase-1.0.la
+rm $PKG/usr/lib/libgstcheck-1.0.la
+rm $PKG/usr/lib/libgstcontroller-1.0.la
+rm $PKG/usr/lib/libgstnet-1.0.la
+rm $PKG/usr/lib/libgstreamer-1.0.la
 }
 uptodate() {
 local url ext
