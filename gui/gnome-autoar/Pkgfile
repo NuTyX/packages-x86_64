@@ -7,6 +7,7 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
 name=gnome-autoar
 version=0.2.3
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:3}/$name-$version.tar.xz)
 
@@ -15,4 +16,8 @@ cd $name-$version
 	./configure --prefix=/usr --disable-static
 	make
 	make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libgnome-autoar-0.la
+rm $PKG/usr/lib/libgnome-autoar-gtk-0.la
 }
