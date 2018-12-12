@@ -9,6 +9,7 @@ run=( python python2 )
 
 name=dbus-python
 version=1.2.8
+release=2
 
 source=( http://dbus.freedesktop.org/releases/$name/$name-$version.tar.gz\
 	)
@@ -30,6 +31,13 @@ build() {
 	popd
 	make DESTDIR=$PKG -C python2 install
 	make DESTDIR=$PKG -C python3 install
+
+# Obsolets libs
+rm $PKG/usr/lib/python2.7/site-packages/_dbus_bindings.la
+rm $PKG/usr/lib/python2.7/site-packages/_dbus_glib_bindings.la
+rm $PKG/usr/lib/python3.7/site-packages/_dbus_bindings.la
+rm $PKG/usr/lib/python3.7/site-packages/_dbus_glib_bindings.la
+
 }
 uptodate() {
 local url ext
