@@ -9,6 +9,7 @@ _name=gst-plugins-good
 
 name=gstreamer-plugins-good
 version=1.14.4
+release=2
 
 source=(http://gstreamer.freedesktop.org/src/${_name}/${_name}-$version.tar.xz)
 
@@ -19,6 +20,76 @@ cd ${_name}-$version
 --with-package-origin="http://downloads.nutyx.org/"
 make
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/gstreamer-1.0/libgstaasink.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstalaw.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstalpha.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstalphacolor.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstapetag.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstaudiofx.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstaudioparsers.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstauparse.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstautodetect.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstavi.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstcacasink.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstcairo.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstcutter.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstdebug.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstdeinterlace.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstdtmf.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstdv.la
+rm $PKG/usr/lib/gstreamer-1.0/libgsteffectv.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstequalizer.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstflac.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstflv.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstflxdec.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstgdkpixbuf.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstgoom.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstgoom2k1.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstgtk.la
+rm $PKG/usr/lib/gstreamer-1.0/libgsticydemux.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstid3demux.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstimagefreeze.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstinterleave.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstisomp4.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstjack.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstjpeg.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstlame.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstlevel.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstmatroska.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstmpg123.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstmulaw.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstmultifile.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstmultipart.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstnavigationtest.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstoss4.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstossaudio.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstpng.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstpulseaudio.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstreplaygain.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstrtp.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstrtpmanager.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstrtsp.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstshapewipe.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstshout2.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstsmpte.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstsoup.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstspectrum.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstspeex.la
+rm $PKG/usr/lib/gstreamer-1.0/libgsttaglib.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstudp.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstvideo4linux2.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstvideobox.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstvideocrop.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstvideofilter.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstvideomixer.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstvpx.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstwavenc.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstwavpack.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstwavparse.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstximagesrc.la
+rm $PKG/usr/lib/gstreamer-1.0/libgsty4menc.la
 }
 uptodate() {
 local url ext
