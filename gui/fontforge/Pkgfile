@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=fontforge
 version=20170731
-release=3
+release=4
 
 run=(shared-mime-info)
 
@@ -21,4 +21,15 @@ build() {
             --docdir=/usr/share/doc/$name-$version
     make
     make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libfontforge.la
+rm $PKG/usr/lib/libfontforgeexe.la
+rm $PKG/usr/lib/libgdraw.la
+rm $PKG/usr/lib/libgioftp.la
+rm $PKG/usr/lib/libgunicode.la
+rm $PKG/usr/lib/libgutils.la
+rm $PKG/usr/lib/python2.7/site-packages/fontforge.la
+rm $PKG/usr/lib/python2.7/site-packages/psMat.la
+
 }
