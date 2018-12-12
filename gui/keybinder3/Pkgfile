@@ -7,7 +7,7 @@ url="https://github.com/engla/keybinder/tree/keybinder-3.0"
 name=keybinder3
 alias=(libkeybinder3)
 version=0.3.2
-release=2
+release=3
 
 
 source=(https://github.com/kupferlauncher/keybinder/releases/download/keybinder-3.0-v$version/keybinder-3.0-$version.tar.gz)
@@ -18,12 +18,8 @@ build() {
   ./configure --prefix=/usr --enable-gtk-doc
   make
   
-}
-
-
-package() {
-
-  cd keybinder-3.0-$version
   make DESTDIR=$PKG install
   
+# Obsolet lib
+rm $PKG/usr/lib/libkeybinder-3.0.la
 }
