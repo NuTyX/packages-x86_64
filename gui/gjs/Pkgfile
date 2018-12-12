@@ -7,8 +7,14 @@ contributors="Pierre B, tnut"
 
 name=gjs
 version=1.54.0
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+package() {
+# Obsolet lib
+rm $PKG/usr/lib/libgjs.la
+}
 
 uptodate(){
 local latest lastversion url
