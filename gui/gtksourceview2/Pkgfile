@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=gtksourceview2
 version=2.10.5
-release=2
+release=3
 
 source=(http://ftp.gnome.org/pub/gnome/sources/gtksourceview/2.10/gtksourceview-${version}.tar.bz2)
 
@@ -18,4 +18,7 @@ sed -i 's#python#python2#' gtksourceview/language-specs/convert.py
       --localstatedir=/var --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libgtksourceview-2.0.la
 }
