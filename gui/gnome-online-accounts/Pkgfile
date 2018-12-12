@@ -8,6 +8,7 @@ run=(gtk-update-icon-cache)
 
 name=gnome-online-accounts
 version=3.30.0
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/${name}/${version%.*}/${name}-$version.tar.xz) 
 
@@ -31,4 +32,10 @@ cd $name-$version
     --enable-yahoo
 make
 make -j1 DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/goa-1.0/web-extensions/libgoawebextension.la
+rm $PKG/usr/lib/libgoa-1.0.la
+rm $PKG/usr/lib/libgoa-backend-1.0.la
+
 }
