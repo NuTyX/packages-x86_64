@@ -6,10 +6,15 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Fanch"
 
 name=gtkmm
-version=3.22.2
+version=3.24.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/gtkmm/${version%.*}/${name}-$version.tar.xz)
 
+package() {
+# Obsolets libs
+rm $PKG/usr/lib/libgdkmm-3.0.la
+rm $PKG/usr/lib/libgtkmm-3.0.la
+}
 uptodate(){
 local latest lastversion url
 url="http://ftp.gnome.org/pub/gnome/sources/$name"
