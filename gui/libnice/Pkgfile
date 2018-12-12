@@ -8,7 +8,7 @@ contributors="Pierre B"
 
 name=libnice
 version=0.1.13
-release=1
+release=2
 
 source=(http://nice.freedesktop.org/releases/$name-$version.tar.gz)
 
@@ -19,4 +19,8 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/gstreamer-1.0/libgstnice.la
+rm $PKG/usr/lib/libnice.la
 }
