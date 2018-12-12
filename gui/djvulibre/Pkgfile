@@ -9,7 +9,7 @@ run=( librsvg hicolor-icon-theme )
 
 name=djvulibre
 version=3.5.27
-release=1
+release=2
 
 source=(
 http://downloads.sourceforge.net/djvu/$name-$version.tar.gz)
@@ -25,4 +25,7 @@ build(){
         install -Dm644 desktopfiles/prebuilt-hi${i}-djvu.png \
             $PKG/usr/share/icons/hicolor/${i}x${i}/mimetypes/image-vnd.djvu.mime.png
     done
+
+# Obsolet lib
+rm $PKG/usr/lib/libdjvulibre.la
 }
