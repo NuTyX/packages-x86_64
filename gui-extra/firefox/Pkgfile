@@ -1,4 +1,4 @@
-# Depends on: cbindgen icu libvpx nspr nss libevent rustc dbus-glib autoconf2-13 pulseaudio gconf libnotify yasm sqlite nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav shared-mime-info
+# Depends on: node cbindgen icu libvpx nspr nss libevent rustc dbus-glib autoconf2-13 pulseaudio gconf libnotify yasm sqlite nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav shared-mime-info
 
 description="Standalone web browser from mozilla.org"
 url="http://www.mozilla.com/firefox/"
@@ -7,7 +7,7 @@ contributors="Pierre B, tnut, Remy"
 
 run=(shared-mime-info icu libvpx libevent pulseaudio gconf sqlite libvpx nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav)
 name=firefox
-version=63.0.3
+version=64.0
 
 source=(firefox.desktop
 	http://www.linuxfromscratch.org/patches/blfs/svn/firefox-$version-system_graphite2_harfbuzz-1.patch
@@ -58,9 +58,6 @@ ac_add_options --disable-necko-wifi
 # If you have installed GConf, comment out this line
 ac_add_options --disable-gconf
 
-# From firefox 64 will be required
-ac_add_options --disable-nodejs
-
 # Comment out following options if you have not installed
 # recommended dependencies:
 ac_add_options --enable-system-sqlite
@@ -69,6 +66,9 @@ ac_add_options --with-system-libvpx
 ac_add_options --with-system-nss
 ac_add_options --with-system-nspr
 ac_add_options --with-system-icu
+
+# The gold linker is no-longer the default
+ac_add_options --enable-linker=gold
 
 # If you are going to apply the patch for system graphite
 # and system harfbuzz, uncomment these lines:
@@ -108,6 +108,9 @@ mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 EOF
 
 patch -Np1 -i ../firefox-$version-system_graphite2_harfbuzz-1.patch
+sed -e 's/checkImpl/checkFFImpl/g' -i js/src/vm/JSContext*.h
+export CC=clang CXX=clang++ AR=llvm-ar NM=llvm-nm RANLIB=llvm-ranlib
+export MOZBUILD_STATE_PATH=${PWD}/mozbuild
 
 SHELL=/bin/sh ./mach build
 SHELL=/bin/sh ./mach buildsymbols
