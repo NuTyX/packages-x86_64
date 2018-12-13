@@ -10,8 +10,7 @@ alias=(NetworkManager)
 _name=NetworkManager
 
 name=networkmanager
-version=1.12.2
-release=2
+version=1.14.4
 
 run=(wpa-supplicant wpa-supplicant-dbus)
 
@@ -51,9 +50,8 @@ polkit.addRule(function(action, subject) {
 });
 EOF
 # Obsolets libs
-rm $PKG/usr/lib/NetworkManager/1.12.2/libnm-device-plugin-adsl.la
-rm $PKG/usr/lib/NetworkManager/1.12.2/libnm-device-plugin-wifi.la
-rm $PKG/usr/lib/NetworkManager/1.12.2/libnm-settings-plugin-ibft.la
+rm $PKG/usr/lib/NetworkManager/$version/libnm-device-plugin-adsl.la
+rm $PKG/usr/lib/NetworkManager/$version/libnm-device-plugin-wifi.la
 rm $PKG/usr/lib/libnm-glib-vpn.la
 rm $PKG/usr/lib/libnm-glib.la
 rm $PKG/usr/lib/libnm-util.la
