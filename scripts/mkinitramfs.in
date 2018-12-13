@@ -27,13 +27,20 @@ copy()
   local file
 
   if [ "$2" == "lib" ]; then
-    file=$(PATH=/lib:/usr/lib type -p $1)
+    file=$(PATH=/lib:/usr/lib:/lib/systemd type -p $1)
   else
-    file=$(type -p $1)
+    file=$(PATH=$PATH:/lib/systemd type -p $1)
   fi
 
   if [ -n $file ] ; then
-    cp $file $WDIR/$2
+	case "$file" in
+		/lib/systemd/libsystemd*.so)
+			cp -v $file $WDIR/$2/systemd
+		;;
+		*)
+			cp -v $file $WDIR/$2
+		;;
+	esac
   else
     echo "Missing required file: $1 for directory $2"
     rm -rf $WDIR
@@ -52,10 +59,10 @@ unsorted=$(mktemp /tmp/unsorted.XXXXXXXXXX)
 
 # Create base directory structure
 # mkdir -p $WDIR/{bin,dev,lib/firmware,run,sbin,sys,proc}
-mkdir -p $WDIR/{bin,dev,lib/{lsb,firmware,udev},run,sbin,sys,proc,tmp,etc,usr/{bin,lib,share}}
+mkdir -p $WDIR/{bin,dev,lib/{lsb,firmware,udev,systemd},run,sbin,sys,proc,tmp,etc,usr/{bin,lib,share}}
 mkdir -p $WDIR/etc/{sysconfig,modprobe.d,udev/{rules.d,hwdb.d}}
 touch $WDIR/etc/modprobe.d/modprobe.conf
-[ -d /lib64 ] && cp -a /lib64 $WDIR/lib64
+[ -d /lib64 ] && cp -av /lib64 $WDIR/lib64
 
 if [ -z $1 ]; then
 	INITRAMFS_FILE=initrd
@@ -63,13 +70,8 @@ if [ -z $1 ]; then
 else
 	KERNEL_VERSION=$1
 	if [ -z $BUSYBOX ]; then
-		sbinfiles="udevd udevadm ip"
+		sbinfiles="ip"
 	else
-		for I in udevd udevadm
-		do
-			cp /sbin/$I $WDIR/sbin/$I
-			ldd /sbin/$I | sed "s/\t//" | cut -d " " -f1 >> $unsorted
-		done
 		sbinfiles="ip"
 	fi
 fi
@@ -81,12 +83,12 @@ if [ -n "$KERNEL_VERSION" ] && [ ! -d "/lib/modules/$1" ] ; then
   exit 1
 fi
 
-
+libsystemdexecfiles='systemd systemd-sulogin-shell systemd-shutdown'
 usrbinfiles="cut groups"
-binfiles="sh cat clear date grep cp dd hostname killall ls mkdir mknod more mount mountpoint chmod"
-binfiles="$binfiles umount stty sed sleep ln rm uname"
+binfiles="udevadm sh cat clear date grep cp dd hostname killall ls mkdir mknod more mount mountpoint chmod"
+binfiles="$binfiles umount stty sed sleep ln rm uname systemd-tmpfiles"
 
-sbinfiles="$sbinfiles blkid switch_root losetup"
+sbinfiles="$sbinfiles blkid switch_root sulogin"
 
 if [ ! -z $1 ]; then
 
@@ -265,6 +267,16 @@ for f in $sbinfiles ; do
 	fi
 done
 
+for f in $libsystemdexecfiles ; do
+	if [ -z $BUSYBOX ];then
+		ldd /lib/systemd/$f | sed "s/\t//" | cut -d " " -f1 >> $unsorted
+		copy $f lib/systemd
+	else
+		ln -s -v $BUSYBOX $WDIR/lib/systemd/$f
+	fi
+done
+
+
 if [ -z $BUSYBOX ]; then
 	if [ -x /bin/kmod ] ; then
 		ln -s kmod $WDIR/bin/lsmod
@@ -310,7 +322,8 @@ usbcore usb-common usb-storage loop sr_mod \
 cdrom squashfs isofs overlay mmc_core \
 rtsx_pci rtsx_pci_sdmmc rtsx_pci_ms mmc_block \
 ssb lpc_ich shpcp sdhci-acpi sdhci-pltfm \
-sdhci sdhci-pci
+sdhci sdhci-pci \
+virtio virtio_blk virtio_pci virtio_net
 do
 	find /lib/modules/ -type f -name $i* 2> /dev/null | \
 	cpio --make-directories -p --quiet $WDIR 2> /dev/null
