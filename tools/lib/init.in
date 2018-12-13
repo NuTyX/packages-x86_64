@@ -24,7 +24,7 @@
 # Default Quota in percent for rootfs
 ROOTFS_QUOTA=50
 
-PATH=/bin:/usr/bin:/sbin:/usr/sbin
+PATH="/bin:/usr/bin:/sbin:/usr/sbin:/lib:/lib/systemd"
 export PATH
 
 problem()
@@ -247,9 +247,9 @@ MainLoop(){
    do
 	if [ "$verbose" == "yes" ]; then
 		ListModules
-		printf "Launch /etc/rc.d/init.d/setup-nutyx ...\n"
+		printf "Launch /sbin/setup-nutyx ...\n"
 	fi
-	/etc/rc.d/init.d/setup-nutyx || problem
+	/sbin/setup-nutyx || problem
    done
    clear
 }
@@ -347,7 +347,7 @@ if [ "$live" == "yes" ] || [ "$root" == "" ]; then
 	[ "$verbose" == "no" ] || printf "Loading kernel Modules ...\n"
 	[ "$verbose" == "no" ] || sleep 2
 	LoadModules
-	if [ ! -f /etc/rc.d/init.d/setup-nutyx ]; then
+	if [ ! -f /sbin/setup-nutyx ]; then
 		find_media
 		if [ ! -L /dev/nutyx-cd ]; then
 			[ "$verbose" == "no" ] || printf "Media not found yet, trying again in 5 sec\n"
@@ -361,14 +361,14 @@ if [ "$live" == "yes" ] || [ "$root" == "" ]; then
 	#
 	# If still not find the setup-nutyx file then it's time to giveup
 	#
-	if [ ! -f /etc/rc.d/init.d/setup-nutyx ]; then
+	if [ ! -f /sbin/setup-nutyx ]; then
 		no_mount
 		sh
 	fi
 	if [ "$verbose" == "yes" ]; then
 
-		printf "/etc/rc.d/init.d/setup-nutyx exist ...\n"
-		ls -lt /etc/rc.d/init.d/setup-nutyx
+		printf "/sbin/setup-nutyx exist ...\n"
+		ls -lt /sbin/setup-nutyx
 		sleep 5
 	fi
 fi
