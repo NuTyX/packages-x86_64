@@ -22,6 +22,11 @@ create-service-dir:
 	install -d -m ${DIRMODE} ${EXTDIR}/sysconfig/network-devices/services
 	install -d -m ${DIRMODE} ${SERVICEDIR}
 
+install-service-setup-nutyx: create-dirs
+	install -m ${MODE} sysd/units/setup-nutyx.service ${UNITSDIR}
+	install -d ${DIRMODE} ${UNITSDIR}/sysinit.target.wants
+	ln -sv ../setup-nutyx.service ${UNITSDIR}/sysinit.target.wants
+
 install-service-dhclient: create-service-dir
 	install -m ${MODE} sysd/services/dhclient ${SERVICEDIR}
 
