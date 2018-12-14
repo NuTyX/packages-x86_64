@@ -21,7 +21,7 @@
 # gettext initialization
 # 
 export TEXTDOMAIN='setup-nutyx'
-export TEXTDOMAINDIR='/etc/rc.d/init.d/locale'
+export TEXTDOMAINDIR='/usr/share/locale'
 . gettext.sh
 . /lib/lsb/init-functions
 
@@ -1038,8 +1038,6 @@ setup_keymap ()
 {
 	cat > ${CONSOLE} << "EOF"
 FONT="LatGrkCyr-8x16"
-UNICODE="1"
-LOGLEVEL=1
 EOF
 	cat > ${XORGKB} << "EOF"
 Section "InputClass"
@@ -2354,12 +2352,12 @@ fi
 SETUP_LOG="setup-nutyx-log"
 CARDS="/etc/cards.conf"
 XORGKB="/etc/X11/xorg.conf.d/20-keyboard.conf"
-CONSOLE="/etc/sysconfig/console"
+CONSOLE="/etc/vconsole"
 LOCALE="/etc/profile.d/i18n.sh"
 LOCALTIME="/etc/localtime"
 ZONEINFO="/usr/share/zoneinfo/"
-NETWORK="`ls /etc/sysconfig/ifconfig* 2>/dev/null|head -1`"
-CLOCK="/etc/sysconfig/clock"
+NETWORK="`ls /etc/systemd/network/* 2>/dev/null|head -1`"
+CLOCK="/etc/adjtime"
 USER="/home"
 EFIVARS="/sys/firmware/efi/efivars"
 
