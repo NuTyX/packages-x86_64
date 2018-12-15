@@ -7,6 +7,7 @@ maintainer="tnut <tnut@nutyx.org>"
 
 name=systemd
 version=239-6b4878d
+release=2
 
 PKGMK_IGNORE_UNPACK="yes"
 
@@ -61,4 +62,6 @@ cat > $PKG/lib/systemd/systemd-user-sessions << "EOF"
 rm -f /run/nologin
 EOF
 chmod 755 $PKG/lib/systemd/systemd-user-sessions
+
+rm $PKG/usr/lib/tmpfiles.d/home.conf
 }
