@@ -432,17 +432,17 @@ while [ "$retval" == "" ]; do
   esac
 done
 if [ "`cat $TMP/result`" == "$(gettext "Auto")" ];then
-	cat > /etc/sysconfig/ifconfig.$NETWORK_CARD << "EOF"
-ONBOOT="yes"
-SERVICE="dhcpcd"
-DHCP_START=""
-DHCP_STOP="-k "
-# Mettez PRINTIP="yes" pour que le script affiche l'addresse IP
-PRINTIP="no"
-# Mettez PRINTALL="yes" pour que le script affiche tous le détails
-# de la connection réseau
-PRINTALL="no"
-EOF
+
+	echo "[Match]
+Name=${NETWORK_CARD}
+
+[Network]
+DHCP=ipv4
+
+[DHCP]
+UseDomains=true
+
+" > /etc/systemd/network/${NETWORK_CARD}-dhcp.network
 	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD set to Auto DHCP"
 else
 	dialog \
@@ -1162,9 +1162,14 @@ $(gettext "so that the summer/winter time is changed automatically" ) " 0 0
 			UTC=0;;
 	esac
 
-	echo "UTC=${UTC}" > /etc/sysconfig/clock
-
-	[ -r /etc/sysconfig/clock ] && . /etc/sysconfig/clock
+	echo "0.0 0.0" > /etc/adjtime
+  if [ "$UTC" == "0" ];then
+		echo "0
+LOCAL" >> /etc/adjtime
+	else
+		echo "1
+REMOTE" >> /etc/adjtime
+	fi
 
 	case "${UTC}" in
 		1)
@@ -1527,6 +1532,7 @@ install_nutyx() {
 	etc/systemd/network/* \
 	etc/adjtime \
 	etc/cards.conf \
+	etc/fstab \
 	etc/network \
 	etc/mdadm.conf \
 	$TEXTDOMAINDIR
