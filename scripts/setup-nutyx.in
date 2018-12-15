@@ -21,7 +21,7 @@
 # gettext initialization
 # 
 export TEXTDOMAIN='setup-nutyx'
-export TEXTDOMAINDIR='/usr/share/locale'
+export TEXTDOMAINDIR='/etc/rc.d/init.d/locale'
 . gettext.sh
 . /lib/lsb/init-functions
 
@@ -58,7 +58,7 @@ _msgfmt() {
 	echo "locale ${L}" >> ${CARDS}
 	localedef --delete-from-archive de_CH.utf8
 	localedef -i ${1} -f UTF-8 ${1}.UTF-8
-	if [ -n /lib/services/setup-nutyx/setup-nutyx.${L} ]; then
+	if [ -f /lib/services/setup-nutyx/setup-nutyx.${L} ]; then
 		mkdir -p $TEXTDOMAINDIR/${L}/LC_MESSAGES
 		msgfmt /lib/services/setup-nutyx/setup-nutyx.${L} \
 		-o $TEXTDOMAINDIR/${L}/LC_MESSAGES/setup-nutyx.mo
@@ -76,73 +76,6 @@ interrupt() {
 dialog --title " $(gettext "ERROR configuration") " \
 	--msgbox " \n $(gettext "Please try again") " 7 32
 exit 1
-}
-create_lxdm_conf() {
-mkdir -p /etc/lxdm
-echo "[base]
-## uncomment and set autologin username to enable autologin
-# autologin=${1}
-
-## uncomment and set timeout to enable timeout autologin,
-## the value should >=5
-# timeout=10
-
-## default session or desktop used when no systemwide config
-# session=/usr/bin/startxfce4
-
-## uncomment and set to set numlock on your keyboard
-# numlock=0
-
-## set this if you don't want to put xauth file at ~/.Xauthority
-# xauth_path=/tmp
-
-# not ask password for users who have empty password
-# skip_password=1
-
-## greeter used to welcome the user
-greeter=/usr/libexec/lxdm-greeter-gtk
-
-[server]
-## arg used to start xserver, not fully function
-# arg=/usr/bin/X -background vt1
-arg=/usr/bin/X
-# uncomment this if you really want xserver listen to tcp
-# tcp_listen=1
-# uncoment this if you want reset the xserver after logout
-reset=1
-
-[display]
-## gtk theme used by greeter
-gtk_theme=Clearlooks
-
-## background of the greeter
-#bg=/usr/share/backgrounds/default.png
-
-## if show bottom pane
-bottom_pane=1
-
-## if show language select control
-lang=1
-
-## if show keyboard layout select control
-keyboard=0
-
-## the theme of greeter
-theme=Industrial
-
-[input]
-
-[userlist]
-## if disable the user list control at greeter
-disable=0
-
-## whitelist user
-white=
-
-## blacklist user
-black=" > $SETUP_LXDM_CONFFILE
-chmod 640 $SETUP_LXDM_CONFFILE
-$SETUP_LOG "setup-nutyx --create-user" "$SETUP_LXDM_CONFFILE created"
 }
 network_card_found() {
 local NIC
@@ -355,10 +288,7 @@ setup_user()
 				$SETUP_LOG "setup-nutyx --create-user" "${DESCRIPTION} -G $USER_GROUPS -m ${NAME}"
 			fi
 			setup_password
-
-			[ ! -f $SETUP_LXDM_CONFFILE ] && create_lxdm_conf $NAME
-
-			setup_update
+#			setup_update
 		fi
 		SETUP_CONFIG_USER="no"
 	fi
@@ -1054,7 +984,7 @@ dialog  \
 "de_CH-latin1" "QWERTZ" \
 "de-latin1-nodeadkeys" "QWERTZ" \
 "de" "QWERTZ" \
-"cf" "AZERTY" \
+"cf" "QWERTY" \
 "us" "QWERTY" \
 "de-latin1" "QWERTY" \
 "azerty" "AZERTY" \
@@ -1301,7 +1231,8 @@ select_disk() {
 		1|255)
 			break;;
 	esac
-	DISK=`cat $TMP/disk|sed 's/"//g'`
+	DISK=`cat $TMP/disk|sed 's/"//g'|sed 's/ //g'`
+	DISK=`echo $DISK|sed  "s/ //"`
 	if [ -z $DISK ]; then
 		DISK="no"
 	fi
@@ -1352,6 +1283,7 @@ check_available_disk() {
 		# Only one disk ?
 		if [ `echo $DISK_LIST|wc -w` -eq 1 ]; then
 			DISK=$DISK_LIST
+			DISK=`echo $DISK|sed  "s/ //"`
 			echo "$DISK_LIST" > $TMP/disk
 		fi
 		CHECK_HD_OK="yes"
@@ -1592,12 +1524,9 @@ install_nutyx() {
 	for FILE in boot/kernel  \
 	boot/kernel-`uname -r` \
 	etc/profile.d/i18n.sh \
-	etc/sysconfig/network \
-	etc/sysconfig/clock \
+	etc/systemd/network/* \
+	etc/adjtime \
 	etc/cards.conf \
-	etc/resolv.conf \
-	etc/fstab \
-	etc/localtime \
 	etc/network \
 	etc/mdadm.conf \
 	$TEXTDOMAINDIR
@@ -1617,6 +1546,14 @@ install_nutyx() {
 	if [ -f ${1}/boot/kernel ]; then
 		cp  ${1}/boot/kernel ${2}/boot/kernel-`uname -r`
 		ln -sf kernel-`uname -r` ${2}/boot/kernel
+	fi
+	if  [ -f ${1}/boot/grub/splash.png ]; then
+		mkdir -p ${2}/boot/grub/
+		cp ${1}/boot/grub/splash.png ${2}/boot/grub/
+	fi
+	if [ -f ${1}/boot/grub/fonts/unicode.pf2 ]; then
+		mkdir -p ${2}/boot/grub/fonts
+		cp ${1}//boot/grub/fonts/unicode.pf2 ${2}/boot/grub/fonts
 	fi
 	for DIR in proc sys dev srv mnt tmp
 	do
@@ -1655,8 +1592,8 @@ setup_erase() {
 	MF=/mnt/hd
 	mkdir -p $MF
 	mount $PARTITION $MF || error "$(gettext "mounting") $PARTITION"
-	if [ -d /media/cdrom/isolinux/boot ]; then
-		erase_nutyx "/media/cdrom/isolinux" "$MF"
+	if [ -d /media/cdrom/boot ]; then
+		erase_nutyx "/media/cdrom" "$MF"
 	else
 		erase_nutyx "/" "$MF"
 	fi
@@ -1691,9 +1628,9 @@ setup_install() {
 	MF=/mnt/hd
 	mkdir -p $MF
 	mount $PARTITION $MF || error "$(gettext "mounting") $PARTITION"
-	if [ -d /media/cdrom/isolinux/boot ]; then
+	if [ -d /media/cdrom/boot ]; then
 		# Installing from ISO
-		install_nutyx "/media/cdrom/isolinux" "$MF"
+		install_nutyx "/media/cdrom/" "$MF"
 	else
 		# Installing from Maintenance this means
 		# TODO the initrd has to be rebuild at configuration time
@@ -1715,7 +1652,7 @@ setup_install() {
 		FORMAT="no"
 		[ ! -z $EFI_SYS_PART ] && FORMAT=`print_file_system $EFI_SYS_PART`
 		if [ "$FORMAT" == "vfat" ];then
-			setup_efibootmgr "/media/cdrom/isolinux" "$MF"
+			setup_efibootmgr "/media/cdrom" "$MF"
 		else
 			dialog --title "   Oups !!!  " \
 			--msgbox "    $(gettext "This installation won't boot again ...")" 6 60
@@ -1737,7 +1674,9 @@ setup_efibootmgr() {
 	ln -sf efi/EFI/BOOT/$SPNR/kernel.efi ${2}/boot/kernel-`uname -r`
 	ln -sf efi/EFI/BOOT/$SPNR/kernel.efi ${2}/boot/kernel
 	umount "$EFI_SYS_PART"
-	efibootmgr -c -L "NuTyX Linux Quiet on $PARTITION" -l "\EFI\BOOT\\$SPNR\kernel.efi" -u "root=$PARTITION $OPTIONS"
+	efibootmgr -c -L "NuTyX Linux Quiet on $PARTITION" -d "$DISK" -l "\EFI\BOOT\\$SPNR\kernel.efi" -u "root=$PARTITION $OPTIONS" || \
+	dialog --title "   Oups !!!  " \
+	--msgbox "    $(gettext "This installation won't boot again ...")" 6 60
 	umount $PARTITION
 }
 MBR_ok() {
@@ -1818,11 +1757,27 @@ setup_grub() {
 set default=0
 # Allow 5 seconds before booting the default.
 set timeout=5
-set color_highlight=blue/white
-set color_normal=cyan/black
-# insmod all_video
-# insmod jpeg
-# terminal_output gfxterm
+
+insmod all_video
+if loadfont /boot/grub/fonts/unicode.pf2; then
+ set gfxmode=800x600
+ insmod efi_gop
+ insmod efi-uga
+ insmod video_bochs
+ insmod video_cirrus
+ insmod gfxterm
+ insmod png
+ terminal_output gfxterm
+fi
+
+if background_image /boot/grub/splash.png; then
+  set color_normal=light-gray/black
+  set color_highlight=white/black
+else
+  set color_normal=cyan/blue
+  set color_highlight=white/blue
+fi
+
 EOF
 	fi
 	# Writing of NEW MBR
@@ -1919,9 +1874,9 @@ EOF
 #
 EOF
 		if [ ! -f $TMP/boot_partition/${GRUB_DESTINATION_DIR}initrd ]; then
-			cp /media/cdrom/isolinux/initrd \
+			cp /media/cdrom/boot/initrd \
 			$TMP/boot_partition/${GRUB_DESTINATION_DIR}initrd 2> /dev/null
-			cp /media/cdrom/isolinux/kernel \
+			cp /media/cdrom/boot/kernel \
 			$TMP/boot_partition/${GRUB_DESTINATION_DIR}kernel 2> /dev/null
 		fi
 		MBR_ok
@@ -1942,10 +1897,10 @@ setup_reboot() {
 	--msgbox "  $(gettext "Press OK to reboot the computer")  " 0 0 
 	/sbin/reboot -f
 }
-setup_initrd() {
+setup_advanced_initrd() {
 	if [ -d "$EFIVARS" ]; then
 		dialog --title "   $(gettext "Welcome to the NuTyX installer")   " \
-		--colors --menu "    $(gettext "Main Menu")   "  0 0 0 \
+		--colors --menu "    $(gettext "Advanced Menu")   "  0 0 0 \
 		"$(gettext "Help")" "$(gettext "How to do it") ? " \
 		"$(gettext "Keyboard")" "$(gettext "Configure the keyboard") ($(gettext "optional"))" \
 		"$(gettext "Partitioning")" "$(gettext "Create all your partitions") ($(gettext "optional"))" \
@@ -1955,6 +1910,7 @@ setup_initrd() {
 		"$(gettext "Console")" "$(gettext "Open a console")" \
 		"$(gettext "Erase")" "$(gettext "Erase") NuTyX" \
 		"$(gettext "Restart")" "$(gettext "Reboot the PC")" \
+		"$(gettext "Main")" "$(gettext "Main Menu")" \
 		2>$TMP/choix
 	else
 		dialog --title "   $(gettext "Welcome to the NuTyX installer")   " \
@@ -1969,6 +1925,7 @@ setup_initrd() {
 		"$(gettext "Console")" "$(gettext "Open a console")" \
 		"$(gettext "Erase")" "$(gettext "Erase") NuTyX" \
 		"$(gettext "Restart")" "$(gettext "Reboot the PC")" \
+		"$(gettext "Main")" "$(gettext "Main Menu")" \
 		2>$TMP/choix
 	fi
 	retval=$?
@@ -1976,6 +1933,83 @@ setup_initrd() {
 	case $retval in
 	0|2)
 		case $choice in
+			"$(gettext "Main")")
+				setup_initrd
+				;;
+			"$(gettext "Help")")
+				if [ -d "$EFIVARS" ]; then
+					setup_help_efi
+				else
+					setup_help
+				fi
+				;;
+			"$(gettext "Install")")
+				echo "CHECK_SINGLE_PARTITION=$CHECK_SINGLE_PARTITION" > /dev/tty2
+				[ "$CHECK_SINGLE_PARTITION" == "no" ] && unset PARTITION
+				setup_install
+				;;
+			"$(gettext "Partitioning")")
+				setup_partition
+				;;
+			"$(gettext "Format")")
+				echo "CHECK_SINGLE_PARTITION=$CHECK_SINGLE_PARTITION" > /dev/tty2
+				[ "$CHECK_SINGLE_PARTITION" == "no" ] && unset PARTITION
+				setup_format
+				;;
+			"$(gettext "Boot")")
+				echo "CHECK_SINGLE_PARTITION=$CHECK_SINGLE_PARTITION" > /dev/tty2
+				[ "$CHECK_SINGLE_PARTITION" == "no" ] && unset PARTITION
+				setup_grub
+				;;
+			"$(gettext "Keyboard")")
+				setup_keymap
+				;;
+			"$(gettext "Network")")
+				setup_net
+				;;
+			"$(gettext "Clock")")
+				setup_clock
+				;;
+			"$(gettext "Console")")
+				source /etc/profile
+				/usr/sbin/pwconv
+				/usr/sbin/grpconv
+				sh
+				;;
+			"$(gettext "Erase")")
+				echo "CHECK_SINGLE_PARTITION=$CHECK_SINGLE_PARTITION" > /dev/tty2
+				[ "$CHECK_SINGLE_PARTITION" == "no" ] && unset PARTITION
+				setup_erase
+				;;
+			"$(gettext "Restart")")
+				setup_reboot
+				;;
+		esac
+		;;
+	1)
+		echo "1"
+		;;
+	255)
+		echo "255"
+		;;
+	esac
+
+
+}
+setup_initrd() {
+	dialog --title "   $(gettext "Welcome to the NuTyX installer")   " \
+	--colors --menu "    $(gettext "Main Menu")   "  0 0 0 \
+	"$(gettext "Install")" "$(gettext "Install NuTyX")" \
+	"$(gettext "Advanced")" "$(gettext "Advanced Menu")" \
+	2>$TMP/choix
+	retval=$?
+	choice=`cat $TMP/choix`
+	case $retval in
+	0|2)
+		case $choice in
+			"$(gettext "Advanced")")
+				setup_advanced_initrd
+				;;
 			"$(gettext "Help")")
 				if [ -d "$EFIVARS" ]; then
 					setup_help_efi
@@ -2047,7 +2081,8 @@ check_esp() {
 		dialog --title "   Hmmmm   " \
 		--msgbox "    $(gettext "GPT partition table not found")" 6 60
 	else
-		EFI_SYS_PART="`LANG=C fdisk ${FIRST_DISK} -l -o device,type|grep EFI|cut -d " " -f1`"
+		EFI_SYS_PART="`(LANGUAGE=C fdisk ${FIRST_DISK} -l -o device,type|grep EFI|cut -d " " -f1)`"
+
 		if [ -z "${EFI_SYS_PART}" ];then
 			dialog --title "   Hmmmm   " \
 			--msgbox "    $(gettext "EFI partition not found")" 6 60
@@ -2083,7 +2118,7 @@ $(gettext "Are you sure you want to continue ?")" 7 60
 }
 check_swap() {
 	unset SWAP_LIST
-	SWAP_LIST="`LANG=C fdisk -l -o device,type|grep swap|cut -d " " -f1`"
+	SWAP_LIST="`(LANGUAGE=C fdisk -l -o device,type|grep swap|cut -d " " -f1)`"
 	if [ -z "${SWAP_LIST}" ];then
 		dialog --title "   Hmmmm   " \
 	--msgbox "    $(gettext "Swap partition not found")" 6 60
@@ -2195,7 +2230,7 @@ parse_options() {
 					;;
 				-cU|--config-update)
 					check_root
-					setup_update
+#					setup_update
 					;;
 				-cu|--create-user)
 					check_root
@@ -2265,7 +2300,7 @@ cleanup () {
 top_loop() {
 	if [ "$SETUP_INITRD" = "yes" ]; then
 		[ "$SETUP_CONFIG_LANGUAGE" = "yes" ] && LANG=de_CH.utf-8 setup_language
-		if [ ! -d /media/cdrom/isolinux/boot ]; then
+		if [ ! -d /media/cdrom/boot ]; then
 			dialog --title "   $(gettext "Welcome to the NuTyX installer")   " \
 				--msgbox "    $(gettext "You can remove the ISO media now.")" 6 60
 		fi
