@@ -21,7 +21,7 @@
 # gettext initialization
 # 
 export TEXTDOMAIN='setup-nutyx'
-export TEXTDOMAINDIR='/etc/rc.d/init.d/locale'
+export TEXTDOMAINDIR='/usr/share/locale'
 . gettext.sh
 . /lib/lsb/init-functions
 
@@ -60,8 +60,9 @@ _msgfmt() {
 	localedef -i ${1} -f UTF-8 ${1}.UTF-8
 	if [ -f /lib/services/setup-nutyx/setup-nutyx.${L} ]; then
 		mkdir -p $TEXTDOMAINDIR/${L}/LC_MESSAGES
-		msgfmt /lib/services/setup-nutyx/setup-nutyx.${L} \
+		msgfmt /lib/services/setup-nutyx/$TEXTDOMAIN.${L} \
 		-o $TEXTDOMAINDIR/${L}/LC_MESSAGES/setup-nutyx.mo
+		TEXTDOMAINFILE=$TEXTDOMAINDIR/${L}/LC_MESSAGES/$TEXTDOMAIN.mo
 	fi
 	echo "export LANG=${1}.utf-8" > ${LOCALE}
 	$SETUP_LOG "setup-nutyx --config-lang" "variable LANG=${1}.utf-8 saved in ${LOCALE}"
@@ -413,6 +414,7 @@ setup_wireless()
 setup_net() 
 {
 network_card_found
+NETWORK_DIR="/etc/systemd/network/"
 retval=""
 while [ "$retval" == "" ]; do
 	dialog  \
@@ -442,7 +444,7 @@ DHCP=ipv4
 [DHCP]
 UseDomains=true
 
-" > /etc/systemd/network/${NETWORK_CARD}-dhcp.network
+" > ${NETWORK_DIR}${NETWORK_CARD}-dhcp.network
 	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD set to Auto DHCP"
 else
 	dialog \
@@ -489,19 +491,19 @@ else
 	if [ -n ${GW} ]; then
 		/sbin/ip route add default via ${GW}
 	fi
-	cat > /etc/sysconfig/ifconfig.${NETWORK_CARD} << "EOF"
-ONBOOT=yes
-SERVICE=ipv4-static
-EOF
+	echo "[Match]
+Name=${NETWORK_CARD}
+
+[Network]" > ${NETWORK_DIR}${NETWORK_CARD}-static.network
+
 	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: SERVICE=ipv4-static"
-	echo "IP=${IP}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
+	echo "Adress=${IP}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
 	if [ -n ${GW} ]; then
-		echo "GATEWAY=${GW}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
+		echo "Gateway=${GW}" >> ${NETWORK_DIR}${NETWORK_CARD}-static.network
 		$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: GATEWAY=${GW}"
 	fi
-	echo "PREFIX=${PREFIX}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
+	echo "Prefix=${PREFIX}" >> ${NETWORK_DIR}${NETWORK_CARD}-static.network
 	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: PREFIX=${PREFIX}"
-	echo "BROADCAST=${BROADCAST}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
 	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: BROADCAST=${BROADCAST}"
 	if [ -n "${DNS}" ]; then
 		dialog \
@@ -510,25 +512,17 @@ EOF
 		$(gettext "this is only need if you are in a subdomain").\
 		$(gettext "Most of the time it's not need"): " 10 60 2> $TMP/SUFFIX
 		SUFFIX=$(tail -n 1 $TMP/SUFFIX)
-		echo "nameserver ${DNS}" > /etc/resolv.conf
+		echo "DNS=${DNS}"  >> ${NETWORK_DIR}${NETWORK_CARD}-static.network
 		$SETUP_LOG "setup-nutyx --config-net" "/etc/resolv.conf: nameserver ${DNS}"
 		if [ -n "${SUFFIX}" ]; then
+			echo "Domains=${SUFFIX}" >> ${NETWORK_DIR}${NETWORK_CARD}-static.network
 			echo "search ${SUFFIX}" >> /etc/resolv.conf
 			$SETUP_LOG "setup-nutyx --config-net" "/etc/resolv.conf: search ${SUFFIX}"
 		fi
 	fi
 fi
-if [ ! -f /etc/sysconfig/network ]; then
-	cat > /etc/sysconfig/network << "EOF"
-HOSTNAME='nutyx'        # Hostname of this machine
-MANAGER=''              # Network manager (wicd/networkmanager/cli/nothing)
-NETWORKWAIT='no'        # Wait or not for network
-LINKDELAY='15'          # init delay for initialisation of Networkmanager
-NETWORKDELAY='0'        # init delay to wait after initialisation of Networkmanager
-EOF
-fi
-if [ "$SETUP_INITRD" == "yes" ]; then
-	/etc/rc.d/init.d/network start
+if [ ! -f /etc/hostname ]; then
+	echo "nutyx" > /etc/hostname
 fi
 SETUP_CONFIG_NETWORK="no"
 }
@@ -1530,12 +1524,13 @@ install_nutyx() {
 	boot/kernel-`uname -r` \
 	etc/profile.d/i18n.sh \
 	etc/systemd/network/* \
+	etc/hostname \
 	etc/adjtime \
 	etc/cards.conf \
 	etc/fstab \
 	etc/network \
 	etc/mdadm.conf \
-	$TEXTDOMAINDIR
+	$TEXTDOMAINFILE
 	do
 		if [ -f /$FILE ] || [ -d /$FILE ];then
 			cp -a /$FILE  ${2}/$FILE
