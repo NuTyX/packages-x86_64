@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=udisks2
-version=2.7.6
+version=2.8.1
 
 source=(https://github.com/storaged-project/udisks/releases/download/udisks-$version/udisks-$version.tar.bz2)
 
@@ -17,5 +17,11 @@ cd udisks-$version
 --localstatedir=/var \
 --disable-static
 make
+
+sed -i -r 's/^ +\././' doc/man/*.[158]
+
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libudisks2.la
 }
