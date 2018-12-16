@@ -7,15 +7,18 @@ contributors="Pierre B"
 
 name=gavl
 version=1.4.0
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/sourceforge/gmerlin/$name-$version.tar.gz)
 
 build() {
-cd $SRC/$name-$version
-
-./configure --prefix=/usr        \
-            --with-cpuflags=none
+cd $name-$version
+LIBS=-lm \
+./configure --prefix=/usr \
+--docdir=/usr/share/doc/gavl-$version
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libgavl.la
 }
