@@ -6,7 +6,8 @@ maintainer="kientzle at acm dot org"
 packager="tnut <tnut@nutyx.org>"
 
 name=libarchive
-version=3.3.3
+version=3.3.2
+release=2
 
 source=(http://www.libarchive.org/downloads/libarchive-$version.tar.gz
 	)
@@ -19,12 +20,15 @@ cd $name-$version
 --infodir=/usr/share/info 
 make
 make DESTDIR=$PKG install
-
+# Obsolet lib
+rm $PKG/usr/lib/libarchive.la
 }
 devel() {
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
-usr/lib/libarchive.a usr/lib/libarchive.la usr/include usr/lib/pkgconfig
-rm -r usr/lib/libarchive.a usr/lib/libarchive.la usr/include usr/lib/pkgconfig
+usr/lib/libarchive.a usr/include usr/lib/pkgconfig
+rm -r usr/lib/libarchive.a
+rm -r usr/include
+rm -r usr/lib/pkgconfig
 }
