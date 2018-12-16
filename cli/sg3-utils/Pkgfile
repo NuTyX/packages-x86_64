@@ -4,8 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=sg3-utils
-version=1.42
-release=1
+version=1.44
 
 source=(http://sg.danny.cz/sg/p/sg3_utils-$version.tar.xz)
 build() {
@@ -13,4 +12,7 @@ cd sg3_utils-$version
 ./configure --prefix=/usr --disable-static
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libsgutils2.la
 }
