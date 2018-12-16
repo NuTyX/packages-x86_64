@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=python-qt
 version=5.11.3
+release=2
 
 source=(http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-$version/PyQt5_gpl-$version.tar.gz)
 build() {
@@ -19,4 +20,11 @@ python3 configure.py   \
 make
 make DESTDIR=$PKG INSTALL_ROOT=$PKG install -j1
 
+
+# Already in python2-qt
+mkdir -p $PKG/usr/local/{bin,share/qt/qsci/api/python}
+mv  $PKG/usr/{,local}/bin/pylupdate5
+mv $PKG/usr/{,local}/bin/pyrcc5
+mv $PKG/usr/{,local}/bin/pyuic5
+mv $PKG/usr/{,local}/share/qt/qsci/api/python/PyQt5.api
 }
