@@ -497,7 +497,7 @@ Name=${NETWORK_CARD}
 [Network]" > ${NETWORK_DIR}${NETWORK_CARD}-static.network
 
 	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: SERVICE=ipv4-static"
-	echo "Adress=${IP}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
+	echo "Address=${IP}" >> ${NETWORK_DIR}${NETWORK_CARD}-static.network
 	if [ -n ${GW} ]; then
 		echo "Gateway=${GW}" >> ${NETWORK_DIR}${NETWORK_CARD}-static.network
 		$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: GATEWAY=${GW}"
