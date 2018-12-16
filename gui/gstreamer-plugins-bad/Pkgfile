@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=gstreamer-plugins-bad
 version=1.14.4
-release=2
+release=3
 
 source=(https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-$version.tar.xz )
 
@@ -110,6 +110,12 @@ rm $PKG/usr/lib/libgstphotography-1.0.la
 rm $PKG/usr/lib/libgstplayer-1.0.la
 rm $PKG/usr/lib/libgsturidownloader-1.0.la
 rm $PKG/usr/lib/libgstwebrtc-1.0.la
+rm $PKG/usr/lib/libgstwayland-1.0.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstkms.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstvdpau.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstcolormanagement.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstwaylandsink.la
+rm $PKG/usr/lib/gstreamer-1.0/libgstopenglmixers.la
 }
 uptodate() {
 local url ext
