@@ -2,12 +2,12 @@
 
 description="GStreamer library for creating audio/video editors"
 url="https://gstreamer.freedesktop.org/modules/gst-editing-services.html"
-packager="rems <rems@nutyx.org>"
-contributors=""
+packager="tnut <tnut@nutyx.org>"
+contributors="rems"
 
 name=gstreamer-editing-services
 version=1.14.4
-release=2
+release=3
 
 source=(https://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
 
@@ -15,7 +15,7 @@ build() {
 cd $name-$version
 ./configure --prefix=/usr --enable-gtk-doc \
             --with-package-name="GStreamer (NuTyX)" \
-            --with-package-origin="http://www.nutyx.org/
+            --with-package-origin="http://www.nutyx.org/"
 make
 make DESTDIR=$PKG install
 
