@@ -6,15 +6,14 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=pcsclite
-version=1.8.23
+version=1.8.24
 
 PKGMK_KEEP_SOURCES="No"
 
-source=(https://alioth.debian.org/frs/download.php/latestzip/39/pcsclite-latest.zip
+source=(https://pcsclite.apdu.fr/files/pcsc-lite-$version.tar.bz2
 	pcscd)
 
 build() {
-  tar xf pcsc-lite-$version.tar.bz2
   cd pcsc-lite-$version
   ./configure --prefix=/usr \
               --sbindir=/usr/bin \
@@ -29,6 +28,11 @@ build() {
   make DESTDIR=$PKG install
 
   install -d $PKG/usr/lib/pcsc/drivers
+
+  # Obsolets libs
+  rm $PKG/usr/lib/libpcsclite.la
+  rm $PKG/usr/lib/libpcscspy.la
+
 
   # Service
   mkdir -p $PKG/etc/rc.d/init.d
