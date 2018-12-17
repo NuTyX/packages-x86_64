@@ -449,7 +449,7 @@ UseDomains=true
 else
 	dialog \
 	--title " $(gettext "Configuration of") ${NETWORK_CARD} " \
-	--inputbox " $(gettext "Enter an IP address") : " 10 60 "192.168.1.5" 2> $TMP/IP
+	--inputbox " $(gettext "Enter an IP address") : " 10 60 "192.168.1.5/24" 2> $TMP/IP
 
 	if [ "`cat $TMP/IP`" == "" ]; then
 		interrupt
@@ -464,15 +464,6 @@ else
 		interrupt
 	else
 		BROADCAST=$(tail -n 1 $TMP/BC)
-	fi
-	dialog \
-	--title " $(gettext "Configuration of") ${NETWORK_CARD} " \
-	--inputbox "$(gettext "Enter the subnet mask"),\
-	$(gettext "in most cases the current value can be used"): " 10 60 "255.255.255.0" 2> $TMP/NM
-	if [ "`cat $TMP/NM`" == "" ]; then
-		interrupt
-	else
-		PREFIX=$(tail -n 1 $TMP/NM)
 	fi
 	GW_TEMP=$(echo $IP|cut -d . -f 1).$(echo $IP|cut -d . -f 2).$(echo $IP|cut -d . -f 3).1
 	dialog \
@@ -502,8 +493,6 @@ Name=${NETWORK_CARD}
 		echo "Gateway=${GW}" >> ${NETWORK_DIR}${NETWORK_CARD}-static.network
 		$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: GATEWAY=${GW}"
 	fi
-	echo "Prefix=${PREFIX}" >> ${NETWORK_DIR}${NETWORK_CARD}-static.network
-	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: PREFIX=${PREFIX}"
 	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: BROADCAST=${BROADCAST}"
 	if [ -n "${DNS}" ]; then
 		dialog \
@@ -1529,6 +1518,7 @@ install_nutyx() {
 	etc/cards.conf \
 	etc/fstab \
 	etc/network \
+	etc/resolv.conf \
 	etc/mdadm.conf \
 	$TEXTDOMAINFILE
 	do
