@@ -1800,6 +1800,16 @@ EOF
 		NuTyX_PART="`cat $TMP/boot`"
 		BOOT_FS="`print_file_system $PARTITION`"
 		NuTyX_FS="`print_file_system $NuTyX_PART`"
+		echo "menuentry \"NuTyX LTS ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		echo " linux /${GRUB_DESTINATION_DIR}kernel-lts root=${NuTyX_PART} ro quiet verbose=no" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		echo "#  initrd /${GRUB_DESTINATION_DIR}initrd-lts" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		echo "}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		echo " " >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		echo "menuentry \"NuTyX LTS Verbose ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		echo "  linux /${GRUB_DESTINATION_DIR}kernel-lts root=${NuTyX_PART} ro " >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		echo "#  initrd /${GRUB_DESTINATION_DIR}initrd-lts" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		echo "}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		echo " "  >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
 		echo "menuentry \"NuTyX ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
 		echo " linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro quiet verbose=no" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
 		echo "#  initrd /${GRUB_DESTINATION_DIR}initrd" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
@@ -1809,6 +1819,7 @@ EOF
 		echo "  linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro " >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
 		echo "#  initrd /${GRUB_DESTINATION_DIR}initrd" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
 		echo "}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+
 	else
 		#
 		# NuTyX is not yet installed
@@ -1845,22 +1856,22 @@ EOF
 #
 #menuentry  "Harddisk number 2 and partition number 3" {
 #   set root=(hd1,3)
-#   linux /boot/kernel root=/dev/sdb3 ro quiet verbose=no
+#   linux /boot/kernel-lts root=/dev/sdb3 ro quiet verbose=no
 #}
 #
 # The same one for debug purpose:
 #
 #menuentry  "Harddisk number 2 and partition number 3 verbose mode" {
 #   set root=(hd1,3)
-#   linux /boot/kernel root=/dev/sdb3 ro
+#   linux /boot/kernel-lts root=/dev/sdb3 ro
 #}
 #
 # An other one with initrd and rootdelay (to use with USB stick for ex)
 #
 #menuentry  "Harddisk number 2 and partition number 1 with initrd" {
 #   set root=(hd1,1)
-#   linux /boot/kernel root=/dev/sdb1 ro rootdelay=5
-#   initrd /boot/initrd
+#   linux /boot/kernel-lts root=/dev/sdb1 ro rootdelay=5
+#   initrd /boot/initrd-lts
 #}
 #
 EOF
