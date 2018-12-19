@@ -18,8 +18,8 @@ _version=${version:0:4}
 run=(nutyx)
 
 # Virtualbox
-vb_version=5.2.22
-buildrelease=126460
+vb_version=6.0.0
+buildrelease=127566
 _VBARCH=amd64
 
 ## Download all the sources
@@ -116,7 +116,7 @@ cd $SRC/linux-${_version}
 mkdir -p $PKG/boot
 
 cp  System.map \
-$PKG/boot/System_64.map-$version
+$PKG/boot/System_64.map-$version-NuTyX-lts
 cp  .config    \
 $PKG/boot/config_64-$version-NuTyX-lts
 cp  arch/x86_64/boot/bzImage \
