@@ -12,7 +12,7 @@ PKGMK_GROUPS=(devel doc)
 name=kernel-lts
 alias=(linux-lts)
 
-version=4.14.85
+version=4.19.10
 _version=${version:0:4}
 
 run=(nutyx)
@@ -29,7 +29,7 @@ source=(\
 $url/pub/linux/kernel/v4.x/linux-${_version}.tar.xz
 $url/pub/linux/kernel/v4.x/patch-$version.xz
 http://download.virtualbox.org/virtualbox/${vb_version}/VirtualBox-${vb_version}-${buildrelease}-Linux_${_VBARCH}.run
-$name.config_64)
+config_64)
 
 ## Time to build everything
 #
@@ -45,13 +45,13 @@ if [ -f $SRC/patch-$version.xz ]; then
 fi
 
 make mrproper
-cp $SRC/kernel-lts.config_64 ./.config
+cp $SRC/config_64 ./.config
 
 # make menuconfig
 
 make
 
-cp .config $SRC/$name.config_64
+cp .config $SRC/config_64
 
 ## Modules
 #
@@ -118,7 +118,7 @@ mkdir -p $PKG/boot
 cp  System.map \
 $PKG/boot/System_64.map-$version
 cp  .config    \
-$PKG/boot/config_64-$version
+$PKG/boot/config_64-$version-NuTyX-lts
 cp  arch/x86_64/boot/bzImage \
 $PKG/boot/kernel-$version-NuTyX-lts
 
@@ -142,10 +142,10 @@ rm -rf $PKG/lib/firmware
 
 # post-install autogen
 echo 'LK="."
-[ -L boot/kernel ] && LK="`readlink boot/kernel`"
+[ -L boot/kernel-lts ] && LK="`readlink boot/kernel-lts`"
 if [ "`dirname $LK`" != "." ]; then
   echo "This is a efi installation"
-  ln -sf $LK boot/kernel
+  ln -sf $LK boot/kernel-lts
   if [ -f boot/$LK ]; then' > $PKGMK_ROOT/$name.post-install
 echo "    mv boot/kernel-$version-NuTyX-lts boot/\$LK 2>/dev/null
     ln -sf \$LK boot/kernel-$version-NuTyX-lts
@@ -156,25 +156,11 @@ else
   echo \"This is a bios installation\"
   if [ -L boot/initrd ]; then
     mkinitramfs $version-NuTyX-lts
-    ln -sf initrd-$version-NuTyX-lts boot/initrd
+    ln -sf initrd-$version-NuTyX-lts boot/initrd-lts
   fi
-  ln -sf kernel-$version-NuTyX-lts boot/kernel
+  ln -sf kernel-$version-NuTyX-lts boot/kernel-lts
 fi" >> $PKGMK_ROOT/$name.post-install
 
-# pre-install autogen
-cd $SRC
-if [ -f aaabasicfs-${AAABASICFS}.tar.xz ]; then
- bsdtar -p -o -C $SRC -xf aaabasicfs-${AAABASICFS}.tar.xz
- echo ". lib/lsb/init-functions" >  $PKGMK_ROOT/$name.pre-install
- for FILE in `tar --list --file aaabasicfs-${AAABASICFS}.tar.xz|grep -v /$`
- do
-   echo "log_info_msg \"update $FILE\"" >> $PKGMK_ROOT/$name.pre-install
-   echo "cat  > $FILE << \"END_OF_FILE\"" >> $PKGMK_ROOT/$name.pre-install
-   cat $SRC/$FILE >> $PKGMK_ROOT/$name.pre-install
-   echo "END_OF_FILE" >> $PKGMK_ROOT/$name.pre-install
-   echo "evaluate_retval" >> $PKGMK_ROOT/$name.pre-install
- done
-fi
 }
 devel() {
 
