@@ -257,7 +257,8 @@ LoadModules() {
  for i in dm-mod md-mod ehci-pci overlay \
  xhci-pci xhci-hcd ehci-hcd nls_iso8859_1 \
  uhci-hcd uas sr_mod usb-storage loop \
- squashfs isofs vfat fat nls_cp437
+ squashfs isofs vfat fat nls_cp437 \
+ virtio virtio_blk virtio_pci virtio_net virtio_ring
  do
   if [ "$verbose" == "yes" ]; then
     modprobe -v $i

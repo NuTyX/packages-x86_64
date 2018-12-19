@@ -35,11 +35,11 @@ copy()
   if [ -n $file ] ; then
 	case "$file" in
 		/lib/systemd/libsystemd*.so)
-			cp -v $file $WDIR/$2/systemd
-		;;
+			cp $file $WDIR/$2/systemd
+			;;
 		*)
-			cp -v $file $WDIR/$2
-		;;
+			cp $file $WDIR/$2
+			;;
 	esac
   else
     echo "Missing required file: $1 for directory $2"
@@ -323,7 +323,7 @@ cdrom squashfs isofs overlay mmc_core \
 rtsx_pci rtsx_pci_sdmmc rtsx_pci_ms mmc_block \
 ssb lpc_ich shpcp sdhci-acpi sdhci-pltfm \
 sdhci sdhci-pci \
-virtio virtio_blk virtio_pci virtio_net
+virtio virtio_blk virtio_pci virtio_net virtio_ring
 do
 	find /lib/modules/ -type f -name $i* 2> /dev/null | \
 	cpio --make-directories -p --quiet $WDIR 2> /dev/null
