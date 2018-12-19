@@ -6,16 +6,15 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=polkit
-version=0.114
-release=2
+version=0.115
 
-source=(http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
+source=(http://www.linuxfromscratch.org/patches/blfs/svn/polkit-0.115-security_patch-2.patch
+	http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
 
-sed -e '/JS_ReportWarningUTF8/s/,/, "%s",/'  \
-        -i  src/polkitbackend/polkitbackendjsauthority.cpp
+patch -Np1 -i ../polkit-0.115-security_patch-2.patch
 
 
 ./configure --prefix=/usr \
