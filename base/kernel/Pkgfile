@@ -11,7 +11,7 @@ PKGMK_GROUPS=(devel doc)
 name=kernel
 alias=(linux)
 
-version=4.19.10
+version=4.19.11
 _version=${version:0:4}
 
 run=(nutyx)
@@ -117,7 +117,7 @@ mkdir -p $PKG/boot
 cp  System.map \
 $PKG/boot/System_64.map-$version-NuTyX
 cp  .config    \
-$PKG/boot/config_64-$version
+$PKG/boot/config_64-$version-NuTyX
 cp  arch/x86_64/boot/bzImage \
 $PKG/boot/kernel-$version-NuTyX
 
