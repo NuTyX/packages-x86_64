@@ -6,16 +6,13 @@ maintainer="tnut at nutyx dot org, Artemia76 at nutyx dot org"
 packager="tnut <tnut@nutyx.org>"
 
 name=flcards
-version=2.4.82
-release=2
+version=2.4.84
 
-source=(cards-2.4.82-upstream-1.patch
-	http://downloads.nutyx.org/files/cards-$version.tar.gz)
+source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
 
 build() {
 
 cd cards-$version
-patch -Np1 -i ../cards-2.4.82-upstream-1.patch
 make flcards
 cd fltk
 make DESTDIR=$PKG install
