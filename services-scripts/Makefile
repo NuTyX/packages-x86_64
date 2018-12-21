@@ -75,7 +75,7 @@ install-haveged: create-dirs
 install-httpd: create-dirs
 	install -m ${CONFMODE} sysd/tmpfiles/httpd.conf ${TMPFILESDIR}/
 	install -m ${CONFMODE} sysd/units/httpd.service ${UNITSDIR}/
-	/bin/systemd-tmpfiles --create httpd.conf
+	test -n "${DESTDIR}" || /bin/systemd-tmpfiles --create httpd.conf
 	test -n "${DESTDIR}" || systemctl enable httpd.service
 
 install-iptables: create-dirs
@@ -101,13 +101,13 @@ install-lightdm: create-dirs
 install-mysqld: create-dirs
 	install -m ${CONFMODE} sysd/tmpfiles/mysqld.conf ${TMPFILESDIR}/
 	install -m ${CONFMODE} sysd/units/mysqld.service ${UNITSDIR}/
-	systemd-tmpfiles --create mysqld.conf
+	test -n "${DESTDIR}" || systemd-tmpfiles --create mysqld.conf
 	test -n "${DESTDIR}" || systemctl enable mysqld.service
 
 install-named: create-dirs
 	install -m ${CONFMODE} sysd/tmpfiles/named.conf ${TMPFILESDIR}/
 	install -m ${CONFMODE} sysd/units/named.service ${UNITSDIR}/
-	/bin/systemd-tmpfiles --create named.conf
+	test -n "${DESTDIR}" || /bin/systemd-tmpfiles --create named.conf
 	test -n "${DESTDIR}" || systemctl enable named.service
 
 install-nfs-client: create-dirs
@@ -144,7 +144,7 @@ install-postfix: create-dirs
 install-postgresql: create-dirs
 	install -m ${CONFMODE} sysd/tmpfiles/postgresql.conf ${TMPFILESDIR}/
 	install -m ${CONFMODE} sysd/units/postgresql.service ${UNITSDIR}/
-	systemd-tmpfiles --create postgresql.conf
+	test -n "${DESTDIR}" || systemd-tmpfiles --create postgresql.conf
 	test -n "${DESTDIR}" || systemctl enable postgresql.service
 
 install-proftpd: create-dirs
@@ -177,7 +177,7 @@ install-saslauthd: create-dirs
 	install -m ${CONFMODE} sysd/default/saslauthd ${DEFAULTSDIR}/
 	install -m ${CONFMODE} sysd/tmpfiles/saslauthd.conf ${TMPFILESDIR}/
 	install -m ${CONFMODE} sysd/units/saslauthd.service ${UNITSDIR}/
-	systemd-tmpfiles --create saslauthd.conf
+	test -n "${DESTDIR}" || systemd-tmpfiles --create saslauthd.conf
 	test -n "${DESTDIR}" || systemctl enable saslauthd.service
 
 install-sendmail: create-dirs
@@ -190,7 +190,7 @@ install-slapd: create-dirs
 	install -m ${CONFMODE} sysd/default/slapd ${DEFAULTSDIR}/
 	install -m ${CONFMODE} sysd/tmpfiles/slapd.conf ${TMPFILESDIR}/
 	install -m ${CONFMODE} sysd/units/slapd.service ${UNITSDIR}/
-	systemd-tmpfiles --create slapd.conf
+	test -n "${DESTDIR}" || systemd-tmpfiles --create slapd.conf
 	test -n "${DESTDIR}" || systemctl enable slapd.service
 
 install-sshd: create-dirs
@@ -204,7 +204,7 @@ install-svnserve: create-dirs
 	install -m ${CONFMODE} sysd/default/svnserve ${DEFAULTSDIR}/
 	install -m ${CONFMODE} sysd/tmpfiles/svnserve.conf ${TMPFILESDIR}/
 	install -m ${CONFMODE} sysd/units/svnserve.service ${UNITSDIR}/
-	systemd-tmpfiles --create svnserve.conf
+	test -n "${DESTDIR}" || systemd-tmpfiles --create svnserve.conf
 	test -n "${DESTDIR}" || systemctl enable svnserve.service
 
 install-unbound: create-dirs
