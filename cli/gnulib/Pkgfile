@@ -1,0 +1,50 @@
+# Depends on: git
+description="A parallel, SMP-based, bzip2-compatible compression utility"
+url="http://lbzip2.org"
+packager="tnut <tnut@nutyx.org>"
+
+name=gnulib
+version=git
+release=2
+
+source=()
+
+prepare() {
+git clone https://git.savannah.gnu.org/git/gnulib.git gnulib
+}
+
+build() {
+
+cd $name
+
+install -vdm755 $PKG/usr/bin
+cp -a check-module $PKG/usr/bin
+
+install -vdm755 $PKG/usr/share/gnulib
+cp -a build-aux posix-modules config doc lib m4 modules top tests \
+      MODULES.html.sh Makefile gnulib-tool cfg.mk check-copyright \
+      $PKG/usr/share/gnulib
+ln -s ../share/gnulib/gnulib-tool $PKG/usr/bin
+# Fix permissions
+chmod 0755 $PKG/usr/share/gnulib/build-aux/config.guess
+chmod 0755 $PKG/usr/share/gnulib/build-aux/config.sub
+chmod 0755 $PKG/usr/share/gnulib/build-aux/gendocs.sh
+chmod 0644 $PKG/usr/share/gnulib/doc/gendocs_template
+chmod 0644 $PKG/usr/share/gnulib/m4/fflush.m4
+chmod 0644 $PKG/usr/share/gnulib/modules/canonicalize-lgpl
+chmod 0644 $PKG/usr/share/gnulib/modules/fflush
+chmod 0644 $PKG/usr/share/gnulib/modules/fflush-tests
+chmod 0644 $PKG/usr/share/gnulib/tests/test-base64.c
+chmod 0755 $PKG/usr/share/gnulib/tests/test-closein.sh
+chmod 0644 $PKG/usr/share/gnulib/tests/test-fflush.c
+chmod 0755 $PKG/usr/share/gnulib/tests/test-posix_spawn1.in.sh
+chmod 0755 $PKG/usr/share/gnulib/tests/test-posix_spawn2.in.sh
+
+# Remove unused files
+rm -f $PKG/usr/share/gnulib/doc/gnulib.info
+rm -f $PKG/usr/share/gnulib/doc/gnulib.html
+rm -f $PKG/usr/share/gnulib/modules/COPYING
+rm -f $PKG/usr/share/gnulib/*/.cvsignore debian/gnulib/usr/share/gnulib/.cvsignore
+rm -f $PKG/usr/share/gnulib/*/.gitignore debian/gnulib/usr/share/gnulib/.gitignore
+rm -f $PKG/usr/share/gnulib/*/.gitattributes debian/gnulib/usr/share/gnulib/.gitattributes
+}
