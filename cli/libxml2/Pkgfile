@@ -7,20 +7,44 @@ contributors="Pierre B, Fanch"
 
 name=libxml2
 version=2.9.8
-release=4
+release=5
 
 source=(ftp://xmlsoft.org/libxml2/$name-$version.tar.gz  http://www.linuxfromscratch.org/patches/blfs/svn/libxml2-2.9.8-python3_hack-1.patch)
 
+prepare() {
+mkdir build-py{2,3}
+}
+
 build() {
-cd $name-$version
+cd build-py2
+../$name-$version/configure \
+    --prefix=/usr \
+    --disable-static \
+    --with-history \
+    --with-python=/usr/bin/python2
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0 /g' libtool
+  PYTHONHASHSEED=0 make
+  find doc -type f -exec chmod 0644 {} +
+
+cd ../$name-$version
 patch -Np1 -i ../libxml2-2.9.8-python3_hack-1.patch
 sed -i '/_PyVerify_fd/,+1d' python/types.c
-./configure --prefix=/usr    \
+
+cd ../build-py3
+../$name-$version/configure --prefix=/usr    \
             --disable-static \
             --with-history   \
             --with-python=/usr/bin/python3
-make
-make DESTDIR=$PKG install
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0 /g' libtool
+  PYTHONHASHSEED=0 make
+  find doc -type f -exec chmod 0644 {} +
+
+cd ..
+
+make -C build-py2 DESTDIR=$PKG install
+make -C build-py3/python DESTDIR=$PKG install
+
 rm $PKG/usr/lib/$name.la
 rm $PKG/usr/lib/python3.7/site-packages/libxml2mod.la
+rm $PKG/usr/lib/python2.7/site-packages/libxml2mod.la
 }
