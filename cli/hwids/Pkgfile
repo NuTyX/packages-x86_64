@@ -5,12 +5,12 @@ url="https://github.com/gentoo/hwids"
 packager="tnut <tnut@nutyx.org>"
 
 name=hwids
-version="20171003"
+version="20180917-git"
 
 build() {
 git clone git://github.com/gentoo/$name.git
 cd $name
-git checkout $name-$version
+git checkout $name-${version:0:8}
 for i in pci.ids usb.ids
 do
     install -Dm644 $i \
