@@ -3,7 +3,7 @@ url="http://www.crufty.net/help/sjg/bmake.html"
 packager="tnut at nutyx dot org"
 
 name=bmake
-version=20180512
+version=20180919
 
 source=(http://www.crufty.net/ftp/pub/sjg/bmake-$version.tar.gz)
 
@@ -14,12 +14,12 @@ build(){
     _links_new="dep doc inc init lib links man nls obj own prog subdir"
     sed -i -e "s/$_links_orig/$_links_new/" mk/install-mk
 
-    cd $SRC
+    cd ..
     mkdir -p bmake-build
     cd bmake-build
-    sh ../bmake/boot-strap --prefix=/usr
+    sh ../bmake/boot-strap --prefix=/usr op=build
 
-    cd $SRC/bmake-build
+    cd ../bmake-build
     # Fix directory permissions on install
     install -dm0755 $PKG/usr/bin
     install -dm0755 $PKG/usr/share/man/cat1
