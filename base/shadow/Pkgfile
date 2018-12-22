@@ -6,6 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=shadow
 version=4.6
+release=2
 
 source=(https://github.com/shadow-maint/shadow/releases/download/$version/shadow-$version.tar.xz) 
 
@@ -86,6 +87,10 @@ cat > $PKG/etc/pam.d/system-session << "EOF"
 session   required    pam_unix.so
 session   optional    pam_loginuid.so
 session   optional    pam_ck_connector.so nox11
+
+# Systemd additions
+session   required    pam_loginuid.so
+session    optional    pam_systemd.do
 
 # End /etc/pam.d/system-session
 EOF
