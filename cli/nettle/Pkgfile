@@ -3,16 +3,19 @@ url="http://www.lysator.liu.se/~nisse/nettle/"
 packager="tnut <tnut@nutyx.org>"
 
 name=nettle
-version=3.4
+version=3.4.1
 
 source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
+
 ./configure --prefix=/usr \
---libdir=/usr/lib
+            --disable-static
+
 make
 make DESTDIR=$PKG install
+
 chmod -v 755 $PKG/usr/lib/lib{hogweed,nettle}.so
 install -v -m755 -d $PKG/usr/share/doc/nettle-$version
 rm -rf $PKG/usr/share/info/dir
