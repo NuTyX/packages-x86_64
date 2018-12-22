@@ -6,8 +6,8 @@ contributors="Fanch, Greg"
 packager="tnut<tnut@nutyx.org>"
 
 name=libmicrohttpd
-version=0.9.59
-release=2
+version=0.9.62
+
 source=(ftp://ftp.gnu.org/gnu/libmicrohttpd/$name-$version.tar.gz)
 
 build() {
@@ -18,11 +18,6 @@ build() {
 
   make
   make DESTDIR=$PKG install
-
-  install -Dm644 $SRC/$name-$version/src/include/platform.h \
-	$PKG/usr/include/$name/platform.h
-  sed -i 's#Cflags: -I${includedir}#Cflags: -I${includedir} -I${includedir}/libmicrohttpd#' \
-	$PKG/usr/lib/pkgconfig/libmicrohttpd.pc
 
   # Obsolet lib
   rm $PKG/usr/lib/libmicrohttpd.la
