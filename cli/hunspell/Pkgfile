@@ -6,8 +6,7 @@ contributors="Pierre B"
 PKGMK_KEEP_SOURCES="no"
 
 name=hunspell
-version=1.6.1
-release=3
+version=1.7.0
 
 source=(https://github.com/hunspell/hunspell/archive/v$version.tar.gz )
 
@@ -17,11 +16,15 @@ build() {
         ./configure --prefix=/usr \
 		    --disable-static \
         	    --with-ui \
-		    --with-readline \
-		    --with-experimental
+		    --with-readline
+		    
         make
         make DESTDIR=$PKG install
+# add generic hunspell.so for development and projects not using pkgconfig flags
+pushd $PKG/usr/lib
+  ln -s libhunspell-?.?.so libhunspell.so
+popd
 
-        # Obsolet lib
-        rm $PKG/usr/lib/libhunspell-1.6.la
+# Obsolet lib
+  rm $PKG/usr/lib/libhunspell-1.?.la
 }
