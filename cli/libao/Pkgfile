@@ -1,0 +1,38 @@
+# Depends on: alsa-lib git 
+
+description="Cross-platform audio output library and plugins"
+url="http://xiph.org/ao/"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+name=libao
+version=1.2.2-git
+release=2
+
+source=()
+
+prepare() {
+git clone https://git.xiph.org/libao.git $name
+}        
+build() {
+    cd $name
+./autogen.sh
+./configure --prefix=/usr \
+            --enable-alsa-mmap
+
+make
+make DESTDIR=$PKG install
+
+install -vdm755 $PKG/etc
+
+cat > $PKG/etc/libao.conf << EOF
+default_driver=alsa
+dev=default
+quiet
+EOF
+
+# Obsolet libs
+rm $PKG/usr/lib/ao/plugins-4/libalsa.la
+rm $PKG/usr/lib/ao/plugins-4/liboss.la
+rm $PKG/usr/lib/libao.la
+}
