@@ -1,0 +1,22 @@
+# Depends on: python python2
+
+description="Implementation of lex and yacc parsing tools"
+url="http://www.dabeaz.com/ply/"
+packager="rems <rems@nutyx.org>"
+
+name=python-ply
+version=3.11
+
+source=(${url}ply-$version.tar.gz)
+
+prepare() {
+cp -a ply-$version{,-py2}
+}
+
+build() {
+
+cd ply-$version
+python3 setup.py install --root=$PKG
+cd ../ply-$version-py2
+python2 setup.py install --root="PKG"
+}
