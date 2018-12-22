@@ -6,7 +6,7 @@ packager="greg@nutyx.org"
 
 name=python2-polib
 _name=polib
-version=1.0.8
+version=1.1.0
 release=1
 
 run=(python2)
@@ -24,7 +24,6 @@ cd "${SRC}/${_name}-${version}"
 
 
 package() {
-
   cd "${SRC}/${_name}-${version}"
   python2 setup.py install --root="${PKG}" --optimize=1
 	
