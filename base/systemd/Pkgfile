@@ -8,15 +8,12 @@ maintainer="tnut <tnut@nutyx.org>"
 name=systemd
 version=240
 
-PKGMK_IGNORE_UNPACK="yes"
-
 source=(https://github.com/systemd/systemd/archive/v$version.tar.gz)
 
 build () {
-tar -xf systemd-$version.tar.xz
 cd $name-$version
 ln -sf /tools/bin/true /usr/bin/xsltproc
-sed '166,$ d' -i src/resolve/meson.build
+# sed '165,$ d' -i src/resolve/meson.build
 sed -i 's/GROUP="render", //' rules/50-udev-default.rules.in
 
 for file in /tools/lib/lib{blkid,mount,uuid}*; do
@@ -47,6 +44,7 @@ meson --prefix=/usr                \
       -Dsysusers=false             \
       -Dumount-path=/bin/umount    \
       -Db_lto=false                \
+      -Dman=false                  \
       ..
 
 LANG=en_US.UTF-8 ninja
