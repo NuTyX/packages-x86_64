@@ -5,18 +5,19 @@ contributors="Pierre B"
 
 
 name=openjdk
-version=8u131
+version=10.0.2u13
 release=1
-_version=1.8.0.131
+_version=10.0.2+13
 
-source=(http://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-${_version}/OpenJDK-${_version}-`uname -m`-bin.tar.xz)
+source=(http://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-${_version:0:6}/OpenJDK-${_version}-`uname -m`-bin.tar.xz)
 	
 build() {
 cd OpenJDK*
 install -vdm755 $PKG/opt/OpenJDK-$version-bin
 mv -v * $PKG/opt/OpenJDK-$version-bin 
 chown -R root:root $PKG/opt/OpenJDK-$version-bin
-mkdir -p $PKG/etc/profile.d
+
+mkdir -pv $PKG/etc/profile.d
 cat > $PKG/etc/profile.d/openjdk.sh << "EOF"
 # Begin /etc/profile.d/openjdk.sh
 
@@ -47,9 +48,9 @@ unset AUTO_CLASSPATH_DIR dir jar
 # End /etc/profile.d/openjdk.sh
 EOF
 
-ln -sv OpenJDK-$version-bin $PKG/opt/jdk
+ln -sfnv OpenJDK-$version-bin $PKG/opt/jdk
 
-mkdir -p $PKG/usr/share
+mkdir -pv $PKG/usr/share
 mv $PKG/opt/jdk/man \
-$PKG/usr/share
+   $PKG/usr/share
 }
