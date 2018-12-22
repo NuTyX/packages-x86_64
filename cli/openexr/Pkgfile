@@ -6,15 +6,17 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=openexr
-version=2.2.1
+version=2.3.0
 
-source=( http://savannah.nongnu.org/download/$name/$name-$version.tar.gz)
+source=(https://github.com/openexr/openexr/releases/download/v$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
+
 ./configure --prefix=/usr \
 --localstatedir=/var \
 --sysconfdir=/etc
+
 make
 make DESTDIR=$PKG install
 rm $PKG/usr/lib/libIlmImf.la
