@@ -4,8 +4,11 @@ packager="tnut <tnut@nutyx.org>"
 
 name=kerberos
 version=1.16.1
+nutyx_version=10.92.2
+release=2
 
-source=(http://web.mit.edu/$name/dist/krb5/${version:0:4}/krb5-$version.tar.gz)
+source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
+        http://web.mit.edu/$name/dist/krb5/${version:0:4}/krb5-$version.tar.gz)
 
 build()  {
 cd krb5-$version/src
@@ -29,4 +32,7 @@ unset LIBRARY
 install -v -dm755 $PKG/usr/share/doc/krb5-$version
 cp -vfr ../doc/*  $PKG/usr/share/doc/krb5-$version
 
+# Service
+cd $SRC/nutyx-${nutyx_version}
+make DESTDIR=$PKG install-krb5
 }
