@@ -4,24 +4,27 @@ packager="tnut<tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libatomic-ops
-version=7.6.6
-release=2
+version=7.6.8
 
 source=(http://www.ivmaisoft.com/_bin/atomic_ops/libatomic_ops-$version.tar.gz)
 
 build() {
+
 cd libatomic_ops-$version
+
 ./configure --prefix=/usr    \
             --enable-shared  \
             --disable-static \
             --docdir=/usr/share/doc/libatomic_ops-$version
+
 make
 make DESTDIR=$PKG install
+
 rm -vrf $PKG/usr/share/libatomic_ops
-rm $PKG/usr/lib/libatomic_ops_gpl.la
 
 # Obsolet lib
 rm $PKG/usr/lib/libatomic_ops.la
+rm $PKG/usr/lib/libatomic_ops_gpl.la
 }
 uptodate() {
 local url ext name
