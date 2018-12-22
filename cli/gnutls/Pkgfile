@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=gnutls
-version=3.5.19
+version=3.6.5
 
 source=(ftp://ftp.gnutls.org/gcrypt/$name/v${version:0:3}/$name-$version.tar.xz)
 
@@ -15,8 +15,13 @@ cd $name-$version
 ./configure --prefix=/usr \
 --with-zlib \
 --with-default-trust-store-file="pkcs11:" \
---disable-guile
+--disable-guile \
+--disable-static
+
 make
 make DESTDIR=$PKG install
+
+# Obsolet lib
+
 rm $PKG/usr/lib/libgnutls{,xx}.la
 }
