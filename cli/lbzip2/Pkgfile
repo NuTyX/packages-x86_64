@@ -1,3 +1,4 @@
+# Depends on: gnulib
 description="A parallel, SMP-based, bzip2-compatible compression utility"
 url="http://lbzip2.org"
 packager="tnut <tnut@nutyx.org>"
@@ -7,4 +8,14 @@ version=2.5
 
 source=(http://archive.lbzip2.org/$name-$version.tar.bz2)
 
+build() {
 
+cd $name-$version
+
+build-aux/autogen.sh
+
+./configure --prefix=/usr
+
+make
+make DESTDIR=$PKG install
+}
