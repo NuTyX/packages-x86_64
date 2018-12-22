@@ -1,3 +1,5 @@
+#Depends on: systemd
+
 description="A disk reporting library. It only supports a subset of the ATA S.M.A.R.T. functionality."
 url="http://0pointer.de/blog/projects/being-smart.html"
 maintainer="Lennart"
@@ -6,7 +8,7 @@ contributors="Pierre B"
 
 name=libatasmart
 version=0.19
-release=2
+release=4
 
 source=(http://0pointer.de/public/$name-$version.tar.xz)
 
@@ -14,9 +16,12 @@ build() {
 cd $name-$version
 ./configure --prefix=/usr \
 --disable-static
+
 make
+
 make DESTDIR=$PKG docdir=/usr/share/doc/libatasmart-$version install
 
-#Obsolet lib
+# Obsolet libs
+
 rm $PKG/usr/lib/libatasmart.la
 }
