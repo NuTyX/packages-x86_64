@@ -1,4 +1,4 @@
-# Depends on: libgudev gtk-doc
+# Depends on: libgudev gtk-doc glib python help2man gtk-doc systemd
 
 description="MBIM modem protocol helper library"
 url="http://www.freedesktop.org/wiki/Software/libmbim/"
@@ -6,14 +6,16 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libmbim
-version=1.16.0
-release=2
+version=1.16.2
 
 source=(http://www.freedesktop.org/software/$name/$name-$version.tar.xz)
 
 build() {
   cd $name-$version
   ./configure --prefix=/usr    \
+              --sysconfdir=/etc/libmbim \
+              --localstatedir=/var \
+              --enable-gtk-doc \
               --disable-static
   make
   make DESTDIR=$PKG install
