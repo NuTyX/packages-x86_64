@@ -4,14 +4,15 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libisofs
-version=1.4.8
-release=2
+version=1.5.0
 
 source=(http://files.libburnia-project.org/releases/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr --disable-static
+./configure --prefix=/usr --disable-static \
+            --enable-libacl --enable-xattr
+            
 make
 make DESTDIR=$PKG install
 rm $PKG/usr/lib/$name.la
