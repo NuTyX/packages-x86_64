@@ -4,12 +4,12 @@ maintainer="Olli Parviainen <oparviai 'at' iki' dot' fi>"
 packager="tnut <tnut@nutyx.org>"
 
 name=soundtouch
-version=1.9.2
+version=2.1.2
 release=2
 
-source=(http://www.surina.net/soundtouch/$name-$version.tar.gz)
+source=(https://gitlab.com/$name/$name/-/archive/$version/$name-$version.tar.gz)
 build() {
-cd $name
+cd $name-$version
 ./bootstrap
 ./configure --prefix=/usr \
 --docdir=/usr/share/doc/$name-$version
