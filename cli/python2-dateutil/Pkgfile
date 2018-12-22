@@ -5,26 +5,26 @@ url="https://github.com/dateutil/dateutil"
 packager="greg@nutyx.org"
 
 name=python2-dateutil
-version=2.6.1
-release=1
+version=2.7.5
 
 run=(python2-setuptools python2-six python2)
 
-source=(https://github.com/dateutil/dateutil/archive/$version.tar.gz
-)
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://files.pythonhosted.org/packages/0e/01/68747933e8d12263d41ce08119620d9a7e5eb72c876a3442257f74490da0/python-dateutil-$version.tar.gz)
 
 prepare() {
 
 cd $SRC
-cp -r  dateutil-$version python2-dateutil-$version
+cp -r  python-dateutil-$version python2-dateutil-$version
 
 }
 
 
 build() {
 
-cd $SRC/python2-dateutil-$version
-python2 setup.py install --root=$PKG --optimize=1
+cd python2-dateutil-$version
+python2 setup.py build install --root=$PKG --optimize=1
 
 }
 
