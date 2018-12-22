@@ -1,4 +1,4 @@
-# Depends on: libusb confuse python boost cmake swig
+# Depends on: libusb confuse boost cmake swig
 
 description="A library to talk to FTDI chips, optional python bindings."
 url="http://www.intra2net.com/en/developer/libftdi/download.php"
@@ -17,8 +17,9 @@ cd ${name}1-$version
 
   mkdir -p build
   cd build
-  cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_SKIP_BUILD_RPATH=ON \
-    -DCMAKE_BUILD_TYPE=Release -DEXAMPLES=OFF -DFTDI_EEPROM=ON
+  cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
+           -DFTDI_EEPROM=ON -DDOCUMENTATION=OFF \
+           -DSTATICLIBS=0 -Wno-dev
   make
   make DESTDIR=$PKG install
   install -Dm644 ../packages/99-libftdi.rules $PKG/etc/udev/rules.d/69-libftdi.rules
