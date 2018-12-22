@@ -5,17 +5,19 @@ url="http://www.freedesktop.org/wiki/Software/ModemManager/"
 packager="tnut <tnut@nutyx.org>"
 
 name=modemmanager
-version=1.6.12
+version=1.8.2
 release=3
 
 source=(http://www.freedesktop.org/software/ModemManager/ModemManager-$version.tar.xz)
 build() {
 cd ModemManager-$version
 ./configure --prefix=/usr             \
-            --sysconfdir=/etc         \
+            --sysconfdir=/etc/ModemManager         \
             --localstatedir=/var      \
             --enable-more-warnings=no \
-            --disable-static
+            --disable-static \
+            --with-systemd-journal        \
+            --with-systemd-suspend-resume
 make
 make DESTDIR=$PKG install
 
