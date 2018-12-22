@@ -6,25 +6,21 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=crypto++
-version=5.6.5
-_version=565
-release=2
+version=7.0.0
 
-source=(${url}cryptopp${_version}.zip
-        crypto++-libcrypto++.pc)
+source=(${url}cryptopp${version//./}.zip
+        libcrypto++.pc)
 
 build() {
   
-  sed -i -e 's/^CXXFLAGS/#CXXFLAGS/' GNUmakefile
-
-  export CXXFLAGS="${CXXFLAGS} -DNDEBUG -fPIC"
-
-  make -f GNUmakefile  
-  make libcryptopp.so
-
-  install -d $PKG/usr/{lib/pkgconfig,include/cryptopp}
-  install -m644 *.h $PKG/usr/include/cryptopp/
-  install -m644 libcryptopp.so $PKG/usr/lib/libcryptopp.so
-  install -m644 $SRC/crypto++-libcrypto++.pc $PKG/usr/lib/pkgconfig/libcrypto++.pc
-  install -D -m644 License.txt $PKG/usr/share/licenses/$name/LICENSE
+export CXXFLAGS="${CXXFLAGS} -DNDEBUG -fPIC"  
+make dynamic cryptest.exe
+make install DESTDIR="$PKG" PREFIX="/usr"
+install -d "${PKG}/usr/lib/pkgconfig"
+install -m644 "libcrypto++.pc" "${PKG}/usr/lib/pkgconfig/libcrypto++.pc"
+# Remove cryptest.exe and test files, only needed for check() and bloats the package
+# because cryptest.exe is linked statically.
+rm "$PKG/usr/bin/cryptest.exe"
+rmdir "$PKG/usr/bin/"
+rm -r "$PKG/usr/share/cryptopp/"
 }
