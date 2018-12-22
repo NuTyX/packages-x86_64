@@ -1,3 +1,5 @@
+# Depends on: cdrtools
+
 description="DVD+-RW/R tools"
 url="http://fy.chalmers.se/~appro/linux/DVD+RW/"
 packager="tnut <tnut@nutyx.org>"
@@ -5,14 +7,22 @@ contributors="Pierre B"
 
 name=dvd+rw-tools
 version=7.1
-release=3
+release=4
 
-source=( http://fy.chalmers.se/~appro/linux/DVD+RW/tools/dvd+rw-tools-$version.tar.gz \
-	 transport.patch)
+source=(http://fy.chalmers.se/~appro/linux/DVD+RW/tools/dvd+rw-tools-$version.tar.gz \
+        https://sources.debian.org/data/main/d/dvd+rw-tools/7.1-14/debian/patches/glibc-2.28.patch
+	dvd+rw-tools-7.0-dvddl.patch
+	dvd+rw-tools-7.0-wctomb.patch
+	dvd+rw-tools-7.0-wexit.patch
+	dvd+rw-tools-7.1-layerbreaksetup.patch)
 
 build() {
 	cd $name-$version
-	patch -Np1 -i ../transport.patch
+  patch -p0 -i ../dvd+rw-tools-7.0-dvddl.patch
+  patch -p1 -i ../glibc-2.28.patch
+  patch -p0 -i ../dvd+rw-tools-7.0-wctomb.patch
+  patch -p1 -i ../dvd+rw-tools-7.0-wexit.patch
+  patch -p1 -i ../dvd+rw-tools-7.1-layerbreaksetup.patch
 	make
 	mkdir -p $PKG/usr/bin $PKG/usr/share/man/man1
         for exec in \
