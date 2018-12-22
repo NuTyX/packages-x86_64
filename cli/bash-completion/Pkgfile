@@ -6,6 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=bash-completion
 version=2.8
+release=2
 
 source=(https://github.com/scop/$name/releases/download/$version/$name-$version.tar.xz)
 
@@ -20,5 +21,6 @@ make DESTDIR=$PKG install
 
 # remove Slackware's makepkg completion
 rm $PKG/usr/share/bash-completion/completions/makepkg
-
+rm $PKG/usr/share/bash-completion/completions/mount
+rm $PKG/usr/share/bash-completion/completions/umount
 }
