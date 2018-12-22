@@ -7,16 +7,16 @@ packager="greg<greg@nutyx.org>"
 
 
 name=ack
-version=2.18
-release=1
+version=2.24
 
-source=(http://beyondgrep.com/$name-$version-single-file)
+source=(http://search.cpan.org/CPAN/authors/id/P/PE/PETDANCE/$name-$version.tar.gz)
 
 build() {
 
-    install -D $name-$version-single-file $PKG/usr/bin/$name
-    install -d $PKG/usr/share/man/man1
-    pod2man $PKG/usr/bin/$name > $PKG/usr/share/man/man1/$name.1
+cd $name-$version
+PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR="$PKG" install
 
 }
 uptodate() {
