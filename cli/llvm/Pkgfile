@@ -7,10 +7,9 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Remy"
 
 name=llvm
-version=6.0.1
+version=7.0.0
 
-source=(
-	${url}releases/$version/$name-$version.src.tar.xz
+source=(${url}releases/$version/$name-$version.src.tar.xz
 	${url}releases/$version/cfe-$version.src.tar.xz
 	${url}releases/$version/compiler-rt-$version.src.tar.xz)
 
@@ -30,7 +29,7 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr  \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DLLVM_BUILD_LLVM_DYLIB=ON \
 	-DLLVM_LINK_LLVM_DYLIB=ON  \
-	-DLLVM_TARGETS_TO_BUILD="host;AMDGPU;" \
+	-DLLVM_TARGETS_TO_BUILD="host;AMDGPU;BPF" \
 	-Wno-dev -G Ninja ..
 
 ninja
