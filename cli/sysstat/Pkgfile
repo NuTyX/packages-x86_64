@@ -4,12 +4,10 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Pierre B"
 
 name=sysstat
-version=11.5.7
-release=2
-nutyx_version=9.92
+version=12.0.2
 
-source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
-	$url/$name-$version.tar.xz)
+source=($url/$name-$version.tar.xz)
+
 build() {
 
 cd $name-$version
@@ -18,11 +16,15 @@ sa_lib_dir=/usr/lib/sa    \
 sa_dir=/var/log/sa        \
 conf_dir=/etc/sysconfig   \
 ./configure --prefix=/usr \
-            --disable-file-attr 
+            --disable-file-attr \
+            --mandir=/usr/share/man \
+            --enable-copy-only \
+            --disable-man-group
 make
 make DESTDIR=$PKG install
 
-# Service
-cd ../nutyx-${nutyx_version}
-make DESTDIR=$PKG install-sysstat
+install -vdm755 $PKG/lib/systemd/system/
+install -v -m644 sysstat.service $PKG/lib/systemd/system/sysstat.service
+sed -i "/^Also=/d" $PKG/lib/systemd/system/sysstat.service
+
 }
