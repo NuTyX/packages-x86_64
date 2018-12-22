@@ -1,0 +1,35 @@
+# Depends on: libcap cmake
+
+description="Set of programs for CD/DVD recording, ISO image creation and audio CD extraction"
+url="http://cdrecord.org/"
+maintainer="Joerg Jaspert"
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+
+name=cdrtools
+version=3.02a09
+
+source=(https://downloads.sourceforge.net/cdrtools/$name-$version.tar.bz2)
+
+build() {
+	cd $name-${version:0:4}
+sed -i 's|/opt/schily|/usr|g' DEFAULTS/Defaults.linux
+sed -i 's|DEFINSGRP=.*|DEFINSGRP=root|' DEFAULTS/Defaults.linux
+# install rscsi to /usr/bin instead of /usr/sbin
+  sed -i 's|INSDIR=.*|INSDIR=bin|' rscsi/Makefile
+export GMAKE_NOWARN=true
+make LINKMODE=dynamic -j1
+make INS_BASE=/usr DESTDIR=$PKG LINKMODE=dynamic install
+	cd $PKG/usr/bin
+	ln -s cdrecord wodim
+	ln -s mkisofs genisoimage
+	ln -s readcd readom
+	ln -s cdda2wav icedax
+	ln -s cdrecord dvdrecord
+rm -rf "$PKG"/usr/include
+rm -rf "$PKG"/usr/lib/{*.a,profiled}
+rm -rf "$PKG"/usr/share/man/man3
+# autoload 'sg' module needed by cdrecord
+install -vd -m755 "$PKG"/etc/modules-load.d/
+echo sg > "$PKG"/etc/modules-load.d/cdrecord.conf
+}
