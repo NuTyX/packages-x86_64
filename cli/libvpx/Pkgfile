@@ -6,10 +6,12 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libvpx
-version=1.6.1
+version=1.7.0
 release=1
 
-source=(http://storage.googleapis.com/downloads.webmproject.org/releases/webm/libvpx-$version.tar.bz2)
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/webmproject/$name/archive/v$version.tar.gz)
 build() {
 cd $name-$version
 sed   -e 's/cp -p/cp/'       \
