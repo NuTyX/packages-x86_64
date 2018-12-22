@@ -1,15 +1,14 @@
-# Depends on: libjpeg-turbo libexif libusb-compat
+# Depends on: libjpeg-turbo2 libexif libusb-compat
 
 description="Core library of gphoto2, designed to allow access to digital camera by external programs."
 url="http://www.gphoto.org/proj/libgphoto2/"
 packager="Sipo"
 name=libgphoto2
-version=2.5.16
-_version="${version//./_}"
+version=2.5.20
 release=2
+_version="${version//./_}"
 
 source=(https://github.com/gphoto/$name/archive/libgphoto2-${_version}-release.tar.gz)
-
 
 build() {
 cd $name-$name-${_version}-release
@@ -17,9 +16,18 @@ cd $name-$name-${_version}-release
 autoreconf -fvi
 
 ./configure --prefix=/usr --disable-rpath
-
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0 /g' -e 's/ \
+     if test "$export_dynamic" = yes && test -n "$export_dynamic_flag_spec"; then/ \
+     func_append compile_command " -Wl,-O1,--as-needed"\n \
+     func_append finalize_command " -Wl,-O1,--as-needed"\n\0/' libtool
 make
 make DESTDIR=$PKG install
+
+# Remove unused udev helper
+  rm -r "$PKG/usr/lib/udev"
+
+# Remove recursive symlink
+  rm "$PKG/usr/include/gphoto2/gphoto2"
 
 cd $PKG/usr/lib/libgphoto2
 
@@ -34,7 +42,7 @@ export CAMLIBS=$PWD/$version
 # Obsolets libs
 
 rm $PKG/usr/lib/libgphoto2.la
-rm $PKG/usr/lib/libgphoto2/2.5.16/*.la
+# rm $PKG/usr/lib/libgphoto2/2.5.16/*.la
 rm $PKG/usr/lib/libgphoto2_port.la
 rm $PKG/usr/lib/libgphoto2_port/0.12.0/*.la
 
