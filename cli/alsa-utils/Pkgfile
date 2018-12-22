@@ -1,4 +1,4 @@
-# Depends on: alsa-lib xmlto libsamplerate gawk
+# Depends on: alsa-lib xmlto libsamplerate gawk systemd dialog
 
 description="Utilities for configuring and using ALSA"
 url="http://www.alsa-project.org"
@@ -10,7 +10,7 @@ PKGMK_GROUPS=(man)
 
 name=alsa-utils
 version=1.1.7
-nutyx_version=10.4
+nutyx_version=10.92.2
 
 source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
 	ftp://ftp.alsa-project.org/pub/utils/$name-$version.tar.bz2)
@@ -22,12 +22,12 @@ cd $name-$version
 --disable-alsaconf \
 --disable-bat \
 --disable-xmlto \
---with-curses=ncursesw
+--with-curses=ncursesw \
+--with-udev-rules-dir=/lib/udev/rules.d \
+--with-systemdsystemunitdir=/lib/systemd/system
+
 make
 make DESTDIR=$PKG install
-
-cd ../nutyx-${nutyx_version}
-make DESTDIR=$PKG install-alsa
 }
 uptodate() {
 local url ext
