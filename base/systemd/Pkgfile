@@ -6,13 +6,11 @@ packager="tnut <tnut@nutyx.org>"
 maintainer="tnut <tnut@nutyx.org>"
 
 name=systemd
-version=239-6b4878d
-release=2
+version=240
 
 PKGMK_IGNORE_UNPACK="yes"
 
-source=(https://github.com/systemd/systemd/archive/v${version:0:3}/systemd-$version.tar.xz
-        http://anduin.linuxfromscratch.org/LFS/systemd-man-pages-$version.tar.xz)
+source=(https://github.com/systemd/systemd/archive/v$version.tar.gz)
 
 build () {
 tar -xf systemd-$version.tar.xz
@@ -24,8 +22,6 @@ sed -i 's/GROUP="render", //' rules/50-udev-default.rules.in
 for file in /tools/lib/lib{blkid,mount,uuid}*; do
     ln -sf $file /usr/lib/
 done
-
-tar -xvf ../systemd-man-pages-$version.tar.xz
 
 mkdir -p build
 cd       build
@@ -64,4 +60,20 @@ EOF
 chmod 755 $PKG/lib/systemd/systemd-user-sessions
 
 rm $PKG/usr/lib/tmpfiles.d/home.conf
+
+cat > $PKG/etc/pam.d/systemd-user << "EOF"
+# Begin /etc/pam.d/systemd-user
+
+account  required pam_access.so
+account  include  system-account
+
+session  required pam_env.so
+session  required pam_limits.so
+session  include  system-session
+
+auth     required pam_deny.so
+password required pam_deny.so
+
+# End /etc/pam.d/systemd-user
+EOF
 }
