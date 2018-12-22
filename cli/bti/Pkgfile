@@ -7,12 +7,13 @@ contributors="Alienus"
 packager="tnut <tnut@nutyx.org>"
 name=bti
 version=034
-release=1
 
-source=(https://www.kernel.org/pub/software/web/bti/bti-$version.tar.xz)
+source=(https://www.kernel.org/pub/software/web/bti/bti-$version.tar.xz
+        0001-Replace-removed-is_error-macro.patch)
 
 build(){
     cd $name-$version
+    patch -Np1 -i ../0001-Replace-removed-is_error-macro.patch
     ./configure --prefix=/usr
     make
     make DESTDIR=$PKG install
