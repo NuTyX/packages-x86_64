@@ -6,13 +6,13 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
 name=lua-filesystem
-version=1.6.3
+version=1.7.0.2
 release=2
 
 PKGMK_KEEP_SOURCES="no"
 
-_version=v_${version//./_}
-source=(https://github.com/keplerproject/luafilesystem/archive/${_version}.tar.gz)
+_version=${version//./_}
+source=(https://github.com/keplerproject/luafilesystem/archive/v${_version}.tar.gz)
 
 build(){
     cd luafilesystem-${_version}
