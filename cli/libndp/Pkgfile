@@ -4,16 +4,17 @@ maintainer="iri Pirko jiri at resnulli dot us"
 packager="tnut <tnut@nutyx.org>"
 
 name=libndp
-version=1.6
-release=2
+version=1.7
 
 source=(http://libndp.org/files/$name-$version.tar.gz)
 build() {
 cd $name-$version
+
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \
 --disable-static
+
 make
 make DESTDIR=$PKG install
 
