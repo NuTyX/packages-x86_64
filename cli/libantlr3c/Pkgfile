@@ -4,14 +4,31 @@ contributors="fanch, tnut"
 packager="greg<greg@nutyx.org>"
 
 name=libantlr3c
-version=3.4
-release=3
+version=3.5.2
 
-source=(http://www.antlr3.org/download/C/${name}-${version}.tar.gz)
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/antlr/antlr3/archive/$version.tar.gz)
 
 build() {
 
-cd $name-$version
+cd antlr3-$version/runtime/C
+
+cat <<EOF> antlr3config.h.in
+#include <stdint.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <sys/stat.h>
+#include <sys/socket.h>
+#include <antlr3defs.h>
+EOF
+
+aclocal
+libtoolize
+automake --add-missing
+autoconf
 
 if [[ "$PKGMK_ARCH" == 'i686' ]]; then
 	_cfgopt='32' && _cfgopt=
@@ -22,13 +39,7 @@ fi
 
 make	
 
-}
-
-
-package() {
-
-  cd $name-$version
-  make DESTDIR=$PKG install
+ make DESTDIR=$PKG install
 
   # Obsolet lib
   rm $PKG/usr/lib/libantlr3c.la
