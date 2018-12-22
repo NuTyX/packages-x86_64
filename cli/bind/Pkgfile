@@ -1,19 +1,28 @@
-# Depends on: kerberos libxml2
+# Depends on: kerberos libxml2 openssl python libcap python-ply
 
 description="The BIND package includes the client side programs nslookup, dig and host."
 url="http://www.isc.org/downloads/bind/"
 packager="tnut at nutyx dot org"
 
 name=bind
-version=9.13.3
-nutyx_version=10.4
+version=9.13.5
+nutyx_version=10.92.2
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	ftp://ftp.isc.org/isc/bind9/$version/$name-$version.tar.gz)
 
+run=(python-ply)
+
 build(){
     cd $name-$version
-    ./configure --prefix=/usr
+    ./configure --prefix=/usr \
+                --sysconfdir=/etc/bind \
+                --disable-static \
+                --mandir=/usr/share/man \
+                --localstatedir=/var    \
+                --with-python=/usr/bin/python3 \
+                --enable-threads        \
+                --with-openssl
 
 	make -C lib/dns
 	make -C lib/isc
@@ -32,9 +41,10 @@ build(){
 	doc/misc/{dnssec,ipv6,migrat*,options,rfc-compliance,roadmap,sdb} \
 	$PKG/usr/share/doc/bind-$version/misc
 
-    # service
-	cd $SRC/nutyx-${nutyx_version}
-	make DESTDIR=$PKG install-bind
+# Service
+cd $SRC/nutyx-${nutyx_version}
+make DESTDIR=$PKG install-named
+
 }
 uptodate() {
 local url ext
