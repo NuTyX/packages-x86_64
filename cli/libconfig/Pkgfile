@@ -6,17 +6,14 @@ packager="tnut <tnut@nutyx.org>"
 PKGMK_KEEP_SOURCES="no"
 
 name=libconfig
-version=1.6
-release=3
+version=1.7.2
 
 source=(https://github.com/hyperrealm/libconfig/archive/v$version.tar.gz)
 
 prepare() {
 
   cd $name-$version
-
-# See: https://github.com/hyperrealm/libconfig/issues/47
-  rm lib/scanner.c
+autoreconf -iv
 }
 package() {
   # Obsolets libs
