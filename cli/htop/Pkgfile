@@ -1,4 +1,4 @@
-# Depends on: ncurses
+# Depends on: ncurses libnl python
 
 description="an interactive process viewer"
 url="http://htop.sourceforge.net/"
@@ -6,15 +6,21 @@ packager="greg <greg@nutyx.org>"
 contributors="Fanch, Tnut"
 
 name=htop
-version=2.0.2
-release=1
+version=2.2.0
 
 source=(https://hisham.hm/htop/releases/$version/$name-$version.tar.gz)
 
 
 build() {
     cd $name-$version
-    ./configure --prefix=/usr --disable-nls 
+sed -i 's|#!/usr/bin/env python|#!/usr/bin/python3|' \
+       ./scripts/MakeHeader.py
+./configure --prefix=/usr \
+                --sysconfdir=/etc/htop \
+                --enable-cgroup \
+                --enable-delayacct \
+                --enable-vserver
+                
     make
     make DESTDIR=$PKG install
 }
