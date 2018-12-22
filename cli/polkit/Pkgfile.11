@@ -1,0 +1,47 @@
+# Depends on: glib js52 gobject-introspection intltool perl-xml-parser libxslt docbook-xsl systemd
+
+description="Application development toolkit for controlling system-wide privileges"
+url="http://hal.freedesktop.org/docs/polkit"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=polkit
+version=0.115
+
+source=(http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+
+sed -i "s:/sys/fs/cgroup/systemd/:/sys:g" configure
+
+sed -e '/JS_ReportWarningUTF8/s/,/, "%s",/'  \
+        -i  src/polkitbackend/polkitbackendjsauthority.cpp
+
+
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--mandir=/usr/share/man \
+--localstatedir=/var \
+--enable-libsystemd-login=yes \
+--disable-static
+
+make||make -j1
+
+make DESTDIR=$PKG install
+
+# Obsolets libs
+rm $PKG/usr/lib/libpolkit-{agent,gobject}-1.la
+
+mkdir -p $PKG/etc/pam.d
+cat > $PKG/etc/pam.d/polkit-1 << "EOF"
+# Begin /etc/pam.d/polkit-1
+
+auth     include        system-auth
+account  include        system-account
+password include        system-password
+session  include        system-session
+
+# End /etc/pam.d/polkit-1
+EOF
+}
