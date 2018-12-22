@@ -4,10 +4,9 @@ url="https://github.com/eqrion/cbindgen/blob/master/README.md"
 packager="tnut <tnut@nutyx.org>"
 
 name=cbindgen
-version=0.6.6
-release=2
+version=0.6.7
 
-source=( https://github.com/eqrion/cbindgen/archive/v$version/cbindgen-$version.tar.gz )
+source=(https://github.com/eqrion/cbindgen/archive/v$version/cbindgen-$version.tar.gz)
 
 build() {
 
@@ -16,4 +15,5 @@ cargo build --release
 mkdir -p $PKG/usr/bin
 
 install -Dm755 target/release/$name $PKG/usr/bin/$name
+install -Dt "$PKG/usr/share/doc/$name-$version" -m644 README.md
 }
