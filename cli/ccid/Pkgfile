@@ -1,4 +1,4 @@
-# Depends : pcsclite libusb flex pkg-config
+# Depends : pcsclite libusb flex
 
 description="A generic USB Chip/Smart Card Interface Devices driver"
 url="http://pcsclite.alioth.debian.org/ccid.html"
@@ -6,10 +6,9 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=ccid
-version=1.4.25
-release=2
+version=1.4.30
 
-source=(https://alioth.debian.org/frs/download.php/file/4187/$name-$version.tar.bz2)
+source=(https://ccid.apdu.fr/files/ccid-$version.tar.bz2)
 
 build() {
   cd $name-$version
@@ -22,4 +21,5 @@ build() {
  
   mv "$PKG/usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist" "$PKG/etc/libccid_Info.plist"
   ln -s /etc/libccid_Info.plist $PKG/usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist
+  install -Dm644 src/92_pcscd_ccid.rules "${PKG}/usr/lib/udev/rules.d/92_pcscd_ccid.rules"
 }
