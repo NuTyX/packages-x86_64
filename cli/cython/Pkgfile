@@ -1,4 +1,4 @@
-# Depends on: python python2 python2-setuptools python-setuptools
+# Depends on: python python2 python2-setuptools
 
 description="C extensions for Python."
 url="http://www.cython.org/"
@@ -8,8 +8,8 @@ packager="tnut <tnut@nutyx.org>"
 PKGMK_KEEP_SOURCES="no"
 
 name=cython
-version=0.27.3
-run=(python python2 python2-setuptools python-setuptools)
+version=0.29.2
+run=(python python2 python2-setuptools )
 
 source=(https://github.com/$name/$name/archive/$version.tar.gz)
 
@@ -21,22 +21,21 @@ xargs sed -e 's|/usr/bin/env python|/usr/bin/env python2|' -e \
 }
 
 build() {
-cd cython-$version
-python setup.py build
-python setup.py install --root=$PKG --skip-build
-
-for f in cygdb cython cythonize; do
-	mv -v $PKG/usr/bin/$f $PKG/usr/bin/${f}3
-	ln -sv ${f}3 $PKG/usr/bin/$f
-done
-
-
-cd ../cython2-$version
+cd cython2-$version
 python2 setup.py build
 python2 setup.py install --root=$PKG --skip-build
 
 for f in cygdb cython cythonize; do
-	mv -v $PKG/usr/bin/$f $PKG/usr/bin/${f}2
+        mv -v $PKG/usr/bin/$f $PKG/usr/bin/${f}2
+done
+
+cd ../cython-$version
+python3 setup.py build
+python2 setup.py install --root=$PKG --skip-build
+
+for f in cygdb cython cythonize; do
+	mv -v $PKG/usr/bin/$f $PKG/usr/bin/${f}3
+	ln -sv ${f}3 $PKG/usr/bin/$f
 done
 
 }
