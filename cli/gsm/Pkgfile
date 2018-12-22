@@ -4,15 +4,14 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=gsm
-version=1.0.17
-release=1
+version=1.0.18
 
 source=(http://www.quut.com/$name/$name-$version.tar.gz
         gsm.patch)
 
 build() {
   cd $name-*
-  patch -Np0 -i $SRC/gsm.patch
+  patch -Np0 -i ../gsm.patch
   CFLAGS="${CFLAGS} -fPIC"
   make CCFLAGS="-c ${CFLAGS}"
 
