@@ -3,16 +3,19 @@ url="http://www.iis.fraunhofer.de/en/ff/amm/impl/fdkaaccodec.html"
 packager="tnut <tnut@nutyx.org>"
 
 name=fdk-aac
-version=0.1.5
-release=3
+version=2.0.0
 
-source=(http://downloads.sourceforge.net/opencore-amr/$name-$version.tar.gz)
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://sourceforge.net/projects/opencore-amr/files/$name/$name-$version.tar.gz)
 
 build() {
 
+
 cd $name-$version
-CXXFLAGS+=' -std=c++11 -Wno-narrowing'
-./configure --prefix=/usr
+
+./configure --prefix=/usr \
+            --disable-rpath
 make
 
 make DESTDIR=$PKG install
