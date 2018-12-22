@@ -7,16 +7,20 @@ contributors="Pierre B"
 
 name=cyrus-sasl
 version=2.1.27
+nutyx_version=10.92.2
 
-source=(ftp://ftp.cyrusimap.org/cyrus-sasl/$name-$version.tar.gz)
+source=(ftp://ftp.cyrusimap.org/cyrus-sasl/$name-$version.tar.gz
+        http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz)
 build() {
 	cd $name-$version
+
 	./configure --prefix=/usr \
 		--sysconfdir=/etc \
 		--mandir=/usr/share/man \
 		--enable-auth-sasldb \
 		--with-dbpath=/var/lib/sasl/sasldb2 \
 		--with-saslauthd=/var/run/saslauthd
+
 	make
 	make DESTDIR=$PKG install
 	install -v -m700 -d $PKG/var/lib/sasl $PKG/var/run/saslauthd
@@ -31,5 +35,8 @@ rm $PKG/usr/lib/sasl2/libplain.la
 rm $PKG/usr/lib/sasl2/libsasldb.la
 rm $PKG/usr/lib/sasl2/libscram.la
 
+# Service
+cd $SRC/nutyx-${nutyx_version}
+make DESTDIR=$PKG install-saslauthd
 
 }
