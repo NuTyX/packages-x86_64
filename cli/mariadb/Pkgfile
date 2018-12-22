@@ -1,4 +1,4 @@
-# Depends on: lzo cmake libevent boost libxml2 cracklib pcre ruby
+# Depends on: lzo cmake libevent boost libxml2 cracklib pcre ruby libaio openssl systemd
 
 description="MariaDB is a fork and a replacement for the MySQL relational database management system."
 url="http://www.mariadb.org/en/about/"
@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=mariadb
 version=10.3.11
-nutyx_version=10.4
+nutyx_version=10.92.2
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	ftp://ftp.osuosl.org/pub/mariadb/$name-$version/source/$name-$version.tar.gz)
@@ -39,6 +39,7 @@ cmake -DCMAKE_BUILD_TYPE=Release                        \
       -DWITH_EXTRA_CHARSETS=complex                     \
       -DWITH_EMBEDDED_SERVER=ON                         \
       -DSKIP_TESTS=ON                                   \
+      -DWITH_SSL=system                                 \
       -DTOKUDB_OK=0                                     \
       .. 
 make
@@ -126,5 +127,5 @@ rm -r $PKG/usr/share/mysql/test
 
 # Service
 cd $SRC/nutyx-${nutyx_version}
-make DESTDIR=$PKG install-mysql
+make DESTDIR=$PKG install-mysqld
 }
