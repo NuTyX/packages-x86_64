@@ -1,4 +1,4 @@
-# Depends on: libusb libgcrypt
+# Depends on: libusb libgcrypt systemd
 
 description="Library implementation of the Media Transfer Protocol."
 url="http://libmtp.sourceforge.net"
@@ -6,15 +6,15 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
 name=libmtp
-version=1.1.13
-release=2
+version=1.1.16
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
 build(){
     cd $name-$version
     ./configure --prefix=/usr \
-                --disable-static
+                --disable-static \
+                --with-udev=/lib/udev
     make
     make -k check
     make DESTDIR=$PKG install
