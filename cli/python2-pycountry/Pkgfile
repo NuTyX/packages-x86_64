@@ -5,19 +5,18 @@ url="http://pypi.python.org/pypi/pycountry"
 packager="greg@nutyx.org"
 
 name=python2-pycountry
-version=17.9.23
+version=18.12.8
 release=1
 
 run=(python2-setuptools python2)
 
-source=(https://pypi.io/packages/source/p/pycountry/pycountry-${version}.tar.gz
-)
+source=(https://files.pythonhosted.org/packages/87/c7/c2c76c3ae4ac79c74c1871ae775ed97b70d475dd90d1e824b1d2fc0cd54f/pycountry-18.12.8.tar.gz)
 
 
 build() {
 
-cd "${SRC}/pycountry-${version}"
-python2 setup.py install --root="$PKG/" --optimize=1
+cd pycountry-$version
+python2 setup.py build install --root="$PKG/" --optimize=1
 
 }
 
