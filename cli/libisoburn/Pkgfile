@@ -6,14 +6,12 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libisoburn
-version=1.4.8
-release=2
+version=1.5.0
 
 source=(http://files.libburnia-project.org/releases/libisoburn-$version.tar.gz)
 build () {
 cd $name-$version
-./configure --prefix=/usr --disable-static \
---enable-pkg-check-modules
+./configure --prefix=/usr --disable-static 
 make
 make DESTDIR=$PKG install
 
