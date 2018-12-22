@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=python2-protobuf
 _name=protobuf
-version=3.5.0.1
+version=3.6.1
 _gtestver=1.8.0
 release=2
 
@@ -39,10 +39,12 @@ build() {
   ./autogen.sh
 
   cd "$SRC/$_name-$version/googletest"
+  autoreconf -fiv
   ./configure
   make
 
   cd "$SRC/$_name-$version/gmock"
+  autoreconf -fiv
   ./configure
   make
 
