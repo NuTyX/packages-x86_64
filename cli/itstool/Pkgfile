@@ -5,15 +5,13 @@ url="http://itstool.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 name=itstool
-version=2.0.4
+version=2.0.5
 release=2
 
-source=(http://files.itstool.org/itstool/$name-$version.tar.bz2
-	 http://www.linuxfromscratch.org/patches/blfs/svn/itstool-2.0.4-segfault-1.patch)
+source=(http://files.itstool.org/itstool/$name-$version.tar.bz2)
 
 build() {
 cd $name-$version
-patch -Np1 -i ../itstool-$version-segfault-1.patch
 PYTHON=/usr/bin/python3 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
