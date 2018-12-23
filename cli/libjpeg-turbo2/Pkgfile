@@ -7,6 +7,7 @@ contributors=""
 
 name=libjpeg-turbo2
 version=2.0.1
+release=4
 
 source=(http://sourceforge.net/projects/libjpeg-turbo/files/$version/libjpeg-turbo-$version.tar.gz)
 
@@ -17,11 +18,12 @@ cmake -DWITH_JAVA=1 \
       -DWITH_JPEG8=1 \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+      -DCMAKE_BUILD_TYPE=RELEASE \
+      -DCMAKE_INSTALL_DOCDIR=/usr/share/doc/libjpeg-turbo2-$version
 
 make
 make DESTDIR=$PKG \
-docdir="/usr/share/doc/${pkgname}" \
-exampledir="/usr/share/doc/${pkgname}" \
+exampledir="/usr/share/doc/${name}-$version" \
                   install
 install -m 644 jpegint.h "${PKG}/usr/include" # required by other software
 }
