@@ -5,6 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=linux-firmware
 version=20181026
+unset MAKEFLAGS
 
 build() {
 git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git \
@@ -18,8 +19,8 @@ find firmware -name '*.c' \
 -or -name "README" \
 -or -name '*.pl' \
 -or -name '*.pst' \
--or -name '*.txt' | xargs rm -rv
-find firmware \( -type d -and -empty \) | xargs rm -rv
+-or -name '*.txt' -delete
+find firmware \( -type d -and -empty \) -delete
 rm -rf firmware/cis/src
 rm -rf firmware/usbdux
 rm -rf firmware/carl9170fw
