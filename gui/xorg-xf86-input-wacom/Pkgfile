@@ -14,7 +14,7 @@ build() {
 	./configure --prefix=/usr \
 	--sysconfdir=/etc \
 	--localstatedir=/var \
-	--with-systemd-unit-dir=no
+	--with-systemd-unit-dir=/lib/systemd/system
 
 	make
 	make DESTDIR=$PKG install
