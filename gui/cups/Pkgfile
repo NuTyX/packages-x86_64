@@ -1,4 +1,4 @@
-# Depends on: libusb avahi python gnutls xdg-utils gtk-update-icon-cache
+# Depends on: systemd libusb avahi python gnutls xdg-utils gtk-update-icon-cache
 
 description="The Common Unix Printing System (CUPS) is a print spooler and associated utilities"
 url="http://www.cups.org"
@@ -11,11 +11,10 @@ PKGMK_GROUPS=(devel man)
 
 name=cups
 version=2.2.10
-nutyx_version=10.4
+#nutyx_version=10.4
 run=(xdg-utils gtk-update-icon-cache)
 
-source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
+source=(https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
 	99-printer.rules)
 
 build() {
@@ -29,7 +28,7 @@ build() {
 	autoconf -I config-scripts
 	CC=gcc \
 	./configure --libdir=/usr/lib \
-		--disable-systemd \
+		--enable-systemd \
 		--with-rcdir=/tmp/cupsinit \
 		--with-system-groups=lpadmin \
 		--with-docdir=/usr/share/cups/doc-$version \
@@ -48,8 +47,8 @@ build() {
 		$PKG/usr/share/applications/cups.desktop
 	fi
 	# Service
-	cd ../nutyx-${nutyx_version}
-	make DESTDIR=$PKG install-$name
+	#cd ../nutyx-${nutyx_version}
+	#make DESTDIR=$PKG install-$name
 
 	# Supprimer les filtres faisant parti de cups-filters
 	rm -rf $PKG/usr/share/cups/banners
