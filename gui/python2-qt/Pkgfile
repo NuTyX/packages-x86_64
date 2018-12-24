@@ -1,4 +1,4 @@
-# Depends on: dbus-python python2-sip qtbase
+# Depends on: python2-enum34 dbus-python python2-sip qtbase qtmultimedia qttools qtwebkit
 
 description="connector python for qt"
 url="http://www.riverbankcomputing.co.uk/software/pyqt/intro"
@@ -6,13 +6,13 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=python2-qt
-version=5.9.2
+version=5.11.3
 
 source=(http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-$version/PyQt5_gpl-$version.tar.gz)
 build() {
 cd PyQt5_gpl-$version
 
-python configure.py   \
+python2 configure.py   \
      -v /usr/share/sip \
      -q /usr/bin/qmake \
      --confirm-license \
