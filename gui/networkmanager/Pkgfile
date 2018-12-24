@@ -1,4 +1,4 @@
-# Depends on: libndp libsoup libgudev dbus-glib iptables libnl nss wireless-tools polkit upower vala wpa-supplicant-dbus gobject-introspection newt dhcpcd python2-gobject gtk-doc
+# Depends on: systemd wpa-supplicant libndp libsoup libgudev dbus-glib iptables libnl nss wireless-tools polkit upower vala gobject-introspection newt dhcpcd python2-gobject gtk-doc
 
 description="Tools which simplify and make the network more directly manageable."
 url="http://projects.gnome.org/NetworkManager/"
@@ -12,7 +12,7 @@ _name=NetworkManager
 name=networkmanager
 version=1.14.4
 
-run=(wpa-supplicant wpa-supplicant-dbus)
+run=(wpa-supplicant)
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$_name/${version%.*}/$_name-$version.tar.xz)
 
@@ -27,7 +27,7 @@ CXXFLAGS+=" -fPIC"
 --with-nmtui \
 --with-libnm-glib \
 --enable-gtk-doc \
---with-systemdsystemunitdir=no \
+--with-systemdsystemunitdir=/lib/systemd/system \
 --disable-json-validation \
 --disable-ovs \
 --disable-ppp \
