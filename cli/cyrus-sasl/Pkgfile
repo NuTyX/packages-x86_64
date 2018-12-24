@@ -7,13 +7,12 @@ contributors="Pierre B"
 
 name=cyrus-sasl
 version=2.1.27
-nutyx_version=10.92.2
+nutyx_version=10.92.3
 
 source=(ftp://ftp.cyrusimap.org/cyrus-sasl/$name-$version.tar.gz
         http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz)
 build() {
 	cd $name-$version
-
 	./configure --prefix=/usr \
 		--sysconfdir=/etc \
 		--mandir=/usr/share/man \

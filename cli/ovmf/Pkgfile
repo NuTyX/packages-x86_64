@@ -6,7 +6,7 @@ contributors="tnut"
 packager="Rems <rems@nutyx.org>"
  
 name=ovmf
-version=git
+version=7c3a1ef
 _openssl_ver=1.1.0h
 _toolchain_opt=GCC5
 
@@ -15,6 +15,9 @@ source=(https://www.openssl.org/source/openssl-${_openssl_ver}.tar.gz)
 build() {
 
 git clone https://github.com/tianocore/edk2.git
+cd edk2
+git checkout 7c3a1ef
+cd ..
 mkdir -pv bin
   ln -sf /usr/bin/python2 bin/python
   rm -rf $SRC/edk2/CryptoPkg/Library/OpensslLib/openssl

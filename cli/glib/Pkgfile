@@ -9,9 +9,10 @@ PKGMK_GROUPS=(man devel doc )
 
 name=glib
 version=2.58.1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/glib/${version:0:4}/$name-$version.tar.xz
-	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-10.0.jpg
+	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-11.0.jpg
 	glib-$version-skip_warnings-1.patch)
 
 build () {
@@ -29,7 +30,7 @@ build () {
 
 
   # Default NuTyX Wallpaper
-  install -D -m644 ../../nutyx-10.0.jpg \
+  install -D -m644 ../../nutyx-11.0.jpg \
   $PKG/usr/share/backgrounds/nutyx/nutyx.jpg
 
 }
