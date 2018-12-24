@@ -1,0 +1,27 @@
+# Depends on: libunistring
+
+description="Designed for internationalized string handling based on the Stringprep"
+url="http://www.gnu.org/software/libidn/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=libidn2
+version=2.0.5
+
+source=(https://ftp.gnu.org/gnu/libidn/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --disable-static
+make
+make DESTDIR=$PKG install
+rm $PKG/usr/lib/$name.la
+}
+uptodate() {
+local url ext
+url="https://ftp.gnu.org/gnu/$name/"
+ext=".tar.gz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
+sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
+}
