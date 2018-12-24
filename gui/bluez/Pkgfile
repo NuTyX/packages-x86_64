@@ -8,19 +8,16 @@ contributors="Pierre B"
 name=bluez
 version=5.46
 release=3
-nutyx_version=10.4
+nutyx_version=10.92.2
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz
-	http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-obexd_without_systemd-1.patch)
+	http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
 build() {
 cd $name-$version
-patch -Np1 -i ../$name-$version-obexd_without_systemd-1.patch
 
 ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --disable-systemd \
     --enable-gstreamer \
     --enable-alsa \
     --enable-usb \
@@ -34,7 +31,7 @@ patch -Np1 -i ../$name-$version-obexd_without_systemd-1.patch
     --enable-cups \
     --disable-test \
     --enable-library \
-    --without-systemdunitdir
+    --with-systemdunitdir=/lib/systemd/system
 make
 make DESTDIR=$PKG install
 
@@ -71,8 +68,8 @@ install -v -dm755 $PKG/usr/share/doc/$name-$version
 install -v -m644 doc/*.txt $PKG/usr/share/doc/$name-$version
 
 # Service
-cd ../nutyx-${nutyx_version}
-make DESTDIR=$PKG install-bluetooth
+#cd ../nutyx-${nutyx_version}
+#make DESTDIR=$PKG install-bluetooth
 
 # Obsolet lib
 rm $PKG/usr/lib/libbluetooth.la
