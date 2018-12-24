@@ -1,11 +1,11 @@
-# Depends on: harfbuzz libjpeg-turbo openjpeg2 freeglut xorg-libx11 xorg-libxcursor xorg-libxext xorg-libxrandr xorg-libxinerama
+# Depends on: lcms2 harfbuzz libjpeg-turbo2 openjpeg2 freeglut xorg-libx11 xorg-libxcursor xorg-libxext xorg-libxrandr xorg-libxinerama freetype
 
 description="Lightweight PDF and XPS viewer"
 url="http://www.mupdf.com"
 packager="tnut <tnut@nutyx.org>"
 
 name=mupdf
-version=1.13.0
+version=1.14.0
 
 source=(http://www.linuxfromscratch.org/patches/blfs/svn/mupdf-$version-shared_libs-1.patch
 	http://www.mupdf.com/downloads/archive/$name-$version-source.tar.gz)
@@ -14,15 +14,12 @@ build() {
 unset MAKEFLAGS
 cd $name-$version-source
 
-for i in curl freeglut freetype harfbuzz jpeg lcms2 libjpeg openjpeg zlib
-do
-   rm -rf thirdparty/$i
-done
+sed -i '/SYS_CURL_LIBS/s|$| -lpthread|' Makethird
+rm -rf thirdparty/{curl,freeglut,harfbuzz,libjpeg,openjpeg,zlib}
 
 patch -Np1 -i ../$name-$version-shared_libs-1.patch
-
-
-make build=release
+export USE_SYSTEM_LIBS=yes
+CFLAGS+=' -fPIC' CXXFLAGS+=' -fPIC' make build=release libs apps extra
 
 make prefix=$PKG/usr build=release \
 docdir=$PKG/usr/share/doc/$name-$version \
