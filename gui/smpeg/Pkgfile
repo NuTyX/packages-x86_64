@@ -1,4 +1,4 @@
-# Depends on: sdl
+# Depends on: sdl xorg-libx11
 
 description="A SDL MPEG player library."
 url="http://www.lokigames.com/development/smpeg.php3"
@@ -8,16 +8,20 @@ contributors="Fanch"
 name=smpeg
 version=0.4.5
 release=5
-source=(http://crux.ster.zone/downloads/$name/$name-$version.tar.xz)
+source=(http://crux.ster.zone/downloads/$name/$name-$version.tar.xz
+        020_libx11.diff)
+
+unset MAKEFLAGS
 
 build() {
-	cd $name-$version
-	CXX="g++ -std=c++98" ./configure \
+cd $name-$version
+patch -Np1 -i ../020_libx11.diff
+./autogen.sh
+export CFLAGS+=" -Wno-error=narrowing"
+    ./configure \
 		--prefix=/usr \
 		--mandir=/usr/share/man \
 		--disable-static
-	make || make -j1
-	make install DESTDIR=$PKG
-
-rm $PKG/usr/lib/libsmpeg.la
+make
+make DESTDIR=$PKG install
 }
