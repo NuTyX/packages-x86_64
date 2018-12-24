@@ -26,7 +26,7 @@ cd $name-$version
 --disable-mono \
 --enable-core-docs \
 --with-distro=none \
---with-systemdsystemunitdir=no
+--with-systemdsystemunitdir=/lib/systemd/system
 make
 make DESTDIR=$PKG install
 
