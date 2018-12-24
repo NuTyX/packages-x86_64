@@ -1,4 +1,4 @@
-# Depends on: ninja meson libcdio-paranoia avahi dbus-glib intltool libsecret gtk3 libsoup udisks2 obexd fuse2 libarchive libmtp samba bluez gcr
+# Depends on: systemd ninja meson libcdio-paranoia avahi dbus-glib intltool libsecret gtk3 libsoup udisks2 obexd fuse2 libarchive libmtp samba bluez gcr
 
 description="Userspace virtual filesystem implemented as a pluggable module for gio"
 url="http://www.gnome.org/"
@@ -28,7 +28,7 @@ meson --prefix=/usr     \
       -Ddnssd=false     \
       -Dgoa=false       \
       -Dgoogle=false    \
-      -Dsystemduserunitdir=no ..
+      -Dsystemduserunitdir=/lib/systemd/system ..
 ninja
 
 DESTDIR=$PKG ninja install
