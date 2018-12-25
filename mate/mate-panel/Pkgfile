@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, Jayce, Greg, Remy"
 
 name=mate-panel
-version=1.20.3
+version=1.20.4
 
 
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
@@ -23,7 +23,9 @@ build() {
   make
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make DESTDIR=$PKG install
-  
+
+  # Obsolet lib
+  rm $PKG/usr/lib/libmate-panel-applet-4.la
 }
 
 uptodate() {
