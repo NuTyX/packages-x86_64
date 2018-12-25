@@ -1,0 +1,57 @@
+# Depends on: acl dbus glib xorg-libx11 polkit systemd pam zlib xmlto
+
+description="framework for defining and tracking users, login sessions, and seats"
+url="https://github.com/ConsoleKit2/ConsoleKit2"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=consolekit2
+version=1.0.2
+release=3
+
+source=(https://github.com/Consolekit2/ConsoleKit2/releases/download/$version/ConsoleKit2-$version.tar.bz2
+        consolekit2.tmpfiles.conf
+	75-consolekit2.rules
+	consolekit2.logrotate)
+
+build() {
+cd ConsoleKit2-$version
+
+./configure                    \
+	--prefix=/usr          \
+	--sysconfdir=/etc      \
+	--sbindir=/usr/bin     \
+	--localstatedir=/var   \
+	--enable-polkit        \
+	--enable-pam-module    \
+	--enable-udev-acl      \
+	--enable-docbook-docs  \
+	--with-xinitrc-dir=/etc/X11/app-defaults/xinitrc.d     \
+	--with-systemdsystemunitdir=no
+
+make
+make DESTDIR=$PKG install
+
+mv $PKG/etc/X11/app-defaults/xinitrc.d/90-consolekit{,.sh}
+
+install -Dm644 $SRC/consolekit2.tmpfiles.conf $PKG/usr/lib/tmpfiles.d/consolekit.conf
+
+rm -rf $PKG/run
+
+install -D -m644 $SRC/consolekit2.logrotate $PKG/etc/logrotate.d/consolekit
+
+install -dm700 -o polkitd $PKG/usr/share/polkit-1/rules.d
+install -m644 $SRC/75-consolekit2.rules $PKG/usr/share/polkit-1/rules.d/75-consolekit.rules
+
+install -dm755 $PKG/etc/pam.d/
+cat >> $PKG/etc/pam.d/consolekit << "EOF"
+auth            include         system-login
+account         include         system-login
+session         include         system-login
+password        include         system-login
+session         optional        pam_ck_connector.so nox11
+EOF
+
+rm $PKG/usr/lib/libck-connector.la
+rm $PKG/lib/security/pam_ck_connector.la
+}
