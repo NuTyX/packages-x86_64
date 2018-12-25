@@ -4,15 +4,16 @@ contributors="tnut"
 packager="greg<greg@nutyx.org>"
 
 name=hdparm
-version=9.52
-release=1
+version=9.58
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
 
 build() {
 
-cd $name-$version && make
+cd $name-$version
+
+make
 
 }
 
