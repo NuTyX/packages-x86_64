@@ -1,4 +1,4 @@
-# Depends on: gnutls hicolor-icon-theme 
+# Depends on: gnutls hicolor-icon-theme perl 
 
 description="lftp is a sophisticated ftp/http client."
 url="http://lftp.yar.ru"
@@ -13,11 +13,13 @@ source=(${url}/ftp/$name-$version.tar.xz)
 build() {
 
 cd $name-$version
+
 ./configure --prefix=/usr \
 --with-gnutls \
 --without-openssl \
 --without-included-regex \
 --disable-static
+
 make
 make DESTDIR=$PKG install
 
