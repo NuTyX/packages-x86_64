@@ -6,10 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 # Depends on: 
 
 name=fakeroot
-version=1.22
-
-release=2
-
+version=1.23
 
 source=(http://ftp.debian.org/debian/pool/main/f/$name/${name}_${version}.orig.tar.bz2
 		silence-dlerror.patch)
@@ -18,6 +15,7 @@ build() {
 	patch -Np1 -i ../silence-dlerror.patch
 	./configure --prefix=/usr \
 	--disable-static \
+        --libdir=/usr/lib/libfakeroot \
 	--with-ipc=sysv
 
 	make
@@ -25,4 +23,6 @@ build() {
 package() {
 	cd $name-$version
 	make DESTDIR=$PKG install
+install -dm755 $PKG/etc/ld.so.conf.d/"
+  echo '/usr/lib/libfakeroot' > "$PKG/etc/ld.so.conf.d/fakeroot.conf"
 }
