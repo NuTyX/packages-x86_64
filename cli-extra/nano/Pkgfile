@@ -12,9 +12,10 @@ build() {
 cd $name-$version
 
 ./configure --prefix=/usr \
---sysconfdir=/etc \
+--sysconfdir=/etc/nano \
 --enable-color    \
 --enable-utf8     \
+--enable-multibuffer \
 --docdir=/usr/share/doc/nano-$version \
 --disable-x
 
@@ -22,5 +23,6 @@ make
 
 make DESTDIR=$PKG install
 
-mkdir -p $PKG/etc/nano
+install -DTm644 ../${name}-${version}/doc/sample.nanorc ${PKG}/etc/nano/nanorc
+
 }
