@@ -1,3 +1,4 @@
+# Depends on: gpm
 description="Joe's own editor"
 url="http://joe-editor.sourceforge.net/"
 contributors="Berlius, Tnut, Greg"
@@ -10,10 +11,10 @@ source=(https://downloads.sourceforge.net/joe-editor/$name-$version.tar.gz)
 
 build() {
 
-  cd $SRC/$name-$version
+  cd $name-$version
 
   ./configure --prefix=/usr \
-	--sysconfdir=/etc \
+	--sysconfdir=/etc/joe \
 	--mandir=/usr/share/man \
 	--docdir=/usr/share/doc/$name-$version
   make
