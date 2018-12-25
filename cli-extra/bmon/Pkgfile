@@ -17,7 +17,8 @@ source=(https://github.com/tgraf/$name/archive/v$version.tar.gz)
 
 build() {
 
-    cd $SRC/$name-$version	
+    cd $name-$version
+
     ./autogen.sh
     ./configure --prefix=/usr --sysconfdir=/etc
  
