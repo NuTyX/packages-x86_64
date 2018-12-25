@@ -6,7 +6,8 @@ packager="tnut <tnut@nutyx.org>"
 contributors="fanch,tnut,greg,jayce"
 
 name=atril
-version=1.20.2
+version=1.20.3
+release=2
 
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
@@ -29,6 +30,18 @@ build() {
   make
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make DESTDIR=$PKG install
+
+  # Obsolets libs
+  rm $PKG/usr/lib/atril/3/backends/libcomicsdocument.la
+  rm $PKG/usr/lib/atril/3/backends/libdjvudocument.la
+  rm $PKG/usr/lib/atril/3/backends/libpdfdocument.la
+  rm $PKG/usr/lib/atril/3/backends/libpixbufdocument.la
+  rm $PKG/usr/lib/atril/3/backends/libpsdocument.la
+  rm $PKG/usr/lib/atril/3/backends/libtiffdocument.la
+  rm $PKG/usr/lib/atril/3/backends/libepubdocument.la
+  rm $PKG/usr/lib/caja/extensions-2.0/libatril-properties-page.la
+  rm $PKG/usr/lib/libatrildocument.la
+  rm $PKG/usr/lib/libatrilview.la
 }
 
 uptodate() {
