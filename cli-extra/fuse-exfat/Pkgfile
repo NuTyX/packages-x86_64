@@ -1,9 +1,9 @@
+# Depends on: fuse2
+
 description="exfat filesystem utilities"
 url="http://code.google.com/p/exfat/"
 contributors="guy, tnut"
 packager="greg<greg@nutyx.org>"
-
-# Depends on: fuse2
 
 name=fuse-exfat
 version=1.2.7
@@ -13,12 +13,11 @@ source=(https://github.com/relan/exfat/releases/download/v$version/$name-$versio
 
 build () {
 
-   cd $name-$version
+ cd $name-$version
    ./configure --prefix=/usr --sbindir=/sbin
    make
   
 }
-
 
 package() {
 
