@@ -1,22 +1,24 @@
+# Depends on: docbook2x libmnl libnftnl jansson
+
 description="Netfilter nftables userspace tools"
 url="http://netfilter.org/projects/nftables/"
 contributors="alienus, fanch, tnut"
 packager="greg<greg@nutyx.org>"
 
-# Depends on: docbook2x libmnl libnftnl 
-
 name=nftables
-version=0.7
-release=1
+version=0.9.0
 
-source=($url/files/nftables-$version.tar.bz2)
+source=($url/files/nftables-$version.tar.bz2
+        nftables.conf
+        nftables.service)
 
 build(){
 
 	cd $name-$version
 	./configure --prefix=/usr \
-		--sysconfdir=/etc \
+		--sysconfdir=/etc/nftables \
 		--mandir=/usr/share/man
+                --with-json
 	make
   
 }
@@ -27,4 +29,8 @@ package() {
 cd $name-$version
 make DESTDIR=$PKG install 
 
+install -Dm644 ../nftables.conf "$PKG/etc/nftables/nftables.conf"
+
+# systemd
+  install -Dm644 ../nftables.service "$PKG/lib/systemd/system/nftables.service"
 }
