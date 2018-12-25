@@ -23,13 +23,8 @@ sed -i build/mk.config                   \
 make makefiles                           
 make -C libcommon                        
 make -C libuxre                          
-make -C cpio
 
 install -v -dm 755 $PKG/usr/bin	
 install -v -dm 755 $PKG/usr/share/man/man1	
 
-install -v -m755 cpio/pax_su3 $PKG/usr/bin/pax 
-install -v -m644 cpio/pax.1 $PKG/usr/share/man/man1
-
-	
 }
