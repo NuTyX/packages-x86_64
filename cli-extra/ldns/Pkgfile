@@ -1,9 +1,9 @@
+# Depends on: openssl ca-certificates libcap python swig doxygen
+
 description="Fast DNS library with the goal to simplify DNS programming."
 url="http://www.nlnetlabs.nl"
 contributors="berlius"
-packager="greg<greg@nutyx.org>"
-
-# Depends on: openssl ca-certificates libcap python swig doxygen 
+packager="greg<greg@nutyx.org>" 
 
 name=ldns
 version=1.7.0
@@ -14,7 +14,7 @@ source=(https://www.nlnetlabs.nl/downloads/$name/$name-$version.tar.gz
 
 prepare() {
 
-	cd $SRC/$name-$version
+	cd $name-$version
 	patch -p1 -i ../pc.patch
 	
 }
@@ -22,7 +22,7 @@ prepare() {
  
 build() {
 
-	cd $SRC/$name-$version
+	cd $name-$version
 	
 	./configure \
 		--prefix=/usr \
@@ -31,8 +31,7 @@ build() {
 		--disable-rpath \
 		--with-drill \
 		--with-examples \
-		--with-trust-anchor=/etc/trusted-key.key \
-		--disable-dane-verify # needs openssl>=1.1.0
+		--with-trust-anchor=/etc/trusted-key.key
 
 	make
 }
@@ -40,7 +39,7 @@ build() {
 
 package() {
 
-	cd $SRC/$name-$version
+	cd $name-$version
 	make DESTDIR=$PKG install
 	
 		
