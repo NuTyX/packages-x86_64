@@ -12,7 +12,7 @@ source=(http://downloads.sourceforge.net/sourceforge/$name/$name-${version%.*}-$
 
 build() {
 
-  cd $SRC/$name-${version%.*}-${version##*.}
+  cd $name-${version%.*}-${version##*.}
   ./configure --prefix=/usr --mandir=/usr/share/man
   make
   
@@ -20,7 +20,7 @@ build() {
 
 package() {
 
-  cd $SRC/$name-${version%.*}-${version##*.}
+  cd $name-${version%.*}-${version##*.}
   make DESTDIR=$PKG install
   
 }
