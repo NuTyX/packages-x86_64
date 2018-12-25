@@ -1,4 +1,4 @@
-# Depends on: bash cd-discid wget libvorbis cdparanoia cdrkit flac id3lib lame mp3gain
+# Depends on: bash cd-discid wget libvorbis cdparanoia cdrtools flac id3lib lame mp3gain
 
 description="a better cd encoder"
 url="https://abcde.einval.com/"
@@ -6,22 +6,22 @@ packager="remy <remy@nutyx.org>"
 contributors="Greg"
 
 name=abcde
-version=2.8.1
+version=2.9.2
 release=1
 
-source=(https://abcde.einval.com/download/$name-$version.tar.gz fix-mp3-tagging.patch)
+source=(https://abcde.einval.com/download/$name-$version.tar.gz)
 
 prepare() {
    cd $name-$version
-   patch -Np0 < "$SRC/fix-mp3-tagging.patch"
    sed -e "s:normalize-audio:normalize:g" -i $name
+   sed -i 's/^#CDDBMETHOD=musicbrainz/CDDBMETHOD=cddb/' abcde.conf
 }
 
 build() {
 
 cd $name-$version
     make DESTDIR=$PKG \
-        PREFIX=/usr \
+        prefix=/usr \
 	sysconfdir=/etc \
 	mandir=$PKG/usr/man/man1 \
         install
