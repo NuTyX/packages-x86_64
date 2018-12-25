@@ -1,4 +1,4 @@
-# Depends on: pcre glib gpm slang
+# Depends on: pcre glib gpm slang cdrtools gawk p7zip perl zip 
 
 description="Midnight Commander is a text based filemanager/shell that emulates Norton Commander"
 url="https://www.midnight-commander.org/"
@@ -16,7 +16,7 @@ build() {
 	./configure --prefix=/usr \
 		--enable-charset  \
 		--disable-static  \
-		--sysconfdir=/etc \
+		--sysconfdir=/etc/mc \
 		--with-screen=slang
 	make
 
