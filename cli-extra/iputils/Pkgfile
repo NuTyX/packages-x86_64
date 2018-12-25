@@ -1,32 +1,25 @@
-# Depends on: libcap libidn perl-sgmls openssl sysfsutils
+# Depends on: libcap libidn2 perl-sgmls openssl sysfsutils
 
 description="Basic networking applet"
 url="https://github.com/iputils/iputils/releases"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
-run=()
-
-
-
 name=iputils
-version=s20151218
+version=s20180629
 release=1
 
-source=(http://www.skbuff.net/iputils/$name-$version.tar.bz2
-)
+PKGMK_KEEP_SOURCES="no"
 
-prepare() {
-echo "Fonction prepare sans objet"
-}
+source=(http://www.skbuff.net/iputils/$name-$version.tar.bz2)
 
 build() {
-cd $SRC/$name-$version
+cd $name-$version
 make USE_GCRYPT=no USE_GNUTLS=no CCOPTOPT="$CFLAGS"
 }
 
 package() {
-cd $SRC/$name-$version
+cd $name-$version
 install -dm755 $PKG/usr/bin
 install -m755 arping clockdiff ping rarpd rdisc tftpd tracepath $PKG/usr/bin/
 }
