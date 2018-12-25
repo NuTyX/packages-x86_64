@@ -1,34 +1,31 @@
+# Depends on: python2 libjpeg-turbo2 gpgme libsigc++ ca-certificates
+
+
 description="CenterIM is a powerful communication tool that can be used through SSH."
 url="http://www.centerim.org/"
-contributors="pierre"
-packager="greg<greg@nutyx.org>"
-
-# Depends on: python2 libjpeg-turbo gpgme
+contributors="pierre, greg"
+packager="remy<remy@nutyx.org>"
 
 name=centerim
-version=4.22.10
-release=1
+version=5.0.1
 
-source=(http://www.centerim.org/download/releases/$name-$version.tar.gz)
+source=(http://www.centerim.org/download/cim5/$name5-$version.tar.gz)
 
 build() {
 
-	cd $name-$version
-    sed -i 's#python#python2#' misc/CenterIMLog2HTML.py
-    sed -i '1,1i#include <stdio.h>' libicq2000/libicq2000/sigslot.h
-    export CXXFLAGS+=' -std=gnu++98'
-    ./configure --prefix=/usr  \
-                --with-ssl     \
-                --with-openssl \
-                --enable-locales-fix
-  make
+	cd $name5-$version
+
+    ./bootstrap
+
+    ./configure --prefix=/usr
+
+ make
 		
 }
 
 
 package() {
 
-	cd $name-$version
+	cd $name5-$version
 	make DESTDIR=$PKG install
-  
 }
