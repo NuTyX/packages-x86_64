@@ -1,8 +1,8 @@
+# Depends on: ncurses pcre
+
 description="Robust and modular log colorizer with many plugins"
 url="http://freshmeat.net/projects/ccze/"
 packager="greg<greg@nutyx.org>"
-
-# Depends on: ncurses pcre
 
 name=ccze
 version=0.2.1
@@ -14,9 +14,9 @@ source=(ftp://ftp.debian.org/debian/pool/main/c/$name/${name}_${version}.orig.ta
 
 build() {
 
-  cd $SRC/$name-$version
+  cd $name-$version
 
-  patch -Np0 -i $SRC/$name-fix-segfault.diff
+  patch -Np0 -i ../$name-fix-segfault.diff
 
   #killing a bug
   sed -e 's/-Wswitch -Wmulticharacter/-Wswitch/' -i src/Makefile.in
@@ -29,7 +29,7 @@ build() {
 
 package() {
 
-  cd $SRC/$name-$version
+  cd $name-$version
 
   make DESTDIR=$PKG install
   
