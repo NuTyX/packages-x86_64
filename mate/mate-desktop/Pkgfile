@@ -6,7 +6,8 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, Greg, Remy"
 
 name=mate-desktop
-version=1.20.3
+version=1.20.4
+release=2
 
 source=(http://pub.mate-desktop.org/releases/${version%.*}/${name}-${version}.tar.xz)
 
@@ -23,6 +24,9 @@ schemas/org.mate.background.gschema.xml.in
 make
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libmate-desktop-2.la
 }
 
 uptodate() {
