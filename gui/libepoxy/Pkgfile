@@ -6,10 +6,18 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libepoxy
-version=1.5.2
+version=1.5.3
 
-source=( https://github.com/anholt/${name}/releases/download/$version/$name-$version.tar.xz)
+source=(https://github.com/anholt/${name}/releases/download/$version/$name-$version.tar.xz)
 
-package() {
-rm $PKG/usr/lib/$name.la
+build() {
+cd $name-$version
+
+mkdir build
+cd build
+
+meson --prefix=/usr
+ninja
+DESTDIR=$PKG ninja install
+
 }
