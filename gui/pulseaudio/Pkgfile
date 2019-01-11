@@ -8,27 +8,22 @@ contributors="Pierre B"
 run=(bluez sbc)
 
 name=pulseaudio
-version=11.1
-release=4
+version=12.2
 
-source=(http://freedesktop.org/software/pulseaudio/releases/pulseaudio-$version.tar.xz
-	http://www.linuxfromscratch.org/patches/blfs/8.2/pulseaudio-$version-glibc_2.27_fix-1.patch)
+source=(https://freedesktop.org/software/pulseaudio/releases/pulseaudio-$version.tar.xz)
+
 build() {
 unset MAKEFLAGS
 cd pulseaudio-$version
-
-patch -Np1 -i ../pulseaudio-$version-glibc_2.27_fix-1.patch
-
-AUTOPOINT='intltoolize --automake --copy' autoreconf -fiv
 
 ./configure --prefix=/usr         \
             --sysconfdir=/etc     \
             --localstatedir=/var  \
             --disable-bluez4      \
             --disable-rpath       \
-            --with-udev-rules-dir=/usr/lib/udev/rules.d
+            --with-udev-rules-dir=/lib/udev/rules.d
 make
-make DESTDIR=$PKG install
+make DESTDIR=$PKG install bashcompletiondir=/usr/share/bash-completion/completions
 mkdir -p $PKG/usr/share/icons/hicolor/scalable/devices
 for size in 16 22 32 48 64 128; do
     mkdir -p $PKG/usr/share/icons/hicolor/${size}x${size}/{apps,devices}
@@ -40,7 +35,7 @@ rm -f $PKG/etc/dbus-1/system.d/pulseaudio-system.conf
 rm $PKG/usr/lib/libpulse-mainloop-glib.la
 rm $PKG/usr/lib/libpulse-simple.la
 rm $PKG/usr/lib/libpulse.la
-rm $PKG/usr/lib/pulseaudio/libpulsecommon-11.1.la
-rm $PKG/usr/lib/pulseaudio/libpulsecore-11.1.la
+rm $PKG/usr/lib/pulseaudio/libpulsecommon-$version.la
+rm $PKG/usr/lib/pulseaudio/libpulsecore-$version.la
 rm $PKG/usr/lib/pulseaudio/libpulsedsp.la
 }
