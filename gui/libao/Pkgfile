@@ -1,4 +1,4 @@
-# Depends on: alsa-lib pulseaudio
+# Depends on: alsa-lib pulseaudio git
 
 description="Cross-platform audio output library and plugins"
 url="http://xiph.org/ao/"
@@ -6,24 +6,30 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libao
-version=1.2.0
-release=2
+version=1.2.2-git
 
-source=(http://downloads.xiph.org/releases/ao/$name-$version.tar.gz)
+source=()
+
+prepare() {
+git clone https://git.xiph.org/libao.git $name
+}
 
 build() {
-  cd $name-$version
+  cd $name
+
+./autogen.sh
   ./configure --prefix=/usr      \
 	      --enable-alsa-mmap 
+
   make
   make DESTDIR=$PKG install
 
   mkdir -p $PKG/etc/
 
-cat > $PKG/etc/libao.conf << "EOf"
+cat > $PKG/etc/libao.conf << "EOF"
 default_driver=alsa
 dev=default
-EOf
+EOF
 
 # Obsolets libs
 rm $PKG/usr/lib/ao/plugins-4/libalsa.la
