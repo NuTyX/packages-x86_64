@@ -6,29 +6,24 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
 name=libwmf
-version=0.2.8.4
-release=3
+version=0.2.10
 
-source=(
-http://downloads.sourceforge.net/sourceforge/wvware/$name-$version.tar.gz
-libwmf.0.2.8.4-libpng-1.5.patch
-libwmf.0.2.8.4-useafterfree.patch)
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/caolanm/libwmf/archive/v$version.tar.gz)
 
 build(){
     cd $name-$version
-    patch -p1 -i $SRC/libwmf.0.2.8.4-libpng-1.5.patch
-    patch -p1 -i $SRC/libwmf.0.2.8.4-useafterfree.patch
     ./configure --prefix=/usr \
                 --with-gsfontdir=/usr/share/fonts/Type1 \
                 --with-fontdir=/usr/share/fonts/Type1 \
                 --with-gsfontmap=/usr/share/ghostscript/9.14/Resource/Init/Fontmap.GS
     make
-    make DESTDIR=$PKG install
+    make -j1 DESTDIR=$PKG install
     # rm fonts already in gsfonts packages
     rm -rf $PKG/usr/share/fonts
 
 # Obsolets libs
-rm $PKG/usr/lib/gtk-2.0/2.10.0/loaders/io-wmf.la
 rm $PKG/usr/lib/libwmf.la
 rm $PKG/usr/lib/libwmflite.la
 }
