@@ -1,8 +1,8 @@
 # Depends on: gtk2,gobject-introspection, python2-gtk
 
 name=keybinder2
-version=0.3.0
-release=5
+_name=keybinder
+version=0.3.1
 
 url="https://github.com/engla/keybinder"
 description="Library for registering global keyboard shortcuta"
@@ -10,10 +10,10 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Geantbrun"
 maintainer="https://github.com/engla/keybinder"
 
-source=(http://ftp.osuosl.org/pub/blfs/conglomeration/keybinder/keybinder-$version.tar.gz)
+source=(https://github.com/kupferlauncher/$_name/releases/download/v$version/$_name-$version.tar.gz)
 
 build() {
-cd keybinder-$version
+cd $_name-$version
 ./configure --prefix=/usr --disable-lua
 make 
 make DESTDIR=$PKG install
