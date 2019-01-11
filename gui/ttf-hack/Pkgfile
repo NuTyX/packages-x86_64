@@ -7,10 +7,9 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=ttf-hack
-version=2.020
-release=1
+version=3.003
 
-source=(https://github.com/source-foundry/Hack/releases/download/v${version}/Hack-v${version/./_}-ttf.tar.xz)
+source=(https://github.com/source-foundry/Hack/releases/download/v${version}/Hack-v${version}-ttf.tar.xz)
 
 build() {
   install -Dm644 -t $PKG/usr/share/fonts/TTF $SRC/Hack-*.ttf
