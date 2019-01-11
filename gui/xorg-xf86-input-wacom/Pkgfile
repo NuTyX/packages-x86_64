@@ -3,11 +3,10 @@
 description="Xorg Wacom tablet driver."
 packager="tnut <tnut@nutyx.org>"
 name=xorg-xf86-input-wacom
-version=0.35.0
+version=0.36.1
 _name=${name/xorg-/}
-release=2
 
-source=(https://downloads.sourceforge.net/project/linuxwacom/${_name}/${_name}-$version.tar.bz2)
+source=(https://github.com/linuxwacom/xf86-input-wacom/releases/download/$_name-$version/$_name-$version.tar.bz2)
 
 build() {
 	cd ${_name}-$version
