@@ -1,4 +1,4 @@
-# Depends on: python2-enum34 dbus-python python2-sip qtbase qtmultimedia qttools qtwebkit
+# Depends on: python2-enum34 dbus-python python2-sip-qt5 sip qtbase qtmultimedia qttools qtwebkit qtconnectivity qtserialport qtsvg qtx11extras qtnetworkauth qtwebengine qtwebsockets qtxmlpatterns
 
 description="connector python for qt"
 url="http://www.riverbankcomputing.co.uk/software/pyqt/intro"
@@ -16,10 +16,16 @@ python2 configure.py   \
      -v /usr/share/sip \
      -q /usr/bin/qmake \
      --confirm-license \
-     --qsci-api
+     --qsci-api \
+     --no-sip-files
 
-find -name 'Makefile' | xargs sed -i 's|-Wl,-rpath,/usr/lib||g;s|-Wl,-rpath,.* ||g'
 make
-make DESTDIR=$PKG INSTALL_ROOT=$PKG install
+make -j1 DESTDIR=$PKG INSTALL_ROOT=$PKG install
 
+mv "$PKG"/usr/bin/{,python2-}pyuic5
+mv "$PKG"/usr/bin/{,python2-}pyrcc5
+
+rm "$PKG"/usr/lib/qt/plugins/designer/libpyqt5.so
+rm "$PKG"/usr/lib/qt/plugins/PyQt5/libpyqt5qmlplugin.so
+rm "$PKG"/usr/share/qt/qsci/api/python/PyQt5.api
 }
