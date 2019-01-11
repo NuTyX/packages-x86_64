@@ -6,12 +6,16 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libwacom
-version=0.25
-release=2
-source=(http://sourceforge.net/projects/linuxwacom/files/libwacom/libwacom-$version.tar.bz2)
+version=0.32
+
+source=(https://github.com/linuxwacom/libwacom/releases/download/${name}-${version}/${name}-${version}.tar.bz2)
+
 build() {
+
 cd $name-$version
+
 ./configure --prefix=/usr --disable-static
+
 make
 make DESTDIR=$PKG install
 
