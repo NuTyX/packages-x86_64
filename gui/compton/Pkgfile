@@ -1,4 +1,4 @@
-# Depends on: dbus libconfig pcre mesa xorg-libxcomposite xorg-libxinerama xorg-libxrandr xorg-libxdamage freeglut
+# Depends on: dbus libconfig libev pcre mesa xorg-libxcomposite xorg-libxinerama xorg-libxrandr xorg-libxdamage freeglut xcb-util-renderutil xcb-util-image
 
 description="A compositor for X, and a fork of xcompmgr-dana."
 url="http://github.com/chjj/compton"
@@ -6,21 +6,25 @@ packager="tnut <tnut@nutyx.org>"
 contributors="greg <greg@nutyx.org>"
 
 name=compton
-version=0.1_beta2
+version=4.0
 release=1
 
-source=(https://github.com/chjj/compton/releases/download/v$version/compton-git-v$version-2013-10-21.tar.xz
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/yshui/compton/archive/v4.tar.gz
 		compton.conf)
 
 run=(libconfig)
 
 build() {
 
-	cd compton-git-v0.1_beta2-2013-10-21
+	cd compton-${version:0:1}
 
-	CFG='-DCONFIG_LIBCONFIG' make
-	make DESTDIR=$PKG install
-	
-	install -Dm644 $SRC/compton.conf $PKG/etc/xdg/compton.conf
+mkdir -pv build
+cd build
+meson --prefix=/usr
+ninja
+DESTDIR=$PKG ninja install
+install -Dm644 $SRC/compton.conf $PKG/etc/xdg/compton.conf
 	
 }
