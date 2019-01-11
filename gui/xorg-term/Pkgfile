@@ -7,15 +7,13 @@ contributors="Pierre B, Greg, Remy"
 
 alias=(xterm)
 name=xorg-term
-version=331
-release=2
+version=342
 
 run=(xorg-luit)
 
 _name=xterm
 
-source=(xorg-term-331-color-1.patch
-	ftp://ftp.invisible-island.net/${_name}/${_name}-$version.tgz)
+source=(ftp://ftp.invisible-island.net/${_name}/${_name}-$version.tgz)
 
 prepare() {
 cd ${_name}-$version
@@ -25,7 +23,7 @@ printf '\tkbs=\\177,\n' >> terminfo
 
 build() {
 cd ${_name}-$version
-patch -Np1 -i ../$name-$version-color-1.patch
+#patch -Np1 -i ../$name-$version-color-1.patch
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
             --mandir=/usr/share/man \
             --with-x \
