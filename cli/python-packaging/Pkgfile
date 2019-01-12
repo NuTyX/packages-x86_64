@@ -1,0 +1,35 @@
+# Depends on: python2-setuptools python2-markupsafe python2-pyparsing python-pyparsing python python-markupsafe python2-six python-six
+
+description="Core utilities for Python packages in python 2&3"
+url="https://github.com/pypa/packaging"
+packager="Rocket"
+contributors="rems"
+
+name=python-packaging
+version=18.0
+release=2
+
+source=(https://pypi.io/packages/source/p/packaging/packaging-$version.tar.gz)
+
+run=(python2-six python-six python2-pyparsing python-pyparsing)
+
+prepare() {
+
+cp -r packaging-$version packaging-$version-py2
+
+}
+
+
+build() {
+
+cd packaging-$version-py2
+
+python2 setup.py build
+python2 setup.py install --root="$PKG" --optimize=1
+
+cd ../packaging-$version
+
+python3 setup.py build
+python3 setup.py install --root="$PKG" --optimize=1
+
+}
