@@ -1,0 +1,34 @@
+# Depends on: python2-setuptools python
+
+description="Getting image size from png/jpeg/jpeg2000/gif file python 2&3"
+url="https://github.com/shibukawa/imagesize_py"
+packager="Rocket"
+contributors="rems"
+
+name=python-imagesize
+version=1.1.0
+
+run=(python2 python)
+
+source=(https://files.pythonhosted.org/packages/source/i/imagesize/imagesize-$version.tar.gz)
+
+prepare() {
+
+cp -r imagesize-$version imagesize-$version-py2
+
+}
+
+
+build() {
+
+cd imagesize-$version-py2
+
+python2 setup.py build
+python2 setup.py install --root="$PKG" --optimize=1
+
+cd ../imagesize-$version
+
+python3 setup.py build
+python3 setup.py install --root="$PKG" --optimize=1
+
+}
