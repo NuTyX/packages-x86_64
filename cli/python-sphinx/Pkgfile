@@ -1,0 +1,39 @@
+# Depends on: python2-setuptools python-docutils python-jinja python-six python2-six python-imagesize python python-snowballstemmer
+ 
+description="python 2&3 documentation generator"
+url="http://www.sphinx-doc.org/"
+packager="Rocket"
+contributors="rems"
+
+name=python-sphinx
+version=1.8.3
+
+source=(https://pypi.org/packages/source/S/Sphinx/Sphinx-$version.tar.gz)
+
+run=(python2 python python-docutils python-jinja python-six python2-six python-imagesize python-snowballstemmer)
+
+prepare() {
+
+cp -r Sphinx-$version Sphinx-$version-py2
+# change python2 interpreter
+  find Sphinx-$version-py2 -type f -exec \
+  sed -i '1s,^#! \?/usr/bin/\(env \|\)python$,#!/usr/bin/python2,' {} \;
+# change sphinx-binaries name in source code
+  find Sphinx-$version-py2 -type f -name '*.py' -exec \
+  sed -ri 's,(sphinx-(:?build|apidoc|autogen|quickstart)),\12,' {} \;
+}
+
+
+build() {
+
+cd Sphinx-$version-py2
+
+make PYTHON=python2 build
+python2 setup.py install --root="$PKG" --optimize=1
+
+cd ../Sphinx-$version
+
+make PYTHON=python3 build
+python3 setup.py install --root="$PKG" --optimize=1
+
+}
