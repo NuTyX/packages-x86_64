@@ -1,0 +1,40 @@
+# Depends on: python2-setuptools python-pytz python
+
+description="A collection of tools for internationalizing Python applications"
+url="http://babel.pocoo.org/"
+packager="rems <rems@nutyx.org>"
+contributors="tnut, rocket"
+
+name=python-babel
+version=2.6.0
+_core=33
+
+PKGMK_KEEP_SOURCES="no"
+PKGMK_IGNORE_UNPACK="yes"
+
+run=(python2 python2-setuptools python-pytz)
+
+source=(https://github.com/python-babel/babel/archive/v$version.tar.gz
+        http://unicode.org/Public/cldr/$_core/core.zip)
+
+prepare() {
+tar -xf v$version.tar.gz
+cp -r babel-$version babel-$version-py2
+cp core.zip babel-$version-py2/cldr/core-$_core.0.zip
+cp core.zip babel-$version/cldr/core-$_core.0.zip
+}
+
+build() {
+
+cd babel-$version-py2
+
+python2 setup.py import_cldr
+python2 setup.py build
+python2 setup.py install --root="$PKG" --optimize=1 --skip-build
+mv "$PKG"/usr/bin/pybabel "$PKG"/usr/bin/pybabel2
+
+cd ../babel-$version
+python3 setup.py import_cldr
+python3 setup.py build
+python3 setup.py install --root="$PKG" --optimize=1 --skip-build
+}
