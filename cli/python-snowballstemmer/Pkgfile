@@ -1,0 +1,34 @@
+# Depends on: python2 python
+ 
+description="Snowball stemming library collection for python 2&3"
+url="https://github.com/shibukawa/snowball_py"
+packager="Rocket"
+contributors="rems"
+
+name=python-snowballstemmer
+version=1.2.1
+
+source=(https://pypi.python.org/packages/source/s/snowballstemmer/snowballstemmer-$version.tar.gz)
+
+run=(python2 python)
+
+prepare() {
+
+cp -r snowballstemmer-$version snowballstemmer-$version-py2
+
+}
+
+
+build() {
+
+cd snowballstemmer-$version-py2
+
+python2 setup.py build
+python2 setup.py install --root="$PKG" --optimize=1
+
+cd ../snowballstemmer-$version
+
+python3 setup.py build
+python3 setup.py install --root="$PKG" --optimize=1
+
+}
