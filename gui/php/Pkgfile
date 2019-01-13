@@ -46,4 +46,7 @@ build () {
 
     sed -i 's@php/includes"@&\ninclude_path = ".:/usr/lib/php"@' \
     $PKG/etc/php.ini
+
+    # Dirty but works
+    rm -r /usr/lib/php
 }
