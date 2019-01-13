@@ -1,4 +1,4 @@
-# Depends on: gtk2 gtk3 sdl2 glib jemalloc python2 vte vte3 mesa virglrenderer lzo nettle cyrus-sasl libssh2 alsa-lib alsa-plugins alsa-utils check bluez libgcrypt gnutls libusb usbutils usbredir bridge-utils xorg-libdrm spice spice-protocol libaio
+# Depends on: gtk2 gtk3 sdl2 glib libseccomp libcap-ng jemalloc python2 vte vte3 mesa virglrenderer lzo nettle cyrus-sasl libssh2 pulseaudio alsa-lib alsa-plugins alsa-utils check bluez libgcrypt gnutls libusb usbutils usbredir bridge-utils xorg-libdrm spice spice-protocol libaio
 
 description="QEMU is a processor emulator using dynamic translation to achieve good emulation speed (PC, PowerPC, PowerMac, sun, Mips, ARM etc...)"
 url="http://www.qemu.org"
@@ -6,9 +6,9 @@ packager="rems <rems@nutyx.org>"
 contributors="tnut"
 
 description="Processor emulator using dynamic translation to achieve good emulation speed" 
-name=qemu
-version=3.0.0
-release=3
+iname=qemu
+version=3.1.0
+release=2
 
 source=(http://download.qemu-project.org/qemu-$version.tar.bz2)
 
@@ -21,9 +21,8 @@ cd build
 
 ../configure --prefix=/usr        \
             --sysconfdir=/etc     \
-            --audio-drv-list=alsa \
+            --audio-drv-list=alsa,pa \
             --with-sdlabi=2.0     \
-            --with-gtkabi=3.0     \
             --enable-gcrypt       \
             --enable-jemalloc     \
             --enable-opengl       \
