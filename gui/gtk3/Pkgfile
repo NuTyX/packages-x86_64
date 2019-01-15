@@ -7,13 +7,13 @@ contributor="Pierre B, Greg"
 run=(adwaita-icon-theme)
 
 name=gtk3
-version=3.24.2
+version=3.24.3
 
 source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
 
 build() {
 cd gtk+-$version
-sed -i 's/dfeault/default/' docs/tools/shooter.c
+
 ./configure --prefix=/usr \
 --sysconfdir=/etc         \
 --mandir=/usr/share/man   \
