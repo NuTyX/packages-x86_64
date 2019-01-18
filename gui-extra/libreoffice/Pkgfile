@@ -1,4 +1,4 @@
-# Depends on: python perl-archive-zip unzip zip icu cups poppler-glib xorg-fontconfig libxslt kerberos gtk2 xorgproto dbus-glib mesa postgresql
+# Depends on: python perl-archive-zip unzip zip icu cups poppler-glib xorg-fontconfig libxslt kerberos gtk2 xorgproto dbus-glib mesa postgresql wget apache-ant apr boost clucene dbus-glib libjpeg-turbo2 xorg-glu gstreamer-plugins-base gtk3 icu libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss redland unixodbc serf dconf bluez desktop-file-utils doxygen gdb gnutls mariadb kerberos nasm sane valgrind cppunit hunspell hyphen telepathy-glib zenity
 
 PKGMK_IGNORE_UNPACK="yes"
 
@@ -10,12 +10,13 @@ contributors="Pierre B, Tnut, Greg"
 run=(shared-mime-info xdg-utils desktop-file-utils) 
 
 name=libreoffice
-version=6.1.2.1
+version=6.1.4.2
 
 source=(http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-$version.tar.xz
 	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-dictionaries-$version.tar.xz
 	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-help-$version.tar.xz
-	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-translations-$version.tar.xz)
+	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-translations-$version.tar.xz
+        http://www.linuxfromscratch.org/patches/blfs/svn/libreoffice-6.1.4.2-consolidated_fixes-1.patch)
 
 prepare() {
         unset ACLOCAL
@@ -23,38 +24,49 @@ prepare() {
         tar -xf $name-$version.tar.xz --no-overwrite-dir
 
         cd $name-$version
+	patch -Np1 -i ../libreoffice-6.1.4.2-consolidated_fixes-1.patch
         install -dm755 external/tarballs
 
-        ln -sv $SRC/$name-dictionaries-$version.tar.xz  external/tarballs/
-        ln -sv $SRC/$name-help-$version.tar.xz          external/tarballs/
-        ln -sv $SRC/$name-translations-$version.tar.xz  external/tarballs/
+        ln -sv ../$name-dictionaries-$version.tar.xz  external/tarballs/
+        ln -sv ../$name-help-$version.tar.xz          external/tarballs/
+        ln -sv ../$name-translations-$version.tar.xz  external/tarballs/
 
         sed -e "/gzip -f/d"   \
             -e "s|.1.gz|.1|g" \
             -i bin/distro-install-desktop-integration
 
         sed -e "/distro-install-file-lists/d" -i Makefile.in
-
-        chmod -v +x bin/unpack-sources                                                                                                                                    
+	                                                                                                                                  
 }
 
 build() {
 cd $name-$version
-
-
 
 ./autogen.sh --prefix=/usr \
 	--sysconfdir=/etc \
 	--with-vendor="NuTyX" \
 	--with-lang="ar es de fr hi it ja pt fi nb nl nn da sv tr ru pl zh-CN"   \
 	--with-myspell-dicts \
-	--without-system-dicts \
+	--with-system-dicts \
+	--with-alloc=system \
+	--with-junit \
 	--enable-release-build=yes \
-	--without-java \
+	--with-system-apr \
+	--with-system-boost \
+	--with-system-lcms2 \
+	--with-system-libatomic_ops \
+	--with-system-libxml        \
+	--with-system-neon          \
+	--with-system-nss           \
+	--with-system-odbc          \
+	--with-system-redland       \
+	--with-system-serf          \
+	--with-system-zlib          \
 	--without-fonts \
-	--without-doxygen \
-	--disable-gtk3 \
-	--disable-gstreamer-1-0 \
+	--without-junit \
+	--with-doxygen \
+	--enable-gtk3 \
+	--enable-gstreamer-1-0 \
 	--enable-python=system \
 	--with-system-cairo \
 	--with-system-curl \
