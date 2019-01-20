@@ -7,12 +7,15 @@ maintainer="tnut <tnut@nutyx.org>"
 
 name=systemd
 version=240
+release=2
 
-source=(https://github.com/systemd/systemd/archive/v$version.tar.gz)
+source=(https://github.com/systemd/systemd/archive/v$version.tar.gz
+        http://www.linuxfromscratch.org/patches/lfs/development/systemd-240-security_fixes-1.patch)
 
 build () {
 cd $name-$version
-ln -sf /tools/bin/true /usr/bin/xsltproc
+patch -Np1 -i ../systemd-240-security_fixes-1.patch
+[ -d /tools ] && ln -sf /tools/bin/true /usr/bin/xsltproc
 # sed '165,$ d' -i src/resolve/meson.build
 sed -i 's/GROUP="render", //' rules/50-udev-default.rules.in
 
