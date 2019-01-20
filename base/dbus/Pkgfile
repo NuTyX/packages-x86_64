@@ -8,6 +8,7 @@ name=dbus
 version=1.12.12
 
 source=(http://dbus.freedesktop.org/releases/dbus/dbus-$version.tar.gz)
+release=2
 
 build () {
 cd $name-$version
@@ -19,6 +20,7 @@ cd $name-$version
 --disable-static       \
 --docdir=/usr/share/doc/dbus-$version \
 --with-console-auth-dir=/run/console \
+--enable-user-session \
 --without-x
 
 make
