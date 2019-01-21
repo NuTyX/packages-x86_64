@@ -1,0 +1,24 @@
+# Depends on: boost curl libxml2 docbook2x cppunit
+
+description="a C/C++ client library for the CMIS protocol"
+url="https://github.com/tdf/libcmis"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+name=libcmis
+version=0.5.2
+
+source=(https://github.com/tdf/libcmis/releases/download/v$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+            DOCBOOK2MAN='docbook2man' \
+            --disable-static \
+            --disable-werror
+make
+make DESTDIR=$PKG install
+# Obsolet libs
+rm $PKG/usr/lib/libcmis-0.5.la
+rm $PKG/usr/lib/libcmis-c-0.5.la
+}
