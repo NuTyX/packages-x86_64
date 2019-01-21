@@ -1,0 +1,26 @@
+# Depends on: libxslt openssl gnutls nss libtool
+
+description="XML Security Library is a C library based on LibXML2"
+url="https://www.aleksey.com/xmlsec/index.html"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+name=xmlsec
+version=1.2.27
+
+source=(https://www.aleksey.com/xmlsec/download/${name}1-$version.tar.gz)
+
+build() {
+cd ${name}1-$version
+./configure --prefix=/usr \
+            --disable-static
+
+make
+make DESTDIR=$PKG install
+# Obsolet libs
+rm $PKG/usr/lib/libxmlsec1-gcrypt.la
+rm $PKG/usr/lib/libxmlsec1-gnutls.la
+rm $PKG/usr/lib/libxmlsec1-nss.la
+rm $PKG/usr/lib/libxmlsec1.la
+rm $PKG/usr/lib/libxmlsec1-openssl.la
+}
