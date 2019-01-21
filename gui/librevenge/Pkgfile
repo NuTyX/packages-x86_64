@@ -1,0 +1,24 @@
+# Depends on: boost cppunit doxygen
+
+description="library for REVerses ENGineered formats filters"
+url="http://sf.net/p/libwpd/librevenge/"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+name=librevenge
+version=0.0.4
+
+source=(http://sourceforge.net/projects/libwpd/files/librevenge/$name-$version/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+            --disable-static \
+            --disable-werror
+make
+make DESTDIR=$PKG install
+# Obsolet libs
+rm $PKG/usr/lib/librevenge-0.0.la
+rm $PKG/usr/lib/librevenge-stream-0.0.la
+rm $PKG/usr/lib/librevenge-generators-0.0.la
+}
