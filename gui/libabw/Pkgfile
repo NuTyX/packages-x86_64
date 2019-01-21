@@ -1,0 +1,22 @@
+# Depends on: boost libxml2 doxygen gperf librevenge 
+
+description="A library that parses the file format of AbiWord documents"
+url="https://wiki.documentfoundation.org/DLP/Libraries/libabw"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+name=libabw
+version=0.1.2
+
+source=(https://dev-www.libreoffice.org/src/$name/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+            --disable-static
+
+make
+make DESTDIR=$PKG install
+# Obsolet libs
+
+}
