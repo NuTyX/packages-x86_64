@@ -1,0 +1,26 @@
+# Depends on: python
+
+description="A cross-platform process and system utilities module for Python3"
+url="https://github.com/giampaolo/psutil"
+packager="Dania <Dania@nutyx.org>"
+contributors=""
+
+name=python-psutil
+version=5.4.8
+
+source=(https://github.com/giampaolo/psutil/archive/release-$version.tar.gz
+        fix_disk_io_counters.patch
+        fix_test_disk_io_counters_sysfs.patch)
+
+prepare() {
+  cd psutil-release-$version
+  patch -Np1 -i $SRC/fix_disk_io_counters.patch
+  patch -Np1 -i $SRC/fix_test_disk_io_counters_sysfs.patch
+}
+
+build() {
+
+  cd psutil-release-$version
+  python3 setup.py build 
+  python3 setup.py install --skip-build --root=$PKG --optimize=1
+}
