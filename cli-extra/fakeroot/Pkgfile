@@ -1,0 +1,30 @@
+# Depends on:
+
+description="Gives a fake root environment."
+url="http://packages.debian.org/fakeroot"
+contributors="alienus, greg"
+packager="tnut <tnut@nutyx.org>"
+
+name=fakeroot
+version=1.23
+release=2
+
+source=(http://ftp.debian.org/debian/pool/main/f/$name/${name}_${version}.orig.tar.xz
+		silence-dlerror.patch)
+
+build() {
+	cd $name-$version
+	patch -Np1 -i ../silence-dlerror.patch
+
+	./configure --prefix=/usr \
+	--disable-static \
+        --libdir=/usr/lib/libfakeroot \
+	--with-ipc=sysv
+
+	make
+	make DESTDIR=$PKG install
+
+install -dm755 $PKG/etc/ld.so.conf.d/
+echo '/usr/lib/libfakeroot' > "$PKG/etc/ld.so.conf.d/fakeroot.conf"
+rm $PKG/usr/lib/libfakeroot/libfakeroot.la
+}
