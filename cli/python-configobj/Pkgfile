@@ -1,0 +1,18 @@
+# Depends on: python python-six
+
+description="Simple but powerful config file reader and writer for Python3"
+url="https://github.com/DiffSK/configobj"
+packager="Dania <Dania@nutyx.org>"
+contributors=""
+
+name=python-configobj
+version=5.0.6
+
+source=(https://github.com/DiffSK/configobj/archive/v$version.tar.gz)
+
+build() {
+
+  cd configobj-$version
+  python3 setup.py build 
+  python3 setup.py install --skip-build --root=$PKG --optimize=1
+}
