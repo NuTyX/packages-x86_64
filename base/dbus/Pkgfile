@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=dbus
 version=1.12.12
-release=3
+release=4
 
 source=(http://dbus.freedesktop.org/releases/dbus/dbus-$version.tar.gz)
 
@@ -29,6 +29,7 @@ SYSTEMCTL=/bin/systemctl
 
 make
 make DESTDIR=$PKG install
+rm $PKG/usr/bin/dbus-launch
 mkdir -pv $PKG/lib
 mv -v $PKG/usr/lib/libdbus-1.so.* $PKG/lib
 ln -sfv ../../lib/$(readlink $PKG/usr/lib/libdbus-1.so) $PKG/usr/lib/libdbus-1.so
