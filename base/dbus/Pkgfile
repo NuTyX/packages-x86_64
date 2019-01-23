@@ -33,7 +33,7 @@ mkdir -pv $PKG/lib
 mv -v $PKG/usr/lib/libdbus-1.so.* $PKG/lib
 ln -sfv ../../lib/$(readlink $PKG/usr/lib/libdbus-1.so) $PKG/usr/lib/libdbus-1.so
 ln -sv $PKG/etc/machine-id $PKG/var/lib/dbus
-chown -v root:messagebus $PKG/usr/libexec/dbus-launch-helper
+chown -v root:messagebus $PKG/usr/libexec/dbus-daemon-launch-helper
 chmod -v 4750 $PKG/usr/libexec/dbus-daemon-launch-helper
 # Obsolet lib
 rm $PKG/usr/lib/libdbus-1.la
