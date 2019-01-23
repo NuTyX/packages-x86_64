@@ -1,0 +1,61 @@
+diff --git a/.gitignore b/.gitignore
+index a0e9a31..cfcb0af 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -25,3 +25,4 @@ documentation/latex
+ *.mo
+ *.save
+ *.layout
++build/
+diff --git a/po/fr.po b/po/fr.po
+index e8abe2f..dc93833 100644
+--- a/po/fr.po
++++ b/po/fr.po
+@@ -300,6 +300,9 @@ msgstr "\t   Affiche cet aide"
+ msgid "Name           : "
+ msgstr "Nom                 : "
+ 
++msgid "Alias          : "
++msgstr "Aussi appelé        : "
++
+ msgid "Series(base)   : "
+ msgstr "Séries(base)        : "
+ 
+@@ -352,10 +355,10 @@ msgid "Arch           : "
+ msgstr "Arch                : "
+ 
+ msgid "Man. installed : Yes"
+-msgstr "Install manu.       : Oui"
++msgstr "Install. manuelle   : Oui"
+ 
+ msgid "Man. installed : No"
+-msgstr "Install manu.       : Non"
++msgstr "Install. manuelle   : Non"
+ 
+ 
+ msgid "Dependencies   : "
+diff --git a/src/pkginfo.cxx b/src/pkginfo.cxx
+index 7a19b10..6be288b 100644
+--- a/src/pkginfo.cxx
++++ b/src/pkginfo.cxx
+@@ -171,9 +171,9 @@ void Pkginfo::run()
+ 			buildSimpleDatabase();
+ 			for (auto i : m_listOfInstPackages) {
+ 				if ( i.second.dependency == true)
+-					cout << "AUTO ";
++					cout << "AUTO: ";
+ 				else
+-					cout << " MAN ";
++					cout << " MAN: ";
+ 
+ 				cout << "(" << i.second.collection << ")"
+ 				<< " " << i.first << " "
+@@ -311,7 +311,7 @@ void Pkginfo::run()
+ 				string arg = m_listOfAlias[m_arg];
+ 				cout << _("Name           : ") << arg << endl;
+ 				if (m_listOfInstPackages[arg].alias.size() > 0 ) {
+-					cout << "Alias          : ";
++					cout << _("Alias          : ");
+ 					for ( auto i : m_listOfInstPackages[arg].alias) cout << i << " ";
+ 						cout << endl;
+ 				}
