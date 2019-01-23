@@ -1,4 +1,4 @@
-# Depends on: systemd xorgproto xorg-libxkbfile xorg-font-util xcb-util-keysyms libepoxy xcb-util-image xcb-util-renderutil xcb-util-wm mesa xorg-glu xorg-pixman xorg-libdmx xorg-libxres xorg-libxfont2 xorg-xkeyboard-config wayland
+# Depends on: systemd xorgproto xorg-libxkbfile xorg-font-util xcb-util-keysyms libepoxy xcb-util-image xcb-util-renderutil xcb-util-wm mesa xorg-glu xorg-pixman xorg-libdmx xorg-libxres xorg-libxfont2 xorg-xkeyboard-config wayland xorg-xkbcomp libtirpc
 
 description="The Xorg Server is the core of the X Window system."
 url="http://xorg.freedesktop.org"
@@ -7,6 +7,7 @@ contributors="Pierre B, Greg"
 
 name=xorg-server
 version=1.20.3
+release=2
 
 source=(http://ftp.x.org/pub/individual/xserver/$name-$version.tar.bz2)
 
@@ -20,7 +21,10 @@ cd $name-$version
 --with-fontrootdir=/usr/share/fonts \
 --enable-install-setuid \
 --enable-systemd-logind \
---enable-suid-wrapper
+--enable-suid-wrapper \
+--enable-config-udev \
+--enable-config-udev-kms
+
 make
 make DESTDIR=$PKG install
 rm -rf $PKG/var

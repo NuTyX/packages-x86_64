@@ -1,4 +1,4 @@
-# Depends on: glib js52 gobject-introspection intltool libxslt docbook-xsl
+# Depends on: glib js52 gobject-introspection intltool perl-xml-parser libxslt docbook-xsl systemd
 
 description="Application development toolkit for controlling system-wide privileges"
 url="http://hal.freedesktop.org/docs/polkit"
@@ -7,23 +7,25 @@ contributors="Pierre B"
 
 name=polkit
 version=0.115
+release=2
 
-source=(http://www.linuxfromscratch.org/patches/blfs/svn/polkit-0.115-security_patch-2.patch
-	http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
+source=(http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
 
-patch -Np1 -i ../polkit-0.115-security_patch-2.patch
+sed -i "s:/sys/fs/cgroup/systemd/:/sys:g" configure
+
+sed -e '/JS_ReportWarningUTF8/s/,/, "%s",/'  \
+        -i  src/polkitbackend/polkitbackendjsauthority.cpp
 
 
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
 --mandir=/usr/share/man \
 --localstatedir=/var \
---enable-libsystemd-login=no \
---disable-static \
---enable-libelogind=no
+--enable-libsystemd-login=yes \
+--disable-static
 
 make||make -j1
 

@@ -7,6 +7,7 @@ contributors="Tyrry"
 
 name=gvfs
 version=1.38.1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
@@ -22,8 +23,8 @@ meson --prefix=/usr     \
       -Dafc=false       \
       -Dbluray=false    \
       -Dnfs=false       \
-      -Dtmpfilesdir=no  \
-      -Dlogind=false    \
+      -Dtmpfilesdir=true \
+      -Dlogind=true    \
       -Ddnssd=false     \
       -Dgoa=false       \
       -Dgoogle=false    \
