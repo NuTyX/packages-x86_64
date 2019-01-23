@@ -7,7 +7,7 @@ maintainer="tnut <tnut@nutyx.org>"
 
 name=systemd
 version=240
-release=2
+release=3
 
 source=(https://github.com/systemd/systemd/archive/v$version.tar.gz
         http://www.linuxfromscratch.org/patches/lfs/development/systemd-240-security_fixes-1.patch)
@@ -58,6 +58,7 @@ cat > $PKG/lib/systemd/systemd-user-sessions << "EOF"
 #!/bin/bash
 rm -f /run/nologin
 EOF
+
 chmod 755 $PKG/lib/systemd/systemd-user-sessions
 
 rm $PKG/usr/lib/tmpfiles.d/home.conf
@@ -70,7 +71,10 @@ account  include  system-account
 
 session  required pam_env.so
 session  required pam_limits.so
-session  include  system-session
+session  required pam_unix.so
+session  required pam_loginuid.so
+session  optional pam_keyinit.so force revoke
+session  optional systemd.so
 
 auth     required pam_deny.so
 password required pam_deny.so
