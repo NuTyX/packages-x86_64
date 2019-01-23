@@ -1,0 +1,18 @@
+# Depends on: python python-six
+
+description="A fully functional X client library for Python3 programs"
+url="https://github.com/python-xlib/python-xlib"
+packager="Dania <Dania@nutyx.org>"
+contributors=""
+
+name=python-xlib
+version=0.23
+
+source=(https://github.com/python-xlib/python-xlib/archive/$version.tar.gz)
+
+build() {
+
+  cd $name-$version
+  python3 setup.py build 
+  python3 setup.py install --skip-build --root=$PKG --optimize=1
+}

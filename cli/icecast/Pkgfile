@@ -1,0 +1,32 @@
+#Depends on: curl libvorbis libxslt speex libtheora
+
+description="Streaming audio over the Internet"
+url="http://www.icecast.org/"
+packager="Hugo <graknu@nutyx.org>"
+
+
+name=icecast
+version=2.4.3
+release=2
+
+source=(http://downloads.us.xiph.org/releases/$name/$name-$version.tar.gz
+	start-by-nobody.patch
+	icecast.service)
+
+build(){ 
+cd $name-$version
+
+patch -Np1 -i ../start-by-nobody.patch
+
+./configure --prefix=/usr \
+	    --sysconfdir=/etc \
+            --localstatedir=/var
+
+make
+
+make DESTDIR=$PKG install
+
+install -d -g99 -o99 $PKG/var/log/icecast
+
+install -Dm0644 $SRC/icecast.service $PKG/lib/systemd/system/icecast.service
+}
