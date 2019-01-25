@@ -34,6 +34,60 @@ index e8abe2f..dc93833 100644
  
  
  msgid "Dependencies   : "
+diff --git a/src/pkgdbh.cxx b/src/pkgdbh.cxx
+index daed065..6819808 100644
+--- a/src/pkgdbh.cxx
++++ b/src/pkgdbh.cxx
+@@ -717,19 +717,13 @@ void Pkgdbh::moveMetaFilesPackage(const string& name, pkginfo_t& info)
+ 		}
+ 	}
+ 	removeFile ( m_root, "/.MTREE");
++	metaFilesList.insert(".META");
+ 	set<string> fileContent;
+ 	if ( parseFile(fileContent,".META") == -1 ) {
+ 		m_actualError = CANNOT_FIND_FILE;
+ 		treatErrors(".META");
+ 	}
+-	removeFile ( m_root, "/.META");
+ 
+-	/*
+-	 * TODO add the builddate of the package if available
+-	 */
+-	if (m_dependency)
+-		fileContent.insert("d1");
+-	m_dependency=false;
+ 	mkdir(packagenamedir.c_str(),0755);
+ 
+ 	for (set<string>::const_iterator i = metaFilesList.begin(); i!=  metaFilesList.end(); ++i)
+@@ -748,18 +742,17 @@ void Pkgdbh::moveMetaFilesPackage(const string& name, pkginfo_t& info)
+ 			}
+ 		}
+ 	}
+-
+-	string file = packagenamedir + "/META";
+-	int fd_new = creat(file.c_str(),0644);
+-	if (fd_new == -1)
+-	{
+-		m_actualError = CANNOT_CREATE_FILE;
+-		treatErrors(file);
++	/*
++	 * TODO add the builddate of the package if available
++	 */
++	if (m_dependency) {
++		string file = packagenamedir + "/META";
++		fileContent.insert("d1");
++		std::ofstream out(file);
++		for ( auto i: fileContent) out << i << endl;
++		out.close();
++		m_dependency=false;
+ 	}
+-	std::ofstream out(file);
+-	for ( auto i: fileContent) out << i <<endl;
+-	out.close();
+-
+ 	m_actualAction = PKG_MOVE_META_END;
+ 	progressInfo();
+ }
 diff --git a/src/pkginfo.cxx b/src/pkginfo.cxx
 index 7a19b10..6be288b 100644
 --- a/src/pkginfo.cxx
