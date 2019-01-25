@@ -8,12 +8,17 @@ version=2.02
 run=(efivar)
 
 source=(http://downloads.tuxfamily.org/nutyx/files/unicode.pf2
-	http://alpha.gnu.org/gnu/grub/grub-$version.tar.xz)
+	http://rems.techozor.fr/other-sources/grub-$version.tar.xz
+        0010-relocation.patch)
 
 PKGMK_GROUPS=(man locale)
 
 build() {
  cd grub-$version
+
+echo "Patch x86-64: Treat R_X86_64_PLT32 as R_X86_64_PC32..."
+	patch -Np1 -i ../0010-relocation.patch
+
  ./configure --prefix=/usr --sysconfdir=/etc \
  --sbindir=/sbin \
  --disable-efiemu --enable-grub-mkfont \
