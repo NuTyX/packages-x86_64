@@ -12,7 +12,7 @@ PKGMK_GROUPS=(devel doc)
 name=kernel-lts
 alias=(linux-lts)
 
-version=4.19.17
+version=4.19.18
 _version=${version:0:4}
 
 run=(nutyx)
@@ -154,7 +154,7 @@ echo "    mv boot/kernel-$version-NuTyX-lts boot/\$LK 2>/dev/null
   fi
 else
   echo \"This is a bios installation\"
-  if [ -L boot/initrd ]; then
+  if [ -L boot/initrd-lts ]; then
     mkinitramfs $version-NuTyX-lts
     ln -sf initrd-$version-NuTyX-lts boot/initrd-lts
   fi
