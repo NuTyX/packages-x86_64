@@ -8,11 +8,11 @@ maintainer="tnut <tnut@nutyx.org>"
 
 name=nutyx
 version=10.92.4
-# release=2
-# patchname="$name-$version-consolidate-$release.patch"
+release=2
+patchname="$name-$version-consolidate-$release.patch"
 
 source=(http://downloads.tuxfamily.org/nutyx/files/$name-$version.tar.xz)
-[ -z "$patchname ] || source+=" $patchname"
+[ -z "$patchname" ] || source+=" $patchname"
 
 build () {
 cd $name-$version
