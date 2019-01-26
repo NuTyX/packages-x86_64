@@ -1509,11 +1509,7 @@ install_nutyx() {
 		mkdir -p ${2}/boot
 	fi
 
-	for FILE in boot/kernel  \
-	boot/`readlink boot/kernel` \
-	boot/kernel-lts \
-	boot/`readlink boot/kernel-lts` \
-	etc/profile.d/i18n.sh \
+	for FILE in etc/profile.d/i18n.sh \
 	etc/systemd/network/* \
 	etc/hostname \
 	etc/adjtime \
@@ -1524,7 +1520,7 @@ install_nutyx() {
 	etc/mdadm.conf \
 	$TEXTDOMAINFILE
 	do
-		if [ -f /$FILE ] || [ -d /$FILE ] || [ -d /$FILE ];then
+		if [ -f /$FILE ] || [ -d /$FILE ] || [ -L /$FILE ];then
 			cp -a /$FILE  ${2}/$FILE
 		fi
 	done
@@ -1532,21 +1528,22 @@ install_nutyx() {
 		rm -f ${2}/usr/lib/locale
 		cp -a /etc/locale ${2}/usr/lib/
 	fi
-	if [ -L ${1}/kernel ]; then
-		cp -a ${1}/kernel ${2}/boot/
-		cp -a ${1}/`readlink kernel` ${2}/boot/
-	fi
-	if [ -L ${1}/boot/kernel-lts ]; then
-		cp  -a ${1}/boot/kernel-lts ${2}/boot/
-		cp -a ${1}/`readlink kernel-lts` ${2}/boot/
-	fi
+	cp -a ${1}/boot/kernel* ${2}/boot/
+	for i in /lib/modules/*
+	do
+		if [ -z `basename $i|grep -i lts` ]; then
+			ln -sf kernel-`basename $i` ${2}/boot/kernel
+		else
+			ln -sf kernel-`basename $i` ${2}/boot/kernel-lts
+		fi
+	done
 	if  [ -f ${1}/boot/grub/splash.png ]; then
 		mkdir -p ${2}/boot/grub/
 		cp ${1}/boot/grub/splash.png ${2}/boot/grub/
 	fi
 	if [ -f ${1}/boot/grub/fonts/unicode.pf2 ]; then
 		mkdir -p ${2}/boot/grub/fonts
-		cp ${1}//boot/grub/fonts/unicode.pf2 ${2}/boot/grub/fonts
+		cp ${1}/boot/grub/fonts/unicode.pf2 ${2}/boot/grub/fonts
 	fi
 	for DIR in proc sys dev srv mnt tmp
 	do

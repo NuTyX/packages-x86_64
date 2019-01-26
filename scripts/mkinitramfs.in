@@ -76,7 +76,7 @@ else
 	fi
 fi
 
-INITRAMFS_FILE=initrd-$KERNEL_VERSION
+INITRAMFS_FILE=initrd-$1
 
 if [ -n "$KERNEL_VERSION" ] && [ ! -d "/lib/modules/$1" ] ; then
   echo "No modules directory named $1"
@@ -356,8 +356,8 @@ mv $INITRAMFS_FILE /boot/$INITRAMFS_FILE
 
 if [ -d /ISO ];then
 	mkdir -p /ISO/boot
-	cp -v /boot/kernel-$KERNEL_VERSION /ISO/boot/kernel
-	cp -v /boot/initrd-$KERNEL_VERSION /ISO/boot/initrd
+	cp -v /boot/kernel-$1 /ISO/boot/
+	cp -v /boot/initrd-$1 /ISO/boot/
 fi
 
 printf "done.\n"

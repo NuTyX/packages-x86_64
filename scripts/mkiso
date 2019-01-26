@@ -74,6 +74,7 @@ done
 
 	ISO=NuTyX_${ARCH}-${VERSION_NUTYX}
 	sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" isolinux/menu.cfg
+	sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" isolinux/install.cfg
 	sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" isolinux/menu.cfg
 	sed -i "s|#ARCH#|${ARCH}|" isolinux/menu.cfg
 
@@ -117,27 +118,29 @@ else
   set color_highlight=white/blue
 fi
 
-menuentry "NuTyX #ARCH# #VERSION_NUTYX# (UEFI mode) normal" {
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) normal" {
 
-    linux /boot/kernel ro quiet
-    initrd /boot/initrd
+    linux /boot/kernel-#VERSION_KERNEL#  ro quiet
+    initrd /boot/initrd-#VERSION_KERNEL#
 }
-menuentry "NuTyX #ARCH# #VERSION_NUTYX# (UEFI mode) debug" {
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) debug" {
     set background_color=black
-    linux /boot/kernel ro testiso rootdelay=3
-    initrd /boot/initrd
+    linux /boot/kernel-#VERSION_KERNEL#  ro testiso rootdelay=3
+    initrd /boot/initrd-#VERSION_KERNEL#
 }
-menuentry "NuTyX #ARCH# #VERSION_NUTYX# (UEFI mode) installable live" {
-    linux /boot/kernel ro quiet rootdelay=5 live
-    initrd /boot/initrd
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) installable live" {
+    linux /boot/kernel-#VERSION_KERNEL#  ro quiet rootdelay=5 live
+    initrd /boot/initrd-#VERSION_KERNEL#
 }
-menuentry "NuTyX #ARCH# #VERSION_NUTYX# (UEFI mode) debug live" {
-    linux /boot/kernel ro testiso rootdelay=3 live
-    initrd /boot/initrd
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) debug live" {
+    linux /boot/kernel-#VERSION_KERNEL#  ro testiso rootdelay=3 live
+    initrd /boot/initrd-#VERSION_KERNEL#
 }
 EOF
 	sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" boot/grub/grub.cfg
+	sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" boot/grub/grub.cfg
 	sed -i "s|#ARCH#|${ARCH}|" boot/grub/grub.cfg
+
 	for FILE in kernel initrd
 	do
 		[ -f isolinux/$FILE ] && mv -v isolinux/$FILE boot/

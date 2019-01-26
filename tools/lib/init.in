@@ -195,7 +195,7 @@ do_mount_in_ram()
 		fi
 	done
 	if [ "$ROOTFS_OK" == "yes" ]; then
-		cp /media/cdrom/boot/kernel /boot/kernel
+		cp /media/cdrom/boot/kernel* /boot/
 		mkdir -p /boot/grub/fonts
 		cp /media/cdrom/boot/grub/fonts/unicode.pf2 /boot/grub/fonts/unicode.pf2
 		cp /media/cdrom/boot/grub/splash.png /boot/grub/splash.png
