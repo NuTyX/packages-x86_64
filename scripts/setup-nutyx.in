@@ -1510,7 +1510,9 @@ install_nutyx() {
 	fi
 
 	for FILE in boot/kernel  \
-	boot/kernel-`uname -r` \
+	boot/`readlink boot/kernel` \
+	boot/kernel-lts \
+	boot/`readlink boot/kernel-lts` \
 	etc/profile.d/i18n.sh \
 	etc/systemd/network/* \
 	etc/hostname \
@@ -1522,7 +1524,7 @@ install_nutyx() {
 	etc/mdadm.conf \
 	$TEXTDOMAINFILE
 	do
-		if [ -f /$FILE ] || [ -d /$FILE ];then
+		if [ -f /$FILE ] || [ -d /$FILE ] || [ -d /$FILE ];then
 			cp -a /$FILE  ${2}/$FILE
 		fi
 	done
@@ -1530,13 +1532,13 @@ install_nutyx() {
 		rm -f ${2}/usr/lib/locale
 		cp -a /etc/locale ${2}/usr/lib/
 	fi
-	if [ -f ${1}/kernel ]; then
-		cp  ${1}/kernel ${2}/boot/kernel-`uname -r`
-		ln -sf kernel-`uname -r` ${2}/boot/kernel
+	if [ -L ${1}/kernel ]; then
+		cp -a ${1}/kernel ${2}/boot/
+		cp -a ${1}/`readlink kernel` ${2}/boot/
 	fi
-	if [ -f ${1}/boot/kernel ]; then
-		cp  ${1}/boot/kernel ${2}/boot/kernel-`uname -r`
-		ln -sf kernel-`uname -r` ${2}/boot/kernel
+	if [ -L ${1}/boot/kernel-lts ]; then
+		cp  -a ${1}/boot/kernel-lts ${2}/boot/
+		cp -a ${1}/`readlink kernel-lts` ${2}/boot/
 	fi
 	if  [ -f ${1}/boot/grub/splash.png ]; then
 		mkdir -p ${2}/boot/grub/
@@ -1660,12 +1662,12 @@ setup_efibootmgr() {
 	mount "$EFI_SYS_PART" ${2}/boot/efi
 	mkdir -p ${2}/boot/efi/EFI/BOOT/$SPNR
 	rm ${2}/boot/efi/EFI/BOOT/$SPNR/* 2>/dev/null
-	mv ${2}/boot/kernel-`uname -r` \
-	${2}/boot/efi/EFI/BOOT/$SPNR/kernel.efi
-	ln -sf efi/EFI/BOOT/$SPNR/kernel.efi ${2}/boot/kernel-`uname -r`
-	ln -sf efi/EFI/BOOT/$SPNR/kernel.efi ${2}/boot/kernel
+	mv ${2}/boot/kernel-lts-`uname -r` \
+	${2}/boot/efi/EFI/BOOT/$SPNR/kernel-lts.efi
+	ln -sf efi/EFI/BOOT/$SPNR/kernel-lts.efi ${2}/boot/kernel-lts-`uname -r`
+	ln -sf efi/EFI/BOOT/$SPNR/kernel-lts.efi ${2}/boot/kernel-lts
 	umount "$EFI_SYS_PART"
-	efibootmgr -c -L "NuTyX Linux Quiet on $PARTITION" -d "$DISK" -l "\EFI\BOOT\\$SPNR\kernel.efi" -u "root=$PARTITION $OPTIONS" || \
+	efibootmgr -c -L "NuTyX Linux Quiet on $PARTITION" -d "$DISK" -l "\EFI\BOOT\\$SPNR\kernel-lts.efi" -u "root=$PARTITION $OPTIONS" || \
 	dialog --title "   Oups !!!  " \
 	--msgbox "    $(gettext "This installation won't boot again ...")" 6 60
 	umount $PARTITION
