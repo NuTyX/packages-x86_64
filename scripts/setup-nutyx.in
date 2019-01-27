@@ -1659,9 +1659,9 @@ setup_efibootmgr() {
 	mount "$EFI_SYS_PART" ${2}/boot/efi
 	mkdir -p ${2}/boot/efi/EFI/BOOT/$SPNR
 	rm ${2}/boot/efi/EFI/BOOT/$SPNR/* 2>/dev/null
-	mv ${2}/boot/kernel-lts-`uname -r` \
+	mv ${2}/boot/kernel-`uname -r`-NuTyX-lts \
 	${2}/boot/efi/EFI/BOOT/$SPNR/kernel-lts.efi
-	ln -sf efi/EFI/BOOT/$SPNR/kernel-lts.efi ${2}/boot/kernel-lts-`uname -r`
+	ln -sf efi/EFI/BOOT/$SPNR/kernel-lts.efi ${2}/boot/kernel-`uname -r`-NuTyX-lts
 	ln -sf efi/EFI/BOOT/$SPNR/kernel-lts.efi ${2}/boot/kernel-lts
 	umount "$EFI_SYS_PART"
 	efibootmgr -c -L "NuTyX Linux Quiet on $PARTITION" -d "$DISK" -l "\EFI\BOOT\\$SPNR\kernel-lts.efi" -u "root=$PARTITION $OPTIONS" || \
