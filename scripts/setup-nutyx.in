@@ -1531,11 +1531,10 @@ install_nutyx() {
 	cp -a ${1}/boot/kernel* ${2}/boot/
 	for i in /lib/modules/*
 	do
-		if [ -z `basename $i|grep -i lts` ]; then
-			ln -sf kernel-`basename $i` ${2}/boot/kernel
-		else
-			ln -sf kernel-`basename $i` ${2}/boot/kernel-lts
-		fi
+		j=`basename $i`
+		ke=-`echo $j|cut -d "-" -f3`
+		[ ${#ke} == 1 ] && ke=""
+		ln -sf kernel-$j ${2}/boot/kernel$ke
 	done
 	if  [ -f ${1}/boot/grub/splash.png ]; then
 		mkdir -p ${2}/boot/grub/
@@ -1659,14 +1658,20 @@ setup_efibootmgr() {
 	mount "$EFI_SYS_PART" ${2}/boot/efi
 	mkdir -p ${2}/boot/efi/EFI/BOOT/$SPNR
 	rm ${2}/boot/efi/EFI/BOOT/$SPNR/* 2>/dev/null
-	mv ${2}/boot/kernel-`uname -r`-NuTyX-lts \
-	${2}/boot/efi/EFI/BOOT/$SPNR/kernel-lts.efi
-	ln -sf efi/EFI/BOOT/$SPNR/kernel-lts.efi ${2}/boot/kernel-`uname -r`-NuTyX-lts
-	ln -sf efi/EFI/BOOT/$SPNR/kernel-lts.efi ${2}/boot/kernel-lts
+	for i in /lib/modules/*
+	do
+		j=`basename $i`
+		ke=-`echo $j|cut -d "-" -f3`
+		[ ${#ke} == 1 ] && ke=""
+		mv ${2}/boot/kernel-$j \
+		${2}/boot/efi/EFI/BOOT/$SPNR/kernel$ke.efi
+		ln -sf efi/EFI/BOOT/$SPNR/kernel$ke.efi ${2}/boot/kernel-$j
+		ln -sf efi/EFI/BOOT/$SPNR/kernel$ke.efi ${2}/boot/kernel$ke
+		efibootmgr -c -L "NuTyX Linux Quiet on $PARTITION" -d "$DISK" -l "\EFI\BOOT\\$SPNR\kernel$ke.efi" -u "root=$PARTITION $OPTIONS" || \
+		dialog --title "   Oups !!!  " \
+		--msgbox "    $(gettext "This installation won't boot again ...")" 6 60
+	done
 	umount "$EFI_SYS_PART"
-	efibootmgr -c -L "NuTyX Linux Quiet on $PARTITION" -d "$DISK" -l "\EFI\BOOT\\$SPNR\kernel-lts.efi" -u "root=$PARTITION $OPTIONS" || \
-	dialog --title "   Oups !!!  " \
-	--msgbox "    $(gettext "This installation won't boot again ...")" 6 60
 	umount $PARTITION
 }
 MBR_ok() {
