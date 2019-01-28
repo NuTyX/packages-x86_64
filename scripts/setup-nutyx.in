@@ -1667,7 +1667,7 @@ setup_efibootmgr() {
 		${2}/boot/efi/EFI/BOOT/$SPNR/kernel$ke.efi
 		ln -sf efi/EFI/BOOT/$SPNR/kernel$ke.efi ${2}/boot/kernel-$j
 		ln -sf efi/EFI/BOOT/$SPNR/kernel$ke.efi ${2}/boot/kernel$ke
-		efibootmgr -c -L "NuTyX Linux Quiet on $PARTITION" -d "$DISK" -l "\EFI\BOOT\\$SPNR\kernel$ke.efi" -u "root=$PARTITION $OPTIONS" || \
+		efibootmgr -c -L "NuTyX Linux kernel$ke Quiet on $PARTITION" -d "$DISK" -l "\EFI\BOOT\\$SPNR\kernel$ke.efi" -u "root=$PARTITION $OPTIONS" || \
 		dialog --title "   Oups !!!  " \
 		--msgbox "    $(gettext "This installation won't boot again ...")" 6 60
 	done
