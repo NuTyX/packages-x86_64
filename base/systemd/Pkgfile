@@ -8,6 +8,7 @@ maintainer="tnut <tnut@nutyx.org>"
 name=systemd
 version=240
 release=3
+nutyx_version=10.93.1
 
 source=(https://github.com/systemd/systemd/archive/v$version.tar.gz
         http://www.linuxfromscratch.org/patches/lfs/development/systemd-240-security_fixes-1.patch)
@@ -74,11 +75,27 @@ session  required pam_limits.so
 session  required pam_unix.so
 session  required pam_loginuid.so
 session  optional pam_keyinit.so force revoke
-session  optional systemd.so
+session  optional pam_systemd.so
 
 auth     required pam_deny.so
 password required pam_deny.so
 
 # End /etc/pam.d/systemd-user
+EOF
+
+cat > $PKG/etc/os-release << "EOF"
+# Begin /etc/os-release
+
+NAME=NuTyX
+VERSION="${nutyx_version}"
+ID=nutyx
+VERSION_ID="${nutyx_version}"
+PRETTY_NAME="NuTyX ${nutyx_version}"
+ANSI_COLOR="0;34"
+CPE_NAME="cpe:/o:NuTyX_project:nutyx:${nutyx_version}"
+HOME_URL="http://nutyx.org/"
+BUG_REPORT_URL="https://bugs.nutyx.org"
+
+# End /etc/os-release
 EOF
 }
