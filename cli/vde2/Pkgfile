@@ -19,7 +19,7 @@ build() {
     patch -Np1 -i ../vde_cryptcab-compile-against-openssl-1.1.0.patch
 
 	./configure --prefix=/usr \
-               --sysconfdir=/etc
+               --sysconfdir=/etc \
                --sbindir=/usr/sbin \
                --libexecdir=/usr/lib/vde2 \
                --enable-experimental
