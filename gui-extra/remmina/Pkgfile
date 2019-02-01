@@ -6,7 +6,7 @@ contributors="tnut"
 packager="rems <rems@nutyx.org>"
  
 name=remmina
-version=1.2.32.1
+version=1.3.2
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -16,6 +16,8 @@ build() {
 
 cd Remmina-$version
 
+sed -e 's|ssh_threads|ssh|' -i cmake/FindLIBSSH.cmake # Fix build with libssh 0.8
+
 cmake \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=/usr/lib \
@@ -24,5 +26,4 @@ cmake \
 
   make
   make DESTDIR=$PKG install
-  rm -rf "$PKG"/build
 }
