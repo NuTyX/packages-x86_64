@@ -1,4 +1,4 @@
-# Depends on: systemd ninja meson libcdio-paranoia avahi dbus-glib intltool libsecret gtk3 libsoup udisks2 obexd fuse2 libarchive libmtp samba bluez gcr
+# Depends on: systemd ninja meson libcdio-paranoia avahi dbus-glib libgdata libgudev libbluray intltool libsecret gtk3 libsoup udisks2 obexd fuse2 libarchive libmtp samba bluez gcr
 
 description="Userspace virtual filesystem implemented as a pluggable module for gio"
 url="http://www.gnome.org/"
@@ -7,12 +7,15 @@ contributors="Tyrry"
 
 name=gvfs
 version=1.38.1
-release=2
+release=5
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz
+       handle-inactive-vfs.patch)
 
 build() {
 cd $name-$version
+
+patch -Np1 -i ../handle-inactive-vfs.patch
 
 mkdir build &&
 cd    build &&
@@ -21,14 +24,11 @@ meson --prefix=/usr     \
       --sysconfdir=/etc \
       -Dgphoto2=false   \
       -Dafc=false       \
-      -Dbluray=false    \
       -Dnfs=false       \
-      -Dtmpfilesdir=true \
-      -Dlogind=true    \
       -Ddnssd=false     \
       -Dgoa=false       \
       -Dgoogle=false    \
-      -Dsystemduserunitdir=/lib/systemd/system ..
+      -Dsystemduserunitdir=/usr/lib/systemd/user ..
 ninja
 
 DESTDIR=$PKG ninja install
