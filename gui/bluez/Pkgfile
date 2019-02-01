@@ -7,7 +7,8 @@ contributors="Pierre B"
 
 name=bluez
 version=5.50
-nutyx_version=10.92.3
+nutyx_version=10.93.1
+release=2
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
@@ -37,7 +38,7 @@ make DESTDIR=$PKG install
 install -v -dm755 $PKG/{etc/bluetooth,usr/sbin}
 
 ln -svf ../libexec/bluetooth/bluetoothd $PKG/usr/sbin
-
+ln -sv bluetooth.service  $PKG/lib/systemd/system/dbus-org.bluez.service
 
 cat > $PKG/etc/bluetooth/rfcomm.conf << "EOF"
 # rfcomm.conf
