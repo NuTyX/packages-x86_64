@@ -1,0 +1,30 @@
+# Depends on: git
+
+description="AudioProcessing library based on Google's implementation of WebRTC"
+url="https://freedesktop.org/software/pulseaudio/webrtc-audio-processing/"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+name=webrtc-audio-processing
+version=0.3.1
+
+source=()
+
+prepare () {
+git clone https://anongit.freedesktop.org/git/pulseaudio/webrtc-audio-processing $name
+cd $name
+git checkout e882a5442ac22c93648e12837248d651d18b9247
+}
+
+build() {
+  cd $name
+NOCONFIGURE=1 ./autogen.sh
+
+./configure --prefix=/usr --disable-static
+
+  make
+  make DESTDIR=$PKG install
+ 
+# Obsolet lib
+rm $PKG/usr/lib/libwebrtc_audio_processing.la
+}

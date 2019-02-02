@@ -1,4 +1,4 @@
-# Depends on: fftw intltool json-c libsndfile alsa-lib dbus glib libcap openssl speex libsamplerate bluez sbc gconf 
+# Depends on: fftw intltool json-c libsndfile alsa-lib dbus glib libcap openssl speex speexdsp libsamplerate bluez sbc gconf webrtc-audio-processing jack
 
 description="A featureful, general-purpose sound server"
 url="http://www.pulseaudio.org"
@@ -9,6 +9,7 @@ run=(bluez sbc)
 
 name=pulseaudio
 version=12.2
+release=2
 
 source=(https://freedesktop.org/software/pulseaudio/releases/pulseaudio-$version.tar.xz)
 
@@ -21,6 +22,11 @@ cd pulseaudio-$version
             --localstatedir=/var  \
             --disable-bluez4      \
             --disable-rpath       \
+            --enable-gsettings \
+            --enable-gconf \
+            --enable-jack \
+            --enable-webrtc-aec \
+            --with-systemduserunitdir=/usr/lib/systemd/user \
             --with-udev-rules-dir=/lib/udev/rules.d
 make
 make DESTDIR=$PKG install bashcompletiondir=/usr/share/bash-completion/completions
