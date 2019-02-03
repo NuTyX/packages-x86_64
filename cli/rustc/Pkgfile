@@ -1,4 +1,4 @@
-# Depends on: cmake curl llvm python libedit
+# Depends on: cmake curl llvm python libedit libssh2
 
 description="The Rust programming language is designed to be a safe, concurrent, practical language."
 url="http://static.rust-lang.org/"
@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B., Rémy"
 
 name=rustc
-version=1.29.2
+version=1.32.0
 
 source="http://static.rust-lang.org/dist/$name-$version-src.tar.gz"
 
@@ -15,15 +15,25 @@ prepare() {
    cat <<EOF > config.toml
 # see src/bootstrap/config.toml.example for more possible options
 [llvm]
+
+# use ninja
+ninja = true
+
 targets = "X86"
+# When compiling LLVM, the experimental targets (WebAssembly
+# and RISCV) are built by default - omit them
+experimental-targets = ""
 
 [build]
+# omit HTML docs to save time and space (comment this to build them)
+docs = false
+
 # install cargo as well as rust
 extended = true
 
 [install]
 prefix = "/usr"
-docdir = "share/doc/rustc-1.29.2"
+docdir = "share/doc/rustc-1.32.0"
 
 [rust]
 channel = "stable"
@@ -33,11 +43,8 @@ rpath = false
 # so disable codegen tests
 codegen-tests = false
 
-[target.x86_64-unknown-linux-gnu]
-# delete this *section* if you are not using system llvm.
-# NB the output of llvm-config (i.e. help options) may be
-# dumped to the screen when config.toml is parsed.
-llvm-config = "/usr/bin/llvm-config"
+# get a trace if there is an Internal Compiler Exception
+backtrace-on-ice = true
 
 EOF
 }
