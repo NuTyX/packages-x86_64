@@ -479,3 +479,9 @@ msgstr "Du kan ta bort media som innehåller ISO nu."
 
 msgid "Advanced Menu"
 msgstr "Avancerad meny"
+
+msgid "Advanced"
+msgstr "Avancerad"
+
+msgid "Main"
+msgstr "Huvud"

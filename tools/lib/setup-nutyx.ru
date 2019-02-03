@@ -443,3 +443,9 @@ msgstr "Теперь вы можете удалить носитель, соде
 
 msgid "Advanced Menu"
 msgstr "Расширенное меню"
+
+msgid "Advanced"
+msgstr "Gelismis"
+
+msgid "Main"
+msgstr "Ana"

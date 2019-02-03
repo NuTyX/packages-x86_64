@@ -440,3 +440,9 @@ msgstr "U kunt de media met de ISO nu verwijderen."
 
 msgid "Advanced Menu"
 msgstr "Geavanceerd menu"
+
+msgid "Advanced"
+msgstr "Geavanceerd"
+
+msgid "Main"
+msgstr "Hoofd"

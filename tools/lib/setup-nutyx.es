@@ -444,3 +444,9 @@ msgstr "Puede eliminar los medios que contienen el ISO ahora."
 
 msgid "Advanced Menu"
 msgstr "Menú avanzado"
+
+msgid "Advanced"
+msgstr "Avanzado"
+
+msgid "Main"
+msgstr "Principal"
