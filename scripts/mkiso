@@ -58,7 +58,7 @@ done
 	else
 		VERSION_NUTYX=${1}
 	fi
-	[ "`basename $LFS/lib/modules/${VERSION_KERNEL}" != "${VERSION_KERNEL}" ] && error "kernels mismatches."
+	[ ! -d "$LFS/lib/modules/${VERSION_KERNEL}" ] && error "It's not the ${VERSION_KERNEL} kernel in this ISO"
 
 	[ ! -f "`which xorriso`" ] && error "You need to install 'libisoburn'"
 	[ ! -f "`which isohybrid`" ] && error "You need to install 'syslinux'"
