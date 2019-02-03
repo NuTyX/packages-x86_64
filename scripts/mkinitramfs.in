@@ -322,7 +322,8 @@ usbcore usb-common usb-storage loop sr_mod \
 cdrom squashfs isofs overlay mmc_core \
 rtsx_pci rtsx_pci_sdmmc rtsx_pci_ms mmc_block \
 ssb lpc_ich shpcp sdhci-acpi sdhci-pltfm \
-sdhci sdhci-pci \
+sdhci sdhci-pci failover net_failover \
+serio i8042 libps2 atkbd \
 virtio virtio_blk virtio_pci virtio_net virtio_ring
 do
 	find /lib/modules/ -type f -name $i* 2> /dev/null | \
