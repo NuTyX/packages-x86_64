@@ -1,4 +1,5 @@
-SCRIPTDIR=`dirname $0`
+SCRIPTDIR=`pwd -P`
+SCRIPTDIR+="/`dirname $0`"
 ISODIR=${LFS}/ISO
 ARCH=`uname -m`
 LABEL=nutyxcd
@@ -65,7 +66,6 @@ done
 	[ ! -f "`which mkdosfs`" ] && error "You need to install 'dosfstools'"
 	[ ! -d /usr/lib/grub/${GRUB_EFI_ARCH}-efi ] && error "You need to install 'grub-efi'"
 
-
 	# isolinux stufs
 	cd ${ISODIR} || error "cd ${ISODIR}"
 	for FILE in splash.png libutil.c32 libcom32.c32 ldlinux.c32 vesamenu.c32 isolinux.bin
@@ -75,11 +75,10 @@ done
 	done
 
 	ISO=NuTyX_${ARCH}-${VERSION_NUTYX}
-	sed "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" $SCRIPTDIR/../iso/isolinux/menu.cfg > iso/isolinux/menu.cfg
-	sed "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" $SCRIPTDIR/../iso/isolinux/live.cfg > iso/isolinux/live.cfg
-	sed "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" $SCRIPTDIR/../iso/isolinux/install.cfg > iso/isolinux/install.cfg
-	sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" isolinux/menu.cfg
-	sed -i "s|#ARCH#|${ARCH}|" isolinux/menu.cfg
+	sed "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" $SCRIPTDIR/../iso/isolinux/menu.cfg > isolinux/menu.cfg
+	sed "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" $SCRIPTDIR/../iso/isolinux/live.cfg > isolinux/live.cfg
+	sed "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" $SCRIPTDIR/../iso/isolinux/install.cfg > isolinux/install.cfg
+	sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" isolinux/menu.cfg
 
 	# efi stufs
 	[ -d iso ] && rm -rv iso
