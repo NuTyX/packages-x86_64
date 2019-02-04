@@ -7,11 +7,9 @@ contributors="Pierre B"
 
 name=bluez
 version=5.50
-nutyx_version=10.93
-release=2
+release=5
 
-source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
+source=(http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
 build() {
 cd $name-$version
 
@@ -31,7 +29,8 @@ cd $name-$version
     --enable-cups \
     --disable-test \
     --enable-library \
-    --with-systemdunitdir=/lib/systemd/system
+    --with-systemdsystemunitdir=/lib/systemd/system \
+    --with-systemduserunitdir=/usr/lib/systemd/user
 make
 make DESTDIR=$PKG install
 
@@ -39,6 +38,7 @@ install -v -dm755 $PKG/{etc/bluetooth,usr/sbin}
 
 ln -svf ../libexec/bluetooth/bluetoothd $PKG/usr/sbin
 ln -sv bluetooth.service  $PKG/lib/systemd/system/dbus-org.bluez.service
+ln -sv /usr/lib/systemd/user/obex.service $PKG/usr/lib/systemd/user/dbus-org.bluez.obex.service
 
 cat > $PKG/etc/bluetooth/rfcomm.conf << "EOF"
 # rfcomm.conf
@@ -66,10 +66,6 @@ install -m644 profiles/network/network.conf \
 
 install -v -dm755 $PKG/usr/share/doc/$name-$version
 install -v -m644 doc/*.txt $PKG/usr/share/doc/$name-$version
-
-# Service
-#cd ../nutyx-${nutyx_version}
-#make DESTDIR=$PKG install-bluetooth
 
 # Obsolet lib
 rm $PKG/usr/lib/libbluetooth.la
