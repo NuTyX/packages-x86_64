@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=geoclue
 version=0.12.0
-release=2
+release=3
 
 source=(https://launchpad.net/geoclue/trunk/0.12/+download/geoclue-0.12.0.tar.gz)
 
@@ -27,4 +27,12 @@ make DESTDIR=$PKG install
 
 # Obsolet lib
 rm $PKG/usr/lib/libgeoclue.la
+
+# In conflicts
+rm $PKG/usr/share/gtk-doc/html/geoclue/home.png                                                                              
+rm $PKG/usr/share/gtk-doc/html/geoclue/index.html                                                                            
+rm $PKG/usr/share/gtk-doc/html/geoclue/left.png                                                                              
+rm $PKG/usr/share/gtk-doc/html/geoclue/right.png                                                                             
+rm $PKG/usr/share/gtk-doc/html/geoclue/style.css                                                                             
+rm $PKG/usr/share/gtk-doc/html/geoclue/up.png                                                                                
 }
