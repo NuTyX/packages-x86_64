@@ -1098,72 +1098,76 @@ if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
    return
 fi
 
-echo "## For nos
+echo "
+# Default server URL
+url ${URL}
+#
+## For nos
 # Comment following line
 # If you don't want to install Non Open source/Not compiled packages
 #
-dir ${DEPOT}/nos|${URL}
+dir ${DEPOT}/nos
 #
 ## For LXQt
 # Comment following 2 lines
 # if you don't want to install LXQt
 #
-dir ${DEPOT}/lxqt-extra|${URL}
-dir ${DEPOT}/lxqt|${URL}
+dir ${DEPOT}/lxqt-extra
+dir ${DEPOT}/lxqt
 #
 ## For lxde
 # Comment following 2 lines
 # if you don't want to install lxde
 #
-dir ${DEPOT}/lxde-extra|${URL}
-dir ${DEPOT}/lxde|${URL}
+dir ${DEPOT}/lxde-extra
+dir ${DEPOT}/lxde
 #
 ## For Gnome
 # Comment following 2 lines
 # if you don't want to install gnome
 #
-dir ${DEPOT}/gnome-extra|${URL}
-dir ${DEPOT}/gnome|${URL}
+dir ${DEPOT}/gnome-extra
+dir ${DEPOT}/gnome
 #
 ## For mate
 # Comment following 2 lines
 # if you don't want to install mate
 #
-dir ${DEPOT}/mate-extra|${URL}
-dir ${DEPOT}/mate|${URL}
+dir ${DEPOT}/mate-extra
+dir ${DEPOT}/mate
 #
 ## For kde5
 # Comment following 2 lines
 # if you don't want to install kde5
 #
-dir ${DEPOT}/kde5-extra|${URL}
-dir ${DEPOT}/kde5|${URL}
+dir ${DEPOT}/kde5-extra
+dir ${DEPOT}/kde5
 #
 ## For xfce4
 # Comment following 2 lines
 # if you don't want to install xfce4
 #
-dir ${DEPOT}/xfce4-extra|${URL}
-dir ${DEPOT}/xfce4|${URL}
+dir ${DEPOT}/xfce4-extra
+dir ${DEPOT}/xfce4
 #
 #
 ## Normally everything under this line
 # are needed stuffs
 #
 ## For all the graphical applications
-dir ${DEPOT}/gui-extra|${URL}
+dir ${DEPOT}/gui-extra
 #
 ## For a minimal graphical interface
-dir ${DEPOT}/gui|${URL}
+dir ${DEPOT}/gui
 #
 ## For all the console applications
-dir ${DEPOT}/cli-extra|${URL}
+dir ${DEPOT}/cli-extra
 #
 ## For a minimal console interface
-dir ${DEPOT}/cli|${URL}
+dir ${DEPOT}/cli
 #
 ## Chroot system without reboot possibilities for a chroot
-dir ${DEPOT}/base|${URL}
+dir ${DEPOT}/base
 #
 ## Normaly you want to keep base and
 base ${DEPOT}/base
