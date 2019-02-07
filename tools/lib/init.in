@@ -199,8 +199,10 @@ do_mount_in_ram()
 		mkdir -p /boot/grub/fonts
 		cp /media/cdrom/boot/grub/fonts/unicode.pf2 /boot/grub/fonts/unicode.pf2
 		cp /media/cdrom/boot/grub/splash.png /boot/grub/splash.png
-		umount /media/cdrom
-		eject $DEV > /dev/null 2>&1
+		if [ ! -d /media/cdrom/`uname -m` ]; then
+			umount /media/cdrom
+			eject $DEV > /dev/null 2>&1
+		fi
 	fi 
 }
 find_media() {
@@ -224,7 +226,6 @@ find_media() {
 			mkdir  -p /media/cdrom 2>/dev/null
 			[ "$verbose" == "no" ] || printf "mount -n /dev/nutyx-cd /media/cdrom\n"
 			mount -n /dev/nutyx-cd /media/cdrom
-			[ -d /media/cdrom/depot ] && echo $DEV > /tmp/depot
 			break
 		fi
 	done

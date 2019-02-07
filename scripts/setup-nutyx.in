@@ -1891,7 +1891,7 @@ EOF
 }
 setup_reboot() {
 	cd /
-	if [ -f /tmp/depot ]; then
+	if [ -d /media/cdrom/${SETUP_ARCH} ]; then
 	 umount /media/cdrom > /dev/null 2>&1
 	fi
 	for i in /mnt/*; do
