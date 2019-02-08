@@ -1,4 +1,4 @@
-# Depends on: libjpeg-turbo libpng gnutls libgcrypt sdl
+# Depends on: libjpeg-turbo2 libpng gnutls libgcrypt sdl
 
 description="A cross-platform C libraries that allow you to easily implement VNC server"
 url="https://libvnc.github.io/"
@@ -6,15 +6,17 @@ packager="jayce <jayce.net@gmail.com>"
 contributors="tnut"
 
 name=libvncserver
-version=0.9.11
-release=3
+version=0.9.12
 
 source=(https://github.com/LibVNC/libvncserver/archive/LibVNCServer-${version}.tar.gz)
 
 build () {
 cd $name-LibVNCServer-$version
-./autogen.sh
-./configure --prefix=/usr
+
+mkdir -pv build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+
 make
 make DESTDIR=$PKG install
 
