@@ -1,0 +1,33 @@
+# Depends on: ninja cmake
+
+description="Open-source formatting library for C++"
+url="http://fmtlib.net"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+name=fmt
+version=5.3.0
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/fmtlib/$name/archive/$version.tar.gz)
+
+build() {
+cd $name-$version
+if [[ -d build ]]; then
+    rm -rf build
+fi
+
+mkdir -pv build
+cd build
+
+cmake .. -G Ninja \
+         -DCMAKE_BUILD_TYPE=Release \
+         -DCMAKE_INSTALL_PREFIX=/usr \
+         -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+         -DBUILD_SHARED_LIBS=1
+
+cmake --build .
+
+DESTDIR=$PKG cmake --build . --target install
+}
