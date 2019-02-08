@@ -1,4 +1,4 @@
-# Depends on: kodi-platform
+# Depends on: kodi-platform kodi p8-platform rapidxml
 
 description="IPTV Simple PVR client addon for Kodi"
 url="https://github.com/kodi-pvr/pvr.iptvsimple"
@@ -6,30 +6,23 @@ contributors=""
 packager="rems <rems@nutyx.org>"
 
 name=kodi-addon-pvr-iptvsimple
-version=2.4.14
-kodiver=17.6
-koditarget=Krypton
+version=3.5.7
+kodiver=18.0
+koditarget=Leia
+
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/kodi-pvr/pvr.iptvsimple/archive/$version-$koditarget.tar.gz
-        https://github.com/xbmc/xbmc/archive/$kodiver-$koditarget.tar.gz)
+source=(https://github.com/kodi-pvr/pvr.iptvsimple/archive/$version-$koditarget.tar.gz)
 
 build() {
-
-mkdir -p "pvr.iptvsimple-$version-$koditarget/build"
-cd pvr.iptvsimple-$version-$koditarget/build
+cd pvr.iptvsimple-$version-$koditarget/
+mkdir -pv build
+cd build
 
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_INSTALL_LIBDIR=/usr/lib/kodi \
       -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=1 \
-      -DADDONS_TO_BUILD=pvr.iptvsimple \
-      -DADDONS_SRC_PREFIX=../.. \
-      ../../xbmc-$kodiver-$koditarget/project/cmake/addons
+      ..
 
   make
-install -vdm755 "$PKG/usr/lib/"
-install -vdm755 "$PKG/usr/share/"
-mv -v build/depends/lib/kodi/ "$PKG/usr/lib/kodi/"
-mv -v build/depends/share/kodi/ "$PKG/usr/share/kodi/"
+  make DESTDIR=$PKG install
 }
