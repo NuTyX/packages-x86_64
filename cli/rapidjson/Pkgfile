@@ -1,0 +1,28 @@
+# Depends on: gcc cmake
+
+description="A fast JSON parser/generator for C++ with both SAX/DOM style API"
+url="https://github.com/miloyip/rapidjson"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+name=rapidjson
+version=1.1.0
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/miloyip/$name/archive/v$version.tar.gz)
+
+build() {
+cd $name-$version
+
+mkdir -pv build
+
+find -name CMakeLists.txt | xargs sed -e 's|-Werror||' -i # Don't use -Werror
+
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+         -DCMAKE_BUILD_TYPE=Release
+
+make
+make DESTDIR=$PKG install
+}
