@@ -7,10 +7,10 @@ contributors="Alienus"
 
 name=minidlna
 version=1.2.1
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/project/$name/$name/$version/minidlna-$version.tar.gz
-	minidlna)
+	minidlna.service minidlna.sysusers minidlna.tmpfiles)
         
 build() {
   cd $name-$version
@@ -28,19 +28,8 @@ build() {
   $PKG/usr/share/man/man8/minidlnad.8
 
   # Service
-  mkdir -p $PKG/etc/rc.d/init.d
-  install -Dm754 $SRC/minidlna $PKG/etc/rc.d/init.d/minidlna
-  for i in 0 1 6
-  do
-    mkdir -p $PKG/etc/rc.d/rc${i}.d
-    cd $PKG/etc/rc.d/rc${i}.d
-    ln -s ../init.d/minidlna K10minidlna
-  done
-  for i in 2 3 4 5
-  do
-    mkdir -p $PKG/etc/rc.d/rc${i}.d
-    cd $PKG/etc/rc.d/rc${i}.d
-    ln -s ../init.d/minidlna S90minidlna
- done
 
+install -Dm0644 ../minidlna.tmpfiles $PKG/usr/lib/tmpfiles.d/minidlna.conf
+install -Dm0644 ../minidlna.sysusers $PKG/usr/lib/sysusers.d/minidlna.conf
+install -Dm0644 ../minidlna.service $PKG/lib/systemd/system/minidlna.service
 }
