@@ -1,0 +1,24 @@
+# Depends on: ghostscript groff
+
+description="A library that is used to make fuzzy comparisons of strings and byte arrays"
+url="http://fstrcmp.sourceforge.net/"
+packager="rems"
+contributors=""
+
+name=fstrcmp
+version=0.7.D001
+
+source=(http://fstrcmp.sourceforge.net/$name-$version.tar.gz)
+
+build () {
+cd $name-$version
+
+./configure --prefix=/usr
+
+make
+
+mkdir -pv $PKG/usr/bin
+make DESTDIR=$PKG install
+
+# Obsolets libs
+}
