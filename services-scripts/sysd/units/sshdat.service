@@ -1,9 +1,0 @@
-[Unit]
-Description=SSH Per-Connection Server
-After=sshdgenkeys.service
-
-[Service]
-ExecStart=/usr/sbin/sshd -i
-StandardInput=socket
-StandardError=syslog
-KillMode=process
