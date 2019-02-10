@@ -1,0 +1,33 @@
+# Depends on: desktop-file-utils,gtk2,hicolor-icon-theme,lxde-icon-theme,lxde-panel,lxde-session,openbox,pcmanfm,shared-mime-info
+
+url="http://lxde.org/about.html"
+maintainer="Copyright (C) 2001 Owen Taylor, Matthias Clasen, Red Hat, Inc."
+packager="Tnut <tnut@nutyx.org>"
+contributors="Geantbrun"
+description="provides a set of default configuration for LXDE"
+run=(lxde-icon-theme menu-cache lxde-menu-data lxde-panel lxde-session openbox pcmanfm )
+name=lxde-common
+version=0.99.2
+release=3
+
+source=(http://downloads.sourceforge.net/lxde/$name-$version.tar.xz
+	icon-sekong.png)
+
+build() {
+cd $name-$version
+
+# NuTyX Background
+sed -i "s@lxde/wallpapers/lxde_blue.jpg@backgrounds/nutyx/nutyx.jpg@" \
+pcmanfm/pcmanfm.conf.in
+
+./configure --prefix=/usr \
+	--sysconfdir=/etc
+make
+make DESTDIR=$PKG install
+
+cp ../icon-sekong.png \
+$PKG/usr/share/lxde/images/lxde-icon.png
+cp ../icon-sekong.png \
+$PKG/usr/share/lxde/images/logout-banner.png
+
+}

@@ -1,0 +1,39 @@
+# Depends on: intltool vte
+
+description="Terminal emulator without any unnecessary dependencies"
+contributors="tnut"
+packager="greg <greg@nutyx.org>"
+url="http://lxde.org/"
+
+name=lxde-terminal
+alias=(lxterminal)
+_name=lxterminal
+version=0.3.1
+release=1
+
+source=(https://downloads.sourceforge.net/lxde/lxterminal-$version.tar.xz
+)
+
+
+prepare() {
+
+  cd ${_name}-$version
+  
+}
+
+
+build() {
+
+	cd ${_name}-$version
+	./configure --prefix=/usr \ --enable-gtk3
+	make
+
+}
+
+
+package() {
+
+	cd ${_name}-$version
+	make DESTDIR=$PKG install
+
+    }

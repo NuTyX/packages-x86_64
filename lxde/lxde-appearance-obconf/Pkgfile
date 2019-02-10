@@ -1,0 +1,37 @@
+# Depends on: intltool lxde-appearance openbox
+
+description="Le paquet LXAppearance OBconf contient un greffon LXAppearance pour configurer OpenBox."
+url="http://lxde.org/"
+contributors="geantbrun"
+packager="greg <greg@nutyx.org>"
+
+name=lxde-appearance-obconf
+alias=(lxappearance-obconf)
+_name=lxappearance-obconf
+version=0.2.3
+release=2
+
+source=(http://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz)
+
+prepare() {
+
+  cd ${_name}-$version
+  sed -i /frame1/,+19d src/obconf.glade
+  
+}
+
+build() {
+
+  cd ${_name}-$version
+  ./configure --prefix=/usr --enable-gtk3 
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+
+    }
+  
+package() {
+
+  cd ${_name}-$version
+  make DESTDIR=$PKG install
+  
+	}

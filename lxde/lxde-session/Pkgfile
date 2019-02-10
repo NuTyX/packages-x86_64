@@ -1,0 +1,41 @@
+# Depends on: gtk3 polkit
+
+description="Contains the default session manager for LXDE"
+url="http://lxde.org/"
+contributors="geantbrun, tnut"
+packager="greg<greg@nutyx.org>"
+
+name=lxde-session
+alias=(lxsession)
+_name=lxsession
+version=0.5.3
+release=1
+
+source=(http://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz
+		0001-Use-GApplication-for-unique-app-handling.patch)
+
+prepare() {
+
+	cd $_name-$version
+	patch -Np1 -i ../0001-Use-GApplication-for-unique-app-handling.patch
+	rm *.stamp
+	autoreconf -fi
+	
+	}
+
+build() {
+
+	cd $SRC
+	[ -d gtk3 ] || cp -r $_name-$version gtk3
+	cd gtk3
+	./configure --sysconfdir=/etc --prefix=/usr --libexecdir=/usr/lib --enable-gtk3
+	make
+	
+	}
+
+package() {
+
+    cd gtk3
+	make DESTDIR=$PKG install
+	
+	}
