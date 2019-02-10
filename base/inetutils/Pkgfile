@@ -1,0 +1,34 @@
+description="The Inetutils package contains programs for basic networking."
+url="http://www.gnu.org/software/inetutils/"
+maintainer="Alain Malgoire,Alfred M. Szmidt,Arash Yadegarnia,Bernhard Rosenkraenzer,Dan Stromberg,David O'Shea and many more"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=inetutils
+version=1.9.4
+release=2
+
+source=(http://ftp.gnu.org/gnu/inetutils/inetutils-$version.tar.xz)
+
+build()
+{
+cd  inetutils-$version
+
+./configure --prefix=/usr \
+--localstatedir=/var \
+--disable-logger \
+--disable-whois \
+--disable-rcp   \
+--disable-rexec \
+--disable-rlogin \
+--disable-rsh \
+--disable-servers
+
+make
+make check || true
+make DESTDIR=$PKG install
+
+mkdir $PKG/{s,}bin
+mv -v $PKG/usr/bin/{hostname,ping,ping6,traceroute} $PKG/bin
+mv -v $PKG/usr/bin/ifconfig $PKG/sbin
+}

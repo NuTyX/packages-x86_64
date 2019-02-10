@@ -1,0 +1,31 @@
+# Depends on: lzo
+
+description="Btrfs filesystem utilities"
+url="http://btrfs.wiki.kernel.org/"
+
+contributors="Alienus"
+packager="tnut <tnut@tnut@nutyx.org>"
+
+name=btrfs-progs
+version=4.17
+
+source=(https://www.kernel.org/pub/linux/kernel/people/kdave/$name/$name-v$version.tar.xz)
+
+build(){
+cd $name-v$version
+sed -i '1,100 s/\.gz//g' Documentation/Makefile.in
+./configure \
+--prefix=/usr \
+--libdir=/lib \
+--bindir=/sbin \
+ --disable-zstd \
+--disable-documentation \
+--disable-python
+make
+make DESTDIR=$PKG install
+
+# Binaries should be available in case of mounting /usr
+mkdir -p $PKG/{sbin,usr/lib}
+ln -sfv ../../lib/$(readlink $PKG/lib/libbtrfs.so) $PKG/usr/lib/libbtrfs.so
+rm -v $PKG/lib/libbtrfs.{a,so}
+}

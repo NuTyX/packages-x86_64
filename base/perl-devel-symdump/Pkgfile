@@ -1,0 +1,21 @@
+# Depends on: perl
+
+description="Perl symbol table access and dumping"
+url="https://metacpan.org/pod/Devel::Symdump"
+packager="tnut <tnut@nutyx.org>"
+
+run=( perl )
+name=perl-devel-symdump
+version=2.18
+
+source=(http://www.cpan.org/authors/id/A/AN/ANDK/Devel-Symdump-$version.tar.gz)
+
+build() {
+    cd Devel-Symdump-$version
+    perl Makefile.PL
+    make OPTIMIZE="$CFLAGS" || exit 1
+    make install INSTALLDIRS=vendor DESTDIR=$PKG || exit 1
+
+    find $PKG -name .packlist -or \
+         -name '*.bs' | xargs rm
+}

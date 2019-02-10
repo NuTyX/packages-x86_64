@@ -1,0 +1,36 @@
+packager="tnut <tnut@nutyx dot org>"
+contributors="Pierre B"
+url="https://www.kernel.org/pub/linux/utils/net/iproute2/"
+description="Programs for basic and advanced network routing."
+
+name=iproute2
+version=4.19.0
+
+PKGMK_GROUPS=(devel man doc)
+
+source=($url/iproute2-$version.tar.xz)
+
+build()
+{
+cd iproute2-$version
+sed -i /ARPD/d Makefile
+sed -i 's/arpd.8//' man/man8/Makefile
+
+# disable building one module that requires iptables
+sed -i 's/m_ipt.o//' tc/Makefile
+
+make MANDIR=/usr/share/man INFODIR=/usr/share/info \
+	DESTDIR=$PKG 
+make MANDIR=/usr/share/man \
+	INFODIR=/usr/share/info DESTDIR=$PKG \
+     DOCDIR=/usr/share/doc/iproute2-$version install
+}
+devel()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib
+
+rm -r usr/lib
+}

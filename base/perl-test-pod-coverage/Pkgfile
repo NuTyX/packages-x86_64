@@ -1,0 +1,24 @@
+# Depends on: perl-pod-coverage
+
+description="CPAN Test::Pod::Coverage module"
+url="https://metacpan.org/pod/Test::Pod::Coverage"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus"
+
+run=( perl )
+
+name=perl-test-pod-coverage
+version=1.10
+release=1
+
+source=(http://search.cpan.org/CPAN/authors/id/N/NE/NEILB/Test-Pod-Coverage-$version.tar.gz)
+
+build() {
+    cd Test-Pod-Coverage-$version
+    perl Makefile.PL
+    make OPTIMIZE="$CFLAGS" || exit 1
+    make install INSTALLDIRS=vendor DESTDIR=$PKG || exit 1
+
+    # Remove .packlist if present in the package
+    find $PKG -name .packlist -delete
+}

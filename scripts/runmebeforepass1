@@ -1,0 +1,110 @@
+THIS_SCRIPT_PATH="$(readlink -f "$(type -P $0 || echo $0)")"
+THIS_SCRIPT_DIR="$(dirname "$THIS_SCRIPT_PATH")"
+source $THIS_SCRIPT_DIR/color_messages.sh
+trap "interrupted" SIGHUP SIGINT SIGQUIT SIGTERM
+color_mesg
+
+version="development"
+[ -z "${URL}" ] && URL="http://downloads.tuxfamily.org/nutyx"
+echo
+msg "$(gettext "This script will run some pre-checks and")"
+msg "$(gettext "download missing sources...")"
+msg2 "$(gettext "Press 'ENTER' to continue or 'ctrl+c' to exit.")"
+
+read a
+# Checking the current directory
+[ "`pwd`" == "$HOME/$version" ] || abort "$(gettext "The script must be run from: $HOME/%s")" "$version"
+
+# Checking variables
+[ -f ~/.bash_profile ] || abort "$(gettext ".bash_profile file not found.")"
+plain "$(gettext "Found .bash_profile file: OK")"
+
+[ -n $LFS ] || abort "$(gettext "LFS path is not set.")"
+plain "$(gettext "LFS path is set: %s: OK")" "$LFS"
+
+[ -n $LFS_TARGET ] || abort "$(gettext "LFS_TARGET is not set.")"
+plain "$(gettext "LFS_TARGET is set: %s: OK")" "$LFS_TARGET"
+
+# Checking the user
+[ "$(whoami)" == "lfs" ] || abort "$(gettext "This script MUST be run as 'lfs' user and not as: <%s>")" "$(whoami)"
+plain "$(gettext "User 'lfs': OK")"
+
+# Checking Directories
+[ -d $LFS ] || abort "$(gettext "%s directory not found.")" "$LFS"
+plain "$(gettext "Found %s directory: OK")" "$LFS"
+[ -O $LFS ] || abort "$(gettext "%s is not owned by user 'lfs'.")" "$LFS"
+
+[ -d $LFS/sources ] || abort "$(gettext "%s/sources directory not found.")" "$LFS"
+plain "$(gettext "Found %s/sources directory: OK")" "$LFS"
+[ -O $LFS/sources ] || abort "$(gettext "%s/sources is not owned by user 'lfs'.")" "$LFS"
+
+[ -d $LFS/tools ] || abort "$(gettext "%s/tools directory not found.")" "$LFS"
+plain "$(gettext "Found %s/tools directory: OK")" "$LFS"
+[ -O $LFS/tools ] || abort "$(gettext "%s/tools is not owned by user 'lfs'.")" "$LFS"
+
+if [ ! -d $HOME/logs ]; then
+    plain "$(gettext "$HOME/logs directory not found. Creating it...")"
+    rm -rf $HOME/logs
+    mkdir -p $HOME/logs
+fi
+plain "$(gettext "Directory $HOME/logs: OK")" "$LFS"
+
+# Checking Links
+if [ ! -L /sources ]; then
+    error "$(gettext "Missing symbolic link: /sources")"
+    abort "$(gettext "Run as root: %s")" "ln -sv $LFS/sources /sources"
+fi
+plain "$(gettext "Link /sources: OK")"
+
+if [ ! -L /tools ]; then
+    error "$(gettext "Missing symbolic link: /tools")"
+    abort "$(gettext "Run as root: %s")" "ln -sv $LFS/tools /tools"
+fi
+plain "$(gettext "Link /tools: OK")"
+
+if [ ! -L $HOME/bin ]; then
+    plain "$(gettext "Link $HOME/bin not found. Creating it...")"
+	ln -svf $HOME/$version/scripts $HOME/bin
+fi
+plain "$(gettext "Link $HOME/bin: OK")"
+
+if [ ! -L $HOME/config ]; then
+    plain "$(gettext "Link $HOME/config not found. Creating it...")"
+	ln -svf $HOME/$version/scripts $HOME/config
+fi
+plain "$(gettext "Link $HOME/config: OK")"
+
+# Diverse
+[ -f $LFS/sources/.md5sums ] && rm $LFS/sources/.md5sums
+echo
+msg "$(gettext "Downloading sources...")"
+echo
+
+for i in `cat scripts/wget_nutyx_list|grep -v ^#|sed "s@  @|@"`
+do
+	FILE=`echo $i|cut -d "|" -f2`
+	MD5SUM=`echo $i|cut -d "|" -f1`
+	if [ ! -f $LFS/sources/$FILE ]; then
+		wget --no-check-certificate $URL/sources/$version/$FILE -P $LFS/sources
+	fi
+	if [ "$MD5SUM" != "skip" ]; then
+		echo "$MD5SUM  $FILE" >> $LFS/sources/.md5sums
+	fi
+done
+if [ -f $LFS/sources/.md5sums ]; then
+	cd  $LFS/sources
+	md5sum -c .md5sums || exit 1
+	cd -
+else
+    abort "$(gettext "%s/sources/md5sums not found - impossible to verify sources.")" "$LFS"
+fi
+echo ""
+msg "$(gettext "=====> Successfull configured")"
+echo ""
+msg "$(gettext "If you read this message you can continue by running:")"
+echo ""
+plain2 "$(gettext "cd $HOME/$version/chroot")"
+plain2 "$(gettext "pass")"
+echo ""
+msg "$(gettext "Well Done!")"
+echo "" 

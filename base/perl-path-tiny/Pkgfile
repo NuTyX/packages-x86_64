@@ -1,0 +1,26 @@
+# Depends on: perl
+
+description="File path utility"
+url="https://metacpan.org/pod/Path::Tiny"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=( perl )
+
+name=perl-path-tiny
+version=0.108
+
+source=(https://cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/Path-Tiny-0.108.tar.gz)
+
+build() {
+
+cd Path-Tiny-$version
+export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
+unset PERL5LIB PERL_MM_OPT
+perl Makefile.PL
+make
+make DESTDIR=$PKG install
+find $PKG \
+        -name '*.bs' -or \
+        -name .packlist | xargs rm
+}

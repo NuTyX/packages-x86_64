@@ -1,0 +1,111 @@
+description="The Glibc package contains the main C library."
+url="https://www.gnu.org/software/libc/"
+packager="tnut <tnut@nutyx.org>"
+kernelversion=4.19
+
+
+name=glibc
+version=2.28
+
+source=(http://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
+	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
+	http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz
+	 glibc.locales.supported )
+
+build() {
+
+# Headers
+cd linux-$kernelversion
+make mrproper
+make headers_check
+make INSTALL_HDR_PATH=dest headers_install
+find dest/include \( -name .install -o -name ..install.cmd \) -delete
+mkdir -p $PKG/usr/include
+cp -rv dest/include/* $PKG/usr/include
+
+cd ../glibc-$version
+patch -Np1 -i ../glibc-$version-fhs-1.patch
+
+case $(uname -m) in
+   i?86)
+     mkdir $PKG/lib
+     GCC_INCDIR=/usr/lib/gcc/$(uname -m)-pc-linux-gnu/8.2.0/include
+     ln -s ld-linux.so.2 $PKG/lib/ld-lsb.so.3
+   ;;
+   x86_64) 
+     mkdir $PKG/lib64
+     GCC_INCDIR=/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.0/include
+     ln -s ../lib/ld-linux-x86-64.so.2 $PKG/lib64
+     ln -s ../lib/ld-linux-x86-64.so.2 $PKG/lib64/ld-lsb-x86-64.so.3
+   ;;
+esac
+
+mkdir -v build
+cd       build
+
+CC="gcc -isystem $GCC_INCDIR -isystem /usr/include"       \
+../configure --prefix=/usr                                \
+--with-bugurl=https://bugs.nutyx.org \
+--disable-werror                \
+--enable-kernel=3.2             \
+--enable-stack-protector=strong \
+libc_cv_slibdir=/lib
+
+make || make -j1
+
+# make -k check 2>&1 | tee glibc-check-log
+# grep Error glibc-check-log
+
+make install_root=$PKG install
+
+mkdir -p $PKG/etc
+cp -v ../nscd/nscd.conf $PKG/etc/nscd.conf
+mkdir -pv $PKG/var/cache/nscd
+
+touch $PKG/etc/ld.so.conf
+
+mkdir -pv $PKG/usr/lib/locale
+
+cp $SRC/glibc.locales.supported \
+../localedata/SUPPORTED
+
+make install_root=$PKG localedata/install-locales
+
+cat > $PKG/etc/nsswitch.conf << "EOF"
+# Begin /etc/nsswitch.conf
+
+passwd: files
+group: files
+shadow: files
+
+hosts: files dns
+networks: files
+
+protocols: files
+services: files
+ethers: files
+rpc: files
+
+# End /etc/nsswitch.conf
+EOF
+
+
+cat > $PKG/etc/ld.so.conf << "EOF"
+# Begin /etc/ld.so.conf
+/usr/local/lib
+/opt/lib
+
+# Add an include directory
+include /etc/ld.so.conf.d/*.conf
+# End of  /etc/ld.so.conf
+EOF
+
+mkdir $PKG/etc/ld.so.conf.d
+}
+devel() {
+cd $PKG
+bsdtar -r -f \
+$PKGMK_PACKAGE_DIR/${name}.${group}${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+usr/include
+rm -r usr/include
+}

@@ -1,0 +1,44 @@
+# Depends on: efibootmgr efivar freetype
+description="The GRUB package contains the GRand Unified Bootloader, EFI version"
+url="http://www.gnu.org/software/grub/"
+packager="tnut <tnut@nutyx.org>"
+
+name=grub-efi
+version=2.02
+release=3
+
+run=(efivar)
+
+source=(http://downloads.tuxfamily.org/nutyx/files/unicode.pf2
+	http://rems.techozor.fr/other-sources/grub-$version.tar.xz
+        0010-relocation.patch
+        0008-Fix-packed-not-aligned-error-on-GCC-8.patch)
+
+PKGMK_GROUPS=(man locale)
+
+build() {
+ cd grub-$version
+
+echo "Patch x86-64: Treat R_X86_64_PLT32 as R_X86_64_PC32..."
+	patch -Np1 -i ../0010-relocation.patch
+
+echo "Patch to fix packed-not-aligned error on GCC 8..."
+	patch -Np1 -i "../0008-Fix-packed-not-aligned-error-on-GCC-8.patch"
+
+ ./configure --prefix=/usr --sysconfdir=/etc \
+ --sbindir=/sbin \
+ --disable-efiemu --enable-grub-mkfont \
+ --with-platform=efi --target=$PKGMK_ARCH \
+ --program-prefix="" --program-suffix="-efi" \
+ --with-bootdir="/boot" \
+ --with-grubdir="grub-efi"  --disable-werror
+
+ make -s
+
+ make DESTDIR=$PKG install
+
+ mv $PKG/etc/bash_completion.d/grub{,-efi}
+ mv $PKG/etc/grub.d/README{,-efi}
+ mv $PKG/usr/share/grub/grub{,-efi}-mkconfig_lib
+ cp ../unicode.pf2 $PKG/usr/share/grub/
+}

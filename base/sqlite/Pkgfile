@@ -1,0 +1,32 @@
+description="Library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine"
+url="http://www.sqlite.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Tnut, Remy"
+
+_amalgamationver=3260000
+
+name=sqlite
+version=3.26.0
+
+source=(http://www.sqlite.org/2018/sqlite-autoconf-${_amalgamationver}.tar.gz)
+
+build() {
+  cd $name-autoconf-${_amalgamationver}
+
+  ./configure --prefix=/usr \
+           --disable-static \
+           --enable-fts5    \
+  CFLAGS="-g -O2 -DSQLITE_ENABLE_FTS4=1 \
+  -DSQLITE_ENABLE_FTS3=1                \
+  -DSQLITE_ENABLE_COLUMN_METADATA=1     \
+  -DSQLITE_ENABLE_UNLOCK_NOTIFY=1       \
+  -DSQLITE_SECURE_DELETE=1              \
+  -DSQLITE_ENABLE_DBSTAT_VTAB=1         \
+  -DSQLITE_ENABLE_FTS3_TOKENIZER=1"
+
+  make -j1
+
+  make DESTDIR=$PKG install
+
+  rm $PKG/usr/lib/libsqlite3.la
+}

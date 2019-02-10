@@ -1,0 +1,15 @@
+description="Contains programs for generating Makefiles for use with Autoconf."
+url="http://www.gnu.org/software/automake/"
+packager="tnut <tnut@nutyx.org>"
+
+name=automake
+version=1.16.1
+
+source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz)
+build() {
+cd automake-$version
+./configure --prefix=/usr \
+--docdir=$PKG/usr/share/doc/automake-$version
+make
+make prefix=$PKG/usr install
+}

@@ -1,0 +1,28 @@
+description="Transport Independent RPC library (SunRPC replacement)"
+url="http://downloads.sourceforge.net/project/libtirpc"
+maintainer="Gilles Quillard gilles dot quillard at bull dot net"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=libtirpc
+version=1.0.3
+
+source=(http://downloads.sourceforge.net/libtirpc/libtirpc-$version.tar.bz2)
+
+build()
+{
+cd libtirpc-$version
+
+
+./configure --prefix=/usr     \
+            --sysconfdir=/etc \
+            --disable-static  \
+            --disable-gssapi
+
+make
+make pkgconfigdir=/usr/lib/pkgconfig DESTDIR=$PKG install
+chown -R root:root $PKG
+mkdir -p $PKG/lib
+mv -v $PKG/usr/lib/libtirpc.so.* $PKG/lib
+ln -sfv ../../lib/libtirpc.so.3.0.0 $PKG/usr/lib/libtirpc.so
+}

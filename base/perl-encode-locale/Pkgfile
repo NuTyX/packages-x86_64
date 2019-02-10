@@ -1,0 +1,23 @@
+# Depends on: perl
+
+description="Determine the locale encoding"
+url="https://metacpan.org/pod/Encode::Locale"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=( perl )
+
+name=perl-encode-locale
+version=1.05
+
+source=(http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/Encode-Locale-$version.tar.gz)
+
+build() {
+cd Encode-Locale-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+find $PKG \
+         -name '*.bs' -or \
+         -name '.packlist' | xargs rm
+} 

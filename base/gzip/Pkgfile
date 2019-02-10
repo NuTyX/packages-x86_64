@@ -1,0 +1,25 @@
+description="The Gzip package contains programs for compressing and decompressing files."
+url="http://www.gzip.org/"
+
+maintainer="Jean-loup Gailly jloup at gzip dot org,Mark Adler for the decompression code."
+contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+
+name=gzip
+version=1.9
+
+source=(http://ftp.gnu.org/gnu/gzip/gzip-$version.tar.xz)
+
+build()
+{
+cd gzip-$version
+sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' lib/*.c
+echo "#define _IO_IN_BACKUP 0x100" >> lib/stdio-impl.h
+
+./configure --prefix=/usr
+make
+make -k check || true
+make DESTDIR=$PKG install
+mkdir -p $PKG/bin
+mv -v $PKG/usr/bin/gzip $PKG/bin
+}

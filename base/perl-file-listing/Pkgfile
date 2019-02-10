@@ -1,0 +1,24 @@
+# Depends on: perl perl-http-date 
+
+description="parse directory listing"
+url="https://metacpan.org/pod/File::Listing"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=( perl )
+
+name=perl-file-listing
+version=6.04
+release=1
+
+source=(http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/File-Listing-$version.tar.gz)
+
+build() {
+cd File-Listing-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+find $PKG \
+	-name '*.bs' -or \
+	-name .packlist -delete
+}

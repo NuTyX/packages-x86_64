@@ -1,0 +1,38 @@
+description="Free general-purpose data compression software with high compression ratio."
+url="http://tukaani.org/xz/"
+maintainer="Lasse Collin, lasse dot collin at tukaani dot org"
+packager="tnut <tnut@nutyx.org>"
+
+PKGMK_GROUPS=(devel man doc)
+
+name=xz
+version=5.2.4
+
+source=(${url}$name-$version.tar.xz)
+build()
+{
+cd xz-$version
+
+./configure --prefix=/usr \
+--bindir=/bin \
+--docdir=/usr/share/doc/xz-$version
+make
+make pkgconfigdir=/usr/lib/pkgconfig DESTDIR=$PKG install
+
+mkdir -pv $PKG/{,usr/}lib
+
+mv -v $PKG/usr/lib/liblzma.so.* \
+$PKG/lib
+
+ln -svf ../../lib/liblzma.so.$version $PKG/usr/lib/liblzma.so
+}
+devel()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib \
+usr/include
+rm -r usr/lib \
+usr/include
+}

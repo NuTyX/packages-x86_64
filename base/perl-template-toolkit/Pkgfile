@@ -1,0 +1,22 @@
+# Depends on: perl-appconfig
+
+description="Perl template processing system"
+url="http://search.cpan.org/dist/Template-Toolkit/"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+run=(perl-appconfig)
+
+name=perl-template-toolkit
+version=2.28
+
+source=(http://search.cpan.org/CPAN/authors/id/A/AT/ATOOMIC/Template-Toolkit-$version.tar.gz)
+
+build() {
+	cd Template-Toolkit-$version
+
+        perl Makefile.PL INSTALLDIRS=vendor TT_ACCEPT=y
+
+	make
+	make DESTDIR=$PKG install
+}

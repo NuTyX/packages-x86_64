@@ -1,0 +1,33 @@
+PKGMK_GROUPS=(devel doc man)
+
+description="Library that can create and read several streaming archive formats."
+url="http://people.freebsd.org/~kientzle/libarchive"
+maintainer="kientzle at acm dot org"
+packager="tnut <tnut@nutyx.org>"
+
+name=libarchive
+version=3.3.3
+
+source=(http://www.libarchive.org/downloads/libarchive-$version.tar.gz
+	)
+
+build() {
+cd $name-$version
+
+./configure --prefix=/usr \
+--mandir=/usr/share/man \
+--infodir=/usr/share/info 
+make
+make DESTDIR=$PKG install
+# Obsolet lib
+rm $PKG/usr/lib/libarchive.la
+}
+devel() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+usr/lib/libarchive.a usr/include usr/lib/pkgconfig
+rm -r usr/lib/libarchive.a
+rm -r usr/include
+rm -r usr/lib/pkgconfig
+}

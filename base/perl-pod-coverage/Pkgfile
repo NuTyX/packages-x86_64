@@ -1,0 +1,25 @@
+# Depends on: perl-devel-symdump
+
+description="Checks if the documentation of a module is comprehensive"
+url="https://metacpan.org/pod/Pod::Coverage"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus"
+
+run=( perl )
+
+name=perl-pod-coverage
+version=0.23
+release=2
+
+source=(
+http://www.cpan.org/authors/id/R/RC/RCLAMP/Pod-Coverage-$version.tar.gz)
+
+build() {
+    cd Pod-Coverage-$version
+    perl Makefile.PL
+    make OPTIMIZE="$CFLAGS" || exit 1
+    make install INSTALLDIRS=vendor DESTDIR=$PKG || exit 1
+
+    # Remove .packlist if present in the package
+    find $PKG -name .packlist -delete
+}

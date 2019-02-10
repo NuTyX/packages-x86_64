@@ -1,0 +1,17 @@
+name=libarchive
+version=3.3.3
+source=(http://www.libarchive.org/downloads/$name-$version.tar.gz
+	)
+
+build() {
+cd $name-$version
+
+./configure --prefix=/tools \
+	--without-xml2 --without-expat \
+	--without-openssl --disable-acl \
+	--disable-bsdcpio --without-zlib \
+	--disable-xattr \
+	--without-iconv --without-bz2lib
+make
+make install
+}

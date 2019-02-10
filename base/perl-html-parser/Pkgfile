@@ -1,0 +1,25 @@
+# Depends on: perl perl-html-tagset 
+
+description="Perl HTML parser class"
+url="https://metacpan.org/pod/HTML::Parser"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=( perl )
+
+name=perl-html-parser
+version=3.72
+release=1
+
+source=(http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/HTML-Parser-$version.tar.gz)
+
+build() {
+cd HTML-Parser-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+
+find $PKG \
+        -name '*.bs' -or \
+        -name .packlist | xargs rm
+}

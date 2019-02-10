@@ -1,0 +1,23 @@
+# Depends on: perl
+
+description="Check for POD errors in files"
+url="https://metacpan.org/pod/Test::Pod"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus"
+
+run=( perl )
+
+name=perl-test-pod
+version=1.52
+
+source=(http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/Test-Pod-$version.tar.gz)
+
+build() {
+    cd Test-Pod-$version
+    perl Makefile.PL
+    make OPTIMIZE="$CFLAGS" || exit 1
+    make install INSTALLDIRS=vendor DESTDIR=$PKG || exit 1
+
+    # Remove .packlist if present in the package
+    find $PKG -name .packlist -delete
+}

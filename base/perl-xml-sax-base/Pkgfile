@@ -1,0 +1,25 @@
+# Depends on: perl
+
+description="Base class SAX Drivers and Filters"
+url="https://metacpan.org/pod/XML::SAX::Base"
+packager="tnut <tnut@nutyx.org>"
+
+run=( perl )
+
+name=perl-xml-sax-base
+version=1.09
+release=1
+
+source=(
+http://www.cpan.org/authors/id/G/GR/GRANTM/XML-SAX-Base-$version.tar.gz)
+
+build() {
+    cd XML-SAX-Base-$version
+    perl Makefile.PL
+    make OPTIMIZE="$CFLAGS" || exit 1
+    make test || true
+    make install INSTALLDIRS=vendor DESTDIR=$PKG || exit 1
+
+    # Remove .packlist if present in the package
+    find $PKG -name .packlist -delete
+}

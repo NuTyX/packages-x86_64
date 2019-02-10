@@ -1,0 +1,25 @@
+# Depends on: perl-io-tty
+
+description="IPC::Run - system() and background procs w/ piping, redirs, ptys"
+url="https://metacpan.org/pod/IPC::Run"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus"
+
+run=( perl )
+
+name=perl-ipc-run
+version=20180523.0
+
+source=(http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/IPC-Run-$version.tar.gz)
+
+build() {
+    cd IPC-Run-$version
+    perl Makefile.PL
+    make OPTIMIZE="$CFLAGS"
+    make install INSTALLDIRS=vendor DESTDIR=$PKG
+
+    # Remove .packlist if present in the package
+    for i in .packlist; do
+        find $PKG -name "$i" -exec rm -rf {} \;
+    done
+}

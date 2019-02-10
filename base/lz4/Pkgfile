@@ -1,0 +1,17 @@
+description="Very fast lossless compression algorithm"
+url="https://github.com/Cyan4973/lz4"
+packager="rems <rems@nutyx.org>"
+
+name=lz4
+version=1.8.3
+
+source=(https://github.com/lz4/lz4/archive/v1.8.3.tar.gz)
+
+build() {
+cd $name-$version
+
+make -C lib PREFIX=/usr
+make -C programs PREFIX=/usr lz4 lz4c
+make install PREFIX=/usr DESTDIR=$PKG
+
+}

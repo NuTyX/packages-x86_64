@@ -1,0 +1,112 @@
+# Depends on: meson ninja
+
+description="Init system to control boot, execution and halt of a linux system"
+url="http://www.freedesktop.org/wiki/Software/systemd/"
+packager="tnut <tnut@nutyx.org>"
+maintainer="tnut <tnut@nutyx.org>"
+
+name=systemd
+version=240
+release=4
+nutyx_version=10.93.1
+
+source=(https://github.com/systemd/systemd/archive/v$version.tar.gz
+        http://www.linuxfromscratch.org/patches/lfs/development/systemd-240-security_fixes-1.patch)
+
+build () {
+cd $name-$version
+patch -Np1 -i ../systemd-240-security_fixes-1.patch
+[ -d /tools ] && ln -sf /tools/bin/true /usr/bin/xsltproc
+# sed '165,$ d' -i src/resolve/meson.build
+sed -i 's/GROUP="render", //' rules/50-udev-default.rules.in
+
+for file in /tools/lib/lib{blkid,mount,uuid}*; do
+    ln -sf $file /usr/lib/
+done
+
+mkdir -p build
+cd       build
+
+PKG_CONFIG_PATH="/usr/lib/pkgconfig:/tools/lib/pkgconfig" \
+LANG="en_US.UTF-8"                  \
+meson --prefix=/usr                \
+      --sysconfdir=/etc            \
+      --localstatedir=/var         \
+      -Dblkid=true                 \
+      -Dbuildtype=release          \
+      -Ddefault-dnssec=no          \
+      -Dfirstboot=false            \
+      -Dinstall-tests=false        \
+      -Dkill-path=/bin/kill        \
+      -Dkmod-path=/bin/kmod        \
+      -Dldconfig=false             \
+      -Dmount-path=/bin/mount      \
+      -Drootprefix=                \
+      -Drootlibdir=/lib            \
+      -Dsplit-usr=true             \
+      -Dsulogin-path=/sbin/sulogin \
+      -Dsysusers=false             \
+      -Dumount-path=/bin/umount    \
+      -Db_lto=false                \
+      -Dman=false                  \
+      ..
+
+LANG=en_US.UTF-8 ninja
+DESTDIR=$PKG LANG="en_US.UTF-8" ninja install
+rm -rfv $PKG/usr/lib/rpm
+rm -f /usr/bin/xsltproc
+
+# Disable service systemd-networkd
+unlink $PKG/etc/systemd/system/dbus-org.freedesktop.network1.service
+unlink $PKG/etc/systemd/system/multi-user.target.wants/systemd-networkd.service
+unlink $PKG/etc/systemd/system/sockets.target.wants/systemd-networkd.socket
+unlink $PKG/etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
+
+# Disable service systemd-resolved
+unlink $PKG/etc/systemd/system/dbus-org.freedesktop.resolve1.service
+unlink $PKG/etc/systemd/system/multi-user.target.wants/systemd-resolved.service
+
+cat > $PKG/lib/systemd/systemd-user-sessions << "EOF"
+#!/bin/bash
+rm -f /run/nologin
+EOF
+
+chmod 755 $PKG/lib/systemd/systemd-user-sessions
+
+rm $PKG/usr/lib/tmpfiles.d/home.conf
+
+cat > $PKG/etc/pam.d/systemd-user << "EOF"
+# Begin /etc/pam.d/systemd-user
+
+account  required pam_access.so
+account  include  system-account
+
+session  required pam_env.so
+session  required pam_limits.so
+session  required pam_unix.so
+session  required pam_loginuid.so
+session  optional pam_keyinit.so force revoke
+session  optional pam_systemd.so
+
+auth     required pam_deny.so
+password required pam_deny.so
+
+# End /etc/pam.d/systemd-user
+EOF
+
+cat > $PKG/etc/os-release << "EOF"
+# Begin /etc/os-release
+
+NAME=NuTyX
+VERSION="${nutyx_version}"
+ID=nutyx
+VERSION_ID="${nutyx_version}"
+PRETTY_NAME="NuTyX ${nutyx_version}"
+ANSI_COLOR="0;34"
+CPE_NAME="cpe:/o:NuTyX_project:nutyx:${nutyx_version}"
+HOME_URL="http://nutyx.org/"
+BUG_REPORT_URL="https://bugs.nutyx.org"
+
+# End /etc/os-release
+EOF
+}

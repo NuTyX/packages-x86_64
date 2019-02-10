@@ -1,0 +1,36 @@
+description="The Gawk package contains programs for manipulating text files."
+url="http://www.gnu.org/software/gawk/"
+maintainer="Paul Rubin,Paul Finlason,Richard Stallman,David Trueman and,Arnold Robbins"
+packager="tnut <tnut@tnut@org>"
+contributors="Pierre B"
+
+name=gawk
+version=4.2.1
+
+source=(http://ftp.gnu.org/gnu/gawk/gawk-$version.tar.xz)
+
+build()
+{
+cd gawk-$version
+sed -i 's/extras//' Makefile.in
+./configure --prefix=/usr
+make
+# Some checks fails
+make check || true
+make DESTDIR=$PKG install
+
+# Documentation
+mkdir -vp $PKG/usr/share/doc/gawk-$version
+cp    -v doc/{awkforai.txt,*.{eps,pdf,jpg}} \
+$PKG/usr/share/doc/gawk-$version
+}
+devel()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/share/awk usr/include
+
+rm -r usr/share/awk usr/include
+}
+

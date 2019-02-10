@@ -1,0 +1,23 @@
+# Depends on: perl perl-net-dns
+
+description="A Net::DNS::Resolver descendant class for offline emulation of DNS"
+url="https://metacpan.org/pod/Net::DNS::Resolver::Programmable"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=( perl )
+
+name=perl-net-dns-resolver-programmable
+version=0.009
+release=1
+
+source=(http://www.cpan.org/authors/id/B/BI/BIGPRESH/Net-DNS-Resolver-Programmable-$version.tar.gz)
+
+build() {
+cd Net-DNS-Resolver-Programmable-$version
+PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+find $PKG -name '*.bs' -or \
+-name '.packlist' -delete
+}

@@ -1,0 +1,55 @@
+description="Libraries for terminal-independent handling of character screens."
+url="http://www.gnu.org/software/ncurses/ncurses.html"
+maintainer="Thomas E. Dickey TD,Juergen Pfeifer JPF,Eric S Raymond ESR,Alexander V Lukyanov,Philippe Blain PB,Sven Verdoolaege SV"
+packager="tnut <tnut@nutyx.org>"
+
+name=ncurses
+version=6.1
+
+source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
+build()
+{
+cd ncurses-$version
+
+sed -i '/LIBTOOL_INSTALL/d' c++/Makefile.in
+
+./configure --prefix=/usr --mandir=/usr/share/man \
+-infodir=/usr/share/info --without-normal \
+--with-shared --bindir=/bin --sbindir=/sbin \
+--libdir=/lib --without-debug --enable-pc-files \
+--enable-widec --with-install-prefix=$PKG
+
+make
+
+make install
+
+mkdir -p $PKG/lib
+
+for lib in ncurses form panel menu ; do \
+        rm -vf $PKG/lib/lib${lib}.so ; \
+        echo "INPUT(-l${lib}w)" >$PKG/lib/lib${lib}.so ; \
+        ln -sfv lib${lib}w.a $PKG/lib/lib${lib}.a ; \
+done
+ln -sfv libncurses++w.a $PKG/lib/libncurses++.a
+rm -vf $PKG/usr/lib/libcursesw.so
+echo "INPUT(-lncursesw)" >$PKG/lib/libcursesw.so
+ln -sfv libncurses.so $PKG/lib/libcurses.so
+ln -sfv libncursesw.a $PKG/lib/libcursesw.a
+ln -sfv libncurses.a $PKG/lib/libcurses.a
+
+mkdir -vp   $PKG/usr/share/doc/$name-$version
+cp -R doc/* $PKG/usr/share/doc/$name-$version
+
+make distclean
+
+./configure --prefix=/usr --with-shared --without-normal \
+--mandir=/usr/share/man --infodir=/usr/share/info \
+--bindir=/bin --sbindir=/sbin --libdir=/lib \
+--without-debug --without-cxx-binding \
+--with-abi-version=5 \
+--with-install-prefix=$PKG
+
+make sources libs
+mkdir -p $PKG/usr/lib
+cp -av lib/lib*.so.5* $PKG/usr/lib
+}
