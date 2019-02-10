@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## 'cli-extra, 'gui-extra', 'lxde', 'lxde-extra', 'xfce4', 'xfce4-extra', 'mate' and 'mate-extra' collections ports
 
 > NOTE: the git address is changed.
