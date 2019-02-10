@@ -1,0 +1,33 @@
+# Depends on: gtk3 docbook-xsl xmlto zip p7zip lzop cpio unrar
+
+description="GTK+ frontend to various command line archivers"
+url="https://github.com/ib/xarchive"
+packager="greg<greg@nutyx.org>"
+contributors="Tnut"
+
+name=xarchiver
+version=0.5.4.11
+release=1
+_gitrev=79a73d46b782cf8bb93d058d00d2cb81a9b3df8a
+
+source=(https://github.com/ib/xarchiver/archive/$_gitrev.tar.gz)
+
+
+build() {
+
+  # Bon..pour la version GTK3...
+  [ -d gtk3 ] || cp -r $name-$_gitrev gtk3
+  cd gtk3
+  ./configure --prefix=/usr --libexecdir=/usr/lib/xfce4
+  make -j1
+
+}
+
+  # Empaquetage de la version GTK3...
+
+package() {
+
+  cd gtk3
+  make DESTDIR=$PKG install
+  
+}

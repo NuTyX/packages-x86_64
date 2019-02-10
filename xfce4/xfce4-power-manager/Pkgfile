@@ -1,0 +1,24 @@
+# Depends on: dbus-glib libnotify xfce4-panel upower udisks 
+
+description="Power manager for the Xfce desktop."
+url="http://www.xfce.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="tyrry,tnut,greg" 
+
+name=xfce4-power-manager
+version=1.6.0
+release=1
+
+source=(http://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2)
+
+build() {
+
+cd $name-$version
+./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc
+    
+make
+make DESTDIR=$PKG install
+
+}

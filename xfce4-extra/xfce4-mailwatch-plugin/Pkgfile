@@ -1,0 +1,28 @@
+# Depends on: xfce4-panel gnutls libgcrypt intltool perl-xml-parser xfce4-libui
+
+description="Multi-protocol, multi-mailbox mail watcher for the Xfce4 panel"
+url="http://goodies.xfce.org/projects/panel-plugins/xfce4-mailwatch-plugin"
+packager="greg <greg@nutyx.org>"
+contributors="Chris Farrell, timcowchip"
+
+name=xfce4-mailwatch-plugin
+version=1.2.0
+release=1
+
+source=(http://archive.xfce.org/src/panel-plugins/$name/${version%.*}/$name-$version.tar.bz2)
+
+build() {
+
+  cd "$SRC/$name-$version"
+
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib \
+    --localstatedir=/var \
+    --disable-debug
+    
+  make
+  make DESTDIR="$PKG" install
+  
+}

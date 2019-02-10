@@ -1,0 +1,27 @@
+# Depends on: git intltool pulseaudio dbus-glib pavucontrol keybinder3 libnotify xfce4-dev-tools xfce4-libutil xfce4-libui xfce4-panel
+
+description="Pulseaudio plugin for Xfce4 panel"
+url="https://goodies.xfce.org/projects/panel-plugins/xfce4-pulseaudio-plugin"
+packager="tnut <tnut@nutyx.org>"
+
+name=xfce4-pulseaudio-plugin
+version=0.3.0
+release=2
+
+run=(gtk-update-icon-cache pavucontrol)
+source=(http://archive.xfce.org/src/panel-plugins/$name/0.3/$name-$version.tar.bz2)
+build() {
+cd $name-$version
+
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--libexecdir=/usr/lib \
+--localstatedir=/var \
+--enable-keybinder \
+--enable-libnotify
+
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+make
+make DESTDIR=$PKG install
+}
