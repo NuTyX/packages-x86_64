@@ -1,4 +1,4 @@
-# Depends on: libtirpc systemd
+# Depends on: libtirpc
 
 description="portmap replacement which supports RPC over various protocols"
 url="http://rpcbind.sourceforge.net/"
@@ -9,7 +9,9 @@ PKGMK_GROUPS=(man)
 
 name=rpcbind
 version=1.2.5
-nutyx_version=10.91
+release=2
+
+nutyx_version=10.96
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	http://downloads.sourceforge.net/rpcbind/rpcbind-$version.tar.bz2
@@ -22,13 +24,15 @@ build() {
     patch -Np1 -i ../rpcbind-$version-vulnerability_fixes-1.patch
     ./configure --prefix=/usr       \
                 --bindir=/sbin      \
-		--sbindir=/sbin      \
-                --with-rpcuser=rpc \
-		--enable-warmstarts
+		--sbindir=/sbin     \
+                --with-rpcuser=rpc  \
+		--enable-warmstarts \
+		--without-systemdsystemunitdir
     make
     make DESTDIR=$PKG install
 
     cd ../nutyx-${nutyx_version}
     make DESTDIR=$PKG install-rpcbind
+    make DESTDIR=$PKG install-netfs
 
 }
