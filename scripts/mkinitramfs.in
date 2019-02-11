@@ -27,20 +27,13 @@ copy()
   local file
 
   if [ "$2" == "lib" ]; then
-    file=$(PATH=/lib:/usr/lib:/lib/systemd type -p $1)
+    file=$(PATH=/lib:/usr/lib type -p $1)
   else
-    file=$(PATH=$PATH:/lib/systemd type -p $1)
+    file=$(type -p $1)
   fi
 
   if [ -n $file ] ; then
-	case "$file" in
-		/lib/systemd/libsystemd*.so)
-			cp $file $WDIR/$2/systemd
-			;;
-		*)
-			cp $file $WDIR/$2
-			;;
-	esac
+    cp $file $WDIR/$2
   else
     echo "Missing required file: $1 for directory $2"
     rm -rf $WDIR
@@ -59,10 +52,10 @@ unsorted=$(mktemp /tmp/unsorted.XXXXXXXXXX)
 
 # Create base directory structure
 # mkdir -p $WDIR/{bin,dev,lib/firmware,run,sbin,sys,proc}
-mkdir -p $WDIR/{bin,dev,lib/{lsb,firmware,udev,systemd},run,sbin,sys,proc,tmp,etc,usr/{bin,lib,share}}
+mkdir -p $WDIR/{bin,dev,lib/{lsb,firmware,udev},run,sbin,sys,proc,tmp,etc,usr/{bin,lib,share}}
 mkdir -p $WDIR/etc/{sysconfig,modprobe.d,udev/{rules.d,hwdb.d}}
 touch $WDIR/etc/modprobe.d/modprobe.conf
-[ -d /lib64 ] && cp -av /lib64 $WDIR/lib64
+[ -d /lib64 ] && cp -a /lib64 $WDIR/lib64
 
 if [ -z $1 ]; then
 	INITRAMFS_FILE=initrd
@@ -70,7 +63,12 @@ if [ -z $1 ]; then
 else
 	KERNEL_VERSION=$1
 	if [ -z $BUSYBOX ]; then
-		sbinfiles="ip"
+		sbinfiles="udevd udevadm ip"
+		for I in udevd udevadm
+		do
+			cp /sbin/$I $WDIR/sbin/$I
+			ldd /sbin/$I | sed "s/\t//" | cut -d " " -f1 >> $unsorted
+		done
 	else
 		sbinfiles="ip"
 	fi
@@ -83,12 +81,11 @@ if [ -n "$KERNEL_VERSION" ] && [ ! -d "/lib/modules/$1" ] ; then
   exit 1
 fi
 
-libsystemdexecfiles='systemd systemd-sulogin-shell systemd-shutdown'
 usrbinfiles="cut groups"
-binfiles="udevadm sh cat clear date grep cp dd hostname killall ls mkdir mknod more mount mountpoint chmod"
-binfiles="$binfiles umount stty sed sleep ln rm uname systemd-tmpfiles"
+binfiles="sh cat clear date grep cp dd hostname killall ls mkdir mknod more mount mountpoint chmod"
+binfiles="$binfiles umount stty sed sleep ln rm uname"
 
-sbinfiles="$sbinfiles blkid switch_root sulogin"
+sbinfiles="$sbinfiles blkid switch_root losetup"
 
 if [ ! -z $1 ]; then
 
@@ -264,15 +261,6 @@ for f in $sbinfiles ; do
 		copy $f sbin
 	else
 		ln -s $BUSYBOX $WDIR/sbin/$f
-	fi
-done
-
-for f in $libsystemdexecfiles ; do
-	if [ -z $BUSYBOX ];then
-		ldd /lib/systemd/$f | sed "s/\t//" | cut -d " " -f1 >> $unsorted
-		copy $f lib/systemd
-	else
-		ln -s -v $BUSYBOX $WDIR/lib/systemd/$f
 	fi
 done
 
