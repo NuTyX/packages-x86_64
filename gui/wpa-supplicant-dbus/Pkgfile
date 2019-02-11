@@ -1,0 +1,60 @@
+# Depends on: wpa-supplicant libnl dbus libxml2
+
+description="A utility providing key negotiation for WPA wireless networks"
+url="http://hostap.epitest.fi/wpa_supplicant"
+packager="tnut tnut@nutyx.org>"
+contributors="Pierre B, tnut, greg"
+
+name=wpa-supplicant-dbus
+version=2.6
+release=3
+
+run=(wpa-supplicant)
+
+source=( http://www.linuxfromscratch.org/patches/blfs/svn/wpa_supplicant-$version-upstream_fixes-1.patch
+	http://hostap.epitest.fi/releases/wpa_supplicant-$version.tar.gz)
+
+build() {
+
+cd wpa_supplicant-$version
+cat > wpa_supplicant/.config << "EOF"
+CONFIG_BACKEND=file
+CONFIG_CTRL_IFACE=y
+CONFIG_DEBUG_FILE=y
+CONFIG_DEBUG_SYSLOG=y
+CONFIG_DEBUG_SYSLOG_FACILITY=LOG_DAEMON
+CONFIG_DRIVER_NL80211=y
+CONFIG_DRIVER_WEXT=y
+CONFIG_DRIVER_WIRED=y
+CONFIG_EAP_GTC=y
+CONFIG_EAP_LEAP=y
+CONFIG_EAP_MD5=y
+CONFIG_EAP_MSCHAPV2=y
+CONFIG_EAP_OTP=y
+CONFIG_EAP_PEAP=y
+CONFIG_EAP_TLS=y
+CONFIG_EAP_TTLS=y
+CONFIG_IEEE8021X_EAPOL=y
+CONFIG_IPV6=y
+CONFIG_LIBNL32=y
+CONFIG_PEERKEY=y
+CONFIG_PKCS12=y
+CONFIG_READLINE=y
+CONFIG_SMARTCARD=y
+CONFIG_WPS=y
+CFLAGS += -I/usr/include/libnl3
+CONFIG_CTRL_IFACE_DBUS=y
+CONFIG_CTRL_IFACE_DBUS_NEW=y
+CONFIG_CTRL_IFACE_DBUS_INTRO=y
+EOF
+patch -p1 -i ../wpa_supplicant-$version-upstream_fixes-1.patch
+cd wpa_supplicant &&
+make BINDIR=/usr/sbin LIBDIR=/usr/lib
+mkdir -p $PKG/{etc/dbus-1/system.d,usr/{sbin,share/dbus-1/system-services}}
+install -v -m755 wpa_supplicant $PKG/usr/sbin
+install -v -m644 dbus/fi.{epitest.hostap.WPASupplicant,w1.wpa_supplicant1}.service \
+$PKG/usr/share/dbus-1/system-services
+install -v -m644 dbus/dbus-wpa_supplicant.conf \
+$PKG/etc/dbus-1/system.d/wpa_supplicant.conf
+
+}
