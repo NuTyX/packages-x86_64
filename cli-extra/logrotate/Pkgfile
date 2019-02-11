@@ -1,4 +1,4 @@
-# Depends on: popt gzip acl systemd
+# Depends on: popt gzip acl
 
 description="Rotates system logs automatically"
 url="https://github.com/logrotate/logrotate"
@@ -16,7 +16,6 @@ cd $name-$version
 
 ./configure \
 --prefix=/usr \
---sbindir=/usr/bin \
 --mandir=/usr/share/man \
 --with-compress-command=/usr/bin/gzip \
 --with-uncompress-command=/usr/bin/gunzip \
@@ -32,10 +31,20 @@ make DESTDIR=$PKG install
 mkdir -p $PKG/etc/$name.d
 mkdir -p $PKG/var/state/logrotate
 install -D -m 640 ../$name.conf $PKG/etc/$name.conf
-install -D -m644 examples/logrotate.timer $PKG/lib/systemd/system/logrotate.timer
-	install -D -m644 examples/logrotate.service $PKG/usr/lib/systemd/system/logrotate.service
-	install -d -m755 $PKG/lib/systemd/system/timers.target.wants
-	ln -s ../logrotate.timer $PKG/lib/systemd/system/timers.target.wants/logrotate.timer
+cat > $PKG/etc/logrotate.d/sys.log << EOF
+/var/log/sys.log {
+   # If the log file is larger than 100kb, rotate it
+   size   100k
+   rotate 5
+   weekly
+   postrotate
+      /bin/killall -HUP syslogd
+   endscript
+}
+EOF
+
+chmod -v 0644 $PKG/etc/logrotate.d/sys.log
+
 }
 
 uptodate() {
