@@ -1,0 +1,25 @@
+# Depends on: acl libgudev dbus-glib libatasmart lvm2 parted polkit sg3-utils docbook-xsl 
+
+description="Disk Management Service"
+url="http://www.freedesktop.org/wiki/Software/udisks"
+packager="greg <greg@nutyx.org>"
+contributors="Pierre B"
+
+name=udisks
+version=1.0.5
+release=3
+
+source=(http://hal.freedesktop.org/releases/$name-$version.tar.gz)
+
+build() {
+
+cd udisks-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libexecdir=/usr/lib/udisks
+
+make
+make DESTDIR=$PKG profiledir=/etc/bash_completion.d install
+mv $PKG/sbin $PKG/usr
+}
