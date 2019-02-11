@@ -1,7 +1,3 @@
-. /lib/lsb/init-functions                                                                                                                                         
-log_info_msg2 "${WARNING} To activate rsyncd, please pass ${INFO} systemctl enable --now rsyncd ${NORMAL}"
-log_info_msg2 "${WARNING} A default conf file for the service will be copied if nothing presents ${NORMAL}"
-
 if [ ! -f etc/rsyncd.conf ]; then
 	cat > etc/rsyncd.conf << "EOF"
 # use chroot = yes
