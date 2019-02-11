@@ -21,7 +21,6 @@ install: all
 	$(MAKE) -C $(DIRTOOLS) install
 	$(MAKE) -C $(DIRSCRIPTS) install
 	$(MAKE) -C $(DIRMAN) install
-	$(MAKE) -C $(DIRSERVICES) install-service-setup-nutyx
 man:
 	$(MAKE) -C $(DIRMAN) man
 clean:
