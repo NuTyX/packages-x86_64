@@ -1,4 +1,4 @@
-# Depends on: keyutils talloc systemd pam kerberos
+# Depends on: keyutils talloc pam kerberos
 
 description="CIFS filesystem user-space tools"
 url="http://www.samba.org"
@@ -7,6 +7,7 @@ contributors="Pierre B"
 
 name=cifs-utils
 version=6.8
+release=2
 
 source=(http://ftp.samba.org/pub/linux-cifs/$name/$name-$version.tar.bz2)
 
@@ -14,13 +15,10 @@ source=(http://ftp.samba.org/pub/linux-cifs/$name/$name-$version.tar.bz2)
 build() {
 cd $name-$version
 autoreconf -fiv
-./configure --prefix=/usr \
---bindir=/usr/bin \
---sbindir=/usr/sbin \
---with-pamdir=/lib/security
+./configure --prefix=/usr   \
+--with-pamdir=/lib/security \
+--disable-systemd
 
 make
 make DESTDIR=$PKG install
-mv $PKG/sbin/mount.cifs $PKG/usr/sbin
-rm -d $PKG/sbin
 }
