@@ -1,4 +1,4 @@
-# Depends on: python libxml2 libxslt openldap pam kerberos systemd
+# Depends on: python libxml2 libxslt openldap pam kerberos
 
 description="Advanced object-relational database management system (ORDBMS)."
 url="http://www.postgresql.org/docs"
@@ -9,7 +9,9 @@ PKGMK_GROUPS=(lib doc man devel service)
 
 name=postgresql
 version=11.1
-nutyx_version=10.92.3
+release=2
+
+nutyx_version=10.96
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	http://ftp.postgresql.org/pub/source/v$version/$name-$version.tar.bz2)
@@ -25,7 +27,6 @@ sed -i '/DEFAULT_PGSOCKET_DIR/s@/tmp@/run/postgresql@' src/include/pg_config_man
 --with-docdir=/usr/share/doc/$name-$version \
 --enable-thread-safety \
 --with-system-tzdata=/usr/share/zoneinfo \
---with-systemd \
 --with-pam
 
 # build
