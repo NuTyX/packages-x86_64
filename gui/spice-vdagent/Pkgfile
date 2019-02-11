@@ -1,4 +1,4 @@
-# Depends on: alsa-lib dbus glib xorg-libpciaccess xorg-libxfixes xorg-libxinerama xorg-libxrandr systemd spice-protocol desktop-file-utils
+# Depends on: alsa-lib dbus glib xorg-libpciaccess xorg-libxfixes xorg-libxinerama xorg-libxrandr spice-protocol desktop-file-utils
 
 description="Spice agent for Linux guests"
 url="https://www.spice-space.org"
@@ -17,8 +17,7 @@ cd $name-$version
 ./configure --prefix=/usr \
             --sysconfdir=/etc \
             --localstatedir=/var \
-            --with-session-info=systemd \
-            --with-init-script=systemd
+            --with-init-script=systemv
 
 make
 make DESTDIR=$PKG install
