@@ -1,4 +1,4 @@
-# Depends on: systemd jansson rpcsvc-proto libtirpc docbook-xsl talloc tevent avahi gnutls libgpg-error popt python2 cups kerberos libcap openldap tdb ldb
+# Depends on: jansson rpcsvc-proto libtirpc docbook-xsl talloc tevent avahi gnutls libgpg-error popt python2 cups kerberos libcap openldap tdb ldb
 
 description="SMB Fileserver and AD Domain server"
 url="http://www.samba.org"
@@ -7,7 +7,7 @@ contributors="Pierre B, Tnut, Greg"
 
 name=samba
 version=4.9.4
-nutyx_version=10.92.3
+nutyx_version=10.96
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	https://download.samba.org/pub/samba/stable/$name-$version.tar.gz)
@@ -27,7 +27,7 @@ LDFLAGS+=" -ltirpc"                       \
     --with-pammodulesdir=/lib/security  \
     --without-ad-dc                     \
     --enable-fhs                        \
-    --with-systemd                   \
+    --without-systemd                   \
     --enable-selftest                   \
     --bundled-libraries=!talloc,!pytalloc-util,!tevent,!popt,!tdb,!ldb
 
