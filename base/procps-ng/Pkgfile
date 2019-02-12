@@ -17,8 +17,7 @@ cd $name-$version
 --libdir=/usr/lib \
 --docdir=/usr/share/doc/procps-ng-$version \
 --disable-static \
---disable-kill \
---with-systemd
+--disable-kill
 
 make
 make DESTDIR=$PKG install
