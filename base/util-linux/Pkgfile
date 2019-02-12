@@ -27,13 +27,15 @@ mkdir -pv $PKG/var/lib/hwclock
 	--disable-pylibmount \
 	--disable-static     \
 	--without-python     \
+	--without-systemd    \
+	--without-systemdsystemunitdir	
 
 make
 make DESTDIR=$PKG  install
-for file in /usr/lib/lib{blkid,mount,uuid}*
-do
-rm $file
-done
+# for file in /usr/lib/libuuid*
+# do
+# rm $file
+# done
 }
 devel()
 {
