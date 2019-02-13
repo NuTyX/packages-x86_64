@@ -1,0 +1,23 @@
+description="Partition table rescue/guessing tool."
+url="https://github.com/baruch/gpart"
+contributors="Pierre B., Greg"
+packager="tnut <tnut@nutyx.org>"
+
+name=gpart
+version=0.3
+release=2
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/baruch/${name}/archive/${version}.tar.gz)
+
+build() {
+
+cd $name-$version
+
+./autogen.sh
+
+make
+
+make prefix=$PKG/usr sbindir=${PKG}/usr/bin install
+}

@@ -1,0 +1,14 @@
+# Depends on: meson gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache gtk3 gcr libsoup libsecret desktop-file-utils dconf gpgme openldap intltool yelp-tools gobject-introspection xorg-libsm vala
+
+description="GNOME application for managing PGP keys"
+url="http://www.gnome.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, Jayce"
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+
+name=seahorse
+version=3.30
+
+source=(http://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build=meson

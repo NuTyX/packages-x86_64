@@ -1,0 +1,27 @@
+# Depends on: qtsvg hicolor-icon-theme make qttools
+
+description="Powerful yet simple to use screenshot software"
+url="https://github.com/lupoDharkael/flameshot"
+packager="Greg"
+contributors="Graknu"
+
+name=flameshot
+version=0.6.0
+release=1
+
+source=(https://github.com/lupoDharkael/$name/archive/v$version.tar.gz 
+		https://github.com/lupoDharkael/$name/commit/415b059fb248eec4b4ee3be85a1594ce99bfce67.patch)
+
+build() {
+  cd ${name}-${version}
+  patch -Np1 -i ../415b059fb248eec4b4ee3be85a1594ce99bfce67.patch
+  
+  sed -i "s|TAG_VERSION = .*|TAG_VERSION = v${version}|" flameshot.pro 
+  
+  qmake CONFIG+=packaging BASEDIR="${PKG}"
+  
+  make
+  
+  make INSTALL_ROOT="${PKG}" install
+
+}

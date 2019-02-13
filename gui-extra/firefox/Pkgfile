@@ -1,0 +1,160 @@
+# Depends on: node cbindgen icu libvpx libwebp nspr nss libevent rustc dbus-glib autoconf2-13 pulseaudio gconf libnotify yasm sqlite nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav shared-mime-info
+
+description="Standalone web browser from mozilla.org"
+url="http://www.mozilla.com/firefox/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, tnut, Remy"
+
+run=(shared-mime-info icu libevent pulseaudio gconf sqlite libvpx nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav)
+name=firefox
+version=65.0
+
+source=(firefox.desktop
+	http://www.linuxfromscratch.org/patches/blfs/svn/firefox-$version-system_graphite2_harfbuzz-1.patch
+	https://archive.mozilla.org/pub/firefox/releases/$version/source/$name-$version.source.tar.xz)
+
+build() {
+
+ARCH=`uname -m`
+
+for lang in ar da de es-ES fi fr it nb-NO nl pt-PT ru sv-SE tr ja zh-CN hi-IN
+do 
+wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$ARCH/xpi/$lang.xpi
+done
+
+cd $name-$version
+# Locale autodetect
+sed -i '/intl.locale.matchOS/s/false/true/' modules/libpref/init/all.js
+
+cat > mozconfig << "EOF"
+# If you have a multicore machine, all cores will be used by default.
+# If desired, you can reduce the number of cores used, e.g. to 1, by
+# uncommenting the next line and setting a valid number of CPU cores.
+#mk_add_options MOZ_MAKE_FLAGS="-j1"
+
+# If you have installed dbus-glib, comment out this line:
+#ac_add_options --disable-dbus
+
+# If you have installed dbus-glib, and you have installed (or will install)
+# wireless-tools, and you wish to use geolocation web services, comment out
+# this line
+ac_add_options --disable-necko-wifi
+
+# API Keys for geolocation APIs - necko-wifi (above) is required for MLS
+# Uncomment the following line if you wish to use Mozilla Location Service
+#ac_add_options --with-mozilla-api-keyfile=$PWD/mozilla-key
+
+# Uncomment the following line if you wish to use Google's geolocaton API
+# (needed for use with saved maps with Google Maps)
+#ac_add_options --with-google-api-keyfile=$PWD/google-key
+
+# Uncomment these lines if you have installed optional dependencies:
+#ac_add_options --enable-system-hunspell
+#ac_add_options --enable-startup-notification
+
+# Comment out following option if you have PulseAudio installed
+# ac_add_options --disable-pulseaudio
+
+# If you have installed GConf, comment out this line
+ac_add_options --disable-gconf
+
+# Comment out following options if you have not installed
+# recommended dependencies:
+ac_add_options --enable-system-sqlite
+ac_add_options --with-system-libevent
+ac_add_options --with-system-libvpx
+ac_add_options --with-system-nss
+ac_add_options --with-system-nspr
+ac_add_options --with-system-icu
+
+# The gold linker is no-longer the default
+ac_add_options --enable-linker=gold
+
+# If you are going to apply the patch for system graphite
+# and system harfbuzz, uncomment these lines:
+#ac_add_options --with-system-graphite2
+#ac_add_options --with-system-harfbuzz
+
+# Stripping is now enabled by default.
+# Uncomment these lines if you need to run a debugger:
+#ac_add_options --disable-strip
+#ac_add_options --disable-install-strip
+
+# The BLFS editors recommend not changing anything below this line:
+ac_add_options --prefix=/usr
+ac_add_options --enable-application=browser
+
+ac_add_options --disable-crashreporter
+ac_add_options --disable-updater
+ac_add_options --disable-tests
+
+# Optimization for size is broken with gcc7
+ac_add_options --enable-optimize="-O2"
+
+
+ac_add_options --enable-official-branding
+
+# From firefox-61, system cairo is not supported
+ac_add_options --enable-system-ffi
+ac_add_options --enable-system-pixman
+
+
+ac_add_options --with-system-bz2
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-png
+ac_add_options --with-system-zlib
+
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
+EOF
+
+patch -Np1 -i ../firefox-$version-system_graphite2_harfbuzz-1.patch
+sed -e 's/checkImpl/checkFFImpl/g' -i js/src/vm/JSContext*.h
+export CC=clang CXX=clang++ AR=llvm-ar NM=llvm-nm RANLIB=llvm-ranlib
+export MOZBUILD_STATE_PATH=${PWD}/mozbuild
+
+SHELL=/bin/sh ./mach build
+SHELL=/bin/sh ./mach buildsymbols
+
+mkdir -pv $PKG/usr/{bin,lib{,/mozilla/plugins}}
+
+SHELL=/bin/sh DESTDIR=$PKG ./mach install
+
+ln -svf ../mozilla/plugins $PKG/usr/lib/firefox/browser/
+
+# Need for gnash
+mkdir -p $PKG/usr/include/npapi
+cp -v dom/plugins/base/*.h $PKG/usr/include/npapi
+
+# Launcher 
+mkdir -pv $PKG/usr/share/applications
+install -Dm644 $SRC/firefox.desktop $PKG/usr/share/applications/firefox.desktop
+
+mkdir -pv $PKG/usr/share/pixmaps
+ln -sf /usr/lib/firefox-$version/browser/icons/mozicon128.png $PKG/usr/share/pixmaps/firefox.png
+
+for i in 16 22 24 32 48 256
+do
+   mkdir -p $PKG/usr/share/icons/hicolor/${i}x${i}/apps
+   cp browser/branding/official/default${i}.png \
+      $PKG/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png
+done
+
+for lang in ar da de tr es-ES fi fr it nb-NO nl pt-PT ru sv-SE tr ja zh-CN hi-IN
+
+do 
+install -Dm644 $SRC/$lang.xpi \
+    $PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+done
+install -Dm644 /dev/stdin $PKG/usr/lib/firefox/browser/defaults/preferences/vendor.js <<END
+// Use LANG environment variable to choose locale
+pref("intl.locale.requested", "");
+
+// Disable default browser checking.
+pref("browser.shell.checkDefaultBrowser", false);
+
+// Don't disable our bundled extensions in the application directory
+pref("extensions.autoDisableScopes", 11);
+pref("extensions.shownSelectionUI", true);
+END
+
+}

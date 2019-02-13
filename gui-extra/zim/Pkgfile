@@ -1,0 +1,25 @@
+# Depends on: python2-gtk dejavu-ttf desktop-file-utils
+
+description="A WYSIWYG text editor that aims at bringing the concept of a wiki to the desktop."
+url="http://zim-wiki.org/"
+contributors="Alienus, Tnut, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+run=(python2-gtk dejavu-ttf desktop-file-utils shared-mime-info)
+
+name=zim
+version=0.68
+
+source=(
+http://www.zim-wiki.org/downloads/$name-$version.tar.gz)
+
+build() {
+    cd $name-$version
+	for file in zim/inc/xdot.py; do
+        sed -i 's_#!/usr/bin/env python_#!/usr/bin/env python2_' $file
+    done
+
+	sed -i 's|\t\tinstall_class.run(self)|&\n\t\treturn None|' setup.py
+	
+    python2 setup.py install --prefix=/usr --root=$PKG --optimize=1
+}

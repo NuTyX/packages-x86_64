@@ -1,0 +1,37 @@
+# Depends on: cyrus-sasl desktop-file-utils gtk2 gstreamer libxml2 perl-xml-parser gnutls nss nspr xorg-libxscrnsaver xorg-libxrandr xorg-libxinerama xorg-libsm xscreensaver startup-notification hicolor-icon-theme libidn dbus networkmanager
+
+description="Instant messaging client that can connect with a wide range of networks"
+url="http://www.pidgin.im"
+packager="tnut <tnut@nutyx.org>"
+
+run=(desktop-file-utils)
+
+name=pidgin
+version=2.13.0
+release=2
+
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--with-gstreamer=1.0 \
+--disable-gevolution \
+--disable-meanwhile \
+--disable-avahi \
+--disable-mono \
+--disable-tk \
+--disable-cap \
+--disable-gtkspell  \
+--disable-vv \
+--disable-nm \
+--disable-tcl \
+--disable-schemas-install \
+--enable-cyrus-sasl \
+--enable-gnutls=yes
+ 
+make
+make DESTDIR=$PKG install
+rm -rf $PKG/{etc,usr/lib/perl5}
+}

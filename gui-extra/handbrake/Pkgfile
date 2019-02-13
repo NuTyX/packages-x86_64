@@ -1,0 +1,25 @@
+# Depends on:  intltool python2 yasm zlib libnotify gstreamer-plugins-base gtk3 dbus-glib libass lame libxml2 opus libvorbis libtheora libsamplerate x264 speex jansson librsvg libgudev x265
+
+description="Multithreaded video transcoder"
+url="https://handbrake.fr"
+contributors="tnut"
+packager="rems <rems@nutyx.org>"
+ 
+name=handbrake
+version=1.2.0
+
+
+
+source=(https://download2.handbrake.fr/$version/HandBrake-$version-source.tar.bz2)
+
+build() {
+
+cd HandBrake-$version
+
+./configure --prefix=/usr
+
+make -C build
+
+cd build
+make DESTDIR="$PKG" install
+}

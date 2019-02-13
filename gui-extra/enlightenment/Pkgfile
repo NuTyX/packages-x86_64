@@ -1,0 +1,27 @@
+# Depends on: efl xcb-util-keysyms
+
+description="Enlightenment window manager"
+url="http://www.enlightenment.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Berlius, Sh4d0w"
+
+run=(efl)
+
+name=enlightenment
+version=0.22.4
+
+source=(https://download.enlightenment.org/rel/apps/enlightenment/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
+uptodate() {
+local ext url LYNX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.xz"
+url="https://download.enlightenment.org/rel/apps/$name"
+$LYNX $url/?C=M\;O=D|grep "$ext$"|grep "$url/$name-"|sed "s@$ext\$@@"|sed "s@$url/$name-@@"|head -1
+}

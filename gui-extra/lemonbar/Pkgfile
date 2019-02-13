@@ -1,0 +1,22 @@
+# Depends on: libxcb git xorg-libxinerama
+
+description="A featherweight, lemon-scented, bar based on xcb."
+url="https://github.com/LemonBoy/bar"
+packager="greg <greg@nutyx.org>"
+contributors="Tnut"
+
+PKGMK_KEEP_SOURCES="no"
+
+name=lemonbar
+version=1.3
+release=1
+
+source=(https://github.com/LemonBoy/bar/archive/v$version.tar.gz)
+
+build() {
+	cd bar-$version
+
+	make all doc
+	install -Dm755 lemonbar   $PKG/usr/bin/lemonbar
+	install -Dm644 lemonbar.1 $PKG/usr/share/man/man1/lemonbar.1
+}

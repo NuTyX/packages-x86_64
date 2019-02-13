@@ -1,0 +1,24 @@
+# Depends on: xfce4-panel
+
+description="Command line plugin Xfce4 panel."
+url="http://goodies.xfce.org/projects/panel-plugins/xfce4-verve-plugin"
+packager="greg <greg@nutyx.org>"
+contributors="pierre B, tnut"
+
+name=xfce4-verve-plugin
+version=1.1.0
+release=1
+
+source=(http://archive.xfce.org/src/panel-plugins/$name/${version%.*}/$name-$version.tar.bz2)
+
+build() {
+
+cd $name-$version
+
+./configure --prefix=/usr \
+--disable-debug
+
+make
+make DESTDIR=$PKG install
+
+}

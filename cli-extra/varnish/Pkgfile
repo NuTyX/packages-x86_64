@@ -1,0 +1,29 @@
+# Depends on: libedit pcre python2-docutils
+
+description="Varnish is a web application accelerator."
+url="http://www.varnish-cache.org/"
+contributors="alieanus, Tnut"
+packager="greg <greg@nutyx.org>"
+
+name=varnish
+version=5.1.3
+release=1
+
+source=(http://repo.varnish-cache.org/source/$name-$version.tar.gz
+		varnish.service)
+
+build(){
+
+    cd $name-$version
+    
+    # https://github.com/varnish/Varnish-Cache/pull/88
+    [[ $PKGMK_ARCH == i686 ]] && CFLAGS+=' -ffloat-store -fexcess-precision=standard'
+    ./configure --prefix=/usr \
+                --sysconfdir=/etc \
+                --localstatedir=/var/lib
+    make
+    make DESTDIR=$PKG install
+
+    # install the varnish init script
+    install -Dm755 $SRC/$name.service $PKG/etc/rc.d/init.d/$name
+}

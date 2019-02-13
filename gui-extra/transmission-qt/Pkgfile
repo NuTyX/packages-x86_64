@@ -1,0 +1,36 @@
+# Depends on:intltool curl libevent openssl qtbase qttools desktop-file-utils gtk-update-icon-cache doxygen gdb
+
+description="Light and fast Bittorent client (GTK Interface)"
+url="http://www.transmissionbt.com/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus, Tnut, Remy"
+
+name=transmission-qt
+version=2.94
+
+source=(https://raw.githubusercontent.com/transmission/transmission-releases/master/transmission-$version.tar.xz)
+
+build() {
+cd transmission-$version
+./configure --prefix=/usr \
+                --disable-cli \
+                --disable-daemon \
+                --without-gtk
+make
+pushd qt
+   qmake qtr.pro \
+   DEFINES+=TRANSLATIONS_DIR=\\\\\\\"/usr/share/transmission-qt/translations\\\\\\\"
+   lrelease translations/*.ts
+   make
+popd
+make  INSTALL_ROOT=$PKG/usr -C qt install
+cd $SRC/transmission-$version
+mkdir -pv $PKG/usr/share/applications/
+mkdir -pv $PKG/usr/share/pixmaps/
+mkdir -pv $PKG/usr/share/transmission-qt/translations
+install -Dm644 -t $PKG/usr/share/transmission-qt/translations qt/translations/*.qm
+    
+install -m644 ./qt/transmission-qt.desktop $PKG/usr/share/applications/transmission-qt.desktop
+install -m644 ./qt/icons/transmission.png  $PKG/usr/share/pixmaps/transmission-qt.png
+
+}

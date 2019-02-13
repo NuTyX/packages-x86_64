@@ -1,0 +1,35 @@
+# Depends on: ffmpeg libjpeg-turbo libpng
+
+description="Cree des vignettes de vos fichiers videos" 
+url="https://github.com/dirkvdb/ffmpegthumbnailer/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fred, Greg"
+
+
+name=ffmpegthumbnailer
+version=2.2.0
+release=1
+
+source=(https://github.com/dirkvdb/$name/archive/$version.tar.gz)
+
+build() {
+
+cd $name-$version
+	
+ mkdir -p build
+  cd build
+  cmake .. \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_INSTALL_LIBDIR=lib \
+	-DENABLE_GIO=ON \
+	-DENABLE_THUMBNAILER=ON
+  make
+  	
+	
+}
+  
+package() {
+  cd $name-$version/build
+  make DESTDIR=$PKG install
+}

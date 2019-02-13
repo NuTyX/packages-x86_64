@@ -1,0 +1,27 @@
+packager="Greg"
+
+# Depends on: xorg-fontconfig 
+
+
+description="M+ Japanese outline fonts"
+url="http://mplus-fonts.osdn.jp/mplus-outline-fonts/index-en.html"
+
+run=()
+
+name=ttf-mplus
+version=TESTFLIGHT_063
+_version=${version/_/-}
+
+release=1
+
+source=(http://jaist.dl.osdn.jp/mplus-fonts/62344/mplus-$_version.tar.xz)
+
+build(){
+  cd ${SRC}/mplus-${_version}
+
+  install -d ${PKG}/usr/share/fonts/TTF
+  install -m644 *.ttf ${PKG}/usr/share/fonts/TTF/
+
+  install -D -m644 LICENSE_E \
+          ${PKG}/usr/share/licenses/${name}/COPYING
+}

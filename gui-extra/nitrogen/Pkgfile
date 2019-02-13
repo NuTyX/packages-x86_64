@@ -1,0 +1,19 @@
+# Depends on: gtk2 gtkmm2 hicolor-icon-theme librsvg
+
+description="Background browser and setter for X windows"
+url="http://projects.l3ib.org/nitrogen/"
+packager="SipoMatadorduCosmos"
+
+name=nitrogen
+version=1.6.1
+release=1
+
+source=(https://github.com/l3ib/$name/releases/download/$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+CXXFLAGS+=' -std=c++11'
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}

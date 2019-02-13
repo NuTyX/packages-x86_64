@@ -1,0 +1,37 @@
+# Depends on: libcap pam mariadb openssl pcre postgresql 
+
+description="A secure and highly configurable FTP daemon for serving large file archives over a network"
+url="ftp://ftp.proftpd.org/distrib/source/proftpd-1.3.6.tar.gz"
+contributors="Berlius, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+
+name=proftpd
+version=1.3.6
+release=3
+nutyx_version=9.92
+
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	ftp://ftp.proftpd.org/distrib/source/$name-$version.tar.gz
+	proftpd.conf)
+
+build() {
+	
+ cd $SRC/$name-$version
+
+ ./configure --prefix=/usr \
+ --sysconfdir=/etc \
+ --localstatedir=/var/run 
+ make	
+}
+package() {
+ cd $SRC/$name-$version
+
+ make DESTDIR=$PKG install
+ install -v -m755 -d $PKG/etc 
+ cp -v $SRC/proftpd.conf $PKG/etc
+
+ # Service
+ cd $SRC/nutyx-${nutyx_version}
+ make DESTDIR=$PKG install-proftpd
+}

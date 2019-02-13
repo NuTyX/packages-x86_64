@@ -1,0 +1,21 @@
+# Depends on: libxcb xcb-util xcb-util-wm git xcb-util-keysyms
+
+description="Tiling window manager based on binary space partitioning"
+url="https://github.com/baskerville/bspwm"
+packager="tnut <tnut@nutyx.org>"
+contributors="Chris Farrell, timcowchip, Greg"
+
+name=bspwm
+version=0.9.5
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/baskerville/$name/archive/$version.tar.gz)
+
+build() {
+
+cd $name-$version
+
+make PREFIX=/usr
+make PREFIX=/usr DESTDIR="$PKG" install
+}

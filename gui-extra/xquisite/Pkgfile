@@ -1,0 +1,19 @@
+# Depends on: gtk-update-icon-cache
+
+description="Icons xquisite for xfce"
+url="http://xfce-look.org/content/show.php/Xquisite?content=69735"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=xquisite
+version=0.4.6
+release=2
+
+run=(gtk-update-icon-cache)
+
+source=(http://downloads.nutyx.org/files/$name-$version.tar.gz)
+
+build() {
+mkdir -p $PKG//usr/share/icons/
+mv Xquisite $PKG//usr/share/icons/
+}

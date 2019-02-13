@@ -1,0 +1,30 @@
+# Depends on: gtk3 xfce4-libui xfce4-libutil 
+
+description="Implementation of the freedesktop.org menu specification"
+url="http://www.xfce.org/"
+packager="greg <greg@nutyx.org>"
+contributors="tyrry,fanch"
+
+name=xfce4-garcon
+_name=garcon
+version=0.6.1
+release=1
+
+source=(http://archive.xfce.org/src/xfce/garcon/0.6/${_name}-$version.tar.bz2)
+		
+build() {
+
+cd ${_name}-$version
+
+./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib \
+    --localstatedir=/var \
+    --disable-static \
+    --disable-debug
+    
+  make
+  make DESTDIR=$PKG install
+
+}

@@ -1,0 +1,17 @@
+# Depends on: efl
+
+description="Audio Video player for enlightenment"
+url="http://www.enlightenment.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Berlius"
+
+name=rage
+version=0.2.1
+source=(http://download.enlightenment.org/rel/apps/$name/$name-$version.tar.xz)
+uptodate() {
+local ext url LYNX
+LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
+ext=".tar.xz"
+url="https://download.enlightenment.org/rel/apps/$name"
+$LYNX $url/?C=M\;O=D|grep "$ext$"|grep "$url/$name-"|sed "s@$ext\$@@"|sed "s@$url/$name-@@"|head -1
+}

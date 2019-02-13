@@ -1,0 +1,22 @@
+# Depends on: gtk-update-icon-cache
+
+description=" Papirus icon theme for Linux"
+url="https://github.com/PapirusDevelopmentTeam/papirus-icon-theme"
+packager="tnut <tnut@nutyx.org"
+contributors="DamnKid, Greg"
+
+name=papirus-icon-theme
+version=20190203
+
+PKGMK_KEEP_SOURCES="no"
+
+run=(gtk-update-icon-cache)
+
+source=(${url}/archive/$version.tar.gz)
+
+build() {
+
+	cd ${name}-$version
+	make DESTDIR=$PKG install
+	
+}

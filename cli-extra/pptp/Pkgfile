@@ -1,0 +1,27 @@
+# Depends on: ppp
+
+description="Client for the proprietary Microsoft Point-to-Point Tunneling Protocol, PPTP."
+url="http://pptpclient.sourceforge.net/"
+contributors="guy, greg"
+packager="remy <remy@nutyx.org>"
+
+name=pptp
+version=1.10.0
+
+source=(http://downloads.sourceforge.net/sourceforge/pptpclient/$name-$version.tar.gz)
+
+build() {
+
+	cd $name-$version
+
+# use our CFLAGS and LDFLAGS
+        sed -i -e "/CFLAGS  =/ c\CFLAGS = ${CFLAGS}" Makefile
+        sed -i -e "/LDFLAGS =/ c\LDFLAGS = ${LDFLAGS}" Makefile
+
+# adjust ip path
+	sed -i 's|/bin/ip|/sbin/ip|g' routing.c
+
+	make
+	make DESTDIR=$PKG install
+	
+}

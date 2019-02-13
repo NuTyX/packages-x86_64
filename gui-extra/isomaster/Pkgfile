@@ -1,0 +1,21 @@
+# Depends on: gtk2 desktop-file-utils harfbuzz atk gdk-pixbuf xorg-libx11 xorg-libxext xorg-libxrender xorg-libxdmcp xcb-proto xorg-server xorg-libxau libxcb libpng freetype xorg-fontconfig xorg-pixman pango cairo pcre glib
+
+description="CD/DVD Image Editor"
+url="http://www.littlesvr.ca/isomaster/"
+contributors="Chris Farrell, timcowchip"
+packager="greg<greg@nutyx.org"
+
+
+name=isomaster
+version=1.3.13
+release=1
+
+source=(http://littlesvr.ca/isomaster/releases/$name-$version.tar.bz2)
+
+build() {
+  cd $name-$version
+  
+  make PREFIX=/usr
+
+  make PREFIX=/usr DESTDIR=$PKG install
+}

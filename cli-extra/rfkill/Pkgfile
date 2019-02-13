@@ -1,0 +1,30 @@
+# Depends on:
+
+description="Tool for enabling and disabling wireless devices"
+url="http://wireless.kernel.org/en/users/Documentation/rfkill"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+name=rfkill
+version=0.5
+
+source=(https://www.kernel.org/pub/software/network/$name/$name-$version.tar.gz
+	    rules.d)
+
+build() {
+
+  cd $SRC/${name}-${version}
+  
+  
+  
+  make
+
+}
+
+package() {
+
+   cd $SRC/${name}-${version}
+   make SBINDIR=/usr/bin DESTDIR=$PKG install
+   install -Dm644 ../rules.d $PKG/lib/udev/rules.d/60-rfkill.rules
+
+}

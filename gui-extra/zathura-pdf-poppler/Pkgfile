@@ -1,0 +1,19 @@
+# Depends on: meson poppler-glib zathura
+
+description="Adds pdf support to zathura by using the poppler engine"
+packager="Rocket"
+url="http://pwmt.org/projects/zathura-pdf-poppler/"
+
+name=zathura-pdf-poppler
+version=0.2.9
+
+source=(https://pwmt.org/projects/zathura/plugins/download/zathura-pdf-poppler-${version}.tar.xz)
+
+build() {
+cd $name-${version}
+
+meson --prefix=/usr build
+
+ninja -C build
+DESTDIR="$PKG" ninja -C build install
+}

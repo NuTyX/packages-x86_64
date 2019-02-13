@@ -1,0 +1,26 @@
+description="A script that automates pasting to a number of pastebin services"
+url="http://wgetpaste.zlin.dk/"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: wget
+
+name=wgetpaste
+version=2.28
+release=1
+
+source=(http://wgetpaste.zlin.dk/$name-$version.tar.bz2
+		http://wgetpaste.zlin.dk/$name.example)
+
+build () {
+
+  cd $SRC/$name-$version
+
+  install -Dm755 $name $PKG/usr/bin/$name
+  install -Dm644 _${name} $PKG/usr/share/zsh/site-functions/_${name}
+  install -Dm644 $SRC/${name}.example $PKG/usr/share/${name}/${name}.example
+
+# license
+  sed -n '2,5p' wgetpaste > LICENSE
+  install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
+  
+}

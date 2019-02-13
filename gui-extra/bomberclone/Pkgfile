@@ -1,0 +1,48 @@
+# Depends on: sdl-mixer sdl-image
+
+description="A clone of Atomic Bomberman."
+url="http://www.bomberclone.de/"
+packager="greg <greg@nutyx.org>"
+contributors="berlius"
+
+name=bomberclone
+version=0.11.9
+release=1
+
+source=(http://downloads.sourceforge.net/project/$name/$name/$name-$version.tar.gz
+		bomberclone-0.11.9-build-fix.patch
+		http://sourceforge.net/p/bomberclone/patches/9/attachment/snprintf.diff)
+		
+		
+prepare() {
+
+	cd $name-$version
+	patch -p0 -i ../bomberclone-0.11.9-build-fix.patch
+	patch -p0 -i ../snprintf.diff
+	
+}	
+
+
+build() {
+
+	cd $name-$version
+
+	sed -i -e '/^packagedatadir=/s|share/games/${PACKAGE}|share/${PACKAGE}|' configure
+
+	./configure \
+		--prefix=/usr \
+		--disable-debug \
+		--disable-werror \
+		--disable-dependency-tracking
+
+	make LDFLAGS+="-lm"
+	
+}
+
+package() {
+
+	cd $name-$version
+	
+	make DESTDIR=$PKG install
+	
+}

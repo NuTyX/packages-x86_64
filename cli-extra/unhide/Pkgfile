@@ -1,0 +1,44 @@
+# Depends on: iproute2 lsof psmisc net-tool-cvs procps-ng
+
+description="A forensic tool to find processes hidden by rootkits, LKMs or by other techniques."
+url="http://sourceforge.net/projects/unhide/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+run=()
+
+
+
+name=unhide
+version=20130526
+release=1
+
+source=(http://downloads.sourceforge.net/project/$name/$name/$name-$version.tgz
+)
+
+prepare() {
+echo "Fonction prepare sans objet"
+}
+
+build() {
+cd $name-$version
+cc -Wall -O2 --static -pthread unhide-linux*.c unhide-output.c -o unhide-linux
+cc -Wall -O2 --static unhide_rb.c -o unhide_rb
+cc -Wall -O2 --static unhide-posix.c -o unhide-posix
+cc -Wall -O2 --static unhide-tcp.c unhide-tcp-fast.c unhide-output.c -o unhide-tcp
+}
+
+package() {
+cd $name-$version
+for _p in unhide-linux unhide-posix unhide_rb unhide-tcp; do
+install -Dm0755 $_p $PKG/usr/bin/$_p
+done
+ln -s unhide-linux $PKG/usr/bin/unhide
+install -Dm0644 man/unhide.8 $PKG/usr/share/man/man8/unhide.8
+}
+
+uptodate() {
+echo "Fonction uptodate sans objet"
+}
+
+

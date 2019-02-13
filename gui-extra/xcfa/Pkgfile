@@ -1,0 +1,23 @@
+# Depends on: taglib alsa-lib curl vte3
+
+description="X Convert File Audio"
+url="http://www.xcfa.tuxfamily.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+name=xcfa
+version=5.0.2
+release=2
+
+source=(http://download.tuxfamily.org/xcfaudio/xcfa_download/src/${name}-${version}.tar.gz)
+
+build() {
+  cd ${name}-${version}
+  ./configure --prefix=/usr
+  make
+}
+
+package(){
+  cd ${name}-${version}
+  make DESTDIR=$PKG install
+}

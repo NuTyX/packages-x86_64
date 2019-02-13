@@ -1,0 +1,17 @@
+# Depends on: libnotify gtk3 gstreamer curl
+
+description="administrator of downloading with importation HTML"
+url="http://urlget.sourceforge.net/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=uget
+version=2.2.1
+
+source=(http://downloads.sourceforge.net/urlget/$name-$version.tar.gz)
+build() {
+	cd $name-$version
+	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+	make
+	make DESTDIR=$PKG install
+}

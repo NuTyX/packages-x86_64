@@ -1,0 +1,40 @@
+# Depends on: perl jasper libpng libwmf libxml2 libtiff
+
+description="Image processing system."
+url="http://www.graphicsmagick.org/"
+contributors="Tnut, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+name=graphicsmagick
+version=1.3.30
+
+source=(http://downloads.sourceforge.net/project/${name}/${name}/${version}/GraphicsMagick-${version}.tar.xz)
+
+build() {
+
+cd GraphicsMagick-$version
+
+./configure \
+		--prefix=/usr \
+		--enable-shared \
+		--with-modules \
+		--with-perl \
+		--with-gs-font-dir=/usr/share/fonts/Type1 \
+		--with-quantum-depth=16 \
+		--with-threads
+make
+make DESTDIR=$PKG install
+
+cd PerlMagick
+	sed -i -e "s:'LDDLFLAGS'  => \"\(.*\)\":'LDDLFLAGS'  => \"-L${PKG}/usr/lib \1\":" Makefile.PL
+	perl Makefile.PL INSTALLDIRS=vendor PREFIX=/usr DESTDIR=${PKG}
+	sed -i -e "s/LDLOADLIBS =/LDLOADLIBS = -lGraphicsMagick/" Makefile
+	make
+	make install
+
+	# Remove perllocal.pod and .packlist
+	rm -f ${PKG}/usr/lib/share/perl5/base/perllocal.pod
+	rm -rf ${PKG}/usr/lib/perl5/core_perl
+	rm -rf ${PKG}/usr/lib/perl5/vendor_perl/auto/Graphics/Magick/.packlist
+	
+}

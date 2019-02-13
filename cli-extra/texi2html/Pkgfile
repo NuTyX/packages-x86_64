@@ -1,0 +1,28 @@
+description="Converts texinfo documents to HTML"
+url="http://www.nongnu.org/texi2html/"
+contributors="Chris Farrell, timcowchip"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: perl
+
+name=texi2html
+version=5.0
+release=1
+
+source=("http://download.savannah.gnu.org/releases/texi2html/$name-$version.tar.bz2")
+
+build() {
+
+  cd $name-$version
+  ./configure --prefix=/usr
+  make
+
+}
+
+
+package() {
+
+	cd $name-$version
+	make DESTDIR=$PKG install
+
+}

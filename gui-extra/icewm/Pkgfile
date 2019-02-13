@@ -1,0 +1,21 @@
+# Depends on: xorg-server xorg-fontconfig gdk-pixbuf fribidi
+
+packager="tnut <tnut@nutyx.org>"
+url="www.icewm.org"
+description="IceWM is a window manager with the goals of speed, simplicity"
+
+name=icewm
+version=1.4.2
+
+source=(http://github.com/bbidulock/$name/releases/download/$version/$name-$version.tar.bz2)
+ 
+build() {
+
+cd $name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--docdir=/usr/share/$name-$version
+make
+
+make DESTDIR=$PKG install
+}

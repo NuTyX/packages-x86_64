@@ -1,0 +1,24 @@
+# Depends on: xorg-server
+
+description="A window manager for X11"
+url="http://blackboxwm.sourceforge.net"
+packager="tnut <tnut@nutyx.org>"
+contributors="Berlius, Tnut"
+
+name=blackbox
+version=0.73
+
+PKGMK_KEEP_SOURCE="no"
+
+source=(https://github.com/bbidulock/blackboxwm/archive/0.73.tar.gz)
+
+build () {
+
+    cd $SRC/blackboxwm-$version
+    sed -e '/AC_DISABLE_SHARED/d' -i configure.ac # Build shared library
+    ./autogen.sh
+
+    ./configure --prefix=/usr --mandir=/usr/share/man
+    make
+    make DESTDIR=$PKG install	
+}

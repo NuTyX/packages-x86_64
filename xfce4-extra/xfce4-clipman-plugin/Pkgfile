@@ -1,0 +1,29 @@
+# Depends on: xfce4-panel libunique1 xorg-libxtst qrencode
+
+description="A clipboard plugin for the Xfce4 panel"
+url="http://goodies.xfce.org/projects/panel-plugins/xfce4-clipman-plugin"
+packager="greg <greg@nutyx.org>"
+contributors="tyrry"
+
+
+name=xfce4-clipman-plugin
+version=1.4.2
+release=1
+
+source=(http://archive.xfce.org/src/panel-plugins/$name/${version%.*}/$name-$version.tar.bz2)
+
+build() {
+
+cd $name-$version
+
+	./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib \
+    --localstatedir=/var \
+    --disable-debug
+    
+	make
+	make DESTDIR=$PKG install
+	
+}

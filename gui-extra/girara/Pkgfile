@@ -1,0 +1,19 @@
+# Depends on: glib gtk3 meson
+
+description="User interface library focused on simplicity and minimalism"
+packager="Rocket"
+url="http://pwmt.org/projects/girara"
+name=girara
+version=0.3.2
+
+source=("https://github.com/pwmt/${name}/archive/${version}.tar.gz")
+
+build() {
+cd $name-$version
+
+meson build
+
+cd build
+ninja
+DESTDIR="$PKG" ninja install
+}

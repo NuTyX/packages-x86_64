@@ -1,0 +1,23 @@
+#Depends on: qtdeclarative 
+
+description="QML port of qtermwidget"
+url="https://github.com/Swordfish90/qmltermwidget"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+PKGMK_KEEP_SOURCES="no"
+
+name=qmltermwidget
+version=0.1.0
+release=2
+
+source=(https://github.com/Swordfish90/qmltermwidget/archive/v$version.tar.gz)
+
+build() {
+
+    cd $SRC/$name-$version
+
+    qmake && make
+
+    make INSTALL_ROOT=$PKG install
+}

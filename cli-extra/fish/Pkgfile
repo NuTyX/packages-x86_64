@@ -1,0 +1,41 @@
+# Depends on: ncurses doxygen inetutils
+description="a modern interactive commandline shell."
+url="http://www.fishshell.com/"
+packager="remy <remy@nutyx.org>"
+contributors="greg, fanch"
+
+run=(doxygen)
+
+name=fish
+version=2.7.1
+release=1
+
+source=(https://github.com/fish-shell/fish-shell/archive/$version.tar.gz)
+
+
+prepare() {
+
+  cd fish-shell-$version
+  echo $version > version
+  autoreconf -fiv
+  
+}
+
+
+
+build() {
+
+  cd fish-shell-$version
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc
+  make
+	
+}
+
+
+package() {
+
+	cd fish-shell-$version
+	make DESTDIR=$PKG install
+
+}

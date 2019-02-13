@@ -1,0 +1,57 @@
+# Depends on: caja dconf djvulibre gtk2 libsecret libspectre mate-desktop mate-icon-theme poppler-glib poppler webkitgtk
+
+description="Simply a pdf document viewer"
+url="https://mate-desktop.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="fanch,tnut,greg,jayce"
+
+name=atril
+version=1.20.3
+release=2
+
+source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
+
+build() {
+
+  cd $name-$version
+  sed -i 's|/usr/share/javascript/mathjax|/usr/share/mathjax|' backend/epub/epub-document.c
+  ./configure \
+          --prefix=/usr \
+          --libexecdir=/usr/lib/${name} \
+          --enable-gtk-doc \
+          --enable-djvu \
+          --enable-dvi \
+          --enable-epub \
+          --enable-t1lib \
+          --enable-pixbuf \
+          --enable-comics \
+          --enable-xps \
+          --enable-introspection
+  make
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make DESTDIR=$PKG install
+
+  # Obsolets libs
+  rm $PKG/usr/lib/atril/3/backends/libcomicsdocument.la
+  rm $PKG/usr/lib/atril/3/backends/libdjvudocument.la
+  rm $PKG/usr/lib/atril/3/backends/libpdfdocument.la
+  rm $PKG/usr/lib/atril/3/backends/libpixbufdocument.la
+  rm $PKG/usr/lib/atril/3/backends/libpsdocument.la
+  rm $PKG/usr/lib/atril/3/backends/libtiffdocument.la
+  rm $PKG/usr/lib/atril/3/backends/libepubdocument.la
+  rm $PKG/usr/lib/caja/extensions-2.0/libatril-properties-page.la
+  rm $PKG/usr/lib/libatrildocument.la
+  rm $PKG/usr/lib/libatrilview.la
+}
+
+uptodate() {
+feed=https://github.com/mate-desktop/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

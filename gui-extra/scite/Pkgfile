@@ -1,0 +1,23 @@
+# Depends on: setconf gtk3
+
+description="A free source code editing component for Win32, GTK+, and OS X"
+packager="greg <greg@nutyx.org>"
+contributors="Renaud Chenard"
+url="http://scintilla.org/"
+
+name=scite
+version=4.1.2
+release=1
+
+source=(http://downloads.sourceforge.net/sourceforge/scintilla/${name}${version//./}.tgz)
+
+
+build() {
+  GTK3=1 make -C scintilla/gtk
+  GTK3=1 make -C $name/gtk
+}
+
+package() {
+  GTK3=1 make -C $name/gtk DESTDIR=$PKG install
+  ln -sf /usr/bin/SciTE $PKG/usr/bin/scite
+}

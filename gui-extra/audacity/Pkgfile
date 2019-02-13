@@ -1,0 +1,28 @@
+# Depends on: libvorbis libmad libid3tag wxgtk lame hicolor-icon-theme ffmpeg shared-mime-info desktop-file-utils redland jack soundtouch cmake zip python2 
+
+description="A program that lets you manipulate digital audio waveforms"
+url="http://web.audacityteam.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, Greg"
+
+name=audacity
+version=2.3.0
+
+source=(https://github.com/audacity/audacity/archive/Audacity-$version.tar.gz
+)
+
+build() {
+
+cd $name-Audacity-$version
+
+autoreconf -vi
+
+WX_CONFIG=wx-config-gtk3 ./configure --prefix=/usr \
+--with-libsamplerate --with-soundtouch \
+--with-ffmpeg="system" --with-expat="system" \
+--with-lame="system" --with-libsndfile="system"
+
+make
+make DESTDIR=$PKG install
+	
+}

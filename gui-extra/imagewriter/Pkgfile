@@ -1,0 +1,31 @@
+# Depends on : qtbase desktop-file-utils hicolor-icon-theme udisks2 xdg-su
+
+description="A graphical utility for writing raw disk images & hybrid isos to USB keys in QT5"
+url="https://github.com/mbarringer/imagewriter"
+packager="Rems"
+contributors="Tnut, Greg"
+
+name=imagewriter
+version=20150521
+
+source=()
+
+prepare() {
+git clone https://github.com/openSUSE/$name $name
+	if [ -e /usr/bin/kdesu ]
+	  then sed 's/\/usr\/bin\/xdg-su -c \/usr\/bin\//kdesu /' -i $name/$name.desktop
+	  else sed 's/\/usr\/bin\/xdg-su -c \/usr\/bin\//xdg-su -s /' -i $name/$name.desktop
+	fi
+}
+
+build() {
+	cd $name
+	CFLAGS="$CFLAGS -DKIOSKHACK"
+	qmake PREFIX="$PKG/usr" DEFINES=USEUDISKS2 $name.pro
+	make
+}
+
+package() {
+	cd $name
+	make DESTDIR=$PKG install
+}

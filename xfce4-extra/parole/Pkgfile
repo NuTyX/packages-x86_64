@@ -1,0 +1,23 @@
+# Depends on: xfce4-libui libnotify dbus-glib xfce4-libui gstreamer-plugins-base gstreamer-plugins-good libdvdcss libdvdnav libdvdread startup-notification 
+
+description="A modern media player based on the GStreamer framework"
+url="http://goodies.xfce.org/projects/applications/parole"
+packager="greg <greg@nutyx.org>"
+contributors="tyrry at nutyx dot org"
+
+name=parole
+version=0.9.2
+release=1
+
+source=(http://archive.xfce.org/src/apps/parole/${version%.*}/parole-$version.tar.bz2)
+
+build() {
+
+cd parole-$version
+
+./configure --prefix=/usr
+
+make
+make DESTDIR=$PKG install
+
+}

@@ -1,0 +1,19 @@
+# Depends on: alsa-lib zlib libvorbis xorg-libxdamage xorg-libxext libtheora xorg-libsm jack
+description="Produces a OGG encapsulated Theora/Vorbis recording of your desktop"
+name=recordmydesktop
+version=0.3.8.1
+release=1
+url="http://recordmydesktop.sourceforge.net"
+source=(http://downloads.sourceforge.net/${name}/${name}-${version}.tar.gz
+	shmstr-to-shmproto.patch
+	recordmydesktop-bitrate.patch)
+
+build() {
+  cd ${name}-${version}
+  patch -p0 < ../shmstr-to-shmproto.patch
+  patch -p1 < ../recordmydesktop-bitrate.patch
+  ./configure --prefix=/usr --enable-jack=yes LIBS="`pkg-config --libs jack`" \
+	CFLAGS="`pkg-config --cflags jack` -DHAVE_LIBJACK"
+  make
+  make DESTDIR=$PKG install
+}

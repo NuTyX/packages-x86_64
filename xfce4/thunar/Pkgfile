@@ -1,0 +1,41 @@
+# Depends on: libnotify libexif exo xfce4-libui xfce4-panel desktop-file-utils gvfs gtk2 libpng libgudev xfce4-libutil
+
+description="Modern file manager for Xfce"
+url="http://thunar.xfce.org"
+packager="greg <greg@nutyx.org>"
+contributors="tyrry,tnut"
+
+run=(desktop-file-utils gtk-update-icon-cache)
+
+name=thunar
+version=1.6.12
+release=1
+
+source=(http://archive.xfce.org/src/xfce/thunar/${version%.*}/Thunar-$version.tar.bz2)
+
+build() {
+
+cd Thunar-$version
+
+./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib \
+    --localstatedir=/var \
+    --disable-static \
+    --enable-gio-unix \
+    --enable-dbus \
+    --enable-startup-notification \
+    --enable-gudev \
+    --enable-notifications \
+    --enable-exif \
+    --enable-pcre \
+    --enable-gtk-doc \
+    --disable-debug
+    
+make
+make DESTDIR=$PKG install
+
+sed -i 's:x-directory/gnome-default-handler;::' \
+    $PKG/usr/share/applications/Thunar-folder-handler.desktop
+}

@@ -1,0 +1,26 @@
+# Depends on: gpm
+description="Joe's own editor"
+url="http://joe-editor.sourceforge.net/"
+contributors="Berlius, Tnut, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+name=joe
+version=4.6
+
+source=(https://downloads.sourceforge.net/joe-editor/$name-$version.tar.gz)
+
+build() {
+
+  cd $name-$version
+
+  ./configure --prefix=/usr \
+	--sysconfdir=/etc/joe \
+	--mandir=/usr/share/man \
+	--docdir=/usr/share/doc/$name-$version
+  make
+  make DESTDIR=$PKG install
+
+  install -vm 755 joe/util/{stringify,termidx,uniproc} \
+  $PKG/usr/bin
+  
+}

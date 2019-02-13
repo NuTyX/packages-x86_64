@@ -1,0 +1,30 @@
+# Depends on: libpcap libcap-ng openssl
+
+description="Powerful command-line packet analyzer"
+url="http://www.tcpdump.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="greg"
+
+name=tcpdump
+version=4.9.2
+release=2
+
+source=(https://sources.archlinux.org/other/packages/tcpdump/${name}-${version}.tar.gz)
+
+
+build () {
+
+	cd $SRC/$name-$version
+		./configure \
+			--prefix=/usr \
+			--sbindir=/usr/bin \
+
+	make
+}
+
+package() {
+
+	cd $SRC/$name-$version
+	make DESTDIR=$PKG install
+	rm -f $PKG/usr/bin/tcpdump.$version
+}

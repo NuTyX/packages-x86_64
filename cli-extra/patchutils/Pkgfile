@@ -1,0 +1,29 @@
+description="A small collection of programs that operate on patch files"
+url="http://cyberelk.net/tim/patchutils/"
+contributors="tnut"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: perl
+run=(perl)
+
+name=patchutils
+version=0.3.4
+release=1
+
+source=(http://cyberelk.net/tim/data/patchutils/stable/$name-$version.tar.xz)
+
+build() {
+
+cd $name-$version
+./configure --prefix=/usr
+make
+
+}
+
+
+package () {
+
+cd $name-$version
+make DESTDIR=$PKG install
+
+}

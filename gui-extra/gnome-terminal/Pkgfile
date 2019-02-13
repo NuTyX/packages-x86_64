@@ -1,0 +1,24 @@
+# Depends on: gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache dconf gconf gtk3 gnome-doc-utils gsettings-desktop-schemas vte3 nautilus 
+
+description="The GNOME Terminal Emulator"
+url="http://www.gnome.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, Jayce, Fanch, Remy"
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+
+name=gnome-terminal
+version=3.30.2
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr             \
+            --disable-static          \
+            --disable-migration       \
+            --disable-search-provider \
+            --without-pcre2 --with-nautilus-extension
+make
+make DESTDIR=$PKG install
+
+}

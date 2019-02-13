@@ -1,0 +1,48 @@
+# Depends on: exiv2 lcms2 lensfun desktop-file-utils curl libsecret libgphoto2 openexr sqlite libxslt libsoup gtk3 pugixml json-glib lua colord colord-gtk graphicsmagick intltool cmake librsvg flickcurl
+
+description="Utility to organize and develop raw images"
+url="http://darktable.sf.net/"
+packager="tnut tnut@nutyx.org>"
+contributors="Tnut, Greg, Rémy"
+
+name=darktable
+version=2.4.4
+
+source=(https://github.com/darktable-org/darktable/releases/download/release-${version}/darktable-${version/rc/.rc}.tar.xz)
+
+
+build() {
+
+cd $SRC/$name-${version/rc/~rc}
+  mkdir -p build
+  cd build
+  CXXFLAGS+=" -fpermissive"
+  cmake \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBINARY_PACKAGE_BUILD=1 \
+      -DBUILD_USERMANUAL=False \
+      -DUSE_LIBSECRET=On \
+      -DUSE_LUA=On \
+      -DUSE_GNOME_KEYRING=Off \
+      -DUSE_COLORD=On \
+      -DPROJECT_VERSION=$version \
+      ..
+  make
+
+  cd ../tools/basecurve
+  cmake .
+  make
+
+}
+
+package() {
+
+  cd $srcdir/$name-${version/rc/~rc}/build
+  make DESTDIR=$PKG install
+  ln -s darktable/libdarktable.so $PKG/usr/lib/libdarktable.so
+  install -Dm0755 ../tools/basecurve/dt-curve-tool $PKG/usr/bin/dt-curve-tool
+  install -Dm0755 ../tools/basecurve/dt-curve-tool-helper $PKG/usr/bin/dt-curve-tool-helper
+
+}

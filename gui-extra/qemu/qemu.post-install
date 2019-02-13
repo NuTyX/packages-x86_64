@@ -1,0 +1,15 @@
+echo "Your username need to be part of the 'kvm' group to be able to use virtualisation
+Votre nom d'utilisateur doit être ajouté au groupe 'kvm' pour la virtualisation"
+
+echo "
+  usermod -a -G kvm <username>"
+
+ln -svf qemu-system-x86_64 /usr/bin/qemu
+
+echo "Qemu is configured to launch a x86_64 machine.
+To use another system (PowerMac, PowerPC, Sparc, mips etc..)
+you need to launch the corresponding machines from the '/usr/bin' folder
+
+Qemu est configuré pour lancer une machine virtuelle x86_64.
+Pour utiliser un autre système (PowerMac, PowerPC, Sparc, mips etc..)
+il faut lancer les machines correstondantes directement depuis le repertoire /usr/bin."

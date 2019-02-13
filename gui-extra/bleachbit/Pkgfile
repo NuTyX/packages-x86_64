@@ -1,0 +1,28 @@
+# Depends on: python2 python2-gtk desktop-file-utils gtk-update-icon-cache hicolor-icon-theme
+
+description="Deletes unneeded files to free disk space and maintain privacy"
+url="http://bleachbit.sourceforge.net/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+name=bleachbit
+version=1.12
+release=3
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/bleachbit/bleachbit/archive/v$version.tar.gz)
+
+build() {
+
+    cd $name-$version
+    
+	for file in $(find . -name '*.py' -print); do
+        sed -i -e 's_^#!.*/usr/bin/python_#!/usr/bin/python2_' \
+               -e 's_^#!.*/usr/bin/env.*python_#!/usr/bin/env python2_' "$file"
+    done
+    
+    sed -i 's/python/python2/g' Makefile
+
+    make prefix=/usr DESTDIR=$PKG PYTHON=python2 install
+    
+}

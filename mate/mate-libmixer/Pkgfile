@@ -1,0 +1,41 @@
+# Depends on: alsa-lib pulseaudio
+
+description="Mixer library for MATE Desktop"
+url="https://mate-desktop.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch, Tnut, Greg"
+
+name=mate-libmixer
+_name=libmatemixer
+version=1.20.1
+
+source=(http://pub.mate-desktop.org/releases/${version%.*}/${_name}-$version.tar.xz)
+
+build() {
+
+  cd ${_name}-$version
+  ./configure \
+          --prefix=/usr \
+          --sysconfdir=/etc \
+          --localstatedir=/var \
+          --disable-static
+          
+  make
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make DESTDIR=$PKG install
+
+  rm $PKG/usr/lib/libmatemixer.la
+  rm $PKG/usr/lib/libmatemixer/libmatemixer-{null,pulse,alsa}.la
+}
+
+uptodate() {
+feed=https://github.com/mate-desktop/$_name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

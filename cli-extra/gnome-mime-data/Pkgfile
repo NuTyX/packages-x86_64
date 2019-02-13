@@ -1,0 +1,34 @@
+description="Base set of file types and applications for GNOME-2"
+url="http://www.gnome.org/"
+contributors="fanch at nutyx dor org"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: intltool perl-xml-parser
+
+name=gnome-mime-data
+version=2.18.0
+
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.bz2)
+
+
+build() {
+
+	cd $name-$version
+	./configure --prefix=/usr \
+	            --sysconfdir=/etc \
+	            --prefix=/usr \
+		    --sysconfdir=/etc \
+		    --localstatedir=/var \
+	            --disable-nls 
+	make
+
+}
+
+
+package() {
+
+	cd $name-$version
+	make DESTDIR=$PKG install
+
+}

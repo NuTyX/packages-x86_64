@@ -1,0 +1,24 @@
+# Depends on: xorg-libx11 xorg-fontconfig 
+
+description="Serif (Libertine) and Sans Serif (Biolinum) OpenType fonts with large Unicode coverage"
+url="http://linuxlibertine.sourceforge.net/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+_reldate=2012_07_02
+
+name=ttf-linux-libertine
+version=5.3.0
+release=2
+
+source=("http://downloads.sourceforge.net/project/linuxlibertine/linuxlibertine/${version}/LinLibertine"{TTF,OTF}"_${version}_${_reldate}.tgz") 
+
+build() {
+	cd $SRC
+	install -dm755 $PKG/usr/share/fonts/{OTF,TTF}
+	install -m644 *.ttf $PKG/usr/share/fonts/TTF
+	install -m644 *.otf $PKG/usr/share/fonts/OTF
+
+	install -Dm644 OFL-1.1.txt $PKG/usr/share/licenses/$name/LICENSE
+	install -Dm644 LICENCE.txt $PKG/usr/share/licenses/$name/README
+}

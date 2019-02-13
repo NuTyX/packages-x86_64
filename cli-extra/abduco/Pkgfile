@@ -1,0 +1,34 @@
+# Depends on: 
+
+description="Session management in a clean and simple way."
+url="http://brain-dump.org/projects/abduco/"
+packager="remy<remy@nutyx.org>"
+contributors="Greg"
+
+name=abduco
+version=0.6
+release=2
+
+source=(http://brain-dump.org/projects/$name/$name-$version.tar.gz
+        config.h)
+
+prepare() {
+cd $name-$version
+cp "../config.h" .
+}
+
+build() {
+cd $name-$version
+make all
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG PREFIX=/usr install
+ 
+}
+
+uptodate() {
+echo "Fonction  vide, normal..." 
+}
+

@@ -1,0 +1,33 @@
+# Depends on: python2-gtk wpa-supplicant dbus-python wireless-tools dhcpcd
+
+description="Wired and wireless network manager for Linux"
+url="http://wicd.sourceforge.net/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=( python2-gtk wpa-supplicant dbus-python wireless-tools dhcpcd )
+
+name=wicd
+version=1.7.4
+release=3
+
+source=( http://launchpad.net/wicd/1.7/$version/+download/$name-$version.tar.gz)
+build() {
+unset MAKEFLAGS
+cd $name-$version
+sed -e "/wpath.logrotate\|wpath.systemd/d" \
+    -e "/detection failed/ a\                self.init=\'init\/default\/wicd\'" \
+    -i.orig setup.py
+rm po/*.po
+
+python setup.py configure \
+--no-install-kde \
+--no-install-acpi \
+--no-install-pmutils \
+--no-install-init \
+--no-install-gnome-shell-extensions \
+--docdir=/usr/share/doc/wicd-$version
+
+python setup.py install --root=$PKG
+cp scripts/wicd $PKG/usr/bin/wicd
+}

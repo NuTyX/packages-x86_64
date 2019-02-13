@@ -1,0 +1,30 @@
+# Depends on: p11-kit cmake gcr bzr gobject-introspection intltool ninja aria2 gtk3 xorg-libxscrnsaver webkitgtk vala libnotify librsvg libunique1 desktop-file-utils libzeitgeist hicolor-icon-theme libpeas gstreamer-plugins-libav gstreamer-plugins-base gstreamer-plugins-good libsoup
+
+description="Midori is a lightweight web browser that uses WebKitGTK+."
+url="http://www.midori-browser.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre, Tnut, Dania"
+
+run=(desktop-file-utils gtk-update-icon-cache hicolor-icon-theme)
+
+name=midori
+version=7.0
+
+source=(https://github.com/midori-browser/core/releases/download/v${version:0:1}/$name-v$version.tar.gz)
+
+build () {
+cd $name-v$version
+
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+ -DCMAKE_INSTALL_LIBDIR=lib \
+ -DCMAKE_INSTALL_DOCDIR=/usr/share/doc/$name-$version \
+ -DCMAKE_C_FLAGS="$CFLAGS -fPIC -w" \
+ -DVALA_CFLAGS="$CFLAGS -fPIC -w" \
+ -G Ninja \
+ ..
+ninja
+cd ..
+DESTDIR="$PKG" ninja -C build install
+}
