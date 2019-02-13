@@ -1,0 +1,51 @@
+# Depends on: vim pam
+
+description="Feature-rich cron implementation"
+url="http://fcron.free.fr"
+contributors="Pierre, Greg"
+packager="tnut<tnut@nutyx.org>"
+
+name=fcron
+version=3.2.1
+release=4
+
+source=(http://fcron.free.fr/archives/$name-$version.src.tar.gz)
+
+prepare() {
+
+unset MAKEFLAGS
+
+}
+
+build() {
+
+	cd $name-$version
+
+	./configure --prefix=/usr \
+                    --sysconfdir=/etc/fcron \
+                    --without-sendmail \
+                    --localstatedir=/var \
+	            --with-boot-install=no \
+                    --mandir=/usr/share/man \
+		    --infodir=/usr/share/info \
+                    --with-piddir=/run \
+		    --with-answer-all=no \
+		    --with-systemdsystemunitdir=no
+	make
+        make DESTDIR=$PKG install
+
+mkdir -p $PKG/etc/pam.d
+
+for i in fcron fcrontab
+do
+install -D -m644 files/fcron.pam $PKG/etc/pam.d/$i
+done
+
+# Add cron.* directories
+
+for j in daily hourly monthly weekly
+do
+install -d -m755 $PKG/etc/cron.$j
+done
+
+}

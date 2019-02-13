@@ -1,0 +1,39 @@
+# Depends on: python xorg-server xorg-fontconfig xorg-font-util xorg-mkfontdir xorg-font-alias xorg-encodings xorg-bdftopcf
+
+description="Monospace bitmap font (for X11 and console)"
+url="http://sourceforge.net/projects/terminus-font/"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+name=terminus-font
+version=4.46
+release=1
+
+source=(http://downloads.sourceforge.net/project/$name/$name-$version/$name-$version.tar.gz)
+
+prepare() {
+  chmod +x $name-$version/configure
+}
+
+build() {
+  cd $name-$version
+
+  ./configure \
+    --prefix=/usr \
+    --x11dir=/usr/share/fonts/misc \
+    --psfdir=/usr/share/kbd/consolefonts
+  make
+}
+
+package() {
+  make -C $name-$version DESTDIR=$PKG install
+
+  install -Dm644 $SRC/$name-$version/75-yes-terminus.conf \
+    $PKG/etc/fonts/conf.avail/75-yes-terminus.conf
+  install -Dm644 $SRC/$name-$version/OFL.TXT \
+    $PKG/usr/share/licenses/$name/LICENSE
+  install -d $PKG/etc/fonts/conf.d
+
+  cd $PKG/etc/fonts/conf.d
+  ln -s ../conf.avail/75-yes-terminus.conf .
+}

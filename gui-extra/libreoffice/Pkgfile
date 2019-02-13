@@ -1,0 +1,118 @@
+# Depends on: python perl-archive-zip unzip zip icu cups poppler-glib xorg-fontconfig libxslt kerberos gtk2 xorgproto dbus-glib mesa postgresql wget apache-ant apr boost clucene dbus-glib libjpeg-turbo2 xorg-glu gstreamer-plugins-base libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss redland unixodbc serf dconf bluez desktop-file-utils doxygen gdb gnutls mariadb kerberos nasm sane valgrind cppunit hunspell hyphen telepathy-glib zenity libcmis xmlsec gpgme libgpg-error libassuan libepoxy libabw llvm
+
+PKGMK_IGNORE_UNPACK="yes"
+
+description="Office suite. It is largely compatible with Microsoft Office (fork from OpenOffice.org)."
+url="http://www.libreoffice.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Tnut, Greg"
+
+run=(shared-mime-info xdg-utils desktop-file-utils) 
+
+name=libreoffice
+version=6.1.4.2
+release=2
+
+source=(http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-$version.tar.xz
+	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-dictionaries-$version.tar.xz
+	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-help-$version.tar.xz
+	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-translations-$version.tar.xz
+        http://www.linuxfromscratch.org/patches/blfs/svn/libreoffice-6.1.4.2-consolidated_fixes-1.patch
+        0001-Remove-check-if-root-due-to-issue-with-fakeroot.patch)
+
+prepare() {
+        unset ACLOCAL
+
+        tar -xf $name-$version.tar.xz --no-overwrite-dir
+
+        cd $name-$version
+        patch -Np1 -i ../0001-Remove-check-if-root-due-to-issue-with-fakeroot.patch
+	patch -Np1 -i ../libreoffice-6.1.4.2-consolidated_fixes-1.patch
+        install -dm755 external/tarballs
+
+        ln -sv ../$name-dictionaries-$version.tar.xz  external/tarballs/
+        ln -sv ../$name-help-$version.tar.xz          external/tarballs/
+        ln -sv ../$name-translations-$version.tar.xz  external/tarballs/
+
+        sed -e "/gzip -f/d"   \
+            -e "s|.1.gz|.1|g" \
+            -i bin/distro-install-desktop-integration
+
+        sed -e "/distro-install-file-lists/d" -i Makefile.in
+	                                                                                                                                  
+}
+
+build() {
+cd $name-$version
+
+./autogen.sh CC=clang CXX=clang++ --prefix=/usr \
+	--sysconfdir=/etc \
+	--with-vendor="NuTyX" \
+	--with-lang="ar es de fr hi it ja pt fi nb nl nn da sv tr ru pl zh-CN"   \
+	--with-myspell-dicts \
+	--with-system-dicts \
+	--with-alloc=system \
+	--enable-release-build=yes \
+	--with-system-apr \
+	--with-system-boost \
+	--with-system-lcms2 \
+	--with-system-libatomic_ops \
+	--with-system-libxml        \
+	--with-system-neon          \
+	--with-system-nss           \
+	--with-system-odbc          \
+	--with-system-redland       \
+	--with-system-serf          \
+	--with-system-zlib          \
+        --with-system-dicts        \
+        --with-system-openldap          \
+	--without-fonts \
+	--without-junit \
+        --without-java \
+        --disable-epm \
+        --disable-odk \
+	--with-doxygen \
+        --enable-dbus \
+	--enable-gstreamer-1-0 \
+	--enable-python=system \
+	--with-system-cairo \
+	--with-system-curl \
+        --with-system-icu \
+	--with-system-expat \
+	--with-system-libpng \
+	--with-system-jpeg \
+	--with-system-openssl \
+	--with-system-poppler \
+	--with-system-postgresql \
+        --with-system-libcmis \
+	--with-system-xmlsec \
+        --with-system-gpgmepp \
+        --with-system-epoxy \
+        --with-system-librevenge \
+        --with-system-libabw \
+        --with-system-hunspell \
+        --with-system-sane \
+        --with-system-bluez \
+        --with-system-clucene \
+        --with-system-cppunit \
+        --with-help \
+        --disable-gtk3 \
+        --disable-debug \
+        --with-system-mariadb \
+	--with-parallelism=$(getconf _NPROCESSORS_ONLN)
+
+CPPFLAGS='-DU_USE_ICU_NAMESPACE=1' make build-nocheck
+
+make DESTDIR=$PKG distro-pack-install
+
+	# Dictionaries installation
+	chown -cR 0:0 dictionaries/ 
+	for lang in en fr_FR es de it_IT pt_PT no nl_NL sv_SE da_DK ru_RU
+	do
+	  mkdir -pv $PKG/usr/lib/$name/share/extensions/dict-$lang
+	  cp -R dictionaries/$lang/* $PKG/usr/lib/$name/share/extensions/dict-$lang
+	done
+        
+	# Nettoyage
+	rm -rf $PKG/gid_Module_*
+}

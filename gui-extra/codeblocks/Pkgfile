@@ -1,0 +1,26 @@
+# Depends on: zip boost desktop-file-utils gamin gtk-update-icon-cache hicolor-icon-theme hunspell shared-mime-info wxgtk
+
+
+description="a cross-platform Integrated Development Environment (IDE)."
+url="http://www.codeblocks.org/"
+maintainer="The Code::Blocks Team"
+packager="tnut <tnut@nutyx.org>"
+contributors="tnut, Rémy"
+
+name=codeblocks
+version=17.12
+release=2
+
+source=(https://downloads.sourceforge.net/codeblocks/${name}_$version.tar.xz)
+build () {
+cd $name-*
+
+./configure --prefix=/usr    \
+  --with-contrib-plugins=all \
+  --with-wx-config=/usr/bin/wx-config
+
+sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+make
+make DESTDIR=$PKG install
+}

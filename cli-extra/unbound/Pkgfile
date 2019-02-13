@@ -1,0 +1,35 @@
+# Depends on: openssl doxygen
+
+description="A validating, recursive, and caching DNS resolver."
+url="http://www.unbound.net"
+contributors="tnut, greg"
+packager="tnut <tnut@nutyx.org>"
+
+
+name=unbound
+version=1.6.7
+
+source=(${url}/downloads/$name-$version.tar.gz)
+
+build()
+{
+
+  cd $name-$version
+
+  ./configure --prefix=/usr     \
+            --sysconfdir=/etc \
+            --disable-static  \
+            --with-pidfile=/run/unbound.pid &&
+
+  make
+
+  make doc
+
+  make DESTDIR=$PKG install
+  mkdir -p $PKG/usr/bin
+  mv -v $PKG/usr/sbin/unbound-host $PKG/usr/bin/
+
+  install -v -m755 -d $PKG/usr/share/doc/$name-$version
+  install -v -m644 doc/html/* $PKG/usr/share/doc/$name-$version
+  
+}

@@ -1,0 +1,18 @@
+# Depends on: fontforge xorg-server
+
+description="Thai fonts set"
+url="http://linux.thai.net/projects/thaifonts-scalable/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=thaifonts-scalable
+version=0.4.17
+release=2
+
+source=(http://linux.thai.net/pub/thailinux/software/$name/$name-$version.tar.gz)
+build() {
+cd $name-$version
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+make
+make DESTDIR=$PKG install
+}

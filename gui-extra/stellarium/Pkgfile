@@ -1,0 +1,20 @@
+# Depends on: cmake qtbase qtlocation qtmultimedia qtscript qttools qtserialport 
+
+description="Open source planetarium"
+URL="http://stellarium.org"
+packager="Dania <Dania@nutyx.org>"
+contributor="tnut"
+
+name=stellarium
+version=0.18.1
+
+source=(https://github.com/Stellarium/stellarium/releases/download/v"$version"/$name-$version.tar.gz)
+
+build() {
+    cd $name-$version
+    mkdir -p builds/unix && cd builds/unix
+
+    cmake   -DCMAKE_INSTALL_PREFIX=/usr ../..
+    make
+    make DESTDIR=$PKG install
+}

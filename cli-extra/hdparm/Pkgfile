@@ -1,0 +1,26 @@
+description="The Hdparm package contains an utility that is useful for controlling ATA/IDE"
+url="http://hdparm.sourceforge.net/"
+contributors="tnut"
+packager="greg<greg@nutyx.org>"
+
+name=hdparm
+version=9.58
+
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
+
+
+build() {
+
+cd $name-$version
+
+make
+
+}
+
+
+package() {
+
+cd $name-$version
+make DESTDIR=$PKG binprefix=/usr install
+
+}

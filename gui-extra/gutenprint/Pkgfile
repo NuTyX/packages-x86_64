@@ -1,0 +1,50 @@
+# Depends on: ijs gtk2 cups foomatic-db-engine ghostscript cups-filters
+
+description="Top quality printer drivers for POSIX systems"
+url="http://gimp-print.sourceforge.net"
+contributors="Pierre B., tnut"
+packager="greg <greg@nutyx.org>"
+
+
+name=gutenprint
+version=5.3.1
+
+source=(https://downloads.sourceforge.net/gimp-print/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+sed -i 's|$(PACKAGE)/doc|doc/$(PACKAGE)-$(VERSION)|' \
+       {,doc/,doc/developer/}Makefile.in
+# sbindir is not properly taken over there
+sed -i "s:cups_sbindir=\"\/usr\/sbin\":cups_sbindir=\"\/usr\/bin\":g" m4/stp_cups.m4
+sed -i  "s:cups_sbindir=\"\${cups_prefix}\/sbin\":cups_sbindir=\"\${cups_prefix}\/bin\":" m4/stp_cups.m4
+sed -i "s:m4local:m4extra:" Makefile.am
+autoreconf -vfi
+
+./configure --prefix=/usr \
+--sbin=/usr/sbin \
+--disable-rpath \
+--enable-samples \
+--disable-static \
+--disable-static-genppd \
+--enable-cups-ppds \
+--enable-simplified-cups-ppds=only \
+--enable-translated-cups-ppds \
+--infodir=/usr/share/info \
+--mandir=/usr/share/man
+make
+make DESTDIR=$PKG install
+
+cd ..
+mkdir tmp
+
+mv ${PKG}/usr/share/cups/model tmp/
+
+
+rm -rf ${PKG}/usr/share/foomatic
+rm -rf ${PKG}/etc
+
+mkdir -p ${PKG}/usr/share/cups
+mv tmp/* ${PKG}/usr/share/cups/
+
+}

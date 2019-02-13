@@ -1,0 +1,27 @@
+# Depends on: glibc
+
+description="System Utilities Based on Sysfs"
+url="http://linux-diag.sourceforge.net/Sysfsutils.html"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+name=sysfsutils
+version=2.1.0
+release=1
+
+source=(http://downloads.sourceforge.net/sourceforge/linux-diag/${name}-${version}.tar.gz)
+
+prepare() {
+echo "Fonction prepare sans objet"
+}
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --mandir=/usr/share/man
+make
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+}

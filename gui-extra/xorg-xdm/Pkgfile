@@ -1,0 +1,51 @@
+# Depends on: pam xorg-libxaw xorg-libxinerama xorg-xinit xorg-libxft
+
+description="X display Manager"
+url="https://xorg.freedesktop.org/"
+packager="greg <greg@nutyx.org>"
+contributors="tnut"
+
+name=xorg-xdm
+version=1.1.11
+release=4
+
+run=(xorg-xinit)
+
+source=($url/releases/individual/app/xdm-$version.tar.bz2
+		git_fixes.diff Xsession-loginshell.patch 
+		Xsession-xsm.patch)
+	
+	
+build() {
+
+   cd xdm-$version
+   patch -Np1 -i ../git_fixes.diff
+   patch -Np0 -i ../Xsession-loginshell.patch
+   patch -Np1 -i ../Xsession-xsm.patch
+   autoreconf -fi
+   ./configure --prefix=/usr \
+   --with-xdmconfigdir=/etc/X11/xdm \
+   --with-xdmscriptdir=/etc/X11/xdm \
+   --with-pixmapdir=/usr/share/xdm/pixmaps
+   make
+   make DESTDIR=$PKG install
+   mkdir -p $PKG/{usr/sbin,etc/pam.d}
+   mv $PKG/usr/{,s}bin/xdm 
+   cat > $PKG/etc/pam.d/xdm << "EOF"
+# Begin /etc/pam.d/xdm
+
+auth     requisite      pam_nologin.so
+auth     required       pam_env.so
+auth     include        system-auth
+
+account  include        system-account
+
+password include        system-password
+
+session  required       pam_limits.so
+session  include        system-session
+
+# End /etc/pam.d/xdm
+EOF
+
+}

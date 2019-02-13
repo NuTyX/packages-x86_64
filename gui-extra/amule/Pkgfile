@@ -1,0 +1,24 @@
+# Depends on: crypto++ util-linux wxgtk
+
+description=" An all-platform Edonkey client."
+url="http://www.amule.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+name=amule
+version=2.3.2
+release=3
+
+source=(https://downloads.sourceforge.net/project/amule/aMule/$version/aMule-$version.tar.bz2
+        crypto++.patch)
+
+
+build() {
+   cd aMule-$version
+        patch -p1 -i ../crypto++.patch
+	./configure --prefix=/usr 
+		
+	make
+	make install DESTDIR=$PKG
+	
+}

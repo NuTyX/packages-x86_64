@@ -1,0 +1,33 @@
+# Depends on: gtk3 intltool
+
+description="contains a desktop-independent theme switcher for GTK+3"
+url="http://lxde.org/"
+contributors="geantbrun"
+packager="greg<greg@nutyx.org>"
+
+
+name=lxde-appearance
+alias=(lxappearance)
+_name=lxappearance
+version=0.6.3
+release=1
+
+source=(http://ufpr.dl.sourceforge.net/project/lxde/LXAppearance/${_name}-$version.tar.xz)
+
+build() {
+
+	cd $SRC
+	[ -d gtk3 ] || cp -r $_name-$version gtk3
+    cd gtk3
+    ./configure --sysconfdir=/etc --prefix=/usr --enable-dbus --enable-gtk3
+    make
+
+	}
+
+
+package() {
+
+	cd gtk3
+	make DESTDIR=$PKG install
+
+    }

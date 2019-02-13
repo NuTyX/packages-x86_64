@@ -1,0 +1,27 @@
+# Depends on: fuse2
+
+description="exfat filesystem utilities"
+url="http://code.google.com/p/exfat/"
+contributors="guy, tnut"
+packager="greg<greg@nutyx.org>"
+
+name=fuse-exfat
+version=1.2.7
+release=1
+
+source=(https://github.com/relan/exfat/releases/download/v$version/$name-$version.tar.gz)
+
+build () {
+
+ cd $name-$version
+   ./configure --prefix=/usr --sbindir=/sbin
+   make
+  
+}
+
+package() {
+
+	cd $name-$version
+	make DESTDIR=$PKG install
+
+}

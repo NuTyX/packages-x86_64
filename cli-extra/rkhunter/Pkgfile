@@ -1,0 +1,39 @@
+description="Checks machines for the presence of rootkits and other unwanted tools."
+url="http://rkhunter.sourceforge.net/"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: bash perl wget unhide
+
+name=rkhunter
+version=1.4.4
+release=1
+
+source=(http://downloads.sourceforge.net/sourceforge/$name/$name-$version.tar.gz)
+
+build () {
+
+  cd $SRC/$name-$version
+
+  # fix installer for x86_64
+  sed -i -e "s/lib64/lib/g" installer.sh
+
+  # install to "/usr"
+  install -dm0755 $PKG/usr
+  ./installer.sh --layout custom $PKG/usr --striproot $PKG --install
+
+  # fix paths
+  mv $PKG/usr/etc $PKG
+  mv $PKG/usr/var $PKG
+
+  sed -i -e s#/usr/etc/rkhunter.conf#/etc/rkhunter.conf#g $PKG/usr/bin/$name
+  sed -i -e s#/usr/etc/rkhunter.conf#/etc/rkhunter.conf#g $PKG/etc/$name.conf
+  sed -i -e s#/usr/var/lib/rkhunter/db#/var/lib/rkhunter/db#g $PKG/etc/$name.conf
+  sed -i -e s#/usr/var/lib/rkhunter/tmp#/var/lib/rkhunter/tmp#g $PKG/etc/$name.conf
+
+  # cleanup
+  rm -f $PKG/var/lib/$name/tmp/{group,passwd}
+
+  # we trust in udev
+  sed -i 's|^#ALLOWHIDDENDIR=/dev/.udev$|ALLOWHIDDENDIR=/dev/.udev|' \
+    $PKG/etc/$name.conf
+}

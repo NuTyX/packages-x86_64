@@ -1,0 +1,31 @@
+# Depends on: libjpeg-turbo xorg-libxdamage xorg-libxinerama xorg-libxrandr xorg-libxtst libvncserver
+
+description="VNC server for real X displays"
+url="https://github.com/LibVNC/x11vnc"
+packager="tnut <tnut@nutyx.org"
+contributors="Greg"
+
+name=x11vnc
+version=0.9.15
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/LibVNC/x11vnc/archive/${version}.tar.gz)
+
+build() {
+
+cd $name-$version
+autoreconf -fi
+./configure --prefix=/usr --mandir=/usr/share/man
+make
+
+}
+
+
+package() {
+
+cd $SRC/$name-$version
+make DESTDIR=$PKG install
+install misc/{rx11vnc,Xdummy} $PKG/usr/bin
+
+}

@@ -1,0 +1,27 @@
+# Depends on: fuse2
+
+description="An automounter implemented with FUSE."
+url="https://github.com/pcarrier/afuse/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+name=afuse
+version=0.4.1
+release=2
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/pcarrier/afuse/archive/v$version.tar.gz)
+
+build() {
+cd $name-$version
+./autogen.sh
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+
+}
+
+uptodate() {
+echo "Fonction  vide, normal..." 
+}

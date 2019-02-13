@@ -1,0 +1,35 @@
+# Depends on: poppler-glib gtk2 desktop-file-utils hicolor-icon-theme
+
+url="http://freecode.com/projects/epdfview"
+packager="Sipo"
+description="Lightweight PDF document viewer"
+name=epdfview
+alias=(ePDFView)
+version=0.1.8
+release=1
+
+source=(http://anduin.linuxfromscratch.org/BLFS/epdfview/$name-$version.tar.bz2
+	$name-$version-fixes-2.patch)
+
+
+prepare() {
+
+cp $SRC/$name-$version-fixes-2.patch $SRC/$name-$version/$name-$version-fixes-2.patch
+cd $name-$version
+patch -Np1 -i ../epdfview-0.1.8-fixes-2.patch
+
+}
+
+build() {
+
+cd $name-$version
+./configure --prefix=/usr 
+make
+make DESTDIR=$PKG install
+
+}
+
+
+
+
+

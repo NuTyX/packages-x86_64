@@ -1,0 +1,31 @@
+description="Checks and undeletes partitions + PhotoRec, signature based recovery tool"
+url="http://www.cgsecurity.org/index.html?testdisk.html"
+contributors="tnut"
+packager="greg<greg@nutyx.org>"
+
+
+# Depends on: ntfs-3g
+
+name=testdisk
+version=7.0
+release=1
+
+source=(http://www.cgsecurity.org/$name-$version.tar.bz2)
+
+build() {
+
+	cd $name-$version
+	./configure --prefix=/usr \
+	--without-ewf \
+	--enable-sudo
+	make
+
+}
+
+
+package() {
+
+	cd $name-$version
+	make DESTDIR=$PKG install
+
+}

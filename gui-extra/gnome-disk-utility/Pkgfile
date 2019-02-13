@@ -1,0 +1,14 @@
+# Depends on: meson ninja gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache libcanberra libdvdread gnome-settings-daemon librsvg gtk3 intltool libsecret libpwquality udisks2 xorg-libxinerama
+
+description="Disk Management Utility for GNOME."
+url="http://www.gnome.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, jayce, Remy, Fanch"
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+
+name=gnome-disk-utility
+version=3.30.2
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build=meson

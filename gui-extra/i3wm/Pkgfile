@@ -1,0 +1,24 @@
+# Depends on: yajl xmlto libev startup-notification pango libxkbcommon xcb-util-cursor xcb-util-wm xcb-util-keysyms xorg-libx11 xcb-util-xrm i3status
+
+description="Tiling window manager"
+url="https://i3wm.org"
+packager="tnut <tnut@nutyx.org>"
+
+run=(i3status)
+
+name=i3wm
+version=4.14.1
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/i3/i3/archive/$version.tar.gz)
+
+build() {
+cd i3-$version
+autoreconf -fi
+mkdir build
+cd build
+../configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}

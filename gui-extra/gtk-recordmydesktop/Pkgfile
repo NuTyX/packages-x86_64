@@ -1,0 +1,26 @@
+# Depends on: python2-gtk recordmydesktop
+
+description="Graphical frontend to recordmydesktop."
+url="http://recordmydesktop.sourceforge.net/"
+packager="greg <greg@nutyx.org>"
+contributors="fanch at nutyx dot com"
+
+run=(python2-gtk recordmydesktop)
+
+name=gtk-recordmydesktop
+version=0.3.8
+release=1
+
+source=(https://downloads.sourceforge.net/sourceforge/recordmydesktop/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+make
+}
+
+package() {
+cd $name-$version
+make DESTDIR=$PKG install
+sed -i 's#/usr/bin/python#/usr/bin/python2#' $PKG/usr/bin/gtk-recordMyDesktop
+}

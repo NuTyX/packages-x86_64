@@ -1,0 +1,23 @@
+# Depends on: hicolor-icon-theme libmediainfo qtbase qttools qttranslations
+
+description="A small and user friendly opensource video library with great potential"
+url="http://melnik.solutions/project/alexandra"
+contributors=""
+packager="rems <rems@nutyx.org>"
+ 
+name=alexandra
+version=1.5.1
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/eugene-melnik/$name/archive/$version.tar.gz)
+
+build() {
+
+cd $name-$version
+
+qmake PREFIX=/usr alexandra.pro
+
+  make
+  make INSTALL_ROOT=$PKG install
+}

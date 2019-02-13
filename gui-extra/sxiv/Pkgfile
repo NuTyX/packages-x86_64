@@ -1,0 +1,35 @@
+# Depends on: imlib2 desktop-file-utils xdg-utils hicolor-icon-theme libexif xorg-libxft
+
+description="Simple X Image Viewer"
+url="https://github.com/muennich/sxiv"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+PKGMK_KEEP_SOURCES="no"
+
+name=sxiv
+version=24
+release=1
+
+source=(https://github.com/muennich/$name/archive/v$version.tar.gz)
+
+prepare() {
+  cd $name-$version
+  ln -s config.def.h config.h
+}
+
+build() {
+
+make -C $name-$version
+
+}
+
+package() {
+
+cd $name-$version
+
+  make PREFIX=/usr DESTDIR=$PKG install
+  make -C icon PREFIX=/usr DESTDIR=$PKG install
+  install -Dm644 sxiv.desktop $PKG/usr/share/applications/sxiv.desktop
+
+}

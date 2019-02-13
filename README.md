@@ -56,3 +56,19 @@ Sous NuTyX, on parle de "scénario" pour expliquer le choix d'utilisation de cet
 n'utiliser que les binaires proposés dans les trois collections mentionnées ci-dessus, n'utiliser que la collection de
 base et ses propres recettes, ou un mélange.
 
+## 'base, cli, gui, cli-extra, 'gui-extra', 'lxde', 'lxde-extra', 'xfce4', 'xfce4-extra', 'mate' and 'mate-extra' collections ports
+
+> NOTE: the git address is changed.
+
+You can get a readonly copy via the command:
+
+    # git clone http://git.tuxfamily.org/nutyx.org/core
+
+Contributions are welcome. If you don't know what it all about, please take the time to read the documentation at
+http://www.nutyx.org/en/build-package.html
+(version française)
+http://www.nutyx.org/fr/build-package.html
+
+It will explain you what's a collection, a git, a port, the tools around 'cards' etc
+
+Have fun :)

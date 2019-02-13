@@ -1,0 +1,31 @@
+# Depends on: xorg-server xorg-libxt xorg-libxft xorg-libxmu mesa libpng libjpeg-turbo cairo librsvg
+
+description="A lightweight window manager for the X11 Window System"
+url="http://joewing.net/projects/jwm/"
+packager="greg<greg@nutyx.org>"
+contributors="timcowchip, tnut"
+
+name=jwm
+version=2.3.7
+release=1
+
+source=(http://joewing.net/projects/jwm/releases/jwm-$version.tar.xz
+		jwm.desktop)
+
+prepare() {
+  cd $SRC/$name-$version
+  sed -i 's|/usr/local/share/|/usr/share/|' contrib/Makefile po/Makefile* example.jwmrc
+}
+
+build() {
+ cd $SRC/$name-$version
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-fribidi 
+  make
+}
+
+package() {
+ cd $SRC/$name-$version
+  make BINDIR=$PKG/usr/bin MANDIR=$PKG/usr/share/man \
+       DESTDIR=$PKG SYSCONF=$PKG/etc install
+  install -Dm644 $SRC/jwm.desktop $PKG/usr/share/xsessions/jwm.desktop
+}

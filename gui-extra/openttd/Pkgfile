@@ -1,0 +1,34 @@
+# Depends on: libpng sdl icu xorg-fontconfig lzo hicolor-icon-theme desktop-file-utils xz openttd-opengfx openttd-opensfx
+
+
+description="An engine for running Transport Tycoon Deluxe."
+url="http://www.openttd.org"
+contributors="tsgeek at mailoo dot org"
+packager="remy<remy@nutyx.org>"
+
+
+name=openttd
+version=1.8.0
+
+source=(http://binaries.openttd.org/releases/${version}/${name}-${version}-source.tar.xz
+)
+
+build() {
+  cd $name-$version
+# http://site.icu-project.org/download/61#TOC-Migration-Issues
+
+CXXFLAGS+=' -DU_USING_ICU_NAMESPACE=1'
+
+ ./configure \
+    --prefix-dir=/usr \
+    --binary-name=$name \
+    --binary-dir=bin \
+    --data-dir=share/$name \
+    --install-dir=$PKG \
+    --doc-dir=share/doc/$name \
+    --menu-name="OpenTTD" \
+    --personal-dir=.${name}    
+
+make
+make DESTDIR=$PKG install
+}

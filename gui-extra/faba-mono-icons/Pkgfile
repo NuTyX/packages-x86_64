@@ -1,0 +1,18 @@
+# Depends on: git faba-icon-theme
+
+description="Faba Mono Icons is a supplementary theme to Faba Icon Theme. It consists only of monochrome panel icons"
+packager="greg<greg@nutyx.org>"
+contributors="Jayce,tnut"
+url="https://github.com/snwh/faba-mono-icons"
+
+name=faba-mono-icons
+version=94.560b521
+release=1
+
+build() {
+   git clone https://github.com/snwh/${name}
+   cd $name
+   bash autogen.sh --prefix=/usr
+   make
+   make DESTDIR=$PKG install
+}

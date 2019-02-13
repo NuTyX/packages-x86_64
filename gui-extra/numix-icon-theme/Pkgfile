@@ -1,0 +1,21 @@
+ # Depends on: 	gtk-update-icon-cache git 
+
+description="Base icon theme from the Numix project"
+packager="rems"
+url="http://numixproject.org/"
+
+name=numix-icon-theme
+version=git
+release=1
+
+source=()
+
+prepare() {
+git clone https://github.com/numixproject/numix-icon-theme.git $name
+}
+
+build() {
+cd $name
+  install -dm 755 "$PKG"/usr/share/icons
+  cp -dr --no-preserve='ownership' Numix{,-Light} "$PKG"/usr/share/icons/
+}

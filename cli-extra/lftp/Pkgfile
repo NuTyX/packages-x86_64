@@ -1,0 +1,26 @@
+# Depends on: gnutls hicolor-icon-theme perl 
+
+description="lftp is a sophisticated ftp/http client."
+url="http://lftp.yar.ru"
+packager="tnut <tnut@nutyx.org>"
+contributors="alienus, tnut, Greg"
+
+name=lftp
+version=4.8.4
+
+source=(${url}/ftp/$name-$version.tar.xz)
+
+build() {
+
+cd $name-$version
+
+./configure --prefix=/usr \
+--with-gnutls \
+--without-openssl \
+--without-included-regex \
+--disable-static
+
+make
+make DESTDIR=$PKG install
+
+}

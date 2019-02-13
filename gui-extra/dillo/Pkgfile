@@ -1,0 +1,42 @@
+# Depends on: fltk openssl10
+
+description="A small, fast graphical web browser built on FLTK"
+url="http://www.dillo.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=dillo
+version=3.0.5
+release=4
+source=(http://www.dillo.org/download/dillo-$version.tar.bz2
+        http://www.dillo.org/Icons/d2_icon3_122x122.png)
+build() {
+cd $name-$version
+CFLAGS="-I/usr/include/openssl-1.0" LDFLAGS="-L/usr/lib/openssl-1.0" \
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--enable-ssl \
+--enable-cookies
+
+sed -i "s@<openssl/@<openssl-1.0/@"  dpi/https.c
+
+make
+make DESTDIR=$PKG install
+mkdir -p $PKG/usr/share/{applications,pixmaps}
+cat > $PKG/usr/share/applications/dillo.desktop << EOF
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Dillo
+Name[fr]=Dillo
+Comment=Browse The Web
+Comment[fr]=Navigateur Web
+GenericName[fr]=Navigateur Web
+Icon=dillo
+Exec=dillo
+Categories=Network;Application;Browser;WebBrowser;
+StartupNotify=true
+Terminal=false
+EOF
+install -m644 ../d2_icon3_122x122.png $PKG/usr/share/pixmaps/dillo.png
+}

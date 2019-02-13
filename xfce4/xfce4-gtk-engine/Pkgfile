@@ -1,0 +1,38 @@
+# Depends on: gtk2
+
+description="Xfce Gtk+-2.0 engine and themes"
+url="http://www.xfce.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tyrry, Tnut, Greg"
+
+name=xfce4-gtk-engine
+_name=gtk-xfce-engine
+version=2.10.1
+release=2
+
+source=(http://archive.xfce.org/src/xfce/${_name}/${version%.*}/${_name}-$version.tar.bz2)
+
+build() {
+
+cd ${_name}-$version
+
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib \
+    --localstatedir=/var \
+    --disable-static \
+    --disable-debug
+
+  make
+
+ }
+ 
+  package() {
+
+  cd ${_name}-$version
+  make DESTDIR=$PKG install
+
+  # Obsolet lib
+  rm $PKG//usr/lib/gtk-2.0/2.10.0/engines/libxfce.la
+}

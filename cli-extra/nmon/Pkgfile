@@ -1,0 +1,25 @@
+description="AIX & Linux Performance Monitoring tool"
+url="http://nmon.sourceforge.net"
+packager="greg<greg@nutyx.org>"
+
+# Depends on: ncurses
+
+name=nmon
+version=16g
+release=1
+
+source=(http://downloads.sourceforge.net/$name/lmon$version.c)
+
+build() {
+
+  cd $SRC
+  cc -o nmon lmon$version.c -g -O2 -D JFS -D GETUSER -Wall -D LARGEMEM -lncurses -lm -g -D X86
+  
+}
+
+package() {
+
+  cd $SRC
+  install -D -m 0755 nmon $PKG/usr/bin/nmon
+  
+}

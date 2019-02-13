@@ -1,0 +1,57 @@
+# Depends on: libevent openssl zlib
+
+description="Tor is a anonymous network and proxy."
+url="http://www.torproject.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+name=tor
+version=0.3.2.10
+
+source=(https://www.torproject.org/dist/tor-$version.tar.gz
+	tor.rc
+	tor-config.patch)
+
+prepare() {
+	cd $name-$version
+	patch -p 1 -i $SRC/tor-config.patch
+
+	# fix for find: The relative path `~/bin' is included in the PATH
+	# environment variable, which is insecure in combination with the
+	# -execdir action of find. Please remove that entry from $PATH
+	export PATH='/sbin:/usr/sbin:/bin:/usr/bin'
+}
+
+build() {
+	cd $name-$version
+	./configure \
+		--prefix=/usr \
+		--mandir=/usr/man \
+		--sysconfdir=/etc
+
+	make
+	make DESTDIR=$PKG install
+	
+	install -d $PKG/usr/var/lib/tor
+	chown root:root $PKG/usr/var/lib/tor
+	touch \
+		$PKG/usr/var/lib/tor/cached-certs \
+		$PKG/usr/var/lib/tor/cached-consensus \
+		$PKG/usr/var/lib/tor/cached-descriptors \
+		$PKG/usr/var/lib/tor/cached-descriptors.new \
+		$PKG/usr/var/lib/tor/cached-routers.new \
+		$PKG/usr/var/lib/tor/state
+	find $PKG/usr/var/lib/tor/ -type f -execdir chown root:root {} \; -execdir chmod 0600 {} \;
+
+	mv $PKG/etc/tor/torrc.sample $PKG/etc/tor/torrc
+	find $PKG/etc/tor/ -type f -exec chown root:tor {} \; -execdir chmod 0640 {} \;
+
+	find $PKG/usr/bin -type f -execdir chown root:tor {} \; -execdir chmod 0750 {} \;
+
+	install -d $PKG/var/log/tor
+	chown root:root $PKG/var/log/tor
+	touch $PKG/var/log/tor/notices.log
+	find $PKG/var/log/tor/ -type f -exec chown root:root {} \; -execdir chmod 0640 {} \;
+
+	install -m 0750 -D $SRC/tor.rc $PKG/etc/rc.d/tor
+}

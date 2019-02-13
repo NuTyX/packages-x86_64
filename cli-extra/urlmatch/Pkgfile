@@ -1,0 +1,21 @@
+description="A fast URL matcher library"
+url="https://github.com/clbr/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+name=urlmatch
+alias=(liburlmatch)
+version=1.0
+release=2
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/clbr/urlmatch/archive/v$version.tar.gz)
+	
+build() {
+
+cd urlmatch-$version
+make
+make install DESTDIR=$PKG
+
+}

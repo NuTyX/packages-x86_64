@@ -1,0 +1,13 @@
+# Depends on: python2-gtk
+description="tool of configuration for openbox"
+url="http://obmenu.sourceforge.net"
+packager="geantbrun at gmail dot com"
+name=obmenu
+version=1.0
+release=2
+run=(python2-gtk)
+source=(http://freefr.dl.sourceforge.net/sourceforge/obmenu/$name-$version.tar.gz)
+build() {
+cd $name-$version
+python2 setup.py install --root=$PKG
+}

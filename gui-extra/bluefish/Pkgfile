@@ -1,0 +1,35 @@
+# Depends on: pcre enchant gtk2 desktop-file-utils
+
+description="A powerful HTML editor for experienced web designers and programmers"
+url="http://bluefish.openoffice.nl/"
+packager="greg <greg@nutyx.org>"
+contributors="tnut"
+
+name=bluefish
+version=2.2.10
+release=1
+
+source=(http://www.bennewitz.com/bluefish/stable/source/$name-$version.tar.bz2)
+
+build() {
+
+	cd $name-$version
+
+	./configure --prefix=/usr \
+		--with-freedesktop_org-menu=/usr/share/applications \
+		--with-freedesktop_org-mime=/usr/share/mime \
+		--with-icon-path=/usr/share/pixmaps \
+		--disable-update-databases \
+		--without-libgnomeui \
+		--docdir=/usr/share/doc/$name-$version
+
+make
+
+}
+
+package() {
+
+	cd $name-$version
+	make DESTDIR=$PKG install
+
+}

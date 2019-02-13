@@ -1,0 +1,26 @@
+diff -pruN tor-0.2.0.30.orig/src/config/torrc.sample.in tor-0.2.0.30/src/config/torrc.sample.in
+--- tor-0.2.0.30.orig/src/config/torrc.sample.in	2008-07-17 13:50:58.055386603 +0000
++++ tor-0.2.0.30/src/config/torrc.sample.in	2008-07-17 13:55:17.578388974 +0000
+@@ -33,7 +33,7 @@ SocksListenAddress 127.0.0.1 # accept co
+ ## may provide sensitive information to an attacker who obtains the logs.
+ ##
+ ## Send all messages of level 'notice' or higher to @LOCALSTATEDIR@/log/tor/notices.log
+-#Log notice file @LOCALSTATEDIR@/log/tor/notices.log
++Log notice file /var/log/tor/notices.log
+ ## Send every possible message to @LOCALSTATEDIR@/log/tor/debug.log
+ #Log debug file @LOCALSTATEDIR@/log/tor/debug.log
+ ## Use the system log instead of Tor's logfiles
+@@ -44,11 +44,11 @@ SocksListenAddress 127.0.0.1 # accept co
+ ## Uncomment this to start the process in the background... or use
+ ## --runasdaemon 1 on the command line. This is ignored on Windows;
+ ## see the FAQ entry if you want Tor to run as an NT service.
+-#RunAsDaemon 1
++RunAsDaemon 1
+ 
+ ## The directory for keeping all the keys/etc. By default, we store
+ ## things in $HOME/.tor on Unix, and in Application Data\tor on Windows.
+-#DataDirectory @LOCALSTATEDIR@/lib/tor
++DataDirectory @LOCALSTATEDIR@/lib/tor
+ 
+ ## The port on which Tor will listen for local connections from Tor
+ ## controller applications, as documented in control-spec.txt.

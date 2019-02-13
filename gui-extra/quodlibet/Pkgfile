@@ -1,0 +1,24 @@
+# Depends on: gtk3 python-gobject dbus-python python-cairo python-mutagen dbus-glib gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav gstreamer-plugins-ugly gstreamer-plugins-bad python-feedparser intltool
+
+description="A python audio library tagger, manager and player"
+url="https://github.com/quodlibet/quodlibet"
+packager="tnut <tnut@nutyx.org>"
+contributors="Remy"
+
+name=quodlibet
+version=4.2.0
+
+PKGMK_KEEP_SOURCES="no"
+
+run=(python-mutagen python-gobject dbus-python python-cairo gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav gstreamer-plugins-ugly gstreamer-plugins-bad python-feedparser)
+source=(https://github.com/quodlibet/quodlibet/archive/release-$version.tar.gz)
+
+build() {
+
+  cd $name-release-$version/$name
+
+sed -e 's|vendor-completions|site-functions|' -i gdist/zsh_completions.py
+
+  python3 setup.py build
+  python3 setup.py install --root=$PKG
+}

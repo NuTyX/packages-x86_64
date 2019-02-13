@@ -1,0 +1,31 @@
+# Depends on: xfce4-panel lm-sensors libnotify hicolor-icon-theme
+
+description="A lm_sensors plugin for the Xfce panel."
+url="http://goodies.xfce.org/"
+packager="greg <greg@nutyx.org>"
+contributors="tyrry"
+
+name=xfce4-sensors-plugin
+version=1.2.6
+release=1
+
+source=(http://archive.xfce.org/src/panel-plugins/$name/1.2/$name-$version.tar.bz2)
+
+build() {
+
+cd $name-$version
+
+	./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib \
+    --localstatedir=/var \
+    --datadir=/usr/share \
+    --datarootdir=/usr/share \
+    --disable-static \
+    --disable-debug
+  
+	make
+	make DESTDIR=$PKG install
+	
+}

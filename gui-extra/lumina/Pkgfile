@@ -1,0 +1,29 @@
+# Depends on: qtbase fluxbox kwindowsystem oxygen-icons5 xscreensaver poppler-qt qtx11extras qtmultimedia xorg-xbacklight alsa-utils acpid numlockx fluxmod-styles network-manager-applet xorg-term qtsvg qttools
+
+description="A Lightweight QT5 Desktop for FreeBSD"
+url="https://github.com/pcbsd/lumina"
+packager="tnut <tnut@nutyx.org>"
+contributors="Chris F, Remy"
+
+name=lumina
+version=1.4.0p1
+_version=1.4.0-p1
+
+PKGMK_KEEP_SOURCES="no"
+
+run=(fluxbox fluxmod-styles)
+
+source=(https://github.com/trueos/$name/archive/v$_version.tar.gz)
+
+build(){
+	
+    cd $name-$_version/
+    
+    find "${srcdir}/${pkgfullname}" -name *.desktop -exec sed -i 's/usr\/local/usr/' {} \;
+    
+    qmake QMAKE_CFLAGS_ISYSTEM= PREFIX="/usr" LIBPREFIX=/usr/lib/qt CONFIG+=WITH_I18N L_MANDIR=/usr/share/man L_ETCDIR="/etc"
+    
+    make
+
+    make INSTALL_ROOT=$PKG install    
+}

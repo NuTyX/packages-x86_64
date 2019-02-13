@@ -1,0 +1,33 @@
+# Depends on: gtk3
+
+description="Task manager tool for lxde"
+url="http://lxde.org/"
+contributors="geantbrun"
+packager="greg <greg@nutyx.org>"
+
+name=lxde-task
+alias=(lxtask)
+_name=lxtask
+version=0.1.8
+release=1
+
+source=(https://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz)
+
+build() {
+
+    [ -d gtk3 ] || cp -r $_name-$version gtk3
+    cd gtk3
+    ./configure --sysconfdir=/etc --prefix=/usr --enable-gtk3
+  
+    make
+    make DESTDIR=$PKG install
+
+}
+
+
+package() {
+
+	cd gtk3
+	make DESTDIR=$PKG install
+
+    }

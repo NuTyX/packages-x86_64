@@ -1,0 +1,17 @@
+description="Linux namespaces sandbox program"
+url="https://l3net.wordpress.com/projects/firejail/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Hugo, Remy"
+name=firejail
+version=0.9.56
+
+source=(
+https://sourceforge.net/projects/firejail/files/$name/$name-$version.tar.xz)
+
+build(){
+cd $name-$version
+export CFLAGS="${CFLAGS/-fsanitize=undefined/}"
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}

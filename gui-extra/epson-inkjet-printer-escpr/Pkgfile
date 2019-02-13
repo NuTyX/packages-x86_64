@@ -1,0 +1,22 @@
+# Depends on : cups ghostscript
+
+description="Epson Inkjet Printer Driver (ESC/P-R) for Linux"
+url="http://download.ebz.epson.net/dsc/search/01/search/?OSC=LX"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=epson-inkjet-printer-escpr
+version=1.6.5
+release=2
+
+source=(https://download3.ebz.epson.net/dsc/f/03/00/04/54/27/b73564748bfde7b7ce625e20d4a3257d447bec79/epson-inkjet-printer-escpr-$version-1lsb3.2.tar.gz)
+
+build() {
+  cd $name-$version
+
+  ./configure --prefix=/usr \
+              --with-cupsfilterdir=/usr/lib/cups/filter \
+              --with-cupsppddir=/usr/share/ppd
+  make
+  make DESTDIR=$PKG install
+}

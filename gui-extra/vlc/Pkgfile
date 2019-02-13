@@ -1,0 +1,51 @@
+# Depends on: qtbase qtsvg qtx11extras x264 flac libmad glib librsvg alsa-lib xorg-libxinerama xorg-libxpm libvpx libcdio vcdimager live libdvdcss libdvdread libdvdnav libogg libtheora lame faac libvorbis ffmpeg faad2 liba52 libmpcdec fribidi lua libdv speex samba libupnp nfs-utils libshout libnotify speex sdl-image libcaca chromaprint libmtp taglib libsecret libva libvdpau libdvbpsi
+
+description="Media player, streamer, and encoder. It can play from many inputs"
+url="http://www.slackware.com/~alien/slackbuilds/vlc/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, tnut, Remy"
+
+name=vlc
+version=3.0.6
+
+source=(https://download.videolan.org/$name/$version/$name-$version.tar.xz)
+
+build() {
+
+cd $name-$version
+
+sed -i '/vlc_demux.h/a #define LUA_COMPAT_APIINTCASTS' modules/lua/vlc.h
+sed -i '/DEPRECATED/s:^://:'  modules/text_renderer/freetype/text_layout.c
+sed -i '/#include <QString>/i#include <QButtonGroup>' \
+        modules/gui/qt/components/simple_preferences.cpp
+
+BUILDCC=gcc ./configure --prefix=/usr \
+            --disable-rpath \
+            --sysconfdir=/etc \
+            --disable-ncurses \
+            --enable-aa \
+            --enable-upnp \
+            --enable-opus \
+            --enable-dvbpsi \
+            --enable-x264 \
+            --enable-x265 \
+            --enable-vdpau \
+            --enable-sdl-image \
+            --enable-fribidi \
+            --enable-gnutls \
+            --enable-bluray
+
+make
+
+make DESTDIR=$PKG docdir=/usr/share/doc/$name-$version-release install
+
+for res in 16 32 48 128; do
+    install -D -m644 "$SRC/vlc-$version/share/icons/${res}x${res}/vlc.png" \
+    "$PKG/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png"
+done
+
+# Obsolets libs
+rm $PKG/usr/lib/libvlc{,core}.la
+rm $PKG/usr/lib/vlc/libcompat.la
+rm $PKG/usr/lib/vlc/libvlc{_pulse,_vdpau,_xcb_events}.la
+}

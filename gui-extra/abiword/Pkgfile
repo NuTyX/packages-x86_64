@@ -1,0 +1,39 @@
+# Depends on: icu boost cairo aspell fribidi enchant wv librsvg gtk2 redland rasqal desktop-file-utils gtk3
+
+description="Word processing similar to MS® Word, suitable for a wide variety of word processing tasks"
+url="http://www.abisource.com/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B., Tnut, Greg"
+
+name=abiword
+version=3.0.2
+release=4
+
+source=(${url}downloads/$name/$version/source/$name-$version.tar.gz
+		abiword-3.0.2-gtk3_22_render_fix-1.patch)
+		
+prepare() {
+
+cp $SRC/abiword-3.0.2-gtk3_22_render_fix-1.patch $SRC/$name-$version/abiword-3.0.2-gtk3_22_render_fix-1.patch
+cd $name-$version
+patch -Np1 -i abiword-3.0.2-gtk3_22_render_fix-1.patch
+
+sed -e "s/free_suggestions/free_string_list/" \
+    -e "s/_to_personal//"                     \
+    -e "s/in_session/added/"                  \
+    -i src/af/xap/xp/enchant_checker.cpp      &&
+
+sed -e "/icaltime_from_timet/{s/timet/&_with_zone/;s/0/0, 0/}" \
+    -i src/text/ptbl/xp/pd_DocumentRDF.cpp
+
+}
+
+build() {
+
+cd $name-$version
+
+./configure --prefix=/usr \
+    --disable-static
+make DESTDIR=$PKG install
+
+}

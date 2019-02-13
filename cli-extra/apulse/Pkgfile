@@ -1,0 +1,26 @@
+# Depends on: glib alsa-lib cmake
+
+description="PulseAudio emulation for ALSA."
+url="https://github.com/i-rinat/apulse"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+PKGMK_KEEP_SOURCES="no"
+
+name=apulse
+version=0.1.12
+
+source=(https://github.com/i-rinat/$name/archive/v$version.tar.gz)
+
+build() {
+cd $name-$version
+mkdir -pv build
+cd build
+cmake \
+-DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_BUILD_TYPE=Release  \
+..
+
+make
+make DESTDIR=$PKG install
+}

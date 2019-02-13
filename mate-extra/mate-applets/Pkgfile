@@ -1,0 +1,35 @@
+# Depends on: gtksourceview libgtop libnotify mate-panel mate-icon-theme python-gobject upower wireless-tools upower
+
+description="Applets for MATE panel"
+url="https://mate-desktop.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch, Tnut, Greg, Jayce, Remy"
+
+name=mate-applets
+version=1.20.3
+
+source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
+
+build() {
+  cd $name-$version
+   ./configure \
+          --prefix=/usr \
+          --sysconfdir=/etc \
+          --libexecdir=/usr/lib/${name} \
+          --enable-polkit \
+          --enable-ipv6
+  make
+  make DESTDIR=$PKG install
+}
+
+uptodate() {
+feed=https://github.com/mate-desktop/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

@@ -1,0 +1,32 @@
+# Depends on: adwaita-icon-theme gtk3 gstreamer-plugins-base gnome-icon-theme itstool yelp-xsl gobject-introspection libgnome-keyring nautilus gspell poppler-glib gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
+
+description="Pdf, Postscript, DjVu, Tiff, DVI documents viewer."
+url="http://gnome.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Remy, Fanch"
+
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+
+name=evince
+version=3.30.2
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr           \
+            --enable-introspection  \
+            --disable-static \
+             --enable-nautilus \
+			--enable-pdf \
+			--enable-tiff \
+			--enable-djvu \
+			--enable-dvi \
+			--enable-t1lib \
+			--enable-comics \
+			--enable-gtk-doc \
+			--enable-multimedia \
+			--disable-schemas-compile
+make
+make DESTDIR=$PKG install
+}

@@ -1,0 +1,20 @@
+# Depends on: libcaca imagemagick nitrogen xdotool xorg-xdpyinfo xorg-xprop xorg-xrandr xorg-xwininfo
+
+description="A CLI system information tool written in BASH that supports displaying images."
+url="https://github.com/dylanaraps/neofetch"
+contributors=""
+packager="rems <rems@nutyx.org>"
+ 
+name=neofetch
+version=5.0.0
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/dylanaraps/neofetch/archive/${version}.tar.gz)
+
+build() {
+
+cd $name-$version
+
+make DESTDIR=$PKG install
+}

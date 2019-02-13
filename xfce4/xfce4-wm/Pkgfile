@@ -1,0 +1,34 @@
+# Depends on: libwnck2 xorg-libxres libwnck xfce4-libui xfce4-libutil startup-notification
+
+description="Xfce window manager"
+url="http://www.xfce.org/"
+packager="greg <greg@nutyx.org>"
+contributors="tyrry,tnut"
+
+name=xfce4-wm
+_name=xfwm4
+version=4.12.4
+release=1
+
+source=(http://archive.xfce.org/src/xfce/${_name}/${version%.*}/${_name}-$version.tar.bz2)
+
+build() {
+
+cd ${_name}-$version
+
+./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib \
+    --localstatedir=/var \
+    --disable-static \
+    --enable-startup-notification \
+    --enable-randr \
+    --enable-compositor \
+    --enable-xsync \
+    --disable-debugr
+    
+make
+make DESTDIR=$PKG install
+
+}

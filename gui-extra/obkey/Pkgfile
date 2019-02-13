@@ -1,0 +1,27 @@
+# Depends on: python2 python2-gtk git
+
+description="Openbox Key Editor"
+url="http://code.google.com/p/obkey"
+packager="greg<greg@nutyx.org>"
+contributors=""
+
+name=obkey
+version=1.0.11
+release=1
+
+source=()
+
+
+build() {
+
+git clone https://github.com/stevenhoneyman/obkey.git obkey
+cd $SRC/obkey
+install -Dm755 obkey $PKG/usr/bin/obkey
+	install -Dm755 obkey_classes.py $PKG/usr/lib/python2.7/site-packages/obkey_classes.py
+	mkdir -p $PKG/usr/share/obkey/icons/
+	install -Dm644 icons/add_{child,sibling}.png $PKG/usr/share/obkey/icons/
+	mkdir -p $PKG/usr/share/applications/
+install -Dm644 misc/obkey.desktop $PKG/usr/share/applications/
+
+}
+

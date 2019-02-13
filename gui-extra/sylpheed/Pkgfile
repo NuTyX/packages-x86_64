@@ -1,0 +1,28 @@
+# Depends on: atk,expat,freetype,glib,libpng,pcre,cairo,cyrus-sasl,xorg-fontconfig,libassuan,libgpg-error,openldap,pango,gtk2,gnupg,gpgme,desktop-file-utils
+
+description="Lightweight and user-friendly e-mail client"
+url="http://sylpheed.sraoss.jp/en/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=(gnupg)
+
+name=sylpheed
+version=3.7.0
+
+source=(http://sylpheed.sraoss.jp/sylpheed/v${version%.*}/$name-$version.tar.bz2)
+
+build() {
+        cd $name-$version
+        ./configure --prefix=/usr \
+        --enable-static=no \
+        --disable-gtkspell \
+        --disable-gtktest \
+        --disable-compface \
+        --enable-gpgme \
+        --enable-ssl \
+        --enable-ldap
+
+        make
+        make DESTDIR=$PKG install
+}

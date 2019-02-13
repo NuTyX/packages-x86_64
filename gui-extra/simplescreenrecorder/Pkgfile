@@ -1,0 +1,30 @@
+# Depends on: qtbase qtx11extras qttools ffmpeg alsa-lib pulseaudio jack mesa xorg-glu xorg-libx11 xorg-libxext xorg-libxfixes xorg-libxi desktop-file-utils gtk-update-icon-cache
+ 
+description="A feature-rich screen recorder that supports X11 and OpenGL"
+url="http://www.maartenbaert.be/simplescreenrecorder/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg, Remy"
+
+PKGMK_KEEP_SOURCES="no"
+
+name=simplescreenrecorder
+version=0.3.11
+
+source=(https://github.com/MaartenBaert/ssr/archive/$version.tar.gz)
+
+build() {
+
+cd ssr-$version
+
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX="/usr" \
+	-DCMAKE_BUILD_TYPE=Release  \
+	-DWITH_QT5=on               \
+	-DCMAKE_INSTALL_LIBDIR='lib'\
+	..
+make
+
+make DESTDIR=$PKG install  
+}

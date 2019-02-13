@@ -1,0 +1,21 @@
+# Depends on: id3lib libid3tag flac libvorbis speex gtk3 itstool
+
+description="Utility for viewing and editing tags for most audio formats"
+url="http://projects.gnome.org/easytag/"
+contributors="pierre, tnut"
+packager="greg <greg@nutyx.org>"
+
+name=easytag
+version=2.4.3
+release=1
+
+source=(http://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+
+}
