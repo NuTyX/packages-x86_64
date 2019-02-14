@@ -6,6 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=readline
 version=8.0
+release=2
 
 source=(http://ftp.gnu.org/gnu/readline/readline-$version.tar.gz)
 
@@ -42,10 +43,10 @@ $PKG/usr/share/doc/readline-$version
 
 rm -rv $PKG/usr/bin
 
-ln -sfv ../../lib/libreadline.so.7 \
+ln -sfv ../../lib/libreadline.so.8 \
 $PKG/usr/lib/libreadline.so
 
-ln -sfv ../../lib/libhistory.so.7 \
+ln -sfv ../../lib/libhistory.so.8 \
 $PKG/usr/lib/libhistory.so
 
 }
