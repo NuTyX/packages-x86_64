@@ -1,5 +1,5 @@
 description="A set of utilities to manage software packages on NuTyX distribution."
-url="https://github.com/NuTyX/cards"
+url="https://git.tuxfamily.org/nutyx/cards"
 maintainer="tnut at nutyx dot org"
 packager="tnut <tnut@nutyx.org>"
 
@@ -22,10 +22,12 @@ PKGMK_GROUPS=(devel doc man)
 
 name=cards
 version=2.4.93
+release=2
 
 # patchname="$name-$version-consolidate-1.patch"
 
-source=(http://downloads.tuxfamily.org/nutyx/files/cards-$version.tar.gz)
+source=(http://downloads.tuxfamily.org/nutyx/files/
+	http://downloads.tuxfamily.org/nutyx/files/pkgadd)
 
 [ -z "$patchname" ] || source+=" $patchname"
 build () {
@@ -33,6 +35,8 @@ cd $name-$version
 [ -z "$patchname" ] || -Np1 -i ../$patchname
 make all
 make DESTDIR=$PKG install
+# Temporary broken with glibc 2.29
+install -m755 ../pkgadd $PKG/bin/pkgadd
 mkdir -p $PKG/{etc,usr}/ports
 }
 devel()

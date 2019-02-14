@@ -1,5 +1,6 @@
 version=2.4.93
-source=(http://downloads.nutyx.org/files/cards-$version.tar.gz)
+source=(http://downloads.tuxfamily.org/nutyx/files/pkgadd
+	http://downloads.tuxfamily.org/nutyx/files/cards-$version.tar.gz)
 build()
 {
 cd cards-$version
@@ -7,7 +8,9 @@ cd cards-$version
 PKG_CONFIG_PATH=/tools/lib/pkgconfig \
 make pkgadd
 make pkgmk
-install -m755 src/pkgadd /tools/bin/pkgadd
+# temporary broken with glib 2.29
+# install -m755 src/pkgadd /tools/bin/pkgadd
+install -m755 ../pkgadd /tools/bin/pkgadd
 install -m755 scripts/pkgmk /tools/bin/pkgmk
 ln -sv pkgadd /tools/bin/pkginfo
 ln -sv pkgadd /tools/bin/pkgrm
