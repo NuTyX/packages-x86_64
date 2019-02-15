@@ -1,4 +1,4 @@
-# Depends on: libnl dbus
+# Depends on: libnl
 
 description="A utility providing key negotiation for WPA wireless networks"
 url="http://hostap.epitest.fi/wpa_supplicant"
@@ -7,7 +7,7 @@ contributors="Pierre B, tnut, greg"
 
 name=wpa-supplicant
 version=2.6
-release=3
+release=4
 
 source=( http://www.linuxfromscratch.org/patches/blfs/svn/wpa_supplicant-$version-upstream_fixes-2.patch
 	http://hostap.epitest.fi/releases/wpa_supplicant-$version.tar.gz)
@@ -40,9 +40,6 @@ CONFIG_PKCS12=y
 CONFIG_READLINE=y
 CONFIG_SMARTCARD=y
 CONFIG_WPS=y
-CONFIG_CTRL_IFACE_DBUS=y
-CONFIG_CTRL_IFACE_DBUS_NEW=y
-CONFIG_CTRL_IFACE_DBUS_INTRO=y
 CFLAGS += -I/usr/include/libnl3
 EOF
 patch -p1 -i ../wpa_supplicant-$version-upstream_fixes-2.patch
@@ -52,13 +49,4 @@ mkdir -p $PKG/{etc,sbin,usr/share/man/man{5,8}}
 install -v -m755 wpa_{cli,passphrase,supplicant} $PKG/sbin
 install -v -m644 doc/docbook/wpa_supplicant.conf.5 $PKG/usr/share/man/man5
 install -v -m644 doc/docbook/wpa_{cli,passphrase,supplicant}.8 $PKG/usr/share/man/man8
-install -vdm755 $PKG/lib/systemd/system/
-install -vm644 systemd/*.service $PKG/lib/systemd/system/
-install -v -d -m755 $PKG/usr/share/dbus-1/system-services/
-install -v -m644 dbus/fi.{epitest.hostap.WPASupplicant,w1.wpa_supplicant1}.service \
-                 $PKG/usr/share/dbus-1/system-services/
-install -v -d -m755 $PKG/etc/dbus-1/system.d
-install -v -m644 dbus/dbus-wpa_supplicant.conf \
-                 $PKG/etc/dbus-1/system.d/wpa_supplicant.conf
-
 }
