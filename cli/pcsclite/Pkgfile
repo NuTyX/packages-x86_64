@@ -7,7 +7,6 @@ contributors="Pierre B"
 
 name=pcsclite
 version=1.8.24
-release=2
 
 PKGMK_KEEP_SOURCES="No"
 
@@ -18,15 +17,34 @@ build() {
   cd pcsc-lite-$version
   ./configure --prefix=/usr \
               --sbindir=/usr/bin \
-              --sysconfdir=/etc/pcsclite \
               --enable-libudev \
+              --disable-libsystemd \
+              --sysconfdir=/etc \
               --enable-ipcdir=/run/pcscd \
               --enable-usbdropdir=/usr/lib/pcsc/drivers
   make
   make DESTDIR=$PKG install
 
   install -d $PKG/usr/lib/pcsc/drivers
-# Obsolets libs
-rm $PKG/usr/lib/libpcsclite.la
-rm $PKG/usr/lib/libpcscspy.la
+
+  # Obsolets libs
+  rm $PKG/usr/lib/libpcsclite.la
+  rm $PKG/usr/lib/libpcscspy.la
+
+
+  # Service
+  mkdir -p $PKG/etc/rc.d/init.d
+  install -m755 ../pcscd $PKG/etc/rc.d/init.d/pcscd
+  for i in 0 1 2 3 4 5 6
+  do
+   mkdir -p $PKG/etc/rc.d/rc${i}.d
+  done
+  for i in 3 4 5
+  do
+   ln -sf ../init.d/pcscd $PKG/etc/rc.d/rc${i}.d/S90pcscd
+  done
+  for i in 0 1 2 6
+  do
+   ln -sf ../init.d/pcscd$PKG/etc/rc.d/rc${i}.d/K01pcscd
+  done
 }
