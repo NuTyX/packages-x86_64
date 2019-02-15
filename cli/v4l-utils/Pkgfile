@@ -14,7 +14,7 @@ build() {
 	cd $name-$version
 	./configure --prefix=/usr \
 	--sysconfdir=/etc/$name
-	make install DESTDIR=$PKG
+	 MAKEFLAGS="-j1" make install DESTDIR=$PKG
 
 	rm -f $PKG/usr/bin/ivtv-ctl
 
