@@ -414,7 +414,6 @@ setup_wireless()
 setup_net() 
 {
 network_card_found
-NETWORK_DIR="/etc/systemd/network/"
 retval=""
 while [ "$retval" == "" ]; do
 	dialog  \
@@ -434,22 +433,22 @@ while [ "$retval" == "" ]; do
   esac
 done
 if [ "`cat $TMP/result`" == "$(gettext "Auto")" ];then
-
-	echo "[Match]
-Name=${NETWORK_CARD}
-
-[Network]
-DHCP=ipv4
-
-[DHCP]
-UseDomains=true
-
-" > ${NETWORK_DIR}${NETWORK_CARD}-dhcp.network
+	cat > /etc/sysconfig/ifconfig.$NETWORK_CARD << "EOF"
+ONBOOT="yes"
+SERVICE="dhcpcd"
+DHCP_START=""
+DHCP_STOP="-k "
+# Mettez PRINTIP="yes" pour que le script affiche l'addresse IP
+PRINTIP="no"
+# Mettez PRINTALL="yes" pour que le script affiche tous le détails
+# de la connection réseau
+PRINTALL="no"
+EOF
 	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD set to Auto DHCP"
 else
 	dialog \
 	--title " $(gettext "Configuration of") ${NETWORK_CARD} " \
-	--inputbox " $(gettext "Enter an IP address") : " 10 60 "192.168.1.5/24" 2> $TMP/IP
+	--inputbox " $(gettext "Enter an IP address") : " 10 60 "192.168.1.5" 2> $TMP/IP
 
 	if [ "`cat $TMP/IP`" == "" ]; then
 		interrupt
@@ -464,6 +463,15 @@ else
 		interrupt
 	else
 		BROADCAST=$(tail -n 1 $TMP/BC)
+	fi
+	dialog \
+	--title " $(gettext "Configuration of") ${NETWORK_CARD} " \
+	--inputbox "$(gettext "Enter the subnet mask"),\
+	$(gettext "in most cases the current value can be used"): " 10 60 "255.255.255.0" 2> $TMP/NM
+	if [ "`cat $TMP/NM`" == "" ]; then
+		interrupt
+	else
+		PREFIX=$(tail -n 1 $TMP/NM)
 	fi
 	GW_TEMP=$(echo $IP|cut -d . -f 1).$(echo $IP|cut -d . -f 2).$(echo $IP|cut -d . -f 3).1
 	dialog \
@@ -482,17 +490,19 @@ else
 	if [ -n ${GW} ]; then
 		/sbin/ip route add default via ${GW}
 	fi
-	echo "[Match]
-Name=${NETWORK_CARD}
-
-[Network]" > ${NETWORK_DIR}${NETWORK_CARD}-static.network
-
+	cat > /etc/sysconfig/ifconfig.${NETWORK_CARD} << "EOF"
+ONBOOT=yes
+SERVICE=ipv4-static
+EOF
 	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: SERVICE=ipv4-static"
-	echo "Address=${IP}" >> ${NETWORK_DIR}${NETWORK_CARD}-static.network
+	echo "IP=${IP}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
 	if [ -n ${GW} ]; then
-		echo "Gateway=${GW}" >> ${NETWORK_DIR}${NETWORK_CARD}-static.network
+		echo "GATEWAY=${GW}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
 		$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: GATEWAY=${GW}"
 	fi
+	echo "PREFIX=${PREFIX}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
+	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: PREFIX=${PREFIX}"
+	echo "BROADCAST=${BROADCAST}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
 	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: BROADCAST=${BROADCAST}"
 	if [ -n "${DNS}" ]; then
 		dialog \
@@ -501,17 +511,25 @@ Name=${NETWORK_CARD}
 		$(gettext "this is only need if you are in a subdomain").\
 		$(gettext "Most of the time it's not need"): " 10 60 2> $TMP/SUFFIX
 		SUFFIX=$(tail -n 1 $TMP/SUFFIX)
-		echo "DNS=${DNS}"  >> ${NETWORK_DIR}${NETWORK_CARD}-static.network
+		echo "nameserver ${DNS}" > /etc/resolv.conf
 		$SETUP_LOG "setup-nutyx --config-net" "/etc/resolv.conf: nameserver ${DNS}"
 		if [ -n "${SUFFIX}" ]; then
-			echo "Domains=${SUFFIX}" >> ${NETWORK_DIR}${NETWORK_CARD}-static.network
 			echo "search ${SUFFIX}" >> /etc/resolv.conf
 			$SETUP_LOG "setup-nutyx --config-net" "/etc/resolv.conf: search ${SUFFIX}"
 		fi
 	fi
 fi
-if [ ! -f /etc/hostname ]; then
-	echo "nutyx" > /etc/hostname
+if [ ! -f /etc/sysconfig/network ]; then
+	cat > /etc/sysconfig/network << "EOF"
+HOSTNAME='nutyx'        # Hostname of this machine
+MANAGER=''              # Network manager (wicd/networkmanager/cli/nothing)
+NETWORKWAIT='no'        # Wait or not for network
+LINKDELAY='15'          # init delay for initialisation of Networkmanager
+NETWORKDELAY='0'        # init delay to wait after initialisation of Networkmanager
+EOF
+fi
+if [ "$SETUP_INITRD" == "yes" ]; then
+	/etc/rc.d/init.d/network start
 fi
 SETUP_CONFIG_NETWORK="no"
 }
@@ -951,6 +969,8 @@ setup_keymap ()
 {
 	cat > ${CONSOLE} << "EOF"
 FONT="LatGrkCyr-8x16"
+UNICODE="1"
+LOGLEVEL=1
 EOF
 	cat > ${XORGKB} << "EOF"
 Section "InputClass"
@@ -1145,14 +1165,9 @@ $(gettext "so that the summer/winter time is changed automatically" ) " 0 0
 			UTC=0;;
 	esac
 
-	echo "0.0 0.0" > /etc/adjtime
-  if [ "$UTC" == "0" ];then
-		echo "0
-LOCAL" >> /etc/adjtime
-	else
-		echo "1
-REMOTE" >> /etc/adjtime
-	fi
+	echo "UTC=${UTC}" > /etc/sysconfig/clock
+
+	[ -r /etc/sysconfig/clock ] && . /etc/sysconfig/clock
 
 	case "${UTC}" in
 		1)
@@ -1510,13 +1525,15 @@ install_nutyx() {
 	fi
 
 	for FILE in etc/profile.d/i18n.sh \
-	etc/systemd/network/* \
+	etc/profile.d/i18n.sh \
+	etc/sysconfig/network \
+	etc/sysconfig/clock \
 	etc/hostname \
-	etc/adjtime \
 	etc/cards.conf \
-	etc/fstab \
-	etc/network \
 	etc/resolv.conf \
+	etc/fstab \
+	etc/localtime \
+	etc/network \
 	etc/mdadm.conf \
 	$TEXTDOMAINFILE
 	do
@@ -2393,12 +2410,12 @@ fi
 SETUP_LOG="setup-nutyx-log"
 CARDS="/etc/cards.conf"
 XORGKB="/etc/X11/xorg.conf.d/20-keyboard.conf"
-CONSOLE="/etc/vconsole.conf"
+CONSOLE="/etc/sysconfig/console"
 LOCALE="/etc/profile.d/i18n.sh"
 LOCALTIME="/etc/localtime"
 ZONEINFO="/usr/share/zoneinfo/"
-NETWORK="`ls /etc/systemd/network/* 2>/dev/null|head -1`"
-CLOCK="/etc/adjtime"
+NETWORK="`ls /etc/sysconfig/ifconfig* 2>/dev/null|head -1`"
+CLOCK="/etc/sysconfig/clock"
 USER="/home"
 EFIVARS="/sys/firmware/efi/efivars"
 
