@@ -6,7 +6,7 @@ packager="tnut at nutyx dot org"
 
 name=bind
 version=9.13.5
-nutyx_version=10.92.3
+nutyx_version=10.96.1
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	ftp://ftp.isc.org/isc/bind9/$version/$name-$version.tar.gz)
@@ -43,7 +43,7 @@ build(){
 
 # Service
 cd $SRC/nutyx-${nutyx_version}
-make DESTDIR=$PKG install-named
+make DESTDIR=$PKG install-bind
 
 }
 uptodate() {
