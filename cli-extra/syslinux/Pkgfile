@@ -9,9 +9,9 @@ run=(mtools)
 
 name=syslinux
 version=6.03
-release=3
+release=4
 
-source=(http://downloads.tuxfamily.org/nutyx/files/splash-10.2.png
+source=(http://downloads.tuxfamily.org/nutyx/files/splash-11.0.png
 	http://www.kernel.org/pub/linux/utils/boot/syslinux/$name-$version.tar.xz
         0012-ldlinux-Fix-return-pointer-to-local-data.patch
         0013-extlinux-pull-in-sys_sysmacros.h-for-major_minor_makedev.patch)
@@ -27,5 +27,5 @@ sed 's|> /dev/null 2>&1||' -i efi/check-gnu-efi.sh
 	sed -i "s|win32/syslinux.exe||g" Makefile
 	make || true
 	make SBINDIR=$PKG/usr/sbin BINDIR=$PKG/usr/bin INCDIR=$PKG/usr/include MANDIR=$PKG/usr/share/man AUXDIR=$PKG/usr/lib/syslinux install
-	install -m644 ../splash-10.2.png $PKG/usr/lib/syslinux/splash.png
+	install -m644 ../splash-11.0.png $PKG/usr/lib/syslinux/splash.png
 }
