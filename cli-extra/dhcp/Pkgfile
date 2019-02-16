@@ -5,7 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=dhcp
 version=4.4.1
-nutyx_version=10.92.3
+nutyx_version=10.96.3
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	ftp://ftp.isc.org/isc/dhcp/$version/dhcp-$version.tar.gz
@@ -42,7 +42,7 @@ build() {
 
 	# Service
 	cd $SRC/nutyx-${nutyx_version}
-	make DESTDIR=$PKG install-dhclient
+	make DESTDIR=$PKG install-service-dhclient
 	install -v -dm 755 $PKG/var/lib/dhcpd
 
 	cp -v $SRC/dhcpd.conf $PKG/etc/dhcp/dhcpd.conf
