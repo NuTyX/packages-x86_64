@@ -13,11 +13,12 @@ name=cups
 version=2.2.10
 release=2
 
-nutyx_version=10.96
+nutyx_version=10.96.3
 
 run=(xdg-utils gtk-update-icon-cache)
 
-source=(https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
+source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz \
+	https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
 	99-printer.rules)
 
 build() {
