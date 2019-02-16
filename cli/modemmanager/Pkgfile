@@ -15,9 +15,7 @@ cd ModemManager-$version
             --sysconfdir=/etc/ModemManager         \
             --localstatedir=/var      \
             --enable-more-warnings=no \
-            --disable-static \
-            --with-systemd-journal        \
-            --with-systemd-suspend-resume
+            --disable-static
 make
 make DESTDIR=$PKG install
 
