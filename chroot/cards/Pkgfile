@@ -1,9 +1,15 @@
+name=cards
 version=2.4.93
 source=(http://downloads.tuxfamily.org/nutyx/files/cards-$version.tar.gz)
+
+patchname="$name-$version-consolidate-1.patch"
+
+[ -z "$patchname" ] || source+=" $patchname"
+
 build()
 {
 cd cards-$version
-
+[ -z "$patchname" ] || patch -Np1 -i ../$patchname
 PKG_CONFIG_PATH=/tools/lib/pkgconfig \
 make pkgadd
 make pkgmk

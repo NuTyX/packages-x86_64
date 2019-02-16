@@ -1,0 +1,13 @@
+diff --git a/src/pkgdbh.cxx b/src/pkgdbh.cxx
+index 66ec501..4d343ea 100644
+--- a/src/pkgdbh.cxx
++++ b/src/pkgdbh.cxx
+@@ -707,7 +707,7 @@ void Pkgdbh::moveMetaFilesPackage(const string& name, pkginfo_t& info)
+ 
+ 	for (set<string>::const_iterator i = info.files.begin(); i != info.files.end(); ++i)
+ 	{
+-		if ( strncmp(i->c_str(),package_meta_dir.c_str(),package_meta_dir.size()) == 0 )
++		if ( strncmp(i->c_str(),package_meta_dir.c_str(),package_meta_dir.size()+1) == 0 )
+ 		{
+ #ifndef NDEBUG
+ 			cout << "*I: " << *i << endl;
