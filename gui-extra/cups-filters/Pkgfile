@@ -6,11 +6,12 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=cups-filters
-version=1.21.6
+version=1.22.0
 
 source=( http://www.openprinting.org/download/$name/$name-$version.tar.xz)
 build() {
 unset MAKEFLAGS
+read a
 cd $name-$version
 ./configure --prefix=/usr                   \
             --sysconfdir=/etc               \
