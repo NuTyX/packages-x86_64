@@ -7,6 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=bamf
 version=0.5.3
+release=2
 
 source=(https://launchpad.net/bamf/${version%.*}/$version/+download/$name-$version.tar.gz)
 
@@ -24,4 +25,7 @@ export CFLAGS+=" -Wno-deprecated-declarations"
  make
 
  make DESTDIR=$PKG install
+
+ # Obsolet lib
+ rm $PKG/usr/lib/libbamf3.la
 }
