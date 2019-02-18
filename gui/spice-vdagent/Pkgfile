@@ -16,9 +16,7 @@ cd $name-$version
  
 ./configure --prefix=/usr \
             --sysconfdir=/etc \
-            --localstatedir=/var \
-            --with-init-script=systemv
-
+            --localstatedir=/var
 make
 make DESTDIR=$PKG install
 
