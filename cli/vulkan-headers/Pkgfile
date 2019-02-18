@@ -1,0 +1,32 @@
+# Depends on: cmake
+
+description="Vulkan header files"
+url="https://www.khronos.org/vulkan/"
+packager="rems <rems@nutyx.org>"
+contributors=""
+
+name=vulkan-headers
+version=1.1.97.0
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/KhronosGroup/Vulkan-Headers/archive/sdk-$version.tar.gz)
+
+prepare() {
+
+mkdir build
+
+}
+
+build() {
+
+cd build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release \
+      ../Vulkan-Headers-sdk-$version
+
+	make
+	make DESTDIR=$PKG install
+
+}
