@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=giflib
-version=5.1.4
-release=2
+version=5.1.6
 
 source=(http://downloads.sourceforge.net/giflib/giflib-$version.tar.bz2 )
 build() {
@@ -20,5 +19,5 @@ install -v -m644 doc/*.html \
 $PKG/usr/share/doc/giflib-$version/html
 
 # Obsolet lib
-rm $PKG/usr/lib/libgif.la
+rm $PKG/usr/lib/libgif.{la,a}
 }
