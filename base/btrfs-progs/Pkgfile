@@ -7,7 +7,7 @@ contributors="Alienus"
 packager="tnut <tnut@tnut@nutyx.org>"
 
 name=btrfs-progs
-version=4.17
+version=4.20.1
 
 source=(https://www.kernel.org/pub/linux/kernel/people/kdave/$name/$name-v$version.tar.xz)
 
@@ -27,5 +27,7 @@ make DESTDIR=$PKG install
 # Binaries should be available in case of mounting /usr
 mkdir -p $PKG/{sbin,usr/lib}
 ln -sfv ../../lib/$(readlink $PKG/lib/libbtrfs.so) $PKG/usr/lib/libbtrfs.so
-rm -v $PKG/lib/libbtrfs.{a,so}
+ln -sfv ../../lib/$(readlink $PKG/lib/libbtrfsutil.so) $PKG/usr/lib/libbtrfsutil.so
+rm -v $PKG/lib/libbtrfs.{a,so} $PKG//lib/libbtrfsutil.{a,so}
+mv -v $PKG/bin/{mkfs,fsck}.btrfs $PKG/sbin
 }
