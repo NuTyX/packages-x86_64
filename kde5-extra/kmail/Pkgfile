@@ -1,0 +1,25 @@
+# Depends on: boost extra-cmake-modules kdoctools kdesignerplugin akonadi-import-wizard kdepim-runtime kmail-account-wizard kontactinterface mbox-importer pim-sieve-editor knotifyconfig ktnef qtwebengine
+
+description="KDE mail client"
+url="https://projects.kde.org/kmail"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=kmail
+version=18.12.2
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

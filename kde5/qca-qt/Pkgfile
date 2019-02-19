@@ -1,0 +1,45 @@
+# Depends on : qtbase nss cmake doxygen openssl10
+
+description="Qt5 Cryptographic Architecture"
+url="http://delta.affinix.com/qca/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=qca-qt
+version=2.1.3
+
+source=(http://download.kde.org/stable/qca/$version/src/qca-$version.tar.xz)
+
+prepare() {
+sed -i "s@<openssl/@<openssl-1.0/@" qca-$version/plugins/qca-ossl/qca-ossl.cpp
+}
+build() {
+mkdir build
+cd build
+cmake ../qca-$version             \
+    -DCMAKE_INSTALL_PREFIX=/usr   \
+    -DBUILD_TESTS=OFF             \
+    -DQCA_SUFFIX=qt5              \
+    -DQCA_INSTALL_IN_QT_PREFIX=ON \
+    -DQCA_MAN_INSTALL_DIR=/usr/share/man \
+    -DOPENSSL_INCLUDE_DIR=/usr/include/openssl-1.0 \
+    -DOPENSSL_SSL_LIBRARY=/usr/lib/openssl-1.0/libssl.so \
+    -DOPENSSL_CRYPTO_LIBRARY=/usr/lib/openssl-1.0/libcrypto.so
+
+make
+make DESTDIR=$PKG install
+
+rm $PKG/usr/certs/rootcerts.pem
+}
+
+uptodate() {
+feed=https://github.com/KDE/qca/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

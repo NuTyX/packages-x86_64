@@ -1,0 +1,27 @@
+# Depends on: frei0r-plugins shared-mime-info qtquickcontrols frei0r-plugins knewstuff kplotting knotifyconfig kded kfilemetadata mlt xorg-glu sdl-image hicolor-icon-theme qtbase extra-cmake-modules kdoctools v4l-utils ffmpeg cdrtools libdv
+
+description="A non-linear video editor for Linux using the MLT video framework"
+url="http://www.kdenlive.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=(shared-mime-info frei0r-plugins)
+
+name=kdenlive
+version=18.12.2
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom # ATTENTION, ce feed n'est pas à jour.
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

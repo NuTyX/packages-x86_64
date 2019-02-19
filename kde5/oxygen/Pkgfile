@@ -1,0 +1,27 @@
+# Depends on: oxygen-icons5 frameworkintegration kcmutils kcompletion kconfig kconfigwidgets kcoreaddons kguiaddons ki18n kwidgetsaddons kwindowsystem kwayland kdecoration libxcb
+
+description="KDE Oxygen style "
+url="https://www.kde.org/"
+packager="itnut <tnut@nutyx.org"
+contributors="Pierre B"
+
+run=(oxygen-icons5)
+
+name=oxygen
+version=5.12.7
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

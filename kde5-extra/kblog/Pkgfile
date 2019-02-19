@@ -1,0 +1,24 @@
+# Depends on: extra-cmake-modules boost kdoctools kxmlrpcclient syndication kcalcore
+
+description="A blogging library for KDE "
+url="https://projects.kde.org/kblog"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+name=kblog
+version=18.12.2
+
+build="kde5"
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

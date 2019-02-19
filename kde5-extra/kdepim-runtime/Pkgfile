@@ -1,0 +1,27 @@
+# Depends on: shared-mime-info libkgapi akonadi-calendar knotifyconfig kross kalarmcal kmbox kimap syndication hicolor-icon-theme extra-cmake-modules kdoctools boost python kdesignerplugin akonadi-notes kontact kdav
+
+description="Project that aims to bring together anything to do with personal information management."
+url="https://projects.kde.org/kdepim"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=(shared-mime-info)
+
+name=kdepim-runtime
+version=18.12.2
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

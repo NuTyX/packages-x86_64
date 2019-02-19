@@ -1,0 +1,28 @@
+# Depends on: qtgraphicaleffects qtquickcontrols kwin plasma-workspace attica baloo karchive kauth kbookmarks kcmutils kcodecs kcompletion kconfig kconfigwidgets kcoreaddons kdbusaddons kdeclarative kded kdelibs4support kemoticons kglobalaccel kguiaddons ki18n kiconthemes kio kio-extras kitemviews kjobwidgets knewstuff knotifications knotifyconfig kparts kpeople krunner kservice kwallet kwidgetsaddons kwindowsystem kxmlgui solid sonnet phonon-qt libxcb xcb-util-image libcanberra pulseaudio breeze kde-cli-tools oxygen desktop-file-utils xdg-utils kactivities-stats kpackage ibus
+
+description="KDE Plasma Desktop "
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=(qtgraphicaleffects qtquickcontrols desktop-file-utils xdg-utils kio-extras)
+
+name=plasma-desktop
+version=5.12.7
+
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

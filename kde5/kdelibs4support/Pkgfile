@@ -1,0 +1,39 @@
+# Depends on: kded kauth kcodecs kcompletion kconfig kconfigwidgets kcoreaddons kcrash kdbusaddons kdesignerplugin kglobalaccel kguiaddons ki18n kiconthemes kio kitemviews kjobwidgets knotifications kparts kservice ktextwidgets kunitconversion kwidgetsaddons kwindowsystem kxmlgui solid kdoctools kemoticons kinit kitemmodels kdoctools openssl perl-uri networkmanager
+
+description="Porting aid from KDELibs4 "
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=kdelibs4support
+version=5.54.0
+
+source=(http://download.kde.org/stable/frameworks/${version%.*}/portingAids/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+
+sed -i "s:4.2:4.5:g" cmake/FindDocBookXML4.cmake
+
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DKDE_INSTALL_LIBDIR=lib       \
+      -DBUILD_TESTING=OFF         \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

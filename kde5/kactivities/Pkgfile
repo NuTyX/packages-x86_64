@@ -1,0 +1,25 @@
+# Depends on: qtbase boost kcmutils kconfig kconfigwidgets kcoreaddons kdbusaddons kdeclarative kglobalaccel ki18n kio kservice kwindowsystem kxmlgui
+
+description="Runtime and library to organize the user work in separate activities"
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=kactivities
+version=5.54.0
+
+source=(http://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

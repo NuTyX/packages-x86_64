@@ -1,0 +1,27 @@
+# Depends on: extra-cmake-modules qtbase qtspeech kwallet kcmutils knotifyconfig kconfig kservice kdbusaddons kdoctools ktexteditor kcodecs kcrash knotifications akonadi kldap libkdepim kmailtransport kidentitymanagement libkleo pimcommon kmailtransport kimap akonadi-mime kross knewstuff shared-mime-info ki18n
+
+description="KMail account wizard"
+url="https://projects.kde.org/kmail-account-wizard"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=(shared-mime-info)
+
+name=kmail-account-wizard
+version=18.12.2
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

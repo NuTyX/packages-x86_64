@@ -1,0 +1,28 @@
+# Depends on: qtsensors qtmultimedia qttools qtvirtualkeyboard kauth kcmutils kcompletion kconfig kconfigwidgets kcoreaddons kcrash kdeclarative kglobalaccel ki18n kiconthemes kinit kio knewstuff knotifications kpackage kservice kwidgetsaddons kwindowsystem kxmlgui plasma-framework kdecoration libepoxy libxcb xcb-util-cursor xcb-util-image xcb-util-keysyms kwayland systemd kde-cli-tools mesa xdg-utils kidletime kscreenlocker breeze
+
+description="KDE Window manager "
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=(libepoxy libxcb xcb-util-cursor xcb-util-image xcb-util-keysyms xdg-utils) 
+
+name=kwin
+version=5.12.7
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
+

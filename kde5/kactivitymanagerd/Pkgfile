@@ -1,0 +1,38 @@
+# Depends on: qtbase extra-cmake-modules kconfig kdbusaddons ki18n kcoreaddons kwindowsystem kglobalaccel kxmlgui kio
+
+description="Core components for the KDE Activity concept"
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=kactivitymanagerd
+version=5.12.7
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr         \
+      -DCMAKE_BUILD_TYPE=Release          \
+      -DKDE_INSTALL_LIBDIR=lib            \
+      -DBUILD_TESTING=OFF                 \
+      -KACTIVITIES_ENABLE_EXCEPTIONS=OFF  \
+      -KACTIVITIES_LIBRARY_ONLY=OFF       \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

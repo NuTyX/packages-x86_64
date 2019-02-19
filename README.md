@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## NuTyX
 
 **ENGLISH** [NuTyX](http://www.nutyx.org) is a GNU/Linux distribution for multiple architectures based on the online 
@@ -56,7 +57,7 @@ Sous NuTyX, on parle de "scénario" pour expliquer le choix d'utilisation de cet
 n'utiliser que les binaires proposés dans les trois collections mentionnées ci-dessus, n'utiliser que la collection de
 base et ses propres recettes, ou un mélange.
 
-## 'base, cli, gui, cli-extra, 'gui-extra', 'lxde', 'lxde-extra', 'xfce4', 'xfce4-extra', 'mate' and 'mate-extra' collections ports
+## 'base, cli, gui, cli-extra, 'gui-extra', 'lxde', 'lxde-extra', 'xfce4', 'xfce4-extra', 'mate', 'mate-extra', 'kde5' and 'kde5-extra' collections ports
 
 > NOTE: the git address is changed.
 

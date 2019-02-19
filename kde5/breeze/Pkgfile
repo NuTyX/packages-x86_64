@@ -1,0 +1,27 @@
+# Depends on: breeze-icons plasma-framework frameworkintegration kcmutils kconfig kconfigwidgets kcoreaddons kguiaddons ki18n kwidgetsaddons kwindowsystem kdecoration libxcb kde-cli-tools kwayland
+
+description="Artwork, styles and assets for the Breeze visual style for the Plasma Desktop "
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+run=(breeze-icons)
+
+name=breeze
+version=5.12.7
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

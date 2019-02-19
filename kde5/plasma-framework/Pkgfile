@@ -1,0 +1,46 @@
+# Depends on: mesa libxcb qtquickcontrols2 qttools extra-cmake-modules kactivities kirigami2 kdeclarative kdoctools kwayland
+
+description="Plasma library and runtime components based upon KF5 and Qt5 "
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=plasma-framework
+version=5.54.0
+
+source=(http://downloads.tuxfamily.org/nutyx/files/kde-wallpaper-nutyx-11.0.tar.xz
+	http://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
+
+build=kde5
+build() {
+
+cd $name-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DKDE_INSTALL_LIBDIR=lib    \
+      -DBUILD_TESTING=OFF         \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+
+# NuTyX Wallpaper
+mkdir -p $PKG/usr/share/wallpapers
+cp -a $SRC/NuTyX \
+$PKG/usr/share/wallpapers/NuTyX
+mv $PKG/usr/share/wallpapers/NuTyX/default.metadata.desktop \
+$PKG/usr/share/plasma/desktoptheme/default/metadata.desktop
+}
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

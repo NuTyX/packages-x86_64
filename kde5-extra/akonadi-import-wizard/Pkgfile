@@ -1,0 +1,24 @@
+# Depends on: akonadi hicolor-icon-theme mailcommon boost extra-cmake-modules kdoctools
+
+description="Import data from other mail clients to KMail"
+url="https://projects.kde.org/akonadi-import-wizard"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=akonadi-import-wizard
+version=18.12.2
+
+source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

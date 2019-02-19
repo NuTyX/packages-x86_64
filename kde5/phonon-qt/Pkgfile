@@ -1,0 +1,42 @@
+# Depends on: extra-cmake-modules qtbase pulseaudio
+
+description="API multimedia of KDE. the replaces the old aRts, which is more supported by KDE."
+url="https://www.kde.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+name=phonon-qt
+release=3
+version=4.9.1
+_name=phonon
+source=(http://download.kde.org/stable/${_name}/$version/${_name}-$version.tar.xz)
+
+build() {
+
+mkdir build
+cd    build
+
+cmake ../phonon-$version           \
+    -DCMAKE_BUILD_TYPE=Release     \
+    -DCMAKE_SKIP_RPATH=ON          \
+    -DCMAKE_INSTALL_PREFIX=/usr    \
+    -DPHONON_INSTALL_QT_EXTENSIONS_INTO_SYSTEM_QT=ON \
+    -DPHONON_BUILD_PHONON4QT5=ON   \
+    -D__KDE_HAVE_GCC_VISIBILITY=NO \
+    -DCMAKE_INSTALL_LIBDIR=lib     \
+    -Wno-dev
+make
+make DESTDIR=$PKG install
+}
+
+uptodate() {
+feed=https://github.com/KDE/phonon/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
