@@ -1,17 +1,23 @@
-# Depends on: python2
+# Depends on: python
 
 description="SCons is a free tool construction allows replacement of make."
 url="http://scons.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 name=scons
-version=3.0.1
-release=2
+version=3.0.4
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 build () 
 { 
 cd $name-$version
-python2 setup.py install --standard-lib --prefix=/usr --install-data=/usr/share --root=$PKG --optimize=1;
+sed -i 's/env python/&3/' script/scons*
+python3 setup.py install \
+	--standard-lib   \
+	--prefix=/usr    \
+	--install-data=/usr/share \
+	--root=$PKG --optimize=1
+rm -v $PKG/usr/bin/scons*.bat
+
 install -D -m644 LICENSE.txt $PKG/usr/share/licenses/$name/LICENSE
 }
