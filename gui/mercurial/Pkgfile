@@ -1,33 +1,25 @@
-# Depends on: python2 gnupg subversion bzr python2-docutils ca-certificates
+# Depends on: python gnupg subversion bzr python-docutils ca-certificates
 
 description="A scalable distributed SCM tool"
 url="http://mercurial.selenic.com"
-packager="greg <greg@nutyx.org>"
-contributors="Berlius, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Berlius, Greg"
 
 run=(python2 python2-docutils) 
 
 name=mercurial
-version=4.8.1
+version=4.9
 
 source=(https://www.mercurial-scm.org/release/mercurial-$version.tar.gz
 mercurial.profile
 )
- 
-prepare() {
-  cd $name-$version
-  sed -i -e 's#env python#env python2#' mercurial/lsprof.py
-}
-
 build() {
-  cd $name-$version/contrib/chg
-  make
-}
+  cd $name-$version/
+  make build
 
-package() {
-  cd $name-$version
-  python2 setup.py install --root=$PKG/ --optimize=1
-
+  sed -i '/runrst/s/N)/N)3/' doc/Makefile
+  2to3-3.7 -w doc/hgmanpage.py
+  make doc
   install -d $PKG/usr/share/man/{man1,man5}
   install -m644 doc/hg.1 $PKG/usr/share/man/man1
   install -m644 doc/{hgrc.5,hgignore.5} $PKG/usr/share/man/man5
