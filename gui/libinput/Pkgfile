@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Pierre B, Jayce"
 
 name=libinput
-version=1.12.4
+version=1.12.6
 
 source=(http://freedesktop.org/software/$name/$name-$version.tar.xz)
 
@@ -14,7 +14,11 @@ build() {
 cd $name-$version
 mkdir build
 cd build
-meson --prefix=/usr -Dtests=false -Ddebug-gui=false -Ddocumentation=false
+meson --prefix=/usr \
+	-Dtests=false \
+	-Ddebug-gui=false \
+	-Dudev-dir=/lib/udev \
+	-Ddocumentation=false
 ninja
 DESTDIR=$PKG ninja install
 }
