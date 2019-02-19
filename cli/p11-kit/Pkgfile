@@ -6,18 +6,31 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=p11-kit
-version=0.23.14
+version=0.23.15
 
 source=( https://github.com/p11-glue/p11-kit/releases/download/$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
+sed '20,$ d' -i trust/trust-extract-compat.in &&
+cat >> trust/trust-extract-compat.in << "EOF"
+# Copy existing anchor modifications to /etc/ssl/local
+/usr/libexec/make-ca/copy-trust-modifications
+
+# Generate a new trust store
+/usr/sbin/make-ca -f -g
+EOF
+
 ./configure --prefix=/usr \
             --sysconfdir=/etc \
             --with-trust-paths=/etc/pki/anchors \
             --enable-doc
 make
 make DESTDIR=$PKG install
+
+ln -s /usr/libexec/p11-kit/trust-extract-compat \
+      $PKG/usr/bin/update-ca-certificates
+
 if [ -f $PKG/etc/pkcs11/pkcs11.conf.example ]; then
 	mv $PKG/etc/pkcs11/pkcs11.conf{.example,}
 fi
