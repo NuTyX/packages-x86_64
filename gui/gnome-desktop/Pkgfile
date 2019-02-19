@@ -8,10 +8,9 @@ contributors="Tnut, Fanch, Jayce, Remy"
 run=(gsettings-desktop-schemas freefont-ttf)
 
 name=gnome-desktop
-version=3.30.2
-release=2
+version=3.30.2.1
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
