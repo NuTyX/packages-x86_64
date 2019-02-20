@@ -5,8 +5,8 @@ packager="tnut <tnut@nutyx.org>"
 
 
 name=stunnel
-version=5.42
-release=2
+version=5.50
+
 nutyx_version=10.96.3
 
 source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
@@ -31,7 +31,6 @@ package () {
 cd $name-$version
 make DESTDIR=$PKG install
 
-sed -i 's@$2/bin/openssl@/bin/openssl@g' tools/makecert.sh
 
 cd ../nutyx-${nutyx_version}
 make DESTDIR=$PKG install-stunnel
