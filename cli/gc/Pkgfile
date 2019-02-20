@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=gc
-version=8.0.0
+version=8.0.2
 
 source=(http://www.hboehm.info/gc/gc_source/gc-$version.tar.gz)
 
@@ -18,7 +18,7 @@ sed -i 's#pkgdata#doc#' doc/doc.am && autoreconf &&
 --disable-static \
 --enable-shared \
 --enable-cplusplus
-install -D -m 644 doc/gc.man $PKG/usr/share/man/man3/gc.3 
+install -D -m 644 doc/gc.man $PKG/usr/share/man/man3/gc_malloc.3
 make
 make DESTDIR=$PKG install
 # rm obsolets libs
