@@ -2,21 +2,19 @@
 
 description="Screen saver and locker for the X Window System"
 url="http://www.jwz.org/xscreensaver/"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
 
 name=xscreensaver
-version=5.40
-release=1
+version=5.42
 
 source=(http://www.jwz.org/xscreensaver/$name-$version.tar.gz)
 
 build() {
 
 cd $name-$version
-./configure --prefix=/usr \
---libexecdir=/usr/lib \
---without-gnome
+sed -i '/^\/\//d' hacks/fontglide.c
+./configure --prefix=/usr
 make
 
 make install_prefix=$PKG install
