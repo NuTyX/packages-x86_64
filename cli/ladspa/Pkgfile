@@ -4,26 +4,22 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=ladspa
-version=1.13
-release=1
+version=1.15
 
-source=(https://github.com/OpenMandrivaAssociation/ladspa/raw/master/ladspa_sdk_$version.tgz
-       ladspa-fix-memleak-in-plugin-scanning.patch
-       ladspa-fallback-ladspa-path.patch)
+source=(https://ladspa.org/download/ladspa_sdk_${version}.tgz
+       ladspa-fix-memleak-in-plugin-scanning.patch)
 
 build() {
-cd ladspa_sdk/src
+mv -v ${name}_sdk_${version} ${name}-${version}
+cd $name-$version
+patch -Np1 -i ../ladspa-fix-memleak-in-plugin-scanning.patch
 
-patch -Np1 -i ../../ladspa-fix-memleak-in-plugin-scanning.patch
-patch -Np2 -i ../../ladspa-fallback-ladspa-path.patch
-
-sed \
-    -e 's/mkdirhier/mkdir -p/' \
-    -e "s#-O3#${CFLAGS} ${LDFLAGS/,--as-needed/}#" \
-    -i makefile
-
+sed -e "s#-O2#${CFLAGS} ${LDFLAGS}#" -i src/Makefile
+cd src
 make targets
 make INSTALL_PLUGINS_DIR="$PKG/usr/lib/ladspa/" \
      INSTALL_INCLUDE_DIR="$PKG/usr/include/"    \
      INSTALL_BINARY_DIR="$PKG/usr/bin/" install
+
+install -vDm 644 ../doc/*.{html,txt} -t $PKG/usr/share/doc/$name
 }
