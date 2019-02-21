@@ -6,12 +6,9 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
 name=libnftnl
-version=1.1.1
+version=1.1.2
 
 source=(http://netfilter.org/projects/libnftnl/files/libnftnl-$version.tar.bz2)
-
-build=autotools
-    
 package() {
     # Obsolet lib
     rm $PKG/usr/lib/libnftnl.la
