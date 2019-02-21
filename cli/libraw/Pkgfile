@@ -5,13 +5,13 @@ url="http://www.libraw.org/"
 packager="tnut<tnut@nutyx.org>"
 
 name=libraw
-version=0.19.1
-release=2
+version=0.19.2
 
 source=(http://www.libraw.org/data/LibRaw-$version.tar.gz)
 build ()
 {
 cd LibRaw-$version
+./mkdist.sh
 ./configure --prefix=/usr \
  --enable-jpeg \
  --enable-jasper \
