@@ -2,12 +2,11 @@
 
 description="Gnome keyboard library"
 url="http://www.gnome.org/"
-packager="remy <remy@nutyx.org>"
-contributors="Pierre, jayce"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre, jayce, Remy"
 
 name=libgnomekbd
-version=3.26.0
-release=2
+version=3.26.1
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
@@ -15,10 +14,4 @@ package() {
 # Obsolet lib
 rm $PKG/usr/lib/libgnomekbd.la
 rm $PKG/usr/lib/libgnomekbdui.la
-}
-build() {
-cd $name-$version
-./configure --prefix=/usr --disable-static
-make 
-make DESTDIR=$PKG install
 }
