@@ -12,7 +12,7 @@ source=(https://ladspa.org/download/ladspa_sdk_${version}.tgz
 build() {
 mv -v ${name}_sdk_${version} ${name}-${version}
 cd $name-$version
-patch -Np1 -i ../ladspa-fix-memleak-in-plugin-scanning.patch
+patch -Np0 -i ../ladspa-fix-memleak-in-plugin-scanning.patch
 
 sed -e "s#-O2#${CFLAGS} ${LDFLAGS}#" -i src/Makefile
 cd src
