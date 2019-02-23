@@ -3,15 +3,17 @@ url="http://web.mit.edu/kerberos/"
 packager="tnut <tnut@nutyx.org>"
 
 name=kerberos
-version=1.16.1
+version=1.17
 nutyx_version=10.97
-release=2
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
         http://web.mit.edu/$name/dist/krb5/${version:0:4}/krb5-$version.tar.gz)
 
 build()  {
 cd krb5-$version/src
+
+sed -i -e 's@\^u}@^u cols 300}@' tests/dejagnu/config/default.exp
+sed -i -e '/eq 0/{N;s/12 //}'    plugins/kdb/db2/libdb2/test/run.test
 
 ./configure --prefix=/usr            \
             --sysconfdir=/etc        \
@@ -28,6 +30,10 @@ for LIBRARY in gssapi_krb5 gssrpc k5crypto kadm5clnt_mit kadm5srv_mit kdb5 krb5 
 done
 
 unset LIBRARY
+
+mkdir $PKG/bin
+mv -v $PKG/usr/bin/ksu $PKG/bin
+chmod -v 755 $PKG/bin/ksu
 
 install -v -dm755 $PKG/usr/share/doc/krb5-$version
 cp -vfr ../doc/*  $PKG/usr/share/doc/krb5-$version
