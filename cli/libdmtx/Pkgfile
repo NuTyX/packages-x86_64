@@ -5,8 +5,11 @@ packager="tnut <tnut@nutyx.org>"
 name=libdmtx
 version=0.7.5
 
-source=(https://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
-
+source=(https://github.com/dmtx/$name/archive/v$version/$name-$version.tar.gz)
+prepare() {
+cd $name-$version
+./autogen.sh
+}
 package() {
 # Obsolet lib
 rm $PKG/usr/lib/libdmtx.la
