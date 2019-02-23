@@ -29,5 +29,4 @@ mkdir -p $PKG/{sbin,usr/lib}
 ln -sfv ../../lib/$(readlink $PKG/lib/libbtrfs.so) $PKG/usr/lib/libbtrfs.so
 ln -sfv ../../lib/$(readlink $PKG/lib/libbtrfsutil.so) $PKG/usr/lib/libbtrfsutil.so
 rm -v $PKG/lib/libbtrfs.{a,so} $PKG//lib/libbtrfsutil.{a,so}
-mv -v $PKG/bin/{mkfs,fsck}.btrfs $PKG/sbin
 }
