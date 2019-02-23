@@ -8,10 +8,10 @@ contributors="PierreB Tnut"
 name=x264
 version=20190209-2245
 
-source=(http://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20180205-2245-stable.tar.bz2)
+source=(http://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-$version-stable.tar.bz2)
 
 build() {
-cd x264-snapshot-${version/./-}-stable
+cd x264-snapshot-${version}-stable
 ./configure \
 --prefix=/usr \
 --enable-pic \
