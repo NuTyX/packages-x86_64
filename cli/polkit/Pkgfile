@@ -7,18 +7,14 @@ contributors="Pierre B"
 
 name=polkit
 version=0.115
-release=3
+release=4
 
-source=(http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
+source=(http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-security_patch-3.patch
+	http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
-
-sed -i "s:/sys/fs/cgroup/systemd/:/sys:g" configure
-
-sed -e '/JS_ReportWarningUTF8/s/,/, "%s",/'  \
-        -i  src/polkitbackend/polkitbackendjsauthority.cpp
-
+patch -Np1 -i ../$name-$version-security_patch-3.patch
 
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
