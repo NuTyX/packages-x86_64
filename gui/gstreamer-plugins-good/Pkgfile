@@ -9,12 +9,14 @@ _name=gst-plugins-good
 
 name=gstreamer-plugins-good
 version=1.14.4
-release=2
+release=3
 
-source=(http://gstreamer.freedesktop.org/src/${_name}/${_name}-$version.tar.xz)
+source=(http://www.linuxfromscratch.org/patches/blfs/svn/gst-plugins-good-$version-vpx_1.8-1.patch
+	http://gstreamer.freedesktop.org/src/${_name}/${_name}-$version.tar.xz)
 
 build() {
 cd ${_name}-$version
+patch -Np1 -i ../gst-plugins-good-$version-vpx_1.8-1.patch
 ./configure --prefix=/usr \
 --with-package-name="GStreamer Good Plugins $version NuTyX" \
 --with-package-origin="http://downloads.nutyx.org/"
