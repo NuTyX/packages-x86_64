@@ -7,7 +7,7 @@ contributors="Pierre B"
 
 name=qt4
 version=4.8.7
-release=3
+release=4
 
 _name=qt-everywhere-opensource-src-${version}
 
@@ -22,6 +22,8 @@ QT4BINDIR=$QT4PREFIX/lib/qt4/bin
 
 cd ${_name}
 patch -Np1 -i ../$name-$version-conglo-1.patch
+
+sed -i 's|^asm volatile ($|asm (|' src/3rdparty/javascriptcore/JavaScriptCore/jit/JITStubs.cpp
 
 echo "QMAKE_CXXFLAGS += -std=gnu++98" >> src/3rdparty/javascriptcore/JavaScriptCore/JavaScriptCore.pri
 echo "QMAKE_CXXFLAGS += -std=gnu++98" >> src/plugins/accessible/qaccessiblebase.pri
