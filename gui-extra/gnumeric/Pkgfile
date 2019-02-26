@@ -13,12 +13,11 @@ source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$versio
 build() {
 
 cd $name-$version
-sed -e "s@zz-application/zz-winassoc-xls;@@" -i gnumeric.desktop.in
+sed -i 's/HELP_LINGUAS = cs de es/HELP_LINGUAS = de es/' doc/Makefile.in
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var/lib \
---disable-schemas-install --enable-ssindex
-
+--disable-schemas-install
 make
 make DESTDIR=$PKG install
 
