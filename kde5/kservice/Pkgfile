@@ -10,19 +10,7 @@ version=5.55.0
 
 source=(http://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
 
-build() {
-unset MAKEFLAGS
-cd $name-$version
-mkdir build
-cd    build
-cmake .. \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib \
-    -DBUILD_TESTING=OFF \
-    -DBUILD_QCH=ON
-make
-make DESTDIR=$PKG install
-}
+build=kde5
 
 uptodate() {
 feed=https://github.com/KDE/$name/releases.atom 
