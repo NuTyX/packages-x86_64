@@ -8,7 +8,7 @@ contributors="Pierre B"
 run=(startup-notification hunspell)
 
 name=thunderbird
-version=60.5.1
+version=60.5.2
 
 source=(http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.xz
 	$name.desktop)
@@ -51,7 +51,8 @@ ac_add_options --disable-gconf
 ac_add_options --enable-system-sqlite
 ac_add_options --enable-system-ffi
 ac_add_options --with-system-libevent
-ac_add_options --with-system-libvpx
+# fails to build against libvpx-1.8.0
+#ac_add_options --with-system-libvpx
 ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
 ac_add_options --with-system-icu
