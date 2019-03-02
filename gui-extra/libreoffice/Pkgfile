@@ -1,4 +1,4 @@
-# Depends on: python perl-archive-zip unzip zip icu cups poppler-glib xorg-fontconfig ttf-liberation noto-fonts dejavu-ttf libxslt kerberos xorgproto dbus-glib mesa postgresql wget apache-ant apr boost clucene dbus-glib libepoxy libjpeg-turbo2 xorg-glu gstreamer-plugins-base libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss redland serf unixodbc desktop-file-utils doxygen gdb gnutls mariadb nasm telepathy-glib xmlsec gpgme
+# Depends on: python perl-archive-zip unzip zip icu cups poppler-glib xorg-fontconfig libxslt kerberos xorgproto dbus-glib mesa postgresql wget apache-ant apr boost clucene dbus-glib libepoxy libjpeg-turbo2 xorg-glu gstreamer-plugins-base libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss redland serf unixodbc desktop-file-utils doxygen gdb gnutls mariadb nasm telepathy-glib xmlsec gpgme
 
 PKGMK_IGNORE_UNPACK="yes"
 
@@ -9,6 +9,8 @@ contributors="Pierre B, Tnut, Greg"
 run=(shared-mime-info xdg-utils desktop-file-utils) 
 name=libreoffice
 version=6.2.0.3
+release=2
+
 source=(http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-$version.tar.xz
 	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-dictionaries-$version.tar.xz
 	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-help-$version.tar.xz
@@ -44,7 +46,6 @@ cd $name-$version
 	--with-lang="ar cs es de fr el ga gl hi hr hu it ja lt lv pt fi nb nl nn da sv tr ro sq sk sl sr th uk ru pl zh-CN"   \
 	--with-help                 \
 	--with-myspell-dicts        \
-	--without-fonts             \
 	--without-junit             \
 	--without-system-dicts      \
 	--disable-dconf             \
