@@ -1,0 +1,72 @@
+diff --git a/scripts/build-collection.in b/scripts/build-collection.in
+index 870f2af..002a034 100644
+--- a/scripts/build-collection.in
++++ b/scripts/build-collection.in
+@@ -1,5 +1,5 @@
+ #!/bin/bash
+-#  Copyright (c) 2016 by NuTyX team (http://nutyx.org)
++#  Copyright (c) 2016-2019 by NuTyX team (http://nutyx.org)
+ #
+ #  This program is free software; you can redistribute it and/or modify
+ #  it under the terms of the GNU General Public License as published by
+@@ -155,7 +155,7 @@ export CFLAGS="-O2 -pipe"
+ export CXXFLAGS="${CFLAGS}"
+ export MAKEFLAGS="-j$(getconf _NPROCESSORS_ONLN)"
+ PKGMK_GROUPS=(devel man doc service)
+-PKGMK_LOCALES=(ar fr de it es hi ja nl pt da nn sv fi tr ru pl zh_CN)
++PKGMK_LOCALES=(ar fr cs de is it el es ga gl hi hr hu ja lt lv nl pt pl da nn ro ru sq sk sl sr sv fi th tr pl uk vi zh_CN)
+ PKGMK_CLEAN="no"
+ PKGMK_KEEP_SOURCES="yes"
+ PKGMK_SOURCE_DIR="/sources"
+diff --git a/src/pkgdbh.cxx b/src/pkgdbh.cxx
+index b789631..4d32f47 100644
+--- a/src/pkgdbh.cxx
++++ b/src/pkgdbh.cxx
+@@ -1123,6 +1123,7 @@ set< pair<string,time_t> > Pkgdbh::getPackageDependencies(const string& filename
+ {
+ 	pair<string, pkginfo_t> packageArchive;
+ 	set< pair<string,time_t> > packageNameDepsBuildTime;
++	set< pair<string,time_t> > packageNameDepsBuildTimeTemp;
+ 	packageArchive = openArchivePackage(filename);
+ #ifndef NDEBUG
+ 	cerr << "----> Begin of Direct Dependencies of " << packageArchive.first << endl;
+@@ -1140,29 +1141,27 @@ set< pair<string,time_t> > Pkgdbh::getPackageDependencies(const string& filename
+ #ifndef NDEBUG
+ 	cerr << "----> End of Direct Dependencies" << endl;
+ #endif
+-	packageNameDepsBuildTime = packageArchive.second.dependencies;
++	packageNameDepsBuildTimeTemp = packageArchive.second.dependencies;
+ #ifndef NDEBUG
+ 	cerr << "----> Before cleanup: " << packageArchive.first << endl;
+-	for (auto it : packageNameDepsBuildTime ) cerr << it.first << it.second<< " ";
++	for (auto it : packageNameDepsBuildTimeTemp ) cerr << it.first << it.second<< " ";
+ 	cerr << endl;
+ 	int i=1;
+ #endif
+-	for (std::set< pair<string,time_t> >::iterator it = packageNameDepsBuildTime.begin();it != packageNameDepsBuildTime.end();it++ ) {
++	for (auto it : packageNameDepsBuildTimeTemp ) {
+ #ifndef NDEBUG
+-		cerr << it->first << it->second << endl;
++		cerr << it.first << " " <<  it.second << endl;
+ 		cerr << "packageArchiveName:" <<packageArchive.first << endl;
+ #endif
+ 		/*
+-		 * If actual and already present erase the dep
++		 * If actual and already present don't add the dep
+ 		 */
+-		if ( checkPackageNameBuildDateSame(*it)  ) {
+-			packageNameDepsBuildTime.erase(it);
+-#ifndef NDEBUG
+-			cerr << "----> " << it->first << " deleted" << endl;
+-#endif
+-			it--;
+-		}
++		if ( checkPackageNameBuildDateSame(it)  )
++			continue;
++		packageNameDepsBuildTime.insert(it);
++			//packageNameDepsBuildTime.erase(it);
+ #ifndef NDEBUG
++		cerr << "----> " << it.first << " deleted" << endl;
+ 		cerr << i << endl;
+ 		i++;
+ #endif

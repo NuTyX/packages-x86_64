@@ -6,10 +6,13 @@ maintainer="Tnut, Gianni"
 packager="tnut <tnut@nutyx dot org>"
 name=libcards
 version=2.4.94
+release=2
 
-source=(http://downloads.tuxfamily.org/nutyx/files/cards-$version.tar.gz)
+source=($name-$version-consolidate-1.patch
+	http://downloads.tuxfamily.org/nutyx/files/cards-$version.tar.gz)
 build () {
 cd cards-$version
+patch -Np1 -i ../$name-$version-consolidate-1.patch
 make libs
 make DESTDIR=$PKG install-libs
 cd documentation
