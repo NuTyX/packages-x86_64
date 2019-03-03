@@ -6,16 +6,13 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=scribus
-version=1.5.4
+version=1.5.5_pre20190124
 
 run=(shared-mime-info)
-source=(scribus-1.5.4-poppler-0.64.0.patch
-	https://downloads.sourceforge.net/${name}/${name}-${version}.tar.xz)
+source=(https://github.com/scribusproject/scribus/archive/1ed85778dd55bcbcfad2bbc276fd4c97f43ad965.tar.gz)
 
 build() {
-	cd $name-$version
-	patch -Np1 -i ../scribus-1.5.4-poppler-0.64.0.patch
-#	sed -e 's|GBool|bool|g' -e 's|gTrue|true|g' -e 's|gFalse|false|g' -i scribus/plugins/import/pdf/*
+	cd $name-1ed85778dd55bcbcfad2bbc276fd4c97f43ad965
 	mkdir build
 	cd build
 	cmake ../ -DCMAKE_INSTALL_PREFIX=/usr \
@@ -23,6 +20,6 @@ build() {
                 -DLIB_SUFFIX=""
 	make
 	make DESTDIR=$PKG install
-	install -Dm644 $SRC/$name-$version/scribus.desktop \
+	install -Dm644 ../scribus.desktop \
 	$PKG/usr/share/applications/scribus.desktop
 }
