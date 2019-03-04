@@ -11,25 +11,31 @@ PKGMK_GROUPS=(devel doc)
 name=kernel
 alias=(linux)
 
-version=4.20.13
-_version=${version:0:4}
+version=5.0
+_version=${version:0:3}
 
 run=(nutyx)
 
 # Virtualbox
-vb_version=6.0.4
-buildrelease=128413
+vb_version=5.2.26
+buildrelease=128414
 _VBARCH=amd64
+
+# Linux patch version
+if [ "${_version}" != "${version}" ]; then
+ patchname="patch-$version.xz"
+fi
+
 
 ## Download all the sources
 #
 
 source=(\
-$url/pub/linux/kernel/v4.x/linux-${_version}.tar.xz
-$url/pub/linux/kernel/v4.x/patch-$version.xz config_64
+$url/pub/linux/kernel/v5.x/linux-${_version}.tar.xz config_64
 http://download.virtualbox.org/virtualbox/${vb_version}/VirtualBox-${vb_version}-${buildrelease}-Linux_${_VBARCH}.run
 )
 
+[ -z $patchversion ] || source+=" $url/pub/linux/kernel/v5.x/$patchname"
 ## Time to build everything
 #
 
@@ -59,6 +65,7 @@ cd $SRC/linux-${_version}
 make INSTALL_MOD_PATH=$PKG modules_install
 
 KERNEL_VERSION="${version}-NuTyX"
+[ -z $patchversion ] && KERNEL_VERSION="${version}.0-NuTyX"
 
 # Virtualbox
 cd $SRC
