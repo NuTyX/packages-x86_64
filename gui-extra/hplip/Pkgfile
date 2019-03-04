@@ -6,7 +6,7 @@ contributors="tnut, Greg"
 packager="tnut<tnut@nutyx.org>"
 
 name=hplip
-version=3.18.12
+version=3.19.1
 
 run=(python2-sip dbus-python python2-qt python2-gobject2 python2-notify openssl)
 
@@ -19,8 +19,8 @@ prepare() {
 	cd $name-$version
 	
         patch -Np0 -i ../disable_upgrade.patch
-	patch -Np1 -i ../0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
-	patch -Np1 -i ../hplip-colorlaserjet-mfp-m278-m281.patch
+#	patch -Np1 -i ../0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
+#	patch -Np1 -i ../hplip-colorlaserjet-mfp-m278-m281.patch
 }
 build() {
 
