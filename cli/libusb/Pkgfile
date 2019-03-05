@@ -1,3 +1,5 @@
+# Depends on: eudev
+
 description="The libusb package contains a library used by some applications for USB device access."
 url="http://libusb.wiki.sourceforge.net/"
 packager="tnut <tnut@nutyx.org>"
@@ -5,17 +7,18 @@ contributors="Pierre B"
 
 name=libusb
 version=1.0.22
-release=2
+release=3
 
 source=( https://github.com//libusb/libusb/releases/download/v$version/libusb-$version.tar.bz2)
 
 build() {
+  unset MAKEFLAGS
   cd $name-$version
   ./configure --prefix=/usr\
           --disable-build-docs\
           --mandir=/usr/share/man\
           --infodir=/usr/share/info
-  make -j1
+  make
   make DESTDIR=$PKG install
   rm $PKG/usr/lib/libusb-1.0.la
 }
