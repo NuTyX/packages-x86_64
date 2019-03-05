@@ -68,49 +68,49 @@ KERNEL_VERSION="${version}-NuTyX"
 [ -z $patchversion ] && KERNEL_VERSION="${version}.0-NuTyX"
 
 # Virtualbox
-cd $SRC
+# cd $SRC
 # Modules host
 
-sh VirtualBox-${vb_version}-${buildrelease}-Linux_${_VBARCH}.run --target vb --keep --noexec
-cd vb
-tar xfj VirtualBox.tar.bz2
-cd src/vboxhost/
+# sh VirtualBox-${vb_version}-${buildrelease}-Linux_${_VBARCH}.run --target vb --keep --noexec
+# cd vb
+# tar xfj VirtualBox.tar.bz2
+# cd src/vboxhost/
 
-for i in `find . -name Makefile.include.header`
-do
-  sed -i "s@/lib/modules/@$PKG/lib/modules/@" $i
-done
+# for i in `find . -name Makefile.include.header`
+# do
+#   sed -i "s@/lib/modules/@$PKG/lib/modules/@" $i
+# done
 
-KERN_VER=${KERNEL_VERSION} make
+# KERN_VER=${KERNEL_VERSION} make
 
-for i in *.ko
-do
-	install -D -m0644 $i \
-	$PKG/lib/modules/${KERNEL_VERSION}/misc/$i
-done
+# for i in *.ko
+# do
+#	install -D -m0644 $i \
+#	$PKG/lib/modules/${KERNEL_VERSION}/misc/$i
+# done
 
 # Modules guest
-mkdir $SRC/vb-guest
-cd    $SRC/vb-guest
+# mkdir $SRC/vb-guest
+# cd    $SRC/vb-guest
 
-bsdtar -xf ../vb/additions/VBoxGuestAdditions.iso
-sh  VBoxLinuxAdditions.run --target vb --keep --noexec
-cd vb
-tar xfj VBoxGuestAdditions-x86.tar.bz2
-cd src/vboxguest-${vb_version}
+# bsdtar -xf ../vb/additions/VBoxGuestAdditions.iso
+# sh  VBoxLinuxAdditions.run --target vb --keep --noexec
+# cd vb
+# tar xfj VBoxGuestAdditions-x86.tar.bz2
+# cd src/vboxguest-${vb_version}
 
-for i in `find . -name Makefile.include.header`
-do
-  sed -i "s@/lib/modules/@$PKG/lib/modules/@" $i
-done
+# for i in `find . -name Makefile.include.header`
+# do
+#   sed -i "s@/lib/modules/@$PKG/lib/modules/@" $i
+# done
 
-KERN_VER=${KERNEL_VERSION} make all
+# KERN_VER=${KERNEL_VERSION} make all
 
-for i in *.ko
-do
-	install -D -m0644 $i \
-	$PKG/lib/modules/${KERNEL_VERSION}/misc/$i
-done
+# for i in *.ko
+# do
+#	install -D -m0644 $i \
+#	$PKG/lib/modules/${KERNEL_VERSION}/misc/$i
+# done
 
 
 # depmod needed
