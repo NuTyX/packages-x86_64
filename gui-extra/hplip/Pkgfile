@@ -10,61 +10,67 @@ version=3.19.1
 
 run=(python2-sip dbus-python python2-qt python2-gobject2 python2-notify openssl)
 
-source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz
-       disable_upgrade.patch
-       0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
-       hplip-colorlaserjet-mfp-m278-m281.patch)
+source=(https://downloads.sourceforge.net/$name/$name-$version.tar.gz
+        disable_upgrade.patch
+        0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
+        0023-Fix-handling-of-unicode-filenames-in-sixext.py.patch
+        0025-Remove-all-ImageProcessor-functionality-which-is-clo.patch)
 
 prepare() {
-	cd $name-$version
-	
-        patch -Np0 -i ../disable_upgrade.patch
-#	patch -Np1 -i ../0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
-#	patch -Np1 -i ../hplip-colorlaserjet-mfp-m278-m281.patch
+ cd $name-$version
+ 
+ # disable insecure update - https://bugs.archlinux.org/task/38083
+ patch -Np0 -i ../disable_upgrade.patch
+ 
+ # add missing 'include <cups/ppd.h>' at various places
+ patch -Np1 -i ../0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
+ # fix some handling unicode file names FS#58412
+ patch -Np1 -i ../0023-Fix-handling-of-unicode-filenames-in-sixext.py.patch
+ # remove binary blob libImageProcessor and all linking - FS#59681
+ patch -Np1 -i ../0025-Remove-all-ImageProcessor-functionality-which-is-clo.patch
+
+ export AUTOMAKE='automake --foreign'
+ autoreconf --force --install
 }
+
 build() {
+ cd $name-$version
+ ./configure --prefix=/usr \
+             --enable-qt5 \
+             --disable-qt4 \
+             --enable-hpcups-install \
+             --enable-cups-drv-install \
+             --enable-pp-build #--help
+ make
+}
 
-        cd $name-$version
+package() {
+ cd $name-$version
+ make -j1 DESTDIR=$PKG install
+ 
+ # remove config provided by sane and autostart of hp-daemon
+ rm -rf $PKG/etc/{sane.d,xdg}
+ install -dm755 $PKG/etc/sane.d/dll.d
+ echo hpaio > $PKG/etc/sane.d/dll.d/hpaio
+ 
+ # remove HAL .fdi file because HAL is no longer used
+ rm -vrf $PKG/usr/share/hal
+ 
+ # remove rc script
+ rm -vrf $PKG/etc/init.d
 
-        export AUTOMAKE='automake --foreign'
-        autoreconf -fiv
+ # add mixed license file
+ install -Dt $PKG/usr/share/licenses/${pkgname} -m644 COPYING
 
-        ./configure --prefix=/usr \
-                --enable-qt5  \
-		--disable-qt4 \
-                --disable-foomatic-rip-hplip-install \
-                --enable-foomatic-ppd-install \
-                --enable-hpcups-install \
-                --enable-new-hpcups \
-                --enable-cups-ppd-install \
-                --enable-cups-drv-install \
-                --enable-hpijs-install \
-                --enable-foomatic-drv-install \
-                --enable-pp-build \
-		--enable-udev-acl-rules \
-                --enable-dbus-build  \
-                --enable-scan-build \
-                --enable-fax-build \
-                --enable-network-build
+ rm $PKG/usr/lib/python2.7/site-packages/hpmudext.la
+ rm $PKG/usr/lib/python2.7/site-packages/pcardext.la
+ rm $PKG/usr/lib/python2.7/site-packages/cupsext.la
+ rm $PKG/usr/lib/python2.7/site-packages/scanext.la
+ rm $PKG/usr/lib/libhpdiscovery.la
+ rm $PKG/usr/lib/sane/libsane-hpaio.la
+ rm $PKG/usr/lib/libhpmud.la
+ rm $PKG/usr/lib/libhpipp.la
+ rm $PKG/usr/lib/libhpip.la
 
-        make -s
-	make DESTDIR=$PKG install || make -j1 DESTDIR=$PKG install
-
-        # remove config provided by sane and autostart of hp-daemon
-        rm -rf $PKG/etc/{sane.d,xdg}
-        install -dm755 $PKG/etc/sane.d/dll.d
-        echo hpaio > $PKG/etc/sane.d/dll.d/hpaio
-
-        # remove HAL .fdi file because HAL is no longer used
-        rm -vrf $PKG/usr/share/hal
-rm $PKG/usr/lib/python2.7/site-packages/hpmudext.la
-rm $PKG/usr/lib/python2.7/site-packages/pcardext.la
-rm $PKG/usr/lib/python2.7/site-packages/cupsext.la
-rm $PKG/usr/lib/python2.7/site-packages/scanext.la
-rm $PKG/usr/lib/libhpdiscovery.la
-rm $PKG/usr/lib/sane/libsane-hpaio.la
-rm $PKG/usr/lib/libhpmud.la
-rm $PKG/usr/lib/libhpipp.la
-rm $PKG/usr/lib/libhpip.la
 
 }
