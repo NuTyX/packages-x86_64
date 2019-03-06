@@ -4,7 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=iptables
-version=1.6.2
+version=1.8.2
 nutyx_version=10.97
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
@@ -17,10 +17,8 @@ cd $name-$version
 ./configure --prefix=/usr \
 --sbindir=/sbin \
 --with-xtlibdir=/lib/xtables \
---with-pkgconfigdir=/usr/lib/pkgconfig \
 --enable-libipq \
---disable-nftables \
---enable-devel
+--disable-nftables
 make
 make DESTDIR=$PKG install
 
@@ -33,4 +31,8 @@ done
 # service
 cd ../nutyx-${nutyx_version}
 make DESTDIR=$PKG install-$name
+# Obsolet libs
+rm $PKG/usr/lib/libip{6,4}tc.la
+rm $PKG/usr/lib/libip{q,tc}.la
+rm $PKG/usr/lib/libxtables.la
 }
