@@ -64,12 +64,12 @@ else
 	KERNEL_VERSION=$1
 	if [ -z $BUSYBOX ]; then
 		sbinfiles="udevd udevadm ip"
+	else
 		for I in udevd udevadm
 		do
 			cp /sbin/$I $WDIR/sbin/$I
 			ldd /sbin/$I | sed "s/\t//" | cut -d " " -f1 >> $unsorted
 		done
-	else
 		sbinfiles="ip"
 	fi
 fi
@@ -80,6 +80,7 @@ if [ -n "$KERNEL_VERSION" ] && [ ! -d "/lib/modules/$1" ] ; then
   echo "No modules directory named $1"
   exit 1
 fi
+
 
 usrbinfiles="cut groups"
 binfiles="sh cat clear date grep cp dd hostname killall ls mkdir mknod more mount mountpoint chmod"
@@ -263,7 +264,6 @@ for f in $sbinfiles ; do
 		ln -s $BUSYBOX $WDIR/sbin/$f
 	fi
 done
-
 
 if [ -z $BUSYBOX ]; then
 	if [ -x /bin/kmod ] ; then

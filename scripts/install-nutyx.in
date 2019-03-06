@@ -984,6 +984,12 @@ cat > ${FOLDER}/etc/$FILE << "EOF"
 #                                                              order
 # Exemple de montage nfs
 # 192.168.254.254:/home/thierry /home/thierry nfs rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
+
+proc           /proc        proc     nosuid,noexec,nodev 0     0
+sysfs          /sys         sysfs    nosuid,noexec,nodev 0     0
+devpts         /dev/pts     devpts   gid=5,mode=620      0     0
+tmpfs          /run         tmpfs    defaults            0     0
+devtmpfs       /dev         devtmpfs mode=0755,nosuid    0     0
 EOF
 }
 generate_bashrc() {
@@ -1103,17 +1109,17 @@ echo "
 url ${URL}
 #
 ## For nos
-# Decomment following line
-# If you want to install Non Open source/Not compiled packages
+# Comment following line
+# If you don't want to install Non Open source/Not compiled packages
 #
-# dir ${DEPOT}/nos
+dir ${DEPOT}/nos
 #
 ## For LXQt
-# Decomment following 2 lines
+# Comment following 2 lines
 # if you don't want to install LXQt
 #
-# dir ${DEPOT}/lxqt-extra
-# dir ${DEPOT}/lxqt
+dir ${DEPOT}/lxqt-extra
+dir ${DEPOT}/lxqt
 #
 ## For lxde
 # Comment following 2 lines
@@ -1233,7 +1239,6 @@ fi
 [ -z "$VERSION" ] && VERSION="#VERSION#"
 if [ "$VERSION" == "development" ]; then
 	CODE_NAME="`date +%Y%m%d`"
-	INIT="sysd"
 else
 	CODE_NAME="Houaphan"
 fi
@@ -1254,6 +1259,8 @@ grub lz4 mdadm jfsutils xfsprogs btrfs-progs dhcpcd kernel-lts"
 fi
 [ "$KERNEL" == "NONE" ] && KERNEL=""
 [ "$KERNEL" == "none" ] && KERNEL=""
+
+KERNEL+=" $INIT"
 
 [ -z $LFS ] && LFS=$FOLDER
 
