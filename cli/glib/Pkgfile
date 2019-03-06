@@ -8,9 +8,9 @@ contributors="Tnut, Fanch"
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.58.3
+version=2.60.0
 
-source=(http://ftp.gnome.org/pub/gnome/sources/glib/${version:0:4}/$name-$version.tar.xz
+source=(https://ftp.gnome.org/pub/gnome/sources/glib/${version:0:4}/$name-$version.tar.xz
 	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-11.0.jpg
 	glib-$version-skip_warnings-1.patch)
 
@@ -22,7 +22,7 @@ build () {
   mkdir build-glib
   cd    build-glib
 
-  meson --prefix=/usr -Dman=true -Dselinux=false ..
+  meson --prefix=/usr -Dman=true -Dselinux=auto ..
   ninja
 
   DESTDIR=$PKG ninja install
