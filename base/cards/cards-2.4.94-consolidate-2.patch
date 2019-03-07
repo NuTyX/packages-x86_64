@@ -32,7 +32,7 @@ index 55cefe0..0687177 100644
  # PKGMK_KEEP_SOURCES="yes"
  # PKGMK_SOURCE_DIR="/tmp"
 diff --git a/scripts/pkgmk.in b/scripts/pkgmk.in
-index f4fab35..56da219 100644
+index f4fab35..343bfa0 100644
 --- a/scripts/pkgmk.in
 +++ b/scripts/pkgmk.in
 @@ -4,7 +4,7 @@
@@ -68,9 +68,9 @@ index f4fab35..56da219 100644
 -						fi
 -					done
 +		for group in ${PKGMK_LOCALES[@]}; do
-+			if [ "`type -t ${group}`" == "function" ]; then
++			if [ "`type -t locale_${group}`" == "function" ]; then
 +				BUILD_SUCCESSFUL="no"
-+				(set -e -x ;${group})
++				(set -e -x ;locale_${group})
 +				j=1
 +				if [ $? = 0 ]; then
 +					BUILD_SUCCESSFUL="yes"
