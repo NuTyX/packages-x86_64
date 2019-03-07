@@ -8,17 +8,14 @@ contributors="Greg"
 run=(gtk-update-icon-cache)
 
 name=obs-studio
-version=22.0.2
-release=2
+version=23.0.1
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/jp9000/obs-studio/archive/$version.tar.gz
-        https://github.com/obsproject/obs-studio/commit/cf73fa6da19f798ce04907781d6dc00484820b77.patch)
+source=(https://github.com/jp9000/obs-studio/archive/$version.tar.gz)
 
 build() {
 cd $name-$version
-patch -Np1 -i ../cf73fa6da19f798ce04907781d6dc00484820b77.patch
 sed -i '15i #include <QAction>' UI/frontend-plugins/frontend-tools/scripts.cpp
 mkdir build
 cd    build
