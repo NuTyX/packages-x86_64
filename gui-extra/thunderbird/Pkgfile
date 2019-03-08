@@ -98,12 +98,12 @@ $PKG/usr/share/icons/hicolor/symbolic/apps/thunderbird-symbolic.svg
 
 mkdir -p $PKG/etc/ld.so.conf.d
 echo "/usr/lib/$name" > $PKG/etc/ld.so.conf.d/$name.conf
-cat > $PKG/usr/lib/thunderbird/defaults/pref/vendor.js << "EOF"
+
+cat > $PKG/usr/lib/thunderbird/defaults/preferences/vendor.js << "EOF"
 // Use LANG environment variable to choose locale
 pref("intl.locale.requested", "");
 EOF
 
-chown -R 0:0 $PKG/usr/lib/$name
 }
 locale_ar()
 {
@@ -111,7 +111,7 @@ lang=ar
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -125,7 +125,7 @@ lang=as
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -139,7 +139,7 @@ lang=cs
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -153,7 +153,7 @@ lang=da
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -167,7 +167,7 @@ lang=de
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -181,7 +181,7 @@ lang=el
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -196,6 +196,7 @@ do
    wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
    install -Dm644 $lang.xpi \
    $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+   rm $lang.xpi
 done
 
 cd $PKG
@@ -217,7 +218,7 @@ lang=et
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -231,7 +232,7 @@ lang=fa
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -246,7 +247,7 @@ lang=ff
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -260,7 +261,7 @@ lang=fi
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -274,7 +275,7 @@ lang=fr
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -288,7 +289,7 @@ lang=ga-IE
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.ga${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -302,7 +303,7 @@ lang=gl
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -316,7 +317,7 @@ lang=hi-IN
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.hi${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -330,7 +331,7 @@ lang=hr
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -344,7 +345,7 @@ lang=hu
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -358,7 +359,7 @@ lang=is
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -372,7 +373,7 @@ lang=it
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -386,7 +387,7 @@ lang=ja
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -400,7 +401,7 @@ lang=ko
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -414,7 +415,7 @@ lang=lt
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -428,7 +429,7 @@ lang=lv
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -442,7 +443,7 @@ lang=nl
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -456,7 +457,7 @@ lang=nn-NO
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.nn${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -470,7 +471,7 @@ lang=pl
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -485,6 +486,7 @@ do
   wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
   install -Dm644 $lang.xpi \
   $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+  rm $lang.xpi
 done
 
 cd $PKG
@@ -494,7 +496,7 @@ usr/lib/$name/extensions/langpack-pt-PT@$name.mozilla.org.xpi \
 usr/lib/$name/extensions/langpack-pt-BR@$name.mozilla.org.xpi
 
 rm usr/lib/$name/extensions/langpack-pt-BR@$name.mozilla.org.xpi
-rm usr/lib/$name/extensions/langpack-pr-PT@$name.mozilla.org.xpi
+rm usr/lib/$name/extensions/langpack-pt-PT@$name.mozilla.org.xpi
 }
 locale_ro()
 {
@@ -502,7 +504,7 @@ lang=ro
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -516,7 +518,7 @@ lang=ru
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -530,7 +532,7 @@ lang=sk
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -544,7 +546,7 @@ lang=sl
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -558,7 +560,7 @@ lang=sq
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -572,7 +574,7 @@ lang=sr
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -586,10 +588,10 @@ lang=sv-SE
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-sv@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/${name}.sv${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
 usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
 
 rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
@@ -600,7 +602,7 @@ lang=th
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -614,7 +616,7 @@ lang=tr
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -628,7 +630,7 @@ lang=uk
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -642,7 +644,7 @@ lang=vi
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
@@ -656,11 +658,11 @@ lang=zh-CN
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
+rm $lang.xpi
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+$PKGMK_PACKAGE_DIR/${name}.zh${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/$name/extensions/langpack-zh@$name.mozilla.org.xpi
 
 rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
 }
