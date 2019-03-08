@@ -1,15 +1,14 @@
-# Depends on: python perl-archive-zip unzip zip icu cups poppler-glib xorg-fontconfig libxslt kerberos xorgproto dbus-glib mesa postgresql wget apache-ant apr boost clucene dbus-glib libepoxy libjpeg-turbo2 xorg-glu gstreamer-plugins-base libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss redland serf unixodbc desktop-file-utils doxygen gdb gnutls nasm telepathy-glib xmlsec gpgme
-
-PKGMK_IGNORE_UNPACK="yes"
+# Depends on: python perl-archive-zip unzip zip icu gtk3 cups poppler-glib xorg-fontconfig libxslt kerberos xorgproto dbus-glib mesa postgresql wget apache-ant apr boost clucene dbus-glib libepoxy libjpeg-turbo2 xorg-glu gstreamer-plugins-base libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss redland serf unixodbc desktop-file-utils doxygen gdb gnutls nasm telepathy-glib xmlsec gpgme
+name=libreoffice
+version=6.2.2.1
 
 description="Office suite. It is largely compatible with Microsoft Office (fork from OpenOffice.org)."
 url="http://www.libreoffice.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
 run=(shared-mime-info xdg-utils desktop-file-utils) 
-name=libreoffice
-version=6.2.0.3
-release=3
+
+PKGMK_IGNORE_UNPACK="yes"
 
 source=(http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-$version.tar.xz
 	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-dictionaries-$version.tar.xz
@@ -49,7 +48,6 @@ cd $name-$version
 	--without-junit             \
 	--without-system-dicts      \
 	--disable-dconf             \
-	--disable-gtk3              \
 	--disable-odk               \
 	--enable-release-build=yes  \
 	--enable-python=system      \
@@ -58,6 +56,7 @@ cd $name-$version
 	--with-system-cairo         \
 	--with-system-clucene       \
 	--with-system-curl          \
+	--with-system-epoxy         \
 	--with-system-expat         \
 	--with-system-gpgmepp       \
 	--with-system-icu           \
@@ -83,4 +82,687 @@ cd $name-$version
         
 	# Nettoyage
 	rm -rf $PKG/gid_Module_*
+}
+locale_ar()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.ar${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/ar \
+usr/lib/libreoffice/program/resource/ar \
+usr/lib/libreoffice/share/extensions/dict-ar \
+usr/lib/libreoffice/readmes/README_ar \
+usr/lib/libreoffice/share/registry/{Langpack-ar.xcd,res/{registry_,fcfg_langpack_}ar.xcd} \
+usr/lib/libreoffice/share/wizards/resources_ar.properties
+
+rm -r usr/lib/libreoffice/{help/ar,program/resource/ar} \
+usr/lib/libreoffice/share/extensions/dict-ar
+rm usr/lib/libreoffice/readmes/README_ar \
+usr/lib/libreoffice/share/registry/{Langpack-ar.xcd,res/{registry_,fcfg_langpack_}ar.xcd} \
+usr/lib/libreoffice/share/wizards/resources_ar.properties
+}
+locale_cs()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.cs${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/cs \
+usr/lib/libreoffice/program/resource/cs \
+usr/lib/libreoffice/share/autotext/cs \
+usr/lib/libreoffice/share/extensions/dict-cs \
+usr/lib/libreoffice/readmes/README_cs \
+usr/lib/libreoffice/share/numbertext/cs.sor \
+usr/lib/libreoffice/share/registry/{Langpack-cs.xcd,res/{registry_,fcfg_langpack_}cs.xcd} \
+usr/lib/libreoffice/share/wizards/resources_cs.properties
+
+rm -r usr/lib/libreoffice/{help/cs,program/resource/cs} \
+usr/lib/libreoffice/share/autotext/cs \
+usr/lib/libreoffice/share/extensions/dict-cs
+rm usr/lib/libreoffice/readmes/README_cs \
+usr/lib/libreoffice/share/numbertext/cs.sor \
+usr/lib/libreoffice/share/registry/{Langpack-cs.xcd,res/{registry_,fcfg_langpack_}cs.xcd} \
+usr/lib/libreoffice/share/wizards/resources_cs.properties
+}
+locale_da()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.da${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/da \
+usr/lib/libreoffice/program/resource/da \
+usr/lib/libreoffice/share/autotext/da \
+usr/lib/libreoffice/share/extensions/dict-da \
+usr/lib/libreoffice/readmes/README_da \
+usr/lib/libreoffice/share/numbertext/da.sor \
+usr/lib/libreoffice/share/registry/{Langpack-da.xcd,res/{registry_,fcfg_langpack_}da.xcd} \
+usr/lib/libreoffice/share/wizards/resources_da.properties
+
+rm -r usr/lib/libreoffice/{help/da,program/resource/da} \
+usr/lib/libreoffice/share/autotext/da \
+usr/lib/libreoffice/share/extensions/dict-da
+rm usr/lib/libreoffice/readmes/README_da \
+usr/lib/libreoffice/share/numbertext/da.sor \
+usr/lib/libreoffice/share/registry/{Langpack-da.xcd,res/{registry_,fcfg_langpack_}da.xcd} \
+usr/lib/libreoffice/share/wizards/resources_da.properties
+}
+locale_de()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.de${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/de \
+usr/lib/libreoffice/program/resource/de \
+usr/lib/libreoffice/share/autotext/de \
+usr/lib/libreoffice/share/extensions/dict-de \
+usr/lib/libreoffice/readmes/README_de \
+usr/lib/libreoffice/share/numbertext/de.sor \
+usr/lib/libreoffice/share/registry/{Langpack-de.xcd,res/{registry_,fcfg_langpack_}de.xcd} \
+usr/lib/libreoffice/share/wizards/resources_de.properties
+
+rm -r usr/lib/libreoffice/{help/de,program/resource/de} \
+usr/lib/libreoffice/share/autotext/de \
+usr/lib/libreoffice/share/extensions/dict-de
+rm usr/lib/libreoffice/readmes/README_de \
+usr/lib/libreoffice/share/numbertext/de.sor \
+usr/lib/libreoffice/share/registry/{Langpack-de.xcd,res/{registry_,fcfg_langpack_}de.xcd} \
+usr/lib/libreoffice/share/wizards/resources_de.properties
+}
+locale_el()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.el${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/el \
+usr/lib/libreoffice/program/resource/el \
+usr/lib/libreoffice/share/autotext/el \
+usr/lib/libreoffice/share/extensions/dict-el \
+usr/lib/libreoffice/readmes/README_el \
+usr/lib/libreoffice/share/numbertext/el.sor \
+usr/lib/libreoffice/share/registry/{Langpack-el.xcd,res/{registry_,fcfg_langpack_}el.xcd} \
+usr/lib/libreoffice/share/wizards/resources_el.properties
+
+rm -r usr/lib/libreoffice/{help/el,program/resource/el} \
+usr/lib/libreoffice/share/autotext/el \
+usr/lib/libreoffice/share/extensions/dict-el
+rm usr/lib/libreoffice/readmes/README_el \
+usr/lib/libreoffice/share/numbertext/el.sor \
+usr/lib/libreoffice/share/registry/{Langpack-el.xcd,res/{registry_,fcfg_langpack_}el.xcd} \
+usr/lib/libreoffice/share/wizards/resources_el.properties
+}
+locale_es()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.es${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/es \
+usr/lib/libreoffice/program/resource/es \
+usr/lib/libreoffice/share/autotext/es \
+usr/lib/libreoffice/share/extensions/dict-es \
+usr/lib/libreoffice/readmes/README_es \
+usr/lib/libreoffice/share/numbertext/es.sor \
+usr/lib/libreoffice/share/registry/{Langpack-es.xcd,res/{registry_,fcfg_langpack_}es.xcd} \
+usr/lib/libreoffice/share/wizards/resources_es.properties
+
+rm -r usr/lib/libreoffice/{help/es,program/resource/es} \
+usr/lib/libreoffice/share/autotext/es \
+usr/lib/libreoffice/share/extensions/dict-es
+rm usr/lib/libreoffice/readmes/README_es \
+usr/lib/libreoffice/share/numbertext/es.sor \
+usr/lib/libreoffice/share/registry/{Langpack-es.xcd,res/{registry_,fcfg_langpack_}es.xcd} \
+usr/lib/libreoffice/share/wizards/resources_es.properties
+}
+locale_fi()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.fi${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/fi \
+usr/lib/libreoffice/program/resource/fi \
+usr/lib/libreoffice/share/autotext/fi \
+usr/lib/libreoffice/readmes/README_fi \
+usr/lib/libreoffice/share/numbertext/fi.sor \
+usr/lib/libreoffice/share/registry/{Langpack-fi.xcd,res/{registry_,fcfg_langpack_}fi.xcd} \
+usr/lib/libreoffice/share/wizards/resources_fi.properties
+
+rm -r usr/lib/libreoffice/{help/fi,program/resource/fi} \
+usr/lib/libreoffice/share/autotext/fi
+rm usr/lib/libreoffice/readmes/README_fi \
+usr/lib/libreoffice/share/numbertext/fi.sor \
+usr/lib/libreoffice/share/registry/{Langpack-fi.xcd,res/{registry_,fcfg_langpack_}fi.xcd} \
+usr/lib/libreoffice/share/wizards/resources_fi.properties
+}
+locale_fr()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.fr${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/fr \
+usr/lib/libreoffice/program/resource/fr \
+usr/lib/libreoffice/share/autotext/fr \
+usr/lib/libreoffice/share/extensions/dict-fr \
+usr/lib/libreoffice/readmes/README_fr \
+usr/lib/libreoffice/share/numbertext/fr.sor \
+usr/lib/libreoffice/share/registry/{Langpack-fr.xcd,res/{registry_,fcfg_langpack_}fr.xcd} \
+usr/lib/libreoffice/share/wizards/resources_fr.properties
+
+rm -r usr/lib/libreoffice/{help/fr,program/resource/fr} \
+usr/lib/libreoffice/share/autotext/fr \
+usr/lib/libreoffice/share/extensions/dict-fr
+rm usr/lib/libreoffice/readmes/README_fr \
+usr/lib/libreoffice/share/numbertext/fr.sor \
+usr/lib/libreoffice/share/registry/{Langpack-fr.xcd,res/{registry_,fcfg_langpack_}fr.xcd} \
+usr/lib/libreoffice/share/wizards/resources_fr.properties
+}
+locale_ga()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.ga${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/program/resource/ga \
+usr/lib/libreoffice/share/autotext/ga \
+usr/lib/libreoffice/readmes/README_ga \
+usr/lib/libreoffice/share/registry/{Langpack-ga.xcd,res/{registry_,fcfg_langpack_}ga.xcd} \
+usr/lib/libreoffice/share/wizards/resources_ga.properties
+
+rm -r usr/lib/libreoffice/program/resource/ga \
+usr/lib/libreoffice/share/autotext/ga
+rm usr/lib/libreoffice/readmes/README_ga \
+usr/lib/libreoffice/share/registry/{Langpack-ga.xcd,res/{registry_,fcfg_langpack_}ga.xcd} \
+usr/lib/libreoffice/share/wizards/resources_ga.properties
+}
+locale_gl()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.gl${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/gl \
+usr/lib/libreoffice/program/resource/gl \
+usr/lib/libreoffice/share/autotext/gl \
+usr/lib/libreoffice/share/extensions/dict-gl \
+usr/lib/libreoffice/readmes/README_gl \
+usr/lib/libreoffice/share/numbertext/gl.sor \
+usr/lib/libreoffice/share/registry/{Langpack-gl.xcd,res/{registry_,fcfg_langpack_}gl.xcd} \
+usr/lib/libreoffice/share/wizards/resources_gl.properties
+
+rm -r usr/lib/libreoffice/{help/gl,program/resource/gl} \
+usr/lib/libreoffice/share/autotext/gl \
+usr/lib/libreoffice/share/extensions/dict-gl
+rm usr/lib/libreoffice/readmes/README_gl \
+usr/lib/libreoffice/share/numbertext/gl.sor \
+usr/lib/libreoffice/share/registry/{Langpack-gl.xcd,res/{registry_,fcfg_langpack_}gl.xcd} \
+usr/lib/libreoffice/share/wizards/resources_gl.properties
+}
+locale_hi()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.hi${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/hi \
+usr/lib/libreoffice/program/resource/hi \
+usr/lib/libreoffice/share/autotext/hi \
+usr/lib/libreoffice/share/extensions/dict-hi \
+usr/lib/libreoffice/readmes/README_hi \
+usr/lib/libreoffice/share/registry/{Langpack-hi.xcd,res/{registry_,fcfg_langpack_}hi.xcd} \
+usr/lib/libreoffice/share/wizards/resources_hi.properties
+
+rm -r usr/lib/libreoffice/{help/hi,program/resource/hi} \
+usr/lib/libreoffice/share/autotext/hi \
+usr/lib/libreoffice/share/extensions/dict-hi
+rm usr/lib/libreoffice/readmes/README_hi \
+usr/lib/libreoffice/share/registry/{Langpack-hi.xcd,res/{registry_,fcfg_langpack_}hi.xcd} \
+usr/lib/libreoffice/share/wizards/resources_hi.properties
+}
+locale_hr()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.hr${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/hr \
+usr/lib/libreoffice/program/resource/hr \
+usr/lib/libreoffice/share/autotext/hr \
+usr/lib/libreoffice/share/extensions/dict-hr \
+usr/lib/libreoffice/readmes/README_hr \
+usr/lib/libreoffice/share/numbertext/hr.sor \
+usr/lib/libreoffice/share/registry/{Langpack-hr.xcd,res/{registry_,fcfg_langpack_}hr.xcd} \
+usr/lib/libreoffice/share/wizards/resources_hr.properties
+
+rm -r usr/lib/libreoffice/{help/hr,program/resource/hr} \
+usr/lib/libreoffice/share/autotext/hr \
+usr/lib/libreoffice/share/extensions/dict-hr
+rm usr/lib/libreoffice/readmes/README_hr \
+usr/lib/libreoffice/share/numbertext/hr.sor \
+usr/lib/libreoffice/share/registry/{Langpack-hr.xcd,res/{registry_,fcfg_langpack_}hr.xcd} \
+usr/lib/libreoffice/share/wizards/resources_hr.properties
+}
+locale_hu()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.hu${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/hu \
+usr/lib/libreoffice/program/resource/hu \
+usr/lib/libreoffice/share/autotext/hu \
+usr/lib/libreoffice/share/extensions/dict-hu \
+usr/lib/libreoffice/readmes/README_hu \
+usr/lib/libreoffice/share/numbertext/hu.sor \
+usr/lib/libreoffice/share/registry/{Langpack-hu.xcd,res/{registry_,fcfg_langpack_}hu.xcd} \
+usr/lib/libreoffice/share/wizards/resources_hu.properties
+
+rm -r usr/lib/libreoffice/{help/hu,program/resource/hu} \
+usr/lib/libreoffice/share/autotext/hu \
+usr/lib/libreoffice/share/extensions/dict-hu
+rm usr/lib/libreoffice/readmes/README_hu \
+usr/lib/libreoffice/share/numbertext/hu.sor \
+usr/lib/libreoffice/share/registry/{Langpack-hu.xcd,res/{registry_,fcfg_langpack_}hu.xcd} \
+usr/lib/libreoffice/share/wizards/resources_hu.properties
+}
+locale_it()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.it${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/it \
+usr/lib/libreoffice/program/resource/it \
+usr/lib/libreoffice/share/autotext/it \
+usr/lib/libreoffice/share/extensions/dict-it \
+usr/lib/libreoffice/readmes/README_it \
+usr/lib/libreoffice/share/numbertext/it.sor \
+usr/lib/libreoffice/share/registry/{Langpack-it.xcd,res/{registry_,fcfg_langpack_}it.xcd} \
+usr/lib/libreoffice/share/wizards/resources_it.properties
+
+rm -r usr/lib/libreoffice/{help/it,program/resource/it} \
+usr/lib/libreoffice/share/autotext/it \
+usr/lib/libreoffice/share/extensions/dict-it
+rm usr/lib/libreoffice/readmes/README_it \
+usr/lib/libreoffice/share/numbertext/it.sor \
+usr/lib/libreoffice/share/registry/{Langpack-it.xcd,res/{registry_,fcfg_langpack_}it.xcd} \
+usr/lib/libreoffice/share/wizards/resources_it.properties
+}
+locale_ja()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.ja${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/ja \
+usr/lib/libreoffice/program/resource/ja \
+usr/lib/libreoffice/share/autotext/ja \
+usr/lib/libreoffice/readmes/README_ja \
+usr/lib/libreoffice/share/numbertext/ja.sor \
+usr/lib/libreoffice/share/registry/{Langpack-ja.xcd,res/{registry_,fcfg_langpack_}ja.xcd} \
+usr/lib/libreoffice/share/wizards/resources_ja.properties
+
+rm -r usr/lib/libreoffice/{help/ja,program/resource/ja} \
+usr/lib/libreoffice/share/autotext/ja
+rm usr/lib/libreoffice/readmes/README_ja \
+usr/lib/libreoffice/share/numbertext/ja.sor \
+usr/lib/libreoffice/share/registry/{Langpack-ja.xcd,res/{registry_,fcfg_langpack_}ja.xcd} \
+usr/lib/libreoffice/share/wizards/resources_ja.properties
+}
+locale_lt()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.lt${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/lt \
+usr/lib/libreoffice/program/resource/lt \
+usr/lib/libreoffice/share/autotext/lt \
+usr/lib/libreoffice/share/extensions/dict-lt \
+usr/lib/libreoffice/readmes/README_lt \
+usr/lib/libreoffice/share/numbertext/lt.sor \
+usr/lib/libreoffice/share/registry/{Langpack-lt.xcd,res/{registry_,fcfg_langpack_}lt.xcd} \
+usr/lib/libreoffice/share/wizards/resources_lt.properties
+
+rm -r usr/lib/libreoffice/{help/lt,program/resource/lt} \
+usr/lib/libreoffice/share/autotext/lt \
+usr/lib/libreoffice/share/extensions/dict-lt
+rm usr/lib/libreoffice/readmes/README_lt \
+usr/lib/libreoffice/share/numbertext/lt.sor \
+usr/lib/libreoffice/share/registry/{Langpack-lt.xcd,res/{registry_,fcfg_langpack_}lt.xcd} \
+usr/lib/libreoffice/share/wizards/resources_lt.properties
+}
+locale_lv()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.lv${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/lv \
+usr/lib/libreoffice/program/resource/lv \
+usr/lib/libreoffice/share/autotext/lv \
+usr/lib/libreoffice/share/extensions/dict-lv \
+usr/lib/libreoffice/readmes/README_lv \
+usr/lib/libreoffice/share/numbertext/lv.sor \
+usr/lib/libreoffice/share/registry/{Langpack-lv.xcd,res/{registry_,fcfg_langpack_}lv.xcd} \
+usr/lib/libreoffice/share/wizards/resources_lv.properties
+
+rm -r usr/lib/libreoffice/{help/lv,program/resource/lv} \
+usr/lib/libreoffice/share/autotext/lv \
+usr/lib/libreoffice/share/extensions/dict-lv
+rm usr/lib/libreoffice/readmes/README_lv \
+usr/lib/libreoffice/share/numbertext/lv.sor \
+usr/lib/libreoffice/share/registry/{Langpack-lv.xcd,res/{registry_,fcfg_langpack_}lv.xcd} \
+usr/lib/libreoffice/share/wizards/resources_lv.properties
+}
+locale_nl()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.nl${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/nl \
+usr/lib/libreoffice/program/resource/nl \
+usr/lib/libreoffice/share/autotext/nl \
+usr/lib/libreoffice/share/extensions/dict-nl \
+usr/lib/libreoffice/readmes/README_nl \
+usr/lib/libreoffice/share/numbertext/nl.sor \
+usr/lib/libreoffice/share/registry/{Langpack-nl.xcd,res/{registry_,fcfg_langpack_}nl.xcd} \
+usr/lib/libreoffice/share/wizards/resources_nl.properties
+
+rm -r usr/lib/libreoffice/{help/nl,program/resource/nl} \
+usr/lib/libreoffice/share/autotext/nl \
+usr/lib/libreoffice/share/extensions/dict-nl
+rm usr/lib/libreoffice/readmes/README_nl \
+usr/lib/libreoffice/share/numbertext/nl.sor \
+usr/lib/libreoffice/share/registry/{Langpack-nl.xcd,res/{registry_,fcfg_langpack_}nl.xcd} \
+usr/lib/libreoffice/share/wizards/resources_nl.properties
+}
+locale_nn()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.nn${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/n{b,n} \
+usr/lib/libreoffice/program/resource/n{b,n} \
+usr/lib/libreoffice/share/autotext/n{b,n} \
+usr/lib/libreoffice/share/extensions/dict-no \
+usr/lib/libreoffice/readmes/README_n{b,n} \
+usr/lib/libreoffice/share/numbertext/no.sor \
+usr/lib/libreoffice/share/registry/{Langpack-nn.xcd,res/{registry_,fcfg_langpack_}nn.xcd} \
+usr/lib/libreoffice/share/registry/res/registry_nb.xcd \
+usr/lib/libreoffice/share/wizards/resources_nn.properties
+
+rm -r usr/lib/libreoffice/{help/n{b,n},program/resource/n{b,n}} \
+usr/lib/libreoffice/share/autotext/n{b,n} \
+usr/lib/libreoffice/share/extensions/dict-no
+rm usr/lib/libreoffice/readmes/README_n{b,n} \
+usr/lib/libreoffice/share/numbertext/no.sor \
+usr/lib/libreoffice/share/registry/{Langpack-nn.xcd,res/{registry_,fcfg_langpack_}nn.xcd} \
+usr/lib/libreoffice/share/registry/res/registry_nb.xcd \
+usr/lib/libreoffice/share/wizards/resources_nn.properties
+}
+locale_pl()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.pl${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/pl \
+usr/lib/libreoffice/program/resource/pl \
+usr/lib/libreoffice/share/autotext/pl \
+usr/lib/libreoffice/share/extensions/dict-pl \
+usr/lib/libreoffice/readmes/README_pl \
+usr/lib/libreoffice/share/numbertext/pl.sor \
+usr/lib/libreoffice/share/registry/{Langpack-pl.xcd,res/{registry_,fcfg_langpack_}pl.xcd} \
+usr/lib/libreoffice/share/wizards/resources_pl.properties
+
+rm -r usr/lib/libreoffice/{help/pl,program/resource/pl} \
+usr/lib/libreoffice/share/autotext/pl \
+usr/lib/libreoffice/share/extensions/dict-pl
+rm usr/lib/libreoffice/readmes/README_pl \
+usr/lib/libreoffice/share/numbertext/pl.sor \
+usr/lib/libreoffice/share/registry/{Langpack-pl.xcd,res/{registry_,fcfg_langpack_}pl.xcd} \
+usr/lib/libreoffice/share/wizards/resources_pl.properties
+}
+locale_pt()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.pt${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/pt \
+usr/lib/libreoffice/program/resource/pt \
+usr/lib/libreoffice/share/autotext/pt \
+usr/lib/libreoffice/share/extensions/dict-pt-PT \
+usr/lib/libreoffice/readmes/README_pt \
+usr/lib/libreoffice/share/numbertext/pt.sor \
+usr/lib/libreoffice/share/registry/{Langpack-pt.xcd,res/{registry_,fcfg_langpack_}pt.xcd} \
+usr/lib/libreoffice/share/wizards/resources_pt.properties
+
+rm -r usr/lib/libreoffice/{help/pt,program/resource/pt} \
+usr/lib/libreoffice/share/autotext/pt \
+usr/lib/libreoffice/share/extensions/dict-pt-PT
+rm usr/lib/libreoffice/readmes/README_pt \
+usr/lib/libreoffice/share/numbertext/pt.sor \
+usr/lib/libreoffice/share/registry/{Langpack-pt.xcd,res/{registry_,fcfg_langpack_}pt.xcd} \
+usr/lib/libreoffice/share/wizards/resources_pt.properties
+}
+locale_ro()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.ro${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/ro \
+usr/lib/libreoffice/program/resource/ro \
+usr/lib/libreoffice/share/autotext/ro \
+usr/lib/libreoffice/share/extensions/dict-ro \
+usr/lib/libreoffice/readmes/README_ro \
+usr/lib/libreoffice/share/numbertext/ro.sor \
+usr/lib/libreoffice/share/registry/{Langpack-ro.xcd,res/{registry_,fcfg_langpack_}ro.xcd} \
+usr/lib/libreoffice/share/wizards/resources_ro.properties
+
+rm -r usr/lib/libreoffice/{help/ro,program/resource/ro} \
+usr/lib/libreoffice/share/autotext/ro \
+usr/lib/libreoffice/share/extensions/dict-ro
+rm usr/lib/libreoffice/readmes/README_ro \
+usr/lib/libreoffice/share/numbertext/ro.sor \
+usr/lib/libreoffice/share/registry/{Langpack-ro.xcd,res/{registry_,fcfg_langpack_}ro.xcd} \
+usr/lib/libreoffice/share/wizards/resources_ro.properties
+}
+locale_ru()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.ru${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/ru \
+usr/lib/libreoffice/program/resource/ru \
+usr/lib/libreoffice/share/autotext/ru \
+usr/lib/libreoffice/share/extensions/dict-ru \
+usr/lib/libreoffice/readmes/README_ru \
+usr/lib/libreoffice/share/numbertext/ru.sor \
+usr/lib/libreoffice/share/registry/{Langpack-ru.xcd,res/{registry_,fcfg_langpack_}ru.xcd} \
+usr/lib/libreoffice/share/wizards/resources_ru.properties
+
+rm -r usr/lib/libreoffice/{help/ru,program/resource/ru} \
+usr/lib/libreoffice/share/autotext/ru \
+usr/lib/libreoffice/share/extensions/dict-ru
+rm usr/lib/libreoffice/readmes/README_ru \
+usr/lib/libreoffice/share/numbertext/ru.sor \
+usr/lib/libreoffice/share/registry/{Langpack-ru.xcd,res/{registry_,fcfg_langpack_}ru.xcd} \
+usr/lib/libreoffice/share/wizards/resources_ru.properties
+}
+locale_sk()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.sk${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/sk \
+usr/lib/libreoffice/program/resource/sk \
+usr/lib/libreoffice/share/autotext/sk \
+usr/lib/libreoffice/share/extensions/dict-sk \
+usr/lib/libreoffice/readmes/README_sk \
+usr/lib/libreoffice/share/registry/{Langpack-sk.xcd,res/{registry_,fcfg_langpack_}sk.xcd} \
+usr/lib/libreoffice/share/wizards/resources_sk.properties
+
+rm -r usr/lib/libreoffice/{help/sk,program/resource/sk} \
+usr/lib/libreoffice/share/autotext/sk \
+usr/lib/libreoffice/share/extensions/dict-sk
+rm usr/lib/libreoffice/readmes/README_sk \
+usr/lib/libreoffice/share/registry/{Langpack-sk.xcd,res/{registry_,fcfg_langpack_}sk.xcd} \
+usr/lib/libreoffice/share/wizards/resources_sk.properties
+}
+locale_sl()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.sl${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/sl \
+usr/lib/libreoffice/program/resource/sl \
+usr/lib/libreoffice/share/autotext/sl \
+usr/lib/libreoffice/share/extensions/dict-sl \
+usr/lib/libreoffice/readmes/README_sl \
+usr/lib/libreoffice/share/numbertext/sl.sor \
+usr/lib/libreoffice/share/registry/{Langpack-sl.xcd,res/{registry_,fcfg_langpack_}sl.xcd} \
+usr/lib/libreoffice/share/wizards/resources_sl.properties
+
+rm -r usr/lib/libreoffice/{help/sl,program/resource/sl} \
+usr/lib/libreoffice/share/autotext/sl \
+usr/lib/libreoffice/share/extensions/dict-sl
+rm usr/lib/libreoffice/readmes/README_sl \
+usr/lib/libreoffice/share/numbertext/sl.sor \
+usr/lib/libreoffice/share/registry/{Langpack-sl.xcd,res/{registry_,fcfg_langpack_}sl.xcd} \
+usr/lib/libreoffice/share/wizards/resources_sl.properties
+}
+locale_sq()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.sq${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/sq \
+usr/lib/libreoffice/program/resource/sq \
+usr/lib/libreoffice/share/autotext/sq \
+usr/lib/libreoffice/share/extensions/dict-sq \
+usr/lib/libreoffice/readmes/README_sq \
+usr/lib/libreoffice/share/numbertext/sq.sor \
+usr/lib/libreoffice/share/registry/{Langpack-sq.xcd,res/{registry_,fcfg_langpack_}sq.xcd} \
+usr/lib/libreoffice/share/wizards/resources_sq.properties
+
+rm -r usr/lib/libreoffice/{help/sq,program/resource/sq} \
+usr/lib/libreoffice/share/autotext/sq \
+usr/lib/libreoffice/share/extensions/dict-sq
+rm usr/lib/libreoffice/readmes/README_sq \
+usr/lib/libreoffice/share/numbertext/sq.sor \
+usr/lib/libreoffice/share/registry/{Langpack-sq.xcd,res/{registry_,fcfg_langpack_}sq.xcd} \
+usr/lib/libreoffice/share/wizards/resources_sq.properties
+}
+locale_sr()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.sr${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/program/resource/sr \
+usr/lib/libreoffice/share/autotext/sr \
+usr/lib/libreoffice/share/extensions/dict-sr \
+usr/lib/libreoffice/readmes/README_sr \
+usr/lib/libreoffice/share/numbertext/sr.sor \
+usr/lib/libreoffice/share/registry/{Langpack-sr.xcd,res/{registry_,fcfg_langpack_}sr.xcd} \
+usr/lib/libreoffice/share/wizards/resources_sr.properties
+
+rm -r usr/lib/libreoffice/program/resource/sr \
+usr/lib/libreoffice/share/autotext/sr \
+usr/lib/libreoffice/share/extensions/dict-sr
+rm usr/lib/libreoffice/readmes/README_sr \
+usr/lib/libreoffice/share/numbertext/sr.sor \
+usr/lib/libreoffice/share/registry/{Langpack-sr.xcd,res/{registry_,fcfg_langpack_}sr.xcd} \
+usr/lib/libreoffice/share/wizards/resources_sr.properties
+}
+locale_sv()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.sv${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/sv \
+usr/lib/libreoffice/program/resource/sv \
+usr/lib/libreoffice/share/autotext/sv \
+usr/lib/libreoffice/share/extensions/dict-sv \
+usr/lib/libreoffice/readmes/README_sv \
+usr/lib/libreoffice/share/numbertext/sv.sor \
+usr/lib/libreoffice/share/registry/{Langpack-sv.xcd,res/{registry_,fcfg_langpack_}sv.xcd} \
+usr/lib/libreoffice/share/wizards/resources_sv.properties
+
+rm -r usr/lib/libreoffice/{help/sv,program/resource/sv} \
+usr/lib/libreoffice/share/autotext/sv \
+usr/lib/libreoffice/share/extensions/dict-sv
+rm usr/lib/libreoffice/readmes/README_sv \
+usr/lib/libreoffice/share/numbertext/sv.sor \
+usr/lib/libreoffice/share/registry/{Langpack-sv.xcd,res/{registry_,fcfg_langpack_}sv.xcd} \
+usr/lib/libreoffice/share/wizards/resources_sv.properties
+}
+locale_th()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.th${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/program/resource/th \
+usr/lib/libreoffice/share/autotext/th \
+usr/lib/libreoffice/share/extensions/dict-th \
+usr/lib/libreoffice/readmes/README_th \
+usr/lib/libreoffice/share/numbertext/th.sor \
+usr/lib/libreoffice/share/registry/{Langpack-th.xcd,res/{registry_,fcfg_langpack_}th.xcd} \
+usr/lib/libreoffice/share/wizards/resources_th.properties
+
+rm -r usr/lib/libreoffice/program/resource/th \
+usr/lib/libreoffice/share/autotext/th \
+usr/lib/libreoffice/share/extensions/dict-th
+rm usr/lib/libreoffice/readmes/README_th \
+usr/lib/libreoffice/share/numbertext/th.sor \
+usr/lib/libreoffice/share/registry/{Langpack-th.xcd,res/{registry_,fcfg_langpack_}th.xcd} \
+usr/lib/libreoffice/share/wizards/resources_th.properties
+}
+locale_tr()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.tr${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/tr \
+usr/lib/libreoffice/program/resource/tr \
+usr/lib/libreoffice/share/autotext/tr \
+usr/lib/libreoffice/readmes/README_tr \
+usr/lib/libreoffice/share/numbertext/tr.sor \
+usr/lib/libreoffice/share/registry/{Langpack-tr.xcd,res/{registry_,fcfg_langpack_}tr.xcd} \
+usr/lib/libreoffice/share/wizards/resources_tr.properties
+
+rm -r usr/lib/libreoffice/{help/tr,program/resource/tr} \
+usr/lib/libreoffice/share/autotext/tr
+rm usr/lib/libreoffice/readmes/README_tr \
+usr/lib/libreoffice/share/numbertext/tr.sor \
+usr/lib/libreoffice/share/registry/{Langpack-tr.xcd,res/{registry_,fcfg_langpack_}tr.xcd} \
+usr/lib/libreoffice/share/wizards/resources_tr.properties
+}
+locale_uk()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.uk${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/uk \
+usr/lib/libreoffice/program/resource/uk \
+usr/lib/libreoffice/share/autotext/uk \
+usr/lib/libreoffice/share/extensions/dict-uk \
+usr/lib/libreoffice/readmes/README_uk \
+usr/lib/libreoffice/share/numbertext/uk.sor \
+usr/lib/libreoffice/share/registry/{Langpack-uk.xcd,res/{registry_,fcfg_langpack_}uk.xcd} \
+usr/lib/libreoffice/share/wizards/resources_uk.properties
+
+rm -r usr/lib/libreoffice/{help/uk,program/resource/uk} \
+usr/lib/libreoffice/share/autotext/uk \
+usr/lib/libreoffice/share/extensions/dict-uk
+rm usr/lib/libreoffice/readmes/README_uk \
+usr/lib/libreoffice/share/numbertext/uk.sor \
+usr/lib/libreoffice/share/registry/{Langpack-uk.xcd,res/{registry_,fcfg_langpack_}uk.xcd} \
+usr/lib/libreoffice/share/wizards/resources_uk.properties
+}
+locale_zh_CN()
+{
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.zh_CN${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/libreoffice/help/zh-CN \
+usr/lib/libreoffice/program/resource/zh_CN \
+usr/lib/libreoffice/share/autotext/zh-CN \
+usr/lib/libreoffice/readmes/README_zh-CN \
+usr/lib/libreoffice/share/numbertext/zh.sor \
+usr/lib/libreoffice/share/registry/{Langpack-zh-CN.xcd,res/{registry_,fcfg_langpack_}zh-CN.xcd} \
+usr/lib/libreoffice/share/wizards/resources_zh_CN.properties
+
+rm -r usr/lib/libreoffice/{help/zh-CN,program/resource/zh_CN} \
+usr/lib/libreoffice/share/autotext/zh-CN
+rm usr/lib/libreoffice/readmes/README_zh-CN \
+usr/lib/libreoffice/share/numbertext/zh.sor \
+usr/lib/libreoffice/share/registry/{Langpack-zh-CN.xcd,res/{registry_,fcfg_langpack_}zh-CN.xcd} \
+usr/lib/libreoffice/share/wizards/resources_zh_CN.properties
 }
