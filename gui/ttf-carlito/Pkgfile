@@ -1,0 +1,14 @@
+# Depends on: xorg-fontconfig xorg-encodings xorg-font-util
+name=ttf-carlito
+version=20130920
+description="Googles Carlito font"
+packager="tnut <tnut@nutyx.org>"
+
+source=(https://dev-www.libreoffice.org/src/c74b7223abe75949b4af367942d96c7a-crosextrafonts-carlito-$version.tar.gz)
+
+build() {
+cd crosextrafonts-carlito-$version
+install -d $PKG/usr/share/fonts/TTF/
+install -m644 *.ttf $PKG/usr/share/fonts/TTF/
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
+}
