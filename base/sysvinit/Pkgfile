@@ -5,15 +5,15 @@ contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
 name=sysvinit
-version=2.93
+version=2.94
 
 source=(http://download.savannah.nongnu.org/releases/sysvinit/sysvinit-$version.tar.xz
-	http://www.linuxfromscratch.org/patches/lfs/development/$name-$version-consolidated-1.patch)
+	http://www.linuxfromscratch.org/patches/lfs/development/$name-$version-consolidated-4.patch)
 
 build()
 {
 cd $name-$version
-patch -Np1 -i ../$name-$version-consolidated-1.patch
+patch -Np1 -i ../$name-$version-consolidated-4.patch
 
 make -C src
 
