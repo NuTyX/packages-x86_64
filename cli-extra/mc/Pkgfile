@@ -6,7 +6,7 @@ contributors="pierre, Greg"
 packager="tnut<tnut@nutyx.org>"
 
 name=mc
-version=4.8.21
+version=4.8.22
 
 source=(${url}downloads/$name-$version.tar.xz)
 
@@ -15,8 +15,7 @@ build() {
 	cd $name-$version
 	./configure --prefix=/usr \
 		--enable-charset  \
-		--disable-static  \
-		--sysconfdir=/etc/mc \
+		--sysconfdir=/etc \
 		--with-screen=slang
 	make
 
