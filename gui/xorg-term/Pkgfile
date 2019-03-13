@@ -7,16 +7,18 @@ contributors="Pierre B, Greg, Remy"
 
 alias=(xterm)
 name=xorg-term
-version=342
+version=344
 
 run=(xorg-luit)
 
 _name=xterm
 
-source=(ftp://ftp.invisible-island.net/${_name}/${_name}-$version.tgz)
+source=($name-$version-color-1.patch
+	https://invisible-mirror.net/archives/${_name}/${_name}-$version.tgz)
 
 prepare() {
 cd ${_name}-$version
+patch -Np1 -i ../$name-$version-color-1.patch
 sed -i '/v0/{n;s/new:/new:kb=^?:/}' termcap
 printf '\tkbs=\\177,\n' >> terminfo
 }
