@@ -1,0 +1,32 @@
+# Depends on: xfce4-panel
+
+description="monitor DD for the panel"
+url="http://goodies.xfce.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="tyrry, Greg"
+
+name=xfce4-diskperf-plugin
+version=2.6.1
+release=1
+
+source=(fix-sysmacros_h.patch
+	http://archive.xfce.org/src/panel-plugins/$name/2.6/$name-$version.tar.bz2)
+
+build() {
+
+cd $name-$version
+patch -Np0 -i ../fix-sysmacros_h.patch
+rm configure
+autoconf
+./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --libexecdir=/usr/lib \
+  --localstatedir=/var \
+  --disable-static \
+  --disable-debug
+    
+make
+make DESTDIR=$PKG install
+	
+}
