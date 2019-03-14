@@ -1,0 +1,14 @@
+# Depends on: meson ninja exempi libgrss flac libexif libgsf libseccomp libvorbis poppler-glib tracker upower
+
+description="Collection of data extractors for Tracker/Nepomuk"
+url="http://www.gnome.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, Jayce"
+run=(desktop-file-utils gtk-update-icon-cache)
+
+name=tracker-miners
+version=2.2.1
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:3}/$name-$version.tar.xz)
+
+build=meson
