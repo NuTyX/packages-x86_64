@@ -7,7 +7,7 @@ contributors="Tnut, Jayce, Remy, Fanch"
 run=(adwaita-icon-theme gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
 name=epiphany
-version=3.30.3
+version=3.32.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
@@ -15,7 +15,7 @@ build() {
 cd $name-$version
 mkdir build
 cd    build
-meson --prefix=/usr -Ddistributor_name=NuTyX -Dunit_tests=false
+meson --prefix=/usr -Ddistributor_name=NuTyX -Dunit_tests=disabled
 ninja
 DESTDIR=$PKG ninja install
 }
