@@ -1,4 +1,4 @@
-# Depends on: freefont-ttf iso-codes itstool gtk3 docbook-xml libseccomp gsettings-desktop-schemas gobject-introspection startup-notification xorg-xkeyboard-config
+# Depends on: meson ninja freefont-ttf iso-codes itstool gtk3 docbook-xml libseccomp gsettings-desktop-schemas gobject-introspection startup-notification xorg-xkeyboard-config
 
 description="Library with common API for various GNOME modules"
 url="http://www.gnome.org/"
@@ -8,20 +8,8 @@ contributors="Tnut, Fanch, Jayce, Remy"
 run=(gsettings-desktop-schemas freefont-ttf)
 
 name=gnome-desktop
-version=3.30.2.1
+version=3.32.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
-build() {
-cd $name-$version
-./configure --prefix=/usr \
---localstatedir=/var \
---sysconfdir=/etc \
---libexecdir=/usr/lib/$name \
---with-gnome-distributor="NuTyX"
-make
-make DESTDIR=$PKG install
-
-# Obsolet lib
-rm $PKG/usr/lib/libgnome-desktop-3.la
-}
+build=meson
