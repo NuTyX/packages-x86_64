@@ -1,0 +1,22 @@
+# Depends on: gdk-pixbuf
+
+description="Library tasked with managing, extracting and handling media art caches"
+url="https://github.com/curlybeast/libmediaart"
+packager="jayce <jayce.net@gmail.com>"
+contributors="Tnut"
+
+name=libmediaart
+version=1.9.4
+release=3
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:3}/$name-$version.tar.xz)
+
+build() {
+ cd $name-$version
+ ./configure --prefix=/usr \
+ 	--disable-static --enable-gdkpixbuf --disable-qt
+  make
+  make DESTDIR=$PKG install
+
+
+}

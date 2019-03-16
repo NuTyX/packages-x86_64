@@ -1,0 +1,14 @@
+# Depends on: adwaita-icon-theme gtk3 itstool  desktop-file-utils gsettings-desktop-schemas librsvg gobject-introspection desktop-file-utils gtk-update-icon-cache meson ninja vala
+
+description="A graphical directory tree analyzer"
+url="http://www.gnome.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, Jayce, Remy"
+run=(desktop-file-utils gtk-update-icon-cache)
+
+name=baobab
+version=3.32.0
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build=meson

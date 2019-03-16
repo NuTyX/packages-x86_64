@@ -1,0 +1,22 @@
+# Depends on: gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache  gtk3 itstool gobject-introspection vala
+
+description="Gucharmap is a Unicode character map and font viewer"
+url="http://www.gnome.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, Jayce"
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+
+name=gucharmap
+version=12.0.1
+
+source=(http://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build() {
+        cd $name-$version
+	LIBS="-ldl" \
+	./configure --prefix=/usr \
+	--enable-vala \
+	--with-unicode-data=download
+        make
+        make DESTDIR=$PKG install
+}

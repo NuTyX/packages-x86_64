@@ -1,0 +1,35 @@
+# Depends on: git gnome-common yelp yelp-tools yelp-xsl docbook-xsl vte3 gnutls itstool gtk-vnc itstool libsecret telepathy-glib vala vte avahi appstream-glib freerdp 
+
+description="Remote desktop client for Gnome"
+url="https://gnome.org"
+contributors="tnut"
+packager="remy <remy@nutyx.org>"
+ 
+name=vinagre
+version=git-adcb63cf
+
+
+source=(freerdp2017.diff)
+
+prepare () {
+
+git clone https://git.gnome.org/browse/vinagre
+
+cd $name
+git checkout adcb63cfad988a92126a751b6e8f7cfef0762955
+patch -Np1 -i ../freerdp2017.diff                                                                                                                                           
+
+NOCONFIGURE=1 ./autogen.sh
+}
+
+build() {
+
+cd $name
+
+./configure --prefix=/usr \
+            --enable-compile-warnings=minimum \
+            --enable-rdp
+  make
+  
+  make DESTDIR=$PKG install
+}

@@ -1,0 +1,24 @@
+# Depends on: xmlto libxslt polkit gobject-introspection vala
+
+description="Accessing the list of user accounts and information attached to those accounts." 
+url="http://www.freedesktop.org/wiki/Software/AccountsService/"
+packager="jayce <jayce.net@gmail.com>"
+contributors="Pierre"
+
+name=accountsservice
+version=0.6.45
+release=2
+
+source=(http://www.freedesktop.org/software/$name/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var  \
+--disable-static \
+--disable-systemd
+make
+make DESTDIR=$PKG install
+mkdir -p $PKG/var/{lib,run}/polkit-1
+}

@@ -1,0 +1,15 @@
+# Depends on: gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache adwaita-icon-theme desktop-file-utils gnome-desktop gnome-icon-theme libpeas shared-mime-info yelp-xsl gobject-introspection librsvg exempi lcms2 libexif meson ninja
+
+description="Eye of Gnome: An image viewing and cataloging program"
+url="http://www.gnome.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch, Tnut, jayce, Remy"
+
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+
+name=eog
+version=3.32.0
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build=meson

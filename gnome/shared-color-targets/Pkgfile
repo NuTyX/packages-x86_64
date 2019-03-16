@@ -1,0 +1,17 @@
+description="Shared color targets for creating color profiles."
+url="http://www.gnome.org"
+packager="jayce <jayce.net@gmail.com>"
+contributors="Fanch"
+
+name=shared-color-targets
+version=0.1.7
+release=3
+source=(http://people.freedesktop.org/~hughsient/releases/$name-$version.tar.xz)
+
+uptodate() {
+local url ext
+ext=".tar.xz"
+url="https://people.freedesktop.org/~hughsient/releases"
+lynx -dump -listonly --nonumbers $url/?C=M\;O=A|\
+grep $ext$|grep $url/$name-|tail -1|sed s@$url/$name-@@|sed s@$ext@@
+}

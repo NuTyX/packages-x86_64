@@ -1,0 +1,30 @@
+# Depends on: gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache  gobject-introspection intltool gtk3 gdk-pixbuf libsoup libpeas libxml2 tdb json-glib totem-pl-parser libmtp gstreamer gstreamer-plugins-base gstreamer-plugins-good webkitgtk python python-gobject
+
+description="An iTunes-like music playback and management application"
+url="http://www.rhythmbox.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, Jayce"
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache gstreamer gstreamer-plugins-base gstreamer-plugins-good)
+
+name=rhythmbox
+version=3.4.3
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:3}/$name-$version.tar.xz)
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr \
+		--sysconfdir=/etc \
+		--disable-scrollkeeper \
+		--enable-python=yes \
+		--enable-vala \
+		--enable-browser-plugin \
+		--enable-musicbrainz \
+		--with-gudev \
+		--with-mtp \
+		--with-gnome-keyring \
+		--with-brasero \
+		--with-webkit
+	make
+	make DESTDIR=$PKG install
+}

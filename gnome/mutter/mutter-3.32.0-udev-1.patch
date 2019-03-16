@@ -1,0 +1,12 @@
+diff -Naur a/meson.build b/meson.build
+--- a/meson.build	2019-03-12 00:01:02.000000000 +0100
++++ b/meson.build	2019-03-15 18:35:39.109982449 +0100
+@@ -168,7 +168,7 @@
+ 
+ have_libgudev = get_option('udev')
+ if have_libgudev
+-  libudev_dep = dependency('libudev', version: udev_req)
++  libudev_dep = dependency('libudev')
+   gudev_dep = dependency('gudev-1.0', version: gudev_req)
+ endif
+ 

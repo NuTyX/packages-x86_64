@@ -1,0 +1,21 @@
+# Depends on: dconf dbus-glib docbook-xml docbook-xsl gconf gnome-desktop json-glib libxslt mesa meson upower xmlto  
+
+description="start up the GNOME Desktop environment"
+url="http://www.gnome.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch, Tnut, Remy"
+
+name=gnome-session
+version=3.32.0
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+sed 's@/bin/sh@/bin/sh -l@' -i gnome-session/gnome-session.in
+mkdir build
+cd build
+meson --prefix=/usr -Dsystemd=false -Dsystemd_journal=false
+ninja
+DESTDIR=$PKG ninja install
+}

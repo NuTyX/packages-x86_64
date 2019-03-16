@@ -1,0 +1,26 @@
+# Depends on: libsoup check
+
+description="The Operating System information database"
+url="http://libosinfo.org"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, Jayce"
+
+name=libosinfo
+version=1.2.0
+
+source=(https://releases.pagure.org/$name/$name-$version.tar.gz)
+
+build() {
+ cd $name-$version
+ ./configure --prefix=/usr \
+ 	--disable-nls
+  make
+  make DESTDIR=$PKG install
+}
+uptodate() {
+local url ext
+url="https://releases.pagure.org/$name/"
+ext=".tar.gz"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|grep $name-|grep $ext$|sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
+}
