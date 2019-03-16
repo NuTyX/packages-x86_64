@@ -10,11 +10,11 @@ alias=(NetworkManager)
 _name=NetworkManager
 
 name=networkmanager
-version=1.14.6
+version=1.16.0
 
 run=(wpa-supplicant wpa-supplicant-dbus)
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$_name/${version%.*}/$_name-$version.tar.xz)
+source=(http://ftp.gnome.org/pub/gnome/sources/$_name/${version:0:4}/$_name-$version.tar.xz)
 
 build() {
 
