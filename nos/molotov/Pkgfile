@@ -1,0 +1,31 @@
+# Depends on: fuse gconf desktop-file-utils xdg-utils p7zip
+ 
+description="Streaming access to French (only) TV channels."
+packager="rems"
+url="http://www.molotov.tv/"
+
+name=molotov
+version=3.0.0
+release=1
+
+PKGMK_KEEP_SOURCES=no
+
+source=(http://desktop-auto-upgrade.molotov.tv/linux/${version}/$name.AppImage
+        molotov)
+
+build() {
+chmod u+x molotov.AppImage
+./molotov.AppImage --appimage-extract 2> /dev/null
+sed -i "s/Exec=AppRun/Exec=$name/" squashfs-root/molotov.desktop
+sed -i "s/Categories=AudioVideo/Categories=Video;Player;AudioVideo;/" squashfs-root/molotov.desktop
+sed -i "s/MOLOTOV_VERSION/${version}/g" molotov
+install -d -m755 $PKG/usr/share/{applications,icons/hicolor}
+install -d -m755 $PKG/opt/appimages
+install -d -m755 $PKG/usr/share/icons/hicolor/256x256/apps
+icon_dir=squashfs-root/usr/share/icons/hicolor/0x0
+install -D -m644 $icon_dir/apps/molotov.png $PKG/usr/share/icons/hicolor/256x256/apps/molotov.png
+install -D -m644 squashfs-root/molotov.desktop $PKG/usr/share/applications/appimagekit-molotov.desktop
+install -D -m755 molotov $PKG/usr/bin/molotov
+install -D -m755 molotov.AppImage $PKG/opt/appimages/Molotov-$version.AppImage
+rm -r squashfs-root
+}

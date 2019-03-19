@@ -1,0 +1,76 @@
+# Depends on: kernel-lts-nvidia-340
+description="NVIDIA drivers utilities and links"
+url="http://www.nvidia.com/"
+contributors="tnut"
+packager="remy <remyg@nutyx.org>"
+
+run=(kernel-lts-nvidia-340)
+
+name=nvidia-lts-340
+version=340.107
+release=2
+
+[ "$PKGMK_ARCH" == "i686"   ] && _ARCH=x86
+[ "$PKGMK_ARCH" == "x86_64"   ] && _ARCH=x86_64
+source=(http://download.nvidia.com/XFree86/Linux-${_ARCH}/$version/NVIDIA-Linux-${_ARCH}-$version.run)
+
+build() {
+
+   sh NVIDIA-Linux-${_ARCH}-$version.run --extract-only
+   cd NVIDIA-Linux-${_ARCH}-$version
+
+   # Libraries
+   install -d $PKG/usr/lib/{tls,vdpau}
+   for i in libglx.so.$version libGL.so.$version libOpenCL.so.1.0.0  \
+   libcuda.so.$version libnvidia-cfg.so.$version \
+   libnvidia-compiler.so.$version libnvidia-glcore.so.$version  \
+   libnvidia-tls.so.$version libnvcuvid.so.$version \
+   libnvidia-ml.so.$version
+   do
+      install -m 0755 $i $PKG/usr/lib
+      ln -s $i $PKG/usr/lib/${i%.*.*}
+      ln -s $i $PKG/usr/lib/${i%.*.*}.1
+   done
+
+   for i in libvdpau_nvidia.so.$version
+   do
+      install -m 0755 $i $PKG/usr/lib/vdpau
+      ln -s $i $PKG/usr/lib/vdpau/${i%.*.*}
+      ln -s $i $PKG/usr/lib/vdpau/${i%.*.*}.1
+   done
+
+   install -m 0755 tls/libnvidia-tls.so.$version $PKG/usr/lib/tls
+   ln -s libnvidia-tls.so.$version $PKG/usr/lib/tls/libnvidia-tls.so
+   ln -s libnvidia-tls.so.$version $PKG/usr/lib/tls/libnvidia-tls.so.1
+
+   # install xconfig/settings programs and manpages
+   install -d $PKG/usr/{bin,share/man/man1}
+   install -m 0755 nvidia-{xconfig,settings} $PKG/usr/bin/
+   install -m 0644 nvidia-{xconfig,settings}.1.gz \
+   $PKG/usr/share/man/man1/
+
+   install -m 0755 nvidia-{xconfig,settings,smi} $PKG/usr/bin/
+   install -m 0644 nvidia-{xconfig,settings,smi}.1.gz \
+   $PKG/usr/share/man/man1/
+
+   # xorg driver/extensions
+   install -d $PKG/usr/lib/xorg/modules/{drivers,extensions}
+   install -m 0755 nvidia_drv.so $PKG/usr/lib/xorg/modules/drivers
+   install -m 0755 libglx.so.$version $PKG/usr/lib/xorg/modules/extensions
+   ln -s libglx.so.$version $PKG/usr/lib/xorg/modules/extensions/libglx.so
+   install -m 0755 libnvidia-wfb.so.$version $PKG/usr/lib/xorg/modules
+
+   # xorg config
+   mkdir -p $PKG/etc/X11/xorg.conf.d
+   cat > $PKG/etc/X11/xorg.conf.d/30-nvidia.conf << "EOF"
+Section "Device"
+        Identifier      "NVIDIA"
+        Driver          "nvidia"
+EndSection
+EOF
+
+   # Blacklist 
+   mkdir -p $PKG/etc/modprobe.d
+   echo "blacklist nouveau" > $PKG/etc/modprobe.d/nouveau.conf
+   echo "blacklist nvidiafb" > $PKG/etc/modprobe.d/nvidiafb.conf
+}

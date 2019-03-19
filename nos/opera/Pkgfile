@@ -1,0 +1,33 @@
+# Depends on: gtk3 alsa-lib libnotify curl nss cups xorg-libxscrnsaver desktop-file-utils shared-mime-info hicolor-icon-theme upower
+
+description="A fast and secure web browser"
+url="http://www.opera.com/"
+contributors="Rems"
+packager="tnut <tnut@nutyx.org>"
+ 
+name=opera
+version=58.0.3135.47
+
+run=(desktop-file-utils shared-mime-info hicolor-icon-theme)
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(http://ftp.opera.com/pub/opera/desktop/$version/linux/${name}-stable_${version}_amd64.deb
+        http://rems.techozor.fr/other-sources/libffmpeg.so
+        default
+        opera)
+
+build() {
+tar -xvf data.tar.xz --exclude=usr/share/{lintian,menu} -C "$PKG/"
+cd "$PKG/usr/lib/"*-linux-gnu/
+mv "$name" ../
+rm -rf "$PKG/usr/lib/"*-linux-gnu
+# suid opera_sandbox
+chmod 4755 "$PKG/usr/lib/$name/opera_sandbox"
+# install default options
+install -Dm644 "$SRC/default" "$PKG/etc/$name/default"
+# install opera wrapper
+rm "$PKG/usr/bin/$name"
+install -Dm755 "$SRC/$name" "$PKG/usr/bin/$name"
+install -vDm644 "$SRC/libffmpeg.so" "$PKG/usr/lib/opera/lib_extra/libffmpeg.so"
+}

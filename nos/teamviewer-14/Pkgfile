@@ -1,0 +1,35 @@
+# Depends on: hicolor-icon-theme dbus qtbase qtdeclarative qtquickcontrols qtwebkit qtx11extras
+
+description="All-In-One Software for Remote Support and Online Meetings"
+packager="liberodark"
+url="https://www.teamviewer.com/"
+
+PKGMK_KEEP_SOURCES="no"
+
+name=teamviewer-14
+version=14.1.3399
+release=2
+
+run=(qtwebkit qtdeclarative qtquickcontrols qtx11extras hicolor-icon-theme)
+
+source=(https://download.teamviewer.com/download/linux/version_14x/teamviewer_amd64.deb)
+
+build() {
+
+tar xvf data.tar.xz
+rm -r etc/apt
+for i in etc usr var opt
+do
+cp -dr --no-preserve=ownership $i $PKG
+done
+
+rm $PKG/opt/teamviewer/tv_bin/xdg-utils/xdg-email
+
+install -D -m0644 $PKG/opt/teamviewer/tv_bin/script/teamviewerd.service \
+                  $PKG/lib/systemd/system/teamviewerd.service
+
+if [ -f $PKG/opt/teamviewer/tv_bin/script/libdepend ]; then
+	echo "Removing libdepend to ditch lib32 dependencies"
+	rm $PKG/opt/teamviewer/tv_bin/script/libdepend
+fi
+}

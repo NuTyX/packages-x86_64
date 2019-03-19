@@ -1,0 +1,21 @@
+# Depends on: openjdk
+
+description="Cross-platform file backup"
+packager="liberodark"
+url="http://www.frostwire.com"
+
+name=frostwire
+version=6.7.6
+_version=272
+
+run=(openjdk)
+
+source=(https://dl.frostwire.com/frostwire/$version/frostwire-$version.noarch.tar.gz $name.desktop $name.png)
+
+build() {
+
+mkdir -p $PKG/opt/frostwire/
+cp -r "frostwire-${version}.noarch/."  $PKG/opt/frostwire/
+install -vDm644 $SRC/$name.desktop $PKG/usr/share/applications/$name.desktop
+install -vDm644 $SRC/$name.png $PKG/usr/share/pixmaps/$name.png
+}
