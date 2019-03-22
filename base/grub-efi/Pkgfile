@@ -5,7 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=grub-efi
 version=2.02
-release=3
+release=4
 
 run=(efivar)
 
@@ -41,4 +41,7 @@ echo "Patch to fix packed-not-aligned error on GCC 8..."
  mv $PKG/etc/grub.d/README{,-efi}
  mv $PKG/usr/share/grub/grub{,-efi}-mkconfig_lib
  cp ../unicode.pf2 $PKG/usr/share/grub/
+
+ # Duplicate with grub package
+ rm -r $PKG/usr/share/{info,locale}
 }
