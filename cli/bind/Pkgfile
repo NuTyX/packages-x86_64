@@ -1,11 +1,11 @@
-# Depends on: kerberos libxml2 openssl python libcap python-ply
+# Depends on: kerberos libxml2 openssl libcap python-ply
 
 description="The BIND package includes the client side programs nslookup, dig and host."
 url="http://www.isc.org/downloads/bind/"
 packager="tnut at nutyx dot org"
 
 name=bind
-version=9.13.7
+version=9.14.0
 nutyx_version=11.0
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
@@ -15,12 +15,12 @@ run=(python-ply)
 
 build(){
     cd $name-$version
-    ./configure --prefix=/usr \
-                --sysconfdir=/etc/bind \
-                --disable-static \
+    ./configure --prefix=/usr           \
+                --sysconfdir=/etc/bind  \
+                --disable-static        \
                 --mandir=/usr/share/man \
                 --localstatedir=/var    \
-                --with-python=/usr/bin/python3 \
+                --without-python        \
                 --enable-threads        \
                 --with-openssl
 
