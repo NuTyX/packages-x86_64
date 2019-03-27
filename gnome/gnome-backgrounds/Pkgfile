@@ -6,15 +6,8 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce, Remy"
 
 name=gnome-backgrounds
-version=3.30.0
+version=3.32.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
-build() {
-cd $name-$version
-mkdir build
-cd build
-meson 
-ninja
-DESTDIR=$PKG ninja install
-}
+build=meson
