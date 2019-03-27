@@ -7,8 +7,9 @@ contributors="Fanch, Tnut, Remy"
 
 name=gnome-user-docs
 version=3.32.0
+release=2
 
-PKGMK_LOCALES=(as ca cs da de el fi fr es gl gu he hi hr hu id it ja kn lv mr nl pa pl pt ro ru sl sr sv te vi ta zh)
+PKGMK_LOCALES=(as ca cs da de el fi fr es gl gu he hi hr hu id it ja kn ko lv mr nl pa pl pt ro ru sl sr sv te vi ta zh)
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
@@ -78,6 +79,9 @@ pack_remove_locale ja
 }
 locale_kn() {
 pack_remove_locale kn
+}
+locale_ko() {
+pack_remove_locale ko
 }
 locale_lv() {
 pack_remove_locale lv
