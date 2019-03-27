@@ -1,4 +1,4 @@
-# Depends on: ninja enchant cmake gstreamer-plugins-base gstreamer-plugins-bad xorg-libxt gtk2 gtk3 gtk-doc hunspell hyphen icu libgudev libsecret libsoup libwebp mesa ruby sqlite enchant geoclue2 gobject-introspection hicolor-icon-theme llvm harfbuzz gtk-doc libnotify wayland woff2
+# Depends on: openjpeg2 ninja enchant cmake gstreamer-plugins-base gstreamer-plugins-bad xorg-libxt gtk2 gtk3 gtk-doc hunspell hyphen icu libgudev libsecret libsoup libwebp mesa ruby sqlite enchant geoclue2 gobject-introspection hicolor-icon-theme llvm harfbuzz gtk-doc libnotify wayland woff2
 
 description="engine of made Web free for the browsers web version 3"
 url="http://webkitgtk.org/"
@@ -6,20 +6,18 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Greg"
 
 name=webkitgtk
-version=2.22.6
+version=2.24.0
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 
 build() {
 cd webkitgtk-$version
-sed -i '1s/python$/&2/' Tools/gtk/generate-gtkdoc
 mkdir -vp build
 cd        build
 CFLAGS=-Wno-expansion-to-defined \
 CXXFLAGS=-Wno-expansion-to-defined \
 cmake -G Ninja \
-      -DPORT=GTK \
-	  -DCMAKE_BUILD_TYPE=Release  \
+      -DCMAKE_BUILD_TYPE=Release  \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_SKIP_RPATH=ON       \
       -DPORT=GTK                  \
