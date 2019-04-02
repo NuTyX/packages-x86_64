@@ -1,4 +1,4 @@
-# Depends on: fltk
+# Depends on: fltk openssl
 
 description="A small, fast graphical web browser built on FLTK"
 url="http://www.dillo.org/"
@@ -7,18 +7,18 @@ contributors="Pierre B"
 
 name=dillo
 version=3.0.5
-release=4
-source=(http://www.dillo.org/download/dillo-$version.tar.bz2
+release=5
+source=(dillo-3.0.5-openssl-1.patch
+	http://www.dillo.org/download/dillo-$version.tar.bz2
         http://www.dillo.org/Icons/d2_icon3_122x122.png)
 build() {
 cd $name-$version
-CFLAGS="-I/usr/include/openssl-1.0" LDFLAGS="-L/usr/lib/openssl-1.0" \
+patch -Np1 -i ../dillo-3.0.5-openssl-1.patch
+autoreconf -i
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
 --enable-ssl \
 --enable-cookies
-
-sed -i "s@<openssl/@<openssl-1.0/@"  dpi/https.c
 
 make
 make DESTDIR=$PKG install
