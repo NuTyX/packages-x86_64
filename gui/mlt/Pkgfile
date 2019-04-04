@@ -1,18 +1,18 @@
-# Depends on: ladspa frei0r-plugins libdv sdl-image libsamplerate sox ffmpeg vid-stab qtsvg jack libexif swig movit eigen3
+# Depends on: python2 ladspa frei0r-plugins libdv sdl-image libsamplerate sox ffmpeg vid-stab qtsvg jack libexif swig movit eigen3
 
 description="An open source multimedia framework"
 url="http://www.mltframework.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 name=mlt
-version=6.12.0
+version=6.14.0
 
 
 source=(https://github.com/mltframework/mlt/releases/download/v$version/mlt-$version.tar.gz)
 
 build() {
   cd $name-$version
-  ./configure --prefix=/usr --avformat-swscale \
+  ./configure --prefix=/usr --disable-gtk2 \
   --enable-gpl --enable-gpl3 --enable-opengl \
   --qt-libdir=/usr/lib --qt-includedir=/usr/include/qt
   make
