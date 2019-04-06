@@ -8,6 +8,8 @@ contributors="Alienus, tnut, Greg"
 name=node
 alias=(nodejs node-js)
 version=11.5.0
+release=2
+
 source=(https://nodejs.org/dist/v$version/node-v$version.tar.xz)
 
 build() {
@@ -16,13 +18,13 @@ build() {
 
 	./configure \
 		--prefix=/usr \
-		--without-npm \
-		--shared-zlib
+		--shared-zlib \
+		--shared-openssl \
+		--shared-cares \
+		--with-intl=system-icu
 
 	make
 	make DESTDIR=$PKG install
-
-	rm -r $PKG/usr/share/doc
 
 	# clean up
 	find $PKG -type f \( \
