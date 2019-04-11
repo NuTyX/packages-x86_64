@@ -1,4 +1,4 @@
-# Depends on: efl
+# Depends on: ninja meson efl
 
 description="Audio Video player for enlightenment"
 url="http://www.enlightenment.org"
@@ -6,8 +6,9 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Berlius"
 
 name=rage
-version=0.2.1
+version=0.3.0
 source=(http://download.enlightenment.org/rel/apps/$name/$name-$version.tar.xz)
+build=meson
 uptodate() {
 local ext url LYNX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
