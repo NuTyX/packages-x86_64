@@ -554,7 +554,7 @@ locale_sv()
 lang=sv-SE
 wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-sv@$name.mozilla.org.xpi
+$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
 rm $lang.xpi
 cd $PKG
 bsdtar -cf \
