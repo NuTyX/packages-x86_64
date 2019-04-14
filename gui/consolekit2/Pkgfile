@@ -3,16 +3,14 @@
 description="framework for defining and tracking users, login sessions, and seats"
 url="https://github.com/ConsoleKit2/ConsoleKit2"
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+contributors="Pierre B, Rems, Hugo"
 
 name=consolekit2
-version=1.0.2
-release=4
+version=1.2.1
 
 source=(https://github.com/Consolekit2/ConsoleKit2/releases/download/$version/ConsoleKit2-$version.tar.bz2
-        consolekit2.tmpfiles.conf
-	75-consolekit2.rules
-	consolekit2.logrotate)
+        consolekit2.logrotate
+	org.freedesktop.consolekit.rules)
 
 build() {
 cd ConsoleKit2-$version
@@ -20,16 +18,14 @@ cd ConsoleKit2-$version
 ./configure                    \
 	--prefix=/usr          \
 	--sysconfdir=/etc      \
-	--sbindir=/usr/bin     \
-	--with-rundir=/run     \
-	--libexecdir=/usr/lib/ConsoleKit \
 	--localstatedir=/var   \
 	--enable-polkit        \
 	--enable-pam-module    \
 	--enable-udev-acl      \
 	--enable-docbook-docs  \
-	--with-dbus-services=/usr/share/dbus-1/services \
-	--with-xinitrc-dir=/etc/X11/app-defaults/xinitrc.d     \
+	--docdir=/usr/share/doc/ConsoleKit-$version        \
+	--with-dbus-services=/usr/share/dbus-1/services    \
+	--with-xinitrc-dir=/etc/X11/app-defaults/xinitrc.d \
 	--with-systemdsystemunitdir=no
 
 make
@@ -37,24 +33,35 @@ make DESTDIR=$PKG install
 
 mv $PKG/etc/X11/app-defaults/xinitrc.d/90-consolekit{,.sh}
 
-install -Dm644 $SRC/consolekit2.tmpfiles.conf $PKG/usr/lib/tmpfiles.d/consolekit.conf
-
 rm -rf $PKG/run
 
 install -D -m644 $SRC/consolekit2.logrotate $PKG/etc/logrotate.d/consolekit
 
 install -dm700 -o polkitd $PKG/usr/share/polkit-1/rules.d
-install -m644 $SRC/75-consolekit2.rules $PKG/usr/share/polkit-1/rules.d/75-consolekit.rules
-
-install -dm755 $PKG/etc/pam.d/
-cat >> $PKG/etc/pam.d/consolekit << "EOF"
-auth            include         system-login
-account         include         system-login
-session         include         system-login
-password        include         system-login
-session         optional        pam_ck_connector.so nox11
-EOF
+install -m644 $SRC/org.freedesktop.consolekit.rules \
+$PKG/usr/share/polkit-1/rules.d/org.freedesktop.consolekit.rules
 
 rm $PKG/usr/lib/libck-connector.la
 rm $PKG/lib/security/pam_ck_connector.la
+
+cat > $PKG/usr/lib/ConsoleKit/run-session.d/pam-foreground-compat.ck << "EOF"
+#!/bin/sh
+TAGDIR=/var/run/console
+
+[ -n "$CK_SESSION_USER_UID" ] || exit 1
+[ "$CK_SESSION_IS_LOCAL" = "true" ] || exit 0
+
+TAGFILE="$TAGDIR/`getent passwd $CK_SESSION_USER_UID | cut -f 1 -d:`"
+
+if [ "$1" = "session_added" ]; then
+    mkdir -p "$TAGDIR"
+    echo "$CK_SESSION_ID" >> "$TAGFILE"
+fi
+
+if [ "$1" = "session_removed" ] && [ -e "$TAGFILE" ]; then
+    sed -i "\%^$CK_SESSION_ID\$%d" "$TAGFILE"
+    [ -s "$TAGFILE" ] || rm -f "$TAGFILE"
+fi
+EOF
+chmod -v 755 $PKG/usr/lib/ConsoleKit/run-session.d/pam-foreground-compat.ck
 }
