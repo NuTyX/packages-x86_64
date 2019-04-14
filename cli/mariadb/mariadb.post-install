@@ -1,5 +1,8 @@
 . lib/lsb/init-functions
 log_warning_msg "${WARNING} Create a /etc/mysql/my.cnf  by comparing it with /etc/mysql/my.cnf.example ${NORMAL}"
 log_warning_msg "${WARNING} Create a database if need by run the command: ${NORMAL}"
-printf "#  mysql_install_db --basedir=/usr --datadir=/srv/mysql --user=mysql\n"
-printf "#  chown -R mysql:mysql /srv/mysql\n"
+printf "sudo  mysql_install_db --basedir=/usr --datadir=/srv/mysql --user=mysql\n"
+printf "sudo  chown -R mysql:mysql /srv/mysql\n"
+log_warning_msg "${WARNING} Secure MariaDB by running the command: ${NORMAL}"
+printf "sudo /usr/bin/mysql_secure_installation\n"
+log_warning_msg "${WARNING} Make shure the mysql service is running before ${NORMAL}"
