@@ -1,4 +1,4 @@
-# Depends on: libpng
+# Depends on: meson ninja libpng
 
 description="library for the manipulation of pixels"
 url="http://xorg.freedesktop.org"
@@ -9,15 +9,15 @@ contributors="Pierre B"
 name=xorg-pixman
 _name=pixman
 alias=(pixman)
-version=0.38.0
+version=0.38.4
 
 source=(http://ftp.x.org/pub/individual//lib/${_name}-$version.tar.bz2)
 
 build() {
-
 cd ${_name}-$version
-./configure --prefix=/usr --disable-static
-make
-make DESTDIR=$PKG install
-rm $PKG/usr/lib/libpixman-1.la
+mkdir build
+cd    build
+meson --prefix=/usr
+ninja
+DESTDIR=$PKG ninja install
 }
