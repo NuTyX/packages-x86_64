@@ -8,19 +8,20 @@ contributors="Pierre B"
 run=( gsettings-desktop-schemas )
 
 name=glib-networking
-version=2.60.0.1
+version=2.60.1
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=(http://www.linuxfromscratch.org/patches/blfs/svn/glib-networking-$version-upstream_fixes-1.patch
+	http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build () {
 
 cd $name-$version
+patch -Np1 -i ../glib-networking-$version-upstream_fixes-1.patch
 mkdir build
 cd    build
 
 meson --prefix=/usr            \
-      -Dlibproxy_support=false \
-      -Dca_certificates_path=/etc/ssl/ca-bundle.crt
+      -Dlibproxy=disabled
 ninja
 DESTDIR=$PKG ninja install
 }
