@@ -13,7 +13,3 @@ if [ ! -f var/log/PM2/dump.pm2 ]; then
    echo "[]" > var/log/PM2/dump.pm2
    chown pm2:pm2 var/log/PM2/dump.pm2
 fi
-if [ ! -d var/lock/pm2 ]; then
-   log_info_msg "${INFO}Creating lock dir${NORMAL}\n"
-   mkdir -p var/lock/pm2
-fi

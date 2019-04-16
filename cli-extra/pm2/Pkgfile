@@ -7,6 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=pm2
 version=3.5.0
+release=2
 
 source=(https://registry.npmjs.org/$name/-/$name-$version.tgz)
 
@@ -29,7 +30,7 @@ $PKG/etc/rc.d/init.d/pm2
 sed -i "s@%PM2_PATH%@/usr/bin/pm2@" $PKG/etc/rc.d/init.d/pm2
 sed -i "s@%USER%@pm2@" $PKG/etc/rc.d/init.d/pm2
 sed -i "s@%HOME_PATH%@/var/log/PM2@" $PKG/etc/rc.d/init.d/pm2
-sed -i "s@/var/lock/subsys@/var/lock/pm2@" $PKG/etc/rc.d/init.d/pm2
+sed -i "s@/var/lock/subsys/pm2-init.sh@/var/lock/pm2.lock@" $PKG/etc/rc.d/init.d/pm2
 sed -i '/export PATH=%NODE_PATH%:$PATH/d' $PKG/etc/rc.d/init.d/pm2
 
 for i in 2 3 4 5;do
