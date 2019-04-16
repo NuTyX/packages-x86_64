@@ -1,0 +1,19 @@
+. lib/lsb/init-functions
+if ! (getent group pm2 > /dev/null); then
+  log_info_msg "${INFO}Creating pm2 group${NORMAL}\n"
+  groupadd -g 28 pm2
+fi
+if ! (getent passwd pm2 >/dev/null); then
+   log_info_msg "${INFO}Creating pm2 user${NORMAL}\n"
+   useradd -c "Process manager for NodeJS" -d "/var/log/PM2" \
+   -g pm2 -s /bin/bash -u 28 -m -k /dev/null pm2
+fi
+if [ ! -f var/log/PM2/dump.pm2 ]; then
+   log_info_msg "${INFO}Creating dump.pm2${NORMAL}\n"
+   echo "[]" > var/log/PM2/dump.pm2
+   chown pm2:pm2 var/log/PM2/dump.pm2
+fi
+if [ ! -d var/lock/pm2 ]; then
+   log_info_msg "${INFO}Creating lock dir${NORMAL}\n"
+   mkdir -p var/lock/pm2
+fi

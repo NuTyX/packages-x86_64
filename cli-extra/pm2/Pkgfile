@@ -1,0 +1,41 @@
+# Depend on: node
+
+description="Advanced, production process manager for Node.js"
+url="http://pm2.keymetrics.io/"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=pm2
+version=3.5.0
+
+source=(https://registry.npmjs.org/$name/-/$name-$version.tgz)
+
+PKGMK_IGNORE_UNPACK="yes"
+PKGMK_GROUPS=()
+
+build() {
+
+npm install -g --user root --prefix "$PKG/usr" $name-$version.tgz
+
+chmod -R u=rwX,go=rX $PKG
+
+# Service
+mkdir -p $PKG/etc/rc.d/init.d
+for i in 0 1 2 3 4 5 6;do
+ mkdir -p $PKG/etc/rc.d/rc${i}.d
+done
+install -m755 $PKG/usr/lib/node_modules/pm2/lib/templates/init-scripts/pm2-init-amazon.sh \
+$PKG/etc/rc.d/init.d/pm2
+sed -i "s@%PM2_PATH%@/usr/bin/pm2@" $PKG/etc/rc.d/init.d/pm2
+sed -i "s@%USER%@pm2@" $PKG/etc/rc.d/init.d/pm2
+sed -i "s@%HOME_PATH%@/var/log/PM2@" $PKG/etc/rc.d/init.d/pm2
+sed -i "s@/var/lock/subsys@/var/lock/pm2@" $PKG/etc/rc.d/init.d/pm2
+sed -i '/export PATH=%NODE_PATH%:$PATH/d' $PKG/etc/rc.d/init.d/pm2
+
+for i in 2 3 4 5;do
+ ln -sv ../init.d/pm2 $PKG/etc/rc.d/rc${i}.d/Sd99pm2
+done
+for i in 0 1 6;do
+ ln -sv ../init.d/pm2 $PKG/etc/rc.d/rc${i}.d/K00pm2
+done
+}
