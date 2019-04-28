@@ -9,14 +9,10 @@ name=openjpeg2
 version=2.3.0
 release=3
 
-PKGKMK_KEEP_SOURCES="no"
 
-source=(https://github.com/uclouvain/openjpeg/archive/v$version/${_name}-$version.tar.gz
-        http://www.linuxfromscratch.org/patches/blfs/svn/openjpeg-$version-only_shared-1.patch)
-
+source=(https://github.com/uclouvain/${_name}/archive/v$version/${_name}-$version.tar.gz)
 build() {
 cd openjpeg-$version
-patch -Np1 -i ../openjpeg-$version-only_shared-1.patch
 mkdir -v build
 cd build
 
@@ -25,9 +21,10 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DBUILD_STATIC_LIBS=OFF ..
 make
 make DESTDIR=$PKG install
-	pushd ../doc
-	for man in man/man?/* ; do
-		install -v -D -m 644 $man $PKG/usr/share/$man
-	done
-	popd
+
+pushd ../doc
+ for man in man/man?/* ; do
+  install -v -D -m 644 $man $PKG/usr/share/$man
+ done
+popd
 }
