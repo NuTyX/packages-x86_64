@@ -1,0 +1,99 @@
+# Depends on: openssl pcre
+
+name=nginx
+version=1.16.0
+source=(https://nginx.org/download/nginx-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure \
+--with-openssl=/usr/include/openssl \
+--conf-path=/etc/nginx/nginx.conf \
+--pid-path=/var/run/nginx.pid \
+--error-log-path=/var/log/nginx/error.log \
+--http-log-path=/var/log/nginx/access.log \
+--prefix=/usr \
+--modules-path=/usr/lib/nginx/modules \
+--http-scgi-temp-path=/usr/lib/nginx/scgi \
+--http-uwsgi-temp-path=/usr/lib/nginx/uwsgi \
+--http-proxy-temp-path=/usr/lib/nginx/proxy \
+--http-client-body-temp-path=/usr/lib/nginx/client-body \
+--user=www --group=www
+make
+make DESTDIR=$PKG install
+mkdir -p $PKG/usr/lib/nginx
+
+sed -e '44s|html|/srv/www|' \
+    -e '54s|html|/srv/www|' \
+    -i $PKG/etc/nginx/nginx.conf
+
+# Service
+mkdir -p $PKG/etc/rc.d/init.d
+cat  > $PKG/etc/rc.d/init.d/nginx << "EOF"
+#/bin/sh
+
+. /lib/lsb/init-functions
+
+DAEMON=/usr/sbin/nginx
+PIDFILE=/var/run/nginx.pid
+
+start() {
+        log_info_msg "Starting Nginx Server..."
+        $DAEMON
+        evaluate_retval
+}
+
+stop() {
+       log_info_msg "Stopping Nginx Server..."
+       kill `cat $PIDFILE`
+       evaluate_retval
+}
+
+reload() {
+      log_info_msg "Reloading Nginx Server..."
+      $DAEMON -s reload
+      evaluate_retval
+}
+
+status() {
+      pid=`pidof $DAEMON`
+      if [ "$pid" ]; then
+         echo "Nginx running on PID $pid"
+      else
+         echo "Nginx is not running"
+      fi
+}
+
+case $1 in
+         start)
+                 start
+                 ;;
+         stop)
+                 stop
+                 ;;
+         restart)
+                 stop
+                 start
+                 ;;
+         status)
+                 status
+                 ;;
+         force-reload)
+                 reload
+                 ;;
+         *)
+                 echo "Syntax: $0 <start|stop|restart|status|force-reload>"
+                 ;;
+esac
+EOF
+chmod 755 $PKG/etc/rc.d/init.d/nginx
+mkdir -p $PKG/etc/rc.d/rc{0,1,2,3,4,5,6}.d
+for i in 0 1 2 6
+do
+  ln -sf  ../init.d/nginx $PKG/etc/rc.d/rc${i}.d/K28nginx
+done
+for i in 3 4 5
+do
+  ln -sf  ../init.d/nginx $PKG/etc/rc.d/rc${i}.d/S32nginx
+done
+}

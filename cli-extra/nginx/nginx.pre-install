@@ -1,0 +1,5 @@
+. lib/lsb/init-functions
+if ! (getent group www > /dev/null); then
+  log_info_msg "${INFO}Creating www group${NORMAL}\n"
+  groupadd -g 38 www
+fi
