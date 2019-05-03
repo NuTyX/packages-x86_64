@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, Jayce, Greg"
 
 name=mate-utils
-version=1.22.0
+version=1.22.2
 
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
@@ -31,11 +31,7 @@ build() {
 uptodate() {
 feed=https://github.com/mate-desktop/$name/releases.atom 
 exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
+$exec $feed | grep release | grep title | \
+sed -e "s@<title>$name @@" -e "s@ release</title>@@"  \
+-e "s@ @@g" | head -1
 }
