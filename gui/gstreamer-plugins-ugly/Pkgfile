@@ -1,4 +1,4 @@
-# Depends on: gstreamer-plugins-base lame libdvdread liba52 libmad libmpeg2 
+# Depends on: meson ninja gstreamer-plugins-base lame libdvdread liba52 libmad libmpeg2 
 
 description="GStreamer Multimedia Framework ugly Plugins"
 url="http://gstreamer.freedesktop.org/modules/gst-plugins-ugly.html"
@@ -7,29 +7,22 @@ contributors="Pierre B"
 
 _name=gst-plugins-ugly
 name=gstreamer-plugins-ugly
-version=1.14.4
-release=2
+version=1.16.0
 
 source=(http://gstreamer.freedesktop.org/src/${_name}/gst-plugins-ugly-$version.tar.xz )
 
 build() {
 cd gst-plugins*
+mkdir build
+cd    build
+meson --prefix=/usr \
+-Dbuildtype=release \
+-Dpackage-name="GStreamer Ugly Plugins $version NuTyX" \
+-Dpackage-origin="http://downloads.nutyx.org/"
+ninja
 
-./configure --prefix=/usr \
---with-package-name="GStreamer Ugly Plugins $version NuTyX" \
---with-package-origin="http://downloads.nutyx.org/"
-make
-make DESTDIR=$PKG install
+DESTDIR=$PKG ninja install
 
-# Obsolet libs
-rm $PKG/usr/lib/gstreamer-1.0/libgsta52dec.la
-rm $PKG/usr/lib/gstreamer-1.0/libgstasf.la
-rm $PKG/usr/lib/gstreamer-1.0/libgstdvdlpcmdec.la
-rm $PKG/usr/lib/gstreamer-1.0/libgstdvdread.la
-rm $PKG/usr/lib/gstreamer-1.0/libgstdvdsub.la
-rm $PKG/usr/lib/gstreamer-1.0/libgstmpeg2dec.la
-rm $PKG/usr/lib/gstreamer-1.0/libgstrealmedia.la
-rm $PKG/usr/lib/gstreamer-1.0/libgstxingmux.la
 }
 uptodate() {
 local url ext
