@@ -1,7 +1,14 @@
 # Depends on: openssl pcre
 
+description="HTTP and reverse proxy, mail proxy, and a generic TCP/UDP proxy server"
+packager="tnut <tnut@nutyx.org>"
+url="http://nginx.org/en/"
+maintainer="http://hg.nginx.org/nginx"
+
 name=nginx
 version=1.16.0
+release=2
+
 source=(https://nginx.org/download/nginx-$version.tar.gz)
 
 build() {
@@ -21,11 +28,17 @@ cd $name-$version
 --user=www --group=www
 make
 make DESTDIR=$PKG install
-mkdir -p $PKG/usr/lib/nginx
+install -d $PKG{/srv/www,/usr/{lib/nginx,share/man/man8}}
 
+# Configuration file
 sed -e '44s|html|/srv/www|' \
     -e '54s|html|/srv/www|' \
-    -i $PKG/etc/nginx/nginx.conf
+    -i $PKG/etc/nginx/nginx.conf.default
+rm  $PKG/etc/nginx/nginx.conf
+cp -a html $PKG/etc/nginx
+
+# Man pages
+install -m644 objs/nginx.8 $PKG/usr/share/man/man8/nginx.8
 
 # Service
 mkdir -p $PKG/etc/rc.d/init.d
