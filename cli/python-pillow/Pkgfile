@@ -2,11 +2,12 @@
 
 description="Python Imaging Library"
 url="https://pypi.python.org/pypi/Pillow"
-packager="rems <rems@nutyx.org>"
+maintainer="https://github.com/python-pillow/Pillow/releases.atom"
+packager="tnut <tnut@nutyx.org>"
 contributors="hugo, Rémy"
 
 name=python-pillow
-version=5.3.0
+version=6.0.0
 
 source=(https://files.pythonhosted.org/packages/source/P/Pillow/Pillow-$version.tar.gz)
 
@@ -14,4 +15,9 @@ build(){
 cd Pillow-$version
 python3 setup.py build
 python3 setup.py install --root=$PKG --optimize=1
+}
+uptodate() {
+lynx -read_timeout=20 -dump -listonly -nonumbers $maintainer \
+grep release | grep alternate | grep tag| \
+head -1 | cut -d "/" -f9|sed 's@\"@@'
 }
