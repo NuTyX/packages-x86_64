@@ -23,3 +23,9 @@ build() {
 
   cp -r $SRC/ubuntu-mate-settings-$_umsver/usr/share/mate-panel $PKG/usr/share
 }
+uptodate() {
+feed=https://github.com/mate-desktop/$name/releases.atom
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+$exec $feed | grep release | grep title | head -1 | \
+sed -e "s@ @@g" -e "s@<title>$name@@" -e "s@release</title>@@"
+}
