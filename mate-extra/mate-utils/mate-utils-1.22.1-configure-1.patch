@@ -1,0 +1,13 @@
+--- a/configure.ac	2019-05-04 17:48:34.283236803 +0200
++++ b/configure.ac	2019-05-04 17:40:34.686572392 +0200
+@@ -34,10 +34,6 @@
+ if test x$RSVG_CONVERT = x ; then
+     AC_MSG_ERROR([could not locate rsvg-convert])
+ fi
+-AC_PATH_PROG(INKSCAPE, inkscape)
+-if test x$INKSCAPE = x ; then
+-    AC_MSG_ERROR([could not locate inkscape])
+-fi
+ 
+ MATE_COMPILE_WARNINGS([yes])
+ 
