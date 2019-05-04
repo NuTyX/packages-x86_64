@@ -20,15 +20,8 @@ build() {
 	DESTDIR=$PKG ninja install
 }
 uptodate() {
-	
-feed=https://github.com/solus-project/$name/releases.atom 
+feed=https://github.com/solut-project/$name/releases.atom
 exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@Brisk Menu @@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
- 
+$exec $feed | grep release | grep title | head -1 | \
+sed -e "s@ @@g" -e "s@<title>$name@@" -e "s@release</title>@@"
 }
