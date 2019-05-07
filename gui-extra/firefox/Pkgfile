@@ -1,6 +1,7 @@
 # Depends on: node cbindgen icu libvpx libwebp nspr nss libevent rustc dbus-glib autoconf2-13 pulseaudio gconf libnotify yasm sqlite nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav shared-mime-info
 name=firefox
-version=66.0.3
+version=66.0.4
+locale_version=66.0.3
 
 description="Standalone web browser from mozilla.org"
 url="http://www.mozilla.com/firefox/"
@@ -12,6 +13,21 @@ run=(shared-mime-info icu libevent pulseaudio gconf sqlite libvpx nss alsa-lib g
 source=(firefox.desktop
 	http://www.linuxfromscratch.org/patches/blfs/svn/firefox-$version-system_graphite2_harfbuzz-1.patch
 	https://archive.mozilla.org/pub/firefox/releases/$version/source/$name-$version.source.tar.xz)
+
+pack_remove_locale() {
+
+wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/${locale_version}/linux-$PKGMK_ARCH/xpi/${1}.xpi
+install -Dm644 ${1}.xpi \
+$PKG/usr/lib/firefox/browser/extensions/langpack-${1}@firefox.mozilla.org.xpi
+rm ${1}.xpi
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.${1}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/firefox/browser/extensions/langpack-${1}@firefox.mozilla.org.xpi
+
+rm usr/lib/firefox/browser/extensions/langpack-${1}@firefox.mozilla.org.xpi
+
+}
 
 build() {
 
@@ -148,93 +164,33 @@ END
 }
 locale_ar()
 {
-lang=ar
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale ar
 }
 locale_as()
 {
-lang=as
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale as
 }
 locale_cs()
 {
-lang=cs
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale cs
 }
 locale_da()
 {
-lang=da
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale da
 }
 locale_de()
 {
-lang=de
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale de
 }
 locale_el()
 {
-lang=el
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale el
 }
 locale_es()
 {
 for lang in es-AR es-CL es-ES es-MX
 do
-   wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
+   wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/${locale_version}/linux-$PKGMK_ARCH/xpi/$lang.xpi
    install -Dm644 $lang.xpi \
    $PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
    rm $lang.xpi
@@ -255,79 +211,29 @@ rm usr/lib/firefox/browser/extensions/langpack-es-MX@firefox.mozilla.org.xpi
 }
 locale_et()
 {
-lang=et
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale et
 }
 locale_fa()
 {
-lang=fa
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale fa
 }
 
 locale_ff()
 {
-lang=ff
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale ff
 }
 locale_fi()
 {
-lang=fi
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale fi
 }
 locale_fr()
 {
-lang=fr
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale fr
 }
 locale_ga()
 {
 lang=ga-IE
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
+wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/${locale_version}/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
 rm $lang.xpi
@@ -340,22 +246,12 @@ rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
 }
 locale_gl()
 {
-lang=gl
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale gl
 }
 locale_hi()
 {
 lang=hi-IN
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
+wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/${locale_version}/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
 rm $lang.xpi
@@ -368,135 +264,45 @@ rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
 }
 locale_hr()
 {
-lang=hr
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale hr
 }
 locale_hu()
 {
-lang=hu
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale hu
 }
 locale_is()
 {
-lang=is
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale is
 }
 locale_it()
 {
-lang=it
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale it
 }
 locale_ja()
 {
-lang=ja
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale ja
 }
 locale_ko()
 {
-lang=ko
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale ko
 }
 locale_lt()
 {
-lang=lt
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale lt
 }
 locale_lv()
 {
-lang=lv
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale lv
 }
 locale_nl()
 {
-lang=nl
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale nl
 }
 locale_nn()
 {
 for lang in nn-NO nb-NO
 do
-  wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
+  wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/${locale_version}/linux-$PKGMK_ARCH/xpi/$lang.xpi
   install -Dm644 $lang.xpi \
   $PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
   rm $lang.xpi
@@ -512,23 +318,13 @@ rm usr/lib/firefox/browser/extensions/langpack-nb-NO@firefox.mozilla.org.xpi
 }
 locale_pl()
 {
-lang=pl
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale pl
 }
 locale_pt()
 {
 for lang in pt-PT pt-BR
 do
-  wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
+  wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/${locale_version}/linux-$PKGMK_ARCH/xpi/$lang.xpi
   install -Dm644 $lang.xpi \
   $PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
   rm $lang.xpi
@@ -545,92 +341,32 @@ rm usr/lib/firefox/browser/extensions/langpack-pt-PT@firefox.mozilla.org.xpi
 }
 locale_ro()
 {
-lang=ro
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale ro
 }
 locale_ru()
 {
-lang=ru
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale ru
 }
 locale_sk()
 {
-lang=sk
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale sk
 }
 locale_sl()
 {
-lang=sl
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale sl
 }
 locale_sq()
 {
-lang=sq
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale sq
 }
 locale_sr()
 {
-lang=sr
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale sr
 }
 locale_sv()
 {
 lang=sv-SE
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
+wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/${locale_version}/linux-$PKGMK_ARCH/xpi/$lang.xpi
 install -Dm644 $lang.xpi \
 $PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
 rm $lang.xpi
@@ -643,65 +379,25 @@ rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
 }
 locale_th()
 {
-lang=th
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale th
 }
 locale_tr()
 {
-lang=tr
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale tr
 }
 locale_uk()
 {
-lang=uk
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale uk
 }
 locale_vi()
 {
-lang=vi
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
-
-rm usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
+pack_remove_locale vi
 }
 locale_zh()
 {
 for lang in zh-CN zh-TW
 do
-  wget http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
+  wget http://download.cdn.mozilla.net/pub/mozilla.org/firefox/releases/${locale_version}/linux-$PKGMK_ARCH/xpi/$lang.xpi
   install -Dm644 $lang.xpi \
   $PKG/usr/lib/firefox/browser/extensions/langpack-$lang@firefox.mozilla.org.xpi
   rm $lang.xpi
