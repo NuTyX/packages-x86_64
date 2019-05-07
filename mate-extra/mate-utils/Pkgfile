@@ -7,15 +7,14 @@ contributors="Fanch, Tnut, Jayce, Greg"
 
 name=mate-utils
 version=1.22.1-git
+release=2
 
 # source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
-source=(mate-utils-1.22.1-configure-1.patch)
 build() {
 
   unset MAKEFLAGS
   git clone https://github.com/mate-desktop/$name $name-$version 
   cd $name-$version
-  patch -Np1 -i ../mate-utils-1.22.1-configure-1.patch
  
   rm -r gsearchtool/help/pt
 
