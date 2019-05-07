@@ -120,11 +120,11 @@ cd $SRC/linux-${_version}
 mkdir -p $PKG/boot
 
 cp  System.map \
-$PKG/boot/System_64.map-$version-NuTyX
+$PKG/boot/System_64.map-${KERNEL_VERSION}
 cp  .config    \
-$PKG/boot/config_64-$version-NuTyX
+$PKG/boot/config_64-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
-$PKG/boot/kernel-$version-NuTyX
+$PKG/boot/kernel-${KERNEL_VERSION}
 
 # Reorgenise the sources
 cd $PKG/lib/modules/${KERNEL_VERSION}/
@@ -151,25 +151,25 @@ if [ "`dirname $LK`" != "." ]; then
   echo "This is a efi installation"
   ln -sf $LK boot/kernel
   if [ -f boot/$LK ]; then' > $PKGMK_ROOT/$name.post-install
-echo "    mv boot/kernel-$version-NuTyX boot/\$LK 2>/dev/null
-    ln -sf \$LK boot/kernel-$version-NuTyX
+echo "    mv boot/kernel-${KERNEL_VERSION} boot/\$LK 2>/dev/null
+    ln -sf \$LK boot/kernel-${KERNEL_VERSION}
   else
     echo \"EFI Partition not found, mount EFI Partition and re-install the kernel\"
   fi
 else
   echo \"This is a bios installation\"
   if [ -L boot/initrd ]; then
-    mkinitramfs $version-NuTyX
-    ln -sf initrd-$version-NuTyX boot/initrd
+    mkinitramfs ${KERNEL_VERSION}
+    ln -sf initrd-${KERNEL_VERSION} boot/initrd
   fi
-  ln -sf kernel-$version-NuTyX boot/kernel
+  ln -sf kernel-${KERNEL_VERSION} boot/kernel
 fi" >> $PKGMK_ROOT/$name.post-install
 
 }
 devel() {
 
 cd $PKG
-rm -r usr/src/linux-${_version}/{tools,ipc,init,drivers,firmware,fs,mm,samples,security,sound,virt}
+rm -r usr/src/linux-${_version}/{tools,ipc,init,drivers,fs,mm,samples,security,sound,virt}
 for i in alpha arc arm arm26 arm64 avr32 blackfin c6x \
 cris frv h8300 hexagon ia64 m32r m68k m68knommu metag \
 mips microblaze mn10300 openrisc parisc powerpc ppc s390 \
