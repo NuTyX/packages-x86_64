@@ -1,4 +1,4 @@
-# Depends on: gtk2 hicolor-icon-theme desktop-file-utils
+# Depends on: gtk3 hicolor-icon-theme desktop-file-utils
 
 description="Fast and lightweight IDE"
 url="http://www.geany.org"
@@ -6,13 +6,6 @@ contributors="Pierre, Tnut, Greg"
 packager="tnut <tnut@nutyx.org>"
 
 name=geany
-version=1.33
+version=1.35
 
 source=(http://download.$name.org/$name-$version.tar.bz2)
-
-build() {
-cd $name-$version
-./configure --prefix=/usr
-make
-make DESTDIR=$PKG install
-}
