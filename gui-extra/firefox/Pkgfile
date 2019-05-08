@@ -1,7 +1,7 @@
 # Depends on: node cbindgen icu libvpx libwebp nspr nss libevent rustc dbus-glib autoconf2-13 pulseaudio gconf libnotify yasm sqlite nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav shared-mime-info
 name=firefox
-version=66.0.4
-locale_version=66.0.3
+version=66.0.5
+locale_version=$version
 
 description="Standalone web browser from mozilla.org"
 url="http://www.mozilla.com/firefox/"
@@ -116,7 +116,7 @@ ac_add_options --with-system-zlib
 
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 EOF
-
+[ "$PKGMK_ARCH" == "i686" ] && echo "ac_add_options --disable-debug-symbols" >> mozconfig
 patch -Np1 -i ../firefox-$version-system_graphite2_harfbuzz-1.patch
 sed -e 's/checkImpl/checkFFImpl/g' -i js/src/vm/JSContext*.h
 export CC=clang CXX=clang++ AR=llvm-ar NM=llvm-nm RANLIB=llvm-ranlib
