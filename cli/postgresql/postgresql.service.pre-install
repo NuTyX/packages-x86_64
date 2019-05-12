@@ -1,0 +1,10 @@
+. lib/lsb/init-functions
+if ! (getent group postgres > /dev/null); then
+	log_info_msg "${INFO}Creating postgres group${NORMAL}\n"
+	groupadd -g 41 postgres
+fi
+if ! (getent passwd postgres > /dev/null); then
+	log_info_msg "${INFO}Creating postgres user${NORMAL}\n"
+	useradd  -c 'PostgreSQL Server' -d /srv/pgsql/data \
+	-g postgres -u 41 postgres
+fi
