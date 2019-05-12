@@ -1,0 +1,7 @@
+. lib/lsb/init-functions
+if [ ! -f etc/ssh/sshd_config ]; then
+	cp etc/ssh/sshd_config{.default,}
+	echo "PermitRootLogin no" >> etc/ssh/sshd_config
+	log_success_msg "${WARNING} /etc/ssh/sshd_config created ${NORMAL}"
+	log_warning_msg "${WARNING} Double check /etc/ssh/sshd_config and adapted to your needs ${NORMAL}"
+fi

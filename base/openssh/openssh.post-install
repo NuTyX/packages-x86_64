@@ -1,0 +1,6 @@
+. lib/lsb/init-functions
+if [ ! -f etc/ssh/ssh_config ]; then
+	cp etc/ssh/ssh_config{.default,}
+	log_success_msg "${WARNING} /etc/ssh/ssh_config created ${NORMAL}"
+	log_warning_msg "${WARNING} Double check /etc/ssh/ssh_config and adapted to your needs ${NORMAL}"
+fi

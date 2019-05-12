@@ -1,0 +1,10 @@
+. lib/lsb/init-functions
+if ! (getent group sshd > /dev/null); then
+	log_info_msg "${INFO}Creating sshd group${NORMAL}\n"
+	groupadd -g 50 sshd
+fi
+if ! (getent passwd sshd > /dev/null); then
+	log_info_msg "${INFO}Creating sshd user${NORMAL}\n"
+	useradd  -c 'sshd PrivSep' -d /var/lib/sshd \
+	-g sshd -s /bin/false -u 50 sshd
+fi

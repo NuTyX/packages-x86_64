@@ -1,4 +1,4 @@
-# Depends on: libedit
+# Depends on: openssl libedit
 
 description="Free version of the SSH connectivity tools"
 url="http://www.openssh.org/"
@@ -7,8 +7,7 @@ contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
 name=openssh
-version=7.9p1
-release=2
+version=8.0p1
 
 nutyx_version=11.0
 
@@ -48,7 +47,18 @@ install -v -m755 -d $PKG/usr/share/doc/$name-$version
 install -v -m644 INSTALL LICENCE OVERVIEW README* \
 $PKG/usr/share/doc/$name-$version
 
+# Configurations files
+mv $PKG/etc/ssh/ssh_config{,.default}
+mv $PKG/etc/ssh/sshd_config{,.default}
+
 # Service
 cd $SRC/nutyx-${nutyx_version}
 make DESTDIR=$PKG install-sshd
+}
+service() {
+cd $PKG
+bsdtar -r -f \
+$PKGMK_PACKAGE_DIR/${name}.${group}${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
+etc/rc.d etc/ssh/sshd_config.default var usr/sbin
+rm -r etc/rc.d etc/ssh/sshd_config.default var usr/sbin
 }
