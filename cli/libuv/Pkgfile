@@ -1,23 +1,20 @@
-contributors="Greg, Remy"
-packager="tnut <tnut@nutyx.org>"
 description="Cross-platform asynchronous I/O"
 url="https://github.com/"
 
+contributors="Greg, Remy"
+packager="tnut <tnut@nutyx.org>"
+
+
 name=libuv
-version=1.26.0
+version=1.29.0
 
 source=($url$name/$name/archive/v$version/$name-$version.tar.gz)
 
-build() {
+prepare() {
 cd $name-$version
-
 sh autogen.sh
-./configure --prefix=/usr \
-            --disable-static
-            
-make
-
-make DESTDIR=$PKG install
-
-rm $PKG/usr/lib/libuv.la
+}
+build=autotools
+package() {
+rm $PKG/usr/lib/$name.la
 }
