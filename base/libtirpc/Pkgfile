@@ -5,7 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libtirpc
-version=1.0.3
+version=1.1.4
 
 source=(http://downloads.sourceforge.net/libtirpc/libtirpc-$version.tar.bz2)
 
@@ -25,4 +25,7 @@ chown -R root:root $PKG
 mkdir -p $PKG/lib
 mv -v $PKG/usr/lib/libtirpc.so.* $PKG/lib
 ln -sfv ../../lib/libtirpc.so.3.0.0 $PKG/usr/lib/libtirpc.so
+
+# Obsolet lib
+rm $PKG/usr/lib/libtirpc.la
 }
