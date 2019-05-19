@@ -5,13 +5,6 @@ url="https://talloc.samba.org"
 packager="tnut <tnut@nutyx.org>"
 
 name=talloc
-version=2.1.14
+version=2.2.0
 
 source=(https://www.samba.org/ftp/$name/$name-$version.tar.gz)
-
-build() {
-cd $name-$version
-./configure --prefix=/usr
-make
-make DESTDIR=$PKG install
-}
