@@ -51,9 +51,7 @@ EOF
   export RUSTFLAGS="$RUSTFLAGS -C link-args=-lffi"
   python3 ./x.py build
   export LIBSSH2_SYS_USE_PKG_CONFIG=1 
-  DESTDIR=$PWD/install python3 ./x.py install
+  DESTDIR=$PKG python3 ./x.py install
 
-  chown -R root:root install
-
-  cp -a install/* $PKG/
+  rm -rfv $PKG/tmp
 }
