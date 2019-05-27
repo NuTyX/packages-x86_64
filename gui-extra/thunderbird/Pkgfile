@@ -1,7 +1,7 @@
 # Depends on: autoconf2-13 icu alsa-lib gtk2 zip unzip libevent libvpx nspr nss yasm dbus-glib doxygen libnotify openjdk startup-notification hunspell sqlite wireless-tools xorg-libx11 xorg-libxt xorg-libxrandr desktop-file-utils hicolor-icon-theme shared-mime-info pulseaudio
 name=thunderbird
-version=60.6.1
-
+version=60.7.0
+locale_version=$version
 description="Stand-alone mail/news client based on the Mozilla codebase."
 url="http://www.mozilla.org/thunderbird"
 packager="tnut <tnut@nutyx.org>"
@@ -10,13 +10,31 @@ contributors="Pierre B"
 run=(startup-notification hunspell)
 
 
-source=(http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.xz
+source=(rust-1.33.patch
+	http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.xz
 	$name.desktop)
+
+pack_remove_locale() {
+
+wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/${locale_version}/linux-$PKGMK_ARCH/xpi/${1}.xpi
+install -Dm644 ${1}.xpi \
+$PKG/usr/lib/$name/extensions/langpack-${1}@$name.mozilla.org.xpi
+rm ${1}.xpi
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.${1}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/$name/extensions/langpack-${1}@$name.mozilla.org.xpi
+
+rm usr/lib/$name/extensions/langpack-${1}@$name.mozilla.org.xpi
+
+}
 
 build() {
 export PYTHON="/usr/bin/python2"
 
-cd $SRC/$name-$version
+cd $name-$version
+
+patch -Np1 -i ../rust-1.33.patch
 
 cat > mozconfig << "EOF"
 # If you have a multicore machine, the build may be faster if using parallel
@@ -63,6 +81,7 @@ ac_add_options --enable-calendar
 ac_add_options --disable-crashreporter
 ac_add_options --disable-updater
 ac_add_options --disable-debug
+ac_add_options --disable-debug-symbols
 ac_add_options --disable-tests
 ac_add_options --disable-jack
 
@@ -106,87 +125,27 @@ EOF
 }
 locale_ar()
 {
-lang=ar
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale ar
 }
 locale_as()
 {
-lang=as
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale as
 }
 locale_cs()
 {
-lang=cs
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale cs
 }
 locale_da()
 {
-lang=da
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale da
 }
 locale_de()
 {
-lang=de
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale de
 }
 locale_el()
 {
-lang=el
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale el
 }
 locale_es()
 {
@@ -209,74 +168,23 @@ rm usr/lib/$name/extensions/langpack-es-ES@$name.mozilla.org.xpi
 }
 locale_et()
 {
-lang=et
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale et
 }
 locale_fa()
 {
-lang=fa
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale fa
 }
-
 locale_ff()
 {
-lang=ff
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale ff
 }
 locale_fi()
 {
-lang=fi
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale fi
 }
 locale_fr()
 {
-lang=fr
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale fr
 }
 locale_ga()
 {
@@ -294,129 +202,39 @@ rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
 }
 locale_gl()
 {
-lang=gl
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale gl
 }
 locale_hr()
 {
-lang=hr
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale hr
 }
 locale_hu()
 {
-lang=hu
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale hu
 }
 locale_is()
 {
-lang=is
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale is
 }
 locale_it()
 {
-lang=it
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale it
 }
 locale_ja()
 {
-lang=ja
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale ja
 }
 locale_ko()
 {
-lang=ko
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale ko
 }
 locale_lt()
 {
-lang=lt
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale lt
 }
 locale_nl()
 {
-lang=nl
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale nl
 }
 locale_nn()
 {
@@ -434,17 +252,7 @@ rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
 }
 locale_pl()
 {
-lang=pl
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale pl
 }
 locale_pt()
 {
@@ -467,87 +275,27 @@ rm usr/lib/$name/extensions/langpack-pt-PT@$name.mozilla.org.xpi
 }
 locale_ro()
 {
-lang=ro
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale ro
 }
 locale_ru()
 {
-lang=ru
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale ru
 }
 locale_sk()
 {
-lang=sk
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale sk
 }
 locale_sl()
 {
-lang=sl
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale sl
 }
 locale_sq()
 {
-lang=sq
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale sq
 }
 locale_sr()
 {
-lang=sr
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale sr
 }
 locale_sv()
 {
@@ -565,45 +313,15 @@ rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
 }
 locale_tr()
 {
-lang=tr
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale tr
 }
 locale_uk()
 {
-lang=uk
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale uk
 }
 locale_vi()
 {
-lang=vi
-wget  http://download.cdn.mozilla.net/pub/mozilla.org/$name/releases/$version/linux-$PKGMK_ARCH/xpi/$lang.xpi
-install -Dm644 $lang.xpi \
-$PKG/usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-rm $lang.xpi
-cd $PKG
-bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.$lang${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
-
-rm usr/lib/$name/extensions/langpack-$lang@$name.mozilla.org.xpi
+pack_remove_locale vi
 }
 locale_zh()
 {
