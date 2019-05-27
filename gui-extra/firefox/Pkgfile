@@ -1,6 +1,6 @@
 # Depends on: node cbindgen icu libvpx libwebp nspr nss libevent rustc dbus-glib autoconf2-13 pulseaudio gconf libnotify yasm sqlite nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav shared-mime-info
 name=firefox
-version=66.0.5
+version=67.0
 locale_version=$version
 
 description="Standalone web browser from mozilla.org"
@@ -11,7 +11,6 @@ contributors="Pierre B, tnut, Remy"
 run=(shared-mime-info icu libevent pulseaudio gconf sqlite libvpx nss alsa-lib gtk2 gtk3 zip unzip gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav)
 
 source=(firefox.desktop
-	http://www.linuxfromscratch.org/patches/blfs/svn/firefox-$version-system_graphite2_harfbuzz-1.patch
 	https://archive.mozilla.org/pub/firefox/releases/$version/source/$name-$version.source.tar.xz)
 
 pack_remove_locale() {
@@ -77,8 +76,8 @@ ac_add_options --with-system-nss
 ac_add_options --with-system-nspr
 ac_add_options --with-system-icu
 
-# The gold linker is no-longer the default
-ac_add_options --enable-linker=gold
+#  Do not specify the gold linker which is not the default. It will take
+# longer and use more disk space when debug symbols are disabled.
 
 # If you are going to apply the patch for system graphite
 # and system harfbuzz, uncomment these lines:
@@ -90,6 +89,11 @@ ac_add_options --enable-linker=gold
 #ac_add_options --disable-strip
 #ac_add_options --disable-install-strip
 
+# Disabling debug symbols makes the build much smaller and a little
+# faster. Comment this if you need to run a debugger.
+ac_add_options --disable-debug-symbols
+
+
 # The BLFS editors recommend not changing anything below this line:
 ac_add_options --prefix=/usr
 ac_add_options --enable-application=browser
@@ -99,7 +103,7 @@ ac_add_options --disable-updater
 ac_add_options --disable-tests
 
 # Optimization for size is broken with gcc7
-ac_add_options --enable-optimize="-O2"
+ac_add_options --enable-optimize
 
 
 ac_add_options --enable-official-branding
@@ -108,18 +112,25 @@ ac_add_options --enable-official-branding
 ac_add_options --enable-system-ffi
 ac_add_options --enable-system-pixman
 
+# From firefox-62 --with-pthreads is not recognized
 
 ac_add_options --with-system-bz2
 ac_add_options --with-system-jpeg
 ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 
+# The following option unsets Telemetry Reporting. With the Addons Fiasco,
+# Mozilla was found to be collecting user's data, including saved passwords and
+# web form data, without users consent. Mozilla was also found shipping updates
+# to systems without the user's knowledge or permission.
+# As a result of this, use the following command to permanently disable
+# telemetry reporting in Firefox.
+unset MOZ_TELEMETRY_REPORTING
+
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 EOF
-[ "$PKGMK_ARCH" == "i686" ] && echo "ac_add_options --disable-debug-symbols" >> mozconfig
-patch -Np1 -i ../firefox-$version-system_graphite2_harfbuzz-1.patch
 sed -e 's/checkImpl/checkFFImpl/g' -i js/src/vm/JSContext*.h
-export CC=clang CXX=clang++ AR=llvm-ar NM=llvm-nm RANLIB=llvm-ranlib
+export CC=gcc CXX=g++
 export MOZBUILD_STATE_PATH=${PWD}/mozbuild
 
 SHELL=/bin/sh ./mach build
@@ -162,6 +173,14 @@ pref("extensions.shownSelectionUI", true);
 END
 
 }
+locale_af()
+{
+pack_remove_locale af
+}
+locale_an()
+{
+pack_remove_locale an
+}
 locale_ar()
 {
 pack_remove_locale ar
@@ -170,9 +189,29 @@ locale_as()
 {
 pack_remove_locale as
 }
+locale_az()
+{
+pack_remove_locale az
+}
+locale_bg()
+{
+pack_remove_locale bg
+}
+locale_bs()
+{
+pack_remove_locale bs
+}
+locale_ca()
+{
+pack_remove_locale ca
+}
 locale_cs()
 {
 pack_remove_locale cs
+}
+locale_cy()
+{
+pack_remove_locale cy
 }
 locale_da()
 {
