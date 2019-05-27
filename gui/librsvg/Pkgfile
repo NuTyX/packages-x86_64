@@ -1,4 +1,4 @@
-# Depends on: gdk-pixbuf libcroco pango vala gtk-doc rustc
+# Depends on: gdk-pixbuf libcroco pango vala rustc
 
 description="Library and tools used to manipulate, convert and view Scalable Vector Graphic images."
 url="http://librsvg.sourceforge.net/"
@@ -6,15 +6,14 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=librsvg
-version=2.44.13
+version=2.44.14
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 build() {
 cd $name-$version
 ./configure --prefix=/usr \
 --disable-static \
---enable-vala \
---enable-gtk-doc
+--enable-vala
 
 make
 make DESTDIR=$PKG install
