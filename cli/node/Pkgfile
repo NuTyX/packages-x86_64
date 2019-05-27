@@ -7,8 +7,7 @@ contributors="Alienus, tnut, Greg"
 
 name=node
 alias=(nodejs node-js)
-version=11.5.0
-release=2
+version=12.3.1
 
 source=(https://nodejs.org/dist/v$version/node-v$version.tar.xz)
 
@@ -35,4 +34,9 @@ build() {
 		-name 'ChangeLog' -o \
 		-name 'NEWS' \) -delete
 
+}
+uptodate() {
+url+="dist/latest/"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|tail -1|sed -e "s@$url$name-v@@" -e "s@.tar.xz@@"
 }
