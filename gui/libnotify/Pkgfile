@@ -1,4 +1,4 @@
-# Depends on: gobject-introspection gdk-pixbuf gtk3
+# Depends on: meson ninja gobject-introspection gdk-pixbuf gtk3 gtk-doc
 
 description="Desktop notification library"
 url="http://www.galago-project.org/news/index.php"
@@ -6,20 +6,12 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libnotify
-version=0.7.7
-release=2
+version=0.7.8
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
-build() {
-cd $name-$version
-./configure --prefix=/usr --disable-static
-make
-make DESTDIR=$PKG install
+build=meson
 
-# Obsolet lib
-rm $PKG/usr/lib/libnotify.la
-}
 uptodate(){
 local latest lastversion url
 url="http://ftp.gnome.org/pub/gnome/sources/$name"
