@@ -6,9 +6,22 @@ packager="tnut <tnut@nutyx.org>"
 
 name=seamonkey
 version=2.49.4
-release=2
+release=3
+locale_version=$version
 
 source=( https://ftp.mozilla.org/pub/$name/releases/$version/source/$name-$version.source.tar.xz )
+
+pack_remove_locale() {
+wget https://ftp.mozilla.org/pub/seamonkey/releases/${locale_version}/langpack/$name-${locale_version}.${1}.langpack.xpi
+install -Dm644 $name-${locale_version}.${1}.langpack.xpi \
+$PKG/usr/lib/$name-$version/extensions/langpack-${1}@$name.mozilla.org.xpi
+rm $name-${locale_version}.${1}.langpack.xpi
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.${1}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+$PKG/usr/lib/$name-$version/extensions/langpack-${1}@$name.mozilla.org.xpi
+
+rm $PKG/usr/lib/$name-$version/extensions/langpack-${1}@$name.mozilla.org.xpi
+}
 
 build()  {
 
@@ -83,6 +96,9 @@ ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 EOF
 
+grep -rl -- '-Werror=format' |
+    xargs sed -i 's/error=format/no-&/'
+
 CFLAGS_HOLD=$CFLAGS
 CXXFLAGS_HOLD=$CXXFLAGS
 EXTRA_FLAGS=" -fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2"
@@ -90,7 +106,7 @@ export CFLAGS+=$EXTRA_FLAGS
 export CXXFLAGS+=$EXTRA_FLAGS
 unset EXTRA_FLAGS
 
-SHELL=/bin/sh make -f client.mk
+SHELL=/bin/sh CC=gcc CXX=g++ make -f client.mk
 
 SHELL=/bin/sh make -f client.mk DESTDIR=$PKG install INSTALL_SDK=
 
@@ -111,4 +127,48 @@ $PKG/usr/share/applications/seamonkey.desktop
 sed -i 's/@MOZ_APP_NAME@/seamonkey/' \
 $PKG/usr/share/applications/seamonkey.desktop
 
+}
+locale_cs()
+{
+pack_remove_locale cs
+}
+locale_de()
+{
+pack_remove_locale de
+}
+locale_fr()
+{
+pack_remove_locale fr
+}
+locale_hu()
+{
+pack_remove_locale hu
+}
+locale_it()
+{
+pack_remove_locale it
+}
+locale_ja()
+{
+pack_remove_locale ja
+}
+locale_lt()
+{
+pack_remove_locale lt
+}
+locale_nl()
+{
+pack_remove_locale nl
+}
+locale_pl()
+{
+pack_remove_locale pl
+}
+locale_ru()
+{
+pack_remove_locale ru
+}
+locale_sk()
+{
+pack_remove_locale sk
 }
