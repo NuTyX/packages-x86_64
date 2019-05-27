@@ -5,8 +5,7 @@ url="http://pygments.org"
 packager="tnut <tnut@nutyx.org>"
 
 name=python-pygments
-version=2.3.0
-release=3
+version=2.4.1
 
 source=(https://pypi.org/packages/source/P/Pygments/Pygments-${version}.tar.gz)
 
@@ -15,4 +14,8 @@ build() {
     python3 setup.py install --root=$PKG -O1
     # Part of pygmentize
     rm -rv $PKG/usr/bin
+}
+uptodate() {
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+https://pypi.org/project/Pygments/|grep Pygments-|tail -1|cut -d "-" -f2|sed s@.tar.gz@@
 }
