@@ -6,14 +6,13 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=scribus
-version=1.5.5_pre20190124
-release=2
+version=1.5.5_pre20190502
 
 run=(shared-mime-info)
-source=(https://github.com/scribusproject/scribus/archive/1ed85778dd55bcbcfad2bbc276fd4c97f43ad965.tar.gz)
+source=(https://github.com/scribusproject/scribus/archive/9449265592a5195153d72c2a511d2010b0cf5b0b.tar.gz)
 
 build() {
-	cd $name-1ed85778dd55bcbcfad2bbc276fd4c97f43ad965
+	cd $name-9449265592a5195153d72c2a511d2010b0cf5b0b
 	mkdir build
 	cd build
 	cmake ../ -DCMAKE_INSTALL_PREFIX=/usr \
