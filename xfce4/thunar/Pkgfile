@@ -2,13 +2,13 @@
 
 description="Modern file manager for Xfce"
 url="http://thunar.xfce.org"
-packager="greg <greg@nutyx.org>"
-contributors="tyrry,tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="tyrry,tnut,greg"
 
 run=(desktop-file-utils gtk-update-icon-cache)
 
 name=thunar
-version=1.8.4
+version=1.8.6
 
 source=(http://archive.xfce.org/src/xfce/thunar/${version%.*}/Thunar-$version.tar.bz2)
 
@@ -19,19 +19,7 @@ cd Thunar-$version
 ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libexecdir=/usr/lib \
-    --localstatedir=/var \
-    --disable-static \
-    --enable-gio-unix \
-    --enable-dbus \
-    --enable-startup-notification \
-    --enable-gudev \
-    --enable-notifications \
-    --enable-exif \
-    --enable-pcre \
-    --enable-gtk-doc \
-    --disable-debug
-    
+    --docdir=/usr/share/doc/$name-$version
 make
 make DESTDIR=$PKG install
 
