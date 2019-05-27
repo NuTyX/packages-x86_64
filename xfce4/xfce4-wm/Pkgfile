@@ -7,28 +7,14 @@ contributors="tyrry,tnut"
 
 name=xfce4-wm
 _name=xfwm4
-version=4.12.4
-release=1
+version=4.12.5
 
 source=(http://archive.xfce.org/src/xfce/${_name}/${version%.*}/${_name}-$version.tar.bz2)
 
 build() {
 
 cd ${_name}-$version
-
-./configure \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --libexecdir=/usr/lib \
-    --localstatedir=/var \
-    --disable-static \
-    --enable-startup-notification \
-    --enable-randr \
-    --enable-compositor \
-    --enable-xsync \
-    --disable-debugr
-    
+./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
-
 }
