@@ -2,15 +2,14 @@
 
 description="Implementation of the freedesktop.org menu specification"
 url="http://www.xfce.org/"
-packager="greg <greg@nutyx.org>"
-contributors="tyrry,fanch"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tyrry, Fanch, Greg"
 
 name=xfce4-garcon
 _name=garcon
-version=0.6.1
-release=1
+version=0.6.2
 
-source=(http://archive.xfce.org/src/xfce/garcon/0.6/${_name}-$version.tar.bz2)
+source=(http://archive.xfce.org/src/xfce/garcon/${version:0:3}/${_name}-$version.tar.bz2)
 		
 build() {
 
@@ -18,12 +17,7 @@ cd ${_name}-$version
 
 ./configure \
     --prefix=/usr \
-    --sysconfdir=/etc \
-    --libexecdir=/usr/lib \
-    --localstatedir=/var \
-    --disable-static \
-    --disable-debug
-    
+    --sysconfdir=/etc 
   make
   make DESTDIR=$PKG install
 
