@@ -1,6 +1,6 @@
 # Depends on: python perl-archive-zip unzip zip icu gtk3 cups poppler-glib xorg-fontconfig libxslt kerberos xorgproto dbus-glib mesa postgresql wget apache-ant apr boost clucene dbus-glib libepoxy libjpeg-turbo2 xorg-glu gstreamer-plugins-base libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss redland serf unixodbc desktop-file-utils doxygen gdb gnutls nasm telepathy-glib xmlsec gpgme
 name=libreoffice
-version=6.2.2.1
+version=6.2.4.2
 
 description="Office suite. It is largely compatible with Microsoft Office (fork from OpenOffice.org)."
 url="http://www.libreoffice.org"
@@ -23,7 +23,6 @@ prepare() {
 
         cd $name-$version
         patch -Np1 -i ../0001-Remove-check-if-root-due-to-issue-with-fakeroot.patch
-	sed -i 's/loaded;/bool{loaded};/' sfx2/source/appl/shutdownicon.cxx
 
 
         install -dm755 external/tarballs/
