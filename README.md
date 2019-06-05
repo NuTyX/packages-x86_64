@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 ## NuTyX
 
-**ENGLISH** [NuTyX](http://www.nutyx.org) is a GNU/Linux distribution for multiple architectures based on the online 
+**ENGLISH** [NuTyX](http://www.nutyx.org) is a GNU/Linux distribution for multiple architectures inspired by the online 
 documentation [Linux From Scratch (LFS)](http://www.linuxfromscratch.org).
 
 NuTyX features a custom package manager called "cards". Cards can install binary packages, a group of related binary packages
@@ -29,10 +28,10 @@ ist für mittlere und fortgeschrittene Linux-Benutzer geeignet.
 ---
 
 **FRANÇAIS** [NuTyX](http://www.nutyx.org) est une distribution GNU/Linux pour systèmes basés sur diverses architectures.
-Sa construction est basée sur la documentation en ligne disponible sur [Linux From Scratch (LFS)](http://www.linuxfromscratch.org).
+Sa construction est inspirée de la documentation en ligne disponible sur [Linux From Scratch (LFS)](http://www.linuxfromscratch.org).
 
 L'objectif de NuTyX est de permettre à ses utilisateurs d'être le plus rapidement possible autonomes.
-Le nombre de paquets est volontairement limité. Les environnement graphiques sont disponibles dans des projets git séparés.
+Le nombre de paquets est volontairement limité. 
 
 NuTyX utilise son propre gestionnaire de paquets "cards". Cards gère de façon autonome
 les dépendances de fonctionnement. Cela signifie que l'empaqueteur ne doit pas s'en soucier lors de
@@ -41,7 +40,9 @@ paquet est compilé à partir d'un système de base, aucune dépendance superflu
 de l'installation du binaire.
 
 Sous NuTyX, une collection de paquets / de ports correspond à un ensemble de paquets ou de ports interdépendants.
+
 Par défaut, il y a 3 collections:
+
 - base qui comprend l'ensemble des paquets /ports  qui constituent un système minimal utilisable avec tous les
 outils de développement nécessaire.
 
@@ -63,7 +64,7 @@ base et ses propres recettes, ou un mélange.
 
 You can get a readonly copy via the command:
 
-    # git clone http://git.tuxfamily.org/nutyx.org/core
+    # git clone https://github.com/NuTyX/packages-x86_64
 
 Contributions are welcome. If you don't know what it all about, please take the time to read the documentation at
 http://www.nutyx.org/en/build-package.html
