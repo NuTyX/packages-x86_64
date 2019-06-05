@@ -1,0 +1,10 @@
+. lib/lsb/init-functions
+if ! (getent group mysql > /dev/null); then
+	log_info_msg "${INFO}Creating mysql group${NORMAL}\n"
+	groupadd -g 40 mysql
+fi
+if ! (getent passwd mysql > /dev/null); then
+	log_info_msg "${INFO}Creating mysql user${NORMAL}\n"
+	useradd  -c 'MySQL Server' -d /srv/mysql \
+	-g mysql -s /bin/false -u 40 mysql
+fi
