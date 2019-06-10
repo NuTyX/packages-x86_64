@@ -1,0 +1,12 @@
+SN="rsyncd"
+IDN="48"
+. lib/lsb/init-functions
+if ! (getent group $SN > /dev/null); then
+	log_info_msg "${INFO}Creating $SN group${NORMAL}\n"
+	groupadd -g $IDN $SN
+fi
+if ! (getent passwd $SN > /dev/null); then
+	log_info_msg "${INFO}Creating $SN user${NORMAL}\n"
+	useradd  -c "$SN Daemon" -d /home/rsync \
+	-g $SN -s /bin/false -u $IDN $SN
+fi
