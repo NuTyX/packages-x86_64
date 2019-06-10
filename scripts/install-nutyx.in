@@ -846,8 +846,8 @@ floppy:x:7:
 disk:x:8:
 lp:x:9:
 dialout:x:10:
-audio:x:11:gdm
-video:x:12:gdm
+audio:x:11
+video:x:12
 utmp:x:13:
 usb:x:14:
 cdrom:x:15:
@@ -856,51 +856,32 @@ atd:x:17:
 messagebus:x:18:
 lpadmin:x:19:
 named:x:20:
-gdm:x:21:
 fcron:x:22:
-systemd-journal:x:23:
 input:x:24:
 apache:x:25:
 smmsp:x:26:
 polkitd:x:27:
 man:x:29
 wheel:x:30:root
-exim:x:31:
 postfix:x:32:
 postdrop:x:33:
 mail:x:34:
 vmailman:x:35:
 news:x:36:
-kdm:x:37:
-mysql:x:40:
-postgres:x:41:
 dovecot:x:42:
 dovenull:x:43:
 ftp:x:45:
 proftpd:x:46:
 vsftpd:x:47:
-rsyncd:x:48:
-sshd:x:50:
 stunnel:x:51:
-svn:x:56:
-svntest:x:57:
 pulse:x:58:
 pulse-access:x:59:
 games:x:60:
 kvm:x:61:
 wireshark:x:62:
 lightdm:x:63:
-sddm:x:64:
 scanner:x:70:
 colord:x:71:
-systemd-bus-proxy:x:72:
-systemd-journal-gateway:x:73:
-systemd-journal-remote:x:74:
-systemd-journal-upload:x:75:
-systemd-network:x:76:
-systemd-resolve:x:77:
-systemd-timesync:x:78:
-systemd-coredump:x:79:
 vboxusers:x:80:
 ldap:x:83:
 avahi:x:84:
@@ -922,42 +903,25 @@ lp:x:9:9:Print Service User:/dev/null:/bin/false
 atd:x:17:17:add daemon:/dev/null:/bin/false
 messagebus:x:18:18:D-Bus Message Daemon User:/dev/null:/bin/false
 named:x:20:20:BIND Owner:/home/named:/bin/false
-gdm:x:21:21:GDM Daemon User:/var/lib/gdm:/bin/false
 fcron:x:22:22:Fcron User:/dev/null:/bin/false
 www:x:24:24:Nginx Server:/dev/null:bin/false
 apache:x:25:25:Apache Server:/dev/null:/bin/false
 smmsp:x:26:26:Sendmail Daemon:/dev/null:/bin/false
 polkitd:x:27:27:Policy Kit Daemon User:/etc/polkit-1:/bin/false
 man:x:29:29:Man Pages:/dev/null:/bin/false
-exim:x:31:31:Exim Daemon:/dev/null:/bin/false
 postfix:x:32:32:Postfix Daemon User:/var/spool/postfix:/bin/false
 sendmail:x:34:34:Sendmail Daemon:/dev/null:/bin/false
 vmailman:x:35:35:Vmail Daemon:/dev/null:/bin/false
 news:x:36:36:News Daemon:/dev/null:/bin/false
-kdm:x:37:37:KDM Daemon Owner:/var/lib/kdm:/bin/false
-mysql:x:40:40:MySQL Server:/dev/null:/bin/false
-postgres:x:41:41:PostgreSQL Server:/srv/pgsql/data:/bin/bash
 dovecot:x:42:42:Dovecot unprivileged user:/dev/null:/bin/false
 dovenull:x:43:43:Dovecot login user:/dev/null:/bin/false
 ftp:x:45:45:anonymous_user:/home/ftp:/bin/false
 proftpd:x:46:46:proftpd:/srv/ftp:/usr/bin/proftpdshell
 vsftpd:x:47:47:vsftpd User:/dev/null:/bin/false
-rsyncd:x:48:48:rsyncd Daemon:/home/rsync:/bin/false
-sshd:x:50:50:sshd PrivSep:/var/lib/sshd:/bin/false
 stunnel:x:51:51:stunnel Daemon:/var/lib/stunnel:/bin/false
-svn:x:56:56:SVN Owner:/home/svn:/bin/false
 games:x:60:60:Games High Score Owner:/var/games:/bin/false
 lightdm:x:63:63:Light Display Manager:/var/lib/lightdm:/sbin/nologin
-sddm:x:64:64:Simple Desktop Display Manager:/var/lib/sddm:/bin/false
 colord:x:71:71:Color Daemon Owner:/var/lib/colord:/bin/false
-systemd-bus-proxy:x:72:72:systemd Bus Proxy:/:/bin/false
-systemd-journal-gateway:x:73:73:systemd Journal Gateway:/:/bin/false
-systemd-journal-remote:x:74:74:systemd Journal Remote:/:/bin/false
-systemd-journal-upload:x:75:75:systemd Journal Upload:/:/bin/false
-systemd-network:x:76:76:systemd Network Management:/:/bin/false
-systemd-resolve:x:77:77:systemd Resolver:/:/bin/false
-systemd-timesync:x:78:78:systemd Time Synchronization:/:/bin/false
-systemd-coredump:x:79:79:systemd Core Dumper:/:/bin/false
 ldap:x:83:83:OpenLDAP Daemon Owner:/var/lib/openldap:/bin/false
 avahi:x:84:84:Avahi Daemon Owner:/var/run/avahi-daemon:/bin/false
 avahi-autoipd:x:85:85:Avahi autoip Daemon:/:/var/run/avahi-autoipd:/bin/false
@@ -1236,7 +1200,8 @@ libarchive mpc mpfr openssl cards"
    [ "$ARCH" = "i686" -a "$HOST_ARCH" = "x86_64" ] && CHROOT_LIST="$CHROOT_LIST util-linux"
 fi
 [ -z "$URL" ] && URL="http://downloads.nutyx.org"
-[ -z "$VERSION" ] && VERSION="#VERSION#"
+
+[ -z "$VERSION" ] && VERSION="rolling"
 if [ "$VERSION" == "development" ]; then
 	CODE_NAME="`date +%Y%m%d`"
 else
@@ -1504,7 +1469,7 @@ parse_options() {
 				install_configuration_files
 				exit 0;;
 			-v|--version)
-				echo "`basename $INSTALL_COMMAND` $VERSION-$RELEASE"
+				echo "`basename $INSTALL_COMMAND` #VERSION#-$RELEASE"
 				exit 0;;
 			/*)
 				boot_mesg "
