@@ -1,18 +1,12 @@
-# Depends on: python
-
-url="http://pkg-isocodes.alioth.debian.org/"
-packager="remy <remy@nutyx.org>"
-contributors="Pierre B,tnut"
 description="The ISO Codes package contains a list of country, language and currency names"
+url="http://pkg-isocodes.alioth.debian.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Remy, Minzords"
 
 name=iso-codes
-version=4.1
+version=4.2
+
+makedepends=(python)
 
 source=(http://anduin.linuxfromscratch.org/BLFS/$name/$name-$version.tar.xz)
-
-build() {
-cd $name-$version
-./configure --prefix=/usr 
-make
-make DESTDIR=$PKG install
-} 
