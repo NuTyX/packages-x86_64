@@ -1,16 +1,17 @@
-# Depends on : cmake python libunwind ninja
+description="A new implementation of the C++ standard library, targeting C++11."
 
 url="http://libcxx.llvm.org/"
-description="A new implementation of the C++ standard library, targeting C++11."
-packager="sipo <sipo@linuxnutyx.org>"
-contributors="Greg"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg, Minzords"
 
 PKGMK_IGNORE_UNPACK="yes"
 
+makedepends=(cmake python libunwind ninja)
 run=(python)
 
 name=libcxx
-version=7.0.0
+version=8.0.0
 
 source=(https://releases.llvm.org/$version/llvm-$version.src.tar.xz
         https://releases.llvm.org/$version/libcxx-$version.src.tar.xz
