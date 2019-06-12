@@ -1,13 +1,14 @@
-# Depends on: xorg-server xorg-fontconfig gdk-pixbuf fribidi
+description="IceWM is a window manager with the goals of speed, simplicity"
 
 packager="tnut <tnut@nutyx.org>"
 url="www.icewm.org"
-description="IceWM is a window manager with the goals of speed, simplicity"
+
+makedepends=(xorg-server xorg-fontconfig gdk-pixbuf fribidi)
 
 name=icewm
-version=1.4.2
+version=1.5.5
 
-source=(http://github.com/bbidulock/$name/releases/download/$version/$name-$version.tar.bz2)
+source=(https://github.com/ice-wm/$name/releases/download/$version/$name-$version.tar.xz)
  
 build() {
 
