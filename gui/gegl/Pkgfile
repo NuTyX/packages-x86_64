@@ -1,12 +1,16 @@
-# Depends on: asciidoc babl gtk2 librsvg ruby lua ffmpeg librsvg openexr exiv2 graphviz libjpeg-turbo libwebp python2 sdl gobject-introspection vala json-glib gtk-doc
-
 description="Generic Graphics Library"
 url="http://gegl.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=gegl
-version=0.4.14
+version=0.4.16
+
+makedepends=(asciidoc babl gtk2 librsvg ruby lua ffmpeg librsvg \
+openexr exiv2 graphviz libjpeg-turbo libwebp python2 sdl \
+gobject-introspection vala json-glib gtk-doc)
+
+
 
 source=(http://ftp.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.bz2)
 
