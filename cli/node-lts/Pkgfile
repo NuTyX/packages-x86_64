@@ -1,0 +1,42 @@
+# Depends on: python2 c-ares icu zlib libuv
+
+description="Evented I/O for V8 JavaScript"
+url="http://nodejs.org/"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus, tnut, Greg"
+
+name=node-lts
+alias=(nodejs-lts node-js-lts)
+version=10.16.0
+
+source=(https://nodejs.org/dist/v$version/node-v$version.tar.xz)
+
+build() {
+
+	cd node-v$version
+
+	./configure \
+		--prefix=/usr \
+		--shared-zlib \
+		--shared-openssl \
+		--shared-cares \
+		--with-intl=system-icu
+
+	make
+	make DESTDIR=$PKG install
+
+	# clean up
+	find $PKG -type f \( \
+		-name 'README.md' -o \
+		-name 'AUTHORS.md' -o \
+		-name 'INSTALL.md' -o \
+		-name 'TODO.org' -o \
+		-name 'ChangeLog' -o \
+		-name 'NEWS' \) -delete
+
+}
+uptodate() {
+url+="dist/latest/"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url|tail -1|sed -e "s@$url$name-v@@" -e "s@.tar.xz@@"
+}
