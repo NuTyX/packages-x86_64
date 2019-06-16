@@ -1,5 +1,3 @@
-# Depends on: libffi pcre python elfutils meson ninja libxslt docbook-xsl
-
 description="The GLib package contains a low-level libraries useful for providing data structure handling"
 url="http://www.gtk.org/"
 packager="tnut <tnut@nutyx.org>"
@@ -8,7 +6,9 @@ contributors="Tnut, Fanch"
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.60.3
+version=2.60.4
+makedepends=(libffi pcre python elfutils meson ninja libxslt docbook-xsl)
+
 
 source=(https://ftp.gnome.org/pub/gnome/sources/glib/${version:0:4}/$name-$version.tar.xz
 	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-11.0.jpg
