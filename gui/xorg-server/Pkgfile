@@ -1,12 +1,13 @@
-# Depends on: xorgproto xorg-libxkbfile xorg-font-util xcb-util-keysyms libepoxy xcb-util-image xcb-util-renderutil xcb-util-wm mesa xorg-glu xorg-pixman xorg-libdmx xorg-libxres xorg-libxfont2 xorg-xkeyboard-config wayland
-
 description="The Xorg Server is the core of the X Window system."
 url="http://xorg.freedesktop.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Greg"
 
 name=xorg-server
-version=1.20.4
+version=1.20.5
+makedepends=(xorgproto xorg-libxkbfile xorg-font-util xcb-util-keysyms \
+libepoxy xcb-util-image xcb-util-renderutil xcb-util-wm mesa xorg-glu \
+xorg-pixman xorg-libdmx xorg-libxres xorg-libxfont2 xorg-xkeyboard-config wayland)
 
 source=(http://ftp.x.org/pub/individual/xserver/$name-$version.tar.bz2)
 
@@ -24,7 +25,8 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 rm -rf $PKG/var
-rm $PKG/usr/lib/xorg/modules/{libexa,libfb,libfbdevhw,libglamoregl,libint10,libshadow,libshadowfb,libvbe,libvgahw,libwfb}.la
+rm $PKG/usr/lib/xorg/modules/{libexa,libfb,libfbdevhw,libglamoregl,\
+libint10,libshadow,libshadowfb,libvbe,libvgahw,libwfb}.la
 rm $PKG/usr/lib/xorg/modules/drivers/modesetting_drv.la
 rm $PKG/usr/lib/xorg/modules/extensions/libglx.la
 }
