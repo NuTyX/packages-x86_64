@@ -1,6 +1,5 @@
-# Depends on: python libxml2 libxslt openldap pam kerberos
-
 description="Advanced object-relational database management system (ORDBMS)."
+
 url="http://www.postgresql.org/docs"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
@@ -8,7 +7,9 @@ contributors="Pierre B"
 PKGMK_GROUPS=(lib doc man devel service)
 
 name=postgresql
-version=11.3
+version=11.4
+
+makedepends=(python libxml2 libxslt openldap pam kerberos)
 
 nutyx_version=11.0
 
