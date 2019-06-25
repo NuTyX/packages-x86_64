@@ -1,12 +1,12 @@
-# Depends on: talloc tevent tdb popt python2 cmocka lmdb
-
 description="A schema-less, ldap like, API and database"
 url="http://ldb.samba.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=ldb
-version=1.4.3
+version=1.6.3
+
+makedepends=(talloc tevent tdb popt python2 cmocka lmdb)
 
 source=(http://samba.org/ftp/${name}/${name}-${version}.tar.gz)
 
@@ -16,8 +16,6 @@ build () {
 
 	sed -i -e "s|/usr/bin/env python$|/usr/bin/env python2|" \
 	buildtools/bin/waf
-
-	export PYTHON=/usr/bin/python2
 
 	./configure --prefix=/usr \
 		--disable-rpath \
