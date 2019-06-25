@@ -1,12 +1,16 @@
-# Depends on: jansson rpcsvc-proto libtirpc docbook-xsl talloc tevent avahi gnutls libgpg-error popt python2 cups kerberos libcap openldap tdb ldb
-
 description="SMB Fileserver and AD Domain server"
 url="http://www.samba.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
 
 name=samba
-version=4.9.4
+version=4.10.5
+
+makedepends=(jansson rpcsvc-proto libtirpc docbook-xsl talloc 
+             tevent avahi gnutls libgpg-error popt python2 
+             cups kerberos libcap openldap tdb ldb)
+
+
 nutyx_version=11.0
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
