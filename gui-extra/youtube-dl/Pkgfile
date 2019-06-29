@@ -1,13 +1,12 @@
-# Depends on: python2 python2-setuptools ffmpeg
-
 description="A small command-line program to download videos from YouTube."
 url="http://youtube-dl.org"
 packager="rems@nutyx.org>"
 contributors="Fanch,tnut,greg"
 
 name=youtube-dl
-version=2019.01.30.1
+version=2019.06.08
 
+makedepends=(python2 python2-setuptools ffmpeg)
 run=(python2 python2-setuptools)
 
 source=(https://github.com/rg3/$name/releases/download/$version/$name-$version.tar.gz)
