@@ -66,6 +66,17 @@ install-httpd: create-dirs
 	ln -sf  ../init.d/httpd ${EXTDIR}/rc.d/rc5.d/S32httpd
 	ln -sf  ../init.d/httpd ${EXTDIR}/rc.d/rc6.d/K28httpd
 
+install-nginx: create-dirs
+	install -m ${MODE} init.d/nginx     ${EXTDIR}/rc.d/init.d/
+	ln -sf  ../init.d/nginx  ${EXTDIR}/rc.d/rc0.d/K28nginx
+	ln -sf  ../init.d/nginx  ${EXTDIR}/rc.d/rc1.d/K28nginx
+	ln -sf  ../init.d/nginx  ${EXTDIR}/rc.d/rc2.d/K28nginx
+	ln -sf  ../init.d/nginx  ${EXTDIR}/rc.d/rc3.d/S32nginx
+	ln -sf  ../init.d/nginx  ${EXTDIR}/rc.d/rc4.d/S32nginx
+	ln -sf  ../init.d/nginx  ${EXTDIR}/rc.d/rc5.d/S32nginx
+	ln -sf  ../init.d/nginx  ${EXTDIR}/rc.d/rc6.d/K28nginx
+
+
 install-php: create-dirs
 	install -m ${MODE} init.d/php-fpm     ${EXTDIR}/rc.d/init.d/
 	ln -sf  ../init.d/php-fpm ${EXTDIR}/rc.d/rc0.d/K28php-fpm
@@ -618,6 +629,15 @@ uninstall-httpd:
 	rm -f ${EXTDIR}/rc.d/rc4.d/S32httpd
 	rm -f ${EXTDIR}/rc.d/rc5.d/S32httpd
 	rm -f ${EXTDIR}/rc.d/rc6.d/K28httpd
+uninstall-nginx:
+	rm -f ${EXTDIR}/rc.d/init.d/nginx
+	rm -f ${EXTDIR}/rc.d/rc0.d/K28nginx
+	rm -f ${EXTDIR}/rc.d/rc1.d/K28nginx
+	rm -f ${EXTDIR}/rc.d/rc2.d/K28nginx
+	rm -f ${EXTDIR}/rc.d/rc3.d/S32nginx
+	rm -f ${EXTDIR}/rc.d/rc4.d/S32nginx
+	rm -f ${EXTDIR}/rc.d/rc5.d/S32nginx
+	rm -f ${EXTDIR}/rc.d/rc6.d/K28nginx
 
 uninstall-php:
 	rm -f ${EXTDIR}/rc.d/init.d/php-fpm
@@ -1096,6 +1116,7 @@ uninstall-xinetd:
 	install-alsa \
 	install-avahi \
 	install-httpd \
+	install-nginx \
 	install-php \
 	install-bind \
 	install-bluetooth \
@@ -1142,6 +1163,7 @@ uninstall-xinetd:
 	uninstall-alsa \
 	uninstall-avahi \
 	uninstall-httpd \
+	uninstall-nginx \
 	uninstall-php \
 	uninstall-bind \
 	uninstall-bluetooth \
