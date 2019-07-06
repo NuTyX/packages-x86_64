@@ -1,13 +1,13 @@
-#Depends on: libssh2 gnutls libpsl nettle zlib
-
 description="Utility for transferring files with URL syntax to many protocols (Link with gnutls)"
 url="http://curl.haxx.se"
 maintainer="Daniel Stenberg"
-packager="graknu <graknu@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Graknu"
 
 
 name=libcurl-gnutls
-version=7.63.0
+version=7.65.1
+makedepends=(libssh2 gnutls libpsl nettle zlib)
 
 source=(http://curl.haxx.se/download/curl-$version.tar.xz)
 
@@ -44,4 +44,7 @@ cd curl-$version
 
   install -dm 755 $PKG/usr/share/licenses
   ln -s curl $PKG/usr/share/licenses/libcurl-gnutls
+
+  # Obsolet lib
+  rm $PKG/usr/lib/libcurl.la
 }
