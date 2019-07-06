@@ -1,13 +1,11 @@
-# Depends on: glib gobject-introspection libbytesize lvm2 volume_key parted gptfdisk gtk-doc yaml
-
 description="C library supporting GObject introspection for manipulation of block devices"
 url="https://github.com/storaged-project/libblockdev"
 packager="tnut <tnut@nutyx.org>"
 
-run=(gptfdisk)
-
 name=libblockdev
-version=2.20
+version=2.22
+makedepends=(python glib gobject-introspection libbytesize lvm2 volume_key parted gptfdisk gtk-doc yaml)
+run=(gptfdisk)
 
 source=( https://github.com/storaged-project/$name/releases/download/$version-1/$name-$version.tar.gz)
 build() {
