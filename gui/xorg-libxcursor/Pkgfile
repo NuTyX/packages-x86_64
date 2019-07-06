@@ -1,5 +1,3 @@
-# Depends on: xorgproto xorg-libxrender xorg-libxfixes xorg-libx11 
-
 description="libXcursor, library Xorg"
 url="http://xorg.freedesktop.org"
 packager="tnut <tnut@nutyx.org>"
@@ -8,9 +6,8 @@ contributors="Pierre B, Greg"
 name=xorg-libxcursor
 alias=(libXcursor libxcursor)
 _name=libXcursor
-
-version=1.1.15
-release=3
+version=1.2.0
+makedepends=(xorgproto xorg-libxrender xorg-libxfixes xorg-libx11)
 
 source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
