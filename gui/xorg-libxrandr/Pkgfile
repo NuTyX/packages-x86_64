@@ -1,5 +1,3 @@
-# Depends on: xorgproto xorg-libx11 xorg-libxext xorg-libxrender
-
 description="Library libXrandr, resize and rotate extension client library"
 url="http://xorg.freedesktop.org"
 packager="tnut <tnut@nutyx.org>"
@@ -7,9 +5,9 @@ contributors="Pierre B, Greg"
 
 name=xorg-libxrandr
 alias=(libXrandr)
-version=1.5.1
-release=3
+version=1.5.2
 _name=libXrandr
+makedepends=(xorgproto xorg-libx11 xorg-libxext xorg-libxrender)
 
 source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
