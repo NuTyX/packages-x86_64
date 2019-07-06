@@ -1,5 +1,3 @@
-# Depends on: apr expat
-
 description="Apache Portable Runtime Utility Library"
 url="http://apr.apache.org/"
 contributors="Jmilot, Greg"
@@ -7,7 +5,8 @@ packager="tnut <tnut@nutyx.org>"
 
 name=apr-util
 version=1.6.1
-release=2
+release=3
+makedepends=(apr expat)
 
 source=(http://archive.apache.org/dist/apr/$name-$version.tar.bz2)
 
