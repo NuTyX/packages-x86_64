@@ -1,5 +1,3 @@
-# Depends on: libxcb
-
 description="xorg lib xtrans"
 url="http://xorg.freedesktop.org"
 packager="greg <greg@nutyx.org>"
@@ -8,17 +6,10 @@ contributors="Pierre B, tnut"
 _name=xtrans
 name=xorg-xtrans
 alias=(xtrans)
-version=1.3.5
-release=1
+version=1.4.0
+
+makedepends=(libxcb)
 
 source=(http://ftp.x.org/pub/individual//lib/${_name}-$version.tar.bz2)
 
-build() {
-
-cd ${_name}-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-
-make
-make DESTDIR=$PKG install
-
-}
+build=xorg
