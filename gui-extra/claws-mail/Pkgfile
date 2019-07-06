@@ -1,12 +1,14 @@
-# Depends on: bogofilter enchant aspell libetpan gnupg gpgme gnutls dbus gtk2 libtasn1 enchant xorg-libsm hicolor-icon-theme desktop-file-utils xorgproto
-
 description="A GTK+ based e-mail client."
 url="http://www.claws-mail.org"
 contributors="Pierre B., Tnut, Greg"
 packager="tnut <tnut@nutyx.org>"
 
 name=claws-mail
-version=3.17.1
+version=3.17.3
+makedepends=(bogofilter enchant aspell libetpan gnupg gpgme gnutls
+             dbus gtk2 libtasn1 enchant xorg-libsm hicolor-icon-theme
+             desktop-file-utils xorgproto)
+
 
 source=(${url}/download.php?file=releases/$name-$version.tar.xz)
 
