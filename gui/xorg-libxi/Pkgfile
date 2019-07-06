@@ -1,5 +1,3 @@
-# Depends on: xorgproto xorg-libx11 xorg-libxext xorg-libxfixes
-
 description="libXi, library X Input client"
 url="http://xorg.freedesktop.org"
 packager="tnut <tnut@nutyx.org>"
@@ -7,9 +5,9 @@ contributors="Pierre B, Greg"
 
 name=xorg-libxi
 alias=(libXi)
-version=1.7.9
-release=3
+version=1.7.10
 _name=libXi
+makedepends=(xorgproto xorg-libx11 xorg-libxext xorg-libxfixes)
 
 source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
