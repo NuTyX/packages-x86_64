@@ -1,11 +1,15 @@
-# Depends on: python perl-archive-zip unzip zip icu gtk3 cups poppler-glib xorg-fontconfig libxslt kerberos xorgproto dbus-glib mesa postgresql wget apache-ant apr boost clucene dbus-glib libepoxy libjpeg-turbo2 xorg-glu gstreamer-plugins-base libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss redland serf unixodbc desktop-file-utils doxygen gdb gnutls nasm telepathy-glib xmlsec gpgme
-name=libreoffice
-version=6.2.4.2
-
 description="Office suite. It is largely compatible with Microsoft Office (fork from OpenOffice.org)."
 url="http://www.libreoffice.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
+
+name=libreoffice
+version=6.2.5.2
+makedepends=(python perl-archive-zip unzip zip icu gtk3 cups poppler-glib xorg-fontconfig
+             libxslt kerberos xorgproto dbus-glib mesa postgresql wget apache-ant apr
+             boost clucene dbus-glib libepoxy libjpeg-turbo2 xorg-glu gstreamer-plugins-base
+             libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss redland serf unixodbc
+             desktop-file-utils doxygen gdb gnutls nasm telepathy-glib xmlsec gpgme)
 run=(shared-mime-info xdg-utils desktop-file-utils) 
 
 PKGMK_IGNORE_UNPACK="yes"
