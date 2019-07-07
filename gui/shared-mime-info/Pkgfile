@@ -1,13 +1,11 @@
-# Depends on: libxml2 intltool glib
-
 description="The Shared Mime Info package contains a MIME database."
 url="http://freedesktop.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=shared-mime-info
-version=1.10
-
+version=1.12
+makedepends=(libxml2 intltool glib)
 source=( http://freedesktop.org/~hadess/$name-$version.tar.xz)
 
 build() {
