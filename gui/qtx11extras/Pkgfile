@@ -1,15 +1,12 @@
-# Depends on: qtbase
-
 description="A cross-platform application and UI framework, QtWinextras files"
 url="http://qt-project.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=qtx11extras
-version=5.12.4
-
+version=5.13.0
 _name="${name}-everywhere-src"
-
+makedepends=(qtbase)
 source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 build() {
