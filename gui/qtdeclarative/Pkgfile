@@ -1,19 +1,20 @@
-# Depends on: qtbase mesa 
-
 description="A cross-platform application and UI framework, QtDeclarative files"
 url="http://qt-project.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=qtdeclarative 
-version=5.12.4
-
+version=5.13.0
 _name="${name}-everywhere-src"
-
+makedepends=(mesa qtbase)
 source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 build() {
 cd ${_name}-${version}
+
+sed -i 's/python /python3 /' qtdeclarative.pro \
+src/3rdparty/masm/masm.pri
+
 qmake
 make
 make INSTALL_ROOT=$PKG install
