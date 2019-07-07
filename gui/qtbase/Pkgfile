@@ -1,17 +1,28 @@
-# Depends on: git xorgproto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms xcb-util-renderutil xcb-util xcb-util-image xcb-util-wm xcb-util-cursor glib dbus xorg-fontconfig xorg-libsm xorg-libxrandr xorg-libxv xorg-libxi unixodbc libjpeg-turbo alsa-lib xdg-utils hicolor-icon-theme desktop-file-utils mesa xorg-libxcursor xorg-libxrender libpng mariadb icu libglade xorg-libxfixes xorg-libxinerama libxkbcommon harfbuzz mtdev postgresql cups python gperf ruby pulseaudio bluez libtiff libmng openal libxslt xorg-libxcomposite gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad pulseaudio hunspell wayland ca-certificates pcre gtk2 gtk3 libxkbcommon nss pciutils freetype
-
 description="A cross-platform application and UI framework"
 url="http://qt-project.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=qtbase
-version=5.12.4
-release=2
+version=5.13.0
+makedepends=(git xorgproto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext
+             xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms
+             xcb-util-renderutil xcb-util xcb-util-image xcb-util-wm xcb-util-cursor
+             glib dbus xorg-fontconfig xorg-libsm xorg-libxrandr xorg-libxv
+             xorg-libxi unixodbc libjpeg-turbo alsa-lib xdg-utils hicolor-icon-theme
+             desktop-file-utils mesa xorg-libxcursor xorg-libxrender libpng mariadb
+             icu libglade xorg-libxfixes xorg-libxinerama libxkbcommon harfbuzz mtdev
+             postgresql cups python gperf ruby pulseaudio bluez libtiff libmng openal
+             libxslt xorg-libxcomposite gstreamer gstreamer-plugins-base
+             gstreamer-plugins-good gstreamer-plugins-bad pulseaudio hunspell
+             wayland ca-certificates pcre gtk2 gtk3 libxkbcommon nss pciutils freetype)
+
+
 
 _name="${name}-everywhere-src"
 
-source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
+source=(qt-$version-upstream_fixes-1.patch
+	https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 
 build() {
@@ -20,6 +31,7 @@ QT5PREFIX=/usr
 QT5BINDIR=$QT5PREFIX/bin/qt
 
 cd ${_name}-${version}
+patch -Np1 -i ../qt-$version-upstream_fixes-1.patch
 
 ./configure -prefix         /usr                        \
             -sysconfdir     /etc/xdg                    \
