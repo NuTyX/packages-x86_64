@@ -4,22 +4,22 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=exiv2
-version=0.26
-release=2
-
-source=(http://www.exiv2.org/builds/$name-$version-trunk.tar.gz)
+version=0.27.1
+makedepends=(cmake)
+source=(http://www.exiv2.org/builds/$name-$version-Source.tar.gz)
 
 build() {
-cd $name-trunk
-./configure --prefix=/usr \
-	--enable-video \
-	--enable-webready \
-	--without-ssh \
-	--disable-static 
+cd $name-$version-Source
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr  \
+      -DCMAKE_BUILD_TYPE=Release   \
+      -DEXIV2_ENABLE_VIDEO=yes     \
+      -DEXIV2_ENABLE_WEBREADY=yes  \
+      -DEXIV2_ENABLE_CURL=yes      \
+      -DEXIV2_BUILD_SAMPLES=no     \
+      -G "Unix Makefiles" ..
+
 make
 make DESTDIR=$PKG install
-chmod -v 755 $PKG/usr/lib/libexiv2.so
-
-# Obsolet lib
-rm $PKG/usr/lib/libexiv2.la
 }
