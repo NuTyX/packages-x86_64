@@ -1,13 +1,11 @@
-# Depends on: doxygen graphviz libevdev mtdev libwacom gtk3 check libunwind meson valgrind
-
 description="Library for display servers and other applications that need to deal with input devices"
 url="http://www.freedesktop.org/wiki/Software/libinput/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Pierre B, Jayce"
 
 name=libinput
-version=1.12.6
-
+version=1.13.4
+makedepends=(doxygen graphviz libevdev mtdev libwacom gtk3 check libunwind meson valgrind)
 source=(http://freedesktop.org/software/$name/$name-$version.tar.xz)
 
 build() {
