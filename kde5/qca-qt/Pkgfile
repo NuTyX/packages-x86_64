@@ -1,21 +1,17 @@
-# Depends on : qtbase nss cmake doxygen
-
 description="Qt5 Cryptographic Architecture"
 url="http://delta.affinix.com/qca/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=qca-qt
-version=2.1.3
-release=2
+version=2.2.1
+makedepends=(qtbase nss cmake doxygen)
 
-source=( http://www.linuxfromscratch.org/patches/blfs/svn/qca-2.1.3-openssl-1.patch
-	http://download.kde.org/stable/qca/$version/src/qca-$version.tar.xz)
+source=( http://download.kde.org/stable/qca/$version/qca-$version.tar.xz)
 
 prepare() {
 mkdir build
 cd qca-$version
-patch -Np1 -i ../qca-2.1.3-openssl-1.patch
 sed -i 's@cert.pem@certs/ca-bundle.crt@' CMakeLists.txt
 }
 build() {
