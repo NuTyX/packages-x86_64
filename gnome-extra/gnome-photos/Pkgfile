@@ -8,6 +8,12 @@ run=(intltool itstool gsettings-desktop-schemas desktop-file-utils gtk-update-ic
 
 name=gnome-photos
 version=3.32.0
+release=2
+makedepends=(meson gsettings-desktop-schemas desktop-file-utils
+             gtk-update-icon-cache babl exempi gegl gfbgraph gnome-desktop
+             gnome-online-accounts grilo libgdata libexif tracker libdazzle
+             libgexiv2 geocode-glib)
+
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
