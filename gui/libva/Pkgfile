@@ -1,13 +1,11 @@
-# Depends on: libglade xorg-libdrm xorg-libxfixes
-
 description="Video Acceleration (VA) API for Linux"
 url="https://01.org/linuxmedia/vaapi"
 packager="tnut <tnut@nutyx.org>"
 contributors="greg, remy"
 
 name=libva
-version=2.4.0
-
+version=2.5.0
+makedepends=(libglade xorg-libdrm xorg-libxfixes)
 source=(https://github.com/01org/libva/releases/download/$version/$name-$version.tar.bz2)
 
 build() {
