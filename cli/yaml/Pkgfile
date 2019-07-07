@@ -1,17 +1,16 @@
-# Depends on: doxygen 
-
 description="C library for parsing and emitting YAML (YAML Ain't Markup Language)"
 url="http://pyyaml.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=yaml
-version=0.2.1
-
-source=(http://pyyaml.org/download/libyaml/yaml-$version.tar.gz)
+version=0.2.2
+makedepends=(doxygen)
+source=(https://github.com/yaml/libyaml/archive/$version/libyaml-dist-$version.tar.gz)
 
 build() {
-cd yaml-$version
+cd libyaml-$version
+./bootstrap
 ./configure --prefix=/usr --disable-static 
 make DESTDIR=$PKG install
 rm $PKG/usr/lib/libyaml.la
