@@ -1,5 +1,3 @@
-# Depends on: xorg-libx11 xorg-libxcursor libpng
-
 description="The Xorg applications provide the applications available in X Window implementations."
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
@@ -8,9 +6,9 @@ PKGMK_GROUPS=(doc man)
 url="http://xorg.freedesktop.org"
 
 name=xorg-xcursorgen
-version=1.0.6
+version=1.0.7
 _name=${name/xorg-/}
-
+makedepends=(xorg-libx11 xorg-libxcursor libpng)
 source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
 
 build=xorg
