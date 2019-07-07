@@ -1,5 +1,3 @@
-# Depends on: nss cmake xorg-libxxf86vm libpng xorg-fontconfig libjpeg-turbo cairo libxml2 lcms2 gobject-introspection gtk3 openjpeg2
-
 description="PDF rendering library based on xpdf 3.0"
 url="http://poppler.freedesktop.org/"
 packager="tnut <tnut@nutyx.org>"
@@ -7,7 +5,11 @@ contributors="Alienus, Pierre B., Fanch"
 
 dataversion=0.4.9
 name=poppler
-version=0.76.1
+version=0.78.0
+makedepends=(nss cmake xorg-libxxf86vm libpng xorg-fontconfig
+             libjpeg-turbo2 cairo libxml2 lcms2
+             gobject-introspection gtk3 openjpeg2)
+
 
 source=(
 http://poppler.freedesktop.org/$name-$version.tar.xz
