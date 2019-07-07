@@ -1,13 +1,11 @@
-# Depends on: xorg-xkeyboard-config libxcb doxygen xorg-util-macros
-
 description="Keymap compiler and support library by the XKB specification"
 url="http://xkbcommon.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libxkbcommon
-version=0.8.3
-
+version=0.8.4
+makedepends=(xorg-xkeyboard-config libxcb doxygen xorg-util-macros)
 source=(http://xkbcommon.org/download/libxkbcommon-$version.tar.xz)
 
 build() {
