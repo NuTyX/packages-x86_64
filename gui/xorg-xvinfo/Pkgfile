@@ -1,5 +1,3 @@
-# Depends on: xorg-libx11 xorg-libxv
-
 description="Prints out the capabilities of any video adaptors associated with the display."
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
@@ -8,9 +6,9 @@ PKGMK_GROUPS=(doc man)
 url="http://xorg.freedesktop.org"
 
 name=xorg-xvinfo
-version=1.1.3
+version=1.1.4
 _name=${name/xorg-/}
-
+makedepends=(xorg-libx11 xorg-libxv)
 source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
 
 build=xorg
