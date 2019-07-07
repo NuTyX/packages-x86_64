@@ -1,5 +1,3 @@
-# Depends on: xorg-util-macros xorg-mkfontscale
-
 description="Utilities for the polices print of X"
 url="http://xorg.freedesktop.org"
 packager="tnut <tnut@nutyx.org>"
@@ -8,8 +6,8 @@ contributors="Pierre B, Greg"
 
 name=xorg-encodings
 _name=${name/xorg-/}
-version=1.0.4
-
+version=1.0.5
+makedepends=(xorg-util-macros xorg-mkfontscale)
 source=(http://ftp.x.org/pub/individual//font/${_name}-$version.tar.bz2)
 
 build() {
