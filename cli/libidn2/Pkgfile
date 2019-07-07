@@ -1,13 +1,11 @@
-# Depends on: libunistring
-
 description="Designed for internationalized string handling based on the Stringprep"
 url="http://www.gnu.org/software/libidn/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libidn2
-version=2.1.1
-
+version=2.2.0
+makedepends=(libunistring)
 source=(https://ftp.gnu.org/gnu/libidn/$name-$version.tar.gz)
 
 build() {
