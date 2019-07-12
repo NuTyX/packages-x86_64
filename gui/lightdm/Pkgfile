@@ -1,5 +1,3 @@
-# Depends on: gtk3 libgcrypt pam pcre gobject-introspection xorg-libxklavier vala
-
 description="Lightweight X11 Display Manager based on Gtk"
 url="https://en.wikipedia.org/wiki/LightDM"
 packager="dania@nutyx.org"
@@ -8,7 +6,9 @@ contributors="Rems, Tnut"
 name=lightdm
 version=1.28.0
 nutyx_version=11.0
-release=3
+release=4
+makedepends=(gtk3 libgcrypt pam pcre gobject-introspection xorg-libxklavier vala consolekit2)
+run=(consolekit2)
 
 source=(https://github.com/CanonicalLtd/$name/releases/download/$version/$name-$version.tar.xz
         http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz)
