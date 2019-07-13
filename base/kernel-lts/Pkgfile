@@ -1,5 +1,3 @@
-# Depends on: nutyx
-
 url="http://www.kernel.org"
 description="The long term stable kernel version with virtualbox modules"
 packager="tnut <tnut@nutyx.org>"
@@ -12,9 +10,9 @@ PKGMK_GROUPS=(devel doc)
 name=kernel-lts
 alias=(linux-lts)
 
-version=4.19.57
+version=4.19.58
 _version=${version:0:4}
-
+makedepends=(nutyx)
 run=(nutyx)
 
 # Virtualbox
@@ -26,6 +24,7 @@ _VBARCH=amd64
 #
 
 source=(\
+https://libarchive.org/downloads/libarchive-3.3.3.tar.gz
 $url/pub/linux/kernel/v4.x/linux-${_version}.tar.xz
 $url/pub/linux/kernel/v4.x/patch-$version.xz
 http://download.virtualbox.org/virtualbox/${vb_version}/VirtualBox-${vb_version}-${buildrelease}-Linux_${_VBARCH}.run
@@ -33,7 +32,12 @@ config_64)
 
 ## Time to build everything
 #
-
+prepare() {
+tar xf libarchive-3.3.3.tar.gz
+cd libarchive-3.3.3
+./configure
+make
+}
 build(){
 
 bsdtar -p -o -C $SRC -xf linux-${_version}.tar.xz
@@ -87,7 +91,7 @@ done
 mkdir $SRC/vb-guest
 cd    $SRC/vb-guest
 
-bsdtar -xf ../vb/additions/VBoxGuestAdditions.iso
+../libarchive-3.3.3/bsdtar -xf ../vb/additions/VBoxGuestAdditions.iso
 sh  VBoxLinuxAdditions.run --target vb --keep --noexec
 cd vb
 tar xfj VBoxGuestAdditions-x86.tar.bz2

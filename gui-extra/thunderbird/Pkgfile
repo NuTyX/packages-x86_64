@@ -1,17 +1,17 @@
-# Depends on: autoconf2-13 icu alsa-lib gtk2 zip unzip libevent libvpx nspr nss yasm dbus-glib doxygen libnotify openjdk startup-notification hunspell sqlite wireless-tools xorg-libx11 xorg-libxt xorg-libxrandr desktop-file-utils hicolor-icon-theme shared-mime-info pulseaudio
 name=thunderbird
-version=60.7.2
+version=60.8.0
 locale_version=$version
 description="Stand-alone mail/news client based on the Mozilla codebase."
 url="http://www.mozilla.org/thunderbird"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
-
+makedepends=(autoconf2-13 icu alsa-lib gtk2 zip unzip libevent libvpx nspr nss yasm dbus-glib doxygen libnotify
+             openjdk startup-notification hunspell sqlite wireless-tools xorg-libx11 xorg-libxt xorg-libxrandr
+             desktop-file-utils hicolor-icon-theme shared-mime-info pulseaudio)
 run=(startup-notification hunspell)
 
 
-source=(rust-1.33.patch
-	http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.xz
+source=(http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$version/source/$name-$version.source.tar.xz
 	$name.desktop)
 
 pack_remove_locale() {
@@ -33,8 +33,6 @@ build() {
 export PYTHON="/usr/bin/python2"
 
 cd $name-$version
-
-patch -Np1 -i ../rust-1.33.patch
 
 cat > mozconfig << "EOF"
 # If you have a multicore machine, the build may be faster if using parallel
@@ -93,6 +91,9 @@ ac_add_options --enable-install-strip
 ac_add_options --enable-official-branding
 
 EOF
+
+sed -i -e '/#!\[deny(missing_docs)\]/d' servo/components/style/lib.rs
+sed -i -e 's/#!\[deny(unsafe_code, missing_docs)\]/#!\[deny(unsafe_code)\]/g' servo/components/style_traits/lib.rs
 
 ./mach configure
 ./mach build
