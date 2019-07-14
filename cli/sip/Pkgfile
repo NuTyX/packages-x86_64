@@ -1,20 +1,23 @@
-# Depends on: python
-
 description="A tool that makes it easy to create Python bindings for C and C++ libraries"
 url="http://www.riverbankcomputing.co.uk/software/sip/intro"
 packager="tnut <tnut@nutyx.org>"
 
 name=sip
-version=4.19.14
-
-source=(https://www.riverbankcomputing.com/static/Downloads/sip/sip-$version.tar.gz )
+version=4.19.18
+makedepends=(python python2)
+run=(python python2)
+source=(https://www.riverbankcomputing.com/static/Downloads/sip/$version/sip-$version.tar.gz )
 
 build() {
 	cd sip-$version
-	mkdir build
+	mkdir build{,-python2}
 	cd build
-        python3 ../configure.py CFLAGS="$CFLAGS" LFLAGS="$LDFLAGS"
-        make DESTDIR=$PKG install -C sipgen
-        mv "$PKG"/usr/include/{python*/sip.h,}
-        rm -r "$PKG"/usr/include/python*
+        python3 ../configure.py CFLAGS="$CFLAGS" LFLAGS="$LDFLAGS" --sip-module PyQt5.sip
+	make
+        make DESTDIR=$PKG install
+	cd ../build-python2
+	python ../configure.py CFLAGS="$CFLAGS" LFLAGS="$LDFLAGS" --sip-module PyQt5.sip
+	make
+	make DESTDIR=$PKG install
+#        mv "$PKG"/usr/include/{python*/sip.h,}
 }
