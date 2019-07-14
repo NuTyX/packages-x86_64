@@ -1,17 +1,18 @@
-# Depends on: python2-sip avahi python ghostscript foomatic-db foomatic-db-engine usbutils sane cups cups-filters cups-pk-helper libusb net-snmp dbus-python python2-gobject2 python2-notify python2-qt openssl
-
 description="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet"
 url="http://hplipopensource.com"
 contributors="tnut, Greg"
 packager="tnut<tnut@nutyx.org>"
 
 name=hplip
-version=3.19.1
+version=3.19.6
+makedepends=(avahi python ghostscript foomatic-db python2-enum34
+             foomatic-db-engine usbutils sane cups cups-filters
+             cups-pk-helper libusb net-snmp dbus-python python2-qt
+             python2-gobject2 sip)
 
-run=(python2-sip dbus-python python2-qt python2-gobject2 python2-notify openssl)
+run=(sip dbus-python python2-qt python2-enum34 python2-gobject2 foomatic-db-engine)
 
 source=(https://downloads.sourceforge.net/$name/$name-$version.tar.gz
-        disable_upgrade.patch
         0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
         0023-Fix-handling-of-unicode-filenames-in-sixext.py.patch
         0025-Remove-all-ImageProcessor-functionality-which-is-clo.patch)
@@ -19,13 +20,12 @@ source=(https://downloads.sourceforge.net/$name/$name-$version.tar.gz
 prepare() {
  cd $name-$version
  
- # disable insecure update - https://bugs.archlinux.org/task/38083
- patch -Np0 -i ../disable_upgrade.patch
- 
  # add missing 'include <cups/ppd.h>' at various places
  patch -Np1 -i ../0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
+
  # fix some handling unicode file names FS#58412
  patch -Np1 -i ../0023-Fix-handling-of-unicode-filenames-in-sixext.py.patch
+
  # remove binary blob libImageProcessor and all linking - FS#59681
  patch -Np1 -i ../0025-Remove-all-ImageProcessor-functionality-which-is-clo.patch
 
