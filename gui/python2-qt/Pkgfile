@@ -1,15 +1,17 @@
-# Depends on: python2-enum34 dbus-python python2-sip-qt5 sip qtbase qtmultimedia qttools qtwebkit qtconnectivity qtserialport qtsvg qtx11extras qtnetworkauth qtwebengine qtwebsockets qtxmlpatterns
-
 description="connector python for qt"
 url="http://www.riverbankcomputing.co.uk/software/pyqt/intro"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=python2-qt
-version=5.12
-release=2
+version=5.13.0
+makedepends=(python2-enum34 dbus-python sip qtbase 
+             qtmultimedia qttools qtwebkit qtconnectivity
+             qtserialport qtsvg qtx11extras qtnetworkauth
+             qtwebengine qtwebsockets qtxmlpatterns)
+run=(python2 python2-enum34)
 
-source=(https://www.riverbankcomputing.com/static/Downloads/PyQt5/PyQt5_gpl-$version.tar.gz)
+source=(https://www.riverbankcomputing.com/static/Downloads/PyQt5/$version/PyQt5_gpl-$version.tar.gz)
 build() {
 cd PyQt5_gpl-$version
 
