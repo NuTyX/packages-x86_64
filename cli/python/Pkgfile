@@ -1,5 +1,3 @@
-# Depends on: sqlite expat libffi
-
 PKGMK_GROUPS=(devel man doc)
 PKGMK_IGNORE_UNPACK="yes"
 
@@ -9,7 +7,8 @@ contributors="Alienus"
 packager="tnut <tnut@nutyx.org>"
 
 name=python
-version=3.7.3
+version=3.7.4
+makedepends=(sqlite expat libffi)
 alias=(python3 Python)
 source=(http://www.python.org/ftp/python/$version/Python-$version.tar.xz
         https://docs.python.org/ftp/python/doc/$version/python-$version-docs-html.tar.bz2
