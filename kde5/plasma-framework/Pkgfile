@@ -1,13 +1,12 @@
-# Depends on: mesa libxcb qtquickcontrols2 kactivities kirigami2 kdeclarative kdoctools kwayland knotifications
-
 description="Plasma library and runtime components based upon KF5 and Qt5 "
 url="https://www.kde.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=plasma-framework
-version=5.59.0
-
+version=5.60.0
+makedepends=(mesa libxcb qtquickcontrols2 kactivities kirigami2
+             kdeclarative kdoctools kwayland knotifications)
 source=(http://downloads.tuxfamily.org/nutyx/files/kde-wallpaper-nutyx-11.0.tar.xz
 	http://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
 
