@@ -1,5 +1,3 @@
-# Depends on: nutyx
-
 url="http://www.kernel.org"
 description="The latest stable kernel version"
 packager="tnut <tnut@nutyx.org>"
@@ -11,9 +9,9 @@ PKGMK_GROUPS=(devel doc)
 name=kernel
 alias=(linux)
 
-version=5.1.16
+version=5.1.18
 _version=${version:0:3}
-
+makedepends=(nutyx)
 run=(nutyx)
 
 # Virtualbox
