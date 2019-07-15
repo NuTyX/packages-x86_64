@@ -1,13 +1,11 @@
-# Depends on: extra-cmake-modules avahi
-
 description="Abstraction to system DNSSD features "
 url="https://www.kde.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=kdnssd
-version=5.59.0
-
+version=5.60.0
+makedepends=(extra-cmake-modules avahi)
 source=(https://download.kde.org/stable/frameworks/${version:0:4}/$name-$version.tar.xz)
 
 build=kde5
