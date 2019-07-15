@@ -1,14 +1,15 @@
-# Depends on: lynx xmlto xorg-xset
-
 description="Set of command line tools that assist applications with a variety of desktop integration tasks." 
 url="https://www.freedesktop.org/wiki/Software/xdg-utils/"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
 
 run=(xorg-xset)
 
 name=xdg-utils
 version=1.1.3
+release=2
+makedepends=(lynx xmlto xorg-xset)
+run=(xorg-xset)
 
 source=(http://portland.freedesktop.org/download/$name-$version.tar.gz)
 
@@ -16,6 +17,8 @@ build() {
 
    cd $name-$version
 
+   sed -i "s@\-a is_file_url_or_path@\&\& is_file_url_or_path@" \
+   scripts/xdg-open.in
    ./configure --prefix=/usr \
    --mandir=/usr/share/man 
 
