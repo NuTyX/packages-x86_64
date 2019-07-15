@@ -1,13 +1,11 @@
-# Depends on: kconfig kcoreaddons kcodecs kconfigwidgets kiconthemes kwidgetsaddons kxmlgui
-
 description="Support for bookmarks and the XBEL format "
 url="https://www.kde.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=kbookmarks
-version=5.59.0
-
+version=5.60.0
+makedepends=(kconfig kcoreaddons kcodecs kconfigwidgets kiconthemes kwidgetsaddons kxmlgui)
 source=(http://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
 
 build=kde5
