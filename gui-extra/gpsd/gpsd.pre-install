@@ -1,0 +1,6 @@
+. lib/lsb/init-functions
+if ! (getent group uucp > /dev/null); then
+  log_info_msg "${INFO}Creating uucp group${NORMAL}\n"
+  groupadd -g 89 uucp
+fi
+
