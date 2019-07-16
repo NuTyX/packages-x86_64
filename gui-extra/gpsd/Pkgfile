@@ -1,0 +1,53 @@
+description="GPS daemon and library to support USB/serial GPS devices"
+url="http://catb.org/gpsd/"
+
+packager="dania <dania@nutyx.org>"
+contributors="Tnut"
+
+name=gpsd
+version=3.19
+
+makedepends=(asciidoc bluez docbook-xls gtk3 libusb python2 qtbase scons
+            python2-gobject python2-cairo python-gobject python-cairo)
+run=(python2)
+
+source=(http://download-mirror.savannah.gnu.org/releases/gpsd/gpsd-${version}.tar.gz)
+
+build() {
+ cd $name-$version
+ scons LINKFLAGS="${LDFLAGS}" \
+ CC=$CC CXX=$CXX CCFLAGS="$CFLAGS" \
+ CXXFLAGS="$CXXFLAGS" prefix=/usr \
+ destdir=${PKG} DESTDIR=${PKG} \
+ systemd=no \
+ libQgpsmm=no \
+ gpsd_group=uucp
+ scons build
+ export DESTDIR=$PKG
+ scons prefix=/usr destdir=$PKG DESTDIR=$PKG install
+ # Wrong location
+ mv $PKG/usr/local/lib/python* $PKG/usr/lib
+
+ # Missing files
+ install -Dm755 gpsinit -t $PKG/usr/bin
+ chmod 755 $PKG/usr/bin/*
+
+ mkdir -p $PKG/etc/gpsd
+ cat > $PKG/etc/gpsd/gpsd.conf << "EOF"
+# Default settings for gpsd.
+START_DAEMON="true"
+GPSD_OPTIONS=""
+DEVICES=""
+USBAUTO="true"
+EOF
+
+install -Dm644 gpsd.rules $PKG/lib/udev/rules.d/25-gpsd-usb.rules
+install -Dm755 gpsd.hotplug $PKG/lib/udev/gpsd.hotplug
+
+install -Dm644 packaging/X11/xgps.desktop \
+    $PKG/usr/share/applications/xgps.desktop
+install -Dm644 packaging/X11/xgpsspeed.desktop \
+    $PKG/usr/share/applications/xgpsspeed.desktop
+install -Dm644 packaging/X11/gpsd-logo.png \
+    $PKG/usr/share/gpsd/gpsd-logo.png
+}
