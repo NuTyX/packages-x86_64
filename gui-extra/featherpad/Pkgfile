@@ -1,0 +1,21 @@
+description="Lightweight Qt5 plain text editor for Linux"
+url="https://github.com/tsujan/FeatherPad"
+
+name=featherpad
+version=0.10.0
+
+makedepends=(desktop-fil-utils qtbase qtsvg qttools qttranslations qtx11extras)
+
+PKGM_KEEP_SOURCES="no"
+
+source=(https://github.com/tsujan/FeatherPad/archive/V$version.tar.gz)
+
+build() {
+
+cd FeatherPad-$version
+mkdir build
+cd build
+qmake ../
+make
+make INSTALL_ROOT=$PKG install
+}
