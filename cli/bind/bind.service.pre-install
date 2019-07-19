@@ -1,0 +1,25 @@
+. lib/lsb/init-functions
+UN=named
+GN=$SN
+if ! (getent group $GN > /dev/null); then
+	log_info_msg "${INFO}Creating $GN group${NORMAL}\n"
+	groupadd -g 20 $GN
+fi
+if ! (getent passwd $UN > /dev/null); then
+	log_info_msg "${INFO}Creating $UN user${NORMAL}\n"
+	useradd  -c "BIND Owner" \
+	-g $GN -s /bin/false -u 20 $UN
+fi
+if [ ! -d srv/named ]; then
+	log_info_msg "${INFO}Creating $UN directory${NORMAL}\n"
+	install -d -m770 -o named -g named srv/named
+	mkdir -p srv/named/dev srv/named/etc/namedb/{slave,pz} \
+	usr/lib/engines var/run/named
+	mknod srv/named/dev/null c 1 3
+	mknod srv/named/dev/urandom c 1 9
+	chmod 666 srv/named/dev/{null,urandom}
+	if [ -L  etc/localtime ]; then
+		cp -a etc/localtime srv/named/etc
+	fi
+	touch srv/named/managed-keys.bind
+fi
