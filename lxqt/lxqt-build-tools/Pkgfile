@@ -1,13 +1,11 @@
-# Depends on: cmake qttools
-
 description="Various packaging tools and scripts for LXQt applications"
 url="http://lxqt.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=lxqt-build-tools
-version=0.5.0
-
+version=0.6.0
+makedepends=(cmake qttools)
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
 build=kde5
