@@ -1,13 +1,12 @@
-# Depends on: lxqt-build-tools hicolor-icon-theme openbox qtx11extras
-
 description="Openbox configuration tool. Qt port of ObConf"
 url="http://lxqt.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=obconf-qt
-version=0.13.0
-
+version=0.14.1
+makedepends=(lxqt-build-tools hicolor-icon-theme openbox qtx11extras)
+run=(hicolor-icon-theme)
 source=(https://github.com/lxde/$name/releases/download/$version/$name-$version.tar.xz)
 
 build=kde5
