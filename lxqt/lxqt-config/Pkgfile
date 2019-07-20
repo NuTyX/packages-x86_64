@@ -1,13 +1,13 @@
-# Depends on: lxqt-build-tools hicolor-icon-theme liblxqt qtsvg libkscreen xorg-libxcursor
-
 description="LXQt system configuration."
 url="http://lxqt.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=lxqt-config
-version=0.13.0
-
+version=0.14.1
+makedepends=(lxqt-build-tools hicolor-icon-theme xorg-xf86-input-libinput
+             liblxqt qtsvg libkscreen xorg-libxcursor)
+run=(hicolor-icon-theme)
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
 build=kde5
