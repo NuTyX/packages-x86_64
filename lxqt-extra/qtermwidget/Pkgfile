@@ -1,14 +1,12 @@
-# Depends on: cmake qtbase lxqt-build-tools
-
 description="Is a terminal widget for Qt"
 url="https://github.com/qterminal/"
 packager="tnut<tnut@nutyx.org>"
 contributors="Greg"
 
-PKGMK_KEEP_SOURCES="no"
 
 name=qtermwidget
-version=0.9.0
+version=0.14.1
+makedepends=(cmake qtbase lxqt-build-tools)
 
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
