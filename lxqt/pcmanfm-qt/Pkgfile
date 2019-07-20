@@ -1,13 +1,12 @@
-# Depends on: lxqt-build-tools desktop-file-utils libfm-qt lxde-menu-data gvfs  
-
 description="The LXQt file manager, Qt port of PCManFM"
 url="http://lxqt.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=pcmanfm-qt
-version=0.13.0
-
+version=0.14.1
+makedepends=(lxqt-build-tools desktop-file-utils libfm-qt lxde-menu-data gvfs)
+run=(desktop-file-utils lxde-menu-data gvfs)
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
 build=kde5
