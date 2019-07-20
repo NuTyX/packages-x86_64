@@ -1,12 +1,11 @@
-# Depends on: xorg-libsm libxkbcommon qtbase qtsvg cmake
-
 description="Library providing freedesktop.org XDG specs implementations for Qt."
 url="http://lxqt.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=libqtxdg
-version=3.2.0
+version=3.3.1
+makedepends=(xorg-libsm libxkbcommon qtbase qtsvg cmake lxqt-build-tools)
 
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
@@ -23,5 +22,3 @@ sed "s@libqtxdg@@" | \
 head -n $(($ligne+1 )) | \
 tail -n $(($ligne))
 }
-
-# Recette editee le 17/10/17 a 12:48:29
