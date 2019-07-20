@@ -1,13 +1,11 @@
-# Depends on: liblxqt polkit lxqt-build-tools
-
 description="LXQt system administration tool."
 url="http://lxqt.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=lxqt-admin
-version=0.13.0
-
+version=0.14.1
+makedepends=(liblxqt polkit lxqt-build-tools)
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
 build=kde5
