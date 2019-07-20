@@ -1,16 +1,12 @@
-# Depends on: lxqt-build-tools qtbase pulseaudio cmake
-
 description="A Pulseaudio mixer in Qt (port of pavucontrol"
 url="http://lxqt.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=pavucontrol-qt
-version=0.4.0
-
-PKGMK_KEEP_SOURCES="no"
-
-source=(https://github.com/lxqt/$name/archive/$version.tar.gz)
+version=0.14.1
+makedepends=(lxqt-build-tools qtbase pulseaudio cmake)
+source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
 build=kde5
 
