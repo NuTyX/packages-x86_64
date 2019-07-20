@@ -1,14 +1,13 @@
-# Depends on: liblxqt xdg-user-dirs breeze-icons oxygen-icons5 lxqt-build-tools openbox
-
 description="The LXQt session"
 url="http://lxqt.org"
 packager="tnut<tnut@nutyx.org>"
 contributors="Greg"
 
-run=(breeze-icons openbox)
-
 name=lxqt-session
-version=0.13.0
+version=0.14.1
+makedepends=(liblxqt xdg-user-dirs breeze-icons oxygen-icons5
+             lxqt-build-tools openbox)
+run=(openbox breeze-icons openbox oxygen-icons5 xdg-user-dirs)
 
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
