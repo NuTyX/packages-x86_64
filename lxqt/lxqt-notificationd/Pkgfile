@@ -1,13 +1,11 @@
-# Depends on: lxqt-build-tools liblxqt
-
 description="LXQt notification daemon and library."
 url="http://lxqt.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=lxqt-notificationd
-version=0.13.0
-
+version=0.14.1
+makedepends=(lxqt-build-tools liblxqt)
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
 build=kde5
