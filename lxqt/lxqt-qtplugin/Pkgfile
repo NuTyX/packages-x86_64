@@ -1,13 +1,11 @@
-# Depends on: lxqt-build-tools libdbusmenu-qt libqtxdg libfm-qt
-
 description="LXQt platform integration for Qt"
 url="http://lxqt.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=lxqt-qtplugin
-version=0.13.0
-
+version=0.14.0
+makedepends=(lxqt-build-tools libdbusmenu-qt libqtxdg libfm-qt)
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
 build=kde5
