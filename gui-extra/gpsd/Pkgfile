@@ -6,7 +6,7 @@ contributors="Tnut"
 
 name=gpsd
 version=3.19
-release=2
+release=3
 makedepends=(asciidoc bluez docbook-xsl gtk3 libusb python2 qtbase scons
             python2-gobject python2-cairo python-gobject python-cairo)
 run=(python2)
@@ -44,6 +44,8 @@ EOF
 
 install -Dm644 gpsd.rules $PKG/lib/udev/rules.d/25-gpsd-usb.rules
 install -Dm755 gpsd.hotplug $PKG/lib/udev/gpsd.hotplug
+
+sed -i "s@RUN@MODE=\"0666\", RUN@g" $PKG/lib/udev/rules.d/25-gpsd-usb.rules
 
 install -Dm644 packaging/X11/xgps.desktop \
     $PKG/usr/share/applications/xgps.desktop
