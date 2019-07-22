@@ -1,30 +1,37 @@
-# Depends on: shared-mime-info gtk3 libpcap pcre hicolor-icon-theme
-
-description="Network Sniffer with nice GTK3 UI"
+description="Network Sniffer with nice GUI"
 url="http://www.wireshark.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="fanch,tnut,Greg,Rémy"
 
 name=wireshark
-version=2.6.3
+version=3.0.3
+makedepends=(cmake ninja shared-mime-info gtk3 libpcap pcre hicolor-icon-theme
+             qtbase qttranslations qtmultimedia qtsvg)
+run=(shared-mime-info hicolor-icon-theme)
 
-run=(shared-mime-info)
-
-source=(https://1.eu.dl.wireshark.org/src/wireshark-$version.tar.xz)
+source=(https://www.wireshark.org/download/src/all-versions/wireshark-$version.tar.xz)
 
 build() {
   cd $name-$version
 
-  ./configure --prefix=/usr \
-              --with-plugins=/usr/lib/$name/plugins \
-              --without-krb5 \
-              --with-qt=no \
-              --with-gtk=yes
+  mkdir build
+  cd    build
+  cmake  -DCMAKE_INSTALL_PREFIX=/usr \
+         -DCMAKE_BUILD_TYPE=Release \
+         -DMAKE_INSTALL_DOCDIR=/usr/share/doc/$name-$version \
+         -G Ninja ..
 
-  make
-  make DESTDIR=$PKG install
+  ninja
+  DESTDIR=$PKG ninja install
 
+  install -v -m755 -d $PKG/usr/share/doc/wireshark-$version
+  install -v -m644    ../README.linux ../doc/README.* ../doc/{*.pod,randpkt.txt} \
+                      $PKG/usr/share/doc/wireshark-$version
 
-  # Don't remove these files, they are read by wireshark's about box.
-  #rm -f $PKG/usr/share/$name/{AUTHORS-SHORT,COPYING}
+  pushd $PKG/usr/share/doc/wireshark-$version
+     for FILENAME in ../../wireshark/*.html; do
+         ln -s -v -f $FILENAME .
+     done
+  popd
+  unset FILENAME
 }
