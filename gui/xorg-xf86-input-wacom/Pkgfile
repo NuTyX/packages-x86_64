@@ -1,10 +1,9 @@
-# Depends on: xorg-libxi xorg-libxinerama xorg-libxrandr xorg-server
-
 description="Xorg Wacom tablet driver."
 packager="tnut <tnut@nutyx.org>"
 name=xorg-xf86-input-wacom
-version=0.36.1
+version=0.37.0
 _name=${name/xorg-/}
+makedepends=(xorg-libxi xorg-libxinerama xorg-libxrandr xorg-server)
 
 source=(https://github.com/linuxwacom/xf86-input-wacom/releases/download/$_name-$version/$_name-$version.tar.bz2)
 
