@@ -1,19 +1,26 @@
-# Depends on: gtk3 x264 flac libmad glib librsvg libcaca alsa-lib xorg-libxinerama xorg-libxpm libvpx libcdio vcdimager live libdvdcss libdvdread libdvdnav libogg libtheora lame jansson faac libvorbis ffmpeg faad2 liba52 libmpeg2 libmpcdec fribidi libdv speex pulseaudio
-
 description="A GTK+ audio player for GNU/Linux"
 url="http://deadbeef.sourceforge.net"
-contributors="Pierre B"
-packager="greg <greg@nutyx.org>"
+contributors="Pierre B, Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=deadbeef
-version=0.7.2
-release=2
+version=1.8.1
+makedepends=(intltool perl-xml-parser desktop-file-utils gtk3
+             x264 flac libmad glib librsvg libcaca
+             alsa-lib xorg-libxinerama xorg-libxpm libvpx libcdio vcdimager
+             live libdvdcss libdvdread libdvdnav libogg libtheora
+             lame jansson faac libvorbis ffmpeg faad2 liba52 libmpeg2
+             libmpcdec fribidi libdv speex pulseaudio)
 
-source=(http://downloads.sourceforge.net/project/$name/$name-$version.tar.bz2)
+run=(desktop-file-utils)
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/DeaDBeeF-Player/deadbeef/archive/$version.tar.gz)
 
 build () {
   cd $name-$version
-  CXX="g++ -std=c++98" ./configure --prefix=/usr --disable-ffmpeg --enable-gtk3
+  ./autogen.sh
+  ./configure --prefix=/usr --disable-ffmpeg --enable-gtk3
   make 
   make DESTDIR=$PKG install
 }
