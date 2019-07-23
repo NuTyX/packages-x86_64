@@ -5,6 +5,11 @@
 #
 
 # ugly hack to test for support for capabilities
+. lib/lsb/init-functions
+if ! (getent group wireshark > /dev/null); then
+    log_info_msg "${INFO}Creating wireshark group${NORMAL}\n"
+    groupadd -g 62 wireshark
+fi
 if ! setfattr -n user.xattr_test usr/bin/dumpcap 2> /dev/null; then
   echo capabilities not supported on this system
   echo capturing with wireshark will require root privileges
@@ -12,9 +17,6 @@ if ! setfattr -n user.xattr_test usr/bin/dumpcap 2> /dev/null; then
 fi
 
 setfattr -x user.xattr_test usr/bin/dumpcap 
-
-
-getent group wireshark >/dev/null || groupadd -r wireshark
 
 chgrp wireshark usr/bin/dumpcap
 chmod 754 usr/bin/dumpcap
