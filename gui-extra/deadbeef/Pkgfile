@@ -4,7 +4,7 @@ contributors="Pierre B, Greg"
 packager="tnut <tnut@nutyx.org>"
 
 name=deadbeef
-version=1.8.1
+version=0.7.2
 makedepends=(intltool perl-xml-parser desktop-file-utils gtk3
              x264 flac libmad glib librsvg libcaca
              alsa-lib xorg-libxinerama xorg-libxpm libvpx libcdio vcdimager
@@ -13,14 +13,11 @@ makedepends=(intltool perl-xml-parser desktop-file-utils gtk3
              libmpcdec fribidi libdv speex pulseaudio)
 
 run=(desktop-file-utils)
-PKGMK_KEEP_SOURCES="no"
-
-source=(https://github.com/DeaDBeeF-Player/deadbeef/archive/$version.tar.gz)
+source=(http://downloads.sourceforge.net/project/$name/$name-$version.tar.bz2)
 
 build () {
   cd $name-$version
-  ./autogen.sh
-  ./configure --prefix=/usr --disable-ffmpeg --enable-gtk3
+   CXX="g++ -std=c++98" ./configure --prefix=/usr --disable-ffmpeg --enable-gtk3
   make 
   make DESTDIR=$PKG install
 }
