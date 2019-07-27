@@ -4,15 +4,16 @@ maintainer="Robert Corbett,Richard Stallman,Wilfred Hansen"
 packager="tnut <tnut@nutyx.org>"
 
 name=bison
-version=3.3.2
+version=3.4.1
 
 source=(http://ftp.gnu.org/gnu/bison/bison-$version.tar.xz)
 
 build()
 {
 cd bison-$version
+sed -i '6855 s/mv/cp/' Makefile.in
 ./configure --prefix=/usr \
 --docdir=/usr/share/doc/$name-$version
-make
+make -j1
 make DESTDIR=$PKG install
 }
