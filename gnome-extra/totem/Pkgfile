@@ -1,13 +1,17 @@
-# Depends on: appstream-glib meson ninja gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache grilo libpeas gnome-icon-theme iso-codes gnome-desktop python2-xdg clutter-gst clutter-gtk xorg-libsm libpeas python-gobject libgdata gstreamer-plugins-good gstreamer-plugins-bad totem-pl-parser python-pylint
-
 description="GNOME3 movie player based on GStreamer"
 url="http://www.gnome.org/projects/totem/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, jayce, Fanch, Remy"
+makedepends=(appstream-glib meson ninja gsettings-desktop-schemas
+             desktop-file-utils gtk-update-icon-cache grilo libpeas
+             gnome-icon-theme iso-codes gnome-desktop python2-xdg
+             clutter-gst clutter-gtk xorg-libsm libpeas python-gobject
+             libgdata gstreamer-plugins-good gstreamer-plugins-bad
+             totem-pl-parser python-pylint)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
 name=totem
-version=3.32.0
+version=3.32.1
 
 source=(http://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
