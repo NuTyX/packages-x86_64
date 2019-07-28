@@ -1,17 +1,30 @@
-# Depends on: meson libgudev sqlite polkit lcms2 gobject-introspection libusb dbus vala libgusb
-
 description="System daemon for managing color devices"
 url="http://www.freedesktop.org/software/colord/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=colord
-version=1.4.3
-
+version=1.4.4
+makedepends=(meson libgudev sqlite polkit lcms2 gobject-introspection libusb dbus vala libgusb)
 source=(http://www.freedesktop.org/software/$name/releases/$name-$version.tar.xz)
+
+prepare() {
+SN="colord"
+IDN="71"
+if ! (getent group $SN > /dev/null); then
+   groupadd -g $IDN $SN
+fi
+if ! (getent passwd $SN > /dev/null); then
+   useradd -c "Color Daemon Owner" -d /var/lib/$SN \
+   -u $IDN -g $SN -s /bin/false $SN
+fi
+}
 
 build() {
 cd $name-$version
+mv po/fur.po po/ur.po
+sed -i 's/fur/ur/' po/LINGUAS
+
 mkdir build
 cd    build
 meson --prefix=/usr              \

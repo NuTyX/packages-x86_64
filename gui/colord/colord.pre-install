@@ -1,0 +1,15 @@
+. lib/lsb/init-functions
+
+SN="colord"
+IDN="71"
+
+if ! (getent group $SN > /dev/null); then
+   log_info_msg "${INFO}Creating $SN group${NORMAL}\n"
+   groupadd -g $IDN $SN
+fi
+
+if ! (getent passwd $SN > /dev/null); then
+   log_info_msg "${INFO}Creating $SN user${NORMAL}\n"
+   useradd -c "Color Daemon Owner" -d /var/lib/$SN \
+   -u $IDN -g $SN -s /bin/false $SN
+fi
