@@ -1,19 +1,30 @@
 description="Lightweight X11 Display Manager based on Gtk"
 url="https://en.wikipedia.org/wiki/LightDM"
-packager="dania@nutyx.org"
-contributors="Rems, Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems, Tnut, Daniel"
 
 name=lightdm
-version=1.28.0
-nutyx_version=11.0
-release=4
+version=1.30.0
+nutyx_version=11.1
+
 makedepends=(gtk3 libgcrypt pam pcre gobject-introspection xorg-libxklavier vala consolekit2)
 run=(consolekit2)
 
 source=(https://github.com/CanonicalLtd/$name/releases/download/$version/$name-$version.tar.xz
         http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz)
 
- build() {
+prepare() {
+SN="lightdm"
+IDN="65"
+if ! (getent group $SN > /dev/null); then
+   groupadd -g $IDN $SN
+fi
+if ! (getent passwd $SN > /dev/null); then
+   useradd -c "Lightdm Daemon" -d /var/lib/$SN \
+   -u $IDN -g $SN -s /bin/false $SN
+fi
+}
+build() {
  
  cd $name-$version 
  
@@ -42,7 +53,7 @@ install -v -dm755 -o lightdm -g lightdm $PKG/var/lib/lightdm-data
 install -v -dm755 -o lightdm -g lightdm $PKG/var/cache/lightdm
 install -v -dm770 -o lightdm -g lightdm $PKG/var/log/lightdm
 
-#Service
+# Service
 cd $SRC/nutyx-${nutyx_version}
 make DESTDIR=$PKG install-lightdm
 
