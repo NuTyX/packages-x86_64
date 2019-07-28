@@ -836,7 +836,7 @@ generate_group() {
 [ ! -d ${FOLDER}/etc ] && mkdir -pv ${FOLDER}/etc
 cat > ${FOLDER}/etc/group << "EOF"
 root:x:0:
-bin:x:1:
+bin:x:1:daemon
 sys:x:2:
 kmem:x:3:
 tape:x:4:
@@ -854,36 +854,16 @@ cdrom:x:15:
 adm:x:16:
 atd:x:17:
 messagebus:x:18:
-lpadmin:x:19:
-fcron:x:22:
 input:x:24:
-smmsp:x:26:
-polkitd:x:27:
 man:x:29
 wheel:x:30:root
-postfix:x:32:
-postdrop:x:33:
-mail:x:34:
-vmailman:x:35:
-news:x:36:
-dovecot:x:42:
-dovenull:x:43:
-ftp:x:45:
-proftpd:x:46:
-vsftpd:x:47:
-stunnel:x:51:
-pulse:x:58:
-pulse-access:x:59:
 games:x:60:
-lightdm:x:63:
 scanner:x:70:
-colord:x:71:
 vboxusers:x:80:
 ldap:x:83:
 avahi:x:84:
 avahi-autoipd:x:85:
 netdev:x:86:
-ntp:x:87:
 unbound:x:88:
 nogroup:x:99:
 users:x:999:
@@ -895,31 +875,16 @@ generate_passwd() {
 cat > ${FOLDER}/etc/passwd << "EOF"
 root::0:0:root:/root:/bin/bash
 bin:x:1:1:bin:/dev/null:/bin/false
+daemon:x:6:6:Daemon User:/dev/null:/bin/false
 lp:x:9:9:Print Service User:/dev/null:/bin/false
 atd:x:17:17:add daemon:/dev/null:/bin/false
 messagebus:x:18:18:D-Bus Message Daemon User:/dev/null:/bin/false
-fcron:x:22:22:Fcron User:/dev/null:/bin/false
 www:x:24:24:Nginx Server:/dev/null:bin/false
-smmsp:x:26:26:Sendmail Daemon:/dev/null:/bin/false
-polkitd:x:27:27:Policy Kit Daemon User:/etc/polkit-1:/bin/false
 man:x:29:29:Man Pages:/dev/null:/bin/false
-postfix:x:32:32:Postfix Daemon User:/var/spool/postfix:/bin/false
-sendmail:x:34:34:Sendmail Daemon:/dev/null:/bin/false
-vmailman:x:35:35:Vmail Daemon:/dev/null:/bin/false
-news:x:36:36:News Daemon:/dev/null:/bin/false
-dovecot:x:42:42:Dovecot unprivileged user:/dev/null:/bin/false
-dovenull:x:43:43:Dovecot login user:/dev/null:/bin/false
-ftp:x:45:45:anonymous_user:/home/ftp:/bin/false
-proftpd:x:46:46:proftpd:/srv/ftp:/usr/bin/proftpdshell
-vsftpd:x:47:47:vsftpd User:/dev/null:/bin/false
-stunnel:x:51:51:stunnel Daemon:/var/lib/stunnel:/bin/false
 games:x:60:60:Games High Score Owner:/var/games:/bin/false
-lightdm:x:63:63:Light Display Manager:/var/lib/lightdm:/sbin/nologin
-colord:x:71:71:Color Daemon Owner:/var/lib/colord:/bin/false
 ldap:x:83:83:OpenLDAP Daemon Owner:/var/lib/openldap:/bin/false
 avahi:x:84:84:Avahi Daemon Owner:/var/run/avahi-daemon:/bin/false
 avahi-autoipd:x:85:85:Avahi autoip Daemon:/:/var/run/avahi-autoipd:/bin/false
-ntp:x:87:87:Network Time Protocol:/var/lib/ntp:/bin/false
 unbound:x:88:88:Unbound DNS resolver:/var/lib/unbound:/bin/false
 anonymous:x:98:99:Unprivileged User:/dev/null:/bin/false
 nobody:x:99:99:Unprivileged User:/dev/null:/bin/false
