@@ -1,5 +1,3 @@
-# Depends on: libusb avahi python gnutls xdg-utils gtk-update-icon-cache
-
 description="The Common Unix Printing System (CUPS) is a print spooler and associated utilities"
 url="http://www.cups.org"
 packager="tnut <tnut@nutyx.org>"
@@ -11,14 +9,32 @@ PKGMK_GROUPS=(devel man)
 
 name=cups
 version=2.2.11
+nutyx_version=11.1
+release=2
 
-nutyx_version=11.0
-
+makedepends=(libusb avahi python gnutls xdg-utils gtk-update-icon-cache)
 run=(xdg-utils gtk-update-icon-cache)
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz \
 	https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
 	99-printer.rules)
+prepare() {
+
+SN="lpadmin"
+IDN="19"
+UN="lp"
+
+if ! (getent group $SN > /dev/null); then
+   groupadd -g $IDN $SN
+fi
+
+UN="lp"
+IDN="9"
+if ! (getent passwd $UN > /dev/null); then
+   useradd -c "Printer Service User" -d /var/spool/cups \
+   -u $IDN -g $UN -s /bin/false -u $UN
+fi
+}
 
 build() {
 	cd $name-$version
