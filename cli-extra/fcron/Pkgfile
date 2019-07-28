@@ -1,5 +1,3 @@
-# Depends on: vim pam
-
 description="Feature-rich cron implementation"
 url="http://fcron.free.fr"
 contributors="Pierre, Greg"
@@ -8,8 +6,10 @@ packager="tnut<tnut@nutyx.org>"
 name=fcron
 version=3.2.1
 release=4
-
-source=(http://fcron.free.fr/archives/$name-$version.src.tar.gz)
+nutyx_version=11.1
+makedepends=(vim pam)
+source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
+        http://fcron.free.fr/archives/$name-$version.src.tar.gz)
 
 prepare() {
 
@@ -22,7 +22,7 @@ build() {
 	cd $name-$version
 
 	./configure --prefix=/usr \
-                    --sysconfdir=/etc/fcron \
+                    --sysconfdir=/etc \
                     --without-sendmail \
                     --localstatedir=/var \
 	            --with-boot-install=no \
@@ -48,4 +48,7 @@ do
 install -d -m755 $PKG/etc/cron.$j
 done
 
+# Service
+cd $SRC/nutyx-${nutyx_version}
+make DESTDIR=$PKG install-fcron
 }
