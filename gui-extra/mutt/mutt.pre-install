@@ -1,0 +1,10 @@
+. lib/lsb/init-functions
+
+SN="mail"
+IDN="34"
+
+if ! (getent group $SN > /dev/null); then
+   log_info_msg "${INFO}Creating $SN group${NORMAL}\n"
+   groupadd -g $IDN $SN
+fi
+
