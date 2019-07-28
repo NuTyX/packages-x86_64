@@ -1,5 +1,3 @@
-# Depends on: libical libvorbis alsa-lib libusb-compat libsndfile cups glib
-
 description="The BlueZ package contains the Bluetooth protocol stack for Linux."
 url="http://www.bluez.org/"
 packager="tnut <tnut@nutyx.org>"
@@ -7,12 +5,16 @@ contributors="Pierre B"
 
 name=bluez
 version=5.50
-release=5
+nutyx_version=11.1
+release=6
+makedepends=(libical libvorbis alsa-lib libusb-compat libsndfile cups glib)
 
-source=(http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
+source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
+	http://www.linuxfromscratch.org/patches/blfs/8.4/bluez-5.50-obexd_without_systemd-1.patch
+	http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
 build() {
 cd $name-$version
-
+patch -Np1 -i ../bluez-5.50-obexd_without_systemd-1.patch
 ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -29,16 +31,13 @@ cd $name-$version
     --enable-cups \
     --disable-test \
     --enable-library \
-    --with-systemdsystemunitdir=/lib/systemd/system \
-    --with-systemduserunitdir=/usr/lib/systemd/user
+    --disable-systemd
 make
 make DESTDIR=$PKG install
 
 install -v -dm755 $PKG/{etc/bluetooth,usr/sbin}
-
+install -v -m644 src/main.conf $PKG/etc/bluetooth/main.conf
 ln -svf ../libexec/bluetooth/bluetoothd $PKG/usr/sbin
-ln -sv bluetooth.service  $PKG/lib/systemd/system/dbus-org.bluez.service
-ln -sv /usr/lib/systemd/user/obex.service $PKG/usr/lib/systemd/user/dbus-org.bluez.obex.service
 
 cat > $PKG/etc/bluetooth/rfcomm.conf << "EOF"
 # rfcomm.conf
@@ -69,4 +68,8 @@ install -v -m644 doc/*.txt $PKG/usr/share/doc/$name-$version
 
 # Obsolet lib
 rm $PKG/usr/lib/libbluetooth.la
+
+# Service
+cd $SRC/nutyx-${nutyx_version}
+make DESTDIR=$PKG install-bluetooth
 }
