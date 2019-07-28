@@ -5,14 +5,26 @@ packager="tnut <tnut@nutyx.org>"
 
 
 name=stunnel
-version=5.50
+version=5.55
+nutyx_version=11.1
 
-nutyx_version=11.0
 
 source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
 	ftp://ftp.stunnel.org/stunnel/archive/5.x/$name-$version.tar.gz
 	stunnel.conf)
+prepare () {
+SN="stunnel"
+IDN="51"
 
+if ! (getent group $SN > /dev/null); then
+   groupadd -g $IDN $SN
+fi
+if ! (getent passwd $SN > /dev/null); then
+   useradd -c "stunnel Daemon" -d /var/lib/$SN \
+   -u $IDN -g $SN -s /bin/false $SN
+fi
+
+}
 build () {
  
 cd $name-$version

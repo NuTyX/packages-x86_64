@@ -1,7 +1,14 @@
-if [ -z "`grep '^stunnel:' etc/group`" ]; then
-	groupadd -g 51 stunnel 
+. lib/lsb/init-functions
+
+SN="stunnel"
+IDN="51"
+
+if ! (getent group $SN > /dev/null); then
+   log_info_msg "${INFO}Creating $SN group${NORMAL}\n"
+   groupadd -g $IDN $SN
 fi
-if [ -z "`grep '^stunnel:' etc/passwd`" ]; then
-	useradd -c "stunnel Daemon" -d /var/lib/stunnel \
-        -g stunnel -s /bin/false -u 51 stunnel
+if ! (getent passwd $SN > /dev/null); then
+   log_info_msg "${INFO}Creating $SN user${NORMAL}\n"
+   useradd -c "stunnel Daemon" -d /var/lib/$SN \
+   -u $IDN -g $SN -s /bin/false $SN
 fi
