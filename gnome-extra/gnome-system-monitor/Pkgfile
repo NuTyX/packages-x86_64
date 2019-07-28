@@ -1,14 +1,15 @@
-# Depends on: meson gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache adwaita-icon-theme itstool libgtop libwnck gtkmm glibmm librsvg gnome-icon-theme desktop-file-utils
-
 description="A system monitor for GNOME"
 url="http://library.gnome.org/users/gnome-system-monitor/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce, Remy, Fanch"
-
+makedepends=(meson gsettings-desktop-schemas desktop-file-utils
+             gtk-update-icon-cache adwaita-icon-theme itstool
+             libgtop libwnck gtkmm glibmm librsvg gnome-icon-theme
+             desktop-file-utils)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
 name=gnome-system-monitor
-version=3.32.0
+version=3.32.1
 
 source=(http://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
