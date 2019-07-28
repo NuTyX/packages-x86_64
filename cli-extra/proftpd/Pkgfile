@@ -1,5 +1,3 @@
-# Depends on: libcap pam mariadb openssl pcre postgresql 
-
 description="A secure and highly configurable FTP daemon for serving large file archives over a network"
 url="ftp://ftp.proftpd.org/distrib/source/proftpd-1.3.6.tar.gz"
 contributors="Berlius, Greg"
@@ -8,13 +6,25 @@ packager="tnut <tnut@nutyx.org>"
 
 name=proftpd
 version=1.3.6
-release=3
-nutyx_version=11.0
+release=4
+nutyx_version=11.1
+makedepends=(libcap pam mariadb openssl pcre postgresql)
 
 source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
 	ftp://ftp.proftpd.org/distrib/source/$name-$version.tar.gz
 	proftpd.conf)
 
+prepare() {
+SN="proftpd"
+IDN="46"
+if ! (getent group $SN > /dev/null); then
+   groupadd -g $IDN $SN
+fi
+if ! (getent passwd $SN > /dev/null); then
+   useradd -c "$SN" -d /srv/ftp -g $SN \
+   -s /usr/bin/proftpdshell -u  $IDN $SN 
+fi
+}
 build() {
 	
  cd $SRC/$name-$version
@@ -28,8 +38,12 @@ package() {
  cd $SRC/$name-$version
 
  make DESTDIR=$PKG install
- install -v -m755 -d $PKG/etc 
- cp -v $SRC/proftpd.conf $PKG/etc
+
+ install -d -m755 $PKG/usr/share/doc/proftpd-$version
+ cp -Rv doc/*     $PKG/usr/share/doc/proftpd-$version
+
+ install -d -m755 $PKG/etc 
+ cp $SRC/proftpd.conf $PKG/etc/proftpd.conf.example
 
  # Service
  cd $SRC/nutyx-${nutyx_version}

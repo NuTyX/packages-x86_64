@@ -1,0 +1,17 @@
+. lib/lsb/init-functions
+SN="proftpd"
+IDN="46"
+if ! (getent group $SN > /dev/null); then
+	log_info_msg "${INFO}Creating $SN group${NORMAL}\n"
+	groupadd -g $IDN $SN
+fi
+if ! (getent passwd $SN > /dev/null); then
+	log_info_msg "${INFO}Creating $SN user${NORMAL}\n"
+	useradd -c "$SN" -d /srv/ftp -g $SN \
+        -s /usr/bin/proftpdshell -u  $IDN $SN
+fi
+if [ -d srv/ftp ]; then
+	install -v -d -m775 -o $SN -g $SN srv/ftp 
+fi
+ln -v -s /bin/false usr/bin/proftpdshell          
+echo /usr/bin/proftpdshell >> etc/shells
