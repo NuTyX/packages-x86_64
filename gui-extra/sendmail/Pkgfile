@@ -1,4 +1,3 @@
-# Depends on: ghostscript cyrus-sasl openssl procmail openldap 
 description="The sendmail package contains a Mail Transport Agent (MTA)."
 url="ftp://ftp.sendmail.org/pub/sendmail/"
 packager="tnut <tnut@nutyx.org>"
@@ -6,8 +5,9 @@ contributors="berlius"
 
 name=sendmail
 version=8.15.2
-release=3
-nutyx_version=9.92
+release=4
+nutyx_version=11.1
+makedepends=(ghostscript cyrus-sasl openssl procmail openldap)
 
 source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
 	ftp://ftp.sendmail.org/pub/$name/$name.$version.tar.gz site.config.m4)
