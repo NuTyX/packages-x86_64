@@ -1,13 +1,14 @@
-# Depends on: ninja meson cairo libthai freetype xorg-libxft gobject-introspection harfbuzz xorg-libxxf86vm gtk-doc fribidi
-
 description="Library for layout and rendering of text"
 url="http://www.pango.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=pango
-version=1.42.4
-release=2
+version=1.44.1
+makedepends=(ninja meson cairo libthai freetype xorg-libxft gobject-introspection
+             harfbuzz xorg-libxxf86vm gtk-doc fribidi)
+
+
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
