@@ -1,12 +1,12 @@
-# Depends on: libxcb kdecoration breeze-icons libksysguard libxcb 
-
-name=breeze
 description="Artwork, styles and assets for the Breeze visual style for the Plasma Desktop "
 url="https://www.kde.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+makedepends=(libxcb kdecoration breeze-icons libksysguard libxcb)
 run=(breeze-icons)
-version=5.16.3
+
+name=breeze
+version=5.16.4
 source=(https://download.kde.org/stable/plasma/${version:0:6}/$name-$version.tar.xz)
 
 build=kde5
