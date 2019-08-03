@@ -1,10 +1,10 @@
-# Depends on: extra-cmake-modules kcmutils kdoctools hicolor-icon-theme kwayland libfakekey qca-qt kde-cli-tools qtdeclarative sshfs
-
 description="Adds communication between KDE and your smartphone"
 url="https://community.kde.org/KDEConnect"
 packager="rems <rems@nutyx.org>"
 contributors=""
-
+makedepends=(extra-cmake-modules kcmutils kdoctools
+             hicolor-icon-theme kwayland libfakekey
+             qca-qt kde-cli-tools qtdeclarative sshfs)
 run=(hicolor-icon-theme qtdeclarative sshfs)
 
 name=kdeconnect
