@@ -1,5 +1,3 @@
-# Depends on: mesa
-
 description="library graphic 3D table OpenGL"
 url="http://www.xorg-mesa3d.org"
 packager="greg <greg@nutyx.org>"
@@ -7,10 +5,10 @@ contributors="Pierre B"
 
 name=xorg-glu
 _name=glu
-version=9.0.0
-release=3
+version=9.0.1
+makedepends=(mesa)
 
-source=(ftp://ftp.freedesktop.org/pub/mesa/${_name}/${_name}-$version.tar.bz2)
+source=(ftp://ftp.freedesktop.org/pub/mesa/${_name}/${_name}-$version.tar.xz)
 
 build() {
 
