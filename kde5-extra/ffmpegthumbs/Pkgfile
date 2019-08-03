@@ -1,12 +1,10 @@
-# Depends on : extra-cmake-modules kdoctools kio ffmpeg
-
 description="FFmpeg-based thumbnail creator for video files"
 url="https://projects.kde.org/projects/kde/applications/FFmpeg-based thumbnail creator for video files"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 name=ffmpegthumbs
-version=19.04.3
-
+version=19.08.0
+makedepends=(extra-cmake-modules kdoctools kio ffmpeg)
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build() {
