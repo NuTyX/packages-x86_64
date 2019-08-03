@@ -1,12 +1,13 @@
-# Depends on: kconfig kdoctools kiconthemes kinit ki18n kcmutils kio kservice kwindowsystem kactivities plasma-workspace
-
 description="Tools based on KDE Frameworks 5 to better interact with the system "
 url="https://www.kde.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=kde-cli-tools
-version=5.16.3
+version=5.16.4
+makedepends=(kconfig kdoctools kiconthemes kinit ki18n kcmutils kio kservice
+             kwindowsystem kactivities plasma-workspace)
+
 
 source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
 
