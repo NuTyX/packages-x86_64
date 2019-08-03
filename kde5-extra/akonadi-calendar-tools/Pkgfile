@@ -1,13 +1,13 @@
-# Depends on : akonadi-contacts akonadi-calendar calendarsupport libkdepim kcalutils kmailtransport boost extra-cmake-modules kdesignerplugin kdoctools 
-
 description="Akonadi calendar integration"
 url="https://projects.kde.org/akonadi-calendar-tools"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=akonadi-calendar-tools
-version=19.04.3
-
+version=19.08.0
+makedepends=(akonadi-contacts akonadi-calendar calendarsupport
+             libkdepim kcalutils kmailtransport boost
+             extra-cmake-modules kdesignerplugin kdoctools)
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build=kde5
