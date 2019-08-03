@@ -1,13 +1,12 @@
-# Depends on: libkdegames extra-cmake-modules kdoctools freecell-solver hicolor-icon-theme
-
 description="Offers a selection of solitaire card games"
 url="https://www.kde.org/"
-packager="rems <rems@nutyx.org>"
-contributors=""
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
 
 name=kpat
-version=19.04.3
-
+version=19.08.0
+makedepends=(libkdegames extra-cmake-modules kdoctools
+             freecell-solver hicolor-icon-theme)
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build=kde5
