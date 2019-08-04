@@ -1,15 +1,14 @@
-# Depends on: exo xfce4-libui xfce4-garcon xorg-libxklavier xorg-libxkbfile libcanberra gnome-icon-theme
-
 description="Settings manager for xfce"
 url="http://www.xfce.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Tyrry, Tnut, Greg"
-
+makedepends=(exo xfce4-libui xfce4-garcon xorg-libxklavier xorg-libxkbfile
+             libcanberra gnome-icon-theme)
 run=(gnome-icon-theme)
 
 name=xfce4-settings
 version=4.12.4
-
+release=2
 source=(http://archive.xfce.org/src/xfce/${name}/${version%.*}/$name-$version.tar.bz2 
 		default-xsettings-xml.patch)
 
