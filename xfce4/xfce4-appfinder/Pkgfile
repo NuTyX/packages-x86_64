@@ -1,13 +1,11 @@
-# Depends on: xfce4-libui xfce4-garcon 
-
 description="An application finder for Xfce"
 url="http://www.xfce.org/"
 packager="greg <greg@nutyx.org>"
 contributors="tyrry"
-
+makedepends=(xfce4-libui xfce4-garcon)
 name=xfce4-appfinder
 version=4.12.0
-release=2
+release=3
 
 source=(http://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2
 	    0001-Use-non-legacy-icon-names.patch)
