@@ -1,13 +1,11 @@
-# Depends on: dbus-glib libnotify xfce4-panel upower hicolor-icon-theme
-
 description="Power manager for the Xfce desktop."
 url="http://www.xfce.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="tyrry,tnut,greg" 
+makedepends=(dbus-glib libnotify xfce4-panel upower hicolor-icon-theme)
 
 name=xfce4-power-manager
-version=1.6.2
-
+version=1.6.4
 source=(http://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2)
 
 build() {
