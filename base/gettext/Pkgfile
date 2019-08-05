@@ -5,19 +5,12 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=gettext
-version=0.19.8.1
-release=1
+version=0.20.1
 
 source=(http://ftp.gnu.org/gnu/gettext/gettext-$version.tar.xz)
 build()
 {
 cd gettext-$version
-
-sed -i '/^TESTS =/d' gettext-runtime/tests/Makefile.in
-sed -i 's/test-lock..EXEEXT.//' gettext-tools/gnulib-tests/Makefile.in
-
-sed -e '/AppData/{N;N;p;s/\.appdata\./.metainfo./}' \
-    -i gettext-tools/its/appdata.loc
 
 ./configure --prefix=/usr \
             --disable-static \
