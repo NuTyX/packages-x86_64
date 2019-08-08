@@ -1,13 +1,12 @@
-# Depends on: glib gobject-introspection gtk-doc
-
 description="The libgudev package contains GObject bindings for libudev."
 url="http://www.codeforge.com/s/0/libgudev"
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch"
 
+makedepends=(glib gobject-introspection gtk-doc)
+
 name=libgudev
-version=232
-release=3
+version=233
 
 source=(http://ftp.gnome.org/pub/gnome/sources/libgudev/$version/libgudev-$version.tar.xz)
 build() {
