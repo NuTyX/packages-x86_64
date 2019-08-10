@@ -1,0 +1,21 @@
+description="A fork of zenity - display graphical dialogs from shell scripts or command line"
+url="https://github.com/v1cont/yad"
+packager="tnut <tnut@nutyx.org"
+contributors="Greg"
+name=yad
+version=3.0
+makedepends=(gtk3 webkitgtk)
+run=()
+
+source=(${url}/releases/download/$version/${name}-${version}.tar.xz)
+build() {
+cd $name-$version
+autoreconf -ivf
+intltoolize
+./configure --prefix=/usr \
+--with-gtk=gtk3 \
+--enable-icon-browser \
+--enable-html
+make
+make DESTDIR=$PKG install
+}
