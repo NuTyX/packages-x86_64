@@ -1,5 +1,3 @@
-# Depends on: polkit gtk3
-
 description="PolicyKit integration for the MATE desktop"
 url="https://mate-desktop.org/"
 packager="tnut <tnut@nutyx.org>"
@@ -7,7 +5,9 @@ contributors="greg,fanch,tnut,jayce"
 
 name=mate-polkit
 version=1.22.0
+release=2
 
+makedepends=(polkit gtk3)
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
