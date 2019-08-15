@@ -1,5 +1,3 @@
-# Depends on: gtk3 libwnck libfakekey libunique1 mate-panel
-
 description="A simple window management tool"
 url="https://mate-desktop.org/"
 packager="tnut <tnut@nutyx.org>"
@@ -7,7 +5,9 @@ contributors="Fanch, Tnut, Jayce, Greg"
 
 name=mate-netbook
 version=1.22.1
+release=2
 
+makedepends=(gtk3 libwnck libfakekey libunique1 mate-panel)
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
