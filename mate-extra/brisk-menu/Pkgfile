@@ -1,5 +1,3 @@
-# Depends on: git mate-desktop mate-menus mate-panel meson ninja
-
 description="Brisk menu an efficient menu for the MATE"
 url="https://github.com/solus-project/brisk-menu"
 packager="tnut <tnut@nutyx.org>"
@@ -7,8 +5,9 @@ contributors="jayce, Greg"
 
 name=brisk-menu
 version=git
+release=2
 
-
+makedepends=(git mate-desktop mate-menus mate-panel meson ninja)
 
 build() {
 	git clone https://github.com/getsolus/brisk-menu.git	
