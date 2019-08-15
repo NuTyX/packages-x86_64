@@ -1,5 +1,3 @@
-# Depends on: gtk3
-
 description="Mate calculator"
 url="https://mate-desktop.org/"
 packager="tnut <tnut@nutyx.org>"
@@ -7,7 +5,9 @@ contributors="Fanch, Tnut, Greg, Remy, Jayce"
 
 name=mate-calc
 version=1.22.1
+release=2
 
+makedepends=(gtk3)
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 uptodate() {
