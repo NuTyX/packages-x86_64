@@ -1,5 +1,3 @@
-# Depends on: gtksourceview libgtop libnotify mate-panel mate-icon-theme python-gobject upower wireless-tools upower
-
 description="Applets for MATE panel"
 url="https://mate-desktop.org/"
 packager="tnut <tnut@nutyx.org>"
@@ -7,6 +5,11 @@ contributors="Fanch, Tnut, Greg, Jayce, Remy"
 
 name=mate-applets
 version=1.22.1
+release=2
+
+makedepends=(gtksourceview libgtop libnotify mate-panel mate-icon-theme
+             python-gobject upower wireless-tools upower)
+run=(python-gobject)
 
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
