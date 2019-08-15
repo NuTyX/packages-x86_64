@@ -1,5 +1,3 @@
-# Depends on: xscreensaver
-
 description="Enable screensavers from xscreensaver for MATE"
 url="http://www.jwz.org/xscreensaver/"
 packager="greg <greg@nutyx.org>"
@@ -7,7 +5,10 @@ contributors="fanch"
 
 name=mate-screensaver-hacks
 version=5.26
-release=1
+release=2
+
+makedepends=(xscreensaver)
+run=(xscreensaver)
 
 source=(migrate-xscreensaver-config.sh
         xscreensaver-config.xsl LICENSE)
