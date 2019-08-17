@@ -1,5 +1,3 @@
-# Depends on: kwallet knotifications knotifyconfig kemoticons kparts kidletime qca-qt hicolor-icon-theme extra-cmake-modules kdoctools
-
 description="A user friendly IRC client for KDE"
 url="http://konversation.kde.org"
 packager="tnut <tnut@nutyx.org>"
@@ -7,6 +5,9 @@ contributors="Pierre B"
 
 name=konversation
 version=1.7.5
+release=2
+makedepends=(kwallet knotifications knotifyconfig kemoticons kparts kidletime
+             qca-qt hicolor-icon-theme extra-cmake-modules kdoctools)
 
 source=(http://download.kde.org/stable/$name/$version/src/$name-$version.tar.xz)
 
