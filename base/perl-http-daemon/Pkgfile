@@ -1,17 +1,15 @@
-# Depends on: perl perl-http-date perl-http-message perl-lwp-mediatypes 
-
 description="A simple http server class"
 url="https://metacpan.org/pod/HTTP::Daemon"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-run=( perl )
+makedepends=(perl perl-http-date perl-http-message perl-lwp-mediatypes)
+run=(perl)
 
 name=perl-http-daemon
-version=6.01
-release=1
+version=6.05
 
-source=(http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/HTTP-Daemon-$version.tar.gz)
+source=(http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/HTTP-Daemon-$version.tar.gz)
 
 build() {
 cd HTTP-Daemon-$version
