@@ -1,14 +1,14 @@
-# Depends on: perl perl-digest-hmac perl-net-ip perl-io-socket-inet6 perl-socket6 
-
 description="Perl Module: Interface to the DNS resolver"
 url="https://metacpan.org/pod/Net::DNS"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-run=( perl )
+makedepends=(perl perl-digest-hmac perl-net-ip
+             perl-io-socket-inet6 perl-socket6)
+run=(perl)
 
 name=perl-net-dns
-version=1.19
+version=1.20
 
 source=(http://www.cpan.org/authors/id/N/NL/NLNETLABS/Net-DNS-$version.tar.gz)
 
@@ -18,5 +18,6 @@ perl Makefile.PL INSTALLDIRS=vendor
 make
 make DESTDIR=$PKG install
 find $PKG -iname '*.pod' -or \
--name '.packlist' -delete
+-name '.packlist' -or \
+-empty -delete
 }
