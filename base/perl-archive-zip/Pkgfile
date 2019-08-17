@@ -1,20 +1,21 @@
-# Depends on: perl
-
 description="Programe Perl for creating, manipulating and writing Zip archive files"
-url="http://search.cpan.org/~adamk/Archive-Zip-1.23/lib/Archive/Zip.pm"
+url="https://metacpan.org/pod/Archive::Zip"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-run=( perl )
+run=(perl)
 
 name=perl-archive-zip
-version=1.60
+version=1.64
 
 source=(http://cpan.metacpan.org/authors/id/P/PH/PHRED/Archive-Zip-$version.tar.gz)
 
 build() {
-	cd Archive-*
-        perl Makefile.PL
-	make OPTIMIZE="${CFLAGS}"
-	make DESTDIR=${PKG} install
+cd Archive-*
+perl Makefile.PL INSTALLDIRS=vendor
+make OPTIMIZE="${CFLAGS}"
+make DESTDIR=${PKG} install
+find $PKG \
+	-name '*.bs' -or \
+	-name .packlist -delete
 }
