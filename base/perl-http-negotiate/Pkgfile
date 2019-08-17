@@ -1,15 +1,13 @@
-# Depends on: perl perl-http-message 
-
 description="Choose a variant to serve"
 url="https://metacpan.org/pod/HTTP::Negotiate"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-run=( perl )
+makedepends=(perl perl-http-message)
+run=(perl)
 
 name=perl-http-negotiate
 version=6.01
-release=1
 
 source=(http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/HTTP-Negotiate-$version.tar.gz)
 
@@ -20,5 +18,6 @@ make
 make DESTDIR=$PKG install
 
 find $PKG -name '*.bs' -or \
--name '.packlist' -delete
+-name '.packlist' -or \
+-empty -delete
 }
