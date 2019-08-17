@@ -1,5 +1,3 @@
-# Depends on: perl
-
 description="Perl Module: Easy manipulation of IPv4 and IPv6 addresses"
 url="https://metacpan.org/pod/Net::IP"
 packager="tnut <tnut@nutyx.org>"
@@ -18,5 +16,6 @@ PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
 make
 make DESTDIR=$PKG install
 find $PKG -iname '*.pod' -or \
--name '.packlist' | xargs rm
+-name '.packlist' -or \
+-empty -delete
 }
