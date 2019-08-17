@@ -1,15 +1,12 @@
-# Depends on: gettext perl
-
 description="Permits access from Perl to the gettext() family of functions"
 url="https://metacpan.org/pod/Locale::gettext"
 packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
-
-run=( perl )
+makedepends=(gettext perl)
+run=(perl)
 
 name=perl-locale-gettext
 version=1.07
-release=1
 
 source=(http://search.cpan.org/CPAN/authors/id/P/PV/PVANDRY/gettext-$version.tar.gz)
 
