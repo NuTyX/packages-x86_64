@@ -1,11 +1,10 @@
-# Depends on: perl perl-http-date perl-http-message
-
 description="HTTP cookie jars"
 url="https://metacpan.org/pod/HTTP::Cookies"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-run=( perl )
+makedepends=(perl perl-http-date perl-http-message)
+run=(perl)
 
 name=perl-http-cookies
 version=6.04
@@ -18,5 +17,6 @@ perl Makefile.PL INSTALLDIRS=vendor
 make
 make DESTDIR=$PKG install
 find $PKG -name '*.bs' -or \
--name '.packlist' -delete
+-name '.packlist' -or \
+-empty -delete
 }
