@@ -1,14 +1,12 @@
-# Depends on: perl-xml-namespacesupport perl-xml-sax-base
-
 description="Simple API for XML"
-url=""
+url="https://metacpan.org/pod/XML::SAX"
 packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
-
-run=( perl )
+makedepends=(perl-xml-namespacesupport perl-xml-sax-base)
+run=(perl)
 
 name=perl-xml-sax
-version=1.00
+version=1.02
 
 source=(
 http://www.cpan.org/authors/id/G/GR/GRANTM/XML-SAX-$version.tar.gz)
@@ -21,5 +19,7 @@ build() {
     PERLLIB=blib/lib make install INSTALLDIRS=vendor DESTDIR=$PKG
 
     # Remove .packlist if present in the package
-    find $PKG -name .packlist -delete
+    find $PKG -name .packlist -or \
+    -name '*.bs' -or \
+    -empty -delete
 }
