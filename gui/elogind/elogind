@@ -1,0 +1,67 @@
+#!/bin/sh
+########################################################################
+# Begin elogind
+#
+# Description : Startup script for elogind
+#
+# Authors     : DJ Lucas - dj@linuxfromscratch.org
+#
+# Version     : BLFS 8.4
+#
+########################################################################
+
+### BEGIN INIT INFO
+# Provides:            elogind
+# Required-Start:      dbus mountcgroupfs
+# Should-Start:
+# Required-Stop:
+# Should-Stop:
+# Default-Start:       2 3 4 5
+# Default-Stop:        0 1 6
+# Short-Description:   Manages user sessions
+# Description:         Starts the elogind user session management daemon
+# X-LFS-Provided-By:   BLFS
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+   start)
+      install -vdm755 /run/systemd > /dev/null 2>&1 &&
+      log_info_msg "Startng elogind Session Manager..." &&
+      test -d /run/systemd && start_daemon /lib/elogind/elogind -D
+      evaluate_retval
+      ;;
+
+    stop)
+      log_info_msg "Stopping elogind Session Manager..."
+      killproc /lib/elogind/elogind
+      evaluate_retval
+      ;;
+
+   reload)
+      log_info_msg "Reloading elogind Session Manager..."
+      pid=`pidofproc elogind`
+      kill -HUP "${pid}"
+      evaluate_retval
+      ;;
+
+   restart)
+      ${0} stop
+      sleep 1
+      ${0} start
+      ;;
+
+   status)
+      statusproc /lib/elogind/elogind
+      ;;
+
+   *)
+      echo "Usage: ${0} {start|stop|reload|restart|status}"
+      exit 1
+      ;;
+esac
+
+exit 0
+
+# End /etc/init.d/elogind

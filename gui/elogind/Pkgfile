@@ -1,0 +1,44 @@
+description="Standalone logind fork"
+url="https://github.com/elogind/elogind"
+packager="tnut <tnut@nutyx.org>"
+
+name=elogind
+version=241.3
+
+PKGMK_GROUPS=(doc devel man)
+makedepends=(dbus meson ninja eudev glib libseccomp)
+
+
+source=(elogind
+        https://github.com/${name}/${name}/archive/v${version}/$name-$version.tar.gz)
+
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+meson --prefix=/usr --sysconfdir=/etc \
+      --localstatedir=/var            \
+      -Dcgroup-controller=elogind     \
+      -Ddbuspolicydir=/etc/dbus-1/system.d ..
+ninja
+
+DESTDIR=$PKG ninja install
+
+ln -sfv  libelogind.pc $PKG/usr/lib/pkgconfig/libsystemd.pc
+ln -sfvn elogind $PKG/usr/include/systemd
+
+# Service
+mkdir -p $PKG/etc/rc.d/init.d
+install -m 754 ../../elogind $PKG/etc/rc.d/init.d/
+
+mkdir -p $PKG/etc/rc.d/rc{0,1,2,3,4,5,6}.d
+for i in 0 1 6
+do
+  ln -sf  ../init.d/elogind $PKG/etc/rc.d/rc${i}.d/K24elogind
+done
+for i in 2 3 4 5
+do
+  ln -sf  ../init.d/elogind $PKG/etc/rc.d/rc${i}.d/S31elogind
+done
+}
