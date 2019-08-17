@@ -1,11 +1,9 @@
-# Depends on: perl
-
 description="File path utility"
 url="https://metacpan.org/pod/Path::Tiny"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-run=( perl )
+run=(perl)
 
 name=perl-path-tiny
 version=0.108
@@ -21,6 +19,7 @@ perl Makefile.PL
 make
 make DESTDIR=$PKG install
 find $PKG \
-        -name '*.bs' -or \
-        -name .packlist | xargs rm
+ -name '*.bs' -or \
+ -name .packlist -or \
+ -empty -delete
 }
