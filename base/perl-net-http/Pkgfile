@@ -1,14 +1,12 @@
-# Depends on: perl
-
 description="Low-level HTTP connection (client)"
 url="https://metacpan.org/pod/Net::HTTP"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-run=( perl )
+run=(perl)
 
 name=perl-net-http
-version=6.18
+version=6.19
 
 source=(http://cpan.metacpan.org/authors/id/O/OA/OALDERS/Net-HTTP-$version.tar.gz)
 
@@ -19,5 +17,6 @@ make
 make DESTDIR=$PKG install
 find $PKG \
  -name '*.bs' -or \
- -name '.packlist' | xargs rm
+ -name '.packlist' -or \
+ -empty -delete
 }
