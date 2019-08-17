@@ -1,15 +1,13 @@
-# Depends on: perl perl-html-tagset 
-
 description="Perl HTML parser class"
 url="https://metacpan.org/pod/HTML::Parser"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-run=( perl )
+makedepends=(perl perl-html-tagset)
+run=(perl)
 
 name=perl-html-parser
 version=3.72
-release=1
 
 source=(http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/HTML-Parser-$version.tar.gz)
 
@@ -21,5 +19,5 @@ make DESTDIR=$PKG install
 
 find $PKG \
         -name '*.bs' -or \
-        -name .packlist | xargs rm
+        -name .packlist -delete
 }
