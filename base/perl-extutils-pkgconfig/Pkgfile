@@ -1,11 +1,9 @@
-# Depends on: perl-extutils-depends
-
 description="Perl connector for pkgconfig"
 url="https://metacpan.org/pod/ExtUtils::PkgConfig"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
-
-run=( perl )
+makedepends=(perl-extutils-depends)
+run=(perl)
 
 name=perl-extutils-pkgconfig
 version=1.16
@@ -17,7 +15,8 @@ build() {
 	perl Makefile.PL
 	make
 	make DESTDIR=$PKG install
-	find $PKG -name .packlist -delete
-	find $PKG -empty -delete
+	find $PKG \
+        -name .packlist -or \
+        -name *.bs -or \
+        -empty -delete
 }
-  
