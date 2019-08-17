@@ -1,12 +1,14 @@
-# Depends on: phonon-qt gstreamer gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad gstreamer-plugins-ugly libxml2 pulseaudio qtx11extras
-
 description="phonon-backend-gstreamer plugin audio for KDE"
 url="https://www.kde.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=phonon-backend-gstreamer-qt
-version=4.9.0
+version=4.9.1
+makedepends=(phonon-qt gstreamer gstreamer-plugins-base gstreamer-plugins-good
+             gstreamer-plugins-bad gstreamer-plugins-ugly libxml2 pulseaudio
+             qtx11extras)
+
 _name=phonon-backend-gstreamer
 
 source=( http://download.kde.org/stable/phonon/${_name}/$version/${_name}-$version.tar.xz)
