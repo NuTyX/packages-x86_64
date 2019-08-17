@@ -1,9 +1,7 @@
-# Depends on: perl
-
-description="Perl/CPAN AppConfig module - Read configuration files and parse command line arguments"
-url="http://search.cpan.org/dist/AppConfig/"
-packager="rems <rems@nutyx.org>"
-contributors=""
+description="AppConfig module - Read configuration files and parse command line arguments"
+url="https://metacpan.org/pod/AppConfig"
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
 
 run=(perl)
 
@@ -13,10 +11,14 @@ version=1.71
 source=(https://www.cpan.org/authors/id/N/NE/NEILB/AppConfig-$version.tar.gz)
 
 build() {
-	cd AppConfig-$version
+cd AppConfig-$version
 
-        perl Makefile.PL INSTALLDIRS=vendor
+perl Makefile.PL INSTALLDIRS=vendor
 
-	make
-	make DESTDIR=$PKG install
+make
+make DESTDIR=$PKG install
+find $PKG \
+	-name '*.bs' -or \
+	-name .packlist -delete
+
 }
