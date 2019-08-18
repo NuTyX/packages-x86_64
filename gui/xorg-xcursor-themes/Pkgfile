@@ -1,5 +1,3 @@
-# Depends on: xorg-xcursorgen
-
 description="game of themes for the curseurs X"
 url="http://xorg.freedesktop.org"
 packager="tnut <tnut@nutyx.org>"
@@ -9,7 +7,8 @@ _name=xcursor-themes
 name=xorg-xcursor-themes
 alias=(xcursor-themes)
 version=1.0.6
-
+release=2
+makedepends=(xorg-xcursorgen)
 source=(http://ftp.x.org/pub/individual//data/${_name}-$version.tar.bz2)
 
 build() {
