@@ -1,5 +1,3 @@
-# Depends on: meson docbook-xsl libxslt xorg-util-macros xorg-libpciaccess ninja
-
 description="Provides a userspace library for accessing the DRM, direct rendering manager"
 url="http://xorg.freedesktop.org"
 packager="tnut <tnut@nutyx.org>"
@@ -8,10 +6,9 @@ contributors="Pierre B, tnut"
 
 name=xorg-libdrm
 _name=libdrm
-version=2.4.98
-
+version=2.4.99
 alias=(libdrm)
-
+makedepends=(meson docbook-xsl libxslt xorg-util-macros xorg-libpciaccess ninja)
 source=(http://dri.freedesktop.org/${_name}/${_name}-$version.tar.bz2)
 
 build() {
