@@ -1,25 +1,13 @@
-# Depends on: 
-
 description="util-macros, contains the macros m4 used by the packages xorg"
 url="http://www.x.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
-
-PKGMK_GROUPS=()
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
 
 name=xorg-util-macros
 _name=util-macros
 version=1.19.2
+release=2
 
 source=(https://www.x.org/archive//individual/util/$_name-$version.tar.gz)
 
-build() {
-
-cd ${_name}-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-
-make
-make DESTDIR=$PKG install
-
-}
-
+build=xorg
