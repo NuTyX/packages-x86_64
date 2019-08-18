@@ -1,16 +1,14 @@
-# Depends on: meson ninja libpng
-
 description="library for the manipulation of pixels"
 url="http://xorg.freedesktop.org"
 packager="greg <greg@nutyx.org>"
 contributors="Pierre B"
 
-
 name=xorg-pixman
 _name=pixman
 alias=(pixman)
 version=0.38.4
-
+release=2
+makedepends=(meson ninja libpng)
 source=(http://ftp.x.org/pub/individual//lib/${_name}-$version.tar.bz2)
 
 build() {
