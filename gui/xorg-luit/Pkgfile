@@ -1,5 +1,3 @@
-# Depends on: xorg-libfontenc
-
 description="Filter that can be run between an arbitrary application and UTF8 emulator."
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
@@ -10,7 +8,8 @@ url="http://xorg.freedesktop.org"
 name=xorg-luit
 version=1.1.1
 _name=${name/xorg-/}
-
+release=2
+makedepends=(xorg-libfontenc)
 source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
 
 build=xorg
