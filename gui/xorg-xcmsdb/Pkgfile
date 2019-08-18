@@ -1,5 +1,3 @@
-# Depends on: xorg-libx11
-
 description="Device Color Characterization utility for X Color Management System."
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
@@ -10,7 +8,8 @@ url="http://xorg.freedesktop.org"
 name=xorg-xcmsdb
 version=1.0.5
 _name=${name/xorg-/}
-
+release=2
+makedepends=(xorg-libx11)
 source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
 
 build=xorg
