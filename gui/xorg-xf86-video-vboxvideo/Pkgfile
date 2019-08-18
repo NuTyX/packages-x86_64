@@ -1,13 +1,9 @@
-# Depends on: xorg-server
-
 description="Xorg VirtualBox video driver."
 packager="tnut <tnut@nutyx.org>"
 name=xorg-xf86-video-vboxvideo
 version=1.0.0
-release=3
-
 _name=${name/xorg-/}
-
+makedepends=(xorg-server)
 source=(http://ftp.x.org/pub/individual//driver/${_name}-$version.tar.bz2)
 
 build=xorg
