@@ -1,5 +1,3 @@
-# Depends on: xorgproto xorg-libxfont
-
 description="Convert X font from Bitmap Distribution Format to Portable Compiled Format."
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
@@ -9,9 +7,8 @@ url="http://xorg.freedesktop.org"
 
 name=xorg-bdftopcf
 version=1.1
-release=2
 _name=${name/xorg-/}
-
+makedepends=(xorgproto xorg-libxfont)
 source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
 
 build=xorg
