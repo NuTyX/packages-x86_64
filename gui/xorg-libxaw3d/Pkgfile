@@ -1,5 +1,3 @@
-# Depends on: xorgproto xorg-libxmu xorg-util-macros 
-
 description="Three-D Athena Widgets toolkit"
 url="http://xorg.freedesktop.org"
 packager="tnut <tnut@nutyx.org>"
@@ -7,8 +5,9 @@ contributors="Pierre B, Greg"
 
 name=xorg-libxaw3d
 version=1.6.3
+release=2
 _name=libXaw3d
-
+makedepends=(xorgproto xorg-libxmu xorg-util-macros)
 source=(http://xorg.freedesktop.org/archive/individual/lib/${_name}-$version.tar.bz2)
 
 build=xorg
