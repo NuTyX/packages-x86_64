@@ -1,5 +1,3 @@
-# Depends on: xorg-libxmu
-
 description="Users preferences utility for X."
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
@@ -10,7 +8,8 @@ url="http://xorg.freedesktop.org"
 name=xorg-xset
 version=1.2.4
 _name=${name/xorg-/}
-
+release=2
+makedepends=(xorg-libxmu)
 source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
 
 build=xorg
