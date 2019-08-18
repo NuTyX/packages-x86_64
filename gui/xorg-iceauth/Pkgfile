@@ -1,5 +1,3 @@
-# Depends on: xorgproto xorg-libice
-
 description="ICE authority file utility."
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
@@ -9,9 +7,8 @@ url="http://xorg.freedesktop.org"
 
 name=xorg-iceauth
 version=1.0.8
-release=2
 _name=${name/xorg-/}
-
+makedepends=(xorgproto xorg-libice)
 source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
 
 build=xorg
