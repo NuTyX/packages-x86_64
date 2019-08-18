@@ -1,5 +1,3 @@
-# Depends on: xorgproto xorg-libx11 xorg-libxt xorg-libxext
-
 description="libXpm, library Xorg"
 url="http://xorg.freedesktop.org"
 packager="tnut <tnut@nutyx.org>"
@@ -8,9 +6,8 @@ contributors="Pierre B, Greg"
 name=xorg-libxpm
 alias=(libXpm)
 version=3.5.12
-release=3
 _name=libXpm
-
+makedepends=(xorgproto xorg-libx11 xorg-libxt xorg-libxext)
 source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
 build=xorg
