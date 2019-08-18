@@ -1,16 +1,13 @@
-# Depends on: xorgproto xorg-libx11 xorg-libxext
-
 description="libXv, library X Video extension client"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
 
 name=xorg-libxv
 alias=(libXv)
 version=1.0.11
-release=3
 _name=libXv
-
+makedepends=(xorgproto xorg-libx11 xorg-libxext)
 source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
 build=xorg
