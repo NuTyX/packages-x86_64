@@ -1,13 +1,9 @@
-# Depends on: xorg-libdrm xorg-libxvmc mesa xorg-server
-
 description="Xorg drivers"
 packager="tnut <tnut@nutyx.org>"
 name=xorg-xf86-video-openchrome
 version=0.6.0
-release=3
-
 _name=${name/xorg-/}
-
+makedepends=(xorg-libdrm xorg-libxvmc mesa xorg-server)
 source=(http://ftp.x.org/pub/individual//driver/${_name}-$version.tar.bz2)
 
 build=xorg
