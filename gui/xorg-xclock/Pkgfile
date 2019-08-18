@@ -1,5 +1,3 @@
-# Depends on: xorg-libxft xorg-server xorg-libxaw xorg-libxmu
-
 description="clock analog for X mainly pout tester all X"
 url="http://xorg.freedesktop.org"
 packager="tnut <tnut@nutyx.org>"
@@ -8,17 +6,8 @@ contributors="Pierre B, Greg"
 _name=xclock
 name=xorg-xclock
 alias=(xclock)
-version=1.0.7
-release=1
-
+version=1.0.9
+makedepends=(xorg-libxft xorg-server xorg-libxaw xorg-libxmu)
 source=(http://ftp.x.org/pub/individual//app/${_name}-$version.tar.bz2)
 
-build() {
-
-	cd ${_name}-$version	
-	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-	
-	make
-	make DESTDIR=$PKG install
-	
-}
+build=xorg
