@@ -1,12 +1,9 @@
-# Depends on: xorg-server
-
 description="Xorg VMWare mouse input driver."
 packager="tnut <tnut@nutyx.org>"
 name=xorg-xf86-input-vmmouse
 version=13.1.0
 _name=${name/xorg-/}
-release=2
-
+makedepends=(xorg-server)
 source=(http://ftp.x.org/pub/individual//driver/${_name}-$version.tar.bz2)
 
 build() {
