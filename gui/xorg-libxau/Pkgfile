@@ -1,5 +1,3 @@
-# Depends on: xorgproto 
-
 description="libxi, X Authorization routines"
 url="http://xorg.freedesktop.org"
 packager="tnut <tnut@nutyx.org>"
@@ -7,8 +5,9 @@ contributors="Pierre B, Greg"
 
 name=xorg-libxau
 version=1.0.9
+release=2
 _name=libXau
-
+makedepends=(xorgproto)
 source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
 build=xorg
