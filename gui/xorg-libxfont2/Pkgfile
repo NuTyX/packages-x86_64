@@ -1,5 +1,3 @@
-# Depends on: freetype xorgproto xorg-xtrans xorg-libfontenc
-
 description="libXfont2, library Xorg"
 url="http://xorg.freedesktop.org"
 packager="tnut  <tnut@nutyx.org>"
@@ -8,10 +6,8 @@ contributors="Pierre B, Greg"
 name=xorg-libxfont2
 alias=(libXfont2)
 version=2.0.3
-release=3
-
 _name=libXfont2
-
+makedepends=(freetype xorgproto xorg-xtrans xorg-libfontenc)
 source=(http://ftp.x.org/pub/individual//lib/libXfont2-$version.tar.bz2)
 
 build=xorg
