@@ -1,5 +1,3 @@
-# Depends on: xorgproto xorg-libx11
-
 description="libXrender, library X Render extension client"
 url="http://xorg.freedesktop.org"
 packager="tnut <tnut@nutyx.org>"
@@ -8,10 +6,8 @@ contributors="Pierre B, Greg"
 name=xorg-libxrender
 alias=(libXrender)
 version=0.9.10
-release=3
-
 _name=libXrender
-
+makedepends=(xorgproto xorg-libx11)
 source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.bz2)
 
 build=xorg
