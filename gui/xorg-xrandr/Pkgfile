@@ -1,5 +1,3 @@
-# Depends on: xorg-libx11 xorg-libxrandr
-
 description="Primitive command line interface to RandR extension."
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
@@ -8,8 +6,9 @@ PKGMK_GROUPS=(doc man)
 url="http://xorg.freedesktop.org"
 
 name=xorg-xrandr
-version=1.5.0
+version=1.5.1
 _name=${name/xorg-/}
+makedepends=(xorg-libx11 xorg-libxrandr)
 
 source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
 
