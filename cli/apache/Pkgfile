@@ -3,17 +3,26 @@ url="http://httpd.apache.org/ABOUT_APACHE.html"
 packager="tnut <tnut@nutyx.org>"
 
 name=apache
-version=2.4.39
+version=2.4.41
 nutyx_version=11.1
-release=2
 
 makedepends=(pcre apr-util sqlite expat)
-
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	http://archive.apache.org/dist/httpd/httpd-$version.tar.bz2
 	http://www.linuxfromscratch.org/patches/blfs/svn/httpd-$version-blfs_layout-1.patch)
 
+prepare(){
+UN=apache
+GN=$SN
+if ! (getent group $GN > /dev/null); then
+   groupadd -g 25 $GN
+fi
+if ! (getent passwd $UN > /dev/null); then
+   useradd  -c "Apache Server" -d /srv/www \
+   -g $GN -s /bin/false -u 25 $UN
+fi
+}
 build(){
 
 cd httpd-$version
