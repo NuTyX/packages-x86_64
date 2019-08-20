@@ -1,27 +1,19 @@
-# Depends on: pam xorg-libxaw xorg-libxinerama xorg-xinit xorg-libxft
-
 description="X display Manager"
 url="https://xorg.freedesktop.org/"
-packager="greg <greg@nutyx.org>"
-contributors="tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="tnut, Greg"
 
 name=xorg-xdm
-version=1.1.11
-release=4
-
+version=1.1.12
+makedepends=(pam xorg-libxaw xorg-libxinerama xorg-xinit xorg-libxft)
 run=(xorg-xinit)
 
 source=($url/releases/individual/app/xdm-$version.tar.bz2
-		git_fixes.diff Xsession-loginshell.patch 
-		Xsession-xsm.patch)
-	
-	
+	Xsession.patch)
 build() {
 
    cd xdm-$version
-   patch -Np1 -i ../git_fixes.diff
-   patch -Np0 -i ../Xsession-loginshell.patch
-   patch -Np1 -i ../Xsession-xsm.patch
+   patch -Np1 -i ../Xsession.patch
    autoreconf -fi
    ./configure --prefix=/usr \
    --with-xdmconfigdir=/etc/X11/xdm \
