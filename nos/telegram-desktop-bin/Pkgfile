@@ -1,15 +1,12 @@
-# Depends on : glib hicolor-icon-theme xorg-libx11 chrpath
-
-
 description="Official desktop version of Telegram messaging app - Static binaries"
 url="https://desktop.telegram.org"
-packager="rems <rems@nutyx.org>"
-contributors="Greg, Minzord"
-
-run=()
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg, Minzord, Rems"
+makedepends=(glib hicolor-icon-theme xorg-libx11 chrpath)
+run=(hicolor-icon-theme)
 
 name=telegram-desktop-bin
-version=1.5.11
+version=1.8.1
 
 source=(https://updates.tdesktop.com/tlinux/tsetup.$version.tar.xz
 	telegram-desktop-bin.desktop
