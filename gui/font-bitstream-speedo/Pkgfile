@@ -1,5 +1,3 @@
-# Depends on: xorg-mkfontdir xorg-fontconfig xorg-font-util xorg-font-alias xorg-encodings
-
 description="Xorg Bitstream speedo fonts."
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
@@ -9,6 +7,10 @@ url="http://xorg.freedesktop.org"
 
 name=font-bitstream-speedo
 version=1.0.2
+release=2
+makedepends=(xorg-mkfontscale xorg-fontconfig xorg-font-util
+             xorg-font-alias xorg-encodings)
+
 
 source=(http://ftp.x.org/pub/individual/font/$name-$version.tar.bz2)
 
