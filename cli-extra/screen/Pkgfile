@@ -1,21 +1,13 @@
-# Depends on:
-
 description="Runs several separate processes on a single physical character-based terminal."
 url="http://www.gnu.org/software/screen/screen.html"
-contributors="pierre"
-packager="greg<greg@nutyx.org>"
-
-run=()
+contributors="Pierre B, Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=screen
-version=4.6.2
-release=1
+version=4.6.1
+release=2
 
 source=(ftp://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
-
-prepare() {
-echo "Fonction prepare sans objet"
-}
 
 build() {
 cd $name-$version
@@ -27,10 +19,6 @@ cd $name-$version
 --with-sys-screenrc=/etc/screenrc &&
 sed -i -e "s%/usr/local/etc/screenrc%/etc/screenrc%" {etc,doc}/* &&
 make
-}
-
-package() {
-cd $name-$version
 make DESTDIR=$PKG install
 mkdir $PKG/etc
 install -m 644 etc/etcscreenrc \
@@ -38,6 +26,9 @@ $PKG/etc/screenrc
 }
 
 uptodate() {
-echo "Fonction uptodate sans objet"
-}
+local url ext
+ext=".tar.gz"
+url="http://ftp.gnu.org/gnu/screen"
 
+lynx -dump -listonly --nonumbers $url/?O=A|tail -2|grep $ext$|sed s@$url/$name-@@|sed s@$ext@@
+}
