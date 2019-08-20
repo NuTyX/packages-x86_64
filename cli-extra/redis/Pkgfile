@@ -1,17 +1,12 @@
-# Depends on: jemalloc grep shadow
-
 description="Advanced key-value store"
 url="http://redis.io/"
-packager="greg<greg@nutyx.org>"
-contributors=""
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
 
-run=()
-
-
+makedepends=(jemalloc grep shadow)
 
 name=redis
-version=4.0.2
-release=1
+version=5.0.5
 
 source=(http://download.redis.io/releases/redis-$version.tar.gz
 redis.rc
@@ -37,9 +32,3 @@ install -D -m 755 $SRC/redis.rc $PKG/etc/rc.d/redis
 install -Dm644 redis.conf $PKG/etc/redis.conf
 install -Dm644 ../redis.logrotate $PKG/etc/logrotate.d/redis
 }
-
-uptodate() {
-echo "Fonction uptodate sans objet"
-}
-
-
