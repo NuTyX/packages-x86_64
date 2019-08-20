@@ -9,38 +9,29 @@ makedepends=(ruby icu gperf python2 qtdoc qttools cmake
      gstreamer-plugins-base)
 
 name=qtwebkit
-version=5.212.0alpha2
+version=5.212.0-alpha3
 
-source=(https://github.com/annulen/webkit/releases/download/qtwebkit-5.212.0-alpha2/qtwebkit-5.212.0-alpha2.tar.xz
-        qtwebkit-gcc7.patch
-        qtwebkit-null-pointer-dereference.patch
-        f51554bf.patch)
+source=(https://github.com/annulen/webkit/releases/download/$name-$version/$name-$version.tar.xz)
 
 build() {
 
-cd qtwebkit-5.212.0-alpha2
-patch -p1 -i ../qtwebkit-gcc7.patch
-patch -p1 -i ../qtwebkit-null-pointer-dereference.patch
-patch -p1 -i ../f51554bf.patch
-
-cd ..
-
+cd qtwebkit-$version
 mkdir build
 cd build
 
-cmake ../qtwebkit-5.212.0-alpha2 \
-    -DCMAKE_INSTALL_PREFIX=/usr \
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DPORT=Qt \
-    -DENABLE_TOOLS=OFF
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS} -DNDEBUG" \
+    -DENABLE_TOOLS=OFF ..
 make
 
 make DESTDIR=$PKG install
 # Fix pkgconfig files
-  sed -e 's|qt/Qt5WebKit|qt/QtWebKit|' -i "$pkgdir"/usr/lib/pkgconfig/Qt5WebKit.pc
-  sed -e 's|qt/Qt5WebKitWidgets|qt/QtWebKitWidgets|' -i "$pkgdir"/usr/lib/pkgconfig/Qt5WebKitWidgets.pc
-  sed -e '/Name/a Description: Qt WebKit module' -i "$pkgdir"/usr/lib/pkgconfig/Qt5WebKit.pc
-  sed -e '/Name/a Description: Qt WebKitWidgets module' -i "$pkgdir"/usr/lib/pkgconfig/Qt5WebKitWidgets.pc
+  sed -e 's|qt/Qt5WebKit|qt/QtWebKit|' -i $PKG/usr/lib/pkgconfig/Qt5WebKit.pc
+  sed -e 's|qt/Qt5WebKitWidgets|qt/QtWebKitWidgets|' -i $PKG/usr/lib/pkgconfig/Qt5WebKitWidgets.pc
+  sed -e '/Name/a Description: Qt WebKit module' -i $PKG/usr/lib/pkgconfig/Qt5WebKit.pc
+  sed -e '/Name/a Description: Qt WebKitWidgets module' -i $PKG/usr/lib/pkgconfig/Qt5WebKitWidgets.pc
 }
 
 uptodate() {
