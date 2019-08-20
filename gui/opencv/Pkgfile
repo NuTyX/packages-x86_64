@@ -1,0 +1,31 @@
+description="Contains graphics libraries mainly aimed at real-time computer vision."
+url="https://opencv.org"
+
+packager="tnut <tnut@nutyx.org>"
+makedepends=(cmake unzip ffmpeg gstreamer-plugins-base gtk3 jasper libjpeg-turbo2
+             libpng libtiff libwebp v4l-utils xine-lib python2 doxygen)
+
+name=opencv
+version=4.1.1
+
+source=( https://github.com/opencv/opencv/archive/$version/opencv-$version.tar.gz)
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr      \
+      -DCMAKE_BUILD_TYPE=Release       \
+      -DENABLE_CXX11=ON                \
+      -DBUILD_PERF_TESTS=OFF           \
+      -DWITH_XINE=ON                   \
+      -DBUILD_TESTS=OFF                \
+      -DENABLE_PRECOMPILED_HEADERS=OFF \
+      -DCMAKE_SKIP_RPATH=ON            \
+      -DBUILD_WITH_DEBUG_INFO=OFF      \
+      -Wno-dev  ..
+
+make
+make DESTDIR=$PKG install
+}
