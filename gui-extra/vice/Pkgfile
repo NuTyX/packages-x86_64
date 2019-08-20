@@ -1,12 +1,13 @@
-#Depends on: gtkglext pulseaudio giflib xorg-bdftopcf xorg-mkfontdir libpcap xorg-libxaw ffmpeg xa
-
 description="The Versatile Commodore 8-bit Emulator"
 url="http://vice-emu.sourceforge.net/"
-packager="Greg"
-contributors=""
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
 
 name=vice
 version=3.2
+release=2
+makedepends=(gtkglext pulseaudio giflib xorg-bdftopcf
+             xorg-mkfontscale libpcap xorg-libxaw ffmpeg xa)
 
 source=(http://downloads.sourceforge.net/project/vice-emu/releases/$name-$version.tar.gz 
         disable-fc-cache.patch)
@@ -31,11 +32,6 @@ build() {
     --enable-gnomeui \
     --enable-external-ffmpeg
   make
-}
-
-package() {
-  cd ${name}-${version}
-
   make DESTDIR="${PKG}" realdocdir="/usr/share/doc/vice" install -j1
   ln -s /usr/share/doc/vice "${PKG}/usr/lib/vice/doc"
 }
