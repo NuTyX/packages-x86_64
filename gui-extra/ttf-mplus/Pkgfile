@@ -5,7 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 makedepends=(xorg-fontconfig xorg-mkfontscale)
-run=(xorg-mkfontscale xorg-mkfontdir)
+run=(xorg-mkfontscale)
 
 name=ttf-mplus
 version=TESTFLIGHT-063
@@ -13,7 +13,7 @@ version=TESTFLIGHT-063
 source=(http://jaist.dl.osdn.jp/mplus-fonts/62344/mplus-${version}.tar.xz)
 
 build(){
-  cd ${SRC}/mplus-${_version}
+  cd ${SRC}/mplus-${version}
 
   install -d ${PKG}/usr/share/fonts/TTF
   install -m644 *.ttf ${PKG}/usr/share/fonts/TTF/
