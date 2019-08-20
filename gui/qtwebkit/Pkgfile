@@ -1,15 +1,15 @@
-# Depends on: ruby icu gperf python2 qtdoc qttools cmake qtlocation qtsensors qtwebchannel libwebp libxslt xorg-libxcomposite hyphen gstreamer-plugins-base
-
 description="Classes for a WebKit2 based implementation and a new QML API"
 url="http://qt-project.org/"
-packager="rems <rems@nutyx.org>"
-contributors="greg"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg, Rems"
 
-run=()
+makedepends=(ruby icu gperf python2 qtdoc qttools cmake
+     qtlocation qtsensors qtwebchannel libwebp
+     libxslt xorg-libxcomposite hyphen
+     gstreamer-plugins-base)
 
 name=qtwebkit
 version=5.212.0alpha2
-release=2
 
 source=(https://github.com/annulen/webkit/releases/download/qtwebkit-5.212.0-alpha2/qtwebkit-5.212.0-alpha2.tar.xz
         qtwebkit-gcc7.patch
