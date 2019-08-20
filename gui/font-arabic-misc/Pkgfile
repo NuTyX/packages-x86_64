@@ -1,5 +1,3 @@
-# Depends on: xorg-bdftopcf xorg-mkfontdir xorg-fontconfig xorg-font-util xorg-font-alias xorg-encodings
-
 description="Xorg Arabic Misc fonts."
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
@@ -9,7 +7,9 @@ url="http://xorg.freedesktop.org"
 
 name=font-arabic-misc
 version=1.0.3
-
+release=2
+makedepends=(xorg-bdftopcf xorg-mkfontscale xorg-fontconfig
+             xorg-font-util xorg-font-alias xorg-encodings)
 source=(http://ftp.x.org/pub/individual/font/$name-$version.tar.bz2)
 
 build() {
