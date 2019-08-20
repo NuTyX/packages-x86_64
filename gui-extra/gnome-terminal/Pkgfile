@@ -1,13 +1,15 @@
-# Depends on: gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache dconf gconf gtk3 gsettings-desktop-schemas vte3 nautilus 
-
 description="The GNOME Terminal Emulator"
 url="http://www.gnome.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce, Fanch, Remy"
+
+makedepends=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
+             dconf gconf gtk3 gsettings-desktop-schemas vte3 nautilus)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
 name=gnome-terminal
 version=3.32.2
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
