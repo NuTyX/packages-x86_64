@@ -1,14 +1,18 @@
-# Depends on: meson ninja freefont-ttf iso-codes itstool gtk3 docbook-xml libseccomp gsettings-desktop-schemas gobject-introspection startup-notification xorg-xkeyboard-config
-
 description="Library with common API for various GNOME modules"
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Fanch, Jayce, Remy"
 
+makedepends=(meson ninja freefont-ttf iso-codes itstool gtk3
+             docbook-xml libseccomp gsettings-desktop-schemas
+             gobject-introspection startup-notification
+             xorg-xkeyboard-config)
 run=(gsettings-desktop-schemas freefont-ttf)
 
 name=gnome-desktop
 version=3.32.2
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
