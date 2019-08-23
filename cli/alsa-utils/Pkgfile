@@ -1,17 +1,15 @@
-# Depends on: alsa-lib xmlto libsamplerate gawk dialog
-
 description="Utilities for configuring and using ALSA"
 url="http://www.alsa-project.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
-
+makedepends=(alsa-lib xmlto libsamplerate gawk dialog)
 run=(gawk)
 PKGMK_GROUPS=(man)
 
 name=alsa-utils
 version=1.1.9
-
-nutyx_version=11.0
+release=2
+nutyx_version=11.1
 
 source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
 	ftp://ftp.alsa-project.org/pub/utils/$name-$version.tar.bz2)
