@@ -1,15 +1,14 @@
-# Depends on: mtools nasm
-
 description="Bootloaders that can boot from FAT, ext2/3/4 or btrfs filesystems, from CDs and via PXE"
 url="http://syslinux.org"
 contributors="Pierre B, Greg"
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(mtools nasm)
 run=(mtools)
 
 name=syslinux
 version=6.03
-release=4
+release=5
 
 source=(http://downloads.tuxfamily.org/nutyx/files/splash-11.0.png
 	http://www.kernel.org/pub/linux/utils/boot/syslinux/$name-$version.tar.xz
