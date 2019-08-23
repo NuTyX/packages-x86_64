@@ -1,14 +1,18 @@
-# Depends on: adwaita-icon-theme gtk3 gstreamer-plugins-base gnome-icon-theme itstool yelp-xsl gobject-introspection libgnome-keyring nautilus gspell poppler-glib gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
-
 description="Pdf, Postscript, DjVu, Tiff, DVI documents viewer."
 url="http://gnome.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Remy, Fanch"
 
+makedepends=(adwaita-icon-theme gtk3 gstreamer-plugins-base
+             gnome-icon-theme itstool yelp-xsl gobject-introspection
+             libgnome-keyring nautilus gspell poppler-glib
+             gsettings-desktop-schemas desktop-file-utils
+             gtk-update-icon-cache)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
 name=evince
 version=3.32.0
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
