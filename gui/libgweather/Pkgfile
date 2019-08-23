@@ -1,13 +1,14 @@
-# Depends on: geocode-glib gtk3 gobject-introspection gtk-update-icon-cache gtk-doc libsoup meson ninja vala
-
 description="Provides access to weather information from the net"
 url="https://wiki.gnome.org/action/show/Projects/LibGWeather"
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, jayce, Remy"
+
+makedepends=(geocode-glib gtk3 gobject-introspection gtk-update-icon-cache
+             gtk-doc libsoup meson ninja vala)
 run=(gtk-update-icon-cache)
 
 name=libgweather
-version=3.32.0
+version=3.32.2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
