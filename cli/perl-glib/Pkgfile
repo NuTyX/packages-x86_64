@@ -1,15 +1,14 @@
-# Depends on: perl-extutils-depends gobject-introspection perl-extutils-pkgconfig 
-
 description="Perl connector for glib"
 url="http://www.gtkperl.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(perl-extutils-depends gobject-introspection perl-extutils-pkgconfig)
 run=( perl )
 
 name=perl-glib
 version=1.326
-release=1
+release=2
 
 source=(http://www.cpan.org/authors/id/X/XA/XAOC/Glib-$version.tar.gz)
 
@@ -20,6 +19,6 @@ build() {
 	make DESTDIR=$PKG install
 	find $PKG \
 	-name perllocal.pod \
-	-o -name .packlist | xargs rm 
-	rm $PKG -empty | xargs rmdir -p ||:
+	-or -name .packlist -or \
+        -empty -delete
 }
