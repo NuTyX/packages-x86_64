@@ -1,15 +1,14 @@
-# Depends on: gtk3 menu-cache alsa-lib libwnck wireless-tools keybinder3 libfm lxde-menu-data
-
-description="Ccontains a lightweight X11 desktop panel"
+description="Contains a lightweight X11 desktop panel"
 url="http://lxde.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="geantbrun, Greg"
 
+makedepends=(gtk3 menu-cache alsa-lib libwnck wireless-tools
+             keybinder3 libfm lxde-menu-data)
 name=lxde-panel
 alias=(lxpanel)
 _name=lxpanel
 version=0.10.0
-release=2
 
 source=(http://downloads.sourceforge.net/lxde/files/${_name}-$version.tar.xz)
 
@@ -22,7 +21,6 @@ prepare() {
   sed -i 's/libwnck-3.0//' configure.ac
   autoreconf -fi 
 }
-
 build() {
   cd $_name-$version
   
