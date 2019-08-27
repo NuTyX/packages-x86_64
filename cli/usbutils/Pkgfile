@@ -1,24 +1,21 @@
-# Depends on: libusb-compat hwids
-
 description="USB Device Utilities"
 url="http://downloads.sourceforge.net/linux-usb/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(libusb-compat hwids)
 run=(hwids)
 
 name=usbutils
-version=010
-release=2
+version=012
 
 source=(http://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-$version.tar.xz)
 
 build() {
 cd $name-$version
 
-./configure --prefix=/usr \
---datadir=/usr/share/hwdata \
---disable-zlib
+./autogen.sh --prefix=/usr \
+--datadir=/usr/share/hwdata
 
 mkdir -p $PKG/usr/share/hwdata
 
