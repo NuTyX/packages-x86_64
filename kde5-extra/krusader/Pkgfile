@@ -1,0 +1,16 @@
+description="Advanced twin panel (commander style) file manager for KDE Plasma"
+url="https://krusader.org"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=krusader
+version=2.7.2
+
+makedepends=(cmake extra-cmake-modules
+             karchive kbookmarks kcodecs kcompletion kconfig
+             kcoreaddons kguiaddons ki18n kiconthemes kio
+             knotifications kparts ktextwidgets kwallet
+             kwidgetsaddons kwindowsystem kxmlgui solid)
+run=(shared-mime-info desktop-file-utils gtk-update-icon-cache)
+source=(http://download.kde.org/stable/$name/$version/$name-$version.tar.xz)
+build=kde5
