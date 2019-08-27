@@ -1,16 +1,14 @@
-#Depends on : python python-urllib3 python-chardet python-certifi python-idna
-
 description="Python HTTP for Humans"
 url="https://pypi.python.org/pypi/requests"
 packager="tnut <tnut@nutyx.org>"
 contributors="Hugo"
 
 name=python-requests
-version=2.19.1
-
+version=2.22.0
 
 PKGMK_KEEP_SOURCES="no"
 
+makedepends=(python python-urllib3 python-chardet python-certifi python-idna)
 run=(python-urllib3 python-chardet python-certifi python-idna)
 
 source=(https://github.com/kennethreitz/requests/archive/v$version.tar.gz )
