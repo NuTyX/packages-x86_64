@@ -3,21 +3,17 @@ url="http://www.enlightenment.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Berlius, Sh4d0w"
 
-makedepends=(efl xcb-util-keysyms)
+makedepends=(meson ninja efl xcb-util-keysyms)
 run=(efl)
 
 name=enlightenment
-version=0.22.4
-release=2
+version=0.23.0
 
 source=(https://download.enlightenment.org/rel/apps/enlightenment/$name-$version.tar.xz)
-
-build() {
-cd $name-$version
-./configure --prefix=/usr
-make
-make DESTDIR=$PKG install
+prepare() {
+sed -i "91 s/true/false/" $name-$version/meson_options.txt
 }
+build=meson
 uptodate() {
 local ext url LYNX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
