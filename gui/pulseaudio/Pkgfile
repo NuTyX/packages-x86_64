@@ -1,15 +1,17 @@
-# Depends on: fftw intltool json-c libsndfile alsa-lib dbus glib libcap openssl speex speexdsp libsamplerate bluez sbc gconf webrtc-audio-processing jack
-
 description="A featureful, general-purpose sound server"
 url="http://www.pulseaudio.org"
+
 packager="tnut <tnut@nutyx.org"
 contributors="Pierre B"
 
+makedepends=(fftw intltool json-c libsndfile alsa-lib dbus glib libcap openssl
+             speex speexdsp libsamplerate bluez sbc gconf
+             webrtc-audio-processing jack)
 run=(bluez sbc)
 
 name=pulseaudio
 version=12.2
-release=3
+release=4
 
 source=(https://freedesktop.org/software/pulseaudio/releases/pulseaudio-$version.tar.xz)
 
@@ -17,6 +19,11 @@ build() {
 unset MAKEFLAGS
 cd pulseaudio-$version
 
+sed -i "s:asoundlib.h:alsa/asoundlib.h:" src/modules/alsa/*.{c,h}
+sed -i "s:use-case.h:alsa/use-case.h:" configure.ac
+sed -i "s:use-case.h:alsa/use-case.h:" src/modules/alsa/alsa-ucm.h
+
+NOCONFIGURE=1 ./bootstrap.sh
 ./configure --prefix=/usr         \
             --sysconfdir=/etc     \
             --localstatedir=/var  \
@@ -26,7 +33,8 @@ cd pulseaudio-$version
             --enable-gconf \
             --enable-jack \
             --enable-webrtc-aec \
-            --with-udev-rules-dir=/lib/udev/rules.d
+            --with-udev-rules-dir=/lib/udev/rules.d \
+            --with-systemduserunitdir=no
 make
 make DESTDIR=$PKG install
 mkdir -p $PKG/usr/share/icons/hicolor/scalable/devices
