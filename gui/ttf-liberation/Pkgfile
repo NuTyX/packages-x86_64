@@ -1,14 +1,14 @@
-# Depends on: xorg-fontconfig xorg-font-util xorg-encodings fontforge
-
 description="Red Hats Liberation fonts."
 url="http://sources.openelec.tv/mirror/liberation-fonts-ttf"
-packager="greg <greg@nutyx.org>"
-contributors="Alienus, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus, Greg"
 
-run=( xorg-fontconfig xorg-font-util xorg-encodings fontforge )
+makedepends=(xorg-fontconfig xorg-font-util xorg-encodings fontforge)
+run=(xorg-fontconfig xorg-font-util xorg-encodings fontforge )
+
 name=ttf-liberation
 version=2.00.1
-release=2
+release=3
 
 source=(https://releases.pagure.org/liberation-fonts/liberation-fonts-ttf-$version.tar.gz
 ttf-liberation.30-0-liberation-mono.conf
