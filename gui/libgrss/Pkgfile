@@ -1,13 +1,14 @@
-# Depends on: libxml2 glib libsoup gobject-introspection gtk-doc
-
 description="Glib based library to manage RSS and Atom feeds"
 url="http://www.gnome.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce"
+
+makedepends=(libxml2 glib libsoup gobject-introspection gtk-doc)
 run=(desktop-file-utils gtk-update-icon-cache)
 
 name=libgrss
 version=0.7.0
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:3}/$name-$version.tar.xz)
 
