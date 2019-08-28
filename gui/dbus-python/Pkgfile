@@ -1,15 +1,15 @@
-# Depends on: python2 python dbus-glib
-
 description="Python bindings for DBUS"
 url="http://dbus.freedesktop.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-run=( python python2 )
+makedepends=(python2 python dbus-glib)
+run=(python python2)
 
 name=dbus-python
 version=1.2.8
-release=2
+release=3
 
 source=( http://dbus.freedesktop.org/releases/$name/$name-$version.tar.gz\
 	)
