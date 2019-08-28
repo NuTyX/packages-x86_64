@@ -1,15 +1,15 @@
-# Depends on: python2-gobject2 python2-cairo libglade 
-
 description="provides the links of Python 2 for the class GObject of GLib."
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-run=( python2-gobject2 python2-cairo )
+makedepends=(python2-gobject2 python2-cairo libglade)
+run=(python2-gobject2 python2-cairo)
 
 name=python2-gtk
 version=2.24.0
-release=2
+release=3
 
 source=(http://ftp.gnome.org/pub/gnome/sources/pygtk/${version%.*}/pygtk-$version.tar.bz2)
 	
