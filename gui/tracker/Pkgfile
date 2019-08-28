@@ -1,13 +1,15 @@
-# Depends on: meson ninja json-glib icu networkmanager python2 sqlite upower libsoup vala gtk-doc desktop-file-utils gtk-update-icon-cache libseccomp
-
 description="Semantic data storage"
 url="http://www.gnome.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce"
+
+makedepends=(meson ninja json-glib icu networkmanager python2 sqlite upower libsoup
+             vala gtk-doc desktop-file-utils gtk-update-icon-cache libseccomp)
 run=(desktop-file-utils gtk-update-icon-cache)
 
 name=tracker
 version=2.2.2
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:3}/$name-$version.tar.xz)
 
