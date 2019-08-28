@@ -1,16 +1,13 @@
-# Depends on: intltool gconf gtk2 libgnome-keyring libgtop startup-notification gtk-doc
-
 description="Vgksu authorization library"
 url="http://www.nongnu.org/gksu/index.html"
-packager="greg<greg@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
 
-run=(intltool gtk-doc)
-
+makedepends=(intltool gconf gtk2 libgnome-keyring
+             libgtop startup-notification gtk-doc)
 name=libgksu
 version=2.0.12
-release=2
-
+release=3
 
 source=(http://people.debian.org/~kov/gksu/$name-$version.tar.gz
 		libgksu-2.0.0-fbsd.patch
@@ -21,8 +18,6 @@ source=(http://people.debian.org/~kov/gksu/$name-$version.tar.gz
         libgksu-2.0.7-libs.patch
         libgksu-2.0.7-polinguas.patch
         )
-
-
 
 build() {
   cd $name-$version
