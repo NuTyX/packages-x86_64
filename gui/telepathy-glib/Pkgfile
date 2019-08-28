@@ -1,15 +1,14 @@
-# Depends on: dbus-glib libxslt gobject-introspection vala 
-
 description="GLib bindings for the Telepathy D-Bus protocol"
 url="http://telepathy.freedesktop.org/"
 packager="greg <greg@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(dbus-glib libxslt gobject-introspection vala)
 run=(gobject-introspection vala)
 
 name=telepathy-glib
 version=0.24.1
-release=4
+release=5
 
 source=(http://${name%-*}.freedesktop.org/releases/$name/$name-$version.tar.gz)
 
