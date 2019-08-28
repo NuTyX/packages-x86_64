@@ -1,15 +1,15 @@
-# Depends on: librsvg libtiff libjpeg-turbo hicolor-icon-theme 
-
 description="Suite to create, manipulate and view DjVu ('déjà vu') documents"
 url="http://djvu.sourceforge.net"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
-run=( librsvg hicolor-icon-theme )
+makedepends=(librsvg libtiff libjpeg-turbo hicolor-icon-theme)
+run=(librsvg hicolor-icon-theme)
 
 name=djvulibre
 version=3.5.27
-release=2
+release=3
 
 source=(
 http://downloads.sourceforge.net/djvu/$name-$version.tar.gz)
