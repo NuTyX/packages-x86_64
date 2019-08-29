@@ -1,15 +1,17 @@
-# Depends on: libjpeg-turbo libpng xorg-libxft xorg-libxi xorg-libxinerama mesa doxygen
+# Depends on: 
 
 description="Graphical user interface toolkit for X"
 url="http://www.fltk.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+makedepends=(libjpeg-turbo libpng xorg-libxft xorg-libxi xorg-libxinerama mesa doxygen)
 
 name=fltk
 version=1.3.5
-release=2
+release=3
 
-source=(http://fltk.org/pub/fltk/1.3.4/fltk-1.3.4-1-source.tar.gz)
+source=(http://fltk.org/pub/fltk/$version/fltk-$version-1-source.tar.gz)
 build() {
 cd fltk-*
 
