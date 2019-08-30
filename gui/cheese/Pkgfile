@@ -1,13 +1,16 @@
-# Depends on: libcanberra clutter-gst clutter-gtk gnome-desktop gnome-video-effects gstreamer-plugins-bad gstreamer-plugins-good itstool librsvg libgudev gobject-introspection vala gtk-update-icon-cache
-
 description="Use your webcam to take photos and videos, apply fancy special effects and share the fun with others"
 url="https://wiki.gnome.org/Apps/Cheese"
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, Remy"
+
+makedepends=(libcanberra clutter-gst clutter-gtk gnome-desktop gnome-video-effects
+             gstreamer-plugins-bad gstreamer-plugins-good itstool librsvg libgudev
+             gobject-introspection vala gtk-update-icon-cache)
 run=(gtk-update-icon-cache)
 
 name=cheese
 version=3.32.1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 build() {
