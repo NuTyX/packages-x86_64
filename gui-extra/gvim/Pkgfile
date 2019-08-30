@@ -1,14 +1,15 @@
-# Depends on:  vim, gtk3, xorg-libxt
-
 description="GTK version of the vim editor"
 url="http://www.vim.org/"
+
 contributors="fanch, tnut, greg"
 packager="tnut <tnut@nutyx.org"
 
+makedepends=(vim, gtk3, xorg-libxt)
+run=(vim)
+
 name=gvim
 version=8.1
-
-run=(vim)
+release=2
 
 source=(ftp://ftp.vim.org/pub/vim/unix/vim-$version.tar.bz2)
 
