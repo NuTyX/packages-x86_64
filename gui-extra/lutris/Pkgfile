@@ -1,11 +1,15 @@
-# Depends on: python-gobject python-yaml python-evdev gtk3 glib psmisc unrar unzip p7zip curl xorg-xrandr
-
 description="Lutris is an open gaming platform for Linux."
-packager="liberodark"
 url="https://lutris.net"
 
+packager="tnut <tnut@nutyx.org>"
+contributors="Liberodark"
+
+makedepends=(python-gobject python-yaml python-evdev gtk3 glib psmisc
+             unrar unzip p7zip curl xorg-xrandr)
+run=(python-gobject python-yaml python-evdev)
+
 name=lutris
-version=0.4.23
+version=0.5.1.2
 
 source=($url/releases/${name}_$version.tar.xz)
 
