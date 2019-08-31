@@ -1,15 +1,17 @@
-# Depends on: eudev libusb ffmpeg gtk3 v4l-utils portaudio gsl desktop-file-utils
-name=guvcview
-version=2.0.6
-
 description="Simple GTK interface for capturing and viewing video from UVC devices"
 url="http://guvcview.sourceforge.net/"
 
-packager="daniel <dania@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Daniel"
+
+name=guvcview
+version=2.0.6
+release=2
+
+makedepends=(eudev libusb ffmpeg gtk3 v4l-utils portaudio gsl desktop-file-utils)
+run=(desktop-file-utils)
 
 source=(https://downloads.sourceforge.net/$name/$name-src-$version.tar.gz)
-
-run=(desktop-file-utils)
 
 build() {
 
