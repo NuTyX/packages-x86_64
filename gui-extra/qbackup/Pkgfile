@@ -1,12 +1,14 @@
-# Depends on: openjdk
-
 description="Cross-platform file backup"
-packager="liberodark"
 url="https://www.qualeed.com/en/qbackup/"
+
+packager="tnut <tnut@nutyx.org"
+contributors="liberodark"
 
 name=qbackup
 version=1.10.0.0
+release=2
 
+makedepends=(openjdk)
 run=(openjdk)
 
 source=(https://github.com/liberodark/qBackup/releases/download/${version}/qBackup-${version}.tar.gz $name.desktop $name.png)
