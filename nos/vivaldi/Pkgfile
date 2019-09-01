@@ -1,17 +1,19 @@
-# Depends on: gtk3 nss xorg-libxtst gconf xorg-libx11 freetype freefont-ttf desktop-file-utils shared-mime-info alsa-lib hicolor-icon-theme
-
 description="An advanced browser made with the power user in mind."
 url="https://vivaldi.com"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
+makedepends=(gtk3 nss xorg-libxtst gconf xorg-libx11 freetype
+             freefont-ttf desktop-file-utils shared-mime-info
+             alsa-lib hicolor-icon-theme)
+run=(gtk3 nss xorg-libxtst gconf xorg-libx11 freetype freefont-ttf
+     desktop-file-utils shared-mime-info alsa-lib hicolor-icon-theme)
+
 name=vivaldi
 _name=vivaldi-ffmpeg-codecs
-version=2.2
-_version=1388.37-1
-
-run=(gtk3 nss xorg-libxtst gconf xorg-libx11 freetype freefont-ttf desktop-file-utils shared-mime-info alsa-lib hicolor-icon-theme)
-
+version=2.7
+_version=1628.30-1
 
 source=(https://downloads.vivaldi.com/stable/$name-stable-$version.${_version}.x86_64.rpm
 libffmpeg.so)
