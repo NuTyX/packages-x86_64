@@ -1,16 +1,18 @@
-# Depends on: hicolor-icon-theme dbus qtbase qtdeclarative qtquickcontrols qtwebkit qtx11extras
-
 description="All-In-One Software for Remote Support and Online Meetings"
-packager="liberodark"
 url="https://www.teamviewer.com/"
+
+contributors="Liberodark"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(hicolor-icon-theme dbus qtbase qtdeclarative
+             qtquickcontrols qtwebkit qtx11extras)
+run=(qtwebkit qtdeclarative qtquickcontrols
+     qtx11extras hicolor-icon-theme)
 
 PKGMK_KEEP_SOURCES="no"
 
 name=teamviewer-14
-version=14.1.3399
-release=2
-
-run=(qtwebkit qtdeclarative qtquickcontrols qtx11extras hicolor-icon-theme)
+version=14.5.1691
 
 source=(https://download.teamviewer.com/download/linux/version_14x/teamviewer_amd64.deb)
 
