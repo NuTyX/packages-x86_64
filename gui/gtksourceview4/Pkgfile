@@ -1,0 +1,32 @@
+description="Syntax highlighting for the GtkTextView widget"
+url="http://mail.gnome.org/mailman/listinfo/gnome-devtools"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(gtk3 gobject-introspection vala gtk-doc)
+name=gtksourceview4
+
+version=4.2.0
+
+source=(http://download.gnome.org/sources/gtksourceview/${version:0:3}/gtksourceview-$version.tar.xz)
+
+build() {
+cd gtksourceview-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
+package() {
+# Obsolet lib
+rm $PKG/usr/lib/libgtksourceview-4.la
+}
+uptodate(){
+local latest lastversion url name
+name=gtksourceview
+url="http://ftp.gnome.org/pub/gnome/sources/$name"
+latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep [0-9]/$|head -1`"
+lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$latest/?C=N\;O=D|grep LATEST|grep [0-9]$|cut -d "-" -f3`"
+echo "$lastversion"
+}
