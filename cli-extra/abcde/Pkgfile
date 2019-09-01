@@ -1,12 +1,15 @@
-# Depends on: bash cd-discid wget libvorbis cdparanoia cdrtools flac id3lib lame mp3gain
-
 description="a better cd encoder"
 url="https://abcde.einval.com/"
-packager="remy <remy@nutyx.org>"
-contributors="Greg"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg, Remy"
+
+makedepends=(bash cd-discid wget libvorbis cdparanoia cdrtools
+             flac id3lib lame mp3gain)
 
 name=abcde
 version=2.9.2
+release=2
 
 source=(https://abcde.einval.com/download/$name-$version.tar.gz)
 
