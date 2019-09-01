@@ -1,12 +1,14 @@
-# Depends on: glib cups lcms2 poppler mupdf qpdf libjpeg-turbo libpng libtiff ghostscript avahi ijs harfbuzz 
-
 description="OpenPrinting CUPS Filters"
 url="http://www.cups.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(glib cups lcms2 poppler mupdf qpdf libjpeg-turbo
+             libpng libtiff ghostscript avahi ijs harfbuzz)
+
 name=cups-filters
-version=1.22.0
+version=1.25.4
 
 source=( http://www.openprinting.org/download/$name/$name-$version.tar.xz)
 build() {
