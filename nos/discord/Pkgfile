@@ -1,14 +1,16 @@
-# Depends on: gtk2 gconf libnotify xorg-libxscrnsaver glibc alsa-lib nspr nss pulseaudio libcxx
-
 description="All-in-one voice and text chat for gamers that's free and secure."
 url="https://discordapp.com/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
+makedepends=(gtk2 gconf libnotify xorg-libxscrnsaver
+             glibc alsa-lib nspr nss pulseaudio libcxx)
+run=(libcxx)
+
 name=discord
 version=0.0.9
-
-run=(libcxx)
+release=2
 
 source=(https://dl.discordapp.net/apps/linux/$version/$name-$version.tar.gz
 Discord.desktop
