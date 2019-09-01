@@ -1,14 +1,16 @@
-# Depends on: gtk3 alsa-lib libnotify curl nss cups xorg-libxscrnsaver desktop-file-utils shared-mime-info hicolor-icon-theme upower
-
 description="A fast and secure web browser"
 url="http://www.opera.com/"
+
 contributors="Rems"
 packager="tnut <tnut@nutyx.org>"
- 
-name=opera
-version=58.0.3135.47
 
+makedepends=(gtk3 alsa-lib libnotify curl nss cups
+             xorg-libxscrnsaver desktop-file-utils
+             shared-mime-info hicolor-icon-theme upower)
 run=(desktop-file-utils shared-mime-info hicolor-icon-theme)
+
+name=opera
+version=63.0.3368.53
 
 PKGMK_KEEP_SOURCES="no"
 
