@@ -1,22 +1,25 @@
-#Depends on:
-
 description="tool like grep, aimed at programmers with large trees of heterogeneous source code"
-url="http://beyondgrep.com/"
-contributors="berlius"
-packager="greg<greg@nutyx.org>"
+url="https://metacpan.org/pod/distribution/ack/ack"
 
+contributors="berlius, Greg"
+packager="tnut<tnut@nutyx.org>"
 
-name=ack
-version=2.24
+makedepends=(perl)
+run=(perl)
 
-source=(http://search.cpan.org/CPAN/authors/id/P/PE/PETDANCE/$name-$version.tar.gz)
+name=perl-ack
+version=3.1.1
+
+source=(https://cpan.metacpan.org/authors/id/P/PE/PETDANCE/ack-v$version.tar.gz)
 
 build() {
 
-cd $name-$version
+cd ack-v$version
 PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
 make
 make DESTDIR="$PKG" install
+find /tmp/work/pkg -name .packlist -or \
+-name '*.bs' -or -empty -delete
 
 }
 uptodate() {
