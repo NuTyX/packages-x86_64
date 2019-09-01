@@ -1,22 +1,19 @@
-#Depends on: sox ffmpeg gtk2 intltool docbook-xsl
-
 description="Imagination is a lightweight and simple DVD slideshow maker in GTK+2."
 url="http://imagination.sourceforge.net/"
-packager="Grakni <erondror@orange.fr>"
+
+contributors="Grakni"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(sox ffmpeg gtk2 intltool docbook-xsl)
 
 name=imagination
-version=3.0
+version=3.4
 
-source=(
-https://freefr.dl.sourceforge.net/project/$name/$name/$version/$name-$version.tar.gz)
+source=(https://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
 
 build() {
-cd $SRC/$name-$version
+cd $name-$version
 LDFLAGS="-lm -lgmodule-2.0" ./configure --prefix=/usr
 make
-}
-
-package() {
-cd $SRC/$name-$version
 make DESTDIR=$PKG install
 }
