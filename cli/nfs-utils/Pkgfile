@@ -1,30 +1,39 @@
-# Depends on: libtirpc rpcbind
-
 description="Userspace server and client tools necessary to use the kernel's NFS abilities."
 url="http://nfs.sourceforge.net"
+
 packager="tnut <tnut@nutyx.org>"
 
-name=nfs-utils
-version=2.2.1
-release=2
+makedepends=(libtirpc rpcbind rpcsvc-proto)
+run=(rpcbind)
 
-nutyx_version=11.0
+name=nfs-utils
+version=2.4.1
+nutyx_version=11.1
+
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	http://downloads.sourceforge.net/nfs/$name-$version.tar.bz2)
+	http://downloads.sourceforge.net/nfs/$name-$version.tar.xz)
 
 run=(rpcbind)
 
+prepare() {
+
+if ! (getent group nogroup > /dev/null); then
+   groupadd -g 99 nogroup
+fi
+if ! (getent passwd nobody > /dev/null); then
+   useradd -c "Unprivileged Nobody" -d /dev/null \
+   -g nogroup -s /bin/false -u 99 nobody
+fi
+}
 build() {
 # build package
 
 cd $name-$version
-sed -i '/fcntl.h/a#include <stdint.h>' support/nsm/rpc.c
-./configure --prefix=/usr     \
---sysconfdir=/etc \
---sbindir=/sbin   \
---disable-nfsv4   \
---disable-gss \
---without-tcp-wrappers		
+./configure --prefix=/usr \
+--sysconfdir=/etc         \
+--sbindir=/sbin           \
+--disable-nfsv4           \
+--disable-gss
 
 make
 mkdir $PKG/sbin
