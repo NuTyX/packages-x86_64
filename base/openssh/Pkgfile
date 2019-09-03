@@ -1,16 +1,16 @@
-# Depends on: openssl libedit
-
 description="Free version of the SSH connectivity tools"
 url="http://www.openssh.org/"
 
 contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(openssl libedit)
+
 name=openssh
 version=8.0p1
+release=2
 
-nutyx_version=11.0
-
+nutyx_version=11.1
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$name-$version.tar.gz)
 
