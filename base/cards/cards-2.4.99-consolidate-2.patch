@@ -1,0 +1,22 @@
+diff --git a/scripts/pkgmk.in b/scripts/pkgmk.in
+index 551c444..ad4341e 100644
+--- a/scripts/pkgmk.in
++++ b/scripts/pkgmk.in
+@@ -810,7 +810,7 @@ add_meta_to_archive() {
+ 
+ 	# TODO improve the pkginfo --runtimedepfiles functionnality
+ 	if [ "$PKGMK_IGNORE_RUNTIMEDEPS" == "no" ];then
+-		for dep in "$(pkginfo --runtimedepfiles $TAR|grep -v ^[A-Z])"; do
++		for dep in $(pkginfo --runtimedepfiles $TAR|grep -v ^[A-Z]); do
+ 			echo "R$dep" >> .META
+ 		done
+ 		# We don't want any .devel dependencies here
+@@ -830,7 +830,7 @@ add_meta_to_archive() {
+ 			rds=("run_$GROUP[@]")
+ 			if [ ! -z "$(echo ${!rds})" ]; then
+ 				info "Adding runtime deps to Archive $NAME"
+-				for rd in "$(echo ${!rds})"; do
++				for rd in $(echo ${!rds}); do
+ 					if [ "$(pkginfo -b $rd)" == "0" ] || [ "$(pkginfo -b $rd)" == "" ]; then
+ 						error "Runtime dependency $rd not found, cannot continue"
+ 						clean
