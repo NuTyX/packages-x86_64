@@ -1,22 +1,25 @@
-# Depends on: popt
-
 description="Tools and library to manipulate EFI variables"
 url="https://github.com/rhinstaller/efivar"
+
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(popt)
+
 name=efivar
-version=31
-release=1
-source=(https://github.com/rhinstaller/efivar/releases/download/$version/efivar-$version.tar.bz2)
+version=37
+
+source=(efivar-37-gcc-9-1.patch
+	https://github.com/rhinstaller/efivar/releases/download/$version/efivar-$version.tar.bz2)
+
 build() {
 unset MAKEFLAGS
-unset CFLAGS
 cd $name-$version
-cp -p Make.defaults Make.defaults.dist
+patch -Np1 -i ../efivar-37-gcc-9-1.patch
 sed 's|-O2|-Os|g' -i Make.defaults
 cp -p src/test/Makefile src/test/Makefile.dist
 sed 's|-rpath=$(TOPDIR)/src/|-rpath=$(libdir)|g' \
 -i src/test/Makefile
+CFLAGS+=" -flto"
 make libdir=/usr/lib/ bindir=/usr/bin/ \
 mandir=/usr/share/man/     \
 includedir=/usr/include/ V=1 -j1
