@@ -1,10 +1,12 @@
-# Depends on: git
-
 description="The linux kernel firmware set of files. More and more hardware requires this package"
+
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(git)
+
 name=linux-firmware
-version=20181026
+version=20190903
+
 unset MAKEFLAGS
 
 build() {
