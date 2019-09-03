@@ -1,16 +1,17 @@
-# Depends on: libffi sqlite
-
 description="Next generation of the python high-level scripting language"
 url="http://www.python.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
-PKGMK_GROUPS=(devel man doc)
+makedepends=(libffi sqlite)
 
+PKGMK_GROUPS=(devel man doc)
 _pybasever=2.7
 
 name=python2
 version=2.7.16
+release=2
 
 source=(
 ${url}/ftp/python/$version/Python-$version.tar.xz
