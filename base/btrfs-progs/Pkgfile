@@ -1,19 +1,18 @@
-# Depends on: lzo
-
 description="Btrfs filesystem utilities"
 url="http://btrfs.wiki.kernel.org/"
 
 contributors="Alienus"
 packager="tnut <tnut@tnut@nutyx.org>"
 
+makedepends=(lzo)
+
 name=btrfs-progs
-version=4.20.2
+version=5.2.1
 
 source=(https://www.kernel.org/pub/linux/kernel/people/kdave/$name/$name-v$version.tar.xz)
 
 build(){
 cd $name-v$version
-sed -i '1,100 s/\.gz//g' Documentation/Makefile.in
 ./configure \
 --prefix=/usr \
 --libdir=/lib \
