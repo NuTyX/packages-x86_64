@@ -1,15 +1,16 @@
-# Depends on: python2-setuptools
-
 description="Python syntax highlighter"
 url="http://pypi.python.org/"
+
 contributors="Tnut, Greg"
 packager="tnut <tnut@nutyx.org>"
 
-name=python2-pygments
-version=2.3.1
-release=2
+makedepends=(python2-setuptools)
 
-source=(https://files.pythonhosted.org/packages/64/69/413708eaf3a64a6abb8972644e0f20891a55e621c6759e2c3f3891e05d63/Pygments-2.3.1.tar.gz)
+name=python2-pygments
+version=2.4.2
+
+source=(
+https://files.pythonhosted.org/packages/7e/ae/26808275fc76bf2832deb10d3a3ed3107bc4de01b85dcccbe525f2cd6d1e/Pygments-$version.tar.gz)
 
 build() {
 
