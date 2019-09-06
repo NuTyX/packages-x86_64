@@ -1,12 +1,14 @@
-# Depends on: doxygen
-
 description="An alternative implementation of Linux sound support"
 url="http://www.alsa-project.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(doxygen)
+
 name=alsa-lib
 version=1.1.9
+release=2
 
 source=(ftp://ftp.alsa-project.org/pub/lib/$name-$version.tar.bz2)
 build() {

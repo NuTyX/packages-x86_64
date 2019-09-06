@@ -1,12 +1,14 @@
-# Depends on: cyrus-sasl json-c libidn liboauth libxml2 openldap pcre 
-
 description="bti (twitter/identi.ca console client)"
 url="http://gregkh.github.com/bti/"
 
-contributors="Alienus"
+contributors="Alienus, Rems"
 packager="tnut <tnut@nutyx.org>"
+
+makedepends=(cyrus-sasl json-c libidn liboauth libxml2 openldap pcre)
+
 name=bti
 version=034
+release=2
 
 source=(https://www.kernel.org/pub/software/web/bti/bti-$version.tar.xz
         0001-Replace-removed-is_error-macro.patch)

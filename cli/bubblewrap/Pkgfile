@@ -1,15 +1,15 @@
-# Depends on: libxslt docbook-xsl libcap
-
 description="Unprivileged sandboxing tool"
 url="https://github.com/projectatomic/bubblewrap"
-packager="greg<greg@nutyx.org"
+
+contributors="Greg, Rems"
+packager="tnut <tnut@nutyx.org"
+
+makedepends=(libxslt docbook-xsl libcap)
 
 name=bubblewrap
-version=0.3.1
+version=0.3.3
 
-PKGMK_KEEP_SOURCES="no"
-
-source=(https://github.com/projectatomic/bubblewrap/archive/v$version.tar.gz)
+source=(https://github.com/projectatomic/bubblewrap/releases/download/v$version/bubblewrap-$version.tar.xz)
 
 prepare() {
 
