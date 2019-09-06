@@ -1,11 +1,14 @@
-# Depends on: icu python python2
-
 description="Boost provides a set of free peer-reviewed portable C++ source libraries."
 url="http://boost.sourceforge.net/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Rems"
+
+makedepends=(icu python python2)
+
 name=boost
 version=1.70.0
+release=2
 
 source=(https://dl.bintray.com/boostorg/release/$version/source/${name}_${version//./_}.tar.bz2)
 
