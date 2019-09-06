@@ -1,24 +1,17 @@
+# Depends on: glib openjdk 
+
 description="Ant package is a Java-based build tool."
 url="http://ant.apache.org/"
-
 contributors="pierre B."
 
-makedepends=(glib)
-run=(openjdk)
-
 name=apache-ant
-version=1.10.6
+version=1.10.5
+release=3
 
 source=(https://www.apache.org/dist/ant/binaries/$name-$version-bin.tar.xz)
 build() {
 
 cd $name-$version
-
-sed -i 's/--add-modules java.activation/-html4/' build.xml
-./bootstrap.sh
-
-bootstrap/bin/ant -f fetch.xml -Ddest=optional
-./build.sh -Ddist.dir=$PWD/ant-$version dist
 
 install -d $PKG/opt/ant-$version/{bin,lib}
 cp -rf * $PKG/opt/ant-$version/lib
