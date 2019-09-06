@@ -1,10 +1,12 @@
-# Depends on: rustc
 description="Cbindgen can be used to generate C bindings for Rust code."
 url="https://github.com/eqrion/cbindgen/blob/master/README.md"
+
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(rustc)
+
 name=cbindgen
-version=0.8.7
+version=0.9.1
 
 source=(https://github.com/eqrion/cbindgen/archive/v$version/cbindgen-$version.tar.gz)
 
