@@ -1,12 +1,15 @@
-# Depends on: python llvm
-
 description="security-oriented fuzzer with compile-time instrumentation"
 url="http://lcamtuf.coredump.cx/afl/releases/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
+makedepends=(llvm)
+run=(python)
+
 name=afl
 version=2.52b
+release=2
 
 source=(http://lcamtuf.coredump.cx/afl/releases/$name-$version.tgz)
 
