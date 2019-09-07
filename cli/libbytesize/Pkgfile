@@ -1,13 +1,19 @@
 description="Library facilitates the common operations with sizes in bytes."
 url="https://github.com/storaged-project/libblockdev"
+
 packager="tnut <tnut@nutyx.org>"
+
+makedepends=(glib pcre2 python python2 gtk-doc)
+
 
 name=libbytesize
 version=2.1
+release=2
+
 makedepends=(glib pcre2 python python2 gtk-doc)
 
 source=( https://github.com/storaged-project/$name/releases/download/$version/$name-$version.tar.gz)
-package {
+package() {
 # Obsolet lib
 rm $PKG/usr/lib/libbytesize.la
 }
