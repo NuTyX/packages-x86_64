@@ -1,13 +1,14 @@
 description="The GLib package contains a low-level libraries useful for providing data structure handling"
 url="http://www.gtk.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Fanch"
 
+makedepends=(libffi pcre python elfutils meson ninja libxslt docbook-xsl)
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.60.6
-makedepends=(libffi pcre python elfutils meson ninja libxslt docbook-xsl)
+version=2.60.7
 
 
 source=(https://ftp.gnome.org/pub/gnome/sources/glib/${version:0:4}/$name-$version.tar.xz
