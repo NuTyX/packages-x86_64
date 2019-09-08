@@ -1,13 +1,15 @@
-# Depends on: libcap cmake
-
 description="Set of programs for CD/DVD recording, ISO image creation and audio CD extraction"
 url="http://cdrecord.org/"
+
 maintainer="Joerg Jaspert"
-contributors="Pierre B"
+contributors="Pierre B, Rems"
 packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libcap cmake)
 
 name=cdrtools
 version=3.02a09
+release=2
 
 source=(https://downloads.sourceforge.net/cdrtools/$name-$version.tar.bz2)
 
