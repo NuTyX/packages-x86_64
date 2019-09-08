@@ -1,12 +1,15 @@
-# Depends on: lzo libpng glib xorg-pixman xorg-fontconfig xcb-util xorg-libxrender xorg-libxxf86vm
-
 description="Cairo is a 2D graphics library with support for multiple output devices."
 url="http://www.cairographics.org/"
+
 packager="rems <rems@nutyx.org>"
 contributors="Pierre B,tnut"
 
+makedepends=(lzo libpng glib xorg-pixman xorg-fontconfig xcb-util
+             xorg-libxrender xorg-libxxf86vm)
+
 name=cairo
 version=1.16.0
+release=2
 
 source=( http://cairographics.org/releases/$name-$version.tar.xz)
 
