@@ -1,13 +1,14 @@
-# Depends on: git python-astroid python-six
-
 description="Analyzes Python code looking for bugs and signs of poor quality."
 url="http://pylint.org"
+
 packager="tnut <tnut@nutyx.org>"
+
+makedepends=(git python-astroid python-six)
 
 alias=(pylint)
 
 name=python-pylint
-version=2.2.2
+version=2.3.1
 
 source=(https://github.com/PyCQA/pylint/archive/pylint-$version.tar.gz)
 build() {
