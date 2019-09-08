@@ -1,12 +1,13 @@
-# Depends on: unzip
-
 description="A free C++ class library of cryptographic schemes"
 url="https://www.cryptopp.com/"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+contributors="Pierre B, Rems"
+
+makedepends=(unzip)
 
 name=crypto++
-version=7.0.0
+version=8.2.0
 
 source=(${url}cryptopp${version//./}.zip
         libcrypto++.pc)
