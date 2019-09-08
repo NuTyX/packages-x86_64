@@ -1,12 +1,14 @@
-# Depends on: keyutils talloc pam kerberos
-
 description="CIFS filesystem user-space tools"
 url="http://www.samba.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Rems, Graknu"
 
+makedepends=(keyutils talloc pam kerberos)
+
 name=cifs-utils
 version=6.9
+release=2
 
 source=(http://ftp.samba.org/pub/linux-cifs/$name/$name-$version.tar.bz2)
 
