@@ -1,12 +1,15 @@
-# Depends on: autoconf2-13 gtk2 gtk3 unzip yasm zip icu libevent libvpx nspr nss pulseaudio sqlite dbus-glib gconf gstreamer-plugins-base startup-notification
-
 description="Browser suite, the Open Source sibling of Netscape"
 url="https://www.seamonkey-project.org/"
+
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(autoconf2-13 gtk2 gtk3 unzip yasm zip icu libevent
+             libvpx nspr nss pulseaudio sqlite dbus-glib gconf
+             gstreamer-plugins-base startup-notification)
+
 name=seamonkey
-version=2.49.4
-release=3
+version=2.49.5
+
 locale_version=$version
 
 source=( https://ftp.mozilla.org/pub/$name/releases/$version/source/$name-$version.source.tar.xz )
@@ -98,6 +101,8 @@ EOF
 
 grep -rl -- '-Werror=format' |
     xargs sed -i 's/error=format/no-&/'
+
+sed -i '/USE_LIBS/,+2 s/^/#/' mozilla/security/manager/ssl/moz.build
 
 CFLAGS_HOLD=$CFLAGS
 CXXFLAGS_HOLD=$CXXFLAGS
