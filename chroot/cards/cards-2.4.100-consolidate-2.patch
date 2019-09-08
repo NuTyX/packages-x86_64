@@ -1,0 +1,13 @@
+diff --git a/scripts/pkgmk.in b/scripts/pkgmk.in
+index 16310b6..80483cc 100644
+--- a/scripts/pkgmk.in
++++ b/scripts/pkgmk.in
+@@ -111,7 +111,7 @@ get_variables() {
+ 		fi
+ 		if [ -z "$maintainer" ]; then
+ 			[ ! -z "$(echo $KEY|grep -i main)" ] && maintainer=$VALUE
+-			if [ ! -z "maintainer" ]; then
++			if [ ! -z "$maintainer" ]; then
+ 				error "Variable 'maintainer' should be used instead of comment form"
+ 				exit $E_PKGFILE
+ 			fi
