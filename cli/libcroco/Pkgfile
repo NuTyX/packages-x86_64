@@ -1,22 +1,21 @@
-# Depends on: libxml2 glib 
-
 description="The libcroco package contains a standalone CSS2 parsing and manipulation library."
 url="https://launchpad.net/libcroco"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(libxml2 glib)
+
 name=libcroco
 version=0.6.13
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/libcroco/0.6/$name-$version.tar.xz)
 
 
-build() {
-cd $name-$version
-./configure --prefix=/usr \
-	--disable-static
-make
-make DESTDIR=$PKG install
+build=autotools
+
+package(){
 rm $PKG/usr/lib/$name-0.6.la
 }
 uptodate(){
