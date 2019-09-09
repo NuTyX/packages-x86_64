@@ -1,12 +1,14 @@
-# Depends on: apr-util openssl scons kerberos 
+description="C-based HTTP client library built upon the Apache Portable Runtime (APR) library."
 
 packager="tnut <tnut@nutyx.org>"
 contributors="Berlius"
-description="C-based HTTP client library built upon the Apache Portable Runtime (APR) library."
+
+makedepends=(apr-util openssl scons kerberos)
 
 name=serf
 version=1.3.9	
-release=1
+release=2
+
 source=(https://archive.apache.org/dist/$name/$name-$version.tar.bz2)
  
 build() {
