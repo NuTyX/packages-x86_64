@@ -1,24 +1,33 @@
-# Depends on: eudev
-
 description="The libusb package contains a library used by some applications for USB device access."
 url="http://libusb.wiki.sourceforge.net/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(eudev doxygen)
+
 name=libusb
-version=1.0.22
-release=3
+version=1.0.23
 
 source=( https://github.com//libusb/libusb/releases/download/v$version/libusb-$version.tar.bz2)
 
 build() {
   unset MAKEFLAGS
   cd $name-$version
-  ./configure --prefix=/usr\
-          --disable-build-docs\
-          --mandir=/usr/share/man\
+
+  sed -i "s/^PROJECT_LOGO/#&/" doc/doxygen.cfg.in
+
+  ./configure --prefix=/usr \
+          --mandir=/usr/share/man \
+          --disable-static \
           --infodir=/usr/share/info
+  make -C doc docs
   make
   make DESTDIR=$PKG install
   rm $PKG/usr/lib/libusb-1.0.la
+
+  # Documentation
+  install -v -d -m755 $PKG/usr/share/doc/libusb-$version/apidocs
+  install -v -m644    doc/html/* \
+  $PKG/usr/share/doc/libusb-$version/apidocs
 }
