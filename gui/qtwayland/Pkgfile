@@ -1,12 +1,14 @@
 description="A cross-platform application and UI framework, QtWayland files"
 url="http://qt-project.org/"
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+contributors="Pierre B, Rems"
+
+makedepends=(qtbase qtdeclarative xorg-libxcomposite wayland)
 
 name=qtwayland
-version=5.13.0
+version=5.13.1
 _name="${name}-everywhere-src"
-makedepends=(qtbase qtdeclarative xorg-libxcomposite wayland)
+
 source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 build() {
