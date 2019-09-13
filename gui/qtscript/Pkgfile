@@ -1,12 +1,16 @@
 description="A cross-platform application and UI framework, QtScript files"
 url="http://qt-project.org/"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+contributors="Pierre B, Rems"
+
+makedepends=(qtbase)
 
 name=qtscript
-version=5.13.0
+version=5.13.1
+
 _name="${name}-everywhere-src"
-makedepends=(qtbase)
+
 source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 prepare() {
@@ -26,5 +30,4 @@ make INSTALL_ROOT=$PKG install
 # Obsolets libs
 rm $PKG/usr/lib/libQt5Script.la
 rm $PKG/usr/lib/libQt5ScriptTools.la
-
 }
