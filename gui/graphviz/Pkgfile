@@ -1,23 +1,21 @@
-# Depends on: gtk2 freetype xorg-fontconfig gdk-pixbuf libjpeg-turbo libpng pango libglade ghostscript swig guile openjdk lua python ruby tcl tk
-
 description="Graphviz is open source graph visualization software"
 url="http://www.graphviz.org"
-packager="rems <rems@nutyx.org>"
-contributors="Pierre B,tnut"
 
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Tnut, Rems"
+
+makedepends=(gtk2 freetype xorg-fontconfig gdk-pixbuf libjpeg-turbo2
+             libpng pango libglade ghostscript swig guile openjdk
+             lua python ruby tcl tk)
 
 name=graphviz
-version=2.40.1
-release=3
+version=2.42.1
 
-source=(http://$name.gitlab.io/pub/$name/stable/SOURCES/$name.tar.gz)
-
-PKGMK_KEEP_SOURCES="no"
+source=(https://www2.graphviz.org/Packages/stable/portable_source//$name-$version.tar.gz)
 
 build () {
   cd $name-$version
 
-  sed -e '/ruby/s/1\.9/2.4/' -i configure.ac
   sed -i '/LIBPOSTFIX="64"/s/64//' configure.ac
 
   autoreconf
@@ -57,4 +55,8 @@ rm $PKG/usr/lib/tcl8.6/graphviz/libgv_tcl.la
 rm $PKG/usr/lib/tcl8.6/graphviz/libtcldot.la
 rm $PKG/usr/lib/tcl8.6/graphviz/libtcldot_builtin.la
 rm $PKG/usr/lib/tcl8.6/graphviz/libtclplan.la
+rm $PKG/usr/lib/graphviz/libgvplugin_visio.la
+rm $PKG/usr/lib/graphviz/python2/libgv_python2.la
+rm $PKG/usr/lib/graphviz/python3/libgv_python3.la
+
 }
