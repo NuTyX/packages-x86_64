@@ -9,21 +9,10 @@ makedepends=(meson ninja xorg-libxfixes doxygen graphviz)
 name=libvdpau
 version=1.3
 
-source=(https://gitlab.freedesktop.org/vdpau/libvdpau/-/archive/$name/$name-$version.tar.bz2)
+source=(https://gitlab.freedesktop.org/vdpau/libvdpau/-/archive/$version/$name-$version.tar.bz2)
 
-build() {
+build=meson
 
-cd $name-$version
-
-mkdir build
-cd    build
-
-meson --prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---docdir=/usr/share/doc/libvdpau-$version
-
-ninja 
-
-DESTDIR=$PKG ninja install
+package() {
+mv $PKG/usr/share/doc/libvdpau{,-$version}
 }
