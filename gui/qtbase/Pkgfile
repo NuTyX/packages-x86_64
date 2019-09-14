@@ -21,8 +21,7 @@ makedepends=(git xorgproto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext
 
 _name="${name}-everywhere-src"
 
-source=(qt-$version-upstream_fixes-1.patch
-	https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
+source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 
 build() {
@@ -31,7 +30,6 @@ QT5PREFIX=/usr
 QT5BINDIR=$QT5PREFIX/bin/qt
 
 cd ${_name}-${version}
-patch -Np1 -i ../qt-$version-upstream_fixes-1.patch
 
 ./configure -prefix         /usr                        \
             -sysconfdir     /etc/xdg                    \
