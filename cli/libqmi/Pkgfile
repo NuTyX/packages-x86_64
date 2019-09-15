@@ -1,20 +1,18 @@
-# Depends on: python2 glib libgudev libmbim
-
 description="GLib-based library for talking to WWAN modems and devices (QMI) protocol."
 url="http://www.freedesktop.org/software/libqmi/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(python2 glib libgudev libmbim)
+
 name=libqmi
-version=1.22.4
+version=1.22.6
 
 source=( http://www.freedesktop.org/software/libqmi/libqmi-$version.tar.xz)
 
-build() {
-cd libqmi-$version
-./configure --prefix=/usr --disable-static
-make
-make DESTDIR=$PKG install
+build=autotools
+package() {
 # Obsolet lib
 rm $PKG/usr/lib/libqmi-glib.la
 }
