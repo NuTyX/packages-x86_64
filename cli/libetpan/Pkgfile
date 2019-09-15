@@ -1,15 +1,15 @@
-# Depends on: libgcrypt expat cyrus-sasl gnutls zlib
-
 description="A portable middleware for email access"
 url="http://www.etpan.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-PKGMK_KEEP_SOURCES="no"
+makedepends=(libgcrypt expat cyrus-sasl gnutls zlib)
 
 name=libetpan
 version=1.9.3
 
+PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/dinhviethoa/$name/archive/$version.tar.gz)
 
 build() {
