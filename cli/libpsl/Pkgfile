@@ -1,11 +1,12 @@
-# Depends on: python2 libidn libunistring
-
 description="C library to handle the Public Suffix List"
 url="https://github.com/rockdaboot/libpsl"
+
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(python2 libidn libunistring)
+
 name=libpsl
-version=0.20.2
+version=0.21.0
 
 source=(https://github.com/rockdaboot/libpsl/releases/download/$name-$version/$name-$version.tar.gz)
 build() {
