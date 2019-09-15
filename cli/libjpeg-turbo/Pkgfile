@@ -1,13 +1,14 @@
-# Depends on: nasm
-
 description="Fork of the original IJG libjpeg which uses SIMD to accelerate baseline JPEG"
 url="http://libjpeg-turbo.virtualgl.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(nasm)
+
 name=libjpeg-turbo
 version=1.5.3
-release=4
+release=5
 
 source=(http://sourceforge.net/projects/libjpeg-turbo/files/$version/libjpeg-turbo-$version.tar.gz)
 
