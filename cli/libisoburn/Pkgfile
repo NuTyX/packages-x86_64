@@ -1,20 +1,18 @@
-# Depends on: libburn libisofs acl attr doxygen
-
 description="libisoburn is a frontend for libraries libburn and libisofs"
 url="http://libburnia-project.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(libburn libisofs acl attr doxygen)
+
 name=libisoburn
 version=1.5.0
+release=2
 
 source=(http://files.libburnia-project.org/releases/libisoburn-$version.tar.gz)
-build () {
-cd $name-$version
-./configure --prefix=/usr --disable-static 
-make
-make DESTDIR=$PKG install
-
+build=autotools
+package(){
 # Obsolet lib
 rm $PKG/usr/lib/libisoburn.la
 } 
