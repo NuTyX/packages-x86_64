@@ -1,12 +1,14 @@
-# Depends on: libusb confuse boost cmake swig
-
 description="A library to talk to FTDI chips, optional python bindings."
 url="http://www.intra2net.com/en/developer/libftdi/download.php"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
+makedepends=(libusb confuse boost cmake swig)
+
 name=libftdi
 version=1.4
+release=2
 
 source=(http://www.intra2net.com/en/developer/libftdi/download/${name}1-$version.tar.bz2)
 
