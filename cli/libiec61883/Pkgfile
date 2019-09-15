@@ -1,25 +1,18 @@
 description="A higher level API for streaming DV, MPEG-2 and audio over Linux IEEE 1394."
 url="http://www.kernel.org/pub/linux/libs/ieee1394/"
-contributors="fanch"
-packager="greg<greg@nutyx.org>"
 
-# Depends on: libraw1394
+contributors="Fanch, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libraw1394)
 
 name=libiec61883
 version=1.2.0
-release=2
+release=3
 
 source=(https://www.kernel.org/pub/linux/libs/ieee1394/${name}-${version}.tar.xz)
 
-build() {
-
-cd $name-$version
-./configure \
---prefix=/usr 
-make
-
-make DESTDIR=$PKG install
-
+package() {
 # Obsolet lib
 rm $PKG/usr/lib/libiec61883.la
 }
