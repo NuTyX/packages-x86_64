@@ -10,20 +10,20 @@ name=libtorrent-rasterbar
 version=1.2.1
 _version=${version//./_}
 
-source=(https://github.com/arvidn/libtorrent/archive/libtorrent_"${_version}".tar.gz)
+source=(https://github.com/arvidn/libtorrent/archive/libtorrent-"${_version}".tar.gz)
 
 build() {
 mkdir -v py2 py3
-  cd libtorrent-libtorrent_"${_version}"
-  sed -i 's/-msse4.2//' configure.ac
-  ./autotool.sh
+cd libtorrent-libtorrent-"${_version}"
+sed -i 's/-msse4.2//' configure.ac
+./autotool.sh
 cp -a * ../py2
 cp -a * ../py3
 cd ../py2
 _boost="boost_python"
 CXXFLAGS="$CXXFLAGS -std=c++11" \
   PYTHON=/usr/bin/python2 \
-  ../libtorrent-libtorrent_${_version}/configure \
+  ../libtorrent-libtorrent-${_version}/configure \
   --prefix=/usr \
   --enable-python-binding \
   --enable-examples \
@@ -38,7 +38,7 @@ cd ../py3
 _boost="boost_python3"
 CXXFLAGS="$CXXFLAGS -std=c++11" \
   PYTHON=/usr/bin/python3 \
-  ../libtorrent-libtorrent_${_version}/configure \
+  ../libtorrent-libtorrent-${_version}/configure \
   --prefix=/usr \
   --enable-python-binding \
   --enable-examples \
