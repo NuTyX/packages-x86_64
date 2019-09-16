@@ -1,12 +1,13 @@
-# Depends on: libpng libjpeg-turbo2 libtiff
-
 description="WebP library and conversion tools"
 url="https://developers.google.com/speed/webp/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(libpng libjpeg-turbo2 libtiff)
+
 name=libwebp
-version=1.0.2
+version=1.0.3
 
 source=(http://downloads.webmproject.org/releases/webp/$name-$version.tar.gz)
 
@@ -23,5 +24,4 @@ make
 make DESTDIR=$PKG install
 # Obsolets libs
 rm $PKG/usr/lib/libwebp{,decoder,demux,mux}.la
-
 }
