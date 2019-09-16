@@ -1,14 +1,14 @@
-# Depends on: boost python python2
-
 description="A C++ BitTorrent library that aims to be a good alternative to all the other implementations around"
 url="http://www.rasterbar.com/products/libtorrent/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Rems"
 
+makedepends=(boost python python2)
+
 name=libtorrent-rasterbar
-version=1.1.12
+version=1.2.1
 _version=${version//./_}
-release=2
 
 source=(https://github.com/arvidn/libtorrent/archive/libtorrent_"${_version}".tar.gz)
 
