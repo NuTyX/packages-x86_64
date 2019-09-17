@@ -1,13 +1,15 @@
-# Depends on: ncurses openssl zlib unzip zip sharutils
-
 description="Text-based web browser."
 url="http://lynx.isc.org/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Danny Rawlins, crux at romster dot me"
+
 maintainer="Mark Rosenstand, mark at borkware dot net"
+packager="tnut <tnut@nutyx.org>"
+contributors="Danny R"
+
+makedepends=(ncurses openssl zlib unzip zip sharutils)
 
 name=lynx
 version=2.8.9rel.1
+release=2
 
 source=(http://invisible-mirror.net/archives/${name}/tarballs/${name}$version.tar.bz2)
 
