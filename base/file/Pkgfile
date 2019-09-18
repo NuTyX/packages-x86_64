@@ -1,10 +1,11 @@
 description="Utility for determining the type of a given file or files."
 url="ftp://ftp.fu-berlin.de/unix/tools/file/"
+
 maintainer="Christos Zoulas"
 packager="tnut <tnut@nutyx.org>"
 
 name=file
-version=5.36
+version=5.37
 
 source=(ftp://ftp.astron.com/pub/file/file-$version.tar.gz)
 
@@ -14,6 +15,9 @@ cd $name-$version
 make
 make check
 make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libmagic.la
 }
 devel()
 {
