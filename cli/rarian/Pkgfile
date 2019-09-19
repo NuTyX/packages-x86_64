@@ -1,13 +1,14 @@
-# Depends on: libxslt 
-
 description="Documentation meta-data library, designed as a replacement for Scrollkeeper."
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(libxslt)
+
 name=rarian
 version=0.8.1
-release=2
+release=3
 
 source=( http://ftp.gnome.org/pub/gnome/sources/rarian/${version%.*}/$name-$version.tar.bz2)
 build() {
