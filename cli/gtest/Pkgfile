@@ -1,16 +1,16 @@
-# Depends on: python2 cmake
-
 description="Google Test - C++ testing utility"
 url="https://github.com/google/googletest/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(python2 cmake)
+
 name=gtest
 version=1.8.0
-release=3
+release=4
 
 PKGMK_KEEP_SOURCES="no"
-
 source=(gtest.pc.in gtest-pkgconfig.patch gmock-install.patch gmock.pc.in
 	https://github.com/google/googletest/archive/release-${version}.tar.gz)
 
