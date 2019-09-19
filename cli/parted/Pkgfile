@@ -1,13 +1,14 @@
-# Depends on: lvm2 
-
 description="A program for creating, destroying, resizing, checking and copying partitions"
 url="http://www.gnu.org/software/parted/index.shtml"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(lvm2)
+
 name=parted
 version=3.2
-release=2
+release=3
 
 source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz
  http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-devmapper-1.patch)
