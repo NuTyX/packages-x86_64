@@ -1,13 +1,15 @@
-# Depends on: db libsamplerate readline doxygen celt 
-
 description="A low-latency audio server"
 url="http://jackaudio.org"
+
 packager="tnut <tnut@nutyx.org>"
+
+makedepends=(db libsamplerate readline doxygen celt)
 
 _longname=jack-audio-connection-kit
 
 name=jack
 version=0.125.0
+release=2
 
 source=(http://jackaudio.org/downloads/${_longname}-$version.tar.gz
         jack-99-audio.conf
