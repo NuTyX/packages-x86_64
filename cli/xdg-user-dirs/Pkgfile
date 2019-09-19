@@ -1,12 +1,15 @@
-# Depends on: libxslt docbook-xsl
-
 description="Manage user directories like ~/Desktop and ~/Music"
 url="http://www.freedesktop.org/wiki/Software/xdg-user-dirs"
+
 packager="tnut <tnut@nutyx.org>"
 maintainer="Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>"
 
+makedepends=(libxslt docbook-xsl)
+
 name=xdg-user-dirs
 version=0.17
+release=2
+
 source=(http://user-dirs.freedesktop.org/releases/$name-$version.tar.gz
         xdg-user-dirs)
 
