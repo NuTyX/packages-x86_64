@@ -1,13 +1,14 @@
-# Depends on: perl perl-net-dns perl-digest-sha1 perl-uri perl-digest-nilsimsa 
-
 description="A distributed, collaborative, spam detection and filtering network"
 url="http://search.cpan.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(perl perl-net-dns perl-digest-sha1 perl-uri perl-digest-nilsimsa)
+
 name=razor
 version=2.85
-release=2
+release=3
 
 unset MAKEFLAGS
 source=(http://sourceforge.net/projects/razor/files/razor-agents/$version/razor-agents-$version.tar.bz2
