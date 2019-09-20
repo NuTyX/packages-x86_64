@@ -1,14 +1,14 @@
-# Depends on: git
-
 description="AudioProcessing library based on Google's implementation of WebRTC"
 url="https://freedesktop.org/software/pulseaudio/webrtc-audio-processing/"
-packager="rems <rems@nutyx.org>"
-contributors=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
+
+makedepends=(git)
 
 name=webrtc-audio-processing
 version=0.3.1
-
-source=()
+release=2
 
 prepare () {
 git clone https://anongit.freedesktop.org/git/pulseaudio/webrtc-audio-processing $name
