@@ -1,12 +1,14 @@
-# Depends on: brotli git cmake ninja
 description="Web Open Font Format 2 reference implementation"
 url="https://github.com/google/woff2"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch"
 
+makedepends=(brotli git cmake ninja)
+
 name=woff2
 version=1.0.2
-release=2
+release=3
 
 source=()
 
@@ -19,4 +21,3 @@ build() {
   ninja 
   DESTDIR=$PKG ninja install
 }
-
