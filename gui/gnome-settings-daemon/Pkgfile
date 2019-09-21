@@ -7,7 +7,7 @@ contributors="Fanch, Tnut, jayce, Remy"
 makedepends=(geoclue2 geocode-glib libgweather librsvg meson
              networkmanager ninja nss intltool cups colord
              gnome-desktop libcanberra libnotify libgnomekbd
-             libwacom pulseaudio upower)
+             libwacom pulseaudio upower elogind  gcr)
 run=(gtk-update-icon-cache gsettings-desktop-schemas)
 
 name=gnome-settings-daemon
@@ -15,4 +15,12 @@ version=3.34.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
-build=meson
+build() {
+cd $name-$version
+mkdir build
+cd    build
+meson --prefix=/usr --sysconfdir=/etc \
+-Dsystemd=false ..
+ninja
+DESTDIR=$PKG ninja install
+}
