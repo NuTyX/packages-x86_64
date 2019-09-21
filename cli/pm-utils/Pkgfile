@@ -1,13 +1,14 @@
-# Depends on: pm-quirks 
-
 description="Utilities and scripts for suspend and hibernate power management"
 url="http://pm-utils.freedesktop.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(pm-quirks)
+
 name=pm-utils
 version=1.4.1
-release=2
+release=3
 
 source=(http://pm-utils.freedesktop.org/releases/pm-utils-${version}.tar.gz
         02-logging-append.patch
