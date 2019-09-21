@@ -1,12 +1,14 @@
-# Depends on: libtirpc
-
 description="Useful to List Open Files for a given running application or process."
+url="http://ftp.u-strasbg.fr/securite"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Berlius, Fanch"
-url="http://ftp.u-strasbg.fr/securite"
+
+makedepends=(libtirpc)
 
 name=lsof
 version=4.91
+release=2
 
 source=(http://ftp.u-strasbg.fr/securite/lsof/lsof_$version.tar.gz)
 
