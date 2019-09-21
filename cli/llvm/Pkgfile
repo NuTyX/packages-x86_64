@@ -1,13 +1,13 @@
-# Depends on: libffi python2 cmake ninja
-
 description="Low Level Virtual Machine, collection of modular and reusable compiler and toolchain."
 url="http://llvm.org/"
-maintainer="Chris Lattner <sabre at nondot dot org>"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Remy"
 
+makedepends=(libffi python2 cmake ninja)
+
 name=llvm
-version=8.0.0
+version=9.0.0
 
 source=(${url}releases/$version/$name-$version.src.tar.xz
 	${url}releases/$version/cfe-$version.src.tar.xz
