@@ -1,12 +1,14 @@
-# Depends on: glib openjdk 
-
 description="Ant package is a Java-based build tool."
 url="http://ant.apache.org/"
+
+packager="tnut <tnut@nutyx.org>"
 contributors="pierre B."
+
+makedepends=(glib openjdk)
 
 name=apache-ant
 version=1.10.5
-release=3
+release=4
 
 source=(https://www.apache.org/dist/ant/binaries/$name-$version-bin.tar.xz)
 build() {
