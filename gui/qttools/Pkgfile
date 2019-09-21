@@ -8,6 +8,8 @@ makedepends=(qtbase qtdeclarative desktop-file-utils hicolor-icon-theme xdg-util
 
 name=qttools
 version=5.13.1
+release=2
+
 _name="${name}-everywhere-src"
 
 source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
@@ -80,5 +82,5 @@ rm $PKG/usr/lib/libQt5Designer.la
 rm $PKG/usr/lib/libQt5DesignerComponents.la
 rm $PKG/usr/lib/libQt5Help.la
 rm $PKG/usr/lib/libQt5UiTools.la
-
+rm $PKG/usr/lib/Qt5UiPlugin.la
 }
