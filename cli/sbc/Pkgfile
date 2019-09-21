@@ -1,13 +1,13 @@
-# Depends on: libsndfile
-
+description="Digital audio encoder and decoder used to transfer data to Bluetooth audio output devices."
 url="https://fr.wikipedia.org/wiki/SBC_%28codec%29"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-description="Digital audio encoder and decoder used to transfer data to Bluetooth audio output devices."
+makedepends=(libsndfile)
 name=sbc
 version=1.4
-release=2
+release=3
 
 source=(http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
 
