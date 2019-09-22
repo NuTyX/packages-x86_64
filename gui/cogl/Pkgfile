@@ -1,12 +1,14 @@
-# Depends on: xorg-libxrandr gdk-pixbuf mesa xorg-glu pango xorg-libdrm gobject-introspection
-
 description="An object oriented GL/GLES Abstraction/Utility Layer"
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+
+makedepends=(xorg-libxrandr gdk-pixbuf mesa xorg-glu
+             pango xorg-libdrm gobject-introspection)
+
 name=cogl
-version=1.22.2
-release=3
+version=1.22.4
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
