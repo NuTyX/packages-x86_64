@@ -1,13 +1,18 @@
-# Depends on: xorgproto pkg-config libtool xorg-xrandr wayland wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext xorg-libxdamage expat llvm elfutils xorg-libxshmfence libva libvdpau
-
 description="Mesa is an OpenGL compatible 3D graphics library."
 url="http://www.xorg-mesa3d.org"
+
 packager="rems <rems@nutyx.org>"
 contributors="Pierre B, tnut"
+
+makedepends=(xorgproto pkg-config libtool xorg-xrandr wayland
+             wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext
+             xorg-libxdamage expat llvm elfutils xorg-libxshmfence
+             libva libvdpau)
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
 version=18.3.6
+release=2
 
 source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/mesa/mesa-$version-add_xdemos-1.patch)
