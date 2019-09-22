@@ -1,17 +1,17 @@
-# Depends on: expat xorg-libx11 xorg-libsm xorg-libice
-
-PKGMK_GROUPS=(doc devel)
-
 description="Freedesktop.org message bus system"
 url="http://www.freedesktop.org/wiki/Software/dbus/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Jayce"
 
+makedepends=(expat xorg-libx11 xorg-libsm xorg-libice)
+
 name=dbus
 version=1.12.16
+release=2
+nutyx_version=11.1
 
-nutyx_version=11.0
-
+PKGMK_GROUPS=(doc devel)
 source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
 	http://dbus.freedesktop.org/releases/dbus/$name-$version.tar.gz \
 	dbus.system-local.conf)
