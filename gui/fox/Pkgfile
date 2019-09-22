@@ -1,14 +1,16 @@
-# Depends on: xorg-libxcursor xorg-libxft xorg-libxrandr xorg-libxxf86vm mesa cups xorg-glu
-
 description="C++ based class library for building Graphical User Interfaces"
 url="http://www.fox-toolkit.org/"
+
 maintainer="Jeroen van de Zijp <jeroen at fox-toolkit dot com>"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(xorg-libxcursor xorg-libxft xorg-libxrandr xorg-libxxf86vm mesa cups xorg-glu)
+
 name=fox
 version=1.6.57
-release=2
+release=3
+
 source=(ftp://ftp.fox-toolkit.org/pub/$name-$version.tar.gz)
 
 build() {
