@@ -1,13 +1,14 @@
-# Depends on: intltool glib dbus-python gobject-introspection libdaemon 
-
 description="Multicast/unicast DNS-SD framework"
 url="http://www.avahi.org/"
+
 packager="tnut <tnut@nutyx.org>, jayce"
-contributors="Pierre B"
+contributors="Pierre B, Rems"
+
+makedepends=(intltool glib dbus-python gobject-introspection libdaemon)
 
 name=avahi
 version=0.7
-release=3
+release=4
 
 source=( https://github.com/lathiat/avahi/releases/download/v$version/avahi-$version.tar.gz)
 
