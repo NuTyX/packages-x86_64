@@ -14,7 +14,7 @@ source=(https://github.com/NuTyX/cards/archive/cards-$version.tar.gz)
 
 build() {
 
-cd cards-$version
+cd cards-cards-$version
 make flcards
 cd fltk
 make DESTDIR=$PKG install
