@@ -1,12 +1,13 @@
-# Depends on:  python-random2 python-six cmake gperf perl-path-tiny perl-template-toolkit
-
 description="A program that automatically solves layouts of Freecell or variants"
 url="https://fc-solve.shlomifish.org"
-packager="remy <remy@nutyx.org>"
-contributors=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
+
+makedepends=(python-random2 python-six cmake gperf perl-path-tiny perl-template-toolkit)
 
 name=freecell-solver
-version=5.0.0
+version=5.14.0
 
 source=(https://fc-solve.shlomifish.org/downloads/fc-solve/$name-$version.tar.xz)
 
@@ -17,9 +18,6 @@ cmake ../$name-$version \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DFCS_WITH_TEST_SUITE=OFF \
       -DBUILD_STATIC_LIBRARY=OFF
-
 make 
 make DESTDIR=$PKG install
-
-# Obsolet lib
 }
