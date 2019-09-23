@@ -1,13 +1,14 @@
-# Depends on: dbus-glib intltool libxml2 gobject-introspection gtk3 polkit gtk-doc
-
 description="A configuration database system used by many Gnome applications"
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(dbus-glib intltool libxml2 gobject-introspection gtk3 polkit gtk-doc)
+
 name=gconf
 version=3.2.6
-release=6
+release=7
 
 source=(http://ftp.gnome.org/pub/gnome/sources/GConf/${version%.*}/GConf-$version.tar.xz
 		gconf-merge-schema)
@@ -18,8 +19,6 @@ cd GConf-$version
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
 --disable-static \
---libexecdir=/usr/lib/GConf \
---mandir=/usr/share/man \
 --disable-orbit
 make 
 make DESTDIR=$PKG install
