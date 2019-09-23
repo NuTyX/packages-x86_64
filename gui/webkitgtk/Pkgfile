@@ -1,12 +1,18 @@
-# Depends on: openjpeg2 ninja enchant cmake gstreamer-plugins-base gstreamer-plugins-bad xorg-libxt gtk2 gtk3 gtk-doc hunspell hyphen icu libgudev libsecret libsoup libwebp mesa ruby sqlite enchant geoclue2 gobject-introspection hicolor-icon-theme llvm harfbuzz gtk-doc libnotify wayland woff2
-
 description="engine of made Web free for the browsers web version 3"
 url="http://webkitgtk.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Greg"
 
+makedepends=(openjpeg2 ninja enchant cmake gstreamer-plugins-base
+             gstreamer-plugins-bad xorg-libxt gtk2 gtk3 gtk-doc
+             hunspell hyphen icu libgudev libsecret libsoup
+             libwebp mesa ruby sqlite enchant geoclue2
+             gobject-introspection hicolor-icon-theme llvm
+             harfbuzz gtk-doc libnotify wayland woff2)
+             
 name=webkitgtk
-version=2.24.2
+version=2.26.0
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 
@@ -24,7 +30,9 @@ cmake -G Ninja \
       -DLIB_INSTALL_DIR=/usr/lib  \
       -DUSE_LIBHYPHEN=OFF         \
       -DENABLE_MINIBROWSER=ON     \
-      -DUSE_WOFF2=OFF             \
+      -DUSE_WOFF2=ON              \
+      -DENABLE_GTKDOC=ON          \
+      -DENABLE_BUBBLEWRAP_SANDBOX=OFF \
       -Wno-dev ..
 ninja || ninja -j1
 DESTDIR=$PKG ninja install || DESTDIR=$PKG ninja -j1 install
