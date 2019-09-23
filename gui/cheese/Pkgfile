@@ -1,27 +1,26 @@
 description="Use your webcam to take photos and videos, apply fancy special effects and share the fun with others"
 url="https://wiki.gnome.org/Apps/Cheese"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, Remy"
 
 makedepends=(libcanberra clutter-gst clutter-gtk gnome-desktop gnome-video-effects
              gstreamer-plugins-bad gstreamer-plugins-good itstool librsvg libgudev
-             gobject-introspection vala gtk-update-icon-cache)
+             gobject-introspection vala)
 run=(gtk-update-icon-cache)
 
 name=cheese
-version=3.32.1
-release=2
+version=3.34.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 build() {
 cd $name-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
-      --disable-static --disable-schemas-compile
-make
-make DESTDIR=$PKG install
+sed -i "s/&version;/3.34.0/" docs/reference/cheese{,-docs}.xml
 
-# Obsolets libs
-rm $PKG/usr/lib/libcheese-gtk.la
-rm $PKG/usr/lib/libcheese.la
+mkdir build
+cd    build
 
+meson --prefix=/usr -Dgtk_doc=false ..
+ninja
+DESTDIR=$PKG ninja install
 }
