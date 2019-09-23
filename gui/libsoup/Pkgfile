@@ -1,15 +1,15 @@
 description="HTTP client/server library for GNOME"
 url="https://wiki,gnome.org/Projects/libsoup"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Remy"
 
-makedepends=(glib-networking libxml2 gobject-introspection vala sqlite
+makedepends=(libxml2 gobject-introspection vala sqlite
              ninja meson libpsl kerberos)
-run=( glib-networking )
+run=(glib-networking)
 
 name=libsoup
-version=2.66.2
-release=2
+version=2.68.1
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
@@ -17,7 +17,10 @@ build() {
 cd $name-$version
 mkdir build
 cd    build
-meson --prefix=/usr -Dvapi=true
+meson --prefix=/usr \
+      -Dvapi=enable \
+      -Dgssapi=disabled \
+      ..
 ninja
 DESTDIR=$PKG ninja install
 }
