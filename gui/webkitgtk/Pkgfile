@@ -32,6 +32,7 @@ cmake -G Ninja \
       -DENABLE_MINIBROWSER=ON     \
       -DUSE_WOFF2=ON              \
       -DENABLE_GTKDOC=ON          \
+      -DUSE_WPE_RENDERER=OFF      \
       -DENABLE_BUBBLEWRAP_SANDBOX=OFF \
       -Wno-dev ..
 ninja || ninja -j1
