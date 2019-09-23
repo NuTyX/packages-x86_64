@@ -1,12 +1,14 @@
-# Depends on: ghostscript groff
-
 description="A library that is used to make fuzzy comparisons of strings and byte arrays"
 url="http://fstrcmp.sourceforge.net/"
-packager="rems"
-contributors=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
+
+makedepends=(ghostscript groff)
 
 name=fstrcmp
 version=0.7.D001
+release=2
 
 source=(http://fstrcmp.sourceforge.net/$name-$version.tar.gz)
 
@@ -19,6 +21,4 @@ make
 
 mkdir -pv $PKG/usr/bin
 make DESTDIR=$PKG install
-
-# Obsolets libs
 }
