@@ -1,12 +1,14 @@
-# Depends on: pango glibmm cairomm
-
 description="C++ bindings for pango"
 url="http://cairographics.org/cairomm/"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+contributors="Pierre B, Rems"
+
+makedepends=(pango glibmm cairomm)
 
 name=pangomm
 version=2.42.0
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
