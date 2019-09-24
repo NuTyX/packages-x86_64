@@ -1,19 +1,19 @@
-# Depends on: gdk-pixbuf json-glib libarchive libsoup meson ninja pango gcab gobject-introspection gtk3 yaml
 
 description="Library to read and write AppStream metadata"
 url="http://people.freedesktop.org/~hughsient/appstream-glib/"
-packager="fanch at nutyx dot org, tnut at nutyx dot org"
  
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, Jayce"
 
+makedepends=(gdk-pixbuf json-glib libarchive libsoup meson ninja pango gcab
+             gobject-introspection gtk3 yaml)
 name=appstream-glib
-version=0.7.12
+version=0.7.15
 
-source=(http://people.freedesktop.org/~hughsient/$name/releases/$name-$version.tar.xz)
+source=(https://github.com/hughsie/appstream-glib/archive/appstream_glib_0_7_15.tar.gz)
 
 build() {
-cd $name-$version
+cd appstream-glib-appstream_glib_0_7_15
 mkdir build
 cd build
 meson --prefix=/usr -Dgtk-doc=false -Drpm=false -Dstemmer=false
