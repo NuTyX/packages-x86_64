@@ -1,12 +1,14 @@
-# Depends on: cmake p8-platform xorg-libxrandr
-
 description="Pulse-Eight's libcec for the Pulse-Eight USB-CEC adapter"
 url="http://libcec.pulse-eight.com/"
-packager="remy <remy@nutyx.org>"
-contributors=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Remy"
+
+makedepends=(cmake p8-platform xorg-libxrandr)
 
 name=libcec
 version=4.0.3
+release=2
 
 source=(https://github.com/Pulse-Eight/$name/archive/$name-$version.tar.gz)
 
@@ -21,9 +23,5 @@ cmake .. \
     -DCMAKE_INSTALL_LIBDIR=/usr/lib \
     -DCMAKE_INSTALL_LIBDIR_NOARCH=/usr/lib
 make
-}
-
-package() {
-cd $name-$name-$version/build
 make DESTDIR=$PKG install
 }
