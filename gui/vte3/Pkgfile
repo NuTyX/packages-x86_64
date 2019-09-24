@@ -1,32 +1,27 @@
-# Depends on: pcre2, gtk3, perl-xml-parser, python2-gtk, gobject-introspection
-
 description="Vte is a library (libvte) implementing a terminal emulator widget for GTK+ 3"
 url="http://developer.gnome.org/arch/gnome/widgets/vte.html"
+
 packager=" <tnut tnut@nutyx.org>"
 contributors="Greg, Pierre B, Jayce"
 
+makedepends=(pcre2 gnutls vala gtk3 perl-xml-parser python2-gtk gobject-introspection)
+
 name=vte3
 _name=vte
-version=0.56.3
+version=0.58.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/${_name}/${version%.*}/${_name}-$version.tar.xz)
 
 build() {
+cd ${_name}-$version
+mkdir build
+cd    build
 
-	cd ${_name}-$version
-	sed -i '/Werror/d' configure.ac
-	autoreconf
-	./configure --prefix=/usr\
-		--libexecdir=/usr/lib/$name \
-		--enable-introspection \
-		--with-xft2 \
-		--with-pangox
-		
-	make
-	make DESTDIR=$PKG install
+meson  --prefix=/usr --sysconfdir=/etc -Dfribidi=false
 
-# Obsolet lib
-rm $PKG/usr/lib/libvte-2.91.la	
+ninja
+
+DESTDIR=$PKG ninja install
 }
 uptodate(){
 local latest lastversion url
