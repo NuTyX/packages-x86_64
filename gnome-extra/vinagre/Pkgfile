@@ -1,13 +1,17 @@
-# Depends on: git gnome-common yelp yelp-tools yelp-xsl docbook-xsl vte3 gnutls itstool gtk-vnc itstool libsecret telepathy-glib vala vte avahi appstream-glib freerdp 
-
 description="Remote desktop client for Gnome"
 url="https://gnome.org"
-contributors="tnut"
-packager="remy <remy@nutyx.org>"
+
+contributors="Remy"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(git gnome-common yelp yelp-tools yelp-xsl
+             docbook-xsl vte3 gnutls itstool gtk-vnc
+             itstool libsecret telepathy-glib vala
+             vte avahi appstream-glib freerdp)
  
 name=vinagre
 version=git-adcb63cf
-
+release=2
 
 source=(freerdp2017.diff)
 
