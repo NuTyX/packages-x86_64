@@ -6,20 +6,20 @@ makedepends=(meson sassc caribou evolution-data-server gjs gnome-control-center
              gnome-themes-extra libcroco mutter startup-notification gnome-bluetooth
              gstreamer-plugins-base network-manager-applet gtk-doc adwaita-icon-theme
              dconf gnome-backgrounds gnome-menus telepathy-mission-control
-             gnome-settings-daemon libgdm)
+             gnome-settings-daemon libgdm gnome-autoar asciidoc)
 
 run=(adwaita-icon-theme dconf gnome-backgrounds gnome-menus
      telepathy-mission-control gtk-update-icon-cache
      gnome-settings-daemon libgdm)
 
 name=gnome-shell
-version=3.32.2
-release=2
+version=3.34.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
+sed -i '/isGreeter/,+2 d' js/ui/status/keyboard.js 
 mkdir build
 cd build
 meson --prefix=/usr -Dsystemd=false
