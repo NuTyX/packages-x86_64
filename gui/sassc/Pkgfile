@@ -1,18 +1,18 @@
-# Depends on: libsass
-
 description="C implementation of Sass CSS preprocessor."
 url="http://libsass.org/"
-packager="fanch <fanch@nutyx.org>"
+
+packager="tnut <tnut@nutyx.org>"
 contributors="Fanch"
 
+makedepends=(libsass)
 name=sassc
-version=3.5.0
-release=1
-source=(http://rsync.nutyx.org/sources/$name-$version.tar.bz2)
+version=3.6.1
+
+source=(https://github.com/sass/sassc/archive/$version/sassc-$version.tar.gz)
 
 build() {
 cd $name-$version
-autoreconf -i
+autoreconf -fi
 	./configure --prefix=/usr
 	make
 	make DESTDIR=$PKG install
