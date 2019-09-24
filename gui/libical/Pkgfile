@@ -4,11 +4,10 @@ url="http://sourceforge.net/projects/freeassociation/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(libxml2 cmake gobject-introspection icu doxygen glib)
+makedepends=(libxml2 cmake gobject-introspection icu doxygen glib vala)
 
 name=libical
-version=3.0.5
-release=2
+version=3.0.6
 
 source=( https://github.com/libical/libical/releases/download/v$version/$name-$version.tar.gz)
 
@@ -20,6 +19,8 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
 -DCMAKE_INSTALL_LIBDIR=/usr/lib \
 -DCMAKE_BUILD_TYPE=Release  \
 -DSHARED_ONLY=yes \
+-DGOBJECT_INTROSPECTION=true \
+-DICAL_GLIB_VAPI=true        \
 -DICAL_BUILD_DOCS=false \
 ..
 make
