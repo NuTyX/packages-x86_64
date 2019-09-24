@@ -1,26 +1,18 @@
-# Depends on: gdb, gtk3, gjs, vala, gobject-introspection, python2-gobject2, python-gobject, lua, valgrind
-
 description="A GObject-based plugins engine."
 url="https://wiki.gnome.org/Projects/Libpeas"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch"
 
+makedepends=(ninja meson gdb gtk3 gjs vala gobject-introspection
+             python2-gobject2 python-gobject lua valgrind)
 
 name=libpeas
-version=1.22.0
-release=2
+version=1.24.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
-package() {
-# Obsolet lib
-rm $PKG/usr/lib/libpeas-1.0.la
-rm $PKG/usr/lib/libpeas-1.0/loaders/libpython3loader.la
-rm $PKG/usr/lib/libpeas-1.0/loaders/libpythonloader.la
-rm $PKG/usr/lib/libpeas-gtk-1.0.la
-rm $PKG/usr/lib/peas-demo/plugins/helloworld/libhelloworld.la
-rm $PKG/usr/lib/peas-demo/plugins/secondtime/libsecondtime.la
-}
+build=meson
 
 uptodate(){
 local latest lastversion url
