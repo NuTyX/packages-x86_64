@@ -1,24 +1,28 @@
-# Depends on: xmlto libxslt polkit gobject-introspection vala
-
 description="Accessing the list of user accounts and information attached to those accounts." 
 url="http://www.freedesktop.org/wiki/Software/AccountsService/"
-packager="jayce <jayce.net@gmail.com>"
-contributors="Pierre"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierrei, Jayce"
+
+makedepends=(meson ninja xmlto libxslt polkit
+             elogind gobject-introspection vala)
 
 name=accountsservice
-version=0.6.45
-release=2
+version=0.6.55
 
 source=(http://www.freedesktop.org/software/$name/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var  \
---disable-static \
---disable-systemd
-make
-make DESTDIR=$PKG install
+mkdir build
+cd    build
+meson --prefix=/usr             \
+      -Dadmin_group=adm         \
+      -Delogind=true            \
+      -Dsystemdsystemunitdir=no \
+      ..
+ninja
+DESTDIR=$PKG ninja install
+ 
 mkdir -p $PKG/var/{lib,run}/polkit-1
 }
