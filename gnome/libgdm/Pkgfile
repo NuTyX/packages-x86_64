@@ -1,13 +1,14 @@
-# Depends on: accountsservice nss libcanberra gnome-session upower
-
 description="Library for Graphical logins and managing local and remote displays."
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx dot org>"
 contributors="Fanch"
 
+makedepends=(accountsservice nss libcanberra gnome-session upower)
+
 name=libgdm
 version=3.16.4
-release=3
+release=4
 alias=(gdm)
 source=(http://ftp.gnome.org/pub/gnome/sources/gdm/${version%.*}/gdm-$version.tar.xz )
 
