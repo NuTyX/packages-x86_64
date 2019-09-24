@@ -1,14 +1,14 @@
-# Depends on: alsa-lib pulseaudio git
-
 description="Cross-platform audio output library and plugins"
 url="http://xiph.org/ao/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(alsa-lib pulseaudio git)
+
 name=libao
 version=1.2.2-git
-
-source=()
+release=2
 
 prepare() {
 git clone https://git.xiph.org/libao.git $name
