@@ -1,24 +1,19 @@
-# Depends on: glib libgudev
-
 description="Library to identify Wacom tablets and their features"
 url="http://linuxwacom.sourceforge.net/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(glib libgudev)
+
 name=libwacom
-version=0.32
+version=0.33
 
 source=(https://github.com/linuxwacom/libwacom/releases/download/${name}-${version}/${name}-${version}.tar.bz2)
 
-build() {
+build=autotools
 
-cd $name-$version
-
-./configure --prefix=/usr --disable-static
-
-make
-make DESTDIR=$PKG install
-
+package() {
 # Obsolet libs
 rm $PKG/usr/lib/libwacom.la
 }
