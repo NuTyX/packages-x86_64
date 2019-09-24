@@ -1,12 +1,14 @@
-# Depends on: boost curl libxml2 docbook2x cppunit
-
 description="a C/C++ client library for the CMIS protocol"
 url="https://github.com/tdf/libcmis"
-packager="rems <rems@nutyx.org>"
-contributors=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
+
+makedepends=(boost curl libxml2 docbook2x cppunit)
 
 name=libcmis
 version=0.5.2
+release=2
 
 source=(https://github.com/tdf/libcmis/releases/download/v$version/$name-$version.tar.gz)
 
