@@ -1,12 +1,14 @@
-# Depends on: meson ninja gstreamer-plugins-base libdvdread libdvdnav faac faad2 libexif libmpeg2 mpg123
-
 description="GStreamer Multimedia Framework Bad Plugins"
 url="http://gstreamer.freedesktop.org/modules/gst-plugins-base.html"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(meson ninja gstreamer-plugins-base libdvdread libdvdnav
+             faac faad2 libexif libmpeg2 mpg123)
+
 name=gstreamer-plugins-bad
-version=1.16.0
+version=1.16.1
 
 source=(https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-$version.tar.xz )
 
