@@ -1,14 +1,18 @@
-# Depends on: meson ninja aalib jack lame libcaca libdv libgudev mpg123 speex wavpack v4l-utils taglib libshout libraw1394 gstreamer-plugins-base flac gdk-pixbuf libjpeg-turbo libpng libsoup libvpx pulseaudio
-
 description="GStreamer Multimedia Framework good Plugins"
 url="http://gstreamer.freedesktop.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-_name=gst-plugins-good
+makedepends=(meson ninja aalib jack lame libcaca libdv libgudev
+             mpg123 speex wavpack v4l-utils taglib libshout
+             libraw1394 gstreamer-plugins-base flac
+             gdk-pixbuf libjpeg-turbo libpng libsoup
+             libvpx pulseaudio)
 
 name=gstreamer-plugins-good
-version=1.16.0
+version=1.16.1
+_name=gst-plugins-good
 
 source=(http://gstreamer.freedesktop.org/src/${_name}/${_name}-$version.tar.xz)
 
