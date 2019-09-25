@@ -1,12 +1,14 @@
-# Depends on: bash-completion gobject-introspection gtk-doc python-gobject gstreamer-plugins-base gstreamer-plugins-bad
-
 description="GStreamer library for creating audio/video editors"
 url="https://gstreamer.freedesktop.org/modules/gst-editing-services.html"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="rems"
 
+makedepends=(bash-completion gobject-introspection gtk-doc python-gobject
+             gstreamer-plugins-base gstreamer-plugins-bad)
+
 name=gstreamer-editing-services
-version=1.16.0
+version=1.16.1
 
 source=(https://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
 
