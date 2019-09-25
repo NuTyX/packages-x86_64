@@ -1,12 +1,14 @@
-# Depends on: meson ninja gstreamer-plugins-base gstreamer-plugins-bad libva
-
 description="GStreamer Multimedia Framework"
 url="http://gstreamer.freedesktop.org/"
+
 packager="tnut <tnut@nutyx.>"
 contributors="Remy"
 
+makedepends=(meson ninja
+             gstreamer-plugins-base gstreamer-plugins-bad libva)
+
 name=gstreamer-vaapi
-version=1.16.0
+version=1.16.1
 
 source=(http://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
 
