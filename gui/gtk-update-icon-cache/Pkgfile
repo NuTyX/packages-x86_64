@@ -1,12 +1,14 @@
-# Depends on: gdk-pixbuf glib atk pango cairo libffi libpng pcre
-
 description="The GTK+ update icon cache tool"
 url="http://www.gtk.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(gdk-pixbuf glib atk pango cairo libffi libpng pcre)
+
 name=gtk-update-icon-cache
 version=2.24.32
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
 
