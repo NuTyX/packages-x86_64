@@ -1,12 +1,14 @@
-# Depends on: gtk3 intltool xorg-libxkbfile xorg-libxklavier gobject-introspection
-
 description="Gnome keyboard library"
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre, jayce, Remy"
 
+makedepends=(gtk3 intltool xorg-libxkbfile xorg-libxklavier gobject-introspection)
+
 name=libgnomekbd
 version=3.26.1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
