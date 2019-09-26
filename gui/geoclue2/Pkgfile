@@ -1,13 +1,16 @@
-# Depends on: meson ninja  avahi libsoup json-glib modemmanager libnotify geoip python2 gobject-introspection intltool
-
 description="Modular geoinformation service built on the D-Bus messaging system."
 url="http://freedesktop.org/software/geoclue/docs/"
-maintainer="Zeeshan Ali <zeeshanak at gnome dot org>" 
+
+maintainer="Zeeshan Ali <zeeshanak at gnome dot org>"
 packagers="tnut <tnut@nutyx.org>"
 contributors="Fanch"
 
+makedepends=(meson ninja  avahi libsoup json-glib modemmanager
+             libnotify geoip python2 gobject-introspection intltool)
+
 name=geoclue2
 version=2.5.3
+release=2
 
 source=(https://gitlab.freedesktop.org/geoclue/geoclue/-/archive/$version/geoclue-$version.tar.bz2)
 
