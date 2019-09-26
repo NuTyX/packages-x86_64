@@ -1,12 +1,14 @@
-# Depends on: ninja meson libusb gperf glib gobject-introspection libgudev vala
-
 description="The libgusb package contains the GObject wrappers for libusb-1.0"
 url="https://gitorious.org/gusb/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(ninja meson libusb gperf glib gobject-introspection libgudev vala)
+
 name=libgusb
 version=0.3.0
+release=2
 
 source=(http://people.freedesktop.org/~hughsient/releases/$name-$version.tar.xz)
 
