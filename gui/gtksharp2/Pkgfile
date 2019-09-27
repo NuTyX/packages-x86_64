@@ -1,10 +1,11 @@
-# Depends on: mono gtk2 libglade
-
 description="Gtk2 bindings for C Sharp"
 url="http://www.mono-project.com/docs/gui/gtksharp/"
-contributors=""
-packager="rems <rems@nutyx.org>"
- 
+
+contributors="Rems"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(mono gtk2 libglade)
+
 name=gtksharp2
 version=2.12.45
 release=2
@@ -25,5 +26,4 @@ rm $PKG/usr/lib/libgladesharpglue-2.la
 rm $PKG/usr/lib/libglibsharpglue-2.la
 rm $PKG/usr/lib/libgtksharpglue-2.la
 rm $PKG/usr/lib/libpangosharpglue-2.la
-
 }
