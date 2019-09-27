@@ -1,13 +1,14 @@
-# Depends on: gtk2 pangomm cairomm atkmm
-
 description="C++ bindings for gtk2"
 url="http://gtkmm.sourceforge.net/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch"
 
+makedepends=(gtk2 pangomm cairomm atkmm)
+
 name=gtkmm2
 version=2.24.5
-release=2
+release=3
 
 source=(http://ftp.gnome.org/pub/gnome/sources/gtkmm/${version%.*}/gtkmm-$version.tar.xz)
 
