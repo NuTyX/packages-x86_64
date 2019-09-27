@@ -1,13 +1,15 @@
-# Depends on: libpcap
-
 description="Real-time bandwidth usage information on a network interface" 
 url="http://www.ex-parrot.com/~pdw/iftop/"
+
 maintainer="Juergen Daubert, jue at crux dot nu"
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(libpcap)
+
 name=iftop
 version=1.0pre4
-release=1
+release=2
+
 source=(http://www.ex-parrot.com/~pdw/iftop/download/$name-$version.tar.gz)
 
 build () {
