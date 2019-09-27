@@ -1,14 +1,16 @@
-# Depends on: freetype ghostscript lcms libgsf giflib libxml2 openexr libwmf libpng librsvg libwebp djvulibre
-
 description="An image viewing/manipulation program"
 url="http://www.imagemagick.org/"
+
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(freetype ghostscript lcms libgsf giflib libxml2
+              openexr libwmf libpng librsvg libwebp djvulibre)
+	      
 name=imagemagick
-version=7.0.8.28
-_version=7.0.8-28
+version=7.0.8.66
+_version=7.0.8-66
+
 source=(ftp://ftp.imagemagick.org/pub/ImageMagick/releases/ImageMagick-${_version}.tar.xz)
-release=2
 
 build () {
     cd ImageMagick-*
@@ -33,8 +35,4 @@ build () {
     make
     make DESTDIR=$PKG install
     find  $PKG -name perllocal.pod -exec rm {} \;
-
-# Obsolets libs
-rm -v $PKG/usr/lib/*.la
-	
 }
