@@ -1,12 +1,14 @@
-# Depends on : gtk2 xorg-glu xorg-libxmu pangox-compat python
-
 description="opengl extensions for gtk2"
 url="http://gtkglext.sourceforge.net/"
-packager="Greg"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+makedepends=(gtk2 xorg-glu xorg-libxmu pangox-compat python)
 
 name=gtkglext
 version=1.2.0
-release=2
+release=3
 
 source=(http://downloads.sourceforge.net/sourceforge/gtkglext/$name-$version.tar.bz2 gtk2.20.patch gtkglext-gcc8.patch)
 
@@ -19,7 +21,7 @@ prepare(){
 
   autoreconf -vi
 }
-  
+
 build() {
   cd $name-$version
 
@@ -31,5 +33,4 @@ build() {
 # Obsolets libs
 rm $PKG/usr/lib/libgdkglext-x11-1.0.la
 rm $PKG/usr/lib/libgtkglext-x11-1.0.la
-
 }
