@@ -1,0 +1,26 @@
+description="SDL_image is a simple library to load images of various formats as SDL surfaces."
+url="http://www.libsdl.org/projects/SDL_image"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Berlius"
+
+makedepends=(sdl1 libjpeg-turbo libpng libtiff libwebp)
+
+name=sdl1-image
+version=1.2.12
+
+source=(http://www.libsdl.org/projects/SDL_image/release/SDL_image-$version.tar.gz)
+
+build() {
+
+cd SDL_image-$version
+
+./configure --prefix=/usr \
+   
+
+make
+make DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libSDL_image.la
+}
