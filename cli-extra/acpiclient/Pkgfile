@@ -1,12 +1,12 @@
-# Depends on: 
-
 description="Client for battery, power, and thermal readings."
 url="http://sourceforge.net/projects/acpiclient"
-packager="greg<greg@nutyx.org>"
-contributors=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg, Rems"
 
 name=acpiclient
 version=1.7
+release=2
 
 source=(http://downloads.sourceforge.net/acpiclient/acpi-$version.tar.gz)
 
@@ -15,8 +15,4 @@ cd acpi-$version
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
-}
-
-uptodate() {
-echo "Fonction  vide, normal..." 
 }
