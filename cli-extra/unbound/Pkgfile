@@ -1,13 +1,14 @@
-# Depends on: openssl doxygen
-
 description="A validating, recursive, and caching DNS resolver."
 url="http://www.unbound.net"
+
 contributors="tnut, greg"
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(openssl doxygen)
 
 name=unbound
 version=1.6.7
+release=2
 
 source=(${url}/downloads/$name-$version.tar.gz)
 
