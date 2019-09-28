@@ -1,12 +1,14 @@
-# Depends on: gnutls hicolor-icon-theme perl 
-
 description="lftp is a sophisticated ftp/http client."
 url="http://lftp.yar.ru"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="alienus, tnut, Greg"
+contributors="alienus, Rems, Greg"
+
+makedepends=(gnutls hicolor-icon-theme perl)
 
 name=lftp
 version=4.8.4
+release=2
 
 source=(${url}/ftp/$name-$version.tar.xz)
 
@@ -22,5 +24,4 @@ cd $name-$version
 
 make
 make DESTDIR=$PKG install
-
 }
