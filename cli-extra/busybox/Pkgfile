@@ -1,12 +1,12 @@
-# Depends on: musl
-
 description="Combines tiny versions of many common UNIX utilities."
 url="https://busybox.net/about.html"
 
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(musl)
+
 name=busybox
-version=1.30.1
+version=1.31.0
 
 source=($name.config
 	https://busybox.net/downloads/busybox-$version.tar.bz2)

@@ -1,17 +1,16 @@
-# Depends on: confuse libnl
-
-
 description="Portable bandwidth monitor and rate estimator"
 url="http://github.com/tgraf/bmon/"
+
 contributors="Berlius, Greg"
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(confuse libnl)
+
 name=bmon
 version=4.0
-release=2
+release=3
 
 PKGMK_KEEP_SOURCES="no"
-
 source=(https://github.com/tgraf/$name/archive/v$version.tar.gz)
 
 
