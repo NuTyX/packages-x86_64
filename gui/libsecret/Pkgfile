@@ -1,13 +1,14 @@
-# Depends on: intltool libxslt docbook-xsl glib gobject-introspection libgcrypt vala 
-
 description="The libsecret package contains a GObject based library for accessing the Secret Service API."
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(intltool libxslt docbook-xsl glib gobject-introspection libgcrypt vala)
 
 name=libsecret
 version=0.18.8
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
