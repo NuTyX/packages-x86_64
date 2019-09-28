@@ -1,13 +1,11 @@
-# Depends on:
-
 description="Gives a fake root environment."
 url="http://packages.debian.org/fakeroot"
-contributors="alienus, greg"
+
+contributors="Alienus, Greg, Rems"
 packager="tnut <tnut@nutyx.org>"
 
 name=fakeroot
-version=1.23
-release=2
+version=1.24
 
 source=(http://ftp.debian.org/debian/pool/main/f/$name/${name}_${version}.orig.tar.xz
 		silence-dlerror.patch)
@@ -15,6 +13,7 @@ source=(http://ftp.debian.org/debian/pool/main/f/$name/${name}_${version}.orig.t
 build() {
 	cd $name-$version
 	patch -Np1 -i ../silence-dlerror.patch
+	./bootstrap
 
 	./configure --prefix=/usr \
 	--disable-static \
