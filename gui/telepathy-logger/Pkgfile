@@ -1,13 +1,14 @@
-# Depends on: intltool sqlite telepathy-glib gobject-introspection 
-
 description="Telepathy framework logging daemon"
 url="http://telepathy.freedesktop.org/"
-packager="greg <greg@nutyx.org>"
+
+packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+
+makedepends=(intltool sqlite telepathy-glib gobject-introspection)
 
 name=telepathy-logger
 version=0.8.2
-release=2
+release=3
 
 source=(http://${name%-*}.freedesktop.org/releases/$name/$name-$version.tar.bz2)
 
