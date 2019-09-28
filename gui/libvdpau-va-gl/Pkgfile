@@ -1,13 +1,14 @@
-# Depends on: cmake ffmpeg libvdpau libva doxygen graphviz
-
 description="Video Acceleration vdpau for Linux"
 url="https://01.org/linuxmedia/vaapi"
-packager="rems <rems@nutyx.org>"
-contributors="tnut"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
+
+makedepends=(cmake ffmpeg libvdpau libva doxygen graphviz)
 
 name=libvdpau-va-gl
 version=0.4.2
-release=2
+release=3
 
 source=(https://github.com/i-rinat/$name/archive/v$version/$name-$version.tar.gz)
 
