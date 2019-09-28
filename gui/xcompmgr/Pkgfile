@@ -1,18 +1,18 @@
-# Description: Composite Window-effects manager for X.org
-# URL: http://xorg.freedesktop.org/
-# Packager: Chris Farrell, timcowchip at gmail dot com
-# Maintainer: Chris Farrell, timcowchip at gmail dot com
-# Depends on: xorg-libxcomposite xorg-libxdamage xorg-libxrender xorg-libxext
+description="Composite Window-effects manager for X.org"
+url="http://xorg.freedesktop.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors=" Chris F."
+
+makedepends=(xorg-libxcomposite xorg-libxdamage xorg-libxrender xorg-libxext)
 
 name=xcompmgr
-version=1.1.7
-release=1
+version=1.1.8
 
-source=(http://xorg.freedesktop.org/releases/individual/app/${name}-${version}.tar.bz2 fix_broken_shadows.diff)
+source=(http://xorg.freedesktop.org/releases/individual/app/${name}-${version}.tar.bz2)
 
 build() {
   cd ${name}-${version}
-  patch -Np0 -i ${SRC}/fix_broken_shadows.diff
   ./configure --prefix=/usr
   make
 
