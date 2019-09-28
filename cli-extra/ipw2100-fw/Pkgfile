@@ -1,23 +1,20 @@
 description="Firmwares for wifi IPW2100 Intel Centrino"
 url="http://ipw2100.sourceforge.net/"
-contributors="pierre"
-packager="greg<greg@nutyx.org>"
 
-# Depends on: 
+contributors="Pierre B, Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=ipw2100-fw
 version=1.3
-release=2
+release=3
 
 source=(http://downloads.tuxfamily.org/nutyx/files/$name-$version.tgz)
 
 build() {
-
 	for i in *.fw
 	do
 	install -D -m 644 $i $PKG/lib/firmware/$i
 	done
 	# Install firmware licence
- 	install -D -m 644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
- 	
+ 	install -D -m 644 LICENSE $PKG/usr/share/licenses/$name/LICENSE	
 }
