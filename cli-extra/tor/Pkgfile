@@ -1,12 +1,14 @@
-# Depends on: libevent openssl zlib
-
 description="Tor is a anonymous network and proxy."
 url="http://www.torproject.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
+makedepends=(libevent openssl zlib)
+
 name=tor
 version=0.3.2.10
+release=2
 
 source=(https://www.torproject.org/dist/tor-$version.tar.gz
 	tor.rc

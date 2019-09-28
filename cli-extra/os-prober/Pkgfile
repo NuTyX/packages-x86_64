@@ -1,18 +1,19 @@
 description="Can probe disks on the system for other operating systems, and add them to the boot loader"
 url="http://joeyh.name/code/os-prober/"
-contributors="Chris Farrell,timcowchip,tnut"
-packager="greg<greg@nutyx.org>"
 
-# Depends on: bash
+contributors="Chris Farrell,timcowchip,tnut, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(bash)
 
 name=os-prober
 version=1.76
-release=1
+release=2
 
 source=(http://ftp.de.debian.org/debian/pool/main/o/os-prober/os-prober_$version.tar.xz)
 
 
-prepare() {
+build() {
 
   cd $name-$version
 
@@ -20,23 +21,7 @@ prepare() {
   sed -i -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" os-probes/mounted/common/90linux-distro
 
   rm -f Makefile
-  
-}
-
-build() {
-
-  cd $name-$version
-
   make newns
-  
-}
-
-
-
-package() {
-
-
-  cd $name-$version
 
   install -Dm755 linux-boot-prober $PKG/usr/bin/linux-boot-prober
   install -Dm755 os-prober $PKG/usr/bin/os-prober

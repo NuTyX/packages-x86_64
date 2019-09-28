@@ -1,13 +1,12 @@
 description="copies files to and from archives in several formats."
 url="http://downloads.sourceforge.net/heirloom"
-contributors="berlius"
-packager="greg<greg@nutyx.org>"
 
-# Depends on:
+contributors="berlius, Greg, Rems"
+packager="tnut <tnut@nutyx.org>"
 
 name=pax
 version=070715	
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/heirloom/heirloom-070715.tar.bz2)
  
@@ -18,13 +17,12 @@ cd heirloom-$version
 sed -i build/mk.config                   \
     -e '/LIBZ/s@ -Wl[^ ]*@@g'            \
     -e '/LIBBZ2/{s@^#@@;s@ -Wl[^ ]*@@g}' \
-    -e '/BZLIB/s@0@1@'                   
-	
-make makefiles                           
-make -C libcommon                        
-make -C libuxre                          
+    -e '/BZLIB/s@0@1@'
 
-install -v -dm 755 $PKG/usr/bin	
-install -v -dm 755 $PKG/usr/share/man/man1	
+make makefiles
+make -C libcommon
+make -C libuxre
 
+install -v -dm 755 $PKG/usr/bin
+install -v -dm 755 $PKG/usr/share/man/man1
 }

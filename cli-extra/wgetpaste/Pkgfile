@@ -1,12 +1,14 @@
 description="A script that automates pasting to a number of pastebin services"
 url="http://wgetpaste.zlin.dk/"
-packager="greg<greg@nutyx.org>"
 
-# Depends on: wget
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+makedepends=(wget)
 
 name=wgetpaste
 version=2.28
-release=1
+release=2
 
 source=(http://wgetpaste.zlin.dk/$name-$version.tar.bz2
 		http://wgetpaste.zlin.dk/$name.example)
@@ -21,6 +23,5 @@ build () {
 
 # license
   sed -n '2,5p' wgetpaste > LICENSE
-  install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
-  
+  install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE 
 }

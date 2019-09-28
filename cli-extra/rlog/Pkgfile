@@ -1,13 +1,12 @@
 description="A flexible message logging facility for C++ programs and libraries"
 url="http://www.arg0.net/rlog"
-contributors="pierre at nutyx dot org"
-packager="greg<greg@nutyx.org>"
 
-# Depends on: 
+contributors="Pierre B, Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=rlog
 version=1.4
-release=1
+release=2
 
 source=(https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/$name/$name-$version.tar.gz 
        $name-section.patch)
@@ -19,14 +18,4 @@ build () {
 	./configure --prefix=/usr
 	make
 	make DESTDIR=$PKG install
-	
 }
-
-
-package() {
-
-	cd $name-$version
-	make DESTDIR=$PKG install
-
-}
-
