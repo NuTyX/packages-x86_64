@@ -1,45 +1,45 @@
 description="Mesa is an OpenGL compatible 3D graphics library."
 url="http://www.xorg-mesa3d.org"
 
-packager="rems <rems@nutyx.org>"
-contributors="Pierre B, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Rems"
 
-makedepends=(xorgproto pkg-config libtool xorg-xrandr wayland
+makedepends=(xorgproto pkg-config libtool xorg-xrandr wayland python-mako
              wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext
              xorg-libxdamage expat llvm elfutils xorg-libxshmfence
-             libva libvdpau)
+             libva libvdpau valgrind lm-sensors xorg-libxvmc libunwind)
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=18.3.6
-release=2
+version=19.2.0
 
 source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/mesa/mesa-$version-add_xdemos-1.patch)
 build() {
 cd mesa-$version
+
 patch -Np1 -i ../mesa-$version-add_xdemos-1.patch
 
-./configure CFLAGS='-O2' CXXFLAGS='-O2' LDFLAGS=-lLLVM \
---prefix=/usr                  \
---sysconfdir=/etc              \
---enable-osmesa                \
---enable-xa                    \
---enable-glx-tls               \
---enable-gles2                 \
---with-platforms="drm,x11,wayland" \
---with-dri-drivers="i915,i965,nouveau,r200" \
---with-gallium-drivers="nouveau,virgl,r300,r600,radeonsi,svga,swrast"
-make
-make -C xdemos DEMOS_PREFIX=/usr
 
-make DESTDIR=$PKG install
+GALLIUM_DRV="i915,nouveau,r600,radeonsi,svga,swrast,virgl"
+DRI_DRIVERS="i965,nouveau"
 
-make -C xdemos DEMOS_PREFIX=/usr DESTDIR=$PKG install
+mkdir build
+cd    build
+
+meson --prefix=/usr                  \
+      -Dbuildtype=release            \
+      -Ddri-drivers=$DRI_DRIVERS     \
+      -Dgallium-drivers=$GALLIUM_DRV \
+      -Dgallium-nine=false           \
+      -Dglx=dri                      \
+      -Dosmesa=gallium               \
+      -Dvalgrind=false
+
+ninja
+DESTDIR=$PKG ninja install
 
 install -v -dm755 $PKG/usr/share/doc/mesa-$version
+cp -rfv ../docs/* $PKG/usr/share/doc/mesa-$version
 
-cp -rfv docs/* $PKG/usr/share/doc/mesa-$version
-
-rm $PKG/usr/lib/{libEGL,libGL,libGLESv1_CM,libGLESv2,libOSMesa,libgbm,libglapi,libxatracker}.la
 }
