@@ -1,13 +1,14 @@
-# Depends on: libedit pcre python2-docutils
-
 description="Varnish is a web application accelerator."
 url="http://www.varnish-cache.org/"
-contributors="alieanus, Tnut"
-packager="greg <greg@nutyx.org>"
+
+contributors="Alienus, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libedit pcre python2-docutils)
 
 name=varnish
 version=5.1.3
-release=1
+release=2
 
 source=(http://repo.varnish-cache.org/source/$name-$version.tar.gz
 		varnish.service)
