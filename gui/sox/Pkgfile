@@ -1,13 +1,16 @@
-# Depends on: file libsndfile libpng lame opencore-amr gsm libao libmad libid3tag wavpack pulseaudio opusfile
-
 description="The Swiss Army knife of sound processing tools"
 url="http://sox.sourceforge.net/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(file libsndfile libpng lame opencore-amr
+             gsm libao libmad libid3tag wavpack
+             pulseaudio opusfile)
+
 name=sox
 version=14.4.2
-release=3
+release=4
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2
        sox-dynamic.patch) 
