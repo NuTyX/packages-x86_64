@@ -1,18 +1,19 @@
-# Depends on: avahi apache
-
 description="Zeroconf module for Apache"
 url="http://0pointer.de/lennart/projects/mod_dnssd"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch B"
+
+makedepends=(avahi apache)
 
 _name=mod_dnssd
 name=mod-dnssd
 version=0.6
-release=1
+release=2
 
 source=(http://0pointer.de/lennart/projects/${_name}/${_name}-${version}.tar.gz
         fix_undefined_reference.patch)
-        
+
 build() {
   cd ${_name}-$version
   patch -p1 < ${SRC}/fix_undefined_reference.patch
@@ -20,4 +21,3 @@ build() {
   make
   install -D -m755 src/.libs/mod_dnssd.so ${PKG}/usr/lib/httpd/modules/mod_dnssd.so
 }
-  
