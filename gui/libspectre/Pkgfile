@@ -1,23 +1,20 @@
-# Depends on: ghostscript 
-
 description="library for the made of documents postscript"
 url="http://libspectre.freedesktop.org/wiki/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(ghostscript)
+
 name=libspectre
 version=0.2.8
-release=2
+release=3
 
 source=(http://libspectre.freedesktop.org/releases/$name-$version.tar.gz)
 
-build() {
-cd $name-$version
-	./configure --prefix=/usr \
-	--disable-static
-	make
-	make DESTDIR=$PKG install
+build=autotools
 
+package() {
 # Obsolet lib
 rm $PKG/usr/lib/libspectre.la
 }
