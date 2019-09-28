@@ -1,13 +1,14 @@
 description="CLI tool which shows weather forecasts from METAR data"
 url="http://fungi.yuggoth.org/weather/"
-contributors="Chris Farrell timcowchip"
-packager="greg<greg@nutyx.org>"
 
-# Depends on: python2
+contributors="Chris Farrell timcowchip, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(python2)
 
 name=weather
 version=2.3
-release=1
+release=2
 
 source=(http://fungi.yuggoth.org/weather/src/$name-$version.tar.gz)
 
@@ -34,10 +35,5 @@ build() {
 
   install -Dm644 weather.1   "$PKG/usr/share/man/man1/weather.1"
   install -Dm644 weatherrc.5 "$PKG/usr/share/man/man5/weatherrc.5"
-
-  install -Dm644 LICENSE "$PKG/usr/share/licenses/$name/BSD2"
-  
+  install -Dm644 LICENSE "$PKG/usr/share/licenses/$name/BSD2" 
 }
-
-	
-	
