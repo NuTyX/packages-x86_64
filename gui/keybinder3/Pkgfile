@@ -4,7 +4,7 @@ url="https://github.com/engla/keybinder/tree/keybinder-3.0"
 packager="tnut <tnut@nutyx.org>"
 contributors="Sipo"
 
-makedepends=(gtk3)
+makedepends=(gtk3 gtk-doc gobject-introspection)
 
 name=keybinder3
 alias=(libkeybinder3)
@@ -16,7 +16,7 @@ source=(https://github.com/kupferlauncher/keybinder/releases/download/keybinder-
 build() {
 
   cd keybinder-3.0-$version
-  ./configure --prefix=/usr --enable-gtk-doc
+  ./configure --prefix=/usr
   make
   
   make DESTDIR=$PKG install
