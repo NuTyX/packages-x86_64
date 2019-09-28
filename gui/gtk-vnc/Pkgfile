@@ -12,17 +12,4 @@ version=1.0.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
-build() {
-	cd $name-$version
-	./configure --prefix=/usr  \
-            --with-gtk=3.0 \
-            --enable-vala \
-            --with-examples 
-	make
-	make DESTDIR=$PKG install
-
-# Obsolets libs
-rm $PKG/usr/lib/libgvnc-1.0.la
-rm $PKG/usr/lib/libgvncpulse-1.0.la
-rm $PKG/usr/lib/libgtk-vnc-2.0.la
-}
+build=meson
