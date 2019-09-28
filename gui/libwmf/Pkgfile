@@ -1,15 +1,14 @@
-# Depends on: gsfonts libjpeg-turbo xorg-libx11 gdk-pixbuf gtk2 xorg-libxt
-
 description="A library for reading vector images in Microsoft's native Windows Metafile Format (WMF)"
 url="http://wvware.sourceforge.net/libwmf.html"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
+makedepends=(gsfonts libjpeg-turbo xorg-libx11 gdk-pixbuf gtk2 xorg-libxt)
 name=libwmf
-version=0.2.10
+version=0.2.11
 
 PKGMK_KEEP_SOURCES="no"
-
 source=(https://github.com/caolanm/libwmf/archive/v$version.tar.gz)
 
 build(){
