@@ -1,26 +1,25 @@
-# Depends on: sdl libjpeg-turbo libpng libtiff libwebp
+description="A simple library to load images of various formats as SDL surfaces (Version 2)"
+url="http://crawl.develz.org/"
 
-description="SDL_image is a simple library to load images of various formats as SDL surfaces."
-url="http://www.libsdl.org/projects/SDL_image"
 packager="tnut <tnut@nutyx.org>"
-contributors="Berlius"
+contributors="Remy"
+
+makedepends=(sdl libpng libtiff libjpeg-turbo libwebp cmake)
 
 name=sdl-image
-version=1.2.12
-release=2
+version=2.0.5
 
-source=(http://www.libsdl.org/projects/SDL_image/release/SDL_image-$version.tar.gz)
+source=(https://www.libsdl.org/projects/SDL_image/release/SDL2_image-$version.tar.gz)
 
 build() {
 
-cd SDL_image-$version
+cd SDL2_image-$version
 
-./configure --prefix=/usr \
-   
+./configure --disable-static --prefix=/usr
 
-make
+make 
 make DESTDIR=$PKG install
 
 # Obsolet lib
-rm $PKG/usr/lib/libSDL_image.la
+rm $PKG/usr/lib/libSDL2_image.la
 }
