@@ -3,23 +3,16 @@ url="http://mail.gnome.org/mailman/listinfo/gnome-devtools"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(gtk3 gobject-introspection vala gtk-doc)
+makedepends=(meson ninja gtk3 gobject-introspection vala gtk-doc)
 
 name=gtksourceview4
 version=4.4.0
 
 source=(http://download.gnome.org/sources/gtksourceview/${version:0:3}/gtksourceview-$version.tar.xz)
-
-build() {
-cd gtksourceview-$version
-./configure --prefix=/usr
-make
-make DESTDIR=$PKG install
+prepare() {
+mv gtksourceview-$version $name-$version
 }
-package() {
-# Obsolet lib
-rm $PKG/usr/lib/libgtksourceview-4.la
-}
+build=meson
 uptodate(){
 local latest lastversion url name
 name=gtksourceview
