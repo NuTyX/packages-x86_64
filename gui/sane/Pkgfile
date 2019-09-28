@@ -1,16 +1,17 @@
-# Depends on: libusb-compat libjpeg-turbo libtiff gtk2 libexif cups net-snmp avahi
-
 description="Scanner Access Now Easy"
 url="http://www.sane-project.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(libusb-compat libjpeg-turbo libtiff gtk2 libexif cups net-snmp avahi)
+
 name=sane
 version=1.0.27
-release=3
+release=4
 
 source=(network.patch
-	http://fossies.org/linux/misc//sane-backends-$version.tar.gz)
+	http://fossies.org/linux/misc/sane-backends-$version.tar.gz)
 
 build() {
 	cd $name-backends-$version
