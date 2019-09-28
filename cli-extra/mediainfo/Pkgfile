@@ -1,12 +1,14 @@
-# Depends on: libmediainfo
-
 description="Show technical and tag informations about video or audio file."
 url="https://mediaarea.net/"
-packager="remy <remy@nutyx.org>"
-contributors="greg"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg, Remy"
+
+makedepends=(libmediainfo)
 
 name=mediainfo
 version=18.08.1
+release=2
 
 source=(https://mediaarea.net/download/source/$name/$version/"${name}"_$version.tar.xz)
 
@@ -16,15 +18,5 @@ build() {
   ./autogen.sh
   ./configure --prefix=/usr
   make
-  
-}
-
-
-package() {
-
-
-  cd MediaInfo/Project/GNU/CLI
   make DESTDIR=$PKG install
-  
-  
 }
