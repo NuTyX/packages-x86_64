@@ -1,13 +1,12 @@
-# Depends on: 
-
 description="Session management in a clean and simple way."
 url="http://brain-dump.org/projects/abduco/"
-packager="remy<remy@nutyx.org>"
-contributors="Greg"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg, Rems"
 
 name=abduco
 version=0.6
-release=2
+release=3
 
 source=(http://brain-dump.org/projects/$name/$name-$version.tar.gz
         config.h)
@@ -20,15 +19,5 @@ cp "../config.h" .
 build() {
 cd $name-$version
 make all
+make DESTDIR=$PKG PREFIX=/usr install 
 }
-
-package() {
-cd $name-$version
-make DESTDIR=$PKG PREFIX=/usr install
- 
-}
-
-uptodate() {
-echo "Fonction  vide, normal..." 
-}
-
