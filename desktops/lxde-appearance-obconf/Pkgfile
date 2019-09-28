@@ -1,0 +1,25 @@
+description="Plugin for LXAppearance to configure OpenBox"
+url="http://lxde.org/"
+contributors="Geantbrun, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(intltool lxde-appearance openbox)
+name=lxde-appearance-obconf
+alias=(lxappearance-obconf)
+_name=lxappearance-obconf
+version=0.2.3
+
+source=(http://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz)
+
+prepare() {
+
+  cd ${_name}-$version
+  sed -i /frame1/,+19d src/obconf.glade 
+}
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr --enable-gtk3 
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+make
+make DESTDIR=$PKG install
+}
