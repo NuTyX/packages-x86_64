@@ -1,9 +1,15 @@
-# Depends on: gnutls
 description="A mini smtp client"
-packager="Rocket"
 url="https://marlam.de/msmtp/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rocket"
+
+makedepends=(gnutls)
+
 name=msmtp
 version=1.8.1
+release=2
+
 source=(https://marlam.de/$name/releases/$name-$version.tar.xz)
 
 build() {

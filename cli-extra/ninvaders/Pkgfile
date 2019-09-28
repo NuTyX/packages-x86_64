@@ -1,14 +1,12 @@
 description="ninvaders (Space Invaders clone based on ncurses for ASCII output"
 url="http://ninvaders.sourceforge.net/"
-contributors="NuTyX Team"
-packager="greg<greg@nutyx.org>"
 
-
-# Depends on: 
+contributors="Greg"
+packager="tnut <tnut@nutyx.org>"
 
 name=ninvaders
 version=0.1.1
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/sourceforge/ninvaders/$name-$version.tar.gz)
 
@@ -16,10 +14,5 @@ build(){
 
     cd $name-$version
     make CFLAGS="${CFLAGS}" &&
-    install -Dm755 nInvaders $PKG/usr/bin/$name
-    
+    install -Dm755 nInvaders $PKG/usr/bin/$name   
 }
-
-
-
-
