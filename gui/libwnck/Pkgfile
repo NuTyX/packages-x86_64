@@ -1,26 +1,20 @@
-# Depends on: gtk3 perl-xml-parser xorg-libxt xorg-libxres startup-notification xorg-libxinerama xorg-libxrandr xorg-libxcursor xorg-libxdamage intltool gobject-introspection
-
 description="Window Navigator Construction Kit (GTK+3)."
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(gtk3 perl-xml-parser xorg-libxt xorg-libxres
+             startup-notification xorg-libxinerama xorg-libxrandr
+             xorg-libxcursor xorg-libxdamage intltool
+             gobject-introspection meson ninja)
+
 name=libwnck
-version=3.30.0
-release=2
+version=3.32.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/libwnck/${version%.*}/libwnck-$version.tar.xz)
 
-build() {
-cd $name-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
---disable-static --enable-gtk-doc --enable-compile-warnings=minimum
-sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-make
-make DESTDIR=$PKG install
-# Obsolet lib
-rm $PKG/usr/lib/libwnck-3.la
-}
+build=meson
 
 uptodate(){
 local latest lastversion url
