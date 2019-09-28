@@ -1,23 +1,38 @@
-# Depends on: alsa-lib nasm libusb pulseaudio xorg-libx11 xorg-libxext 
-
-description="Simple Directmedia Layer, a library multiplatforme"
+description="A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard"
 url="http://www.libsdl.org"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+contributors="Pierre B, Rems"
+
+makedepends=(xorg-libxext xorg-libxrender xorg-libx11
+             xorg-libxcursor alsa-lib mesa pulseaudio
+             xorg-libxrandr xorg-libxinerama libxkbcommon wayland)
 
 name=sdl
-version=1.2.15
-release=2
+version=2.0.10
 
-source=(http://www.libsdl.org/release/SDL-$version.tar.gz)
+source=(${url}/release/SDL2-$version.tar.gz)
+
 build() {
-cd SDL-$version
-sed -i '/_XData32/s:register long:register _Xconst long:' src/video/x11/SDL_x11sym.h 
-./configure --prefix=/usr --disable-static 
-make
-make DESTDIR=$PKG install
+  mkdir build
+  cd build
+  ../SDL2-$version/configure --prefix=/usr     \
+    --enable-sdl-dlopen                        \
+    --disable-arts --disable-esd --disable-nas \
+    --enable-alsa --enable-pulseaudio-shared   \
+    --disable-video-wayland                    \
+    --disable-rpath
+  make
+}
+package() {
+  cd build
+  make DESTDIR=$PKG install
+  install -Dm644 ../SDL2-$version/COPYING.txt $PKG/usr/share/licenses/$name/LICENSE
 
-# Obsolets libs
-rm $PKG/usr/lib/libSDL.la
-rm $PKG/usr/lib/libSDLmain.la
+  # Obsolet lib
+  rm $PKG/usr/lib/libSDL2.la
+  rm $PKG/usr/lib/libSDL2_test.la
+  rm $PKG/usr/lib/libSDL2main.la
+
+
 }
