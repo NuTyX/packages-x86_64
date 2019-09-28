@@ -1,13 +1,14 @@
-# Depends on: libsoup gobject-introspection 
-
 description="Gives more easily access to internet services which says be 'RESTful'."
 url="http://www.gnome.org/"
+
 packager="fanch <fanch@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(libsoup gobject-introspection)
+
 name=librest
 version=0.8.1
-release=2
+release=3
 
 source=(http://ftp.gnome.org/pub/gnome/sources/rest/${version%.*}/rest-$version.tar.xz)
 
