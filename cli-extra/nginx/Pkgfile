@@ -1,13 +1,14 @@
-# Depends on: openssl pcre
-
 description="HTTP and reverse proxy, mail proxy, and a generic TCP/UDP proxy server"
-packager="tnut <tnut@nutyx.org>"
 url="http://nginx.org/en/"
+
+packager="tnut <tnut@nutyx.org>"
 maintainer="http://hg.nginx.org/nginx"
+
+makedepends=(openssl pcre)
 
 name=nginx
 version=1.16.0
-release=2
+release=3
 
 source=(https://nginx.org/download/nginx-$version.tar.gz)
 
