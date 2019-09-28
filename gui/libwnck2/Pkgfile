@@ -1,13 +1,13 @@
-# Depends on: xorg-libxres gtk2 intltool gobject-introspection startup-notification gtk-doc
-
 description="contains a kit of contruction of navigator of windows"
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tyrry"
 
+makedepends=(xorg-libxres gtk2 intltool gobject-introspection startup-notification gtk-doc)
 name=libwnck2
 version=2.31.0
-release=3
+release=4
 
 source=(http://ftp.gnome.org/pub/gnome/sources/libwnck/${version%.*}/libwnck-$version.tar.xz)
 build() {
