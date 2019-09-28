@@ -1,11 +1,14 @@
-# Depends on: gpm
 description="Joe's own editor"
 url="http://joe-editor.sourceforge.net/"
+
 contributors="Berlius, Tnut, Greg"
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(gpm)
+
 name=joe
 version=4.6
+release=2
 
 source=(https://downloads.sourceforge.net/joe-editor/$name-$version.tar.gz)
 
@@ -21,6 +24,5 @@ build() {
   make DESTDIR=$PKG install
 
   install -vm 755 joe/util/{stringify,termidx,uniproc} \
-  $PKG/usr/bin
-  
+  $PKG/usr/bin 
 }
