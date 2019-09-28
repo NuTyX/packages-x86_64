@@ -1,16 +1,16 @@
-# Depends on: dbus
-
 description="Small library for C application development"
 url="https://launchpad.net/libnih"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
+makedepends=(dbus)
+
 name=libnih
 version=1.0.3
-release=2
+release=3
 
-source=(
-http://launchpad.net/libnih/1.0/$version/+download/$name-$version.tar.gz)
+source=(http://launchpad.net/libnih/1.0/$version/+download/$name-$version.tar.gz)
 
 package() {
 # Obsolets libs
