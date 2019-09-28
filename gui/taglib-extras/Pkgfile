@@ -1,13 +1,14 @@
-# Depends on: taglib cmake
-
 description="Additional taglib plugins for KDE"
 url="http://developer.kde.org/~wheeler/taglib.html"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
+
+makedepends=(taglib cmake)
 
 name=taglib-extras
 version=1.0.1
-release=2
+release=3
 
 source=(https://download.kde.org/stable/$name/$version/src/$name-$version.tar.gz
 		taglib-1.10.patch)
@@ -21,7 +22,4 @@ build() {
         -DCMAKE_BUILD_TYPE=Release
   make 
   make DESTDIR=$PKG install
-
 }
-
-  
