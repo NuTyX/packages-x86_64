@@ -1,14 +1,14 @@
-# Depends on: bluez libical 
-
 description="contains of services D-Bus bidder a function of client and of server OBEX."
 url="http://www.bluez.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(bluez libical)
 
 name=obexd
 version=0.48
-release=1
+release=2
 
 source=(http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
 build() {
