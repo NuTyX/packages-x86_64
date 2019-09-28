@@ -1,19 +1,18 @@
-# Depends on: freetype sdl
-
 description="TrueType library for libsdl."
 url="http://www.libsdl.org/projects/SDL_ttf/"
-packager="jayce <jayce.net@gmail.com>"
+
+packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Fanch"
 
+makedepends=(freetype sdl)
 
 name=sdl-ttf
-version=2.0.11
-release=2
+version=2.0.15
 
-source=(http://www.libsdl.org/projects/SDL_ttf/release/SDL_ttf-$version.tar.gz)
+source=(http://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-$version.tar.gz)
 
 build() {
-	cd SDL_ttf-$version
+	cd SDL2_ttf-$version
 
 	./configure \
 		--prefix=/usr \
@@ -22,6 +21,4 @@ build() {
 	make 
 	make DESTDIR=$PKG install
 
-# Obsolet lib
-rm $PKG/usr/lib/libSDL_ttf.la
 }
