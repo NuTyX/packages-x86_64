@@ -1,13 +1,14 @@
-# Depends on: polkit gtk3 
-
 description="Legacy polkit authentication agent for GNOME"
 url="http://hal.freedesktop.org/docs/polkit-gnome"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="B Juglas"
 
+makedepends=(polkit gtk3)
+
 name=polkit-gnome
 version=0.105
-release=1
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/0.105/$name-$version.tar.xz)
 build() {
