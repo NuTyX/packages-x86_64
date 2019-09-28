@@ -1,15 +1,16 @@
-# Depends on: glib alsa-lib cmake
-
 description="PulseAudio emulation for ALSA."
 url="https://github.com/i-rinat/apulse"
-packager="tnut <tnut@nutyx.org>"
-contributors="Greg"
 
-PKGMK_KEEP_SOURCES="no"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg, Rems"
+
+makedepends=(glib alsa-lib cmake)
 
 name=apulse
 version=0.1.12
+release=2
 
+PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/i-rinat/$name/archive/v$version.tar.gz)
 
 build() {
