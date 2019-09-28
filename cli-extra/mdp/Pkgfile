@@ -1,13 +1,14 @@
-# Depends on: git
-
 description="A command-line based markdown presentation tool."
 url="https://github.com/visit1985/mdp"
-packager="Graknu wgraknu@tuxfamily.org>"
-contributors=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Graknu"
+
+makedepends=(git)
 
 name=mdp
 version=1.0.15
-
+release=2
 
 source=(https://github.com/visit1985/$name/archive/$version.tar.gz)
 
@@ -17,4 +18,3 @@ build() {
 	make
 	make DESTDIR=$PKG install
 }
-
