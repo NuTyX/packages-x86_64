@@ -1,22 +1,20 @@
-# Depends on: sdl
-
 description="A cross-platform networking library for SDL."
 url="http://www.libsdl.org/projects/SDL_net"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch"
 
-name=sdl-net
-version=1.2.8
-release=2
+makedepends=(sdl)
 
-source=(http://www.libsdl.org/projects/SDL_net/release/SDL_net-$version.tar.gz)
+name=sdl-net
+version=2.0.1
+
+source=(http://www.libsdl.org/projects/SDL_net/release/SDL2_net-$version.tar.gz)
 
 build() {
-	cd SDL_net-$version
+	cd SDL2_net-$version
 	./configure --prefix=/usr
 	make
 	make DESTDIR=$PKG install
 
-# Obsolet lib
-rm $PKG/usr/lib/libSDL_net.la
 }
