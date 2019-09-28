@@ -1,12 +1,14 @@
-# Depends on: python libpcap openssl
-
 description="Virtual Distributed Ethernet for emulators like qemu"
 url="https://sourceforge.net/projects/vde/"
-packager="rems <rems@nutyx.org>"
-contributors=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
+
+makedepends=(python libpcap openssl)
 
 name=vde2
 version=2.3.2
+release=2
 
 source=(https://downloads.sourceforge.net/vde/$name-$version.tar.bz2
         vde_cryptcab-compile-against-openssl-1.1.0.patch)
