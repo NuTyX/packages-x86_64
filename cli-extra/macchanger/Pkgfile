@@ -1,13 +1,12 @@
-# Depends on:
-
 description="Utility for viewing/manipulating the MAC address of network interfaces"
 url="http://www.gnu.org/software/macchanger"
-packager="greg<greg@nutyx.org>"
-contributors=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
 
 name=macchanger
 version=1.7.0
-release=1
+release=2
 
 source=(https://github.com/alobbs/macchanger/archive/$version.tar.gz)
 
@@ -22,12 +21,5 @@ build () {
               --infodir=/usr/share/info
 
   make
-
-}
-
-package() {
-
-  cd $name-$version
-  make DESTDIR=$PKG install
- 
+  make DESTDIR=$PKG install 
 }
