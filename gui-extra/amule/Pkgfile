@@ -1,13 +1,14 @@
-# Depends on: crypto++ util-linux wxgtk
-
 description=" An all-platform Edonkey client."
 url="http://www.amule.org"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Greg"
+contributors="Greg, Rems"
+
+makedepends=(crypto++ util-linux wxgtk)
 
 name=amule
 version=2.3.2
-release=3
+release=4
 
 source=(https://downloads.sourceforge.net/project/amule/aMule/$version/aMule-$version.tar.bz2
         crypto++.patch)
