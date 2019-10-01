@@ -6,8 +6,7 @@ contributors="Fanch, Tnut, Greg, Jayce, Remy"
 set=(mate-extra)
 
 name=mate-applets
-version=1.22.1
-release=2
+version=1.22.2
 
 makedepends=(gtksourceview libgtop libnotify mate-panel mate-icon-theme
              python-gobject upower wireless-tools upower)
@@ -27,7 +26,6 @@ build() {
           --libexecdir=/usr/lib/${name} \
           --enable-polkit \
           --enable-ipv6
-  read a
   make
   make DESTDIR=$PKG install
 }
