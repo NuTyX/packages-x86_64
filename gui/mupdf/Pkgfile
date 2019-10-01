@@ -3,7 +3,7 @@ url="http://www.mupdf.com"
 packager="tnut <tnut@nutyx.org>"
 
 name=mupdf
-version=1.16.0
+version=1.16.1
 makedepends=(lcms2 harfbuzz libjpeg-turbo2 openjpeg2 freeglut xorg-libx11
              xorg-libxcursor xorg-libxext xorg-libxrandr xorg-libxinerama freetype)
 
@@ -24,5 +24,5 @@ make prefix=$PKG/usr build=release \
 docdir=$PKG/usr/share/doc/$name-$version \
 install
 
-ln -svf mupdf-x11-curl $PKG/usr/bin/mupdf
+ln -svf mupdf-x11 $PKG/usr/bin/mupdf
 }
