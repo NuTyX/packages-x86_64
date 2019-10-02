@@ -1,0 +1,80 @@
+description="VirtualBox Guest Additions (binary version)"
+url="http://virtualbox.org"
+packager="tnut <tnut@nutyx.org>"
+
+
+name=virtualbox-guest
+version=6.0.4
+_release=128413
+
+PKGMK_GROUPS=(man)
+
+[ "`uname -m`" == "x86_64"   ] && _ARCH=amd64
+
+source=(https://libarchive.org/downloads/libarchive-3.3.3.tar.gz
+        http://download.virtualbox.org/virtualbox/$version/VirtualBox-${version}-${_release}-Linux_${_ARCH}.run)
+
+prepare() {
+# tar xf libarchive-3.3.3.tar.gz
+cd libarchive-3.3.3
+./configure
+make
+}
+build() {
+	sh VirtualBox-${version}-${_release}-Linux_${_ARCH}.run --keep --noexec --target vb
+	mkdir -p  $PKG/{sbin,etc/{udev/rules.d,sysconfig/modules.d,rc.d/init.d},usr/{bin,sbin,lib{,/xorg/modules/drivers}}}
+	cd vb
+	tar xfj VirtualBox.tar.bz2
+
+	mkdir addons
+	cd    addons
+	../../libarchive-3.3.3/bsdtar xf ../additions/VBoxGuestAdditions.iso
+
+	sh VBoxLinuxAdditions.run --keep --noexec --target guest
+	cd guest
+
+	bsdtar xf VBoxGuestAdditions-amd64.tar.bz2
+
+	# lib
+	cp -av lib/* $PKG/usr/lib
+
+	# bin
+	cp -av bin/* $PKG/usr/bin
+
+	# sbin
+	cp -av sbin/* $PKG/usr/sbin
+
+	# xorg
+	cp -av other/* $PKG/usr/lib/xorg/modules/drivers
+
+	# sbin
+	mv $PKG/usr/lib/xorg/modules/drivers/mount.vboxsf \
+	$PKG/sbin
+	ln -sv ../etc/rc.d/init.d/vboxadd-service \
+	$PKG/sbin/rcvboxadd-service
+
+	# service
+	cp -av init/* $PKG/etc/rc.d/init.d
+	rm  $PKG/etc/rc.d/init.d/vboxadd
+	for i in 3 4 5
+	do
+		mkdir -p $PKG/etc/rc.d/rc$i.d
+		ln -sv ../init.d/vboxadd-service $PKG/etc/rc.d/rc$i.d/S35vboxadd-service
+	done
+	for i in 0 1 2 6
+	do
+		mkdir -p $PKG/etc/rc.d/rc$i.d
+		ln -sv ../init.d/vboxadd-service $PKG/etc/rc.d/rc$i.d/K65vboxadd-service
+	done
+	sed -i 's@killall $1@killall -w $1@'  $PKG/etc/rc.d/init.d/vboxadd-service
+
+	cat > $PKG/etc/sysconfig/modules.d/virtualbox-guest.conf << "EOF"
+vboxguest
+vboxsf
+vboxvideo
+EOF
+	cat > $PKG/etc/udev/rules.d/60-vboxadd.rules << "EOF"
+KERNEL=="vboxguest", NAME="vboxguest", OWNER="vboxadd", MODE="0660"
+KERNEL=="vboxuser", NAME="vboxuser", OWNER="vboxadd", MODE="0666"
+EOF
+}
