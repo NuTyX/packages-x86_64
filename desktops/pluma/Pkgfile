@@ -1,12 +1,17 @@
 description="A powerful text editor for MATE"
 url="https://mate-desktop.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, Jayce, Greg, Remy"
 
-set=(mate-extra)
+makedepends=(enchant gtk3 libsoup iso-codes gtksourceview libpeas)
+run=(mate-desktop python2-gobject2 python2-gtk python2-gtksourceview2)
+
+
+set=(mate)
 
 name=pluma
-version=1.22.1
+version=1.22.2
 
 makedepends=(enchant gtk3 libsoup iso-codes gtksourceview mate-desktop
              python2-gobject2 python2-gtk python2-gtksourceview2 libpeas)
