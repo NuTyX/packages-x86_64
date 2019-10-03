@@ -1,15 +1,18 @@
 description="Faenza icon theme for MATE"
 url="https://mate-desktop.org/"
-packager="greg <greg@nutyx.org>"
-contributors="fanch,tnut,jayce"
 
-set=(mate-extra)
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch, Jayce, Greg"
+
+makedepends=(mate-common gtk-update-icon-cache)
+run=(gtk-update-icon-cache)
+
+set=(mate)
 
 name=mate-icon-theme-faenza
 version=1.20.0
-release=2
-makedepends=(mate-common gtk-update-icon-cache)
-run=(gtk-update-icon-cache)
+release=3
+
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
