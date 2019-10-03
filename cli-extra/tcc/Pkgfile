@@ -1,0 +1,23 @@
+description="a small but fast c compiler"
+url="https://bellard.org/tcc/tcc-doc.html#Invoke"
+packager="cbarth15"
+contributors="cbarth15"
+
+
+name=tcc
+
+version=0.9.27
+
+source=(http://download.savannah.gnu.org/releases/tinycc/tcc-0.9.27.tar.bz2)
+
+build() {
+
+	cd $name-$version
+	unset CFLAGS
+	unset LDFLAGS
+	./configure --prefix=/usr \
+		--disable-static
+	make
+	make DESTDIR=$PKG docdir="$pkgdir"/usr/share/doc/tcc install
+
+}
