@@ -1,16 +1,17 @@
 description="The MATE Session Handler"
 url="https://mate-desktop.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, Jayce, Greg"
+
+makedepends=(gtk3 mate-desktop mate-polkit mate-settings-daemon
+             xorg-libsm xorg-libxtst)
 
 set=(mate)
 
 name=mate-session-manager
-version=1.22.1
-release=2
+version=1.22.2
 
-makedepends=(gtk3 mate-desktop mate-polkit mate-settings-daemon
-             xorg-libsm xorg-libxtst)
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
