@@ -1,24 +1,22 @@
 description="Common MATE utilities for viewing disk usage"
 url="https://mate-desktop.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, Jayce, Greg"
 
-set=(mate-extra)
+makedepends=(gtk-doc yelp-tools gtk3 mate-panel libgtop librsvg)
+
+set=(mate)
 
 name=mate-utils
-version=1.22.1-git
-release=3
+version=1.22.2
 
-makedepends=(gtk-doc yelp-tools gtk3 mate-panel libgtop librsvg)
+source=(https://pub.mate-desktop.org/releases/1.22/mate-utils-$version.tar.xz)
 build() {
 
-  unset MAKEFLAGS
-  git clone https://github.com/mate-desktop/$name $name-$version 
   cd $name-$version
  
-  rm -r gsearchtool/help/pt
-
- ./autogen.sh \
+ ./configure \
           --prefix=/usr \
           --libexecdir=/usr/lib/${name} \
           --sysconfdir=/etc \
