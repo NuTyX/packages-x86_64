@@ -7,12 +7,12 @@ packager="tnut <tnut@nutyx dot org>"
 makedepends=(doxygen)
 
 name=libcards
-version=2.4.101
+version=2.4.102
 
-source=(https://github.com/NuTyX/cards/archive/cards-$version.tar.gz)
+source=(https://downloads.tuxfamily.org/nutyx/files/cards-$version.tar.gz)
 
 build () {
-cd cards-cards-$version
+cd cards-$version
 make libs
 make DESTDIR=$PKG install-libs
 cd documentation
