@@ -1,26 +1,18 @@
 description="Terminal MATE"
 url="https://mate-desktop.org/"
-packager="jayce <jayce@nutyx.org>"
+
+packager="tnut <tnut@nutyx.org>"
 contributors="fanch,tnut,jayce,greg"
 
-set=(mate-extra)
+makedepends=(gtk3 mate-desktop vte3)
+
+set=(mate)
 
 name=mate-terminal
 version=1.22.1
-release=2
+release=3
 
-makedepends=(gtk3 mate-desktop vte3)
 source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
-
-build() {
-
-  cd $name-$version
-  ./configure \
-          --prefix=/usr
-  make
-  make DESTDIR=$PKG install
-  
-}
 
 uptodate() {
 feed=https://github.com/mate-desktop/$name/releases.atom
