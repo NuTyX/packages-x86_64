@@ -1,15 +1,17 @@
 description="An engine for running Transport Tycoon Deluxe."
 url="http://www.openttd.org"
+
 maintainers="tsgeek at mailoo dot org"
 contributors="Remy"
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(libpng sdl1 icu xorg-fontconfig lzo hicolor-icon-theme
+             xz openttd-opengfx openttd-opensfx)
+run=(desktop-file-utils)
+
 
 name=openttd
-version=1.9.2
-makedepends=(libpng sdl icu xorg-fontconfig lzo hicolor-icon-theme
-             desktop-file-utils xz openttd-opengfx openttd-opensfx)
-run=(desktop-file-utils)
+version=1.9.3
 
 source=(https://proxy.binaries.openttd.org/openttd-releases/${version}/${name}-${version}-source.tar.xz)
 
