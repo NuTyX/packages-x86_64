@@ -1,12 +1,17 @@
-# Depends on: faba-icon-theme faba-mono-icons meson ninja
-
 description="Moka is a stylized Linux desktop icon set, designed to be clear, simple and consistent."
-packager="jayce dot net at gmail dot com"
 url="https://github.com/moka-project/moka-icon-theme"
+
+contributors="Jayce"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(faba-icon-theme faba-mono-icons meson ninja)
+run=(gtk-update-icon-cache)
 
 name=moka-icon-theme
 version=5.4.0
+release=2
 
+PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/snwh/$name/archive/v$version.tar.gz)
 
 build=meson
