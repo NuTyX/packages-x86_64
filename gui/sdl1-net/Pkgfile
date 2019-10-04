@@ -1,0 +1,18 @@
+description="A small sample cross-platform networking library"
+url="https://www.libsdl.org/projects/SDL_net/"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(sdl1)
+
+name=sdl1-net
+version=1.2.8
+
+source=(https://www.libsdl.org/projects/SDL_net/release/SDL_net-$version.tar.gz)
+
+build() {
+  cd SDL_net-$version
+  ./configure --prefix=/usr --disable-static
+  make
+  make DESTDIR=$PKG install
+}
