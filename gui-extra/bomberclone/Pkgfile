@@ -1,13 +1,14 @@
-# Depends on: sdl-mixer sdl-image
-
 description="A clone of Atomic Bomberman."
 url="http://www.bomberclone.de/"
-packager="greg <greg@nutyx.org>"
-contributors="berlius"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Berlius, Greg"
+
+makedepends=(sdl1-mixer sdl1-image)
 
 name=bomberclone
 version=0.11.9
-release=1
+release=2
 
 source=(http://downloads.sourceforge.net/project/$name/$name/$name-$version.tar.gz
 		bomberclone-0.11.9-build-fix.patch
@@ -36,13 +37,5 @@ build() {
 		--disable-dependency-tracking
 
 	make LDFLAGS+="-lm"
-	
-}
-
-package() {
-
-	cd $name-$version
-	
 	make DESTDIR=$PKG install
-	
 }
