@@ -1,12 +1,14 @@
-# Depends on: sdl-net zlib sdl-mixer libglade libpng alsa-lib xorg-glu
-
 description="Emulator with builtin DOS for running DOS Games"
 url="http://dosbox.sourceforge.net/"
+
 packager="tnut <tnut@nutyx.org"
 contributors="Greg"
 
+makedepends=(sdl1-net zlib sdl1-sound
+            libglade libpng alsa-lib xorg-glu)
+
 name=dosbox
-version=0.74.2
+version=0.74.3
 
 source=(http://download.sourceforge.net/$name/$name-0.74-2.tar.gz
 )
