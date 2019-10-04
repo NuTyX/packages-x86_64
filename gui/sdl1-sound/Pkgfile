@@ -1,0 +1,21 @@
+description="Library to decode several popular sound file formats, such as .WAV and .MP3"
+url="http://www.libsdl.org/projects/SDL_sound"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
+
+makedepends=(sdl1 libmikmod libvorbis flac speex)
+
+name=sdl1-sound
+version=1.0.3
+
+source=(https://icculus.org/SDL_sound/downloads/SDL_sound-$version.tar.gz)
+
+build() {
+ cd SDL_sound-$version
+
+  ./configure --prefix=/usr --disable-static
+  make
+
+  make DESTDIR=$PKG install
+}
