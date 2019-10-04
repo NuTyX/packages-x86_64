@@ -1,15 +1,16 @@
-# Depends on: zip boost desktop-file-utils gamin gtk-update-icon-cache hicolor-icon-theme hunspell shared-mime-info wxgtk
-
-
 description="a cross-platform Integrated Development Environment (IDE)."
 url="http://www.codeblocks.org/"
+
 maintainer="The Code::Blocks Team"
 packager="tnut <tnut@nutyx.org>"
 contributors="tnut, Rémy"
 
+makedepends=(zip boost gamin hunspell shared-mime-info wxgtk)
+run=(desktop-file-utils gtk-update-icon-cache hicolor-icon-theme)
+
 name=codeblocks
 version=17.12
-release=2
+release=3
 
 source=(https://downloads.sourceforge.net/codeblocks/${name}_$version.tar.xz)
 build () {
