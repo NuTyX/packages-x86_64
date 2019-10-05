@@ -4,13 +4,13 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
 
 name=libreoffice
-version=6.2.5.2
+version=6.3.2.2
 makedepends=(python perl-archive-zip unzip zip icu gtk3 cups poppler-glib xorg-fontconfig
              libxslt kerberos xorgproto dbus-glib mesa postgresql wget apache-ant apr
              boost clucene dbus-glib libepoxy libjpeg-turbo2 xorg-glu gstreamer-plugins-base
              libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss redland serf unixodbc
-             desktop-file-utils doxygen gdb gnutls nasm telepathy-glib xmlsec gpgme)
-run=(shared-mime-info xdg-utils desktop-file-utils) 
+             doxygen gdb gnutls nasm telepathy-glib xmlsec gpgme)
+run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache)
 
 PKGMK_IGNORE_UNPACK="yes"
 
@@ -51,12 +51,13 @@ cd $name-$version
 	--without-junit             \
 	--without-system-dicts      \
 	--disable-dconf             \
+	--disable-gtk               \
+	--enable-gtk3               \
 	--disable-odk               \
 	--enable-release-build=yes  \
 	--enable-python=system      \
 	--with-system-apr           \
 	--with-system-boost         \
-	--with-system-cairo         \
 	--with-system-clucene       \
 	--with-system-curl          \
 	--with-system-epoxy         \
