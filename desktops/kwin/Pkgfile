@@ -7,8 +7,11 @@ set=(kde5 plasma5)
 
 name=kwin
 version=5.16.5
-makedepends=(libinput qtsensors kscreenlocker plasma-framework kcmutils breeze
-             kinit xcb-util-cursor knewstuff)
+release=2
+
+makedepends=(libinput qtsensors kscreenlocker plasma-framework
+             kcmutils breeze xcb-util-cursor knewstuff)
+run=(kinit)
 
 source=(https://download.kde.org/stable/plasma/${version:0:6}/$name-$version.tar.xz)
 
