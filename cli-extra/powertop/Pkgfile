@@ -1,0 +1,21 @@
+description="an intel provided tool that enhances powersaving"
+url="https://bellard.org/tcc/tcc-doc.html#Invoke"
+packager="cbarth15"
+contributors="cbarth"
+
+name=powertop
+
+version=2.11
+
+source=(https://github.com/fenrus75/$name/archive/v$version.tar.gz)
+
+build() {
+
+	cd $name-$version
+	./autogen.sh
+	./configure --prefix=/usr \
+		--disable-static
+	make
+	make DESTDIR=$PKG install
+
+}
