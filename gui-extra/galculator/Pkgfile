@@ -1,13 +1,15 @@
-# Depends on: gtk3 
-
 description="GTK+ based scientific calculator"
 url="http://galculator.sourceforge.net/"
-contributors="pierre at nutyx dot org"
-packager="greg <greg@nutyx.org>"
- 
+
+contributors="Pierre B., Greg"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(gtk3)
+run=(hicolor-icon-theme desktop-file-utils)
+
 name=galculator
 version=2.1.4
-release=1
+release=2
 
 source=(http://galculator.mnim.org/downloads/$name-$version.tar.bz2)
 
