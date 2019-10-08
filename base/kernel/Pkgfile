@@ -1,6 +1,9 @@
 url="http://www.kernel.org"
 description="The latest stable kernel version"
+
 packager="tnut <tnut@nutyx.org>"
+
+run=(nutyx)
 
 PKGMK_IGNORE_UNPACK="yes"
 PKGMK_NO_STRIP="yes"
@@ -9,10 +12,8 @@ PKGMK_GROUPS=(devel doc)
 name=kernel
 alias=(linux)
 
-version=5.3.4
+version=5.3.5
 _version=${version:0:3}
-makedepends=(nutyx)
-run=(nutyx)
 
 # Virtualbox
 vb_version=5.2.26
