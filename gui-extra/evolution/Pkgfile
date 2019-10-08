@@ -1,21 +1,20 @@
 description="Manage your email, contacts and schedule."
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Jayce, Tnut, Fanch, Remy"
+
+makedepends=(adwaita-icon-theme evolution-data-server gnome-autoar gnome-desktop gnome-icon-theme 
+             highlight shared-mime-info  gstreamer libcanberra libgweather libcryptui gtkspell 
+             itstool libgdata shared-mime-info libnotify clutter-gtk geoclue 
+             geocode-glib gtk-doc openldap gtksourceview gtkspell gspell)
 
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
 name=evolution
-version=3.34.0
+version=3.34.1
 
-makedepends=(adwaita-icon-theme evolution-data-server gnome-autoar gnome-desktop gnome-icon-theme 
-highlight shared-mime-info  gstreamer libcanberra libgweather libcryptui gtkspell 
-highlight itstool libgdata shared-mime-info libnotify clutter-gtk geoclue 
-geocode-glib gtk-doc openldap gtksourceview gtkspell gspell)
-run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
-
-
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
