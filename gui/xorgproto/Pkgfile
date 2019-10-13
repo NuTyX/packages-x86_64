@@ -1,18 +1,28 @@
 description="Xorg Header files which allow to build against the installed X Window system."
+url="http://xorg.freedesktop.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(meson ninja )
+
 PKGMK_GROUPS=(doc man)
-url="http://xorg.freedesktop.org"
 
 name=xorgproto
 version=2019.1
-_name=$name
-makedepends=(meson ninja )
+release=2
 
+_name=$name
+
+PKGMK_GROUPS=(doc man)
 source=(http://ftp.x.org/pub/individual/proto/$name-$version.tar.bz2)
 
 build=meson
+
+package() {
+# In xorg-libx11
+rm $PKG/usr/include/X11/extensions/XKBgeom.h
+}
 
 uptodate() {
 local ext urlLINX
