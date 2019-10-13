@@ -8,7 +8,7 @@ makedepends=(libsndfile)
 
 name=vamp-plugin-sdk
 version=2.6
-release=3
+release=4
 
 source=(https://code.soundsoftware.ac.uk/attachments/download/1520/$name-$version.tar.gz)
 
@@ -18,7 +18,7 @@ cd $SRC/$name-$version
 make
 make DESTDIR=$PKG install
 
-install -Dm644 COPYING $PKG/usr/share/licenses/$pkgname/COPYING
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 
 # Obsolets libs
 rm $PKG/usr/lib/libvamp-{,host}sdk.la
