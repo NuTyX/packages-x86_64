@@ -8,6 +8,7 @@ makedepends=(gtk3 xorg-libsm librsvg intltool gtksourceview)
 
 name=xpad
 version=5.4.0
+release=2
 
 source=(http://launchpad.net/xpad/trunk/$version/+download/xpad-$version.tar.bz2)
 
@@ -16,5 +17,5 @@ cd $name-$version
 ./autogen.sh
 ./configure --prefix=/usr
 make
-make DESTDIR=$PKG install helpdir=$PKG/usr/lib/xpad/help  
+make DESTDIR=$PKG install
 }
