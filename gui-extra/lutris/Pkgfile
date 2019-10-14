@@ -4,12 +4,13 @@ url="https://lutris.net"
 packager="tnut <tnut@nutyx.org>"
 contributors="Liberodark"
 
-makedepends=(python-gobject python-yaml python-evdev gtk3 glib psmisc
+makedepends=(gtk3 glib psmisc
              unrar unzip p7zip curl xorg-xrandr)
-run=(python-gobject python-yaml python-evdev)
+run=(python-gobject python-yaml python-evdev python-pillow)
 
 name=lutris
 version=0.5.1.2
+release=2
 
 source=($url/releases/${name}_$version.tar.xz)
 
