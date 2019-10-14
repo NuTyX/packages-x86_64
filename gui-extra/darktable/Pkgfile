@@ -1,17 +1,17 @@
 description="Utility to organize and develop raw images"
 url="http://darktable.sf.net/"
+
 packager="tnut tnut@nutyx.org>"
 contributors="Tnut, Greg, Rémy"
 
-name=darktable
-version=2.6.2
 makedepends=(git exiv2 lcms2 lensfun desktop-file-utils curl libsecret
              libgphoto2 openexr sqlite libxslt libsoup gtk3 pugixml
              json-glib lua colord colord-gtk graphicsmagick intltool
              cmake librsvg flickcurl llvm openjpeg2)
 
-
-
+name=darktable
+version=2.6.2
+release=2
 
 build() {
 git clone https://github.com/darktable-org/darktable.git
@@ -34,4 +34,5 @@ git clone https://github.com/darktable-org/darktable.git
       ..
   make
   make DESTDIR=$PKG install
+  ln -sv darktable/libdarktable.so $PKG/usr/lib/libdarktable.so
 }
