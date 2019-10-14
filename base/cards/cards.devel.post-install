@@ -1,20 +1,14 @@
 . lib/lsb/init-functions
-VERSION=$(grep version var/lib/pkg/nutyx-version |cut -d " " -f2)
+VERSION="rolling"
 [ ! -d etc/ports ] && mkdir -p etc/ports
 for i in base cli gui \
-cli-extra gui-extra \
-xfce4 xfce4-extra \
-mate mate-extra \
-kde5 kde5-extra \
-lxqt lxqt-extra \
-lxde lxde-extra \
-nos
+cli-extra gui-extra desktops
 
 do
    if [ ! -f etc/ports/$i.cards ]; then
       echo "host=downloads.nutyx.org
 destination=/usr/ports/$i
-version=$VERSION
+version="$VERSION"
 collection=$i" > etc/ports/$i.cards
       log_success_msg "${WARNING} /etc/ports/$i.cards created ${NORMAL}"
       log_warning_msg "${WARNING} Double check /etc/ports/$i and adapted to your needs ${NORMAL}"
