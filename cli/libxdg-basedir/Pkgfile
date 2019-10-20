@@ -1,0 +1,18 @@
+description="An implementation of the XDG Base Directory specifications."
+url="https://github.com/devnev/libxdg-basedir"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=libxdg-basedir
+version=1.2.0
+
+source=(https://github.com/devnev/$name/archive/$name-$version.tar.gz)
+
+build() {
+
+cd $name-$name-$version
+sed -i "577 s/fallbacklength/fallbacklength+1/" src/basedir.c
+./autogen.sh --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
