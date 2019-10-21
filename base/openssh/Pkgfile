@@ -7,13 +7,19 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(openssl libedit)
 
 name=openssh
-version=8.0p1
-release=2
+version=8.1p1
 
-nutyx_version=11.1
+nutyx_version=11.2
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$name-$version.tar.gz)
-
+prepare() {
+groupadd -g 50 sshd
+useradd  -c 'sshd PrivSep' \
+         -d /var/lib/sshd  \
+         -g sshd           \
+         -s /bin/false     \
+         -u 50 sshd
+}
 build() {
 unset MAKEFLAGS
 cd $name-$version
