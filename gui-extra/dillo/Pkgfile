@@ -1,13 +1,15 @@
-# Depends on: fltk openssl
-
 description="A small, fast graphical web browser built on FLTK"
 url="http://www.dillo.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(fltk openssl)
+
 name=dillo
 version=3.0.5
-release=5
+release=6
+
 source=(dillo-3.0.5-openssl-1.patch
 	http://www.dillo.org/download/dillo-$version.tar.bz2
         http://www.dillo.org/Icons/d2_icon3_122x122.png)
