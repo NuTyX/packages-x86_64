@@ -1,9 +1,11 @@
-# Depends on: libxml2 cups cups-filters 
+description="Filter scripts used by the printer spoolers to convert the incoming PostScript data"
+url="http://www.linuxprinting.org/foomatic.html"
 
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
-url="http://www.linuxprinting.org/foomatic.html"
-description="Filter scripts used by the printer spoolers to convert the incoming PostScript data"
+
+makedepends=(libxml2 cups cups-filters)
+
 name=foomatic-filters
 version=4.0
 release=20160212
