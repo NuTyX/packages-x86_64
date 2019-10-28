@@ -1,13 +1,14 @@
-# Depends on: git fltk
-
 description="Fast Light Window Manager"
 url="http://flwm.sourceforge.net/"
-contributors="timcowchip, tnut"
-packager="greg <greg@nutyx.org>"
+
+contributors="Timcowchip, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(git fltk)
 
 name=flwm
 version=git
-release=2
+release=3
 
 source=(flwm.desktop)
 
@@ -15,7 +16,6 @@ build() {
 
   git clone https://github.com/bbidulock/flwm.git flwm
   cd flwm
-  
   make || return 1
   mkdir -p $PKG/usr/share/xsessions
   cp $SRC/$name.desktop $PKG/usr/share/xsessions/
