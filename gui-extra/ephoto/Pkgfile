@@ -1,12 +1,15 @@
-# Depends on: efl
-
 description="Image viewer/editor/manipulator/slideshow creator for enlightenment"
 url="http://www.enlightenment.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Berlius"
 
+makedepends=(efl)
+
 name=ephoto
 version=1.5
+release=2
+
 source=(http://download.enlightenment.org/rel/apps/$name/$name-$version.tar.xz)
 uptodate() {
 local ext url LYNX
