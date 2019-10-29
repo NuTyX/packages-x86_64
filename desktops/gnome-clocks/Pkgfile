@@ -1,16 +1,18 @@
 description="Clocks applications for GNOME"
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce, Remy"
-makedepends=(meson ninja gsettings-desktop-schemas desktop-file-utils
-             gtk-update-icon-cache gtk3 libcanberra gnome-desktop
+
+makedepends=(meson ninja gtk3 libcanberra gnome-desktop
              libnotify libgweather geoclue2 geocode-glib gsound)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
-set=(gnome-extra)
+set=(gnome)
 
 name=gnome-clocks
-version=3.32.0
-release=2
+version=3.34.0
+
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+
 build=meson
