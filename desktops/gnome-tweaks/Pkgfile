@@ -1,17 +1,18 @@
 description="A tool to customize advanced GNOME 3 options"
 url="https://live.gnome.org/GnomeTweakTool"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Tnut, Jayce"
-makedepends=(gtk3 gconf python-gobject python2-gobject gsettings-desktop-schemas
-             desktop-file-utils gtk-update-icon-cache meson)
+contributors="Jayce"
+
+makedepends=(gtk3 gconf python-gobject python2-gobject meson)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
      python-gobject python2-gobject)
 
-set=(gnome-extra)
+set=(gnome)
 
 name=gnome-tweaks
-version=3.32.0
-release=2
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+version=3.34.0
+
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build=meson
