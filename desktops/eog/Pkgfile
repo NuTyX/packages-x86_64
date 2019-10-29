@@ -4,16 +4,17 @@ url="http://www.gnome.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, jayce, Remy"
 
-makedepends=(adwaita-icon-theme desktop-file-utils gnome-desktop
-             libpeas shared-mime-info yelp-xsl librsvg gnome-icon-theme
-             exempi lcms2 libexif meson ninja gobject-introspection)
-run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+makedepends=(gnome-desktop libpeas shared-mime-info yelp-xsl librsvg
+             gnome-icon-theme exempi lcms2 libexif meson ninja
+             gobject-introspection)
+run=(adwaita-icon-theme gsettings-desktop-schemas
+     desktop-file-utils gtk-update-icon-cache)
 
-set=(gnome-extra)
+set=(gnome)
 
 name=eog
-version=3.34.0
+version=3.34.1
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build=meson
