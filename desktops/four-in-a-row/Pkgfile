@@ -1,17 +1,19 @@
 description="Make lines of the same color to win"
 url="http://www.gnome.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce"
-makedepends=(meson ninja gsettings-desktop-schemas desktop-file-utils
-             gtk-update-icon-cache hicolor-icon-theme gtk3 libcanberra
-             librsvg)
-run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
-set=(gnome-extra)
+makedepends=(meson ninja gtk3 libcanberra
+             librsvg)
+run=(hicolor-icon-theme gsettings-desktop-schemas
+     desktop-file-utils gtk-update-icon-cache)
+
+set=(gnome)
 
 name=four-in-a-row
-version=3.32.0
-release=2
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+version=3.34.1
+
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build=meson
