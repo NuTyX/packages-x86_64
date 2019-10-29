@@ -1,19 +1,20 @@
 description="Access, organize, and share your photos on GNOME"
 url="http://www.gnome.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce, Remy"
-makedepends=(meson gsettings-desktop-schemas desktop-file-utils
-             gtk-update-icon-cache babl exempi gegl gfbgraph gnome-desktop
-             gnome-online-accounts grilo libgdata libexif tracker libdazzle
-             libgexiv2 geocode-glib)
-run=(intltool itstool gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
-set=(gnome-extra)
+makedepends=(meson babl exempi gegl gfbgraph gnome-desktop
+             gnome-online-accounts grilo libgdata libexif tracker
+             libdazzle libgexiv2 geocode-glib intltool itstool)
+run=(gsettings-desktop-schemas
+     desktop-file-utils gtk-update-icon-cache)
+
+set=(gnome)
 
 name=gnome-photos
-version=3.32.0
-release=3
+version=3.34.0
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build=meson
