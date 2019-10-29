@@ -1,15 +1,17 @@
 description="GNOME calendar"
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, jayce, Remy"
-makedepends=(libdazzle meson gsettings-desktop-schemas desktop-file-utils
-             gtk-update-icon-cache evolution-data-server intltool python)
+
+makedepends=(libdazzle meson intltool
+             evolution-data-server python)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
-set=(gnome-extra)
+set=(gnome)
 
 name=gnome-calendar
-version=3.34.0
+version=3.34.2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/${name}/${version:0:4}/${name}-$version.tar.xz)
 
