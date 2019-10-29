@@ -10,9 +10,9 @@ makedepends=(gcr kerberos libgnome-keyring libnotify librest libsecret
 run=(gtk-update-icon-cache)
 
 name=gnome-online-accounts
-version=3.34.0
+version=3.34.1
 
-source=(http://ftp.gnome.org/pub/gnome/sources/${name}/${version%.*}/${name}-$version.tar.xz) 
+source=(https://ftp.gnome.org/pub/gnome/sources/${name}/${version%.*}/${name}-$version.tar.xz) 
 
 build() {
 cd $name-$version
@@ -39,5 +39,4 @@ make -j1 DESTDIR=$PKG install
 rm $PKG/usr/lib/goa-1.0/web-extensions/libgoawebextension.la
 rm $PKG/usr/lib/libgoa-1.0.la
 rm $PKG/usr/lib/libgoa-backend-1.0.la
-
 }
