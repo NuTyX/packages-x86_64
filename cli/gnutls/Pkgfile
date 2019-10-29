@@ -1,11 +1,14 @@
 description="Libraries and userspace tools which provide a secure layer over a reliable transport layer." 
 url="http://www.gnu.org/software/gnutls/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Rems, Fanch"
 
-name=gnutls
-version=3.6.8
 makedepends=(nettle libtasn1 libidn p11-kit libunistring ca-certificates)
+
+name=gnutls
+version=3.6.10
+
 source=(ftp://ftp.gnutls.org/gcrypt/$name/v${version:0:3}/$name-$version.tar.xz)
 
 build() {
