@@ -7,13 +7,13 @@ contributors="Fanch, Tnut"
 makedepends=(dbus gcr pam libxslt libcap-ng gnupg openssh valgrind)
 
 name=gnome-keyring
-version=3.28.2
-release=3
+version=3.34.0
 
 source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
+sed -i -r 's:"(/desktop):"/org/gnome\1:' schema/*.xml 
 ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
