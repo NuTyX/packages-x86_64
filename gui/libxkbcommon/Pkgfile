@@ -4,22 +4,12 @@ url="http://xkbcommon.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(xorg-xkeyboard-config libxcb doxygen xorg-util-macros)
+makedepends=(meson ninja wayland wayland-protocols
+             xorg-xkeyboard-config libxcb doxygen xorg-util-macros)
 
 name=libxkbcommon
 version=0.9.1
 
 source=(http://xkbcommon.org/download/libxkbcommon-$version.tar.xz)
 
-build() {
-cd $name-$version
-./configure --prefix=/usr \
-            --disable-static \
-	 --docdir=/usr/share/doc/libxkbcommon-$version
-make
-make DESTDIR=$PKG install
-
-# Obsolets libs
-rm $PKG/usr/lib/libxkbcommon.la
-rm $PKG/usr/lib/libxkbcommon-x11.la
-}
+build=meson
