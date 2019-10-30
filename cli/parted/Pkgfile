@@ -9,13 +9,10 @@ makedepends=(lvm2)
 name=parted
 version=3.3
 
-source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz
- http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-devmapper-1.patch)
+source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-patch -Np1 -i ../parted-3.2-devmapper-1.patch
-sed -i '/utsname.h/a#include <sys/sysmacros.h>' libparted/arch/linux.c
 ./configure --prefix=/usr \
 --disable-static
 make
