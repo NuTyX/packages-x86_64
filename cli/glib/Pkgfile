@@ -8,7 +8,7 @@ makedepends=(libffi pcre python elfutils meson ninja libxslt docbook-xsl)
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.62.1
+version=2.62.2
 
 
 source=(https://ftp.gnome.org/pub/gnome/sources/glib/${version:0:4}/$name-$version.tar.xz
@@ -36,7 +36,7 @@ build () {
 }
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/$name"
+url="https://ftp.gnome.org/pub/gnome/sources/$name"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
