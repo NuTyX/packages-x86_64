@@ -1,0 +1,22 @@
+description="A tabbed PDF viewer using the poppler library."
+url="https://launchpad.net/qpdfview"
+
+packager="tnut<tnut@nutyx.org"
+contributors="Greg"
+
+makedepends=(qttools libspectre djvulibre qtsvg poppler-qt cups)
+set=(lxqt)
+
+name=qpdfview
+version=0.4.18beta1
+
+source=(https://launchpad.net/qpdfview/trunk/$version/+download/qpdfview-$version.tar.gz)
+
+build() {
+cd $name-$version
+lrelease qpdfview.pro
+qmake qpdfview.pro
+make
+make INSTALL_ROOT=$PKG install
+}
+
