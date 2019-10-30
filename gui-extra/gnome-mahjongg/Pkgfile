@@ -5,15 +5,16 @@ contributors="Rems"
 packager="tnut <tnut@nutyx.org>"
 
 
-makedepends=(meson ninja gsettings-desktop-schemas desktop-file-utils
-             gtk-update-icon-cache gobject-introspection
+makedepends=(meson ninja gobject-introspection
              gtk3 vala intltool itstool libcanberra
              librsvg yelp-tools)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
-name=gnome-mahjongg
-version=3.32.0
+set=(gnome)
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+name=gnome-mahjongg
+version=3.34.0
+
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build=meson
