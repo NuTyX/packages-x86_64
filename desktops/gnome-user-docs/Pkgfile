@@ -1,17 +1,18 @@
 description="The GNOME User Docs package contains documentation for GNOME"
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, Remy"
 
 set=(gnome)
 
 name=gnome-user-docs
-version=3.32.3
+version=3.34.0
 makedepends=(itstool)
 
 PKGMK_LOCALES=(as ca cs da de el fi fr es gl gu he hi hr hu id it ja kn ko lv mr nl pa pl pt ro ru sl sr sv te vi ta zh)
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 pack_remove_locale() {
 cd $PKG
