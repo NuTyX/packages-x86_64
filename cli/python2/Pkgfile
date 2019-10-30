@@ -19,10 +19,11 @@ $name.png)
 
 build() {
     cd Python-$version
-    ./configure --prefix=/usr \
-                --with-system-expat \
-                --with-system-ffi \
-                --enable-shared \
+    ./configure --prefix=/usr        \
+                --with-system-expat  \
+                --with-system-ffi    \
+                --enable-shared      \
+                --with-ensurepip=yes \
                 --enable-unicode=ucs4
     make
     make DESTDIR=$PKG install
