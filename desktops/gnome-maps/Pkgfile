@@ -1,16 +1,18 @@
 description="GNOME Maps is a map application for GNOME"
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
-contributors=" Tnut, Jayce, Fanch, Remy"
-makedepends=(libchamplain meson gsettings-desktop-schemas desktop-file-utils
-             gtk-update-icon-cache  clutter-gtk geoclue2 geocode-glib gjs
+contributors="Jayce, Fanch, Remy"
+
+makedepends=(libchamplain meson clutter-gtk geoclue2 geocode-glib gjs
              libgee folks gfbgraph)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
-set=(gnome-extra)
+set=(gnome)
 
 name=gnome-maps
-version=3.32.2.1
+version=3.34.1
 
 source=(https://ftp.acc.umu.se/pub/gnome/sources/gnome-maps/${version:0:4}/gnome-maps-$version.tar.xz)
+
 build=meson
