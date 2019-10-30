@@ -1,17 +1,21 @@
 description="GNOME file manager"
 url="http://live.gnome.org/Nautilus"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Fanch, Tnut, jayce, Remy"
-run=(desktop-file-utils gtk-update-icon-cache tracker-miners)
+contributors="Fanch, jayce, Remy"
+
+run=(desktop-file-utils gtk-update-icon-cache tracker-miners
+     shared-mime-info)
+makedepends=(gnome-autoar libnotify gnome-desktop tracker
+             gobject-introspection exempi libexif libgexiv2
+             gvfs meson gtk-doc)
+set=(gnome)
 
 name=nautilus
-version=3.32.3
-makedepends=(gnome-autoar libnotify gnome-desktop tracker tracker-miners
-             shared-mime-info gobject-introspection exempi libexif libgexiv2
-             gvfs gtk-update-icon-cache desktop-file-utils meson gtk-doc)
+version=3.34.1
 
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build() {
   cd $name-$version
