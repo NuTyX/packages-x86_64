@@ -1,14 +1,16 @@
- # Depends on: gdk-pixbuf ruby-bundler
-
 description="A flat and light theme with a modern look"
-packager="Rems"
 url="http://numixproject.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
+
+makedepends=(gdk-pixbuf ruby-bundler)
 
 name=numix-gtk-theme
 version=2.6.7
+release=2
 
 PKGMK_KEEP_SOURCES="no"
-
 source=(https://github.com/numixproject/numix-gtk-theme/archive/$version.tar.gz
         Gemfile)
 
