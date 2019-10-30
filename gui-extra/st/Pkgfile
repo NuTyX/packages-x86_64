@@ -1,31 +1,30 @@
-# Depends on: xorg-libxext xorg-libxft 
-
 description="st is a simple terminal implementation for X"
 url="http://st.suckless.org/"
-contributors="alienus, tnut"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus, Greg"
+
+makedepends=(xorg-libxext xorg-libxft)
 
 name=st
 version=0.8.1
+release=2
 
 source=(http://dl.suckless.org/st/$name-$version.tar.gz
 		config.h)
 
 prepare() {
 
-  cd $SRC/$name-$version
+  cd $name-$version
   sed -i '/\@tic /d' Makefile
-  cp $SRC/config.h config.h
+  cp ../config.h config.h
 }
 
 build() {
-  cd $SRC/$name-$version
+cd $name-$version
 CC=/usr/bin/gcc make X11INC=/usr/include/X11 X11LIB=/usr/lib/X11
-}
+make PREFIX=/usr DESTDIR=$PKG TERMINFO=$PKG/usr/share/terminfo install
 
-package() {
-
-  cd $SRC/$name-$version
-  make PREFIX=/usr DESTDIR=$PKG TERMINFO=$PKG/usr/share/terminfo install
 # Conflict in /usr/share/terminfo
 rm -v $PKG/usr/share/terminfo/s/st{,-256color}
 }
