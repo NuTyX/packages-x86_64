@@ -18,11 +18,6 @@ source=(http://ftp.x.org/pub/individual/proto/$name-$version.tar.bz2)
 
 build=meson
 
-package() {
-# In xorg-libx11
-rm $PKG/usr/include/X11/extensions/XKBgeom.h
-}
-
 uptodate() {
 local ext urlLINX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
