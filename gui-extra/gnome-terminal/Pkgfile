@@ -1,15 +1,18 @@
 description="The GNOME Terminal Emulator"
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce, Fanch, Remy"
 
 makedepends=(dconf gconf gtk3 vte3 nautilus)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
-name=gnome-terminal
-version=3.34.0
+set=(gnome)
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+name=gnome-terminal
+version=3.34.1
+
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
