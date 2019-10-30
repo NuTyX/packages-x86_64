@@ -7,8 +7,20 @@ contributors="Jayce, Fanch"
 makedepends=(gedit)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
+set=(gnome)
+
 name=gedit-plugins
 version=3.34.0
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
-build=meson
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+build() {
+
+cd $name-$version
+    mkdir build
+    cd    build
+    meson --prefix=/usr \
+    -D plugin_zeitgeist=false
+    ninja
+    DESTDIR=$PKG ninja install
+}
