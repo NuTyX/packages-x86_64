@@ -4,6 +4,8 @@ url="http://www.gnome.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce, Fanch"
 
+set=(gnome)
+
 makedepends=(meson ninja libpeas yelp-xsl enchant iso-codes
              gtksourceview4 gspell enchant gtk3 gtksourceview gvfs
              libsoup libzeitgeist python-gobject python)
@@ -12,6 +14,6 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 name=gedit
 version=3.34.0
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build=meson
