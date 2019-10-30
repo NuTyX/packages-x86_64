@@ -1,19 +1,25 @@
 description="Enlightenment window manager"
 url="http://www.enlightenment.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Berlius, Sh4d0w"
 
-makedepends=(meson ninja efl xcb-util-keysyms)
-run=(efl)
+makedepends=(meson ninja)
+run=(efl xcb-util-keysyms hicolor-icon-theme
+     desktop-file-utils)
+set=(enlightenment)
 
 name=enlightenment
-version=0.23.0
+version=0.23.1
 
 source=(https://download.enlightenment.org/rel/apps/enlightenment/$name-$version.tar.xz)
+
 prepare() {
 sed -i "91 s/true/false/" $name-$version/meson_options.txt
 }
+
 build=meson
+
 uptodate() {
 local ext url LYNX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
