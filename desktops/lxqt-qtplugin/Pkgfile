@@ -1,13 +1,16 @@
 description="LXQt platform integration for Qt"
 url="http://lxqt.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
-collection=lxqt
+makedepends=(lxqt-build-tools libdbusmenu-qt libqtxdg libfm-qt)
+set=(lxqt)
 
 name=lxqt-qtplugin
 version=0.14.0
-makedepends=(lxqt-build-tools libdbusmenu-qt libqtxdg libfm-qt)
+release=2
+
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
 build=kde5
