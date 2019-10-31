@@ -1,0 +1,5 @@
+. lib/lsb/init-functions
+if [ -f etc/pam.d/system-session ];then
+  rm etc/pam.d/system-session
+  log_info_msg "${INFO} /etc/pam.d/system-session file will be replaced ${NORMAL}\n"
+fi
