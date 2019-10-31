@@ -9,7 +9,7 @@ makedepends=(autoconf git udisks2 accountsservice clutter-gtk
              grilo libgtop libpwquality kerberos shared-mime-info cheese
              cups samba gnome-bluetooth ibus meson modemmanager
              network-manager-applet ninja gnome-color-manager
-             sound-theme-freedesktop cups-pk-helper vino
+             sound-theme-freedesktop cups-pk-helper
              wayland gdk-pixbuf)
 run=(iso-codes gsettings-desktop-schemas)
 
@@ -18,6 +18,6 @@ set=(gnome)
 name=gnome-control-center
 version=3.34.1
 
-source=(http://ftp.gnome.org/pub/gnome/sources/${name}/${version:0:4}/${name}-$version.tar.xz)
+source=(https://ftp.gnome.org/pub/gnome/sources/${name}/${version:0:4}/${name}-$version.tar.xz)
 
 build=meson
