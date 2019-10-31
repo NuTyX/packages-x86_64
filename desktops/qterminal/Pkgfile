@@ -1,14 +1,17 @@
 description="A lightweight Qt-based terminal emulator"
 url="http://lxqt.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
-collection=lxqt-extra
+makedepends=(lxqt-build-tools hicolor-icon-theme qtermwidget qtx11extras lxqt-build-tools)
+run=(hicolor-icon-theme)
+
+set=(lxqt)
 
 name=qterminal
 version=0.14.1
-makedepends=(lxqt-build-tools hicolor-icon-theme qtermwidget qtx11extras lxqt-build-tools)
-run=(hicolor-icon-theme)
+release=2
 
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
