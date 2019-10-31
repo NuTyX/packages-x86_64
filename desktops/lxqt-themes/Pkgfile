@@ -1,14 +1,16 @@
 description="LXQt themes, graphics and icons."
 url="http://lxqt.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
-collection=lxqt-extra
+makedepends=(lxqt-build-tools)
+run=(hicolor-icon-theme)
+set=(lxqt)
 
 name=lxqt-themes
 version=0.14.0
-makedepends=(hicolor-icon-theme lxqt-build-tools)
-run=(hicolor-icon-theme)
+release=2
 
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
