@@ -1,12 +1,15 @@
-# Depends on:intltool curl libevent openssl qtbase qttools desktop-file-utils gtk-update-icon-cache doxygen gdb
-
 description="Light and fast Bittorent client (GTK Interface)"
 url="http://www.transmissionbt.com/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Alienus, Tnut, Remy"
 
+makedepends=(intltool curl libevent openssl qtbase qttools doxygen gdb)
+run=(desktop-file-utils gtk-update-icon-cache)
+
 name=transmission-qt
 version=2.94
+release=2
 
 source=(https://raw.githubusercontent.com/transmission/transmission-releases/master/transmission-$version.tar.xz)
 
