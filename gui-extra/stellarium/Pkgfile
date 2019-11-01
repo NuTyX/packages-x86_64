@@ -1,12 +1,14 @@
-# Depends on: cmake qtbase qtlocation qtmultimedia qtscript qttools qtserialport 
-
 description="Open source planetarium"
 URL="http://stellarium.org"
-packager="Dania <Dania@nutyx.org>"
-contributor="tnut"
+
+packager="tnut <tnut@nutyx.org>"
+contributor="Dania"
+
+makedepends=(cmake qtbase qtlocation qtmultimedia qtscript qttools qtserialport)
 
 name=stellarium
 version=0.18.1
+release=2
 
 source=(https://github.com/Stellarium/stellarium/releases/download/v"$version"/$name-$version.tar.gz)
 
