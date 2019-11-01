@@ -1,13 +1,14 @@
-# Depends on: libpcap
-
 description="A daemon which implements the Point-to-Point Protocol for dial-up networking"
 url="http://ppp.samba.org/index"
-contributors="pierre"
-packager="rems <rems@nutyx.org>"
+
+contributors="Pierre B., Rems"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libpcap)
 
 name=ppp
 version=2.4.7
-release=2
+release=3
 
 source=(http://samba.org/ftp/$name/$name-$version.tar.gz
 	ppp.systemd
