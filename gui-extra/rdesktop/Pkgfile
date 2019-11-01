@@ -1,13 +1,14 @@
-# Depends on: xorg-libx11
-
 description="Allows access the terminal windows"
 url="http://www.rdesktop.org/"
-packager="Jayce <jayce.net@gmail.com>"
-contributors="Pierre"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierrei, Jayce"
+
+makedepends=(xorg-libx11)
 
 name=rdesktop
 version=1.8.3
-release=2
+release=3
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz
 	rdesktop-send_physical_buttons.diff
