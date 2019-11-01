@@ -1,24 +1,21 @@
-# Depends on: gtk2 lua
-
 description="The GTK Engines package contains eight themes/engines and two additional engines for GTK2"
 url="https://ftp.gnome.org/pub/gnome/sources/gtk-engines"
-contributors="berlius"
-packager="greg <greg@nutyx.org>"
+
+contributors="Berlius, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(gtk2 lua)
 
 name=gtk-engines
 version=2.20.2
-release=1
+release=2
 
 source=(https://ftp.gnome.org/pub/gnome/sources/gtk-engines/2.20/$name-$version.tar.bz2)
  
 build() {
 
-	cd $name-$version
-	
-	./configure --prefix=/usr 
-	
-	make
-
-	make DESTDIR=$PKG install
-
+cd $name-$version
+./configure --prefix=/usr 	
+make
+make DESTDIR=$PKG install
 }
