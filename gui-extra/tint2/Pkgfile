@@ -1,17 +1,17 @@
-# Depends on: git cmake startup-notification ninja setconf xorg-libxdamage xorg-libxrandr librsvg gtk2 imlib2
-
 description="Basic, good-looking task manager for WMs"
 url="https://gitlab.com/o9000/tint2"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg, Rémy"
 
+makedepends=(git cmake ninja setconf xorg-libxdamage
+             xorg-libxrandr librsvg gtk2 imlib2)
+run=(startup-notification)
+
+
 name=tint2
 version=16.6.1
-release=2
-
-source=()
-
-
+release=3
 
 build() {
 
@@ -19,16 +19,10 @@ git clone https://gitlab.com/o9000/tint2.git
 
 cd $name
 
-cmake \
-	-DCMAKE_INSTALL_PREFIX=/usr \
-	-DCMAKE_BUILD_TYPE=Release \
-	-DENABLE_TINT2CONF=1 \
-	-GNinja
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+ -DCMAKE_BUILD_TYPE=Release \
+ -DENABLE_TINT2CONF=1 \
+ -GNinja
 ninja
-}
-
-package() {
-
-	cd $name
-	DESTDIR=$PKG ninja install
+DESTDIR=$PKG ninja install
 }
