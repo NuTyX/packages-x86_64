@@ -5,8 +5,12 @@ url="https://github.com/mbarringer/imagewriter"
 packager="Rems"
 contributors="Tnut, Greg"
 
+makedepends=(qtbase)
+run=(desktop-file-utils hicolor-icon-theme udisks2 xdg-su) 
+
 name=imagewriter
 version=20150521
+release=2
 
 source=()
 
@@ -23,9 +27,5 @@ build() {
 	CFLAGS="$CFLAGS -DKIOSKHACK"
 	qmake PREFIX="$PKG/usr" DEFINES=USEUDISKS2 $name.pro
 	make
-}
-
-package() {
-	cd $name
 	make DESTDIR=$PKG install
 }
