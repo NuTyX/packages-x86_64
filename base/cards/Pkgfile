@@ -22,7 +22,7 @@ dialog.devel tar wget zlib.devel)
 PKGMK_GROUPS=(devel doc man)
 
 name=cards
-version=2.4.105
+version=2.4.106
 
 # patchname="$name-$version-consolidate-$release.patch"
 
@@ -39,6 +39,10 @@ cd $name-$version
 make all
 make DESTDIR=$PKG install
 mkdir -p $PKG/{etc,usr}/ports
+
+mkdir -p $PKG/usr/share/doc/cards-$version
+install -m644 ChangeLog \
+$PKG/usr/share/doc/cards-$version/ChangeLog
 }
 devel()
 {
