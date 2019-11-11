@@ -1,0 +1,19 @@
+description="ACPI tools, including Intel ACPI Source Language compiler"
+url="https://acpica.org"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(flex bison)
+
+name=acpica
+version=20190816
+
+source=(https://acpica.org/sites/acpica/files/acpica-unix-$version.tar.gz)
+
+
+build() {
+
+cd acpica-unix-$version
+make
+make DESTDIR=$PKG install
+}
