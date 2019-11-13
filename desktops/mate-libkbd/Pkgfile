@@ -1,17 +1,18 @@
 description="MATE keyboard library"
 url="https://mate-desktop.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, Jayce, Greg, Remy"
 
+makedepends=(gtk3 xorg-libxklavier)
 set=(mate)
 
 name=mate-libkbd
 _name=libmatekbd
 version=1.22.0
-release=2
+release=3
 
-makedepends=(mate-common dconf gtk3 iso-codes xorg-libxklavier)
-source=(http://pub.mate-desktop.org/releases/${version%.*}/${_name}-$version.tar.xz)
+source=(https://pub.mate-desktop.org/releases/${version%.*}/${_name}-$version.tar.xz)
 
 build() {
 
