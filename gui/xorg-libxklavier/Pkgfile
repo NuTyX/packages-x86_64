@@ -1,12 +1,19 @@
 description="libxklavier, library for the keyboard under X"
 url="http://xorg.freedesktop.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Greg"
+
+makedepends=(libxml2 xorg-libx11 glib gobject-introspection
+             libinput xorg-xkbcomp
+             xorg-libxkbfile xorg-xkeyboard-config xorg-libxfixes)
+run=(iso-codes)
 
 name=xorg-libxklavier
 _name=libxklavier
 version=5.4
-makedepends=(iso-codes libxml2 xorg-libx11 glib gobject-introspection xorg-libxkbfile)
+release=2
+
 source=(http://pkgs.fedoraproject.org/repo/pkgs/libxklavier/${_name}-$version.tar.bz2/13af74dcb6011ecedf1e3ed122bd31fa/${_name}-$version.tar.bz2)
 
 
