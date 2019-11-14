@@ -1,9 +1,14 @@
-# Depends on: alsa-lib zlib libvorbis xorg-libxdamage xorg-libxext libtheora xorg-libsm jack
 description="Produces a OGG encapsulated Theora/Vorbis recording of your desktop"
+url="http://recordmydesktop.sourceforge.net"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(alsa-lib zlib libvorbis xorg-libxdamage xorg-libxext
+             libtheora xorg-libsm jack)
 name=recordmydesktop
 version=0.3.8.1
-release=1
-url="http://recordmydesktop.sourceforge.net"
+release=2
+
 source=(http://downloads.sourceforge.net/${name}/${name}-${version}.tar.gz
 	shmstr-to-shmproto.patch
 	recordmydesktop-bitrate.patch)

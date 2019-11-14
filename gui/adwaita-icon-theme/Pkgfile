@@ -7,13 +7,13 @@ makedepends=(intltool icon-naming-utils)
 run=(librsvg hicolor-icon-theme gtk-update-icon-cache)
 
 name=adwaita-icon-theme
-version=3.34.0
+version=3.34.3
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/$name"
+url="https://ftp.gnome.org/pub/gnome/sources/$name"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \

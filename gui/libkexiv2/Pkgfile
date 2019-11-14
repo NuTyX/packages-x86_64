@@ -1,13 +1,15 @@
 description="A library to manipulate pictures metadata"
 url="http://www.kde.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 set=(kde5 plasma5)
+makedepends=(exiv2 extra-cmake-modules)
 
 name=libkexiv2
-version=19.08.2
-makedepends=(exiv2 extra-cmake-modules)
+version=19.08.3
+
 source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build=kde5
@@ -23,4 +25,3 @@ sed "s@v@@" | \
 head -n $(($ligne+1 )) | \
 tail -n $(($ligne))
 }
-

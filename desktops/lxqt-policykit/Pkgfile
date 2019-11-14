@@ -1,13 +1,15 @@
 description="The LXQt policykit authentication agent"
 url="http://lxqt.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
-collection=lxqt
+makedepends=(lxqt-build-tools liblxqt polkit-qt)
+set=(lxqt)
 
 name=lxqt-policykit
 version=0.14.1
-makedepends=(lxqt-build-tools liblxqt polkit-qt)
+release=2
 
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 

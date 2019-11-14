@@ -1,13 +1,14 @@
-# Description:  Lightweight and highly configurable tiling window manager for X
-# URL: http://wmfs.info/
-# Packager: Chris Farrell, timcowchip at gmail dot com
-# Maintainer: Chris Farrell, timcowchip at gmail dot com
-# Depends on: git xorg-libxft, xorg-libx11, imlib2, 
+description="Lightweight and highly configurable tiling window manager for X"
+url="http://wmfs.info/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Timcowchip"
+
+makedepends=(git xorg-libxft xorg-libx11 imlib2)
 
 name=wmfs2
 version=git
-release=1
-source=()
+release=2
 
 build() {
   if cd $PKGMK_SOURCE_DIR/wmfs ; then

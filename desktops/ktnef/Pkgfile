@@ -5,12 +5,12 @@ contributors="Pierre B"
 set=(kde5 plasma5)
 
 name=ktnef
-version=19.08.2
+version=19.08.3
 makedepends=(extra-cmake-modules python kdoctools kcalutils kcontacts)
 
 build=kde5
 
-source=( http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+source=(https://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 uptodate() {
 feed=https://github.com/KDE/$name/releases.atom 

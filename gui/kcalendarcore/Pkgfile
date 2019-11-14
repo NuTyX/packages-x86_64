@@ -1,17 +1,17 @@
-description="The KDE calendar access library "
-url="https://projects.kde.org/kcalcore"
+description="The KDE calendar access library"
+url="https://community.kde.org/Frameworks"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 set=(kde5 plasma5)
 
-name=kcalcore
-version=19.08.2
-makedepends=(extra-cmake-modules python kdoctools libical kdelibs4support)
+name=kcalendarcore
+version=5.63.0
+makedepends=(extra-cmake-modules qtbase doxygen qttools qtdoc kdoctools libical)
 
 build="kde5"
 
-source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+source=(https://download.kde.org/stable/frameworks/${version%.*}/$name-$version.tar.xz)
 
 uptodate() {
 feed=https://github.com/KDE/$name/releases.atom 

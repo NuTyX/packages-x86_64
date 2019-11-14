@@ -1,20 +1,19 @@
 description="A Qt-based library that maps JSON data to QVariant objects"
 url="http://qjson.sourceforge.net"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
-collection=lxqt
+makedepends=(qtbase cmake)
+
+set=(lxqt)
 
 name=qjson
 version=0.9.0
-release=2
-
-makedepends=(qtbase cmake)
+release=3
 
 PKGMK_KEEP_SOURCES="no"
-
 source=(https://github.com/flavio/qjson/archive/$version.tar.gz)
-
 
 build=kde5
 

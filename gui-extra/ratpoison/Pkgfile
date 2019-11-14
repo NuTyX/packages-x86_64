@@ -1,17 +1,18 @@
-# Depends on: texinfo xorg-libxft xorg-libxinerama xorg-libxtst xorg-libxrandr
-
 description="A simple keystroke-driven window manager."
 url="http://www.nongnu.org/ratpoison/"
-contributors="alienus, tnut"
-packager="greg<greg@nutyx.org>"
+
+contributors="Alienus, Greg"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(texinfo xorg-libxft xorg-libxinerama
+             xorg-libxtst xorg-libxrandr)
 
 name=ratpoison
 version=1.4.9
-release=1
+release=2
 
 source=(http://savannah.nongnu.org/download/$name/$name-$version.tar.xz
-		$name.desktop
-		$name.README)
+	$name.desktop $name.README)
 
 build(){
 
@@ -38,4 +39,3 @@ build(){
     install -m644 $SRC/$name.README \
         $PKG/usr/share/doc/$name-$version/$name.README
 }
-

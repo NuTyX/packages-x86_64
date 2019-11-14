@@ -1,10 +1,11 @@
 description="A non-linear video editor for Linux using the MLT video framework"
 url="http://www.kdenlive.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(frei0r-plugins shared-mime-info qtquickcontrols qtmultimedia
-             frei0r-plugins knotifications knewstuff kplotting knotifyconfig
+makedepends=(qtquickcontrols qtmultimedia knotifyconfig
+             knotifications knewstuff kplotting
              kded kfilemetadata kdeclarative mlt xorg-glu sdl-image
              hicolor-icon-theme kdoctools v4l-utils ffmpeg cdrtools libdv)
 run=(shared-mime-info frei0r-plugins)
@@ -12,9 +13,9 @@ run=(shared-mime-info frei0r-plugins)
 set=(kde5 plasma5)
 
 name=kdenlive
-version=19.08.2
+version=19.08.3
 
-source=(http://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+source=(https://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
 
 build=kde5
 

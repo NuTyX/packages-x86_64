@@ -4,20 +4,18 @@ url="http://darktable.sf.net/"
 packager="tnut tnut@nutyx.org>"
 contributors="Tnut, Greg, Rémy"
 
-makedepends=(git exiv2 lcms2 lensfun desktop-file-utils curl libsecret
-             libgphoto2 openexr sqlite libxslt libsoup gtk3 pugixml
+makedepends=(exiv2 lcms2 lensfun curl libsecret libgphoto2
+             openexr sqlite libxslt libsoup gtk3 pugixml
              json-glib lua colord colord-gtk graphicsmagick intltool
              cmake librsvg flickcurl llvm openjpeg2)
+run=(desktop-file-utils)
 
 name=darktable
-version=2.6.2
-release=2
+version=2.6.3
 
+source=(https://github.com/darktable-org/$name/releases/download/release-$version/$name-$version.tar.xz)
 build() {
-git clone https://github.com/darktable-org/darktable.git
-  cd $name
-  git submodule init
-  git submodule update
+  cd $name-$version
   mkdir -p build
   cd build
   cmake \
@@ -35,4 +33,4 @@ git clone https://github.com/darktable-org/darktable.git
   make
   make DESTDIR=$PKG install
   ln -sv darktable/libdarktable.so $PKG/usr/lib/libdarktable.so
-}
+ }

@@ -1,13 +1,15 @@
 description="LXQt about dialog."
 url="http://lxqt.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
-collection=lxqt
+makedepends=(liblxqt lxqt-build-tools)
+set=(lxqt)
 
 name=lxqt-about
 version=0.14.1
-makedepends=(liblxqt lxqt-build-tools)
+release=2
 
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 

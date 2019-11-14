@@ -1,12 +1,16 @@
-# Depends on: gstreamer-plugins-libav gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad gstreamer-plugins-ugly clutter-gst clutter-gtk
 
 description="Powerful media player with a minimalistic interface"
 url="https://wiki.gnome.org/Apps/Snappy"
-contributors=""
-packager="rems <rems@nutyx.org>"
+
+contributors="Rems"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(gstreamer-plugins-libav gstreamer-plugins-base gstreamer-plugins-good
+             gstreamer-plugins-bad gstreamer-plugins-ugly clutter-gst clutter-gtk)
  
 name=snappy-player
 version=1.0
+release=2
 
 source=(https://download.gnome.org/sources/snappy/$version/snappy-$version.tar.xz
         0001-Set-windowing-backend-to-X11.patch

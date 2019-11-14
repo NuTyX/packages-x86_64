@@ -1,16 +1,13 @@
-# Depends on: desktop-file-utils gtk2 gettext grep intltool goffice
-
 description="Personal financial management program"
 url="http://www.grisbi.org"
-packager="sloteur at free dot fr"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems, Sloteur"
+
+makedepends=(gtk2 gettext grep intltool goffice)
+run=(desktop-file-utils)
+
 name=grisbi
-version=1.0.4
+version=1.2.2
 
 source=(https://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
-
-build() {
-cd $name-$version
-./configure --prefix=/usr
-make
-make DESTDIR=$PKG install
-}

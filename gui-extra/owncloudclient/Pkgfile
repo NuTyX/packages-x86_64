@@ -1,23 +1,22 @@
-# Depends on: cmake extra-cmake-modules sqlite qtbase qtkeychain qtwebkit
-
 description="ownCloud client based on mirall"
 url="http://owncloud.org/"
-packager="remy <remy@nutyx.org>"
-contributors="Pierre, Tnut"
 
-name=owncloud-cli
-version=2.5.1.10973
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre, Rems"
 
-_name=owncloudclient
+makedepends=(cmake extra-cmake-modules sqlite qtbase qtkeychain qtwebkit)
 
-source=(https://download.owncloud.com/desktop/stable/${_name}-$version.tar.xz)
+name=owncloudclient
+version=2.5.0.10650
+
+source=(https://download.owncloud.com/desktop/stable/${name}-$version.tar.xz)
 
 build() {
 
 mkdir build
 cd    build
 
-cmake ../$_name-$version            \
+cmake ../$name-$version            \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_INSTALL_LIBDIR=lib  \
         -DCMAKE_BUILD_TYPE=Release  \

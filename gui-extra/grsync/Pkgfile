@@ -1,12 +1,14 @@
-# Depends on: gtk3 rsync intltool 
-
 description="GUI for rsync"
 url="https://github.com/FreeRDP/Remmina/"
-packager="remy <remy@nutyx.org>"
-contributors=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Remy"
+
+makedepends=(gtk3 rsync intltool)
+
 name=grsync
 version=1.2.6
-
+release=2
 
 source=(http://www.opbyte.it/release/$name-$version.tar.gz
         gtk3-port.patch)
