@@ -1,20 +1,22 @@
 description="The BlueZ package contains the Bluetooth protocol stack for Linux."
 url="http://www.bluez.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=bluez
-version=5.50
-nutyx_version=11.1
-release=6
-makedepends=(libical libvorbis alsa-lib libusb-compat libsndfile cups glib)
+version=5.52
+nutyx_version=11.2
+
+PKGMK_GROUPS=(man devel doc)
+
+makedepends=(dbus libical libvorbis alsa-lib
+             libusb-compat libsndfile cups glib)
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	http://www.linuxfromscratch.org/patches/blfs/8.4/bluez-5.50-obexd_without_systemd-1.patch
-	http://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
+	https://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
 build() {
 cd $name-$version
-patch -Np1 -i ../bluez-5.50-obexd_without_systemd-1.patch
 ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
