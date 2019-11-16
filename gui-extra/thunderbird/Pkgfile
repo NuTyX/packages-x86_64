@@ -12,15 +12,15 @@ run=(startup-notification hunspell desktop-file-utils hicolor-icon-theme
      shared-mime-info)
 
 name=thunderbird
-version=68.1.2
+version=68.2.1
 locale_version=$version
 
-source=(https://download.cdn.mozilla.net/pub/thunderbird/releases/$version/source/$name-$version.source.tar.xz
+source=(https://archive.mozilla.org/pub/thunderbird/releases/$version/source/$name-$version.source.tar.xz
 	$name.desktop)
 
 pack_remove_locale() {
 
-wget  https://download.cdn.mozilla.net/pub/thunderbird/releases/$version/linux-${PKGMK_ARCH}/xpi/${1}.xpi
+wget  https://archive.mozilla.org/pub/thunderbird/releases/$version/linux-${PKGMK_ARCH}/xpi/${1}.xpi
 install -Dm644 ${1}.xpi \
 $PKG/usr/lib/$name/extensions/langpack-${1}@$name.mozilla.org.xpi
 rm ${1}.xpi
@@ -93,9 +93,6 @@ ac_add_options --enable-install-strip
 ac_add_options --enable-official-branding
 
 EOF
-
-sed -i -e '/#!\[deny(missing_docs)\]/d' servo/components/style/lib.rs
-sed -i -e 's/#!\[deny(unsafe_code, missing_docs)\]/#!\[deny(unsafe_code)\]/g' servo/components/style_traits/lib.rs
 
 
 ./mach configure
