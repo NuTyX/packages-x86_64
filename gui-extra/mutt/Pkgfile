@@ -1,14 +1,14 @@
 description="MailUserAgent, useful for reading, writing, replying to, saving, and deleting your email."
 url="http://www.mutt.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Berlius, Tnut, Greg"
 
-name=mutt
-version=1.12.1
 makedepends=(aspell aspell-dict cyrus-sasl gdb gnupg gpgme libidn kerberos
              sendmail slang openssl gnutls db libxslt lynx)
 
-
+name=mutt
+version=1.12.2
 
 source=(ftp://ftp.mutt.org/pub/mutt/$name-$version.tar.gz)
  
@@ -35,10 +35,14 @@ cp -v doc/manual.txt{,.shipped}
             --with-gdbm       \
             --with-ssl        \
             --without-bdb     \
+            --with-sasl       \
+            --enable-smtp     \
             --without-tokyocabinet 
-make 
-test -s doc/manual.txt || mv -v doc/manual.txt{.shipped,}
+make
 
 make DESTDIR=$PKG install
 
+test -s doc/manual.txt ||
+install -v -m644 doc/manual.txt.shipped \
+$PKG/usr/share/doc/$name-$version
 }
