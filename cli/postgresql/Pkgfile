@@ -1,25 +1,31 @@
 description="Advanced object-relational database management system (ORDBMS)."
-
 url="http://www.postgresql.org/docs"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+
+makedepends=(python libxml2 libxslt openldap pam kerberos)
 
 PKGMK_GROUPS=(lib doc man devel service)
 
 name=postgresql
-version=11.5
+version=12.1
+nutyx_version=11.2
 
-makedepends=(python libxml2 libxslt openldap pam kerberos)
+source=(https://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
+	https://ftp.postgresql.org/pub/source/v$version/$name-$version.tar.bz2)
 
-nutyx_version=11.0
-
-source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	http://ftp.postgresql.org/pub/source/v$version/$name-$version.tar.bz2)
+prepare() {
+groupadd -g 41 postgres
+useradd -c "PostgreSQL Server" -g postgres -d /srv/pgsql/data \
+ -u 41 postgres
+}
 
 build() {
 cd $name-$version
 # prepare
-sed -i '/DEFAULT_PGSOCKET_DIR/s@/tmp@/run/postgresql@' src/include/pg_config_manual.h
+sed -i '/DEFAULT_PGSOCKET_DIR/s@/tmp@/run/postgresql@' \
+src/include/pg_config_manual.h
 
 # configure
 ./configure --prefix=/usr \
