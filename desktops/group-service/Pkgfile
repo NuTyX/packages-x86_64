@@ -1,0 +1,33 @@
+description="Borrowing DBUS services to manage user groups"
+url="https://github.com/zhuyaliang/group-service"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(vala meson ninja gobject-introspection)
+run=(elogind mate-polkit)
+
+name=group-service
+version=1.2.0
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(group-service-1.2.0-translation-1.patch
+        https://github.com/zhuyaliang/$name/archive/$version.tar.gz)
+prepare() {
+cd $name-$version
+patch -Np1 -i ../group-service-1.2.0-translation-1.patch
+}
+build() {
+
+mkdir build
+cd    build
+
+meson --prefix=/usr \
+      -Dsystemd=false \
+      -Dsystemdsystemunitdir=false \
+      ../$name-$version
+
+ninja
+
+DESTDIR=$PKG ninja install
+}
