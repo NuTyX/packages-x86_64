@@ -4,15 +4,16 @@ url="http://www.gnome.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Jayce, Fanch, Remy"
 
-makedepends=(libchamplain meson clutter-gtk geoclue2 geocode-glib gjs
-             libgee folks gfbgraph)
-run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+makedepends=(libchamplain meson clutter-gtk geoclue2 geocode-glib
+             libgee folks)
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
+    gjs gfbgraph)
 
 set=(gnome)
 
 name=gnome-maps
-version=3.34.1
+version=3.34.2
 
-source=(https://ftp.acc.umu.se/pub/gnome/sources/gnome-maps/${version:0:4}/gnome-maps-$version.tar.xz)
+source=(https://download.gnome.org/sources/gnome-maps/${version:0:4}/gnome-maps-$version.tar.xz)
 
 build=meson
