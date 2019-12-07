@@ -1,17 +1,18 @@
 description="SMB Fileserver and AD Domain server"
 url="http://www.samba.org"
-
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
+
+name=samba
+version=4.10.6
 
 makedepends=(jansson rpcsvc-proto libtirpc docbook-xsl talloc 
              tevent avahi gnutls libgpg-error popt python2 
              cups kerberos libcap openldap tdb ldb)
 
-name=samba
-version=4.11.0
 
-nutyx_version=11.2
+nutyx_version=11.1
+
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	https://download.samba.org/pub/samba/stable/$name-$version.tar.gz)
 
@@ -56,15 +57,18 @@ install -v -m755 examples/LDAP/{get*,ol*} \
 $PKG/etc/openldap/schema
 
 
-#  cups
-install -d $PKG/usr/lib/cups/backend
-ln -v -sf /usr/bin/smbspool $PKG/usr/lib/cups/backend/smb
+#  cups 
+cd $PKG/usr/lib/
+install -d cups/backend
+ln -v -sf $PKG/usr/bin/smbspool $PKG/usr/lib/cups/backend/smb
 
 # service
 cd $SRC/nutyx-${nutyx_version}
 make DESTDIR=$PKG install-samba
 make DESTDIR=$PKG install-winbindd
 
+#  Doublon
+rm -rv $PKG/usr/lib/share/perl5/vendor/Parse/Yapp
 }
 uptodate() {
 local ext url name LINX
