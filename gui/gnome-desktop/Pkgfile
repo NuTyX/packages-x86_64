@@ -4,14 +4,14 @@ url="http://www.gnome.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Fanch, Jayce, Remy"
 
-makedepends=(meson ninja iso-codes itstool gtk3
+makedepends=(meson ninja itstool gtk3
              docbook-xml libseccomp gobject-introspection
              startup-notification xorg-xkeyboard-config)
-run=(gsettings-desktop-schemas freefont-ttf)
+run=(gsettings-desktop-schemas freefont-ttf iso-codes)
 
 name=gnome-desktop
-version=3.34.1
+version=3.34.2
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build=meson
