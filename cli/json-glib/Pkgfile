@@ -10,13 +10,13 @@ name=json-glib
 version=1.4.4
 release=2
 
-source=( http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz )
+source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz )
 
 build=meson
 
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/$name"
+url="https://download.gnome.org/sources/$name"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \

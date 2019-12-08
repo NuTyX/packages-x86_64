@@ -10,7 +10,7 @@ name=rarian
 version=0.8.1
 release=3
 
-source=( http://ftp.gnome.org/pub/gnome/sources/rarian/${version%.*}/$name-$version.tar.bz2)
+source=(https://download.gnome.org/sources/rarian/${version%.*}/$name-$version.tar.bz2)
 build() {
 cd $name-$version
 ./configure --prefix=/usr \
@@ -21,7 +21,7 @@ rm $PKG/usr/lib/librarian.la
 }
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/$name"
+url="https://download.gnome.org/sources/$name"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
