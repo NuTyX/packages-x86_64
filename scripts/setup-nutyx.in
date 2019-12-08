@@ -316,7 +316,7 @@ if [ "$DEVTYPE" = "wlan" ]; then
 
 	dialog --file $TMP/networks 2>$TMP/result
 	retval=$?
-	result=`cat $TMP/result`
+	result="$(cat $TMP/result)"
 	case $retval in
 		0)
 			if [ "$result" != "" ]; then
@@ -326,11 +326,11 @@ if [ "$DEVTYPE" = "wlan" ]; then
 				--passwordbox \" $(gettext "Enter the password of") (PASSPHRASE): \Zb\Z4$ESSID\Zn \" 0 0" > $TMP/passwd
 				dialog --insecure --file $TMP/passwd 2>$TMP/result
 				retval=$?
-				result=`cat $TMP/result`
+				result="$(cat $TMP/result)"
 				case $retval in
 					0)
 						if [ "$result" != "" ]; then
-							KEY=`cat $TMP/result`
+							KEY="$(cat $TMP/result)"
 							WPA_FILE=/etc/wpa_supplicant.conf.${NETWORK_CARD}
 							[ -f $WPA_FILE ] && mv $WPA_FILE ${WPA_FILE}.old
 							wpa_passphrase "$ESSID" "$KEY" > $WPA_FILE
@@ -357,11 +357,11 @@ rm $TMP/passwd
 setup_wireless()
 {
 	local TITLE WPA_FILE returncode WPA_TOOL ESSID KEY
-	WPA_TOOL="`which wpa_passphrase`"
-	IWCONFIG="`which iwconfig`"
+	WPA_TOOL="$(which wpa_passphrase)"
+	IWCONFIG="$(which iwconfig)"
 
 	if [ ! -z $IWCONFIG ];then
-		WIFI_NETWORK_CARD="`$IWCONFIG 2>&1|grep IEEE|cut -d " " -f1|tail -1`"
+		WIFI_NETWORK_CARD="$($IWCONFIG 2>&1|grep IEEE|cut -d " " -f1|tail -1)"
 	fi
 	if [ -z ${WIFI_NETWORK_CARD} ];then
 		network_card_found

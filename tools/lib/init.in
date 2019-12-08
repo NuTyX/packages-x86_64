@@ -164,29 +164,36 @@ do_mount_in_ram()
 			mkdir -p /$DIR
 			mkdir -p $OVLU
 			mkdir -p $OVLW
-
-			# How much RAM for rootfs:
-			MEM_TOTAL=`cat /proc/meminfo|grep MemTotal|sed "s/[^[:digit:]]*//g"`
-			MEM_AVAIL=`cat /proc/meminfo|grep MemAvail|sed "s/[^[:digit:]]*//g"`
-			MEM_USED=$((MEM_TOTAL - MEM_AVAIL))
-			ROOTFS_TOTAL=$((MEM_TOTAL * ROOTFS_QUOTA / 100))
-			ROOTFS_AVAIL=$((ROOTFS_TOTAL - MEM_USED))
-			MAX_ROOTFS_SIZE=$((ROOTFS_AVAIL * 90 / 100 ))
-			SQFS_SIZE=`ls -s $SQFS/$DIR.squashfs| cut -d " " -f1`
-			# We going to keep 10 % as reserve (calculation rounding issue etc)
-			if [ $SQFS_SIZE -gt $((ROOTFS_AVAIL * 90 / 100 )) ];then
-				# Not enough RAM
+			if [ "$toram" == "yes" ]; then
+				# How much RAM for rootfs:
+				MEM_TOTAL=$(cat /proc/meminfo|grep MemTotal|sed "s/[^[:digit:]]*//g")
+				MEM_AVAIL=$(cat /proc/meminfo|grep MemAvail|sed "s/[^[:digit:]]*//g")
+				MEM_USED=$((MEM_TOTAL - MEM_AVAIL))
+				ROOTFS_TOTAL=$((MEM_TOTAL * ROOTFS_QUOTA / 100))
+				ROOTFS_AVAIL=$((ROOTFS_TOTAL - MEM_USED))
+				MAX_ROOTFS_SIZE=$((ROOTFS_AVAIL * 90 / 100 ))
+				SQFS_SIZE=$(ls -s $SQFS/$DIR.squashfs| cut -d " " -f1)
+				# We going to keep 10 % as reserve (calculation rounding issue etc)
+				if [ $SQFS_SIZE -gt $((ROOTFS_AVAIL * 90 / 100 )) ];then
+					# Not enough RAM
+					[ "$verbose" == "no" ] || printf "mount -o loop -t squashfs %s/%s.squashfs /%s\n" $SQFS/$DIR.squashfs /$DIR
+					[ "$verbose" == "no" ] || printf "not enough space in RAM\n"
+					mount -o loop -t squashfs $SQFS/$DIR.squashfs /$DIR || problem
+					[ "$verbose" == "no" ] || sleep 5
+					ROOTFS_OK="no"
+				else
+					# Still enough RAM
+					[ "$verbose" == "no" ] || printf "still enough RAM, cp  %s /boot\n" $SQFS/$DIR.squashfs
+					cp $SQFS/$DIR.squashfs /boot/
+					mount -o loop -t squashfs /boot/$DIR.squashfs /$DIR || problem
+					[ "$verbose" == "no" ] || sleep 5
+				fi
+			else
 				[ "$verbose" == "no" ] || printf "mount -o loop -t squashfs %s/%s.squashfs /%s\n" $SQFS/$DIR.squashfs /$DIR
-				[ "$verbose" == "no" ] || printf "not enough space in RAM\n"
+				[ "$verbose" == "no" ] || printf "not in RAM\n"
 				mount -o loop -t squashfs $SQFS/$DIR.squashfs /$DIR || problem
 				[ "$verbose" == "no" ] || sleep 5
 				ROOTFS_OK="no"
-			else
-				# Still enough RAM
-				[ "$verbose" == "no" ] || printf "still enough RAM, cp  %s /boot\n" $SQFS/$DIR.squashfs
-				cp $SQFS/$DIR.squashfs /boot/
-				mount -o loop -t squashfs /boot/$DIR.squashfs /$DIR || problem
-				[ "$verbose" == "no" ] || sleep 5
 			fi
 			# Overlay
 			[ "$verbose" == "no" ] || echo "mount -n -t overlay -o lowerdir=/$DIR,upperdir=$OVLU,workdir=$OVLW /$DIR"
@@ -334,6 +341,7 @@ for param in $cmdline ; do
     quiet        ) export verbose="no"               ;;
     testiso      ) export verbose="yes"              ;;
     testinitrd   ) export verbose="yes"              ;;
+    toram        ) export toram="yes"                ;;
   esac
 done
 
