@@ -6,14 +6,13 @@ contributor="Pierre B, Greg, Minzord"
 
 makedepends=(gtk-doc libepoxy xorg-libxinerama xorg-libxrandr \
 xorg-libxcursor at-spi2-atk cups colord xorg-libxi atk cairo pango gdk-pixbuf \
-gtk-update-icon-cache wayland-protocols libxkbcommon python2-six)
-run=(adwaita-icon-theme)
+wayland-protocols libxkbcommon python2-six)
+run=(adwaita-icon-theme gtk-update-icon-cache)
 
 name=gtk3
-version=3.24.12
-release=2
+version=3.24.13
 
-source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
+source=(https://download.gnome.org/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
 
 build() {
 cd gtk+-$version
@@ -41,7 +40,7 @@ rm $PKG/{usr/bin/gtk-update-icon-cache,usr/share/man/man1/gtk-update-icon-cache.
 }
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/gtk+"
+url="https://download.gnome.org/sources/gtk+"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \

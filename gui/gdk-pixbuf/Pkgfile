@@ -5,18 +5,19 @@ contributors="Greg, Pierre B, Jayce"
 packager="tnut <tnut@nutyx.org>"
 
 makedepends=(gobject-introspection jasper xorg-libxcomposite libtiff
-             libpng libjpeg-turbo shared-mime-info)
+             libpng libjpeg-turbo2 meson ninja)
+run=(shared-mime-info)
 
 name=gdk-pixbuf
-version=2.38.2
+version=2.40.0
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build=meson
 
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/$name"
+url="https://download.gnome.org/sources/$name"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \

@@ -1570,10 +1570,26 @@ do_stop_sysklogd()
 	log_info_msg "Stopping kernel log daemon..."
 	killproc /sbin/klogd
 	evaluate_retval
+	mv /var/log/kern.log{,.old}
+	touch /var/log/kern.log
 
 	log_info_msg "Stopping system log daemon..."
 	killproc /sbin/syslogd
 	evaluate_retval
+	mv /var/log/sys.log{,.old}
+	touch /var/log/sys.log
+
+	mv /var/log/auth.log{,.old}
+	touch /var/log/auth.log
+
+	mv /var/log/daemon.log{,.old}
+	touch /var/log/daemon.log
+
+	mv /var/log/user.log{,.old}
+	touch /var/log/user.log
+
+	mv /var/log/wtmp{,.old}
+	touch /var/log/wtmp
 }
 do_status_sysklogd()
 {
