@@ -130,12 +130,30 @@ menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) debug" {
     linux /boot/kernel-#VERSION_KERNEL#  ro testiso rootdelay=3
     initrd /boot/initrd-#VERSION_KERNEL#
 }
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) copied to RAM" {
+
+    linux /boot/kernel-#VERSION_KERNEL#  ro quiet toram
+    initrd /boot/initrd-#VERSION_KERNEL#
+}
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) debug copied to RAM" {
+    set background_color=black
+    linux /boot/kernel-#VERSION_KERNEL#  ro testiso rootdelay=3 toram
+    initrd /boot/initrd-#VERSION_KERNEL#
+}
 menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) installable live" {
     linux /boot/kernel-#VERSION_KERNEL#  ro quiet rootdelay=5 live
     initrd /boot/initrd-#VERSION_KERNEL#
 }
 menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) debug live" {
     linux /boot/kernel-#VERSION_KERNEL#  ro testiso rootdelay=3 live
+    initrd /boot/initrd-#VERSION_KERNEL#
+}
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) installable live copied to RAM" {
+    linux /boot/kernel-#VERSION_KERNEL#  ro quiet rootdelay=5 live toram
+    initrd /boot/initrd-#VERSION_KERNEL#
+}
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) debug live copied to RAM" {
+    linux /boot/kernel-#VERSION_KERNEL#  ro testiso rootdelay=3 live toram
     initrd /boot/initrd-#VERSION_KERNEL#
 }
 EOF
