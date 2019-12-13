@@ -4,12 +4,15 @@ packager="tnut <tnut@nutyx.org>"
 
 name=bash
 version=5.0
+release=2
 
-source=(http://ftp.gnu.org/gnu/bash/bash-$version.tar.gz)
+source=(http://www.linuxfromscratch.org/patches/lfs/development/bash-5.0-upstream_fixes-1.patch
+        http://ftp.gnu.org/gnu/bash/bash-$version.tar.gz)
 
 build()
 {
 cd bash-$version
+patch -Np1 -i ../$name-$version-upstream_fixes-1.patch
 ./configure --prefix=/usr \
 --htmldir=/usr/share/doc/bash-$version \
 --docdir=/usr/share/doc/bash-$version \
