@@ -6,14 +6,14 @@ contributors="Pierre B"
 set=(kde5 plasma5)
 
 name=okular
-version=19.08.3
+version=19.12.0
 makedepends=(qtspeech extra-cmake-modules khtml kirigami2 threadweaver kactivities
              kdelibs4support kpty libkscreen freetype poppler-qt libspectre
              djvulibre qca-qt libkexiv2 chmlib  zlib ebook-tools kdoctools
              phonon-qt kdegraphics-mobipocket)
 run=(kdegraphics-mobipocket)
 
-source=(https://download.kde.org/stable/applications/$version/src/$name-$version.tar.xz)
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
 build() {
   cd $name-$version
