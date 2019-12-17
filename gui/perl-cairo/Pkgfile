@@ -1,0 +1,20 @@
+
+makedepends=(perl-glib perl-extutils-pkgconfig perl-extutils-depends)
+run=(perl cairo)
+name=perl-cairo
+version=1.107
+
+source=(https://sourceforge.net/projects/gtk2-perl/files/Cairo/$version/Cairo-$version.tar.gz)
+
+build() {
+
+cd Cairo-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make install DESTDIR=$PKG
+
+find $PKG -name -packlist -or \
+-name *.bs -or \
+-name perllocal.pod -or \
+-empty -delete
+}
