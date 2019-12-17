@@ -1,24 +1,25 @@
-description="Perl connector for glib"
-url="http://www.gtkperl.org"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+description="Perl wrappers for glib 2.x"
+url="http://gtk2-perl.sourceforge.net"
 
-makedepends=(perl-extutils-depends gobject-introspection perl-extutils-pkgconfig)
-run=( perl )
+makedepends=(perl-extutils-pkgconfig perl-extutils-depends)
+run=(perl glib)
 
 name=perl-glib
-version=1.326
-release=2
+version=1.3291
 
-source=(http://www.cpan.org/authors/id/X/XA/XAOC/Glib-$version.tar.gz)
+source=(https://sourceforge.net/projects/gtk2-perl/files/Glib/$version/Glib-$version.tar.gz)
 
 build() {
-	cd Glib-$version
-	perl Makefile.PL
-	make
-	make DESTDIR=$PKG install
-	find $PKG \
-	-name perllocal.pod \
-	-or -name .packlist -or \
-        -empty -delete
+
+cd Glib-$version
+PERL_USE_UNSAFE_INC=1 \
+perl Makefile.PL INSTALLDIRS=vendor
+PERL_USE_UNSAFE_INC=1 \
+make
+make install DESTDIR=$PKG
+
+find $PKG -name .packlist -or \
+-name *.bs -or \
+-name perllocal.pod -or \
+-empty -delete
 }
