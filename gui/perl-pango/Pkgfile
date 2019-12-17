@@ -1,0 +1,19 @@
+description="Perl wrappers for cairo"
+url="http://gtk2-perl.sourceforge.net/"
+
+makedepends=(perl-cairo perl-extutils-pkgconfig perl-extutils-depends)
+run=(perl pango)
+
+name=perl-pango
+version=1.227
+
+source=(https://sourceforge.net/projects/gtk2-perl/files/Pango/$version/Pango-$version.tar.gz)
+
+build() {
+
+cd Pango-$version
+export PERL_USE_UNSAFE_INC=1
+PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+make
+make install DESTDIR=$PKG
+}
