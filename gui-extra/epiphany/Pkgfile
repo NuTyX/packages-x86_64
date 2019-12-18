@@ -4,17 +4,18 @@ url="http://www.gnome.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce, Remy, Fanch"
 
-makedepends=(icu ninja meson lsb-release libwnck avahi gcr iso-codes \
-libgnome-keyring libnotify json-glib webkitgtk nss gnome-desktop libdazzle)
+makedepends=(icu ninja meson lsb-release libwnck avahi gcr
+             libgnome-keyring libnotify json-glib webkitgtk
+             nss gnome-desktop libdazzle)
 run=(adwaita-icon-theme gsettings-desktop-schemas
-     desktop-file-utils gtk-update-icon-cache)
+     desktop-file-utils gtk-update-icon-cache iso-codes)
 
 set=(gnome)
 
 name=epiphany
-version=3.34.1
+version=3.34.2
 
-source=(https://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
