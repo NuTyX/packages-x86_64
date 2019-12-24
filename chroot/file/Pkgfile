@@ -1,11 +1,12 @@
-version=5.37
+version=5.38
 source=(ftp://ftp.astron.com/pub/file/file-$version.tar.gz)
 
 build()
 {
 cd file-$version
 
-./configure --prefix=/tools
+./configure --prefix=/tools \
+--disable-libseccomp
 
 make
 

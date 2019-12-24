@@ -5,13 +5,14 @@ maintainer="Christos Zoulas"
 packager="tnut <tnut@nutyx.org>"
 
 name=file
-version=5.37
+version=5.38
 
 source=(ftp://ftp.astron.com/pub/file/file-$version.tar.gz)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr
+./configure --prefix=/usr \
+--disable-libseccomp
 make
 make check
 make DESTDIR=$PKG install
