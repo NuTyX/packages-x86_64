@@ -1,18 +1,16 @@
 description="Distributed version control system designed to handle small to very large projects."
 url="http://git-scm.com/"
 
-
 maintainer="Junio C Hamano, Linus Torvalds"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+run=(openssh)
 
 name=git
-version=2.24.0
+version=2.24.1
 
 source=(https://www.kernel.org/pub/software/scm/$name/$name{,-manpages,-htmldocs}-$version.tar.xz)
-
-run=(openssh)
 
 build() {
 cd $name-$version
