@@ -7,16 +7,8 @@ contributors="Pierre B, Rems"
 makedepends=(glib ninja meson)
 
 name=fribidi
-version=1.0.5
-release=2
+version=1.0.8
 
 source=(https://github.com/$name/$name/releases/download/v$version/$name-$version.tar.bz2)
 
-build() {
-cd $name-$version
-mkdir -pv build
-cd build
-meson -D docs=false ..
-ninja
-DESTDIR=$PKG ninja install
-}
+build=meson
