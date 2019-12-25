@@ -9,13 +9,10 @@ run=(libgtop libwnck)
 name=bamf
 version=0.5.4
 
-source=(bamf-0.5.4-consolidate-1.patch
-        https://launchpad.net/bamf/${version%.*}/$version/+download/$name-$version.tar.gz)
+source=(https://launchpad.net/bamf/${version%.*}/$version/+download/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
-
-# patch -Np1 -i ../bamf-0.5.4-consolidate-1.patch
 
 export PYTHON='/usr/bin/python2'
 
