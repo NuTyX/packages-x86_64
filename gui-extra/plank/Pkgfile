@@ -1,0 +1,26 @@
+description="Elegant, simple, clean dock"
+url="https://launchpad.net/plank"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(atk cairo gdk-pixbuf glib gtk3 libgee
+             libwnck xorg-libx11 xorg-libxfixes 
+             xorg-libxi pango bamf gnome-menus)
+name=plank
+version=0.11.89
+
+source=(https://launchpad.net/plank/1.0/$version/+download/plank-$version.tar.xz)
+
+build() {
+
+ cd $name-$version
+ sed 's/0.19.6/0.20/' -i configure.ac
+ NOCONFIGURE=1 ./autogen.sh
+
+ ./configure --prefix=/usr --sysconfdir=/etc --disable-apport
+
+ make
+
+ make DESTDIR=$PKG install
+
+}
