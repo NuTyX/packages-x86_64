@@ -7,23 +7,39 @@ contributors="Pierre B, Fanch"
 makedepends=(python2 python)
 
 name=libxml2
-version=2.9.9
-release=2
+version=2.9.10
 
 source=(ftp://xmlsoft.org/libxml2/$name-$version.tar.gz)
 
 
-build() {
-cd $name-$version
-./configure --prefix=/usr \
+prepare() {
+mkdir build-py{2,3}
+}
+
+_build() {
+cd build-py$1
+../$name-$version/configure \
+    --prefix=/usr \
     --disable-static \
     --with-history \
-    --with-python=/usr/bin/python3
+    --with-python=/usr/bin/python$1
+
   PYTHONHASHSEED=0 make
   find doc -type f -exec chmod 0644 {} +
+cd ..
+}
 
-make  DESTDIR=$PKG install
+build() {
+
+_build 2
+_build 3
+}
+package() {
+
+make -C build-py2  DESTDIR=$PKG install
+make -C build-py3/python  DESTDIR=$PKG install
 
 rm $PKG/usr/lib/$name.la
 rm $PKG/usr/lib/python3.7/site-packages/libxml2mod.la
+rm $PKG/usr/lib/python2.7/site-packages/libxml2mod.la
 }
