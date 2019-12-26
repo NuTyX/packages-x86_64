@@ -1,14 +1,17 @@
 description="Library for layout and rendering of text"
 url="http://www.pango.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-name=pango
-version=1.42.4
 makedepends=(ninja meson cairo libthai freetype xorg-libxft gobject-introspection
              harfbuzz xorg-libxxf86vm gtk-doc fribidi)
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+name=pango
+version=1.44.7
+
+source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
@@ -24,7 +27,7 @@ DESTDIR=$PKG ninja install
 }
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/$name"
+url="https://download.gnome.org/sources/$name"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
