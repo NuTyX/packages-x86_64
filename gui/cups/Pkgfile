@@ -10,8 +10,8 @@ run=(xdg-utils gtk-update-icon-cache)
 PKGMK_GROUPS=(devel man)
 
 name=cups
-version=2.3.0
-nutyx_version=11.2
+version=2.3.1
+nutyx_version=11.3
 
 source=(https://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz \
 	https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
@@ -36,7 +36,6 @@ fi
 
 build() {
 	cd $name-$version
-	sed -i 's:444:644:g' Makedefs.in
 	sed -i '/stat.h/a #include <asm-generic/ioctls.h>' tools/ipptool.c
 
 	CC=gcc CXX=g++ \
