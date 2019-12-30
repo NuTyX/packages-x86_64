@@ -8,7 +8,7 @@ makedepends=(aspell aspell-dict cyrus-sasl gdb gnupg gpgme libidn kerberos
              sendmail slang openssl gnutls db libxslt lynx)
 
 name=mutt
-version=1.12.2
+version=1.13.2
 
 source=(ftp://ftp.mutt.org/pub/mutt/$name-$version.tar.gz)
  
@@ -45,4 +45,9 @@ make DESTDIR=$PKG install
 test -s doc/manual.txt ||
 install -v -m644 doc/manual.txt.shipped \
 $PKG/usr/share/doc/$name-$version
+
+if [ -f $PKG/usr/bin/mutt_dotlock ]; then
+  chown root:mail $PKG/usr/bin/mutt_dotlock
+  chmod -v 2755 $PKG/usr/bin/mutt_dotlock
+fi
 }

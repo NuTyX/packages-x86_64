@@ -1,0 +1,5 @@
+. lib/lsb/init-functions
+
+SN="mail"
+log_info_msg "${INFO}Changing $SN ownership of var/mail folder${NORMAL}\n"
+chgrp -v $SN var/mail
