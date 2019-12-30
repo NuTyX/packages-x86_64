@@ -4,7 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Berlius, Jayce, Greg"
 
 name=php
-version=7.3.13
+version=7.4.1
 makedepends=(apache libxml2 aspell aspell-dict libxslt enchant pcre 
              pth freetype libexif libjpeg-turbo libpng libtiff 
              xorg-server curl db mariadb openldap postgresql sqlite 
@@ -41,6 +41,7 @@ build () {
             --enable-ftp                 \
             --with-gettext               \
             --enable-mbstring            \
+            --disable-mbregex            \
             --with-readline      
     make
     make -j1 INSTALL_ROOT=$PKG install
@@ -48,12 +49,10 @@ build () {
     install -v -m644 php.ini-production $PKG/etc/php.ini 
     mv -v $PKG/etc/php-fpm.conf{.default,}  
     install -v -m755 -d $PKG/usr/share/doc/php-$version 
-    install -v -m644 CODING_STANDARDS EXTENSIONS INSTALL NEWS README* UPGRADING* php.gif \
+    install -v -m644 CODING_STANDARDS* EXTENSIONS NEWS README* UPGRADING* \
     $PKG/usr/share/doc/php-$version
 
     sed -i 's@php/includes"@&\ninclude_path = ".:/usr/lib/php"@' \
     $PKG/etc/php.ini
 
-    # Dirty but works
-    rm -r /usr/lib/php
 }
