@@ -4,14 +4,13 @@ url="https://obsproject.com"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
-makedepends=(ffmpeg jansson xorg-libxinerama libxkbcommon qtx11extras curl
-             jack gtk-update-icon-cache cmake xorg-libxcomposite x264
+makedepends=(ffmpeg jansson xorg-libxinerama libxkbcommon
+             qtx11extras cmake xorg-libxcomposite
              vlc swig python luajit fdk-aac)
-run=(gtk-update-icon-cache)
+run=(gtk-update-icon-cache x264 curl jack)
 
 name=obs-studio
-version=23.2.1
-release=2
+version=24.0.5
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -19,9 +18,10 @@ source=(https://github.com/jp9000/obs-studio/archive/$version.tar.gz)
 
 build() {
 cd $name-$version
-sed -i '15i #include <QAction>' UI/frontend-plugins/frontend-tools/scripts.cpp
+
 mkdir build
 cd    build
+
 cmake -DCMAKE_INSTALL_PREFIX="/usr" \
 -DOBS_VERSION_OVERRIDE="$version-$release" ..
 make
