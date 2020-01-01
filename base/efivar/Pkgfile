@@ -7,25 +7,32 @@ makedepends=(popt)
 
 name=efivar
 version=37
+release=2
 
-source=(efivar-37-gcc-9-1.patch
+source=($name-$version-consolidate-1.patch
 	https://github.com/rhinstaller/efivar/releases/download/$version/efivar-$version.tar.bz2)
 
 build() {
 unset MAKEFLAGS
 cd $name-$version
-patch -Np1 -i ../efivar-37-gcc-9-1.patch
+patch -Np1 -i ../$name-$version-consolidate-1.patch
+
+cp -p Make.defaults Make.defaults.dist
 sed 's|-O2|-Os|g' -i Make.defaults
 cp -p src/test/Makefile src/test/Makefile.dist
 sed 's|-rpath=$(TOPDIR)/src/|-rpath=$(libdir)|g' \
 -i src/test/Makefile
+
 CFLAGS+=" -flto"
+
 make libdir=/usr/lib/ bindir=/usr/bin/ \
 mandir=/usr/share/man/     \
 includedir=/usr/include/ V=1 -j1
+
 make -j1 V=1 DESTDIR=${PKG}/ libdir=/usr/lib/ \
 bindir=/usr/bin/ mandir=/usr/share/man   \
 includedir=/usr/include/ DESTDIR=${PKG}/ install
+
 cd src/test
 make -j1 V=1 DESTDIR=${PKG}/ libdir=/usr/lib/ \
 bindir=/usr/bin/ mandir=/usr/share/man   \

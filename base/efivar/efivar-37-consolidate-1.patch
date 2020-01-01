@@ -1,6 +1,47 @@
+diff -Naur a/src/dp-media.c b/src/dp-media.c
+--- a/src/dp-media.c	2018-12-05 16:17:42.000000000 +0000
++++ b/src/dp-media.c	2020-01-01 13:33:48.259980778 +0000
+@@ -46,8 +46,7 @@
+ 			break;
+ 		case EFIDP_HD_SIGNATURE_GUID:
+ 			format(buf, size, off, "HD", "GPT,");
+-			format_guid(buf, size, off, "HD",
+-				    (efi_guid_t *)dp->hd.signature);
++			format_guid(buf, size, off, "HD", dp->hd.signature);
+ 			format(buf, size, off, "HD",
+ 			       ",0x%"PRIx64",0x%"PRIx64")",
+ 			       dp->hd.start, dp->hd.size);
+diff -Naur a/src/dp-message.c b/src/dp-message.c
+--- a/src/dp-message.c	2018-12-05 16:17:42.000000000 +0000
++++ b/src/dp-message.c	2020-01-01 13:33:48.259980778 +0000
+@@ -364,7 +364,7 @@
+ 			       dp->infiniband.port_gid[1],
+ 			       dp->infiniband.port_gid[0]);
+ 			format_guid(buf, size, off, "Infiniband",
+-				    (efi_guid_t *)&dp->infiniband.ioc_guid);
++				    &dp->infiniband.ioc_guid);
+ 			format(buf, size, off, "Infiniband",
+ 			       ",%"PRIu64",%"PRIu64")",
+ 			       dp->infiniband.target_port_id,
+@@ -620,11 +620,13 @@
+ 			  ) / sizeof(efi_ip_addr_t);
+ 		format(buf, size, off, "Dns", "Dns(");
+ 		for (int i=0; i < end; i++) {
+-			const efi_ip_addr_t *addr = &dp->dns.addrs[i];
++			efi_ip_addr_t addr;
++
++			memcpy(&addr, &dp->dns.addrs[i], sizeof(addr));
+ 			if (i != 0)
+ 				format(buf, size, off, "Dns", ",");
+ 			format_ip_addr(buf, size, off, "Dns",
+-				       dp->dns.is_ipv6, addr);
++				       dp->dns.is_ipv6, &addr);
+ 		}
+ 		format(buf, size, off, "Dns", ")");
+ 		break;
 diff -Naur a/src/dp.h b/src/dp.h
 --- a/src/dp.h	2018-12-05 16:17:42.000000000 +0000
-+++ b/src/dp.h	2019-09-02 19:20:06.293526947 +0000
++++ b/src/dp.h	2020-01-01 13:33:48.256647445 +0000
 @@ -70,8 +70,11 @@
  #define format_guid(buf, size, off, dp_type, guid) ({			\
  		int _rc;						\
@@ -23,28 +64,9 @@ diff -Naur a/src/dp.h b/src/dp.h
  		}							\
  		_rc;							\
  	})
-diff -Naur a/src/dp-message.c b/src/dp-message.c
---- a/src/dp-message.c	2018-12-05 16:17:42.000000000 +0000
-+++ b/src/dp-message.c	2019-09-02 19:20:06.293526947 +0000
-@@ -620,11 +620,13 @@
- 			  ) / sizeof(efi_ip_addr_t);
- 		format(buf, size, off, "Dns", "Dns(");
- 		for (int i=0; i < end; i++) {
--			const efi_ip_addr_t *addr = &dp->dns.addrs[i];
-+			efi_ip_addr_t addr;
-+
-+			memcpy(&addr, &dp->dns.addrs[i], sizeof(addr));
- 			if (i != 0)
- 				format(buf, size, off, "Dns", ",");
- 			format_ip_addr(buf, size, off, "Dns",
--				       dp->dns.is_ipv6, addr);
-+				       dp->dns.is_ipv6, &addr);
- 		}
- 		format(buf, size, off, "Dns", ")");
- 		break;
 diff -Naur a/src/guid.c b/src/guid.c
 --- a/src/guid.c	2018-12-05 16:17:42.000000000 +0000
-+++ b/src/guid.c	2019-09-02 19:20:06.293526947 +0000
++++ b/src/guid.c	2020-01-01 13:33:48.256647445 +0000
 @@ -31,7 +31,7 @@
  extern const efi_guid_t efi_guid_zero;
  
@@ -56,7 +78,7 @@ diff -Naur a/src/guid.c b/src/guid.c
  }
 diff -Naur a/src/include/efivar/efivar.h b/src/include/efivar/efivar.h
 --- a/src/include/efivar/efivar.h	2018-12-05 16:17:42.000000000 +0000
-+++ b/src/include/efivar/efivar.h	2019-09-02 19:20:06.293526947 +0000
++++ b/src/include/efivar/efivar.h	2020-01-01 13:33:48.256647445 +0000
 @@ -128,7 +128,7 @@
  
  extern int efi_guid_is_zero(const efi_guid_t *guid);
@@ -68,8 +90,8 @@ diff -Naur a/src/include/efivar/efivar.h b/src/include/efivar/efivar.h
  typedef struct efi_variable efi_variable_t;
 diff -Naur a/src/ucs2.h b/src/ucs2.h
 --- a/src/ucs2.h	2018-12-05 16:17:42.000000000 +0000
-+++ b/src/ucs2.h	2019-09-02 19:20:06.293526947 +0000
-@@ -23,16 +23,21 @@
++++ b/src/ucs2.h	2020-01-01 13:33:48.263314112 +0000
+@@ -23,16 +23,20 @@
  	(((val) & ((mask) << (shift))) >> (shift))
  
  static inline size_t UNUSED
@@ -78,12 +100,11 @@ diff -Naur a/src/ucs2.h b/src/ucs2.h
  {
  	ssize_t i;
 -	for (i = 0; i < (limit >= 0 ? limit : i+1) && s[i] != (uint16_t)0; i++)
-+	const uint16_t *s = vs;
 +	const uint8_t *s8 = vs;
 +
 +	for (i = 0;
-+	     i < (limit >= 0 ? limit : i+1) && s8[0] != 0 && s8[1] != 0;
-+	     i++, s8 += 2, s++)
++	     i < (limit >= 0 ? limit : i+1) && !(s8[0] == 0 && s8[1] == 0);
++	     i++, s8 += 2)
  		;
  	return i;
  }
@@ -94,7 +115,7 @@ diff -Naur a/src/ucs2.h b/src/ucs2.h
  {
  	size_t rc = ucs2len(s, limit);
  	rc *= sizeof (uint16_t);
-@@ -69,10 +74,11 @@
+@@ -69,10 +73,11 @@
  }
  
  static inline unsigned char * UNUSED
@@ -107,7 +128,7 @@ diff -Naur a/src/ucs2.h b/src/ucs2.h
  
  	if (limit < 0)
  		limit = ucs2len(chars, -1);
-@@ -124,10 +130,12 @@
+@@ -124,10 +129,12 @@
  }
  
  static inline ssize_t UNUSED NONNULL(4)
@@ -121,7 +142,7 @@ diff -Naur a/src/ucs2.h b/src/ucs2.h
  
  	if (!ucs2 && size > 0) {
  		errno = EINVAL;
-@@ -162,10 +170,13 @@
+@@ -162,10 +169,13 @@
  			val = utf8[i] & 0x7f;
  			i += 1;
  		}
