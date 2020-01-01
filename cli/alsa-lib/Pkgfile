@@ -7,25 +7,30 @@ contributors="Pierre B"
 makedepends=(doxygen)
 
 name=alsa-lib
-version=1.1.9
-release=2
+version=1.2.1.2
 
-source=(ftp://ftp.alsa-project.org/pub/lib/$name-$version.tar.bz2)
+source=(https://www.alsa-project.org/files/pub/lib/$name-$version.tar.bz2)
 build() {
 cd $name-$version
 ./configure
 make
 make DESTDIR=$PKG install
 make doc
-install -v -d -m755 $PKG/usr/share/doc/$name-$version/html
-cp -a doc/doxygen/html/* $PKG/usr/share/doc/$name-$version/html
-chmod 644 $PKG/usr/share/doc/$name-$version/html/*
+
+install -v -d -m755 $PKG/usr/share/doc/$name-$version/html/search
+
+install -v -m644 doc/doxygen/html/*.* \
+  $PKG/usr/share/doc/$name-$version/html
+
+install -v -m644 doc/doxygen/html/search/* \
+  $PKG/usr/share/doc/$name-$version/html/search
+
 rm $PKG/usr/lib/libasound.la
 }
 uptodate() {
 local url ext
 
-url="ftp://ftp.alsa-project.org/pub/lib/"
+url="https://www.alsa-project.org/files/pub/lib/"
 ext=".tar.bz2"
 lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url|grep $name-[0-9]|sed "s@$url$name-@@"|sed "s@$ext@@"|\
