@@ -7,13 +7,15 @@ makedepends=(efivar pciutils dosfstools)
 run=(dosfstools)
 
 name=efibootmgr
-version=16
-release=2
+version=17
 
-source=($url/releases/download/$version/$name-$version.tar.bz2)
+PKGMK_KEEP_SOURCES="no"
+source=($name-$version-parse_opts-1.patch
+        https://github.com/rhboot/$name/archive/$version.tar.gz)
 
 build() {
 cd $name-$version
+patch -Np1 -i ../$name-$version-parse_opts-1.patch
 make EXTRA_CFLAGS="-Os" EFIDIR="/boot/EFI"
 install -d ${PKG}/usr/bin
 install -D -m0755 src/efibootmgr ${PKG}/usr/bin/efibootmgr
