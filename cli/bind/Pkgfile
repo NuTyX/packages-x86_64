@@ -1,15 +1,18 @@
 description="The BIND package includes the client side programs nslookup, dig and host."
 url="http://www.isc.org/downloads/bind/"
+
 packager="tnut at nutyx dot org"
 
-name=bind
-version=9.14.4
-nutyx_version=11.1
-makedepends=(kerberos libxml2 openssl libcap python-ply)
+makedepends=(kerberos libxml2 openssl libcap)
 run=(python-ply)
 
-source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	ftp://ftp.isc.org/isc/bind9/$version/$name-$version.tar.gz)
+
+name=bind
+version=9.14.9
+nutyx_version=11.3
+
+source=(https://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
+	https://downloads.isc.org/isc/bind9/$version/$name-$version.tar.gz)
 
 build(){
     cd $name-$version
