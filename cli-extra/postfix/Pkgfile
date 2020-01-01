@@ -2,15 +2,16 @@ description="Mail Transport Agent (MTA) for sending email to other users of your
 url="http://www.postfix.org"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Berlius, Fanch, Tnut, Greg, Minzord"
+contributors="Berlius, Fanch, Greg, Minzord"
 
 makedepends=(libnsl db cyrus-sasl openssl icu mariadb openldap pcre postgresql sqlite)
 
 name=postfix
-version=3.4.7
-nutyx_version=11.2
+version=3.4.8
+nutyx_version=11.3
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
+         http://www.linuxfromscratch.org/patches/blfs/svn/postfix-3.4.8-glibc230_fix-1.patch
 	ftp://ftp.porcupine.org/mirrors/postfix-release/official/$name-$version.tar.gz)
 
 prepare() {
@@ -35,7 +36,7 @@ build() {
 cd $name-$version
 
 sed -i 's/.\x08//g' README_FILES/*
-
+patch -Np1 -i ../postfix-3.4.8-glibc230_fix-1.patch
 
 make CCARGS="-DUSE_TLS -I/usr/include/openssl/        \
 -DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl" \
