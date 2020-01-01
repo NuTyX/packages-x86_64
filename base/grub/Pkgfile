@@ -1,17 +1,28 @@
 description="The GRUB package contains the GRand Unified Bootloader."
 url="http://www.gnu.org/software/grub/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=grub
-version=2.02
+version=2.04
+pyversion=3.8.1
 
-source=(http://ftp.gnu.org/gnu/grub/grub-$version.tar.xz
+source=(https://www.python.org/ftp/python/$pyversion/Python-$pyversion.tar.xz
+        https://ftp.gnu.org/gnu/grub/grub-$version.tar.xz
 	grub.cfg)
 
 PKGMK_GROUPS=(man locale)
+prepare() {
 
+   cd Python-$pyversion
+   rm -r Doc
+   ./configure --prefix=$SRC/tools --with-ensurepip=no
+   make
+   make libinstall bininstall
+}
 build() {
+        export PATH=$SRC/tools/bin:$PATH
 	cd grub-$version
 	./configure --prefix=/usr \
 		--sysconfdir=/etc       \
