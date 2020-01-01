@@ -4,12 +4,12 @@ contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
 name=vim
-version=8.1
+version=8.2.0024
 
-source=(ftp://ftp.vim.org/pub/vim/unix/vim-$version.tar.bz2)
+source=(https://github.com/$name/$name/archive/v$version/$name-$version.tar.gz)
 build()
 {
-cd vim81
+cd $name-$version
 echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
 
 ./configure --prefix=/usr --enable-multibyte \
