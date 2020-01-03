@@ -1,20 +1,17 @@
 description="GNU utilities to locate files"
 url="http://www.gnu.org/software/findutils/"
+
 maintainer="Eric B. Decker,Michael Rendell,James A. Woods"
 packager="tnut <tnut@nutyx.org>"
 
 name=findutils
-version=4.6.0
-release=2
+version=4.7.0
 
-source=(http://ftp.gnu.org/gnu/findutils/findutils-$version.tar.gz)
+source=(http://ftp.gnu.org/gnu/findutils/findutils-$version.tar.xz)
 
 build()
 {
-cd findutils-$version
-sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' gl/lib/*.c
-sed -i '/unistd/a #include <sys/sysmacros.h>' gl/lib/mountlist.c
-echo "#define _IO_IN_BACKUP 0x100" >> gl/lib/stdio-impl.h
+cd $name-$version
 
 ./configure --prefix=/usr \
 --localstatedir=/var/lib/locate
