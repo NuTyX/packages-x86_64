@@ -1,24 +1,28 @@
 description="A documentation system for C++, C, Java, IDL and PHP languages"
 url="http://www.doxygen.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
-name=doxygen
-
-version=1.8.16
 
 makedepends=(python2 cmake xapian git)
 
-source=(https://github.com/doxygen/doxygen/archive/Release_${version//./_}.tar.gz)
+name=doxygen
+version=1.8.17
+
+source=(http://doxygen.nl/files/$name-$version.src.tar.gz)
 
 build() {
-cd $name-Release_"${version//./_}"
-mkdir -v build
-cd build
+cd $name-$version
+
+mkdir build
+cd    build
+
 cmake -G "Unix Makefiles" \
 -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_INSTALL_PREFIX=/usr \
 -Dbuild_search=ON \
 -Wno-dev ..
+
 make
 
 make DESTDIR=$PKG install
