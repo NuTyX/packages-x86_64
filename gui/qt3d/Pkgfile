@@ -4,7 +4,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=qt3d
-version=5.13.2
+version=5.14.0
 makedepends=(qtdeclarative assimp)
 
 _name="${name}-everywhere-src"
@@ -12,9 +12,13 @@ _name="${name}-everywhere-src"
 source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 build() {
-cd ${_name}-${version}
-qmake
+mkdir build
+cd build
+
+qmake ../${_name}-${version}
+
 make
+
 make INSTALL_ROOT=$PKG install
 
 # Drop QMAKE_PRL_BUILD_DIR because reference the build dir
