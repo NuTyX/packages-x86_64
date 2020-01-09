@@ -7,16 +7,16 @@ contributors="Pierre B, Rems"
 makedepends=(qtbase qtdeclarative desktop-file-utils hicolor-icon-theme xdg-utils vulkan-headers)
 
 name=qttools
-version=5.13.2
-release=2
+version=5.14.0
 
 _name="${name}-everywhere-src"
 
 source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 build() {
-cd ${_name}-${version}
-qmake
+mkdir build
+cd    build
+qmake ../${_name}-${version}
 make
 make INSTALL_ROOT=$PKG install
 
@@ -25,55 +25,74 @@ mkdir $PKG/usr/share/applications
 cat > $PKG/usr/share/applications/assistant-qt.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 Assistant
-comment=Shows Qt5 documentation and examples
-Exec=$QT5BINDIR/assistant-qt
-icon=assistant-qt
+Comment=Shows Qt5 documentation and examples
+Exec=assistant
+Icon=assistant
 Terminal=false
 Encoding=UTf-8
 Type=Application
-categories=Qt;Development;Documentation;
+Categories=Qt;Development;Documentation;
 EOf
 
 cat > $PKG/usr/share/applications/designer-qt.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 Designer
 GenericName=interface Designer
-comment=Design GUis for Qt5 applications
-Exec=$QT5BINDIR/designer-qt
-icon=designer-qt
+Comment=Design GUis for Qt5 applications
+Exec=designer
+Icon=designer
 mimeType=application/x-designer;
 Terminal=false
 Encoding=UTf-8
 Type=Application
-categories=Qt;Development;
+Categories=Qt;Development;
 EOf
 
 cat > $PKG/usr/share/applications/linguist-qt.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 Linguist
-comment=Add translations to Qt5 applications
-Exec=$QT5BINDIR/linguist-qt
-icon=linguist-qt
+Comment=Add translations to Qt5 applications
+Exec=linguist
+Icon=linguist
 mimeType=text/vnd.trolltech.linguist;application/x-linguist;
 Terminal=false
 Encoding=UTf-8
 Type=Application
-categories=Qt;Development;
+Categories=Qt;Development;
 EOf
 
 cat > $PKG/usr/share/applications/qdbusviewer-qt.desktop << "EOf"
 [Desktop Entry]
 Name=Qt5 QDbusviewer
 GenericName=D-Bus Debugger
-comment=Debug D-Bus applications
-Exec=$QT5BINDIR/qdbusviewer-qt
-icon=qdbusviewer-qt
+Comment=Debug D-Bus applications
+Exec=qdbusviewer
+Icon=qdbusviewer
 Terminal=false
 Encoding=UTf-8
 Type=Application
-categories=Qt;Development;Debugger;
+Categories=Qt;Development;Debugger;
 EOf
 
+cd ../${_name}-${version}
+
+# install missing icons and desktop files
+for icon in src/linguist/linguist/images/icons/linguist-*-32.png ; do
+   size=$(echo $(basename ${icon}) | cut -d- -f2)
+   install -p -D -m644 ${icon} \
+      "${PKG}/usr/share/icons/hicolor/${size}x${size}/apps/linguist.png"
+done
+
+install -D -m644 src/assistant/assistant/images/assistant.png \
+    "${PKG}/usr/share/icons/hicolor/32x32/apps/assistant.png"
+  install -D -m644 src/assistant/assistant/images/assistant-128.png \
+    "${PKG}/usr/share/icons/hicolor/128x128/apps/assistant.png"
+  install -D -m644 src/designer/src/designer/images/designer.png \
+    "${PKG}/usr/share/icons/hicolor/128x128/apps/QtProject-designer.png"
+  install -D -m644 src/qdbus/qdbusviewer/images/qdbusviewer.png \
+    "${PKG}/usr/share/icons/hicolor/32x32/apps/qdbusviewer.png"
+  install -D -m644 src/qdbus/qdbusviewer/images/qdbusviewer-128.png \
+    "${PKG}/usr/share/icons/hicolor/128x128/apps/qdbusviewer.png"
 # Drop QMAKE_PRL_BUILD_DIR because reference the build dir
   find "$PKG/usr/lib" -type f -name '*.prl' \
        -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
