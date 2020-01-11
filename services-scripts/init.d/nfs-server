@@ -64,7 +64,7 @@
 
       log_info_msg "Stopping NFS nfsd..."
       # nfsd needs HUP.  Can't use killproc for kernel process.
-      killall -HUP nfsd 
+      killall -s HUP nfsd
       evaluate_retval
 
       log_info_msg "Stopping NFS mountd..."
