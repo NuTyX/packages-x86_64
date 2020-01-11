@@ -7,14 +7,17 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(qtbase libwebp libmng jasper)
 
 name=qtimageformats 
-version=5.13.2
+version=5.14.0
 _name="${name}-everywhere-src"
 
 source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 build() {
-cd ${_name}-${version}
-qmake
+mkdir build
+cd    build
+
+qmake ../${_name}-${version}
+
 make
 make INSTALL_ROOT=$PKG install
 
