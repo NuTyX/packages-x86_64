@@ -1,0 +1,24 @@
+diff -Naur a/scripts/setup-nutyx.in b/scripts/setup-nutyx.in
+--- a/scripts/setup-nutyx.in	2019-12-15 23:05:31.000000000 +0100
++++ b/scripts/setup-nutyx.in	2020-01-11 16:19:10.203331161 +0100
+@@ -925,7 +925,7 @@
+ 	_msgfmt pt_PT
+ 	echo "export LANG=pt_PT.utf-8" > ${LOCALE}
+ 	_zoneinfo ${ZONEINFO}Europe/Lisbon ${LOCALTIME};;
+- "Brasil")
++ "Brazil")
+ 	_msgfmt pt_BR
+ 	_zoneinfo ${ZONEINFO}America/Sao_Paulo ${LOCALTIME};;
+  "română")
+diff -Naur a/services-scripts/init.d/nfs-server b/services-scripts/init.d/nfs-server
+--- a/services-scripts/init.d/nfs-server	2019-12-15 23:05:31.000000000 +0100
++++ b/services-scripts/init.d/nfs-server	2020-01-11 16:19:53.866664285 +0100
+@@ -64,7 +64,7 @@
+ 
+       log_info_msg "Stopping NFS nfsd..."
+       # nfsd needs HUP.  Can't use killproc for kernel process.
+-      killall -HUP nfsd 
++      killall -s HUP nfsd 
+       evaluate_retval
+ 
+       log_info_msg "Stopping NFS mountd..."
