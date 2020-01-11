@@ -1,17 +1,22 @@
 description="A cross-platform application and UI framework, QtDatavis3d files"
 url="http://qt-project.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Rems"
 
-name=qtdatavis3d
-version=5.13.2
-_name="${name}-everywhere-src"
 makedepends=(cmake qtbase)
+
+name=qtdatavis3d
+version=5.14.0
+_name="${name}-everywhere-src"
+
 source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 build() {
-cd ${_name}-${version}
-qmake
+mkdir build
+cd    build
+
+qmake ../${_name}-${version}
 make
 make INSTALL_ROOT=$PKG install
 
