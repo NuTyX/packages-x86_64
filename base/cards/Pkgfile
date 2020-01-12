@@ -22,9 +22,9 @@ dialog.devel tar wget zlib.devel)
 PKGMK_GROUPS=(devel doc man)
 
 name=cards
-version=2.4.108
+version=2.4.109
 
-# patchname="$name-$version-consolidate-$release.patch"
+[ "$release" != "1" ] &&  patchname="$name-$version-consolidate-$release.patch"
 
 source=(https://downloads.tuxfamily.org/nutyx/files/$name-$version.tar.gz)
 
