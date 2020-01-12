@@ -3,12 +3,14 @@ url="http://qt-project.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Rems"
 
+makedepends=(qtbase qtdeclarative qttools pciutils xorg-libxtst xorg-libxcursor xorg-libxrandr)
+
 PKGMK_GROUPS=()
 
 name=qtdoc
-version=5.13.2
+version=5.14.0
 _name="${name}-everywhere-src"
-makedepends=(qtbase qtdeclarative qttools pciutils xorg-libxtst xorg-libxcursor xorg-libxrandr)
+
 source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 build() {
