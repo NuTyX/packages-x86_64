@@ -1,16 +1,20 @@
 description="A graphical directory tree analyzer"
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce, Remy"
-makedepends=(adwaita-icon-theme gtk3 itstool desktop-file-utils
-             gsettings-desktop-schemas librsvg gobject-introspection
-             gtk-update-icon-cache meson ninja vala)
-run=(desktop-file-utils gtk-update-icon-cache)
 
-set=(gnome-extra)
+makedepends=(adwaita-icon-theme gtk3 itstool
+             librsvg gobject-introspection
+             meson ninja vala)
+run=(desktop-file-utils gtk-update-icon-cache gsettings-desktop-schemas)
+
+set=(gnome)
 
 name=baobab
 version=3.34.0
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+release=2
+
+source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build=meson
