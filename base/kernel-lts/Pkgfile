@@ -9,12 +9,12 @@ run=(nutyx)
 name=kernel-lts
 alias=(linux-lts)
 
-version=4.19.96
+version=4.19.97
 _version=${version:0:4}
 
 # Virtualbox
 vb_version=5.2.30
-buildrelease=130521
+buildr=130521
 _VBARCH=amd64
 
 PKGMK_IGNORE_UNPACK="yes"
@@ -27,7 +27,7 @@ source=(\
 https://libarchive.org/downloads/libarchive-3.3.3.tar.gz
 $url/pub/linux/kernel/v4.x/linux-${_version}.tar.xz
 $url/pub/linux/kernel/v4.x/patch-$version.xz
-http://download.virtualbox.org/virtualbox/${vb_version}/VirtualBox-${vb_version}-${buildrelease}-Linux_${_VBARCH}.run
+http://download.virtualbox.org/virtualbox/${vb_version}/VirtualBox-${vb_version}-${buildr}-Linux_${_VBARCH}.run
 config_64)
 
 ## Time to build everything
@@ -69,7 +69,7 @@ KERNEL_VERSION="${version}-NuTyX-lts"
 cd $SRC
 # Modules host
 
-sh VirtualBox-${vb_version}-${buildrelease}-Linux_${_VBARCH}.run --target vb --keep --noexec
+sh VirtualBox-${vb_version}-${buildr}-Linux_${_VBARCH}.run --target vb --keep --noexec
 cd vb
 tar xfj VirtualBox.tar.bz2
 cd src/vboxhost/
