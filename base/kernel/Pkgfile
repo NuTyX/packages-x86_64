@@ -12,12 +12,12 @@ PKGMK_GROUPS=(devel doc)
 name=kernel
 alias=(linux)
 
-version=5.4.12
+version=5.4.13
 _version=${version:0:3}
 
 # Virtualbox
 vb_version=5.2.26
-buildrelease=128414
+buildr=128414
 _VBARCH=amd64
 
 # Linux patch version
@@ -29,7 +29,7 @@ _VBARCH=amd64
 
 source=(\
 $url/pub/linux/kernel/v5.x/linux-${_version}.tar.xz config_64
-http://download.virtualbox.org/virtualbox/${vb_version}/VirtualBox-${vb_version}-${buildrelease}-Linux_${_VBARCH}.run
+http://download.virtualbox.org/virtualbox/${vb_version}/VirtualBox-${vb_version}-${buildr}-Linux_${_VBARCH}.run
 )
 
 [ -z $patchname ] || source+=" $url/pub/linux/kernel/v5.x/$patchname"
@@ -68,7 +68,7 @@ KERNEL_VERSION="${version}-NuTyX"
 # cd $SRC
 # Modules host
 
-# sh VirtualBox-${vb_version}-${buildrelease}-Linux_${_VBARCH}.run --target vb --keep --noexec
+# sh VirtualBox-${vb_version}-${buildr}-Linux_${_VBARCH}.run --target vb --keep --noexec
 # cd vb
 # tar xfj VirtualBox.tar.bz2
 # cd src/vboxhost/
