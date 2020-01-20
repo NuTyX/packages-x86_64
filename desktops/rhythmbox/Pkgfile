@@ -10,12 +10,11 @@ makedepends=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
      gstreamer gstreamer-plugins-base gstreamer-plugins-good)
 
-set=(gnome-extra)
+set=(gnome)
 
 name=rhythmbox
-version=3.4.3
-release=2
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:3}/$name-$version.tar.xz)
+version=3.4.4
+source=(https://download.gnome.org/sources/$name/${version:0:3}/$name-$version.tar.xz)
 
 build() {
 	cd $name-$version
