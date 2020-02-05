@@ -7,7 +7,7 @@ contributors="Pierre B, Minzord"
 makedepends=(doxygen)
 
 name=ruby
-version=2.6.4
+version=2.7.0
 
 source=(http://cache.ruby-lang.org/pub/ruby/${version:0:3}/ruby-$version.tar.xz)
 
@@ -16,5 +16,6 @@ cd ruby-$version
 ./configure --prefix=/usr --enable-shared \
 --docdir=/usr/share/doc/$name-$version
 make
+make capi
 make DESTDIR=$PKG install
 }
