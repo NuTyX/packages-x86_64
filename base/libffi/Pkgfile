@@ -1,28 +1,19 @@
 description="Provide a portable, high level programming interface to various calling conventions."
 url="http://sourceware.org/libffi/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
-[ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man)
-[ "$PKGMK_ARCH" == "i686" ] && PKGMK_GROUPS=(man)
+
 name=libffi
-version=3.2.1
-release=2
+version=3.3
 
 source=( ftp://sourceware.org/pub/$name/$name-$version.tar.gz )
 
 build() {
 cd $name-$version
 
-sed -e '/^includesdir/ s/$(libdir).*$/$(includedir)/' \
-    -i include/Makefile.in
-
-sed -e '/^includedir/ s/=.*$/=@includedir@/' \
-    -e 's/^Cflags: -I${includedir}/Cflags:/' \
-    -i libffi.pc.in
-
 ./configure --prefix=/usr \
-            --disable-static \
-            --with-gcc-arch=native
+            --disable-static
 make
 make check || true
 make DESTDIR=$PKG install
