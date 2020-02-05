@@ -7,9 +7,9 @@ contributors="Berlius"
 makedepends=(gc libunistring libffi gdb)
 
 name=guile
-version=2.2.6
+version=3.0.0
 
-source=(ftp://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
+source=(https://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
 build() {
 
@@ -27,12 +27,13 @@ build() {
     makeinfo --plaintext -o doc/ref/guile.txt doc/ref/guile.texi
     
     make DESTDIR=$PKG install
-    make install-html 
+    make DESTDIR=$PKG install-html 
 	
     install -v -m755 -d  $PKG/usr/share/gdb/auto-load/usr/lib
     mv $PKG/usr/lib/libguile-*-gdb.scm $PKG/usr/share/gdb/auto-load/usr/lib
 
-    install -v -m755 -d  $PKG/usr/share/doc/guile-$version
+    mv $PKG/usr/share/doc/guile-$version/{guile.html,ref}
+    mv $PKG/usr/share/doc/guile-$version/r5rs{.html,}
 
     find examples -name "Makefile*" -delete   
     cp -vR examples $PKG/usr/share/doc/guile-$version
@@ -44,8 +45,8 @@ build() {
     done
     unset DIRNAME
 # Obsolets libs
-rm $PKG/usr/lib/guile/2.2/extensions/guile-readline.la
-rm $PKG/usr/lib/libguile-2.2.la
+rm $PKG/usr/lib/guile/3.0/extensions/guile-readline.la
+rm $PKG/usr/lib/libguile-3.0.la
 
 }
 uptodate() {
