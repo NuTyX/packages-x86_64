@@ -1,12 +1,14 @@
 description="Download utility that supports HTTP(S), FTP, BitTorrent, and Metalink"
 url="http://aria2.sourceforge.net/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="rems"
 
+makedepends=(c-ares ca-certificates gnutls libssh2 libxml2 sqlite)
+
 name=aria2
 version=1.34.0
-release=2
-makedepends=(c-ares ca-certificates gnutls libssh2 libxml2 sqlite)
+release=3
 
 source=(https://github.com/tatsuhiro-t/$name/releases/download/release-$version/$name-$version.tar.xz)
 
