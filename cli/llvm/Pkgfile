@@ -1,5 +1,5 @@
 description="Low Level Virtual Machine, collection of modular and reusable compiler and toolchain."
-url="http://llvm.org/"
+url="https://llvm.org/"
 
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Remy"
@@ -7,18 +7,20 @@ contributors="Pierre B, Tnut, Remy"
 makedepends=(libffi python2 cmake ninja)
 
 name=llvm
-version=9.0.0
+version=9.0.1
 
-source=(${url}releases/$version/$name-$version.src.tar.xz
-	${url}releases/$version/cfe-$version.src.tar.xz
-	${url}releases/$version/compiler-rt-$version.src.tar.xz)
+PKGMK_GROUPS=(lib man devel doc)
+_url="https://github.com/llvm/llvm-project/releases/download/llvmorg-$version"
+source=(${_url}/$name-$version.src.tar.xz
+	${_url}/clang-$version.src.tar.xz
+	${_url}/compiler-rt-$version.src.tar.xz)
 
 build() {
 
 cd $name-$version.src
 
 mv ../compiler-rt-${version}.src projects/compiler-rt
-mv ../cfe-$version.src tools/clang
+mv ../clang-$version.src tools/clang
 
 mkdir build
 cd    build
