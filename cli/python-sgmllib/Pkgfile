@@ -8,7 +8,7 @@ makedepends=(python)
 
 name=python-sgmllib
 version=5.2.1
-release=3
+release=4
 
 source=(https://github.com/kurtmckee/feedparser/archive/$version.tar.gz)
 
@@ -16,12 +16,12 @@ build() {
 
 cd feedparser-$version
 
-python3 /usr/lib/python3.7/compileall.py feedparser/sgmllib3.py
+python3 /usr/lib/python3.8/compileall.py feedparser/sgmllib3.py
 
 install -Dm644 feedparser/sgmllib3.py \
-    "$PKG/usr/lib/python3.7/site-packages/sgmllib.py"
+    "$PKG/usr/lib/python3.8/site-packages/sgmllib.py"
 
-install -Dm644 feedparser/__pycache__/sgmllib3.cpython-37.pyc \
-    "$PKG/usr/lib/python3.7/site-packages/__pycache__/sgmllib.cpython-37.pyc"
+install -Dm644 feedparser/__pycache__/sgmllib3.cpython-38.pyc \
+    "$PKG/usr/lib/python3.8/site-packages/__pycache__/sgmllib.cpython-38.pyc"
   
 }
