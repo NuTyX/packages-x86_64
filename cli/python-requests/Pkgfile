@@ -3,14 +3,13 @@ url="https://pypi.python.org/pypi/requests"
 packager="tnut <tnut@nutyx.org>"
 contributors="Hugo"
 
-name=python-requests
-version=2.22.0
-
-PKGMK_KEEP_SOURCES="no"
-
-makedepends=(python python-urllib3 python-chardet python-certifi python-idna)
 run=(python-urllib3 python-chardet python-certifi python-idna)
 
+name=python-requests
+version=2.22.0
+release=2
+
+PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/kennethreitz/requests/archive/v$version.tar.gz )
 
 build(){
