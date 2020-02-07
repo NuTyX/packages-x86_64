@@ -8,8 +8,7 @@ makedepends=(libnl)
 name=wpa-supplicant
 version=2.9
 
-source=( http://www.linuxfromscratch.org/patches/blfs/svn/wpa_supplicant-$version-upstream_fixes-2.patch
-	http://hostap.epitest.fi/releases/wpa_supplicant-$version.tar.gz)
+source=(https://w1.fi/releases/wpa_supplicant-$version.tar.gz)
 
 build() {
 
@@ -41,7 +40,6 @@ CONFIG_SMARTCARD=y
 CONFIG_WPS=y
 CFLAGS += -I/usr/include/libnl3
 EOF
-patch -p1 -i ../wpa_supplicant-$version-upstream_fixes-2.patch
 cd wpa_supplicant &&
 make BINDIR=/sbin LIBDIR=/lib
 mkdir -p $PKG/{etc,sbin,usr/share/man/man{5,8}}
