@@ -7,31 +7,17 @@ contributors="Rems"
 makedepends=(icu python python2)
 
 name=boost
-version=1.70.0
-release=2
+version=1.72.0
 
 source=(https://dl.bintray.com/boostorg/release/$version/source/${name}_${version//./_}.tar.bz2)
 
 build() {
 cd ${name}_${version//./_}
+local ICU=$([ -e /usr/bin/icu-config ] && echo --with-icu)
+./bootstrap.sh --prefix=$PKG/usr --with-toolset=gcc $ICU
 
-./bootstrap.sh --prefix=/usr --with-python=/usr/bin/python2
-./b2 stage --stagedir=$PKG/usr threading=multi link=shared
-./b2 install --prefix=$PKG/usr threading=multi link=shared --build-dir=py2build
+./b2 stage variant=release threading=multi \
+	link=shared,static debug-symbols=off -j ${JOBS-1}
 
-sed -e '/using python/ s@;@: /usr/include/python${PYTHON_VERSION/3*/${PYTHON_VERSION}m} ;@' \
-      -i bootstrap.sh
-./bootstrap.sh --prefix=$PKG/usr --with-python=/usr/bin/python3 --with-libraries=python
-
-./b2 clean
-./b2 install \
-link=shared \
-python=3.7 \
---build-dir=py3build \
---with-python
-
-ln -svf detail/sha1.hpp $PKG/usr/include/boost/uuid/sha1.hpp
-}
-uptodate() {
-lynx -dump http://www.boost.org/users/download/|grep 'Current Release'|tail -n 1 | sed 's/.*]\(.*\) -.*/\1/'
+./b2 install threading=multi link=shared
 }
