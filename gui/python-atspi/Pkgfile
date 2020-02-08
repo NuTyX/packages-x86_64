@@ -4,10 +4,11 @@ url="http://www.cairographics.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(alsa-lib expat pulseaudio at-spi2-core python-gobject python2-gobject)
+
 name=python-atspi
 version=2.34.0
-
-makedepends=(alsa-lib expat pulseaudio at-spi2-core python-gobject python2-gobject)
+release=2
 
 source=(http://ftp.gnome.org/pub/gnome/sources/pyatspi/${version%.*}/pyatspi-$version.tar.xz)
 
@@ -19,7 +20,7 @@ make DESTDIR=$PKG install
 }
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/pyatspi"
+url="https://download.gnome.org/sources/pyatspi"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
