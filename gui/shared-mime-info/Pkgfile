@@ -1,13 +1,15 @@
 description="The Shared Mime Info package contains a MIME database."
 url="http://freedesktop.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-name=shared-mime-info
-version=1.12
-makedepends=(libxml2 intltool glib)
-source=( http://freedesktop.org/~hadess/$name-$version.tar.xz)
+makedepends=(libxml2 intltool glib itstool)
 
+name=shared-mime-info
+version=1.15
+
+source=(https://gitlab.freedesktop.org/xdg/shared-mime-info/uploads/b27eb88e4155d8fccb8bb3cd12025d5b/shared-mime-info-$version.tar.xz)
 build() {
 unset MAKEFLAGS
 cd $name-$version
