@@ -22,3 +22,22 @@ make
 
 make prefix=$PKG/usr install
 }
+lib() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+usr/lib/libicu*
+
+rm usr/lib/libicu*
+rm -d usr/lib
+}
+
+devel() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
+usr/lib/icu usr/lib/pkgconfig usr/share/icu usr/include
+
+rm -r usr/{lib/{icu,pkgconfig},share/icu,include}
+rm -d usr/{lib,share}
+}
