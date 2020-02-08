@@ -4,17 +4,19 @@ url="http://www.gnome.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(python2-gobject2 python2-cairo libglade)
+makedepends=(libglade)
 run=(python2-gobject2 python2-cairo)
 
 name=python2-gtk
 version=2.24.0
-release=3
+release=4
 
-source=(http://ftp.gnome.org/pub/gnome/sources/pygtk/${version%.*}/pygtk-$version.tar.bz2)
+source=(python2-gtk-2.24.0-consolidated-1.patch
+	https://download.gnome.org/sources/pygtk/${version%.*}/pygtk-$version.tar.bz2)
 	
 build() {
 cd pygtk-$version
+patch -Np1 -i ../python2-gtk-2.24.0-consolidated-1.patch
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
@@ -29,7 +31,7 @@ rm $PKG/usr/lib/python2.7/site-packages/gtk-2.0/pangocairo.la
 }
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/pygtk"
+url="https://download.gnome.org/sources/pygtk"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \

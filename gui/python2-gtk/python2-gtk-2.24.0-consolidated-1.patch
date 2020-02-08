@@ -1,0 +1,19 @@
+diff -Naur a/pango.defs b/pango.defs
+--- a/pango.defs	2011-04-01 12:37:25.000000000 +0200
++++ b/pango.defs	2020-02-07 16:24:07.043170852 +0100
+@@ -1391,15 +1391,6 @@
+   )
+ )
+ 
+-(define-virtual find_shaper
+-  (of-object "PangoFont")
+-  (return-type "PangoEngineShape*")
+-  (parameters
+-    '("PangoLanguage*" "lang")
+-    '("guint32" "ch")
+-  )
+-)
+-
+ (define-virtual get_glyph_extents
+   (of-object "PangoFont")
+   (return-type "none")
