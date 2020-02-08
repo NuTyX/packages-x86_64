@@ -8,9 +8,9 @@ makedepends=(libsoup gobject-introspection)
 
 name=librest
 version=0.8.1
-release=3
+release=4
 
-source=(http://ftp.gnome.org/pub/gnome/sources/rest/${version%.*}/rest-$version.tar.xz)
+source=(https://download.gnome.org/sources/rest/${version%.*}/rest-$version.tar.xz)
 
 build() {
 cd rest-$version
@@ -27,7 +27,7 @@ rm $PKG/usr/lib/librest-extras-0.7.la
 }
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/rest"
+url="https://download.gnome.org/sources/rest"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
