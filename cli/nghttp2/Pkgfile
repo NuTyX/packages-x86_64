@@ -1,0 +1,20 @@
+description="nghttp2 is an implementation of HTTP/2 and its header compression algorithm, HPACK."
+url="https://github.com/nghttp2"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libxml2)
+
+name=nghttp2
+version=1.40.0
+
+source=( https://github.com/nghttp2/nghttp2/releases/download/v$version/nghttp2-$version.tar.xz)
+build() {
+cd $name-$version
+./configure --prefix=/usr     \
+            --disable-static  \
+            --enable-lib-only \
+            --docdir=/usr/share/doc/nghttp2-$version
+make
+make DESTDIR=$PKG install
+}
