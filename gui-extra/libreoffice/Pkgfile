@@ -4,8 +4,8 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
 
 name=libreoffice
-version=6.3.2.2
-makedepends=(python perl-archive-zip unzip zip icu gtk3 cups poppler-glib xorg-fontconfig
+version=6.4.0.3
+makedepends=(python perl-archive-zip unzip zip icu gtk3 cups xorg-fontconfig
              libxslt kerberos xorgproto dbus-glib mesa postgresql wget apache-ant apr
              boost clucene dbus-glib libepoxy libjpeg-turbo2 xorg-glu gstreamer-plugins-base
              libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss redland serf unixodbc
@@ -51,7 +51,6 @@ cd $name-$version
 	--without-junit             \
 	--without-system-dicts      \
 	--disable-dconf             \
-	--disable-gtk               \
 	--enable-gtk3               \
 	--disable-odk               \
 	--enable-release-build=yes  \
@@ -74,7 +73,6 @@ cd $name-$version
 	--with-system-odbc          \
 	--with-system-openldap      \
 	--with-system-openssl       \
-	--with-system-poppler       \
 	--with-system-postgresql    \
 	--with-system-redland       \
 	--with-system-serf          \
