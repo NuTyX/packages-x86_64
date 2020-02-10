@@ -1,17 +1,20 @@
 description="connector python for qt"
 url="http://www.riverbankcomputing.co.uk/software/pyqt/intro"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-name=python-qt
-version=5.13.0
 makedepends=(sip dbus-python qtbase qtconnectivity qtmultimedia qttools
              qtserialport qtsvg qtx11extras qtnetworkauth
              qtwebengine qtwebkit qtwebsockets)
 
-source=(https://www.riverbankcomputing.com/static/Downloads/PyQt5/$version/PyQt5_gpl-$version.tar.gz)
+
+name=python-qt
+version=5.14.1
+
+source=(https://pypi.python.org/packages/source/P/PyQt5/PyQt5-$version.tar.gz)
 build() {
-cd PyQt5_gpl-$version
+cd PyQt5-$version
 
 python3 configure.py   \
      --no-sip-files \
