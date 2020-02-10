@@ -1,17 +1,19 @@
 description="PDF rendering library based on xpdf 3.0"
 url="URL: http://poppler.freedesktop.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
-name=poppler-glib
-version=0.78.0
 makedepends=(nss poppler xorg-libxxf86vm libpng xorg-fontconfig
              libjpeg-turbo2 cairo libxml2 openjpeg2 lcms lcms2
              glib gobject-introspection gtk3)
 
 
 
-source=(http://poppler.freedesktop.org/poppler-$version.tar.xz)
+name=poppler-glib
+version=0.85.0
+
+source=(https://poppler.freedesktop.org/poppler-$version.tar.xz)
 
 build() {
 cd poppler-$version
