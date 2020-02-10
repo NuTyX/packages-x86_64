@@ -1,16 +1,18 @@
 description="System power information and statistics"
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce"
-makedepends=(gtk3 upower dconf hicolor-icon-theme gsettings-desktop-schemas
-             desktop-file-utils gtk-update-icon-cache)
+
+makedepends=(gtk3 upower dconf hicolor-icon-theme)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
-set=(gnome-extra)
+set=(gnome)
 
 name=gnome-power-manager
 version=3.32.0
-release=2
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz)
+release=3
+
+source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build=meson
