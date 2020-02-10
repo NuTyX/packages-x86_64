@@ -1,18 +1,20 @@
 description="Desktop publishing software"
 url="http://www.scribus.net"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-name=scribus
-version=1.5.5_pre20190502
-release=2
 makedepends=(icu cmake boost aspell cups qttools qtdeclarative gnutls kerberos
              boost ghostscript lcms libxml2 cairo desktop-file-utils shared-mime-info poppler)
 run=(shared-mime-info)
-source=(https://github.com/scribusproject/scribus/archive/9449265592a5195153d72c2a511d2010b0cf5b0b.tar.gz)
+
+name=scribus
+version=1.5.5_pre20200207
+
+source=(https://github.com/scribusproject/scribus/archive/b5f73fe5ca68db5af07d35a35f7b3d99e1bf54d4.tar.gz)
 
 build() {
-	cd $name-9449265592a5195153d72c2a511d2010b0cf5b0b
+	cd $name-b5f73fe5ca68db5af07d35a35f7b3d99e1bf54d4
 	mkdir build
 	cd build
 	cmake ../ -DCMAKE_INSTALL_PREFIX=/usr \
