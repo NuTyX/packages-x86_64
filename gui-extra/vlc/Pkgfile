@@ -1,18 +1,21 @@
 description="Media player, streamer, and encoder. It can play from many inputs"
 url="http://www.slackware.com/~alien/slackbuilds/vlc/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, tnut, Remy"
 
-name=vlc
-version=3.0.8
 makedepends=(qtbase qtsvg qtx11extras x264 flac libmad glib librsvg
              alsa-lib xorg-libxinerama xorg-libxpm libcdio vcdimager
              live libdvdcss libdvdread libdvdnav libogg libtheora
              lame faac libvorbis ffmpeg faad2 liba52 libmpcdec fribidi
              lua libdv speex samba libupnp nfs-utils libshout libnotify
              speex sdl-image libcaca chromaprint libmtp taglib libsecret
-             libva libvdpau libdvbpsi desktop-file-utils)
+             libva libvdpau libdvbpsi)
 run=(desktop-file-utils)
+
+name=vlc
+version=3.0.8
+
 source=(https://download.videolan.org/$name/$version/$name-$version.tar.xz)
 
 build() {
