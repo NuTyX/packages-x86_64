@@ -4,8 +4,7 @@ contributors="Remy"
 packager="tnut <tnut@nutyx.org>"
 
 name=libplist
-version=2.0.0
-release=3
+version=2.1.0
 
 PKGMK_KEEP_SOURCES="no"
 makedepends=(python cython autoconf-archive python2-setuptools)
@@ -50,5 +49,5 @@ install -D -m644 $name-$version/cython/plist.pxd $PKG/usr/include/plist/cython/p
 rm $PKG/usr/lib/libplist++.la
 rm $PKG/usr/lib/libplist.la
 rm $PKG/usr/lib/python2.7/site-packages/plist.la
-rm $PKG/usr/lib/python3.7/site-packages/plist.la
+rm $PKG/usr/lib/python3.8/site-packages/plist.la
 }
