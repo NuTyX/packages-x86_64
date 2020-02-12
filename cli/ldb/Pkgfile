@@ -4,9 +4,9 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=ldb
-version=2.1.0
+version=2.0.8
 
-makedepends=(talloc tevent tdb popt python2 cmocka lmdb)
+makedepends=(talloc tevent tdb popt python cmocka lmdb)
 
 source=(http://samba.org/ftp/${name}/${name}-${version}.tar.gz)
 
@@ -14,8 +14,6 @@ source=(http://samba.org/ftp/${name}/${name}-${version}.tar.gz)
 build () {
 	cd $name-$version
 
-	sed -i -e "s|/usr/bin/env python$|/usr/bin/env python2|" \
-	buildtools/bin/waf
 
 	./configure --prefix=/usr \
 		--disable-rpath \
