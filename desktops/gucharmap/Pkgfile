@@ -1,16 +1,19 @@
 description="Gucharmap is a Unicode character map and font viewer"
 url="http://www.gnome.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tnut, Jayce"
+
 makedepends=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
              gtk3 itstool gobject-introspection vala)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
-set=(gnome-extra)
+set=(gnome)
 
 name=gucharmap
 version=12.0.1
-release=2
+release=3
+
 source=(http://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
 build() {
