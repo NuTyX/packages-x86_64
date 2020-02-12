@@ -1,17 +1,20 @@
 description="SMB Fileserver and AD Domain server"
 url="http://www.samba.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
-
-name=samba
-version=4.10.6
 
 makedepends=(jansson rpcsvc-proto libtirpc docbook-xsl talloc 
              tevent avahi gnutls libgpg-error popt python2 
              cups kerberos libcap openldap tdb ldb)
 
 
-nutyx_version=11.1
+name=samba
+version=4.11.6
+
+nutyx_version=11.3
+
+PKGMK_GROUPS=(lib man devel service doc)
 
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	https://download.samba.org/pub/samba/stable/$name-$version.tar.gz)
@@ -33,7 +36,7 @@ LDFLAGS+=" -ltirpc"                       \
     --enable-fhs                        \
     --without-systemd                   \
     --enable-selftest                   \
-    --bundled-libraries=!talloc,!pytalloc-util,!tevent,!popt,!tdb,!ldb
+    --bundled-libraries=!talloc,!pytalloc-util,!tevent,!popt,!tdb,!ldb,!pyldb-util
 
 make
 
@@ -60,15 +63,13 @@ $PKG/etc/openldap/schema
 #  cups 
 cd $PKG/usr/lib/
 install -d cups/backend
-ln -v -sf $PKG/usr/bin/smbspool $PKG/usr/lib/cups/backend/smb
+ln -v -sf /usr/bin/smbspool $PKG/usr/lib/cups/backend/smb
 
 # service
 cd $SRC/nutyx-${nutyx_version}
 make DESTDIR=$PKG install-samba
 make DESTDIR=$PKG install-winbindd
 
-#  Doublon
-rm -rv $PKG/usr/lib/share/perl5/vendor/Parse/Yapp
 }
 uptodate() {
 local ext url name LINX
