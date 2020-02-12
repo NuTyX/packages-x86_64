@@ -9,7 +9,7 @@ run=(python python2)
 
 name=dbus-python
 version=1.2.8
-release=3
+release=4
 
 source=( http://dbus.freedesktop.org/releases/$name/$name-$version.tar.gz\
 	)
@@ -35,8 +35,8 @@ build() {
 # Obsolets libs
 rm $PKG/usr/lib/python2.7/site-packages/_dbus_bindings.la
 rm $PKG/usr/lib/python2.7/site-packages/_dbus_glib_bindings.la
-rm $PKG/usr/lib/python3.7/site-packages/_dbus_bindings.la
-rm $PKG/usr/lib/python3.7/site-packages/_dbus_glib_bindings.la
+rm $PKG/usr/lib/python3.8/site-packages/_dbus_bindings.la
+rm $PKG/usr/lib/python3.8/site-packages/_dbus_glib_bindings.la
 
 }
 uptodate() {
