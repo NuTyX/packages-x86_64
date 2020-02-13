@@ -5,12 +5,15 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 makedepends=(libusb avahi python gnutls)
-run=(xdg-utils gtk-update-icon-cache)
+run=(xdg-utils gtk-update-icon-cache
+     cups.lib)
 
 PKGMK_GROUPS=(devel man lib)
 
 name=cups
 version=2.3.1
+release=2
+
 nutyx_version=11.3
 
 source=(https://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz \
@@ -80,4 +83,12 @@ session include system-session
 EOF
 	mkdir -p $PKG/etc/udev/rules.d
 	install -m644 ../99-printer.rules  $PKG/etc/udev/rules.d/99-printer.rules
+}
+lib() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+usr/lib/libcups*
+rm usr/lib/libcups*
+rm -d usr/lib
 }
