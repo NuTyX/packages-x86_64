@@ -7,13 +7,16 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(pam)
 
 name=sudo
-version=1.8.27
-release=2
+version=1.8.31
 
 source=($url/sudo/dist/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
+
+sed -e '/^pre-install:/{N;s@;@ -a -r $(sudoersdir)/sudoers;@}' \
+    -i plugins/sudoers/Makefile.in
+
 ./configure --prefix=/usr \
 --libexecdir=/usr/lib \
 --docdir=/usr/share/doc/sudo-$version \
@@ -24,6 +27,8 @@ cd $name-$version
 
 make
 make DESTDIR=$PKG install
+
+ln -sfv libsudo_util.so.0.0.0 $PKG/usr/lib/sudo/libsudo_util.so.0
 
 mkdir -pv $PKG/etc/pam.d
 
