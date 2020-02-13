@@ -1,0 +1,27 @@
+
+description="A web browser built for speed, simplicity, and security"
+url="https://www.chromium.org/Home"
+
+packager="tnut <tnut@nutyx.org>"
+maintainer="Arch Linux"
+
+makedepends=(gtk3 ffmpeg flac dbus freetype xorg-libxscrnsaver
+             libxslt nss snappy re2 json-glib zstd)
+run=(hicolor-icon-theme desktop-file-utils)
+
+name=chromium
+version=80.0.3987.100
+
+source=(https://downloads.tuxfamily.org/nutyx/files/libminizip.so.1.0.0 
+ https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-1-x86_64.pkg.tar.zst)
+
+build() {
+
+tar xaf chromium-$version-1-x86_64.pkg.tar.zst
+
+mv usr $PKG
+cp libminizip.so.1.0.0 $PKG/usr/lib/chromium
+ln -sv libminizip.so.1.0.0 $PKG/usr/lib/chromium/libminizip.so.1
+mkdir -p $PKG/etc/ld.so.conf.d
+echo "/usr/lib/chromium" > $PKG/etc/ld.so.conf.d/$name.conf
+}
