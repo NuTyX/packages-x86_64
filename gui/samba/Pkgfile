@@ -7,10 +7,11 @@ contributors="Pierre B, Tnut, Greg"
 makedepends=(jansson rpcsvc-proto libtirpc docbook-xsl talloc 
              tevent avahi gnutls libgpg-error popt python2 
              cups kerberos libcap openldap tdb ldb)
-
+run=(samba.lib)
 
 name=samba
 version=4.11.6
+release=2
 
 nutyx_version=11.3
 
@@ -70,6 +71,30 @@ cd $SRC/nutyx-${nutyx_version}
 make DESTDIR=$PKG install-samba
 make DESTDIR=$PKG install-winbindd
 
+}
+lib() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+usr/lib/lib* \
+usr/bin/{smbclient,rpcclient,smbspool,smbtree,smbcacls,\
+smbcquotas,smbget,net,nmblookup,smbtar}
+
+rm usr/lib/lib*
+rm usr/bin/{smbclient,rpcclient,smbspool,smbtree,smbcacls,\
+smbcquotas,smbget,net,nmblookup,smbtar}
+rm -d /usr/lib
+rm -d usr/bin
+}
+devel() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
+usr/lib/pkgconfig usr/include
+
+rm -r usr/{include,lib/pkgconfig}
+rm -d usr/include
+rm -d usr/lib
 }
 uptodate() {
 local ext url name LINX
