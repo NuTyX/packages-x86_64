@@ -8,13 +8,12 @@ makedepends=(xine-lib curl aalib)
 run=(xdg-utils shared-mime-info hicolor-icon-theme desktop-file-utils)
 
 name=xine-ui
-version=0.99.11
+version=0.99.12
 
 source=(http://downloads.sourceforge.net/xine/$name-$version.tar.xz)
 
 build() {
   cd $name-$version
-  sed -i "s@xine_list_next_value@xine_list_get_value@" src/xitk/setup.c
   ./configure --prefix=/usr          \
              --mandir=/usr/share/man \
              --disable-lirc
