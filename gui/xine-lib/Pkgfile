@@ -8,19 +8,12 @@ makedepends=(doxygen mesa xorg-libxvmc libxcb faad2 speex libmng
              libvorbis flac libtheora sdl ffmpeg samba librsvg
              imagemagick xorg-glu)
 name=xine-lib
-version=1.2.9
-release=3
+version=1.2.10
 
 source=(http://downloads.sourceforge.net/xine/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-
-sed -e 's|wand/magick_wand.h|MagickWand/MagickWand.h|' \
-    -i src/video_dec/image.c
-
-sed -e 's/\(xcb-shape >= 1.0\)/xcb \1/' \
-    -i m4/video_out.m4
 
 ./configure  --prefix=/usr \
 --disable-vcd \
