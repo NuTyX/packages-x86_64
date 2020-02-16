@@ -8,9 +8,9 @@ makedepends=(pcre2 gnutls vala gtk3 perl-xml-parser python2-gtk gobject-introspe
 
 name=vte3
 _name=vte
-version=0.58.2
+version=0.58.3
 
-source=(http://ftp.gnome.org/pub/gnome/sources/${_name}/${version%.*}/${_name}-$version.tar.xz)
+source=(https://download.gnome.org/sources/${_name}/${version%.*}/${_name}-$version.tar.xz)
 
 build() {
 cd ${_name}-$version
@@ -25,7 +25,7 @@ DESTDIR=$PKG ninja install
 }
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/${_name}"
+url="https://download.gnome.org/sources/${_name}"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
