@@ -8,11 +8,9 @@ makedepends=(libffi pcre python elfutils meson ninja libxslt docbook-xsl)
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.62.4
-release=3
+version=2.62.5
 
-source=(http://www.linuxfromscratch.org/patches/blfs/svn/glib-$version-cve_2020_6750_fix-1.patch
-	https://download.gnome.org/sources/glib/${version:0:4}/$name-$version.tar.xz
+source=(https://download.gnome.org/sources/glib/${version:0:4}/$name-$version.tar.xz
 	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-11.0.jpg
 	glib-$version-skip_warnings-1.patch)
 
@@ -20,7 +18,6 @@ build () {
   cd $name-$version
 
   patch -Np1 -i ../glib-$version-skip_warnings-1.patch
-  patch -Np1 -i ../glib-$version-cve_2020_6750_fix-1.patch
 
   mkdir build-glib
   cd    build-glib
