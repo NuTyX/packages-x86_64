@@ -1,0 +1,19 @@
+description="Database independant abstraction layer for C"
+url="http://libdbi.sourceforge.net/"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=libdbi
+version=0.9.0
+
+source=(https://downloads.sourceforge.net/$name/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
+package() {
+rm $PKG/usr/lib/libdbi.la
+}
