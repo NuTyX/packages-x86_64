@@ -14,12 +14,15 @@ alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
 version=19.3.4
+release=2
 
 source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz
+        http://www.linuxfromscratch.org/patches/blfs/svn/mesa-$version-fix_svga_vmwgfx_segfaults-1.patch
 	http://www.linuxfromscratch.org/patches/downloads/mesa/mesa-$version-add_xdemos-1.patch)
 build() {
 cd mesa-$version
 
+patch -Np1 -i ../mesa-$version-fix_svga_vmwgfx_segfaults-1.patch
 patch -Np1 -i ../mesa-$version-add_xdemos-1.patch
 
 
