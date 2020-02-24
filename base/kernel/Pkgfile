@@ -12,13 +12,8 @@ PKGMK_GROUPS=(devel doc)
 name=kernel
 alias=(linux)
 
-version=5.4.19
+version=5.5.6
 _version=${version:0:3}
-
-# Virtualbox
-vb_version=5.2.26
-buildr=128414
-_VBARCH=amd64
 
 # Linux patch version
 [ "${_version}" != "${version}" ] && patchname="patch-$version.xz"
@@ -29,7 +24,6 @@ _VBARCH=amd64
 
 source=(\
 $url/pub/linux/kernel/v5.x/linux-${_version}.tar.xz config_64
-http://download.virtualbox.org/virtualbox/${vb_version}/VirtualBox-${vb_version}-${buildr}-Linux_${_VBARCH}.run
 )
 
 [ -z $patchname ] || source+=" $url/pub/linux/kernel/v5.x/$patchname"
@@ -63,52 +57,6 @@ make INSTALL_MOD_PATH=$PKG modules_install
 
 KERNEL_VERSION="${version}-NuTyX"
 [ -z $patchname ] && KERNEL_VERSION="${version}.0-NuTyX"
-
-# Virtualbox
-# cd $SRC
-# Modules host
-
-# sh VirtualBox-${vb_version}-${buildr}-Linux_${_VBARCH}.run --target vb --keep --noexec
-# cd vb
-# tar xfj VirtualBox.tar.bz2
-# cd src/vboxhost/
-
-# for i in `find . -name Makefile.include.header`
-# do
-#   sed -i "s@/lib/modules/@$PKG/lib/modules/@" $i
-# done
-
-# KERN_VER=${KERNEL_VERSION} make
-
-# for i in *.ko
-# do
-#	install -D -m0644 $i \
-#	$PKG/lib/modules/${KERNEL_VERSION}/misc/$i
-# done
-
-# Modules guest
-# mkdir $SRC/vb-guest
-# cd    $SRC/vb-guest
-
-# bsdtar -xf ../vb/additions/VBoxGuestAdditions.iso
-# sh  VBoxLinuxAdditions.run --target vb --keep --noexec
-# cd vb
-# tar xfj VBoxGuestAdditions-x86.tar.bz2
-# cd src/vboxguest-${vb_version}
-
-# for i in `find . -name Makefile.include.header`
-# do
-#   sed -i "s@/lib/modules/@$PKG/lib/modules/@" $i
-# done
-
-# KERN_VER=${KERNEL_VERSION} make all
-
-# for i in *.ko
-# do
-#	install -D -m0644 $i \
-#	$PKG/lib/modules/${KERNEL_VERSION}/misc/$i
-# done
-
 
 # depmod needed
 depmod -b $PKG -a ${KERNEL_VERSION}
