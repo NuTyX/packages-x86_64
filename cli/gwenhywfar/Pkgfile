@@ -1,0 +1,24 @@
+description="OS abstraction functions for various projects"
+url="https://www.aquamaniac.de/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(gnutls libgcrypt openssl)
+run=()
+set=()
+
+name=gwenhywfar
+version=5.1.3
+
+source=(https://www.aquamaniac.de/rdm/attachments/download/242/$name-$version.tar.gz)
+
+build() {
+cd $name-$version 
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--enable-system-certs \
+--with-guis="none"
+make
+make DESTDIR=$PKG install
+}
