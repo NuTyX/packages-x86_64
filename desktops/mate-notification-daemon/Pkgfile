@@ -9,9 +9,9 @@ makedepends=(dconf gtk3 libcanberra libwnck libnotify)
 set=(mate)
 
 name=mate-notification-daemon
-version=1.22.1
+version=1.24.0
 
-source=(http://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
+source=(https://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
 build() {
 
@@ -19,7 +19,6 @@ build() {
   ./configure  --prefix=/usr \
           --libexecdir=/usr/lib/${name}
   make
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make DESTDIR=$PKG install
 
 
