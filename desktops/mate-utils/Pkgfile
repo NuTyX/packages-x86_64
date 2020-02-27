@@ -4,14 +4,15 @@ url="https://mate-desktop.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch, Tnut, Jayce, Greg"
 
-makedepends=(gtk-doc yelp-tools gtk3 mate-panel libgtop librsvg)
+makedepends=(gtk-doc yelp-tools gtk3 mate-panel libgtop librsvg
+             udisks2)
 
 set=(mate)
 
 name=mate-utils
-version=1.22.2
+version=1.24.0
 
-source=(https://pub.mate-desktop.org/releases/1.22/mate-utils-$version.tar.xz)
+source=(https://pub.mate-desktop.org/releases/${version%.*}/mate-utils-$version.tar.xz)
 build() {
 
   cd $name-$version
