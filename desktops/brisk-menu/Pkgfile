@@ -4,22 +4,28 @@ url="https://github.com/solus-project/brisk-menu"
 packager="tnut <tnut@nutyx.org>"
 contributors="jayce, Greg"
 
+makedepends=(git mate-desktop mate-menus mate-panel meson ninja)
 set=(mate)
 
 name=brisk-menu
-version=git
-release=3
+version=0.6.1-g25a7def
 
-makedepends=(git mate-desktop mate-menus mate-panel meson ninja)
+prepare() {
+git clone https://github.com/getsolus/brisk-menu.git
+cd $name
+I=$(git describe)
+if [ "$version" != "0.6.1-${I/*-/}" ]; then
+	echo "Version has changed"
+	exit 1
+fi
+cd ..
+}
 
 build() {
-	git clone https://github.com/getsolus/brisk-menu.git	
 	cd $name
-	mkdir build
-	cd    build
-	meson --prefix=/usr
-	ninja
-	DESTDIR=$PKG ninja install
+	meson --buildtype plain build --prefix=/usr
+	ninja -C build
+	DESTDIR=$PKG ninja -C build install
 }
 uptodate() {
 feed=https://github.com/solut-project/$name/releases.atom
