@@ -1,13 +1,16 @@
 description="Daemon providing a polkit authentication UI for KDE"
 url="https://www.kde.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+
+makedepends=(kcrash kdbusaddons kiconthemes kdoctools)
 
 set=(kde5 plasma5)
 
 name=polkit-kde-agent-1
-version=5.18.1
-makedepends=(kcrash kdbusaddons kiconthemes kdoctools)
+version=5.18.2
+
 source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
 
 build=kde5
