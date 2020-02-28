@@ -4,12 +4,13 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
 
 name=libreoffice
-version=6.4.0.3
-makedepends=(python perl-archive-zip unzip zip icu gtk3 cups xorg-fontconfig
+version=6.4.1.2
+makedepends=(python perl-archive-zip unzip zip icu gtk3 cups poppler-glib xorg-fontconfig
              libxslt kerberos xorgproto dbus-glib mesa postgresql wget apache-ant apr
              boost clucene dbus-glib libepoxy libjpeg-turbo2 xorg-glu gstreamer-plugins-base
              libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss redland serf unixodbc
-             doxygen gdb gnutls nasm telepathy-glib xmlsec gpgme)
+             doxygen gdb gnutls nasm telepathy-glib xmlsec gpgme libabw libcmis cppunit hunspell
+             hyphen mariadb)
 run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache)
 
 PKGMK_IGNORE_UNPACK="yes"
@@ -45,10 +46,15 @@ cd $name-$version
 ./autogen.sh --prefix=/usr \
 	--sysconfdir=/etc \
 	--with-vendor="NuTyX" \
-	--with-lang="ar cs es de fr el ga gl hi hr hu it ja lt lv pt fi nb nl nn da sv tr ro sq sk sl sr th uk ru pl zh-CN"   \
+	--with-lang="ar cs es de fr \
+        el ga gl hi hr hu it ja lt  \
+        lv pt fi nb nl nn da sv tr  \
+        ro sq sk sl sr th uk ru pl  \
+        zh-CN"                      \
 	--with-help                 \
 	--with-myspell-dicts        \
 	--without-junit             \
+	--without-fonts             \
 	--without-system-dicts      \
 	--disable-dconf             \
 	--enable-gtk3               \
@@ -58,24 +64,31 @@ cd $name-$version
 	--with-system-apr           \
 	--with-system-boost         \
 	--with-system-clucene       \
+	--with-system-cppunit       \
 	--with-system-curl          \
 	--with-system-epoxy         \
 	--with-system-expat         \
 	--with-system-gpgmepp       \
+	--with-system-hunspell      \
 	--with-system-icu           \
 	--with-system-jpeg          \
+	--with-system-libcmis       \
 	--with-system-lcms2         \
+	--with-system-libabw        \
 	--with-system-libatomic_ops \
 	--with-system-libpng        \
 	--with-system-libxml        \
+	--with-system-mariadb       \
 	--with-system-neon          \
 	--with-system-nss           \
 	--with-system-odbc          \
 	--with-system-openldap      \
 	--with-system-openssl       \
+	--with-system-poppler       \
 	--with-system-postgresql    \
 	--with-system-redland       \
 	--with-system-serf          \
+	--with-system-xmlsec        \
 	--with-system-zlib          \
 	--with-parallelism=$(getconf _NPROCESSORS_ONLN)
 
