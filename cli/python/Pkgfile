@@ -9,6 +9,7 @@ alias=(python3 Python)
 
 name=python
 version=3.8.2
+release=2
 
 source=(http://www.python.org/ftp/python/$version/Python-$version.tar.xz
         https://docs.python.org/ftp/python/doc/$version/python-$version-docs-html.tar.bz2
@@ -27,6 +28,11 @@ tar -xvf Python-$version.tar.xz
                 --with-system-ffi \
          		--with-ensurepip=yes
 	make
+# Remove the tkinter stuff
+rm Lib/test/test_tk.py
+rm Lib/test/test_ttk_{gui,text}only.py
+rm -r Lib/tkinter
+
 	make DESTDIR=$PKG install
 
 	chmod -v 755 $PKG/usr/lib/libpython3.8.so
