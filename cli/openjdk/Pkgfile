@@ -1,15 +1,15 @@
-description="A set of programs called a Java Development Kit (JDK)."
-url="http://openjdk.java.net/"
+description="OpenJDK 8 updates of the open-source reference of the Java SE 8."
+url="http://openjdk.java.net/projects/jdk8/spec/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 
 name=openjdk
-version=10.0.2u13
+version=8u141
 release=1
-_version=10.0.2+13
+_version=1.8.0.141
 
-source=(http://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-${_version:0:6}/OpenJDK-${_version}-`uname -m`-bin.tar.xz)
+source=(http://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-${_version}/OpenJDK-${_version}-`uname -m`-bin.tar.xz)
 	
 build() {
 cd OpenJDK*
