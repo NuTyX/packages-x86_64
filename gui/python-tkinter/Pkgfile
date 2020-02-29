@@ -1,0 +1,86 @@
+description="TCL GUI Toolkit Python module"
+url=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(tk expat)
+
+name=python-tkinter
+version=3.8.2
+
+source=(https://www.python.org/ftp/python/$version/Python-$version.tar.xz)
+
+build() {
+cd Python-$version
+CXX="/usr/bin/g++" \
+./configure --prefix=/usr
+make
+make build_all
+
+# Trap for catching the test/test_tk files
+mkdir Lib/test/tkinter
+for i in test_tk.py test_ttk_{text,gui}only.py
+do
+ mv Lib/test/$i Lib/test/tkinter
+done
+
+# Extract part from the Makefile
+install -d -m 755 $PKG/usr/lib
+LIBSUBDIRS=(tkinter tkinter/test tkinter/test/test_tkinter \
+    tkinter/test/test_ttk test/tkinter)
+for d in ${LIBSUBDIRS[@]}
+do
+	[ -d Lib/$d ] &&
+		install -d -m 755 $PKG/usr/lib/python${version%.*}/$d
+done
+for d in ${LIBSUBDIRS[@]}
+do
+   a=Lib/$d
+   b=$PKG/usr/lib/python${version%.*}/$d
+   for i in $a/*
+   do
+      case $i in
+         *CVS) ;;
+         *.py[co]) ;;
+         *.orig) ;;
+         *~) ;;
+         *)
+           if test -x $i; then
+              install -d $i $b
+           else
+              install -m 644 $i $b
+           fi;;
+       esac
+   done
+done
+
+# Move back the test/tkinter folder contents
+mv $PKG/usr/lib/python${version%.*}/test/tkinter/* \
+$PKG/usr/lib/python${version%.*}/test/
+rm -d $PKG/usr/lib/python${version%.*}/test/tkinter
+
+PYTHONPATH=$PKG/usr/lib/python${version%.*} \
+  ./python -E -Wi Lib/compileall.py \
+  -j0 -d /usr/lib/pytho${version%.*} -f \
+  -x 'bad_coding|badsyntax|site-packages|lib2to3/tests/data' \
+  $PKG/usr/lib/python${version%.*}
+
+PYTHONPATH=$PKG/usr/lib/python${version%.*} \
+  ./python -E -Wi -O Lib/compileall.py \
+  -j0 -d /usr/lib/pytho${version%.*} -f \
+  -x 'bad_coding|badsyntax|site-packages|lib2to3/tests/data' \
+  $PKG/usr/lib/python${version%.*}
+
+PYTHONPATH=$PKG/usr/lib/python${version%.*} \
+  ./python -E -Wi -OO Lib/compileall.py \
+  -j0 -d /usr/lib/pytho${version%.*} -f \
+  -x 'bad_coding|badsyntax|site-packages|lib2to3/tests/data' \
+  $PKG/usr/lib/python${version%.*}
+
+# and finaly the shared librairy
+install -m 755 -d $PKG/usr/lib/python${version%.*}/lib-dynload
+install build/lib.linux-$(uname -m)-${version%.*}/_tkinter.cpython-38-$(uname -m)-linux-gnu.so \
+$PKG/usr/lib/python${version%.*}/lib-dynload
+
+}
