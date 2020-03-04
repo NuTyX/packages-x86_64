@@ -1,13 +1,15 @@
 description="Panel for the Xfce desktop environment."
 url="http://www.xfce.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tyrry, Greg"
-makedepends=(exo xfce4-garcon libwnck2 xfce4-libui gtk-doc gtk3)
+
+makedepends=(exo garcon libwnck libxfce4ui gtk-doc gtk3)
+
 set=(xfce4)
 
 name=xfce4-panel
-version=4.12.2
-release=2
+version=4.14.3
 
 source=(http://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2)
 
@@ -15,10 +17,8 @@ build() {
 
 cd $name-$version
 
-./configure \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --enable-gtk3
+./configure --prefix=/usr \
+--sysconfdir=/etc
 make
 make DESTDIR=$PKG install
 }
