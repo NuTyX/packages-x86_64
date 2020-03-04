@@ -1,0 +1,22 @@
+description="Implementation of the freedesktop.org menu specification"
+url="http://www.xfce.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Tyrry, Fanch, Greg"
+
+makedepends=(gtk3 libxfce4ui libxfce4util)
+
+name=garcon
+version=0.6.4
+
+source=(http://archive.xfce.org/src/xfce/garcon/${version:0:3}/${name}-$version.tar.bz2)
+		
+build() {
+
+cd ${name}-$version
+
+./configure --prefix=/usr \
+--sysconfdir=/etc 
+make
+make DESTDIR=$PKG install
+}
