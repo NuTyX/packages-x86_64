@@ -1,25 +1,25 @@
 description="D-Bus service for applications to request thumbnails"
 url="http://www.xfce.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tyrry, Greg"
 
-makedepends=(libjpeg-turbo libpng freetype gdk-pixbuf dbus-glib intltool gstreamer)
+makedepends=(libjpeg-turbo libpng freetype gdk-pixbuf
+             dbus-glib intltool gstreamer)
 set=(xfce4)
 
 name=tumbler
-version=0.2.6
+version=0.2.8
 
-source=(http://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2)
+source=(https://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2)
 
 build() {
 
 cd $name-$version
 
-./configure \
-    --prefix=/usr \
-    --sysconfdir=/etc
-    
+./configure --prefix=/usr \
+--sysconfdir=/etc
+
 make
 make DESTDIR=$PKG install
-
 }
