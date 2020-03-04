@@ -1,29 +1,28 @@
 description="Settings manager for xfce"
 url="http://www.xfce.org/"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Tyrry, Tnut, Greg"
-makedepends=(exo xfce4-libui xfce4-garcon xorg-libxklavier xorg-libxkbfile
-             libcanberra gnome-icon-theme)
-run=(gnome-icon-theme)
+contributors="Tyrry, Greg"
+
+makedepends=(exo libxfce4ui garcon xorg-libxklavier
+             xorg-libxkbfile libcanberra)
+run=(lxde-icon-theme)
 
 set=(xfce4)
 
 name=xfce4-settings
-version=4.12.4
-release=2
-source=(http://archive.xfce.org/src/xfce/${name}/${version%.*}/$name-$version.tar.bz2 
-		default-xsettings-xml.patch)
+version=4.14.2
+
+source=(https://archive.xfce.org/src/xfce/${name}/${version%.*}/$name-$version.tar.bz2)
 
 build() {
 
 cd $name-$version
 
-patch -Np1 -i $SRC/default-xsettings-xml.patch
+./configure --prefix=/usr \
+--sysconfdir=/etc
 
-./configure \
-    --prefix=/usr \
-    --sysconfdir=/etc
-  make
-  make DESTDIR=$PKG install
+make
+make DESTDIR=$PKG install
 
 }
