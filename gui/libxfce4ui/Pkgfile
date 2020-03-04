@@ -1,0 +1,36 @@
+description="Commonly used Xfce widgets among Xfce applications"
+url="http://www.xfce.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Tyrry, Greg"
+
+makedepends=(gtk2 gtk3 xfconf gobject-introspection)
+run=(startup-notification hicolor-icon-theme)
+
+name=libxfce4ui
+version=4.14.1
+
+source=(http://archive.xfce.org/src/xfce/${name}/${version%.*}/${name}-$version.tar.bz2)
+
+build() {
+
+cd ${name}-$version
+
+	./configure           \
+    	--prefix=/usr         \
+	--disable-static      \
+    	--disable-debug
+    	
+	make
+	make DESTDIR=$PKG install
+	
+for i in usr/bin/xfce4-about usr/share/applications/xfce4-about.desktop usr/share/icons/hicolor/48x48/apps/xfce4-logo.png
+do rm $PKG/$i
+done
+# Obsolets libs
+rm $PKG/usr/lib/libxfce4kbd-private-2.la
+rm $PKG/usr/lib/libxfce4kbd-private-3.la
+rm $PKG/usr/lib/libxfce4ui-1.la
+rm $PKG/usr/lib/libxfce4ui-2.la
+ 
+}
