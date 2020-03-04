@@ -1,23 +1,25 @@
 description="Power manager for the Xfce desktop."
 url="http://www.xfce.org/"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="tyrry,tnut,greg" 
-makedepends=(dbus-glib libnotify xfce4-panel upower hicolor-icon-theme)
+contributors="Tyrry, Greg" 
+
+makedepends=(dbus-glib libnotify xfce4-panel 
+             upower hicolor-icon-theme)
 
 set=(xfce4)
 
 name=xfce4-power-manager
-version=1.6.4
-source=(http://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2)
+version=1.6.5
+
+source=(https://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2)
 
 build() {
 
 cd $name-$version
-./configure \
-    --prefix=/usr \
-    --sysconfdir=/etc
-    
+./configure --prefix=/usr \
+--sysconfdir=/etc
+
 make
 make DESTDIR=$PKG install
-
 }
