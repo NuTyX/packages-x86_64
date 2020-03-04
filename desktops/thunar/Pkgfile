@@ -1,31 +1,27 @@
 description="Modern file manager for Xfce"
 url="http://thunar.xfce.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="tyrry,tnut,greg"
 
-makedepends=(libnotify libexif exo xfce4-libui xfce4-panel
-             desktop-file-utils gvfs gtk2 libpng libgudev
-             xfce4-libutil)
-run=(desktop-file-utils gtk-update-icon-cache)
-
+makedepends=(libnotify libexif exo libxfce4ui xfce4-panel
+             gvfs gtk2 libpng libgudev libxfce4util)
+run=(desktop-file-utils gtk-update-icon-cache
+     lxde-icon-theme)
 set=(xfce4)
 
 name=thunar
-version=1.8.8
+version=1.8.12
 
-source=(http://archive.xfce.org/src/xfce/thunar/${version%.*}/Thunar-$version.tar.bz2)
+source=(http://archive.xfce.org/src/xfce/thunar/${version%.*}/$name-$version.tar.bz2)
 
 build() {
 
-cd Thunar-$version
+cd $name-$version
 
-./configure \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --docdir=/usr/share/doc/$name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--docdir=/usr/share/doc/$name-$version
 make
 make DESTDIR=$PKG install
-
-sed -i 's:x-directory/gnome-default-handler;::' \
-    $PKG/usr/share/applications/Thunar-folder-handler.desktop
 }
