@@ -1,0 +1,28 @@
+description="A desktop manager for Xfce"
+url="http://www.xfce.org"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Tyrry, Greg"
+
+makedepends=(exo libwnck libxfce4ui thunar garcon
+            startup-notification libnotify)
+run=(gtk-update-icon-cache)
+
+set=(xfce4)
+
+name=xfdesktop
+version=4.14.2
+
+source=(https://archive.xfce.org/src/xfce/${name}/${version:0:4}/${name}-$version.tar.bz2)
+
+build() {
+
+cd ${name}-$version
+
+sed -i "s@xfce/xfce-teal.jpg@nutyx/nutyx.jpg@" common/xfdesktop-common.h
+
+./configure --prefix=/usr
+
+make
+make DESTDIR=$PKG install
+}
