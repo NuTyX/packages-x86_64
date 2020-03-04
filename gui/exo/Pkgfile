@@ -4,10 +4,10 @@ url="http://www.xfce.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Tyrry, Greg"
 
-makedepends=(perl-uri xfce4-libui xfce4-libutil gtk-doc)
+makedepends=(gtk3 perl-uri libxfce4ui libxfce4util gtk-doc)
 
 name=exo
-version=0.12.8
+version=0.12.11
 
 source=(http://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2)
 
@@ -15,13 +15,13 @@ build() {
 
 cd $name-$version
 
-	./configure --prefix=/usr \
-	--sysconfdir=/etc \
-	--enable-gtk-doc \
-	--disable-debug
-	
-	make
-	make DESTDIR=$PKG install
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--enable-gtk-doc \
+--disable-debug
+
+make
+make DESTDIR=$PKG install
 	
 # Obsolets libs
 rm $PKG/usr/lib/libexo-1.la
