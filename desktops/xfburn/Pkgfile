@@ -1,0 +1,24 @@
+description="Burn CDs and DVDs from files on your computer or ISO images downloaded from elsewhere."
+url="http://www.xfce.org/projects/xfburn/"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libxfce4util libxfce4ui gstreamer-plugins-base
+             exo libisoburn xorg-pixman)
+run=(cdrdao startup-notification)
+
+set=(xfce4-extra)
+
+name=xfburn
+version=0.6.1
+
+source=(https://archive.xfce.org/src/apps/${name}/${version%.*}/${name}-$version.tar.bz2)
+
+build() {
+
+cd ${name}-$version	
+./configure --prefix=/usr \
+--sysconfdir=/etc
+make
+make DESTDIR=$PKG install
+}
