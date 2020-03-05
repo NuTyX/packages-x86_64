@@ -1,11 +1,12 @@
 url="http://www.os-cillation.com/index.php?id=42&L=5"
-packager="tnut <tnut@nutyx.org>"
 description="Terminal emulator from Xfce4."
 
-makedepends=(exo vte3)
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libxfce4util libxfce4ui exo vte3)
 set=(xfce4-extra)
 
 name=xfce4-terminal
-version=0.8.8
+version=0.8.9.1
 
-source=(http://archive.xfce.org/src/apps/${name}/${version:0:3}/$name-$version.tar.bz2 )
+source=(https://archive.xfce.org/src/apps/${name}/${version:0:3}/$name-$version.tar.bz2)
