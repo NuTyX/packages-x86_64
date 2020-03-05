@@ -1,28 +1,23 @@
 description="File system usage monitor plugin for the Xfce4 panel"
 url="http://goodies.xfce.org/projects/panel-plugins/xfce4-fsguard-plugin"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tyrry, Greg"
-makedepends=(xfce4-panel)
+
+makedepends=(libxfce4util libxfce4ui xfce4-panel)
 
 set=(xfce4-extra)
 
 name=xfce4-fsguard-plugin
-version=1.1.0
-release=2
+version=1.1.1
 
-source=(http://archive.xfce.org/src/panel-plugins/$name/1.1/$name-$version.tar.bz2)
+source=(https://archive.xfce.org/src/panel-plugins/$name/${version:0:3}/$name-$version.tar.bz2)
 
 build() {
 
 cd $name-$version
-	./configure --prefix=/usr \
-	--sysconfdir=/etc \
-	--libexecdir=/usr/lib \
-	--localstatedir=/var \
-	--disable-static \
-	--disable-debug
-	
-	make
-	make DESTDIR=$PKG install
-	
+./configure --prefix=/usr \
+--sysconfdir=/etc
+make
+make DESTDIR=$PKG install
 }
