@@ -1,14 +1,15 @@
 description="Pulseaudio plugin for Xfce4 panel"
 url="https://goodies.xfce.org/projects/panel-plugins/xfce4-pulseaudio-plugin"
+
 packager="tnut <tnut@nutyx.org>"
 makedepends=(git intltool pulseaudio dbus-glib pavucontrol keybinder3
-             libnotify xfce4-dev-tools xfce4-libutil xfce4-libui
+             libnotify xfce4-dev-tools libxfce4util libxfce4ui
              xfce4-panel)
 run=(gtk-update-icon-cache pavucontrol)
 set=(xfce4-extra)
 
 name=xfce4-pulseaudio-plugin
-version=0.4.1
+version=0.4.2
 
 source=(http://archive.xfce.org/src/panel-plugins/$name/${version:0:3}/$name-$version.tar.bz2)
 build() {
