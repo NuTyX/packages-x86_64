@@ -1,33 +1,23 @@
 description="monitor DD for the panel"
 url="http://goodies.xfce.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="tyrry, Greg"
-makedepends=(xfce4-panel)
+
+makedepends=(libxfce4util libxfce4ui  xfce4-panel)
 
 set=(xfce4-extra)
 
 name=xfce4-diskperf-plugin
-version=2.6.1
-release=2
+version=2.6.2
 
-source=(fix-sysmacros_h.patch
-	http://archive.xfce.org/src/panel-plugins/$name/2.6/$name-$version.tar.bz2)
+source=(https://archive.xfce.org/src/panel-plugins/$name/${version:0:3}/$name-$version.tar.bz2)
 
 build() {
 
 cd $name-$version
-patch -Np0 -i ../fix-sysmacros_h.patch
-rm configure
-autoconf
-./configure \
-  --prefix=/usr \
-  --sysconfdir=/etc \
-  --libexecdir=/usr/lib \
-  --localstatedir=/var \
-  --disable-static \
-  --disable-debug
-    
+./configure --prefix=/usr \
+--sysconfdir=/etc
 make
 make DESTDIR=$PKG install
-	
 }
