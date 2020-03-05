@@ -1,33 +1,28 @@
 description="Calendar for Xfce"
 url="http://www.xfce.org/projects/orage/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Tyrry, Greg"
-makedepends=(exo intltool xfce4-panel libnotify)
 
+makedepends=(libxfce4util libxfce4ui exo intltool
+             xfce4-panel libnotify)
 set=(xfce4-extra)
 
 name=orage
-_name=orage
 version=4.12.1
-release=3
+release=4
 
 source=(libical3.patch
-	http://archive.xfce.org/src/apps/${_name}/${version%.*}/${_name}-$version.tar.bz2)
+	http://archive.xfce.org/src/apps/${name}/${version%.*}/${name}-$version.tar.bz2)
 
 build() {
 
-cd ${_name}-$version
+cd ${name}-$version
 
 patch -Np1 -i ../libical3.patch
 
 ./configure --prefix=/usr \
-	--sysconfdir=/etc \
-	--libexecdir=/usr/lib \
-	--localstatedir=/var \
-	--enable-libical \
-	--disable-debug
-
-	make
-	make DESTDIR=$PKG install
-
+--sysconfdir=/etc
+make
+make DESTDIR=$PKG install
 }
