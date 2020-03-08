@@ -6,11 +6,11 @@ contributors="Tyrry"
 
 makedepends=(ninja meson libcdio-paranoia avahi dbus-glib libgdata libgudev
              libbluray intltool libsecret gtk3 libsoup udisks2 obexd fuse2 fuse
-             libarchive libmtp samba bluez gcr libgphoto2 libnfs elogind)
+             libarchive libmtp samba bluez gcr libgphoto2 libnfs)
 
 name=gvfs
 version=1.42.2
-release=2
+release=3
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz
        handle-inactive-vfs.patch)
@@ -30,6 +30,7 @@ meson --prefix=/usr     \
       -Dgoa=false       \
       -Dgoogle=false    \
       -Dtmpfilesdir=no  \
+      -Dlogind=false    \
       -Dsystemduserunitdir=no ..
 ninja
 
