@@ -1,13 +1,16 @@
 description="A DAV protocol implemention with KJobs"
 url="https://projects.kde.org/kdepim"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+
+makedepends=(extra-cmake-modules kio qtxmlpatterns kcoreaddons)
 
 set=(kde5 plasma5)
 
 name=kdav
-version=19.12.2
-makedepends=(extra-cmake-modules kio qtxmlpatterns kcoreaddons)
+version=19.12.3
+
 build=kde5
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
