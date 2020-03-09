@@ -1,14 +1,16 @@
 description="Paint Program"
 url="https://www.kde.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+
+makedepends=(extra-cmake-modules hicolor-icon-theme kdelibs4support
+             libksane libkexiv2 kdelibs4support kitemmodels)
 
 set=(kde5 plasma5)
 
 name=kolourpaint
-version=19.12.2
-makedepends=(extra-cmake-modules hicolor-icon-theme kdelibs4support
-             libksane libkexiv2 kdelibs4support kitemmodels)
+version=19.12.3
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
