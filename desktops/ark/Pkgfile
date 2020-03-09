@@ -1,17 +1,19 @@
 description="Archiving Tool"
 url="https://www.kde.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
-makedepends=(shared-mime-info extra-cmake-modules karchive
+
+makedepends=(extra-cmake-modules karchive
              kconfig kcrash kdbusaddons kdoctools ki18n
              kiconthemes kio kservice kparts kpty
-             kwidgetsaddons kitemmodels p7zip zip unzip unrar)
-run=(shared-mime-info)
+             kwidgetsaddons kitemmodels)
+run=(shared-mime-info unzip unrar p7zip zip)
 
 set=(kde5 plasma5)
 
 name=ark
-version=19.12.2
+version=19.12.3
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
