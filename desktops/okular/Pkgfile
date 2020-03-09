@@ -1,17 +1,19 @@
 description="Document Viewer"
 url="http://www.kde.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+
+makedepends=(qtspeech extra-cmake-modules khtml kirigami2 threadweaver kactivities
+             kdelibs4support kpty libkscreen freetype poppler-qt libspectre
+             djvulibre qca-qt libkexiv2 chmlib  zlib ebook-tools kdoctools
+             phonon-qt)
+run=(kdegraphics-mobipocket)
 
 set=(kde5 plasma5)
 
 name=okular
-version=19.12.2
-makedepends=(qtspeech extra-cmake-modules khtml kirigami2 threadweaver kactivities
-             kdelibs4support kpty libkscreen freetype poppler-qt libspectre
-             djvulibre qca-qt libkexiv2 chmlib  zlib ebook-tools kdoctools
-             phonon-qt kdegraphics-mobipocket)
-run=(kdegraphics-mobipocket)
+version=19.12.3
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
