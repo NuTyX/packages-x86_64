@@ -1,15 +1,18 @@
 description="A KDE-based library for accessing various Google services via their public API "
 url="https://projects.kde.org/projects/extragear/libs/libkgapi"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+
+makedepends=(cyrus-sasl kwallet kcalendarcore kcontacts
+             extra-cmake-modules kdoctools
+             qtwebengine qttools)
 
 set=(kde5 plasma5)
 
 name=libkgapi
-version=19.12.2
-makedepends=(cyrus-sasl kwallet kcalendarcore kcontacts
-             extra-cmake-modules kdoctools
-             qtwebengine qttools)
+version=19.12.3
+
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
 build=kde5
