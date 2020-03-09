@@ -1,12 +1,16 @@
 description="LDAP access API for KDE "
 url="https://projects.kde.org/kldap"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+
+makedepends=(extra-cmake-modules python ki18n kcompletion cyrus-sasl kio kmbox)
+
 set=(kde5 plasma5)
 
 name=kldap
-version=19.12.2
-makedepends=(extra-cmake-modules python ki18n kcompletion cyrus-sasl kio kmbox)
+version=19.12.3
+
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
 build=kde5
