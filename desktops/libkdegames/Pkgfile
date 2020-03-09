@@ -1,13 +1,17 @@
 description="Common code and data for many KDE games"
 url="https://projects.kde.org/projects/kde/kdegames/libkdegames"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+
+makedepends=(extra-cmake-modules kdoctools kdelibs4support
+             kdeclarative kdnssd knewstuff openal)
+
 set=(kde5 plasma5)
 
 name=libkdegames
-version=19.12.2
-makedepends=(extra-cmake-modules kdoctools kdelibs4support
-             kdeclarative kdnssd knewstuff openal)
+version=19.12.3
+
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
 build=kde5
