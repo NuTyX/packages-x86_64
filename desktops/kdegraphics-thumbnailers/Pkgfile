@@ -1,13 +1,16 @@
 description="Thumbnailers for various graphics file formats"
 url="https://projects.kde.org/projects/kde/kdegraphics/kdegraphics-thumbnailers"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+
+makedepends=(extra-cmake-modules kio libkdcraw libkexiv2)
 
 set=(kde5 plasma5)
 
 name=kdegraphics-thumbnailers
-version=19.12.2
-makedepends=(extra-cmake-modules kio libkdcraw libkexiv2)
+version=19.12.3
+
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
 build=kde5
