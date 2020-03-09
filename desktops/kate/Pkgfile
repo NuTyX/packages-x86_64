@@ -1,17 +1,20 @@
 description="Text editor of KDE"
 url="https://www.kde.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-set=(kde5 plasma5)
-
-name=kate
-version=19.12.2
 makedepends=(qtsvg extra-cmake-modules kconfig kcrash ki18n
              kjobwidgets kio kparts ktexteditor kwindowsystem
              kxmlgui kiconthemes kactivities kwallet kdoctools
              plasma-framework knewstuff threadweaver kitemmodels
-             kded hicolor-icon-theme)
+             kded)
+
+run=(hicolor-icon-theme)
+set=(kde5 plasma5)
+
+name=kate
+version=19.12.3
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
