@@ -12,9 +12,8 @@ PKGMK_GROUPS=(devel doc)
 name=kernel-414
 alias=(linux-4.14)
 
-version=4.14.172
+version=4.14.173
 _version=${version:0:4}
-release=2
 
 # Linux patch version
 [ "${_version}" != "${version}" ] && patchname="patch-$version.xz"
@@ -24,7 +23,7 @@ release=2
 
 source=($url/pub/linux/kernel/v4.x/linux-${_version}.tar.xz config_64)
 
-[ -z $patchname ] || source+=" $url/pub/linux/kernel/v5.x/$patchname"
+[ -z $patchname ] || source+=" $url/pub/linux/kernel/v4.x/$patchname"
 ## Time to build everything
 #
 
