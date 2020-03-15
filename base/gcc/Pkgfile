@@ -1,12 +1,14 @@
 description="GNU compiler collection, which includes the C, C++, fortran and objc compilers."
 url="http://gcc.gnu.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 maintainer="Jakub Jelinek (jakub at redhat dot com),Manuel López-Ibáñez (manu at gcc dot gnu.org,Giovanni Bajo,Peter Barada,Gerald Baumgartner and a lot more."
 
 name=gcc
-version=9.2.0
+version=9.3.0
 
+PKGMK_KEEP_LA_LIBS="yes"
 source=(http://ftp.gnu.org/gnu/gcc/gcc-$version/gcc-$version.tar.xz)
 
 build()
