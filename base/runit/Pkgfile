@@ -1,0 +1,132 @@
+#
+# Still a lot of works on this but something to start with :)
+#
+
+description="Unix init scheme with service supervision"
+url="http://smarden.org/runit/"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=runit
+version=2.1.2
+
+libc_name=dietlibc
+libc_version=0.34
+
+source=(http://www.fefe.de/${libc_name}/${libc_name}-${libc_version}.tar.xz
+        $url/$name-$version.tar.gz)
+
+prepare() {
+cd ${libc_name}-${libc_version}
+make
+# PATH=$SRC/${libc_name}-${libc_version}/bin-$(uname -m):$PATH
+}
+
+build() {
+unset MAKEFLAGS
+PATH=$SRC/${libc_name}-${libc_version}/bin-$(uname -m):$PATH
+
+cd admin/$name-$version
+
+echo 'diet -Os gcc -O2 -Wall' >src/conf-cc
+echo 'diet -Os gcc -s -Os -pipe' >src/conf-ld
+
+package/compile
+package/check
+
+# pause command
+cat > src/pause.c << "EOF"
+#include <unistd.h>
+#include <signal.h>
+
+static void
+nop(int sig)
+{
+}
+
+int
+main()
+{
+  signal(SIGTERM, nop);
+  signal(SIGINT, nop);
+  signal(SIGHUP, SIG_IGN);
+
+  pause();
+
+  return 0;
+}
+EOF
+cc src/pause.c -o command/pause
+
+mkdir -p $PKG/{lib,sbin,etc/{sv,runit}}
+
+# Let see this later :)
+# install -m755 command/runit-init \
+# $PKG/sbin/init
+
+for i in chpst runit runsv runsvchdir runsvdir sv svlogd utmpset runit-init pause
+do
+  install -m755 command/$i \
+  $PKG/sbin/$i
+done
+
+# a simple busybox getty for trying
+mkdir -p $PKG/etc/sv/getty-8
+sed  -e s@tty5@tty8@ etc/debian/getty-tty5/run \
+ > $PKG/etc/sv/getty-8/run
+sed -e s@tty5@tty8@ etc/debian/getty-tty5/finish \
+ > $PKG/etc/sv/getty-8/finish
+
+chmod 755 $PKG/etc/sv/getty-8/{run,finish}
+
+# ctrlaltdelete :)
+cp -a etc/debian/ctrlaltdel \
+$PKG/etc/runit
+
+#
+# a simple '1' script for trying
+
+cat > $PKG/etc/runit/1 << "EOF"
+#!/bin/sh
+# system one time tasks
+
+PATH=/command:/usr/bin:/bin:/usr/sbin:/sbin
+
+/etc/init.d/init_single start
+/sbin/setup-nutyx start
+
+touch /etc/runit/stopit
+chmod 0 /etc/runit/stopit
+EOF
+
+#
+# a simple '2' script for trying
+
+cat > $PKG/etc/runit/2 << "EOF"
+#!/bin/sh
+
+PATH=/command:/usr/bin:/bin:/usr/sbin:/sbin
+exec env - PATH=$PATH \
+runsvdir -P /service 'log: .........................................................................................................................................................................................................................................................................................................................................................................................................'
+EOF
+
+#
+# a simple '3' script for trying
+
+cat > $PKG/etc/runit/3 << "EOF"
+#!/bin/sh
+exec 2>&1
+PATH=/command:/usr/bin:/bin:/usr/sbin:/sbin
+
+LAST=0
+test -x /etc/runit/reboot && LAST=6
+echo 'Waiting for services to stop ...'
+sv -w196 force-stop /service/*
+sv exit /service/*
+
+echo "Shutdown..."
+# /etc/init.d/rc $LAST
+EOF
+
+chmod 755 $PKG/etc/runit/{1,2,3}
+}
