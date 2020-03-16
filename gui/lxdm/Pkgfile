@@ -13,7 +13,7 @@ PKGMK_GROUPS=()
 
 name=lxdm
 version=0.5.3
-release=22
+release=23
 
 source=(lxdm-$version-nutyx-1.patch login.png
 	http://downloads.tuxfamily.org/nutyx/files/lxdm-nutyx-11.0.jpg
@@ -60,4 +60,18 @@ $PKG/usr/share/lxdm/themes/Industrial/nutyx.jpg
 # lxdm.conf created in post if needed
 # Let keep it as an example
 mv $PKG/etc/lxdm/lxdm.conf{,.example}
+
+#
+# runit:
+# TODO: need to find a more generic solution
+# like a function in pkgmk script
+#
+
+mkdir -p $PKG/etc/sv/lxdm
+
+cat > $PKG/etc/sv/lxdm/run << "EOF"
+#!/bin/sh
+exec chpst -P /usr/sbin/lxdm
+EOF
+chmod 755 $PKG/etc/sv/lxdm/run
 }
