@@ -1,15 +1,15 @@
 description="GNOME Password Management daemon"
 url="http://www.gnome.org/"
 
-packager="jayce <jayce.net@gmail.com>"
-contributors="Fanch, Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch, Jayce"
 
 makedepends=(dbus gcr pam libxslt libcap-ng gnupg openssh valgrind)
 
 name=gnome-keyring
-version=3.34.0
+version=3.36.0
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
