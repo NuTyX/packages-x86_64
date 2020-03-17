@@ -8,9 +8,9 @@ makedepends=(gdk-pixbuf glib atk pango cairo libffi libpng pcre)
 
 name=gtk-update-icon-cache
 version=2.24.32
-release=2
+release=3
 
-source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
+source=(https://download.gnome.org/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
 
 build() {
 cd gtk+-$version
@@ -28,6 +28,6 @@ install -c gtk-update-icon-cache $PKG/usr/bin/gtk-update-icon-cache
 uptodate(){
 local lastversion
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
-http://ftp.gnome.org/pub/gnome/sources/gtk+/${version:0:4}/?C=N\;O=D|grep LATEST|grep [0-9]$|cut -d "-" -f3`"
+https://download.gnome.org/sources/gtk+/${version:0:4}/?C=N\;O=D|grep LATEST|grep [0-9]$|cut -d "-" -f3`"
 echo "$lastversion"
 }
