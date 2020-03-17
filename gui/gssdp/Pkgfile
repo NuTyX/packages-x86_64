@@ -2,20 +2,20 @@ description="A GObject-based API for handling resource discovery and announcemen
 url="http://gupnp.org/"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Fanchyannmaria"
+contributors="Fanch"
 
 makedepends=(meson ninja libsoup gtk3 gobject-introspection gtk-doc vala)
 
 name=gssdp
-version=1.2.1
+version=1.2.2
 
-source=(http://ftp.gnome.org/pub/gnome/sources/gssdp/${version:0:3}/${name}-${version}.tar.xz)
+source=(https://download.gnome.org/sources/gssdp/${version:0:3}/${name}-${version}.tar.xz)
 
 build=meson
 
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/$name"
+url="https://download.gnome.org/sources/$name"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
