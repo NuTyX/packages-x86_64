@@ -8,16 +8,17 @@ makedepends=(xorg-libxrandr gdk-pixbuf mesa xorg-glu
              pango xorg-libdrm gobject-introspection)
 
 name=cogl
-version=1.22.4
+version=1.22.6
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-mesa_20_fixes-1.patch
+        https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 unset MAKEFLAGS
 
 cd $name-$version
 
-sed -i 's/^#if COGL/#ifdef COGL/' cogl/winsys/cogl-winsys-egl.c
+patch -Np1 -i ../$name-$version-mesa_20_fixes-1.patch
 
 ./configure --prefix=/usr \
 --enable-gles{1,2} \
@@ -29,7 +30,7 @@ rm $PKG/usr/lib/{libcogl,libcogl-path,libcogl-pango,libcogl-gles2}.la
 }
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/$name"
+url="https://download.gnome.org/sources/$name"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
