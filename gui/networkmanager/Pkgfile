@@ -1,48 +1,86 @@
 description="Tools which simplify and make the network more directly manageable."
 url="http://projects.gnome.org/NetworkManager/"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, tnut, Greg"
+contributors="Pierre B, Greg"
 
 makedepends=(libndp libsoup libgudev dbus-glib iptables libnl
-             nss wireless-tools polkit upower vala
-             wpa-supplicant-dbus gobject-introspection
-             newt dhcpcd python2-gobject gtk-doc)
-run=(wpa-supplicant wpa-supplicant-dbus)
+             nss wireless-tools polkit upower vala 
+             gobject-introspection newt
+             python-gobject gtk-doc meson ninja)
+run=(wpa-supplicant wpa-supplicant-dbus dhcpcd)
 
 alias=(NetworkManager)
 
 _name=NetworkManager
 
 name=networkmanager
-version=1.16.0
-release=2
+version=1.22.10
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$_name/${version:0:4}/$_name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$_name/${version:0:4}/$_name-$version.tar.xz)
+
+prepare() {
+sed -i '/initrd/d' ${_name}-$version/src/meson.build
+grep -rl '^#!.*python$'| xargs sed -i '1s/python/&3/'
+mkdir build
+}
 
 build() {
 
-cd ${_name}-$version
-sed -i 's/1,12,2/1,12.2/' libnm-core/nm-version.h
-CXXFLAGS+=" -fPIC"
-./configure --prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---with-nmtui \
---with-libnm-glib \
---enable-gtk-doc \
---with-systemdsystemunitdir=no \
---disable-json-validation \
---disable-ovs \
---disable-ppp \
---docdir=/usr/share/doc/$name-$version
-make
-make DESTDIR=$PKG install
+cd build
+CXXFLAGS+=" -fPIC"              \
+meson --prefix        /usr      \
+      --sysconfdir    /etc      \
+      --localstatedir /var      \
+      -Dudev_dir=/lib/udev      \
+      -Dlibnm_glib=true         \
+      -Dsession_tracking="no"   \
+      -Dlibaudit=no             \
+      -Dlibpsl=false            \
+      -Dnmtui=true              \
+      -Dselinux=false           \
+      -Dsystemdsystemunitdir=no \
+      -Dsystemd_journal=false   \
+      -Djson_validation=false   \
+      -Dqt=false                \
+      -Dovs=false               \
+      -Dppp=false               \
+      -Dmodem_manager=false     \
+      -Ddocs=true               \
+      ../${_name}-$version
+ninja
+DESTDIR=$PKG ninja install
 
+mv $PKG/usr/share/doc/NetworkManager{,-$version}
 # create a VPN directory
 install -d $PKG/etc/$_name/VPN
-install -m755 clients/.libs/nm-online -D $PKG/usr/bin/nm-online
+
 # create keyfile plugin system-settings directory
-install -d $PKG/etc/$_name/system-connections
+install -d $PKG/etc/${_name}/system-connections
+
+# Minimum config to make NetworkManager working
+cat >> $PKG/etc/${_name}/${_name}.conf << "EOF"
+[main]
+plugins=keyfile
+EOF
+
+# Allow polkit to manage authorizations
+cat > $PKG/etc/${_name}/conf.d/polkit.conf << "EOF"
+[main]
+auth-polkit=true
+EOF
+
+# Avoid NetworkManager using his own dhcp client
+cat > $PKG/etc/${_name}/conf.d/dhcp.conf << "EOF"
+[main]
+dhcp=dhcpcd
+EOF
+
+# Preventing NetworkManager updating /etc/resolv.conf
+cat > $PKG/etc/${_name}/conf.d/no-dns-update.conf << "EOF"
+[main]
+dns=none
+EOF
 
 mkdir -p $PKG/usr/share/polkit-1/rules.d
 cat > $PKG/usr/share/polkit-1/rules.d/org.freedesktop.NetworkManager.rules << "EOF"
@@ -52,18 +90,29 @@ polkit.addRule(function(action, subject) {
     }
 });
 EOF
-# Obsolets libs
-rm $PKG/usr/lib/NetworkManager/$version/libnm-device-plugin-adsl.la
-rm $PKG/usr/lib/NetworkManager/$version/libnm-device-plugin-wifi.la
-rm $PKG/usr/lib/libnm-glib-vpn.la
-rm $PKG/usr/lib/libnm-glib.la
-rm $PKG/usr/lib/libnm-util.la
-rm $PKG/usr/lib/libnm.la
+
+#
+# Init Service stuff
+SERVICEDIR=lib/runit/services/${_name}
+mkdir -p $PKG/{var/log/${_name},$SERVICEDIR/{,log}}
+
+cat > $PKG/$SERVICE/run << "EOF"
+#!/bin/sh
+sv check dbus >/dev/null || exit 1
+exec NetworkManager -n > /dev/null 2&>1
+EOF
+cat > $PKG/$SERVICEDIR/log/run << "EOF"
+#!/bin/sh
+exec chpst svlogd -tt /var/log/NetworManager
+EOF
+
+
+chmod 755 $PKG/$SERVICEDIR/{run,/log/run} 
 }
 
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/${_name}"
+url="https://download.gnome.org/sources/${_name}"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
