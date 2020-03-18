@@ -14,7 +14,7 @@ libc_name=dietlibc
 libc_version=0.34
 
 source=(http://www.fefe.de/${libc_name}/${libc_name}-${libc_version}.tar.xz
-        $url/$name-$version.tar.gz)
+        $url/$name-$version.tar.gz $name-$version-consolidate-1.patch)
 
 prepare() {
 cd ${libc_name}-${libc_version}
@@ -25,8 +25,9 @@ make
 build() {
 unset MAKEFLAGS
 PATH=$SRC/${libc_name}-${libc_version}/bin-$(uname -m):$PATH
-
-cd admin/$name-$version
+cd admin
+patch -Np1 -i ../$name-$version-consolidate-1.patch
+cd $name-$version
 
 echo 'diet -Os gcc -O2 -Wall' >src/conf-cc
 echo 'diet -Os gcc -s -Os -pipe' >src/conf-ld
@@ -58,7 +59,7 @@ main()
 EOF
 cc src/pause.c -o command/pause
 
-mkdir -p $PKG/{lib,sbin,etc/{sv,runit}}
+mkdir -p $PKG/{sbin,lib/runit/sv}
 
 # Let see this later :)
 # install -m755 command/runit-init \
@@ -71,62 +72,75 @@ do
 done
 
 # a simple busybox getty for trying
-mkdir -p $PKG/etc/sv/getty-8
+mkdir -p $PKG/lib/runit/services/getty-8
 sed  -e s@tty5@tty8@ etc/debian/getty-tty5/run \
- > $PKG/etc/sv/getty-8/run
+ > $PKG/lib/runit/services/getty-8/run
 sed -e s@tty5@tty8@ etc/debian/getty-tty5/finish \
- > $PKG/etc/sv/getty-8/finish
+ > $PKG/lib/runit/services/getty-8/finish
 
-chmod 755 $PKG/etc/sv/getty-8/{run,finish}
+chmod 755 $PKG/lib/runit/services/getty-8/{run,finish}
 
 # ctrlaltdelete :)
 cp -a etc/debian/ctrlaltdel \
-$PKG/etc/runit
+$PKG/lib/runit
 
 #
 # a simple '1' script for trying
 
-cat > $PKG/etc/runit/1 << "EOF"
+cat > $PKG/lib/runit/1 << "EOF"
 #!/bin/sh
 # system one time tasks
 
 PATH=/command:/usr/bin:/bin:/usr/sbin:/sbin
 
-/etc/init.d/init_single start
+. /lib/lsb/init-functions
+do_mount_virtualfs
+do_load_modules
+do_start_localnet
+do_start_udev
+do_start_checkfs
+do_start_mountfs
+do_start_sysklogd
 /sbin/setup-nutyx start
+do_start_clock
+do_start_cleanfs
+do_start_udev_retry
+do_start_swap
+do_start_console
+do_start_sysctl
 
-touch /etc/runit/stopit
-chmod 0 /etc/runit/stopit
+touch /lib/runit/stopit
+chmod 0 /lib/runit/stopit
 EOF
 
 #
 # a simple '2' script for trying
 
-cat > $PKG/etc/runit/2 << "EOF"
+cat > $PKG/lib/runit/2 << "EOF"
 #!/bin/sh
 
 PATH=/command:/usr/bin:/bin:/usr/sbin:/sbin
 exec env - PATH=$PATH \
-runsvdir -P /service 'log: .........................................................................................................................................................................................................................................................................................................................................................................................................'
+runsvdir -P /etc/runit/default 'log: .........................................................................................................................................................................................................................................................................................................................................................................................................'
 EOF
 
 #
 # a simple '3' script for trying
 
-cat > $PKG/etc/runit/3 << "EOF"
+cat > $PKG/lib/runit/3 << "EOF"
 #!/bin/sh
 exec 2>&1
 PATH=/command:/usr/bin:/bin:/usr/sbin:/sbin
 
 LAST=0
-test -x /etc/runit/reboot && LAST=6
+test -x /lib/runit/reboot && LAST=6
 echo 'Waiting for services to stop ...'
-sv -w196 force-stop /service/*
-sv exit /service/*
+sv -w196 force-stop /lib/runit/default/*
+sv exit /lib/runit/default/*
 
 echo "Shutdown..."
 # /etc/init.d/rc $LAST
 EOF
 
-chmod 755 $PKG/etc/runit/{1,2,3}
+chmod 755 $PKG/lib/runit/{1,2,3}
 }

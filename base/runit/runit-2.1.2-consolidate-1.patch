@@ -1,0 +1,28 @@
+diff -Naur a/runit-2.1.2/src/runit.c b/runit-2.1.2/src/runit.c
+--- a/runit-2.1.2/src/runit.c	2014-08-10 20:22:35.000000000 +0200
++++ b/runit-2.1.2/src/runit.c	2020-03-18 21:13:20.916665823 +0100
+@@ -23,9 +23,9 @@
+ #define FATAL "- runit: fatal: "
+ 
+ const char * const stage[3] ={
+-  "/etc/runit/1",
+-  "/etc/runit/2",
+-  "/etc/runit/3" };
++  "/lib/runit/1",
++  "/lib/runit/2",
++  "/lib/runit/3" };
+ 
+ int selfpipe[2];
+ int sigc =0;
+diff -Naur a/runit-2.1.2/src/sv.c b/runit-2.1.2/src/sv.c
+--- a/runit-2.1.2/src/sv.c	2014-08-10 20:22:34.000000000 +0200
++++ b/runit-2.1.2/src/sv.c	2020-03-18 21:16:13.329998348 +0100
+@@ -32,7 +32,7 @@
+ char *progname;
+ char *action;
+ char *acts;
+-char *varservice ="/service/";
++char *varservice ="/etc/runit/default/";
+ char **service;
+ char **servicex;
+ unsigned int services;
