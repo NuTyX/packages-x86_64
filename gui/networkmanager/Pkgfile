@@ -96,7 +96,7 @@ EOF
 SERVICEDIR=lib/runit/services/${_name}
 mkdir -p $PKG/{var/log/${_name},$SERVICEDIR/{,log}}
 
-cat > $PKG/$SERVICE/run << "EOF"
+cat > $PKG/$SERVICEDIR/run << "EOF"
 #!/bin/sh
 sv check dbus >/dev/null || exit 1
 exec NetworkManager -n > /dev/null 2&>1
