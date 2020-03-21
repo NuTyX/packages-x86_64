@@ -5,15 +5,36 @@ maintainer="Roy Marples"
 packager="tnut <tnut@nutyx.org>"
 
 name=dhcpcd
-version=8.1.2
+version=8.1.6
 
 source=(http://roy.marples.name/downloads/$name/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-./configure --prefix= \
+./configure \
 --libexecdir=/lib/dhcpcd \
 --dbdir=/var/lib/dhcpcd
 make
 make DESTDIR=$PKG install
+#
+## service
+SERVICEDIR=/lib/init/services/${name}
+mkdir -p $PKG/{var/log/${name},$SERVICEDIR/{,log}}
+cat > $PKG/$SERVICEDIR/run << "EOF"
+#!/bin/sh
+for file in /etc/sysconfig/ifconfig.*
+do
+	. $file
+	[ "$SERVICE" != "dhcpcd" ] && continue
+	interface="$interface ${file##*/ifconfig.}"
+done
+
+exec dhcpcd -B $interface
+EOF
+
+cat > $PKG/$SERVICEDIR/log/run << "EOF"
+#!/bin/sh
+exec chpst svlogd -tt /var/log/dhcpcd
+EOF
+
 }
