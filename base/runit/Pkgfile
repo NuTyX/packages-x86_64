@@ -9,12 +9,13 @@ packager="tnut <tnut@nutyx.org>"
 
 name=runit
 version=2.1.2
+release=2
 
 libc_name=dietlibc
 libc_version=0.34
 
 source=(http://www.fefe.de/${libc_name}/${libc_name}-${libc_version}.tar.xz
-        $url/$name-$version.tar.gz $name-$version-consolidate-1.patch)
+        $url/$name-$version.tar.gz $name-$version-consolidate-$release.patch)
 
 prepare() {
 cd ${libc_name}-${libc_version}
@@ -26,7 +27,7 @@ build() {
 unset MAKEFLAGS
 PATH=$SRC/${libc_name}-${libc_version}/bin-$(uname -m):$PATH
 cd admin
-patch -Np1 -i ../$name-$version-consolidate-1.patch
+patch -Np1 -i ../$name-$version-consolidate-$release.patch
 cd $name-$version
 
 echo 'diet -Os gcc -O2 -Wall' >src/conf-cc
@@ -70,24 +71,26 @@ do
   install -m755 command/$i \
   $PKG/sbin/$i
 done
-
+#
 # a simple busybox getty for trying
-mkdir -p $PKG/lib/runit/services/getty-8
-sed  -e s@tty5@tty8@ etc/debian/getty-tty5/run \
- > $PKG/lib/runit/services/getty-8/run
-sed -e s@tty5@tty8@ etc/debian/getty-tty5/finish \
- > $PKG/lib/runit/services/getty-8/finish
+# This will be in busybox package later
+mkdir -p $PKG/lib/init/services/getty-8
 
-chmod 755 $PKG/lib/runit/services/getty-8/{run,finish}
+sed -e s@tty5@tty8@ etc/debian/getty-tty5/run \
+ > $PKG/lib/init/services/getty-8/run
+sed -e s@tty5@tty8@ etc/debian/getty-tty5/finish \
+ > $PKG/lib/init/services/getty-8/finish
+
+chmod 755 $PKG/lib/init/services/getty-8/{run,finish}
 
 # ctrlaltdelete :)
 cp -a etc/debian/ctrlaltdel \
-$PKG/lib/runit
+$PKG/lib/init
 
 #
 # a simple '1' script for trying
 
-cat > $PKG/lib/runit/1 << "EOF"
+cat > $PKG/lib/init/1 << "EOF"
 #!/bin/sh
 # system one time tasks
 
@@ -109,38 +112,38 @@ do_start_swap
 do_start_console
 do_start_sysctl
 
-touch /lib/runit/stopit
-chmod 0 /lib/runit/stopit
+touch /lib/init/stopit
+chmod 0 /lib/init/stopit
 EOF
 
 #
 # a simple '2' script for trying
 
-cat > $PKG/lib/runit/2 << "EOF"
+cat > $PKG/lib/init/2 << "EOF"
 #!/bin/sh
 
 PATH=/command:/usr/bin:/bin:/usr/sbin:/sbin
 exec env - PATH=$PATH \
-runsvdir -P /etc/runit/default 'log: .........................................................................................................................................................................................................................................................................................................................................................................................................'
+runsvdir -P /etc/init/default 'log: .........................................................................................................................................................................................................................................................................................................................................................................................................'
 EOF
 
 #
 # a simple '3' script for trying
 
-cat > $PKG/lib/runit/3 << "EOF"
+cat > $PKG/lib/init/3 << "EOF"
 #!/bin/sh
 exec 2>&1
 PATH=/command:/usr/bin:/bin:/usr/sbin:/sbin
 
 LAST=0
-test -x /lib/runit/reboot && LAST=6
+test -x /lib/init/reboot && LAST=6
 echo 'Waiting for services to stop ...'
 sv -w196 force-stop /lib/runit/default/*
-sv exit /lib/runit/default/*
+sv exit /lib/init/default/*
 
 echo "Shutdown..."
 # /etc/init.d/rc $LAST
 EOF
 
-chmod 755 $PKG/lib/runit/{1,2,3}
+chmod 755 $PKG/lib/init/{1,2,3}
 }
