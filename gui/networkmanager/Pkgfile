@@ -16,6 +16,7 @@ _name=NetworkManager
 
 name=networkmanager
 version=1.22.10
+release=2
 
 source=(https://download.gnome.org/sources/$_name/${version:0:4}/$_name-$version.tar.xz)
 
@@ -93,7 +94,7 @@ EOF
 
 #
 # Init Service stuff
-SERVICEDIR=lib/runit/services/${_name}
+SERVICEDIR=lib/init/services/${_name}
 mkdir -p $PKG/{var/log/${_name},$SERVICEDIR/{,log}}
 
 cat > $PKG/$SERVICEDIR/run << "EOF"
