@@ -10,19 +10,8 @@ makedepends=(intltool libgee libzeitgeist telepathy-glib python-dbusmock
 set=(gnome)
 
 name=folks
-version=0.13.2
+version=0.14.0
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
-build() {
-cd $name-$version
-mkdir build
-cd    build
-read a
-meson --prefix=/usr \
---sysconfdir=/etc   \
-..
-
-ninja
-DESTDIR=$PKG ninja install
-}
+build=meson
