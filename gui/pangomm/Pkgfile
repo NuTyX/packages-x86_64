@@ -7,10 +7,9 @@ contributors="Pierre B, Rems"
 makedepends=(pango glibmm cairomm)
 
 name=pangomm
-version=2.42.0
-release=2
+version=2.42.1
 
-source=(http://ftp.gnome.org/pub/gnome/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 package() {
 # Obsolet lib
@@ -18,7 +17,7 @@ rm $PKG/usr/lib/libpangomm-1.4.la
 }
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/$name"
+url="https://download.gnome.org/sources/$name"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
