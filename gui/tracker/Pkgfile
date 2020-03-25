@@ -1,14 +1,15 @@
 description="Semantic data storage"
 url="http://www.gnome.org"
-packager="tnut <tnut@nutyx.org>"
-contributors="Tnut, Jayce"
 
-makedepends=(meson ninja json-glib icu networkmanager python2 sqlite upower libsoup
-             vala gtk-doc libseccomp)
+packager="tnut <tnut@nutyx.org>"
+contributors="Jayce"
+
+makedepends=(meson ninja json-glib icu networkmanager python
+             sqlite upower libsoup vala gtk-doc libseccomp)
 run=(desktop-file-utils gtk-update-icon-cache)
 
 name=tracker
-version=2.3.2
+version=2.3.4
 
 source=(https://download.gnome.org/sources/$name/${version:0:3}/$name-$version.tar.xz)
 
