@@ -1,29 +1,28 @@
 description="Server and user space API to deal with multimedia pipelines"
-
 url="https://pipewire.org"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Fanch, Tnut"
+contributors="Fanch"
 
 makedepends=(meson dbus doxygen ffmpeg glib graphviz gstreamer
-             gstreamer-plugins-base sbc valgrind)
+             gstreamer-plugins-base sbc valgrind libsndfile) 
 
 name=pipewire
-version=0.2.6
+version=0.3.1
 
-PKGMK_KEEP_SOURCES="no"
-
-source=(https://github.com/PipeWire/pipewire/archive/$version.tar.gz)
+source=(https://github.com/PipeWire/pipewire/archive/$version/$name-$version.tar.gz)
 
 build() {
   cd $name-$version
   mkdir build
   cd    build
-  meson --prefix=/usr  \
-    --sysconfdir=/etc \
-    --libdir  /usr/lib \
-	--libexecdir  /usr/lib \
-    -D docs=true \
-    -D man=true
+  meson --prefix=/usr      \
+    --sysconfdir=/etc      \
+    -Djack=false           \
+    -Dpipewire-jack=false  \
+    -Dvulkan=false         \
+    -Ddocs=true            \
+    -Dman=true ..
   ninja
   DESTDIR=$PKG ninja install
 }
