@@ -5,14 +5,14 @@ contributors="Pierre B"
 
 name=polkit
 version=0.116
-release=2
+release=3
 
 makedepends=(glib js60 gobject-introspection intltool perl-xml-parser libxslt docbook-xsl)
 source=(http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
 
 prepare() {
-SN="lightdm"
-IDN="65"
+SN="polkitd"
+IDN="27"
 if ! (getent group $SN > /dev/null); then
    groupadd -g $IDN $SN
 fi
