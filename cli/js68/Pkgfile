@@ -28,4 +28,7 @@ build() {
   make
 
   make DESTDIR=$PKG install
+
+  # conflict with js60
+  rm $PK/usr/lib/libjs_static.ajs
 }
