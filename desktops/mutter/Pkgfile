@@ -4,7 +4,7 @@ url="http://www.gnome.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Jayce, Fanch, Remy"
 
-makedepends=(clutter meson ninja glib  xorg-libsm
+makedepends=(clutter meson ninja glib  xorg-libsm graphene
              gnome-desktop gnome-settings-daemon libwacom libxkbcommon upower
              zenity gobject-introspection libcanberra startup-notification
              pipewire xorg-libxcursor xorg-libxcomposite wayland-protocols)
@@ -12,7 +12,7 @@ makedepends=(clutter meson ninja glib  xorg-libsm
 set=(gnome)
 
 name=mutter
-version=3.34.4
+version=3.36.0
 
 source=(mutter-$version-udev-1.patch
         https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
