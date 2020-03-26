@@ -8,7 +8,7 @@ makedepends=(pcre2 gnutls vala gtk3 perl-xml-parser python2-gtk gobject-introspe
 
 name=vte3
 _name=vte
-version=0.58.3
+version=0.60.0
 
 source=(https://download.gnome.org/sources/${_name}/${version%.*}/${_name}-$version.tar.xz)
 
@@ -17,7 +17,10 @@ cd ${_name}-$version
 mkdir build
 cd    build
 
-meson  --prefix=/usr --sysconfdir=/etc -Dfribidi=false
+meson  --prefix=/usr \
+--sysconfdir=/etc \
+-Dfribidi=false \
+-D_systemd=false
 
 ninja
 
