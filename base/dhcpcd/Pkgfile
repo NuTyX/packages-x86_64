@@ -6,8 +6,9 @@ packager="tnut <tnut@nutyx.org>"
 
 name=dhcpcd
 version=8.1.6
+release=2
 
-source=(http://roy.marples.name/downloads/$name/$name-$version.tar.xz)
+source=(https://roy.marples.name/downloads/$name/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
@@ -36,5 +37,5 @@ cat > $PKG/$SERVICEDIR/log/run << "EOF"
 #!/bin/sh
 exec chpst svlogd -tt /var/log/dhcpcd
 EOF
-
+chmod 755 $PKG/$SERVICEDIR/{run,/log/run}
 }
