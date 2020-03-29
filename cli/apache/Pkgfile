@@ -4,8 +4,8 @@ packager="tnut <tnut@nutyx.org>"
 
 name=apache
 version=2.4.41
-nutyx_version=11.2
-release=2
+nutyx_version=11.3
+release=3
 
 makedepends=(pcre apr-util sqlite expat)
 
@@ -57,6 +57,21 @@ mv  $PKG/srv/www/index.html{,.apache.example}
 # Service
 cd $SRC/nutyx-${nutyx_version}
 make DESTDIR=$PKG install-httpd
+
+SERVICEDIR=/lib/init/services/httpd
+mkdir -p $PKG$SERVICEDIR
+cat > $PKG$SERVICEDIR/run << "EOF"
+#!/bin/sh
+exec 2>&1
+mkdir -p /var/run/httpd||true
+exec httpd -eDEBUG -DNO_DETACH -DFOREGROUND
+EOF
+cat > $PKG$SERVICEDIR/finish << "EOF"
+#!/bin/sh
+exec /usr/sbin/apachectl -k stop
+EOF
+chmod 755 $PKG$SERVICEDIR/{run,finish}
+
 }
 
 uptodate() {
