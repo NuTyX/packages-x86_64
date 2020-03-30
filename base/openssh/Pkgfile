@@ -8,10 +8,11 @@ makedepends=(openssl libedit)
 
 name=openssh
 version=8.2p1
-nutyx_version=11.3
+nutyx_version=11.4
+release=2
 
-source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$name-$version.tar.gz)
+source=(https://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
+	https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$name-$version.tar.gz)
 
 prepare() {
 groupadd -g 50 sshd
@@ -58,14 +59,104 @@ $PKG/usr/share/doc/$name-$version
 mv $PKG/etc/ssh/ssh_config{,.default}
 mv $PKG/etc/ssh/sshd_config{,.default}
 
-# Service
+#
+## Services
+#
+
+# SysV
 cd $SRC/nutyx-${nutyx_version}
 make DESTDIR=$PKG install-sshd
+
+# runit
+SERVICEDIR=/lib/init/services/sshd
+mkdir -p $PKG$SERVICEDIR/log
+cat >  $PKG$SERVICEDIR/run << "EOF"
+#!/bin/sh
+exec 2>&1
+ssh-keygen -A >/dev/null 2>&1
+exec /usr/sbin/sshd -D -e
+pid=$(cat /run/sshd.pid 2>/dev/null)
+echo "-16" >/proc/${pid}/oom_score_adj >/dev/null
+EOF
+cat >  $PKG$SERVICEDIR/log/run << "EOF"
+#!/bin/sh
+[ -d /var/log/sshd ] || mkdir -p /var/log/sshd
+exec /sbin/svlogd -tt /var/log/sshd
+EOF
+chmod 755 $PKG$SERVICEDIR/{run,log/run}
+mkdir -p $PKG/etc/init/default
+ln -sv /lib/init/services/sshd $PKG/etc/init/default/sshd
+
+# SystemD
+UNITSDIR=/lib/systemd/system
+mkdir -p $PKG$UNITSDIR
+cat > $PKG$UNITSDIR/sshd.service << "EOF"
+[Unit]
+Description=OpenSSH Daemon
+Wants=sshdgenkeys.service
+After=sshdgenkeys.service
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/sshd -D
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+cat > $PKG$UNITSDIR/sshdgenkeys.service << "EOF"
+[Unit]
+Description=SSH Key Generation
+ConditionPathExists=|!/etc/ssh/ssh_host_dsa_key
+ConditionPathExists=|!/etc/ssh/ssh_host_dsa_key.pub
+ConditionPathExists=|!/etc/ssh/ssh_host_ecdsa_key
+ConditionPathExists=|!/etc/ssh/ssh_host_ecdsa_key.pub
+ConditionPathExists=|!/etc/ssh/ssh_host_ed25519_key
+ConditionPathExists=|!/etc/ssh/ssh_host_ed25519_key.pub
+ConditionPathExists=|!/etc/ssh/ssh_host_rsa_key
+ConditionPathExists=|!/etc/ssh/ssh_host_rsa_key.pub
+
+[Service]
+ExecStart=/usr/bin/ssh-keygen -A
+Type=oneshot
+RemainAfterExit=yes
+EOF
+
+cat > $PKG$UNITSDIR/sshdat.service << "EOF"
+[Unit]
+Description=SSH Per-Connection Server
+After=sshdgenkeys.service
+
+[Service]
+ExecStart=/usr/sbin/sshd -i
+StandardInput=socket
+StandardError=syslog
+KillMode=process
+EOF
+
+cat > $PKG$UNITSDIR/sshd.socket << "EOF"
+[Unit]
+Conflicts=sshd.service
+Wants=sshdgenkeys.service
+
+[Socket]
+ListenStream=22
+Accept=yes
+
+[Install]
+WantedBy=sockets.target
+EOF
+chmod 644 $PKG$UNITSDIR/{sshd.socket,{sshd,sshdgenkeys,sshdat}.service}
 }
 service() {
 cd $PKG
 bsdtar -r -f \
 $PKGMK_PACKAGE_DIR/${name}.${group}${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
-etc/rc.d etc/ssh/sshd_config.default var usr/sbin
-rm -r etc/rc.d etc/ssh/sshd_config.default var usr/sbin
+etc/rc.d etc/ssh/sshd_config.default var usr/sbin etc/init/default lib/init \
+lib/systemd
+rm -r etc/rc.d etc/ssh/sshd_config.default var usr/sbin etc/init/default lib/init \
+lib/systemd
 }
