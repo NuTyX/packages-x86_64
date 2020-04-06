@@ -1,0 +1,32 @@
+description="The Start, Run and Stop system supervision for NuTyX"
+url="http://smarden.org/runit/"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=runyx
+version=20200406
+
+libc_name=dietlibc
+libc_version=0.34
+
+source=(http://www.fefe.de/${libc_name}/${libc_name}-${libc_version}.tar.xz
+        https://download.nutyx.org/files/$name-$version.tar.xz)
+
+prepare() {
+cd ${libc_name}-${libc_version}
+make
+# PATH=$SRC/${libc_name}-${libc_version}/bin-$(uname -m):$PATH
+}
+
+build() {
+
+[ "$(uname -m)" == "i686" ] && PKGMK_ARCH="i386"
+PATH=$SRC/${libc_name}-${libc_version}/bin-$(uname -m):$PATH
+cd $name-$version
+
+# echo 'diet -Os gcc -O2 -Wall' >src/conf-cc
+# echo 'diet -Os gcc -s -Os -pipe' >src/conf-ld
+
+make all
+make DESTDIR=$PKG install
+}
