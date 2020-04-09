@@ -7,7 +7,7 @@ contributors="Pierre B., Rémy"
 makedepends=(cmake curl llvm python libedit libssh)
 
 name=rustc
-version=1.39.0
+version=1.42.0
 
 source="http://static.rust-lang.org/dist/$name-$version-src.tar.gz"
 
@@ -16,14 +16,8 @@ build() {
    cat <<EOF > config.toml
 # see src/bootstrap/config.toml.example for more possible options
 [llvm]
-
-# use ninja
-ninja = true
-
+# by default, rust will build for a myriad of architectures
 targets = "X86"
-# When compiling LLVM, the experimental targets (WebAssembly
-# and RISCV) are built by default - omit them
-experimental-targets = ""
 
 [build]
 # omit HTML docs to save time and space (comment this to build them)
@@ -34,7 +28,7 @@ extended = true
 
 [install]
 prefix = "/usr"
-docdir = "share/doc/rustc-1.39.0"
+docdir = "share/doc/rustc-1.42.0"
 
 [rust]
 channel = "stable"
@@ -44,8 +38,15 @@ rpath = false
 # so disable codegen tests
 codegen-tests = false
 
-# get a trace if there is an Internal Compiler Exception
-backtrace-on-ice = true
+[target.x86_64-unknown-linux-gnu]
+# NB the output of llvm-config (i.e. help options) may be
+# dumped to the screen when config.toml is parsed.
+llvm-config = "/usr/bin/llvm-config"
+
+[target.i686-unknown-linux-gnu]
+# NB the output of llvm-config (i.e. help options) may be
+# dumped to the screen when config.toml is parsed.
+llvm-config = "/usr/bin/llvm-config"
 
 EOF
 
