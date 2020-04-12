@@ -1,12 +1,16 @@
 description="Plugin interface for media player features"
 url="https://www.kde.org/"
-packager="rems at nutyx dot org"
-contributors="Pierre B"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Rems"
+
+makedepends=(kparts extra-cmake-modules)
+
 alias=(kmediaplayer)
 
 name=kmediaplayer
-version=5.67.0
-makedepends=(kparts extra-cmake-modules)
+version=5.68.0
+
 source=(https://download.kde.org/stable/frameworks/${version%.*}/portingAids/$name-$version.tar.xz)
 
 build=kde5
