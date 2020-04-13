@@ -11,8 +11,8 @@ PKGMK_GROUPS=(devel doc)
 
 name=kernel-414
 alias=(linux-4.14)
-
-version=4.14.175
+INITRD="initrd-${name/*-/}"
+version=4.14.176
 _version=${version:0:4}
 
 # Linux patch version
@@ -89,25 +89,25 @@ $SRC/linux-${_version}
 rm -rf $PKG/lib/firmware
 
 # post-install autogen
-echo 'LK="."
-[ -L boot/$name ] && LK="$(readlink boot/$name)"
-if [ "$(dirname $LK)" != "." ]; then
-  echo "This is a efi installation"
-  ln -sf $LK boot/$name
-  if [ -f boot/$LK ]; then' > $PKGMK_ROOT/$name.post-install
-echo "    mv boot/$name-${KERNEL_VERSION} boot/\$LK 2>/dev/null
+echo "LK=\".\"
+[ -L boot/$name ] && LK=\"\$(readlink boot/$name)\"
+if [ \"\$(dirname \$LK)\" != \".\" ]; then
+  echo \"This is an efi installation\"
+  ln -sf \$LK boot/$name
+  if [ -f boot/\$LK ]; then
+    mv boot/$name-${KERNEL_VERSION} boot/\$LK 2>/dev/null
     ln -sf \$LK boot/$name-${KERNEL_VERSION}
   else
     echo \"EFI Partition not found, mount EFI Partition and re-install the kernel\"
   fi
 else
   echo \"This is a bios installation\"
-  if [ -L boot/initrd-414 ]; then
+  if [ -L boot/$INITRD ]; then
     mkinitramfs ${KERNEL_VERSION}
-    ln -sf initrd-${KERNEL_VERSION} boot/initrd-414
+    ln -sf initrd-${KERNEL_VERSION} boot/$INITRD
   fi
   ln -sf kernel-${KERNEL_VERSION} boot/$name
-fi" >> $PKGMK_ROOT/$name.post-install
+fi" > $PKGMK_ROOT/$name.post-install
 
 }
 devel() {
