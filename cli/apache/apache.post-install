@@ -8,3 +8,6 @@ if [ ! -f srv/www/index.html ]; then
    cp srv/www/index.html{.apache.example,}
    log_success_msg "${WARNING} /srv/www/index.html created ${NORMAL}"
 fi
+SYSTEMD_TMPFILE=$(which systemd-tmpfile)
+[ -z "$SYSTEMD_TMPFILE" ] || $SYSTEMD_TMPFILE --create httpd.conf
+
