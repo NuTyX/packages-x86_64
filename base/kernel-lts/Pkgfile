@@ -9,7 +9,7 @@ run=(nutyx)
 name=kernel-lts
 
 INITRD="initrd-${name/*-/}"
-version=4.19.115
+version=4.19.116
 _version=${version:0:4}
 
 # Virtualbox
@@ -163,7 +163,13 @@ else
     ln -sf initrd-${KERNEL_VERSION} boot/$INITRD
   fi
   ln -sf kernel-${KERNEL_VERSION} boot/$name
-fi" > $PKGMK_ROOT/$name.post-install
+fi
+
+echo \"This $name version is obsolet, it wont be upgrade anymore.
+You should replace this $name version as soon as possible.
+See https://www.nutyx.org/en/upgrade-kernel-lts
+or
+https://www.nutyx.org/fr/upgrade-kernel-lts\"" > $PKGMK_ROOT/$name.post-install
 
 }
 devel() {
