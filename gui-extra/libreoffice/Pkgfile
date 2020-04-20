@@ -1,10 +1,9 @@
 description="Office suite. It is largely compatible with Microsoft Office (fork from OpenOffice.org)."
 url="http://www.libreoffice.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
 
-name=libreoffice
-version=6.4.1.2
 makedepends=(python perl-archive-zip unzip zip icu gtk3 cups poppler-glib xorg-fontconfig
              libxslt kerberos xorgproto dbus-glib mesa postgresql wget apache-ant apr
              boost clucene dbus-glib libepoxy libjpeg-turbo2 xorg-glu gstreamer-plugins-base
@@ -12,6 +11,10 @@ makedepends=(python perl-archive-zip unzip zip icu gtk3 cups poppler-glib xorg-f
              doxygen gdb gnutls nasm telepathy-glib xmlsec gpgme libabw libcmis cppunit hunspell
              hyphen mariadb)
 run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache)
+
+name=libreoffice
+version=6.4.3.2
+categories=(Office Graphics Education)
 
 PKGMK_IGNORE_UNPACK="yes"
 
