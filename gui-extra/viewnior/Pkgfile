@@ -1,18 +1,21 @@
 description="A simple, fast and elegant image viewer program"
 url="https://siyanpanayotov.com/project/viewnior"
+
 contributors="Rems"
 packager="tnut <tnut@nutyx.org>"
- 
+
+makedepends=(gtk2 exiv2 meson ninja)
+
 name=viewnior
 version=1.7
-release=2
-makedepends=(gtk2 exiv2 meson ninja)
+release=3
+
 source=(https://github.com/hellosiyan/Viewnior/archive/viewnior-$version.tar.gz)
 
 build() {
 
 cd Viewnior-$name-$version
-meson build
+meson --prefix=/usr build
 ninja -C build
 DESTDIR=$PKG ninja -C build install
 }
