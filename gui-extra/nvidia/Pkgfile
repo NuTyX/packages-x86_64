@@ -1,0 +1,65 @@
+description="NVIDIA Pilot and utilities"
+url="https://www.nvidia.com"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=nvidia
+version=440.82
+
+makedepends=(kernel.devel)
+
+source=(https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
+
+build()
+{
+ sh NVIDIA-Linux-x86_64-$version.run --extract-only
+
+ install -dm0755 $PKG/usr/{lib,{bin,share/{applications,pixmaps,man/man1}}}
+
+ # Libraries
+ cd NVIDIA-Linux-x86_64-$version
+
+ for i in *.0 *.$version
+ do
+   install -m 0755 $i $PKG/usr/lib
+ done
+
+ # man and utils
+ install -m 0755 nvidia-{xconfig,settings,smi} $PKG/usr/bin/
+ install -m 0644 nvidia-{xconfig,settings,smi}.1.gz \
+ $PKG/usr/share/man/man1/
+
+ # launcher
+ sed -e "s@__UTILS_PATH__/@@" -e "s@__PIXMAP_PATH__/@@" nvidia-settings.desktop \
+ > $PKG/usr/share/applications/nvidia-settings.desktop
+ install -m 0755 nvidia-settings.png \
+ $PKG/usr/share/pixmaps/
+ 
+ # xorg driver/extensions
+ install -d $PKG/usr/lib/xorg/modules/{drivers,extensions}
+ install -m 0755 nvidia_drv.so $PKG/usr/lib/xorg/modules/drivers
+ install -m 0755 libglxserver_nvidia.so.$version $PKG/usr/lib/xorg/modules/extensions
+ ln -s libglxserver_nvidia.so.$version $PKG/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so
+
+ # xorg config
+  mkdir -p $PKG/etc/X11/xorg.conf.d
+  cat > $PKG/etc/X11/xorg.conf.d/30-nvidia.conf << "EOF"
+Section "Device"
+        Identifier      "NVIDIA"
+        Driver          "nvidia"
+EndSection
+EOF
+
+ # Blacklist 
+ mkdir -p $PKG/etc/modprobe.d
+ echo "blacklist nouveau" > $PKG/etc/modprobe.d/nouveau.conf 
+
+ # Drivers
+ modules_dir="$(basename /lib/modules/*)"
+ cd kernel
+ SYSSRC="/usr/src/*" make modules
+ install -dm0755 $PKG/lib/modules/${modules_dir}/kernel/drivers/video
+ install -m 0644 *.ko $PKG/lib/modules/${modules_dir}/kernel/drivers/video
+ echo "depmod -a ${modules_dir}" > $PKGMK_ROOT/$name.post-install
+ 
+}
