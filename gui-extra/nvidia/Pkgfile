@@ -1,12 +1,10 @@
-description="NVIDIA Pilot and utilities"
+description="Configuration tools for the NVIDIA graphics driver"
 url="https://www.nvidia.com"
 
 packager="tnut <tnut@nutyx.org>"
 
-name=nvidia
 version=440.82
-
-makedepends=(kernel.devel)
+release=2
 
 source=(https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
 
@@ -14,7 +12,7 @@ build()
 {
  sh NVIDIA-Linux-x86_64-$version.run --extract-only
 
- install -dm0755 $PKG/usr/{lib,{bin,share/{applications,pixmaps,man/man1}}}
+ install -dm0755 $PKG/usr/{lib,{bin,share/{applications,pixmaps,man/man1,doc/nvidia}}}
 
  # Libraries
  cd NVIDIA-Linux-x86_64-$version
@@ -41,6 +39,9 @@ build()
  install -m 0755 libglxserver_nvidia.so.$version $PKG/usr/lib/xorg/modules/extensions
  ln -s libglxserver_nvidia.so.$version $PKG/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so
 
+ # doc
+ cp -r html $PKG/usr/share/doc/nvidia/
+  
  # xorg config
   mkdir -p $PKG/etc/X11/xorg.conf.d
   cat > $PKG/etc/X11/xorg.conf.d/30-nvidia.conf << "EOF"
@@ -54,12 +55,4 @@ EOF
  mkdir -p $PKG/etc/modprobe.d
  echo "blacklist nouveau" > $PKG/etc/modprobe.d/nouveau.conf 
 
- # Drivers
- modules_dir="$(basename /lib/modules/*)"
- cd kernel
- SYSSRC="/usr/src/*" make modules
- install -dm0755 $PKG/lib/modules/${modules_dir}/kernel/drivers/video
- install -m 0644 *.ko $PKG/lib/modules/${modules_dir}/kernel/drivers/video
- echo "depmod -a ${modules_dir}" > $PKGMK_ROOT/$name.post-install
- 
 }
