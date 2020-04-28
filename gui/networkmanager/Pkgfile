@@ -5,7 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Greg"
 
 makedepends=(libndp libsoup libgudev dbus-glib iptables libnl
-             nss wireless-tools polkit upower vala 
+             nss wireless-tools polkit upower vala
              gobject-introspection newt
              python-gobject gtk-doc meson ninja)
 run=(wpa-supplicant wpa-supplicant-dbus dhcpcd)
@@ -16,7 +16,7 @@ _name=NetworkManager
 
 name=networkmanager
 version=1.22.10
-release=2
+release=3
 
 source=(https://download.gnome.org/sources/$_name/${version:0:4}/$_name-$version.tar.xz)
 
@@ -77,12 +77,6 @@ cat > $PKG/etc/${_name}/conf.d/dhcp.conf << "EOF"
 dhcp=dhcpcd
 EOF
 
-# Preventing NetworkManager updating /etc/resolv.conf
-cat > $PKG/etc/${_name}/conf.d/no-dns-update.conf << "EOF"
-[main]
-dns=none
-EOF
-
 mkdir -p $PKG/usr/share/polkit-1/rules.d
 cat > $PKG/usr/share/polkit-1/rules.d/org.freedesktop.NetworkManager.rules << "EOF"
 polkit.addRule(function(action, subject) {
@@ -91,24 +85,6 @@ polkit.addRule(function(action, subject) {
     }
 });
 EOF
-
-#
-# Init Service stuff
-SERVICEDIR=lib/init/services/${_name}
-mkdir -p $PKG/{var/log/${_name},$SERVICEDIR/{,log}}
-
-cat > $PKG/$SERVICEDIR/run << "EOF"
-#!/bin/sh
-sv check dbus >/dev/null || exit 1
-exec NetworkManager -n > /dev/null 2&>1
-EOF
-cat > $PKG/$SERVICEDIR/log/run << "EOF"
-#!/bin/sh
-exec chpst svlogd -tt /var/log/NetworManager
-EOF
-
-
-chmod 755 $PKG/$SERVICEDIR/{run,/log/run} 
 }
 
 uptodate(){
