@@ -1,0 +1,38 @@
+description="The Open Source toolkit for Secure Sockets Layer and Transport Layer Security."
+url="http://www.openssl.org/"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=openssl-10
+version=1.0.2u
+
+source=(ftp://ftp.openssl.org/source/old/1.0.2/openssl-$version.tar.gz)
+
+PKGMK_GROUPS=(devel man doc lib)
+
+build() {
+
+cd openssl-$version
+
+./Configure --prefix=/usr \
+	--openssldir=/etc/ssl \
+	--libdir=lib/openssl-1.0 \
+	shared no-ssl3-method \
+	linux-x86_64
+
+make depend
+
+make
+make INSTALL_PREFIX=$PKG install
+
+mv $PKG/usr/bin/openssl{,-1.0}
+mv $PKG/usr/bin/c_rehash{,-1.0}
+
+mv $PKG/etc/ssl{,-1.0}
+mv $PKG/usr/include/openssl{,-1.0}
+sed -i 's@include$@include/openssl-1.0@' \
+$PKG/usr/lib/openssl-1.0/pkgconfig/*.pc
+
+ln -sv openssl-1.0/libssl.so.1.0.0 $PKG/usr/lib/libssl.so.1.0.0
+ln -sv openssl-1.0/libcrypto.so.1.0.0 $PKG/usr/lib/libcrypto.so.1.0.0
+}
