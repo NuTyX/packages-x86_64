@@ -1,0 +1,41 @@
+description="GStreamer Multimedia Framework Base Plugins"
+url=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(gstreamer-0)
+run=()
+set=()
+
+name=gstreamer-plugins-base-0
+version=0.10.36
+
+source=(
+enum_headers.patch
+https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-$version.tar.xz
+)
+
+PKGMK_GROUPS=(lib devel man doc)
+prepare() {
+cd gst-plugins-base-$version
+sed -i -e '/AC_PATH_XTRA/d' -e 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/' \
+configure.ac
+patch -Np1 -i ../enum_headers.patch
+NOCONFIGURE=1 ./autogen.sh
+}
+build() {
+./configure --prefix=/usr \
+--disable-gnome_vfs
+make
+make DESTDIR=$PKG install
+}
+lib() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+usr/lib/libgst* usr/lib/gstreamer-0.10
+rm -r usr/lib/libgst*
+rm -r usr/lib/gstreamer-0.10
+rm -d usr/lib || true
+}
