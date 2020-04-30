@@ -1,0 +1,32 @@
+description="GStreamer Multimedia Framework"
+url="https://gstreamer.freedesktop.org"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libxslt glib)
+
+name=gstreamer-0
+version=0.10.36
+
+source=(
+bison3.patch
+https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-$version.tar.xz
+)
+
+PKGMK_GROUPS=(lib devel man doc)
+build() {
+cd gstreamer-$version
+patch -Np1 -i ../bison3.patch
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
+lib() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+usr/lib/libgst* usr/lib/gstreamer-0.10
+rm -r usr/lib/libgst*
+rm -r usr/lib/gstreamer-0.10
+rm -d usr/lib || true
+}
