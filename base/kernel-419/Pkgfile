@@ -1,43 +1,32 @@
 url="http://www.kernel.org"
-description="The 4.19 longterm support Linux Kernel version with virtualbox modules"
+description="The 4.19 longterm support Linux Kernel version"
 
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
-
 run=(nutyx)
-
-name=kernel-419
-alias=(linux-4.19)
-INITRD="initrd-${name/*-/}"
-version=4.19.118
-_version=${version:0:4}
-
-# Virtualbox
-vb_version=5.2.30
-buildr=130521
-_VBARCH=amd64
 
 PKGMK_IGNORE_UNPACK="yes"
 PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
+name=kernel-419
+alias=(linux-4.19)
+INITRD="initrd-${name/*-/}"
+version=4.19.119
+_version=${version:0:4}
+
+# Linux patch version
+[ "${_version}" != "${version}" ] && patchname="patch-$version.xz"
+
 ## Download all the sources
 #
-source=(\
-https://libarchive.org/downloads/libarchive-3.3.3.tar.gz
-$url/pub/linux/kernel/v4.x/linux-${_version}.tar.xz
-$url/pub/linux/kernel/v4.x/patch-$version.xz
-http://download.virtualbox.org/virtualbox/${vb_version}/VirtualBox-${vb_version}-${buildr}-Linux_${_VBARCH}.run
-config_64)
 
+source=($url/pub/linux/kernel/v4.x/linux-${_version}.tar.xz config_64)
+
+[ -z $patchname ] || source+=" $url/pub/linux/kernel/v4.x/$patchname"
 ## Time to build everything
 #
-prepare() {
-tar xf libarchive-3.3.3.tar.gz
-cd libarchive-3.3.3
-./configure
-make
-}
+
 build(){
 
 bsdtar -p -o -C $SRC -xf linux-${_version}.tar.xz
@@ -64,52 +53,7 @@ cd $SRC/linux-${_version}
 make INSTALL_MOD_PATH=$PKG modules_install
 
 KERNEL_VERSION="${version}-NuTyX-419"
-
-# Virtualbox
-cd $SRC
-# Modules host
-
-sh VirtualBox-${vb_version}-${buildr}-Linux_${_VBARCH}.run --target vb --keep --noexec
-cd vb
-tar xfj VirtualBox.tar.bz2
-cd src/vboxhost/
-
-for i in `find . -name Makefile.include.header`
-do
-  sed -i "s@/lib/modules/@$PKG/lib/modules/@" $i
-done
-
-KERN_VER=${KERNEL_VERSION} make
-
-for i in *.ko
-do
-	install -D -m0644 $i \
-	$PKG/lib/modules/${KERNEL_VERSION}/misc/$i
-done
-
-# Modules guest
-mkdir $SRC/vb-guest
-cd    $SRC/vb-guest
-
-../libarchive-3.3.3/bsdtar -xf ../vb/additions/VBoxGuestAdditions.iso
-sh  VBoxLinuxAdditions.run --target vb --keep --noexec
-cd vb
-tar xfj VBoxGuestAdditions-x86.tar.bz2
-cd src/vboxguest-${vb_version}
-
-for i in `find . -name Makefile.include.header`
-do
-  sed -i "s@/lib/modules/@$PKG/lib/modules/@" $i
-done
-
-KERN_VER=${KERNEL_VERSION} make all
-
-for i in *.ko
-do
-	install -D -m0644 $i \
-	$PKG/lib/modules/${KERNEL_VERSION}/misc/$i
-done
-
+[ -z $patchname ] && KERNEL_VERSION="${version}.0-NuTyX"
 
 # depmod needed
 depmod -b $PKG -a ${KERNEL_VERSION}
@@ -134,8 +78,8 @@ mkdir -p $PKG/usr/src
 mv $SRC/linux-${_version} $PKG/usr/src/
 rm {build,source}
 
-ln -sv ../../../usr/src/linux-${_version} build
-ln -sv ../../../usr/src/linux-${_version} source
+ln -sv /usr/src/linux-${_version} build
+ln -sv /usr/src/linux-${_version} source
 
 mkdir $SRC/linux-${_version}
 mv $PKG/usr/src/linux-${_version}/Documentation \
