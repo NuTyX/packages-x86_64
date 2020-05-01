@@ -5,7 +5,7 @@ contributors="Pierre B"
 description="The Tcl scripting language"
 
 name=tcl
-version=8.6.9
+version=8.6.10
 
 source=( http://downloads.sourceforge.net/$name/$name$version-src.tar.gz)
 
@@ -24,16 +24,16 @@ sed -e "s#$PKGMK_ROOT/unix#/usr/lib#" \
     -e "s#$PKGMK_ROOT#/usr/include#"  \
     -i tclConfig.sh
 
-sed -e "s#$PKGMK_ROOT/unix/pkgs/tdbc1.1.0#/usr/lib/tdbc1.1.0#" \
-    -e "s#$PKGMK_ROOT/pkgs/tdbc1.1.0/generic#/usr/include#"    \
-    -e "s#$PKGMK_ROOT/pkgs/tdbc1.1.0/library#/usr/lib/tcl8.6#" \
-    -e "s#$PKGMK_ROOT/pkgs/tdbc1.1.0#/usr/include#"            \
-    -i pkgs/tdbc1.1.0/tdbcConfig.sh
+sed -e "s#$PKGMK_ROOT/unix/pkgs/tdbc1.1.1#/usr/lib/tdbc1.1.1#" \
+    -e "s#$PKGMK_ROOT/pkgs/tdbc1.1.1/generic#/usr/include#"    \
+    -e "s#$PKGMK_ROOT/pkgs/tdbc1.1.1/library#/usr/lib/tcl8.6#" \
+    -e "s#$PKGMK_ROOT/pkgs/tdbc1.1.1#/usr/include#"            \
+    -i pkgs/tdbc1.1.1/tdbcConfig.sh
 
-sed -e "s#$PKGMK_ROOT/unix/pkgs/itcl4.1.2#/usr/lib/itcl4.1.2#" \
-    -e "s#$PKGMK_ROOT/pkgs/itcl4.1.2/generic#/usr/include#"    \
-    -e "s#$PKGMK_ROOT/pkgs/itcl4.1.2#/usr/include#"            \
-    -i pkgs/itcl4.1.2/itclConfig.sh
+sed -e "s#$PKGMK_ROOT/unix/pkgs/itcl4.2.0#/usr/lib/itcl4.2.0#" \
+    -e "s#$PKGMK_ROOT/pkgs/itcl4.2.0/generic#/usr/include#"    \
+    -e "s#$PKGMK_ROOT/pkgs/itcl4.2.0#/usr/include#"            \
+    -i pkgs/itcl4.2.0/itclConfig.sh
 
 make DESTDIR=$PKG install
 make DESTDIR=$PKG install-private-headers
