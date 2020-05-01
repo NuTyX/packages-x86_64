@@ -11,8 +11,7 @@ run=(xdg-utils gtk-update-icon-cache
 PKGMK_GROUPS=(devel man lib)
 
 name=cups
-version=2.3.1
-release=2
+version=2.3.3
 
 nutyx_version=11.3
 
@@ -90,5 +89,5 @@ bsdtar -cf \
 $PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
 usr/lib/libcups*
 rm usr/lib/libcups*
-rm -d usr/lib
+rm -d usr/lib || true
 }
