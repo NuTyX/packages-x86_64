@@ -11,10 +11,9 @@ makedepends=(apache libxml2 aspell aspell-dict libxslt enchant pcre
 
 
 name=php
-version=7.4.4
+version=7.4.5
 
-source=(http://php.net/distributions/$name-$version.tar.xz
- http://mirror.internode.on.net/pub/php/manual/php_manual_fr.tar.gz)
+source=(http://php.net/distributions/$name-$version.tar.xz)
 
 build () {
 
@@ -35,7 +34,6 @@ build () {
             --enable-calendar            \
             --enable-dba=shared          \
             --with-mysql-sock=/var/run/mysqld/mysqld.sock \
-            --with-gd                    \
             --with-mysqli=mysqlnd        \
             --with-pdo-mysql             \
             --with-gdbm                  \
