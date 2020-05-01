@@ -1,5 +1,5 @@
 url="http://www.kernel.org"
-description="The 4.19 longterm support Linux Kernel version with virtualbox modules"
+description="OBSOLET LTS version Linux Kernel with virtualbox modules"
 
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
@@ -9,12 +9,12 @@ run=(nutyx)
 name=kernel-lts
 
 INITRD="initrd-${name/*-/}"
-version=4.19.116
+version=4.19.119
 _version=${version:0:4}
 
 # Virtualbox
-vb_version=5.2.30
-buildr=130521
+vb_version=5.2.40
+buildr=137108
 _VBARCH=amd64
 
 PKGMK_IGNORE_UNPACK="yes"
@@ -165,11 +165,17 @@ else
   ln -sf kernel-${KERNEL_VERSION} boot/$name
 fi
 
-echo \"This $name version is obsolet, it wont be upgrade anymore.
-You should replace this $name version as soon as possible.
-See https://www.nutyx.org/en/upgrade-kernel-lts
-or
-https://www.nutyx.org/fr/upgrade-kernel-lts\"" > $PKGMK_ROOT/$name.post-install
+echo \"
+
+********************************************************************
+* This kernel-lts version is obsolet, it wont be upgrade anymore.  *
+* You should replace this kernel-lts version as soon as possible.  *
+* See https://www.nutyx.org/en/upgrade-kernel-lts                  *
+* or                                                               *
+* https://www.nutyx.org/fr/upgrade-kernel-lts                      *
+********************************************************************
+
+\"" > $PKGMK_ROOT/$name.post-install
 
 }
 devel() {
