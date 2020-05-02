@@ -10,9 +10,12 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-54
+version=5.4.38
+release=2
+
 alias=(linux-5.4)
 INITRD="initrd-${name/*-/}"
-version=5.4.38
+
 _version=${version:0:3}
 
 # Linux patch version
@@ -68,7 +71,7 @@ $PKG/boot/System_64.map-${KERNEL_VERSION}
 cp  .config    \
 $PKG/boot/config_64-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
-$PKG/boot/kernel-${KERNEL_VERSION}
+$PKG/boot/$name-${KERNEL_VERSION}
 
 # Reorgenise the sources
 cd $PKG/lib/modules/${KERNEL_VERSION}/
@@ -106,7 +109,7 @@ else
     mkinitramfs ${KERNEL_VERSION}
     ln -sf initrd-${KERNEL_VERSION} boot/$INITRD
   fi
-  ln -sf kernel-${KERNEL_VERSION} boot/$name
+  ln -sf $name-${KERNEL_VERSION} boot/$name
 fi" > $PKGMK_ROOT/$name.post-install
 
 }
