@@ -5,6 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=openssl-10
 version=1.0.2u
+release=2
 
 source=(ftp://ftp.openssl.org/source/old/1.0.2/openssl-$version.tar.gz)
 
@@ -17,8 +18,7 @@ cd openssl-$version
 ./Configure --prefix=/usr \
 	--openssldir=/etc/ssl \
 	--libdir=lib/openssl-1.0 \
-	shared no-ssl3-method \
-	linux-x86_64
+	shared linux-x86_64
 
 make depend
 
