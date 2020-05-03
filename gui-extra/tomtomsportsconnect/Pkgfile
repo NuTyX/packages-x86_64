@@ -7,24 +7,23 @@ run=(gstreamer-plugins-base-0.lib openssl-10.lib)
 
 name=tomtomsportsconnect
 version=3.3.9
+release=2
 
 source=(
 https://sports.tomtom-static.com/downloads/desktop/mysportsconnect/latest/tomtomsportsconnect-${version}.x86_64.deb
 )
 
 prepare() {
+tar xf control.tar.gz
 tar xf data.tar.xz
 }
 build() {
 install -d $PKG/{etc/udev/rules.d,usr/{share,lib/TomTomSportsConnect}}
 cp -ra usr/local/TomTomSportsConnect/* $PKG/usr/lib/TomTomSportsConnect/
 cp -ra usr/share/* $PKG/usr/share/
-cat > $PKG/etc/udev/rules.d/90-tomtomsports.rules << "EOF"
-SUBSYSTEMS=="usb", ATTRS{idVendor}=="1390", ATTRS{idProduct}=="7474", GROUP="users", MODE="660"
-SUBSYSTEMS=="usb", ATTRS{idVendor}=="1390", ATTRS{idProduct}=="7475", GROUP="users", MODE="660"
-SUBSYSTEMS=="usb", ATTRS{idVendor}=="1390", ATTRS{idProduct}=="7477", GROUP="users", MODE="660"
-EOF
-chmod 644 $PKG/etc/udev/rules.d/90-tomtomsports.rules
+sed 's@, MODE@, GROUP=\"users\", MODE@' sportsconnect.rules > \
+$PKG/etc/udev/rules.d/90-tomtomsportsconnect.rules
+chmod 644 $PKG/etc/udev/rules.d/90-tomtomsportsconnect.rules
 sed -i "s@usr/local@usr/lib@" \
 $PKG/usr/share/applications/$name.desktop
 }
