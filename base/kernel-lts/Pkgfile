@@ -7,9 +7,10 @@ contributors="Pierre B"
 run=(nutyx)
 
 name=kernel-lts
+version=4.19.120
+release=2
 
 INITRD="initrd-${name/*-/}"
-version=4.19.120
 _version=${version:0:4}
 
 # Virtualbox
@@ -124,7 +125,7 @@ $PKG/boot/System_64.map-$version-NuTyX-lts
 cp  .config    \
 $PKG/boot/config_64-$version-NuTyX-lts
 cp  arch/x86_64/boot/bzImage \
-$PKG/boot/kernel-$version-NuTyX-lts
+$PKG/boot/$name-$version-NuTyX-lts
 
 # Reorgenise the sources
 cd $PKG/lib/modules/${KERNEL_VERSION}/
@@ -162,7 +163,7 @@ else
     mkinitramfs ${KERNEL_VERSION}
     ln -sf initrd-${KERNEL_VERSION} boot/$INITRD
   fi
-  ln -sf kernel-${KERNEL_VERSION} boot/$name
+  ln -sf $name-${KERNEL_VERSION} boot/$name
 fi
 
 echo \"
