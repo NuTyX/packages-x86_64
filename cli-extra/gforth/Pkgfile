@@ -1,0 +1,17 @@
+description="Fast and portable implementation of Forth language"
+url=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+name=gforth
+version=0.7.3
+
+source=(https://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make PREFIX=/usr -j1
+make PREFIX=/usr DESTDIR=$PKG install
+}
