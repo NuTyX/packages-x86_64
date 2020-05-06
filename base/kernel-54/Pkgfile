@@ -10,11 +10,11 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-54
-version=5.4.38
-release=2
+version=5.4.39
 
 alias=(linux-5.4)
 INITRD="initrd-${name/*-/}"
+KERNEL=${name/-*/}
 
 _version=${version:0:3}
 
@@ -55,8 +55,7 @@ cp .config $SRC/config_64
 cd $SRC/linux-${_version}
 make INSTALL_MOD_PATH=$PKG modules_install
 
-KERNEL_VERSION="${version}-NuTyX-54"
-[ -z $patchname ] && KERNEL_VERSION="${version}.0-NuTyX"
+KERNEL_VERSION="$(basename $PKG/lib/modules/*)"
 
 # depmod needed
 depmod -b $PKG -a ${KERNEL_VERSION}
@@ -71,7 +70,7 @@ $PKG/boot/System_64.map-${KERNEL_VERSION}
 cp  .config    \
 $PKG/boot/config_64-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
-$PKG/boot/$name-${KERNEL_VERSION}
+$PKG/boot/$KERNEL-${KERNEL_VERSION}
 
 # Reorgenise the sources
 cd $PKG/lib/modules/${KERNEL_VERSION}/
@@ -98,8 +97,8 @@ if [ \"\$(dirname \$LK)\" != \".\" ]; then
   echo \"This is an efi installation\"
   ln -sf \$LK boot/$name
   if [ -f boot/\$LK ]; then
-    mv boot/$name-${KERNEL_VERSION} boot/\$LK 2>/dev/null
-    ln -sf \$LK boot/$name-${KERNEL_VERSION}
+    mv boot/$KERNEL-${KERNEL_VERSION} boot/\$LK 2>/dev/null
+    ln -sf \$LK boot/$KERNEL-${KERNEL_VERSION}
   else
     echo \"EFI Partition not found, mount EFI Partition and re-install the kernel\"
   fi
@@ -109,7 +108,7 @@ else
     mkinitramfs ${KERNEL_VERSION}
     ln -sf initrd-${KERNEL_VERSION} boot/$INITRD
   fi
-  ln -sf $name-${KERNEL_VERSION} boot/$name
+  ln -sf $KERNEL-${KERNEL_VERSION} boot/$name
 fi" > $PKGMK_ROOT/$name.post-install
 
 }
