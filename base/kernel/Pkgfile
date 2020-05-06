@@ -10,22 +10,21 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel
-version=5.6.10
+version=5.6.11
 
 alias=(linux)
 INITRD="initrd"
+KERNEL=${name/-*/}
+
 _version=${version:0:3}
 
 # Linux patch version
 [ "${_version}" != "${version}" ] && patchname="patch-$version.xz"
 
-
 ## Download all the sources
 #
 
-source=(\
-$url/pub/linux/kernel/v5.x/linux-${_version}.tar.xz config_64
-)
+source=($url/pub/linux/kernel/v5.x/linux-${_version}.tar.xz config_64)
 
 [ -z $patchname ] || source+=" $url/pub/linux/kernel/v5.x/$patchname"
 ## Time to build everything
@@ -56,8 +55,7 @@ cp .config $SRC/config_64
 cd $SRC/linux-${_version}
 make INSTALL_MOD_PATH=$PKG modules_install
 
-KERNEL_VERSION="${version}-NuTyX"
-[ -z $patchname ] && KERNEL_VERSION="${version}.0-NuTyX"
+KERNEL_VERSION="$(basename $PKG/lib/modules/*)"
 
 # depmod needed
 depmod -b $PKG -a ${KERNEL_VERSION}
@@ -72,7 +70,7 @@ $PKG/boot/System_64.map-${KERNEL_VERSION}
 cp  .config    \
 $PKG/boot/config_64-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
-$PKG/boot/$name-${KERNEL_VERSION}
+$PKG/boot/$KERNEL-${KERNEL_VERSION}
 
 # Reorgenise the sources
 cd $PKG/lib/modules/${KERNEL_VERSION}/
@@ -99,8 +97,8 @@ if [ \"\$(dirname \$LK)\" != \".\" ]; then
   echo \"This is an efi installation\"
   ln -sf \$LK boot/$name
   if [ -f boot/\$LK ]; then
-    mv boot/$name-${KERNEL_VERSION} boot/\$LK 2>/dev/null
-    ln -sf \$LK boot/$name-${KERNEL_VERSION}
+    mv boot/$KERNEL-${KERNEL_VERSION} boot/\$LK 2>/dev/null
+    ln -sf \$LK boot/$KERNEL-${KERNEL_VERSION}
   else
     echo \"EFI Partition not found, mount EFI Partition and re-install the kernel\"
   fi
@@ -110,8 +108,9 @@ else
     mkinitramfs ${KERNEL_VERSION}
     ln -sf initrd-${KERNEL_VERSION} boot/$INITRD
   fi
-  ln -sf $name-${KERNEL_VERSION} boot/$name
+  ln -sf $KERNEL-${KERNEL_VERSION} boot/$name
 fi" > $PKGMK_ROOT/$name.post-install
+
 }
 devel() {
 
