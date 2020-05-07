@@ -7,11 +7,10 @@ contributors="Berlius, Fanch, Greg, Minzord"
 makedepends=(libnsl db cyrus-sasl openssl icu mariadb openldap pcre postgresql sqlite)
 
 name=postfix
-version=3.4.9
-nutyx_version=11.3
+version=3.5.1
+runyx_version=20200412
 
-source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-         http://www.linuxfromscratch.org/patches/blfs/svn/postfix-$version-glibc230_fix-1.patch
+source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	ftp://ftp.porcupine.org/mirrors/postfix-release/official/$name-$version.tar.gz)
 
 prepare() {
@@ -36,7 +35,6 @@ build() {
 cd $name-$version
 
 sed -i 's/.\x08//g' README_FILES/*
-patch -Np1 -i ../postfix-$version-glibc230_fix-1.patch
 
 make CCARGS="-DUSE_TLS -I/usr/include/openssl/        \
 -DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl" \
@@ -51,6 +49,9 @@ html_directory=$PKG/usr/share/doc/postfix-$version/html \
 readme_directory=$PKG/usr/share/doc/postfix-$version/readme
 
 # Service
-cd ../nutyx-${nutyx_version}
-make DESTDIR=$PKG install-postfix
+cd ../runyx-${runyx_version}
+make DESTDIR=$PKG install-sysv-postfix
+make DESTDIR=$PKG install-sysd-postfix
+make DESTDIR=$PKG install-runyx-postfix
+
 }
