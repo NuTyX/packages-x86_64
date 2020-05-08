@@ -1,24 +1,27 @@
 description="A scalable distributed SCM tool"
 url="http://mercurial.selenic.com"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Berlius, Greg"
 
-name=mercurial
-version=5.1
-makedepends=(openssh python gnupg subversion bzr python-docutils
+makedepends=(gnupg subversion
+             bzr python-docutils
              ca-certificates)
-run=(openssh)
+run=(openssh python)
+
+name=mercurial
+version=5.4
 
 source=(https://www.mercurial-scm.org/release/mercurial-$version.tar.gz
 mercurial.profile
 )
 build() {
   cd $name-$version/
+  export PYTHON=python3
   make build
 
-  sed -i '/runrst/s/N)/N)3/' doc/Makefile
-  2to3-3.7 -w doc/hgmanpage.py
   make doc
   make DESTDIR=$PKG PREFIX=/usr install-bin
   make DESTDIR=$PKG PREFIX=/usr install-doc
+  unset PYTHON
 }
