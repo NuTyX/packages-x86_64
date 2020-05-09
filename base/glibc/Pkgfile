@@ -1,11 +1,11 @@
 description="The Glibc package contains the main C library."
 url="https://www.gnu.org/software/libc/"
 packager="tnut <tnut@nutyx.org>"
-kernelversion=4.20
+kernelversion=5.6
 
 
 name=glibc
-version=2.30
+version=2.31
 
 source=(https://www.kernel.org/pub/linux/kernel/v4.x/linux-$kernelversion.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
@@ -17,11 +17,11 @@ build() {
 # Headers
 cd linux-$kernelversion
 make mrproper
-make headers_check
-make INSTALL_HDR_PATH=dest headers_install
-find dest/include \( -name .install -o -name ..install.cmd \) -delete
+make headers
+find usr/include -name '.*' -delete
+rm usr/include/Makefile
 mkdir -p $PKG/usr/include
-cp -rv dest/include/* $PKG/usr/include
+cp -rv usr/include/* $PKG/usr/include
 
 cd ../glibc-$version
 patch -Np1 -i ../glibc-$version-fhs-1.patch
