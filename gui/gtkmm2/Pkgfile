@@ -8,9 +8,9 @@ makedepends=(gtk2 pangomm cairomm atkmm)
 
 name=gtkmm2
 version=2.24.5
-release=3
+release=4
 
-source=(http://ftp.gnome.org/pub/gnome/sources/gtkmm/${version%.*}/gtkmm-$version.tar.xz)
+source=(https://download.gnome.org/sources/gtkmm/${version%.*}/gtkmm-$version.tar.xz)
 
 build() {
 cd gtkmm-$version
@@ -26,10 +26,10 @@ rm $PKG/usr/lib/libgtkmm-2.4.la
 }
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/$name"
+url="https://download.gnome.org/sources/$name"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
-http://ftp.gnome.org/pub/gnome/sources/gtkmm/2.24/?C=N\;O=D|grep LATEST|grep [0-9]$|cut -d "-" -f3`"
+https://download.gnome.org/sources/gtkmm/2.24/?C=N\;O=D|grep LATEST|grep [0-9]$|cut -d "-" -f3`"
 echo "$lastversion"
 }
