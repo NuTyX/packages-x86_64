@@ -1,11 +1,13 @@
 description="Qt-style Client and Server library wrapper for the Wayland libraries"
 url="https://www.kde.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(extra-cmake-modules wayland qtwayland)
+
 name=kwayland
-version=5.68.0
-makedepends=(extra-cmake-modules qtbase wayland)
+version=5.70.0
 
 source=(https://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
 
