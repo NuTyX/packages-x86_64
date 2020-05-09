@@ -11,8 +11,7 @@ source=(ftp://ftp.astron.com/pub/file/file-$version.tar.gz)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr \
---disable-libseccomp
+./configure --prefix=/usr
 make
 make check
 make DESTDIR=$PKG install
