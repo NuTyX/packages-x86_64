@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 PKGMK_GROUPS=(devel man doc)
 
 name=xz
-version=5.2.4
+version=5.2.5
 
 source=(${url}$name-$version.tar.xz)
 build()
@@ -19,8 +19,10 @@ cd xz-$version
 make
 make pkgconfigdir=/usr/lib/pkgconfig DESTDIR=$PKG install
 
-mkdir -pv $PKG/{,usr/}lib
+mkdir -pv $PKG/{bin,{,usr/}lib}
 
+# mv -v $PKG/usr/bin/{lzma,unlzma,lzcat,xz,xzcat} \
+# $PKG/bin
 mv -v $PKG/usr/lib/liblzma.so.* \
 $PKG/lib
 
