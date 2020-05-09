@@ -1672,8 +1672,8 @@ setup_install() {
 setup_efibootmgr() {
 	local SPNR OPTIONS
 	mount $PARTITION ${2}
-	OPTIONS=`cat /proc/cmdline|sed "s@BOOT_IMAGE=/boot/kernel\ @@"`
-	SPNR=`echo $PARTITION|sed "s@^/dev/[a-z]*@@"`
+	OPTIONS=$(cat /proc/cmdline|sed "s@BOOT_IMAGE=/boot/kernel\ @@")
+	SPNR=$(echo $PARTITION|sed "s@^/dev/[a-z]*@@")
 	mount -t efivarfs efivarfs /sys/firmware/efi/efivars
 	mkdir -p ${2}/boot/efi
 	mount "$EFI_SYS_PART" ${2}/boot/efi
@@ -1681,8 +1681,8 @@ setup_efibootmgr() {
 	rm ${2}/boot/efi/EFI/BOOT/$SPNR/* 2>/dev/null
 	for i in /lib/modules/*
 	do
-		j=`basename $i`
-		ke=-`echo $j|cut -d "-" -f3`
+		j=$(basename $i)
+		ke=-$(echo $j|cut -d "-" -f3)
 		[ ${#ke} == 1 ] && ke=""
 		mv ${2}/boot/kernel-$j \
 		${2}/boot/efi/EFI/BOOT/$SPNR/kernel$ke.efi
@@ -1826,13 +1826,13 @@ EOF
 		BOOT_FS="`print_file_system $PARTITION`"
 		NuTyX_FS="`print_file_system $NuTyX_PART`"
 		echo "menuentry \"NuTyX LTS ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo " linux /${GRUB_DESTINATION_DIR}kernel-lts root=${NuTyX_PART} ro quiet verbose=no" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "#  initrd /${GRUB_DESTINATION_DIR}initrd-lts" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		echo " linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro quiet verbose=no" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		echo "#  initrd /${GRUB_DESTINATION_DIR}initrd-419" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
 		echo "}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
 		echo " " >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
 		echo "menuentry \"NuTyX LTS Verbose ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "  linux /${GRUB_DESTINATION_DIR}kernel-lts root=${NuTyX_PART} ro " >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "#  initrd /${GRUB_DESTINATION_DIR}initrd-lts" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		echo "  linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro " >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		echo "#  initrd /${GRUB_DESTINATION_DIR}initrd-419" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
 		echo "}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
 		echo " "  >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
 		echo "menuentry \"NuTyX ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
@@ -1881,22 +1881,22 @@ EOF
 #
 #menuentry  "Harddisk number 2 and partition number 3" {
 #   set root=(hd1,3)
-#   linux /boot/kernel-lts root=/dev/sdb3 ro quiet verbose=no
+#   linux /boot/kernel-419 root=/dev/sdb3 ro quiet verbose=no
 #}
 #
 # The same one for debug purpose:
 #
 #menuentry  "Harddisk number 2 and partition number 3 verbose mode" {
 #   set root=(hd1,3)
-#   linux /boot/kernel-lts root=/dev/sdb3 ro
+#   linux /boot/kernel-419 root=/dev/sdb3 ro
 #}
 #
 # An other one with initrd and rootdelay (to use with USB stick for ex)
 #
 #menuentry  "Harddisk number 2 and partition number 1 with initrd" {
 #   set root=(hd1,1)
-#   linux /boot/kernel-lts root=/dev/sdb1 ro rootdelay=5
-#   initrd /boot/initrd-lts
+#   linux /boot/kernel-419 root=/dev/sdb1 ro rootdelay=5
+#   initrd /boot/initrd-419
 #}
 #
 EOF
