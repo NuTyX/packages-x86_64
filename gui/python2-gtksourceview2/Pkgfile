@@ -9,9 +9,9 @@ makedepends=(gtksourceview2 python2-gtk)
 
 name=python2-gtksourceview2
 version=2.10.1
-release=3
+release=4
 
-source=(http://ftp.gnome.org/pub/gnome/sources/pygtksourceview/2.10/pygtksourceview-${version}.tar.bz2)
+source=(https://download.gnome.org/sources/pygtksourceview/2.10/pygtksourceview-${version}.tar.bz2)
 
 build() {
 cd pygtksourceview-$version
@@ -26,7 +26,7 @@ rm $PKG/usr/lib/python2.7/site-packages/gtksourceview2.la
 }
 uptodate(){
 local latest lastversion url
-url="http://ftp.gnome.org/pub/gnome/sources/pygtksourceview"
+url="https://download.gnome.org/sources/pygtksourceview"
 latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
 $url/?C=N\;O=D|grep [0-9]/$|head -1`"
 lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
