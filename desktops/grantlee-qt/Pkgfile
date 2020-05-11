@@ -1,5 +1,6 @@
 description="A string template engine based on the Django template system and written in Qt5"
 url="https://www.gitorious.org/grantlee/pages/Home"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
@@ -7,16 +8,9 @@ makedepends=(qtscript cmake doxygen)
 set=(kde5 plasma5)
 
 name=grantlee-qt
-version=5.1.0
-release=2
+version=5.2.0
 
-source=(http://downloads.grantlee.org/grantlee-$version.tar.gz
-         http://www.linuxfromscratch.org/patches/blfs/svn/grantlee-$version-upstream_fixes-2.patch)         
-prepare() {
-  cd grantlee-$version
-  patch -Np1 -i ../grantlee-$version-upstream_fixes-2.patch
-}
-
+source=(http://downloads.grantlee.org/grantlee-$version.tar.gz)
 
 build() {
 
