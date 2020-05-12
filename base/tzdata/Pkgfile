@@ -1,20 +1,22 @@
 description="The zoneinfo database or IANA Time Zone"
 url="http://www.gnu.org/software/libc/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Minzords"
 
 name=tzdata
-version=2019b
+version=2020a
 
 source=(http://www.iana.org/time-zones/repository/releases/$name$version.tar.gz)
 build() {
-timezones=('africa' 'antarctica' 'asia' 'australasia'
-           'europe' 'northamerica' 'southamerica'
-           'pacificnew' 'etcetera' 'backward'
-           'systemv')
-zic -y ./yearistype -d $PKG/usr/share/zoneinfo ${timezones[@]}
-zic -y ./yearistype -d $PKG/usr/share/zoneinfo/posix ${timezones[@]}
-zic -y ./yearistype -d $PKG/usr/share/zoneinfo/right -L leapseconds ${timezones[@]}
-zic -y ./yearistype -d $PKG/usr/share/zoneinfo -p America/New_York
-install -m444 -t $PKG/usr/share/zoneinfo iso3166.tab zone.tab
+
+for tz in etcetera southamerica northamerica europe \
+  africa antarctica asia australasia backward pacificnew systemv; do
+ zic -L /dev/null -d $PKG/usr/share/zoneinfo $tz
+ zic -L /dev/null  -d $PKG/usr/share/zoneinfo/posix $tz
+ zic -L leapseconds -d $PKG/usr/share/zoneinfo/right $tz
+done
+
+cp -v zone.tab zone1970.tab iso3166.tab $PKG/usr/share/zoneinfo
+zic -d $PKG/usr/share/zoneinfo -p America/New_York
 }
