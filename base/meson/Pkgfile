@@ -4,13 +4,15 @@ url="http://mesonbuild.com/"
 contributors="Jayce, Greg"
 packager="tnut <tnut@nutyx.org>"
 
-name=meson
-version=0.53.1
 makedepends=(python)
+
+name=meson
+version=0.54.1
+
 source=(https://github.com/mesonbuild/$name/releases/download/$version/$name-$version.tar.gz)
 
 build() {
   cd $name-$version
   python3 setup.py build
-  python3 setup.py install --root=$PKG
+  python3 setup.py install --root=$PKG --optimize=1 --skip-build
 }
