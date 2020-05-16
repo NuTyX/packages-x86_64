@@ -1,11 +1,15 @@
 description="Abstraction to system policy and authentication features "
 url="https://www.kde.org/"
+
 packager="tnut <tnut@nutyx.org"
 contributors="Pierre B"
 
+makedepends=(kcoreaddons polkit-qt)
+
 name=kauth
 version=5.70.0
-makedepends=(kcoreaddons polkit-qt)
+release=2
+
 source=(https://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
 
 build=kde5
