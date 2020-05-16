@@ -1149,7 +1149,8 @@ if [ -z "$CHROOT_LIST" ]; then
 	CHROOT_LIST="nutyx acl attr bash bzip2 coreutils curl \
 expat gcc readline ncurses lzo glibc gmp xz zlib \
 libarchive mpc mpfr openssl cards"
-   [ "$ARCH" = "i686" -a "$HOST_ARCH" = "x86_64" ] && CHROOT_LIST="$CHROOT_LIST util-linux"
+   [ "$ARCH" = "i686" -a "$HOST_ARCH" = "x86_64" ] && \
+	CHROOT_LIST+=" util-linux"
 fi
 [ -z "$URL" ] && URL="http://downloads.nutyx.org"
 
@@ -1161,24 +1162,40 @@ else
 fi
 [ -z "$DEPOT" ] && DEPOT="/var/lib/pkg/depot"
 [ -z "$FOLDER" ] && FOLDER="/mnt/hd"
+[ -z "$KERNEL" ] && KERNEL="kernel-419"
 
-[ -z $INIT ] && INIT="sysv"
+[ "$KERNEL" = "NONE" ] && unset KERNEL
+[ "$KERNEL" = "none" ] && unset KERNEL
+
+if [ -z "$CORE" ]; then
+	CORE="flex file gzip \
+grep sed findutils binutils \
+inetutils diffutils shadow \
+bc less"
+fi
+[[ ! -z "$KERNEL" && -z "$INIT" ]] && INIT="sysv"
+
 [ "$INIT" = "sysv" ] && INITS="eudev sysklogd sysvinit"
 [ "$INIT" = "sysd" ] && INITS="dbus systemd"
 [ "$INIT" = "runyx" ] && INITS="eudev sysklogd runyx"
 
-if [ -z "$KERNEL" ]; then
-   if [ "$ARCH" = "i686" -a "$HOST_ARCH" = "x86_64" ]; then
-      KERNEL=$INITS
-   else
-      KERNEL="linux-firmware $INITS reiserfsprogs e3 \
-grub lz4 mdadm jfsutils xfsprogs btrfs-progs dhcpcd kernel-lts"
-   fi
-fi
-[ "$KERNEL" == "NONE" ] && KERNEL=""
-[ "$KERNEL" == "none" ] && KERNEL=""
+[ "$KERNEL" = "NONE" ] && unset KERNEL
+[ "$KERNEL" = "none" ] && unset KERNEL
 
-KERNEL+=" $INITS"
+
+[ -z "$KERNEL" ] || CORE+=" kbd pam \
+gdbm e2fsprogs libpipeline \
+libcap gettext procps-ng \
+psmisc sudo tzdata \
+iproute2 iana-etc \
+kmod groff man-db util-linux \
+cards.fr cards.man nutyx.man \
+lvm2 dialog cpio squashfs \
+ca-certificates lsb-release \
+linux-firmware reiserfsprogs \
+e3 grub lz4 mdadm jfsutils \
+xfsprogs btrfs-progs dhcpcd \
+$KERNEL"
 
 [ -z $LFS ] && LFS=$FOLDER
 
@@ -1334,25 +1351,18 @@ check_mountfolder() {
 	[ ! -d $FOLDER ] && mkdir -p $FOLDER
 }
 generate_setupfile() {
-echo "#!/bin/bash
+if [[ -z "$INITS" && -z "$CORE" && -z "$DEVEL" ]];then
+	echo "#!/bin/bash
+exit" > $FOLDER/$SETUP_FILE
+else
+	echo "#!/bin/bash
 source /etc/profile
 cards sync
-cards install kbd pam \
-shadow gdbm e2fsprogs \
-gzip binutils \
-diffutils file grep bc \
-libpipeline util-linux \
-findutils flex libcap \
-gettext procps-ng psmisc \
-sed sudo tzdata inetutils \
-iproute2 iana-etc \
-kmod less groff man-db \
-cards.fr cards.man nutyx.man \
-lvm2 dialog cpio squashfs \
-ca-certificates lsb-release \
-$KERNEL \
+cards install $CORE \
+$INITS \
 $DEVEL
 exit" > $FOLDER/$SETUP_FILE
+fi
 chmod 177 $FOLDER/$SETUP_FILE
 setup_chroot
 chroot ${FOLDER} /usr/bin/env $LINUX_ARCH /bin/bash -c "$SETUP_FILE"
