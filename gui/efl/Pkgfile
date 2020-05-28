@@ -1,26 +1,32 @@
 description="Enlightenment Foundatation Libraries"
 url="https://www.enlightenment.org"
+
 packager="tnut <tnut@nutyx.org>"
 
-name=efl
-version=1.22.3
-
-makedepends=(shared-mime-info luajit giflib librsvg libraw
-             libjpeg-turbo xorg-libxrender xorg-fontconfig
+makedepends=(check meson ninja scim luajit giflib librsvg
+             libraw libwebp libjpeg-turbo2 xorg-libxrender
+             xorg-fontconfig
              gstreamer-plugins-base fribidi poppler pulseaudio
              xorg-libxp libspectre xorg-libxscrnsaver bullet)
 run=(shared-mime-info)
 
+
+name=efl
+version=1.24.2
+
 source=(https://download.enlightenment.org/rel/libs/$name/$name-$version.tar.xz)
 build() {
-cd $name-$version
-./configure --prefix=/usr \
---disable-systemd --disable-static
-make
-make DESTDIR=$PKG install
-# Obsolets libs
-find $PKG ! -type d -name "*.la" -delete
+mkdir build
+cd    build
 
+meson --prefix=/usr \
+      -Dsystemd=false \
+      -Dfb=true \
+      -Dwl=true \
+      -Dscim=false \
+      ../$name-$version
+ninja
+DESTDIR=$PKG ninja install
 }
 uptodate() {
 local ext url LYNX
