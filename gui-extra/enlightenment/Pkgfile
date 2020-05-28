@@ -10,16 +10,20 @@ run=(efl xcb-util-keysyms hicolor-icon-theme
 set=(enlightenment)
 
 name=enlightenment
-version=0.23.1
+version=0.24.0
 
 source=(https://download.enlightenment.org/rel/apps/enlightenment/$name-$version.tar.xz)
 
-prepare() {
-sed -i "91 s/true/false/" $name-$version/meson_options.txt
+build() {
+mkdir build
+cd    build
+
+meson --prefix=/usr \
+      -Dsystemd=false \
+      ../$name-$version
+ninja
+DESTDIR=$PKG ninja install
 }
-
-build=meson
-
 uptodate() {
 local ext url LYNX
 LYNX="lynx -read_timeout=20 -dump -listonly -nonumbers "
