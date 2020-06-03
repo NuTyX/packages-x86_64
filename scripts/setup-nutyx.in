@@ -376,21 +376,19 @@ setup_wireless()
 	while [ "$ESSID" == "" ];
 	do
 		exec 3>&1
-		ESSID=`dialog  --title " $TITLE " \
+		ESSID=$(dialog  --title " $TITLE " \
 		--colors \
 		--inputbox "$(gettext "Choose the name of the wireless access point") (ESSID)" \
-		0 0 ""	2>&1 1>&3`
-		ESSID="`echo "$ESSID"|sed "s/ //g"`"
+		0 0 ""	2>&1 1>&3)
 	done
 
 	while [ "$KEY" == "" ];
 	do
 		exec 3>&1
-		KEY=`dialog --title " $TITLE " \
+		KEY=$(dialog --title " $TITLE " \
 		--colors \
 		--inputbox "$(gettext "Enter the password of") (PASSPHRASE): \Zb\Z4$ESSID\Zn" \
-		0 0 ""  2>&1 1>&3`
-		KEY="`echo "$KEY"|sed "s/ //g"`"
+		0 0 ""  2>&1 1>&3)
 	done
 
 	WPA_FILE="/etc/wpa_supplicant.conf.${WIFI_NETWORK_CARD}"
