@@ -1409,9 +1409,8 @@ setup_partition() {
 	check_available_partition
 }
 setup_format() {
-	local retval retval2 result
+	local retval FS
 	retval=""
-	retval2=""
 	if [ "$CHECK_HD_OK" == "no" ]; then
 		check_available_disk
 		[ "$CHECK_HD_OK" == "no" ] && return
@@ -1422,61 +1421,22 @@ setup_format() {
 		select_partition "$(gettext "Format a partition")"
 		[ "$PARTITION" == "no" ] && return
 	fi
-	dialog --title " $(gettext "Available file systems") " \
-	--colors --menu " $(gettext "Choose the file system you want to use for the partition") \
-\Zb\Z1$PARTITION\Zn" 0 0 0 \
-		"btrfs" "$(gettext "New promising file system") ($(gettext "recommended"))" \
-		"ext4" "$(gettext "Next generation of Ext3 file system") ($(gettext "recommended"))" \
-		"ext3" "$(gettext "Journaling version of Ext2 file system")"  \
-		"ext2" "$(gettext "Standard file system Ext2")" \
-		"reiserfs" "$(gettext "Very stable file system but not maintain anymore")" \
-		"xfs" "$(gettext "High performance journaling file system create by SGI")" \
-    "jfs" "$(gettext "Journaling file system create by IBM")" \
-		2> $TMP/result
-		result=`cat $TMP/result`
-		if [ ! "$result" == "" ]; then
-			dialog --title " $(gettext "Launch the format process ?") " \
-			--colors --yesno "$(gettext "The partition") \Zb\Z1$PARTITION\Zn \
-$(gettext "will be formatted in") \Zb\Z1$result\Zn.\n\n\
-$(gettext "Are you sure you want to continue ?")" 7 60
-				retval2=$?
-		fi
-		case $retval2 in
-			0)
-				case $result in
-					ext2)
-						mkfs.ext2 -F $PARTITION > /dev/tty2 || error "mkfs.ext2 $PARTITION"
-						$SETUP_LOG "setup-nutyx" "mkfs.ext2 -F $PARTITION"
-						;;
-					ext3)
-						mkfs.ext3 -F $PARTITION > /dev/tty2 || error "mkfs.ext3 $PARTITION"
-						$SETUP_LOG "setup-nutyx" "mkfs.ext3 -F $PARTITION"
-						;;
-					ext4)
-						mkfs.ext4 -F $PARTITION > /dev/tty2 || error "mkfs.ext4 $PARTITION"
-						$SETUP_LOG "setup-nutyx" "mkfs.ext4 -F $PARTITION"
-						;;
-					reiserfs)
-						mkreiserfs -q $PARTITION > /dev/tty2 || error "mkreiserfs -q $PARTITION"
-						$SETUP_LOG "setup-nutyx" "mkreiserfs -q $PARTITION"
-						;;
-					btrfs)
-						mkfs.btrfs -f $PARTITION > /dev/tty2 || error "mkfs.btrfs -f $PARTITION"
-						$SETUP_LOG "setup-nutyx" "mkfs.btrfs -f $PARTITION"
-						;;
-					xfs)
-						mkfs.xfs -f -m crc=0 $PARTITION > /dev/tty2 || error "mkfs.xfs -f $PARTITION"
-						$SETUP_LOG "setup-nutyx" "mkfs.xfs -f -m crc=0 $PARTITION"
-						;;
-					jfs)
-						mkfs.jfs -f $PARTITION > /dev/tty2 || error "mkfs.jfs -f $PARTITION"
-						$SETUP_LOG "setup-nutyx" "mkfs.jfs -f $PARTITION"
-						;;
-				esac;;
-			1|255)
-				break;;
-		esac
-		FORMAT=`print_file_system $PARTITION`
+
+	FS="ext4"
+	dialog --title " $(gettext "Launch the format process ?") " \
+		--colors --yesno "$(gettext "The partition") \Zb\Z1$PARTITION\Zn \
+		$(gettext "will be formatted in") \Zb\Z1$FS\Zn.\n\n\
+		$(gettext "Are you sure you want to continue ?")" 7 60
+	retval=$?
+	case $retval in
+		0)
+			mkfs.ext4 -F $PARTITION > /dev/tty2 || error "mkfs.ext4 $PARTITION"
+			$SETUP_LOG "setup-nutyx" "mkfs.ext4 -F $PARTITION"
+			;;
+		1|255)
+			break;;
+	esac
+	FORMAT=`print_file_system $PARTITION`
 }
 erase_nutyx() {
 	local DIR REAL
