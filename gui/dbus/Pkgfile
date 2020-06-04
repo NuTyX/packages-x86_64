@@ -7,58 +7,52 @@ contributors="Pierre B, Jayce"
 makedepends=(expat xorg-libx11 xorg-libsm xorg-libice)
 
 name=dbus
-version=1.12.16
-release=3
+version=1.12.18
 
 nutyx_version=11.4
 
 PKGMK_GROUPS=(doc devel)
 source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
-	http://dbus.freedesktop.org/releases/dbus/$name-$version.tar.gz \
-	dbus.system-local.conf)
+		http://dbus.freedesktop.org/releases/dbus/$name-$version.tar.gz
+		dbus.system-local.conf)
 
 build() {
 	cd $name-$version
-	./configure --prefix=/usr                 \
+	./configure --prefix=/usr                     \
             --sysconfdir=/etc                     \
             --localstatedir=/var                  \
             --disable-doxygen-docs                \
             --disable-xml-docs                    \
             --disable-static                      \
+            --with-systemduserunitdir=no          \
+            --with-systemdsystemunitdir=no        \
             --docdir=/usr/share/doc/dbus-$version \
             --with-console-auth-dir=/run/console  \
             --with-system-pid-file=/run/dbus/pid  \
-	    --with-system-socket=/run/dbus/system_bus_socket
+	        --with-system-socket=/run/dbus/system_bus_socket
 	make
 	make DESTDIR=$PKG install
 
 	# Adjust some files
+	mkdir $PKG/lib
+	mv -v $PKG/usr/lib/libdbus-1.so.* $PKG/lib
+	ln -sfv ../../lib/$(readlink $PKG/usr/lib/libdbus-1.so) \
+	$PKG/usr/lib/libdbus-1.so
 	chown -v root:messagebus $PKG/usr/libexec/dbus-daemon-launch-helper
 	chmod -v      4750       $PKG/usr/libexec/dbus-daemon-launch-helper
-        mkdir -p $PKG/etc/dbus-1
-        mv ../dbus.system-local.conf $PKG/etc/dbus-1/system-local.conf
+    mkdir -p $PKG/etc/dbus-1
+    mv ../dbus.system-local.conf $PKG/etc/dbus-1/system-local.conf
 
 	# service
-        cd ../nutyx-${nutyx_version}
-        make DESTDIR=$PKG install-dbus
+    cd ../nutyx-${nutyx_version}
+    make DESTDIR=$PKG install-dbus
 	mkdir -p $PKG/usr/lib/dbus-1.0/services
 	mkdir -p $PKG/usr/share/dbus-1/services
 	mkdir -p $PKG/etc/dbus-1/system.d/
 	mkdir -p $PKG/etc/dbus-1/session.d/
- 
+}
+package(){
 	rm $PKG/usr/lib/libdbus-1.la
-#
-## service
-SERVICEDIR=/lib/init/services/${name}
-mkdir -p $PKG$SERVICEDIR
-cat > $PKG$SERVICEDIR/run << "EOF"
-#!/bin/sh
-[ ! -d /run/dbus ] && install -m755 -d /run/dbus
-exec dbus-daemon --system --nofork --nopidfile
-EOF
-chmod 755 $PKG$SERVICEDIR/run
-mkdir -p $PKG/etc/init/default
-ln -sv /lib/init/services/$name $PKG/etc/init/default/$name
 }
 uptodate() {
 local url ext
