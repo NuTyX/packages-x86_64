@@ -1,17 +1,30 @@
 description="An event notification library"
 url="http://www.monkey.org/~provos/libevent/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-name=libevent
-version=2.1.8
+makedepends=(doxygen)
 
-source=(https://github.com/libevent/libevent/releases/download/release-$version-stable/$name-$version-stable.tar.gz)
+name=libevent
+version=2.1.11
+
+_url="https://github.com/libevent/libevent/releases/download/"
+
+source=(${_url}release-$version-stable/$name-$version-stable.tar.gz)
 
 build() {
-cd $name-$version-stable
-./configure --prefix=/usr --disable-static
-make
-make DESTDIR=$PKG install
-rm $PKG/usr/lib/libevent{,_core,_pthreads,_openssl,_extra}.la
+   cd $name-$version-stable
+
+   ./configure --prefix=/usr --disable-static
+
+   make
+   doxygen Doxyfile
+   make DESTDIR=$PKG install
+
+   install -v -m755 -d $PKG/usr/share/doc/$name-$version/api
+   cp -v -R doxygen/html/* $PKG/usr/share/doc/$name-$version/api
+}
+package() {
+   rm $PKG/usr/lib/libevent{,_core,_pthreads,_openssl,_extra}.la
 }
