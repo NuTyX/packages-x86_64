@@ -4,39 +4,33 @@ url="http://www.pulseaudio.org"
 packager="tnut <tnut@nutyx.org"
 contributors="Pierre B"
 
-makedepends=(fftw intltool json-c libsndfile alsa-lib dbus glib libcap openssl
-             speex speexdsp libsamplerate bluez sbc gconf
+makedepends=(fftw intltool json-c libsndfile alsa-lib dbus glib libcap
+             openssl speex speexdsp libsamplerate gconf
              webrtc-audio-processing jack)
 run=(bluez sbc)
 
 name=pulseaudio
-version=12.2
-release=4
+version=13.0
 
 source=(https://freedesktop.org/software/pulseaudio/releases/pulseaudio-$version.tar.xz)
 
 build() {
 unset MAKEFLAGS
-cd pulseaudio-$version
+cd $name-$version
 
-sed -i "s:asoundlib.h:alsa/asoundlib.h:" src/modules/alsa/*.{c,h}
-sed -i "s:use-case.h:alsa/use-case.h:" configure.ac
-sed -i "s:use-case.h:alsa/use-case.h:" src/modules/alsa/alsa-ucm.h
-
-NOCONFIGURE=1 ./bootstrap.sh
-./configure --prefix=/usr         \
-            --sysconfdir=/etc     \
-            --localstatedir=/var  \
-            --disable-bluez4      \
-            --disable-rpath       \
-            --enable-gsettings \
-            --enable-gconf \
-            --enable-jack \
-            --enable-webrtc-aec \
-            --with-udev-rules-dir=/lib/udev/rules.d \
+./configure --prefix=/usr        \
+            --sysconfdir=/etc    \
+            --localstatedir=/var \
+            --disable-bluez4     \
+            --disable-rpath      \
+            --enable-gsettings   \
+            --enable-gconf       \
+            --enable-jack        \
+            --enable-webrtc-aec  \
             --with-systemduserunitdir=no
 make
 make DESTDIR=$PKG install
+
 mkdir -p $PKG/usr/share/icons/hicolor/scalable/devices
 for size in 16 22 32 48 64 128; do
     mkdir -p $PKG/usr/share/icons/hicolor/${size}x${size}/{apps,devices}
