@@ -1,4 +1,5 @@
-description="The International Components for Unicode (ICU) package is a mature, widely used set of C/C++ libraries"
+description="The International Components for Unicode (ICU) package is \
+a mature, widely used set of C/C++ libraries"
 url="http://www.icu-project.org/"
 
 packager="tnut <tnut@nutyx.org>"
@@ -7,19 +8,18 @@ contributors="Pierre B, Tnut, Remy"
 makedepends=(llvm doxygen)
 
 name=icu
-version=65.1
+version=67.1
 
 PKGMK_GROUPS=(lib devel man)
 
-source=(https://github.com/unicode-org/icu/releases/download/release-${version//./-}/icu4c-${version//./_}-src.tgz)
+source=(https://github.com/unicode-org/icu/releases/download/\
+release-${version//./-}/icu4c-${version//./_}-src.tgz)
 
 build () {
-cd $name
-cd source
+cd $name/source
+
 ./configure --prefix=/usr
-
 make
-
 make prefix=$PKG/usr install
 }
 lib() {
@@ -29,7 +29,7 @@ $PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
 usr/lib/libicu*
 
 rm usr/lib/libicu*
-rm -d usr/lib
+rm -d usr/lib || true
 }
 
 devel() {
@@ -39,5 +39,5 @@ $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
 usr/lib/icu usr/lib/pkgconfig usr/share/icu usr/include
 
 rm -r usr/{lib/{icu,pkgconfig},share/icu,include}
-rm -d usr/{lib,share}
+rm -d usr/{lib,share} || true
 }
