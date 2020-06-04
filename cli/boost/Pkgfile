@@ -7,12 +7,16 @@ contributors="Rems"
 makedepends=(icu python python2)
 
 name=boost
-version=1.72.0
+version=1.73.0
 
-source=(https://dl.bintray.com/boostorg/release/$version/source/${name}_${version//./_}.tar.bz2)
+source=(http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-gcc_10-1.patch
+        https://dl.bintray.com/boostorg/release/$version/source/${name}_${version//./_}.tar.bz2)
 
 build() {
 cd ${name}_${version//./_}
+
+patch -Np1 -i ../boost-1.73.0-gcc_10-1.patch
+
 local ICU=$([ -e /usr/bin/icu-config ] && echo --with-icu)
 ./bootstrap.sh --prefix=$PKG/usr --with-toolset=gcc $ICU
 
@@ -20,4 +24,5 @@ local ICU=$([ -e /usr/bin/icu-config ] && echo --with-icu)
 	link=shared,static debug-symbols=off -j ${JOBS-1}
 
 ./b2 install threading=multi link=shared
+ln -svf detail/sha1.hpp $PKG/usr/include/boost/uuid/sha1.hpp
 }
