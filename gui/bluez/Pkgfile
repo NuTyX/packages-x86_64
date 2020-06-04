@@ -4,17 +4,17 @@ url="http://www.bluez.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-name=bluez
-version=5.52
-nutyx_version=11.2
-
-PKGMK_GROUPS=(man devel doc)
-
 makedepends=(dbus libical libvorbis alsa-lib
              libusb-compat libsndfile cups glib)
 
+name=bluez
+version=5.54
+nutyx_version=11.4
+
+PKGMK_GROUPS=(man devel doc)
+
 source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	https://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
+	    https://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
 build() {
 cd $name-$version
 ./configure --prefix=/usr \
