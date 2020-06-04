@@ -1,18 +1,23 @@
 description="C library that performs DNS requests and name resolves asynchronously"
 url="https://c-ares.haxx.se/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
+makedepends=(cmake)
+
 name=c-ares
-version=1.15.0
+version=1.16.1
 
 source=(https://c-ares.haxx.se/download/$name-$version.tar.gz)
 
 build() {
 
 cd $name-$version
-./configure --prefix=/usr --enable-shared
+mkdir build
+cd    build
+cmake  -DCMAKE_INSTALL_PREFIX=/usr ..
 make
 make DESTDIR=$PKG install
-rm $PKG/usr/lib/libcares.la
+
 }
