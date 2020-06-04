@@ -1,11 +1,12 @@
-description="The Perl package contains the Practical Extraction and Report Language."
+description="The Perl package contains the Practical Extraction and \
+Report Language."
 url="http://www.perl.org/"
 
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=perl
-version=5.30.2
+version=5.30.3
 
 source=(https://www.cpan.org/src/5.0/$name-$version.tar.xz)
 
@@ -51,8 +52,9 @@ find $PKG -iname 'TODO*' -or \
 	-iname 'README*' -or \
 	-name '*.bs' -or \
 	-name .packlist -or \
-	-name perllocal.pod | xargs rm
-find $PKG -depth -empty -exec rmdir {} \;
+	-name perllocal.pod -or \
+	-empty -delete
+
 chmod -R +w $PKG
 unset BUILD_ZLIB BUILD_BZIP2
 }
