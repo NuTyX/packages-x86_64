@@ -1,23 +1,29 @@
-description="The Rust programming language is designed to be a safe, concurrent, practical language."
+description="The Rust programming language is designed to be a safe, \
+concurrent, practical language."
 url="http://static.rust-lang.org/"
 
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B., Rémy"
 
-makedepends=(cmake curl llvm python libedit libssh)
+makedepends=(cmake curl llvm python libssh2)
 
 name=rustc
-version=1.42.0
+version=1.43.1
 
-source="http://static.rust-lang.org/dist/$name-$version-src.tar.gz"
+source=(rustc-1.43.1-llvm10-1.patch
+		http://static.rust-lang.org/dist/$name-$version-src.tar.gz)
 
 build() {
    cd $name-$version-src
+   patch -Np1 -i ../rustc-1.43.1-llvm10-1.patch
    cat <<EOF > config.toml
 # see src/bootstrap/config.toml.example for more possible options
 [llvm]
 # by default, rust will build for a myriad of architectures
 targets = "X86"
+
+# When using system llvm prefer shared libraries
+link-shared = true
 
 [build]
 # omit HTML docs to save time and space (comment this to build them)
@@ -28,7 +34,7 @@ extended = true
 
 [install]
 prefix = "/usr"
-docdir = "share/doc/rustc-1.42.0"
+docdir = "share/doc/rustc-1.43.1"
 
 [rust]
 channel = "stable"
