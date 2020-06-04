@@ -10,17 +10,16 @@ makedepends=(xorgproto pkg-config libtool xorg-xrandr wayland python-mako
              wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext
              xorg-libxdamage expat llvm elfutils xorg-libxshmfence
              libva libvdpau valgrind lm-sensors xorg-libxvmc libunwind)
+
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=20.0.7
+version=20.1.0
 
-source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz
-	http://www.linuxfromscratch.org/patches/downloads/mesa/mesa-$version-add_xdemos-1.patch)
+source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
+
 build() {
 cd mesa-$version
-
-patch -Np1 -i ../mesa-$version-add_xdemos-1.patch
 
 GALLIUM_DRV="i915,nouveau,r600,radeonsi,svga,swrast,virgl"
 DRI_DRIVERS="i965,nouveau"
