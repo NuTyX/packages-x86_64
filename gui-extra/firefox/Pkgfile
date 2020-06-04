@@ -2,21 +2,19 @@ description="Standalone web browser from mozilla.org"
 url="http://www.mozilla.com/firefox/"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, tnut, Remy"
+contributors="Pierre B, Remy"
 
 categories=(Network WebBrowser)
 
-makedepends=(node cbindgen icu libvpx libwebp nspr libevent rustc
+makedepends=(node cbindgen libwebp nspr libevent rustc
              dbus-glib autoconf2-13 libnotify yasm)
-run=(shared-mime-info pulseaudio gconf
-     sqlite libvpx nss gtk2 gtk3 zip unzip
+run=(pulseaudio gconf icu sqlite libvpx nss gtk3 zip unzip
      gstreamer gstreamer-plugins-base gstreamer-plugins-good
      gstreamer-plugins-libav shared-mime-info)
 
 
 name=firefox
-version=76.0.1
-release=2
+version=77.0.1
 
 locale_version=$version
 
