@@ -1,52 +1,59 @@
-description="Office suite. It is largely compatible with Microsoft Office (fork from OpenOffice.org)."
+description="Office suite. It is largely compatible with Microsoft Office \
+(fork from OpenOffice.org)."
 url="http://www.libreoffice.org"
 
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
 
-makedepends=(python perl-archive-zip unzip zip icu gtk3 cups poppler-glib xorg-fontconfig
-             libxslt kerberos xorgproto dbus-glib mesa postgresql wget apache-ant apr
-             boost clucene dbus-glib libepoxy libjpeg-turbo2 xorg-glu gstreamer-plugins-base
-             libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss redland serf unixodbc
-             doxygen gdb gnutls nasm telepathy-glib xmlsec gpgme libabw libcmis cppunit hunspell
-             hyphen mariadb)
+makedepends=(python perl-archive-zip unzip zip icu gtk3 cups poppler-glib
+             xorg-fontconfig libxslt kerberos xorgproto dbus-glib mesa
+             postgresql wget apache-ant apr boost clucene dbus-glib
+             libepoxy libjpeg-turbo2 xorg-glu gstreamer-plugins-base
+             libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss
+             redland serf unixodbc doxygen gdb gnutls nasm telepathy-glib
+             xmlsec gpgme libabw libcmis cppunit hunspell hyphen mariadb)
 run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache)
 
 name=libreoffice
-version=6.4.3.2
+version=6.4.4.2
+
 categories=(Office Graphics Education)
 
 PKGMK_IGNORE_UNPACK="yes"
+_url="https://download.documentfoundation.org/libreoffice/src/${version%.*}/"
 
-source=(http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-$version.tar.xz
-	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-dictionaries-$version.tar.xz
-	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-help-$version.tar.xz
-	http://download.documentfoundation.org/libreoffice/src/${version%.*}/$name-translations-$version.tar.xz
-	
+source=(http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-format_overflow-1.patch
+        ${_url}$name-$version.tar.xz
+		${_url}$name-dictionaries-$version.tar.xz
+		${_url}$name-help-$version.tar.xz
+		${_url}$name-translations-$version.tar.xz
         0001-Remove-check-if-root-due-to-issue-with-fakeroot.patch)
+
 prepare() {
-        unset ACLOCAL
+  unset ACLOCAL
 
-        tar -xf $name-$version.tar.xz --no-overwrite-dir
+  tar -xf $name-$version.tar.xz --no-overwrite-dir
 
-        cd $name-$version
-        patch -Np1 -i ../0001-Remove-check-if-root-due-to-issue-with-fakeroot.patch
+  cd $name-$version
+  patch -Np1 -i ../0001-Remove-check-if-root-due-to-issue-with-fakeroot.patch
+  patch -Np1 -i ../$name-$version-format_overflow-1.patch
+  install -dm755 external/tarballs/
+  ln -sv ../../../$name-dictionaries-$version.tar.xz  external/tarballs/
+  ln -sv ../../../$name-help-$version.tar.xz          external/tarballs/
+  ln -sv ../../../$name-translations-$version.tar.xz  external/tarballs/
 
-
-        install -dm755 external/tarballs/
-        ln -sv ../../../$name-dictionaries-$version.tar.xz  external/tarballs/
-        ln -sv ../../../$name-help-$version.tar.xz          external/tarballs/
-        ln -sv ../../../$name-translations-$version.tar.xz  external/tarballs/
-
-	sed -e "/gzip -f/d"   \
-	-e "s|.1.gz|.1|g" \
+  sed -e "/gzip -f/d" -e "s|.1.gz|.1|g" \
 	-i bin/distro-install-desktop-integration
 
-	sed -e "/distro-install-file-lists/d" -i Makefile.in
+  sed -e "/distro-install-file-lists/d" -i Makefile.in
+
+  sed -e 's@getURI()->c_str()@getURI().c_str()@' \
+    -i sdext/source/pdfimport/xpdfwrapper/pdfioutdev_gpl.cxx
 }
 build() {
-cd $name-$version
-./autogen.sh --prefix=/usr \
+   cd $name-$version
+
+   ./autogen.sh --prefix=/usr \
 	--sysconfdir=/etc \
 	--with-vendor="NuTyX" \
 	--with-lang="ar cs es de fr \
