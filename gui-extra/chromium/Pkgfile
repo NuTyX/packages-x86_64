@@ -10,14 +10,12 @@ makedepends=(gtk3 ffmpeg flac dbus freetype xorg-libxscrnsaver
 run=(hicolor-icon-theme desktop-file-utils re2)
 
 name=chromium
-version=80.0.3987.149
+version=83.0.4103.97
 
 source=(https://downloads.tuxfamily.org/nutyx/files/libminizip.so.1.0.0 
- https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-1-x86_64.pkg.tar.zst)
+        https://downloads.tuxfamily.org/nutyx/files/chromium-$version-1-bin-x86_64.tar.xz)
 
 build() {
-
-tar xaf chromium-$version-1-x86_64.pkg.tar.zst
 
 mv usr $PKG
 cp libminizip.so.1.0.0 $PKG/usr/lib/chromium
