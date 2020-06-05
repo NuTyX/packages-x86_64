@@ -3,17 +3,18 @@ url="https://people.mozilla.org"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(autoconf2-13 icu libffi nspr python2 zip rustc)
+makedepends=(autoconf2-13 icu libffi nspr python2 zip)
 
 name=js68
-version=68.4.2
-release=2
+version=68.9.0
 
-source=( https://download.gnome.org/teams/releng/tarballs-needing-help/mozjs/mozjs-$version.tar.bz2)
+source=(https://archive.mozilla.org/pub/firefox/releases/68.9.0esr/source/firefox-68.9.0esr.source.tar.xz)
 
 build() {
 
-  cd mozjs-$version
+  cd firefox-$version
+
+  sed '21,+4d' -i js/moz.configure
 
   mkdir mozjs-build
   cd    mozjs-build
