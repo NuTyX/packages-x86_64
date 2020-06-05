@@ -5,7 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Rems"
 
 name=qtbase
-version=5.14.2
+version=5.15.0
 makedepends=(git xorgproto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext
              xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms
              xcb-util-renderutil xcb-util xcb-util-image xcb-util-wm xcb-util-cursor
@@ -55,11 +55,10 @@ cd ${_name}-${version}
             -system-zlib        \
             -system-libjpeg     \
             -system-libpng      \
-            -system-xcb         \
             -system-harfbuzz    \
             -system-sqlite      \
             -system-freetype    \
-	    -no-rpath
+            -no-rpath
 make
 make INSTALL_ROOT=$PKG install
 
