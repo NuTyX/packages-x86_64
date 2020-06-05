@@ -4,10 +4,12 @@ url="https://www.nvidia.com"
 packager="tnut <tnut@nutyx.org>"
 
 version=440.82
+release=2
 
 run=(kernel)
 
-source=(https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
+source=(nvidia-kernel-5.7.patch
+	https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
 
 build()
 {
@@ -15,6 +17,7 @@ build()
 
 
  cd NVIDIA-Linux-x86_64-$version/kernel
+ patch -Np1 -i ../../nvidia-kernel-5.7.patch
 
  modules_dir="$(basename /lib/modules/*)"
 
