@@ -10,11 +10,27 @@ makedepends=(qtbase qtwebchannel qtlocation xorg-libxcomposite
              xorg-libxscrnsaver)
 
 name=qtwebengine
-version=5.14.2
+version=5.15.0
 _name="${name}-everywhere-src"
 
-source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
+source=(http://www.linuxfromscratch.org/patches/blfs/svn/${_name}-$version-consolidated_fixes-1.patch
+        https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
+prepare() {
+  cd ${_name}-$version
+
+  find -type f -name "*.pr[io]" |
+  xargs sed -i -e 's|INCLUDEPATH += |&$$QTWEBENGINE_ROOT/include |'
+  
+  patch -Np1 -i ../${_name}-$version-consolidated_fixes-1.patch
+
+  sed -e '/link_pulseaudio/s/false/true/' \
+    -i src/3rdparty/chromium/media/media_options.gni
+
+  sed -i 's/NINJAJOBS/NINJA_JOBS/' src/core/gn_run.pro
+
+  cd ..
+}
 build() {
   mkdir build
   cd build 
