@@ -5,14 +5,15 @@ packager="tnut <tnu@nutyx.org>"
 contributors="Pierre B"
 
 makedepends=(lzo cmake libevent boost libxml2 cracklib pcre ruby libaio openssl)
+run=(shadow)
 
 name=mariadb
-version=10.4.12
+version=10.4.13
 
-nutyx_version=11.3
+nutyx_version=11.4
 
 source=(https://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	ftp://ftp.osuosl.org/pub/mariadb/$name-$version/source/$name-$version.tar.gz)
+	https://downloads.mariadb.org/interstitial/$name-$version/source/$name-$version.tar.gz)
 PKGMK_GROUPS=(devel lib man doc service)
 
 prepare() {
