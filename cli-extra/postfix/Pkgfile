@@ -5,9 +5,10 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Berlius, Fanch, Greg, Minzord"
 
 makedepends=(libnsl db cyrus-sasl openssl icu mariadb openldap pcre postgresql sqlite)
+run=(shadow)
 
 name=postfix
-version=3.5.1
+version=3.5.2
 runyx_version=20200412
 
 source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
@@ -51,7 +52,5 @@ readme_directory=$PKG/usr/share/doc/postfix-$version/readme
 # Service
 cd ../runyx-${runyx_version}
 make DESTDIR=$PKG install-sysv-postfix
-make DESTDIR=$PKG install-sysd-postfix
-make DESTDIR=$PKG install-runyx-postfix
 
 }
