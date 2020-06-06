@@ -1,0 +1,43 @@
+diff -Naur a/bindings/python/tests/CMakeLists.txt b/bindings/python/tests/CMakeLists.txt
+--- a/bindings/python/tests/CMakeLists.txt	2020-04-11 18:28:50.000000000 +0200
++++ b/bindings/python/tests/CMakeLists.txt	2020-06-06 11:18:39.123313281 +0200
+@@ -5,7 +5,7 @@
+     # Because it hasn't been built yet
+     set(test_core_dir ${CMAKE_BINARY_DIR}/common/test-core)
+   endif()
+-  add_custom_target(test-python-bindings ALL DEPENDS unittest_support gnucash-core-c-build gnucash-core-c-py swig-app-utils-python)
++  add_custom_target(test-python-bindings ALL DEPENDS unittest_support gnucash-core-c-build gnucash-core-c-py sw_app_utils)
+   add_dependencies(check test-python-bindings)
+   add_test(python-bindings ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/runTests.py.in)
+   set_property(TEST python-bindings PROPERTY ENVIRONMENT
+@@ -21,6 +21,7 @@
+         test_business.py
+         test_commodity.py
+         test_numeric.py
++        test_session.py
+         test_split.py
+         test_transaction.py
+         test_query.py)
+diff -Naur a/gnucash/import-export/csv-imp/gnc-imp-settings-csv.hpp b/gnucash/import-export/csv-imp/gnc-imp-settings-csv.hpp
+--- a/gnucash/import-export/csv-imp/gnc-imp-settings-csv.hpp	2019-09-14 20:56:03.000000000 +0200
++++ b/gnucash/import-export/csv-imp/gnc-imp-settings-csv.hpp	2020-06-06 18:16:39.563195941 +0200
+@@ -36,6 +36,7 @@
+ 
+ #include <string>
+ #include <vector>
++#include <algorithm>
+ #include <boost/optional.hpp>
+ #include <gnc-datetime.hpp>
+ #include "gnc-tokenizer.hpp"
+diff -Naur a/libgnucash/core-utils/binreloc.c b/libgnucash/core-utils/binreloc.c
+--- a/libgnucash/core-utils/binreloc.c	2020-04-11 23:17:58.000000000 +0200
++++ b/libgnucash/core-utils/binreloc.c	2020-06-06 11:18:27.036646635 +0200
+@@ -475,7 +475,7 @@
+     prefix = gnc_gbr_find_prefix (NULL);
+     if (prefix == NULL)
+         return g_strdup (default_dir ? default_dir : compiled_dir);
+-    if (!g_getenv("GNC_UNINSTALLE"))
++    if (!g_getenv("GNC_UNINSTALLED"))
+     {
+         if (!g_strcmp0 (prefix, PREFIX))
+             return g_strdup (compiled_dir);
