@@ -5,12 +5,13 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 makedepends=(python libxml2 libxslt openldap pam kerberos)
+run=(shadow)
 
 PKGMK_GROUPS=(lib doc man devel service)
 
 name=postgresql
-version=12.2
-nutyx_version=11.3
+version=12.3
+nutyx_version=11.4
 
 source=(https://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
 	https://ftp.postgresql.org/pub/source/v$version/$name-$version.tar.bz2)
