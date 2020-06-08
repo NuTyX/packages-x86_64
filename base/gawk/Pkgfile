@@ -6,7 +6,7 @@ packager="tnut <tnut@tnut@org>"
 contributors="Pierre B"
 
 name=gawk
-version=5.0.1
+version=5.1.0
 
 source=(http://ftp.gnu.org/gnu/gawk/gawk-$version.tar.xz)
 
@@ -16,8 +16,6 @@ cd gawk-$version
 sed -i 's/extras//' Makefile.in
 ./configure --prefix=/usr
 make
-# Some checks fails
-make check || true
 make DESTDIR=$PKG install
 
 # Documentation
