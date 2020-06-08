@@ -1464,18 +1464,23 @@ install_nutyx() {
 	[ -d "$EFIVARS" ] && setup_esp
 
 	cd ${1}/boot
+	if [ -d ${2}/home ];then
+		mv ${2}/{home,.home}
+	fi
 	MAX=`ls *squashfs|wc -l`
 	N=0
 	(for i in *squashfs
 	do
-		DIR=`echo $i|cut -d "." -f1`
+		DIR=$(echo $i|cut -d "." -f1)
+		rm -rf ${2}/${DIR}
 		unsquashfs -f -n -d ${2}/${DIR} ${i} >/dev/null
-		REAL=`calc $N/$MAX *100`
+		REAL=$(calc $N/$MAX *100)
 		PCT=${REAL%.*}
 		echo "$PCT"
 		N=$((N+1))
 	done
 	echo "92"
+	rm -rf ${2}/boot
 	chmod 750 ${2}/root
 	mkdir ${2}/boot 2>/dev/null
 	echo "$PARTITION   /    $FORMAT  defaults     0    0" >> /etc/fstab
