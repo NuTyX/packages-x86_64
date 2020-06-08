@@ -1,0 +1,33 @@
+description="Dynamic, any to any, pixel format conversion library"
+url="http://gegl.org/babl"
+
+contributors="Pierre B, tnut, greg"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(meson ninja lcms2 gobject-introspection vala)
+
+name=babl
+version=0.1.78
+
+source=(http://download.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.xz)
+prepare() {
+mv $name-$version/{build,bld}
+}
+build=meson
+package() {
+install -v -m755 -d $PKG/usr/share/gtk-doc/html/babl/graphics
+install -v -m644 $name-$version/docs/*.{css,html} \
+$PKG/usr/share/gtk-doc/html/babl
+install -v -m644 $name-$version/docs/graphics/*.{html,svg} \
+$PKG/usr/share/gtk-doc/html/babl/graphics
+}
+uptodate() {
+local last url ext
+ext=".tar.xz"
+url="https://download.gimp.org/pub/$name"
+
+last="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep [0-9]/|head -1`"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$last/?C=M\;O=D|grep $ext$|head -1|sed "s@$last/$name-@@"|sed "s@$ext@@"
+}
