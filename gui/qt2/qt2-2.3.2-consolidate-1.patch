@@ -1,0 +1,17 @@
+--- a/src/tools/qvaluestack.h	2001-10-29 15:21:15.000000000 +0100
++++ b/src/tools/qvaluestack.h	2020-06-10 21:10:29.189981873 +0200
+@@ -49,12 +49,12 @@
+ public:
+     QValueStack() {}
+    ~QValueStack() {}
+-    void  push( const T& d ) { append(d); }
++    void  push( const T& d ) { this->append(d); }
+     T pop()
+     {
+ 	T elem( this->last() );
+ 	if ( !this->isEmpty() )
+-	    remove( this->fromLast() );
++	    this->remove( this->fromLast() );
+ 	return elem;
+     }
+     T& top() { return this->last(); }

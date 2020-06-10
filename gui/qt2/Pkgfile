@@ -1,0 +1,39 @@
+description="Qt version 2 application and UI framework"
+url="http://qt-project.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Rems"
+
+name=qt2
+version=2.3.2
+makedepends=(xorgproto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext
+             xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms
+             xcb-util-renderutil xcb-util xcb-util-image xcb-util-wm xcb-util-cursor
+             glib dbus xorg-fontconfig xorg-libsm xorg-libxrandr xorg-libxv
+             xorg-libxi unixodbc libjpeg-turbo alsa-lib xdg-utils hicolor-icon-theme
+             desktop-file-utils mesa xorg-libxcursor xorg-libxrender libpng mariadb
+             libglade xorg-libxfixes xorg-libxinerama libxkbcommon libtiff libmng openal
+             libxslt xorg-libxcomposite libxkbcommon nss pciutils freetype)
+
+
+
+_name="qt-x11"
+
+source=($name-$version-consolidate-1.patch
+        https://download.qt.io/archive/qt/${version:0:1}/$version/submodules/${_name}-${version}.tar.gz)
+
+build() {
+cd qt-${version}
+chmod 666 src/tools/qvaluestack.h
+patch -Np1 -i ../$name-$version-consolidate-1.patch
+chmod 444 src/tools/qvaluestack.h
+export QTDIR=$PWD
+./configure -I/usr/include/freetype2 \
+   -gif -thread
+make
+mkdir -p $PKG/usr/{include/qt2,lib,share/doc/qt2}
+cp -a lib/* $PKG/usr/lib/
+cp -a tutorial $PKG/usr/share/doc/qt2/tutorial
+cp -a examples $PKG/usr/share/doc/qt2/examples
+cp -a include/* $PKG/usr/include/qt2/
+}
