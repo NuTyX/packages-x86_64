@@ -27,13 +27,22 @@ cd qt-${version}
 chmod 666 src/tools/qvaluestack.h
 patch -Np1 -i ../$name-$version-consolidate-1.patch
 chmod 444 src/tools/qvaluestack.h
+mkdir -p $PKG/usr/{include/qt2,lib,share/doc/qt2}
+
+for i in compat tools kernel widgets table dialogs \
+  workspace qiconview canvas network xml
+do
+   for file in $(find src/$i -name *.h)
+   do
+       mkdir -p $PKG/usr/include/qt2/$i
+       cp -a $file $PKG/usr/include/qt2/$i/
+   done
+done
 export QTDIR=$PWD
 ./configure -I/usr/include/freetype2 \
    -gif -thread
 make
-mkdir -p $PKG/usr/{include/qt2,lib,share/doc/qt2}
 cp -a lib/* $PKG/usr/lib/
 cp -a tutorial $PKG/usr/share/doc/qt2/tutorial
 cp -a examples $PKG/usr/share/doc/qt2/examples
-cp -a include/* $PKG/usr/include/qt2/
 }
