@@ -4,18 +4,16 @@ url="http://qt-project.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Rems"
 
+makedepends=(xorgproto xorg-xtrans xorg-libx11 xorg-libxext
+             xorg-libfs xorg-libice xorg-libsm xorg-fontconfig
+             xorg-libsm xorg-libxrandr xorg-libxv libpng libtiff
+             xorg-libxi libjpeg-turbo mesa xorg-libxcursor xorg-libxrender
+             xorg-libxfixes xorg-libxinerama libxkbcommon libmng
+             libxslt xorg-libxcomposite libxkbcommon freetype)
+
 name=qt2
 version=2.3.2
-makedepends=(xorgproto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext
-             xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms
-             xcb-util-renderutil xcb-util xcb-util-image xcb-util-wm xcb-util-cursor
-             glib dbus xorg-fontconfig xorg-libsm xorg-libxrandr xorg-libxv
-             xorg-libxi unixodbc libjpeg-turbo alsa-lib xdg-utils hicolor-icon-theme
-             desktop-file-utils mesa xorg-libxcursor xorg-libxrender libpng mariadb
-             libglade xorg-libxfixes xorg-libxinerama libxkbcommon libtiff libmng openal
-             libxslt xorg-libxcomposite libxkbcommon nss pciutils freetype)
-
-
+release=2
 
 _name="qt-x11"
 
@@ -27,22 +25,47 @@ cd qt-${version}
 chmod 666 src/tools/qvaluestack.h
 patch -Np1 -i ../$name-$version-consolidate-1.patch
 chmod 444 src/tools/qvaluestack.h
-mkdir -p $PKG/usr/{include/qt2,lib,share/doc/qt2}
+mkdir -p $PKG/usr/{lib,share/doc/$name-$version}
 
-for i in compat tools kernel widgets table dialogs \
-  workspace qiconview canvas network xml
-do
-   for file in $(find src/$i -name *.h)
-   do
-       mkdir -p $PKG/usr/include/qt2/$i
-       cp -a $file $PKG/usr/include/qt2/$i/
-   done
-done
 export QTDIR=$PWD
-./configure -I/usr/include/freetype2 \
-   -gif -thread
+echo "yes"|./configure -I/usr/include/freetype2 \
+   -gif -thread -system-jpeg -system-libmng
 make
-cp -a lib/* $PKG/usr/lib/
-cp -a tutorial $PKG/usr/share/doc/qt2/tutorial
-cp -a examples $PKG/usr/share/doc/qt2/examples
+cd ..
+mv qt-${version} $PKG/usr/lib/qt2
+mv $PKG/usr/lib/qt2/doc/html $PKG/usr/share/doc/$name-$version/html
+mv $PKG/usr/lib/qt2/doc/man  $PKG/usr/share/man
+rm -d $PKG/usr/lib/qt2/doc
+for LIB in libqt-mt.so.$version libqt.so.$version libqutil.so.1.0.0
+do
+   mv $PKG/usr/lib/qt2/lib/$LIB $PKG/usr/lib
+   ln -sv ../../$LIB $PKG/usr/lib/qt2/lib/$LIB
+done
+
+for FILE in ANNOUNCE FAQ INSTALL LICENSE.GPL LICENSE.QPL MANIFEST \
+  README README.QT changes-2*
+do
+  mv $PKG/usr/lib/qt2/$FILE $PKG/usr/share/doc/$name-$version/
+done
+}
+devel () {
+cd $PKG
+mkdir -p etc/profile.d
+cat > etc/profile.d/qt2.sh << "EOF"
+# Begin /etc/profile.d/qt2.sh
+QTDIR=/usr/lib/qt2
+export QTDIR
+pathappend $QTDIR/bin
+# End /etc/profile.d/qt2.sh
+EOF
+mv usr/lib/qt2/lib lib
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+usr/lib/qt2 \
+etc
+
+rm -r {usr/lib/qt2,etc}
+
+mkdir usr/lib/qt2
+mv lib usr/lib/qt2
 }
