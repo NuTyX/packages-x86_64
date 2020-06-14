@@ -1,0 +1,64 @@
+description='Contains a very secure and very small FTP daemon.'
+url="https://security.appspot.com/"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libnsl libcap)
+
+name=vsftpd
+version=3.0.3
+
+nutyx_version=11.3
+
+source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+	    https://security.appspot.com/downloads/$name-$version.tar.gz)
+
+prepare() {
+
+mkdir -p $PKG/{etc,home,usr/{sbin,share/{vsftpd,man/man{5,8}}}}
+install -v -d -m 0755 $PKG/usr/share/vsftpd/empty
+install -v -d -m 0755 $PKG/home/ftp
+
+SN1="vsftpd"
+IDN1="47"
+SN2="ftp"
+IDN2="45"
+
+if ! (getent group $SN1 > /dev/null); then
+	groupadd -g $IDN1 $SN1
+fi
+if ! (getent group $SN2 > /dev/null); then
+	groupadd -g $IDN2 $SN2
+fi
+
+if ! (getent passwd $SN1 > /dev/null); then
+	useradd -c "vsftpd User" -d /dev/null -g $SN1 \
+        -s /bin/false -u $IDN1 $SN1
+fi
+if ! (getent passwd $SN2 > /dev/null); then
+	useradd -c "anonymous_user" -d /home/ftp -g $SN2 \
+        -s /bin/false -u $IDN2 $SN2
+fi
+}
+build() {
+	
+ cd $name-$version
+
+ sed -e "s/kVSFSysStrOpenUnknown;/(enum EVSFSysUtilOpenMode)&/" -i sysstr.c
+
+ make
+}
+
+package() {
+
+ cd $name-$version
+
+ install -v -m 755 vsftpd        $PKG/usr/sbin/vsftpd
+ install -v -m 644 vsftpd.8      $PKG/usr/share/man/man8
+ install -v -m 644 vsftpd.conf.5 $PKG/usr/share/man/man5
+ install -v -m 644 vsftpd.conf   $PKG/etc/vsftpd.conf.example
+
+ # Service
+ cd $SRC/nutyx-${nutyx_version}
+ make DESTDIR=$PKG install-vsftpd
+}
