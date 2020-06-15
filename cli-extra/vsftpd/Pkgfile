@@ -4,9 +4,11 @@ url="https://security.appspot.com/"
 packager="tnut <tnut@nutyx.org>"
 
 makedepends=(libnsl libcap)
+run=(pam shadow)
 
 name=vsftpd
 version=3.0.3
+release=2
 
 nutyx_version=11.3
 
@@ -15,7 +17,7 @@ source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
 
 prepare() {
 
-mkdir -p $PKG/{etc,home,usr/{sbin,share/{vsftpd,man/man{5,8}}}}
+mkdir -p $PKG/{etc/pam.d,home,usr/{sbin,share/{vsftpd,man/man{5,8}}}}
 install -v -d -m 0755 $PKG/usr/share/vsftpd/empty
 install -v -d -m 0755 $PKG/home/ftp
 
@@ -57,6 +59,44 @@ package() {
  install -v -m 644 vsftpd.8      $PKG/usr/share/man/man8
  install -v -m 644 vsftpd.conf.5 $PKG/usr/share/man/man5
  install -v -m 644 vsftpd.conf   $PKG/etc/vsftpd.conf.example
+ cat >> $PKG/etc/vsftpd.conf.example << "EOF"
+#
+# It is now recommended to run vsftpd in standalone mode.
+# Also, you should specify the privilege separation user created above.
+# Finally, you should specify the chroot directory.
+# man vsftpd.conf will give you all the details.
+background=YES
+listen=YES
+nopriv_user=vsftpd
+secure_chroot_dir=/usr/share/vsftpd/empty
+
+# vsftpd daemon uses seccomp to improve security by default.
+# But it's known to cause vsftpd unable to handle ftp LIST
+# command with recent kernel versions.
+seccomp_sandbox=NO
+
+# To enable local logins
+local_enable=YES
+
+# PAM session support
+session_support=YES
+pam_service_name=vsftpd
+EOF
+  cat > $PKG/etc/pam.d/vsftpd << "EOF"
+# Begin /etc/pam.d/vsftpd
+auth       required     /lib/security/pam_listfile.so item=user sense=deny \
+                                                      file=/etc/ftpusers \
+                                                      onerr=succeed
+auth       required     pam_shells.so
+auth       include      system-auth
+account    include      system-account
+session    include      system-session
+EOF
+
+cat >> /etc/vsftpd.conf << "EOF"
+session_support=YES
+pam_service_name=vsftpd
+EOF
 
  # Service
  cd $SRC/nutyx-${nutyx_version}
