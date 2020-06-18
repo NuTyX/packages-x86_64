@@ -8,7 +8,7 @@ run=(pam shadow)
 
 name=vsftpd
 version=3.0.3
-release=2
+release=3
 
 nutyx_version=11.3
 
@@ -93,7 +93,7 @@ account    include      system-account
 session    include      system-session
 EOF
 
-cat >> /etc/vsftpd.conf << "EOF"
+  cat >> /etc/vsftpd.conf << "EOF"
 session_support=YES
 pam_service_name=vsftpd
 EOF
