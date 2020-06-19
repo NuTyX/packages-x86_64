@@ -5,10 +5,11 @@ packager="tnut <tnut@nutyx.org>"
 contributors="McKim"
 
 makedepends=(git cmake json-glib gtk3)
-run=(pciutils usbutils)
+run=(pciutils usbutils xorg-xrandr mesa)
 
 name=hardinfo
 version=0.5.1
+release=2
 
 prepare() {
 git clone https://github.com/lpereira/hardinfo
@@ -24,6 +25,7 @@ cmake \
     -DJSON_GLIB_INCLUDE_DIRS=/usr/include/json-glib-1.0 \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
+    -DHARDINFO_GTK3=true \
     ..
 make
 make DESTDIR=$PKG install
