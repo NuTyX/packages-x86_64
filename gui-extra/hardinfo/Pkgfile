@@ -1,0 +1,30 @@
+description="A system information and benchmark tool"
+url="https://github.com/lpereira/hardinfo"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="McKim"
+
+makedepends=(git cmake json-glib gtk3)
+run=(pciutils usbutils)
+
+name=hardinfo
+version=0.5.1
+
+prepare() {
+git clone https://github.com/lpereira/hardinfo
+cd $name
+mkdir build
+cd -
+}
+build() {
+
+cd $name/build
+
+cmake \
+    -DJSON_GLIB_INCLUDE_DIRS=/usr/include/json-glib-1.0 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    ..
+make
+make DESTDIR=$PKG install
+}
