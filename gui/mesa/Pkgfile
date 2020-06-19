@@ -15,12 +15,14 @@ alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
 version=20.1.1
+release=2
 
-source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
+source=(http://www.linuxfromscratch.org/patches/blfs/svn/mesa-20.1.1-add_xdemos-1.patch
+	https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
 
 build() {
 cd mesa-$version
-
+patch -Np1 -i ../mesa-20.1.1-add_xdemos-1.patch
 GALLIUM_DRV="i915,nouveau,r600,radeonsi,svga,swrast,virgl"
 DRI_DRIVERS="i965,nouveau"
 
