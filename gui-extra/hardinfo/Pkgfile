@@ -4,12 +4,13 @@ url="https://github.com/lpereira/hardinfo"
 packager="tnut <tnut@nutyx.org>"
 contributors="McKim"
 
-makedepends=(git cmake json-glib gtk3)
+makedepends=(git cmake json-glib gtk3
+             libsoup)
 run=(pciutils usbutils xorg-xrandr mesa)
 
 name=hardinfo
 version=0.5.1
-release=2
+release=3
 
 prepare() {
 git clone https://github.com/lpereira/hardinfo
