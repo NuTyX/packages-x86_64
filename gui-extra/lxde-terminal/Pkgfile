@@ -1,15 +1,19 @@
 description="Terminal emulator without any unnecessary dependencies"
 contributors="tnut, Greg"
+
 packager="tnut <tnut@nutyx.org>"
 url="http://lxde.org/"
 
 makedepends=(intltool vte3 gtk3)
+run=(desktop-file-utils)
+
+set=(lxde)
 
 name=lxde-terminal
 alias=(lxterminal)
 _name=lxterminal
 version=0.3.2
-release=2
+release=3
 
 source=(https://downloads.sourceforge.net/lxde/lxterminal-$version.tar.xz
 )
