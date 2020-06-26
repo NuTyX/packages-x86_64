@@ -1066,13 +1066,70 @@ fi
 echo "
 # Default server URL
 url ${URL}
+#" > ${FOLDER}/etc/cards.conf
+[ "$INIT" = "sysd" ] || echo "
 #
 ## For all the main desktops
 # Comment following line
 # If you don't want to install any main desktop
 #
 dir ${DEPOT}/desktops
+#" >> ${FOLDER}/etc/cards.conf
+[ "$INIT" = "sysd" ] && echo "
+## For nos
+# Comment following line
+# If you don't want to install Non Open source/Not compiled packages
 #
+dir /var/lib/pkg/depot/nos
+#
+## For community
+# Uncomment following line if you want community packages
+# dir /var/lib/pkg/depot/community-extra
+# dir /var/lib/pkg/depot/community
+#
+## For LXQt
+# Uncomment following 2 lines
+# if you want to install LXQt when available
+#
+# dir /var/lib/pkg/depot/lxqt-extra
+# dir /var/lib/pkg/depot/lxqt
+#
+## For lxde
+# Comment following 2 lines
+# if you don't want to install lxde
+#
+dir /var/lib/pkg/depot/lxde-extra
+dir /var/lib/pkg/depot/lxde
+#
+## For Gnome
+# Comment following 2 lines
+# if you don't want to install gnome
+#
+dir /var/lib/pkg/depot/gnome-extra
+dir /var/lib/pkg/depot/gnome
+#
+## For mate
+# Comment following 2 lines
+# if you don't want to install mate
+#
+dir /var/lib/pkg/depot/mate-extra
+dir /var/lib/pkg/depot/mate
+#
+## For kde5
+# Comment following 2 lines
+# if you don't want to install kde5
+#
+dir /var/lib/pkg/depot/kde5-extra
+dir /var/lib/pkg/depot/kde5
+#
+## For xfce4
+# Comment following 2 lines
+# if you don't want to install xfce4
+#
+dir /var/lib/pkg/depot/xfce4-extra
+dir /var/lib/pkg/depot/xfce4
+#" >> ${FOLDER}/etc/cards.conf
+echo "
 ## Normally everything under this line
 # are needed stuffs
 #
@@ -1102,7 +1159,7 @@ base ${DEPOT}/base
 # base ${DEPOT}/cli-extra
 # base ${DEPOT}/gui
 # base ${DEPOT}/gui-extra
-# base ${DEPOT}/..." > ${FOLDER}/etc/cards.conf
+# base ${DEPOT}/..." >> ${FOLDER}/etc/cards.conf
 }
 generate_nutyx_version() {
 local FILE
@@ -1160,6 +1217,8 @@ if [ "$VERSION" == "development" ]; then
 else
 	CODE_NAME="Houaphan"
 fi
+[ "$VERSION" = "sysd" ] && INIT="sysd"
+
 [ -z "$DEPOT" ] && DEPOT="/var/lib/pkg/depot"
 [ -z "$FOLDER" ] && FOLDER="/mnt/hd"
 [ -z "$KERNEL" ] && KERNEL="kernel-419"
@@ -1176,25 +1235,34 @@ fi
 [[ ! -z "$KERNEL" && -z "$INIT" ]] && INIT="sysv"
 
 [ "$INIT" = "sysv" ] && INITS="eudev sysklogd sysvinit"
-[ "$INIT" = "sysd" ] && INITS="dbus systemd"
+if [ "$INIT" = "sysd" ]; then
+	INITS="dbus systemd"
+	CORE+=" libcap kmod"
+	CHROOT_LIST+=" nettle gnutls p11-kit libtasn1 libffi util-linux"
+fi
 [ "$INIT" = "runyx" ] && INITS="eudev sysklogd runyx"
 
 [ "$KERNEL" = "NONE" ] && unset KERNEL
 [ "$KERNEL" = "none" ] && unset KERNEL
 
 
-[ -z "$KERNEL" ] || CORE+=" kbd pam \
+if [ ! -z "$KERNEL" ]; then
+	[ "$INIT" != "sysd" ] && \
+	  CORE+=" libcap util-linux kmod"
+
+	CORE+=" kbd pam \
 gdbm e2fsprogs libpipeline \
-libcap gettext procps-ng \
+gettext procps-ng \
 psmisc sudo tzdata \
 iproute2 iana-etc \
-kmod groff man-db util-linux \
+groff man-db \
 cards.fr cards.man nutyx.man \
 lvm2 dialog cpio squashfs \
 ca-certificates lsb-release \
 linux-firmware e3 grub \
 lz4 mdadm dhcpcd \
 $KERNEL"
+fi
 
 [ -z $LFS ] && LFS=$FOLDER
 
