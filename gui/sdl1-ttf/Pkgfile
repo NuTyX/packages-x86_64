@@ -1,0 +1,30 @@
+description="TrueType library for libsdl."
+url="http://www.libsdl.org/projects/SDL_ttf/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Tnut, Fanch"
+
+makedepends=(freetype sdl1)
+
+name=sdl1-ttf
+version=2.0.11
+
+source=($name-$version-consolidate-1.patch
+        http://www.libsdl.org/projects/SDL_ttf/release/SDL_ttf-$version.tar.gz)
+
+build() {
+  cd SDL_ttf-$version
+  patch -Np1 -i ../$name-$version-consolidate-1.patch 
+
+  touch NEWS README AUTHORS ChangeLog
+
+  autoreconf -vi
+
+  ./configure \
+  --prefix=/usr
+
+  make 
+  make DESTDIR=$PKG install
+
+  rm $PKG/usr/lib/libSDL_ttf.la
+}
