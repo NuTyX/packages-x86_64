@@ -3,10 +3,11 @@ url="http://tux4kids.alioth.debian.org/"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(audiofile esound libjpeg-turbo2 libvorbis libpng sdl1 sdl1-image sdl1-mixer sdl1-ttf)
+makedepends=(libjpeg-turbo2 libvorbis libpng sdl1 sdl1-image sdl1-mixer sdl1-ttf)
 
 name=tuxtype
 version=1.8.1
+release=2
 
 source=(https://src.fedoraproject.org/repo/pkgs/tuxtype2/tuxtype_w_fonts-1.8.1.tar.gz/\
 ce96616ba0c9e619ce0071a528301e94/tuxtype_w_fonts-1.8.1.tar.gz)
@@ -17,4 +18,8 @@ cd tuxtype_w_fonts-$version
 --without-sdlpango
 make
 make DESTDIR=$PKG install
+install -Dm644 $name.desktop \
+$PKG/usr/share/applications/$name.desktop
+install -Dm644 icon.png \
+$PKG/usr/share/pixmaps/$name.png
 }
