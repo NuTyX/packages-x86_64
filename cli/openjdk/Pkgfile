@@ -1,12 +1,15 @@
 description="OpenJDK 8 updates of the open-source reference of the Java SE 8."
 url="http://openjdk.java.net/projects/jdk8/spec/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+run=(make-ca)
 
 name=openjdk
 version=8u141
-release=1
+release=2
+
 _version=1.8.0.141
 
 source=(http://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-${_version}/OpenJDK-${_version}-`uname -m`-bin.tar.xz)
@@ -16,6 +19,9 @@ cd OpenJDK*
 install -vdm755 $PKG/opt/OpenJDK-$version-bin
 mv -v * $PKG/opt/OpenJDK-$version-bin 
 chown -R root:root $PKG/opt/OpenJDK-$version-bin
+
+ln -svf /etc/pki/tls/java/cacerts \
+$PKG/opt/OpenJDK-$version-bin/jre/lib/security/cacerts
 
 mkdir -pv $PKG/etc/profile.d
 cat > $PKG/etc/profile.d/openjdk.sh << "EOF"
