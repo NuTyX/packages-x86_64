@@ -1,0 +1,17 @@
+description="Utility to deliver and manage a complete PKI configuration"
+url="https://github.com/djlucas/make-ca/"
+
+packager="tnut <tnut@nutyx.org>"
+
+run=(gawk nss p11-kit)
+
+name=make-ca
+version=1.7
+
+source=(https://github.com/djlucas/make-ca/releases/download/v$version/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+make DESTDIR=$PKG install
+install -vdm755 $PKG/etc/ssl/local
+}
