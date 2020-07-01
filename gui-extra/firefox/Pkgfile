@@ -14,7 +14,7 @@ run=(pulseaudio gconf icu sqlite libvpx nss gtk3 zip unzip
 
 
 name=firefox
-version=77.0.1
+version=78.0
 
 locale_version=$version
 
@@ -72,9 +72,6 @@ ac_add_options --disable-necko-wifi
 # ac_add_options --disable-pulseaudio
 # ac_add_options --enable-alsa
 
-# If you have installed GConf, comment out this line
-ac_add_options --disable-gconf
-
 # Comment out following options if you have not installed
 # recommended dependencies:
 #ac_add_options --enable-system-sqlite
@@ -123,7 +120,6 @@ ac_add_options --enable-system-pixman
 
 # From firefox-62 --with-pthreads is not recognized
 
-ac_add_options --with-system-bz2
 ac_add_options --with-system-jpeg
 ac_add_options --with-system-png
 ac_add_options --with-system-zlib
