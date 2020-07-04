@@ -1,15 +1,15 @@
-description="Light and fast Bittorent client (GTK Interface)"
+description="Light and fast Bittorent client (QT Interface)"
 url="http://www.transmissionbt.com/"
 
 packager="tnut <tnut@nutyx.org>"
 contributors="Alienus, Tnut, Remy"
 
-makedepends=(intltool curl libevent openssl qtbase qttools doxygen gdb)
+makedepends=(e2fsprogs kerberos intltool curl
+             libevent openssl qtbase qttools doxygen gdb)
 run=(desktop-file-utils gtk-update-icon-cache)
 
 name=transmission-qt
-version=2.94
-release=3
+version=3.00
 
 source=(https://raw.githubusercontent.com/transmission/transmission-releases/master/transmission-$version.tar.xz)
 
