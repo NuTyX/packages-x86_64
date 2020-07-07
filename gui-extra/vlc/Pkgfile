@@ -14,7 +14,7 @@ makedepends=(qtbase qtsvg qtx11extras x264 flac libmad glib librsvg
 run=(desktop-file-utils)
 
 name=vlc
-version=3.0.8
+version=3.0.11
 
 source=(https://download.videolan.org/$name/$version/$name-$version.tar.xz)
 
@@ -23,9 +23,12 @@ build() {
 cd $name-$version
 
 sed -i '/vlc_demux.h/a #define LUA_COMPAT_APIINTCASTS' modules/lua/vlc.h
-sed -i '/DEPRECATED/s:^://:'  modules/text_renderer/freetype/text_layout.c
-sed -i '/#include <QString>/i#include <QButtonGroup>' \
-        modules/gui/qt/components/simple_preferences.cpp
+sed -i '/LIBSSH2_VERSION_NUM/s/10801/10900/' modules/access/sftp.c
+sed -i '/#include <QWidget>/a\#include <QPainterPath>/' \
+ modules/gui/qt/util/timetooltip.hpp
+sed -i '/#include <QPainter>/a\#include <QPainterPath>/' \
+ modules/gui/qt/components/playlist/views.cpp \
+ modules/gui/qt/dialogs/plugins.cpp
 
 BUILDCC=gcc ./configure --prefix=/usr \
             --disable-rpath \
