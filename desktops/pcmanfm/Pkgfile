@@ -7,7 +7,7 @@ makedepends=(libfm lxde-menu-data intltool)
 set=(lxde)
 
 name=pcmanfm
-version=1.2.5
+version=1.3.1
 
 source=(https://downloads.sourceforge.net/$name/$name-$version.tar.xz
 		Fix-CVE-2017-8934.patch
@@ -15,7 +15,7 @@ source=(https://downloads.sourceforge.net/$name/$name-$version.tar.xz
 
 prepare() {
 cd $name-$version
-patch -Np1 -i ../Fix-CVE-2017-8934.patch  
+#patch -Np1 -i ../Fix-CVE-2017-8934.patch  
 }
 
 build() {
