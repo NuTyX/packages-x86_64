@@ -13,6 +13,7 @@ run=(startup-notification hunspell desktop-file-utils hicolor-icon-theme
 
 name=thunderbird
 version=78.0
+release=2
 
 locale_version=$version
 
@@ -51,23 +52,19 @@ cat > mozconfig << "EOF"
 # If you have installed wireless-tools comment out this line:
 ac_add_options --disable-necko-wifi
 
-# Uncomment these lines if you have installed optional dependencies:
-#ac_add_options --enable-startup-notification
 
 # Comment out following option if you have gconf installed
 #ac_add_options --disable-gconf
 
 # Comment out following options if you have not installed
 # recommended dependencies:
-ac_add_options --enable-system-sqlite
 ac_add_options --enable-system-ffi
+ac_add_options --enable-system-pixman
+
 ac_add_options --with-system-libevent
-# fails to build against libvpx-1.8.0
-#ac_add_options --with-system-libvpx
 ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
 ac_add_options --with-system-icu
-ac_add_options --with-system-bz2
 ac_add_options --with-system-jpeg
 ac_add_options --with-system-png
 ac_add_options --with-system-zlib
