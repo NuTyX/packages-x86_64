@@ -423,8 +423,8 @@ msgstr "Configure automatic update"
 msgid "Would you like to enable automatic update"
 msgstr "Would you like to enable automatic update"
 
-msgid "Make shure you reserve the first partition for ESP"
-msgstr "Make shure you reserve the first partition for ESP"
+msgid "Make sure you reserve the first partition for ESP"
+msgstr "Make sure you reserve the first partition for ESP"
 
 msgid "At partitioning, declare the first partition as EFI System"
 msgstr "At partitioning, declare the first partition as EFI System"
