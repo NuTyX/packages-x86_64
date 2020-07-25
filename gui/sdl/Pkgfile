@@ -1,4 +1,4 @@
-description="A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard"
+description='A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard'
 url="http://www.libsdl.org"
 
 packager="tnut <tnut@nutyx.org>"
@@ -9,30 +9,25 @@ makedepends=(xorg-libxext xorg-libxrender xorg-libx11
              xorg-libxrandr xorg-libxinerama libxkbcommon wayland)
 
 name=sdl
-version=2.0.10
+version=2.0.12
 
 source=(${url}/release/SDL2-$version.tar.gz)
 
 build() {
-  mkdir build
-  cd build
-  ../SDL2-$version/configure --prefix=/usr     \
-    --enable-sdl-dlopen                        \
-    --disable-arts --disable-esd --disable-nas \
-    --enable-alsa --enable-pulseaudio-shared   \
-    --disable-video-wayland                    \
-    --disable-rpath
+  cd SDL2-$version
+  ./configure --prefix=/usr
   make
 }
 package() {
-  cd build
+  cd SDL2-$version
   make DESTDIR=$PKG install
   install -Dm644 ../SDL2-$version/COPYING.txt $PKG/usr/share/licenses/$name/LICENSE
 
-  # Obsolet lib
+  # Obsolet libs
   rm $PKG/usr/lib/libSDL2.la
   rm $PKG/usr/lib/libSDL2_test.la
   rm $PKG/usr/lib/libSDL2main.la
 
-
+  # Static obsolet libs
+  rm $PKG/usr/lib/libSDL2*.a
 }
