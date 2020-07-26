@@ -1,7 +1,8 @@
 description="Dash is a POSIX compliant shell"
 url="http://gondor.apana.org.au/~herbert/dash/"
-contributors="tnut"
-packager="greg<greg@nutyx.org>"
+
+contributors="tnut, greg"
+packager="spiky <spiky@nutyx.org>"
 
 name=dash
 version=0.5.11.1
@@ -19,13 +20,5 @@ build(){
 		--exec-prefix="" \
 		--with-libedit
 	make
-
-}
-
-package() {
-
-	cd $name-$version
 	make DESTDIR=$PKG install
-  
 }
-
