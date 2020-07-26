@@ -7,15 +7,14 @@ contributors="Pierre B"
 makedepends=(nspr sqlite)
 
 name=nss
-version=3.54
-release=2
+version=3.55
 
 source=(https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_${version//./_}_RTM/src/nss-$version.tar.gz \
-	http://www.linuxfromscratch.org/patches/blfs/svn/nss-$version-standalone-2.patch)
+	http://www.linuxfromscratch.org/patches/blfs/svn/nss-$version-standalone-1.patch)
 
 build () {
 	cd $name-$version
-	patch -Np1 -i ../nss-$version-standalone-2.patch
+	patch -Np1 -i ../nss-$version-standalone-1.patch
 	cd nss
 # Compilation
 	make -j1 nss_build_all BUILD_OPT=1     		     \
