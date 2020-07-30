@@ -2,19 +2,24 @@ description="A JSON implementation in C"
 url="https://github.com/json-c/json-c/wiki"
 packager="tnut <tnut@nutyx.org>"
 
-name=json-c
-version=0.13.1
-release=2
+makedepends=(cmake)
 
-source=(
-https://s3.amazonaws.com/${name}_releases/releases/$name-$version.tar.gz)
+name=json-c
+version=0.15
+
+source=(https://s3.amazonaws.com/${name}_releases/releases/$name-$version.tar.gz)
 
 build(){
     cd $name-$version
-    ./configure --prefix=/usr \
-                --disable-static
+    mkdir build
+    cd    build
+    cmake   -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_BUILD_TYPE=Release  \
+            ..
+
+
     make || make -j1
     make DESTDIR=$PKG install    
 # Obsolet lib
-rm $PKG/usr/lib/libjson-c.la
+#rm $PKG/usr/lib/libjson-c.la
 }
