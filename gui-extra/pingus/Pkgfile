@@ -1,0 +1,20 @@
+description="A free Lemmings(tm) clone for GNU/Linux"
+url="https://pingus.seul.org"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(scons sdl1-image sdl1-mixer boost xorg-glu mesa)
+
+name=pingus
+version=0.7.5
+
+source=(https://github.com/Pingus/$name/archive/v$version.tar.gz
+        pingus-0.7.6-consolidate-1.patch pingus.desktop)
+build() {
+cd $name-$version
+patch -Np1 -i ../pingus-0.7.6-consolidate-1.patch
+scons prefix=/usr
+make DESTDIR=$PKG PREFIX=/usr install
+install -D -m644 ../pingus.desktop \
+$PKG/usr/share/applications/pingus.desktop
+}
