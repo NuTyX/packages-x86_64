@@ -11,12 +11,12 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=linux-mainline
-version=5.8-rc7
+version=5.8
 
 INITRD="initrd-mainline"
 KERNEL=${name/-*/}
 
-_version=${version}
+_version=${version:0:3}
 
 # Linux patch version
 [ "${_version}" != "${version}" ] && patchname="patch-$version.xz"
@@ -24,7 +24,7 @@ _version=${version}
 ## Download all the sources
 #
 
-source=(https://git.kernel.org/torvalds/t/linux-${version}.tar.gz config_64)
+source=($url/pub/linux/kernel/v5.x/linux-${_version}.tar.xz config_64)
 
 [ -z $patchname ] || source+=" $url/pub/linux/kernel/v5.x/$patchname"
 ## Time to build everything
@@ -32,7 +32,7 @@ source=(https://git.kernel.org/torvalds/t/linux-${version}.tar.gz config_64)
 
 build(){
 
-bsdtar -p -o -C $SRC -xf linux-${_version}.tar.gz
+bsdtar -p -o -C $SRC -xf linux-${_version}.tar.xz
 
 cd linux-${_version}
 
