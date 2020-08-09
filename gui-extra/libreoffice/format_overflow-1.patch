@@ -1,0 +1,91 @@
+Submitted By: Pierre Labastie <pierre dot labastie at neuf dot fr>
+Date: 2020-05-16
+Initial Package Version: 6.4.3.2
+Upstream Status: Committed
+Origin: Upstream
+Description: Fix building with GCC-10
+From 047e8ae5d189f030d565b13f97a4d6a45b00e6be Mon Sep 17 00:00:00 2001
+From: Stephan Bergmann <sbergman@redhat.com>
+Date: Wed, 27 Nov 2019 10:28:52 +0100
+Subject: external/liblangtag: Avoid null pointer deref in lt_warning call
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Recent GCC 10 trunk warns (when LO is configured with --enable-optimized):
+
+> In file included from lt-script-db.c:24:
+> lt-script-db.c: In function ‘lt_script_db_parse.constprop’:
+> lt-messages.h:105:2: error: ‘%s’ directive argument is null [-Werror=format-overflow=]
+>   105 |  lt_message_printf(LT_MSG_WARNING, \
+>       |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   106 |      LT_MSG_FLAG_NONE, \
+>       |      ~~~~~~~~~~~~~~~~~~~
+>   107 |      0,   \
+>       |      ~~~~~~
+>   108 |      __VA_ARGS__)
+>       |      ~~~~~~~~~~~~
+> lt-script-db.c:137:4: note: in expansion of macro ‘lt_warning’
+>   137 |    lt_warning("No subtag node: description = '%s'",
+>       |    ^~~~~~~~~~
+> lt-script-db.c:137:47: note: format string is defined here
+>   137 |    lt_warning("No subtag node: description = '%s'",
+>       |                                               ^~
+
+Change-Id: I2924f7aab84f4f2640f277ee5c2689753627ae78
+Reviewed-on: https://gerrit.libreoffice.org/83869
+Tested-by: Jenkins
+Reviewed-by: Stephan Bergmann <sbergman@redhat.com>
+---
+ external/liblangtag/UnpackedTarball_liblangtag.mk |  3 +++
+ external/liblangtag/Wformat-overflow.patch        | 17 +++++++++++++++++
+ 2 files changed, 20 insertions(+)
+ create mode 100644 external/liblangtag/Wformat-overflow.patch
+
+diff --git a/external/liblangtag/UnpackedTarball_liblangtag.mk b/external/liblangtag/UnpackedTarball_liblangtag.mk
+index cd52b169fa57..66b8051782d0 100644
+--- a/external/liblangtag/UnpackedTarball_liblangtag.mk
++++ b/external/liblangtag/UnpackedTarball_liblangtag.mk
+@@ -17,6 +17,8 @@ $(eval $(call gb_UnpackedTarball_set_pre_action,liblangtag,\
+ 
+ $(eval $(call gb_UnpackedTarball_update_autoconf_configs,liblangtag))
+ 
++$(eval $(call gb_UnpackedTarball_set_patchlevel,liblangtag,0))
++
+ ifneq ($(OS),MACOSX)
+ ifneq ($(OS),WNT)
+ $(eval $(call gb_UnpackedTarball_add_patches,liblangtag,\
+@@ -29,6 +31,7 @@ $(eval $(call gb_UnpackedTarball_add_patches,liblangtag, \
+ 	$(if $(SYSTEM_LIBXML),,external/liblangtag/langtag-libtool-rpath.patch.0) \
+     external/liblangtag/clang-cl.patch.0 \
+     external/liblangtag/langtag-valencia.patch.0 \
++    external/liblangtag/Wformat-overflow.patch \
+ ))
+ 
+ # vim: set noet sw=4 ts=4:
+diff --git a/external/liblangtag/Wformat-overflow.patch b/external/liblangtag/Wformat-overflow.patch
+new file mode 100644
+index 000000000000..f2d017e4b395
+--- /dev/null
++++ b/external/liblangtag/Wformat-overflow.patch
+@@ -0,0 +1,17 @@
++--- liblangtag/lt-script-db.c
+++++ liblangtag/lt-script-db.c
++@@ -134,8 +134,12 @@
++ 			cnode = cnode->next;
++ 		}
++ 		if (!subtag) {
++-			lt_warning("No subtag node: description = '%s'",
++-				   desc);
+++			if (!desc) {
+++				lt_warning("No subtag nor description node");
+++			} else {
+++				lt_warning("No subtag node: description = '%s'",
+++					   desc);
+++			}
++ 			goto bail1;
++ 		}
++ 		if (!desc) {
+-- 
+cgit v1.2.1
+
