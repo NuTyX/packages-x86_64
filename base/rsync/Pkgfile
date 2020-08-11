@@ -1,20 +1,35 @@
 description="Synchronizing files over a network by sending just the differences in the files."
 url="http://samba.anu.edu.au/rsync/"
-packager="tnut <tnut@nutyx.org>"
-name=rsync
-version=3.1.3
-nutyx_version=11.0
-release=3
 
-source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
+packager="tnut <tnut@nutyx.org>"
+run=(shadow)
+
+name=rsync
+version=3.2.3
+runyx_version=20200412
+
+source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	http://rsync.samba.org/ftp/$name/$name-$version.tar.gz
 	rsync.driver )
 
+prepare(){
+UN=rsyncd
+if ! (getent group $UN > /dev/null); then
+   groupadd -g 48 $UN
+fi
+if ! (getent passwd $UN > /dev/null); then
+   useradd  -c "rsyncd Daemon" -d /home/rsync \
+   -g $UN -s /bin/false -u 48 $UN
+fi
+}
 build() {
 
 cd $name-$version
 ./configure --prefix=/usr \
 -mandir=/usr/share/man \
+--disable-xxhash \
+--disable-lz4    \
+--disable-zstd   \
 --without-included-zlib \
 --infodir=/usr/share/info
 make
@@ -28,6 +43,17 @@ $PKG/var/lib/pkg/drivers/rsync
 
 # Service
 
-cd ../nutyx-${nutyx_version}
-make DESTDIR=$PKG install-rsyncd
+cd ../runyx-${runyx_version}
+make DESTDIR=$PKG install-sysv-rsyncd
+make DESTDIR=$PKG install-runyx-rsyncd
+make DESTDIR=$PKG install-sysd-rsyncd
+
+
+}
+service() {
+cd $PKG
+bsdtar -r -f \
+$PKGMK_PACKAGE_DIR/${name}.${group}${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
+etc/rc.d etc/init lib/init lib/systemd
+rm -r etc/rc.d etc/init lib/init lib/systemd
 }
