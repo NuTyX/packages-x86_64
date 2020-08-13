@@ -15,19 +15,19 @@ makedepends=(python perl-archive-zip unzip zip icu gtk3 cups poppler-glib
 run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache)
 
 name=libreoffice
-version=6.4.5.2
+version=7.0.0.3
 
 categories=(Office Graphics Education)
 
 PKGMK_IGNORE_UNPACK="yes"
 _url="https://download.documentfoundation.org/libreoffice/src/${version%.*}/"
 
-source=(http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-format_overflow-1.patch
-        ${_url}$name-$version.tar.xz
-		${_url}$name-dictionaries-$version.tar.xz
-		${_url}$name-help-$version.tar.xz
-		${_url}$name-translations-$version.tar.xz
-        0001-Remove-check-if-root-due-to-issue-with-fakeroot.patch)
+source=(Remove-check-if-root-due-to-issue-with-fakeroot.patch
+http://dev-www.libreoffice.org/extern/884ed41809687c3e168fc7c19b16585149ff058eca79acbf3ee784f6630704cc-opens___.ttf
+	${_url}$name-$version.tar.xz
+	${_url}$name-dictionaries-$version.tar.xz
+	${_url}$name-help-$version.tar.xz
+	${_url}$name-translations-$version.tar.xz)
 
 prepare() {
   unset ACLOCAL
@@ -35,12 +35,15 @@ prepare() {
   tar -xf $name-$version.tar.xz --no-overwrite-dir
 
   cd $name-$version
-  patch -Np1 -i ../0001-Remove-check-if-root-due-to-issue-with-fakeroot.patch
-  patch -Np1 -i ../$name-$version-format_overflow-1.patch
+
+  patch -Np1 -i ../Remove-check-if-root-due-to-issue-with-fakeroot.patch
+
   install -dm755 external/tarballs/
   ln -sv ../../../$name-dictionaries-$version.tar.xz  external/tarballs/
   ln -sv ../../../$name-help-$version.tar.xz          external/tarballs/
   ln -sv ../../../$name-translations-$version.tar.xz  external/tarballs/
+  ln -sv ../../../884ed41809687c3e168fc7c19b16585149ff058eca79acbf3ee784f6630704cc-opens___.ttf \
+  external/tarballs/
 
   sed -e "/gzip -f/d" -e "s|.1.gz|.1|g" \
 	-i bin/distro-install-desktop-integration
@@ -69,6 +72,7 @@ build() {
 	--disable-dconf             \
 	--enable-gtk3               \
 	--disable-odk               \
+	--without-java              \
 	--enable-release-build=yes  \
 	--enable-python=system      \
 	--with-system-apr           \
