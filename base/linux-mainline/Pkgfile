@@ -11,7 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=linux-mainline
-version=5.8
+version=5.8.1
 
 INITRD="initrd-mainline"
 KERNEL=${name/-*/}
@@ -24,7 +24,8 @@ _version=${version:0:3}
 ## Download all the sources
 #
 
-source=($url/pub/linux/kernel/v5.x/linux-${_version}.tar.xz config_64)
+source=(fix_virtualbox.patch
+	$url/pub/linux/kernel/v5.x/linux-${_version}.tar.xz config_64)
 
 [ -z $patchname ] || source+=" $url/pub/linux/kernel/v5.x/$patchname"
 ## Time to build everything
@@ -39,6 +40,8 @@ cd linux-${_version}
 if [ -f $SRC/patch-$version.xz ]; then
 	xz -d -c  $SRC/patch-$version.xz | patch -Np1
 fi
+
+patch -Np1 -i ../fix_virtualbox.patch
 
 make mrproper
 cp $SRC/config_64 ./.config
