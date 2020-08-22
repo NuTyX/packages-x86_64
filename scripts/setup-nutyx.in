@@ -95,7 +95,7 @@ if [  `echo $NIC|wc -w` -gt 1 ];then
 			done >> $TMP/list
 			dialog --file $TMP/list 2>$TMP/result
 			retval=$?
-			result=`cat $TMP/result`
+			result=$(cat $TMP/result)
 			case $retval in
 				0)
 					if [ "$result" != "" ]; then
@@ -109,6 +109,8 @@ if [  `echo $NIC|wc -w` -gt 1 ];then
 	done
 	NETWORK_CARD=`cat $TMP/result|sed 's/"//g'`
 	$SETUP_LOG "setup-nutyx --config-net" "Network card found: $NETWORK_CARD"
+	rm -f $TMP/result
+	rm -f $TMP/list
 fi
 }
 check_group_exist()
@@ -530,6 +532,11 @@ if [ "$SETUP_INITRD" == "yes" ]; then
 	/etc/rc.d/init.d/network start
 fi
 SETUP_CONFIG_NETWORK="no"
+rm -f $TMP/IP
+rm -f $TMP/BC
+rm -f $TMP/DNS
+rm -f $TMP/GW
+rm -f $TMP/NM
 }
 setup_language()
 {
@@ -576,6 +583,7 @@ dialog   \
 "Hong Kong" "English" \
 "Ireland" "English" \
 "India " "English" \
+"Indonesia" "English" \
 "Nigeria" "English" \
 "New Zealand" "English" \
 "Philippines" "English" \
@@ -768,6 +776,9 @@ case ${REPLY} in
  "New Zealand")
 	_msgfmt en_NZ
 	_zoneinfo ${ZONEINFO}Pacific/Auckland ${LOCALTIME};;
+ "Indonesia")
+    _msgfmt en_ID
+    _zoneinfo ${ZONEINFO}Asia/Jakarta ${LOCALTIME};;
  "Philippines")
 	_msgfmt en_PH
 	_zoneinfo ${ZONEINFO}Asia/Manila ${LOCALTIME};;
@@ -1105,6 +1116,7 @@ if [ ! $? = 0 ]; then
   break
 fi
 REPLY=`cat $TMP/locale.check`
+rm -f $TMP/locale.check
 break
 done
 sed -i "/KEYMAP/d" ${CONSOLE}
@@ -1124,7 +1136,7 @@ case $REPLY in
 	fr_CH*) echo '  Option "XkbLayout" "ch(fr)"' >> ${XORGKB};;
 	de_CH*) echo '  Option "XkbLayout" "ch"' >> ${XORGKB};;
 	de-*) echo '  Option "XkbLayout" "de"' >> ${XORGKB};;
-  dk|dk-latin1)
+	dk|dk-latin1)
 		echo '  Option "XkbLayout" "dk"' >> ${XORGKB};;
 	es|es-*) echo '  Option "XkbLayout" "es"' >> ${XORGKB};;
 	hu|hu101)
@@ -1307,7 +1319,7 @@ check_available_partition() {
 		dialog --no-cancel \
 		--title " $(gettext "No partition available") " \
 		--msgbox " $(gettext "Please create/modify yours partitions") " 0 0
-		CHECK_PART_OK="no"
+		CHECK_PART_OK="new"
 		setup_partition
 	else
 		echo "PARTITION_LIST=$PARTITION_LIST" > /dev/tty2
@@ -1335,8 +1347,8 @@ check_available_partition() {
 					echo "CHECK_SINGLE_PARTITION=$CHECK_SINGLE_PARTITION"  > /dev/tty2
 				fi
 			fi
-			CHECK_PART_OK="yes"
 		fi
+		[ "$CHECK_PART_OK" == "new" ] || CHECK_PART_OK="yes"
 		echo "PARTITION_LIST=$PARTITION_LIST" > /dev/tty2
 	fi
 }
@@ -1392,6 +1404,7 @@ setup_partition() {
 	"fdisk" "$(gettext "Advanced partitioning tool")" 2>$TMP/choix
 	retval=$?
 	choice=`cat $TMP/choix`
+	rm -f $TMP/choix
 	case $retval in
 		0|2)
 			case $choice in
@@ -1591,6 +1604,10 @@ setup_install() {
 		[ "$PARTITION" == "no" ] && return
 	fi
 	echo "PARTITION=$PARTITION" > /dev/tty2
+	if [ "$CHECK_PART_OK" == "new" ]; then
+		mkfs.ext4 -F $PARTITION > /dev/tty2 || error "mkfs.ext4 $PARTITION"
+		$SETUP_LOG "setup-nutyx" "mkfs.ext4 -F $PARTITION"
+	fi
 	FORMAT=`print_file_system $PARTITION`
 	echo "FORMAT=$FORMAT" > /dev/tty2
 	if [ "$FORMAT" == "no" ]; then
