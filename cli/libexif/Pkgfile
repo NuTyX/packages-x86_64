@@ -4,10 +4,11 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libexif
-version=0.6.21
-release=2
+version=0.6.22
 
-source=( http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
+source=(
+ https://github.com/libexif/libexif/releases/download/libexif-${version//./_}-release/libexif-$version.tar.xz
+)
 
 
 build() {
