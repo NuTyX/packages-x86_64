@@ -1232,6 +1232,8 @@ grep sed findutils binutils \
 inetutils diffutils shadow \
 bc less"
 fi
+[ -z $KERNEL ] && CORE="-n $CORE"
+
 [[ ! -z "$KERNEL" && -z "$INIT" ]] && INIT="sysv"
 
 [ "$INIT" = "sysv" ] && INITS="eudev sysklogd sysvinit"
