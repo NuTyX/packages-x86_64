@@ -4,12 +4,12 @@ url="https://www.kernel.org/pub/linux/utils/cryptsetup"
 packager="tnut <tnut@nutyx.org>"
 contributors="Rems"
 
-makedepends=(popt json-c)
+makedepends=(lvm2 popt json-c)
 
 name=cryptsetup
-version=2.2.1
+version=2.3.3
 
-source=(https://www.kernel.org/pub/linux/utils/cryptsetup/v2.2/$name-$version.tar.xz)
+source=(https://www.kernel.org/pub/linux/utils/cryptsetup/v${version:0:3}/$name-$version.tar.xz)
 build() {
 cd ${name}-$version
 ./configure --prefix=/usr \

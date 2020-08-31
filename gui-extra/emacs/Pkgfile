@@ -1,7 +1,7 @@
 description="An extensible, customizable, self-documenting real-time display editor."
 url="https://www.gnu.org/software/emacs/"
 
-contributors="Berlius, Tnut, Greg"
+contributors="Berlius, Greg"
 packager="tnut <tnut@nutyx.org>"
 
 makedepends=(gtk3 desktop-file-utils libjpeg-turbo giflib libpng
@@ -9,8 +9,7 @@ makedepends=(gtk3 desktop-file-utils libjpeg-turbo giflib libpng
 run=(gsettings-desktop-schemas)
 
 name=emacs
-version=26.3
-release=2
+version=27.1
 
 source=(https://ftp.gnu.org/pub/gnu/emacs/$name-$version.tar.xz)
 
@@ -23,4 +22,5 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 chown -v -R root:root $PKG/usr/share/emacs/$version
+rm $PKG/usr/lib/systemd/user/emacs.service
 }

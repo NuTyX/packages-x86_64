@@ -1,22 +1,24 @@
 description="phonon-backend-gstreamer plugin audio for KDE"
 url="https://www.kde.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+
+makedepends=(phonon-qt gstreamer gstreamer-plugins-base gstreamer-plugins-good
+             gstreamer-plugins-bad gstreamer-plugins-ugly libxml2 pulseaudio
+             qtx11extras)
 
 set=(kde5 plasma5)
 
 name=phonon-backend-gstreamer-qt
-version=4.9.1
-makedepends=(phonon-qt gstreamer gstreamer-plugins-base gstreamer-plugins-good
-             gstreamer-plugins-bad gstreamer-plugins-ugly libxml2 pulseaudio
-             qtx11extras)
+version=4.10.0
 
 _name=phonon-backend-gstreamer
 
 source=( http://download.kde.org/stable/phonon/${_name}/$version/${_name}-$version.tar.xz)
 
 build() {
-cd phonon-gstreamer-$version
+cd ${_name}-$version
 mkdir build
 cd    build
 cmake -DCMAKE_BUILD_TYPE=Release    \

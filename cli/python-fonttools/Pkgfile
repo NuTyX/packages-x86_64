@@ -1,0 +1,22 @@
+description="A library to manipulate font files from Python"
+url="https://github.com/fonttools/fonttools"
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(cython)
+run=(python)
+
+name=python-fonttools
+version=4.14.0
+
+source=(https://github.com/fonttools/fonttools/releases/download/$version/fonttools-$version.zip)
+
+build() {
+ cd fonttools-$version
+ python3 setup.py build_ext --inplace
+ python3 setup.py build
+
+ python3 setup.py install --skip-build --root=$PKG --optimize=1
+
+}
