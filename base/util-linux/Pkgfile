@@ -6,8 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 name=util-linux
-version=2.35.1
-release=3
+version=2.36
 
 source=(https://www.kernel.org/pub/linux/utils/util-linux/v${version:0:4}/util-linux-$version.tar.xz)
 
@@ -16,6 +15,9 @@ PKGMK_GROUPS=(devel doc man)
 build()
 {
 cd util-linux-$version
+
+# Blue is a very bad color for the info message ...
+sed -i "s@COLOR_BLUE@COLOR_CYAN@" disk-utils/cfdisk.c
 
 mkdir -pv $PKG/var/lib/hwclock
 ./configure ADJTIME_PATH=/var/lib/hwclock/adjtime \
@@ -28,9 +30,7 @@ mkdir -pv $PKG/var/lib/hwclock
 	--disable-runuser    \
 	--disable-pylibmount \
 	--disable-static     \
-	--without-python     \
-	--without-systemd    \
-	--without-systemdsystemunitdir	
+	--without-python
 
 make
 make DESTDIR=$PKG  install
@@ -43,7 +43,7 @@ make DESTDIR=$PKG  install
 ## service
 SERVICEDIR=/lib/init/services
 
-mkdir -p $PKG/etc/init/single
+mkdir -p $PKG/etc/init/{single,multi}
 
 for i in 1 2 3 4 5 6
 do
@@ -54,6 +54,9 @@ exec chpst -P /sbin/agetty -J tty$i 9600" > \
   chmod 755 $PKG$SERVICEDIR/agetty-$i/run
   ln -sv $SERVICEDIR/agetty-$i \
   $PKG/etc/init/single/agetty-$i
+  ln -sv $SERVICEDIR/agetty-$i \
+  $PKG/etc/init/multi/agetty-$i
+
 done
 }
 devel()
