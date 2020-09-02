@@ -15,7 +15,7 @@ makedepends=(python perl-archive-zip unzip zip icu gtk3 cups poppler-glib
 run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache)
 
 name=libreoffice
-version=7.0.0.3
+version=7.0.1.2
 
 categories=(Office Graphics Education)
 
@@ -59,6 +59,7 @@ build() {
    ./autogen.sh --prefix=/usr \
 	--sysconfdir=/etc \
 	--with-vendor="NuTyX" \
+	--with-extra-buildid="version-$release" \
 	--with-lang="ar cs es de fr \
         el ga gl hi hr hu it ja lt  \
         lv pt fi nb nl nn da sv tr  \
