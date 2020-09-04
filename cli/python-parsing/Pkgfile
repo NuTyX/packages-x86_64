@@ -1,0 +1,19 @@
+description="General parsing module for Python"
+url="https://github.com/pyparsing/pyparsing/"
+contributors="Rems"
+packager="tnut <tnut@nutyx.org>"
+ 
+name=python-parsing
+version=2.4.2
+
+makedepends=(python)
+run=(python)
+
+source=(https://github.com/pyparsing/pyparsing/archive/pyparsing_$version.tar.gz)
+
+build() {
+
+cd pyparsing-pyparsing_$version
+python3 setup.py build
+python3 setup.py install --prefix=/usr --root=$PKG --optimize=1
+}
