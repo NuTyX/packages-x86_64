@@ -877,8 +877,8 @@ do_mount_virtualfs()
         if ! mountpoint /run >/dev/null; then
                 mount /run || failed=1
         fi
-        mkdir -p /run/lock /run/shm
-        chmod 1777 /run/shm /run/lock
+        mkdir -p /run/lock
+        chmod 1777 /run/lock
 
         log_info_msg "Mounting virtual file systems: ${INFO}/run"
         if ! mountpoint /proc >/dev/null; then
@@ -893,7 +893,17 @@ do_mount_virtualfs()
                 log_info_msg2 " ${INFO}/dev"
                 mount -o mode=0755,nosuid /dev  || failed=1
         fi
-        ln -sfn /run/shm /dev/shm
+        # Creat /dev/shm on the new /dev filesystem
+        mkdir -p /dev/shm
+        chmod 1777 /dev/shm
+
+        # Mount /dev/shm as tmpfs ( a expected by glibc 2.2+ )
+        if ! mountpoint /dev/shm >/dev/null; then
+            mount /dev/shm || failed=1
+        fi
+
+        # Link /dev/shm /run/shm
+        ln -sfn /dev/shm /run/shm
 	(exit ${failed})
 	evaluate_retval
 }
