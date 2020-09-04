@@ -1,0 +1,27 @@
+description='Next generation technology for building and distributing desktop applications'
+url='https://flatpak.org/'
+
+packager="tnut <tnut@nuyx.org>"
+
+makedepends=(glib libsoup gpgme polkit fuse2 libostree json-glib
+             appstream-glib libseccomp python-parsing)
+run=(bubblewrap gnupg)
+
+version=1.8.2
+source=(https://github.com/flatpak/flatpak/releases/download/$version/flatpak-$version.tar.xz)
+
+build() {
+
+cd $name-$version
+
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--with-system-bubblewrap
+
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+make
+
+make DESTDIR=$PKG install
+}
