@@ -807,11 +807,9 @@ export HISTSIZE=1000
 export HISTIGNORE="&:[bf]g:exit"
 
 # Set some defaults for graphical systems
-export XDG_DATA_DIRS=/usr/share/
-export XDG_CONFIG_DIRS=/etc/xdg/
-
-# Set some defaults for certificates
-export GIO_USE_TLS=gnutls-pkcs11
+export XDG_DATA_DIRS=${XDG_DATA_DIRS:-/usr/share/}
+export XDG_CONFIG_DIRS={XDG_CONFIG_DIRS:-/etc/xdg/}
+export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/tmp/xdg-$USER}
 
 # Setup a red prompt for root and a green one for users.
 NORMAL="\[\e[0m\]"
@@ -946,7 +944,8 @@ EOF
 sysfs          /sys         sysfs    nosuid,noexec,nodev 0     0
 devpts         /dev/pts     devpts   gid=5,mode=620      0     0
 tmpfs          /run         tmpfs    defaults            0     0
-devtmpfs       /dev         devtmpfs mode=0755,nosuid    0     0" >> \
+devtmpfs       /dev         devtmpfs mode=0755,nosuid    0     0
+tmpfs          /dev/shm     tmpfs    defaults            0     0" >> \
 ${FOLDER}/etc/$FILE
 }
 generate_bashrc() {
