@@ -1,0 +1,12 @@
+description='provides GIO-style async APIs for most Flatpak portals.'
+url='https://github.com/flatpak/libportal'
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(meson ninja glib gtk-doc)
+
+version=0.3
+
+source=(https://github.com/flatpak/libportal/releases/download/$version/libportal-$version.tar.xz)
+
+build=meson

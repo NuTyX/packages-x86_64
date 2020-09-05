@@ -1,0 +1,23 @@
+description='Operating system and container binary deployment and upgrades'
+url='https://ostree.readthedocs.io/en/latest/'
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(openssl glib gpgme fuse2 libsoup e2fsprogs)
+
+version=2020.6
+source=(https://github.com/ostreedev/ostree/releases/download/v$version/libostree-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--with-openssl \
+--sysconfdir=/etc \
+--localstatedir=/var
+
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+make
+make DESTDIR=$PKG install
+}
+
