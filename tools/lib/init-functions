@@ -865,6 +865,37 @@ create_files()
    exec 0>&9 9>&-
    return 0
 }
+check_fstab ()
+{
+  local file
+  file=/etc/fstab
+  [ -f $file ] || return 0
+  while read -a fields; do
+    if echo ${fields[0]} | grep -qv '^#\|^$'
+    then
+      case "${fields[1]}" in
+        "/dev")
+          _DEV="true"
+          continue;;
+        "/dev/shm")
+          _DEV_SHM="true"
+            continue;;
+        "/sys")
+          _SYS="true"
+          continue;;
+        "/proc")
+          _PROC="true"
+          continue;;
+        "/run")
+          _RUN="true"
+	   continue;;
+        "/dev/pts")
+	 _DEV_PTS="true"
+         continue;
+      esac
+    fi
+  done < $file
+}
 ################################################################################
 # do_mount_virtualfs()                                                         #
 #                                                                              #
@@ -874,24 +905,50 @@ create_files()
 ################################################################################
 do_mount_virtualfs()
 {
-        if ! mountpoint /run >/dev/null; then
-                mount /run || failed=1
-        fi
+	check_fstab
+	if ! mountpoint /run >/dev/null; then
+		if [ "${_RUN}" == "true" ];then
+			mount /run || failed=1
+		else
+			mount -t tmpfs tmpfs -o nosuid,nodev,mode=755 /run || failed=1
+		fi
+	fi
+	if [ "${_RUN}" == "true" ];then
+		log_info_msg "Mounting virtual file systems: ${INFO}/run (fstab)"
+	else
+		log_info_msg "Mounting virtual file systems: ${INFO}/run"
+	fi
+
         mkdir -p /run/lock
         chmod 1777 /run/lock
 
-        log_info_msg "Mounting virtual file systems: ${INFO}/run"
         if ! mountpoint /proc >/dev/null; then
-                log_info_msg2 " ${INFO}/proc"
-                mount -o nosuid,noexec,nodev /proc || failed=1
+		if [ "${_PROC}" == "true" ];then
+			log_info_msg2 " ${INFO}/proc (fstab)"
+			mount /proc || failed=1
+		else
+			log_info_msg2 " ${INFO}/proc"
+			mount -t proc proc -o nosuid,noexec,nodev /proc || failed=1
+		fi
         fi
         if ! mountpoint /sys >/dev/null; then
-                log_info_msg2 " ${INFO}/sys"
-                mount -o nosuid,noexec,nodev /sys || failed=1
+		if [ "${_SYS}" == "true" ];then
+			log_info_msg2 " ${INFO}/sys (fstab)"
+			mount /sys || failed=1
+		else
+			log_info_msg2 " ${INFO}/sys"
+			mount -t sysfs sysfs -o nosuid,noexec,nodev /sys || failed=1
+		fi
         fi
         if ! mountpoint /dev >/dev/null; then
                 log_info_msg2 " ${INFO}/dev"
-                mount -o mode=0755,nosuid /dev  || failed=1
+		if [ "${_DEV}" == "true" ];then
+			log_info_msg2 " ${INFO}/dev (fstab)"
+			mount /dev || failed=1
+		else
+			log_info_msg2 " ${INFO}/dev"
+			mount -t devtmpfs devtmpfs -o mode=0755,nosuid /dev  || failed=1
+		fi
         fi
         # Creat /dev/shm on the new /dev filesystem
         mkdir -p /dev/shm
@@ -899,7 +956,13 @@ do_mount_virtualfs()
 
         # Mount /dev/shm as tmpfs ( a expected by glibc 2.2+ )
         if ! mountpoint /dev/shm >/dev/null; then
-            mount /dev/shm || failed=1
+		if [ "${_DEV_SHM}" == "true" ];then
+			log_info_msg2 " ${INFO}/dev/shm (fstab)"
+			mount /dev/shm || failed=1
+		else
+			log_info_msg2 " ${INFO}/dev/shm"
+			mount -t tmpfs tmpfs /dev/shm || failed=1
+		fi
         fi
 
         # Link /dev/shm /run/shm
@@ -1187,7 +1250,13 @@ do_start_mountfs()
 
   # Make sure /dev/pts exists
   mkdir -p /dev/pts
-
+  if ! mountpoint /dev/pts >/dev/null; then
+    if [ "${_DEV_PTS}" == "true" ];then
+      mount /dev/pts || failed=1
+    else
+      mount -t devpts devpts -o nosuid,noexec,gid=5,mode=620 /dev/pts || failed=1
+    fi
+  fi
   # This will mount all filesystems that do not have _netdev in
   # their option list.  _netdev denotes a network filesystem.
 
