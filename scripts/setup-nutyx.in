@@ -65,13 +65,13 @@ _msgfmt() {
 	fi
 	if [ -f $TD/lib/setup-nutyx.${L} ]; then
 		mkdir -p $TEXTDOMAINDIR/${L}/LC_MESSAGES
-		msgfmt $TD/lib/$TEXTDOMAIN.${L} \
+		msgfmt $TD/lib/setup-nutyx.${L} \
 		-o $TEXTDOMAINDIR/${L}/LC_MESSAGES/setup-nutyx.mo
 		TEXTDOMAINFILE=$TEXTDOMAINDIR/${L}/LC_MESSAGES/$TEXTDOMAIN.mo
 	fi
 	if [ -f $TD/lib/xdg-user-dirs.${L} ]; then
 		mkdir -p $TEXTDOMAINDIR/${L}/LC_MESSAGES
-		msgfmt $TD/lib/$TEXTDOMAIN.${L} \
+		msgfmt $TD/lib/xdg-user-dirs.${L} \
 		-o $TEXTDOMAINDIR/${L}/LC_MESSAGES/xdg-user-dirs.mo
 	fi
 	echo "export LANG=${1}.utf-8" > ${LOCALE}
