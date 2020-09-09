@@ -52,17 +52,27 @@ _zoneinfo(){
 	$SETUP_LOG "setup-nutyx --config-lang" "ln -sv ${1} ${2}"
 }
 _msgfmt() {
-	local L C
+	local L C TD
+	TD=$(mktemp -d)
 	L=`echo ${1}|cut -d "_" -f1`
 	C=`echo ${1}|cut -d "_" -f2`
 	echo "group ${L}" >> ${CARDS}
 	localedef --delete-from-archive de_CH.utf8
 	localedef -i ${1} -f UTF-8 ${1}.UTF-8
-	if [ -f /lib/services/setup-nutyx/setup-nutyx.${L} ]; then
+	if [ -f /lib/services/setup-nutyx/setup-nutyx.locales.gz ];then
+		bsdtar -xf /lib/services/setup-nutyx/setup-nutyx.locales.gz \
+		-C $TD lib/{setup-nutyx,xdg-user-dirs}.${L}
+	fi
+	if [ -f $TD/lib/setup-nutyx.${L} ]; then
 		mkdir -p $TEXTDOMAINDIR/${L}/LC_MESSAGES
-		msgfmt /lib/services/setup-nutyx/$TEXTDOMAIN.${L} \
+		msgfmt $TD/lib/$TEXTDOMAIN.${L} \
 		-o $TEXTDOMAINDIR/${L}/LC_MESSAGES/setup-nutyx.mo
 		TEXTDOMAINFILE=$TEXTDOMAINDIR/${L}/LC_MESSAGES/$TEXTDOMAIN.mo
+	fi
+	if [ -f $TD/lib/xdg-user-dirs.${L} ]; then
+		mkdir -p $TEXTDOMAINDIR/${L}/LC_MESSAGES
+		msgfmt $TD/lib/$TEXTDOMAIN.${L} \
+		-o $TEXTDOMAINDIR/${L}/LC_MESSAGES/xdg-user-dirs.mo
 	fi
 	echo "export LANG=${1}.utf-8" > ${LOCALE}
 	$SETUP_LOG "setup-nutyx --config-lang" "variable LANG=${1}.utf-8 saved in ${LOCALE}"

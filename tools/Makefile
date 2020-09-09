@@ -55,10 +55,8 @@ $(ETCDIR)/init.d/$${FILE}; \
 	install -m 755 lib/ipv4-static-route $(SERVICEDIR)/ipv4-static-route
 	install -m 644 lib/init-functions $(SERVICEDIR)/init-functions
 	install -m 644 lib/init.in	$(SERVICEDIR)/init.in
-	for EXT in ar da de es fi fr it nl nn pt sv tr ru; do \
-		install -m 644 lib/setup-nutyx.$${EXT} \
-$(SERVICEDIR)/setup-nutyx/setup-nutyx.$${EXT}; \
-	done
+	bsdtar -czf $(SERVICEDIR)/setup-nutyx/setup-nutyx.locales.gz \
+		lib/setup-nutyx.* lib/xdg-user-dirs.*
 	for FILE in bootlog btmp lastlog wtmp; do \
 		touch $(VARDIR)/log/$${FILE}; \
 	done
