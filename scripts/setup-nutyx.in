@@ -52,17 +52,28 @@ _zoneinfo(){
 	$SETUP_LOG "setup-nutyx --config-lang" "ln -sv ${1} ${2}"
 }
 _msgfmt() {
-	local L C
+	local L C TD
+	TD=$(mktemp -d)
 	L=`echo ${1}|cut -d "_" -f1`
 	C=`echo ${1}|cut -d "_" -f2`
 	echo "group ${L}" >> ${CARDS}
 	localedef --delete-from-archive de_CH.utf8
 	localedef -i ${1} -f UTF-8 ${1}.UTF-8
-	if [ -f /lib/services/setup-nutyx/setup-nutyx.${L} ]; then
+	if [ -f /lib/services/setup-nutyx/setup-nutyx.locales.gz ];then
+		bsdtar -xf /lib/services/setup-nutyx/setup-nutyx.locales.gz \
+		-C $TD lib/{setup-nutyx,xdg-user-dirs}.${L}
+	fi
+	if [ -f $TD/lib/setup-nutyx.${L} ]; then
+		TEXTDOMAINFILE1=$TEXTDOMAINDIR/${L}/LC_MESSAGES/setup-nutyx.mo
 		mkdir -p $TEXTDOMAINDIR/${L}/LC_MESSAGES
-		msgfmt /lib/services/setup-nutyx/$TEXTDOMAIN.${L} \
-		-o $TEXTDOMAINDIR/${L}/LC_MESSAGES/setup-nutyx.mo
-		TEXTDOMAINFILE=$TEXTDOMAINDIR/${L}/LC_MESSAGES/$TEXTDOMAIN.mo
+		msgfmt $TD/lib/setup-nutyx.${L} \
+		-o $TEXTDOMAINFILE1
+	fi
+	if [ -f $TD/lib/xdg-user-dirs.${L} ]; then
+		TEXTDOMAINFILE2=$TEXTDOMAINDIR/${L}/LC_MESSAGES/xdg-user-dirs.mo
+		mkdir -p $TEXTDOMAINDIR/${L}/LC_MESSAGES
+		msgfmt $TD/lib/xdg-user-dirs.${L} \
+		-o $TEXTDOMAINFILE2
 	fi
 	echo "export LANG=${1}.utf-8" > ${LOCALE}
 	$SETUP_LOG "setup-nutyx --config-lang" "variable LANG=${1}.utf-8 saved in ${LOCALE}"
@@ -1505,7 +1516,6 @@ install_nutyx() {
 	fi
 
 	for FILE in etc/profile.d/i18n.sh \
-	etc/profile.d/i18n.sh \
 	etc/sysconfig/network \
 	etc/sysconfig/clock \
 	etc/hostname \
@@ -1515,7 +1525,8 @@ install_nutyx() {
 	etc/localtime \
 	etc/network \
 	etc/mdadm.conf \
-	$TEXTDOMAINFILE
+	$TEXTDOMAINFILE1 \
+	$TEXTDOMAINFILE2
 	do
 		if [ -f /$FILE ] || [ -d /$FILE ] || [ -L /$FILE ];then
 			cp -a /$FILE  ${2}/$FILE

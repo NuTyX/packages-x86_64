@@ -807,9 +807,9 @@ export HISTSIZE=1000
 export HISTIGNORE="&:[bf]g:exit"
 
 # Set some defaults for graphical systems
-export XDG_DATA_DIRS=${XDG_DATA_DIRS:-/usr/share/}
-export XDG_CONFIG_DIRS={XDG_CONFIG_DIRS:-/etc/xdg/}
-export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/tmp/xdg-$USER}
+export XDG_DATA_DIRS=/usr/share
+export XDG_CONFIG_DIRS=/etc/xdg/
+export XDG_RUNTIME_DIR=/tmp/xdg-$USER
 
 # Setup a red prompt for root and a green one for users.
 NORMAL="\[\e[0m\]"
@@ -940,13 +940,6 @@ cat > ${FOLDER}/etc/$FILE << "EOF"
 # Exemple de montage nfs
 # 192.168.254.254:/home/thierry /home/thierry nfs rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
 EOF
-[ "$INIT" = "sysd" ] || echo "proc           /proc        proc     nosuid,noexec,nodev 0     0
-sysfs          /sys         sysfs    nosuid,noexec,nodev 0     0
-devpts         /dev/pts     devpts   gid=5,mode=620      0     0
-tmpfs          /run         tmpfs    defaults            0     0
-devtmpfs       /dev         devtmpfs mode=0755,nosuid    0     0
-tmpfs          /dev/shm     tmpfs    defaults            0     0" >> \
-${FOLDER}/etc/$FILE
 }
 generate_bashrc() {
 local FILE
