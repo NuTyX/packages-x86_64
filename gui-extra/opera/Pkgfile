@@ -1,0 +1,32 @@
+description="A fast and secure web browser"
+url="http://www.opera.com/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+categories=(Network WebBrowser)
+
+makedepends=(gtk3 alsa-lib libnotify curl nss cups xorg-libxscrnsaver desktop-file-utils shared-mime-info hicolor-icon-theme upower)
+run=(desktop-file-utils shared-mime-info hicolor-icon-theme)
+set=()
+
+name=opera
+version=70.0.3728.95
+
+source=(https://get.geo.opera.com/pub/opera/desktop/$version/linux/$name-stable_${version}_amd64.deb
+         default
+         opera)
+
+build() {
+tar -xvf data.tar.xz --exclude=usr/share/{lintian,menu} -C "$PKG/"
+cd "$PKG/usr/lib/"*-linux-gnu/
+mv "$name" ../
+rm -rf "$PKG/usr/lib/"*-linux-gnu
+# suid opera_sandbox
+chmod 4755 "$PKG/usr/lib/$name/opera_sandbox"
+# install default options
+install -Dm644 "$SRC/default" "$PKG/etc/$name/default"
+# install opera wrapper
+rm "$PKG/usr/bin/$name"
+install -Dm755 "$SRC/$name" "$PKG/usr/bin/$name"
+}
