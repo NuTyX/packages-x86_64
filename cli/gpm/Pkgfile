@@ -1,21 +1,22 @@
 description="General Purpose Mouse: mouse server for the console and xterm."
 url="http://unix.schottelius.org/gpm"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
+
 name=gpm
 version=1.20.7
-release=6
-nutyx_version=11.0
+release=7
+runyx_version=20200412
 
-source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	gpm-1.20.7-glibc-2.26-1.patch
+source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
+	gpm-1.20.7-consolidated-1.patch
 	http://www.nico.schottelius.org/software/$name/archives/$name-$version.tar.bz2)
 
 build() {
 	cd $name-$version
 
-	patch -Np1 -i ../gpm-1.20.7-glibc-2.26-1.patch
-	sed -i -e 's:<gpm.h>:"headers/gpm.h":' src/prog/{display-buttons,display-coords,get-versions}.c
+	patch -Np1 -i ../gpm-1.20.7-consolidated-1.patch
 
 	./autogen.sh
 	./configure --prefix=/usr \
@@ -28,6 +29,18 @@ build() {
 	ln -sv libgpm.so.2.1.0 $PKG/usr/lib/libgpm.so
 	install -v -m644 conf/gpm-root.conf $PKG/etc
 
-	cd ../nutyx-${nutyx_version}
-	make DESTDIR=$PKG install-gpm
+	cd ../runyx-${runyx_version}
+	make DESTDIR=$PKG install-sysv-gpm
+	make DESTDIR=$PKG install-sysd-gpm
+	make DESTDIR=$PKG install-runyx-gpm
+}
+
+service() {
+cd $PKG
+bsdtar -r -f \
+$PKGMK_PACKAGE_DIR/${name}.${group}${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
+etc/rc.d etc/init lib/init \
+lib/systemd
+rm -r etc/rc.d etc/init lib/init \
+lib/systemd
 }
