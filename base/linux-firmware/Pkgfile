@@ -2,33 +2,16 @@ description="The linux kernel firmware set of files. More and more hardware requ
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(git)
-
 name=linux-firmware
-version=20190903
+version=20200916
 
 unset MAKEFLAGS
 
+source=(http://download.tuxfamily.org/nutyx/files/$name-$version.tar.bz2)
+
 build() {
-git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git \
-firmware
-find firmware -name '*.c' \
--or -name '*.h' \
--or -name '*.asm' \
--or -name 'Makefile' \
--or -name 'configure' \
--or -name '*.S' \
--or -name "README" \
--or -name '*.pl' \
--or -name '*.pst' \
--or -name '*.txt' -delete
-find firmware \( -type d -and -empty \) -delete
-rm -rf firmware/cis/src
-rm -rf firmware/usbdux
-rm -rf firmware/carl9170fw
-rm -rf firmware/.git
 mkdir $PKG/lib
-cp -a firmware \
-$PKG/lib
+cp -a $name-$version/ \
+$PKG/lib/firmware
 
 }
