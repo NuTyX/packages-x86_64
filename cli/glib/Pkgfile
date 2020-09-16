@@ -8,16 +8,16 @@ makedepends=(libffi pcre python elfutils meson ninja libxslt docbook-xsl)
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.64.4
+version=2.64.5
 
 source=(https://download.gnome.org/sources/glib/${version:0:4}/$name-$version.tar.xz
 	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-11.0.jpg
-	glib-$version-skip_warnings-1.patch)
+	glib-skip_warnings-1.patch)
 
 build () {
   cd $name-$version
 
-  patch -Np1 -i ../glib-$version-skip_warnings-1.patch
+  patch -Np1 -i ../glib-skip_warnings-1.patch
 
   mkdir build-glib
   cd    build-glib
