@@ -1,0 +1,54 @@
+description="portmap replacement which supports RPC over various protocols"
+url="http://rpcbind.sourceforge.net/"
+
+contributors="Alienus"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libtirpc)
+
+PKGMK_GROUPS=(man)
+
+name=rpcbind
+version=1.2.5
+release=4
+
+runyx_version=20200412
+source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
+	http://downloads.sourceforge.net/rpcbind/rpcbind-$version.tar.bz2
+	http://www.linuxfromscratch.org/patches/blfs/svn/rpcbind-$version-vulnerability_fixes-1.patch)
+
+build() {
+    cd rpcbind-$version
+    sed -i "/servname/s:rpcbind:sunrpc:" src/rpcbind.c
+
+    patch -Np1 -i ../rpcbind-$version-vulnerability_fixes-1.patch
+    ./configure --prefix=/usr       \
+                --bindir=/sbin      \
+		--sbindir=/sbin     \
+                --with-rpcuser=root \
+		--enable-warmstarts \
+		--without-systemdsystemunitdir
+    make
+    make DESTDIR=$PKG install
+
+    # service
+    cd ../runyx-${runyx_version}
+    make DESTDIR=$PKG install-sysv-rpcbind
+    make DESTDIR=$PKG install-sysv-netfs
+
+    make DESTDIR=$PKG install-runyx-rpcbind
+    make DESTDIR=$PKG install-runyx-netfs
+
+    make DESTDIR=$PKG install-sysd-rpcbind
+ 
+}
+
+service() {
+cd $PKG
+bsdtar -r -f \
+$PKGMK_PACKAGE_DIR/${name}.${group}${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
+etc/rc.d etc/init lib/init \
+lib/systemd
+rm -r etc/rc.d etc/init lib/init \
+lib/systemd
+}
