@@ -1,5 +1,6 @@
 description="DOS filesystem utilities"
 url="https://github.com/dosfstools/dosfstools"
+
 contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
@@ -17,7 +18,6 @@ build() {
               --mandir=/usr/share/man            \
               --docdir=/usr/share/doc/dosfstools \
               --enable-compat-symlinks
-read a
   make
   make DESTDIR=$PKG install
 }
