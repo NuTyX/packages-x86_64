@@ -4,8 +4,10 @@ url="http://www.vim.org/"
 contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(gpm)
+
 name=vim
-version=8.2.1209
+version=8.2.1361
 
 source=(https://github.com/$name/$name/archive/v$version/$name-$version.tar.gz)
 build()
@@ -14,8 +16,7 @@ cd $name-$version
 echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
 
 ./configure --prefix=/usr --enable-multibyte \
-        --enable-gui=no --with-x=no \
-        --disable-gpm
+        --enable-gui=no --with-x=no
 
 make
 mkdir -p $PKG/usr/share/locale
