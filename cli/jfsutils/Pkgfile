@@ -1,18 +1,25 @@
 description="Administration and debugging tools for the jfs file system."
 url="http://jfs.sourgeforge.net"
+
 maintainer="shaggy at kernel dot org"
 packager="tnut <tnut@nutyx.org>"
 
 name=jfsutils
 version=1.1.15
+release=2
 
-source=(http://jfs.sourceforge.net/project/pub/$name-$version.tar.gz)
+source=(jfsutils-1.1.15-gcc10_fix-1.patch
+	http://jfs.sourceforge.net/project/pub/$name-$version.tar.gz)
 
 build() {
 
 cd $name-$version
+
+patch -Np1 -i ../jfsutils-1.1.15-gcc10_fix-1.patch
+
 sed "s@<unistd.h>@&\n#include <sys/types.h>@g" -i fscklog/extract.c
 sed -i "/ioctl.h/a#include <sys/sysmacros.h>" libfs/devices.c
+
 ./configure
 make
 make DESTDIR=$PKG install
