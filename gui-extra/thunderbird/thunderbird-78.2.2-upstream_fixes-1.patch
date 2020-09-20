@@ -1,0 +1,45 @@
+Submitted By:            Douglas R. Reno <renodr at linuxfromscratch dot org>
+Date:                    2020-09-12
+Initial Package Version: 78.2.2
+Upstream Status:         Applied
+Origin:                  Upstream
+Descrpition:             Fixes a regression causing Thunderbird to fail to
+                         initialize properly. The symptoms include menu bar
+                         items that don't open, or that malfuction, as well as
+                         being unable to see folders, mail, or mail contents.
+
+diff -Naurp thunderbird-78.2.2.orig/comm/mail/base/content/specialTabs.js thunderbird-78.2.2/comm/mail/base/content/specialTabs.js
+--- thunderbird-78.2.2.orig/comm/mail/base/content/specialTabs.js       2020-09-08 18:21:50.000000000 -0500
++++ thunderbird-78.2.2/comm/mail/base/content/specialTabs.js    2020-09-12 16:44:45.333743302 -0500
+@@ -1048,18 +1048,20 @@ var specialTabs = {
+       Services.prefs.setCharPref("mailnews.start_page_override.mstone", mstone);
+     }
+ 
+-    let update = Cc["@mozilla.org/updates/update-manager;1"].getService(
+-      Ci.nsIUpdateManager
+-    ).activeUpdate;
++    if (AppConstants.MOZ_UPDATER) {
++       let update = Cc["@mozilla.org/updates/update-manager;1"].getService(
++          Ci.nsIUpdateManager
++       ).activeUpdate;
+ 
+     if (update && Services.vc.compare(update.appVersion, old_mstone) > 0) {
+-      let overridePage = Services.urlFormatter.formatURLPref(
+-        "mailnews.start_page.override_url"
+-      );
+-      overridePage = this.getPostUpdateOverridePage(update, overridePage);
+-      overridePage = overridePage.replace("%OLD_VERSION%", old_mstone);
+-      if (overridePage) {
+-        openLinkExternally(overridePage);
++       let overridePage = Services.urlFormatter.formatURLPref(
++          "mailnews.start_page.override_url"
++       );
++       overridePage = this.getPostUpdateOverridePage(update, overridePage);
++       overridePage = overridePage.replace("%OLD_VERSION%", old_mstone);
++       if (overridePage) {
++          openLinkExternally(overridePage);
++       }
+       }
+     }
+   },
+
