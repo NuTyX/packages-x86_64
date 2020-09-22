@@ -6,7 +6,7 @@ contributors="Pierre B, Remy"
 
 categories=(Network WebBrowser)
 
-makedepends=(node cbindgen libwebp nspr libevent rustc
+makedepends=(python node cbindgen libwebp nspr libevent rustc
              dbus-glib autoconf2-13 libnotify yasm)
 run=(pulseaudio gconf icu sqlite libvpx nss gtk3 zip unzip
      gstreamer gstreamer-plugins-base gstreamer-plugins-good
@@ -14,7 +14,7 @@ run=(pulseaudio gconf icu sqlite libvpx nss gtk3 zip unzip
 
 
 name=firefox
-version=80.0.1
+version=81.0
 
 locale_version=$version
 
@@ -137,6 +137,7 @@ EOF
 sed -e 's/checkImpl/checkFFImpl/g' -i js/src/vm/JSContext*.h
 export CC=gcc CXX=g++
 export MOZBUILD_STATE_PATH=${PWD}/mozbuild
+export MACH_USE_SYSTEM_PYTHON=1
 
 SHELL=/bin/sh ./mach build
 SHELL=/bin/sh ./mach buildsymbols
