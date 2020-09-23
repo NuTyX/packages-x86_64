@@ -1,0 +1,28 @@
+description="Programs for controlling the startup, running, and shutdown of the system."
+url="https://www.freedesktop.org/wiki/Software/systemd/"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libcap kmod meson ninja)
+
+version=246
+
+source=(https://github.com/systemd/systemd/archive/v$version/systemd-$version.tar.gz)
+
+build() {
+
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson --prefix=/usr  \
+--sysconfdir=/etc    \
+--localstatedir=/var \
+..
+
+ninja
+
+DESTDIR=$PKG ninja install
+}
+
