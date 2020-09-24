@@ -3,26 +3,71 @@ url="https://www.freedesktop.org/wiki/Software/systemd/"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(libcap kmod meson ninja)
+makedepends=(libcap kmod meson ninja python)
 
+name=systemd
 version=246
+release=2
 
-source=(https://github.com/systemd/systemd/archive/v$version/systemd-$version.tar.gz)
+PKGMK_IGNORE_FOOTPRINT='no'
 
+source=(http://download.tuxfamily.org/nutyx/files/$name-man-pages-$version.tar.xz
+	https://github.com/systemd/systemd/archive/v$version/systemd-$version.tar.gz)
+
+prepare() {
+ln -sf /bin/true /usr/bin/xsltproc
+
+sed '177,$ d' -i $name-$version/src/resolve/meson.build
+sed -i 's/GROUP="render", //' $name-$version/rules.d/50-udev-default.rules.in
+
+}
 build() {
 
+
 cd $name-$version
+mv ../build build
+cd          build
 
-mkdir build
-cd    build
-
-meson --prefix=/usr  \
---sysconfdir=/etc    \
---localstatedir=/var \
+meson --prefix=/usr           \
+--sysconfdir=/etc             \
+--localstatedir=/var          \
+-Dfirstboot=false             \
+-Dinstall-tests=false         \
+-Dkmod-path=/bin/kmod         \
+-Dmount-path=/bin/mount       \
+-Dsplit-usr=true              \
+-Drpmmacrosdir=no             \
+-Dsulogin-path=/sbin/sulogin  \
+-Dumount-path=/bin/umount     \
+-Dman=true                    \
+-Dsysusers=false              \
+-Duserdb=false                \
 ..
 
 ninja
 
 DESTDIR=$PKG ninja install
+
+mv $PKG/{,s}bin/udevadm
+ln -sv ../lib/systemd/systemd $PKG/sbin/systemd-init
+ln -svf ../../sbin/udevadm $PKG/lib/systemd/systemd-udevd
+
+# eudev Package files
+rm $PKG/sbin/udevadm
+rm -r $PKG/{lib,etc}/udev
+rm $PKG/usr/include/libudev.h
+rm $PKG/usr/lib/pkgconfig/libudev.pc
+rm $PKG/usr/share/pkgconfig/udev.pc
+rm $PKG/lib/libudev*
+rm $PKG/usr/share/bash-completion/completions/udevadm
+rm $PKG/usr/share/zsh/site-functions/_udevadm
+
+# sysvinit package files
+rm $PKG/sbin/{halt,init,poweroff,reboot,runlevel,shutdown,telinit}
+
+# Prevent systemd from resetting the maximum PID value
+rm -f $PKG/usr/lib/sysctl.d/50-pid-max.conf
+
+rm /usr/bin/xsltproc
 }
 

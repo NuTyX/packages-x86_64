@@ -1,0 +1,7 @@
+. lib/lsb/init-functions
+if [ ! -e etc/machine-id ]; then
+   systemd-machine-id-setup
+   log_success_msg "${WARNING} /etc/machine-id created ${NORMAL}"
+else
+   log_success_msg "${WARNING} /etc/machine-id already exist ${NORMAL}"
+fi
