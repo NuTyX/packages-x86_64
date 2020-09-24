@@ -4,15 +4,16 @@ url="http://www.freedesktop.org/wiki/Software/dbus/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Jayce"
 
-makedepends=(expat xorg-libx11 xorg-libsm xorg-libice)
+makedepends=(systemd expat)
 
 name=dbus
 version=1.12.20
+release=2
 
-nutyx_version=11.4
+runyx_version=20200412
 
 PKGMK_GROUPS=(doc devel)
-source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+source=(http://downloads.nutyx.org/files/runyx-${runyx_version}.tar.xz
 		http://dbus.freedesktop.org/releases/dbus/$name-$version.tar.gz
 		dbus.system-local.conf)
 
@@ -43,13 +44,18 @@ build() {
     mkdir -p $PKG/etc/dbus-1
     mv ../dbus.system-local.conf $PKG/etc/dbus-1/system-local.conf
 
-	# service
-    cd ../nutyx-${nutyx_version}
-    make DESTDIR=$PKG install-dbus
-	mkdir -p $PKG/usr/lib/dbus-1.0/services
-	mkdir -p $PKG/usr/share/dbus-1/services
-	mkdir -p $PKG/etc/dbus-1/system.d/
-	mkdir -p $PKG/etc/dbus-1/session.d/
+    # service
+    cd ../runyx-${runyx_version}
+    make DESTDIR=$PKG install-sysv-dbus
+    make DESTDIR=$PKG install-runyx-dbus
+
+    sed -i "s@--config-file=/etc/dbus-1/system.conf@--system@" \
+    $PKG/lib/init/services/dbus/run
+ 
+    mkdir -p $PKG/usr/lib/dbus-1.0/services
+    mkdir -p $PKG/usr/share/dbus-1/services
+    mkdir -p $PKG/etc/dbus-1/system.d/
+    mkdir -p $PKG/etc/dbus-1/session.d/
 }
 package(){
 	rm $PKG/usr/lib/libdbus-1.la
