@@ -5,6 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=runyx
 version=20200412
+release=2
 
 libc_name=dietlibc
 libc_version=0.34
@@ -29,4 +30,5 @@ cd $name-$version
 
 make all
 make DESTDIR=$PKG install
+rm $PKG/sbin/{init,halt,poweroff,reboot,shutdown}
 }
