@@ -13,9 +13,11 @@ PKGMK_GROUPS=()
 
 name=lxdm
 version=0.5.3
-release=26
+release=27
 
+runyx_version=20200412
 source=(lxdm-$version-nutyx-1.patch login.png
+	https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	http://downloads.tuxfamily.org/nutyx/files/lxdm-nutyx-11.0.jpg
 	http://downloads.sourceforge.net/$name/$name-$version.tar.xz)
 
@@ -28,6 +30,7 @@ cat > pam/lxdm << "EOF"
 
 auth     requisite      pam_nologin.so
 auth     required       pam_env.so
+auth     required       pam_succeed_if.so uid >= 1000 quiet
 auth     include        system-auth
 
 account  include        system-account
@@ -43,7 +46,7 @@ EOF
 ./configure --sysconfdir=/etc \
 	--prefix=/usr \
 	--with-pam \
-	--with-systemdsystemunitdir=no
+	--with-systemdsystemunitdir=/lib/systemd/system
 
 make
   
@@ -61,17 +64,8 @@ $PKG/usr/share/lxdm/themes/Industrial/nutyx.jpg
 # Let keep it as an example
 mv $PKG/etc/lxdm/lxdm.conf{,.example}
 
-#
-# runit:
-# TODO: need to find a more generic solution
-# like a function in pkgmk script
-#
-SERVICEDIR=lib/init/services/${name}
-mkdir -p $PKG/$SERVICEDIR
-
-cat > $PKG/$SERVICEDIR/run << "EOF"
-#!/bin/sh
-exec chpst -P /usr/sbin/lxdm
-EOF
-chmod 755 $PKG/$SERVICEDIR/run
+# service
+cd ../runyx-${runyx_version}
+make DESTDIR=$PKG install-runyx-$name
+sed -i '/agetty/d' $PKG/lib/init/services/lxdm/run
 }
