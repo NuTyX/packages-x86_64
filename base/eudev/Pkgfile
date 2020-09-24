@@ -7,6 +7,7 @@ makedepends=(libcap kmod meson ninja python)
 
 _name=systemd
 version=246
+release=2
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -67,6 +68,7 @@ mv $PKG/udevadm $PKG/usr/share/bash-completion/completions
 mv $PKG/_udevadm $PKG/usr/share/zsh/site-functions
 
 rm $PKG/usr/share/pkgconfig/systemd.pc
+rm $PKG/usr/lib/pkgconfig/libsystemd.pc
 
 rm $PKG/lib/lib{nss*,systemd*}
 rm -r $PKG/lib/{modprobe.d,security}
