@@ -539,6 +539,9 @@ LINKDELAY='15'          # init delay for initialisation of Networkmanager
 NETWORKDELAY='0'        # init delay to wait after initialisation of Networkmanager
 EOF
 fi
+
+[ ! -f /etc/hostname ] && echo "nutyx" > /etc/hostname
+
 if [ "$SETUP_INITRD" == "yes" ]; then
 	/etc/rc.d/init.d/network start
 fi
@@ -987,6 +990,8 @@ SETUP_CONFIG_LANGUAGE="no"
 }
 setup_keymap ()
 {
+echo 'FONT="LatGrkCyr-8x16"' > \
+  ${VCONSOLE}
 	cat > ${CONSOLE} << "EOF"
 FONT="LatGrkCyr-8x16"
 UNICODE="1"
@@ -1132,6 +1137,8 @@ break
 done
 sed -i "/KEYMAP/d" ${CONSOLE}
 echo "KEYMAP=${REPLY}.map" >> ${CONSOLE}
+echo "KEYMAP=${REPLY}.map" >> ${VCONSOLE}
+
 $SETUP_LOG "setup-nutyx --config-keymap" "KEYMAP=${REPLY}.map saved in ${CONSOLE}"
 loadkeys ${REPLY}.map > /dev/null 2>&1
 case $REPLY in
@@ -1190,14 +1197,19 @@ $(gettext "so that the summer/winter time is changed automatically" ) " 0 0
 			UTC=0;;
 	esac
 
-	echo "UTC=${UTC}" > /etc/sysconfig/clock
+	echo "UTC=${UTC}" > $CLOCK
+	echo "0.0 0.0" > $ADJTIME
 
-	[ -r /etc/sysconfig/clock ] && . /etc/sysconfig/clock
+	[ -r /etc/sysconfig/clock ] && . $CLOCK
 
 	case "${UTC}" in
 		1)
+			echo "1
+REMOTE" >> $ADJTIME
 			CLOCKPARAMS="${CLOCKPARAMS} --utc";;
 		0)
+			echo "0
+LOCAL" >> $ADJTIME
 			CLOCKPARAMS="${CLOCKPARAMS} --localtime";;
 	esac
 	
@@ -1519,6 +1531,7 @@ install_nutyx() {
 	etc/sysconfig/network \
 	etc/sysconfig/clock \
 	etc/hostname \
+	etc/adjtime \
 	etc/cards.conf \
 	etc/resolv.conf \
 	etc/fstab \
@@ -2406,11 +2419,13 @@ SETUP_LOG="setup-nutyx-log"
 CARDS="/etc/cards.conf"
 XORGKB="/etc/X11/xorg.conf.d/20-keyboard.conf"
 CONSOLE="/etc/sysconfig/console"
+VCONSOLE="/etc/vconsole.conf"
 LOCALE="/etc/profile.d/i18n.sh"
 LOCALTIME="/etc/localtime"
 ZONEINFO="/usr/share/zoneinfo/"
 NETWORK="`ls /etc/sysconfig/ifconfig* 2>/dev/null|head -1`"
 CLOCK="/etc/sysconfig/clock"
+ADJTIME="/etc/adjtime"
 USER="/home"
 EFIVARS="/sys/firmware/efi/efivars"
 
