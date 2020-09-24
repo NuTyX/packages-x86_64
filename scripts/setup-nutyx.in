@@ -539,6 +539,9 @@ LINKDELAY='15'          # init delay for initialisation of Networkmanager
 NETWORKDELAY='0'        # init delay to wait after initialisation of Networkmanager
 EOF
 fi
+
+[ ! -f /etc/hostname ] && echo "nutyx" > /etc/hostname
+
 if [ "$SETUP_INITRD" == "yes" ]; then
 	/etc/rc.d/init.d/network start
 fi
@@ -1194,14 +1197,19 @@ $(gettext "so that the summer/winter time is changed automatically" ) " 0 0
 			UTC=0;;
 	esac
 
-	echo "UTC=${UTC}" > /etc/sysconfig/clock
+	echo "UTC=${UTC}" > $CLOCK
+	echo "0.0 0.0" > $ADJTIME
 
-	[ -r /etc/sysconfig/clock ] && . /etc/sysconfig/clock
+	[ -r /etc/sysconfig/clock ] && . $CLOCK
 
 	case "${UTC}" in
 		1)
+			echo "1
+REMOTE" >> $ADJTIME
 			CLOCKPARAMS="${CLOCKPARAMS} --utc";;
 		0)
+			echo "0
+LOCAL" >> $ADJTIME
 			CLOCKPARAMS="${CLOCKPARAMS} --localtime";;
 	esac
 	
@@ -1523,6 +1531,7 @@ install_nutyx() {
 	etc/sysconfig/network \
 	etc/sysconfig/clock \
 	etc/hostname \
+	etc/adjtime \
 	etc/cards.conf \
 	etc/resolv.conf \
 	etc/fstab \
@@ -2416,6 +2425,7 @@ LOCALTIME="/etc/localtime"
 ZONEINFO="/usr/share/zoneinfo/"
 NETWORK="`ls /etc/sysconfig/ifconfig* 2>/dev/null|head -1`"
 CLOCK="/etc/sysconfig/clock"
+ADJTIME="/etc/adjtime"
 USER="/home"
 EFIVARS="/sys/firmware/efi/efivars"
 
