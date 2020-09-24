@@ -7,7 +7,7 @@ makedepends=(libcap kmod meson ninja python)
 
 _name=systemd
 version=246
-release=2
+release=3
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -48,15 +48,16 @@ DESTDIR=$PKG ninja install
 
 mv $PKG/{,s}bin/udevadm
 ln -svf ../../sbin/udevadm $PKG/lib/systemd/systemd-udevd
+ln -sv udevadm $PKG/sbin/udevd
 
 # systemd Package files
 rm $PKG/bin/{journalctl,loginctl,machinectl,networkctl,portablectl,systemctl}
 rm $PKG/bin/systemd-*
 rm $PKG/sbin/resolvconf
-rm $PKG/etc/pam.d/systemd-user
+rm -r $PKG/etc/{pam,sysctl}.d
 
 rm -r $PKG/usr/bin
-rm -r $PKG/usr/lib/{{environment,binfmt,sysctl,tmpfiles}.d,kernel,systemd}
+rm -r $PKG/usr/lib/{{environment,binfmt,sysctl,tmpfiles,modules-load}.d,kernel,systemd}
 rm -r $PKG/{usr/include,lib,etc}/systemd
 rm -r $PKG/etc/{X11,xdg,binfmt.d,init.d,kernel,modules-load.d,tmpfiles.d}
 
