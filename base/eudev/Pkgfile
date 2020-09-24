@@ -1,63 +1,83 @@
 description="The Eudev package contains programs for dynamic creation of device nodes."
-url="http://www.gentoo.org/proj/en/eudev/"
-maintainer="Ian Stakenvicius,Tony Vroon,Francisco Blas Izquierdo Riera,Luca Barbato,Matt Thode,Richard Yao,Anthony G. Basile"
+url="https://www.freedesktop.org/wiki/Software/systemd/"
+
 packager="tnut <tnut@nutyx.org>"
 
-name=eudev
-version=3.2.7
+makedepends=(libcap kmod meson ninja python)
 
-source=(http://anduin.linuxfromscratch.org/LFS/udev-lfs-20171102.tar.bz2
-	http://dev.gentoo.org/~blueness/eudev/$name-$version.tar.gz)
+_name=systemd
+version=246
 
+PKGMK_IGNORE_FOOTPRINT='no'
+PKGMK_IGNORE_RUNTIMEDEPS='yes'
+
+source=(https://github.com/systemd/systemd/archive/v$version/systemd-$version.tar.gz)
+
+prepare() {
+
+sed '177,$ d' -i ${_name}-$version/src/resolve/meson.build
+sed -i 's/GROUP="render", //' ${_name}-$version/rules.d/50-udev-default.rules.in
+
+}
 build() {
-cd $name-$version
-sed -r -i 's|/usr(/bin/test)|\1|' test/udev-test.pl
 
-if [ -d /tools ];then
-	cat > config.cache << "EOF"
-	HAVE_BLKID=1
-	BLKID_LIBS="-lblkid"
-	BLKID_CFLAGS="-I/tools/include"
-EOF
-fi
 
-./configure --prefix=/usr \
---bindir=/sbin \
---sbindir=/sbin \
---libdir=/usr/lib \
---sysconfdir=/etc \
---libexecdir=/lib \
---with-rootprefix= \
---with-rootlibdir=/lib \
---enable-manpages \
---enable-hwdb  \
---disable-introspection \
---disable-static  \
---config-cache
-if [ -d /tools ];then
- LIBRARY_PATH=/tools/lib make
-else
- make
-fi
-mkdir -pv $PKG/lib/{firmware,udev/devices/pts}
-mkdir -pv $PKG/lib/udev/rules.d
-mkdir -pv $PKG/etc/udev/rules.d
-if [ -d /tools ];then
- make LD_LIBRARY_PATH=/tools/lib DESTDIR=$PKG install
-else
- make DESTDIR=$PKG install
-fi
-# man pages
-pushd man
-make DESTDIR=$PKG install-man7 install-man8
+cd ${_name}-$version
+mkdir build
+cd    build
 
-cd $SRC
-make -j1 -f udev-lfs-20171102/Makefile.lfs DESTDIR=$PKG install
+meson --prefix=/usr           \
+--sysconfdir=/etc             \
+--localstatedir=/var          \
+-Dfirstboot=false             \
+-Dinstall-tests=false         \
+-Dkmod-path=/bin/kmod         \
+-Dmount-path=/bin/mount       \
+-Dsplit-usr=true              \
+-Drpmmacrosdir=no             \
+-Dsulogin-path=/sbin/sulogin  \
+-Dumount-path=/bin/umount     \
+-Dsysusers=false              \
+-Duserdb=false                \
+..
 
-# DB
-if [ -d /tools ];then
- LD_LIBRARY_PATH=/tools/lib $PKG/sbin/udevadm hwdb --update --root=$PKG
-else
- $PKG/sbin/udevadm hwdb --update --root=$PKG
-fi
+ninja
+
+DESTDIR=$PKG ninja install
+
+mv $PKG/{,s}bin/udevadm
+ln -svf ../../sbin/udevadm $PKG/lib/systemd/systemd-udevd
+
+# systemd Package files
+rm $PKG/bin/{journalctl,loginctl,machinectl,networkctl,portablectl,systemctl}
+rm $PKG/bin/systemd-*
+rm $PKG/sbin/resolvconf
+rm $PKG/etc/pam.d/systemd-user
+
+rm -r $PKG/usr/bin
+rm -r $PKG/usr/lib/{{environment,binfmt,sysctl,tmpfiles}.d,kernel,systemd}
+rm -r $PKG/{usr/include,lib,etc}/systemd
+rm -r $PKG/etc/{X11,xdg,binfmt.d,init.d,kernel,modules-load.d,tmpfiles.d}
+
+mv $PKG/{usr/share/bash-completion/completions/udevadm,udevadm}
+mv $PKG/{usr/share/zsh/site-functions/_udevadm,_udevadm}
+rm -r $PKG/usr/share/{doc,factory,polkit-1,bash-completion,zsh,systemd,dbus-1}
+mkdir -p $PKG/usr/share/{bash-completion/completions,zsh/site-functions}
+mv $PKG/udevadm $PKG/usr/share/bash-completion/completions
+mv $PKG/_udevadm $PKG/usr/share/zsh/site-functions
+
+rm $PKG/usr/share/pkgconfig/systemd.pc
+
+rm $PKG/lib/lib{nss*,systemd*}
+rm -r $PKG/lib/{modprobe.d,security}
+
+rm -r $PKG/var
+
+
+# sysvinit package files
+rm $PKG/sbin/{halt,init,poweroff,reboot,runlevel,shutdown,telinit}
+
+# Prevent systemd from resetting the maximum PID value
+rm -f $PKG/usr/lib/sysctl.d/50-pid-max.conf
+
 }
