@@ -7,9 +7,10 @@ makedepends=(libcap kmod meson ninja python)
 
 name=systemd
 version=246
-release=2
+release=3
 
 PKGMK_IGNORE_FOOTPRINT='no'
+PKGMK_IGNORE_RUNTIMEDEPS='yes'
 
 source=(http://download.tuxfamily.org/nutyx/files/$name-man-pages-$version.tar.xz
 	https://github.com/systemd/systemd/archive/v$version/systemd-$version.tar.gz)
