@@ -987,6 +987,8 @@ SETUP_CONFIG_LANGUAGE="no"
 }
 setup_keymap ()
 {
+echo 'FONT="LatGrkCyr-8x16"' > \
+  ${VCONSOLE}
 	cat > ${CONSOLE} << "EOF"
 FONT="LatGrkCyr-8x16"
 UNICODE="1"
@@ -1132,6 +1134,8 @@ break
 done
 sed -i "/KEYMAP/d" ${CONSOLE}
 echo "KEYMAP=${REPLY}.map" >> ${CONSOLE}
+echo "KEYMAP=${REPLY}.map" >> ${VCONSOLE}
+
 $SETUP_LOG "setup-nutyx --config-keymap" "KEYMAP=${REPLY}.map saved in ${CONSOLE}"
 loadkeys ${REPLY}.map > /dev/null 2>&1
 case $REPLY in
@@ -2406,6 +2410,7 @@ SETUP_LOG="setup-nutyx-log"
 CARDS="/etc/cards.conf"
 XORGKB="/etc/X11/xorg.conf.d/20-keyboard.conf"
 CONSOLE="/etc/sysconfig/console"
+VCONSOLE="/etc/vconsole.conf"
 LOCALE="/etc/profile.d/i18n.sh"
 LOCALTIME="/etc/localtime"
 ZONEINFO="/usr/share/zoneinfo/"
