@@ -7,10 +7,11 @@ makedepends=(libcap kmod meson ninja python)
 
 name=systemd
 version=246
-release=3
+release=4
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
+PKGMK_GROUPS=(devel doc man lib)
 
 source=(http://download.tuxfamily.org/nutyx/files/$name-man-pages-$version.tar.xz
 	https://github.com/systemd/systemd/archive/v$version/systemd-$version.tar.gz)
@@ -71,4 +72,11 @@ rm -f $PKG/usr/lib/sysctl.d/50-pid-max.conf
 
 rm /usr/bin/xsltproc
 }
-
+lib() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar
+lib/lib* lib/systemd/libsystemd-shared*
+rm lib/lib* lib/systemd/libsystemd-shared*
+rm -d lib || true
+}
