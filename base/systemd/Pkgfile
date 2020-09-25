@@ -75,8 +75,9 @@ rm /usr/bin/xsltproc
 lib() {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar
+$PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
 lib/lib* lib/systemd/libsystemd-shared*
+
 rm lib/lib* lib/systemd/libsystemd-shared*
 rm -d lib || true
 }
