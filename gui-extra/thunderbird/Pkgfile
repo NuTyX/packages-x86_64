@@ -12,13 +12,12 @@ run=(startup-notification hunspell desktop-file-utils hicolor-icon-theme
      shared-mime-info)
 
 name=thunderbird
-version=78.2.2
-release=2
+version=78.3.0
 
 locale_version=$version
 
 source=(https://archive.mozilla.org/pub/thunderbird/releases/$version/source/$name-$version.source.tar.xz
-	$name.desktop thunderbird-78.2.2-upstream_fixes-1.patch)
+	$name.desktop )
 
 pack_remove_locale() {
 
@@ -38,8 +37,6 @@ rm usr/lib/$name/extensions/langpack-${1}@$name.mozilla.org.xpi
 build() {
 
 cd $name-$version
-
-patch -Np1 -i ../thunderbird-78.2.2-upstream_fixes-1.patch
 
 cat > mozconfig << "EOF"
 # If you have a multicore machine, the build may be faster if using parallel
