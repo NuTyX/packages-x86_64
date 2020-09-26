@@ -8,7 +8,7 @@ makedepends=(systemd expat)
 
 name=dbus
 version=1.12.20
-release=2
+release=3
 
 runyx_version=20200412
 
@@ -25,17 +25,16 @@ build() {
             --disable-doxygen-docs                \
             --disable-xml-docs                    \
             --disable-static                      \
-            --with-systemduserunitdir=no          \
-            --with-systemdsystemunitdir=no        \
             --docdir=/usr/share/doc/dbus-$version \
             --with-console-auth-dir=/run/console  \
             --with-system-pid-file=/run/dbus/pid  \
-	        --with-system-socket=/run/dbus/system_bus_socket
+	    --with-system-socket=/run/dbus/system_bus_socket \
+	    --with-systemdsystemunitdir=/lib/systemd/system  \
+	    --enable-systemd
 	make
 	make DESTDIR=$PKG install
 
 	# Adjust some files
-	mkdir $PKG/lib
 	mv -v $PKG/usr/lib/libdbus-1.so.* $PKG/lib
 	ln -sfv ../../lib/$(readlink $PKG/usr/lib/libdbus-1.so) \
 	$PKG/usr/lib/libdbus-1.so
