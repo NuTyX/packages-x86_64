@@ -7,7 +7,7 @@ makedepends=(libcap kmod meson ninja python)
 
 _name=systemd
 version=246
-release=3
+release=4
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -79,6 +79,11 @@ rm -r $PKG/var
 
 # sysvinit package files
 rm $PKG/sbin/{halt,init,poweroff,reboot,runlevel,shutdown,telinit}
+
+# elogind package files
+rm $PKG/lib/udev/rules.d/70-{power-switch,uaccess}.rules
+rm $PKG/lib/udev/rules.d/71-seat.rules
+rm $PKG/lib/udev/rules.d/73-seat-late.rules
 
 # Prevent systemd from resetting the maximum PID value
 rm -f $PKG/usr/lib/sysctl.d/50-pid-max.conf
