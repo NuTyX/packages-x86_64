@@ -5,7 +5,10 @@ packager="tnut <tnut@nutyx.org>"
 
 name=runyx
 version=20200412
-release=2
+release=3
+
+# As long initctl is in perl
+run=(perl)
 
 libc_name=dietlibc
 libc_version=0.34
@@ -30,5 +33,43 @@ cd $name-$version
 
 make all
 make DESTDIR=$PKG install
+# sysvinit packages
 rm $PKG/sbin/{init,halt,poweroff,reboot,shutdown}
+
+# initctl service
+## it's a perl script for the moment
+
+mkdir -p $PKG/{etc/init/{single,multi},lib/init/services/initctl}
+
+cat > $PKG/lib/init/services/initctl/run << "EOF"
+#!/usr/bin/perl -T
+use v5.18;
+use warnings;
+use autodie;
+
+$ENV{PATH} = '/sbin:/bin';
+
+my $INIT_FIFO    = '/run/initctl';
+my $REQ_SIZE     = 384;
+my $MAGIC_HEADER = 0x03091969;
+my $CMD_RUNLEVEL = 0x1;
+
+-e $INIT_FIFO or system("/usr/bin/mkfifo --mode=0600 $INIT_FIFO");
+
+open(my $pipefh, q{<}, $INIT_FIFO);
+
+while () {
+    read($pipefh, my $request, $REQ_SIZE) == $REQ_SIZE
+        or die "Failed to read $REQ_SIZE bytes";
+
+    my ($magic, $command, $runlevel, $sleeptime, $stuff) = unpack('l l A4 l A*', $request);
+
+    $magic    == $MAGIC_HEADER  or die "Got invalid magic bytes";
+    $command  == $CMD_RUNLEVEL  or next;
+    $runlevel =~ /^(0|6)$/      and system("/sbin/runit-init $1");
+}
+EOF
+ln -sv /lib/init/services/initctl $PKG/etc/init/single
+ln -sv /lib/init/services/initctl $PKG/etc/init/multi
+
 }
