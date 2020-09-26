@@ -1,0 +1,40 @@
+description="Freedesktop.org message bus system"
+url="http://www.freedesktop.org/wiki/Software/dbus/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Jayce"
+
+makedepends=(systemd expat xorg-libx11 xorg-libxsm xorg-libnice)
+
+name=dbus-launch
+_name=dbus
+version=1.12.20
+
+source=(http://dbus.freedesktop.org/releases/dbus/${_name}-$version.tar.gz)
+
+build() {
+	cd ${_name}-$version
+	./configure --prefix=/usr                     \
+            --sysconfdir=/etc                     \
+            --localstatedir=/var                  \
+            --disable-doxygen-docs                \
+            --disable-xml-docs                    \
+            --disable-static                      \
+            --docdir=/usr/share/doc/dbus-$version \
+            --with-console-auth-dir=/run/console  \
+            --with-system-pid-file=/run/dbus/pid  \
+	    --with-system-socket=/run/dbus/system_bus_socket \
+	    --with-systemdsystemunitdir=/lib/systemd/system  \
+	    --enable-systemd
+	make -C dbus
+	make -C tools dbus-launch
+	mkdir -p $PKG/usr/bin
+	/usr/bin/install -c tools/.libs/dbus-launch $PKG/usr/bin/dbus-launch
+}
+uptodate() {
+local url ext
+ext=".tar.gz"
+url="https://dbus.freedesktop.org/releases/dbus"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep $name-[0-9]|grep $ext$|head -1|sed "s@$url/$name-@@"|sed "s/$ext//"
+}
