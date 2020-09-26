@@ -7,8 +7,9 @@ contributors="Pierre B"
 name=polkit
 version=0.116
 
-makedepends=(systemd gettext glib js60 gobject-introspection intltool perl-xml-parser libxslt docbook-xsl)
-source=(http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
+makedepends=(systemd gettext glib js60 gobject-introspection intltool perl-xml-parser libxslt docbook-xsl elogind)
+source=($name-fix_elogind_detection-1.patch
+        http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
 
 prepare() {
 SN="polkitd"
@@ -25,12 +26,15 @@ sed -i "s:/sys/fs/cgroup/systemd/:/sys:g" $name-$version/configure
 build() {
 cd $name-$version
 
+patch -Np1 -i ../$name-fix_elogind_detection-1.patch
+autoreconf -fi
+
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
 --mandir=/usr/share/man \
 --localstatedir=/var \
 --disable-static \
---enable-libsystemd-login=yes
+--disable-libsystemd-login
 
 make||make -j1
 
