@@ -1,13 +1,13 @@
 description="Application development toolkit for controlling system-wide privileges"
 url="http://hal.freedesktop.org/docs/polkit"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=polkit
 version=0.116
-release=4
 
-makedepends=(glib js60 gobject-introspection intltool perl-xml-parser libxslt docbook-xsl)
+makedepends=(systemd gettext glib js60 gobject-introspection intltool perl-xml-parser libxslt docbook-xsl)
 source=(http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
 
 prepare() {
@@ -20,6 +20,7 @@ if ! (getent passwd $SN > /dev/null); then
    useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 \
    -u $IDN -g $SN -s /bin/false $SN
 fi
+sed -i "s:/sys/fs/cgroup/systemd/:/sys:g" $name-$version/configure
 }
 build() {
 cd $name-$version
@@ -28,11 +29,8 @@ cd $name-$version
 --sysconfdir=/etc \
 --mandir=/usr/share/man \
 --localstatedir=/var \
---enable-libsystemd-login=no \
 --disable-static \
---enable-libelogind=no \
---with-authfw=pam \
---with-os-type=LFS
+--enable-libsystemd-login=yes
 
 make||make -j1
 
