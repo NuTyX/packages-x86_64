@@ -1,9 +1,10 @@
 description="Standalone logind fork"
 url="https://github.com/elogind/elogind"
+
 packager="tnut <tnut@nutyx.org>"
 
 name=elogind
-version=241.3
+version=243.7
 
 PKGMK_GROUPS=(doc devel man)
 makedepends=(dbus meson ninja eudev glib libseccomp)
@@ -28,17 +29,26 @@ DESTDIR=$PKG ninja install
 ln -sfv  libelogind.pc $PKG/usr/lib/pkgconfig/libsystemd.pc
 ln -sfvn elogind $PKG/usr/include/systemd
 
-# Service
-mkdir -p $PKG/etc/rc.d/init.d
-install -m 754 ../../elogind $PKG/etc/rc.d/init.d/
+cat > $PKG/etc/pam.d/elogind-user << "EOF"
+# Begin /etc/pam.d/elogind-user
 
-mkdir -p $PKG/etc/rc.d/rc{0,1,2,3,4,5,6}.d
-for i in 0 1 6
-do
-  ln -sf  ../init.d/elogind $PKG/etc/rc.d/rc${i}.d/K24elogind
-done
-for i in 2 3 4 5
-do
-  ln -sf  ../init.d/elogind $PKG/etc/rc.d/rc${i}.d/S31elogind
-done
+account  required    pam_access.so
+account  include     system-account
+
+session  required    pam_env.so
+session  required    pam_limits.so
+session  required    pam_unix.so
+session  required    pam_loginuid.so
+session  optional    pam_keyinit.so force revoke
+session  optional    pam_elogind.so
+
+auth     required    pam_deny.so
+password required    pam_deny.so
+
+# End /etc/pam.d/elogind-user
+EOF
+
+# systemd package files
+rm $PKG/usr/include/systemd
+rm $PKG/usr/lib/pkgconfig/libsystemd.pc
 }
