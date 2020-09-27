@@ -7,7 +7,7 @@ makedepends=(libcap kmod meson ninja python)
 
 name=systemd
 version=246
-release=5
+release=6
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -79,6 +79,8 @@ rm $PKG/usr/share/dbus-1/system-services/org.freedesktop.login1.service
 rm -r $PKG/usr/share/factory/etc/pam.d
 rm $PKG/usr/share/polkit-1/actions/org.freedesktop.login1.policy
 rm $PKG/usr/share/zsh/site-functions/_loginctl
+rm $PKG/lib/systemd/system/multi-user.target.wants/systemd-logind.service
+rm $PKG/lib/systemd/system/systemd-logind.service
 }
 lib() {
 cd $PKG
