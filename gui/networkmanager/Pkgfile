@@ -15,39 +15,40 @@ alias=(NetworkManager)
 _name=NetworkManager
 
 name=networkmanager
-version=1.22.10
-release=3
+version=1.26.2
+runyx_version=20200412
 
-source=(https://download.gnome.org/sources/$_name/${version:0:4}/$_name-$version.tar.xz)
+source=(fix-pygobject3-1.patch
+	http://download.tuxfamily.org/files/runyx-${runyx_version}.tar.xz
+	https://download.gnome.org/sources/$_name/${version:0:4}/$_name-$version.tar.xz)
 
 prepare() {
-sed -i '/initrd/d' ${_name}-$version/src/meson.build
-grep -rl '^#!.*python$'| xargs sed -i '1s/python/&3/'
 mkdir build
+cd ${_name}-$version
+patch -Np1 -i ../fix-pygobject3-1.patch
+cd ..
 }
-
 build() {
 
 cd build
-CXXFLAGS+=" -fPIC"              \
-meson --prefix        /usr      \
-      --sysconfdir    /etc      \
-      --localstatedir /var      \
-      -Dudev_dir=/lib/udev      \
-      -Dlibnm_glib=true         \
-      -Dsession_tracking="no"   \
-      -Dlibaudit=no             \
-      -Dlibpsl=false            \
-      -Dnmtui=true              \
-      -Dselinux=false           \
-      -Dsystemdsystemunitdir=no \
-      -Dsystemd_journal=false   \
-      -Djson_validation=false   \
-      -Dqt=false                \
-      -Dovs=false               \
-      -Dppp=false               \
-      -Dmodem_manager=false     \
-      -Ddocs=true               \
+
+CXXFLAGS+="-02 -fPIC"            \
+meson --prefix        /usr       \
+      -Dudev_dir=/lib/udev       \
+      -Dsession_tracking=elogind \
+      -Dlibnm_glib=true          \
+      -Dsession_tracking="no"    \
+      -Dlibaudit=no              \
+      -Dlibpsl=false             \
+      -Dnmtui=true               \
+      -Dselinux=false            \
+      -Djson_validation=false    \
+      -Dqt=false                 \
+      -Dovs=false                \
+      -Dppp=false                \
+      -Dmodem_manager=false      \
+      -Ddocs=true                \
+      -Dsystemdsystemunitdir=/lib/systemd/system \
       ../${_name}-$version
 ninja
 DESTDIR=$PKG ninja install
@@ -85,6 +86,10 @@ polkit.addRule(function(action, subject) {
     }
 });
 EOF
+
+# Runit service
+cd ../runyx-${runyx_version}
+make DESTDIR=$PKG install-runyx-networkmanager
 }
 
 uptodate(){
