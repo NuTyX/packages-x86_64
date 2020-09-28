@@ -1,1 +1,18 @@
+. lib/lsb/init-functions
+GID=76
+for GROUP in systemd-network \
+  systemd-resolve systemd-timesync
+do
+	if ! (getent group $GROUP > /dev/null); then
+		log_info_msg "${INFO}Creating $GROUP group${NORMAL}\n"
+		groupadd -g $GID $GROUP
+	fi
+	DES=$(echo $GROUP|sed -e "s/-\b\(.\)/ \u\1/g")
+	if ! (getent passwd $GROUP > /dev/null); then
+		log_info_msg "${INFO}Creating $GROUP user${NORMAL}\n"
+		useradd  -c "$DES" -g $GROUP -u $GID -d /dev/null -s /bin/false $GROUP
+	fi
+	GID=$((${GID} + 1))
+done
+
 passwd -l messagebus &>/dev/null
