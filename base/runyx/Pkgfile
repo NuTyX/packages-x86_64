@@ -69,6 +69,7 @@ while () {
     $runlevel =~ /^(0|6)$/      and system("/sbin/runit-init $1");
 }
 EOF
+chmod 755  $PKG/lib/init/services/initctl/run
 ln -sv /lib/init/services/initctl $PKG/etc/init/single
 ln -sv /lib/init/services/initctl $PKG/etc/init/multi
 
