@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 
 name=dhcpcd
 version=8.1.6
-release=2
+release=3
 
 source=(https://roy.marples.name/downloads/$name/$name-$version.tar.xz)
 
@@ -38,4 +38,9 @@ cat > $PKG/$SERVICEDIR/log/run << "EOF"
 exec chpst svlogd -tt /var/log/dhcpcd
 EOF
 chmod 755 $PKG/$SERVICEDIR/{run,/log/run}
+for i in single multi
+do
+  mkdir -p $PKG/etc/init/$i
+  ln -sv /lib/init/services/$name $PKG/etc/init/$i/$name
+done
 }
