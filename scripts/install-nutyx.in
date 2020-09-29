@@ -857,27 +857,11 @@ cdrom:x:15:
 adm:x:16:
 atd:x:17:
 messagebus:x:18:
-EOF
-[ "$INIT" = "sysd" ] && echo "systemd-journal:x:23:" >> \
-${FOLDER}/etc/$FILE
-cat >> ${FOLDER}/etc/$FILE << "EOF"
 input:x:24:
 man:x:29
 wheel:x:30:root
 games:x:60:
 scanner:x:70:
-EOF
-[ "$INIT" = "sysd" ] && echo "systemd-bus-proxy:x:72:
-systemd-journal-gateway:x:73:
-systemd-journal-remote:x:74:
-systemd-journal-upload:x:75:
-systemd-journal-network:x:76:
-systemd-journal-resolve:x:77:
-systemd-journal-timesync:x:78:
-systemd-journal-coredump:x:79:" >> \
-${FOLDER}/etc/$FILE
-
-cat >> ${FOLDER}/etc/$FILE << "EOF"
 vboxusers:x:80:
 ldap:x:83:
 avahi:x:84:
@@ -906,17 +890,6 @@ games:x:60:60:Games High Score Owner:/var/games:/bin/false
 ldap:x:83:83:OpenLDAP Daemon Owner:/var/lib/openldap:/bin/false
 avahi:x:84:84:Avahi Daemon Owner:/var/run/avahi-daemon:/bin/false
 avahi-autoipd:x:85:85:Avahi autoip Daemon:/:/var/run/avahi-autoipd:/bin/false
-EOF
-[ "$INIT" = "sysd" ] && echo "systemd-bus-proxy:x:72:72:systemd Bus Proxy:/:/bin/false
-systemd-journal-gateway:x:73:73:systemd Journal Gateway:/:/bin/false
-systemd-journal-remote:x:74::74:systemd Journal Gateway:/:/bin/false
-systemd-journal-upload:x:75:75:systemd Journal Upload:/:/bin/false
-systemd-journal-network:x:76:76:systemd Network Management:/:/bin/false
-systemd-journal-resolve:x:77:77:systemd Resolver:/:/bin/false
-systemd-journal-timesync:x:78:78:systemd Time Synchronization:/:/bin/false
-systemd-journal-coredump:x:79:79:systemd Core Dumper:/:/bin/false" >> \
-${FOLDER}/etc/$FILE
-cat >> ${FOLDER}/etc/$FILE << "EOF"
 unbound:x:88:88:Unbound DNS resolver:/var/lib/unbound:/bin/false
 anonymous:x:98:99:Unprivileged User:/dev/null:/bin/false
 nobody:x:99:99:Unprivileged User:/dev/null:/bin/false
@@ -1228,7 +1201,7 @@ fi
 
 [[ ! -z "$KERNEL" && -z "$INIT" ]] && INIT="sysv"
 
-[ "$INIT" = "sysv" ] && INITS="eudev sysklogd sysvinit"
+[ "$INIT" = "sysv" ] && INITS="eudev sysklogd sysvinit dbus systemd runyx"
 if [ "$INIT" = "sysd" ]; then
 	INITS="dbus systemd"
 	CORE+=" libcap kmod"

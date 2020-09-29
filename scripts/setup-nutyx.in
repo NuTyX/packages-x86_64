@@ -425,6 +425,7 @@ setup_wireless()
 setup_net() 
 {
 network_card_found
+SYSTEMD_NETWORK_DIR=/etc/systemd/network/
 retval=""
 while [ "$retval" == "" ]; do
 	dialog  \
@@ -455,6 +456,15 @@ PRINTIP="no"
 # de la connection réseau
 PRINTALL="no"
 EOF
+  echo "[Match]
+Name=${NETWORK_CARD}
+
+[Network]
+DHCP=yes
+
+[DHCP]
+UseDomains=true
+" > ${SYSTEMD_NETWORK_DIR}${NETWORK_CARD}.network
 	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD set to Auto DHCP"
 else
 	dialog \
@@ -505,10 +515,17 @@ else
 ONBOOT=yes
 SERVICE=ipv4-static
 EOF
+  echo "[Match]
+Name=${NETWORK_CARD}
+
+[Network]" > ${SYSTEMD_NETWORK_DIR}${NETWORK_CARD}.network
+
 	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: SERVICE=ipv4-static"
 	echo "IP=${IP}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
+	echo "Address=${IP}" >> ${SYSTEMD_NETWORK_DIR}${NETWORK_CARD}.network
 	if [ -n ${GW} ]; then
 		echo "GATEWAY=${GW}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
+		echo "Gateway=${GW}" >> ${SYSTEMD_NETWORK_DIR}${NETWORK_CARD}.network
 		$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD: GATEWAY=${GW}"
 	fi
 	echo "PREFIX=${PREFIX}" >> /etc/sysconfig/ifconfig.${NETWORK_CARD}
@@ -523,8 +540,10 @@ EOF
 		$(gettext "Most of the time it's not need"): " 10 60 2> $TMP/SUFFIX
 		SUFFIX=$(tail -n 1 $TMP/SUFFIX)
 		echo "nameserver ${DNS}" > /etc/resolv.conf
+		echo "DNS=${DNS}" >> ${SYSTEMD_NETWORK_DIR}${NETWORK_CARD}.network
 		$SETUP_LOG "setup-nutyx --config-net" "/etc/resolv.conf: nameserver ${DNS}"
 		if [ -n "${SUFFIX}" ]; then
+			echo "Domains=${SUFFIX}" >> ${SYSTEMD_NETWORK_DIR}${NETWORK_CARD}.network
 			echo "search ${SUFFIX}" >> /etc/resolv.conf
 			$SETUP_LOG "setup-nutyx --config-net" "/etc/resolv.conf: search ${SUFFIX}"
 		fi
@@ -532,7 +551,6 @@ EOF
 fi
 if [ ! -f /etc/sysconfig/network ]; then
 	cat > /etc/sysconfig/network << "EOF"
-HOSTNAME='nutyx'        # Hostname of this machine
 MANAGER=''              # Network manager (wicd/networkmanager/cli/nothing)
 NETWORKWAIT='no'        # Wait or not for network
 LINKDELAY='15'          # init delay for initialisation of Networkmanager
