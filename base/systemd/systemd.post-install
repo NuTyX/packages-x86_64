@@ -5,3 +5,9 @@ if [ ! -e etc/machine-id ]; then
 else
    log_success_msg "${WARNING} /etc/machine-id already exist ${NORMAL}"
 fi
+if  [ ! -L etc/systemd/system/getty.target.wants/getty@tty1.service ]; then
+	mkdir -p etc/systemd/system/getty.target.wants
+	ln -sf /lib/systemd/system/getty@.service \
+	etc/systemd/system/getty.target.wants/getty@tty1.service
+	log_success_msg "${WARNING} /etc/systemd/system/getty.target.wants/getty@tty1.service created ${NORMAL}"
+fi
