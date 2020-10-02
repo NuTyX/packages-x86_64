@@ -1762,7 +1762,7 @@ setup_grub() {
 		select_partition "$(gettext "Configure the boot of the PC")"
 		[ "$PARTITION" == "no" ] && return
 	fi
-	FORMAT=`print_file_system $PARTITION`
+	FORMAT=$(print_file_system $PARTITION)
 	if [ "$FORMAT" == "no" ]; then
 		setup_format
 		[ "$FORMAT" == "no" ] && return
@@ -1815,22 +1815,21 @@ else
   set color_normal=cyan/blue
   set color_highlight=white/blue
 fi
-
 EOF
 	fi
 	# Writing of NEW MBR
-	BOOT_FS="`print_file_system $PARTITION`"
+	BOOT_FS="$(print_file_system $PARTITION)"
 	LANG=C /sbin/grub-install --recheck --force --boot-directory=$TMP/boot_partition/${GRUB_DESTINATION_DIR} ${DISK} > ${GRUB_LOG_FILE} 2>&1
 	if ! (grep finished ${GRUB_LOG_FILE} > /dev/null); then
 		echo "/sbin/grub-install --recheck --force --boot-directory=$TMP/boot_partition/${GRUB_DESTINATION_DIR} [`echo $DISK`]" >> ${GRUB_LOG_FILE}
 		mount >> ${GRUB_LOG_FILE}
-		echo "DISK=${DISK}" >> ${GRUB_LOG_FILE}
-		echo "GRUB_DESTINATION_DIR=${GRUB_DESTINATION_DIR}" >> ${GRUB_LOG_FILE}
-		echo "GRUB_CONFIG_DIR=${GRUB_CONFIG_DIR}" >> ${GRUB_LOG_FILE}
-		echo "NuTyX_PART=${NuTyX_PART}" >> ${GRUB_LOG_FILE}
-		echo "BOOT_FS=${BOOT_FS}" >> ${GRUB_LOG_FILE}
-		echo "NuTyX_FS=${NuTyX_FS}" >> ${GRUB_LOG_FILE}
-		echo "PATH=$PATH" >> ${GRUB_LOG_FILE}
+		echo "DISK=${DISK}
+GRUB_DESTINATION_DIR=${GRUB_DESTINATION_DIR}
+GRUB_CONFIG_DIR=${GRUB_CONFIG_DIR}
+NuTyX_PART=${NuTyX_PART}
+BOOT_FS=${BOOT_FS}
+NuTyX_FS=${NuTyX_FS}
+PATH=$PATH" >> ${GRUB_LOG_FILE}
 		env >> ${GRUB_LOG_FILE}
 		# Restore MBR
 		dd if=$TMP/MBR of=$DISK bs=512 count=1 > 2/dev/null
@@ -1845,27 +1844,72 @@ EOF
 		# The $TMP/boot file contains the NuTyX partition
 		#
 		NuTyX_PART="`cat $TMP/boot`"
-		BOOT_FS="`print_file_system $PARTITION`"
-		NuTyX_FS="`print_file_system $NuTyX_PART`"
-		echo "menuentry \"NuTyX LTS ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo " linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro quiet verbose=no" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "#  initrd /${GRUB_DESTINATION_DIR}initrd-419" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo " " >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "menuentry \"NuTyX LTS Verbose ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "  linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro " >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "#  initrd /${GRUB_DESTINATION_DIR}initrd-419" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo " "  >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "menuentry \"NuTyX ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo " linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro quiet verbose=no" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "#  initrd /${GRUB_DESTINATION_DIR}initrd" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo " " >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "menuentry \"NuTyX Verbose ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "  linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro " >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "#  initrd /${GRUB_DESTINATION_DIR}initrd" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-		echo "}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+		BOOT_FS="$(print_file_system $PARTITION)"
+		NuTyX_FS="$(print_file_system $NuTyX_PART)"
+		echo "
+submenu \"NuTyX LTS ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {
+ submenu \"NuTyX LTS Quiet Mode \" {
+  submenu \" NuTyX RuNyX \" {
+  linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/runit-init root=${NuTyX_PART} ro quiet verbose=no
+  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  }
+  submenu \" NuTyX LTS Quiet  Systemd \" {
+    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
+  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  }
+  submenu \" NuTyX LTS Quiet SysV \" {
+   linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro quiet verbose=no
+   #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  }
+ }
+
+ submenu \"NuTyX LTS Verbose Mode \" {
+  submenu \" NuTyX LTS Verbose RuNyX \" {
+  linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/runit-init root=${NuTyX_PART} ro
+  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  }
+  submenu \" NuTyX LTS Verbose Systemd \" {
+    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/systemd-init root=${NuTyX_PART} ro
+  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  }
+  submenu \" NuTyX LTS Verbose SysV \" {
+   linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro
+   #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  }
+ }
+}
+
+submenu \"NuTyX ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {
+ submenu \"NuTyX Latest Quiet Mode \" {
+  submenu \" NuTyX Latest Quiet RuNyX \" {
+  linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/runit-init root=${NuTyX_PART} ro quiet verbose=no
+  #  initrd /${GRUB_DESTINATION_DIR}initrd
+  }
+  submenu \" NuTyX Latest Quiet Systemd \" {
+    linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
+  #  initrd /${GRUB_DESTINATION_DIR}initrd
+  }
+  submenu \" NuTyX Latest Quiet SysV \" {
+   linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro quiet verbose=no
+   #  initrd /${GRUB_DESTINATION_DIR}initrd
+  }
+ }
+
+ submenu \"NuTyX Latest Verbose Mode \" {
+  submenu \" NuTyX Latest Verbose RuNyX \" {
+  linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/runit-init root=${NuTyX_PART} ro
+  #  initrd /${GRUB_DESTINATION_DIR}initrd
+  }
+  submenu \" NuTyX Latest Verbose Systemd \" {
+    linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/systemd-init root=${NuTyX_PART} ro
+  #  initrd /${GRUB_DESTINATION_DIR}initrd
+  }
+  submenu \" NuTyX Latest Verbose SysV \" {
+   linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro
+   #  initrd /${GRUB_DESTINATION_DIR}initrd
+  }
+ }
+}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
 
 	else
 		#
