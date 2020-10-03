@@ -69,3 +69,8 @@ black=" > etc/lxdm/lxdm.conf
 chmod 640 etc/lxdm/lxdm.conf
 log_success_msg2  "File ${WARNING}/etc/lxdm/lxdm.conf ${NORMAL} created"
 fi
+if [ ! -L etc/systemd/system/display-manager.service ];then
+mkdir -p etc/systemd/system
+ln -sf /lib/systemd/system/lxdm.service etc/systemd/system/display-manager.service && \
+log_success_msg2  "${INFO} Created symlink /etc/systemd/system/display-manager.service -> /lib/systemd/system/lxdm.service${NORMAL}"
+fi
