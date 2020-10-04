@@ -7,7 +7,7 @@ makedepends=(libcap kmod meson ninja python)
 
 name=systemd
 version=246
-release=9
+release=10
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -61,6 +61,7 @@ rm $PKG/usr/include/libudev.h
 rm $PKG/usr/lib/pkgconfig/libudev.pc
 rm $PKG/usr/share/pkgconfig/udev.pc
 rm $PKG/lib/libudev*
+rm $PKG/lib/systemd/network/99-default.link
 rm $PKG/usr/share/bash-completion/completions/udevadm
 rm $PKG/usr/share/zsh/site-functions/_udevadm
 
