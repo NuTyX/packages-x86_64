@@ -5,14 +5,16 @@ packager="tnut <tnut@nutyx.org>"
 
 makedepends=(libcap kmod meson ninja python)
 
+name=eudev
 _name=systemd
 version=246
-release=4
+release=6
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
 
-source=(https://github.com/systemd/systemd/archive/v$version/systemd-$version.tar.gz)
+source=(http://anduin.linuxfromscratch.org/LFS/udev-lfs-20171102.tar.bz2
+        https://github.com/systemd/systemd/archive/v$version/systemd-$version.tar.gz)
 
 prepare() {
 
@@ -50,6 +52,14 @@ mv $PKG/{,s}bin/udevadm
 ln -svf ../../sbin/udevadm $PKG/lib/systemd/systemd-udevd
 ln -sv udevadm $PKG/sbin/udevd
 
+cd $SRC
+make -j1 -f udev-lfs-20171102/Makefile.lfs DESTDIR=$PKG install
+
+$PKG/sbin/udevadm hwdb --update --root=$PKG
+
+mv $PKG/lib/systemd/network/99-default.link \
+$PKG/99-default.link
+
 # systemd Package files
 rm $PKG/bin/{journalctl,loginctl,machinectl,networkctl,portablectl,systemctl}
 rm $PKG/bin/systemd-*
@@ -64,9 +74,11 @@ rm -r $PKG/etc/{X11,xdg,binfmt.d,init.d,kernel,modules-load.d,tmpfiles.d}
 mv $PKG/{usr/share/bash-completion/completions/udevadm,udevadm}
 mv $PKG/{usr/share/zsh/site-functions/_udevadm,_udevadm}
 rm -r $PKG/usr/share/{doc,factory,polkit-1,bash-completion,zsh,systemd,dbus-1}
-mkdir -p $PKG/usr/share/{bash-completion/completions,zsh/site-functions}
+mkdir -p $PKG/{lib/systemd/network,usr/share/{bash-completion/completions,zsh/site-functions}}
+
 mv $PKG/udevadm $PKG/usr/share/bash-completion/completions
 mv $PKG/_udevadm $PKG/usr/share/zsh/site-functions
+mv $PKG/99-default.link $PKG/lib/systemd/network
 
 rm $PKG/usr/share/pkgconfig/systemd.pc
 rm $PKG/usr/lib/pkgconfig/libsystemd.pc
