@@ -5,16 +5,22 @@ maintainer="Roy Marples"
 packager="tnut <tnut@nutyx.org>"
 
 name=dhcpcd
-version=8.1.6
-release=3
+version=9.2.0
 
 source=(https://roy.marples.name/downloads/$name/$name-$version.tar.xz)
 
+prepare() {
+groupadd -g 52 $name
+useradd -c 'dhcpcd PrivSep' -d /var/lib/$name \
+-g $name -s /bin/false -u 52 $name
+}
 build() {
+install -v m700 -d $PKG/var/lib/$name
 cd $name-$version
 ./configure \
---libexecdir=/lib/dhcpcd \
---dbdir=/var/lib/dhcpcd
+--libexecdir=/lib/$name \
+--dbdir=/var/lib/$name \
+--privsepuser=dhcpcd
 make
 make DESTDIR=$PKG install
 #
