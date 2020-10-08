@@ -8,7 +8,7 @@ makedepends=(libcap kmod meson ninja python)
 name=eudev
 _name=systemd
 version=246
-release=6
+release=7
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -61,9 +61,8 @@ mv $PKG/lib/systemd/network/99-default.link \
 $PKG/99-default.link
 
 # systemd Package files
-rm $PKG/bin/{journalctl,loginctl,machinectl,networkctl,portablectl,systemctl}
+rm $PKG/bin/{journalctl,loginctl,machinectl,portablectl,systemctl}
 rm $PKG/bin/systemd-*
-rm $PKG/sbin/resolvconf
 rm -r $PKG/etc/{pam,sysctl}.d
 
 rm -r $PKG/usr/bin
