@@ -6,8 +6,9 @@ packager="tnut <tnut@nutyx.org>"
 
 name=dhcpcd
 version=9.2.0
-
-source=(https://roy.marples.name/downloads/$name/$name-$version.tar.xz)
+runyx_version=20200412
+source=(http://download.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
+	https://roy.marples.name/downloads/$name/$name-$version.tar.xz)
 
 prepare() {
 groupadd -g 52 $name
@@ -49,4 +50,6 @@ do
   mkdir -p $PKG/etc/init/$i
   ln -sv /lib/init/services/$name $PKG/etc/init/$i/$name
 done
+cd  ../runyx-${runyx_version}
+make DESTDIR=$PKG install-sysd-dhcpcd
 }
