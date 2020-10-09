@@ -426,6 +426,7 @@ setup_net()
 {
 network_card_found
 SYSTEMD_NETWORK_DIR=/etc/systemd/network/
+mkdir -p ${SYSTEMD_NETWORK_DIR}
 retval=""
 while [ "$retval" == "" ]; do
 	dialog  \
@@ -465,6 +466,9 @@ DHCP=yes
 [DHCP]
 UseDomains=true
 " > ${SYSTEMD_NETWORK_DIR}${NETWORK_CARD}.network
+  if [ -f /lib/systemd/system/dhcpcd@.service ]; then
+		systemctl enable dhcpcd@${NETWORK_CARD}
+	fi
 	$SETUP_LOG "setup-nutyx --config-net" "$NETWORK_CARD set to Auto DHCP"
 else
 	dialog \
@@ -1849,11 +1853,11 @@ PATH=$PATH" >> ${GRUB_LOG_FILE}
 		echo "
 submenu \"NuTyX LTS ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {
  submenu \"NuTyX LTS Quiet Mode \" {
-  submenu \" NuTyX RuNyX \" {
+  submenu \" NuTyX LTS Quiet RuNyX \" {
   linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/runit-init root=${NuTyX_PART} ro quiet verbose=no
   #  initrd /${GRUB_DESTINATION_DIR}initrd-419
   }
-  submenu \" NuTyX LTS Quiet  Systemd \" {
+  submenu \" NuTyX LTS Quiet Systemd \" {
     linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
   #  initrd /${GRUB_DESTINATION_DIR}initrd-419
   }
@@ -1877,8 +1881,10 @@ submenu \"NuTyX LTS ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {
    #  initrd /${GRUB_DESTINATION_DIR}initrd-419
   }
  }
-}
+}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
 
+    if [ -L /boot/kernel ]; then
+      echo "
 submenu \"NuTyX ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {
  submenu \"NuTyX Latest Quiet Mode \" {
   submenu \" NuTyX Latest Quiet RuNyX \" {
@@ -1910,7 +1916,7 @@ submenu \"NuTyX ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {
   }
  }
 }" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-
+    fi
 	else
 		#
 		# NuTyX is not yet installed
@@ -1947,10 +1953,17 @@ submenu \"NuTyX ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {
 #
 #menuentry  "Harddisk number 2 and partition number 3" {
 #   set root=(hd1,3)
-#   linux /boot/kernel-419 root=/dev/sdb3 ro quiet verbose=no
+#   linux /boot/kernel-419 init=/sbin/runit-init root=/dev/sdb3 ro quiet verbose=no
 #}
 #
-# The same one for debug purpose:
+# The same one with systemd:
+#
+#menuentry  "Harddisk number 2 and partition number 3 verbose mode" {
+#   set root=(hd1,3)
+#   linux /boot/kernel-419 init=/sbin/systemd-init root=/dev/sdb3 ro
+#}
+#
+# The same one with SysV:
 #
 #menuentry  "Harddisk number 2 and partition number 3 verbose mode" {
 #   set root=(hd1,3)
@@ -1961,7 +1974,7 @@ submenu \"NuTyX ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {
 #
 #menuentry  "Harddisk number 2 and partition number 1 with initrd" {
 #   set root=(hd1,1)
-#   linux /boot/kernel-419 root=/dev/sdb1 ro rootdelay=5
+#   linux /boot/kernel-419 init=/sbin/runit-init root=/dev/sdb1 ro rootdelay=5
 #   initrd /boot/initrd-419
 #}
 #
@@ -2410,13 +2423,11 @@ top_loop() {
 		while [ "$SETUP_CONFIG_LANGUAGE" = "yes" ] ||
 			[ "$SETUP_CONFIG_KEYBOARD" = "yes" ] ||
 			[ "$SETUP_CONFIG_NETWORK" = "yes" ] ||
-			[ "$SETUP_CONFIG_WIFI" = "yes" ] ||
 			[ "$SETUP_CONFIG_CLOCK" = "yes" ] ||
 			[ "$SETUP_CONFIG_USER" = "yes" ]; do
 				[ "$SETUP_CONFIG_LANGUAGE" = "yes" ] && LANG=de_CH.utf-8 setup_language
 				[ "$SETUP_CONFIG_KEYBOARD" = "yes" ] && setup_keymap
 				[ "$SETUP_CONFIG_NETWORK" = "yes" ] && setup_net
-				[ "$SETUP_CONFIG_WIFI" = "yes" ] && setup_wireless
 				[ "$SETUP_CONFIG_CLOCK" = "yes" ] && setup_clock
 				[ "$SETUP_CONFIG_USER" = "yes" ] && setup_user
 		done
