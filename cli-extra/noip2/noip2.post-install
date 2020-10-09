@@ -1,0 +1,12 @@
+. /lib/lsb/init-functions
+FILE="no-ip2.conf"
+if [ ! -f etc/$FILE ]; then
+  usr/bin/noip2 -C -c tmp/$FILE
+  if [ -f tmp/$FILE ];then
+    mv tmp/$FILE /etc &&
+    log_success_msg2 "${INFO} /etc/$FILE file created"
+  else
+    log_failure_msg2 "${FAILURE} No file /etc/$FILE created !!"
+    log_warning_msg "${WARNING} You should run: /usr/bin/noip2 -C -c /etc/$FILE again !!!${NORMAL}"
+  fi
+fi

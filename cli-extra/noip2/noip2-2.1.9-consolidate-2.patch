@@ -1,0 +1,130 @@
+diff -Naur a/noip2.c b/noip2.c
+--- a/noip2.c	2008-11-25 20:50:09.000000000 +0100
++++ b/noip2.c	2020-10-08 20:25:58.073111470 +0200
+@@ -128,7 +128,16 @@
+ 	+	November 2008 (johna)  version 2.1.9
+ 	+	hardened force_update() to prevent possible buffer overflow
+ 	+	hardened autoconf() the same way
++
+ 	+	patch suggested by xenomuta@phreaker.net
++        +       January 2015 (dota? =op)  version 2.1.9-1
++        +       added -f flag to run in foreground
++        +       patch suggested by rogi@skylittlesystem.org
++
++
++	+	January 2015 (dota? =op)  version 2.1.9-1
++	+	hack to make foreground mode work as expected
++	+	patch suggested by rogi@skylittlesystem.org
+ 
+ */			
+ /////////////////////////////////////////////////////////////////////////////                                            
+@@ -217,9 +226,9 @@
+   #define UPDATE_SCRIPT		"ducupdate.php"
+ 
+ #ifdef DEBUG
+-  #define OPTCHARS		"CYU:Fc:dD:hp:u:x:SMi:K:I:z"
++  #define OPTCHARS		"CYU:Fc:dD:hp:u:x:SMi:K:I:zf"
+ #else
+-  #define OPTCHARS		"CYU:Fc:hp:u:x:SMi:K:I:z"
++  #define OPTCHARS		"CYU:Fc:hp:u:x:SMi:K:I:zf"
+ #endif
+ #define ARGC			1
+ #define ARGF			(1<<1)
+@@ -240,10 +249,10 @@
+ #define GROUP			2
+ #define DOMAIN			3
+ #ifndef PREFIX
+-  #define PREFIX		"/usr/local"
++  #define PREFIX		"/usr"
+ #endif
+-#define CONFIG_FILEPATH		PREFIX"/etc"
+-#define CONFIG_FILENAME		PREFIX"/etc/no-ip2.conf"
++#define CONFIG_FILEPATH		"/etc"
++#define CONFIG_FILENAME		"/etc/no-ip2.conf"
+ #define CONFSTRLEN		1024
+ #define MAX_DEVLEN		16
+ #define MAX_INSTANCE		4
+@@ -348,6 +357,7 @@
+ int	debug			= 	0;
+ int	timed_out		=	0;
+ int	background		=	1;	// new default
++int	foreground_hack		=	0;	// FIXME: hack s2
+ int	port_to_use		=	CLIENT_IP_PORT;
+ int	socket_fd		=	-1;
+ int	config_fd		=	-1;
+@@ -551,6 +561,7 @@
+ 	fprintf(stderr, "         -M               permit multiple instances\n");
+ 	fprintf(stderr, "         -K processID     terminate instance PID\n");
+ 	fprintf(stderr, "         -z               activate shm dump code\n");
++	fprintf(stderr, "         -f               run in foreground\n");
+ 	fprintf(stderr, "         -h               help (this text)\n");
+ }
+ ///////////////////////////////////////////////////////////////////////////
+@@ -738,6 +749,10 @@
+ 		case 'z':
+ 			shm_dump_active++;
+ 			break;
++		case 'f':
++			background=1;
++			foreground_hack=1;
++			break;
+ 		default:
+ 			Usage();
+ 			exit(0);
+@@ -1023,7 +1038,8 @@
+ 	char	*err_string;
+ 	static int startup = 1;
+ 
+-	x = fork();
++	/* FIXME: hack s2 */
++	x = foreground_hack ? 0 : fork();
+ 	switch (x) {
+ 	    case -1:		// error
+ 		err_string = strerror(errno);
+@@ -1035,13 +1051,23 @@
+ 		setsid();
+ 		if (get_shm_info() == FATALERR)	
+ 		    return FATALERR;
+-		log2syslog++;
+-		if (log2syslog > 0)
+-		    fclose(stderr);
+-		fclose(stdout);
+-		fclose(stdin);
+-		syslog(LOG_INFO, "v%s daemon started%s\n", 
+-			VERSION, (nat) ?  " with NAT enabled" : "");
++
++		/* FIXME: hack s2 */
++		if (foreground_hack) {
++			printf("v%s daemon started%s\n", 
++				VERSION, (nat) ?  " with NAT enabled" : "");
++		}
++
++		else {
++			log2syslog++;
++			if (log2syslog > 0)
++			    fclose(stderr);
++			fclose(stdout);
++			fclose(stdin);
++			syslog(LOG_INFO, "v%s daemon started%s\n", 
++				VERSION, (nat) ?  " with NAT enabled" : "");
++		}
++
+ 		while (background) {
+ 		    delay = MAX(60, my_instance->interval * 60);
+ 		    if (nat)
+@@ -1081,7 +1107,14 @@
+ 		    if (background)	// signal may have reset this!
+ 			Sleep(delay);
+ 		}
+-                syslog(LOG_INFO, "v%s daemon ended.\n", VERSION);
++
++		/* FIXME: hack s2 */
++		if (foreground_hack)
++			printf("v%s daemon ended.\n", VERSION);
++
++		else
++			syslog(LOG_INFO, "v%s daemon ended.\n", VERSION);
++
+ 		break;
+ 	}
+ 	return SUCCESS;
