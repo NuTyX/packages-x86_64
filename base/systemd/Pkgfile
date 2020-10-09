@@ -7,7 +7,7 @@ makedepends=(libcap kmod meson ninja python)
 
 name=systemd
 version=246
-release=11
+release=12
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -43,6 +43,8 @@ meson --prefix=/usr           \
 -Dumount-path=/bin/umount     \
 -Dman=true                    \
 -Dresolve=false               \
+-Dnetworkd=false              \
+-Dtimesyncd=false             \
 -Dsysusers=false              \
 -Duserdb=false                \
 ..
