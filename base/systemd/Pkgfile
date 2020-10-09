@@ -7,7 +7,7 @@ makedepends=(libcap kmod meson ninja python)
 
 name=systemd
 version=246
-release=12
+release=13
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -18,7 +18,7 @@ source=(http://download.tuxfamily.org/nutyx/files/$name-man-pages-$version.tar.x
 
 prepare() {
 ln -sf /bin/true /usr/bin/xsltproc
-
+sed -i "s@: (conf.get('HAVE_SYSV_COMPAT') == 1)@: true@" $name-$version/meson.build
 sed '177,$ d' -i $name-$version/src/resolve/meson.build
 sed -i 's/GROUP="render", //' $name-$version/rules.d/50-udev-default.rules.in
 
@@ -44,6 +44,8 @@ meson --prefix=/usr           \
 -Dman=true                    \
 -Dresolve=false               \
 -Dnetworkd=false              \
+-Dsysvinit-path=              \
+-Dsysvrcnd-path=              \
 -Dtimesyncd=false             \
 -Dsysusers=false              \
 -Duserdb=false                \
@@ -52,6 +54,14 @@ meson --prefix=/usr           \
 ninja
 
 DESTDIR=$PKG ninja install
+
+# systemd-initclt hack
+cp ../units/systemd-initctl.socket \
+$PKG/lib/systemd/system
+cp units/systemd-initctl.service.tmp \
+$PKG/lib/systemd/system/systemd-initctl.service
+ln -sv ../systemd-initctl.socket  \
+$PKG/lib/systemd/system/sockets.target.wants/systemd-initctl.socket
 
 mv $PKG/{,s}bin/udevadm
 ln -sv ../lib/systemd/systemd $PKG/sbin/systemd-init
@@ -69,7 +79,7 @@ rm $PKG/usr/share/bash-completion/completions/udevadm
 rm $PKG/usr/share/zsh/site-functions/_udevadm
 
 # sysvinit package files
-rm $PKG/sbin/{halt,init,poweroff,reboot,runlevel,shutdown,telinit}
+rm $PKG/sbin/{halt,init,poweroff,reboot,shutdown}
 
 # Prevent systemd from resetting the maximum PID value
 rm -f $PKG/usr/lib/sysctl.d/50-pid-max.conf
