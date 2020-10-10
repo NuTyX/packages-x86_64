@@ -4,29 +4,31 @@ url="http://www.samba.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Tnut, Greg"
 
-makedepends=(jansson rpcsvc-proto libtirpc docbook-xsl talloc 
-             tevent avahi gnutls libgpg-error popt python2 
-             cups kerberos libcap openldap tdb ldb)
+makedepends=(perl-yapp jansson rpcsvc-proto libtirpc docbook-xsl
+             avahi gnutls libgpg-error popt python2 
+             cups kerberos libcap openldap)
 run=(samba.lib)
 
 name=samba
-version=4.11.6
-release=3
+version=4.12.7
 
-nutyx_version=11.3
+runyx_version=20200412
 
 PKGMK_GROUPS=(lib man devel service doc)
 
-source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
+source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	https://download.samba.org/pub/samba/stable/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
 
+sed -r 's/nss_(setpw|endpw|setgr|endgr)ent/my_&/' \
+    -i nsswitch/nsstest.c
+
 echo "^samba4.rpc.echo.*on.*ncacn_np.*with.*object.*nt4_dc" >> selftest/knownfail
 
-CFLAGS+=" -I/usr/include/tirpc"           \
-LDFLAGS+=" -ltirpc"                       \
+CFLAGS+=" -I/usr/include/tirpc"         \
+LDFLAGS+=" -ltirpc"                     \
 ./configure                             \
     --prefix=/usr                       \
     --sysconfdir=/etc                   \
@@ -35,9 +37,7 @@ LDFLAGS+=" -ltirpc"                       \
     --with-pammodulesdir=/lib/security  \
     --without-ad-dc                     \
     --enable-fhs                        \
-    --without-systemd                   \
-    --enable-selftest                   \
-    --bundled-libraries=!talloc,!pytalloc-util,!tevent,!popt,!tdb,!ldb,!pyldb-util
+    --enable-selftest
 
 make
 
@@ -67,10 +67,14 @@ install -d cups/backend
 ln -v -sf /usr/bin/smbspool $PKG/usr/lib/cups/backend/smb
 
 # service
-cd $SRC/nutyx-${nutyx_version}
-make DESTDIR=$PKG install-samba
-make DESTDIR=$PKG install-winbindd
-
+cd $SRC/runyx-${runyx_version}
+make DESTDIR=$PKG install-sysv-samba
+make DESTDIR=$PKG install-sysv-winbindd
+sed -i s@install-samba@install-sysd-samba@ services/sysd/Makefile
+make DESTDIR=$PKG install-sysd-samba
+make DESTDIR=$PKG install-sysd-winbindd
+make DESTDIR=$PKG install-runyx-samba
+make DESTDIR=$PKG install-runyx-winbindd
 }
 lib() {
 cd $PKG
@@ -83,8 +87,8 @@ smbcquotas,smbget,net,nmblookup,smbtar}
 rm usr/lib/lib*
 rm usr/bin/{smbclient,rpcclient,smbspool,smbtree,smbcacls,\
 smbcquotas,smbget,net,nmblookup,smbtar}
-rm -d /usr/lib
-rm -d usr/bin
+rm -d /usr/lib|| true
+rm -d usr/bin || true
 }
 devel() {
 cd $PKG
@@ -93,8 +97,8 @@ $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
 usr/lib/pkgconfig usr/include
 
 rm -r usr/{include,lib/pkgconfig}
-rm -d usr/include
-rm -d usr/lib
+rm -d usr/include || true
+rm -d usr/lib || true
 }
 uptodate() {
 local ext url name LINX
