@@ -1,21 +1,22 @@
 description="The sendmail package contains a Mail Transport Agent (MTA)."
 url="ftp://ftp.sendmail.org/pub/sendmail/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="berlius"
 
 name=sendmail
-version=8.15.2
-release=4
-nutyx_version=11.1
+version=8.16.1
+
+runyx_version=20200412
 makedepends=(ghostscript cyrus-sasl openssl procmail openldap)
 
-source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+source=(http://downloads.tuxfamily.org/files/runyx-${runyx_version}.tar.xz
 	ftp://ftp.sendmail.org/pub/$name/$name.$version.tar.gz site.config.m4)
 
 build() {
 
 	cd $name-$version
-    
+
 	cp -v $SRC/site.config.m4 devtools/Site
 
 	sed -i 's|/usr/man/man|/usr/share/man/man|' \
@@ -25,8 +26,8 @@ build() {
 	cd ../cf/cf                     
 	cp generic-linux.mc sendmail.mc 
 	sh Build sendmail.cf
-     
-    install -v -d -m755 $PKG/etc/mail 
+
+	install -v -d -m755 $PKG/etc/mail 
 	install -c -o root -g bin -m 0444 sendmail.cf $PKG/etc/mail/sendmail.cf
 	install -c -o root -g bin -m 0444 submit.cf $PKG/etc/mail/submit.cf
 
@@ -37,15 +38,15 @@ build() {
 	install -v -m644 cf/cf/{submit,sendmail}.mc $PKG/etc/mail 
 	cp -v -R cf/* $PKG/etc/mail                               
 
-	install -v -m755 -d $PKG/usr/share/doc/sendmail-8.15.2/{cf,sendmail} 
+	install -v -m755 -d $PKG/usr/share/doc/sendmail-$version/{cf,sendmail} 
 
 	install -v -m644 CACerts FAQ KNOWNBUGS LICENSE PGPKEYS README RELEASE_NOTES \
-        $PKG/usr/share/doc/sendmail-8.15.2 
+        $PKG/usr/share/doc/sendmail-$version
 
 	install -v -m644 sendmail/{README,SECURITY,TRACEFLAGS,TUNING} \
-        $PKG/usr/share/doc/sendmail-8.15.2/sendmail 
+        $PKG/usr/share/doc/sendmail-$version/sendmail 
 
-	install -v -m644 cf/README $PKG/usr/share/doc/sendmail-8.15.2/cf 
+	install -v -m644 cf/README $PKG/usr/share/doc/sendmail-$version/cf 
 	
 	install -v -d -m755 $PKG/usr/share/man/man8
 	for manpage in sendmail editmap mailstats makemap praliases smrsh
@@ -62,13 +63,15 @@ build() {
 	sed -i 's/groff/GROFF_NO_SGR=1 groff/' Makefile 
 	make op.txt op.pdf
 	
-	install -v -d -m755 $PKG/usr/share/doc/sendmail-8.15.2 
-	install -v -m644 op.ps op.txt op.pdf $PKG/usr/share/doc/sendmail-8.15.2 
+	install -v -d -m755 $PKG/usr/share/doc/sendmail-$version
+	install -v -m644 op.ps op.txt op.pdf $PKG/usr/share/doc/sendmail-$version
 	cd ../..
 
 	# Service
-	cd $SRC/nutyx-${nutyx_version}
-	make DESTDIR=$PKG install-sendmail
+	cd $SRC/runyx-${runyx_version}
+	make DESTDIR=$PKG install-sysv-sendmail
+	make DESTDIR=$PKG install-sysd-sendmail
+	make DESTDIR=$PKG install-runyx-sendmail
 
 	# Dirty but needed
 	rm /etc/mail/submit.cf
