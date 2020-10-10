@@ -1,0 +1,21 @@
+description="Perl extension for generating and using LALR parsers."
+url="https://metacpan.org/pod/CPAN::Yapp"
+packager="tnut <tnut@nutyx.org>"
+
+run=(perl)
+name=perl-yapp
+version=1.21
+
+source=(http://search.cpan.org/CPAN/authors/id/W/WB/WBRASWELL/Parse-Yapp-$version.tar.gz)
+
+build() {
+    cd Parse-Yapp-$version
+    perl Makefile.PL
+    make
+    make install INSTALLDIRS=vendor DESTDIR="$PKG"
+
+    # Remove .packlist if present in the package
+    find $PKG -name '*.bs' -or \
+    -name .packlist -delete
+
+}
