@@ -1,4 +1,11 @@
+. lib/lsb/init-functions
+
 if [ ! -f etc/sysconfig/mouse ]; then
 	echo "MDEVICE=\"/dev/input/mice\"
 PROTOCOL=\"imps2\"" > etc/sysconfig/mouse
+fi
+if [ ! -L etc/systemd/system/multi-user.target.wants/gpm.service ];then
+mkdir -p etc/systemd/system/multi-user.target.wants
+ln -sf /lib/systemd/system/gpm.service etc/systemd/system/multi-user.target.wants/gpm.service && \
+log_success_msg2  "${INFO} Created symlink /etc/systemd/system/multi-user.target.wants/gpm.service -> /lib/systemd/system/gpm.service${NORMAL}"
 fi
