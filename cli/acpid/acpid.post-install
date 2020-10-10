@@ -1,0 +1,5 @@
+. lib/lsb/init-functions
+[ -f etc/acpi/events/lid ] || cp -a etc/acpi/events/lid{.example,}
+[ -f etc/acpi/lid.sh ] || cp -a etc/acpi/lid.sh{.example,}
+log_success_msg "${WARNING} /etc/acpi/lid.sh and /etc/acpi/events/lid created ${NORMAL}"
+log_warning_msg "${WARNING} Adapt them to your needs ${NORMAL}"
