@@ -13,5 +13,4 @@ fi
 if [ -d srv/ftp ]; then
 	install -v -d -m775 -o $SN -g $SN srv/ftp 
 fi
-ln -v -s /bin/false usr/bin/proftpdshell          
-echo /usr/bin/proftpdshell >> etc/shells
+! grep -q proftpdshell etc/shells && echo /usr/bin/proftpdshell >> etc/shells
