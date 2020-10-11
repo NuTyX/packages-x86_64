@@ -12,3 +12,8 @@ if [ ! -f srv/www/index.html ]; then
   cp -a etc/nginx/html/* srv/www/
   log_success_msg "${WARNING} srv/www/index.html created ${NORMAL}"
 fi
+if [ ! -L etc/systemd/system/multi-user.target.wants/nginx.service ];then
+mkdir -p etc/systemd/system/multi-user.target.wants
+ln -sf /lib/systemd/system/nginx.service etc/systemd/system/multi-user.target.wants/nginx.service && \
+log_success_msg2  "${INFO} Created symlink /etc/systemd/system/multi-user.target.wants/nginx.service -> /lib/systemd/system/nginx.service${NORMAL}"
+fi

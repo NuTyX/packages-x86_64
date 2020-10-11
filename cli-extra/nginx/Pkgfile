@@ -1,16 +1,17 @@
 description="HTTP and reverse proxy, mail proxy, and a generic TCP/UDP proxy server"
 url="http://nginx.org/en/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="tnut <tnut@nuxtyx.org>"
 maintainer="http://hg.nginx.org/nginx"
 
 makedepends=(openssl pcre)
+PKGMK_GROUPS=(man)
 
 name=nginx
-version=1.16.1
-nutyx_version=11.3
+version=1.18.0
+runyx_version=20201011
 
-source=(https://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
+source=(https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
         https://nginx.org/download/nginx-$version.tar.gz)
 
 build() {
@@ -43,7 +44,8 @@ cp -a html $PKG/etc/nginx
 install -m644 objs/nginx.8 $PKG/usr/share/man/man8/nginx.8
 
 # Service
-cd $SRC/nutyx-${nutyx_version}
-make DESTDIR=$PKG install-nginx
-
+cd $SRC/runyx-${runyx_version}
+make DESTDIR=$PKG install-sysv-nginx
+make DESTDIR=$PKG install-sysd-nginx
+make DESTDIR=$PKG install-runyx-nginx
 }
