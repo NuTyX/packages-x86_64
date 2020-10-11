@@ -6,7 +6,7 @@ contributors="Greg, Remy"
 
 
 name=libuv
-version=1.38.0
+version=1.40.0
 
 source=(https://dist.libuv.org/dist/v$version/libuv-v$version.tar.gz)
 
@@ -16,7 +16,5 @@ sh autogen.sh
 ./configure --prefix=/usr --disable-static
 make
 make DESTDIR=$PKG install
-}
-package() {
 rm $PKG/usr/lib/$name.la
 }
