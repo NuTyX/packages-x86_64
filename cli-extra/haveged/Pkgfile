@@ -1,16 +1,15 @@
 description="Daemon that generates an unpredictable stream of random numbers and feeds the /dev/random"
 url="http://www.issihosts.com/haveged/"
+
 contributors="Berlius, Greg"
 packager="tnut<tnut@nutyx.org>"
 
 name=haveged
-version=1.9.4
-nutyx_version=11.0
+version=1.9.13
+runyx_version=20200412
 
-PKGMK_KEEP_SOURCES="no"
-
-source=(http://download.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	https://github.com/jirka-h/$name/archive/$version.tar.gz)
+source=(http://download.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
+	https://github.com/jirka-h/$name/archive/v$version/$name-$version.tar.gz)
 
 build () {
 
@@ -24,6 +23,17 @@ build () {
 	cp -v README $PKG/usr/share/doc/haveged-$version
 	
 	# Service
-	cd ../nutyx-${nutyx_version}
-	make DESTDIR=$PKG install-haveged
+	cd ../runyx-${runyx_version}
+	make DESTDIR=$PKG install-sysv-haveged
+	make DESTDIR=$PKG install-sysd-haveged
+	make DESTDIR=$PKG install-runyx-haveged
+
+}
+service() {
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.service${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+lib/{systemd,init} etc/{init,rc.d}
+ 
+rm -r etc/{rc.d,init}
+rm -r lib/{init,systemd}
 }
