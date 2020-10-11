@@ -1,0 +1,8 @@
+. lib/lsb/init-functions
+if [ ! -L etc/systemd/system/sockets.target.wants/smbd.socket ]; then
+   mkdir -p etc/systemd/system/sockets.target.wants
+   ln -svf /lib/systemd/system/smbd.socket \
+   etc/systemd/system/sockets.target.wants/smbd.socket &&
+   log_success_msg2  "${INFO} Created symlink /etc/systemd/system/sockets.target.wants/smbd.socket -> /lib/systemd/system/smbd.socket${NORMAL}"
+fi
+

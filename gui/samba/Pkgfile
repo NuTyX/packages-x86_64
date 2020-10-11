@@ -11,6 +11,7 @@ run=(samba.lib)
 
 name=samba
 version=4.12.7
+release=2
 
 runyx_version=20200412
 
@@ -76,6 +77,17 @@ make DESTDIR=$PKG install-sysd-winbindd
 make DESTDIR=$PKG install-runyx-samba
 make DESTDIR=$PKG install-runyx-winbindd
 }
+
+service() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.service${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+lib/{systemd,init} etc/{init,rc.d}
+
+rm -r etc/{rc.d,init}
+rm -r lib/{init,systemd}
+}
+
 lib() {
 cd $PKG
 bsdtar -cf \
