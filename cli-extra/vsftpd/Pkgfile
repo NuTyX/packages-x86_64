@@ -8,11 +8,11 @@ run=(pam shadow)
 
 name=vsftpd
 version=3.0.3
-release=3
+release=4
 
-nutyx_version=11.3
+runyx_version=20201011
 
-source=(http://downloads.nutyx.org/files/nutyx-${nutyx_version}.tar.xz
+source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	    https://security.appspot.com/downloads/$name-$version.tar.gz)
 
 prepare() {
@@ -99,6 +99,16 @@ pam_service_name=vsftpd
 EOF
 
  # Service
- cd $SRC/nutyx-${nutyx_version}
- make DESTDIR=$PKG install-vsftpd
+ cd $SRC/runyx-${runyx_version}
+ make DESTDIR=$PKG install-sysv-vsftpd
+ make DESTDIR=$PKG install-sysd-vsftpd
+ make DESTDIR=$PKG install-runyx-vsftpd
+}
+service() {
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.service${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+lib/{systemd,init} etc/{init,rc.d}
+
+rm -r etc/{rc.d,init}
+rm -r lib/{init,systemd}
 }
