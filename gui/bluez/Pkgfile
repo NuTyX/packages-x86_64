@@ -8,12 +8,12 @@ makedepends=(dbus libical libvorbis alsa-lib
              libusb-compat libsndfile cups glib)
 
 name=bluez
-version=5.54
-nutyx_version=11.4
+version=5.55
+runyx_version=20200412
 
 PKGMK_GROUPS=(man devel doc)
 
-source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
+source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	    https://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
 build() {
 cd $name-$version
@@ -32,8 +32,7 @@ cd $name-$version
     --enable-dund \
     --enable-cups \
     --disable-test \
-    --enable-library \
-    --disable-systemd
+    --enable-library
 make
 make DESTDIR=$PKG install
 
@@ -72,6 +71,10 @@ install -v -m644 doc/*.txt $PKG/usr/share/doc/$name-$version
 rm $PKG/usr/lib/libbluetooth.la
 
 # Service
-cd $SRC/nutyx-${nutyx_version}
-make DESTDIR=$PKG install-bluetooth
+cd $SRC/runyx-${runyx_version}
+make DESTDIR=$PKG install-sysv-bluetooth
+mkdir -p $PKG/etc/sysconfig
+ln -sv ../sysv/sysconfig services/runyx/
+sed -i 's@${EXTDIR}/@${PKG}/etc/@' services/runyx/Makefile
+make DESTDIR=$PKG install-runyx-bluetooth
 }
