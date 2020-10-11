@@ -1,20 +1,27 @@
 description="The ISC DHCP package contains both the client and server programs for DHCP."
 url="ftp://ftp.isc.org/isc/dhcp"
-contributors="berlius, tnut, greg"
+
+contributors="berlius, Greg"
 packager="tnut <tnut@nutyx.org>"
 
 name=dhcp
 version=4.4.2
-nutyx_version=11.0
+release=2
 
-source=(http://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
+runyx_version=20201011
+
+source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	ftp://ftp.isc.org/isc/dhcp/$version/dhcp-$version.tar.gz
 	dhclient.conf dhcpd.conf )
 
 build() {
 
+	unset MAKEFLAGS
 	cd $name-$version
-
+	sed -i '/o.*dhcp_type/d' server/mdb.c
+	sed -r '/u.*(local|remote)_port/d'    \
+	    -i client/dhclient.c              \
+	    relay/dhcrelay.c
 	CFLAGS="-D_PATH_DHCLIENT_SCRIPT='\"/sbin/dhclient-script\"' \
 	-D_PATH_DHCPD_CONF='\"/etc/dhcp/dhcpd.conf\"' \
 	-D_PATH_DHCLIENT_CONF='\"/etc/dhcp/dhclient.conf\"'" \
@@ -41,10 +48,16 @@ build() {
 	install -v -dm 755 $PKG/etc/sysconfig
 
 	# Service
-	cd $SRC/nutyx-${nutyx_version}
-	make DESTDIR=$PKG install-service-dhclient
+	cd $SRC/runyx-${runyx_version}
+	make DESTDIR=$PKG -C services/sysv install-service-dhclient
+        make DESTDIR=$PKG -C services/runyx install-service-dhclient
+	make DESTDIR=$PKG install-sysd-dhclient
+
+
 	install -v -dm 755 $PKG/var/lib/dhcpd
 
 	cp -v $SRC/dhcpd.conf $PKG/etc/dhcp/dhcpd.conf
-	make DESTDIR=$PKG install-dhcpd
+	make DESTDIR=$PKG install-sysv-dhcpd
+	make DESTDIR=$PKG install-sysd-dhcpd
+	make DESTDIR=$PKG install-runyx-dhcpd
 }
