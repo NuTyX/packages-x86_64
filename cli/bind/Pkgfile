@@ -3,17 +3,17 @@ url="http://www.isc.org/downloads/bind/"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(kerberos libxml2 openssl libcap)
+makedepends=(libuv kerberos libxml2 openssl libcap)
 run=(python-ply)
 
 
 name=bind
-version=9.14.10
+version=9.16.7
 
-nutyx_version=11.3
+runyx_version=20200412
 
-source=(https://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz
-	https://downloads.isc.org/isc/bind9/$version/$name-$version.tar.gz)
+source=(https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
+	https://downloads.isc.org/isc/bind9/$version/$name-$version.tar.xz)
 
 build(){
     cd $name-$version
@@ -26,27 +26,20 @@ build(){
                 --enable-threads        \
                 --with-openssl
 
-	make -C lib/dns
-	make -C lib/isc
-	make -C lib/bind9
-	make -C lib/isccfg
-	make -C lib/irs
-	make -C bin/dig
-
-	make DESTDIR=$PKG -C bin/dig install
-
-    # doc
-	install -v -m755 -d $PKG/usr/share/doc/bind-$version/{arm,misc}
-	install -v -m644 doc/arm/*.html \
-	$PKG/usr/share/doc/bind-$version/arm
-	install -v -m644 \
-	doc/misc/{dnssec,ipv6,migrat*,options,rfc-compliance,roadmap} \
-	$PKG/usr/share/doc/bind-$version/misc
+	make DESTDIR=$PKG install
 
 # Service
-cd $SRC/nutyx-${nutyx_version}
-make DESTDIR=$PKG install-bind
+cd $SRC/runyx-${runyx_version}
+make DESTDIR=$PKG install-sysv-bind
+make DESTDIR=$PKG install-runyx-bind
+}
+service() {
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.service${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+lib/init etc/{init,rc.d}
 
+rm -r etc/{rc.d,init}
+rm -r lib/init
 }
 uptodate() {
 local url ext
