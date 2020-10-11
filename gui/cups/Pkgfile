@@ -12,10 +12,11 @@ PKGMK_GROUPS=(devel man lib)
 
 name=cups
 version=2.3.3
+release=2
 
-nutyx_version=11.3
+runyx_version=20200412
 
-source=(https://downloads.tuxfamily.org/nutyx/files/nutyx-${nutyx_version}.tar.xz \
+source=(https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz \
 	https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
 	99-printer.rules)
 prepare() {
@@ -42,7 +43,6 @@ build() {
 
 	CC=gcc CXX=g++ \
 	./configure --libdir=/usr/lib \
-		--disable-systemd \
 		--with-rcdir=/tmp/cupsinit \
 		--with-system-groups=lpadmin \
 		--with-docdir=/usr/share/cups/doc-$version \
@@ -61,8 +61,10 @@ build() {
 		$PKG/usr/share/applications/cups.desktop
 	fi
 	# Service
-	cd ../nutyx-${nutyx_version}
-	make DESTDIR=$PKG install-$name
+	cd ../runyx-${runyx_version}
+	make DESTDIR=$PKG install-sysv-$name
+	make DESTDIR=$PKG install-runyx-$name
+
 
 	# Supprimer les filtres faisant parti de cups-filters
 	rm -rf $PKG/usr/share/cups/banners
