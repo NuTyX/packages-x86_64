@@ -1,12 +1,13 @@
 description="a modern interactive commandline shell."
 url="http://www.fishshell.com/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg, Fanch, Remy"
 
 makedepends=(cmake doxygen)
 
 name=fish
-version=3.0.2
+version=3.1.2
 
 source=(https://github.com/fish-shell/fish-shell/releases/download/$version/$name-$version.tar.gz)
 
@@ -17,6 +18,8 @@ build() {
   mkdir build
   cd    build
   cmake -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_INSTALL_SYSCONFDIR=/etc \
+  -DCMAKE_BUILD_TYPE=Release \
   ..
   make
   make DESTDIR=$PKG install
