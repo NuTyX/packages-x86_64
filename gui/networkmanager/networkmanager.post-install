@@ -1,6 +1,20 @@
 . lib/lsb/init-functions
-if [ ! -f etc/NetworkManager/NetworkManager.conf ]; then
-	echo "[main]
-plugins=keyfile" > etc/NetworkManager/NetworkManager.conf
-	log_success_msg2  "File ${WARNING}/etc/NetworkManager/NetworkManager.conf ${NORMAL} created"
+if [ ! -L etc/systemd/system/multi-user.target.wants/NetworkManager.service ]; then
+   mkdir -p etc/systemd/system/multi-user.target.wants
+   ln -sf /lib/systemd/system/NetworkManager.service \
+   etc/systemd/system/multi-user.target.wants/NetworkManager.service && \
+   log_success_msg2  "${INFO} link /etc/systemd/system/multi-user.target.wants/NetworkManager.service created ${NORMAL}"
 fi
+if [ ! -L etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service ]; then
+   ln -sf /lib/systemd/system/NetworkManager-dispatcher.service \
+   etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service && \
+   log_success_msg2  "${INFO} link /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service created ${NORMAL}"
+fi
+if [ ! -L etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service ]; then
+   mkdir -p etc/systemd/system/network-online.target.wants
+   ln -sf /lib/systemd/system/NetworkManager-wait-online.service \
+   etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service && \
+   log_success_msg2  "${INFO} link /etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service created ${NORMAL}"
+
+fi
+pkginfo -i|grep -q dhcpcd && log_warning_msg "${WARNING} Make sure you remove dhcpcd package if you use runyx or systemd ${NORMAL} init system."
