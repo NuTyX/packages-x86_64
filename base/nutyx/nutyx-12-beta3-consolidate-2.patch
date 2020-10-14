@@ -1,0 +1,138 @@
+diff --git a/scripts/setup-nutyx.in b/scripts/setup-nutyx.in
+index b362c567f..7cfc01ab9 100755
+--- a/scripts/setup-nutyx.in
++++ b/scripts/setup-nutyx.in
+@@ -76,6 +76,7 @@ _msgfmt() {
+ 		-o $TEXTDOMAINFILE2
+ 	fi
+ 	echo "export LANG=${1}.utf-8" > ${LOCALE}
++	echo "LANG=${1}.utf-8" > ${LOCALECONF}
+ 	$SETUP_LOG "setup-nutyx --config-lang" "variable LANG=${1}.utf-8 saved in ${LOCALE}"
+ }
+ calc(){
+@@ -1851,72 +1852,72 @@ PATH=$PATH" >> ${GRUB_LOG_FILE}
+ 		BOOT_FS="$(print_file_system $PARTITION)"
+ 		NuTyX_FS="$(print_file_system $NuTyX_PART)"
+ 		echo "
+-submenu \"NuTyX LTS ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {
+- submenu \"NuTyX LTS Quiet Mode \" {
+-  submenu \" NuTyX LTS Quiet RuNyX \" {
++submenu \"NuTyX RuNyX \" {
++ submenu \" NuTyX RuNyX Quiet Mode \" {
++  submenu \"  NuTyX RuNyX Quiet LTS version \" {
+   linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/runit-init root=${NuTyX_PART} ro quiet verbose=no
+   #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+   }
+-  submenu \" NuTyX LTS Quiet Systemd \" {
+-    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
+-  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+-  }
+-  submenu \" NuTyX LTS Quiet SysV \" {
+-   linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro quiet verbose=no
++  submenu \"  NuTyX RuNyX Quiet Latest version \" {
++   linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/runit-init root=${NuTyX_PART} ro quiet verbose=no
+    #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+   }
+  }
+-
+- submenu \"NuTyX LTS Verbose Mode \" {
+-  submenu \" NuTyX LTS Verbose RuNyX \" {
+-  linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/runit-init root=${NuTyX_PART} ro
+-  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
++  submenu \" NuTyX RuNyX Verbose Mode \" {
++   submenu \"  NuTyX RuNyX Verbose LTS version \" {
++    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/runit-init root=${NuTyX_PART} ro
++    #  initrd /${GRUB_DESTINATION_DIR}initrd-419
++   }
++   submenu \"  NuTyX RuNyX Verbose Latest version \" {
++    linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/runit-init root=${NuTyX_PART} ro
++    #  initrd /${GRUB_DESTINATION_DIR}initrd
++   }
+   }
+-  submenu \" NuTyX LTS Verbose Systemd \" {
+-    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/systemd-init root=${NuTyX_PART} ro
+-  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
++ }
++submenu \"NuTyX SysV \" {
++ submenu \" NuTyX SysV Quiet Mode \" {
++  submenu \"  NuTyX SysV Quiet LTS version \" {
++   linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro quiet verbose=no
++   #  initrd /${GRUB_DESTINATION_DIR}initrd-419
++  }
++  submenu \"  NuTyX SysV Quiet Latest version \" {
++   linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro quiet verbose=no
++   #  initrd /${GRUB_DESTINATION_DIR}initrd
+   }
+-  submenu \" NuTyX LTS Verbose SysV \" {
+-   linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro
++ }
++ submenu \" NuTyX SysV Verbose Mode \" {
++  submenu \"  NuTyX SysV Verbose LTS version \" {
++   linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro quiet
+    #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+   }
++  submenu \"  NuTyX SysV Verbose Latest version \" {
++   linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro quiet
++   #  initrd /${GRUB_DESTINATION_DIR}initrd
++  }
+  }
+-}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+-
+-    if [ -L /boot/kernel ]; then
+-      echo "
+-submenu \"NuTyX ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {
+- submenu \"NuTyX Latest Quiet Mode \" {
+-  submenu \" NuTyX Latest Quiet RuNyX \" {
+-  linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/runit-init root=${NuTyX_PART} ro quiet verbose=no
+-  #  initrd /${GRUB_DESTINATION_DIR}initrd
++}
++submenu \"NuTyX SystemD \" {
++ submenu \" NuTyX SystemD Quiet Mode \" {
++  submenu \"  NuTyX SystemD Quiet LTS version \" {
++    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
++  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+   }
+-  submenu \" NuTyX Latest Quiet Systemd \" {
++  submenu \"  NuTyX SystemD Quiet Latest version \" {
+     linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
+   #  initrd /${GRUB_DESTINATION_DIR}initrd
+   }
+-  submenu \" NuTyX Latest Quiet SysV \" {
+-   linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro quiet verbose=no
+-   #  initrd /${GRUB_DESTINATION_DIR}initrd
+-  }
+  }
+-
+- submenu \"NuTyX Latest Verbose Mode \" {
+-  submenu \" NuTyX Latest Verbose RuNyX \" {
+-  linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/runit-init root=${NuTyX_PART} ro
+-  #  initrd /${GRUB_DESTINATION_DIR}initrd
++ submenu \" NuTyX SystemD Verbose Mode \" {
++  submenu \"  NuTyX SystemD Verbose LTS version \" {
++    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
++  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+   }
+-  submenu \" NuTyX Latest Verbose Systemd \" {
+-    linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/systemd-init root=${NuTyX_PART} ro
++  submenu \"  NuTyX SystemD Verbose Latest version \" {
++    linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
+   #  initrd /${GRUB_DESTINATION_DIR}initrd
+   }
+-  submenu \" NuTyX Latest Verbose SysV \" {
+-   linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro
+-   #  initrd /${GRUB_DESTINATION_DIR}initrd
+-  }
+  }
+ }" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+-    fi
+ 	else
+ 		#
+ 		# NuTyX is not yet installed
+@@ -2494,6 +2495,7 @@ XORGKB="/etc/X11/xorg.conf.d/20-keyboard.conf"
+ CONSOLE="/etc/sysconfig/console"
+ VCONSOLE="/etc/vconsole.conf"
+ LOCALE="/etc/profile.d/i18n.sh"
++LOCALECONF="/etc/locale.conf"
+ LOCALTIME="/etc/localtime"
+ ZONEINFO="/usr/share/zoneinfo/"
+ NETWORK="`ls /etc/sysconfig/ifconfig* 2>/dev/null|head -1`"

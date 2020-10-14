@@ -1,0 +1,70 @@
+ . lib/lsb/init-functions
+
+# /etc/hostname file
+if [ ! -f etc/hostname ]; then
+   echo "nutyx" > etc/hostname && \
+   log_success_msg2  "${INFO} Created /etc/hostname file ${NORMAL}"
+fi
+
+# /etc/vconsole
+if [ ! -f etc/vconsole ]; then
+   if [ -f etc/sysconfig/console ]; then
+      . etc/sysconfig/console
+      echo "FONT=$FONT
+KEYMAP=$KEYMAP" > etc/vconsole && \
+     log_success_msg2  "${INFO} Created /etc/vconsole file ${NORMAL}"
+   fi
+fi
+
+# /etc/adjtime
+if [ ! -f etc/adjtime ]; then
+   if [ -f etc/sysconfig/clock ]; then
+      . etc/sysconfig/clock
+      echo "0.0 0.0" >  etc/adjtime
+      case "${UTC}" in
+          1)
+             echo "1
+REMOTE" >> etc/adjtime
+             ;;
+          0)
+             echo "0
+LOCAL" >> etc/adtime
+             ;;
+      esac &&  \
+      log_success_msg2  "${INFO} Created /etc/adjtime file ${NORMAL}"
+   fi
+fi
+# /etc/locale.conf
+if [ ! -f etc/locale.conf ]; then
+   if [ -f etc/profile.d/i18n.sh ]; then
+    . etc/profile.d/i18n.sh
+    echo "LANG=$LANG" > etc/locale.conf && \
+    log_success_msg2  "${INFO} Created /etc/locale.conf file ${NORMAL}"
+   fi
+fi
+# /etc/systemd/network
+if [ ! -d etc/systemd/network ]; then
+    mkdir -p etc/systemd/network
+    for file in etc/sysconfig/ifconfig.*
+    do
+       . $file
+       interface="${file/*./}"
+       echo "[Match]
+Name=${interface}
+
+[Network]" > etc/systemd/network/$interface.network
+
+        if [ "$SERVICE" == "dhcpcd" ]; then
+          echo "DHCP=yes
+
+[DHCP]
+UseDomains=true
+" >> etc/systemd/network/$interface.network
+        else
+          echo "Address=${IP}" >> etc/systemd/network/$interface.network
+          [ -n $GATEWAY ] && echo "Gateway=$GATEWAY"  \
+          >> etc/systemd/network/$interface.network
+        fi
+        log_success_msg2  "${INFO} Created /etc/systemd/network/$interface.network file ${NORMAL}"
+    done
+fi
