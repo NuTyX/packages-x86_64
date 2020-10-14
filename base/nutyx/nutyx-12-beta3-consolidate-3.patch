@@ -1,3 +1,15 @@
+diff --git a/scripts/install-nutyx.in b/scripts/install-nutyx.in
+index 74c297cdc..fdf04c3ca 100755
+--- a/scripts/install-nutyx.in
++++ b/scripts/install-nutyx.in
+@@ -188,6 +188,7 @@ install_pkg() {
+ 	if [ -f $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName ]; then
+ 		# Installing the package
+ 		$TMP/$PKGADD -r $FOLDER -i $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName || print_error_msg
++		rm -f $FOLDER/.{PRE,POST}
+ 		echo_ok
+ 	else
+ 		error "$PackageFileName not found"
 diff --git a/scripts/setup-nutyx.in b/scripts/setup-nutyx.in
 index b362c567f..7cfc01ab9 100755
 --- a/scripts/setup-nutyx.in

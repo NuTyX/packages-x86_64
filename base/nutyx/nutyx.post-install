@@ -47,6 +47,7 @@ if [ ! -d etc/systemd/network ]; then
     mkdir -p etc/systemd/network
     for file in etc/sysconfig/ifconfig.*
     do
+       [ ! -f $file ] && continue
        . $file
        interface="${file/*./}"
        echo "[Match]
