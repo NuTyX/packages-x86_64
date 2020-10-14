@@ -14,4 +14,4 @@ if ! (getent passwd $UN > /dev/null); then
 	useradd  -c "dhcpcd PrivSep" -d /var/lib/$UN \
 	-g $UN -s /bin/false -u $ID $UN
 fi
-chmod $UN:$UN var/lib/dhcpcd
+chown $UN:$UN var/lib/dhcpcd
