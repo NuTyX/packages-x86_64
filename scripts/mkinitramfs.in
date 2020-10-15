@@ -27,7 +27,7 @@ copy()
   local file
 
   if [ "$2" == "lib" ]; then
-    file=$(PATH=/lib:/usr/lib type -p $1)
+    file=$(PATH=/lib:/lib/systemd:/usr/lib type -p $1)
   else
     file=$(type -p $1)
   fi
@@ -169,11 +169,6 @@ cat > $WDIR/etc/fstab << "EOF"
 
 # nfs mountpoint example
 # 192.168.254.254:/home/thierry/devel /home/thierry/devel nfs rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
-proc       /proc    proc     nosuid,noexec,nodev 0     0
-sysfs      /sys     sysfs    nosuid,noexec,nodev 0     0
-devpts     /dev/pts devpts   gid=5,mode=620      0     0
-tmpfs      /run     tmpfs    defaults            0     0
-devtmpfs   /dev     devtmpfs mode=0755,nosuid    0     0
 EOF
 
 # echo and false are a bit wird

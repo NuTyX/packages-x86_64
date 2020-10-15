@@ -61,7 +61,7 @@ _msgfmt() {
 	localedef -i ${1} -f UTF-8 ${1}.UTF-8
 	if [ -f /lib/services/setup-nutyx/setup-nutyx.locales.gz ];then
 		bsdtar -xf /lib/services/setup-nutyx/setup-nutyx.locales.gz \
-		-C $TD lib/{setup-nutyx,xdg-user-dirs}.${L}
+		-C $TD lib/{setup-nutyx,xdg-user-dirs,dialog}.${L}
 	fi
 	if [ -f $TD/lib/setup-nutyx.${L} ]; then
 		TEXTDOMAINFILE1=$TEXTDOMAINDIR/${L}/LC_MESSAGES/setup-nutyx.mo
@@ -75,7 +75,20 @@ _msgfmt() {
 		msgfmt $TD/lib/xdg-user-dirs.${L} \
 		-o $TEXTDOMAINFILE2
 	fi
+	if [ -f $TD/lib/dialog.${L} ]; then
+		TEXTDOMAINFILE3=$TEXTDOMAINDIR/${L}/LC_MESSAGES/dialog.mo
+		mkdir -p $TEXTDOMAINDIR/${L}/LC_MESSAGES
+		msgfmt $TD/lib/dialog.${L} \
+		-o $TEXTDOMAINFILE3
+	fi
+	if [ -f $TD/lib/util-linux.${L} ]; then
+		TEXTDOMAINFILE3=$TEXTDOMAINDIR/${L}/LC_MESSAGES/util-linux.mo
+		mkdir -p $TEXTDOMAINDIR/${L}/LC_MESSAGES
+		msgfmt $TD/lib/util-linux.${L} \
+		-o $TEXTDOMAINFILE4
+	fi
 	echo "export LANG=${1}.utf-8" > ${LOCALE}
+	echo "LANG=${1}.utf-8" > ${LOCALECONF}
 	$SETUP_LOG "setup-nutyx --config-lang" "variable LANG=${1}.utf-8 saved in ${LOCALE}"
 }
 calc(){
@@ -1516,7 +1529,7 @@ erase_nutyx() {
   $SETUP_LOG "setup-nutyx" "Erase NuTyX on ${PARTITION} done"
 }
 install_nutyx() {
-	local DIR REAL FILE
+	local DIR REAL FILE VERSNAME EXT
 	setup_swap
 
 	[ -d "$EFIVARS" ] && setup_esp
@@ -1530,23 +1543,23 @@ install_nutyx() {
 	(for i in *squashfs
 	do
 		DIR=$(echo $i|cut -d "." -f1)
-		rm -rf ${2}/${DIR}
-		unsquashfs -f -n -d ${2}/${DIR} ${i} >/dev/null
+		rm -rfv ${2}/${DIR} &> /dev/tty2
+		unsquashfs -f -n -d ${2}/${DIR} ${i} &> /dev/tty2
 		REAL=$(calc $N/$MAX *100)
 		PCT=${REAL%.*}
 		echo "$PCT"
 		N=$((N+1))
 	done
 	echo "92"
-	rm -rf ${2}/boot
-	chmod 750 ${2}/root
-	mkdir ${2}/boot 2>/dev/null
+	rm -rfv ${2}/boot &> /dev/tty2
+	chmod -v 750 ${2}/root &> /dev/tty2
+	mkdir -v ${2}/boot &> /dev/tty2
 	echo "$PARTITION   /    $FORMAT  defaults     0    0" >> /etc/fstab
 	if [ -d "$EFIVARS" ]; then
 		mkdir -p ${2}/boot/efi
 		echo "efivarfs    /sys/firmware/efi/efivars    efivarfs    rw,nosuid,nodev,noexec,noatime 0 0" >> /etc/fstab
 	else
-		mkdir -p ${2}/boot
+		mkdir -pv ${2}/boot &> /dev/tty2
 	fi
 
 	for FILE in etc/profile.d/i18n.sh \
@@ -1561,39 +1574,42 @@ install_nutyx() {
 	etc/network \
 	etc/mdadm.conf \
 	$TEXTDOMAINFILE1 \
-	$TEXTDOMAINFILE2
+	$TEXTDOMAINFILE2 \
+	$TEXTDOMAINFILE3 \
+	$TEXTDOMAINFILE4
 	do
 		if [ -f /$FILE ] || [ -d /$FILE ] || [ -L /$FILE ];then
-			cp -a /$FILE  ${2}/$FILE
+			cp -av /$FILE  ${2}/$FILE &> /dev/tty2
 		fi
 	done
 	if [ -f /etc/locale/locale-archive ]; then
-		rm -f ${2}/usr/lib/locale
-		cp -a /etc/locale ${2}/usr/lib/
+		rm -fv ${2}/usr/lib/locale &> /dev/tty2
+		cp -av /etc/locale ${2}/usr/lib/ &> /dev/tty2
 	fi
-	cp -a ${1}/boot/kernel* ${2}/boot/
+	# Kernels
+	cp -av ${1}/boot/kernel* ${2}/boot/ &> /dev/tty2
 	for i in /lib/modules/*
 	do
-		j=`basename $i`
-		ke=-`echo $j|cut -d "-" -f3`
-		[ ${#ke} == 1 ] && ke=""
-		ln -sf kernel-$j ${2}/boot/kernel$ke
+		VERSNAME="$(basename $i)"
+		EXT="-${VERSNAME/*-/}"
+		[ "$EXT" == "-NuTyX" ] && EXT=""
+		ln -svf kernel-${VERSNAME} ${2}/boot/kernel${EXT} &> /dev/tty2
 	done
 	if  [ -f ${1}/boot/grub/splash.png ]; then
-		mkdir -p ${2}/boot/grub/
-		cp ${1}/boot/grub/splash.png ${2}/boot/grub/
+		mkdir -pv ${2}/boot/grub/ &> /dev/tty2
+		cp -v ${1}/boot/grub/splash.png ${2}/boot/grub/ &> /dev/tty2
 	fi
 	if [ -f ${1}/boot/grub/fonts/unicode.pf2 ]; then
-		mkdir -p ${2}/boot/grub/fonts
-		cp ${1}/boot/grub/fonts/unicode.pf2 ${2}/boot/grub/fonts
+		mkdir -pv ${2}/boot/grub/fonts &> /dev/tty2
+		cp -v ${1}/boot/grub/fonts/unicode.pf2 ${2}/boot/grub/fonts &> /dev/tty2
 	fi
 	for DIR in proc sys dev srv mnt tmp
 	do
-		[ ! -d ${2}/$DIR ] &&	mkdir ${2}/$DIR
+		[ ! -d ${2}/$DIR ] &&	mkdir -v ${2}/$DIR &> /dev/tty2
 	done
-	[ -a ${2}/dev/console ] || mknod -m 640 ${2}/dev/console c 5 1
-	[ -a ${2}/dev/null ] || mknod -m 664 ${2}/dev/null    c 1 3
-	chmod 1777 ${2}/tmp
+	[ -a ${2}/dev/console ] || mknod -vm 640 ${2}/dev/console c 5 1 &> /dev/tty2
+	[ -a ${2}/dev/null ] || mknod -vm 664 ${2}/dev/null    c 1 3 &> /dev/tty2
+	chmod -v 1777 ${2}/tmp &> /dev/tty2
 	echo "100") |
 	dialog --title "$(gettext "Install NuTyX")" --gauge "$(gettext "Please wait") ..." 6 50
 	$SETUP_LOG "setup-nutyx" "Install NuTyX on ${PARTITION} done"
@@ -1851,72 +1867,72 @@ PATH=$PATH" >> ${GRUB_LOG_FILE}
 		BOOT_FS="$(print_file_system $PARTITION)"
 		NuTyX_FS="$(print_file_system $NuTyX_PART)"
 		echo "
-submenu \"NuTyX LTS ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {
- submenu \"NuTyX LTS Quiet Mode \" {
-  submenu \" NuTyX LTS Quiet RuNyX \" {
+submenu \"NuTyX RuNyX \" {
+ submenu \" NuTyX RuNyX Quiet Mode \" {
+  submenu \"  NuTyX RuNyX Quiet LTS version \" {
   linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/runit-init root=${NuTyX_PART} ro quiet verbose=no
   #  initrd /${GRUB_DESTINATION_DIR}initrd-419
   }
-  submenu \" NuTyX LTS Quiet Systemd \" {
-    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
-  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  submenu \"  NuTyX RuNyX Quiet Latest version \" {
+   linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/runit-init root=${NuTyX_PART} ro quiet verbose=no
+   #  initrd /${GRUB_DESTINATION_DIR}initrd
   }
-  submenu \" NuTyX LTS Quiet SysV \" {
+ }
+  submenu \" NuTyX RuNyX Verbose Mode \" {
+   submenu \"  NuTyX RuNyX Verbose LTS version \" {
+    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/runit-init root=${NuTyX_PART} ro
+    #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+   }
+   submenu \"  NuTyX RuNyX Verbose Latest version \" {
+    linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/runit-init root=${NuTyX_PART} ro
+    #  initrd /${GRUB_DESTINATION_DIR}initrd
+   }
+  }
+ }
+submenu \"NuTyX SysV \" {
+ submenu \" NuTyX SysV Quiet Mode \" {
+  submenu \"  NuTyX SysV Quiet LTS version \" {
    linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro quiet verbose=no
    #  initrd /${GRUB_DESTINATION_DIR}initrd-419
   }
- }
-
- submenu \"NuTyX LTS Verbose Mode \" {
-  submenu \" NuTyX LTS Verbose RuNyX \" {
-  linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/runit-init root=${NuTyX_PART} ro
-  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
-  }
-  submenu \" NuTyX LTS Verbose Systemd \" {
-    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/systemd-init root=${NuTyX_PART} ro
-  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
-  }
-  submenu \" NuTyX LTS Verbose SysV \" {
-   linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro
-   #  initrd /${GRUB_DESTINATION_DIR}initrd-419
-  }
- }
-}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-
-    if [ -L /boot/kernel ]; then
-      echo "
-submenu \"NuTyX ${SETUP_ARCH} ${NuTyX_FS} on ${NuTyX_PART}\" {
- submenu \"NuTyX Latest Quiet Mode \" {
-  submenu \" NuTyX Latest Quiet RuNyX \" {
-  linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/runit-init root=${NuTyX_PART} ro quiet verbose=no
-  #  initrd /${GRUB_DESTINATION_DIR}initrd
-  }
-  submenu \" NuTyX Latest Quiet Systemd \" {
-    linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
-  #  initrd /${GRUB_DESTINATION_DIR}initrd
-  }
-  submenu \" NuTyX Latest Quiet SysV \" {
+  submenu \"  NuTyX SysV Quiet Latest version \" {
    linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro quiet verbose=no
    #  initrd /${GRUB_DESTINATION_DIR}initrd
   }
  }
-
- submenu \"NuTyX Latest Verbose Mode \" {
-  submenu \" NuTyX Latest Verbose RuNyX \" {
-  linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/runit-init root=${NuTyX_PART} ro
-  #  initrd /${GRUB_DESTINATION_DIR}initrd
+ submenu \" NuTyX SysV Verbose Mode \" {
+  submenu \"  NuTyX SysV Verbose LTS version \" {
+   linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro
+   #  initrd /${GRUB_DESTINATION_DIR}initrd-419
   }
-  submenu \" NuTyX Latest Verbose Systemd \" {
-    linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/systemd-init root=${NuTyX_PART} ro
-  #  initrd /${GRUB_DESTINATION_DIR}initrd
-  }
-  submenu \" NuTyX Latest Verbose SysV \" {
+  submenu \"  NuTyX SysV Verbose Latest version \" {
    linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro
    #  initrd /${GRUB_DESTINATION_DIR}initrd
   }
  }
+}
+submenu \"NuTyX SystemD \" {
+ submenu \" NuTyX SystemD Quiet Mode \" {
+  submenu \"  NuTyX SystemD Quiet LTS version \" {
+    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
+  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  }
+  submenu \"  NuTyX SystemD Quiet Latest version \" {
+    linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
+  #  initrd /${GRUB_DESTINATION_DIR}initrd
+  }
+ }
+ submenu \" NuTyX SystemD Verbose Mode \" {
+  submenu \"  NuTyX SystemD Verbose LTS version \" {
+    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/systemd-init root=${NuTyX_PART} ro
+  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  }
+  submenu \"  NuTyX SystemD Verbose Latest version \" {
+    linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/systemd-init root=${NuTyX_PART} ro
+  #  initrd /${GRUB_DESTINATION_DIR}initrd
+  }
+ }
 }" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
-    fi
 	else
 		#
 		# NuTyX is not yet installed
@@ -2494,6 +2510,7 @@ XORGKB="/etc/X11/xorg.conf.d/20-keyboard.conf"
 CONSOLE="/etc/sysconfig/console"
 VCONSOLE="/etc/vconsole.conf"
 LOCALE="/etc/profile.d/i18n.sh"
+LOCALECONF="/etc/locale.conf"
 LOCALTIME="/etc/localtime"
 ZONEINFO="/usr/share/zoneinfo/"
 NETWORK="`ls /etc/sysconfig/ifconfig* 2>/dev/null|head -1`"

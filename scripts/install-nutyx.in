@@ -188,6 +188,7 @@ install_pkg() {
 	if [ -f $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName ]; then
 		# Installing the package
 		$TMP/$PKGADD -r $FOLDER -i $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName || print_error_msg
+		rm -f $FOLDER/.{PRE,POST,README}
 		echo_ok
 	else
 		error "$PackageFileName not found"

@@ -56,7 +56,8 @@ $(ETCDIR)/init.d/$${FILE}; \
 	install -m 644 lib/init-functions $(SERVICEDIR)/init-functions
 	install -m 644 lib/init.in	$(SERVICEDIR)/init.in
 	bsdtar -czf $(SERVICEDIR)/setup-nutyx/setup-nutyx.locales.gz \
-		lib/setup-nutyx.* lib/xdg-user-dirs.*
+		lib/setup-nutyx.* lib/xdg-user-dirs.* lib/dialog.* \
+                lib/util-linux.*
 	for FILE in bootlog btmp lastlog wtmp; do \
 		touch $(VARDIR)/log/$${FILE}; \
 	done
