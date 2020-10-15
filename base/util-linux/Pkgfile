@@ -9,13 +9,14 @@ makedepends=(systemd)
 
 name=util-linux
 version=2.36
-release=2
+release=3
 
 PKGMK_IGNORE_FOOTPRINT='no'
 
 source=(https://www.kernel.org/pub/linux/utils/util-linux/v${version:0:4}/util-linux-$version.tar.xz)
 
 PKGMK_GROUPS=(devel doc man)
+PKGMK_LOCALES=()
 
 build()
 {
