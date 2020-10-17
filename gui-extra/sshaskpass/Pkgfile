@@ -1,0 +1,38 @@
+description="X service to grab password for packages"
+url="http://www.openssh.org/"
+
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(gtk2 sudo xorg-libx11)
+
+
+name=sshaskpass
+version=8.4p1
+
+
+source=(https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$version.tar.gz)
+
+
+build() {
+mv openssh-$version sshaskpass-$version
+
+unset MAKEFLAGS
+cd $name-$version
+       cd contrib
+
+       make gnome-ssh-askpass2
+
+       install -v -d -m755 $PKG/usr/libexec/openssh/contrib
+       install -v -m755    gnome-ssh-askpass2 $PKG/usr/libexec/openssh/contrib
+
+      ln -sv -f contrib/gnome-ssh-askpass2 \
+                $PKG/usr/libexec/openssh/ssh-askpass
+
+      mkdir -v $PKG/etc
+
+cat >> $PKG/etc/sudo.conf << "EOF"
+# Path to askpass helper program
+Path askpass /usr/libexec/openssh/ssh-askpass
+EOF
+chmod -v 0644 $PKG/etc/sudo.conf
+}
