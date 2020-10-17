@@ -1607,8 +1607,8 @@ install_nutyx() {
 	do
 		[ ! -d ${2}/$DIR ] &&	mkdir -v ${2}/$DIR &> /dev/tty2
 	done
-	[ -a ${2}/dev/console ] || mknod -vm 640 ${2}/dev/console c 5 1 &> /dev/tty2
-	[ -a ${2}/dev/null ] || mknod -vm 664 ${2}/dev/null    c 1 3 &> /dev/tty2
+	[ -a ${2}/dev/console ] || mknod -m 640 ${2}/dev/console c 5 1 &> /dev/tty2
+	[ -a ${2}/dev/null ] || mknod -m 664 ${2}/dev/null    c 1 3 &> /dev/tty2
 	chmod -v 1777 ${2}/tmp &> /dev/tty2
 	echo "100") |
 	dialog --title "$(gettext "Install NuTyX")" --gauge "$(gettext "Please wait") ..." 6 50
