@@ -4,8 +4,7 @@ url="https://www.kde.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(xorg-xrdb xorg-xsetroot xorg-xprop xorg-xmessage
-             pm-utils gvfs baloo milou networkmanager-qt plasma-integration
+makedepends=(prison baloo milou networkmanager-qt plasma-integration
              kitemmodels kjsembed kwin krunner knotifyconfig kdesu kwallet kscreen
              kdelibs4support ktexteditor kholidays kactivities-stats kpeople)
 run=(pm-utils gvfs xorg-xrdb xorg-xsetroot xorg-xprop xorg-xmessage)
@@ -13,9 +12,9 @@ run=(pm-utils gvfs xorg-xrdb xorg-xsetroot xorg-xprop xorg-xmessage)
 set=(kde5 plasma5)
 
 name=plasma-workspace
-version=5.20.0
+version=5.20.1.1
 
-source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+source=(https://download.kde.org/stable/plasma/${version:0:6}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
