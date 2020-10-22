@@ -266,7 +266,6 @@ LoadModules() {
  xhci-pci xhci-hcd ehci-hcd nls_iso8859_1 \
  uhci-hcd uas sr_mod usb-storage loop failover \
  squashfs isofs vfat fat nls_cp437 net_failover \
- serio libps2 atkbd i8042 \
  virtio virtio_blk virtio_pci virtio_net virtio_ring
  do
   if [ "$verbose" == "yes" ]; then
@@ -423,14 +422,13 @@ EOF
 	[ "$verbose" == "no" ] || sleep 5
 	exec "$init" "$@" > /dev/null 2>&1
 fi
+[ "$verbose" == "no" ] || printf "Start udev ...\n"
+do_start_udev
+
+[ "$verbose" == "no" ] || printf "Start lvm ...\n"
+do_start_lvm
 
 if [ "$root" == "" ]; then
-	[ "$verbose" == "no" ] || printf "Start udev ...\n"
-        do_start_udev
-
-	[ "$verbose" == "no" ] || printf "Start lvm ...\n"
-	do_start_lvm
-
 	[ "$verbose" == "no" ] || printf "Start sysklogd ...\n"
 	do_start_sysklogd
 	[ "$verbose" == "no" ]  && clear
