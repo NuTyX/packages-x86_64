@@ -164,13 +164,6 @@ fi
 [ -f /lib/lsb/init-functions ] && cp /lib/lsb/init-functions $WDIR/lib/lsb/init-functions
 [ -n "$KERNEL_VERSION" ] && cp /etc/group $WDIR/etc
 
-cat > $WDIR/etc/fstab << "EOF"
-# Begin /etc/fstab
-
-# nfs mountpoint example
-# 192.168.254.254:/home/thierry/devel /home/thierry/devel nfs rw,vers=3,_netdev,rsize=8192,wsize=8192 0 0
-EOF
-
 # echo and false are a bit wird
 if [ -z $BUSYBOX ];then
 	cp /bin/echo $WDIR/bin/echo
