@@ -1,0 +1,29 @@
+description="All-in-one voice and text chat for gamers that's free and secure."
+url="https://discordapp.com/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems"
+
+name=discord
+version=0.0.12
+
+run=(gtk2 gconf libnotify xorg-libxscrnsaver glibc alsa-lib nspr nss pulseaudio libcxx)
+
+source=(https://dl.discordapp.net/apps/linux/$version/$name-$version.tar.gz
+        Discord.desktop
+        LICENSE)
+
+
+build() {
+
+  install -d $PKG/opt/$name
+  cp -a Discord/. $PKG/opt/$name
+  chmod 755 $PKG/opt/$name/Discord
+  install -d $PKG/usr/share/applications
+  install Discord.desktop $PKG/usr/share/applications
+  install -d $PKG/usr/bin
+  ln -s /opt/$name/Discord $PKG/usr/bin/$name
+  install -d $PKG/usr/share/pixmaps
+  ln -s /opt/$name/discord.png $PKG/usr/share/pixmaps/$name.png
+  install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
+}
