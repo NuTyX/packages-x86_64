@@ -344,16 +344,16 @@ for param in $cmdline ; do
   esac
 done
 
-if [ -d /lib/modules ] && [ -n "$rootdelay" ] && [ -n "$root" ]; then
-        [ "$verbose" == "no" ] || printf "Start udev...\n"
-        do_start_udev
-	[ "$verbose" == "no" ] || printf "Start lvm ...\n"
-	do_start_lvm
-fi
-
-if [ -n "$rootdelay" ] ; then
+if [ -n "$rootdelay" ]; then
 	[ "$verbose" == "no" ] || printf "Wait  %s second(s) ...\n" $rootdelay
 	sleep "$rootdelay"
+fi
+
+if [ -d /lib/modules ]; then
+	[ "$verbose" == "no" ] || printf "Start udev...\n"
+	do_start_udev
+	[ "$verbose" == "no" ] || printf "Start lvm ...\n"
+	do_start_lvm
 fi
 
 if [ "$live" == "yes" ] || [ "$root" == "" ]; then
@@ -422,12 +422,6 @@ EOF
 	[ "$verbose" == "no" ] || sleep 5
 	exec "$init" "$@" > /dev/null 2>&1
 fi
-[ "$verbose" == "no" ] || printf "Start udev ...\n"
-do_start_udev
-
-[ "$verbose" == "no" ] || printf "Start lvm ...\n"
-do_start_lvm
-
 if [ "$root" == "" ]; then
 	[ "$verbose" == "no" ] || printf "Start sysklogd ...\n"
 	do_start_sysklogd
