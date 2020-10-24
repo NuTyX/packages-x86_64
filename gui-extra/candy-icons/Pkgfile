@@ -1,0 +1,19 @@
+description="Candy icon theme"
+url="https://github.com/EliverLara/candy-icons"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(git)
+run=(gtk-update-icon-cache hicolor-icon-theme)
+name=candy-icons
+version=20201023
+
+prepare() {
+  git clone https://github.com/EliverLara/candy-icons.git
+}
+build() {
+ mkdir -p $PKG/usr/share/{icons,licenses/$name}
+ cp -a $name $PKG/usr/share/icons/$name
+ mv $PKG/usr/share/{icons,licenses}/$name/LICENSE
+ rm -r $PKG/usr/share/icons/$name/{.git,README.md,preview}
+}
