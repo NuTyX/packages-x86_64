@@ -67,12 +67,12 @@ else
 	if [ -z $BUSYBOX ]; then
 		sbinfiles="udevd udevadm ip"
 	else
-		for I in udevd udevadm
-		do
-			cp /sbin/$I $WDIR/sbin/$I
-			ldd /sbin/$I | sed "s/\t//" | cut -d " " -f1 >> $unsorted
-		done
-		sbinfiles="ip"
+#		for I in udevd udevadm
+#		do
+#			cp /sbin/$I $WDIR/sbin/$I
+#			ldd /sbin/$I | sed "s/\t//" | cut -d " " -f1 >> $unsorted
+#		done
+		sbinfiles="ip mdev"
 	fi
 fi
 
@@ -162,8 +162,10 @@ fi
 
 # Install the init-functions
 [ -f /lib/lsb/init-functions ] && cp /lib/lsb/init-functions $WDIR/lib/lsb/init-functions
-[ -n "$KERNEL_VERSION" ] && cp /etc/group $WDIR/etc
-
+if [ -n "$KERNEL_VERSION" ];then
+	cp /etc/group $WDIR/etc
+	cp /etc/passwd $WDIR/etc
+fi
 # echo and false are a bit wird
 if [ -z $BUSYBOX ];then
 	cp /bin/echo $WDIR/bin/echo
@@ -181,14 +183,15 @@ cp /usr/share/terminfo/l/linux \
 
 # Install the udev configuration files if needed
 if [ ! -z $1 ]; then
-	[ -f /etc/udev/udev.conf ] && cp /etc/udev/udev.conf $WDIR/etc/udev/udev.conf
-	for file in $(find /etc/udev/rules.d/ -type f) ; do
-		cp $file $WDIR/etc/udev/rules.d
-	done
-	for file in $(find /etc/udev/hwdb.d/ -type f) ; do
-		cp $file $WDIR/etc/udev/hwdb.d
-	done
-	cat > $WDIR/etc/udev/rules.d/55-lfs.rules << "EOF"
+	if [ -z $BUSYBOX ];then
+		[ -f /etc/udev/udev.conf ] && cp /etc/udev/udev.conf $WDIR/etc/udev/udev.conf
+		for file in $(find /etc/udev/rules.d/ -type f) ; do
+			cp $file $WDIR/etc/udev/rules.d
+		done
+		for file in $(find /etc/udev/hwdb.d/ -type f) ; do
+			cp $file $WDIR/etc/udev/hwdb.d
+		done
+		cat > $WDIR/etc/udev/rules.d/55-lfs.rules << "EOF"
 # /etc/udev/rules.d/55-lfs.rules: Rule definitions for LFS.
 
 # Core kernel devices
@@ -204,6 +207,13 @@ KERNEL=="isdn[0-9]*",       GROUP="dialout"
 KERNEL=="isdnctrl[0-9]*",   GROUP="dialout"
 KERNEL=="dcbri[0-9]*",      GROUP="dialout"
 EOF
+	else
+		if [ -d /etc/mdev.d ]; then
+			[ -f /etc/mdev.conf ] && \
+			cp /etc/mdev.conf $WDIR/etc
+			cp -a /etc/mdev.d $WDIR/etc/mdev.d
+		fi
+	fi
 fi
 # Hostname
 if [ -f /etc/hostname ] ; then
@@ -233,7 +243,7 @@ for f in $usrbinfiles; do
 		ldd /usr/bin/$f | sed "s/\t//" | cut -d " " -f1 >> $unsorted
 		copy $f usr/bin
 	else
-		ln -s $BUSYBOX $WDIR/usr/bin/$f
+		ln -s $BUSYBOX $WDIR/bin/$f
 	fi
 done
 
@@ -279,16 +289,20 @@ sort $unsorted | uniq | while read library ; do
 
   copy $library lib
 done
-if [ ! -z $1 ]; then
-	cp -a /lib/udev $WDIR/lib
+if [ -z $BUSYBOX ]; then
+	if [ ! -z $1 ]; then
+		cp -a /lib/udev $WDIR/lib
 
-# The Hardware clock setting maybe could be faster done
-	cat > $WDIR/lib/udev/do_start_clock << "EOF"
+	# The Hardware clock setting maybe could be faster done
+		cat > $WDIR/lib/udev/do_start_clock << "EOF"
 #!/bin/sh -e
 . /lib/lsb/init-functions
 do_start_clock
 EOF
-	chmod 755 $WDIR/lib/udev/do_start_clock
+		chmod 755 $WDIR/lib/udev/do_start_clock
+	fi
+else
+	rm -r $WDIR/{usr,lib64,{lib,etc}/udev}
 fi
 #
 # Install requested  kernel modules
