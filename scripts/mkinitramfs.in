@@ -3,6 +3,43 @@
 # written by Alexander E. Patrakov and Jeremy Huntwork.
 # adapted by Thierry Nuttens for NuTyX
 
+copyModules() {
+for i in dm-mod md-mod ehci-pci \
+xhci-pci xhci-hcd vfat fat xfs reiserfs btrfs ext2 \
+nls_cp437 ehci-hcd uhci-hcd uas nls_iso8859-1 \
+usbcore usb-common usb-storage loop sr_mod \
+cdrom squashfs isofs overlay mmc_core \
+rtsx_pci rtsx_pci_sdmmc rtsx_pci_ms mmc_block \
+ssb lpc_ich shpcp sdhci-acpi sdhci-pltfm \
+sdhci sdhci-pci failover net_failover \
+serio i8042 libps2 atkbd \
+virtio virtio_blk virtio_pci virtio_net virtio_ring
+do
+	find /lib/modules/$KERNEL_VERSION -type f -name $i* 2> /dev/null | \
+	cpio --make-directories -p --quiet $WDIR 2> /dev/null
+done
+
+if [ ! -z $1 ]; then
+	find \
+	/lib/modules/$KERNEL_VERSION/kernel/{crypto,fs,lib} \
+	/lib/modules/$KERNEL_VERSION/kernel/drivers/{scsi,message,pcmcia,virtio} \
+	/lib/modules/$KERNEL_VERSION/kernel/drivers/{md,ata,block,firewire}  \
+        /lib/modules/$KERNEL_VERSION/kernel/drivers/usb/{host,storage}  \
+	-type f 2> /dev/null | cpio --make-directories -p --quiet $WDIR 2> /dev/null
+
+	if [ "${2}" == "-nf" ] ||  [ "${2}" == "--no-firmwares" ];then
+		printf "No firmware copied, it's for an ISO.\n"
+	else
+		copyFirmwares
+	fi
+fi
+
+cp /lib/modules/$KERNEL_VERSION/modules.{builtin,order,symbols} \
+$WDIR/lib/modules/$KERNEL_VERSION
+
+depmod -b $WDIR $KERNEL_VERSION
+}
+
 copyFirmwares()
 {
   cp -a /lib/firmware/rtlwifi \
@@ -41,6 +78,10 @@ copy()
   fi
 }
 
+#
+##
+### Start Here
+
 printf "Creating $INITRAMFS_FILE... \n"
 BUSYBOX=`which busybox`
 DATADIR=/lib/services
@@ -57,21 +98,27 @@ mkdir -p $WDIR/etc/{sysconfig,modprobe.d,udev/{rules.d,hwdb.d}}
 touch $WDIR/etc/modprobe.d/modprobe.conf
 [ -d /lib64 ] && cp -a /lib64 $WDIR/lib64
 
+KERNEL_VERSION="$(uname -r)"
 if [ -z $1 ]; then
-	echo "Warning you didn't specify any kernel version !!!
-==>	Will be the lasted updated"
-	INITRAMFS_FILE=initrd
-	KERNEL_VERSION="$(ls -tr /lib/modules/|tail -1)"
+	if [ ! -d /lib/modules/${KERNEL_VERSION} ]; then
+		echo "Error you didn't specify any kernel version !!
+The /lib/modules/${KERNEL_VERSION} directory not exist !!"
+
+	else
+		echo "Warning you didn't specify any kernel version !!
+Will try to make for ${KERNEL_VERSION}. If not,"
+	fi
+	echo "
+==> Please choose one from following kernel(s) version(s):
+"
+	ls  /lib/modules
+	echo ""
+	[ ! -d /lib/modules/${KERNEL_VERSION} ] && exit 1
 else
 	KERNEL_VERSION=$1
 	if [ -z $BUSYBOX ]; then
 		sbinfiles="udevd udevadm ip"
 	else
-#		for I in udevd udevadm
-#		do
-#			cp /sbin/$I $WDIR/sbin/$I
-#			ldd /sbin/$I | sed "s/\t//" | cut -d " " -f1 >> $unsorted
-#		done
 		sbinfiles="ip mdev"
 	fi
 fi
@@ -162,10 +209,10 @@ fi
 
 # Install the init-functions
 [ -f /lib/lsb/init-functions ] && cp /lib/lsb/init-functions $WDIR/lib/lsb/init-functions
-if [ -n "$KERNEL_VERSION" ];then
-	cp /etc/group $WDIR/etc
-	cp /etc/passwd $WDIR/etc
-fi
+# if [ -n "$KERNEL_VERSION" ];then
+cp /etc/group $WDIR/etc
+cp /etc/passwd $WDIR/etc
+# fi
 # echo and false are a bit wird
 if [ -z $BUSYBOX ];then
 	cp /bin/echo $WDIR/bin/echo
@@ -304,43 +351,9 @@ EOF
 else
 	rm -r $WDIR/{usr,lib64,{lib,etc}/udev}
 fi
-#
-# Install requested  kernel modules
 
-for i in dm-mod md-mod ehci-pci \
-xhci-pci xhci-hcd vfat fat xfs reiserfs btrfs ext2 \
-nls_cp437 ehci-hcd uhci-hcd uas nls_iso8859-1 \
-usbcore usb-common usb-storage loop sr_mod \
-cdrom squashfs isofs overlay mmc_core \
-rtsx_pci rtsx_pci_sdmmc rtsx_pci_ms mmc_block \
-ssb lpc_ich shpcp sdhci-acpi sdhci-pltfm \
-sdhci sdhci-pci failover net_failover \
-serio i8042 libps2 atkbd \
-virtio virtio_blk virtio_pci virtio_net virtio_ring
-do
-	find /lib/modules/$KERNEL_VERSION -type f -name $i* 2> /dev/null | \
-	cpio --make-directories -p --quiet $WDIR 2> /dev/null
-done
-
-if [ ! -z $1 ]; then
-	find \
-	/lib/modules/$KERNEL_VERSION/kernel/drivers/md \
-	-type f 2> /dev/null | cpio --make-directories -p --quiet $WDIR 2> /dev/null
-	find \
-	/lib/modules/$KERNEL_VERSION/kernel/drivers/ata \
-	-type f 2> /dev/null | cpio --make-directories -p --quiet $WDIR 2> /dev/null
-
-	if [ "${2}" == "-nf" ] ||  [ "${2}" == "--no-firmwares" ];then
-		printf "No firmware copied, it's for an ISO.\n"
-	else
-		copyFirmwares
-	fi
-fi
-
-cp /lib/modules/$KERNEL_VERSION/modules.{builtin,order,symbols} \
-$WDIR/lib/modules/$KERNEL_VERSION
-
-depmod -b $WDIR $KERNEL_VERSION
+###  Install requested $KERNEL_VERSION kernel modules
+[ -z ${KERNEL_VERSION} ] || copyModules
 
 rm -f /boot/$INITRAMFS_FILE
 
