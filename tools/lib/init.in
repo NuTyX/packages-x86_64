@@ -351,7 +351,8 @@ fi
 
 if [ -d /lib/modules ]; then
 	[ "$verbose" == "no" ] || printf "Start udev...\n"
-	do_start_udev
+	[ -f /sbin/udevd ] && do_start_udev
+	[ -L /sbin/mdev ] && /sbin/mdev -s
 	[ "$verbose" == "no" ] || printf "Start lvm ...\n"
 	do_start_lvm
 fi
@@ -431,7 +432,7 @@ if [ "$root" == "" ]; then
 	root=`cat /root/boot`
 
 	[ "$verbose" == "no" ] || printf "Stop udev ...\n"
-	do_stop_udev
+	[ -f /sbin/udevd ] && do_stop_udev
 
 	[ "$verbose" == "no" ] || printf "Stop sysklogd ...\n"
 	do_stop_sysklogd
