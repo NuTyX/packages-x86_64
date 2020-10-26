@@ -76,7 +76,7 @@ WARNING_SUFFIX="${BRACKET}[${WARNING} WARN ${BRACKET}]${NORMAL}"
 
 BOOTLOG=/run/bootlog
 KILLDELAY=0
-
+ECHOCMD="$(which echo)"
 
 # Set any user specified environment variables e.g. HEADLESS
 [ -r /etc/sysconfig/rc.site ]  && . /etc/sysconfig/rc.site
@@ -526,18 +526,18 @@ statusproc()
    base="${1##*/}"
 
    if [ -n "${pidlist}" ]; then
-      /bin/echo -e "${INFO}${base} is running with Process" \
+      $ECHOCMD -e "${INFO}${base} is running with Process" \
          "ID(s) ${pidlist}.${NORMAL}"
    else
       if [ -n "${base}" -a -e "/var/run/${base}.pid" ]; then
-         /bin/echo -e "${WARNING}${1} is not running but" \
+         $ECHOCMD -e "${WARNING}${1} is not running but" \
             "/var/run/${base}.pid exists.${NORMAL}"
       else
          if [ -n "${pidfile}" -a -e "${pidfile}" ]; then
-            /bin/echo -e "${WARNING}${1} is not running" \
+            $ECHOCMD -e "${WARNING}${1} is not running" \
                "but ${pidfile} exists.${NORMAL}"
          else
-            /bin/echo -e "${INFO}${1} is not running.${NORMAL}"
+            $ECHOCMD -e "${INFO}${1} is not running.${NORMAL}"
          fi
       fi
    fi
@@ -573,14 +573,14 @@ log_success_msg()
     if [ "$verbose"  == "no" ]; then 
       return 0
     fi
-    /bin/echo -n -e "${BMPREFIX}${@}"
-    /bin/echo -e "${CURS_ZERO}${SUCCESS_PREFIX}${SET_COL}${SUCCESS_SUFFIX}"
+    $ECHOCMD -n -e "${BMPREFIX}${@}"
+    $ECHOCMD -e "${CURS_ZERO}${SUCCESS_PREFIX}${SET_COL}${SUCCESS_SUFFIX}"
 
     # Strip non-printable characters from log file
     logmessage=`echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g'`
 
     timespec
-    /bin/echo -e "${STAMP} ${logmessage} OK" >> ${BOOTLOG}
+    $ECHOCMD -e "${STAMP} ${logmessage} OK" >> ${BOOTLOG}
     
     return 0
 }
@@ -590,8 +590,8 @@ log_success_msg2()
     if [ "$verbose"  == "no" ]; then 
       return 0
     fi
-    /bin/echo -n -e "${BMPREFIX}${@}"
-    /bin/echo -e "${CURS_ZERO}${SUCCESS_PREFIX}${SET_COL}${SUCCESS_SUFFIX}"
+    $ECHOCMD -n -e "${BMPREFIX}${@}"
+    $ECHOCMD -e "${CURS_ZERO}${SUCCESS_PREFIX}${SET_COL}${SUCCESS_SUFFIX}"
 
     echo " OK" >> ${BOOTLOG}
     
@@ -611,22 +611,22 @@ log_success_msg2()
 ################################################################################
 log_failure_msg()
 {
-    /bin/echo -n -e "${BMPREFIX}${@}"
-    /bin/echo -e "${CURS_ZERO}${FAILURE_PREFIX}${SET_COL}${FAILURE_SUFFIX}"
+    $ECHOCMD -n -e "${BMPREFIX}${@}"
+    $ECHOCMD -e "${CURS_ZERO}${FAILURE_PREFIX}${SET_COL}${FAILURE_SUFFIX}"
 
     # Strip non-printable characters from log file
 
     timespec
     logmessage=`echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g'`
-    /bin/echo -e "${STAMP} ${logmessage} FAIL" >> ${BOOTLOG}
+    $ECHOCMD -e "${STAMP} ${logmessage} FAIL" >> ${BOOTLOG}
     
     return 0
 }
 
 log_failure_msg2()
 {
-    /bin/echo -n -e "${BMPREFIX}${@}"
-    /bin/echo -e "${CURS_ZERO}${FAILURE_PREFIX}${SET_COL}${FAILURE_SUFFIX}"
+    $ECHOCMD -n -e "${BMPREFIX}${@}"
+    $ECHOCMD -e "${CURS_ZERO}${FAILURE_PREFIX}${SET_COL}${FAILURE_SUFFIX}"
 
     echo "FAIL" >> ${BOOTLOG}
     
@@ -644,13 +644,13 @@ log_failure_msg2()
 ################################################################################
 log_warning_msg()
 {
-    /bin/echo -n -e "${BMPREFIX}${@}"
-    /bin/echo -e "${CURS_ZERO}${WARNING_PREFIX}${SET_COL}${WARNING_SUFFIX}"
+    $ECHOCMD -n -e "${BMPREFIX}${@}"
+    $ECHOCMD -e "${CURS_ZERO}${WARNING_PREFIX}${SET_COL}${WARNING_SUFFIX}"
 
     # Strip non-printable characters from log file
     logmessage=`echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g'`
     timespec
-    /bin/echo -e "${STAMP} ${logmessage} WARN" >> ${BOOTLOG}
+    $ECHOCMD -e "${STAMP} ${logmessage} WARN" >> ${BOOTLOG}
     
     return 0
 }
@@ -669,12 +669,12 @@ log_info_msg()
     if [ "$verbose"  == "no" ]; then 
        return 0
     fi
-    /bin/echo -n -e "${BMPREFIX}${@}"
+    $ECHOCMD -n -e "${BMPREFIX}${@}"
 
     # Strip non-printable characters from log file
     logmessage=`echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g'`
     timespec
-    /bin/echo -n -e "${STAMP} ${logmessage}" >> ${BOOTLOG}
+    $ECHOCMD -n -e "${STAMP} ${logmessage}" >> ${BOOTLOG}
     
     return 0
 }
@@ -684,11 +684,11 @@ log_info_msg2()
     if [ "$verbose"  == "no" ] ; then 
        return 0
     fi
-    /bin/echo -n -e "${@}"
+    $ECHOCMD -n -e "${@}"
 
     # Strip non-printable characters from log file
     logmessage=`echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g'`
-    /bin/echo -n -e "${logmessage}" >> ${BOOTLOG}
+    $ECHOCMD -n -e "${logmessage}" >> ${BOOTLOG}
     
     return 0
 }

@@ -34,7 +34,7 @@ ROOTDIR=${DESTDIR}/root
 VARDIR=${DESTDIR}/var
 EXTDIR=${ETCDIR}
 
-VERSION = 12-beta4
+VERSION = 12-rc1
 
 NAME = nutyx-$(VERSION)
 
