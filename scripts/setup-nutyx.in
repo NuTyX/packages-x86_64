@@ -2251,7 +2251,7 @@ for i in ${SWAP_LIST}
 do
 	$SETUP_LOG "setup-nutyx" "swap partition $i added in /etc/fstab"
 	echo "$i swap     swap       pri=1             0     0" >> /etc/fstab
-	/sbin/mkswap $i 2>1 > /dev/null
+	mkswap $i 2>1 > /dev/null
 done
 }
 config_all() {

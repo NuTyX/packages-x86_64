@@ -24,7 +24,7 @@
 # Default Quota in percent for rootfs
 ROOTFS_QUOTA=50
 SETUP_INIT_FILE="/etc/rc.d/init.d/setup-nutyx"
-PATH="/bin:/usr/bin:/sbin:/usr/sbin"
+PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH
 
 problem()
@@ -227,7 +227,7 @@ find_media() {
 		[ "$verbose" == "no" ] || printf "Looking in %s for media\n" $SYS
 		if [ ! -d "$SYS" ]; then  continue; fi
 		DEV=/dev/${SYS##*/}
-		eval `/sbin/blkid $DEV|cut -d ":" -f2`
+		eval $(blkid $DEV|cut -d ":" -f2)
 		if [ ${LABEL} == ${EXPECT_LABEL} ]  2>/dev/null ; then
 			ln -sf $DEV /dev/nutyx-cd
 			mkdir  -p /media/cdrom 2>/dev/null

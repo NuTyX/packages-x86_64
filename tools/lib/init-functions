@@ -76,7 +76,10 @@ WARNING_SUFFIX="${BRACKET}[${WARNING} WARN ${BRACKET}]${NORMAL}"
 
 BOOTLOG=/run/bootlog
 KILLDELAY=0
-ECHOCMD="$(which echo)"
+ECHOCMD="echo"
+SYSLOGDCMD="/usr/sbin/syslogd"
+KLOGDCMD="/usr/sbin/klogd"
+SEDCMD="sed"
 
 # Set any user specified environment variables e.g. HEADLESS
 [ -r /etc/sysconfig/rc.site ]  && . /etc/sysconfig/rc.site
@@ -1352,7 +1355,7 @@ do_start_udev_retry()
 
   # Re-trigger the uevents that may have failed,
   # in hope they will succeed now
-  /bin/sed -e 's/#.*$//' /etc/sysconfig/udev_retry | /bin/grep -v '^$' | \
+  $SEDCMD -e 's/#.*$//' /etc/sysconfig/udev_retry | /bin/grep -v '^$' | \
   while read line ; do
     for subsystem in $line ; do
       /sbin/udevadm trigger --subsystem-match=$subsystem --action=add
@@ -1637,23 +1640,23 @@ do_start_sysklogd()
 {
 	log_info_msg "Starting system log daemon..."
 	parms=${SYSKLOGD_PARMS-'-m 0'}
-	start_daemon /sbin/syslogd $parms
+	start_daemon $SYSLOGDCMD $parms
 	evaluate_retval
 
 	log_info_msg "Starting kernel log daemon..."
-	start_daemon /sbin/klogd
+	start_daemon $KLOGDCMD
 	evaluate_retval
 }
 do_stop_sysklogd()
 {
 	log_info_msg "Stopping kernel log daemon..."
-	killproc /sbin/klogd
+	killproc $KLOGDCMD
 	evaluate_retval
 	mv /var/log/kern.log{,.old}
 	touch /var/log/kern.log
 
 	log_info_msg "Stopping system log daemon..."
-	killproc /sbin/syslogd
+	killproc $SYSLOGDCMD
 	evaluate_retval
 	mv /var/log/sys.log{,.old}
 	touch /var/log/sys.log
@@ -1672,8 +1675,8 @@ do_stop_sysklogd()
 }
 do_status_sysklogd()
 {
-	statusproc /sbin/syslogd
-	statusproc klogd
+	statusproc SYSLOGDCMD
+	statusproc KLOGDCMD
 }
 do_reload_syslogs()
 {
@@ -1739,7 +1742,7 @@ do_stop_sendsignals()
 print_file_system() {
 
   local PI FS
-  PI=`/sbin/blkid ${1}`
+  PI=$(blkid ${1})
   for param in $PI; do
     case $param in TYPE=*)
       FS=`echo ${param#TYPE=}|sed s/\"//g`;;

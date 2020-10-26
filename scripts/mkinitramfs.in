@@ -83,7 +83,7 @@ copy()
 ### Start Here
 
 printf "Creating $INITRAMFS_FILE... \n"
-BUSYBOX=`which busybox`
+BUSYBOX=$(which busybox)
 DATADIR=/lib/services
 INITIN=init.in
 
@@ -93,7 +93,7 @@ unsorted=$(mktemp /tmp/unsorted.XXXXXXXXXX)
 
 # Create base directory structure
 # mkdir -p $WDIR/{bin,dev,lib/firmware,run,sbin,sys,proc}
-mkdir -p $WDIR/{bin,dev,lib/{lsb,firmware,udev},run,sbin,sys,proc,tmp,etc,usr/{bin,lib,share}}
+mkdir -p $WDIR/{bin,dev,lib/{lsb,firmware,udev},run,sbin,sys,proc,tmp,etc,usr/{sbin,bin,lib,share}}
 mkdir -p $WDIR/etc/{sysconfig,modprobe.d,udev/{rules.d,hwdb.d}}
 touch $WDIR/etc/modprobe.d/modprobe.conf
 [ -d /lib64 ] && cp -a /lib64 $WDIR/lib64
@@ -117,7 +117,7 @@ Will try to make for ${KERNEL_VERSION}. If not,"
 else
 	KERNEL_VERSION=$1
 	if [ -z $BUSYBOX ]; then
-		sbinfiles="udevd udevadm ip"
+		sbinfiles="udevd udevadm"
 	else
 		sbinfiles="ip mdev"
 	fi
@@ -133,9 +133,9 @@ fi
 
 usrbinfiles="cut groups"
 binfiles="sh cat clear date grep cp dd hostname killall ls mkdir mknod more mount mountpoint chmod"
-binfiles="$binfiles umount stty sed sleep ln rm uname"
+binfiles="$binfiles umount stty sed sleep ln rm uname ip"
 
-sbinfiles="$sbinfiles blkid switch_root losetup"
+usrsbinfiles="blkid switch_root losetup"
 
 if [ ! -z $1 ]; then
 
@@ -280,8 +280,7 @@ install -m0755 $DATADIR/$INITIN $WDIR/init
 if [ -x /bin/kmod ] ; then
 	binfiles="$binfiles kmod"
 else
-	binfiles="$binfiles lsmod"
-	sbinfiles="$sbinfiles insmod"
+	binfiles="$binfiles lsmod insmod"
 fi
 
 # Install basic binaries
@@ -291,6 +290,15 @@ for f in $usrbinfiles; do
 		copy $f usr/bin
 	else
 		ln -s $BUSYBOX $WDIR/bin/$f
+	fi
+done
+# Install more binaries
+for f in $usrsbinfiles; do
+	if [ -z $BUSYBOX ]; then
+		ldd /usr/sbin/$f | sed "s/\t//" | cut -d " " -f1 >> $unsorted
+		copy $f usr/sbin
+	else
+		ln -s $BUSYBOX $WDIR/usr/sbin/$f
 	fi
 done
 
