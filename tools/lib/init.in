@@ -300,6 +300,44 @@ fi
     fi
   fi
 }
+do_start_live() {
+
+# get read of some services
+for i in do_stop_mountfs
+do
+	sed -i "/${i}/d" /etc/rc.d/init.d/init_single
+done
+touch /fastboot
+rm /init
+chmod 755 /
+chmod 755 /var
+cd /
+cat > "/usr/share/applications/setup-nutyx.desktop" << "EOF"
+[Desktop Entry]
+Version=1.0
+Name=Install NuTyX on your machine
+Comment=Install NuTyX on your machine
+GenericName=Setup NuTyX
+Exec=sudo /root/bin/setup-nutyx
+Terminal=true
+Icon=package-x-generic
+Categories=System;
+Type=Application
+StartupNotification=true
+EOF
+mkdir -p /root/bin
+cat > /root/bin/setup-nutyx << "EOF"
+#!/bin/sh
+#
+rm -f /etc/sysconfig/console
+/sbin/setup-nutyx
+EOF
+chmod 755 /root/bin/setup-nutyx
+[ "$verbose" == "no" ] || printf "exec \"%s\" \"%s\" > /dev/null 2>&1 ...\n" "$init" "$@"
+[ "$verbose" == "no" ] || sleep 5
+exec "$init" "$@" > /dev/null 2>&1
+
+}
 # **********
 # Begin here
 # **********
@@ -343,24 +381,18 @@ for param in $cmdline ; do
     toram        ) export toram="yes"                ;;
   esac
 done
+# Important here is to find out is this a initrd or an ISO/maintenance
+# [ -z $root ] && echo "This is an ISO/Maintenance else it is an initrd
+# live mode is only possible in ISO mode (or maintenance )
+# Sleep after load of the modules
 
+[ "$verbose" == "no" ] || printf "Loading kernel Modules ...\n"
+LoadModules
 if [ -n "$rootdelay" ]; then
 	[ "$verbose" == "no" ] || printf "Wait  %s second(s) ...\n" $rootdelay
 	sleep "$rootdelay"
 fi
-
-if [ -d /lib/modules ]; then
-	[ "$verbose" == "no" ] || printf "Start udev...\n"
-	[ -f /sbin/udevd ] && do_start_udev
-	[ -L /sbin/mdev ] && /sbin/mdev -s
-	[ "$verbose" == "no" ] || printf "Start lvm ...\n"
-	do_start_lvm
-fi
-
-if [ "$live" == "yes" ] || [ "$root" == "" ]; then
-	[ "$verbose" == "no" ] || printf "Loading kernel Modules ...\n"
-	[ "$verbose" == "no" ] || sleep 2
-	LoadModules
+if [ -z $root ]; then
 	if [ ! -f ${SETUP_INIT_FILE} ]; then
 		find_media
 		if [ ! -L /dev/nutyx-cd ]; then
@@ -385,54 +417,21 @@ if [ "$live" == "yes" ] || [ "$root" == "" ]; then
 		ls -lt ${SETUP_INIT_FILE}
 		sleep 5
 	fi
-fi
+	[ "$live" == "yes" ] && do_start_live
+	[ "$verbose" == "no" ] || printf "Start udev...\n"
+	do_start_udev
 
-if [ "$live" == "yes" ]; then
-	# get read of some services
-	for i in do_stop_mountfs
-	do
-		sed -i "/${i}/d" /etc/rc.d/init.d/init_single
-	done
-	touch /fastboot
-	rm /init
-	chmod 755 /
-	chmod 755 /var
-	cd /
-	cat > "/usr/share/applications/setup-nutyx.desktop" << "EOF"
-[Desktop Entry]
-Version=1.0
-Name=Install NuTyX on your machine
-Comment=Install NuTyX on your machine
-GenericName=Setup NuTyX
-Exec=sudo /root/bin/setup-nutyx
-Terminal=true
-Icon=package-x-generic
-Categories=System;
-Type=Application
-StartupNotification=true
-EOF
-	mkdir -p /root/bin
-	cat > /root/bin/setup-nutyx << "EOF"
-#!/bin/sh
-#
-rm -f /etc/sysconfig/console
-/sbin/setup-nutyx
-EOF
-	chmod 755 /root/bin/setup-nutyx
-	[ "$verbose" == "no" ] || printf "exec \"%s\" \"%s\" > /dev/null 2>&1 ...\n" "$init" "$@"
-	[ "$verbose" == "no" ] || sleep 5
-	exec "$init" "$@" > /dev/null 2>&1
-fi
-if [ "$root" == "" ]; then
 	[ "$verbose" == "no" ] || printf "Start sysklogd ...\n"
 	do_start_sysklogd
+
 	[ "$verbose" == "no" ]  && clear
 
 	MainLoop
 	root=`cat /root/boot`
 
 	[ "$verbose" == "no" ] || printf "Stop udev ...\n"
-	[ -f /sbin/udevd ] && do_stop_udev
+	do_stop_udev
+
 
 	[ "$verbose" == "no" ] || printf "Stop sysklogd ...\n"
 	do_stop_sysklogd
@@ -444,16 +443,20 @@ if [ "$root" == "" ]; then
 		[ "$verbose" == "no" ] || printf "umount /%s ...\n" $DIR
 		umount /$DIR > /dev/null 2>&1
 	done
-fi
 
-[ -n "$root" ] && LoadModules
+else
+	[ "$verbose" == "no" ] || printf "Start udev...\n"
+	do_start_udev
+	[ "$verbose" == "no" ] || printf "Start lvm ...\n"
+	do_start_lvm
+fi
 
 mkdir /.root
 do_mount_root
 
-if [ -d /lib/modules ] && [ -n "$rootdelay" ]; then
-	[ "$verbose" == "no" ] || printf "Stop udev ...\n"
-	do_stop_udev
+if [ ! -z $root ]; then
+  [ "$verbose" == "no" ] || printf "Stop udev ...\n"
+  do_stop_udev
 fi
 
 cd /.root

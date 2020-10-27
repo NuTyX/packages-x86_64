@@ -238,11 +238,11 @@ setup_user()
 	fi
 	local RESULT
 	USER_GROUPS=""
-	DEFAULT_GROUPS=(users disk network floppy fuse video lp lpadmin netdev tty audio cdrom scanner adm vboxusers wheel)
+	DEFAULT_GROUPS="users disk network floppy fuse video lp lpadmin netdev tty audio cdrom scanner adm vboxusers wheel"
 	# Avoid spaces troubles :)
 	OLD_IFS=$IFS
-	IFS="|
-"
+#	IFS="|
+#"
 	RESULT="user"
 	while [ "$RESULT" == "user" ];
 	do
@@ -275,7 +275,7 @@ setup_user()
 			setup_user
 		done
 	
-		for GROUP in ${DEFAULT_GROUPS[@]};
+		for GROUP in ${DEFAULT_GROUPS};
 		do
 			check_group_exist $GROUP
 			if [ $? -eq 0 ]; then
@@ -1020,7 +1020,7 @@ case ${REPLY} in
 	_msgfmt vi_VN
 	_zoneinfo ${ZONEINFO}Asia/Ho_Chi_Minh ${LOCALTIME};;
 esac
-. ${LOCALE}
+[ -f ${LOCALE} ] &&  . ${LOCALE}
 SETUP_CONFIG_LANGUAGE="no"
 }
 setup_keymap ()
@@ -1219,7 +1219,7 @@ SETUP_CONFIG_KEYBOARD="no"
 }
 
 setup_clock() {
-	local TABDATE
+	local TABDATE GOODDATE
 	HWCLOCK=`LANG=C.utf-8 hwclock -r`
 	dialog --title "   $(gettext "Coordinated Universal Time or Local Time ?")  " \
 	--yesno "$(gettext "The hardware clock is set to"):\n\n $HWCLOCK. \n\n$(gettext "Do you want to use this time as Coordinated Universal Time ?") \n\
@@ -1258,8 +1258,11 @@ LOCAL" >> $ADJTIME
 	exec 3>&-
 	case $code in
 		0)
-			TABDATE=(`echo $USERDATE|sed "s|/| |g"`)
-			GOODDATE="${TABDATE[2]}${TABDATE[1]}${TABDATE[0]} "
+			TABDATE=${USERDATE//\// }
+			for i in $TABDATE
+			do
+				GOODDATE=$i$GOODDATE
+			done
 			;;
 		1)
 			SETUP_CONFIG_CLOCK="no"
@@ -1272,15 +1275,15 @@ LOCAL" >> $ADJTIME
 	exec 3>&-
 	case $code in
 		0)
-			echo "$GOODDATE$USERTIME" > $TMP/date;;
+			echo "$GOODDATE $USERTIME" > $TMP/date;;
 		1)
 			break;;
 	esac
 
-	date -s "$GOODDATE$USERTIME"
+	date -s "$GOODDATE $USERTIME"
 
 	hwclock --systohc ${CLOCKPARAMS}
-	$SETUP_LOG "setup-nutyx --config-clock" "$(gettext "Date and time settings"): `date -s "$GOODDATE$USERTIME"`"
+	$SETUP_LOG "setup-nutyx --config-clock" "$(gettext "Date and time settings"): $(date -s "$GOODDATE $USERTIME")"
 
 	SETUP_CONFIG_CLOCK="no"
 }

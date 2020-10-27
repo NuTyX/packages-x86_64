@@ -19,20 +19,11 @@ do
 	cpio --make-directories -p --quiet $WDIR 2> /dev/null
 done
 
-if [ ! -z $1 ]; then
-	find \
-	/lib/modules/$KERNEL_VERSION/kernel/{crypto,fs,lib} \
-	/lib/modules/$KERNEL_VERSION/kernel/drivers/{scsi,message,pcmcia,virtio} \
-	/lib/modules/$KERNEL_VERSION/kernel/drivers/{md,ata,block,firewire}  \
-        /lib/modules/$KERNEL_VERSION/kernel/drivers/usb/{host,storage}  \
-	-type f 2> /dev/null | cpio --make-directories -p --quiet $WDIR 2> /dev/null
-
-	if [ "${2}" == "-nf" ] ||  [ "${2}" == "--no-firmwares" ];then
-		printf "No firmware copied, it's for an ISO.\n"
-	else
-		copyFirmwares
-	fi
-fi
+find /lib/modules/$KERNEL_VERSION/kernel/{crypto,fs,lib} \
+     /lib/modules/$KERNEL_VERSION/kernel/drivers/{scsi,message,pcmcia,virtio} \
+     /lib/modules/$KERNEL_VERSION/kernel/drivers/{md,ata,block,firewire}  \
+     /lib/modules/$KERNEL_VERSION/kernel/drivers/usb/{host,storage}  \
+     -type f 2> /dev/null | cpio --make-directories -p --quiet $WDIR 2> /dev/null
 
 cp /lib/modules/$KERNEL_VERSION/modules.{builtin,order,symbols} \
 $WDIR/lib/modules/$KERNEL_VERSION
@@ -116,28 +107,31 @@ Will try to make for ${KERNEL_VERSION}. If not,"
 	[ ! -d /lib/modules/${KERNEL_VERSION} ] && exit 1
 else
 	KERNEL_VERSION=$1
-	if [ -z $BUSYBOX ]; then
-		sbinfiles="udevd udevadm"
-	else
-		sbinfiles="ip mdev"
-	fi
 fi
 
-INITRAMFS_FILE=initrd-$1
+INITRAMFS_FILE=initrd-${KERNEL_VERSION}
 
 if [ -n "$KERNEL_VERSION" ] && [ ! -d "/lib/modules/$1" ] ; then
   echo "No /lib/modules/$1 directory"
   exit 1
 fi
 
+if [ "${2}" == "-nf" ] ||  [ "${2}" == "--no-firmwares" ];then
+	printf "No firmware copied, it's for an ISO.\n"
+else
+	copyFirmwares
+fi
+
 
 usrbinfiles="cut groups"
-binfiles="sh cat clear date grep cp dd hostname killall ls mkdir mknod more mount mountpoint chmod"
-binfiles="$binfiles umount stty sed sleep ln rm uname ip"
+binfiles="sh cat clear date grep cp dd hostname killall ls mkdir \
+mknod more mount mountpoint chmod \
+umount stty sed sleep ln rm uname ip"
 
 usrsbinfiles="blkid switch_root losetup"
-
-if [ ! -z $1 ]; then
+if [ -z $BUSYBOX ]; then
+		sbinfiles="udevd udevadm"
+fi
 
 ##  Optional files and locations
 #
@@ -190,38 +184,49 @@ if [ -x /sbin/lvm ]; then
 fi
 #
 # Add cryptsetup if present
-if [ -x /sbin/cryptsetup ]; then
+if [ -x /usr/sbin/cryptsetup ]; then
 	if [ -z $BUSYBOX ]; then
-		sbinfiles="$sbinfiles cryptsetup"
+		usrsbinfiles="$usrsbinfiles cryptsetup"
 	else
-		cp /sbin/cryptsetup $WDIR/sbin/cryptsetup
-		ldd /sbin/cryptsetup | sed "s/\t//" | cut -d " " -f1 >> $unsorted
+		cp /usr/sbin/cryptsetup $WDIR/usr/sbin/cryptsetup
+		ldd /usr/sbin/cryptsetup | sed "s/\t//" | cut -d " " -f1 >> $unsorted
 	fi
 	if [ -f /root/.crypto/keyfile.bin ]; then
 		mkdir -p $WDIR/root/.crypto
 		cp /root/.crypto/keyfile.bin $WDIR/root/.crypto
 	fi
 fi
-fi
-# Create necessary device nodes
-# mknod -m 640 $WDIR/dev/console c 5 1
-# mknod -m 664 $WDIR/dev/null    c 1 3
+
 
 # Install the init-functions
-[ -f /lib/lsb/init-functions ] && cp /lib/lsb/init-functions $WDIR/lib/lsb/init-functions
-# if [ -n "$KERNEL_VERSION" ];then
+if [ ! -f /lib/lsb/init-functions ]; then
+	echo "ERROR cannot find /lib/lsb/init-functions file !!!"
+	exit 1
+fi
+
+cp /lib/lsb/init-functions $WDIR/lib/lsb/init-functions
+
 cp /etc/group $WDIR/etc
 cp /etc/passwd $WDIR/etc
-# fi
+
 # echo and false are a bit wird
 if [ -z $BUSYBOX ];then
 	cp /bin/echo $WDIR/bin/echo
 	cp /bin/false $WDIR/bin/false
 else
 	cp $BUSYBOX $WDIR/$BUSYBOX
-	ln -s $BUSYBOX $WDIR/bin/echo
-	ln -s $BUSYBOX $WDIR/bin/false
-
+	for LINK in $($BUSYBOX  --list)
+	do
+		[ "$LINK" == "$(basename $BUSYBOX)" ] && continue
+		[ "$LINK" == "init" ] && continue
+		ln -s $BUSYBOX $WDIR/sbin/$LINK
+	done
+	if [ -d /etc/mdev.d ]; then
+		[ -f /etc/mdev.conf ] && \
+		cp /etc/mdev.conf $WDIR/etc
+		cp -a /etc/mdev.d $WDIR/etc/mdev.d
+	fi
+	ln -s $BUSYBOX $WDIR/bin/sh
 fi
 # terminal stuff
 mkdir -p $WDIR/usr/share/terminfo/l
@@ -229,16 +234,16 @@ cp /usr/share/terminfo/l/linux \
  $WDIR/usr/share/terminfo/l/
 
 # Install the udev configuration files if needed
-if [ ! -z $1 ]; then
-	if [ -z $BUSYBOX ];then
-		[ -f /etc/udev/udev.conf ] && cp /etc/udev/udev.conf $WDIR/etc/udev/udev.conf
-		for file in $(find /etc/udev/rules.d/ -type f) ; do
-			cp $file $WDIR/etc/udev/rules.d
-		done
-		for file in $(find /etc/udev/hwdb.d/ -type f) ; do
-			cp $file $WDIR/etc/udev/hwdb.d
-		done
-		cat > $WDIR/etc/udev/rules.d/55-lfs.rules << "EOF"
+
+if [ -z $BUSYBOX ];then
+	[ -f /etc/udev/udev.conf ] && cp /etc/udev/udev.conf $WDIR/etc/udev/udev.conf
+	for file in $(find /etc/udev/rules.d/ -type f) ; do
+		cp $file $WDIR/etc/udev/rules.d
+	done
+	for file in $(find /etc/udev/hwdb.d/ -type f) ; do
+		cp $file $WDIR/etc/udev/hwdb.d
+	done
+	cat > $WDIR/etc/udev/rules.d/55-lfs.rules << "EOF"
 # /etc/udev/rules.d/55-lfs.rules: Rule definitions for LFS.
 
 # Core kernel devices
@@ -254,14 +259,8 @@ KERNEL=="isdn[0-9]*",       GROUP="dialout"
 KERNEL=="isdnctrl[0-9]*",   GROUP="dialout"
 KERNEL=="dcbri[0-9]*",      GROUP="dialout"
 EOF
-	else
-		if [ -d /etc/mdev.d ]; then
-			[ -f /etc/mdev.conf ] && \
-			cp /etc/mdev.conf $WDIR/etc
-			cp -a /etc/mdev.d $WDIR/etc/mdev.d
-		fi
-	fi
 fi
+
 # Hostname
 if [ -f /etc/hostname ] ; then
 	cp /etc/hostname $WDIR/etc/hostname
@@ -271,16 +270,11 @@ fi
 # Clock setting
 [ -f /etc/sysconfig/clock ] && cp /etc/sysconfig/clock $WDIR/etc/sysconfig
 
-# Install any firmware present
-# cp -a /lib/firmware $WDIR/lib
-
 # Install the init file
 install -m0755 $DATADIR/$INITIN $WDIR/init
 
 if [ -x /bin/kmod ] ; then
 	binfiles="$binfiles kmod"
-else
-	binfiles="$binfiles lsmod insmod"
 fi
 
 # Install basic binaries
@@ -288,50 +282,32 @@ for f in $usrbinfiles; do
 	if [ -z $BUSYBOX ]; then
 		ldd /usr/bin/$f | sed "s/\t//" | cut -d " " -f1 >> $unsorted
 		copy $f usr/bin
-	else
-		ln -s $BUSYBOX $WDIR/bin/$f
 	fi
 done
 # Install more binaries
-for f in $usrsbinfiles; do
-	if [ -z $BUSYBOX ]; then
+if [ -z $BUSYBOX ]; then
+
+	for f in $usrsbinfiles; do
 		ldd /usr/sbin/$f | sed "s/\t//" | cut -d " " -f1 >> $unsorted
 		copy $f usr/sbin
-	else
-		ln -s $BUSYBOX $WDIR/usr/sbin/$f
-	fi
-done
+	done
 
-for f in $binfiles ; do
-	if [ -z $BUSYBOX ]; then
+	for f in $binfiles ; do
 		ldd /bin/$f | sed "s/\t//" | cut -d " " -f1 >> $unsorted
 		copy $f bin
-	else
-		ln -s $BUSYBOX $WDIR/bin/$f
-	fi
-done
+	done
 
-for f in $sbinfiles ; do
-	if [ -z $BUSYBOX ];then
+	for f in $sbinfiles ; do
 		ldd /sbin/$f | sed "s/\t//" | cut -d " " -f1 >> $unsorted
 		copy $f sbin
-	else
-		ln -s $BUSYBOX $WDIR/sbin/$f
-	fi
-done
+	done
 
-if [ -z $BUSYBOX ]; then
 	if [ -x /bin/kmod ] ; then
 		ln -s kmod $WDIR/bin/lsmod
-		ln -s ../bin/kmod $WDIR/sbin/insmod
-		ln -s ../bin/kmod $WDIR/sbin/modprobe
-		ln -s ../bin/kmod $WDIR/sbin/depmod
+		ln -s kmod $WDIR/bin/insmod
+		ln -s kmod $WDIR/bin/modprobe
+		ln -s kmod $WDIR/bin/depmod
 	fi
-else
-	ln -s $BUSYBOX $WDIR/sbin/insmod
-	ln -s $BUSYBOX $WDIR/sbin/modprobe
-	ln -s $BUSYBOX $WDIR/sbin/depmod
-	ln -s $BUSYBOX $WDIR/bin/lsmod
 fi
 
 
@@ -345,19 +321,15 @@ sort $unsorted | uniq | while read library ; do
   copy $library lib
 done
 if [ -z $BUSYBOX ]; then
-	if [ ! -z $1 ]; then
-		cp -a /lib/udev $WDIR/lib
+	cp -a /lib/udev $WDIR/lib
 
 	# The Hardware clock setting maybe could be faster done
-		cat > $WDIR/lib/udev/do_start_clock << "EOF"
+	cat > $WDIR/lib/udev/do_start_clock << "EOF"
 #!/bin/sh -e
 . /lib/lsb/init-functions
 do_start_clock
 EOF
-		chmod 755 $WDIR/lib/udev/do_start_clock
-	fi
-else
-	rm -r $WDIR/{usr,lib64,{lib,etc}/udev}
+	chmod 755 $WDIR/lib/udev/do_start_clock
 fi
 
 ###  Install requested $KERNEL_VERSION kernel modules
@@ -378,4 +350,3 @@ if [ -d /ISO ];then
 fi
 
 printf "done.\n"
-
