@@ -7,6 +7,7 @@ PKGMK_GROUPS=(devel doc man)
 
 name=kmod
 version=27
+release=2
 
 source=(http://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-$version.tar.xz )
 
@@ -22,11 +23,9 @@ cd $name-$version
 
 make
 make DESTDIR=$PKG install
-mkdir $PKG/sbin
-for target in depmod insmod modinfo modprobe rmmod; do
-  ln -sv ../bin/kmod $PKG/sbin/$target
+for target in depmod insmod modinfo modprobe rmmod lsmod; do
+  ln -sv kmod $PKG/bin/$target
 done
-ln -sv kmod $PKG/bin/lsmod
 }
 devel()
 {
