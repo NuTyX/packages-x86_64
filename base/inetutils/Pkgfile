@@ -6,7 +6,7 @@ contributors="Pierre B"
 
 name=inetutils
 version=1.9.4
-release=2
+release=3
 
 source=(http://ftp.gnu.org/gnu/inetutils/inetutils-$version.tar.xz)
 
@@ -29,6 +29,5 @@ make check || true
 make DESTDIR=$PKG install
 
 mkdir $PKG/{s,}bin
-mv -v $PKG/usr/bin/{hostname,ping,ping6,traceroute} $PKG/bin
-mv -v $PKG/usr/bin/ifconfig $PKG/sbin
+mv -v $PKG/usr/bin/{hostname,ifconfig,ping,ping6,traceroute} $PKG/bin
 }
