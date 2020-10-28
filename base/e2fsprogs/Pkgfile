@@ -7,6 +7,7 @@ PKGMK_GROUPS=(devel man doc)
 
 name=e2fsprogs
 version=1.45.6
+release=2
 
 source=(http://prdownloads.sourceforge.net/$name/$name-$version.tar.gz)
 
@@ -18,11 +19,12 @@ mkdir -v build
 cd build
 ../configure --prefix=/usr \
 --with-root-prefix="" \
---bindir=/bin \
+--bindir=/usr/bin   \
+--sbindir=/usr/sbin \
 --enable-elf-shlibs \
---disable-libblkid \
---disable-libuuid \
---disable-uuidd \
+--disable-libblkid  \
+--disable-libuuid   \
+--disable-uuidd     \
 --disable-fsck
 
 make || make -j1
