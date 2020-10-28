@@ -5,26 +5,31 @@ contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
 name=sysvinit
-version=2.94
+version=2.97
 
 source=(http://download.savannah.nongnu.org/releases/sysvinit/sysvinit-$version.tar.xz
-	http://www.linuxfromscratch.org/patches/lfs/development/$name-$version-consolidated-4.patch)
+	$name-consolidated-1.patch)
 
 build()
 {
 cd $name-$version
-patch -Np1 -i ../$name-$version-consolidated-4.patch
+patch -Np1 -i ../$name-consolidated-1.patch
 
 make -C src
 
-mkdir -pv $PKG/{sbin,bin,usr/{bin,include,share/man/man{1,5,8}}}
+mkdir -pv $PKG/{sbin,bin,usr/{sbin,include,share/man/man{1,5,8}}}
 
 make -C src  ROOT=$PKG install
 
-rm -rv $PKG/usr/bin
+rm -r $PKG/usr/bin
+for FILE in halt killall5 poweroff reboot
+do
+ mv $PKG/sbin/$FILE $PKG/usr/sbin/$FILE
+done
+
 rm -rv $PKG/usr/share/man/man1
 
-mkdir $PKG/etc
+[ -f $PKG/etc/inittab ] && echo "inittab already present"
 
 cat > $PKG/etc/inittab << "EOF"
 # Begin /etc/inittab
