@@ -4,7 +4,7 @@ contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
 name=procps-ng
-version=3.3.15
+version=3.3.16
 
 source=(http://downloads.sourceforge.net/project/$name/Production/$name-$version.tar.xz )
 
@@ -13,8 +13,8 @@ build()
 cd $name-$version
 
 ./configure --prefix=/usr \
---exec-prefix= \
---libdir=/usr/lib \
+--exec-prefix= --sbindir=/usr/sbin \
+--libdir=/usr/lib --bindir=/usr/bin \
 --docdir=/usr/share/doc/procps-ng-$version \
 --disable-static \
 --disable-kill
