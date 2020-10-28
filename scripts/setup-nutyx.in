@@ -523,10 +523,10 @@ else
 	$(gettext "it is normally the address of your router access point"): " 10 60 ${GW} 2> $TMP/DNS
 	DNS=$(tail -n 1 $TMP/DNS)
 
-	/sbin/ifconfig ${NETWORK_CARD} ${IP} broadcast ${BROADCAST} netmask ${PREFIX}
+	ifconfig ${NETWORK_CARD} ${IP} broadcast ${BROADCAST} netmask ${PREFIX}
 
 	if [ -n ${GW} ]; then
-		/sbin/ip route add default via ${GW}
+		ip route add default via ${GW}
 	fi
 	cat > /etc/sysconfig/ifconfig.${NETWORK_CARD} << "EOF"
 ONBOOT=yes
