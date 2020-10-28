@@ -7,7 +7,7 @@ makedepends=(git musl)
 
 name=busybox
 version=1.31.1
-release=3
+release=4
 
 source=($name.config
 	https://busybox.net/downloads/busybox-$version.tar.bz2)
@@ -34,7 +34,7 @@ for link in $($PKG/sbin/$name --list)
 do
   found=no
   for i in $name bash sh ifup ifdown init halt reboot \
-  shutdown chpst runit runsv sv runsvdir svlogd
+  shutdown poweroff chpst runit runsv sv runsvdir svlogd
   do
    [ "$link" == "$i" ] && found=yes
   done
