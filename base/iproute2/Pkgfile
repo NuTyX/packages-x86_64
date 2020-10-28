@@ -8,6 +8,7 @@ makedepends=(libcap)
 
 name=iproute2
 version=5.9.0
+release=2
 
 PKGMK_GROUPS=(devel man doc)
 
@@ -23,8 +24,8 @@ sed -i 's/arpd.8//' man/man8/Makefile
 sed -i 's/m_ipt.o//' tc/Makefile
 
 make MANDIR=/usr/share/man INFODIR=/usr/share/info \
-	DESTDIR=$PKG 
-make MANDIR=/usr/share/man \
+	SBINDIR=/bin DESTDIR=$PKG
+make MANDIR=/usr/share/man SBINDIR=/bin \
 	INFODIR=/usr/share/info DESTDIR=$PKG \
      DOCDIR=/usr/share/doc/iproute2-$version install
 }
