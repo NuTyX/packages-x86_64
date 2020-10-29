@@ -1,4 +1,1 @@
-cat >> /etc/shells << EOF
-/bin/dash
-EOF
-
+grep -q bin/dash etc/shells || echo "/bin/dash" >> etc/shells

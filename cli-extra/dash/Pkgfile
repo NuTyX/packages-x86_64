@@ -1,11 +1,11 @@
 description="Dash is a POSIX compliant shell"
 url="http://gondor.apana.org.au/~herbert/dash/"
 
-contributors="tnut, greg"
-packager="spiky <spiky@nutyx.org>"
+contributors="tnut, greg, spiky"
+packager="tnut <tnut@nutyx.org>"
 
 name=dash
-version=0.5.11.1
+version=0.5.11.2
 
 source=(http://gondor.apana.org.au/~herbert/dash/files/dash-$version.tar.gz)
 
@@ -14,8 +14,7 @@ build(){
 
 	cd $name-$version
 	./configure \
-		--prefix=/usr \
-		--bindir=/usr/bin \
+		--bindir=/bin \
 		--mandir=/usr/share/man \
 		--exec-prefix="" \
 		--with-libedit
