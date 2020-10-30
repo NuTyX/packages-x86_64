@@ -1,4 +1,3 @@
-#!/bin/bash
 # This file based in part on the mkinitrafms script for the LFS LiveCD
 # written by Alexander E. Patrakov and Jeremy Huntwork.
 # adapted by Thierry Nuttens for NuTyX
@@ -25,10 +24,15 @@ find /lib/modules/$KERNEL_VERSION/kernel/{crypto,fs,lib} \
      /lib/modules/$KERNEL_VERSION/kernel/drivers/usb/{host,storage}  \
      -type f 2> /dev/null | cpio --make-directories -p --quiet $WDIR 2> /dev/null
 
-cp /lib/modules/$KERNEL_VERSION/modules.{builtin,order,symbols} \
-$WDIR/lib/modules/$KERNEL_VERSION
-
-depmod -b $WDIR $KERNEL_VERSION
+mkdir -p $WDIR/lib/modules/$KERNEL_VERSION
+for i in builtin order symbols
+do
+   cp /lib/modules/$KERNEL_VERSION/modules.$i \
+   $WDIR/lib/modules/$KERNEL_VERSION
+done
+cd $WDIR
+depmod $KERNEL_VERSION
+cd -
 }
 
 copyFirmwares()
@@ -73,7 +77,6 @@ copy()
 ##
 ### Start Here
 
-printf "Creating $INITRAMFS_FILE... \n"
 BUSYBOX=$(which busybox)
 DATADIR=/lib/services
 INITIN=init.in
@@ -83,9 +86,26 @@ WDIR=$(mktemp -d /tmp/initrd-work.XXXXXXXXXX)
 unsorted=$(mktemp /tmp/unsorted.XXXXXXXXXX)
 
 # Create base directory structure
-# mkdir -p $WDIR/{bin,dev,lib/firmware,run,sbin,sys,proc}
-mkdir -p $WDIR/{bin,dev,lib/{lsb,firmware,udev},run,sbin,sys,proc,tmp,etc,usr/{sbin,bin,lib,share}}
-mkdir -p $WDIR/etc/{sysconfig,modprobe.d,udev/{rules.d,hwdb.d}}
+for DIR in bin dev lib run sbin sys proc tmp etc usr
+do
+   mkdir -p $WDIR/$DIR
+done
+for DIR in lsb firmware udev
+do
+   mkdir -p $WDIR/lib/$DIR
+done
+for DIR in bin sbin lib share
+do
+   mkdir -p $WDIR/usr/$DIR
+done
+for DIR in sysconfig modprobe.d udev
+do
+   mkdir -p $WDIR/etc/$DIR
+done
+for DIR in rules.d hwdb.d
+do
+   mkdir -p $WDIR/etc/udev/$DIR
+done
 touch $WDIR/etc/modprobe.d/modprobe.conf
 [ -d /lib64 ] && cp -a /lib64 $WDIR/lib64
 
@@ -111,6 +131,8 @@ fi
 
 INITRAMFS_FILE=initrd-${KERNEL_VERSION}
 
+printf "Creating $INITRAMFS_FILE... \n"
+
 if [ -n "$KERNEL_VERSION" ] && [ ! -d "/lib/modules/$1" ] ; then
   echo "No /lib/modules/$1 directory"
   exit 1
@@ -133,7 +155,15 @@ if [ -z $BUSYBOX ]; then
 		sbinfiles="udevd udevadm"
 fi
 
-##  Optional files and locations
+##  Optional files and locations need bash
+##   so that ldd can find librairies
+if [ -x /sbin/lvm ] || [ -x /usr/sbin/cryptsetup ] || [ -x /sbin/mdadm ]; then
+	if ! [ -x /bin/bash ]; then
+		echo "bash needs to be installed !!!"
+		exit 1
+	fi
+
+fi
 #
 # Add mdadm if present
 if [ -x /sbin/mdadm ];then
@@ -141,13 +171,12 @@ if [ -x /sbin/mdadm ];then
 		sbinfiles="$sbinfiles mdadm"
 	else
 		cp /sbin/mdadm $WDIR/sbin/mdadm
-		ldd /sbin/mdadm | sed "s/\t//" | cut -d " " -f1 >> $unsorted
+		/bin/bash ldd /sbin/mdadm | sed "s/\t//" | cut -d " " -f1 >> $unsorted
 	fi
-fi
 #
 # Copy the RAID configuration file if present
-[ -f /etc/mdadm.conf ] && cp /etc/mdadm.conf $WDIR/etc
-
+   [ -f /etc/mdadm.conf ] && cp /etc/mdadm.conf $WDIR/etc
+fi
 #
 # Add lvm if present
 if [ -x /sbin/lvm ]; then
@@ -157,7 +186,7 @@ if [ -x /sbin/lvm ]; then
 		for I in lvm dmsetup
 		do
 			cp /sbin/$I $WDIR/sbin/$I
-			ldd /sbin/$I | sed "s/\t//" | cut -d " " -f1 >> $unsorted
+			/bin/bash ldd /sbin/$I | sed "s/\t//" | cut -d " " -f1 >> $unsorted
 		done
 	fi
 	ln -s lvm $WDIR/sbin/lvchange
@@ -189,7 +218,7 @@ if [ -x /usr/sbin/cryptsetup ]; then
 		usrsbinfiles="$usrsbinfiles cryptsetup"
 	else
 		cp /usr/sbin/cryptsetup $WDIR/usr/sbin/cryptsetup
-		ldd /usr/sbin/cryptsetup | sed "s/\t//" | cut -d " " -f1 >> $unsorted
+		/bin/bash ldd /usr/sbin/cryptsetup | sed "s/\t//" | cut -d " " -f1 >> $unsorted
 	fi
 	if [ -f /root/.crypto/keyfile.bin ]; then
 		mkdir -p $WDIR/root/.crypto
