@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 5.9.0-rc7 Kernel Configuration
+# Linux/x86 5.9.2 Kernel Configuration
 #
 CONFIG_CC_VERSION_TEXT="gcc (GCC) 10.2.0"
 CONFIG_CC_IS_GCC=y
@@ -2258,7 +2258,8 @@ CONFIG_RAPIDIO_RXS_GEN3=m
 #
 # Generic Driver Options
 #
-# CONFIG_UEVENT_HELPER is not set
+CONFIG_UEVENT_HELPER=y
+CONFIG_UEVENT_HELPER_PATH="/sbin/mdev"
 CONFIG_DEVTMPFS=y
 # CONFIG_DEVTMPFS_MOUNT is not set
 CONFIG_STANDALONE=y
@@ -10335,6 +10336,7 @@ CONFIG_TEST_OBJAGG=m
 # CONFIG_TEST_STACKINIT is not set
 # CONFIG_TEST_MEMINIT is not set
 # CONFIG_TEST_HMM is not set
+CONFIG_TEST_FREE_PAGES=m
 # CONFIG_TEST_FPU is not set
 # CONFIG_MEMTEST is not set
 # CONFIG_HYPERV_TESTING is not set
