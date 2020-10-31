@@ -6,11 +6,8 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(meson ninja gtk3 libglade gobject-introspection vala)
 
 name=libhandy
-version=0.0.13
+version=1.0.1
 
-source=(https://source.puri.sm/Librem5/libhandy/-/archive/v$version/$name-v$version.tar.bz2)
+source=(https://ftp.gnome.org/pub/gnome/sources/libhandy/${version:0:3}/libhandy-$version.tar.xz)
 
-prepare() {
-mv $name-v$version $name-$version
-}
 build=meson
