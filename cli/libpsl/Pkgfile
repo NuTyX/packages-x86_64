@@ -6,9 +6,9 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(python2 libidn libunistring)
 
 name=libpsl
-version=0.21.0
+version=0.21.1
 
-source=(https://github.com/rockdaboot/libpsl/releases/download/$name-$version/$name-$version.tar.gz)
+source=(https://github.com/rockdaboot/libpsl/releases/download/$version/$name-$version.tar.gz)
 build() {
 cd $name-$version
 ./configure --prefix=/usr --disable-static
