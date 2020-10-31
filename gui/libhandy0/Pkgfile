@@ -1,0 +1,16 @@
+description="Library full of GTK+ widgets for mobile phones"
+url="A library full of GTK+ widgets for mobile phones"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(meson ninja gtk3 libglade gobject-introspection vala)
+
+name=libhandy0
+version=0.0.13
+
+source=(https://source.puri.sm/Librem5/libhandy/-/archive/v$version/libhandy-v$version.tar.bz2)
+
+prepare() {
+mv libhandy-v$version $name-$version
+}
+build=meson
