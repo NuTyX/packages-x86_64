@@ -3,18 +3,23 @@ url="http://lxde.org/"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(gtk3 libfm)
+makedepends=(gtk3 libfm libunistring)
 set=(lxde)
 
 name=lxhotkey
 version=0.1.0
+release=2
 
 source=(https://downloads.sourceforge.net/lxde/${name}-$version.tar.xz)
 
+prepare() {
+cd $name-$version
+./autogen.sh
+}
 build() {
 
 cd $name-$version
-./configure --sysconfdir=/etc --prefix=/usr --enable-gtk3  
+./configure --sysconfdir=/etc --prefix=/usr --with-gtk=3  
 make
 make DESTDIR=$PKG install
 }
