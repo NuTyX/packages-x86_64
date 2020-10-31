@@ -11,16 +11,8 @@ makedepends=(geoclue2 geocode-glib libgweather librsvg meson
 run=(gtk-update-icon-cache gsettings-desktop-schemas)
 
 name=gnome-settings-daemon
-version=3.36.1
+version=3.38.1
 
 source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
-build() {
-cd $name-$version
-mkdir build
-cd    build
-meson --prefix=/usr --sysconfdir=/etc \
--Dsystemd=false ..
-ninja
-DESTDIR=$PKG ninja install
-}
+build=meson
