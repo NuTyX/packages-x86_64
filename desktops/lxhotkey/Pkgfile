@@ -1,0 +1,20 @@
+description='Keyboard shortcuts configurator'
+url="http://lxde.org/"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(gtk3 libfm)
+set=(lxde)
+
+name=lxhotkey
+version=0.1.0
+
+source=(https://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz)
+
+build() {
+
+cd $name-$version
+./configure --sysconfdir=/etc --prefix=/usr --enable-gtk3  
+make
+make DESTDIR=$PKG install
+}
