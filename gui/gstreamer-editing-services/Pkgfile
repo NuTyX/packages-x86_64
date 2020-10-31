@@ -8,13 +8,12 @@ makedepends=(bash-completion gobject-introspection gtk-doc python-gobject
              gstreamer-plugins-base gstreamer-plugins-bad)
 
 name=gstreamer-editing-services
-version=1.16.2
-release=2
+version=1.18.1
 
-source=(https://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
+source=(https://gstreamer.freedesktop.org/src/gst-editing-services/gst-editing-services-$version.tar.xz)
 
 build() {
-cd $name-$version
+cd gst-editing-services-$version
 mkdir build
 cd    build
 meson --prefix=/usr \
