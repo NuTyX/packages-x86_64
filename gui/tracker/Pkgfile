@@ -5,13 +5,21 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Jayce"
 
 makedepends=(meson ninja json-glib icu networkmanager python
-             sqlite upower libsoup vala gtk-doc libseccomp)
+             sqlite upower libsoup vala gtk-doc libseccomp asciidoc)
 run=(desktop-file-utils gtk-update-icon-cache)
 
 name=tracker
-version=2.3.4
-release=2
+version=3.0.1
 
 source=(https://download.gnome.org/sources/$name/${version:0:3}/$name-$version.tar.xz)
 
-build=meson
+build() {
+    mkdir build
+    cd    build
+    meson --prefix=/usr \
+    -Ddocs=false        \
+    ../$name-$version
+    ninja
+    DESTDIR=$PKG ninja install
+
+}
