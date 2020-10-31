@@ -1,0 +1,26 @@
+description='Qt bindings for pulseaudio'
+url="https://www.kde.org/"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=pulseaudio-qt
+version=1.2
+
+makedepends=(qtbase pulseaudio extra-cmake-modules doxygen qttools qtdoc)
+
+
+source=(https://download.kde.org/stable/$name/${name}-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
