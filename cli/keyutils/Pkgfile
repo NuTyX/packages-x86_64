@@ -1,15 +1,17 @@
 description="Keyutils is a set of utilities for managing the key retention facility in the kernel."
 url=" https://rhn.redhat.com/errata/RHEA-2006-0090.html"
+
 packager="tnut <tnut@nutryx.org>"
 contributors="Pierre B"
 
 name=keyutils
-version=1.6
+version=1.6.1
 
 source=( http://people.redhat.com/~dhowells/$name/$name-$version.tar.bz2 )
 
 build() {
         cd $name-$version
+	sed -i 's:$(LIBDIR)/$(PKGCONFIG_DIR):/usr/lib/pkgconfig:' Makefile
         make
         make NO_ARLIB=1 DESTDIR=$PKG install
 }
