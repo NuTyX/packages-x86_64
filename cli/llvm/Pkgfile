@@ -5,10 +5,10 @@ url="https://llvm.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Remy"
 
-makedepends=(python2 cmake ninja)
+makedepends=(python cmake ninja)
 
 name=llvm
-version=10.0.0
+version=11.0.0
 
 PKGMK_GROUPS=(lib man devel doc)
 _url="https://github.com/llvm/llvm-project/releases/download/llvmorg-$version"
@@ -23,6 +23,8 @@ cd $name-$version.src
 
 mv ../compiler-rt-${version}.src projects/compiler-rt
 mv ../clang-$version.src tools/clang
+
+grep -rl '#!.*python' | xargs sed -i '1s/python$/python3/'
 
 mkdir build
 cd    build
