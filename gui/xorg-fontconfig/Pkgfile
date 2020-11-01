@@ -5,14 +5,18 @@ contributors="Pierre B, Greg"
 
 name=xorg-fontconfig
 _name=fontconfig
-version=2.13.0
+version=2.13.1
+
 makedepends=(freetype expat libpng)
+
 source=( https://www.freedesktop.org/software/$_name/release/$_name-$version.tar.gz)
 
 
 build() {
 
 cd ${_name}-$version
+
+rm -f src/fcobjshash.h
 
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
