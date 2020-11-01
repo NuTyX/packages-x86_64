@@ -7,14 +7,14 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(git cmake python python2-setuptools)
 
 name=brotli
-version=1.0.7
-release=3
+version=1.0.9
 
 PKGMK_KEEP_SOURCES="no"
 
 source=(https://github.com/google/brotli/archive/v$version.tar.gz)
 
 prepare() {
+sed -i 's@-R..libdir.@@' sbrotli-$version/cripts/*.pc.in
 cp -a brotli-$version{,-py2}
 }
 
