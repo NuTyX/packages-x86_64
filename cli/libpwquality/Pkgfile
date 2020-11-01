@@ -4,19 +4,20 @@ url="https://fedorahosted.org/libpwquality/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(python2 cracklib)
+makedepends=(python cracklib)
 
 name=libpwquality
-version=1.4.1
+version=1.4.4
 
 source=(https://github.com/$name/$name/releases/download/$name-$version/$name-$version.tar.bz2)
 
 build() {
 cd $name-$version
-PYTHON=python2 ./configure --prefix=/usr \
-        --sysconfdir=/etc                \
-        --localstatedir=/var             \
-        --with-python-rev=2.7
+./configure --prefix=/usr      \
+--sysconfdir=/etc              \
+--localstatedir=/var           \
+--with-securedir=/lib/security \
+--with-python-binary=python3
 make
 make DESTDIR=$PKG install
 # Obsolets libs
