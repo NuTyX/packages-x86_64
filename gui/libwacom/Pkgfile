@@ -4,16 +4,19 @@ url="http://linuxwacom.sourceforge.net/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(glib libgudev)
+makedepends=(meson ninja glib libgudev)
 
 name=libwacom
-version=0.33
+version=1.5
 
 source=(https://github.com/linuxwacom/libwacom/releases/download/${name}-${version}/${name}-${version}.tar.bz2)
 
-build=autotools
-
-package() {
-# Obsolet libs
-rm $PKG/usr/lib/libwacom.la
+build() {
+mkdir build
+cd    build
+meson --prefix=/usr \
+-Dudev-dir=/lib/udev \
+../$name-$version
+ninja
+DESTDIR=$PKG ninja install
 }
