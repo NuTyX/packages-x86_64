@@ -4,16 +4,15 @@ url="http://boost.sourceforge.net/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Rems"
 
-makedepends=(icu python python2)
+makedepends=(icu python)
 
 name=boost
-version=1.73.0
+version=1.74.0
 
 source=(http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-gcc_10-1.patch
         https://dl.bintray.com/boostorg/release/$version/source/${name}_${version//./_}.tar.bz2)
 
 build() {
-cd ${name}_${version//./_}
 
 patch -Np1 -i ../boost-1.73.0-gcc_10-1.patch
 
