@@ -7,12 +7,12 @@ contributors="Pierre B"
 makedepends=(libassuan)
 
 name=gpgme
-version=1.13.1
+version=1.14.0
 
 source=(https://www.gnupg.org/ftp/gcrypt/$name/$name-$version.tar.bz2)
 build() {
 cd $name-$version
-sed 's#@libsuffix@#.so#' -i lang/cpp/src/GpgmeppConfig.cmake.in.in
+
 ./configure --prefix=/usr \
 --disable-gpg-test
 make
