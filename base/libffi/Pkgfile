@@ -6,6 +6,7 @@ contributors="Pierre B"
 
 name=libffi
 version=3.3
+release=2
 
 source=( ftp://sourceware.org/pub/$name/$name-$version.tar.gz )
 
@@ -13,8 +14,12 @@ build() {
 cd $name-$version
 
 ./configure --prefix=/usr \
-            --disable-static
+--disable-static \
+--with-gcc-arch=native
 make
 make check || true
 make DESTDIR=$PKG install
+}
+package() {
+rm $PKG/usr/lib/libffi.la
 }
