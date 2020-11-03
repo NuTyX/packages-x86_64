@@ -1,0 +1,10 @@
+diff --git a/scripts/cards.in b/scripts/cards.in
+index 87c769f..1ac3647 100644
+--- a/scripts/cards.in
++++ b/scripts/cards.in
+@@ -28,4 +28,4 @@ match_Pkgfile() {
+ match_Anything() {
+ 	find . -name Pkgfile -exec grep -l $1 {} +
+ }
+-export -f commit match_Pkgfile match_Anything
++[ "$SHELL" == "/bin/bash" ] && export -f commit match_Pkgfile match_Anything
