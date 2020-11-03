@@ -5,10 +5,14 @@ packager="tnut <tnut@nutyx.org>"
 run=(python)
 
 name=python-idna
-version=2.8
+version=2.10
 release=4
 
 _name=idna
-source=(https://pypi.io/packages/source/i/idna/idna-$version.tar.gz)
+
+source=(https://github.com/kjd/idna/archive/v$version.tar.gz)
+
+
+cd idna-$version
 
 build=python3
