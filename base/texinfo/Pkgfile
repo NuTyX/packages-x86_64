@@ -3,16 +3,18 @@ url="http://www.gnu.org/software/texinfo"
 maintainer="Karl Berry"
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(perl)
+
 name=texinfo
 version=6.7
+release=2
 
 source=(http://ftp.gnu.org/gnu/$name/texinfo-$version.tar.xz)
 
 build()
 {
 cd texinfo-*
-./configure --prefix=/usr \
-            --disable-static
+./configure --prefix=/usr
 make
 make install DESTDIR=$PKG
 }
