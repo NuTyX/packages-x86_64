@@ -7,6 +7,8 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(sqlite expat libffi)
 alias=(python3 Python)
 
+set=(devel)
+
 name=python
 version=3.9.0
 
@@ -18,14 +20,14 @@ PKGMK_GROUPS=(devel man doc)
 PKGMK_IGNORE_UNPACK="yes"
 
 build() {
-tar -xvf Python-$version.tar.xz
+bsdtar -xvf Python-$version.tar.xz
 	cd Python-$version
 	CXX="/usr/bin/g++" \
 	./configure --prefix=/usr \
                 --enable-shared \
                 --with-system-expat \
                 --with-system-ffi \
-         		--with-ensurepip=yes
+		--with-ensurepip=yes
 	make
 # Remove the tkinter stuff
 rm Lib/test/test_tk.py
