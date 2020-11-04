@@ -1,16 +1,22 @@
 description="For producing shell scripts that can automatically configure source code."
 url="http://www.gnu.org/software/autoconf/"
+
 maintainer="David MacKenzie,François Pinard,Karl Berry,Richard Pixley,Ian Lance Taylor,Roland McGrath,Noah Friedman,David d zuhn, and many others."
+
 packager="tnut <tnut@nutyx.org>"
+makedepends=(m4 perl)
+set=(devel)
 
 name=autoconf
 version=2.69
+release=2
 
-source=(http://ftp.gnu.org/gnu/autoconf/autoconf-$version.tar.xz)
+source=(autoconf-2.69-consolidated_fixes-1.patch
+	http://ftp.gnu.org/gnu/autoconf/autoconf-$version.tar.xz)
 
 build () {
 cd $name-$version
-sed '361 s/{/\\{/' -i bin/autoscan.in
+patch -Np1 -i ../autoconf-2.69-consolidated_fixes-1.patch
 ./configure --prefix=/usr
 make
 make check || true

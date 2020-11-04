@@ -129,6 +129,10 @@ mount -t tmpfs tmpfs ${FOLDER}/run
 if [ -h ${FOLDER}/dev/shm ]; then
    mkdir -p ${FOLDER}/$(readlink ${FOLDER}/dev/shm)
 fi
+if [ ! -L ${FOLDER}/bin/sh ];then
+  ln -sv ../sbin/busybox ${FOLDER}/bin/bash
+  ln -sv bash ${FOLDER}/bin/sh
+fi
 }
 enter_chroot() {
 echo "
@@ -1103,9 +1107,8 @@ check_root() {
 }
 check_variables() {
 if [ -z "$CHROOT_LIST" ]; then
-	CHROOT_LIST="nutyx acl attr bash bzip2 coreutils curl \
-expat gcc readline ncurses lzo glibc gmp xz zlib \
-libarchive mpc mpfr openssl cards"
+	CHROOT_LIST="nutyx busybox curl gcc glibc
+zlib libarchive openssl cards"
    [ "$ARCH" = "i686" -a "$HOST_ARCH" = "x86_64" ] && \
 	CHROOT_LIST+=" util-linux"
 fi
@@ -1125,29 +1128,24 @@ fi
 [ "$KERNEL" = "NONE" ] && unset KERNEL
 [ "$KERNEL" = "none" ] && unset KERNEL
 
-if [ -z "$CORE" ]; then
-	CORE="flex file gzip \
-grep sed findutils binutils \
-inetutils diffutils shadow \
-bc less"
-fi
-[ -z $KERNEL ] && CORE="-n $CORE"
-
-INITS="eudev sysklogd sysvinit dbus systemd runyx"
-
 [ "$KERNEL" = "NONE" ] && unset KERNEL
 [ "$KERNEL" = "none" ] && unset KERNEL
 
 
 if [ ! -z "$KERNEL" ]; then
-	CORE+=" libcap util-linux \
+	INITS="eudev sysklogd sysvinit dbus systemd runyx"
+	CORE=" acl attr bash bzip2 coreutils readline \
+expat ncurses lzo gmp flex file gzip mpc mpfr xz zlib \
+grep sed findutils binutils \
+inetutils diffutils shadow \
+bc less libcap util-linux \
 kmod kbd pam \
 gdbm e2fsprogs libpipeline \
 gettext procps-ng \
 psmisc sudo tzdata \
 iproute2 iana-etc \
 groff man-db \
-cards.fr cards.man nutyx.man \
+cards.man nutyx.man \
 lvm2 dialog cpio squashfs \
 lsb-release \
 linux-firmware e3 grub \
@@ -1167,9 +1165,7 @@ DEPOT_CD="/media/cdrom"
 
 SETUP_FILE=/tmp/setup
 if [ "$SHELL" == "/bin/bash" ]; then
-  if [ -f $LFS/bin/ash ]; then
-	SHELL=/bin/ash
-  fi
+  SHELL=/bin/ash
   if [ -f $LFS/bin/bash ]; then
 	SHELL=/bin/bash
   fi
@@ -1321,14 +1317,14 @@ if [[ -z "$INITS" && -z "$CORE" && -z "$DEVEL" ]];then
 else
 	echo "source /etc/profile
 cards sync
-cards install $CORE \
+cards install -n $CORE \
 $INITS \
 $DEVEL
 exit" > $FOLDER/$SETUP_FILE
 fi
 chmod 177 $FOLDER/$SETUP_FILE
 setup_chroot
-chroot ${FOLDER} env $LINUX_ARCH "$SHELL" -c "$SETUP_FILE"
+chroot ${FOLDER} env $LINUX_ARCH EUID=0 "$SHELL" -c "$SETUP_FILE"
 unmountall
 }
 install_configuration_files() {
