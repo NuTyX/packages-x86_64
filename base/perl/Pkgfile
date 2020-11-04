@@ -5,8 +5,14 @@ url="http://www.perl.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
+makedepends=(bzip2 less)
+set=(devel)
+
 name=perl
 version=5.32.0
+release=2
+
+_majversion=${version:0:4}
 
 source=(https://www.cpan.org/src/5.0/$name-$version.tar.xz)
 
@@ -25,19 +31,20 @@ export BUILD_ZLIB=False
 export BUILD_BZIP2=0
 
 
-sh Configure -des  -Dusethreads \
-	-Dprefix=/usr -Duseshrplib -Dscriptdir=/usr/bin \
-	-Dvendorbin=/usr/bin -Dsitebin=/usr/bin \
-	-Dvendorprefix=/usr -Dinc_version_list=none \
-	-Darchlib=/usr/lib/share/perl5/base \
-	-Dprivlib=/usr/lib/share/perl5/base \
-	-Dvendorlib=/usr/lib/share/perl5/vendor \
-	-Dvendorarch=/usr/lib/perl5/vendor \
-	-Dsitelib=/usr/lib/perl5/site \
-	-Dsitearch=/usr/lib/perl5/site \
-	-Dman1dir=/usr/share/man/man1 \
-	-Dman3dir=/usr/share/man/man3 \
-	-Dpager="/usr/bin/less isR" ${_ARCH}
+sh Configure -des     \
+	-Dprefix=/usr \
+	-Duseshrplib  \
+	-Dvendorprefix=/usr  \
+	-Darchlib=/usr/lib/perl5/${_majversion}/core_perl     \
+	-Dprivlib=/usr/lib/perl5/${_majversion}/core_perl     \
+	-Dvendorlib=/usr/lib/perl5/${_majversion}/vendor_perl  \
+	-Dvendorarch=/usr/lib/perl5/${_majversion}/vendor_perl \
+	-Dsitelib=/usr/lib/perl5/${_majversion}/site_perl      \
+	-Dsitearch=/usr/lib/perl5/${_majversion}/site_perl     \
+	-Dman1dir=/usr/share/man/man1        \
+	-Dman3dir=/usr/share/man/man3        \
+	-Dpager="/usr/bin/less isR" ${_ARCH} \
+	-Dusethreads
 
 make
 # Only when we are building a new base
