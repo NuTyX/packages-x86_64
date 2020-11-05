@@ -3,8 +3,8 @@ description="The 4.9 longterm support Linux Kernel version"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(kmod)
-run=(nutyx)
+makedepends=(bison flex perl)
+run=(nutyx kmod)
 
 PKGMK_IGNORE_UNPACK="yes"
 PKGMK_NO_STRIP="yes"
@@ -12,6 +12,7 @@ PKGMK_GROUPS=(devel doc)
 
 name=kernel-49
 version=4.9.241
+release=2
 
 alias=(linux-4.9)
 INITRD="initrd-${name/*-/}"
