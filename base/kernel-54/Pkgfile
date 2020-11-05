@@ -3,15 +3,15 @@ description="The 5.4 longterm support Linux Kernel version"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(kmod)
-run=(nutyx)
+makedepends=(bison flex perl)
+run=(nutyx kmod)
 
 PKGMK_IGNORE_UNPACK="yes"
 PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-54
-version=5.4.73
+version=5.4.74
 
 alias=(linux-5.4)
 INITRD="initrd-${name/*-/}"
