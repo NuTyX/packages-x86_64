@@ -4,7 +4,7 @@ url="https://fedorahosted.org/libpwquality/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(python cracklib)
+makedepends=(pam python cracklib)
 
 name=libpwquality
 version=1.4.4
@@ -20,7 +20,4 @@ cd $name-$version
 --with-python-binary=python3
 make
 make DESTDIR=$PKG install
-# Obsolets libs
-rm $PKG/usr/lib/libpwquality.la
-rm $PKG/usr/lib/security/pam_pwquality.la
 }
