@@ -15,12 +15,12 @@ build() {
 
 cd feedparser-$version
 
-python3 /usr/lib/python3.8/compileall.py feedparser/sgml.py
+python3 /usr/lib/python3.9/compileall.py feedparser/sgml.py
 
 install -Dm644 feedparser/sgml.py \
-    "$PKG/usr/lib/python3.8/site-packages/sgml.py"
+    "$PKG/usr/lib/python3.9/site-packages/sgml.py"
 
-install -Dm644 feedparser/__pycache__/sgml.cpython-38.pyc \
-    "$PKG/usr/lib/python3.8/site-packages/__pycache__/sgml.cpython-38.pyc"
+install -Dm644 feedparser/__pycache__/sgml.cpython-39.pyc \
+    "$PKG/usr/lib/python3.9/site-packages/__pycache__/sgml.cpython-39.pyc"
   
 }
