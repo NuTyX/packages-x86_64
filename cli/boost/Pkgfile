@@ -9,17 +9,14 @@ makedepends=(icu python)
 name=boost
 version=1.74.0
 
-source=(http://www.linuxfromscratch.org/patches/blfs/svn/$name-$version-gcc_10-1.patch
-        https://dl.bintray.com/boostorg/release/$version/source/${name}_${version//./_}.tar.bz2)
+source=(https://dl.bintray.com/boostorg/release/$version/source/${name}_${version//./_}.tar.bz2)
 
 build() {
+cd ${name}_${version//./_}
 
-patch -Np1 -i ../boost-1.73.0-gcc_10-1.patch
+./bootstrap.sh --prefix=$PKG/usr --with-toolset=gcc --with-python=python3
 
-local ICU=$([ -e /usr/bin/icu-config ] && echo --with-icu)
-./bootstrap.sh --prefix=$PKG/usr --with-toolset=gcc $ICU
-
-./b2 stage variant=release threading=multi \
+./b2 stage -j8 variant=release threading=multi \
 	link=shared,static debug-symbols=off -j ${JOBS-1}
 
 ./b2 install threading=multi link=shared
