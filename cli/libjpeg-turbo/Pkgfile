@@ -1,25 +1,30 @@
-description="Fork of the original IJG libjpeg which uses SIMD to accelerate baseline JPEG"
+description="JPEG image codec with accelerated baseline compression and decompression"
 url="http://libjpeg-turbo.virtualgl.org/"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+contributors="Rems"
 
-makedepends=(nasm)
+makedepends=(nasm openjdk cmake)
 
 name=libjpeg-turbo
-version=1.5.3
-release=5
+version=2.0.5
+release=2
 
-source=(http://sourceforge.net/projects/libjpeg-turbo/files/$version/libjpeg-turbo-$version.tar.gz)
+source=(https://downloads.sourceforge.net/project/libjpeg-turbo/$version/libjpeg-turbo-$version.tar.gz)
 
 build() {
-cd $name-$version
-./configure --prefix=/usr \
---mandir=/usr/share/man \
---disable-static
+cd libjpeg-turbo-$version
+sed 's/Szathmáry/Szathmary/g' -i java/org/libjpegturbo/turbojpeg/*.java
+cmake -DWITH_JAVA=ON \
+      -DWITH_JPEG8=ON \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+      -DCMAKE_BUILD_TYPE=RELEASE \
+      -DCMAKE_INSTALL_DOCDIR=/usr/share/doc/libjpeg-turbo2-$version
+
 make
-make DESTDIR=$PKG install
-rm -rf $PKG/usr/{bin,include,lib/pkgconfig,share}
-rm $PKG/usr/lib/lib{jpeg.so,turbojpeg.so*}
-rm $PKG/usr/lib/lib{turbo,}jpeg.la
+make DESTDIR=$PKG \
+exampledir="/usr/share/doc/${name}-$version" \
+                  install
+install -m 644 jpegint.h "${PKG}/usr/include" # required by other software
 }
