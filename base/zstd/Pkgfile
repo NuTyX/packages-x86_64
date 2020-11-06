@@ -4,24 +4,17 @@ url="https://facebook.github.io/zstd/"
 packager="tnut <tnut@nutyx.org>"
 contributors=""
 
-makedepends=(zlib xz lz4 meson ninja)
-run=()
-set=()
+makedepends=(zlib xz lz4)
 
 name=zstd
-version=1.4.4
+version=1.4.5
 
 source=(https://github.com/facebook/zstd/releases/download/v$version/$name-$version.tar.gz)
 
 build() {
-mkdir build
-cd    build
-meson --prefix=/usr    \
--Dbin_programs=true    \
--Dmulti_thread=enabled \
-../$name-$version/build/meson
-ninja
-DESTDIR=$PKG ninja install
+cd $name-$version
+make
+make DESTDIR=$PKG prefix=/usr install
 mkdir $PKG/lib
 mv -v $PKG/usr/lib/libzstd.so.* $PKG/lib
 ln -sfv ../../lib/$(readlink $PKG/usr/lib/libzstd.so) $PKG/usr/lib/libzstd.so
