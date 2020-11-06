@@ -255,13 +255,13 @@ getPackageFileName() {
 }
 
 download_base() {
-for i in $CHROOT_LIST
+for i in $CHROOT
 do
         download_pkg "$i"
 done
 }
 install_base() {
-for i in $CHROOT_LIST
+for i in $CHROOT
 do 
 	install_pkg "$i"
 done
@@ -1106,12 +1106,19 @@ check_root() {
 [ "$UID" != "0" ] && error " You are not root, cannot continue"
 }
 check_variables() {
-if [ -z "$CHROOT_LIST" ]; then
-	CHROOT_LIST="nutyx busybox curl gcc glibc
-zlib libarchive openssl cards"
-   [ "$ARCH" = "i686" -a "$HOST_ARCH" = "x86_64" ] && \
-	CHROOT_LIST+=" util-linux"
+
+CR="nutyx busybox curl gcc glibc \
+zlib lz4 xz zstd libarchive openssl cards"
+
+if [ -z "$CHROOT" ]; then
+	CHROOT="$CR"
+else
+	CHROOT="$CR $CHROOT"
 fi
+unset CR
+
+[ "$ARCH" = "i686" -a "$HOST_ARCH" = "x86_64" ] && \
+	CHROOT+=" util-linux"
 [ -z "$URL" ] && URL="http://downloads.nutyx.org"
 
 [ -z "$VERSION" ] && VERSION="rolling"
@@ -1148,7 +1155,7 @@ groff man-db \
 cards.man nutyx.man \
 lvm2 dialog cpio squashfs \
 lsb-release \
-linux-firmware e3 grub \
+linux-firmware grub \
 lz4 mdadm dhcpcd \
 $KERNEL"
 fi
@@ -1164,12 +1171,6 @@ LOCAL_DEPOT_PACKAGES="$DEPOT/$BASE"
 DEPOT_CD="/media/cdrom"
 
 SETUP_FILE=/tmp/setup
-if [ "$SHELL" == "/bin/bash" ]; then
-  SHELL=/bin/ash
-  if [ -f $LFS/bin/bash ]; then
-	SHELL=/bin/bash
-  fi
-fi
 }
 config() {
 HOST_ARCH=$(uname -m)
@@ -1312,6 +1313,12 @@ check_mountfolder() {
 	[ ! -d $FOLDER ] && mkdir -p $FOLDER
 }
 generate_setupfile() {
+if [ "$SHELL" == "/bin/bash" ]; then
+  SHELL=/bin/ash
+  if [ -f $LFS/bin/bash ]; then
+	SHELL=/bin/bash
+  fi
+fi
 if [[ -z "$INITS" && -z "$CORE" && -z "$DEVEL" ]];then
 	echo "exit" > $FOLDER/$SETUP_FILE
 else
@@ -1426,7 +1433,7 @@ FOLDER     : $FOLDER
 SHELL      : $SHELL
 DEPOT_BASE : $DEPOT_BASE
 DEVEL      : $DEVEL
-CHROOT_LIST: $CHROOT_LIST"
+CHROOT     : $CHROOT"
 	check_root
 	TMP=$(mktemp -d)
 	check_mountfolder
