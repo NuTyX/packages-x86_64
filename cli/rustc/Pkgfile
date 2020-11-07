@@ -5,17 +5,15 @@ url="http://static.rust-lang.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B., Rémy"
 
-makedepends=(cmake curl llvm python libssh2)
+makedepends=(make-ca cmake curl llvm python libssh2)
 
 name=rustc
-version=1.43.1
+version=1.47.0
 
-source=(rustc-1.43.1-llvm10-1.patch
-		http://static.rust-lang.org/dist/$name-$version-src.tar.gz)
+source=(http://static.rust-lang.org/dist/$name-$version-src.tar.gz)
 
 build() {
    cd $name-$version-src
-   patch -Np1 -i ../rustc-1.43.1-llvm10-1.patch
    cat <<EOF > config.toml
 # see src/bootstrap/config.toml.example for more possible options
 [llvm]
@@ -34,7 +32,7 @@ extended = true
 
 [install]
 prefix = "/usr"
-docdir = "share/doc/rustc-1.43.1"
+docdir = "share/doc/rustc-1.47.0"
 
 [rust]
 channel = "stable"
@@ -57,7 +55,7 @@ llvm-config = "/usr/bin/llvm-config"
 EOF
 
   export RUSTFLAGS="$RUSTFLAGS -C link-args=-lffi"
-  python3 ./x.py build
+  python3 ./x.py build --exclude src/tools/miri
   export LIBSSH2_SYS_USE_PKG_CONFIG=1 
   DESTDIR=$PKG python3 ./x.py install
 
