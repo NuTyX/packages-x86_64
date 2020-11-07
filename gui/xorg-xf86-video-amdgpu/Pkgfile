@@ -2,11 +2,16 @@ description="Xorg AMDGPU video driver."
 packager="tnut <tnut@nutyx.org>"
 contributors="Remy, Minzords"
 name=xorg-xf86-video-amdgpu
-version=19.0.1
+version=19.1.0
 _name=${name/xorg-/}
 makedepends=(mesa xorg-server)
 source=(http://ftp.x.org/pub/individual//driver/${_name}-$version.tar.bz2)
 
+prepare() {
+
+sed -i 's/^miPointerSpriteFuncRec/extern &/' ${_name}-$version/src/drmmode_display.h
+
+}
 build=xorg
 
 package() {
