@@ -4,14 +4,11 @@ url="http://www.spice-space.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Rems"
 
+makedepends=(make-ca meson ninja)
+
 name=spice-protocol
-version=0.14.0
+version=0.14.3
 
-source=(https://www.spice-space.org/download/releases/$name-$version.tar.bz2)
+source=(https://www.spice-space.org/download/releases/$name-$version.tar.xz)
 
-build() {
-cd $name-$version
-./configure --prefix=/usr --datadir=/usr/lib
-make
-make DESTDIR=$PKG install  
-}
+build=meson
