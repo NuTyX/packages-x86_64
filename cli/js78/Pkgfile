@@ -1,0 +1,36 @@
+description="JS is Mozilla's JavaScript engine written in C."
+url="https://people.mozilla.org"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(autoconf2-13 readline llvm icu rustc libffi python zlib zip)
+
+name=js78
+version=78.4.0
+
+source=(https://archive.mozilla.org/pub/firefox/releases/${version}esr/source/firefox-${version}esr.source.tar.xz)
+
+build() {
+
+  cd firefox-$version
+
+  mkdir obj
+  cd    obj
+
+  CC=gcc CXX=g++ \
+  ../js/src/configure --prefix=/usr       \
+              --with-intl-api     \
+              --with-system-zlib  \
+              --with-system-icu   \
+              --disable-jemalloc  \
+              --enable-readline
+
+  make
+
+  make DESTDIR=$PKG install
+
+  # conflict with js60
+  rm $PKG/usr/lib/libjs_static.ajs
+ 
+  sed -i '/@NSPR_CFLAGS@/d' $PKG/usr/bin/js78-config
+}
