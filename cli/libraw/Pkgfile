@@ -3,15 +3,16 @@ url="http://www.libraw.org/"
 
 packager="tnut<tnut@nutyx.org>"
 
-makedepends=(libjpeg-turbo2 jasper lcms2)
+makedepends=(automake autoconf m4 perl libjpeg-turbo jasper lcms2)
 
 name=libraw
-version=0.20.0
+version=0.20.2
 
 source=(http://www.libraw.org/data/LibRaw-$version.tar.gz)
 build ()
 {
 cd LibRaw-$version
+autoreconf -fiv
 ./configure --prefix=/usr \
  --enable-jpeg \
  --enable-jasper \
