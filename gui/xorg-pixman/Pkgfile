@@ -1,21 +1,19 @@
 description="library for the manipulation of pixels"
 url="http://xorg.freedesktop.org"
-packager="greg <greg@nutyx.org>"
-contributors="Pierre B"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg"
 
 name=xorg-pixman
 _name=pixman
 alias=(pixman)
-version=0.38.4
-release=2
-makedepends=(meson ninja libpng)
-source=(http://ftp.x.org/pub/individual//lib/${_name}-$version.tar.bz2)
+version=0.40.0
 
-build() {
-cd ${_name}-$version
-mkdir build
-cd    build
-meson --prefix=/usr
-ninja
-DESTDIR=$PKG ninja install
+makedepends=(meson ninja libpng)
+source=( https://www.cairographics.org/releases/${_name}-$version.tar.gz)
+
+prepare() {
+mv ${_name}-$version $name-$version
 }
+
+build=meson
