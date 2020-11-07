@@ -2,25 +2,29 @@ description="OpenJPEG is an open-source implementation of the JPEG-2000 standard
 url="http://www.ijg.org/"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+contributors="Rems"
 
-makedepends=(lcms2 libpng libtiff)
+makedepends=(cmake lcms2 libpng libtiff doxygen)
 
 name=openjpeg
-version=1.5.2
-release=3
+version=2.3.1
+release=2
 
-source=(http://downloads.sourceforge.net/openjpeg.mirror/$name-$version.tar.gz )
-
-
+source=(https://github.com/uclouvain/${name}/archive/v$version/${name}-$version.tar.gz)
 build() {
-	cd openjpeg-$version
-	autoreconf -f -i
-	./configure --prefix=/usr --disable-static
-	make
-	make DESTDIR=$PKG install
-	ln -s openjpeg-1.5/openjpeg.h $PKG/usr/include
+cd $name-$version
+mkdir -v build
+cd build
 
-	# Obsolet lib
-	rm $PKG/usr/lib/libopenjpeg.la
+cmake -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DBUILD_STATIC_LIBS=OFF ..
+make
+make DESTDIR=$PKG install
+
+pushd ../doc
+ for man in man/man?/* ; do
+  install -v -D -m 644 $man $PKG/usr/share/$man
+ done
+popd
 }
