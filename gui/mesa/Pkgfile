@@ -14,15 +14,15 @@ makedepends=(xorgproto pkg-config libtool xorg-xrandr wayland python-mako
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=20.1.8
+version=20.2.1
 
-source=(http://www.linuxfromscratch.org/patches/blfs/svn/mesa-20.1.1-add_xdemos-1.patch
+source=(http://www.linuxfromscratch.org/patches/blfs/svn/mesa-20.2.1-add_xdemos-1.patch
 	https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
 
 build() {
 cd mesa-$version
-patch -Np1 -i ../mesa-20.1.1-add_xdemos-1.patch
-GALLIUM_DRV="i915,nouveau,r600,radeonsi,svga,swrast,virgl"
+patch -Np1 -i ../mesa-20.2.1-add_xdemos-1.patch
+GALLIUM_DRV="i915,iris,nouveau,r600,radeonsi,svga,swrast,virgl"
 DRI_DRIVERS="i965,nouveau"
 
 mkdir build
@@ -35,7 +35,9 @@ meson --prefix=/usr                  \
       -Dgallium-nine=false           \
       -Dglx=dri                      \
       -Dosmesa=gallium               \
-      -Dvalgrind=false
+      -Dvalgrind=false               \
+      -Dlibunwind=false              \
+      ..
 
 ninja
 DESTDIR=$PKG ninja install
