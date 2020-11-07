@@ -4,20 +4,24 @@ url="http://sourceforge.net/projects/freeassociation/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(libxml2 cmake gobject-introspection icu doxygen glib vala)
+makedepends=(libxml2 cmake db gobject-introspection icu doxygen glib vala)
 
 name=libical
 version=3.0.8
-release=2
+release=3
 
 source=(https://github.com/libical/libical/releases/download/v$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
+
+sed -i '/define LEAP_MONTH/a #define FALSE 0' src/libical/icalrecur.c
+sed -i 's/array/arraytest/'       src/test/libical-glib/CMakeLists.txt
+mv src/test/libical-glib/array.py src/test/libical-glib/arraytest.py
+
 mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
--DCMAKE_INSTALL_LIBDIR=/usr/lib \
 -DCMAKE_BUILD_TYPE=Release  \
 -DSHARED_ONLY=yes \
 -DGOBJECT_INTROSPECTION=true \
