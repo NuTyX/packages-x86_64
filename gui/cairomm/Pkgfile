@@ -5,22 +5,15 @@ maintainer="Murray Cumming <murrayc@murrayc.com>"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(cairo libsigc++)
+makedepends=(meson ninja cairo libsigc++)
 
 name=cairomm
-version=1.12.2
-release=5
+version=1.14.0
 
-source=(http://cairographics.org/releases/$name-$version.tar.gz)
-prepare() {
-cd $name-$version
-sed -e '/^libdocdir =/ s/$(book_name)/cairomm-1.12.2/' \
-    -i docs/Makefile.in
-}
+source=(http://cairographics.org/releases/$name-$version.tar.xz)
 
-package() {
-rm $PKG/usr/lib/libcairomm-1.0.la
-}
+build=meson
+
 uptodate() {
 local url ext
 
