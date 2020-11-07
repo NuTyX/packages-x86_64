@@ -3,26 +3,48 @@ url="http://www.mupdf.com"
 packager="tnut <tnut@nutyx.org>"
 
 name=mupdf
-version=1.16.1
-makedepends=(lcms2 harfbuzz libjpeg-turbo2 openjpeg2 freeglut xorg-libx11
+version=1.18.0
+
+makedepends=(lcms2 harfbuzz libjpeg-turbo openjpeg freeglut xorg-libx11
              xorg-libxcursor xorg-libxext xorg-libxrandr xorg-libxinerama freetype)
 
+source=(http://www.mupdf.com/downloads/archive/$name-$version-source.tar.gz)
 
-
-source=(http://www.linuxfromscratch.org/patches/blfs/svn/mupdf-$version-shared_libs-1.patch
-	http://www.mupdf.com/downloads/archive/$name-$version-source.tar.gz)
+prepare() {
+sed -i '/MU.*_EXE. :/{
+        s/\(.(MUPDF_LIB)\)\(.*\)$/\2 | \1/
+        N
+        s/$/ -lmupdf -L$(OUT)/
+        }' $name-$version-source/Makefile
+cat > $name-$version-source/user.make << EOF
+USE_SYSTEM_FREETYPE := yes
+USE_SYSTEM_HARFBUZZ := yes
+USE_SYSTEM_JBIG2DEC := no
+USE_SYSTEM_JPEGXR := no # not used without HAVE_JPEGXR
+USE_SYSTEM_LCMS2 := no # need lcms2-art fork
+USE_SYSTEM_LIBJPEG := yes
+USE_SYSTEM_MUJS := no # build needs source anyways
+USE_SYSTEM_OPENJPEG := yes
+USE_SYSTEM_ZLIB := yes
+USE_SYSTEM_GLUT := no # need freeglut2-art fork
+USE_SYSTEM_CURL := yes
+USE_SYSTEM_GUMBO := no
+EOF
+}
 
 build() {
 unset MAKEFLAGS
 cd $name-$version-source
 
-patch -Np1 -i ../$name-$version-shared_libs-1.patch
-USE_SYSTEM_LIBS=yes make
+export XCFLAGS=-fPIC
+make build=release shared=yes
+unset XCFLAGS
 
-USE_SYSTEM_LIBS=yes \
-make prefix=$PKG/usr build=release \
+
+make prefix=$PKG/usr shared=yes \
 docdir=$PKG/usr/share/doc/$name-$version \
 install
 
+chmod 755 $PKG/usr/lib/libmupdf.so
 ln -svf mupdf-x11 $PKG/usr/bin/mupdf
 }
