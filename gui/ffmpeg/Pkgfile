@@ -6,7 +6,7 @@ contributors="Pierre B, tnut, Remy, Greg"
 
 makedepends=(doxygen alsa-lib bzip2 fribidi gmp gsm jack ladspa lame
              libavc1394 libiec61883 libmodplug libraw1394 libssh libtheora
-             libwebp libxcb libxml2 opencore-amr openjpeg openjpeg2 v4l-utils
+             libwebp libxcb libxml2 opencore-amr openjpeg v4l-utils
              xz xorg-fontconfig xorg-libx11 yasm opus fdk-aac pulseaudio x264
              x265 libmpeg2 liba52 libass freetype libbluray sdl speex
              libvorbis libogg xvid faac faad2 libvpx xorg-libxext
@@ -14,7 +14,7 @@ makedepends=(doxygen alsa-lib bzip2 fribidi gmp gsm jack ladspa lame
 
 
 name=ffmpeg
-version=4.2.3
+version=4.3.1
 
 source=(${url}releases/ffmpeg-$version.tar.xz)
 
@@ -29,7 +29,6 @@ sed -i 's/-lflite"/-lflite -lasound"/' configure
             --disable-static     \
             --enable-shared      \
             --disable-debug      \
-	    --enable-avisynth    \
 	    --enable-avresample  \
 	    --enable-fontconfig  \
 	    --enable-gmp         \
