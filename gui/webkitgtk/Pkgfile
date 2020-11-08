@@ -4,7 +4,7 @@ url="http://webkitgtk.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Greg, Fanch"
 
-makedepends=(openjpeg2 ninja enchant cmake gstreamer-plugins-base
+makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              gstreamer-plugins-bad xorg-libxt gtk2 gtk3 gtk-doc
              hunspell hyphen icu libgudev libsecret libsoup
              libwebp mesa ruby sqlite enchant geoclue2
@@ -13,13 +13,17 @@ makedepends=(openjpeg2 ninja enchant cmake gstreamer-plugins-base
              
 name=webkitgtk
 version=2.30.2
+release=2
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
+prepare() {
+echo 'add_compile_definitions("U_DEFINE_FALSE_AND_TRUE=1")' >> $name-$version/Source/WTF/wtf/CMakeLists.txt
+}
 
 build() {
-cd webkitgtk-$version
-mkdir -vp build
-cd        build
+cd $name-$version
+mkdir -p build
+cd       build
 CFLAGS=-Wno-expansion-to-defined \
 CXXFLAGS=-Wno-expansion-to-defined \
 cmake -G Ninja \
