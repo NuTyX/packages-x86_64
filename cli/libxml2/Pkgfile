@@ -8,7 +8,7 @@ makedepends=(python2 python)
 
 name=libxml2
 version=2.9.10
-release=2
+release=3
 
 PKGMK_GROUPS=(lib man devel doc)
 source=(ftp://xmlsoft.org/libxml2/$name-$version.tar.gz)
@@ -16,6 +16,9 @@ source=(ftp://xmlsoft.org/libxml2/$name-$version.tar.gz)
 
 prepare() {
 mkdir build-py{2,3}
+sed -i '/if Py/{s/Py/(Py/;s/)/))/}' $name-$version/python/{types.c,libxml.c}
+sed -i '/_PyVerify_fd/,+1d' $name-$version/python/types.c
+sed -i 's/ TRUE/ true/' $name-$version/encoding.c
 }
 
 _build() {
@@ -43,7 +46,7 @@ make -C build-py2  DESTDIR=$PKG install
 make -C build-py3/python  DESTDIR=$PKG install
 
 rm $PKG/usr/lib/$name.la
-rm $PKG/usr/lib/python3.8/site-packages/libxml2mod.la
+rm $PKG/usr/lib/python3.9/site-packages/libxml2mod.la
 rm $PKG/usr/lib/python2.7/site-packages/libxml2mod.la
 }
 
@@ -54,7 +57,7 @@ $PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
 usr/lib/libxml2*
 
 rm usr/lib/libxml2*
-rm -d usr/lib
+rm -d usr/lib || true
 }
 
 devel() {
@@ -65,7 +68,7 @@ usr/lib/cmake usr/lib/pkgconfig usr/lib/python* usr/lib/cmake \
 usr/include usr/lib/xml2Conf.sh usr/share/aclocal
 
 rm -r usr/{share/aclocal,include,lib/{cmake,pkgconfig,python*,xml2Conf.sh}}
-rm -d usr/lib
+rm -d usr/lib || true
 }
 
 doc() {
@@ -74,5 +77,5 @@ bsdtar -cf \
 $PKGMK_PACKAGE_DIR/$name.doc${PKGMK_BUILDVER}any.cards.tar \
 usr/share/doc usr/share/gtk-doc
 rm -r usr/share/{doc,gtk-doc}
-rm -d usr/share
+rm -d usr/share || true
 }
