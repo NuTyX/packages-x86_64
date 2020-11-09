@@ -4,37 +4,27 @@ url="https://gnome.org"
 contributors="Remy"
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(git gnome-common yelp yelp-tools yelp-xsl
-             docbook-xsl vte3 gnutls itstool gtk-vnc
+makedepends=(gnome-common yelp yelp-tools yelp-xsl
+             docbook-xsl vte gnutls itstool gtk-vnc
              itstool libsecret telepathy-glib vala
-             avahi appstream-glib freerdp)
+             avahi appstream-glib)
  
 set=(gnome)
 
 name=vinagre
-version=git-adcb63cf
-release=4
+version=3.22.0
 
-source=(freerdp2017.diff)
-
-prepare () {
-
-git clone https://git.gnome.org/browse/vinagre
-
-cd $name
-git checkout adcb63cfad988a92126a751b6e8f7cfef0762955
-patch -Np1 -i ../freerdp2017.diff                                                                                                                                           
-
-NOCONFIGURE=1 ./autogen.sh
-}
+source=(http://ftp.gnome.org/pub/gnome/sources/vinagre/${version:0:4}/vinagre-$version.tar.xz)
 
 build() {
-
-cd $name
+cd $name-$version
+sed -e '/_VinagreVnc/i gboolean scaling_command_line;' \
+    -i plugins/vnc/vinagre-vnc-connection.c &&
+sed -e '/scaling_/s/^/extern /' \
+    -i plugins/vnc/vinagre-vnc-connection.h
 
 ./configure --prefix=/usr \
-            --enable-compile-warnings=minimum \
-            --enable-rdp
+            --enable-compile-warnings=minimum
   make
   
   make DESTDIR=$PKG install
