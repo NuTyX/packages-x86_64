@@ -24,8 +24,6 @@ cmake ../qca-$version             \
     -DQCA_MAN_INSTALL_DIR=/usr/share/man
 make
 make DESTDIR=$PKG install
-
-rm $PKG/usr/certs/rootcerts.pem
 }
 
 uptodate() {
