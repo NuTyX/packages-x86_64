@@ -10,8 +10,7 @@ makedepends=(sip dbus-python qtbase qtconnectivity qtmultimedia qttools
 
 
 name=python-qt
-version=5.14.2
-release=2
+version=5.15.1
 
 source=(https://pypi.python.org/packages/source/P/PyQt5/PyQt5-$version.tar.gz)
 build() {
@@ -23,12 +22,4 @@ python3 configure.py   \
      --qsci-api
 make
 make DESTDIR=$PKG INSTALL_ROOT=$PKG install -j1
-
-
-# Already in python2-qt
-mkdir -p $PKG/usr/local/{bin,share/qt/qsci/api/python}
-mv  $PKG/usr/{,local}/bin/pylupdate5
-mv $PKG/usr/{,local}/bin/pyrcc5
-mv $PKG/usr/{,local}/bin/pyuic5
-mv $PKG/usr/{,local}/share/qt/qsci/api/python/PyQt5.api
 }
