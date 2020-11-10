@@ -4,13 +4,15 @@ url="http://undefined.org/python/#simplejson"
 contributors="Greg"
 packager="tnut <tnut@nutyx.org>"
 
-run=(python2-setuptools)
+makedepends=(python2-setuptools)
+run=(python2)
 
 name=python2-simplejson
-version=3.16.0
-release=2
+version=3.17.2
 
-source=(https://files.pythonhosted.org/packages/e3/24/c35fb1c1c315fc0fffe61ea00d3f88e85469004713dab488dee4f35b0aff/simplejson-3.16.0.tar.gz)
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/simplejson/simplejson/archive/v$version.tar.gz)
 
 build() {
 
