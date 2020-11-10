@@ -7,18 +7,9 @@ contributors="Dania"
 makedepends=(python)
 
 name=python-psutil
-version=5.4.8
-release=3
+version=5.7.3
 
-source=(https://github.com/giampaolo/psutil/archive/release-$version.tar.gz
-        fix_disk_io_counters.patch
-        fix_test_disk_io_counters_sysfs.patch)
-
-prepare() {
-  cd psutil-release-$version
-  patch -Np1 -i $SRC/fix_disk_io_counters.patch
-  patch -Np1 -i $SRC/fix_test_disk_io_counters_sysfs.patch
-}
+source=(https://github.com/giampaolo/psutil/archive/release-$version.tar.gz)
 
 build() {
 
