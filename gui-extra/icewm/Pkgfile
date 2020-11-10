@@ -3,19 +3,24 @@ description="IceWM is a window manager with the goals of speed, simplicity"
 packager="tnut <tnut@nutyx.org>"
 url="www.icewm.org"
 
-makedepends=(xorg-libxpm xorg-server xorg-fontconfig gdk-pixbuf fribidi)
+makedepends=(cmake xorg-libxpm xorg-server xorg-fontconfig gdk-pixbuf fribidi)
 
 name=icewm
-version=1.8.3
+version=1.9.1
 
 source=(https://github.com/ice-wm/$name/releases/download/$version/$name-$version.tar.lz)
  
 build() {
 
 cd $name-$version
-./configure --prefix=/usr \
---sysconfdir=/etc \
---docdir=/usr/share/$name-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DCFGDIR=/etc               \
+      -DENABLE_LTO=ON             \
+      -DDOCDIR=/usr/share/doc/icewm-$version  \
+      ..
 make
 
 make DESTDIR=$PKG install
