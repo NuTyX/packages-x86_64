@@ -8,15 +8,13 @@ makedepends=(bc libglade xorg-libxmu xorg-libxt xorg-libxpm)
 
 
 name=xscreensaver
-version=5.43
-release=2
+version=5.44
 
 source=(http://www.jwz.org/xscreensaver/$name-$version.tar.gz)
 
 build() {
 
 cd $name-$version
-sed -i '/^\/\//d' hacks/fontglide.c
 ./configure --prefix=/usr
 make
 
