@@ -7,10 +7,10 @@ contributors="Pierre B, Shadow, Rems"
 makedepends=(glib atk libpng libjpeg-turbo libtiff jasper lcms2 gnutls cups)
 
 name=ghostscript
-version=9.27
-release=2
+version=9.53.3
 
-source=( https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${version/./}/$name-$version.tar.gz
+source=( http://www.linuxfromscratch.org/patches/blfs/svn/ghostscript-$version-freetype_fix-1.patch
+	 https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${version//./}/$name-$version.tar.gz
          http://downloads.sourceforge.net/gs-fonts/ghostscript-fonts-std-8.11.tar.gz
 	 http://downloads.sourceforge.net/gs-fonts/gnu-gs-fonts-other-6.0.tar.gz)         
 
@@ -18,7 +18,9 @@ unset MAKEFLAGS
 
 build() {
 cd $name-$version
-rm -rf freetype lcms2 jpeg libpng zlib
+rm -rf freetype lcms2 jpeg libpng zlib openjpeg
+patch -Np1 -i ../ghostscript-$version-freetype_fix-1.patch
+rm -rf zlib
 ./configure --prefix=/usr \
 	--enable-dynamic \
 	--disable-compile-inits \
