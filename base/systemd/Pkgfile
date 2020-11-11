@@ -3,7 +3,11 @@ url="https://www.freedesktop.org/wiki/Software/systemd/"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(libcap kmod meson ninja python)
+# Those dependencies are need to compile the package
+# but not listed to avoid circular dependencies:
+# python meson and ninja
+
+makedepends=(libcap kmod)
 
 name=systemd
 version=246
