@@ -4,18 +4,16 @@ url="http://www.sane-project.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(libusb-compat libjpeg-turbo libtiff gtk2 libexif cups net-snmp avahi)
+makedepends=(libusb-compat libjpeg-turbo libtiff gtk2 libexif cups net-snmp avahi
+	poppler-glib)
 
 name=sane
-version=1.0.27
-release=4
+version=1.0.31
 
-source=(network.patch
-	http://fossies.org/linux/misc/sane-backends-$version.tar.gz)
+source=(http://fossies.org/linux/misc/sane-backends-$version.tar.gz)
 
 build() {
 	cd $name-backends-$version
-	patch -Np1 -i ../network.patch
 
 	./configure --prefix=/usr \
 		--localstatedir=/var \
