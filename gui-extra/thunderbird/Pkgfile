@@ -12,11 +12,12 @@ run=(startup-notification hunspell desktop-file-utils hicolor-icon-theme
      shared-mime-info)
 
 name=thunderbird
-version=78.4.0
+version=78.4.2
 
 locale_version=$version
 
-source=(https://archive.mozilla.org/pub/thunderbird/releases/$version/source/$name-$version.source.tar.xz
+source=($name-rustc1470-1.patch
+	https://archive.mozilla.org/pub/thunderbird/releases/$version/source/$name-$version.source.tar.xz
 	$name.desktop )
 
 pack_remove_locale() {
@@ -33,7 +34,10 @@ usr/lib/$name/extensions/langpack-${1}@$name.mozilla.org.xpi
 rm usr/lib/$name/extensions/langpack-${1}@$name.mozilla.org.xpi
 
 }
-
+prepare() {
+cd $name-$version
+patch -Np1 -i ../$name-rustc1470-1.patch
+}
 build() {
 
 cd $name-$version
