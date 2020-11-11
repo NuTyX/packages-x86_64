@@ -3,10 +3,12 @@ url="http://sourceforge.net/projects/bridge/"
 
 contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
+
+makedepends=(autoconf)
  
 name=bridge-utils
 version=1.6
-release=4
+release=5
 
 runyx_version=20200412
 
@@ -23,8 +25,6 @@ autoconf
 make
 
 make DESTDIR=$PKG install
-
-mv $PKG/usr/sbin $PKG/sbin
 
 # service
 cd ../runyx-${runyx_version}
