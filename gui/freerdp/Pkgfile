@@ -11,14 +11,20 @@ makedepends=(openssl xorg-libxcursor cups alsa-lib xorg-libxext xorg-libxdamage
 	     xorg-libxfixes xorg-libxrender xmlto docbook-xsl)
 
 name=freerdp
-version=2.0.0-rc4
-release=2
+version=2.2.0
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/FreeRDP/FreeRDP/archive/$version.tar.gz)
 
+prepare() {
+mv FreeRDP-$version $name-$version
+
+sed -i 's@share/xml/docbook/xsl-stylesheets-*@share/xml/docbook/xsl-stylesheets-*-nons@' \
+$name-$version/cmake/FindDocBookXSL.cmake
+
+}
 build() {
-  cd FreeRDP-$version
+  cd $name-$version
   cmake \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DCMAKE_INSTALL_LIBDIR=lib \
@@ -28,7 +34,14 @@ build() {
 	-DWITH_CLIENT_CHANNELS=ON \
 	-DWITH_SERVER_CHANNELS=ON \
 	-DWITH_WAYLAND=ON \
-	.
-  make
-  make DESTDIR=$PKG install
+	-DWITH_SERVER=ON \
+	-DWITH_SWSCALE=ON \
+	-DWITH_CHANNELS=ON \
+	-DCHANNEL_URBDRC_CLIENT=ON \
+	-DWITH_VAAPI=ON \
+	-Wno-dev \
+	-B build \
+	-S .
+  make VERBOSE=1 -C build
+  make DESTDIR=$PKG install -C build
 }
