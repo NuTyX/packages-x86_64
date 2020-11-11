@@ -1,13 +1,15 @@
 description="The Kmod package contains libraries and utilities for loading kernel modules."
 url="http://www.kernel.org/pub/linux/kernel/people/rusty/modules"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(xz)
 PKGMK_GROUPS=(devel doc man)
 
 name=kmod
 version=27
-release=2
+release=3
 
 source=(http://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-$version.tar.xz )
 
@@ -23,8 +25,12 @@ cd $name-$version
 
 make
 make DESTDIR=$PKG install
-for target in depmod insmod modinfo modprobe rmmod lsmod; do
+mkdir -p $PKG/sbin
+for target in insmod modinfo modprobe rmmod lsmod; do
   ln -sv kmod $PKG/bin/$target
+done
+for target in depmod; do
+  ln -sv ../bin/kmod $PKG/sbin/$target
 done
 }
 devel()
