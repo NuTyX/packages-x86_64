@@ -1,0 +1,50 @@
+diff --git a/scripts/mybld.in b/scripts/mybld.in
+old mode 100644
+new mode 100755
+index ff659af..d76b388
+--- a/scripts/mybld.in
++++ b/scripts/mybld.in
+@@ -220,6 +220,10 @@ case $1 in
+ 		shift
+ 		PARAM+=($1);;
+ 
++	-p|--pause)
++		PAUSE=" && printf \"You are now in the chroot.\n\
++Type exit when finish.\n\n Good Luck !!!\n\n\" && bash";;
++
+ 	-I|--init)
+ 		INIT="yes";;
+ 
+@@ -552,6 +556,12 @@ GIT=$(basename $GIT_PROJ)
+ mkdir -p "$ROOT/${VERSION}/${COLLECTION}/etc" || exit 1
+ 
+ setup_cards_conf
++
++DEVEL="cards.devel \
++&& cd /root/$GIT \
++$PAUSE \
++&& bash scripts/$COLLECTION"
++
+ echo "$CARDS_CONF" > $ROOT/$VERSION/$COLLECTION/etc/cards.conf
+ [ -z "${PARAM[0]}" ] && CHROOT="ncurses readline bash"
+ if [ "$COLLECTION" == "base" ] \
+@@ -561,18 +571,13 @@ if [ "$COLLECTION" == "base" ] \
+ || [ "$COLLECTION" == "gui-extra" ] \
+ || [ "$COLLECTION" == "desktops" ] \
+ || [ "$COLLECTION" == "nos" ]; then
+-	DEVEL="cards.devel \
+-&& cd /root/$GIT \
+-&& bash scripts/$COLLECTION"
+ 	if ! [ -z "${PARAM[0]}" ]; then
+ 		DEVEL="$DEVEL ${PARAM[0]}"
+ 	else
+ 		DEVEL="$DEVEL -a"
+ 	fi
+ else
+-	DEVEL="cards.devel \
+-&& cd /root/$GIT \
+-&& bash scripts/$COLLECTION -a \
++	DEVEL="$DEVEL -a \
+ && bash scripts/$COLLECTION-extra -a"
+ 	EXTRA="yes"
+ fi
