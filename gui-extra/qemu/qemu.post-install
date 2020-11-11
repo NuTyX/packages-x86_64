@@ -1,8 +1,4 @@
 . lib/lsb/init-functions
-if ! (getent group kvm > /dev/null); then
-    log_info_msg "${INFO}Creating kvm group${NORMAL}\n"
-    groupadd -g 61 kvm
-fi
 
 echo "Your username need to be part of the 'kvm' group to be able to use virtualisation
 Votre nom d'utilisateur doit être ajouté au groupe 'kvm' pour la virtualisation"
