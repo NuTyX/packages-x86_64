@@ -6,11 +6,17 @@ contributors="Alienus"
 
 makedepends=(gsfonts libjpeg-turbo xorg-libx11 gdk-pixbuf gtk2 xorg-libxt)
 name=libwmf
-version=0.2.11
+version=0.2.12
 
 PKGMK_KEEP_SOURCES="no"
-source=(https://github.com/caolanm/libwmf/archive/v$version.tar.gz)
+source=(libwmf-freetype.patch
+	https://github.com/caolanm/libwmf/archive/v$version.tar.gz)
 
+prepare() {
+cd $name-$version
+patch -Np1 -i ../libwmf-freetype.patch
+autoreconf -vif -Ipatches
+}
 build(){
     cd $name-$version
     ./configure --prefix=/usr \
