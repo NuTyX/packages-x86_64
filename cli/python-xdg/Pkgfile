@@ -1,0 +1,18 @@
+description="Python library for accessing FreeDesktop standards"
+url="http://freedesktop.org/wiki/Software/pyxdg"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Geantbrun"
+
+run=(python)
+
+name=python-xdg
+version=0.27
+_basename=pyxdg
+
+source=(https://files.pythonhosted.org/packages/source/${_basename::1}/${_basename}/${_basename}-$version.tar.gz)
+
+build() {
+	cd ${_basename}-$version
+	python3 setup.py install --prefix=/usr --root=$PKG
+}
