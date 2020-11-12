@@ -4,11 +4,12 @@ url="https://releases.pagure.org/"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(nss cryptsetup glib gpgme swig python2 python)
+makedepends=(nss cryptsetup glib gpgme swig)
+run=(python python2)
 
 name=volume_key
 version=0.3.12
-release=2
+release=3
 
 source=(  https://releases.pagure.org/volume_key/volume_key-$version.tar.xz )
 build() {
