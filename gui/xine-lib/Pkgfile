@@ -9,9 +9,14 @@ makedepends=(doxygen mesa xorg-libxvmc libxcb faad2 speex libmng
              imagemagick xorg-glu)
 name=xine-lib
 version=1.2.10
+release=2
 
 source=(http://downloads.sourceforge.net/xine/$name-$version.tar.xz)
 
+prepare() {
+sed -e 's/^const/extern &/' \
+    -i $name-$version/src/libreal/real_common.h
+}
 build() {
 cd $name-$version
 
