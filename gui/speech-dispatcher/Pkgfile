@@ -3,26 +3,27 @@ url="https://devel.freebsoft.org/speechd"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(intltool dotconf pulseaudio)
+makedepends=(texinfo intltool dotconf pulseaudio python-xdg)
 
 name=speech-dispatcher
-version=0.8.8
-release=3
+version=0.10.1
 
-source=(http://www.freebsoft.org/pub/projects/speechd/$name-$version.tar.gz)
+source=(https://github.com/brailcom/speechd/releases/download/$version/$name-$version.tar.gz)
 build() {
 cd $name-$version
 sed -i "s/cicero //g" configure.ac
 sed -i "s/sd_cicero//g" src/modules/Makefile.am
 
-autoreconf -i
+CFLAGS+=' -fcommon'
+
 ./configure --prefix=/usr \
 --enable-shared \
 --sysconfdir=/etc \
 --without-flite
 make
 make DESTDIR="$PKG" install
-sed -i 's|includedir=.*|includedir=${prefix}/include/speech-dispatcher|g' "$PKG/usr/lib/pkgconfig/speech-dispatcher.pc"
+sed -i 's|includedir=.*|includedir=${prefix}/include/speech-dispatcher|g' \
+$PKG/usr/lib/pkgconfig/speech-dispatcher.pc
 
 # Obsolets libs
 rm $PKG/usr/lib/libspeechd.la
