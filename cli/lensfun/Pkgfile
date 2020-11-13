@@ -8,10 +8,15 @@ makedepends=(cmake glib libpng doxygen python-docutils)
 
 name=lensfun
 version=0.3.95
-release=3
+release=4
 
-source=(https://sourceforge.net/projects/$name/files/$version/$name-$version.tar.gz
+source=(lensfun-segfault.patch
+	https://sourceforge.net/projects/$name/files/$version/$name-$version.tar.gz
 	)
+prepare() {
+cd $name-$version
+patch -p1 -i ../lensfun-segfault.patch
+}
 build(){
 cd $name-$version
 mkdir build
