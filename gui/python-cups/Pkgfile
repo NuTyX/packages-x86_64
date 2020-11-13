@@ -4,15 +4,16 @@ url="http://cyberelk.net/tim/software/pycups/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
-makedepends=(cups python)
-run=(python-requests)
+makedepends=(cups)
+run=(python python-requests)
 
 name=python-cups
-version=1.9.73
-release=5
+version=2.0.1
+
+PKGMK_KEEP_SOURCES="no"
 
 source=(
-http://cyberelk.net/tim/data/pycups/pycups-$version.tar.bz2)
+https://github.com/OpenPrinting/pycups/archive/v$version.tar.gz)
 
 build() {
     cd pycups-$version
