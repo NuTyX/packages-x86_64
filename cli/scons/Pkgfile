@@ -7,19 +7,17 @@ contributors="Pierre B"
 run=(python)
 
 name=scons
-version=3.1.2
+version=4.0.1
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 build () 
 { 
-cd $name-$version
-sed -i 's/env python/&3/' script/scons*
+cd SCons-$version
+sed -i 's/env python/&3/' SCons/Utilities/*.py
 python3 setup.py install \
-	--standard-lib   \
 	--prefix=/usr    \
 	--install-data=/usr/share \
 	--root=$PKG --optimize=1
-rm -v $PKG/usr/bin/scons*.bat
 
-install -D -m644 LICENSE.txt $PKG/usr/share/licenses/$name/LICENSE
+install -D -m644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
