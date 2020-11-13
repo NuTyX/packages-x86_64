@@ -4,22 +4,16 @@ url="http://www.dabeaz.com/ply/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Remy"
 
-makedepends=(python python2)
+run=(python)
 
 name=python-ply
 version=3.11
-release=3
+release=4
 
 source=(${url}ply-$version.tar.gz)
-
-prepare() {
-cp -a ply-$version{,-py2}
-}
 
 build() {
 
 cd ply-$version
 python3 setup.py install --root=$PKG
-cd ../ply-$version-py2
-python2 setup.py install --root="PKG"
 }
