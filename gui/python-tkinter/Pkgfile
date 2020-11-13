@@ -8,8 +8,7 @@ makedepends=(tk expat)
 run=(python)
 
 name=python-tkinter
-version=3.8.2
-release=2
+version=3.9.0
 
 source=(https://www.python.org/ftp/python/$version/Python-$version.tar.xz)
 
@@ -82,7 +81,7 @@ PYTHONPATH=$PKG/usr/lib/python${version%.*} \
 
 # and finaly the shared librairy
 install -m 755 -d $PKG/usr/lib/python${version%.*}/lib-dynload
-install build/lib.linux-$(uname -m)-${version%.*}/_tkinter.cpython-38-$(uname -m)-linux-gnu.so \
+install build/lib.linux-$(uname -m)-${version%.*}/_tkinter.cpython-39-$(uname -m)-linux-gnu.so \
 $PKG/usr/lib/python${version%.*}/lib-dynload
 
 }
