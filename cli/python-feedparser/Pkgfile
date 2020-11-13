@@ -4,19 +4,14 @@ url="https://github.com/kurtmckee/feedparser
 packager="tnut <tnut@nutyx.org>"
 contributors="Rems"
 
-makedepends=(libxml2 python-sgmllib)
+makedepends=(libxml2)
 run=(python-sgmllib)
 
 name=python-feedparser
-version=5.2.1
-release=2
+version=6.0.2
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/kurtmckee/feedparser/archive/$version.tar.gz)
-
-prepare() {
-cd feedparser-$version; 2to3 -w feedparser/feedparser.py feedparser/feedparsertest.py
-}
 
 build() {
 
