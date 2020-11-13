@@ -4,10 +4,10 @@ contributors="Remy"
 packager="tnut <tnut@nutyx.org>"
 
 name=libplist
-version=2.1.0
+version=2.2.0
 
 PKGMK_KEEP_SOURCES="no"
-makedepends=(python cython autoconf-archive python2-setuptools)
+makedepends=(libtool automake sed cython autoconf-archive)
 run=(python python2-setuptools)
 
 source=(https://github.com/libimobiledevice/libplist/archive/$version.tar.gz)
@@ -46,8 +46,8 @@ popd
 install -D -m644 $name-$version/cython/plist.pxd $PKG/usr/include/plist/cython/plist.pxd
 
 # Obsolets libs
-rm $PKG/usr/lib/libplist++.la
-rm $PKG/usr/lib/libplist.la
+rm $PKG/usr/lib/libplist++-2.0.la
+rm $PKG/usr/lib/libplist-2.0.la
 rm $PKG/usr/lib/python2.7/site-packages/plist.la
-rm $PKG/usr/lib/python3.8/site-packages/plist.la
+rm $PKG/usr/lib/python3.9/site-packages/plist.la
 }
