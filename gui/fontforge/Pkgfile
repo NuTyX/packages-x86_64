@@ -5,33 +5,24 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=fontforge
-version=20170731
-release=6
+version=20201107
 
-makedepends=(xorgproto m4 shared-mime-info freetype libxml2 cairo gtk2
-             pango desktop-file-utils shared-mime-info giflib
-             libjpeg-turbo libpng libtiff)
-run=(shared-mime-info)
+makedepends=(cmake xorgproto m4 shared-mime-info freetype libxml2 cairo gtk3
+             pango giflib libjpeg-turbo libpng libtiff)
+run=(shared-mime-info desktop-file-utils)
 
-source=(https://github.com/$name/$name/releases/download/$version/$name-dist-$version.tar.xz)
+source=(https://github.com/$name/$name/releases/download/$version/$name-$version.tar.xz)
 
 build() {
-    cd $name*
-    ./configure --prefix=/usr \
-            --enable-gtk2-use \
-            --disable-static  \
-            --docdir=/usr/share/doc/$name-$version
+    mkdir build
+    cd build
+
+    cmake -DCMAKE_INSTALL_PREFIX=/usr  \
+          -DCMAKE_BUILD_TYPE=Release   \
+          -DENABLE_LIBSPIRO=OFF        \
+          -DENABLE_LIBUNINAMESLIST=OFF \
+          -DENABLE_DOCS=OFF            \
+          -Wno-dev ../$name-$version
     make
     make DESTDIR=$PKG install
-
-# Obsolets libs
-rm $PKG/usr/lib/libfontforge.la
-rm $PKG/usr/lib/libfontforgeexe.la
-rm $PKG/usr/lib/libgdraw.la
-rm $PKG/usr/lib/libgioftp.la
-rm $PKG/usr/lib/libgunicode.la
-rm $PKG/usr/lib/libgutils.la
-rm $PKG/usr/lib/python2.7/site-packages/fontforge.la
-rm $PKG/usr/lib/python2.7/site-packages/psMat.la
-
 }
