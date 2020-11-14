@@ -6,15 +6,23 @@ packager="tnut <tnut@nutyx.org>"
 maintainer="Arch Linux"
 
 makedepends=(gtk3 ffmpeg flac dbus freetype xorg-libxscrnsaver
-             libxslt nss snappy json-glib zstd)
+             libxslt nss snappy json-glib llvm)
 run=(hicolor-icon-theme desktop-file-utils re2)
 
 name=chromium
-version=83.0.4103.97
+version=86.0.4240.198
+icuversion=67.1
 
-source=(https://downloads.tuxfamily.org/nutyx/files/libminizip.so.1.0.0 
-        https://downloads.tuxfamily.org/nutyx/files/chromium-$version-1-bin-x86_64.tar.xz)
-
+source=(https://github.com/unicode-org/icu/releases/download/\
+release-${icuversion//./-}/icu4c-${icuversion//./_}-src.tgz \
+	https://downloads.tuxfamily.org/nutyx/files/libminizip.so.1.0.0 
+        https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-1-x86_64.pkg.tar.zst)
+prepare() {
+cd icu/source
+./configure
+make
+cd -
+}
 build() {
 
 mv usr $PKG
@@ -22,4 +30,11 @@ cp libminizip.so.1.0.0 $PKG/usr/lib/chromium
 ln -sv libminizip.so.1.0.0 $PKG/usr/lib/chromium/libminizip.so.1
 mkdir -p $PKG/etc/ld.so.conf.d
 echo "/usr/lib/chromium" > $PKG/etc/ld.so.conf.d/$name.conf
+}
+package() {
+cd icu/source
+for LIB in libicui18n.so libicuuc.so libicudata.so
+do
+   cp lib/$LIB.$icuversion $PKG/usr/lib/$LIB.${icuversion:0:2}
+done
 }
