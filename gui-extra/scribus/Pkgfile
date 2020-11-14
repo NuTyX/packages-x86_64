@@ -9,12 +9,12 @@ makedepends=(icu cmake boost aspell cups qttools qtdeclarative gnutls kerberos
 run=(shared-mime-info)
 
 name=scribus
-version=1.5.5_pre20200604
+version=1.5.6
 
-source=(https://github.com/scribusproject/scribus/archive/3e3838a081f5951ecd083bdd4d0123d5eeae2950.tar.gz)
+source=(https://sourceforge.net/projects/scribus/files/scribus-devel/$version/scribus-$version.tar.xz)
 
 build() {
-	cd $name-3e3838a081f5951ecd083bdd4d0123d5eeae2950
+	cd $name-$version
 	mkdir build
 	cd build
 	cmake ../ -DCMAKE_INSTALL_PREFIX=/usr \
