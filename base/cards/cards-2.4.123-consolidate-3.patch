@@ -1,7 +1,7 @@
 diff --git a/scripts/mybld.in b/scripts/mybld.in
 old mode 100644
 new mode 100755
-index ff659af..d76b388
+index ff659af..6461c12
 --- a/scripts/mybld.in
 +++ b/scripts/mybld.in
 @@ -220,6 +220,10 @@ case $1 in
@@ -15,7 +15,20 @@ index ff659af..d76b388
  	-I|--init)
  		INIT="yes";;
  
-@@ -552,6 +556,12 @@ GIT=$(basename $GIT_PROJ)
+@@ -456,9 +460,11 @@ if [ ! -d .git ]; then
+ "
+ 	exit 1
+ fi
+-parse_arguments "$@"
+ 
+ [ -z "$VERSION" ] && VERSION="$(git branch --show-current)"
++
++parse_arguments "$@"
++
+ [ -z "$COLLECTION" ] && find_collection
+ 
+ if [ "$INIT" == "yes" ]; then
+@@ -552,6 +558,12 @@ GIT=$(basename $GIT_PROJ)
  mkdir -p "$ROOT/${VERSION}/${COLLECTION}/etc" || exit 1
  
  setup_cards_conf
@@ -28,7 +41,7 @@ index ff659af..d76b388
  echo "$CARDS_CONF" > $ROOT/$VERSION/$COLLECTION/etc/cards.conf
  [ -z "${PARAM[0]}" ] && CHROOT="ncurses readline bash"
  if [ "$COLLECTION" == "base" ] \
-@@ -561,18 +571,13 @@ if [ "$COLLECTION" == "base" ] \
+@@ -561,18 +573,13 @@ if [ "$COLLECTION" == "base" ] \
  || [ "$COLLECTION" == "gui-extra" ] \
  || [ "$COLLECTION" == "desktops" ] \
  || [ "$COLLECTION" == "nos" ]; then
@@ -48,3 +61,16 @@ index ff659af..d76b388
  && bash scripts/$COLLECTION-extra -a"
  	EXTRA="yes"
  fi
+diff --git a/scripts/pkgmk.in b/scripts/pkgmk.in
+index d169bd7..1b3a17b 100644
+--- a/scripts/pkgmk.in
++++ b/scripts/pkgmk.in
+@@ -327,7 +327,7 @@ unpack_source() {
+ 	for FILE in ${source[@]}; do
+ 		LOCAL_FILENAME="$(get_filename $FILE)"
+ 		case $LOCAL_FILENAME in
+-			*.tar|*.tar.gz|*.tar.Z|*.tgz|*.tar.bz2|*.tbz2|*.tar.xz|*.txz|*.tar.lzma|*.zip|*.rpm|*.tar.lz|*.7z|*.deb)
++			*.tar|*.tar.gz|*.tar.Z|*.tgz|*.tar.bz2|*.tbz2|*.tar.xz|*.txz|*.tar.lzma|*.zip|*.tar.zst|*.rpm|*.tar.lz|*.7z|*.deb)
+ 				if [ "$PKGMK_IGNORE_UNPACK" != "yes" ];then
+ 					COMMAND="bsdtar -p -o -C $SRC -xf $LOCAL_FILENAME"
+ 				else
