@@ -1,0 +1,42 @@
+Submitted By:            Douglas R. Reno <renodr at linuxfromscratch dot org>
+Date:                    2020-11-13
+Initial Package Version: 2.0.15
+Upstream Status:         Unknown
+Origin:                  Libreoffice + Upstream Bug
+Description:             Fixes two security vulnerabilities in raptor2, one of 
+                         them being a heap buffer overflow, and the other being
+                         an out-of-bounds read.
+
+diff -Naurp raptor2-2.0.15.orig/src/raptor_xml_writer.c raptor2-2.0.15/src/raptor_xml_writer.c
+--- raptor2-2.0.15.orig/src/raptor_xml_writer.c	2014-04-20 13:52:53.000000000 -0500
++++ raptor2-2.0.15/src/raptor_xml_writer.c	2020-11-13 09:12:05.408103672 -0600
+@@ -183,7 +183,9 @@ raptor_xml_writer_start_element_common(r
+ 
+   /* max is 1 per element and 1 for each attribute + size of declared */
+   if(nstack) {
+-    int nspace_max_count = element->attribute_count+1;
++    int nspace_max_count = element->attribute_count * 2; /* attr and value */
++    if (element->name->nspace)
++       nspace_max_count++;
+     if(element->declared_nspaces)
+       nspace_max_count += raptor_sequence_size(element->declared_nspaces);
+     if(element->xml_language)
+@@ -209,6 +211,9 @@ raptor_xml_writer_start_element_common(r
+ 
+   if(nstack && element->attributes) {
+     for(i = 0; i < element->attribute_count; i++) {
++       if (nspace_declarations_count > element->attribute_count)
++          goto error;
++
+       /* qname */
+       if(element->attributes[i]->nspace) {
+         /* Check if we need a namespace declaration attribute */
+@@ -237,7 +242,7 @@ raptor_xml_writer_start_element_common(r
+         }
+       }
+ 
+-      /* Add the attribute + value */
++      /* Add the attribute's value */
+       nspace_declarations[nspace_declarations_count].declaration=
+         raptor_qname_format_as_xml(element->attributes[i],
+                                    &nspace_declarations[nspace_declarations_count].length);
