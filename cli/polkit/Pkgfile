@@ -5,9 +5,10 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=polkit
-version=0.116
+version=0.118
 
-makedepends=(systemd gettext glib js60 gobject-introspection intltool perl-xml-parser libxslt docbook-xsl elogind)
+makedepends=(pam systemd gettext glib js78 gobject-introspection elogind
+             patch autoconf intltool perl-xml-parser libxslt docbook-xsl)
 source=($name-fix_elogind_detection-1.patch
         http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
 
