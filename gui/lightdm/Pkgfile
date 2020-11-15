@@ -30,6 +30,8 @@ fi
 build() {
  
  cd $name-$version 
+
+ sed -i s/systemd/elogind/ data/pam/*
  
  ./configure \
      --prefix=/usr \
