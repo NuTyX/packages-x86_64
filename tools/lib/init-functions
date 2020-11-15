@@ -1652,25 +1652,31 @@ do_stop_sysklogd()
 	log_info_msg "Stopping kernel log daemon..."
 	killproc $KLOGDCMD
 	evaluate_retval
-	mv /var/log/kern.log{,.old}
+	mv /var/log/kern.log \
+	/var/log/kern.log.old
 	touch /var/log/kern.log
 
 	log_info_msg "Stopping system log daemon..."
 	killproc $SYSLOGDCMD
 	evaluate_retval
-	mv /var/log/sys.log{,.old}
+	mv /var/log/sys.log \
+	/var/log/sys.log.old
 	touch /var/log/sys.log
 
-	mv /var/log/auth.log{,.old}
+	mv /var/log/auth.log \
+	/var/log/auth.log.old
 	touch /var/log/auth.log
 
-	mv /var/log/daemon.log{,.old}
+	mv /var/log/daemon.log \
+	/var/log/daemon.log.old
 	touch /var/log/daemon.log
 
-	mv /var/log/user.log{,.old}
+	mv /var/log/user.log \
+	/var/log/user.log.old
 	touch /var/log/user.log
 
-	mv /var/log/wtmp{,.old}
+	mv /var/log/wtmp \
+	/var/log/wtmp.old
 	touch /var/log/wtmp
 }
 do_status_sysklogd()
@@ -1691,11 +1697,13 @@ do_cleanup_syslogs()
 	for file in sys daemon kern mail auth user boot cron
 	do
 	if [ -f /var/log/$file.log ]; then
-		mv /var/log/$file.log{,.old}
+		mv /var/log/$file.log \
+		/var/log/$file.log.old
 		touch /var/log/$file.log
 	fi
 	done
-	mv /var/log/wtmp{,.old}
+	mv /var/log/wtmp \
+	/var/log/wtmp.old
 	touch /var/log/wtmp
 	evaluate_retval
 }
