@@ -4,13 +4,13 @@ url="http://www.postgresql.org/docs"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(python libxml2 libxslt openldap pam kerberos)
+makedepends=(readline flex bison perl python libxml2 libxslt openldap pam kerberos)
 run=(shadow)
 
 PKGMK_GROUPS=(lib doc man devel service)
 
 name=postgresql
-version=12.4
+version=13.1
 runyx_version=20200412
 
 source=(https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
@@ -30,7 +30,7 @@ src/include/pg_config_manual.h
 
 # configure
 ./configure --prefix=/usr \
---with-docdir=/usr/share/doc/$name-$version \
+--docdir=/usr/share/doc/$name-$version \
 --enable-thread-safety \
 --with-system-tzdata=/usr/share/zoneinfo \
 --with-pam
