@@ -4,14 +4,17 @@ url="https://en.wikipedia.org/wiki/LightDM"
 packager="tnut <tnut@nutyx.org>"
 contributors="Rems, Tnut, Daniel"
 
+set=(lightdm)
+
 name=lightdm
 version=1.30.0
 runyx_version=20200412
-release=2
+release=3
 
 PKGMK_GROUPS=(man devel doc)
 
 makedepends=(gtk3 libgcrypt pam pcre gobject-introspection xorg-libxklavier vala)
+run=(xorg-xinit)
 
 source=(https://github.com/CanonicalLtd/$name/releases/download/$version/$name-$version.tar.xz
         http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz)
