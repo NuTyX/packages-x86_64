@@ -1,7 +1,7 @@
 diff --git a/scripts/mybld.in b/scripts/mybld.in
 old mode 100644
 new mode 100755
-index ff659af..6461c12
+index ff659af..5c51bd3
 --- a/scripts/mybld.in
 +++ b/scripts/mybld.in
 @@ -220,6 +220,10 @@ case $1 in
@@ -9,7 +9,7 @@ index ff659af..6461c12
  		PARAM+=($1);;
  
 +	-p|--pause)
-+		PAUSE=" && printf \"You are now in the chroot.\n\
++		PAUSE=" && export PATH=/root/$VERSION/scripts:$PATH && printf \"You are now in the chroot.\n\
 +Type exit when finish.\n\n Good Luck !!!\n\n\" && bash";;
 +
  	-I|--init)
@@ -74,3 +74,16 @@ index d169bd7..1b3a17b 100644
  				if [ "$PKGMK_IGNORE_UNPACK" != "yes" ];then
  					COMMAND="bsdtar -p -o -C $SRC -xf $LOCAL_FILENAME"
  				else
+diff --git a/src/cards_install.cxx b/src/cards_install.cxx
+index fad833b..b017518 100644
+--- a/src/cards_install.cxx
++++ b/src/cards_install.cxx
+@@ -46,7 +46,7 @@ Cards_install::Cards_install(const CardsArgumentParser& argParser,
+ 		std::set<std::string> ListOfPackage = getListOfPackagesFromSet(i);
+ 		if (ListOfPackage.empty() )
+ 			ListOfPackage = getListOfPackagesFromCollection(i);
+-		if ( (!ListOfPackage.empty()) && (!checkBinaryExist(i)) ) {
++		if ( !ListOfPackage.empty() )  {
+ 			/*
+ 			* It's a collection or a set
+ 			*/
