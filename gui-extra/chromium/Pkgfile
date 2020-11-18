@@ -10,7 +10,7 @@ makedepends=(gtk3 ffmpeg flac dbus freetype xorg-libxscrnsaver
 run=(hicolor-icon-theme desktop-file-utils re2)
 
 name=chromium
-version=86.0.4240.198
+version=87.0.4280.66
 icuversion=67.1
 
 source=(https://github.com/unicode-org/icu/releases/download/\
@@ -35,6 +35,6 @@ package() {
 cd icu/source
 for LIB in libicui18n.so libicuuc.so libicudata.so
 do
-   cp lib/$LIB.$icuversion $PKG/usr/lib/$LIB.${icuversion:0:2}
+   cp lib/$LIB.$icuversion $PKG/usr/lib/chromium/$LIB.${icuversion:0:2}
 done
 }
