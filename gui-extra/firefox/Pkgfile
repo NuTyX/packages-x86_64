@@ -14,8 +14,7 @@ run=(pulseaudio gconf icu sqlite libvpx nss gtk3 zip unzip
 
 
 name=firefox
-version=82.0.2
-release=2
+version=83.0
 
 locale_version=$version
 
@@ -167,7 +166,8 @@ do
       $PKG/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png
 done
 
-install -Dm644 /dev/stdin $PKG/usr/lib/firefox/browser/defaults/preferences/vendor.js <<END
+mkdir -pv $PKG/usr/lib/firefox/browser/defaults/preferences
+cat > $PKG/usr/lib/firefox/browser/defaults/preferences/vendor.js << "EOF"
 // Use LANG environment variable to choose locale
 pref("intl.locale.requested", "");
 
@@ -177,7 +177,7 @@ pref("browser.shell.checkDefaultBrowser", false);
 // Don't disable our bundled extensions in the application directory
 pref("extensions.autoDisableScopes", 11);
 pref("extensions.shownSelectionUI", true);
-END
+EOF
 
 }
 locale_af()
