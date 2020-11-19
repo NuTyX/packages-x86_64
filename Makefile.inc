@@ -24,6 +24,7 @@ DESTDIR =
 
 LIBDIR = ${DESTDIR}/lib
 USRBINDIR = ${DESTDIR}/usr/bin
+USRSBINDIR = ${DESTDIR}/usr/sbin
 BINDIR = ${DESTDIR}/bin
 SBINDIR = ${DESTDIR}/sbin
 MANDIR = ${DESTDIR}/usr/share/man
