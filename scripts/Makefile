@@ -21,7 +21,7 @@
 
 include ../Makefile.inc
 
-all: install-nutyx setup-nutyx flushmem ifup ifdown which mkinitramfs
+all: install-nutyx setup-nutyx xdm-nutyx flushmem ifup ifdown which mkinitramfs
 
 %: %.in
 	sed -e "s/#VERSION#/$(VERSION)/" $< > $@
@@ -32,6 +32,7 @@ all: install-nutyx setup-nutyx flushmem ifup ifdown which mkinitramfs
 install: all
 	install -D -m0755 install-nutyx $(SBINDIR)/install-nutyx
 	install -D -m0755 setup-nutyx $(SBINDIR)/setup-nutyx
+	install -D -m0755 xdm-nutyx $(USRSBINDIR)/xdm-nutyx
 	install -D -m0755 flushmem $(SBINDIR)/flushmem
 	install -D -m0755 ifup $(SBINDIR)/ifup
 	install -D -m0755 ifdown  $(SBINDIR)/ifdown
@@ -41,6 +42,7 @@ install: all
 clean:
 	rm -f install-nutyx
 	rm -f setup-nutyx
+	rm -f xdm-nutyx
 	rm -f flushmem
 	rm -f ifup
 	rm -f ifdown

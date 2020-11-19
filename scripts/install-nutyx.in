@@ -475,6 +475,26 @@ rtc
 # End /etc/sysconfig/udev_retry
 EOF
 }
+generate_xdm() {
+local FILE
+FILE="xdm"
+[ -f ${FOLDER}/etc/sysconfig/$FILE ] && return
+[ ! -d ${FOLDER}/etc/sysconfig ] && mkdir -pv ${FOLDER}/etc/sysconfig
+if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
+   cp /etc/sysconfig/$FILE \
+   ${FOLDER}/etc/sysconfig/$FILE
+   return
+fi
+cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
+# Which display manager to use (full path):
+# DISPLAY_MANAGER=/usr/sbin/lxdm
+# DISPLAY_MANAGER=/usr/bin/lightdm
+# DISPLAY_MANAGER=/usr/sbin/gdm
+
+# Options to pass to the display manager:
+DM_OPTIONS=""
+EOF
+}
 generate_createfiles() {
 local FILE
 FILE="createfiles"
@@ -1356,6 +1376,7 @@ install_configuration_files() {
 	generate_createfiles
 	generate_mouse
 	generate_udev_retry
+	generate_xdm
 	generate_rc_site
 	generate_etc_bashrc
 	generate_lsb

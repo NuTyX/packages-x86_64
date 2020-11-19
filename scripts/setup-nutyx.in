@@ -61,7 +61,8 @@ _msgfmt() {
 	localedef -i ${1} -f UTF-8 ${1}.UTF-8
 	if [ -f /lib/services/setup-nutyx/setup-nutyx.locales.gz ];then
 		bsdtar -xf /lib/services/setup-nutyx/setup-nutyx.locales.gz \
-		-C $TD lib/{setup-nutyx,xdg-user-dirs,dialog,util-linux}.${L}
+		-C $TD lib/setup-nutyx.${L} lib/xdg-user-dirs.${L} \
+		lib/dialog.${L} lib/util-linux.${L}
 	fi
 	if [ -f $TD/lib/setup-nutyx.${L} ]; then
 		TEXTDOMAINFILE1=$TEXTDOMAINDIR/${L}/LC_MESSAGES/setup-nutyx.mo
