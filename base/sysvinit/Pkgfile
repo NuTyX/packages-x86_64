@@ -5,17 +5,15 @@ contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
 name=sysvinit
-version=2.97
-release=3
+version=2.98
 
 source=(http://download.savannah.nongnu.org/releases/sysvinit/sysvinit-$version.tar.xz
-	$name-consolidated-1.patch shutdown-fix-1.patch)
+	$name-consolidated-1.patch)
 
 build()
 {
 cd $name-$version
 patch -Np1 -i ../$name-consolidated-1.patch
-patch -Np1 -i ../shutdown-fix-1.patch
 
 make -C src
 
@@ -59,7 +57,7 @@ su:S016:once:/sbin/sulogin
 5:2345:respawn:/sbin/agetty tty5 9600
 6:2345:respawn:/sbin/agetty tty6 9600
 
-20:5:respawn:/usr/sbin/lxdm >& /dev/null
+20:5:respawn:/usr/sbin/xdm-nutyx
 
 # End /etc/inittab
 EOF
