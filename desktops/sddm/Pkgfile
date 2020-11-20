@@ -1,0 +1,56 @@
+description="QML based X11 and Wayland display manager"
+url="https://www.kde.org/"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(python-docutils qttools qtdeclarative extra-cmake-modules)
+run=(elogind xorg-xauth xorg-server xorg-xinit)
+
+set=(kde5 plasma5)
+
+name=sddm
+version=0.19.0
+
+source=(https://github.com/$name/$name/archive/v$version.tar.gz)
+
+prepare() {
+groupadd -g 64 sddm
+useradd -c "Simple Desktop Display manager" \
+-d /var/lib/sddm \
+-u 64 -g sddm \
+-s /sbin/false sddm
+}
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr             \
+      -DCMAKE_BUILD_TYPE=Release              \
+      -DKDE_INSTALL_LIBEXECDIR=/usr/lib/$name \
+      -DBUILD_TESTING=OFF  \
+      -DBUILD_MAN_PAGES=ON \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+
+mkdir -p $PKG/var/lib/sddm
+chown -R sddm:sddm $PKG/var/lib/sddm
+
+sed -i "s@pam_tally2.so file=/var/log/tallylog onerr=succeed@pam_faillock.so preauth@" \
+$PKG/etc/pam.d/sddm-autologin
+
+ln -s login $PKG/etc/pam.d/system-login
+}
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
