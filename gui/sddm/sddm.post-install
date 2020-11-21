@@ -8,5 +8,5 @@ if [ ! -L etc/systemd/system/display-manager.service ];then
 else
   ACTIVE_SERVICE="$(readlink /etc/systemd/system/display-manager.service)"
   [ "${ACTIVE_SERVICE}" != "$SERVICE" ] && \
-  log_warning_msg "${WARNING} symlink /etc/systemd/system/display-manager.service -> ${ACTIVE_SERVICE} already exist${NORMAL}"
+  log_warning_msg "${WARNING} symlink /etc/systemd/system/display-manager.service -> ${ACTIVE_SERVICE} exist${NORMAL}"
 fi

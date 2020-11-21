@@ -27,6 +27,7 @@ mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DCMAKE_BUILD_TYPE=Release              \
+      -DDBUS_CONFIG_FILENAME=sddm_org.freedesktop.DisplayManager.conf \
       -DKDE_INSTALL_LIBEXECDIR=/usr/lib/$name \
       -DBUILD_TESTING=OFF  \
       -DBUILD_MAN_PAGES=ON \
@@ -36,11 +37,23 @@ make DESTDIR=$PKG install
 
 mkdir -p $PKG/var/lib/sddm
 chown -R sddm:sddm $PKG/var/lib/sddm
+chmod -R 0755 $PKG/var/lib/sddm
 
 sed -i "s@pam_tally2.so file=/var/log/tallylog onerr=succeed@pam_faillock.so preauth@" \
 $PKG/etc/pam.d/sddm-autologin
 
-ln -s login $PKG/etc/pam.d/system-login
+# runyx service
+SERVICEDIR=lib/init/services/${name}
+mkdir -p $PKG/$SERVICEDIR
+cat > $PKG/$SERVICEDIR/run << "EOF"
+!/bin/sh
+sv check dbus >/dev/null || exit 1
+
+exec /usr/bin/sddm
+EOF
+chmod 755 $PKG/$SERVICEDIR/run
+install -d -m 755 $PKG/etc/init/multi
+ln -sv /$SERVICEDIR $PKG/etc/init/multi/${name}
 }
 
 uptodate() {
