@@ -9,7 +9,7 @@ set=(lightdm)
 name=lightdm
 version=1.30.0
 runyx_version=20200412
-release=3
+release=4
 
 PKGMK_GROUPS=(man devel doc)
 
@@ -63,13 +63,13 @@ install -v -dm770 -o lightdm -g lightdm $PKG/var/log/lightdm
 
 # Service
 cd $SRC/runyx-${runyx_version}
-make DESTDIR=$PKG install-sysv-$name
 make DESTDIR=$PKG install-sysd-$name
-mkdir -p $PKG/{etc/init/multi,init/services/lightdm}
-cat > $PKG/init/services/lightdm/run << "EOF"
+mkdir -p $PKG/{etc/init/multi,lib/init/services/lightdm}
+cat > $PKG/lib/init/services/lightdm/run << "EOF"
 #!/bin/sh
 exec /usr/bin/lightdm
 EOF
+chmod 755 $PKG/lib/init/services/lightdm/run
 ln -sv /lib/init/services/lightdm $PKG/etc/init/multi/lightdm
 
 # Obsolets libs
