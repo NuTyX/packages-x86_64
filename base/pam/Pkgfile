@@ -2,15 +2,25 @@ description="Pluggable Authentication Modules to choose how applications authent
 url="http://www.kernel.org/pub/libs/pam"
 packager="tnut <tnut@nutyx.org>"
 
-name=pam
-version=1.3.1
+makedepends=(autoconf automake texinfo)
 
-source=(http://linux-pam.org/library/Linux-PAM-$version.tar.xz)
+name=pam
+version=1.5.0
+
+source=(https://github.com/linux-pam/linux-pam/releases/download/v$version/Linux-PAM-$version.tar.xz)
+prepare() {
+
+cd Linux-PAM-$version
+
+sed -e /service_DATA/d \
+    -i modules/pam_namespace/Makefile.am &&
+autoreconf
+}
 
 build() {
 
-mkdir -p $PKG/etc/pam.d
 cd Linux-PAM-$version
+
 ./configure --prefix=/usr --sysconfdir=/etc \
             --libdir=/usr/lib                \
             --enable-securedir=/lib/security \
@@ -18,6 +28,7 @@ cd Linux-PAM-$version
             --docdir=/usr/share/doc/Linux-PAM-$version
 make
 make DESTDIR=$PKG install
+
 chmod -v 4755 $PKG/sbin/unix_chkpwd
 
 for file in pam pam_misc pamc
