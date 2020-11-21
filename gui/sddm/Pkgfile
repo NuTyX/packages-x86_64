@@ -46,7 +46,7 @@ $PKG/etc/pam.d/sddm-autologin
 SERVICEDIR=lib/init/services/${name}
 mkdir -p $PKG/$SERVICEDIR
 cat > $PKG/$SERVICEDIR/run << "EOF"
-!/bin/sh
+#!/bin/sh
 sv check dbus >/dev/null || exit 1
 
 exec /usr/bin/sddm
