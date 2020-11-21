@@ -1,9 +1,12 @@
 . lib/lsb/init-functions
 
+SERVICE="/lib/systemd/system/gdm.service"
 if [ ! -L etc/systemd/system/display-manager.service ];then
-   mkdir -p etc/systemd/system
-   ln -sf /lib/systemd/system/gdm.service etc/systemd/system/display-manager.service && \
-   log_success_msg2  "${INFO} Created symlink /etc/systemd/system/display-manager.service -> /lib/systemd/system/gdm.service${NORMAL}"
+  mkdir -p etc/systemd/system
+  ln -sf $SERVICE etc/systemd/system/display-manager.service && \
+  log_success_msg2  "${INFO} Created symlink /etc/systemd/system/display-manager.service -> $SERVICE${NORMAL}"
 else
-   log_warning_msg "${WARNING} symlink /etc/systemd/system/display-manager.service already exist${NORMAL}"
+  ACTIVE_SERVICE="$(readlink /etc/systemd/system/display-manager.service)"
+  [ "${ACTIVE_SERVICE}" != "$SERVICE" ] && \
+  log_warning_msg "${WARNING} symlink /etc/systemd/system/display-manager.service -> ${ACTIVE_SERVICE} exist${NORMAL}"
 fi
