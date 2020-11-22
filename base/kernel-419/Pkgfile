@@ -5,14 +5,14 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 makedepends=(bison flex perl)
-run=(nutyx kmod)
+run=(nutyx kmod busybox)
 
 PKGMK_IGNORE_UNPACK="yes"
 PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-419
-version=4.19.158
+version=4.19.159
 
 alias=(linux-4.19)
 INITRD="initrd-${name/*-/}"
