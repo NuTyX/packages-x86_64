@@ -4,14 +4,14 @@ description="The 5.10 longterm support Linux Kernel version"
 packager="tnut <tnut@nutyx.org>"
 
 makedepends=(bison flex perl)
-run=(nutyx kmod)
+run=(nutyx kmod busybox)
 
 PKGMK_IGNORE_UNPACK="yes"
 PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-510
-version=5.10-rc4
+version=5.10-rc5
 
 INITRD="initrd-${name/*-/}"
 KERNEL=${name/-*/}
