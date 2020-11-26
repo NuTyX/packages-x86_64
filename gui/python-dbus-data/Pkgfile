@@ -1,0 +1,37 @@
+description="Python bindings for DBUS"
+url="http://dbus.freedesktop.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+makedepends=(dbus glib)
+run=(python)
+
+name=python-dbus-data
+version=1.2.16
+_name=dbus-python
+
+PKGMK_GROUPS=(doc)
+
+source=( http://dbus.freedesktop.org/releases/${_name}/${_name}-$version.tar.gz\
+	)
+
+build() {
+	cd ${_name}-$version
+	mkdir build
+	cd    build
+	../configure --prefix=/usr \
+	--docdir=/usr/share/doc/python-dbus-$version
+	make DESTDIR=$PKG install install-data
+
+# already in python-dbus and dbus-python
+rm -r $PKG/usr/lib/python*
+
+}
+uptodate() {
+local url ext
+ext=".tar.gz"
+url="https://dbus.freedesktop.org/releases/dbus-python"
+lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep $name-[0-9]|grep $ext$|head -1|sed "s@$url/$name-@@"|sed "s/$ext//"
+}
