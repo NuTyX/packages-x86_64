@@ -13,7 +13,7 @@ run=(pm-utils gvfs xorg-xrdb xorg-xsetroot xorg-xprop xorg-xmessage
 set=(kde5 plasma5)
 
 name=plasma-workspace
-version=5.20.2
+version=5.20.3
 
 source=(https://download.kde.org/stable/plasma/${version:0:6}/$name-$version.tar.xz)
 
@@ -28,8 +28,6 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
-
-mkdir -p $PKG/usr/bin/
 
 mkdir -p $PKG/etc/pam.d
 
@@ -73,8 +71,6 @@ account include system-account
 
 # End /etc/pam.d/kscreensaver
 EOF
-
-install -v -dm755 $PKG/usr/share/xsessions
 
 }
 
