@@ -4,38 +4,31 @@ url="http://dbus.freedesktop.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(dbus glib)
-run=(python python2)
+makedepends=(dbus glib python-dbus-data)
+run=(python2)
 
 name=dbus-python
 version=1.2.16
+release=2
 
-source=( http://dbus.freedesktop.org/releases/$name/$name-$version.tar.gz\
-	)
+source=( http://dbus.freedesktop.org/releases/$name/$name-$version.tar.gz )
 
 build() {
 	cd $name-$version
-	mkdir python2
-	pushd python2
-	PYTHON=/usr/bin/python \
+	mkdir build
+	cd    build
 	../configure --prefix=/usr \
-		--docdir=/usr/share/doc/dbus-python-$version
+		--docdir=/usr/share/doc/$name-$version
 	make
-	popd
-	mkdir python3
-	pushd python3
-	PYTHON=/usr/bin/python3 \
-	../configure --prefix=/usr \
-		--docdir=/usr/share/doc/dbus-python-$version
-	popd
-	make DESTDIR=$PKG -C python2 install
-	make DESTDIR=$PKG -C python3 install
+	make DESTDIR=$PKG install
 
 # Obsolets libs
 rm $PKG/usr/lib/python2.7/site-packages/_dbus_bindings.la
 rm $PKG/usr/lib/python2.7/site-packages/_dbus_glib_bindings.la
-rm $PKG/usr/lib/python3.9/site-packages/_dbus_bindings.la
-rm $PKG/usr/lib/python3.9/site-packages/_dbus_glib_bindings.la
+
+# python-dbus-data
+rm -r $PKG/usr/include
+rm -r $PKG/usr/lib/pkgconfig
 
 }
 uptodate() {
