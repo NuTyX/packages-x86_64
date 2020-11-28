@@ -4,13 +4,20 @@ url="http://itstool.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(docbook-xml docbook-xsl libxml2 python)
+makedepends=(autoconf automake libtool sed
+             docbook-xml docbook-xsl libxml2 python)
 
 name=itstool
 version=2.0.6
+release=2
 
-source=(http://files.itstool.org/itstool/$name-$version.tar.bz2)
-
+source=(fix-crash-wrong-encoding.patch
+	http://files.itstool.org/itstool/$name-$version.tar.bz2)
+prepare() {
+cd $name-$version
+patch -Np1 -i ../fix-crash-wrong-encoding.patch
+autoreconf -fvi
+}
 build() {
 cd $name-$version
 PYTHON=/usr/bin/python3 ./configure --prefix=/usr
