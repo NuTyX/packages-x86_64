@@ -8,6 +8,7 @@ makedepends=(python2-cairo gobject-introspection xorg-libxxf86vm meson ninja)
 
 name=python2-gobject
 version=3.36.1
+release=2
 
 source=(https://download.gnome.org/sources/pygobject/${version%.*}/pygobject-$version.tar.xz)
 	
@@ -16,7 +17,7 @@ cd pygobject-$version
 mkdir build
 cd    build
 
-meson --prefix=/usr -D python=/usr/bin/python
+meson --prefix=/usr -D python=/usr/bin/python2
 ninja
 DESTDIR=$PKG ninja install
 rm -r $PKG/usr/{lib/pkgconfig,include}
