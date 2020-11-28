@@ -11,14 +11,25 @@ _pybasever=2.7
 
 name=python2
 version=2.7.18
+release=2
 
 source=(
 ${url}/ftp/python/$version/Python-$version.tar.xz
 $name.png)
 
+prepare() {
+    # make sure we use python2 
+    find . -name '*.py' | \
+    xargs sed -i "s|#[ ]*![ ]*/usr/bin/env python$|#!/usr/bin/env python2|"
+
+
+}
 
 build() {
     cd Python-$version
+
+    sed -i '/2to3/d' ./setup.py
+
     ./configure --prefix=/usr        \
                 --with-system-expat  \
                 --with-system-ffi    \
@@ -26,10 +37,13 @@ build() {
                 --enable-unicode=ucs4
     make
     make DESTDIR=$PKG install
-    chmod -v 755 $PKG/usr/lib/libpython2.7.so.1.0
 
-    # Part of python3
-    rm $PKG/usr/bin/2to3
+    mv $PKG/usr/bin/pydoc{,2}
+    mv $PKG/usr/bin/idle{,2}
+
+    rm $PKG/usr/bin/python
+
+    chmod -v 755 $PKG/usr/lib/libpython2.7.so.1.0
 
     # Install all HTML Docs files with desktop menu integration
 
