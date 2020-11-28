@@ -4,22 +4,27 @@ url="http://www.gnome.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(python2-cairo xorg-libxxf86vm)
+makedepends=(autoconf automake libtool sed python2-cairo xorg-libxxf86vm)
 
 name=python2-gobject2
 version=2.28.7
-release=4
+release=5
 
 source=(https://download.gnome.org/sources/pygobject/${version%.*}/pygobject-$version.tar.xz)
 	
+prepare() {
+find . \( -name '*.py' -o -name '*.py.in' \) -exec sed -i '1s|python$|&2|' {} +
+cd pygobject-$version
+autoreconf -fvi
+}
 build() {
 cd pygobject-$version
-./configure --prefix=/usr --disable-introspection
+./configure --prefix=/usr --disable-introspection \
+PYTHON=/usr/bin/python2
 make
 make DESTDIR=$PKG install
 
 # Obsolets libs
-rm $PKG/usr/lib/libpyglib-2.0-python.la
 rm $PKG/usr/lib/python2.7/site-packages/glib/_glib.la
 rm $PKG/usr/lib/python2.7/site-packages/gobject/_gobject.la
 rm $PKG/usr/lib/python2.7/site-packages/gtk-2.0/gio/_gio.la
