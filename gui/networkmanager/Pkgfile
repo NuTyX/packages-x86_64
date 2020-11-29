@@ -6,7 +6,7 @@ contributors="Pierre B, Greg"
 
 makedepends=(libndp libsoup libgudev dbus-glib iptables libnl
              nss wireless-tools polkit upower vala grep
-             gobject-introspection newt
+             gobject-introspection newt python
              python-gobject gtk-doc meson ninja)
 run=(wpa-supplicant)
 
@@ -16,6 +16,7 @@ _name=NetworkManager
 
 name=networkmanager
 version=1.26.4
+release=2
 
 runyx_version=20200412
 
@@ -24,6 +25,8 @@ source=(http://download.tuxfamily.org/files/runyx-${runyx_version}.tar.xz
 
 build() {
 
+grep -rl '^#!.*python$' | xargs sed -i '1s/python/&3/'
+
 mkdir build
 cd    build
 
@@ -31,7 +34,6 @@ CXXFLAGS+="-02 -fPIC"            \
 meson --prefix        /usr       \
       -Dudev_dir=/lib/udev       \
       -Dsession_tracking=elogind \
-      -Dlibnm_glib=true          \
       -Dsession_tracking="no"    \
       -Dlibaudit=no              \
       -Dlibpsl=false             \
