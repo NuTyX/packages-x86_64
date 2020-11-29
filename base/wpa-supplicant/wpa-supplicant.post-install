@@ -1,0 +1,19 @@
+. lib/lsb/init-functions
+
+LINK=dbus-fi.w1.wpa_supplicant1.service
+
+if [ ! -L etc/systemd/system/$LINK ]; then
+     mkdir -p etc/systemd/system
+     ln -sf /lib/systemd/system/wpa_supplicant.service \
+     etc/systemd/system/$LINK && \
+     log_success_msg2  "${INFO} link /etc/systemd/system/$LINK created ${NORMAL}"
+fi
+
+LINK=wpa_supplicant.service
+
+if [ ! -L etc/systemd/system/multi-user.target.wants/$LINK ]; then
+     mkdir -p etc/systemd/system/multi-user.target.wants
+     ln -sf /lib/systemd/system/wpa_supplicant.service \
+     etc/systemd/system/multi-user.target.wants/$LINK && \
+     log_success_msg2  "${INFO} link /etc/systemd/system/multi-user.target.wants/$LINK created ${NORMAL}"
+fi

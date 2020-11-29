@@ -1,12 +1,14 @@
 description="A utility providing key negotiation for WPA wireless networks"
 url="http://hostap.epitest.fi/wpa_supplicant"
+
 packager="tnut tnut@nutyx.org>"
 contributors="Pierre B, tnut, greg"
 
-makedepends=(libnl)
+makedepends=(readline libnl dbus)
 
 name=wpa-supplicant
 version=2.9
+release=2
 
 source=(https://w1.fi/releases/wpa_supplicant-$version.tar.gz)
 
@@ -39,11 +41,44 @@ CONFIG_READLINE=y
 CONFIG_SMARTCARD=y
 CONFIG_WPS=y
 CFLAGS += -I/usr/include/libnl3
+CONFIG_CTRL_IFACE_DBUS=y
+CONFIG_CTRL_IFACE_DBUS_NEW=y
+CONFIG_CTRL_IFACE_DBUS_INTRO=y
 EOF
 cd wpa_supplicant &&
 make BINDIR=/sbin LIBDIR=/lib
 mkdir -p $PKG/{etc,sbin,usr/share/man/man{5,8}}
+
 install -v -m755 wpa_{cli,passphrase,supplicant} $PKG/sbin
 install -v -m644 doc/docbook/wpa_supplicant.conf.5 $PKG/usr/share/man/man5
 install -v -m644 doc/docbook/wpa_{cli,passphrase,supplicant}.8 $PKG/usr/share/man/man8
+
+install -v -d -m755 $PKG/usr/share/dbus-1/system-services
+
+install -v -m644 dbus/fi.w1.wpa_supplicant1.service \
+$PKG/usr/share/dbus-1/system-services
+
+install -v -d -m755 $PKG/etc/dbus-1/system.d
+
+install -v -m644 dbus/dbus-wpa_supplicant.conf \
+$PKG/etc/dbus-1/system.d/wpa_supplicant.conf
+
+
+# Services
+install -v -d -m755 $PKG/lib/systemd/system
+install -v -m644 systemd/*.service $PKG/lib/systemd/system/
+
+install -v -d -m755 $PKG/lib/init/services/wpa-supplicant
+cat > $PKG/lib/init/services/wpa-supplicant/run << "EOF"
+#!/bin/sh
+for FILE in /etc/wpa_supplicant.conf.*
+do
+   INTERFACE="${FILE/*./}"
+   [ -z $INTERFACE ] && continue
+   OPTIONS+="$OPTIONS -c$FILE -i$INTERFACE"
+done
+exec 2>&1
+exec wpa_supplicant $OPTIONS
+EOF
+chmod 755 $PKG/lib/init/services/wpa-supplicant/run
 }
