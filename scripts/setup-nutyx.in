@@ -385,11 +385,16 @@ setup_wireless()
 {
 	local TITLE WPA_FILE returncode WPA_TOOL ESSID KEY
 	WPA_TOOL="$(which wpa_passphrase)"
-	IWCONFIG="$(which iwconfig)"
-
-	if [ ! -z $IWCONFIG ];then
-		WIFI_NETWORK_CARD="$($IWCONFIG 2>&1|grep IEEE|cut -d " " -f1|tail -1)"
+	if [ -z "${WPA_TOOL}" ]; then
+		error "wpa-supplicant not installed"
 	fi
+	IWCONFIG="$(which iwconfig)"
+	if [ -z "${IWCONFIG}" ]; then
+		error "wireless-tools not installed"
+	fi
+
+	WIFI_NETWORK_CARD="$($IWCONFIG 2>&1|grep IEEE|cut -d " " -f1|tail -1)"
+
 	if [ -z ${WIFI_NETWORK_CARD} ];then
 		network_card_found
 		[ -z ${NETWORK_CARD} ] && return
@@ -434,6 +439,11 @@ setup_wireless()
 		--colors \
 		--msgbox "\Zb\Z1$(gettext "Cannot create") $WPA_FILE\Zn" 0 0
 	fi
+	mkdir -p /etc/init/single
+  mkdir -p /etc/init/multi
+  ln -sv /lib/init/services/wpa-supplicant /etc/init/single/wpa-supplicant
+  ln -sv /lib/init/services/wpa-supplicant /etc/init/multi/wpa-supplicant
+
 	SETUP_CONFIG_WIFI="no"
 }
 setup_net() 
