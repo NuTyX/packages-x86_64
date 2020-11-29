@@ -5,34 +5,27 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Greg"
 
 makedepends=(libndp libsoup libgudev dbus-glib iptables libnl
-             nss wireless-tools polkit upower vala
+             nss wireless-tools polkit upower vala grep
              gobject-introspection newt
              python-gobject gtk-doc meson ninja)
-run=(wpa-supplicant wpa-supplicant-dbus)
+run=(wpa-supplicant)
 
 alias=(NetworkManager)
 
 _name=NetworkManager
 
 name=networkmanager
-version=1.26.2
-release=2
+version=1.26.4
 
 runyx_version=20200412
 
-source=(fix-pygobject3-1.patch
-	http://download.tuxfamily.org/files/runyx-${runyx_version}.tar.xz
+source=(http://download.tuxfamily.org/files/runyx-${runyx_version}.tar.xz
 	https://download.gnome.org/sources/$_name/${version:0:4}/$_name-$version.tar.xz)
 
-prepare() {
-mkdir build
-cd ${_name}-$version
-patch -Np1 -i ../fix-pygobject3-1.patch
-cd ..
-}
 build() {
 
-cd build
+mkdir build
+cd    build
 
 CXXFLAGS+="-02 -fPIC"            \
 meson --prefix        /usr       \
