@@ -1,5 +1,11 @@
 . lib/lsb/init-functions
 
+if [ -f etc/inittab ]; then
+   sed -i "s/^id:[3-5]/id:5/" etc/inittab
+   log_success_msg2  "Init default set to 5 in the ${WARNING}/etc/inittab ${NORMAL}file"
+fi
+
+
 SERVICE="/lib/systemd/system/lightdm.service"
 if [ ! -L etc/systemd/system/display-manager.service ];then
   mkdir -p etc/systemd/system
