@@ -1593,6 +1593,7 @@ install_nutyx() {
 	$TEXTDOMAINFILE4
 	do
 		if [ -f /$FILE ] || [ -d /$FILE ] || [ -L /$FILE ];then
+			mkdir -p $(dirname ${2}/$FILE)
 			cp -av /$FILE  ${2}/$FILE &> /dev/tty2
 		fi
 	done
