@@ -1162,8 +1162,8 @@ fi
 
 if [ ! -z "$KERNEL" ]; then
 	INITS="eudev sysklogd sysvinit dbus systemd runyx"
-	CORE=" acl attr bash bzip2 coreutils readline \
-expat ncurses lzo gmp flex file gzip mpc mpfr xz zlib \
+	CORE=" acl attr bash coreutils readline \
+expat ncurses lzo gmp flex file gzip mpc mpfr \
 grep sed findutils binutils \
 inetutils diffutils shadow \
 bc less libcap util-linux \
@@ -1177,7 +1177,7 @@ cards.man nutyx.man \
 lvm2 dialog cpio squashfs \
 lsb-release \
 linux-firmware grub \
-lz4 mdadm dhcpcd \
+mdadm dhcpcd \
 $KERNEL"
 fi
 
@@ -1377,7 +1377,6 @@ install_configuration_files() {
 	generate_createfiles
 	generate_mouse
 	generate_udev_retry
-	generate_xdm
 	generate_rc_site
 	generate_etc_bashrc
 	generate_lsb

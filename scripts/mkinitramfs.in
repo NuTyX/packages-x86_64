@@ -15,14 +15,14 @@ serio i8042 libps2 atkbd \
 virtio virtio_blk virtio_pci virtio_net virtio_ring
 do
 	find /lib/modules/$KERNEL_VERSION -type f -name $i* 2> /dev/null | \
-	cpio --make-directories -p --quiet $WDIR 2> /dev/null
+	$CPIO --make-directories -p --quiet $WDIR 2> /dev/null
 done
 
 find /lib/modules/$KERNEL_VERSION/kernel/{crypto,fs,lib} \
      /lib/modules/$KERNEL_VERSION/kernel/drivers/{scsi,message,pcmcia,virtio} \
      /lib/modules/$KERNEL_VERSION/kernel/drivers/{md,ata,block,firewire}  \
      /lib/modules/$KERNEL_VERSION/kernel/drivers/usb/{host,storage}  \
-     -type f 2> /dev/null | cpio --make-directories -p --quiet $WDIR 2> /dev/null
+     -type f 2> /dev/null | $CPIO --make-directories -p --quiet $WDIR 2> /dev/null
 
 mkdir -p $WDIR/lib/modules/$KERNEL_VERSION
 for i in builtin order symbols
@@ -78,6 +78,7 @@ copy()
 ### Start Here
 
 BUSYBOX=$(which busybox)
+CPIO=$(which cpio)
 DATADIR=/lib/services
 INITIN=init.in
 
@@ -366,7 +367,7 @@ fi
 
 rm -f /boot/$INITRAMFS_FILE
 
-( cd $WDIR ; find . | cpio -o -H newc --quiet | gzip -9 ) > $INITRAMFS_FILE
+( cd $WDIR ; find . | $CPIO -o -H newc --quiet | gzip -9 ) > $INITRAMFS_FILE
 
 # Remove the temporary direc
 rm -rf $WDIR $unsorted

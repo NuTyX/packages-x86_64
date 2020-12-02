@@ -223,13 +223,19 @@ find_media() {
 		losetup $LOOPDEV /media/fromdev${fromiso}
 	fi
 
-	for SYS in /sys/block/sd* /sys/block/sd*/sd* /sys/block/sr* /sys/block/loop*; do
+	for SYS in /sys/block/*
+	do
 		[ "$verbose" == "no" ] || printf "Looking in %s for media\n" $SYS
-		if [ ! -d "$SYS" ]; then  continue; fi
-		DEV=/dev/${SYS##*/}
+		[ ! -d "$SYS" ] && continue
+		DEV=/dev/$(basename $SYS)
+		[ ! -b $DEV ] && continue
 		eval $(blkid $DEV|cut -d ":" -f2)
 		if [ ${LABEL} == ${EXPECT_LABEL} ]  2>/dev/null ; then
-			ln -sf $DEV /dev/nutyx-cd
+		    if [ -b ${DEV}1 ]; then
+				ln -sf ${DEV}1 /dev/nutyx-cd
+			else
+				ln -sf ${DEV} /dev/nutyx-cd
+			fi
 			mkdir  -p /media/cdrom 2>/dev/null
 			[ "$verbose" == "no" ] || printf "mount -n /dev/nutyx-cd /media/cdrom\n"
 			mount -n /dev/nutyx-cd /media/cdrom
