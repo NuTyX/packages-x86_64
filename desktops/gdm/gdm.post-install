@@ -15,3 +15,19 @@ else
   [ "${ACTIVE_SERVICE}" != "$SERVICE" ] && \
   log_warning_msg "${WARNING} symlink /etc/systemd/system/display-manager.service -> ${ACTIVE_SERVICE} exist${NORMAL}"
 fi
+
+if [ ! -f etc/sysconfig/xdm ];then
+   mkdir -p etc/sysconfig
+   cat > etc/sysconfig/xdm << "EOF"
+# Which display manager to use (full path):
+DISPLAY_MANAGER=/usr/sbin/gdm
+# DISPLAY_MANAGER=/usr/sbin/lxdm
+# DISPLAY_MANAGER=/usr/bin/lightdm
+# DISPLAY_MANAGER=/usr/bin/sddm
+
+
+# Options to pass to the display manager:
+DM_OPTIONS=""
+EOF
+   log_success_msg2  "${INFO} /etc/sysconfig/xdm file created ${NORMAL}"
+fi
