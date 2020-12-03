@@ -4,11 +4,14 @@ url="https://github.com/zdohnal/system-config-printer"
 packager="tnut <tnut@nutyx.org>"
 
 makedepends=(python-smbc docbook-xsl intltool xmlto)
-run=(dbus-python python-gobject python-cairo python-cups python-curl
+run=(python-dbus python-gobject python-cairo python-cups python-curl
      python-smbc desktop-file-utils)
+
+set=(cups printer)
 
 name=system-config-printer
 version=1.5.13
+release=2
 
 source=(https://github.com/OpenPrinting/$name/releases/download/v$version/$name-$version.tar.xz)
 
