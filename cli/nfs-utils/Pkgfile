@@ -8,6 +8,7 @@ run=(rpcbind)
 
 name=nfs-utils
 version=2.5.2
+release=2
 
 runyx_version=20200412
 
@@ -45,7 +46,17 @@ chown nobody.nogroup $PKG/var/lib/nfs
 # Services
 cd ../runyx-${runyx_version}
 make DESTDIR=$PKG install-sysv-nfs-server
+
 make DESTDIR=$PKG install-runyx-nfs-server
 sed -i s@install-nfs@install-sysd-nfs@ services/sysd/Makefile
+sed -i s@/usr/sbin@/sbin@ \
+$PKG/lib/init/services/nfs-server/finish
+sed -i s@/usr/sbin@/sbin@ \
+$PKG/lib/init/services/nfs-server/run
+
+sed -i 's@rpc.mountd@rpc.mountd --foreground@' \
+$PKG/lib/init/services/nfs-server/run
+
+
 make DESTDIR=$PKG install-sysd-nfs-server
 }
