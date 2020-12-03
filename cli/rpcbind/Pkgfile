@@ -10,7 +10,7 @@ PKGMK_GROUPS=(man)
 
 name=rpcbind
 version=1.2.5
-release=4
+release=5
 
 runyx_version=20200412
 source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
@@ -38,6 +38,9 @@ build() {
 
     make DESTDIR=$PKG install-runyx-rpcbind
     make DESTDIR=$PKG install-runyx-netfs
+    sed -i 's@/usr/bin@/sbin@' \
+    $PKG/lib/init/services/rpcbind/run
+
 
     make DESTDIR=$PKG install-sysd-rpcbind
  
