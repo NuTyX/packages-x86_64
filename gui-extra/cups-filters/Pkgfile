@@ -7,8 +7,11 @@ contributors="Pierre B"
 makedepends=(glib cups lcms2 poppler mupdf qpdf libjpeg-turbo
              libpng libtiff ghostscript avahi ijs harfbuzz dejavu-ttf)
 
+set=(cups printer)
+
 name=cups-filters
 version=1.28.5
+release=2
 
 source=( http://www.openprinting.org/download/$name/$name-$version.tar.xz)
 build() {
@@ -24,4 +27,8 @@ make
 make DESTDIR=$PKG install
 # Obsolets libs
 rm $PKG/usr/lib/lib{cupsfilters,fontembed}.la
+
+mkdir -p $PKG/lib/systemd/system
+install -v -m644 utils/cups-browsed.service \
+$PKG/lib/systemd/system/cups-browsed.service
 }

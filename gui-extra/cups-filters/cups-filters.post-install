@@ -1,0 +1,8 @@
+. lib/lsb/init-functions
+if [ ! -L etc/systemd/system/multi-user.target.wants/cups-browsed.service ]; then
+   mkdir -p etc/systemd/system/multi-user.target.wants
+   ln -svf /lib/systemd/system/cups-browsed.service \
+   etc/systemd/system/multi-user.target.wants/cups-browsed.service &&
+   log_success_msg2  "${INFO} Created symlink /etc/systemd/system/multi-user.wants/cups-browsed.service -> /lib/systemd/system/cups-browsed.service${NORMAL}"
+fi
+
