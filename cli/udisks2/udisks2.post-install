@@ -1,0 +1,9 @@
+. lib/lsb/init-functions
+LINK="systemd/system/graphical.target.wants/udisks2.service"
+if [ ! -L etc/$LINK ]; then
+   mkdir -p etc/$(dirname $LINK)
+   ln -svf /lib/systemd/system/$(basename $LINK) \
+   etc/$LINK &&
+   log_success_msg2  "${INFO} Created symlink /etc/$LINK -> /lib/systemd/system/$(basename $LINK)${NORMAL}"
+fi
+
