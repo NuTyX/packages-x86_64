@@ -1,3 +1,23 @@
 . lib/lsb/init-functions
 log_warning_msg "${WARNING} Make sure to install gvfs if you run mate environment ${NORMAL}"
 [  ! -f etc/cups/client.conf ] && echo "ServerName /var/run/cups/cups.sock" > etc/cups/client.conf
+
+if [ ! -L etc/systemd/system/printer.target.wants/org.cups.cupsd.service ]; then
+   mkdir -p etc/systemd/system/printer.target.wants
+   ln -svf /lib/systemd/system/org.cups.cupsd.service \
+   etc/systemd/system/printer.target.wants/org.cups.cupsd.service &&
+   log_success_msg2  "${INFO} Created symlink /etc/systemd/system/printer.target.wants/org.cups.cupsd.service -> /lib/systemd/system/org.cups.cupsd.service${NORMAL}"
+fi
+if [ ! -L etc/systemd/system/sockets.target.wants/org.cups.cupsd.socket ]; then
+   mkdir -p etc/systemd/system/sockets.target.wants
+   ln -svf /lib/systemd/system/org.cups.cupsd.socket \
+   etc/systemd/system/sockets.target.wants/org.cups.cupsd.socket &&
+   log_success_msg2  "${INFO} Created symlink /etc/systemd/system/printer.target.wants/org.cups.cupsd.service -> /lib/systemd/system/cups.cupsd.service${NORMAL}"
+fi
+if [ ! -L etc/systemd/system/multi-user.target.wants/org.cups.cupsd.path ]; then
+   mkdir -p etc/systemd/system/multi-user.target.wants
+   ln -svf /lib/systemd/system/org.cups.cupsd.path \
+   etc/systemd/system/multi-user.target.wants/org.cups.cupsd.path &&
+   log_success_msg2  "${INFO} Created symlink /etc/systemd/system/multi-user.target.wants/org.cups.cupds.path -> /lib/systemd/system/org.cups.cupsd.path${NORMAL}"
+fi
+

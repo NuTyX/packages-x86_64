@@ -4,15 +4,17 @@ url="http://www.cups.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(libusb avahi python gnutls)
+makedepends=(pam libusb avahi python gnutls)
 run=(xdg-utils gtk-update-icon-cache
      cups.lib)
+
+set=(cups printer)
 
 PKGMK_GROUPS=(devel man lib)
 
 name=cups
 version=2.3.3
-release=2
+release=3
 
 runyx_version=20200412
 
