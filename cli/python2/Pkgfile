@@ -11,7 +11,7 @@ _pybasever=2.7
 
 name=python2
 version=2.7.18
-release=2
+release=3
 
 source=(
 ${url}/ftp/python/$version/Python-$version.tar.xz
@@ -42,7 +42,10 @@ build() {
     mv $PKG/usr/bin/idle{,2}
 
     rm $PKG/usr/bin/python
+    rm $PKG/usr/bin/python-config
 
+    rm $PKG/usr/share/man/man1/python.1
+    
     chmod -v 755 $PKG/usr/lib/libpython2.7.so.1.0
 
     # Install all HTML Docs files with desktop menu integration
