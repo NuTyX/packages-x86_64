@@ -12,31 +12,31 @@ makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              harfbuzz gtk-doc libnotify wayland woff2)
              
 name=webkitgtk
-version=2.30.2
-release=2
+version=2.30.3
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 prepare() {
 echo 'add_compile_definitions("U_DEFINE_FALSE_AND_TRUE=1")' >> $name-$version/Source/WTF/wtf/CMakeLists.txt
+pkgrm python2
+pkgrm python2.devel
 }
-
 build() {
 cd $name-$version
 mkdir -p build
 cd       build
-CFLAGS=-Wno-expansion-to-defined \
+CFLAGS=-Wno-expansion-to-defined   \
 CXXFLAGS=-Wno-expansion-to-defined \
-cmake -G Ninja \
-      -DCMAKE_BUILD_TYPE=Release  \
-      -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_SKIP_RPATH=ON       \
-      -DPORT=GTK                  \
-      -DLIB_INSTALL_DIR=/usr/lib  \
-      -DUSE_LIBHYPHEN=OFF         \
-      -DENABLE_MINIBROWSER=ON     \
-      -DUSE_WOFF2=ON              \
-      -DENABLE_GTKDOC=ON          \
-      -DUSE_WPE_RENDERER=OFF      \
+cmake -G Ninja                     \
+      -DCMAKE_BUILD_TYPE=Release   \
+      -DCMAKE_INSTALL_PREFIX=/usr  \
+      -DCMAKE_SKIP_RPATH=ON        \
+      -DPORT=GTK                   \
+      -DLIB_INSTALL_DIR=/usr/lib   \
+      -DUSE_LIBHYPHEN=OFF          \
+      -DENABLE_MINIBROWSER=ON      \
+      -DUSE_WOFF2=ON               \
+      -DENABLE_GTKDOC=ON           \
+      -DUSE_WPE_RENDERER=OFF       \
       -DENABLE_BUBBLEWRAP_SANDBOX=OFF \
       -Wno-dev ..
 ninja || ninja -j1
