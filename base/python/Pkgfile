@@ -11,7 +11,7 @@ set=(devel)
 
 name=python
 version=3.9.0
-release=2
+release=3
 
 source=(http://www.python.org/ftp/python/$version/Python-$version.tar.xz
         https://docs.python.org/ftp/python/doc/$version/python-$version-docs-html.tar.bz2
@@ -39,6 +39,12 @@ rm -r Lib/tkinter
 
 	chmod -v 755 $PKG/usr/lib/libpython3.9.so
 	chmod -v 755 $PKG//usr/lib/libpython3.so
+
+	ln -s python3          $PKG/usr/bin/python
+	ln -s python3-config   $PKG/usr/bin/python-config
+	ln -s idle3            $PKG/usr/bin/idle
+	ln -s pydoc3           $PKG/usr/bin/pydoc
+	ln -s python${version%.*}.1 $PKG/usr/share/man/man1/python.1
 
 # Install all HTML Docs files with desktop menu integration
 
