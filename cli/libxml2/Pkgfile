@@ -4,50 +4,32 @@ url="http://xmlsoft.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Fanch"
 
-makedepends=(python2 python)
+makedepends=(python)
 
 name=libxml2
 version=2.9.10
-release=3
+release=4
 
 PKGMK_GROUPS=(lib man devel doc)
-source=(ftp://xmlsoft.org/libxml2/$name-$version.tar.gz)
+source=(http://www.linuxfromscratch.org/patches/blfs/svn/libxml2-2.9.10-security_fixes-1.patch
+	ftp://xmlsoft.org/libxml2/$name-$version.tar.gz)
 
 
-prepare() {
-mkdir build-py{2,3}
-sed -i '/if Py/{s/Py/(Py/;s/)/))/}' $name-$version/python/{types.c,libxml.c}
-sed -i '/_PyVerify_fd/,+1d' $name-$version/python/types.c
-sed -i 's/ TRUE/ true/' $name-$version/encoding.c
-}
+build() {
+cd $name-$version
+patch -p1 -i ../libxml2-2.9.10-security_fixes-1.patch
+sed -i '/if Py/{s/Py/(Py/;s/)/))/}' python/{types.c,libxml.c}
+sed -i 's/ TRUE/ true/' encoding.c
 
-_build() {
-cd build-py$1
-../$name-$version/configure \
+./configure \
     --prefix=/usr \
     --disable-static \
     --with-history \
-    --with-python=/usr/bin/python$1
-
-  PYTHONHASHSEED=0 make
-  find doc -type f -exec chmod 0644 {} +
-cd ..
-}
-
-build() {
-
-_build 2
-_build 3
-}
-
-package() {
-
-make -C build-py2  DESTDIR=$PKG install
-make -C build-py3/python  DESTDIR=$PKG install
-
+    --with-python=/usr/bin/python3
+make
+make DESTDIR=$PKG install
 rm $PKG/usr/lib/$name.la
 rm $PKG/usr/lib/python3.9/site-packages/libxml2mod.la
-rm $PKG/usr/lib/python2.7/site-packages/libxml2mod.la
 }
 
 lib() {
