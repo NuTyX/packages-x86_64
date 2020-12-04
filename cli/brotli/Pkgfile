@@ -4,32 +4,25 @@ url="https://github.com/google/brotli"
 contributors="Fanch, Rems"
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(git cmake python python2-setuptools)
+makedepends=(git cmake python)
 
 name=brotli
 version=1.0.9
+release=2
 
 PKGMK_KEEP_SOURCES="no"
 
 source=(https://github.com/google/brotli/archive/v$version.tar.gz)
 
-prepare() {
-cp -a brotli-$version{,-py2}
-}
-
 build(){
-   cd $name-$version
+  cd $name-$version
    
-   mkdir -pv build
+  mkdir -pv build
    
   python3 setup.py build
   python3 setup.py install --skip-build -O1 --root="$PKG"
   
-   cd ../brotli-$version-py2
-  python2 setup.py build
-  python2 setup.py install --skip-build -O1 --root="$PKG"
-  
-   cd    ../$name-$version/build
+  cd    ../$name-$version/build
   cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib ..
   make 
   make DESTDIR=$PKG install
