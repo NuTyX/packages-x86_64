@@ -1,17 +1,17 @@
 . lib/lsb/init-functions
 
-echo "Your username need to be part of the 'kvm' group to be able to use virtualisation
-Votre nom d'utilisateur doit être ajouté au groupe 'kvm' pour la virtualisation"
+UN=kvm
+if ! (getent group $UN > /dev/null); then
+	log_info_msg "${INFO}Creating $UN group${NORMAL}\n"
+	groupadd -g 61 $UN
+fi
 
-echo "
-  usermod -a -G kvm <username>"
+log_warning_msg "${WARNING}
 
-ln -svf qemu-system-x86_64 /usr/bin/qemu
+Your account needs to be part of the 'kvm' group
+to be able to use qemu:
 
-echo "Qemu is configured to launch a x86_64 machine.
-To use another system (PowerMac, PowerPC, Sparc, mips etc..)
-you need to launch the corresponding machines from the '/usr/bin' folder
+  usermod -a -G $UN <username>
 
-Qemu est configuré pour lancer une machine virtuelle x86_64.
-Pour utiliser un autre système (PowerMac, PowerPC, Sparc, mips etc..)
-il faut lancer les machines correstondantes directement depuis le repertoire /usr/bin."
+${NORMAL}"
+
