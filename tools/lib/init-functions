@@ -1081,7 +1081,7 @@ do_start_udev()
 
   # Start the udev daemon to continually watch for, and act on,
   # uevents
-  /sbin/udevd --daemon --resolve-names=never
+  /sbin/udevd --daemon
 
   # Now traverse /sys in order to "coldplug" devices that have
   # already been discovered
