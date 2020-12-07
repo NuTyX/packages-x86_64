@@ -1,7 +1,8 @@
-SCRIPTDIR=`pwd -P`
-SCRIPTDIR+="/`dirname $0`"
+SPLASH="splash-20.12.0"
+SCRIPTDIR=$(pwd -P)
+SCRIPTDIR+="/$(dirname $0)"
 ISODIR=${LFS}/ISO
-ARCH=`uname -m`
+ARCH=$(uname -m)
 LABEL=nutyxcd
 GRUB_EFI_ARCH="x86_64"
 GRUB_EFI_IMG="bootx64.efi"
@@ -68,7 +69,10 @@ done
 
 	# isolinux stufs
 	cd ${ISODIR} || error "cd ${ISODIR}"
-	for FILE in splash.png libutil.c32 libcom32.c32 ldlinux.c32 vesamenu.c32 isolinux.bin
+	wget https://download.tuxfamily.org/nutyx/files/$SPLASH.png
+	[ -f $SPLASH.png ] && mv $SPLASH.png isolinux/splash.png
+
+	for FILE in libutil.c32 libcom32.c32 ldlinux.c32 vesamenu.c32 isolinux.bin
 	do
 		[ ! -f /usr/lib/syslinux/$FILE ] && error "syslinux not properly installed"
 		cp -v /usr/lib/syslinux/$FILE isolinux/
