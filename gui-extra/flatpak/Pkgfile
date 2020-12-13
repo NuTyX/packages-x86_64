@@ -7,8 +7,9 @@ makedepends=(glib libsoup gpgme polkit fuse2 libostree json-glib
              appstream-glib libseccomp python-parsing)
 run=(bubblewrap gnupg)
 
-version=1.9.1
-source=(https://github.com/flatpak/flatpak/releases/download/$version/flatpak-$version.tar.xz)
+version=1.9.2
+source=(https://dl.flathub.org/repo/flathub.flatpakrepo
+        https://github.com/flatpak/flatpak/releases/download/$version/flatpak-$version.tar.xz)
 
 build() {
 
@@ -24,4 +25,8 @@ sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 make
 
 make DESTDIR=$PKG install
+}
+package() {
+install -Dm644 flathub.flatpakrepo \
+$PKG/etc/flatpak/remotes.d/flathub.flatpakrepo
 }
