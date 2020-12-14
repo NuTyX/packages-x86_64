@@ -7,26 +7,28 @@ contributors="Pierre B"
 run=(make-ca)
 
 name=openjdk
-version=8u275
-release=01
+version=8u141
+release=2
 
-source=(https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk${version}-b01/OpenJDK8U-jdk_x64_linux_hotspot_${version}b${release}.tar.gz)
+_version=1.8.0.141
+
+source=(http://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-${_version}/OpenJDK-${_version}-`uname -m`-bin.tar.xz)
 
 build() {
-cd jdk8*
-install -vdm755 $PKG/opt/jdk8
-mv -v * $PKG/opt/jdk8
-chown -R root:root $PKG/opt/jdk8
+cd OpenJDK*
+install -vdm755 $PKG/opt/OpenJDK-$version-bin
+mv -v * $PKG/opt/OpenJDK-$version-bin
+chown -R root:root $PKG/opt/OpenJDK-$version-bin
 
 ln -svf /etc/pki/tls/java/cacerts \
-$PKG/opt/jdk8/jre/lib/security/cacerts
+$PKG/opt/OpenJDK-$version-bin/jre/lib/security/cacerts
 
 mkdir -pv $PKG/etc/profile.d
 cat > $PKG/etc/profile.d/openjdk.sh << "EOF"
 # Begin /etc/profile.d/openjdk.sh
 
 # Set JAVA_HOME directory
-JAVA_HOME=/opt/jdk8
+JAVA_HOME=/opt/jdk
 
 # Adjust PATH
 pathappend $JAVA_HOME/bin
@@ -52,7 +54,9 @@ unset AUTO_CLASSPATH_DIR dir jar
 # End /etc/profile.d/openjdk.sh
 EOF
 
+ln -sfnv OpenJDK-$version-bin $PKG/opt/jdk
+
 mkdir -pv $PKG/usr/share
-mv $PKG/opt/jdk8/man \
+mv $PKG/opt/jdk/man \
    $PKG/usr/share
 }
