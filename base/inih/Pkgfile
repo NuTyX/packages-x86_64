@@ -1,0 +1,21 @@
+description='A simple .INI file parser written in C'
+url='https://github.com/benhoyt/inih'
+
+packager="tnut <tnut@nutyx.org"
+
+makedepends=(meson ninja)
+
+name=inih
+version=r52
+
+source=(https://github.com/benhoyt/inih/archive/$version/inih-$version.tar.gz)
+build(){
+  mkdir build
+  cd    build
+  meson --prefix=/usr \
+  -Ddefault_library=shared \
+  -Ddistro_install=true \
+  ../$name-$version
+  ninja
+  DESTDIR=$PKG ninja install
+}
