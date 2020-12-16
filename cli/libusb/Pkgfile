@@ -7,7 +7,7 @@ contributors="Pierre B"
 makedepends=(eudev doxygen)
 
 name=libusb
-version=1.0.23
+version=1.0.24
 
 source=( https://github.com//libusb/libusb/releases/download/v$version/libusb-$version.tar.bz2)
 
@@ -15,19 +15,20 @@ build() {
   unset MAKEFLAGS
   cd $name-$version
 
-  sed -i "s/^PROJECT_LOGO/#&/" doc/doxygen.cfg.in
-
   ./configure --prefix=/usr \
           --mandir=/usr/share/man \
           --disable-static \
           --infodir=/usr/share/info
-  make -C doc docs
   make
+
+  sed -i "s/^TCL_SUBST/#&/; s/wide//" doc/doxygen.cfg 
+  make -C doc docs
+
   make DESTDIR=$PKG install
   rm $PKG/usr/lib/libusb-1.0.la
 
   # Documentation
   install -v -d -m755 $PKG/usr/share/doc/libusb-$version/apidocs
-  install -v -m644    doc/html/* \
+  install -v -m644    doc/api-1.0/* \
   $PKG/usr/share/doc/libusb-$version/apidocs
 }
