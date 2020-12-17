@@ -13,3 +13,13 @@ source=(https://github.com/rhash/RHash/archive/v$version.tar.gz)
 prepare() {
 mv RHash-$version $name-$version
 }
+build() {
+ cd $name-$version
+ ./configure --prefix=/usr --sysconfdir=/etc  \
+ --extra-cflags="$CFLAGS"  --extra-ldflags="$LDFLAGS"
+ make
+ make DESTDIR=$PKG install
+
+ make -C librhash DESTDIR=$PKG install-lib-headers \
+ install-lib-shared install-so-link
+}
