@@ -1,18 +1,24 @@
 description="A GTK+ audio player for GNU/Linux"
 url="http://deadbeef.sourceforge.net"
+
 contributors="Pierre B, Greg"
 packager="tnut <tnut@nutyx.org>"
 
-name=deadbeef
-version=0.7.2
-makedepends=(intltool perl-xml-parser desktop-file-utils gtk3
+makedepends=(intltool perl-xml-parser gtk3
              x264 flac libmad glib librsvg libcaca
              alsa-lib xorg-libxinerama xorg-libxpm libvpx libcdio vcdimager
              live libdvdcss libdvdread libdvdnav libogg libtheora
              lame jansson faac libvorbis ffmpeg faad2 liba52 libmpeg2
              libmpcdec fribidi libdv speex pulseaudio)
 
-run=(desktop-file-utils)
+run=(desktop-file-utils gtk-update-icon-cache)
+
+name=deadbeef
+version=0.7.2
+release=2
+
+PKGMK_GROUPS=(devel)
+
 source=(http://downloads.sourceforge.net/project/$name/$name-$version.tar.bz2)
 
 build () {
