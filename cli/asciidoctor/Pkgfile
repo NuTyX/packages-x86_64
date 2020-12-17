@@ -1,0 +1,22 @@
+description="An implementation of AsciiDoc in Ruby"
+url="https://asciidoctor.org"
+
+packager="Schrodinger72 <cat@schrodinger.ovh>"
+contributors=""
+
+makedepends=(ruby)
+run=(ruby)
+set=()
+
+name=asciidoctor
+version=2.0.12
+
+source=(https://rubygems.org/downloads/${name}-${version}.gem)
+
+build() {
+local _gemdir="$(ruby -e'puts Gem.default_dir')"
+HOME="/tmp" GEM_HOME="$_gemdir" GEM_PATH="$_gemdir" gem install --no-user-install --ignore-dependencies \
+     -i "$PKG/$_gemdir" -n "$PKG/usr/bin" "asciidoctor-$version.gem"
+rm "$PKG/$_gemdir/cache/asciidoctor-$version.gem"
+rm -rf "$PKG/$_gemdir/gems/asciidoctor-$version/man"
+}
