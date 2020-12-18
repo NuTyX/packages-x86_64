@@ -1,3 +1,10 @@
-SYSTEMCTL=$(which systemctl)
-[ -z "$SYSTEMCTL" ] || $SYSTEMCTL enable --now httpd
+. lib/lsb/init-functions
 
+SERVICE="httpd.service"
+LINK="systemd/system/multi-user.target.wants/$SERVICE"
+if [ ! -L etc/$LINK ]; then
+   mkdir -p etc/$(dirname $LINK)
+   ln -svf /lib/systemd/system/$SERVICE \
+   etc/$LINK &&
+   log_success_msg2  "${INFO} Created symlink /etc/$LINK -> /lib/systemd/system/$SERVICE${NORMAL}"
+fi

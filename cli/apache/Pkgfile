@@ -3,24 +3,35 @@ url="http://httpd.apache.org/ABOUT_APACHE.html"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(pcre apr-util sqlite expat)
+makedepends=(sed grep pcre apr-util sqlite expat)
 run=(shadow)
 
 name=apache
 version=2.4.46
+release=2
+
 runyx_version=20200412
 
 source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	http://archive.apache.org/dist/httpd/httpd-$version.tar.bz2
-	http://www.linuxfromscratch.org/patches/blfs/svn/httpd-$version-blfs_layout-1.patch)
+	httpd-layout-1.patch)
 
 prepare(){
 UN=apache
+(getent passwd $UN > /dev/null) && userdel  $UN
+(getent group $UN > /dev/null)  && groupdel $UN
+
+UN=www
+(getent passwd $UN > /dev/null) && userdel  $UN
+(getent group $UN > /dev/null)  && groupdel $UN
+
+
+UN=http
 if ! (getent group $UN > /dev/null); then
    groupadd -g 25 $UN
 fi
 if ! (getent passwd $UN > /dev/null); then
-   useradd  -c "Apache Server" -d /srv/www \
+   useradd  -c "http Server" -d /srv/www \
    -g $UN -s /bin/false -u 25 $UN
 fi
 }
@@ -30,7 +41,7 @@ cd httpd-$version
 
 unset MAKEFLAGS
 
-patch -Np1 -i ../httpd-$version-blfs_layout-1.patch
+patch -Np1 -i ../httpd-layout-1.patch
 sed '/dir.*CFG_PREFIX/s@^@#@' -i support/apxs.in
 ./configure --enable-authnz-fcgi                            \
             --enable-layout=BLFS                            \
@@ -40,7 +51,7 @@ sed '/dir.*CFG_PREFIX/s@^@#@' -i support/apxs.in
             --with-apr=/usr/bin/apr-1-config                \
             --with-apr-util=/usr/bin/apu-1-config           \
             --with-suexec-bin=/usr/lib/httpd/suexec         \
-            --with-suexec-caller=apache                     \
+            --with-suexec-caller=http                       \
             --with-suexec-docroot=/srv/www                  \
             --with-suexec-logfile=/var/log/httpd/suexec.log \
             --with-suexec-uidmin=100                        \
@@ -49,10 +60,10 @@ make
 make DESTDIR=$PKG install
 
 mv -v $PKG/usr/sbin/suexec $PKG/usr/lib/httpd/suexec
-chgrp apache $PKG/usr/lib/httpd/suexec
+chgrp http $PKG/usr/lib/httpd/suexec
 chmod 4754 $PKG/usr/lib/httpd/suexec
 
-chown -v -R apache:apache $PKG/srv/www
+chown -v -R http:http $PKG/srv/www
 mv  $PKG/srv/www/index.html{,.apache.example}
 
 # Services
