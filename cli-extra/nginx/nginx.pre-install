@@ -1,5 +1,17 @@
 . lib/lsb/init-functions
-if ! (getent group www > /dev/null); then
-  log_info_msg "${INFO}Creating www group${NORMAL}\n"
-  groupadd -g 38 www
+
+UN=www
+
+(getent passwd $UN > /dev/null) && userdel $UN
+(getent group input > /dev/null) && groupdel input
+(getent group $UN > /dev/null) && groupdel $UN
+
+if ! (getent group $UN > /dev/null); then
+  log_info_msg "${INFO}Creating $UN group${NORMAL}\n"
+  groupadd -g 24 $UN
+fi
+if ! (getent passwd $UN > /dev/null); then
+ log_info_msg "${INFO}Creating $UN user${NORMAL}\n"
+ useradd  -c "Nginx Server" -d /dev/null \
+ -g $UN -s /bin/false -u 24 $UN
 fi
