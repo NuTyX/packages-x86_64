@@ -1,0 +1,12 @@
+. lib/lsb/init-functions
+
+UN=ldap
+if ! (getent group $UN > /dev/null); then
+ log_info_msg "${INFO}Creating $UN group${NORMAL}\n"
+ groupadd -g 83 $UN
+fi
+if ! (getent passwd $UN > /dev/null); then
+ log_info_msg "${INFO}Creating $UN user${NORMAL}\n"
+ useradd  -c "OpenLDAP Daemon Owner" -d /var/lib/openldap \
+ -g $UN -s /bin/false -u 83 $UN
+fi

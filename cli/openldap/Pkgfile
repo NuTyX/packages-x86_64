@@ -1,13 +1,25 @@
 description="Lightweight Directory Access Protocol (LDAP) client and server"
 url="http://www.openldap.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-name=openldap
-version=2.4.54
+makedepends=(autoconf m4)
 
-source=(ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/$name-$version.tgz
+name=openldap
+version=2.4.56
+runyx_version=20201011
+
+source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
+	ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/$name-$version.tgz
 	 http://www.linuxfromscratch.org/patches/downloads/openldap/openldap-$version-consolidated-1.patch)
+prepare() {
+
+(getent group  ldap > /dev/null) || groupadd -g 83 ldap
+(getent passwd ldap > /dev/null) || useradd  -c "OpenLDAP Daemon Owner" \
+         -d /var/lib/openldap -u 83 \
+         -g ldap -s /bin/false ldap
+}
 build() {
 cd $name-$version
 patch -Np1 -i ../openldap-$version-consolidated-1.patch
@@ -24,4 +36,19 @@ make DESTDIR=$PKG install
 
 rm $PKG/usr/lib/libldap{,_r}.la
 rm $PKG/usr/lib/liblber.la
+
+# Service
+cd ../runyx-${runyx_version}
+make DESTDIR=$PKG install-sysv-slapd
+make DESTDIR=$PKG install-runyx-slapd
+make DESTDIR=$PKG install-sysd-slapd
+}
+service() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.service${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+lib/{systemd,init} etc/{init,rc.d}
+
+rm -r etc/{rc.d,init}
+rm -r lib/{init,systemd}
 }
