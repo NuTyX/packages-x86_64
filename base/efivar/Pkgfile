@@ -1,5 +1,5 @@
 description="Tools and library to manipulate EFI variables"
-url="https://github.com/rhinstaller/efivar"
+url="https://github.com/rhboot/efivar/"
 
 packager="tnut <tnut@nutyx.org>"
 
@@ -7,35 +7,43 @@ makedepends=(popt)
 
 name=efivar
 version=37
-release=2
+_commit=cff88dd96b9d43e2c5875a24ba6180b196890ded
+release=3
 
-source=($name-$version-consolidate-1.patch
-	https://github.com/rhinstaller/efivar/releases/download/$version/efivar-$version.tar.bz2)
+source=(efivar-${version}.patch
+			  https://github.com/rhboot/efivar/archive/${_commit}.tar.gz)
 
 build() {
+
 unset MAKEFLAGS
-cd $name-$version
-patch -Np1 -i ../$name-$version-consolidate-1.patch
+cd $name-${_commit}
 
-cp -p Make.defaults Make.defaults.dist
-sed 's|-O2|-Os|g' -i Make.defaults
-cp -p src/test/Makefile src/test/Makefile.dist
-sed 's|-rpath=$(TOPDIR)/src/|-rpath=$(libdir)|g' \
--i src/test/Makefile
+patch -Np1 -i ../efivar-$version.patch
 
-CFLAGS+=" -flto"
+# remove insecure rpath in efivar-tester
+sed 's|-rpath,$(TOPDIR)/src|-rpath,$(libdir)|g' -i src/test/Makefile
 
-make libdir=/usr/lib/ bindir=/usr/bin/ \
-mandir=/usr/share/man/     \
-includedir=/usr/include/ V=1 -j1
+make -j1 V=1 \
+  libdir=/usr/lib/ \
+	bindir=/usr/bin/ \
+	mandir=/usr/share/man/ \
+  includedir=/usr/include/
 
-make -j1 V=1 DESTDIR=${PKG}/ libdir=/usr/lib/ \
-bindir=/usr/bin/ mandir=/usr/share/man   \
-includedir=/usr/include/ DESTDIR=${PKG}/ install
+make -j1 V=1 \
+  DESTDIR=${PKG}/ \
+	libdir=/usr/lib/ \
+  bindir=/usr/bin/ \
+	mandir=/usr/share/man \
+	includedir=/usr/include/ \
+	install
 
-cd src/test
-make -j1 V=1 DESTDIR=${PKG}/ libdir=/usr/lib/ \
-bindir=/usr/bin/ mandir=/usr/share/man   \
-includedir=/usr/include/ 
-install -v -D -m0755 tester ${PKG}/usr/bin/efivar-tester
+make -j1 V=1 \
+	-C src/test \
+	libdir=/usr/lib/ \
+	bindir=/usr/bin/ \
+	mandir=/usr/share/man \
+	includedir=/usr/include/
+
+install -v -D -m0755 src/test/tester ${PKG}/usr/bin/efivar-tester
+
 }
