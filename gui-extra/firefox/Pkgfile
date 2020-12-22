@@ -1,7 +1,7 @@
 description="Standalone web browser from mozilla.org"
 url="http://www.mozilla.com/firefox/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="Schrodinger72 <schrodinger@nutyx.org>"
 contributors="Pierre B, Remy"
 
 categories=(Network WebBrowser)
@@ -14,7 +14,7 @@ run=(pulseaudio gconf icu sqlite libvpx nss gtk3 zip unzip
 
 
 name=firefox
-version=84.0
+version=84.0.1
 
 locale_version=$version
 
@@ -152,7 +152,7 @@ ln -svf ../mozilla/plugins $PKG/usr/lib/firefox/browser/
 mkdir -p $PKG/usr/include/npapi
 cp -v dom/plugins/base/*.h $PKG/usr/include/npapi
 
-# Launcher 
+# Launcher
 mkdir -pv $PKG/usr/share/applications
 install -Dm644 $SRC/firefox.desktop $PKG/usr/share/applications/firefox.desktop
 
