@@ -1345,7 +1345,13 @@ exit" > $FOLDER/$SETUP_FILE
 fi
 chmod 177 $FOLDER/$SETUP_FILE
 setup_chroot
-chroot ${FOLDER} env $LINUX_ARCH EUID=0 "$SHELL" -c "$SETUP_FILE"
+chroot ${FOLDER} env -i \
+HOME=/root \
+EUID=0 \
+TERM="$TERM"  \
+PS1='\u:\w\$ ' \
+$LINUX_ARCH \
+"$SHELL" -c "$SETUP_FILE"
 unmountall
 }
 install_configuration_files() {
