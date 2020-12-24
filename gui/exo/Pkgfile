@@ -7,7 +7,7 @@ contributors="Tyrry, Greg"
 makedepends=(gtk3 perl-uri libxfce4ui libxfce4util gtk-doc)
 
 name=exo
-version=0.12.11
+version=4.16.0
 
 source=(http://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2)
 
@@ -24,7 +24,6 @@ make
 make DESTDIR=$PKG install
 	
 # Obsolets libs
-rm $PKG/usr/lib/libexo-1.la
 rm $PKG/usr/lib/libexo-2.la
 
 }
