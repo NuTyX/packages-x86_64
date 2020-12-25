@@ -1,0 +1,34 @@
+description="Lua bindings for gnome/gobject using gobject-introspection library"
+url="https://github.com/pavouk/lgi"
+
+packager="Schrodinger72 <schrodinger@nutyx.org>"
+contributors="spiky <spiky@nutyx.org>"
+
+makedepends=( gobject-introspection lua)
+run=( glibc glib libffi lua )
+
+name=lua54-lgi
+_commit=c21f35fccae87fd4e3625d4c878f584b7255d6f6
+version=4.3
+
+source=(https://github.com/pavouk/lgi/archive/${_commit}.tar.gz)
+
+build(){
+    cd lgi-${_commit}
+
+    # CFLAGS="$CFLAGS -I/usr/include/lua" make
+
+    make \
+      LUA_LIBDIR=/usr/lib/lua/5.4 \
+      LUA_SHAREDIR=/usr/share/lua/5.4 \
+      DESTDIR=$PKG install
+
+      install -Dm 755 tools/dump-typelib.lua "$PKG/usr/bin/dump-typelib"
+
+      install -Dm 644 README.md -t "$PKG/usr/share/doc/${name}"
+      install -Dm 644 docs/* -t "$PKG/usr/share/doc/${name}"
+      install -Dm 644 samples/*.lua -t "$PKG/usr/share/${name}/samples"
+      install -Dm 644 samples/gtk-demo/* -t "$PKG/usr/share/${name}/samples/gtk-demo"
+      install -Dm 644 LICENSE -t "$PKG/usr/share/licenses/${name}"
+
+}
