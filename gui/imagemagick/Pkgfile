@@ -5,7 +5,7 @@ packager="tnut <tnut@nutyx.org>"
 
 makedepends=(freetype ghostscript lcms libgsf giflib libxml2
               openexr libwmf libpng librsvg libwebp djvulibre)
-	      
+
 name=imagemagick
 version=7.0.10.27
 _version=7.0.10-27
@@ -17,6 +17,8 @@ build () {
     ./configure --prefix=/usr \
                 --enable-static=no \
                 --enable-shared \
+                --with-png \
+                --with-jpeg \
                 --with-webp \
                 --with-gslib \
                 --with-perl \
