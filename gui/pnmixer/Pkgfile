@@ -1,0 +1,23 @@
+description="The Pnmixer package provides a lightweight volume control with a tray icon."
+url="https://github.com/nicklan/pnmixer/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(alsa-utils gtk3 libnotify)
+run=()
+set=()
+
+name=pnmixer
+version=v0.7.2
+
+source=(https://github.com/nicklan/pnmixer/releases/download/v0.7.2/pnmixer-v0.7.2.tar.gz)
+
+build() {
+cd $name-$version
+mkdir -pv build
+cd    ../$name-$version/build
+cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+make
+make DESTDIR=$PKG install
+}
