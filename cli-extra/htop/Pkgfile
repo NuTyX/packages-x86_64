@@ -1,0 +1,26 @@
+description="an interactive process viewer"
+url="http://htop.sourceforge.net/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch, Greg"
+
+makedepends=(autoconf automake ncurses libnl python)
+
+name=htop
+version=3.0.4
+
+source=(https://github.com/htop-dev/htop/archive/$version/$name-$version.tar.gz)
+
+
+build() {
+  cd $name-$version
+  autoreconf -fi
+  ./configure --prefix=/usr \
+                --sysconfdir=/etc/htop \
+                --enable-cgroup \
+                --enable-delayacct \
+                --enable-vserver
+                
+   make
+   make DESTDIR=$PKG install
+}
