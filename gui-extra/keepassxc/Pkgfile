@@ -1,0 +1,43 @@
+description="Cross-platform community-driven port of Keepass password manager"
+url="https://keepassxc.org/"
+
+packager="Schrodinger72 <schrodinger@nutyx.org>"
+contributors=""
+
+name="keepassxc"
+version="2.6.2"
+
+source=(https://github.com/keepassxreboot/keepassxc/releases/download/${version}/keepassxc-${version}-src.tar.xz)
+
+makedepends=(asciidoctor cmake qttools)
+
+run=(argon2 curl hicolor-icon-theme libgcrypt libsodium xorg-libxtst qrencode
+         qtsvg qtx11extras quazip)
+
+build() {
+  cd $name-$version
+
+  #prepare
+  cmake -B build \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DWITH_XC_AUTOTYPE=ON \
+      -DWITH_XC_YUBIKEY=OFF \
+      -DWITH_XC_BROWSER=ON \
+      -DWITH_XC_NETWORKING=ON \
+      -DWITH_XC_SSHAGENT=ON \
+      -DWITH_XC_TOUCHID=OFF \
+      -DWITH_XC_FDOSECRETS=ON \
+      -DWITH_XC_KEESHARE=ON \
+      -DWITH_XC_KEESHARE_SECURE=ON \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DWITH_XC_UPDATECHECK=OFF
+  cmake --build build
+
+  #test
+  cmake --build build --target test
+
+  #install
+  cmake --build build --target install -- DESTDIR="$PKG"
+
+}
