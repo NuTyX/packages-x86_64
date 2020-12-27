@@ -1,0 +1,29 @@
+description="A password-hashing function (reference C implementation)"
+url="https://github.com/P-H-C/phc-winner-argon2"
+
+packager="Schrodinger72 <schrodinger@nutyx.org>"
+contributors=""
+
+name="argon2"
+version="20190702"
+
+source=(https://github.com/P-H-C/phc-winner-argon2/archive/${version}/${name}-${version}.tar.gz)
+
+makedepends=(glibc)
+
+run=()
+
+build() {
+  cd phc-winner-${name}-${version}
+
+  #prepare
+  make OPTTARGET='none' LIBRARY_REL='lib'
+
+  #test
+  make OPTTARGET='none' LIBRARY_REL='lib' test
+
+  #install
+  make OPTTARGET='none' LIBRARY_REL='lib' DESTDIR="$PKG" install
+  install -D -m0644 LICENSE "${PKG}/usr/share/licenses/argon2/LICENSE"
+
+}
