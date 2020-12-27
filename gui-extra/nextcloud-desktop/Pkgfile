@@ -2,8 +2,9 @@ description="Nextcloud desktop client"
 url="http://nextcloud.com/"
 
 packager="tnut <tnut@nutyx.org>"
+maintainer="Schrodinger72 <schrodinger@nutyx.org>"
 
-version=3.0.1
+version=3.1.1
 
 makedepends=(cmake extra-cmake-modules sqlite qtbase qtkeychain
              qtwebkit qtsvg qtwebengine qtwebkit xdg-utils qttools doxygen
@@ -24,7 +25,7 @@ cmake ../desktop-$version            \
         -DCMAKE_BUILD_TYPE=Release  \
         -DCMAKE_INSTALL_SYSCONFDIR=/etc/$name \
         -DNO_SHIBBOLETH=1
-        
+
 make
 
 make DESTDIR=$PKG install
