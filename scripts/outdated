@@ -1,0 +1,190 @@
+#!/bin/bash
+ARCHGIT="/devel/git/archlinux"
+NOTFOUND=""
+PFn=0
+PNFn=0
+PODn=0
+# for i in gui/*
+for i in base/* cli/* cli-extra/* gui/* gui-extra/* desktops/*
+do
+  COLLECTION=$(dirname $i)
+  PKGNAME=$(basename $i)
+  NOTEXIST="no"
+  case $PKGNAME in
+    qt2|grub-efi|linux-mainline|cards|*cards|eudev|runyx|sysvinit|sysklogd|elogind|nutyx|kernel|kernel*|vboxhost*|nvidia*)
+     continue;;
+
+
+    rustc)
+     ARCHNAME="rust";;
+
+    sdl1)
+     ARCHNAME="sdl";;
+
+    freetype)
+     ARCHNAME="freetype2";;
+
+    squashfs)
+     ARCHNAME="squashfs-tools";;
+
+    autoconf2-13)
+     ARCHNAME="autoconf2.13";;
+
+    libelf)
+     ARCHNAME="elfutils";;
+
+    eigen3)
+     ARCHNAME="eigen";;
+
+    fdk-aac)
+     ARCHNAME="fdkaac";;
+
+    glib)
+     ARCHNAME="glib2";;
+
+    kerberos)
+     ARCHNAME="krb5";;
+
+    lcms)
+     ARCHNAME="lcms2";;
+
+    mutagen)
+     ARCHNAME="python-mutagen";;
+
+    net-tool-cvs)
+     ARCHNAME="net-tools";;
+
+    newt)
+     ARCHNAME="libnewt";;
+
+    node)
+     ARCHNAME="nodejs";;
+
+    aspell-dict)
+     ARCHNANE="aspell-fr";;
+
+    libmpcdec)
+     ARCHNAME="musepack";;
+
+    xvid)
+     ARCHNAME="xvidcore";;
+
+    xapian)
+     ARCHNAME="xapian-core";;
+
+    tidy-html5)
+     ARCHNAME="tidy";;
+
+    vte)
+     ARCHNAME="vte3";;
+
+    yaml)
+     ARCHNAME="perl-yaml";;
+
+    perl-glib)
+     ARCHNAME="glib-perl";;
+
+    dbus-launch)
+     ARCHNAME="dbus";;
+
+    dejavu-ttf)
+     ARCHNAME="ttf-dejavu";;
+
+    python-cups)
+     ARCHNAME="pycups";;
+
+    python-dbus|python-dbus-data)
+     ARCHNAME="dbus-python";;
+
+
+    freefont-ttf)
+     ARCHNAME="ttf-freefont";;
+
+    xorg-term)
+     ARCHNAME="xterm";;
+
+    xorg-font-alias)
+     ARCHNAME="xorg-fonts-alias";;
+
+    xorg-encodings)
+     ARCHNAME="xorg-fonts-encodings";;
+
+    xorg-fontconfig|xorg-pixman|xorg-xkeyboard-config|xorg-xbitmaps|xorg-xtrans|xorg-luit|xorg-glu|xorg-xcursor-themes)
+     ARCHNAME=${PKGNAME/xorg-/};;
+
+    sdl-*)
+     ARCHNAME=${PKGNAME/sdl-/sdl2_};;
+
+    sdl1-*)
+     ARCHNAME=${PKGNAME/sdl1-/sdl_};;
+
+    qt*)
+     ARCHNAME=${PKGNAME/qt/qt5-};;
+
+    xorg-lib*|xorg-xf86*)
+     ARCHNAME=${PKGNAME/xorg-/};;
+
+    gstreamer-*)
+     ARCHNAME=${PKGNAME/gstreamer-/gst-};;
+
+    sg3-utils|wpa-supplicant|wireless-tools|lm-sensors)
+     ARCHNAME=${PKGNAME/-/_};;
+
+    *)
+     ARCHNAME=$PKGNAME;;
+ 
+  esac
+
+  PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/extra-x86_64/PKGBUILD"
+  if  [ ! -f $PKGBUILD ] ; then
+  	PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/extra-any/PKGBUILD"
+  fi
+  if  [ ! -f $PKGBUILD ] ; then
+  	PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/core-x86_64/PKGBUILD"
+  fi
+  if  [ ! -f $PKGBUILD ] ; then
+  	PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/core-any/PKGBUILD"
+  fi
+
+  if  [ ! -f $PKGBUILD ] ; then
+  	PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/trunk/PKGBUILD"
+  fi
+
+  if  [ ! -f $PKGBUILD ] ; then
+  	PKGBUILD="$HOME$ARCHGIT/community/$ARCHNAME/repos/community-x86_64/PKGBUILD"
+  fi
+  if  [ ! -f $PKGBUILD ] ; then
+  	PKGBUILD="$HOME$ARCHGIT/community/$ARCHNAME/repos/community-any/PKGBUILD"
+  fi
+
+  if  [ ! -f $PKGBUILD ] ; then
+  	PKGBUILD="$HOME$ARCHGIT/community/$ARCHNAME/trunk/PKGBUILD"
+  fi
+
+  if [ ! -f $PKGBUILD ];then
+     PNFn=$((PNFn + 1))
+     NOTFOUND+="$(basename $i) "
+     continue
+  fi
+   PFn=$((PFn + 1))
+   . $i/Pkgfile
+   . $PKGBUILD 2>/dev/null
+   if [ -z "$pkgver" ]; then
+      PNFn=$((PNFn + 1))
+     NOTFOUND+="$(basename $i) "
+     continue
+   fi
+   if [ "$pkgver" != "$version" ]; then
+      PODn=$((PODn + 1))
+      echo "$(basename $i) $pkgver ($version)"
+   fi
+   unset pkgver version
+done
+echo "Packages fonuds: $PFn"
+echo "Packages Out of date: $PODn"
+echo "Packages not found: $PNFn"
+
+for i in ${NOTFOUND[@]}
+do
+ echo $i
+done
