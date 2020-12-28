@@ -1,0 +1,39 @@
+description="An advanced browser made with the power user in mind."
+url="https://vivaldi.com"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="rems"
+
+run=(gtk3 nss xorg-libxtst xorg-libx11 freetype freefont-ttf
+     desktop-file-utils shared-mime-info alsa-lib hicolor-icon-theme)
+
+name=vivaldi
+_name=vivaldi-ffmpeg-codecs
+version=3.5
+_version=2115.81-1
+
+source=(https://downloads.vivaldi.com/stable/$name-stable-$version.${_version}.x86_64.rpm
+        libffmpeg.so)
+
+build() {
+    
+    cp -a {opt,usr} $PKG
+   
+
+    # suid sandbox
+    chmod 4755 $PKG/opt/vivaldi/vivaldi-sandbox
+
+    binf=$PKG/usr/bin/vivaldi-stable
+    if [[ ! -e $binf ]] && [[ ! -f $binf ]] && [[ ! -L $binf ]]; then
+        install -dm755 $PKG/usr/bin
+        ln -s /opt/vivaldi/vivaldi $binf
+    fi
+
+    # install icons
+    for res in 16 22 24 32 48 64 128 256; do
+        install -Dm644 $PKG/opt/vivaldi/product_logo_${res}.png \
+            $PKG/usr/share/icons/hicolor/${res}x${res}/apps/vivaldi.png
+    done
+    
+    cp $SRC/libffmpeg.so $PKG/opt/vivaldi/libffmpeg.so 
+}
