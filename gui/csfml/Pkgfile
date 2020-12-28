@@ -1,0 +1,23 @@
+description="C bindings for sfml"
+url="http://www.sfml-dev.org/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(sfml cmake doxygen ninja)
+run=()
+set=()
+
+name=csfml
+version=2.5
+
+source=(https://github.com/SFML/CSFML/archive/2.5.tar.gz)
+
+build() {
+cd CSFML-$version
+mkdir build && cd build
+  cmake .. \
+       -DCMAKE_INSTALL_PREFIX=/usr \
+       -DCSFML_BUILD_DOC=true
+make DESTDIR=$PKG install
+}
