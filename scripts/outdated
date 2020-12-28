@@ -4,16 +4,21 @@ NOTFOUND=""
 PFn=0
 PNFn=0
 PODn=0
-# for i in gui/*
-for i in base/* cli/* cli-extra/* gui/* gui-extra/* desktops/*
+for COLLECTION in base cli cli-extra gui gui-extra desktops
 do
-  COLLECTION=$(dirname $i)
+ echo "
+===> COLLECTION: $COLLECTION
+" 
+ for i in $COLLECTION/*
+ do
   PKGNAME=$(basename $i)
   NOTEXIST="no"
   case $PKGNAME in
-    qt2|grub-efi|linux-mainline|cards|*cards|eudev|runyx|sysvinit|sysklogd|elogind|nutyx|kernel|kernel*|vboxhost*|nvidia*)
+    eigen2|make-ca|qt2|grub-efi|linux-mainline|cards|*cards|eudev|runyx|sysvinit|sysklogd|elogind|nutyx|kernel|kernel*|vboxhost*|nvidia*|virtualbox-guest)
      continue;;
 
+    openssl-10)
+     ARCHNAME="openssl-1.0";;
 
     rustc)
      ARCHNAME="rust";;
@@ -35,6 +40,9 @@ do
 
     eigen3)
      ARCHNAME="eigen";;
+
+    fuse)
+     ARCHNAME="fuse3";;
 
     fdk-aac)
      ARCHNAME="fdkaac";;
@@ -87,6 +95,9 @@ do
     dbus-launch)
      ARCHNAME="dbus";;
 
+    transmission-qt)
+     ARCHNAME="transmission";;
+
     dejavu-ttf)
      ARCHNAME="ttf-dejavu";;
 
@@ -109,6 +120,9 @@ do
     xorg-encodings)
      ARCHNAME="xorg-fonts-encodings";;
 
+    lxde-gpicview)
+     ARCHNAME="gpicview";;
+
     xorg-fontconfig|xorg-pixman|xorg-xkeyboard-config|xorg-xbitmaps|xorg-xtrans|xorg-luit|xorg-glu|xorg-xcursor-themes)
      ARCHNAME=${PKGNAME/xorg-/};;
 
@@ -126,6 +140,12 @@ do
 
     gstreamer-*)
      ARCHNAME=${PKGNAME/gstreamer-/gst-};;
+
+    mate-libkbd|mate-libmixer|mate-libweather)
+     ARCHNAME=${PKGNAME/mate-lib/libmate};;
+
+    lxde-randr|lxde-terminal|lxde-panel|lxde-appearance|lxde-appearance-obconf|lxde-input|lxde-session|lxde-task)
+     ARCHNAME=${PKGNAME/lxde-/lx};;
 
     sg3-utils|wpa-supplicant|wireless-tools|lm-sensors)
      ARCHNAME=${PKGNAME/-/_};;
@@ -179,6 +199,7 @@ do
       echo "$(basename $i) $pkgver ($version)"
    fi
    unset pkgver version
+ done
 done
 echo "Packages fonuds: $PFn"
 echo "Packages Out of date: $PODn"
