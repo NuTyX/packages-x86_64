@@ -2,19 +2,18 @@ description="Cross-platform 3D audio."
 url="http://connect.creativelabs.com/openal"
 
 maintainer="Danny Rawlins, monster dot romster at gmail dot com"
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contributors="Pierre "
 
 makedepends=(alsa-lib cmake)
 
 name=openal
-version=1.19.1
-release=2
+version=1.21.0
 
-source=(http://kcat.strangesoft.net/openal-releases/openal-soft-$version.tar.bz2 )
+source=(https://github.com/kcat/openal-soft/archive/openal-soft-$version.tar.gz )
 
 build() {
-cd openal-soft-$version/build
+cd openal-soft-openal-soft-$version/build
 
 cmake ../ \
 	-DCMAKE_INSTALL_PREFIX=/usr \
