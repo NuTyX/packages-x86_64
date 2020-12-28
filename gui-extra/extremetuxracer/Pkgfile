@@ -2,16 +2,16 @@ description="High speed arctic racing game based on Tux Racer."
 url="http://sourceforge.net/projects/extremetuxracer/"
 
 contributors="Berlius"
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
-makedepends=(sdl1 sdl1-image sdl1-mixer mesa xorg-glu freetype)
+makedepends=(sfml csfml xorg-glu freetype)
  
  
 name=extremetuxracer
-version=0.6.0
-release=3
+version=0.8.0
+release=2
 
-source=(http://sourceforge.net/projects/extremetuxracer/files/releases/0.6.0/etr-$version.tar.xz)
+source=(http://sourceforge.net/projects/extremetuxracer/files/releases/$version/etr-$version.tar.xz)
 
 prepare() {
 mv {etr,extremetuxracer}-$version
