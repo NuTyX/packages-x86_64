@@ -1,13 +1,14 @@
 description="A GTK+ based e-mail client."
 url="http://www.claws-mail.org"
 contributors="Pierre B., Tnut, Greg"
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 name=claws-mail
 version=3.17.7
+release=2
 makedepends=(bogofilter enchant aspell libetpan gnupg gpgme gnutls
              dbus gtk2 libtasn1 enchant xorg-libsm hicolor-icon-theme
-             desktop-file-utils xorgproto)
+             desktop-file-utils xorgproto nettle)
 
 
 source=(${url}/download.php?file=releases/$name-$version.tar.xz)
