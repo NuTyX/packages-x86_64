@@ -1,10 +1,14 @@
 #!/bin/bash
+
+
+COLLECTIONS="base cli cli-extra gui gui-extra desktops"
+[ ! -z $1 ] && COLLECTIONS="$1"
 ARCHGIT="/devel/git/archlinux"
 NOTFOUND=""
 PFn=0
 PNFn=0
 PODn=0
-for COLLECTION in base cli cli-extra gui gui-extra desktops
+for COLLECTION in ${COLLECTIONS[@]}
 do
  echo "
 ===> COLLECTION: $COLLECTION
