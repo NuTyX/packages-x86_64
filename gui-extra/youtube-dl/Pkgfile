@@ -1,12 +1,12 @@
 description="A small command-line program to download videos from YouTube."
 url="http://youtube-dl.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch, Greg, Rems"
+packager="Schrodinger72 <schrodinger@nutyx.org>"
+contributors="Fanch, Greg, Rems, tnut"
 
 name=youtube-dl
-version=2020.01.24
-release=2
+version=2020.12.29
+release=1
 
 makedepends=(python ffmpeg)
 
@@ -14,13 +14,13 @@ source=(https://github.com/rg3/$name/releases/download/$version/$name-$version.t
 
 build() {
   cd $name
-  sed -i 's|etc/bash_completion.d|share/bash-completion/completions|' setup.py 
-  sed -i 's|etc/fish/completions|share/fish/completions|' setup.py 
+  sed -i 's|etc/bash_completion.d|share/bash-completion/completions|' setup.py
+  sed -i 's|etc/fish/completions|share/fish/completions|' setup.py
 
   python3 setup.py install --root=$PKG --optimize=1
 
   install -Dm644 $name.zsh $PKG/usr/share/zsh/site-functions/_$name
 
   mv $PKG/usr/share/bash-completion/completions/$name.bash-completion \
-  $PKG/usr/share/bash-completion/completions/$name 
+  $PKG/usr/share/bash-completion/completions/$name
 }
