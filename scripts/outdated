@@ -18,8 +18,14 @@ do
   PKGNAME=$(basename $i)
   NOTEXIST="no"
   case $PKGNAME in
-    eigen2|make-ca|qt2|grub-efi|linux-mainline|cards|*cards|eudev|runyx|sysvinit|sysklogd|elogind|nutyx|kernel|kernel*|vboxhost*|nvidia*|virtualbox-guest)
+    openjdk|libatomic-ops|eigen2|make-ca|qt2|\
+grub-efi|linux-mainline|cards|*cards|eudev|runyx|\
+sysvinit|sysklogd|elogind|nutyx|kernel|kernel*|\
+vboxhost*|nvidia*|virtualbox-guest)
      continue;;
+
+    perl-yapp)
+     ARCHNAME="perl-parse-yapp";;
 
     openssl-10)
      ARCHNAME="openssl-1.0";;
@@ -39,6 +45,9 @@ do
     autoconf2-13)
      ARCHNAME="autoconf2.13";;
 
+    inih|lrdf)
+     ARCHNAME="lib${PKGNAME}";;
+
     libelf)
      ARCHNAME="elfutils";;
 
@@ -51,8 +60,8 @@ do
     fdk-aac)
      ARCHNAME="fdkaac";;
 
-    glib)
-     ARCHNAME="glib2";;
+    glib|openjpeg)
+     ARCHNAME="${PKGNAME}2";;
 
     kerberos)
      ARCHNAME="krb5";;
@@ -111,6 +120,8 @@ do
     python-dbus|python-dbus-data)
      ARCHNAME="dbus-python";;
 
+    python2-docutils|python-docutils)
+     ARCHNAME="docutils";;
 
     freefont-ttf)
      ARCHNAME="ttf-freefont";;
@@ -138,6 +149,15 @@ do
 
     qt*)
      ARCHNAME=${PKGNAME/qt/qt5-};;
+
+    liba52)
+     ARCHNAME="a52dec";;
+
+    live)
+     ARCHNAME="live-media";;
+
+    libzeitgeist)
+     ARCHNAME=${PKGNAME/lib/};;
 
     xorg-lib*|xorg-xf86*)
      ARCHNAME=${PKGNAME/xorg-/};;
@@ -207,7 +227,7 @@ do
 done
 echo "Packages fonuds: $PFn"
 echo "Packages Out of date: $PODn"
-echo "Packages not found: $PNFn"
+[ $((PNFn)) -gt 0 ] && echo "Packages not found: $PNFn"
 
 for i in ${NOTFOUND[@]}
 do
