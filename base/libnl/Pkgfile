@@ -1,13 +1,16 @@
 description="Collection of Libraries providing APIs to netlink protocol based Linux kernel interfaces"
 url="http://people.suug.ch/~tgr/libnl"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-name=libnl
-version=3.4.0
-release=2
+makedepends=(bison flex)
 
-source=(https://github.com/thom311/libnl/releases/download/libnl$(echo $version|sed 's/\./_/g')/$name-$version.tar.gz)
+name=libnl
+version=3.5.0
+
+source=(https://github.com/thom311/libnl/releases/download/libnl${version/./_/}/$name-doc-$version.tar.gz
+        https://github.com/thom311/libnl/releases/download/libnl${version/./_/}/$name-$version.tar.gz)
 build() {
 cd $name-$version
 ./configure --prefix=/usr \
@@ -15,12 +18,10 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
-# Doc
-mkdir -p $PKG/usr/share/doc/$name-$version
-wget https://github.com/thom311/libnl/releases/download/libnl$(echo $version|sed 's/\./_/g')/libnl-doc-$version.tar.gz
-tar -xf libnl-doc-$version.tar.gz --strip-components=1 --no-same-owner \
--C $PKG/usr/share/doc/$name-$version
 
-find $PKG -name '*.la' | xargs rm -v
+# Doc
+mkdir -p $PKG/usr/share/doc/
+mv ../$name-doc-$version \
+$PKG/usr/share/doc/
 
 }
