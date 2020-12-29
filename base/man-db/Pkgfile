@@ -1,16 +1,18 @@
 description="The Man-DB package contains programs for finding and viewing man pages."
 url="http://savannah.nongnu.org/projects/man-db"
+
 maintainer="Colin Watson cjwatson at debian dot org"
 contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
 name=man-db
-version=2.8.4
+version=2.9.3
 
-source=(http://download.savannah.gnu.org/releases/$name/$name-$version.tar.xz)
+makedepends=(gdbm libpipeline)
+run=(groff less)
 
 PKGMK_GROUPS=(man locale)
-run=(groff less)
+source=(http://download.savannah.gnu.org/releases/$name/$name-$version.tar.xz)
 
 build()
 {
