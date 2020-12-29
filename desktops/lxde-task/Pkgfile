@@ -1,7 +1,7 @@
 description="Task manager tool for lxde"
 url="http://lxde.org/"
-contributors="geantbrun, Greg"
-packager="tnut <tnut@nutyx.org>"
+packager="Schrodinger72 <schrodinger@nutyx.org>"
+contributors="tnut, geantbrun, Greg"
 
 makedepends=(gtk3)
 set=(lxde)
@@ -9,7 +9,7 @@ set=(lxde)
 name=lxde-task
 alias=(lxtask)
 _name=lxtask
-version=0.1.9
+version=0.1.10
 
 source=(https://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz)
 
@@ -17,7 +17,7 @@ build() {
 
 [ -d gtk3 ] || cp -r $_name-$version gtk3
 cd gtk3
-./configure --sysconfdir=/etc --prefix=/usr --enable-gtk3  
+./configure --sysconfdir=/etc --prefix=/usr --enable-gtk3
 make
 make DESTDIR=$PKG install
 }
