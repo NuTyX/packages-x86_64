@@ -1,7 +1,7 @@
 description="a free, open source, and cross-platform media player"
 url="https://mpv.io/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contributors="Tnut, Greg"
 
 makedepends=(ffmpeg lcms2 libcdio-paranoia libglade
@@ -14,7 +14,7 @@ run=(desktop-file-utils hicolor-icon-theme xdg-utils lua)
 
 name=mpv
 _waf_version=2.0.9
-version=0.32.0
+version=0.33.0
 release=2
 
 PKGMK_KEEP_SOURCES="no"
@@ -36,8 +36,7 @@ build() {
     --enable-dvb \
     --enable-dvdnav \
     --enable-libarchive \
-    --enable-libmpv-shared \
-    --enable-libsmbclient
+    --enable-libmpv-shared 
 
   ./waf build
 
