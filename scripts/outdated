@@ -27,8 +27,23 @@ vboxhost*|nvidia*|virtualbox-guest)
     perl-yapp)
      ARCHNAME="perl-parse-yapp";;
 
+    perldoc)
+     ARCHNAME="perl";;
+
+    perl-pcsc)
+     ARCHNAME="pcsc-perl";;
+
     openssl-10)
      ARCHNAME="openssl-1.0";;
+
+    pygmentize)
+     ARCHNAME="python-pygments";;
+
+    mygpoclient)
+     ARCHNAME="python-mygpoclient";;
+
+    apache-ant)
+     ARCHNAME="ant";;
 
     rustc)
      ARCHNAME="rust";;
@@ -138,6 +153,12 @@ vboxhost*|nvidia*|virtualbox-guest)
     lxde-gpicview)
      ARCHNAME="gpicview";;
 
+    python-parsing|python-curl)
+     ARCHNAME=${PKGNAME/-/-py};;
+
+    python2-distutils-extra|python2-evdev|python2-lxml|python2-ply|python2-pyparsing|python2-simplejson|python2-six|python2-xdg)
+     ARCHNAME=${PKGNAME/2/};;
+
     xorg-fontconfig|xorg-pixman|xorg-xkeyboard-config|xorg-xbitmaps|xorg-xtrans|xorg-luit|xorg-glu|xorg-xcursor-themes)
      ARCHNAME=${PKGNAME/xorg-/};;
 
@@ -204,6 +225,10 @@ vboxhost*|nvidia*|virtualbox-guest)
   if  [ ! -f $PKGBUILD ] ; then
   	PKGBUILD="$HOME$ARCHGIT/community/$ARCHNAME/trunk/PKGBUILD"
   fi
+  if  [ ! -f $PKGBUILD ] ; then
+  	PKGBUILD="$HOME$ARCHGIT/$ARCHNAME/PKGBUILD"
+  fi
+
 
   if [ ! -f $PKGBUILD ];then
      PNFn=$((PNFn + 1))
