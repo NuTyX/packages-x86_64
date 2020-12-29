@@ -2,18 +2,20 @@ description="Gtk2 bindings for C Sharp"
 url="http://www.mono-project.com/docs/gui/gtksharp/"
 
 contributors="Rems"
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
-makedepends=(mono gtk2 libglade)
+makedepends=(mono gtk2)
 
 name=gtksharp2
 version=2.12.45
-release=3
+release=7
 
-source=(https://download.mono-project.com/sources/gtk-sharp212/gtk-sharp-$version.tar.gz)
+source=(https://download.mono-project.com/sources/gtk-sharp212/gtk-sharp-$version.tar.gz
+        gtk-sharp2-2.12.12-gtkrange.patch)
 
 build() {
 cd gtk-sharp-$version
+ patch -Np1 -i ../gtk-sharp2-2.12.12-gtkrange.patch
 ./configure --prefix=/usr --sysconfdir=/etc --disable-static
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 make
@@ -22,7 +24,6 @@ make DESTDIR=$PKG install
 # Obsolets libs
 rm $PKG/usr/lib/libatksharpglue-2.la
 rm $PKG/usr/lib/libgdksharpglue-2.la
-rm $PKG/usr/lib/libgladesharpglue-2.la
 rm $PKG/usr/lib/libglibsharpglue-2.la
 rm $PKG/usr/lib/libgtksharpglue-2.la
 rm $PKG/usr/lib/libpangosharpglue-2.la
