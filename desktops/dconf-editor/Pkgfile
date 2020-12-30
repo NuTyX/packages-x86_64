@@ -1,15 +1,15 @@
 description="A graphical editor for the DConf database"
 url="http://www.gnome.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch, Tnut, jayce, Remy"
+packager="Schrodinger72 <schrodinger@nutyx.org>"
+contributors="Fanch, tnut, jayce, Remy"
 
 makedepends=(dconf dbus gtk3 libxml2 libxslt meson ninja vala)
 
 set=(gnome)
 
 name=dconf-editor
-version=3.38.0
+version=3.38.2
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
@@ -21,4 +21,3 @@ meson --prefix=/usr --sysconfdir=/etc
 ninja
 DESTDIR=$PKG ninja install
 }
-
