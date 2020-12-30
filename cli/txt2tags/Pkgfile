@@ -4,9 +4,10 @@ url="http://txt2tags.sourceforge.net"
 contributors="Pierre B., Greg"
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(python)
+
 name=txt2tags
-version=2.6
-release=2
+version=3.7
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/$name/$name/archive/$version.tar.gz)
@@ -14,22 +15,6 @@ source=(https://github.com/$name/$name/archive/$version.tar.gz)
 build() {
 
 cd $name-$version
-	mkdir -p $PKG/usr/bin
-	mkdir -p $PKG/usr/share/{man/man1,man/fr/man1,vim/syntax,doc/$name}
-	# bin
-	sed -i "s/env\ python/env\ python2/" txt2tags
-	install -m 755 txt2tags $PKG/usr/bin
-	install -m 755 extras/{t2tmake.rb,gensite,html-update.sh} $PKG/usr/bin
-	# vim
-	install -m 644 extras/*.vim $PKG/usr/share/vim/syntax
-	# page man
-	install -m 644 doc/English/manpage.man $PKG/usr/share/man/man1/txt2tags.1
-	install -m 644 doc/French/manpage-fr.man $PKG/usr/share/man/fr/man1/txt2tags.1
-	# doc
-	install -m 644 doc/French/{*.pdf,*.t2t} $PKG/usr/share/doc/$name
-	# locale fr
-	mkdir -p $PKG/usr/share/locale/fr/LC_MESSAGES/
-	cd po
-	msgfmt -o txt2tags.mo fr.po
-	install -m 644 txt2tags.mo $PKG/usr/share/locale/fr/LC_MESSAGES
+python setup.py build
+python setup.py install --root=$PKG
 }

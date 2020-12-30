@@ -6,13 +6,14 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(libelf)
 
 name=elfutils
-version=0.177
+version=0.181
 
 source=(https://sourceware.org/elfutils/ftp/$version/elfutils-$version.tar.bz2 )
 
 build() {
 cd $name-$version
 ./configure --prefix=/usr \
+--disable-debuginfod \
 --program-prefix="eu-"
 make
 make prefix=$PKG/usr install

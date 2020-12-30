@@ -1,18 +1,25 @@
 description="Elf librairy"
 url="https://sourceware.org/ftp/elfutils"
+
 packager="tnut <tnut@nutyx.org>"
 name=libelf
-version=0.175
-release=1
+
+makedepends=(m4 zstd)
+
+version=0.182
 
 source=(https://sourceware.org/ftp/elfutils/$version/elfutils-$version.tar.bz2)
 
 build() {
 cd elfutils-$version
-./configure --prefix=/usr
+./configure --prefix=/usr \
+--disable-debuginfod \
+--libdir=/lib
 make
 make check || true
 make -C libelf DESTDIR=$PKG install
+rm $PKG/lib/libelf.a
 mkdir -pv $PKG/usr/lib/pkgconfig
 install -vm644 config/libelf.pc $PKG/usr/lib/pkgconfig/
+
 }
