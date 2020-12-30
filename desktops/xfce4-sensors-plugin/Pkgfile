@@ -1,8 +1,8 @@
 description="A lm_sensors plugin for the Xfce panel."
 url="http://goodies.xfce.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Tyrry, Greg"
+packager="Schrodinger72 <schrodinger@nutyx.org>"
+contributors="tnut, Tyrry, Greg"
 
 makedepends=(libxfce4util libxfce4ui xfce4-panel libnotify)
 run=(lm-sensors hicolor-icon-theme)
@@ -10,7 +10,7 @@ run=(lm-sensors hicolor-icon-theme)
 set=(xfce4-extra)
 
 name=xfce4-sensors-plugin
-version=1.3.92
+version=1.3.95
 
 source=(https://archive.xfce.org/src/panel-plugins/$name/${version:0:3}/$name-$version.tar.bz2)
 
@@ -20,5 +20,5 @@ cd $name-$version
 ./configure --prefix=/usr \
 --sysconfdir=/etc
 make
-make DESTDIR=$PKG install	
+make DESTDIR=$PKG install
 }
