@@ -9,14 +9,14 @@ run=(python python-gobject python-chardet gtk3 desktop-file-utils
 
 name=bleachbit
 version=4.1.0
-release=2
+release=3
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/bleachbit/bleachbit/archive/v$version.tar.gz)
 
 build() {
-
   cd $name-$version
-
   make prefix=/usr DESTDIR=$PKG PYTHON=python3 install
+  chmod 0766 $PKG/usr/share/bleachbit/cleaners
+  chmod -R 0655 $PKG/usr/share/bleachbit/cleaners/*
 }
