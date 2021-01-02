@@ -9,7 +9,7 @@ set=(lightdm)
 name=lightdm
 version=1.30.0
 runyx_version=20200412
-release=5
+release=6
 
 PKGMK_GROUPS=(man devel doc)
 
@@ -67,6 +67,7 @@ make DESTDIR=$PKG install-sysd-$name
 mkdir -p $PKG/{etc/init/multi,lib/init/services/lightdm}
 cat > $PKG/lib/init/services/lightdm/run << "EOF"
 #!/bin/sh
+[ -e /run/dbus/system_bus_socket ] || exit 1
 exec /usr/bin/lightdm
 EOF
 chmod 755 $PKG/lib/init/services/lightdm/run
