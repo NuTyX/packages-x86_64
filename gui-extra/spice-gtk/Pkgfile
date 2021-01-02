@@ -2,27 +2,18 @@ description="GTK+ client library for SPICE"
 url="https://www.spice-space.org/"
 
 contributors="Rems"
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(attr gtk3 libcacard spice-protocol libjpeg-turbo pulseaudio
              opus usbredir gobject-introspection usbutils vala
              gstreamer-plugins-bad gstreamer-plugins-good
-             gstreamer-plugins-libav cyrus-sasl lz4 json-glib)
+             gstreamer-plugins-libav cyrus-sasl lz4 json-glib python-six python-pyparsing)
 
  
 name=spice-gtk
-version=0.37
-release=2
+version=0.38
 
-source=(https://www.spice-space.org/download/gtk/$name-$version.tar.bz2)
+source=(https://gitlab.freedesktop.org/spice/spice-gtk/uploads/d09bd4bfb9619e9720c92622c2220b7e/$name-$version.tar.xz)
 
-build() {
+build=meson
 
-cd $name-$version
-
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
-            --enable-vala --with-coroutine=gthread
-sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-  make
-  make DESTDIR=$PKG install
-}
