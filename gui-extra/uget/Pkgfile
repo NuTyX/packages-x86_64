@@ -1,17 +1,19 @@
 description="administrator of downloading with importation HTML"
 url="http://urlget.sourceforge.net/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contributors="Pierre B"
 
 makedepends=(libnotify gtk3 gstreamer curl)
 
 name=uget
-version=2.2.2
+version=2.2.3
 
-source=(http://downloads.sourceforge.net/urlget/$name-$version.tar.gz)
+source=(http://downloads.sourceforge.net/urlget/$name-$version-1.tar.gz)
 build() {
 	cd $name-$version
+
+        CFLAGS+=' -fcommon'
 	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
 	make
 	make DESTDIR=$PKG install
