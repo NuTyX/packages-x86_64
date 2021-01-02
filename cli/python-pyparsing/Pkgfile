@@ -1,0 +1,21 @@
+description="General parsing module for Python"
+url=""
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python)
+run=(python)
+set=()
+
+name=python-pyparsing
+version=2.4.7
+
+source=(https://github.com/pyparsing/pyparsing/archive/pyparsing_$version.tar.gz)
+
+build() {
+cd pyparsing-pyparsing_$version
+
+python3 setup.py build
+python3 setup.py install --prefix=/usr --root=$PKG --optimize=1
+}
