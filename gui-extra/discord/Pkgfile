@@ -17,7 +17,6 @@ source=(https://dl.discordapp.net/apps/linux/$version/$name-$version.tar.gz
 
 prepare() {
   sed -i "s|Exec=.*|Exec=/usr/bin/$name|" Discord/$name.desktop
-  echo 'Path=/usr/bin' >> Discord/$name.desktop
 }
 build() {
 
