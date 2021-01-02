@@ -1,7 +1,7 @@
 url="http://www.kohaupt-online.de/hp/"
 description="An easy to use screencast creator"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contributors="Rems"
 
 makedepends=(ffmpeg lame pulseaudio lsof
@@ -9,25 +9,25 @@ makedepends=(ffmpeg lame pulseaudio lsof
              qtx11extras xorg-libxrandr xdg-utils)
 
 name=vokoscreen
-version=2.5.8
-_version=beta
+version=3.0.7
 release=2
+_version=beta
 
 PKGMK_KEEP_SOURCES="no"
-source=(https://github.com/vkohaupt/$name/archive/$version-${_version}.tar.gz
-        desktop_file.patch
-        fix_lrelease.patch)
+source=(https://github.com/vkohaupt/${name}NG/archive/$version.tar.gz
+        install.pri)
 
 build() {
 
-cd $name-$version-${_version}
-# Fix lrelease path
-	patch -Np1 < ../fix_lrelease.patch
-# Desktop file description
-	patch -Np1 < ../desktop_file.patch
+
+# Add install instructions
+        cp install.pri ${name}NG-${version}/src/
+        echo 'include(install.pri)' >> ${name}NG-${version}/src/${name}NG.pro
+
+cd ${name}NG-$version
 mkdir -p ../build
 cd ../build
-qmake ../$name-$version-${_version} \
+qmake ../${name}NG-$version/src/${name}NG.pro \
       QMAKE_CFLAGS="${CFLAGS}" \
       QMAKE_CXXFLAGS="${CXXFLAGS}" \
       CONFIG+=release \
