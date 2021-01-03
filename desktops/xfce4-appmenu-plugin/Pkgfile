@@ -1,0 +1,32 @@
+description="A global menu plugin for the Xfce panel"
+url="https://gitlab.com/vala-panel-project/vala-panel-appmenu/"
+
+packager="Schrodinger72 <schrodinger@nutyx.org>"
+contributors=""
+
+makedepends=(libxfce4util libxfce4ui xfce4-panel glib gtk3 meson bamf)
+run=(vala)
+
+set=(xfce4-extra)
+
+name=xfce4-appmenu-plugin
+_name=vala-panel-appmenu
+version=0.7.4
+
+source=(https://gitlab.com/vala-panel-project/${_name}/-/archive/${version}/${_name}-${version}.tar.gz)
+
+build() {
+  cd ${_name}-$version
+  mkdir build
+  cd build
+  meson  \
+    --prefix=/usr \
+    --libdir=lib \
+    --libexecdir=lib \
+    -Dvalapanel=disabled \
+    -Dappmenu-gtk-module=enabled \
+    -Dxfce=enabled \
+    ..
+  ninja
+  DESTDIR=$PKG ninja install
+}
