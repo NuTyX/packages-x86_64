@@ -1,23 +1,16 @@
 description="Fetches system/theme information in terminal for Linux desktop screenshots."
 url="https://github.com/KittyKatt/screenFetch"
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contributors="greg"
 
 name=screenfetch
-version=3.8.0
-release=2
+version=3.9.1
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/KittyKatt/screenFetch/archive/v$version.tar.gz
-		0001-Fix-gpu-variable-check-esp-it-s-empty.patch)
+source=(https://github.com/KittyKatt/screenFetch/archive/v$version.tar.gz)
 
-prepare() {
 
-	cd screenFetch-$version
-	patch -p1 < $SRC/0001-Fix-gpu-variable-check-esp-it-s-empty.patch
-
-}
 
 
 build() {
