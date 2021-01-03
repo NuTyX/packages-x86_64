@@ -1,26 +1,19 @@
 description="Allows access the terminal windows"
 url="http://www.rdesktop.org/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contributors="Pierrei, Jayce"
 
-makedepends=(xorg-libx11)
+makedepends=(xorg-libx11 xorg-libxrandr xorg-libxcursor gnutls)
 
 name=rdesktop
-version=1.8.3
-release=3
+version=1.9.0
 
-source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz
-	rdesktop-send_physical_buttons.diff
-	openssl.patch
-	openssl-crash.patch
-)
+source=(https://github.com/rdesktop/rdesktop/releases/download/v$version/rdesktop-$version.tar.gz)
 
 build() {
 	cd $name-$version
- 	patch -i $SRC/rdesktop-send_physical_buttons.diff 
-	patch -Np1 -i $SRC/openssl.patch 
-	patch -Np1 -i $SRC/openssl-crash.patch
+
         ./configure --prefix=/usr \
 		--disable-credssp \
 		--disable-smartcard
