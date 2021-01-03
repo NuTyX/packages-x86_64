@@ -2,23 +2,14 @@ description="Fast DNS library with the goal to simplify DNS programming."
 url="http://www.nlnetlabs.nl"
 
 contributors="Berlius, Rems, Greg"
-packager="tnut <tnut@nutyx.org>" 
+packager="spiky <spiky@nutyx.org>" 
 
 makedepends=(openssl ca-certificates libcap python swig doxygen)
 
 name=ldns
-version=1.7.0
-release=3
+version=1.7.1
 
-source=(https://www.nlnetlabs.nl/downloads/$name/$name-$version.tar.gz
-		pc.patch)
-
-prepare() {
-
-	cd $name-$version
-	patch -p1 -i ../pc.patch
-	
-}
+source=(https://www.nlnetlabs.nl/downloads/$name/$name-$version.tar.gz)
 
  
 build() {
