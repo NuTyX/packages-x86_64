@@ -5,22 +5,35 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Tyrry, Greg"
 
 makedepends=(exo libxfce4ui garcon xorg-libxklavier
-             xorg-libxkbfile libcanberra)
-run=(lxde-icon-theme)
+             xorg-libxkbfile libcanberra xfconf)
+run=(adwaita-icon-theme colord gnome-themes-extra )
 
 set=(xfce4)
 
 name=xfce4-settings
 version=4.16.0
+release=2
 
-source=(https://archive.xfce.org/src/xfce/${name}/${version%.*}/$name-$version.tar.bz2)
+source=(default-xsettings-xml.patch
+        https://archive.xfce.org/src/xfce/${name}/${version%.*}/$name-$version.tar.bz2)
 
+prepare() {
+cd $name-$version
+patch -Np1 -i ../default-xsettings-xml.patch
+}
 build() {
 
 cd $name-$version
 
 ./configure --prefix=/usr \
---sysconfdir=/etc
+--sysconfdir=/etc \
+--enable-xrandr \
+--enable-xcursor \
+--enable-libnotify \
+--enable-libxklavier \
+--enable-pluggable-dialogs \
+--enable-sound-settings \
+--disable-debug
 
 make
 make DESTDIR=$PKG install
