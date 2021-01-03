@@ -18,7 +18,8 @@ do
   PKGNAME=$(basename $i)
   NOTEXIST="no"
   case $PKGNAME in
-    openjdk|libatomic-ops|eigen2|make-ca|qt2|\
+    gnulib|gstreamer-0|gstreamer-plugins-base-0|\
+openjdk|libatomic-ops|eigen2|make-ca|qt2|\
 grub-efi|linux-mainline|cards|*cards|eudev|runyx|\
 sysvinit|sysklogd|elogind|nutyx|kernel|kernel*|\
 vboxhost*|nvidia*|virtualbox-guest)
@@ -195,6 +196,13 @@ vboxhost*|nvidia*|virtualbox-guest)
     sg3-utils|wpa-supplicant|wireless-tools|lm-sensors)
      ARCHNAME=${PKGNAME/-/_};;
 
+    vid-stab)
+     ARCHNAME=${PKGNAME/-/\.};;
+
+    lua54-lgi)
+     ARCHNAME="lgi";;
+
+
     *)
      ARCHNAME=$PKGNAME;;
  
@@ -250,7 +258,7 @@ vboxhost*|nvidia*|virtualbox-guest)
    unset pkgver version
  done
 done
-echo "Packages fonuds: $PFn"
+echo "Packages founds: $PFn"
 echo "Packages Out of date: $PODn"
 [ $((PNFn)) -gt 0 ] && echo "Packages not found: $PNFn"
 
