@@ -1,15 +1,15 @@
 description="Alternate menu for Xfce4"
 url="http://gottcode.org/xfce4-whiskermenu-plugin/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Greg"
+packager="Schrodinger72 <schrodinger@nutyx.org>"
+contributors="Tnut, Greg"
 
 makedepends=(libxfce4util libxfce4ui
              cmake xfce4-panel)
 set=(xfce4-extra)
 
 name=xfce4-whiskermenu-plugin
-version=2.5.0
+version=2.5.1
 
 source=(https://archive.xfce.org/src/panel-plugins/$name/${version%.*}/$name-$version.tar.bz2)
 
@@ -21,7 +21,7 @@ cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib
-    
+
 make
 make DESTDIR=$PKG install
 
