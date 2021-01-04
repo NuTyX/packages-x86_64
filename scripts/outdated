@@ -1,9 +1,53 @@
 #!/bin/bash
 
-
 COLLECTIONS="base cli cli-extra gui gui-extra desktops"
 [ ! -z $1 ] && COLLECTIONS="$1"
 ARCHGIT="/devel/git/archlinux"
+
+echo '-------------------- ARCH PACKAGES REPOSITORY --------------------' >&2
+if  [ ! -d "$HOME$ARCHGIT/packages/" ] ; then
+  echo "Repository not found in $HOME$ARCHGIT/packages/"
+  while true; do
+      read -p "Would you like to clone packages repository? [y/n]" yn
+      case $yn in
+          [Yy]* )
+            mkdir -p "$HOME$ARCHGIT"
+            cd $HOME$ARCHGIT >&2
+            git clone git://git.archlinux.org/svntogit/packages.git >&2
+            cd - >&2
+            break;;
+          [Nn]* ) exit;;
+          * ) echo "Please answer Y for yes or N for no.";;
+      esac
+  done
+else
+  cd $HOME$ARCHGIT/packages/ >&2
+  git pull --ff-only >&2
+  cd - >&2
+fi
+
+echo '-------------------- ARCH COMMUNITY REPOSITORY --------------------' >&2
+if  [ ! -d "$HOME$ARCHGIT/community/" ] ; then
+  echo "Repository not found in $HOME$ARCHGIT/community/"
+  while true; do
+      read -p "Would you like to clone community repository? [y/n]" yn
+      case $yn in
+          [Yy]* )
+            mkdir -p "$HOME$ARCHGIT"
+            cd $HOME$ARCHGIT >&2
+            git clone git://git.archlinux.org/svntogit/community.git >&2
+            cd - >&2
+            break;;
+          [Nn]* ) exit;;
+          * ) echo "Please answer Y for yes or N for no.";;
+      esac
+  done
+else
+  cd $HOME$ARCHGIT/community/ >&2
+  git pull --ff-only >&2
+  cd - >&2
+fi
+
 NOTFOUND=""
 PFn=0
 PNFn=0
@@ -12,7 +56,7 @@ for COLLECTION in ${COLLECTIONS[@]}
 do
  echo "
 ===> COLLECTION: $COLLECTION
-" 
+"
  for i in $COLLECTION/*
  do
   PKGNAME=$(basename $i)
@@ -205,7 +249,7 @@ vboxhost*|nvidia*|virtualbox-guest)
 
     *)
      ARCHNAME=$PKGNAME;;
- 
+
   esac
 
   PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/extra-x86_64/PKGBUILD"
