@@ -1,0 +1,23 @@
+description="Adds archive operations to the Thunar file context menus"
+url="https://gitlab.xfce.org/thunar-plugins/thunar-archive-plugin"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Tyrry, Greg"
+
+makedepends=(xfce4-dev-tools)
+run=(desktop-file-utils thunar)
+
+name=thunar-archive-plugin
+version=0.4.0
+
+source=(https://archive.xfce.org/src/thunar-plugins/thunar-archive-plugin/${version%.*}/${name}-${version}.tar.bz2)
+
+build() {
+  cd $name-$version
+  ./configure --prefix=/usr \
+    --libexecdir=/usr/lib/xfce4 \
+    --localstatedir=/var \
+    --disable-static
+  make
+  make DESTDIR=$PKG install
+}
