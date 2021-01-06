@@ -7,9 +7,8 @@ contributors="Greg"
 makedepends=(libjpeg-turbo libexif libusb-compat)
 
 name=libgphoto2
-version=2.5.23
+version=2.5.26
 _version="${version//./_}"
-release=2
 
 source=(https://github.com/gphoto/$name/archive/libgphoto2-${_version}-release.tar.gz)
 
@@ -29,8 +28,6 @@ make DESTDIR=$PKG install
 # Remove unused udev helper
   rm -r "$PKG/usr/lib/udev"
 
-# Remove recursive symlink
-  rm "$PKG/usr/include/gphoto2/gphoto2"
 
 cd $PKG/usr/lib/libgphoto2
 
