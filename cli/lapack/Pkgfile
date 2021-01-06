@@ -7,26 +7,26 @@ contributors="Pierre B, Rems"
 makedepends=(cmake)
 
 name=lapack
-version=3.8.0
-release=2
+version=3.9.0
 
-source=(http://www.netlib.org/$name/$name-$version.tar.gz )
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/Reference-LAPACK/lapack/archive/v$version.tar.gz )
 
 build() {
-cd $name-$version
 mkdir build
-cd build
-cmake .. \
+cd    build
+
+cmake ../$name-$version  \
 -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_SKIP_RPATH=ON \
 -DBUILD_SHARED_LIBS=ON \
 -DCMAKE_INSTALL_PREFIX=/usr \
 -DCMAKE_INSTALL_LIBDIR=lib \
 -DCMAKE_Fortran_COMPILER=gfortran \
--DLAPACKE=ON \
 -DCBLAS=ON \
 -DLAPACKE_WITH_TMG=ON \
--DBUILD_TESTING=OFF
+-DBUILD_DEPRECATED=ON
 
 make
 make DESTDIR=$PKG install
