@@ -6,7 +6,7 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(autoconf2-13 readline llvm icu rustc libffi python zlib zip)
 
 name=js78
-version=78.4.0
+version=78.6.0
 
 source=(https://archive.mozilla.org/pub/firefox/releases/${version}esr/source/firefox-${version}esr.source.tar.xz)
 
@@ -17,7 +17,7 @@ build() {
   mkdir obj
   cd    obj
 
-  CC=gcc CXX=g++ \
+  SHELL=/bin/sh CC=gcc CXX=g++ \
   ../js/src/configure --prefix=/usr       \
               --with-intl-api     \
               --with-system-zlib  \
@@ -25,9 +25,9 @@ build() {
               --disable-jemalloc  \
               --enable-readline
 
-  make
+  SHELL=/bin/sh make
 
-  make DESTDIR=$PKG install
+  SHELL=/bin/sh make DESTDIR=$PKG install
 
   # conflict with js60
   rm $PKG/usr/lib/libjs_static.ajs
