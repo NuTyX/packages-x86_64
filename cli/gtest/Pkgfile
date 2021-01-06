@@ -4,67 +4,72 @@ url="https://github.com/google/googletest/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(python2 cmake)
+makedepends=(python sed cmake)
 
 name=gtest
-version=1.8.0
-release=4
+version=1.10.0
 
 PKGMK_KEEP_SOURCES="no"
-source=(gtest.pc.in gtest-pkgconfig.patch gmock-install.patch gmock.pc.in
-	https://github.com/google/googletest/archive/release-${version}.tar.gz)
+source=(https://github.com/google/googletest/archive/release-${version}.tar.gz
+        gtest-PR2491-Fix-gnu-install-dirs-pkg-config.patch
+        gtest-$version-libversion.patch
+        gtest-$version-add-missing-pkgconfig-requires.patch)
 
 prepare() {
-  cd googletest-release-${version}
-    (cd googletest
-    autoreconf -fvi
-    cp $SRC/gtest.pc.in .
-    sed -r "s|(Version:) .+|\1 ${pkgver}|" -i gtest.pc.in
-    patch -p1 < "${srcdir}/gtest-pkgconfig.patch"
-    mkdir build
-  )
+ cd googletest-release-${version}
+ sed "s|__GOOGLETEST_VERSION__|${version}|g" -i ../gtest-$version-libversion.patch
 
-  patch -p1 < $SRC/gmock-install.patch
-  (cd googlemock
-    cp "${srcdir}/gmock.pc.in" .
-    autoreconf -fvi
-  )
+        # From: https://github.com/google/googletest/pull/2491
+ patch -Np1 -i ../gtest-PR2491-Fix-gnu-install-dirs-pkg-config.patch
+
+ # https://src.fedoraproject.org/rpms/gtest/tree/master
+ patch -Np1 -i ../gtest-$version-libversion.patch
+
+ # https://github.com/google/googletest/pull/2756
+ patch -Np1 -i ../gtest-$version-add-missing-pkgconfig-requires.patch
+
+ # fixup version as they are never correct
+ sed -E "s|(GOOGLETEST_VERSION) [0-9\\.]+|\\1 ${version}|" -i CMakeLists.txt
 }
 
 build () {
-  cd googletest-release-${version}
-  (cd googletest
-    # this is odd but needed only to generate gtest-config.
-    ./configure --prefix=/usr
-    cd build
-    cmake -DCMAKE_INSTALL_PREFIX=/usr \
-      -DBUILD_SHARED_LIBS=ON \
-      -DCMAKE_SKIP_RPATH=ON ..
-    make
-  )
-  (cd googlemock
-    ./configure --prefix=/usr --with-gtest --enable-external-gtest
-    make
-  )
-  cd googletest
-  make -C build DESTDIR=$PKG install
-  install -Dm 755 scripts/gtest-config -t $PKG/usr/bin
-  install -Dm 644 build/libgtest{,_main}.so -t $PKG/usr/lib
-  install -Dm 644 m4/gtest.m4 -t $PKG/usr/share/aclocal
-  install -Dm 644 cmake/* -t $PKG/usr/src/gtest/cmake
-  install -Dm 644 src/* -t $PKG/usr/src/gtest/src
-  install -d $PKG/usr/include
-  cp -r include/gtest -t $PKG/usr/include
+  mkdir build && cd build
 
-  patch -Rp1 < $SRC/gtest-pkgconfig.patch
-  install -Dm 644 CMakeLists.txt -t $SRC/usr/src/gtest
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -DBUILD_SHARED_LIBS=ON \
+        -Dgtest_build_tests=ON \
+        -DPYTHON_EXECUTABLE=$(which python3) \
+        ../googletest-release-${version}
 
+  cmake --build .
+
+  DESTDIR="${PKG}" cmake --build . --target install
+
+  # Shouldn't be present
+  find "${PKG}" -name '*.pump' -printf 'Removing %P\n' -delete
+
+  # Install some googletest files
+  cd ../googletest-release-${version}/googletest
+  install -Dm 644 LICENSE -t "${PKG}/usr/share/licenses/${name}-$version"
+  install -Dm 644 README.md CONTRIBUTORS -t "${PKG}/usr/share/doc/${name}-$version"
+  install -Dm 755 scripts/gtest-config.in -t "${PKG}/usr/bin"
+  install -Dm 644 cmake/* -t "${PKG}/usr/src/googletest/cmake"
+  install -Dm 644 src/* -t "${PKG}/usr/src/googletest/src"
+  install -Dm 644 CMakeLists.txt -t "${PKG}/usr/src/googletest"
+  ln -sv googletest $PKG/usr/src/gtest
+
+  # Install some gmock files
   cd ../googlemock
-  make --trace -w -j1 DESTDIR=$PKG install
-  install -Dm 755 scripts/gmock-config -t $PKG/usr/bin
-  install -Dm 644 include/gmock/internal/custom/* -t \
-  $PKG/usr/include/gmock/internal/custom
+  install -Dm 644 LICENSE -t "$PKG/usr/share/licenses/gmock-$version"
+  install -Dm 644 README.md CONTRIBUTORS -t "${PKG}/usr/share/doc/gmock-$version"
+  install -Dm 755 scripts/gmock-config.in -t "${PKG}/usr/bin"
+  install -Dm 644 cmake/* -t "${PKG}/usr/src/gmock/cmake"
+  install -Dm 644 src/* -t "${PKG}/usr/src/gmock/src"
+  install -Dm 644 CMakeLists.txt -t "${PKG}/usr/src/gmock"
+  install -Dm 644 scripts/generator/{*.py,LICENSE,README*} -t "${PKG}/usr/share/gmock-$version/generator"
+  install -Dm 644 scripts/generator/cpp/* -t "${PKG}/usr/share/gmock-$version/generator/cpp"
 
-  # Obsolets libs
-  rm $PKG/usr/lib/libgmock{,_main}.la
+  sed -i 's|src/||' "${PKG}/usr/src/gmock/src/gmock-all.cc"
+
 }
