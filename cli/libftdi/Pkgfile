@@ -7,8 +7,7 @@ contributors="Greg"
 makedepends=(libusb confuse boost cmake swig)
 
 name=libftdi
-version=1.4
-release=3
+version=1.5
 
 source=(http://www.intra2net.com/en/developer/libftdi/download/${name}1-$version.tar.bz2)
 
@@ -25,6 +24,8 @@ cd ${name}1-$version
   make
   make DESTDIR=$PKG install
   install -Dm644 ../packages/99-libftdi.rules $PKG/etc/udev/rules.d/69-libftdi.rules
-  cp -r ../examples/* $PKG/usr/share/libftdi/examples
+  mkdir -p $PKG/usr/share/libftdi
+
+  cp -r ../examples $PKG/usr/share/libftdi/examples
 
 }
