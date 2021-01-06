@@ -4,24 +4,22 @@ url="http://eigen.tuxfamily.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(cmake)
+makedepends=(cmake boost)
 
 name=eigen3
-version=3.3.7
-release=2
+version=3.3.9
 
-PKGMK_KEEP_SOURCES="no"
 
-source=(http://bitbucket.org/eigen/eigen/get/$version.tar.bz2)
+source=(https://gitlab.com/libeigen/eigen/-/archive/$version/eigen-$version.tar.gz)
 build() {
-	cd eigen-eigen-*
+ mkdir build
+ cd build
 
-	mkdir build
-	cd build
+ cmake -DCMAKE_INSTALL_PREFIX=/usr \
+ -DCMAKE_INSTALL_LIBDIR=lib \
+ ../eigen-$version
 
-	cmake -DCMAKE_INSTALL_PREFIX=/usr \
-	-DCMAKE_INSTALL_LIBDIR=lib ..
 
-	make
-	make DESTDIR=$PKG install
+ make
+ make DESTDIR=$PKG install
 }
