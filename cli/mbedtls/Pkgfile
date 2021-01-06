@@ -4,20 +4,37 @@ url="https://tls.mbed.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg"
 
-name=mbedtls
-version=2.16.2
+makedepends=(cmake)
 
-source=(https://tls.mbed.org/download/mbedtls-$version-gpl.tgz
-)
+name=mbedtls
+version=2.25.0
+
+source=(https://github.com/ARMmbed/mbedtls/archive/$name-$version.tar.gz)
 
 build() {
 
-cd $name-$version
+cd $name-$name-$version
 sed -i 's|//\(#define MBEDTLS_THREADING_C\)|\1|' include/mbedtls/config.h
 sed -i 's|//\(#define MBEDTLS_THREADING_PTHREAD\)|\1|' include/mbedtls/config.h
-sed -i 's|<time.h>|"platform.h"|' include/mbedtls/ssl.h
+
+# broken in 2.25.0
+sed -i 's/thread_id, -ret/thread_id, (unsigned int)(-ret)/' programs/ssl/ssl_pthread_server.c
+sed -i 's/thread_id, ret/thread_id, (unsigned int)ret/' programs/ssl/ssl_pthread_server.c
+sed -i 's/ -ret );/ (unsigned int)(-ret) );/' programs/ssl/ssl_pthread_server.c
+sed -i 's/ -ret, error_buf/ (unsigned int)(-ret), error_buf/' programs/ssl/ssl_pthread_server.c
+sed -i 's/04x\\n", ret /04x\\n", (unsigned int)ret /' programs/ssl/ssl_pthread_server.c
+
+
+cmake \
+-B build \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_VERBOSE_MAKEFILE=ON \
+-DUSE_SHARED_MBEDTLS_LIBRARY=ON \
+-DCMAKE_INSTALL_RPATH=
+make -C build
 
 LDFLAGS+=" -I../include " make SHARED=1 no_test
 
-make DESTDIR=$PKG/usr install	
+make -C build DESTDIR=$PKG/usr install	
 }
