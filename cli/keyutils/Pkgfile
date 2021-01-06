@@ -5,13 +5,19 @@ packager="tnut <tnut@nutryx.org>"
 contributors="Pierre B"
 
 name=keyutils
-version=1.6.1
+version=1.6.3
 
-source=( http://people.redhat.com/~dhowells/$name/$name-$version.tar.bz2 )
+source=(request-key.conf.patch reproducible.patch
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git/snapshot/$name-$version.tar.gz)
 
 build() {
         cd $name-$version
-	sed -i 's:$(LIBDIR)/$(PKGCONFIG_DIR):/usr/lib/pkgconfig:' Makefile
+
+	patch -Np0 -i ../request-key.conf.patch
+	patch -Np1 -i ../reproducible.patch
+
+	make CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
+
         make
-        make NO_ARLIB=1 DESTDIR=$PKG install
+        make  DESTDIR=$PKG install
 }
