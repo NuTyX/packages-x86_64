@@ -1,28 +1,25 @@
 description="Console-based network monitoring utility"
 url="https://sourceforge.net/projects/iptraf-ng/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contributors="Greg"
 
 makedepends=(ncurses)
 
 name=iptraf-ng
-version=1.1.4
-release=2
+version=1.2.1
 
-source=(https://infrastructure.fedoraproject.org/infra/hosted-content/iptraf-ng/iptraf-ng/iptraf-ng-$version.tar.gz)
+source=(https://github.com/$name/$name/archive/v$version.tar.gz)
 
 build() {
 
   cd $name-$version
-  ./configure \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --sbindir=/usr/bin
-  # preserve our own flags
-  make CFLAGS="${CFLAGS} -std=gnu99" \
-    LDFLAGS="${LDFLAGS}" CPPFLAGS="${CPPFLAGS}"
-  make DESTDIR=$PKG install
+
+  make CFLAGS="${CFLAGS} -std=gnu99 -D_GNU_SOURCE" \
+       LDFLAGS="${LDFLAGS}" \
+       CPPFLAGS="${CPPFLAGS}" \
+       sbindir_relative=bin \
+       prefix=/usr
+  make DESTDIR=$PKG prefix=/usr sbindir_relative=bin install
   install -Dm 644 iptraf-ng-logrotate.conf -t $PKG/etc/logrotate.d 
 }
