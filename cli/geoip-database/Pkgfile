@@ -3,10 +3,14 @@ url="http://www.maxmind.com/app/c"
 packager="tnut <tnut@nutyx.org>"
 
 name=geoip-database
-version=20180403
+version=20201222
 
-source=(http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
-        http://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz)
+PKGMK_KEEP_SOURCES="no"
+
+_source_base=https://sources.archlinux.org/other/packages/$name/$version
+
+source=(${_source_base}/GeoIP.dat.gz
+        ${_source_base}/GeoIPv6.dat.gz)
 
 build() {
 	umask 022
