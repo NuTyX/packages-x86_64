@@ -1,18 +1,20 @@
 description="A tool for generating C-based recognizers from regular expressions"
 url="http://re2c.sourceforge.net/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(autoconf automake m4 libtool grep sed)
+
 name=re2c
-version=1.1.1
-release=1
+version=2.0.3
 
 PKGMK_KEEP_SOURCES=no
 
 source=(https://github.com/skvadrik/re2c/archive/$version.tar.gz)
 
 build(){
-   cd $name-$version/re2c
+   cd $name-$version
    ./autogen.sh
    ./configure --prefix=/usr
    make
