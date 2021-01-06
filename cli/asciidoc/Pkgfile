@@ -8,11 +8,13 @@ makedepends=(autoconf docbook-xsl libxslt python)
 
 name=asciidoc
 version=9.0.4
-SITE=$(python -c 'import sysconfig; print(sysconfig.get_paths()["platlib"])')
+release=2
+
 source=(https://github.com/${name}/${name}-py3/archive/$version/$name-$version.tar.gz)
 
 
 build(){
+    SITE=$(python -c 'import sysconfig; print(sysconfig.get_paths()["platlib"])')
 
     cd ${name}-py3-$version
     autoconf
