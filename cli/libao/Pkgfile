@@ -4,19 +4,16 @@ url="http://xiph.org/ao/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Rems"
 
-makedepends=(alsa-lib git)
+makedepends=(automake autoconf m4 alsa-lib)
 
 name=libao
-version=1.2.2-git
-release=3
+version=1.2.2
 
-source=()
+PKGMK_KEE_SOURCES="no"
+source=(https://github.com/xiph/libao/archive/$version.tar.gz)
 
-prepare() {
-git clone https://git.xiph.org/libao.git $name
-}        
 build() {
-    cd $name
+cd $name-$version
 ./autogen.sh
 ./configure --prefix=/usr \
             --enable-alsa-mmap
