@@ -4,14 +4,14 @@ url="https://bitbucket.org/lazka/mutagen"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Rems"
 
-makedepends=(python2 python2-setuptools)
+makedepends=(python)
 
 name=mutagen
-version=1.42.0
+version=1.45.1
 
 source=(https://github.com/quodlibet/mutagen/releases/download/release-$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
-python2 setup.py install --root=$PKG
+python setup.py install --root=$PKG
 }
