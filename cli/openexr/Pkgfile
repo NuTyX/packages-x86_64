@@ -4,25 +4,23 @@ url="http://www.openexr.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Rems"
 
-makedepends=(ilmbase)
+makedepends=(cmake boost)
 
 name=openexr
-version=2.3.0
-release=2
+version=2.5.4
+PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/openexr/openexr/releases/download/v$version/$name-$version.tar.gz)
+source=(https://github.com/openexr/openexr/archive/v$version.tar.gz)
 
 build() {
-cd $name-$version
+mkdir build
+cd    build
 
-./configure --prefix=/usr \
---localstatedir=/var \
---sysconfdir=/etc
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+../$name-$version
 
 make
 make DESTDIR=$PKG install
-rm $PKG/usr/lib/libIlmImf.la
-rm $PKG/usr/lib/libIlmImfUtil.la
 }
 uptodate() {
 local url ext
