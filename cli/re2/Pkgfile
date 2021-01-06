@@ -4,14 +4,15 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=re2
-version=2020-10-01
+_version=2020-11-01
+version=${_version//-}
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/google/re2/archive/$version.zip)
+source=(https://github.com/google/re2/archive/${_version}.tar.gz)
 
 build() {
-  cd $name-$version
+  cd $name-${_version}
   make prefix=/usr
   make prefix=/usr DESTDIR=$PKG install
 }
