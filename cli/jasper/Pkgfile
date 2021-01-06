@@ -7,25 +7,29 @@ contributors="Pierre B"
 makedepends=(cmake libjpeg-turbo doxygen)
 
 name=jasper
-version=2.0.14
-release=4
+version=2.0.19
 
-source=(${url}software/$name-$version.tar.gz)
+source=(https://github.com/mdadams/jasper/archive/version-${version}.tar.gz
+        jasper-1.900.1-fix-filename-buffer-overflow.patch)
+
+prepare() {
+cd $name-version-$version
+patch -p1 < ../jasper-1.900.1-fix-filename-buffer-overflow.patch
+sed -r 's|(CMAKE_SKIP_BUILD_RPATH) FALSE|\1 TRUE|g' -i CMakeLists.txt
+}
 
 build() {
-	cd $name-$version
 	mkdir BUILD
 	cd BUILD
 
 	cmake -DCMAKE_INSTALL_PREFIX=/usr \
-	-DCMAKE_INSTALL_LIBDIR=lib \
-	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_INSTALL_LIBDIR=lib     \
+	-DCMAKE_BUILD_TYPE=Release     \
+	-DJAS_ENABLE_LIBJPEG=ON        \
 	-DCMAKE_SKIP_INSTALL_RPATH=YES \
+	-DJAS_ENABLE_DOC=NO            \
 	-DCMAKE_INSTALL_DOCDIR=/usr/share/doc/jasper-$version \
-      	..
+      	../$name-version-$version
 	make
 	make DESTDIR=$PKG install
-
-	install -v -m755 -d $PKG/usr/share/doc/jasper-$version
-	install -v -m644 ../doc/*.pdf $PKG/usr/share/doc/$name-$version
 }
