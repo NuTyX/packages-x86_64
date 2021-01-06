@@ -1,9 +1,12 @@
 description="The GNU Project debugger, allows you to see what is going on “inside” another program while it executes."
 url="http://www.sourceware.org/gdb/"
+
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(ncurses readline expat texinfo)
+
 name=gdb
-version=8.3
+version=10.1
 
 source=(https://ftp.gnu.org/gnu/gdb/$name-$version.tar.xz)
 build() {
@@ -23,6 +26,10 @@ rm $PKG/usr/lib/libbfd.a
 rm $PKG/usr/lib/libbfd.la
 rm $PKG/usr/lib/libopcodes.a
 rm $PKG/usr/lib/libopcodes.la
+rm $PKG/usr/lib/libctf-nobfd.a
+rm $PKG/usr/lib/libctf-nobfd.la
+rm $PKG/usr/lib/libctf.a
+rm $PKG/usr/lib/libctf.la
 
 # Most of the locale are allready present from binnutils, beter get rid of all of them
 rm -r $PKG/usr/share/locale
