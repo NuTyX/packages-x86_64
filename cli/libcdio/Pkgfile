@@ -4,24 +4,30 @@ url="http://www.gnu.org/software/libcdio/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(libcddb)
+makedepends=(autoconf automake m4 libcddb ncurses)
 
 name=libcdio
-version=2.0.0
-release=3
+version=2.1.0
 
-source=( http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
+source=(https://ftp.gnu.org/gnu/$name/$name-$version.tar.bz2)
 
 build() {
-	cd $name-$version
-	./configure --prefix=/usr --disable-static 
-	make
-	make DESTDIR=$PKG install
+cd $name-$version
+
+autoreconf -fi
+
+./configure --prefix=/usr --disable-static --disable-vcd-info --enable-cpp-progs
+make
+make DESTDIR=$PKG install
 
 # Obsolets libs
 rm $PKG/usr/lib/libcdio{,++}.la
 rm $PKG/usr/lib/libiso9660{,++}.la
 rm $PKG/usr/lib/libudf.la
+
+sed -e "/define CDIO_LIBCDIO_SOURCE_PATH/s|.*|/* #undef CDIO_LIBCDIO_SOURCE_PATH */|" \
+      -i $PKG/usr/include/cdio/cdio_config.h
+
 }
 
 uptodate() {
