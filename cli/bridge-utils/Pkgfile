@@ -7,13 +7,12 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(autoconf)
  
 name=bridge-utils
-version=1.6
-release=5
+version=1.7
 
 runyx_version=20200412
 
 source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
-	http://www.kernel.org/pub/linux/utils/net/$name/$name-$version.tar.xz)
+	https://kernel.org/pub/linux/kernel/people/shemminger/$name/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
