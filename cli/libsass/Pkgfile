@@ -4,17 +4,21 @@ url="http://libsass.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch"
 
+makedepends=(autoconf automake libtool grep sed)
+
 name=libsass
-version=3.6.1
+version=3.6.4
 
 source=(https://github.com/sass/$name/archive/$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
+export LIBSASS_VERSION=$version
 autoreconf -i
-	./configure --prefix=/usr
-	make
-	make DESTDIR=$PKG install
+
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
 
 # Obsolet lib
 rm $PKG/usr/lib/libsass.la
