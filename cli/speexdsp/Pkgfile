@@ -5,16 +5,12 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Rems"
 
 name=speexdsp
-version=1.2rc3
-release=2
+version=1.2.0
 
-source=(https://downloads.us.xiph.org/releases/speex/$name-$version.tar.gz
-        speexdsp-fixbuilds-774c87d.patch)
+source=(https://downloads.us.xiph.org/releases/speex/$name-$version.tar.gz)
 
 build() {
-  cd $name-$version
-patch -Np1 -i ../speexdsp-fixbuilds-774c87d.patch
-autoreconf -vi
+cd $name-$version
 ./configure --prefix=/usr \
             --sysconfdir=/etc \
             --localstatedir=/var \
