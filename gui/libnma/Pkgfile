@@ -1,0 +1,15 @@
+description="NetworkManager GUI client library"
+url="https://wiki.gnome.org/Projects/NetworkManager/"
+
+packager="tnut <tnut@nutyx.org>"
+
+name="libnma"
+version=1.8.30
+
+source=(https://gitlab.gnome.org/GNOME/libnma/-/archive/$version/libnma-$version.tar.bz2)
+
+makedepends=(gobject-introspection gtk-doc vala networkmanager gtk3 iso-codes mobile-broadband-provider-info gcr)
+
+build=meson
+
+
