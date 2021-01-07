@@ -97,6 +97,12 @@ sysvinit|sysklogd|elogind|nutyx|kernel|kernel*|\
 vboxhost*|nvidia*|virtualbox-guest)
      continue;;
 
+     gtk-update-icon-cache)
+     ARCHNAME="gtk3";;
+
+    gtksharp2)
+     ARCHNAME="gtk-sharp-2";;
+
     perl-yapp)
      ARCHNAME="perl-parse-yapp";;
 
@@ -121,8 +127,11 @@ vboxhost*|nvidia*|virtualbox-guest)
     rustc)
      ARCHNAME="rust";;
 
-    sdl1)
-     ARCHNAME="sdl";;
+    sdl1|libunique1)
+     ARCHNAME=${PKGNAME/1/};;
+
+    sdl)
+     ARCHNAME="sdl2";;
 
     freetype)
      ARCHNAME="freetype2";;
@@ -142,14 +151,14 @@ vboxhost*|nvidia*|virtualbox-guest)
     eigen3)
      ARCHNAME="eigen";;
 
-    fuse)
-     ARCHNAME="fuse3";;
-
     fdk-aac)
      ARCHNAME="fdkaac";;
 
-    glib|openjpeg)
+    gdk-pixbuf|glib|openjpeg)
      ARCHNAME="${PKGNAME}2";;
+
+    gtkmm|fuse|gtksourceview|gtkspell)
+     ARCHNAME="${PKGNAME}3";;
 
     kerberos)
      ARCHNAME="krb5";;
@@ -195,9 +204,9 @@ vboxhost*|nvidia*|virtualbox-guest)
 
     telegram)
      ARCHNAME="telegram-desktop";;
-
-    transmission-qt)
-     ARCHNAME="transmission";;
+     
+    transmission-qt|phonon-qt)
+     ARCHNAME=${PKGNAME/-qt/};;
 
     dejavu-ttf)
      ARCHNAME="ttf-dejavu";;
@@ -229,8 +238,17 @@ vboxhost*|nvidia*|virtualbox-guest)
     python-parsing|python-curl)
      ARCHNAME=${PKGNAME/-/-py};;
 
-    python2-distutils-extra|python2-evdev|python2-lxml|python2-ply|python2-pyparsing|python2-simplejson|python2-six|python2-xdg)
+    tracker|tracker-miners)
+     ARCHNAME=${PKGNAME/tracker/tracker3};;
+
+
+    gtkmm2|graphite2|tracker2|tracker2-miners|python2-distutils-extra|\
+python2-evdev|python2-lxml|python2-ply|python2-pyparsing|\
+python2-simplejson|python2-six|python2-xdg)
      ARCHNAME=${PKGNAME/2/};;
+
+    oxygen-icons5)
+     ARCHNAME=${PKGNAME/5/};;
 
     xorg-fontconfig|xorg-pixman|xorg-xkeyboard-config|xorg-xbitmaps|xorg-xtrans|xorg-luit|xorg-glu|xorg-xcursor-themes)
      ARCHNAME=${PKGNAME/xorg-/};;
@@ -250,11 +268,21 @@ vboxhost*|nvidia*|virtualbox-guest)
     live)
      ARCHNAME="live-media";;
 
-    libzeitgeist)
+    libzeitgeist|libostree|librest)
      ARCHNAME=${PKGNAME/lib/};;
 
     xorg-lib*|xorg-xf86*)
      ARCHNAME=${PKGNAME/xorg-/};;
+
+    libindicator-gtk3|oxygen-gtk3)
+     ARCHNAME=${PKGNAME/-gtk3/};;
+
+    libfm-extra)
+     ARCHNAME="libfm";;
+
+    gstreamer-vaapi)
+     ARCHNAME=$PKGNAME;;
+
 
     gstreamer-*)
      ARCHNAME=${PKGNAME/gstreamer-/gst-};;
