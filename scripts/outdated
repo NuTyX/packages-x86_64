@@ -8,22 +8,36 @@ echo '-------------------- ARCH PACKAGES REPOSITORY --------------------' >&2
 if  [ ! -d "$HOME$ARCHGIT/packages/" ] ; then
   echo "Repository not found in $HOME$ARCHGIT/packages/"
   while true; do
-      read -p "Would you like to clone packages repository? [y/n]" yn
-      case $yn in
-          [Yy]* )
-            mkdir -p "$HOME$ARCHGIT"
-            cd $HOME$ARCHGIT >&2
-            git clone git://git.archlinux.org/svntogit/packages.git >&2
-            cd - >&2
-            break;;
-          [Nn]* ) exit;;
-          * ) echo "Please answer Y for yes or N for no.";;
-      esac
+    read -p "Would you like to clone packages repository? [y/n]" yn
+    case $yn in
+      [Yy]* )
+        mkdir -p "$HOME$ARCHGIT"
+        cd $HOME$ARCHGIT >&2
+        git clone git://git.archlinux.org/svntogit/packages.git >&2
+        cd - >&2
+        break;;
+      [Nn]* )
+        exit;;
+      * )
+        echo "Cannot continue without packages repository"
+        exit;;
+    esac
   done
 else
-  cd $HOME$ARCHGIT/packages/ >&2
-  git pull --ff-only >&2
-  cd - >&2
+  while true; do
+    read -p "Would you like to update packages repository? [y/N]" yn
+    case $yn in
+      [Yy]* )
+        cd $HOME$ARCHGIT/packages/ >&2
+        git pull --ff-only >&2
+        cd - >&2
+        break;;
+      [Nn]* )
+        break;;
+      * )
+        break;;
+    esac
+  done
 fi
 
 echo '-------------------- ARCH COMMUNITY REPOSITORY --------------------' >&2
@@ -38,14 +52,28 @@ if  [ ! -d "$HOME$ARCHGIT/community/" ] ; then
             git clone git://git.archlinux.org/svntogit/community.git >&2
             cd - >&2
             break;;
-          [Nn]* ) exit;;
-          * ) echo "Please answer Y for yes or N for no.";;
+          [Nn]* )
+            exit;;
+          * )
+            echo "Cannot continue without community repository"
+            exit;;
       esac
   done
 else
-  cd $HOME$ARCHGIT/community/ >&2
-  git pull --ff-only >&2
-  cd - >&2
+  while true; do
+    read -p "Would you like to update community repository? [y/N]" yn
+    case $yn in
+      [Yy]* )
+        cd $HOME$ARCHGIT/community/ >&2
+        git pull --ff-only >&2
+        cd - >&2
+        break;;
+      [Nn]* )
+        break;;
+      * )
+        break;;
+    esac
+  done
 fi
 
 NOTFOUND=""
@@ -167,7 +195,7 @@ vboxhost*|nvidia*|virtualbox-guest)
 
     telegram)
      ARCHNAME="telegram-desktop";;
-     
+
     transmission-qt)
      ARCHNAME="transmission";;
 

@@ -1,7 +1,7 @@
 description="Instant messaging client that can connect with a wide range of networks"
 url="http://www.pidgin.im"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(cyrus-sasl gtk2 gstreamer libxml2
              perl-xml-parser gnutls nss nspr xorg-libxscrnsaver
@@ -11,8 +11,7 @@ makedepends=(cyrus-sasl gtk2 gstreamer libxml2
 run=(desktop-file-utils)
 
 name=pidgin
-version=2.13.0
-release=4
+version=2.14.1
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
 
@@ -20,7 +19,7 @@ build() {
 cd $name-$version
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
---with-gstreamer=1.0 \
+--disable-gstreamer \
 --disable-gevolution \
 --disable-meanwhile \
 --disable-avahi \
