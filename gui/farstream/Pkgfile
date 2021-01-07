@@ -1,7 +1,8 @@
 description="Farstream (formerly Farsight) - Audio/Video Communications Framework"
 url="http://freedesktop.org/software/farstream"
 
-makedepends=(gstreamer-plugins-base libnice gobject-introspection)
+makedepends=(automake autoconf m4 grep sed
+             gstreamer-plugins-base libnice gobject-introspection)
 
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
@@ -9,15 +10,19 @@ contributors="Pierre B"
 name=farstream
 version=0.2.9
 
-source=( http://freedesktop.org/software/farstream/releases/farstream/farstream-$version.tar.gz)
-
+source=(https://freedesktop.org/software/farstream/releases/farstream/farstream-$version.tar.gz
+        farstream-make-4.3.patch)
+prepare() {
+  cd $name-$version
+  patch -p1 -i ../farstream-make-4.3.patch # Fix build with make 4.3
+  ./autogen.sh
+}
 package() {
 # Obsolets libs
 rm $PKG/usr/lib/farstream-0.2/libmulticast-transmitter.la
 rm $PKG/usr/lib/farstream-0.2/libnice-transmitter.la
 rm $PKG/usr/lib/farstream-0.2/librawudp-transmitter.la
 rm $PKG/usr/lib/farstream-0.2/libshm-transmitter.la
-rm $PKG/usr/lib/gstreamer-1.0/libfsmsnconference.la
 rm $PKG/usr/lib/gstreamer-1.0/libfsrawconference.la
 rm $PKG/usr/lib/gstreamer-1.0/libfsrtpconference.la
 rm $PKG/usr/lib/gstreamer-1.0/libfsrtpxdata.la
