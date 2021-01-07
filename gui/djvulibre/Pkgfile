@@ -4,18 +4,18 @@ url="http://djvu.sourceforge.net"
 packager="tnut <tnut@nutyx.org>"
 contributors="Alienus"
 
-makedepends=(librsvg libtiff libjpeg-turbo hicolor-icon-theme)
+makedepends=(autoconf automake m4 sed grep librsvg libtiff libjpeg-turbo)
 run=(librsvg hicolor-icon-theme)
 
 name=djvulibre
-version=3.5.27
-release=4
+version=3.5.28
 
 source=(
 http://downloads.sourceforge.net/djvu/$name-$version.tar.gz)
 
 build(){
     cd $name-$version
+    ./autogen.sh
     ./configure --prefix=/usr \
                 --disable-desktopfiles
     make
