@@ -4,22 +4,11 @@ url="http://people.suug.ch/~tgr/libnl"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(glib gstreamer-plugins-base)
+makedepends=(meson ninja glib gstreamer-plugins-base)
 
 name=libnice
-version=0.1.16
+version=0.1.18
 
 source=(http://nice.freedesktop.org/releases/$name-$version.tar.gz)
 
-build() {
-cd $name-$version
-./configure --prefix=/usr \
---without-gstreamer-0.10 \
---disable-static
-make
-make DESTDIR=$PKG install
-
-# Obsolets libs
-rm $PKG/usr/lib/gstreamer-1.0/libgstnice.la
-rm $PKG/usr/lib/libnice.la
-}
+build=meson
