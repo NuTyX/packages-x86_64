@@ -4,10 +4,20 @@ url="http://www.piksel.org/frei0r"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(gavl doxygen)
+makedepends=(cmake gavl doxygen)
 
 name=frei0r-plugins
-version=1.6.1
-release=3
+version=1.7.0
 
 source=(https://files.dyne.org/frei0r/releases/$name-$version.tar.gz)
+
+build() {
+  mkdir -p build
+  cd build
+  cmake ../$name-$version \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make
+
+  make DESTDIR=$PKG install
+}
+
