@@ -4,16 +4,13 @@ url="https://virgil3d.github.io/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Rémy"
 
-makedepends=(mesa libepoxy)
+makedepends=(meson ninja mesa libepoxy)
 
 name=virglrenderer
-version=0.7.0
-release=2
+version=0.8.2
 
-source=(https://www.freedesktop.org/software/virgl/$name-$version.tar.bz2)
-
-package() {
-
-# Remove obsolet libs
-rm $PKG/usr/lib/libvirglrenderer.la
+source=(https://gitlab.freedesktop.org/virgl/$name/-/archive/$name-$version/$name-$name-$version.tar.bz2)
+prepare() {
+mv $name-$name-$version $name-$version
 }
+build=meson
