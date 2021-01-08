@@ -6,13 +6,22 @@ contributor="Rems, Dania"
 
 set=(lightdm)
 
+makedepends=(autoconf automake m4 xfce4-dev-tools
+             lightdm exo gobject-introspection)
+
+
 name=lightdm-gtk-greeter
-version=2.0.6
-release=4
+version=2.0.8
 
 makedepends=(lightdm exo gobject-introspection)
 
-source=(https://launchpad.net/lightdm-gtk-greeter/"${version:0:3}"/$version/+download/$name-$version.tar.gz)
+source=(https://github.com/Xubuntu/lightdm-gtk-greeter/archive/lightdm-gtk-greeter-$version.tar.gz)
+
+prepare() {
+mv $name-$name-$version $name-$version
+cd $name-$version
+NOCONFIGURE=1 ./autogen.sh
+}
 
 build() {
 
