@@ -8,15 +8,14 @@ makedepends=(m4 perl)
 set=(devel)
 
 name=autoconf
-version=2.69
-release=2
+version=2.70
 
-source=(autoconf-2.69-consolidated_fixes-1.patch
+source=(autoconf-$version-consolidated_fixes-1.patch
 	http://ftp.gnu.org/gnu/autoconf/autoconf-$version.tar.xz)
 
 build () {
 cd $name-$version
-patch -Np1 -i ../autoconf-2.69-consolidated_fixes-1.patch
+# patch -Np1 -i ../autoconf-$version-consolidated_fixes-1.patch
 ./configure --prefix=/usr
 make
 make check || true
