@@ -7,21 +7,28 @@ maintainer="Arch Linux"
 
 makedepends=(gtk3 ffmpeg flac dbus freetype xorg-libxscrnsaver
              libxslt nss snappy json-glib llvm)
-run=(hicolor-icon-theme desktop-file-utils re2)
+run=(hicolor-icon-theme desktop-file-utils)
 
 name=chromium
 version=87.0.4280.88
 icuversion=67.1
+re2version=2020-10-01
+release=2
 
-source=(https://github.com/unicode-org/icu/releases/download/\
+source=(
+        https://github.com/unicode-org/icu/releases/download/\
 release-${icuversion//./-}/icu4c-${icuversion//./_}-src.tgz \
 	https://downloads.tuxfamily.org/nutyx/files/libminizip.so.1.0.0 
-        https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-1-x86_64.pkg.tar.zst)
+        https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-1-x86_64.pkg.tar.zst
+        https://github.com/google/re2/archive/${re2version}.tar.gz)
 prepare() {
 cd icu/source
 ./configure
 make
 cd -
+
+cd re2-$re2version
+make
 }
 build() {
 
@@ -37,4 +44,7 @@ for LIB in libicui18n.so libicuuc.so libicudata.so
 do
    cp lib/$LIB.$icuversion $PKG/usr/lib/chromium/$LIB.${icuversion:0:2}
 done
+cd -
+cd re2-$re2version
+install obj/so/libre2.so $PKG/usr/lib/chromium/libre2.so.8
 }
