@@ -5,8 +5,7 @@ contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
 name=readline
-version=8.0
-release=2
+version=8.1
 
 source=(http://ftp.gnu.org/gnu/readline/readline-$version.tar.gz)
 
@@ -43,10 +42,10 @@ $PKG/usr/share/doc/readline-$version
 
 rm -rv $PKG/usr/bin
 
-ln -sfv ../../lib/libreadline.so.8 \
+ln -sfv ../../lib/$(readlink $PKG/usr/lib/libreadline.so) \
 $PKG/usr/lib/libreadline.so
 
-ln -sfv ../../lib/libhistory.so.8 \
+ln -sfv ../../lib/$(readlink $PKG/usr/lib/libhistory.so ) \
 $PKG/usr/lib/libhistory.so
 
 }
