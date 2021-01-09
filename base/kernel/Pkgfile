@@ -11,13 +11,13 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel
-version=5.9.16
+version=5.10.6
 
 alias=(linux)
 INITRD="initrd"
 KERNEL=${name/-*/}
 
-_version=${version:0:3}
+_version=${version:0:4}
 
 # Linux patch version
 [ "${_version}" != "${version}" ] && patchname="patch-$version.xz"
