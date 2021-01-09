@@ -1,0 +1,198 @@
+makedepends=(git acpica nasm subversion perl-libwww)
+
+description="Tianocore UEFI firmware for Qemu"
+url="http://sourceforge.net/apps/mediawiki/tianocore/index.php?title=EDK2"
+
+packager="rems28 <remy@nutyx.org>"
+ 
+name=ovmf
+version=202011
+
+_openssl_ver=1.1.1i
+_brotli_ver=1.0.7
+_build_type='RELEASE'
+_toolchain_opt=GCC5
+_arch_list=('IA32' 'X64')
+
+PKGMK_KEEP_SOURCES='no'
+
+source=(https://github.com/tianocore/edk2/archive/edk2-stable${version}.tar.gz
+	https://www.openssl.org/source/openssl-${_openssl_ver}.tar.gz
+        https://github.com/google/brotli/archive/v${_brotli_ver}.tar.gz
+	50-edk2-ovmf-i386-secure.json
+	50-edk2-ovmf-x86_64-secure.json
+	60-edk2-ovmf-x86_64.json
+        60-edk2-ovmf-i386.json
+	python3.patch)
+
+unset MAKEFLAGS
+
+build() {
+
+  mv edk2-edk2-stable${version} $name-$version
+
+  #Sylink openssl into place
+
+  rm -rv $name-$version/CryptoPkg/Library/OpensslLib/openssl
+  ln -sv $SRC/openssl-${_openssl_ver} $name-$version/CryptoPkg/Library/OpensslLib/openssl
+
+  #Symlink brotli into place
+
+  rm -rfv $name-$version/BaseTools/Source/C/BrotliCompress/brotli $name-$version/MdeModulePkg/Library/BrotliCustomDecompressLib/brotli
+  ln -sfv $SRC/"brotli-${_brotli_ver}" $name-$version/BaseTools/Source/C/BrotliCompress/brotli
+  ln -sfv $SRC/"brotli-${_brotli_ver}" $name-$version/MdeModulePkg/Library/BrotliCustomDecompressLib/brotli
+
+  if [ "$(uname -m)" != "x86_64" ]; then
+      echo "This package must be built under the x86_64 architecture."
+      false
+  fi
+
+  cd $name-$version
+
+  patch -Np1 -i ../python3.patch
+
+  # -Werror, not even once
+  sed -e 's/ -Werror//g' \
+      -i BaseTools/Conf/*.template BaseTools/Source/C/Makefiles/*.makefile
+
+  make -C BaseTools
+
+  . edksetup.sh
+
+  for _arch in ${_arch_list[@]}; do
+    # shell
+    echo "Building shell (${_arch})."
+    BaseTools/BinWrappers/PosixLike/build -p ShellPkg/ShellPkg.dsc \
+                                          -a "${_arch}" \
+                                          -b "${_build_type}" \
+                                          -n "$(nproc)" \
+                                          -t "${_toolchain_opt}"
+    # ovmf
+    if [[ "${_arch}" == 'IA32' ]]; then
+      echo "Building ovmf (${_arch}) with secure boot"
+
+      OvmfPkg/build.sh -p OvmfPkg/OvmfPkgIa32.dsc \
+                       -a "${_arch}" \
+                       -b "${_build_type}" \
+                       -n "$(nproc)" \
+                       -t "${_toolchain_opt}" \
+                       -D LOAD_X64_ON_IA32_ENABLE \
+                       -D NETWORK_IP6_ENABLE \
+                       -D TPM_ENABLE \
+                       -D HTTP_BOOT_ENABLE \
+                       -D TLS_ENABLE \
+                       -D FD_SIZE_2MB \
+                       -D SECURE_BOOT_ENABLE \
+                       -D SMM_REQUIRE \
+                       -D EXCLUDE_SHELL_FROM_FD
+
+      mv -v Build/Ovmf{Ia32,IA32-secure}
+
+      echo "Building ovmf (${_arch}) without secure boot"
+
+      OvmfPkg/build.sh -p OvmfPkg/OvmfPkgIa32.dsc \
+                       -a "${_arch}" \
+                       -b "${_build_type}" \
+                       -n "$(nproc)" \
+                       -t "${_toolchain_opt}" \
+                       -D LOAD_X64_ON_IA32_ENABLE \
+                       -D NETWORK_IP6_ENABLE \
+                       -D TPM_ENABLE \
+                       -D HTTP_BOOT_ENABLE \
+                       -D TLS_ENABLE \
+                       -D FD_SIZE_2MB
+
+      mv -v Build/Ovmf{Ia32,IA32}
+    fi
+
+    if [[ "${_arch}" == 'X64' ]]; then
+      echo "Building ovmf (${_arch}) with secure boot"
+
+      OvmfPkg/build.sh -p "OvmfPkg/OvmfPkg${_arch}.dsc" \
+                       -a "${_arch}" \
+                       -b "${_build_type}" \
+                       -n "$(nproc)" \
+                       -t "${_toolchain_opt}" \
+                       -D NETWORK_IP6_ENABLE \
+                       -D TPM_ENABLE \
+                       -D FD_SIZE_2MB \
+                       -D TLS_ENABLE \
+                       -D HTTP_BOOT_ENABLE \
+                       -D SECURE_BOOT_ENABLE \
+                       -D SMM_REQUIRE \
+                       -D EXCLUDE_SHELL_FROM_FD
+
+      mv -v Build/OvmfX64{,-secure}
+
+      echo "Building ovmf (${_arch}) without secure boot"
+
+      OvmfPkg/build.sh -p "OvmfPkg/OvmfPkg${_arch}.dsc" \
+                       -a "${_arch}" \
+                       -b "${_build_type}" \
+                       -n "$(nproc)" \
+                       -t "${_toolchain_opt}" \
+                       -D NETWORK_IP6_ENABLE \
+                       -D TPM_ENABLE \
+                       -D FD_SIZE_2MB \
+                       -D TLS_ENABLE \
+                       -D HTTP_BOOT_ENABLE
+    fi
+  done
+
+unset _arch
+
+# minimal UEFI shell, as defined in ShellPkg/Application/Shell/ShellPkg.inf
+  local _min='7C04A583-9E3E-4f1c-AD65-E05268D0B4D1'
+
+# full UEFI shell, as defined in ShellPkg/ShellPkg.dsc
+  local _full='EA4BB293-2D7F-4456-A681-1F22F42CD0BC'
+
+  for _arch in ${_arch_list[@]}; do
+
+    install -vDm 644 "Build/Shell/${_build_type}_${_toolchain_opt}/${_arch}/Shell_${_min}.efi" \
+      "${PKG}/usr/share/${name}/${_arch,,}/Shell.efi"
+
+    install -vDm 644 "Build/Shell/${_build_type}_${_toolchain_opt}/${_arch}/Shell_${_full}.efi" \
+      "${PKG}/usr/share/${name}/${_arch,,}/Shell_Full.efi"
+  done
+
+  # license
+  install -vDm 644 License.txt -t "${PKG}/usr/share/licenses/${name}-$version"
+
+  # docs
+  install -vDm 644 {ReadMe.rst,Maintainers.txt} \
+    -t "${PKG}/usr/share/doc/${name}-$version"
+
+# installing the various firmwares
+  for _arch in ${_arch_list[@]}; do
+
+# installing OVMF.fd for xen: https://bugs.archlinux.org/task/58635
+    install -vDm 644 "Build/Ovmf${_arch}/${_build_type}_${_toolchain_opt}/FV/OVMF.fd" \
+      -t "${PKG}/usr/share/${name}/${_arch,,}"
+
+    install -vDm 644 "Build/Ovmf${_arch}/${_build_type}_${_toolchain_opt}/FV/OVMF_CODE.fd" \
+      -t "${PKG}/usr/share/${name}/${_arch,,}"
+
+    install -vDm 644 "Build/Ovmf${_arch}/${_build_type}_${_toolchain_opt}/FV/OVMF_VARS.fd" \
+      -t "${PKG}/usr/share/${name}/${_arch,,}"
+
+    install -vDm 644 "Build/Ovmf${_arch}-secure/${_build_type}_${_toolchain_opt}/FV/OVMF_CODE.fd" \
+      "${PKG}/usr/share/${name}/${_arch,,}/OVMF_CODE.secboot.fd"
+  done
+
+  # installing qemu descriptors in accordance with qemu:
+  # https://git.qemu.org/?p=qemu.git;a=tree;f=pc-bios/descriptors
+  # https://bugs.archlinux.org/task/64206
+  install -vDm 644 ../*-edk2-*.json -t "${PKG}/usr/share/qemu/firmware"
+
+  # licenses
+  install -vDm 644 License.txt -t \
+                   "${PKG}/usr/share/licenses/${name}-$version"
+
+  install -vDm 644 OvmfPkg/License.txt \
+                   "${PKG}/usr/share/licenses/${name}-$version/OvmfPkg.License.txt"
+
+  # docs
+  install -vDm 644 {OvmfPkg/README,ReadMe.rst,Maintainers.txt} \
+          -t "${PKG}/usr/share/doc/${name}-$version"
+}

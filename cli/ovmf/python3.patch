@@ -1,0 +1,40 @@
+Description: Use python3 syntax
+ Python2 is obsolete.  Update Build.py to use python3 syntax instead.
+Author: Steve Langasek <vorlon@debian.org>
+Last-Update: 2019-08-30
+
+Index: edk2/UefiCpuPkg/ResetVector/Vtf0/Build.py
+===================================================================
+--- edk2.orig/UefiCpuPkg/ResetVector/Vtf0/Build.py
++++ edk2/UefiCpuPkg/ResetVector/Vtf0/Build.py
+@@ -33,15 +33,15 @@
+             'Vtf0.nasmb',
+             )
+         ret = RunCommand(commandLine)
+-        print '\tASM\t' + output
++        print ('\tASM\t' + output)
+         if ret != 0: sys.exit(ret)
+ 
+         commandLine = (
+-            'python',
++            'python3',
+             'Tools/FixupForRawSection.py',
+             output,
+             )
+-        print '\tFIXUP\t' + output
++        print ('\tFIXUP\t' + output)
+         ret = RunCommand(commandLine)
+         if ret != 0: sys.exit(ret)
+ 
+Index: edk2/UefiCpuPkg/ResetVector/Vtf0/Tools/FixupForRawSection.py
+===================================================================
+--- edk2.orig/UefiCpuPkg/ResetVector/Vtf0/Tools/FixupForRawSection.py
++++ edk2/UefiCpuPkg/ResetVector/Vtf0/Tools/FixupForRawSection.py
+@@ -15,6 +15,6 @@
+ if c > len(d):
+     c -= len(d)
+     f = open(sys.argv[1], 'wb')
+-    f.write('\x90' * c)
++    f.write(b'\x90' * c)
+     f.write(d)
+     f.close()
