@@ -351,16 +351,19 @@ python2-simplejson|python2-six|python2-xdg)
      NOTFOUND+="$(basename $i) "
      continue
    fi
-   if [ "$pkgver" != "$version" ]; then
+   if [ ${pkgver%%+*} != "$version" ]; then
       PODn=$((PODn + 1))
-      echo "$(basename $i) $pkgver ($version)"
+      echo "$(basename $i) ${pkgver%%+*} ($version)"
    fi
    unset pkgver version
  done
 done
 echo "Packages founds: $PFn"
 echo "Packages Out of date: $PODn"
-[ $((PNFn)) -gt 0 ] && echo "Packages not found: $PNFn"
+
+[ $((PNFn)) -gt 0 ] && echo "
+===> PACKAGES NOT FOUND : "$PNFn"
+"
 
 for i in ${NOTFOUND[@]}
 do
