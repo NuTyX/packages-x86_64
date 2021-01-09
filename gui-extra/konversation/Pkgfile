@@ -1,14 +1,14 @@
 description="A user friendly IRC client for KDE"
 url="http://konversation.kde.org"
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contributors="Pierre B"
 
 name=konversation
-version=1.7.5
+version=20.12.1
 makedepends=(kwallet knotifications knotifyconfig kemoticons kparts kidletime
-             hicolor-icon-theme extra-cmake-modules kdoctools)
+             hicolor-icon-theme extra-cmake-modules kdoctools knewstuff)
 
-source=(http://download.kde.org/stable/$name/$version/src/$name-$version.tar.xz)
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
 prepare() {
 sed -i  '/#include <QFile>/a #include <QMetaMethod>' \
