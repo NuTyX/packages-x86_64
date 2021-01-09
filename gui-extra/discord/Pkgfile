@@ -6,9 +6,9 @@ contributors="Rems"
 
 name=discord
 version=0.0.13
-release=2
+release=3
 
-run=(gtk2 gconf libnotify xorg-libxscrnsaver glibc alsa-lib nspr nss pulseaudio)
+run=(gtk2 libnotify xorg-libxscrnsaver glibc alsa-lib nspr nss pulseaudio)
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -37,6 +37,4 @@ build() {
 
   install -Dm644 terms $PKG/usr/share/licenses/$name/LICENSE.html
   install -Dm644 licenses $PKG/usr/share/licenses/$name/OSS-LICENSES.html
-
-
 }
