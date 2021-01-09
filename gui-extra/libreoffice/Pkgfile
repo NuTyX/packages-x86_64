@@ -15,8 +15,7 @@ makedepends=(tar python perl-archive-zip unzip zip icu gtk3 cups poppler-glib
 run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache)
 
 name=libreoffice
-version=7.0.3.1
-release=2
+version=7.0.4.2
 
 categories=(Office Graphics Education)
 
@@ -50,9 +49,6 @@ prepare() {
 	-i bin/distro-install-desktop-integration
 
   sed -e "/distro-install-file-lists/d" -i Makefile.in
-
-  sed -e 's@getURI()->c_str()@getURI().c_str()@' \
-    -i sdext/source/pdfimport/xpdfwrapper/pdfioutdev_gpl.cxx
 
   sed -i 29a\
 '\\t\t&&sed -i "s/TRUE/true/g" src/lib/libcdr_utils.cpp \\' \
