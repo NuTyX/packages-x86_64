@@ -6,10 +6,11 @@ packager="tnut <tnut@nutyx.org>"
 run=(kernel)
 
 version=6.1.16
+release=2
 
 buildr=140961
 _VBARCH=amd64
-source=(
+source=(linux-5.10-r0drv-memobj-fix-r0.patch
 http://download.virtualbox.org/virtualbox/${version}/VirtualBox-${version}-${buildr}-Linux_${_VBARCH}.run)
 
 build(){
@@ -19,7 +20,7 @@ KERNEL_VERSION="$(basename /lib/modules/*)"
 sh VirtualBox-${version}-${buildr}-Linux_${_VBARCH}.run --target vb --keep --noexec
 cd vb
 tar xfj VirtualBox.tar.bz2
-
+patch -Np1 -i ../linux-5.10-r0drv-memobj-fix-r0.patch
 cd src/vboxhost
 
 KERN_VER=${KERNEL_VERSION} make
