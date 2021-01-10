@@ -1,5 +1,6 @@
 #!/bin/bash
 
+PACKAGES_FOLDER="$HOME/packages-x86_64"
 COLLECTIONS="base cli cli-extra gui gui-extra desktops"
 [ ! -z $1 ] && COLLECTIONS="$1"
 ARCHGIT="/devel/git/archlinux"
@@ -85,7 +86,7 @@ do
  echo "
 ===> COLLECTION: $COLLECTION
 "
- for i in $COLLECTION/*
+ for i in $PACKAGES_FOLDER/$COLLECTION/*
  do
   PKGNAME=$(basename $i)
   NOTEXIST="no"
