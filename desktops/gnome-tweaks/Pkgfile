@@ -4,7 +4,7 @@ url="https://live.gnome.org/GnomeTweakTool"
 packager="Schrodinger72 <schrodinger@nutyx.org>"
 contributors="tnut, Jayce"
 
-makedepends=(gtk3 gconf meson)
+makedepends=(gtk3 libhandy0 meson)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
      python-gobject python2-gobject)
 
@@ -12,7 +12,7 @@ set=(gnome)
 
 name=gnome-tweaks
 version=3.34.1
-release=1
+release=2
 
 source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
