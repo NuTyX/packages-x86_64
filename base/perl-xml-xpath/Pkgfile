@@ -1,0 +1,21 @@
+description="A set of modules for parsing and evaluating XPath statements"
+url="https://metacpan.org/release/XML-XPath"
+
+packager="Dania"
+contributor="rems"
+
+name=perl-xml-xpath
+version=1.44
+
+makedepends=(perl-path-tiny perl-xml-parser)
+
+source=(https://cpan.metacpan.org/authors/id/M/MA/MANWAR/XML-XPath-$version.tar.gz)
+
+build() {
+  cd XML-XPath-$version
+
+  perl Makefile.PL INSTALLDIRS=vendor
+
+  make
+  make DESTDIR=$PKG install
+}
