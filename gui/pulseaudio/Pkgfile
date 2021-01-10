@@ -1,16 +1,17 @@
 description="A featureful, general-purpose sound server"
 url="http://www.pulseaudio.org"
 
-packager="tnut <tnut@nutyx.org"
-contributors="Pierre B"
+packager="Rems <remy@nutyx.org"
+contributors="Pierre B, Tnut"
 
 makedepends=(fftw intltool json-c libsndfile alsa-lib dbus glib libcap
-             openssl speex speexdsp libsamplerate gconf
+             openssl speex speexdsp libsamplerate
              webrtc-audio-processing jack)
 run=(bluez sbc)
 
 name=pulseaudio
 version=14.0
+release=2
 
 source=(https://freedesktop.org/software/pulseaudio/releases/pulseaudio-$version.tar.xz)
 
@@ -24,7 +25,6 @@ cd $name-$version
             --disable-bluez4     \
             --disable-rpath      \
             --enable-gsettings   \
-            --enable-gconf       \
             --enable-jack        \
             --enable-webrtc-aec  \
             --with-systemduserunitdir=no
