@@ -1,14 +1,15 @@
 description="GTK+ implementation of wxWidgets API for GUI"
 url="http://wxwidgets.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, Rems, Greg"
+packager="Rems <remy@nutyx.org>"
+contributors="Pierre B, Rems, Greg, tnut"
 
 makedepends=(gtk2 gtk3 gstreamer-plugins-base libnotify xorg-libsm
-             xorg-libxxf86vm xorg-glu gconf webkitgtk)
+             xorg-libxxf86vm xorg-glu webkitgtk)
 
 name=wxgtk
 version=3.0.5.1
+release=2
 
 source=(https://github.com/wxWidgets/wxWidgets/releases/download/v$version/wxWidgets-$version.tar.bz2
 	    make-abicheck-non-fatal.patch)
