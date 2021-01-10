@@ -1,16 +1,17 @@
 description="start up the GNOME Desktop environment"
 url="http://www.gnome.org/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="rems <remy@nutyx.org>"
 contributors="Fanch, Tnut, Remy"
 
-makedepends=(dconf dbus-glib docbook-xml docbook-xsl gconf elogind
+makedepends=(dconf dbus-glib docbook-xml docbook-xsl elogind
              gnome-desktop json-glib libxslt mesa meson upower xmlto)
 
 set=(gnome)
 
 name=gnome-session
 version=3.38.0
+release=2
 
 source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
