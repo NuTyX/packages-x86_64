@@ -1,19 +1,20 @@
 description="Manage your email, contacts and schedule."
 url="http://www.gnome.org/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="Rems <remy@nutyx.org>"
 contributors="Jayce, Tnut, Fanch, Remy"
 
 makedepends=(evolution-data-server gnome-autoar gnome-desktop
              highlight gstreamer libcanberra libgweather libcryptui gtkspell 
-             itstool libgdata libnotify clutter-gtk geoclue 
-             geocode-glib gtk-doc openldap gtksourceview gspell)
+             itstool libgdata libnotify clutter-gtk
+             gtk-doc openldap gtksourceview gspell)
 
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
      shared-mime-info gnome-icon-theme adwaita-icon-theme)
 
 name=evolution
 version=3.38.3
+release=2
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
