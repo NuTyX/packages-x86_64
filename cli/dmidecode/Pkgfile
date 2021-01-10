@@ -1,0 +1,19 @@
+description="Desktop Management Interface table related utilities"
+url="https://www.nongnu.org/dmidecode"
+
+packager="Dania"
+contributor="rems"
+
+name=dmidecode
+version=3.3
+
+source=(https://download.savannah.nongnu.org/releases/$name/$name-$version.tar.xz)
+
+build() {
+  cd $name-$version
+
+  sed -i "s:sbin:bin:g" Makefile
+
+  make prefix=/usr CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
+  make prefix=/usr DESTDIR=$PKG install
+}
