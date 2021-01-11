@@ -1,0 +1,40 @@
+Description: Fix the crash from #918953
+ ITS Tool 2.0.4 crashes when output is redictected to a pipe, as reported in
+ #918953. This comes from Python not knowing the preferred encoding for stdout,
+ and using ASCII by default, therefore failing to encode anything outside of it.
+ .
+ This patch makes ITS Tool write to an UTF-8 encoding wrapper around stdout.
+Bug-Debian: https://bugs.debian.org/918953
+Author: Tanguy Ortolo <tanguy+debian@ortolo.eu>
+Last-Update: 2019-01-17
+
+Index: itstool/itstool.in
+===================================================================
+--- itstool.orig/itstool.in	2019-01-17 13:04:20.797021139 -0800
++++ itstool/itstool.in	2019-01-17 13:40:20.792936517 -0800
+@@ -48,6 +48,7 @@
+         """Return a string that can be safely print()ed"""
+         # Since print works on both bytes and unicode, just return the argument
+         return s
++    uout = sys.stdout
+ else:
+     string_types = basestring,
+     ustr = ustr_type = unicode
+@@ -60,6 +61,8 @@
+             # print may not work on unicode if the output encoding cannot be
+             # detected, so just encode with UTF-8
+             return unicode.encode(s, 'utf-8')
++    import codecs
++    uout = codecs.getwriter('utf-8')(sys.stdout)
+ 
+ NS_ITS = 'http://www.w3.org/2005/11/its'
+ NS_ITST = 'http://itstool.org/extensions/'
+@@ -1565,7 +1568,7 @@
+             if opts.test is None:
+                 doc.generate_messages()
+         if opts.output is None or opts.output == '-':
+-            out = sys.stdout
++            out = uout
+         else:
+             try:
+                 out = io.open(opts.output, 'wt', encoding='utf-8')
