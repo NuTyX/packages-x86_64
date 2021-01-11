@@ -8,8 +8,8 @@ run=(python python-gobject python-chardet gtk3 desktop-file-utils
      hicolor-icon-theme)
 
 name=bleachbit
-version=4.1.0
-release=3
+version=4.2.0
+release=1
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/bleachbit/bleachbit/archive/v$version.tar.gz)
@@ -17,6 +17,4 @@ source=(https://github.com/bleachbit/bleachbit/archive/v$version.tar.gz)
 build() {
   cd $name-$version
   make prefix=/usr DESTDIR=$PKG PYTHON=python3 install
-  chmod 0766 $PKG/usr/share/bleachbit/cleaners
-  chmod -R 0655 $PKG/usr/share/bleachbit/cleaners/*
 }
