@@ -1,21 +1,23 @@
 description="XML to PO template files and back"
 url="http://itstool.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="Schrodinger72 <schrodinger@nutyx.org>"
+contributors="Pierre B, Tnut"
 
 makedepends=(autoconf automake libtool sed
              docbook-xml docbook-xsl libxml2 python)
 
 name=itstool
 version=2.0.6
-release=2
+release=3
 
 source=(fix-crash-wrong-encoding.patch
+  fix-crash-stdout.patch
 	http://files.itstool.org/itstool/$name-$version.tar.bz2)
 prepare() {
 cd $name-$version
 patch -Np1 -i ../fix-crash-wrong-encoding.patch
+patch -Np1 -i ../fix-crash-stdout.patch
 autoreconf -fvi
 }
 build() {
