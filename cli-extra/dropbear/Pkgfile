@@ -1,0 +1,17 @@
+description='Lightweight SSH server'
+url='https://github.com/mkj/dropbear'
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(autoconf automake m4 sed grep)
+
+name=dropbear
+version=2020.81
+
+source=(https://github.com/mkj/dropbear/archive/DROPBEAR_${version}.tar.gz)
+prepare() {
+mv $name-DROPBEAR_${version} $name-$version
+cd $name-$version
+autoconf
+autoheader
+}
