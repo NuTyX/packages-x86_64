@@ -30,9 +30,7 @@ do
    cp /lib/modules/$KERNEL_VERSION/modules.$i \
    $WDIR/lib/modules/$KERNEL_VERSION
 done
-cd $WDIR
-depmod $KERNEL_VERSION
-cd -
+depmod -b $WDIR $KERNEL_VERSION
 }
 
 copyFirmwares()
