@@ -1,14 +1,14 @@
 description="Libraries and utilities used for parsing XML files."
 url="http://xmlsoft.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, Fanch"
+packager="Schrodinger72 <schrodinger@nutyx.org>"
+contributors="tnut, Pierre B, Fanch"
 
-makedepends=(python)
+makedepends=(python2)
 
 name=libxml2
 version=2.9.10
-release=4
+release=5
 
 PKGMK_GROUPS=(lib man devel doc)
 source=(http://www.linuxfromscratch.org/patches/blfs/svn/libxml2-2.9.10-security_fixes-1.patch
@@ -25,11 +25,10 @@ sed -i 's/ TRUE/ true/' encoding.c
     --prefix=/usr \
     --disable-static \
     --with-history \
-    --with-python=/usr/bin/python3
+    --with-python=/usr/bin/python2
 make
 make DESTDIR=$PKG install
 rm $PKG/usr/lib/$name.la
-rm $PKG/usr/lib/python3.9/site-packages/libxml2mod.la
 }
 
 lib() {
@@ -46,10 +45,10 @@ devel() {
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
-usr/lib/cmake usr/lib/pkgconfig usr/lib/python* usr/lib/cmake \
+usr/lib/cmake usr/lib/pkgconfig usr/lib/cmake \
 usr/include usr/lib/xml2Conf.sh usr/share/aclocal
 
-rm -r usr/{share/aclocal,include,lib/{cmake,pkgconfig,python*,xml2Conf.sh}}
+rm -r usr/{share/aclocal,include,lib/{cmake,pkgconfig,xml2Conf.sh}}
 rm -d usr/lib || true
 }
 
