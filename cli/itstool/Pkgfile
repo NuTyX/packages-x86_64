@@ -5,24 +5,23 @@ packager="Schrodinger72 <schrodinger@nutyx.org>"
 contributors="Pierre B, Tnut"
 
 makedepends=(autoconf automake libtool sed
-             docbook-xml docbook-xsl libxml2 python)
+             docbook-xml docbook-xsl libxml2 python2)
 
 name=itstool
 version=2.0.6
-release=3
+release=4
 
-source=(fix-crash-wrong-encoding.patch
-  fix-crash-stdout.patch
-	http://files.itstool.org/itstool/$name-$version.tar.bz2)
+source=(http://files.itstool.org/itstool/$name-$version.tar.bz2)
+
 prepare() {
-cd $name-$version
-patch -Np1 -i ../fix-crash-wrong-encoding.patch
-patch -Np1 -i ../fix-crash-stdout.patch
-autoreconf -fvi
+  cd $name-$version
+  sed -i 's/| python/&2/' configure.ac
+  autoreconf -fvi
 }
+
 build() {
-cd $name-$version
-PYTHON=/usr/bin/python3 ./configure --prefix=/usr
-make
-make DESTDIR=$PKG install
+  cd $name-$version
+  PYTHON=/usr/bin/python2 ./configure --prefix=/usr
+  make
+  make DESTDIR=$PKG install
 }
