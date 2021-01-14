@@ -94,10 +94,10 @@ ac_add_options --enable-official-branding
 EOF
 
 
-./mach configure
-./mach build
-./mach buildsymbols
-DESTDIR=$PKG ./mach install
+SHELL=/bin/sh ./mach configure
+SHELL=/bin/sh ./mach build
+SHELL=/bin/sh ./mach buildsymbols
+SHELL=/bin/sh DESTDIR=$PKG ./mach install
 
 mkdir -pv $PKG/usr/bin
 ln -sfv ../lib/$name/thunderbird $PKG/usr/bin
