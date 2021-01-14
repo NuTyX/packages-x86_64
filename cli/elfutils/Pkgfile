@@ -7,6 +7,7 @@ makedepends=(libelf)
 
 name=elfutils
 version=0.182
+release=2
 
 source=(https://sourceware.org/elfutils/ftp/$version/elfutils-$version.tar.bz2 )
 
@@ -17,6 +18,8 @@ cd $name-$version
 --program-prefix="eu-"
 make
 make prefix=$PKG/usr install
-# Aready present in libelf
-rm -r "${PKG}"/usr/{lib,include}
+# Already present in libelf
+rm -r "${PKG}"/usr/include
+rm -f ${PKG}/usr/lib/pkgconfig/libelf.pc
+rm -f "${PKG}"/usr/lib/libelf*
 }
