@@ -1,13 +1,14 @@
 description="Portable cryptographic and SSL/TLS library, aka polarssl"
 url="https://tls.mbed.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Greg"
+packager="Tnut <remy@nutyx.org>"
+contributors="Greg, Tnut"
 
 makedepends=(cmake)
 
 name=mbedtls
 version=2.25.0
+release=2
 
 source=(https://github.com/ARMmbed/mbedtls/archive/$name-$version.tar.gz)
 
@@ -36,5 +37,5 @@ make -C build
 
 LDFLAGS+=" -I../include " make SHARED=1 no_test
 
-make -C build DESTDIR=$PKG/usr install	
+make -C build DESTDIR=$PKG install	
 }
