@@ -1,20 +1,22 @@
 description="The Smart Common Input Method platform"
 url=""
 
-packager="tnut <tnut@nutyx.org>"
-contributors=""
+packager="Rems <remy@nutyx.org>"
+contributors="Tnut"
 
 makedepends=(libtool intltool)
 
 name=scim
 version=1.4.18
+release=2
 
 source=(https://github.com/scim-im/scim/archive/$version.tar.gz)
 
 build() {
 cd $name-$version
 ./bootstrap
-./configure --prefix=/usr
+./configure --prefix=/usr \
+            --sysconfdir=/etc
 make
 make DESTDIR=$PKG install
 }
