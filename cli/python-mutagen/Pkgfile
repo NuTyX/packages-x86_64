@@ -8,6 +8,7 @@ makedepends=(python)
 
 name=python-mutagen
 version=1.45.1
+release=2
 
 source=(https://github.com/quodlibet/mutagen/releases/download/release-$version/mutagen-$version.tar.gz)
 
@@ -15,5 +16,4 @@ build() {
 
 cd mutagen-$version
 python3 setup.py install --root=$PKG
-rm -r $PKG/usr/{bin,share}
 }
