@@ -11,7 +11,9 @@ version=2.4
 release=4
 
 source=()
-
+prepare() {
+ cards install make-ca
+}
 build() {
 	git clone https://git.ffmpeg.org/rtmpdump.git
 	cd rtmpdump
