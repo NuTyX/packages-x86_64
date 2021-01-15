@@ -1,19 +1,42 @@
+
 description="Cairo is a 2D graphics library with support for multiple output devices."
-url="https://www.cairographics.org/"
+url="http://www.cairographics.org/"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, Rems"
+contributors="Rems"
 
-makedepends=(meson ninja lzo libpng
-             glib xorg-pixman xorg-fontconfig xcb-util
-             xorg-libxrender xorg-libxxf86vm)
+makedepends=(autogen automake m4 sed grep gtk-doc
+             lzo libpng glib xorg-pixman xorg-fontconfig
+             xcb-util xorg-libxrender xorg-libxxf86vm)
 
 name=cairo
 version=1.17.4
+release=2
 
-source=(https://gitlab.freedesktop.org/cairo/cairo/-/archive/$version/$name-$version.tar.bz2)
+source=(https://gitlab.freedesktop.org/cairo/cairo/-/archive/$version/cairo-$version.tar.bz2)
+prepare() {
+cd $name-$version
 
-build=meson
+# Fix typo
+sed -i 's/have_png/use_png/g' configure.ac
+
+NOCONFIGURE=1 ./autogen.sh
+}
+
+build() {
+cd $name-$version
+
+./configure --prefix=/usr \
+            --disable-static \
+            --enable-tee \
+            --disable-gl
+
+sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+make
+make DESTDIR=$PKG install
+
+}
 
 uptodate() {
 local url ext
