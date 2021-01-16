@@ -22,6 +22,7 @@ $PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
 usr/lib/lib{e,}xslt*
 rm -r usr/lib/libxslt-plugins
 rm usr/lib/libexslt* usr/lib/libxslt*
+rm -d usr/lib || true
 }
 devel() {
 cd $PKG
