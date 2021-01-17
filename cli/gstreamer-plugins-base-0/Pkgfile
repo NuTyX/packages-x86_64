@@ -4,17 +4,16 @@ url=""
 packager="tnut <tnut@nutyx.org>"
 contributors=""
 
-makedepends=(gstreamer-0)
-run=()
+makedepends=(gstreamer-0 automake autoconf libtool git make-ca sed grep)
+run=(gstreamer-plugins-base-0.lib)
 set=()
 
 name=gstreamer-plugins-base-0
 version=0.10.36
+release=2
 
-source=(
-enum_headers.patch
-https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-$version.tar.xz
-)
+source=(enum_headers.patch
+	https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-$version.tar.xz)
 
 PKGMK_GROUPS=(lib devel man doc)
 prepare() {
@@ -25,8 +24,9 @@ patch -Np1 -i ../enum_headers.patch
 NOCONFIGURE=1 ./autogen.sh
 }
 build() {
+cd gst-plugins-base-$version
 ./configure --prefix=/usr \
---disable-gnome_vfs
+            --disable-gnome_vfs
 make
 make DESTDIR=$PKG install
 }
