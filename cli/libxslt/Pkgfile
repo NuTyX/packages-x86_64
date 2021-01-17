@@ -1,8 +1,8 @@
 description="XSLT libraries used for extending libxml2 libraries to support XSLT files."
 url="http://xmlsoft.org/XSLT/"
 
-packager="Rems <remy@nutyx.org>"
-contributors="Pierre B,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Rémy"
 
 makedepends=(libxml2 libgcrypt)
 
@@ -31,7 +31,7 @@ $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
 usr/lib/pkgconfig usr/include usr/share/aclocal \
 usr/lib/xsltConf.sh
 rm -r usr/{share/aclocal,include,lib/{pkgconfig,xsltConf.sh}}
-rm -d usr/lib
+rm -d usr/lib || true
 }
 package() {
 rm $PKG/usr/lib/lib{e,}xslt.la
