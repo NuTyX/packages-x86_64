@@ -8,10 +8,12 @@ makedepends=(python)
 set=(devel)
 
 name=meson
-version=0.56.0
+version=0.56.2
 
 source=(https://github.com/mesonbuild/$name/releases/download/$version/$name-$version.tar.gz)
-
+prepare() {
+cards install expat expat.devel libffi libffi.devel
+}
 build() {
   cd $name-$version
   python3 setup.py build
