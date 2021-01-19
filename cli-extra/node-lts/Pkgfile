@@ -7,15 +7,29 @@ contributors="Alienus, tnut, Greg"
 makedepends=(python2 c-ares icu zlib libuv)
 name=node-lts
 alias=(nodejs-lts node-js-lts)
-version=10.19.0
-release=2
+version=10.23.1
 
-source=(https://nodejs.org/dist/v$version/node-v$version.tar.xz)
+source=(icu68.patch
+        https://nodejs.org/dist/v$version/node-v$version.tar.xz)
+prepare() {
+  cd node-v$version
+  patch -Np0 -i ../icu68.patch
+
+  echo 'Fixing for python2 name'
+  find -type f -exec sed \
+    -e 's_^#!/usr/bin/env python$_&2_' \
+    -e 's_^\(#!/usr/bin/python2\).[45]$_\1_' \
+    -e 's_^#!/usr/bin/python$_&2_' \
+    -e 's_^\( *exec \+\)python\( \+.*\)$_\1python2\2_'\
+    -e 's_^\(.*\)python\( \+-c \+.*\)$_\1python2\2_'\
+    -e "s_'python'_'python2'_" -i {} +
+  find test/ -type f -exec sed 's_python _python2 _' -i {} +
+}
 
 build() {
 
 	cd node-v$version
-
+	export PYTHON=python2
 	./configure \
 		--prefix=/usr \
 		--shared-zlib \
