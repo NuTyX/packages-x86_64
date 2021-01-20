@@ -1105,13 +1105,12 @@ echo "
 ****************************************************
 
 ****************************************************
-* Thanks for installing NuTyX                      *
+* Thanks for installing NuTyX. Make sure to review *
 *                                                  *
-* Check http://www.nutyx.org/en/documentation.html *
-* or http://www.nutyx.org/fr/documentation.html    *
+*       http://www.nutyx.org/en/install-nutyx      *
 *                                                  *
-* Make sure to review /etc/cards.conf              *
-* to meet your requirements in packages selection  *
+*    Check your /etc/cards.conf file so that       *
+*         it's fits your requirements              *
 *                                                  *
 ****************************************************
 "
@@ -1149,12 +1148,8 @@ fi
 [ "$KERNEL" = "NONE" ] && unset KERNEL
 [ "$KERNEL" = "none" ] && unset KERNEL
 
-[ "$KERNEL" = "NONE" ] && unset KERNEL
-[ "$KERNEL" = "none" ] && unset KERNEL
-
-
 if [ ! -z "$KERNEL" ]; then
-	INITS="eudev sysklogd sysvinit dbus systemd runyx"
+	INITS="eudev sysklogd sysvinit"
 	CORE=" acl attr bash coreutils readline \
 expat ncurses lzo gmp flex file gzip mpc mpfr \
 grep sed findutils binutils \
@@ -1167,10 +1162,8 @@ psmisc sudo tzdata \
 iproute2 iana-etc \
 groff man-db \
 cards.man nutyx.man \
-lvm2 dialog cpio squashfs \
-lsb-release \
-linux-firmware grub \
-mdadm $KERNEL"
+dialog cpio squashfs \
+lsb-release grub"
 fi
 
 [ -z $LFS ] && LFS=$FOLDER
