@@ -452,7 +452,8 @@ network_card_found
 SYSTEMD_NETWORK_DIR=/etc/systemd/network/
 mkdir -p ${SYSTEMD_NETWORK_DIR}
 retval=""
-while [ "$retval" == "" ]; do
+if [ !  -z "${DHCPCD}" ]; then
+  while [ "$retval" == "" ]; do
 	dialog  \
 	--title " $(gettext "Configuration of") ${NETWORK_CARD} " \
 	--radiolist "$(gettext "Configuration mode")" \
@@ -467,8 +468,9 @@ while [ "$retval" == "" ]; do
 			fi;;
 		1|255)
 				exit;;
-  esac
-done
+    esac
+  done
+fi
 if [ "`cat $TMP/result`" == "$(gettext "Auto")" ];then
 	cat > /etc/sysconfig/ifconfig.$NETWORK_CARD << "EOF"
 ONBOOT="yes"
@@ -597,6 +599,7 @@ rm -f $TMP/BC
 rm -f $TMP/DNS
 rm -f $TMP/GW
 rm -f $TMP/NM
+rm -f $TMP/SUFFIX
 }
 setup_language()
 {
@@ -2408,7 +2411,7 @@ check_all () {
 		SETUP_CONFIG_KEYBOARD="yes"
 		RV=$((RV+1))
 	fi
-	if [ -z ${NETWORK} ];then
+	if [ -z ${NETWORKMANAGER} ];then
 		SETUP_CONFIG_NETWORK="yes"
 		RV=$((RV+2))
 	fi
@@ -2472,8 +2475,8 @@ check_root () {
 	fi
 }
 main () {
+	TMP="$(mktemp -d)"
 	parse_options "$@"
-	TMP=`mktemp -d`
 	if [ "$SETUP_INITRD" == "yes" ]; then
 		SETUP_CONFIG_LANGUAGE="yes"
 		SETUP_INSTALL="no"
@@ -2512,8 +2515,10 @@ DIALOG_OK=0
 DIALOG_CANCEL=1
 DIALOG_HELP=2
 
-WPA_TOOL="`which wpa_passphrase`"
-IWCONFIG="`which iwconfig`"
+NETWORKMANAGER="$(which NetworkManager)"
+WPA_TOOL="$(which wpa_passphrase)"
+IWCONFIG="$(which iwconfig)"
+DHCPCD="$(which dhcpcd)"
 
 if [ ! -z "$IWCONFIG" ];then
 	WIFI_NETWORK_CARD="`$IWCONFIG 2>&1|grep IEEE|cut -d " " -f1|tail -1`"
