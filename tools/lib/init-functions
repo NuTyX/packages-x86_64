@@ -1477,15 +1477,16 @@ do_start_sysctl()
 do_config_network()
 {
 NETWORKCONFIG_FILE="/etc/sysconfig/network"
-  if [ ! -f /etc/sysconfig/network ]; then
-    cat > ${NETWORKCONFIG_FILE} << "EOF"
-HOSTNAME='nutyx'
-MANAGER='cli'
+if [ ! -f ${NETWORKCONFIG_FILE}  ]; then
+   cat > ${NETWORKCONFIG_FILE} << "EOF"
+MANAGER=''              # Network manager (wicd/networkmanager/cli/nothing)
+NETWORKWAIT='no'        # Wait or not for network
+LINKDELAY='15'          # init delay for initialisation of Networkmanager
+NETWORKDELAY='0'        # init delay to wait after initialisation of Networkmanager
 EOF
 fi
-
 # Network configuration
-. ${NETWORKCONFIG_FILE}
+[ -r ${NETWORKCONFIG_FILE} ] && . ${NETWORKCONFIG_FILE}
 
 NM_PIDFILE="/var/run/NetworkManager.pid"
 WICD_PIDFILE="/var/run/wicd/wicd.pid"
