@@ -4,7 +4,7 @@ url="http://www.clementine-player.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(git cmake boost qtbase qtx11extras qttools sparsehash mesa
+makedepends=(cmake boost qtbase qtx11extras qttools sparsehash mesa
              libcdio libmtp protobuf taglib chromaprint glew gstreamer
              gstreamer-plugins-base gstreamer-plugins-good
              gstreamer-plugins-ugly gstreamer-plugins-bad
@@ -14,28 +14,26 @@ run=(crypto++ gstreamer-plugins-base gstreamer-plugins-good
      gstreamer-plugins-libav gvfs)
 
 name=clementine
-version=1.3.1-516
-release=3
+version=1.4.0rc1-347-gfc4cb6fc7
 
-source=()
+source=(https://github.com/clementine-player/Clementine/releases/download/$version/$name-$version.tar.xz)
+
+prepare() {
+  sed -e 's|CRYPTOPP cryptopp|CRYPTOPP libcryptopp|' -i \
+  $name-$version/CMakeLists.txt # Fix crypto++ detection
+}
+
 
 build() {
-   
-   git clone -b qt5  https://github.com/clementine-player/Clementine.git
-   cd Clementine
-
-   for i in `find data/schema/ -type f -exec grep -l tokenize {} \;`
-   do
-       sed -i "s@=unicode@=unicode61@" $i
-   done
 
    mkdir build
    cd    build
 
-   cmake .. \
-      -DCMAKE_INSTALL_PREFIX=/usr  \
-      -DCMAKE_BUILD_TYPE='Release' \
-      -Wno-dev
+   cmake ../$name-$version      \
+   -DCMAKE_INSTALL_PREFIX=/usr  \
+   -DUSE_SYSTEM_TAGLIB=ON       \
+   -DCMAKE_BUILD_TYPE='Release' \
+   -Wno-dev
 
    make || make -j1
    make DESTDIR=$PKG install
