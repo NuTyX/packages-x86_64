@@ -1,7 +1,7 @@
 description="The Operating System information database"
 url="http://libosinfo.org"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contributors="Tnut, Jayce"
 
 makedepends=(libsoup check)
@@ -9,18 +9,13 @@ makedepends=(libsoup check)
 set=(gnome)
 
 name=libosinfo
-version=1.2.0
-release=3
+version=1.8.0
 
-source=(https://releases.pagure.org/$name/$name-$version.tar.gz)
+source=(https://releases.pagure.org/$name/$name-$version.tar.xz)
 
-build() {
- cd $name-$version
- ./configure --prefix=/usr \
- 	--disable-nls
-  make
-  make DESTDIR=$PKG install
-}
+build=meson
+
+
 uptodate() {
 local url ext
 url="https://releases.pagure.org/$name/"
