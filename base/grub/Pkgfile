@@ -1,12 +1,14 @@
 description="The GRUB package contains the GRand Unified Bootloader."
 url="http://www.gnu.org/software/grub/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="Schrodinger72 <schrodinger@nutyx.org>"
+contributors="Pierre B, tnut"
 
 name=grub
 version=2.04
 pyversion=3.8.1
+
+makedepends=(bison flex)
 
 source=(https://www.python.org/ftp/python/$pyversion/Python-$pyversion.tar.xz
         https://ftp.gnu.org/gnu/grub/grub-$version.tar.xz
@@ -14,7 +16,6 @@ source=(https://www.python.org/ftp/python/$pyversion/Python-$pyversion.tar.xz
 
 PKGMK_GROUPS=(man locale)
 prepare() {
-
    cd Python-$pyversion
    rm -r Doc
    ./configure --prefix=$SRC/tools --with-ensurepip=no
@@ -22,16 +23,29 @@ prepare() {
    make libinstall bininstall
 }
 build() {
-        export PATH=$SRC/tools/bin:$PATH
-	cd grub-$version
+  export PATH=$SRC/tools/bin:$PATH
+  cp -r grub-$version grub-bios-$version
+
+	cd grub-bios-$version
 	./configure --prefix=/usr \
 		--sysconfdir=/etc       \
 		--sbindir=/sbin        \
-		--disable-grub-emu-usb  \
 		--disable-efiemu \
 		--infodir=/usr/share/info \
+    --with-platform=pc \
 		--disable-werror
 	make
+
+  cd ../grub-$version
+	./configure --prefix=/usr \
+		--sysconfdir=/etc       \
+		--sbindir=/sbin        \
+		--disable-efiemu \
+		--infodir=/usr/share/info \
+    --with-platform=efi \
+		--disable-werror
+	make
+
 	make DESTDIR=$PKG install
         install -d $PKG/boot/grub
 	install -Dm644 ../grub.cfg \
