@@ -1722,7 +1722,28 @@ setup_install() {
 		FORMAT="no"
 		[ ! -z $EFI_SYS_PART ] && FORMAT=`print_file_system $EFI_SYS_PART`
 		if [ "$FORMAT" == "vfat" ];then
-			setup_efibootmgr "/media/cdrom" "$MF"
+			dialog --title " $(gettext "Choose your favorite Boot Manager") " \
+				--menu "$(gettext "Grub, Efibootmgr or nothing"): $result" 15 60 3 \
+				"Grub" "$(gettext "Advanced Linux Kernel boot manager")" \
+				"Efibootmgr" "$(gettext "Classic boot tool")" \
+				"Nothing" "$(gettext "To use the one used on other distro")" 2>$TMP/boot_choice
+		        retval=$?
+		        boot_choice=`cat $TMP/boot_choice`
+	        	case $retval in
+				0|2)
+					case $boot_choice in
+						Grub)
+							setup_grub_efi "$MF";;
+						Efibootmgr)
+							setup_efibootmgr "/media/cdrom" "$MF";;
+						Nothing)
+							continue;;
+					esac
+				;;
+				1|2544)
+					break
+				;;
+			esac
 		else
 			dialog --title "   Oups !!!  " \
 			--msgbox "    $(gettext "This installation won't boot again ...")" 6 60
@@ -1774,6 +1795,263 @@ $(gettext "an simplify VI editor will allow you to modify it").\n\n \
 			setup_keymap
 			vi $GRUB_CONFIG_DIR/$GRUB_CONFIG_FILE;;
 	esac
+}
+setup_grub_efi() {
+	local GRUB_CONFIG_FILE GRUB_CONFIG_DIR GRUB_DESTINATION_DIR GRUB_LOG_FILE SPNR OPTIONS
+	GRUB_CONFIG_FILE="grub.cfg"
+	GRUB_CONFIG_DIR=""
+	GRUB_DESTINATION_DIR=""
+	GRUB_LOG_FILE=$TMP/grub.log
+	if [ "$CHECK_HD_OK" == "no" ]; then
+		check_available_disk
+		[ "$CHECK_HD_OK" == "no" ] && return
+	fi
+	if [ "$CHECK_PART_OK" == "no" ]; then
+		check_available_partition
+		[ "$CHECK_PART_OK" == "no" ] && return
+	fi
+	if [ -z $DISK ]; then
+		select_disk "$(gettext "Configure the boot of the PC")"
+		[ "$DISK" == "no" ] && return
+	fi
+	if [ "$SETUP_INSTALL" != "yes" ]; then
+		[ "$CHECK_SINGLE_PARTITION" == "no" ] && unset PARTITION
+	fi
+	if [ -z $PARTITION ]; then
+		select_partition "$(gettext "Configure the boot of the PC")"
+		[ "$PARTITION" == "no" ] && return
+	fi
+	FORMAT=$(print_file_system $PARTITION)
+	if [ "$FORMAT" == "no" ]; then
+		setup_format
+		[ "$FORMAT" == "no" ] && return
+	fi
+	# We saved the current MBR if no yet saved
+#	dd if=$DISK of=$TMP/MBR bs=512 count=1 2>/dev/null
+	# Copy all the necessary files
+	mkdir $TMP/boot_partition
+	mount $PARTITION $TMP/boot_partition
+	OPTIONS=$(cat /proc/cmdline|sed "s@BOOT_IMAGE=/boot/kernel\ @@")
+	SPNR=$(echo $PARTITION|sed "s@^/dev/[a-z]*@@")
+	mount -t efivarfs efivarfs /sys/firmware/efi/efivars
+	mkdir -p $TMP/boot_partition/boot/efi
+	mount "$EFI_SYS_PART" $TMP/boot_partition/boot/efi
+	mkdir -p $TMP/boot_partition/boot/efi/EFI/
+	rm -f $TMP/boot_partition/boot/efi/EFI/BOOT/$SPNR/* 2>/dev/null
+	echo "$PARTITION" > $TMP/boot_part
+	if [ -d $TMP/boot_partition/boot ]; then
+		# NuTyX is installed means we install GRUB after install
+		GRUB_DESTINATION_DIR="boot/"
+	fi
+	GRUB_CONFIG_DIR="$TMP/boot_partition/${GRUB_DESTINATION_DIR}grub"
+	mkdir $GRUB_CONFIG_DIR 2> /dev/null
+#	if [ -f $GRUB_CONFIG_DIR/MBR.original ]; then
+#		dialog --title " !!! Oups !!!! " \
+#		--msgbox " $(gettext "You already have a copy of the original MBR, I will not make a backup of it") " \
+#		6 50
+#	else
+#		cp $TMP/MBR $GRUB_CONFIG_DIR/MBR.original
+#		dialog --title " $(gettext "Good to know") " \
+#		--msgbox " $(gettext "A copy of the original MBR is saved in the folder /boot/grub of your NuTyX. It will then be possible to restore it if need") " 10 60
+#	fi
+	if [ ! -f $GRUB_CONFIG_DIR/$GRUB_CONFIG_FILE ]; then
+		cat > $GRUB_CONFIG_DIR/$GRUB_CONFIG_FILE << "EOF"
+# Begin grub.cfg
+# By default boot the first menu entry.
+set default=0
+# Allow 5 seconds before booting the default.
+set timeout=5
+
+insmod all_video
+if loadfont /boot/grub/fonts/unicode.pf2; then
+ set gfxmode=800x600
+ insmod efi_gop
+ insmod efi_uga
+ insmod video_bochs
+ insmod video_cirrus
+ insmod gfxterm
+ insmod png
+ terminal_output gfxterm
+fi
+
+if background_image /boot/grub/splash.png; then
+  set color_normal=light-gray/black
+  set color_highlight=white/black
+else
+  set color_normal=cyan/blue
+  set color_highlight=white/blue
+fi
+EOF
+	fi
+	# Writing of NEW MBR
+	BOOT_FS="$(print_file_system $PARTITION)"
+	LANG=C /sbin/grub-install --recheck --force --target=x86_64-efi --boot-directory=$TMP/boot_partition/${GRUB_DESTINATION_DIR} ${DISK} > ${GRUB_LOG_FILE} 2>&1
+	if ! (grep finished ${GRUB_LOG_FILE} > /dev/null); then
+		echo "/sbin/grub-install --recheck --force --target=x86_64-efi --boot-directory=$TMP/boot_partition/${GRUB_DESTINATION_DIR} [`echo $DISK`]" >> ${GRUB_LOG_FILE}
+		mount >> ${GRUB_LOG_FILE}
+		echo "DISK=${DISK}
+GRUB_DESTINATION_DIR=${GRUB_DESTINATION_DIR}
+GRUB_CONFIG_DIR=${GRUB_CONFIG_DIR}
+NuTyX_PART=${NuTyX_PART}
+BOOT_FS=${BOOT_FS}
+NuTyX_FS=${NuTyX_FS}
+PATH=$PATH" >> ${GRUB_LOG_FILE}
+		env >> ${GRUB_LOG_FILE}
+		# Restore MBR
+#		dd if=$TMP/MBR of=$DISK bs=512 count=1 > 2/dev/null
+		dialog --title " $(gettext "Something went wrong probably the file system is not supported") " \
+		--msgbox "`cat ${GRUB_LOG_FILE}`" 30 70
+		umount "$EFI_SYS_PART"
+		umount $TMP/boot_partition
+		umount /mnt/hd 2>/dev/null
+		error "Sorry, I cannot install GRUB" # die now
+	fi
+	if [ -f $TMP/boot ]; then
+		#
+		# The $TMP/boot file contains the NuTyX partition
+		#
+		NuTyX_PART="`cat $TMP/boot`"
+		BOOT_FS="$(print_file_system $PARTITION)"
+		NuTyX_FS="$(print_file_system $NuTyX_PART)"
+		echo "
+submenu \"NuTyX RuNyX \" {
+ submenu \" NuTyX RuNyX Quiet Mode \" {
+  submenu \"  NuTyX RuNyX Quiet LTS version \" {
+  linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/runit-init root=${NuTyX_PART} ro quiet verbose=no
+  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  }
+  submenu \"  NuTyX RuNyX Quiet Latest version \" {
+   linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/runit-init root=${NuTyX_PART} ro quiet verbose=no
+   #  initrd /${GRUB_DESTINATION_DIR}initrd
+  }
+ }
+  submenu \" NuTyX RuNyX Verbose Mode \" {
+   submenu \"  NuTyX RuNyX Verbose LTS version \" {
+    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/runit-init root=${NuTyX_PART} ro
+    #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+   }
+   submenu \"  NuTyX RuNyX Verbose Latest version \" {
+    linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/runit-init root=${NuTyX_PART} ro
+    #  initrd /${GRUB_DESTINATION_DIR}initrd
+   }
+  }
+ }
+submenu \"NuTyX SysV \" {
+ submenu \" NuTyX SysV Quiet Mode \" {
+  submenu \"  NuTyX SysV Quiet LTS version \" {
+   linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro quiet verbose=no
+   #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  }
+  submenu \"  NuTyX SysV Quiet Latest version \" {
+   linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro quiet verbose=no
+   #  initrd /${GRUB_DESTINATION_DIR}initrd
+  }
+ }
+ submenu \" NuTyX SysV Verbose Mode \" {
+  submenu \"  NuTyX SysV Verbose LTS version \" {
+   linux /${GRUB_DESTINATION_DIR}kernel-419 root=${NuTyX_PART} ro
+   #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  }
+  submenu \"  NuTyX SysV Verbose Latest version \" {
+   linux /${GRUB_DESTINATION_DIR}kernel root=${NuTyX_PART} ro
+   #  initrd /${GRUB_DESTINATION_DIR}initrd
+  }
+ }
+}
+submenu \"NuTyX SystemD \" {
+ submenu \" NuTyX SystemD Quiet Mode \" {
+  submenu \"  NuTyX SystemD Quiet LTS version \" {
+    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
+  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  }
+  submenu \"  NuTyX SystemD Quiet Latest version \" {
+    linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/systemd-init root=${NuTyX_PART} ro quiet verbose=no
+  #  initrd /${GRUB_DESTINATION_DIR}initrd
+  }
+ }
+ submenu \" NuTyX SystemD Verbose Mode \" {
+  submenu \"  NuTyX SystemD Verbose LTS version \" {
+    linux /${GRUB_DESTINATION_DIR}kernel-419 init=/sbin/systemd-init root=${NuTyX_PART} ro
+  #  initrd /${GRUB_DESTINATION_DIR}initrd-419
+  }
+  submenu \"  NuTyX SystemD Verbose Latest version \" {
+    linux /${GRUB_DESTINATION_DIR}kernel init=/sbin/systemd-init root=${NuTyX_PART} ro
+  #  initrd /${GRUB_DESTINATION_DIR}initrd
+  }
+ }
+}" >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}
+	else
+		#
+		# NuTyX is not yet installed
+		#
+		cat >> ${GRUB_CONFIG_DIR}/${GRUB_CONFIG_FILE}  << "EOF"
+#################################################################
+#                                                               #
+#               Example of a menuentry:                         #
+#                                                               #
+#   The NuTyX distribution to boot from is located:             #
+#      on the SECOND harddisk ( HDD 2 ) AND                     #
+#      the second harddisk has THREE partitions.                #
+#      NuTyX IS installed on the third partition.               #
+#                                                               #
+# NOTE:                                                         #
+# -----                                                         #
+#                                                               #
+#  ==>>>    Harddisk start AT ZERO                              #
+#  ==>>>    Partition start AT ONE                              #
+#                                                               #
+# We need to inform GRUB that we use the kernel on              #
+# the Partition Number 3 of Harddisk Number 2                   #
+#                                                               #
+#  ======>  set root=(hd1,3)                                    #
+#                                                               #
+# And we need to inform the kernel to look at the right place:  #
+#                                                               #
+#  ======>  root=/dev/sdb3                                      #
+#                                                               #
+#           Below the menuentry of this example:                #
+#       ( adjust to your needs and remove the '#' )             #
+#                                                               #
+#################################################################
+#
+#menuentry  "Harddisk number 2 and partition number 3" {
+#   set root=(hd1,3)
+#   linux /boot/kernel-419 init=/sbin/runit-init root=/dev/sdb3 ro quiet verbose=no
+#}
+#
+# The same one with systemd:
+#
+#menuentry  "Harddisk number 2 and partition number 3 verbose mode" {
+#   set root=(hd1,3)
+#   linux /boot/kernel-419 init=/sbin/systemd-init root=/dev/sdb3 ro
+#}
+#
+# The same one with SysV:
+#
+#menuentry  "Harddisk number 2 and partition number 3 verbose mode" {
+#   set root=(hd1,3)
+#   linux /boot/kernel-419 root=/dev/sdb3 ro
+#}
+#
+# An other one with initrd and rootdelay (to use with USB stick for ex)
+#
+#menuentry  "Harddisk number 2 and partition number 1 with initrd" {
+#   set root=(hd1,1)
+#   linux /boot/kernel-419 init=/sbin/runit-init root=/dev/sdb1 ro rootdelay=5
+#   initrd /boot/initrd-419
+#}
+#
+EOF
+		if [ ! -f $TMP/boot_partition/${GRUB_DESTINATION_DIR}initrd ]; then
+			cp /media/cdrom/boot/initrd \
+			$TMP/boot_partition/${GRUB_DESTINATION_DIR}initrd 2> /dev/null
+			cp /media/cdrom/boot/kernel \
+			$TMP/boot_partition/${GRUB_DESTINATION_DIR}kernel 2> /dev/null
+		fi
+		MBR_ok
+	fi
+	umount "$EFI_SYS_PART"
+	umount $PARTITION
 }
 setup_grub() {
 	local GRUB_CONFIG_FILE GRUB_CONFIG_DIR GRUB_DESTINATION_DIR GRUB_LOG_FILE
