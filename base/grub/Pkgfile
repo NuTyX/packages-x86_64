@@ -1,49 +1,38 @@
 description="The GRUB package contains the GRand Unified Bootloader."
 url="http://www.gnu.org/software/grub/"
 
-packager="Schrodinger72 <schrodinger@nutyx.org>"
-contributors="Pierre B, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Schrodinger72"
 
 name=grub
 version=2.04
-pyversion=3.8.1
+release=2
 
-makedepends=(bison flex)
+dejavu_version=2.37
 
-source=(https://www.python.org/ftp/python/$pyversion/Python-$pyversion.tar.xz
+makedepends=(automake m4 bison flex gettext textinfo python
+             xz efibootmgr efivar freetype lvm2)
+
+source=(http://downloads.sourceforge.net/dejavu/dejavu-fonts-ttf-${dejavu_version}.tar.bz2
         https://ftp.gnu.org/gnu/grub/grub-$version.tar.xz
 	grub.cfg)
 
-PKGMK_GROUPS=(man locale)
+PKGMK_GROUPS=(man)
+
 prepare() {
-   cd Python-$pyversion
-   rm -r Doc
-   ./configure --prefix=$SRC/tools --with-ensurepip=no
-   make
-   make libinstall bininstall
+mv dejavu-fonts-ttf-${dejavu_version}/ttf/Deja* \
+grub-$version
 }
+
 build() {
-  export PATH=$SRC/tools/bin:$PATH
-  cp -r grub-$version grub-bios-$version
-
-	cd grub-bios-$version
+	cd grub-$version
 	./configure --prefix=/usr \
-		--sysconfdir=/etc       \
-		--sbindir=/sbin        \
-		--disable-efiemu \
-		--infodir=/usr/share/info \
-    --with-platform=pc \
-		--disable-werror
-	make
+	--sysconfdir=/etc         \
+	--sbindir=/sbin           \
+	--infodir=/usr/share/info \
+	--enable-boot-time        \
+	--disable-werror
 
-  cd ../grub-$version
-	./configure --prefix=/usr \
-		--sysconfdir=/etc       \
-		--sbindir=/sbin        \
-		--disable-efiemu \
-		--infodir=/usr/share/info \
-    --with-platform=efi \
-		--disable-werror
 	make
 
 	make DESTDIR=$PKG install
