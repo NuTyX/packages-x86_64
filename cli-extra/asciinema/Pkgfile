@@ -1,0 +1,18 @@
+description="Un terminal qui vous permettra d'enregistrer les commandes que vous taperez"
+url="https://asciinema.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="delta"
+
+run=(python)
+
+name=asciinema
+version=2.0.2
+_name=$name
+
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/asciinema/asciinema/archive/v$version.tar.gz)
+
+build=python3
