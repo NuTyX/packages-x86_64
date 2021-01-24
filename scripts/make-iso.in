@@ -173,7 +173,7 @@ export LFS=${BUILD_ISOFOLDER}
 
 if [[ ! -d $GIT_FOLDER ]]
  then
-  git clone $GIT_URL || error "Can not do git clone $GIT_URL"
+  git clone $GIT_URL $GIT_FOLDER || error "Can not do git clone $GIT_URL"
  else
   pushd $GIT_FOLDER
   git pull || error "Can not do git pull in $GITFOLDER"
