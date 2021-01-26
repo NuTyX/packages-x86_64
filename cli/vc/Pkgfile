@@ -1,0 +1,23 @@
+makedepends=(cmake)
+
+description="A library to ease explicit vectorization of C++ code"
+url="https://github.com/VcDevel/Vc"
+
+packager="rems <remy@nutyx.org>"
+
+name=vc
+version=1.4.1
+
+source=(https://github.com/VcDevel/Vc/releases/download/$version/Vc-$version.tar.gz)
+
+build() {
+
+mkdir -p build && cd build
+
+cmake ../Vc-$version \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DTARGET_ARCHITECTURE=generic
+
+make
+make DESTDIR=$PKG install
+}
