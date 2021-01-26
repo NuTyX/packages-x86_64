@@ -11,12 +11,15 @@ makedepends=(sip python-dbus qtbase qtconnectivity qtmultimedia qttools
 
 name=python-qt
 version=5.15.2
+release=2
 
 source=(https://pypi.python.org/packages/source/P/PyQt5/PyQt5-$version.tar.gz)
 build() {
 cd PyQt5-$version
 
 python3 configure.py   \
+     -v /usr/share/sip \
+     -q /usr/bin/qmake \
      --no-sip-files \
      --confirm-license \
      --qsci-api
