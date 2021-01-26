@@ -5,8 +5,8 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 name=gpsd
-version=3.21
-makedepends=(asciidoc bluez docbook-xsl gtk3 libusb python2 qtbase scons
+version=3.22
+makedepends=(tar asciidoc bluez docbook-xsl gtk3 libusb python2 qtbase scons
             python2-gobject python2-cairo python-gobject python-cairo)
 run=(python2)
 
@@ -41,7 +41,7 @@ USBAUTO="true"
 GPSD_SOCKET="/var/run/gpsd.sock"
 EOF
 
-install -Dm644 gpsd.rules $PKG/lib/udev/rules.d/25-gpsd-usb.rules
+install -Dm644 $name-$version/gpsd.rules $PKG/lib/udev/rules.d/25-gpsd-usb.rules
 install -Dm755 gpsd.hotplug $PKG/lib/udev/gpsd.hotplug
 
 sed -i "s@gps%n"@gps%n" , MODE="0666"@g" \
