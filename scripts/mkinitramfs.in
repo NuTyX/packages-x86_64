@@ -289,12 +289,6 @@ KERNEL=="dcbri[0-9]*",      GROUP="dialout"
 EOF
 fi
 
-# Hostname
-if [ -f /etc/hostname ] ; then
-	cp /etc/hostname $WDIR/etc/hostname
-else
-	echo "nutyx" > $WDIR/etc/hostname
-fi
 # Clock setting
 [ -f /etc/sysconfig/clock ] && cp /etc/sysconfig/clock $WDIR/etc/sysconfig
 
