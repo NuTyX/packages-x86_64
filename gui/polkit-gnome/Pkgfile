@@ -8,7 +8,7 @@ makedepends=(polkit gtk3)
 
 name=polkit-gnome
 version=0.105
-release=3
+release=4
 
 source=(https://download.gnome.org/sources/$name/0.105/$name-$version.tar.xz)
 build() {
@@ -28,7 +28,6 @@ Type=Application
 Categories=
 NoDisplay=true
 OnlyShowIn=GNOME;XFCE;Unity;
-AutostartCondition=GNOME3 unless-session gnome
 EOF
 }
 uptodate(){
