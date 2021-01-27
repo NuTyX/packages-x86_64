@@ -1,0 +1,40 @@
+description="Lightweight, cross-platform integrated development environment"
+url="https://www.qt.io/"
+
+packager="rems <remy@nutyx.org>"
+
+name="qtcreator"
+version="4.14.0"
+
+source=(https://download.qt.io/official_releases/qtcreator/${version%.*}/$version/qt-creator-opensource-src-$version.tar.xz)
+
+makedepends=(qttools qtquickcontrols qtquickcontrols2 qtwebengine qtmultimedia qttranslations gdb llvm syntax-highlighting desktop-file-utils)
+
+run=(qtmultimedia gdb qttranslations)
+
+prepare() {
+
+cd qt-creator-opensource-src-$version
+
+  # fix hardcoded libexec path
+sed -e 's|libexec\/qtcreator|lib\/qtcreator|g' -i qtcreator.pri
+sed -e 's|libexec|lib|g' -i src/tools/tools.pro
+
+mkdir -v ../build
+}
+
+build() {
+
+cd build
+
+qmake LLVM_INSTALL_DIR=/usr QBS_INSTALL_DIR=/usr \
+      KSYNTAXHIGHLIGHTING_LIB_DIR=/usr/lib KSYNTAXHIGHLIGHTING_INCLUDE_DIR=/usr/include/KF5/KSyntaxHighlighting \
+      CONFIG+=journald QMAKE_CFLAGS_ISYSTEM=-I \
+      DEFINES+=QBS_ENABLE_PROJECT_FILE_UPDATES \
+      ../qt-creator-opensource-src-$version/qtcreator.pro
+
+make
+make docs
+make INSTALL_ROOT="$PKG/usr/" install
+make INSTALL_ROOT="$PKG/usr/" install_docs
+}
