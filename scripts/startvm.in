@@ -1,0 +1,200 @@
+#!/usr/bin/env bash
+
+_error() {
+
+        $ECHOCMD "${RED}$1, sortie... ${NORMAL}"
+        exit 1
+}
+_warning() {
+
+        $ECHOCMD "${RED}Attention ..., $1${NORMAL}"
+}
+
+_info() {
+
+        $ECHOCMD "${YELLOW}${1}${NORMAL}"
+}
+
+_success() {
+
+        $ECHOCMD "${GREEN}${1}${NORMAL}"
+}
+
+check_var_file() {
+if [[ ! -f ${_FULLPATHNAME}/${_NAME}.var ]]; then
+        _error "Le fichier de configuration de la VM n'existe pas, veuillez utiliser le script persokvm pour le créer"
+else
+	source ${_FULLPATHNAME}/${_NAME}.var
+	_success "Le disque $HDD1_NAME sera utilisé pour la VM"
+	_success "La VM bootera en $BIOS_TYPE_INFO"
+	_success "L'image iso $ISO_FILE est attachée à la VM"
+fi
+}
+
+check_hdd1_file() {
+[[ ! -f $HDD1_NAME ]] &&  _error "le disque dur de la VM n'existe pas, veuillez utiliser le script persokvm pour le créer"
+}
+
+check_hdd2() {
+if [[ -n $HDD2_NAME ]]
+	then
+		ADD_HDD2="-drive file=${HDD2_NAME},if=${HDD2_CONTROLLER_TYPE}"
+		[[ ! -f $HDD2_NAME ]] &&  _error "Le second disque dur de la VM n'existe pas"
+fi
+}
+
+check_hdd3() {
+if [[ -n $HDD2_NAME ]]
+        then
+		ADD_HDD3="-drive file=${HDD3_NAME},if=${HDD3_CONTROLLER_TYPE}"
+		[[ ! -f $HDD3_NAME ]] &&  _error "le troisième disque dur de la VM n'existe pas"
+fi
+}
+
+uefi_bioscmdline() {
+case $BIOS_TYPE_INFO in
+	uefi|UEFI)
+		_UEFI_CODE_CMDLINE="-drive if=pflash,format=raw,readonly,file=/usr/share/ovmf/x64/OVMF_CODE.fd"
+                _UEFI_VAR_CMDLINE="-drive if=pflash,format=raw,file=$OVMF_VAR_DISK_INFO"
+	;;
+	*)
+		_UEFI_CMDLINE=""
+	;;
+esac
+}
+
+iso_disk_cmdline() {
+case $ISO_FILE in
+        no|NO|none|NONE|'')
+                _ISO_CMDLINE=""
+        ;;
+        *)
+                _ISO_CMDLINE="-drive file=$ISO_FILE,media=cdrom,if=ide"
+        ;;
+esac
+}
+
+sndhw_cmdline() {
+case $SOUND_CARD_TYPE in
+        none|NONE|no)
+                _SNDHW_CMDLINE=""
+        ;;
+        ac97)
+                _SNDHW_CMDLINE="-device AC97"
+        ;;
+	*)
+		_SNDHW_CMDLINE="-soundhw $SOUND_CARD_TYPE"
+	;;
+esac
+}
+
+vga_cmdline() {
+case $VGA_HARDWARE_TYPE in
+        virtio|Virtio|VIRTIO)
+                _VGA_CMDLINE="-device virtio-vga,max_hostmem=$(( ${VGA_MEMORY_SIZE/[A-Z]*/} * 1024 * 1024 ))"
+        ;;
+        qxl|Qxl|QXL)
+                _VGA_CMDLINE="-device qxl-vga,vgamem_mb=${VGA_MEMORY_SIZE/[A-Z]*/}"
+        ;;
+        cirrus|Cirrus|CIRRUS)
+                _VGA_CMDLINE="-device cirrus-vga,vgamem_mb=${VGA_MEMORY_SIZE/[A-Z]*/}"
+        ;;
+        *)
+                _VGA_CMDLINE="-vga $VGA_HARDWARE_TYPE"
+	;;
+esac
+}
+
+display_cmdline() {
+case $VGA_DISPLAY_TYPE in
+        vnc|VNC)
+                _DISPLAY_CMDLINE="-$VGA_DISPLAY_TYPE $REMOTE_PORT -k $VNC_LAYOUT $DISPLAY_OPTS"
+        ;;
+        spice)
+                _DISPLAY_CMDLINE="-$VGA_DISPLAY_TYPE port=$REMOTE_PORT,$DISPLAY_OPTS"
+        ;;
+	gtk)
+		_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE"
+	;;
+	egl-headless)
+		_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE -spice port=$REMOTE_PORT,$DISPLAY_OPTS"
+	;;
+	*)
+		_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE"
+	;;
+esac
+}
+
+
+qemu_cmdline() {
+
+_info "Command line summary :"
+
+cat << EOF
+
+-M q35 -m $SYSTEM_MEMORY_SIZE -cpu $CPU_TYPE -smp cores=$NUMBER_OF_CORES
+-device $NETWORK_HARDWARE_TYPE,netdev=net0 -netdev $NETWORK_TYPE,id=net0
+-device virtio-balloon
+${_UEFI_CODE_CMDLINE}
+${_UEFI_VAR_CMDLINE}
+-drive file=$HDD1_NAME,if=$HDD1_CONTROLLER_TYPE
+${ADD_HDD2}
+${ADD_HDD3}
+${_ISO_CMDLINE}
+-boot menu=on
+${_VGA_CMDLINE}
+${_SNDHW_CMDLINE}
+-nodefaults
+${_DISPLAY_CMDLINE}
+-usb
+-object rng-random,id=rng0
+-device virtio-rng,id=rng0
+-monitor $MONITOR
+
+EOF
+
+$QEMU_BIN -enable-kvm -M q35 -m $SYSTEM_MEMORY_SIZE -cpu $CPU_TYPE -smp cores=$NUMBER_OF_CORES \
+          -device $NETWORK_HARDWARE_TYPE,netdev=net0 -netdev $NETWORK_TYPE,id=net0 \
+          -device virtio-balloon \
+          ${_UEFI_CODE_CMDLINE} ${_UEFI_VAR_CMDLINE} \
+          -drive file=${HDD1_NAME},if=${HDD1_CONTROLLER_TYPE} \
+          ${ADD_HDD2} \
+          ${ADD_HDD3} \
+          ${_ISO_CMDLINE} \
+          -boot menu=on  \
+          ${_VGA_CMDLINE} \
+          ${_SNDHW_CMDLINE} \
+          -nodefaults \
+          ${_DISPLAY_CMDLINE} \
+          -usb \
+          -object rng-random,id=rng0 \
+          -device virtio-rng,id=rng0 \
+          -monitor $MONITOR
+}
+
+main() {
+check_var_file
+check_hdd1_file
+check_hdd2
+check_hdd3
+uefi_bioscmdline
+iso_disk_cmdline
+sndhw_cmdline
+vga_cmdline
+display_cmdline
+qemu_cmdline
+}
+
+RED='\033[31m'
+NORMAL='\033[0m'
+YELLOW='\033[33m'
+GREEN='\033[32m'
+
+QEMU_BIN=$(which qemu-system-x86_64)
+ECHOBIN=$(which echo)
+ECHOCMD="$ECHOBIN -e"
+
+_NAME=$1
+_VM_FOLDER=$HOME/VM-qemu
+_FULLPATHNAME=${_VM_FOLDER}/${_NAME}
+main $@

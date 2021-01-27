@@ -21,7 +21,7 @@
 
 include ../Makefile.inc
 
-all: install-nutyx setup-nutyx xdm-nutyx flushmem ifup ifdown which mkinitramfs
+all: install-nutyx setup-nutyx xdm-nutyx flushmem ifup ifdown which mkinitramfs configvm startvm
 
 %: %.in
 	sed -e "s/#VERSION#/$(VERSION)/" $< > $@
@@ -38,6 +38,9 @@ install: all
 	install -D -m0755 ifdown  $(SBINDIR)/ifdown
 	install -D -m0755 mkinitramfs $(SBINDIR)/mkinitramfs
 	install -D -m0755 which $(BINDIR)/which
+	install -D -m0755 configvm $(BINDIR)/configvm
+	install -D -m0755 startvm $(BINDIR)/startvm
+
 
 clean:
 	rm -f install-nutyx
@@ -48,6 +51,8 @@ clean:
 	rm -f ifdown
 	rm -f which
 	rm -f mkinitramfs
+	rm -f configvm
+	rm -f startvm
 
 distclean: clean
 
