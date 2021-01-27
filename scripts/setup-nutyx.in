@@ -448,6 +448,24 @@ setup_wireless()
 }
 setup_net() 
 {
+	dialog \
+	--title " $(gettext "Name of your machine") " \
+	--inputbox " $(gettext "Enter a name") : " 8 40 "$HOSTNAME" 2> $TMP/NAME
+
+	if [ "`cat $TMP/NAME`" == "" ]; then
+		interrupt
+	else
+		HOSTNAME=$(tail -n 1 $TMP/NAME)
+		echo $HOSTNAME > /etc/hostname
+	fi
+NETWORK_MANAGER="$(which NetworkManager)"
+[ -z $NETWORK_MANAGER ] && NETWORK_MANAGER="$(which connmand)"
+[ -z $NETWORK_MANAGER ] && NETWORK_MANAGER="$(which wicd)"
+if [ ! -z $NETWORK_MANAGER ]; then
+  SETUP_CONFIG_NETWORK="no"
+  rm -f $TMP/NAME
+  return 0
+fi
 network_card_found
 SYSTEMD_NETWORK_DIR=/etc/systemd/network/
 mkdir -p ${SYSTEMD_NETWORK_DIR}
@@ -2689,7 +2707,7 @@ check_all () {
 		SETUP_CONFIG_KEYBOARD="yes"
 		RV=$((RV+1))
 	fi
-	if [ -z ${NETWORKMANAGER} ];then
+	if [ ! -r ${NETWORK} ];then
 		SETUP_CONFIG_NETWORK="yes"
 		RV=$((RV+2))
 	fi
@@ -2793,7 +2811,6 @@ DIALOG_OK=0
 DIALOG_CANCEL=1
 DIALOG_HELP=2
 
-NETWORKMANAGER="$(which NetworkManager)"
 WPA_TOOL="$(which wpa_passphrase)"
 IWCONFIG="$(which iwconfig)"
 DHCPCD="$(which dhcpcd)"
@@ -2811,7 +2828,7 @@ LOCALE="/etc/profile.d/i18n.sh"
 LOCALECONF="/etc/locale.conf"
 LOCALTIME="/etc/localtime"
 ZONEINFO="/usr/share/zoneinfo/"
-NETWORK="`ls /etc/sysconfig/ifconfig* 2>/dev/null|head -1`"
+NETWORK="/etc/hostname"
 CLOCK="/etc/sysconfig/clock"
 ADJTIME="/etc/adjtime"
 USER="/home"
