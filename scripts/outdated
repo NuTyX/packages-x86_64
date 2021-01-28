@@ -98,7 +98,7 @@ sysvinit|sysklogd|elogind|nutyx|kernel|kernel*|\
 vboxhost*|nvidia*|virtualbox-guest)
      continue;;
 
-     gtk-update-icon-cache)
+    gtk-update-icon-cache)
      ARCHNAME="gtk3";;
 
     gtksharp2)
@@ -109,6 +109,12 @@ vboxhost*|nvidia*|virtualbox-guest)
 
     perl-pcsc)
      ARCHNAME="pcsc-perl";;
+
+    nextcloud-desktop)
+     ARCHNAME="nextcloud-client";;
+
+    libreoffice)
+     ARCHNAME="libreoffice-fresh";;
 
     openssl-10)
      ARCHNAME="openssl-1.0";;
@@ -283,7 +289,6 @@ python2-simplejson|python2-six|python2-xdg)
 
     gstreamer-vaapi)
      ARCHNAME=$PKGNAME;;
-
 
     gstreamer-*)
      ARCHNAME=${PKGNAME/gstreamer-/gst-};;
