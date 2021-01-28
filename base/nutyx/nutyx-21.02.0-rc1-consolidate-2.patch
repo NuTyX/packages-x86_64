@@ -1,0 +1,24 @@
+commit 397e18f6697be1fda2e098d6bea9a5873e833bc8
+Author: tnut <tnut@nutyx.org>
+Date:   Wed Jan 27 22:39:52 2021 +0100
+
+    mkinitramfs.in
+    do not copy /etc/hostname file
+
+diff --git a/scripts/mkinitramfs.in b/scripts/mkinitramfs.in
+index f5ec75b96..6928d7fc4 100755
+--- a/scripts/mkinitramfs.in
++++ b/scripts/mkinitramfs.in
+@@ -289,12 +289,6 @@ KERNEL=="dcbri[0-9]*",      GROUP="dialout"
+ EOF
+ fi
+ 
+-# Hostname
+-if [ -f /etc/hostname ] ; then
+-	cp /etc/hostname $WDIR/etc/hostname
+-else
+-	echo "nutyx" > $WDIR/etc/hostname
+-fi
+ # Clock setting
+ [ -f /etc/sysconfig/clock ] && cp /etc/sysconfig/clock $WDIR/etc/sysconfig
+ 
