@@ -1,13 +1,14 @@
 description='Next generation technology for building and distributing desktop applications'
 url='https://flatpak.org/'
 
-packager="tnut <tnut@nuyx.org>"
+packager="rems <remy@nuyx.org>"
+contributors="Tnut"
 
 makedepends=(glib libsoup gpgme polkit fuse2 libostree json-glib
              appstream-glib libseccomp python-parsing)
 run=(bubblewrap gnupg)
 
-version=1.9.2
+version=1.10.0
 source=(https://dl.flathub.org/repo/flathub.flatpakrepo
         https://github.com/flatpak/flatpak/releases/download/$version/flatpak-$version.tar.xz)
 
