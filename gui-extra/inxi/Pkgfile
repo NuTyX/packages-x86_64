@@ -1,19 +1,22 @@
 description="script to get system information"
 url="http://inxi.org"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg, Tnut, Remy"
 
-makedepends=(coreutils gawk grep pciutils procps-ng sed file iproute2 kmod
-             sudo usbutils kmod xorg-xdpyinfo xorg-xprop xorg-xrandr lm-sensors)
+makedepends=(coreutils grep procps-ng sed
+             file iproute2 sudo usbutils kmod)
 run=(gawk pciutils usbutils xorg-xdpyinfo xorg-xprop xorg-xrandr lm-sensors)
 
 name=inxi
-version=3.0.36.1
+version=3.2.02
 
-source=(https://github.com/smxi/inxi/archive/${version:0:6}-1.tar.gz)
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/smxi/inxi/archive/${version:0:6}-2.tar.gz)
 
 build() {
-cd $name-${version:0:6}-1  
+cd $name-${version:0:6}-2
   install -D -m755 inxi $PKG/usr/bin/inxi
   install -D -m755 inxi.1 $PKG/usr/share/man/man1/inxi.1
   
