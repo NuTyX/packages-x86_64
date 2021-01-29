@@ -7,15 +7,15 @@ contributors="Alienus, Greg"
 makedepends=(tcl xorg-fontconfig xorg-libxft xorg-libxscrnsaver)
 
 name=tk
-version=8.6.11
-
+version=8.6.11.1
+_version=8.6.11
 source=(http://downloads.sourceforge.net/sourceforge/tcl/tk${version}-src.tar.gz)
 
 build(){
     
     [ "`uname -m`" == "x86_64" ] && X64="--enable-64bit"
     
-    cd $name$version/unix
+    cd $name${_version}/unix
     ./configure --prefix=/usr \
                 --mandir=/usr/share/man \
                 --enable-threads \
