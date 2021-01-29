@@ -7,17 +7,12 @@ contributors="Pierre B"
 makedepends=(libxml2 cmake db gobject-introspection icu doxygen glib vala)
 
 name=libical
-version=3.0.8
-release=3
+version=3.0.9
 
 source=(https://github.com/libical/libical/releases/download/v$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
-
-sed -i '/define LEAP_MONTH/a #define FALSE 0' src/libical/icalrecur.c
-sed -i 's/array/arraytest/'       src/test/libical-glib/CMakeLists.txt
-mv src/test/libical-glib/array.py src/test/libical-glib/arraytest.py
 
 mkdir build
 cd build
