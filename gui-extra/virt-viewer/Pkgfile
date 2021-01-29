@@ -1,15 +1,14 @@
 description="A lightweight interface for interacting with the graphical display of virtualized guest OS."
 url="http://virt-manager.org/"
 
-contributors="Rems"
-packager="tnut <tnut@nutyx.org>"
+contributors="Rems,Tnut"
+packager="rems <remy@nutyx.org>"
 
 makedepends=(intltool gtk-vnc spice-gtk spice-protocol)
 run=(desktop-file-utils) 
 
 name=virt-viewer
-version=8.0
-release=2
+version=9.0
 
 source=(https://virt-manager.org/download/sources/$name/$name-$version.tar.gz)
 
@@ -17,7 +16,8 @@ build() {
 
 cd $name-$version
 
-  ./configure --prefix=/usr --disable-update-mimedb
+  ./configure --prefix=/usr \
+              --disable-update-mimedb
 
   make
   make DESTDIR=$PKG install
