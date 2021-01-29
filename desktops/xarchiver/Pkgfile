@@ -1,16 +1,17 @@
 description="GTK+ frontend to various command line archivers"
 url="https://github.com/ib/xarchive"
-packager="Schrodinger72 <schrodinger@nutyx.org>"
-contributors="tnut, Greg"
+packager="Rems <remy@nutyx.org>"
+contributors="tnut, Greg, Schrodinger72"
 makedepends=(gtk3 docbook-xsl xmlto zip p7zip lzop cpio unrar)
 PKGMK_KEEP_SOURCES="no"
 set=(xfce4-extra)
 
 name=xarchiver
-version=0.5.4.16
+version=0.5.4.17
 
 source=(https://github.com/ib/xarchiver/archive/$version.tar.gz)
 
+unset MAKEFLAGS
 
 build() {
 
@@ -18,7 +19,7 @@ build() {
   [ -d gtk3 ] || cp -r $name-$version gtk3
   cd gtk3
   ./configure --prefix=/usr --libexecdir=/usr/lib/xfce4
-  make -j1
+  make
 
 }
 
