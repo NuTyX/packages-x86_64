@@ -5,6 +5,21 @@ COLLECTIONS="base cli cli-extra gui gui-extra desktops"
 [ ! -z $1 ] && COLLECTIONS="$1"
 ARCHGIT="/devel/git/archlinux"
 
+## the 4 following functions are used to version comparison
+verlte() {
+    [  "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]
+}
+verlt() {
+    [ "$1" = "$2" ] && return 1 || verlte $1 $2
+}
+tobe_updated() {
+  PODn=$((PODn + 1))
+  echo "$(basename $i) $pkgver ($version) [$packager]"
+}
+#up_to_date() {
+#  echo "$(basename $i) $pkgver ($version) [$packager] up to date"
+#}
+
 echo '-------------------- ARCH PACKAGES REPOSITORY --------------------' >&2
 if  [ ! -d "$HOME$ARCHGIT/packages/" ] ; then
   echo "Repository not found in $HOME$ARCHGIT/packages/"
@@ -358,10 +373,13 @@ python2-simplejson|python2-six|python2-xdg)
      continue
    fi
    if [ ${pkgver%%+*} != "$version" ]; then
-      PODn=$((PODn + 1))
-      echo "$(basename $i) ${pkgver%%+*} ($version)"
+
+     #keep this line for debugging
+     #verlt ${version//[!0-9.]/} ${pkgver//[!0-9.]/} && tobe_updated || up_to_date
+     verlt ${version//[!0-9.]/} ${pkgver//[!0-9.]/} && tobe_updated
+
    fi
-   unset pkgver version
+   unset pkgver version packager
  done
 done
 echo "Packages founds: $PFn"
