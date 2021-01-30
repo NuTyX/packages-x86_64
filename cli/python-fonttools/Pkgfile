@@ -8,9 +8,10 @@ makedepends=(cython)
 run=(python)
 
 name=python-fonttools
-version=4.16.1
+version=4.19.1
 
-source=(https://github.com/fonttools/fonttools/releases/download/$version/fonttools-$version.zip)
+PKGMK_KEEP_SOURCES="no"
+source=(https://github.com/fonttools/fonttools/archive/$version.tar.gz)
 
 build() {
  cd fonttools-$version
