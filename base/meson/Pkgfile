@@ -4,15 +4,15 @@ url="http://mesonbuild.com/"
 contributors="Jayce, Greg"
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(python)
 set=(devel)
 
 name=meson
 version=0.56.2
+release=2
 
 source=(https://github.com/mesonbuild/$name/releases/download/$version/$name-$version.tar.gz)
 prepare() {
-cards install expat expat.devel libffi libffi.devel
+cards install python
 }
 build() {
   cd $name-$version
