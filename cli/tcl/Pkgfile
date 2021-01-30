@@ -43,4 +43,6 @@ make DESTDIR=$PKG install-private-headers
 ln -svf tclsh8.6 $PKG/usr/bin/tclsh
 chmod -v 755 $PKG/usr/lib/libtcl8.6.so
 
+# Part of perl
+rm $PKG/usr/share/man/man3/Thread.3
 }
