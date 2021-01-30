@@ -106,9 +106,9 @@ do
   PKGNAME=$(basename $i)
   NOTEXIST="no"
   case $PKGNAME in
-    gnulib|gstreamer-0|gstreamer-plugins-base-0|\
-openjdk|libatomic-ops|eigen2|make-ca|qt2|\
-grub-efi|linux-mainline|cards|*cards|eudev|runyx|\
+    gnulib|gstreamer-0|gstreamer-plugins-base-0|liblinear|ovmf|\
+openjdk|libatomic-ops|eigen2|make-ca|qt2|xfce4-appmenu-plugin|\
+grub-efi|linux-mainline|cards|*cards|eudev|runyx|lcms|\
 sysvinit|sysklogd|elogind|nutyx|kernel|kernel*|\
 vboxhost*|nvidia*|virtualbox-guest)
      continue;;
@@ -152,12 +152,6 @@ vboxhost*|nvidia*|virtualbox-guest)
     sdl1|libunique1)
      ARCHNAME=${PKGNAME/1/};;
 
-    sdl)
-     ARCHNAME="sdl2";;
-
-    freetype)
-     ARCHNAME="freetype2";;
-
     squashfs)
      ARCHNAME="squashfs-tools";;
 
@@ -176,7 +170,7 @@ vboxhost*|nvidia*|virtualbox-guest)
     fdk-aac)
      ARCHNAME="fdkaac";;
 
-    gdk-pixbuf|glib|openjpeg)
+    gdk-pixbuf|glib|openjpeg|freetype|sdl)
      ARCHNAME="${PKGNAME}2";;
 
     gtkmm|fuse|gtksourceview|gtkspell)
@@ -184,9 +178,6 @@ vboxhost*|nvidia*|virtualbox-guest)
 
     kerberos)
      ARCHNAME="krb5";;
-
-    lcms)
-     ARCHNAME="lcms2";;
 
     mutagen)
      ARCHNAME="python-mutagen";;
