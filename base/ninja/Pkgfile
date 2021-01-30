@@ -4,15 +4,17 @@ url="http://martine.github.io/ninja/"
 contributors="Pierre, Greg"
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(python)
-
 name=ninja
 version=1.10.2
+release=2
 
 set=(devel)
 
 source=(https://github.com/ninja-build/$name/archive/v$version/$name-$version.tar.gz)
-	
+
+prepare() {
+cards install python
+}
 build() {
 
 	cd $name-$version
