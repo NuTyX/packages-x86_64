@@ -4,7 +4,7 @@ url='https://github.com/rhash/RHash'
 packager="tnut <tnut@nutyx.org>"
 
 name=rhash
-version=1.4.0
+version=1.4.1
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -14,6 +14,7 @@ prepare() {
 mv RHash-$version $name-$version
 }
 build() {
+ unset MAKEFLAGS
  cd $name-$version
  ./configure --prefix=/usr --sysconfdir=/etc  \
  --extra-cflags="$CFLAGS"  --extra-ldflags="$LDFLAGS"
