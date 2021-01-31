@@ -164,7 +164,7 @@ case $vgaquery in
         	_success "The graphics card will be $vga"
         	_info "Do you want OpenGL support, yes or no (by default)"
         	read glquery
-        	[[ -z $glquery ]] && glquery=non
+        	[[ -z $glquery ]] && glquery=N
 		case $glquery in
                 	Y|y|O|o|yes)
 		                gl="-display sdl,gl=on"
