@@ -227,6 +227,23 @@ if [[ -z $display ]]
 				display="-display gtk"
 				$ECHOCMD "VGA_DISPLAY_TYPE=gtk" >> ${_FULLPATHNAME}/${_NAME}.var
 				_success "The VM will be displayed on your screen"
+				_info "Want a full screen graphics output ? (yes, no (default choice)"
+				read fullscreenquery
+				[[ -z $fullscreenquery ]] && fullscreenquery=N
+				case $fullscreenquery in
+					YES|yes|y|Y)
+						_success "The VM will be displayed in full screen mode"
+						$ECHOCMD "LOCAL_FULLSCREEN=yes" >> ${_FULLPATHNAME}/${_NAME}.var
+					;;
+					NO|no|n|N)
+						_success "The VM will be displayed standard mode"
+						$ECHOCMD "LOCAL_FULLSCREEN=no" >> ${_FULLPATHNAME}/${_NAME}.var
+					;;
+					*)
+						_success "Can't understand, fallback to no full screen"
+						$ECHOCMD "LOCAL_FULLSCREEN=no" >> ${_FULLPATHNAME}/${_NAME}.var
+					;;
+				esac
 			;;
         		vnc)
 				if [[ -n "$gl" ]]
