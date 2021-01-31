@@ -4,19 +4,15 @@ url="http://gtkmm.sourceforge.net/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch"
 
-makedepends=(gtk3 pangomm cairomm atkmm)
+makedepends=(gtk3 pangomm cairomm atkmm meson ninja)
 
 name=gtkmm
-version=3.24.2
-release=2
+version=3.24.3
 
 source=(https://download.gnome.org/sources/gtkmm/${version%.*}/${name}-$version.tar.xz)
 
-package() {
-# Obsolets libs
-rm $PKG/usr/lib/libgdkmm-3.0.la
-rm $PKG/usr/lib/libgtkmm-3.0.la
-}
+build=meson
+
 uptodate(){
 local latest lastversion url
 url="https://download.gnome.org/sources/$name"
