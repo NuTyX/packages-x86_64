@@ -164,7 +164,7 @@ case $vgaquery in
         	_success "The graphics card will be $vga"
         	_info "Do you want OpenGL support, yes or no (by default)"
         	read glquery
-        	[[ -z $glquery ]] && glquery=non
+        	[[ -z $glquery ]] && glquery=N
 		case $glquery in
                 	Y|y|O|o|yes)
 		                gl="-display sdl,gl=on"
@@ -219,9 +219,9 @@ esac
 displayquery() {
 if [[ -z $display ]]
 	then
-		_info "What kind of graphics output ? (default spice, vnc, local (need virt-viewer 8.0)"
+		_info "What kind of graphics output ? (default spice, vnc, egl-headless or local)"
 		read displayquery
-		[[ -z $displayquery ]] && displayquery=spice
+		[[ -z $displayquery ]] && displayquery=local
 		case $displayquery in
 			local)
 				display="-display gtk"
@@ -238,7 +238,7 @@ if [[ -z $display ]]
 				$ECHOCMD "REMOTE_PORT=0:0" >> ${_FULLPATHNAME}/${_NAME}.var
 				$ECHOCMD "VNC_LAYOUT=fr" >> ${_FULLPATHNAME}/${_NAME}.var
 				$ECHOCMD "DISPLAY_OPTS=" >> ${_FULLPATHNAME}/${_NAME}.var
-				_success "The output of the VM will be in VNC localhost: 0, keyboard in FR"
+				_success "The output of the VM will be in VNC localhost: 0, keyboard in FR layout"
 			;;
 			spice)
 				if [[ -n "$gl" ]]
@@ -257,7 +257,7 @@ if [[ -z $display ]]
                                 $ECHOCMD "VGA_DISPLAY_TYPE=egl-headless" >> ${_FULLPATHNAME}/${_NAME}.var
                                 $ECHOCMD "REMOTE_PORT=5900" >> ${_FULLPATHNAME}/${_NAME}.var
                                 $ECHOCMD "DISPLAY_OPTS=disable-ticketing" >> ${_FULLPATHNAME}/${_NAME}.var
-                                _success "The output of the VM will be in SPICE, port 5900, accelération GL"
+                                _success "The output of the VM will be in SPICE, port 5900, 3D acceleration"
                         ;;
 			exit)
 				exit 1
@@ -281,19 +281,19 @@ case $netquery in
         	net=virtio-net
 		$ECHOCMD "NETWORK_HARDWARE_TYPE=$net" >> ${_FULLPATHNAME}/${_NAME}.var
 		$ECHOCMD "NETWORK_TYPE=user" >> ${_FULLPATHNAME}/${_NAME}.var
-        	_success "The network will have $ net as a device"
+        	_success "The network will have $net as a device"
         ;;
         e1000)
         	net=e1000
 		$ECHOCMD "NETWORK_HARDWARE_TYPE=$net" >> ${_FULLPATHNAME}/${_NAME}.var
 		$ECHOCMD "NETWORK_TYPE=user" >> ${_FULLPATHNAME}/${_NAME}.var
-        	_success "The network will have $ net as a device"
+        	_success "The network will have $net as a device"
         ;;
         rtl8139|8139)
         	net=rtl8139
 		$ECHOCMD "NETWORK_HARDWARE_TYPE=$net" >> ${_FULLPATHNAME}/${_NAME}.var
 		$ECHOCMD "NETWORK_TYPE=user" >> ${_FULLPATHNAME}/${_NAME}.var
-        	_success "The network will have $ net as a device"
+        	_success "The network will have $net as a device"
         ;;
         exit)
         	exit 1
@@ -313,17 +313,17 @@ if [[ -z $memquery ]]
 	then
 		mem=2G
 		$ECHOCMD "SYSTEM_MEMORY_SIZE=$mem" >> ${_FULLPATHNAME}/${_NAME}.var
-		_success "The VM will use $ mem from RAM"
+		_success "The VM will use $mem from RAM"
 	else
 		mem=$memquery
 		$ECHOCMD "SYSTEM_MEMORY_SIZE=$mem" >> ${_FULLPATHNAME}/${_NAME}.var
-		_success "The VM will use $ mem from RAM"
+		_success "The VM will use $mem from RAM"
 fi
 }
 
 vmfolder_check() {
 
-[[ ! -d ${_VMFOLDER} ]] && _error "The $ {_ VMFOLDER} folder is not present, please create it"
+[[ ! -d ${_VMFOLDER} ]] && _error "The ${_VMFOLDER} folder is not present, please create it"
 }
 
 qemu_img_check() {
@@ -458,7 +458,7 @@ if [[ ! -f ${_FULLPATHNAME}/${_NAME}.qcow2 ]]
                                                 cp /usr/share/ovmf/x64/OVMF_VARS.fd ${_FULLPATHNAME}/OVMF_VARS_${_NAME}.fd
                                 fi
                         else
-                                _error "The command $ {_ QEMU_IMG_BIN} did not execute correctly"
+                                _error "The command ${_QEMU_IMG_BIN} did not execute correctly"
                 fi
         else
                 _error "VM disk exists, no creation"
@@ -501,7 +501,7 @@ if [[ ! -f ${_FULLPATHNAME}/${_NAME}.qcow2 ]]
                                 $ECHOCMD "HDD1_SIZE_INFO=${_SIZE}" >> ${_FULLPATHNAME}/${_NAME}.var
                                 $ECHOCMD "OVMF_VAR_DISK_INFO=NONE" >> ${_FULLPATHNAME}/${_NAME}.var
                         else
-                                _error "The command $ {_ QEMU_IMG_BIN} did not execute correctly"
+                                _error "The command ${_QEMU_IMG_BIN} did not execute correctly"
                 fi
         else
                 _error "VM disk exists, no creation"
@@ -535,7 +535,7 @@ esac
 }
 
 cdromfolder_check() {
-[[ ! -d ${_FULLISOPATH} ]] && _error "The folder $ {_ FULLISOPATH} does not exist, please create it and put your ISOS there"
+[[ ! -d ${_FULLISOPATH} ]] && _error "The folder ${_FULLISOPATH} does not exist, please create it and put your ISOS there"
 }
 
 cdromquery() {
