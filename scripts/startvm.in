@@ -114,7 +114,11 @@ case $VGA_DISPLAY_TYPE in
                 _DISPLAY_CMDLINE="-$VGA_DISPLAY_TYPE port=$REMOTE_PORT,$DISPLAY_OPTS"
         ;;
 	gtk)
-		_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE"
+		if [[ $LOCAL_FULLSCREEN == yes ]];; then
+			_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE -full-screen"
+		else
+			_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE"
+		fi
 	;;
 	egl-headless)
 		_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE -spice port=$REMOTE_PORT,$DISPLAY_OPTS"
