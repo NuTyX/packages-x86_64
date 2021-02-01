@@ -4,10 +4,10 @@ url="http://www.gnu.org/software/parted/index.shtml"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(lvm2)
+makedepends=(grep sed lvm2 util-linux check texinfo)
 
 name=parted
-version=3.3
+version=3.4
 
 source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.xz)
 
@@ -17,7 +17,6 @@ cd $name-$version
 --disable-static
 make
 make DESTDIR=$PKG install
-rm $PKG/usr/share/info/dir
 make -C doc html
 makeinfo --html -o doc/html doc/parted.texi
 makeinfo --plaintext -o doc/parted.txt doc/parted.texi
