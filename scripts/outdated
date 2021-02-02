@@ -378,8 +378,6 @@ python2-simplejson|python2-six|python2-xdg)
    unset pkgver version packager
  done
 done
-echo "Packages founds: $PFn"
-echo "Packages Out of date: $PODn"
 
 [ $((PNFn)) -gt 0 ] && echo "
 ===> PACKAGES NOT FOUND : "$PNFn"
@@ -387,5 +385,9 @@ echo "Packages Out of date: $PODn"
 
 for i in ${NOTFOUND[@]}
 do
- echo $i
+ echo -n "$i "
 done
+echo "
+---------------------------------"
+echo "Packages founds: $PFn"
+echo "Packages Out of date: $PODn"

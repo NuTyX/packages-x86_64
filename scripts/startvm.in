@@ -22,24 +22,24 @@ _success() {
 
 check_var_file() {
 if [[ ! -f ${_FULLPATHNAME}/${_NAME}.var ]]; then
-        _error "Le fichier de configuration de la VM n'existe pas, veuillez utiliser le script persokvm pour le créer"
+        _error "VM configuration file does not exist, please use persokvm script to create it"
 else
 	source ${_FULLPATHNAME}/${_NAME}.var
-	_success "Le disque $HDD1_NAME sera utilisé pour la VM"
-	_success "La VM bootera en $BIOS_TYPE_INFO"
-	_success "L'image iso $ISO_FILE est attachée à la VM"
+	_success "The disk $HDD1_NAME will be used for the VM"
+	_success "The VM will boot in $BIOS_TYPE_INFO"
+	_success "The iso image $ISO_FILE is attached to the VM"
 fi
 }
 
 check_hdd1_file() {
-[[ ! -f $HDD1_NAME ]] &&  _error "le disque dur de la VM n'existe pas, veuillez utiliser le script persokvm pour le créer"
+[[ ! -f $HDD1_NAME ]] &&  _error "The VM hard disk does not exist, please use the persokvm script to create it"
 }
 
 check_hdd2() {
 if [[ -n $HDD2_NAME ]]
 	then
 		ADD_HDD2="-drive file=${HDD2_NAME},if=${HDD2_CONTROLLER_TYPE}"
-		[[ ! -f $HDD2_NAME ]] &&  _error "Le second disque dur de la VM n'existe pas"
+		[[ ! -f $HDD2_NAME ]] &&  _error "The second hard disk of the VM does not exist"
 fi
 }
 
@@ -47,7 +47,7 @@ check_hdd3() {
 if [[ -n $HDD2_NAME ]]
         then
 		ADD_HDD3="-drive file=${HDD3_NAME},if=${HDD3_CONTROLLER_TYPE}"
-		[[ ! -f $HDD3_NAME ]] &&  _error "le troisième disque dur de la VM n'existe pas"
+		[[ ! -f $HDD3_NAME ]] &&  _error "The third hard disk of the VM does not exist"
 fi
 }
 
@@ -114,7 +114,11 @@ case $VGA_DISPLAY_TYPE in
                 _DISPLAY_CMDLINE="-$VGA_DISPLAY_TYPE port=$REMOTE_PORT,$DISPLAY_OPTS"
         ;;
 	gtk)
-		_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE"
+		if [[ $LOCAL_FULLSCREEN == yes ]]; then
+			_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE -full-screen"
+		else
+			_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE"
+		fi
 	;;
 	egl-headless)
 		_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE -spice port=$REMOTE_PORT,$DISPLAY_OPTS"
