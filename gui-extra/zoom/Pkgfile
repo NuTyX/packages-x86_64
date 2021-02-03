@@ -1,0 +1,18 @@
+description='Video Conferencing and Web Conferencing Service'
+url='https://zoom.us/'
+
+packager="tnut <tnut@nutyx.org>"
+
+run=(xorg-fontconfig glib pulseaudio xorg-libsm xorg-libx11 libxcb
+     xorg-libxcomposite xorg-libxfixes xorg-libxi xorg-libxrandr
+     xorg-libxrender xorg-libxshmfence libxslt mesa nss
+     xcb-util-image xcb-util-keysyms)
+
+name=zoom
+version=5.4.57862.0110
+
+source=(https://zoom.us/client/${version}/zoom_x86_64.pkg.tar.xz )
+
+build () {
+cp -dpr --no-preserve=ownership opt usr $PKG
+}
