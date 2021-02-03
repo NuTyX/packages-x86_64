@@ -1,0 +1,23 @@
+description="A compositor for X, and a fork of xcompmgr-dana."
+url="http://github.com/chjj/compton"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+makedepends=(uthash meson ninja dbus libconfig libev
+             pcre mesa xorg-libxcomposite xorg-libxinerama
+             xorg-libxrandr xorg-libxdamage freeglut
+             xcb-util-renderutil xcb-util-image libxdg-basedir)
+
+name=compton
+version=7.4
+
+PKGMK_KEEP_SOURCES="no"
+source=(https://github.com/yshui/compton/archive/v$version.tar.gz)
+
+build=meson
+
+package() {
+cd $name-$version
+install -Dm644 compton.sample.conf $PKG/etc/xdg/compton.conf.example
+}
