@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-
 usage() {
 
-echo -e "$(basename $0) [ISO_FLAVOUR] [Kernel-VERSION]"
+echo -e "$(basename ${0}) [ISO_FLAVOUR] [Kernel-VERSION]"
 echo -e "Available official flavours are MINI, XFCE4, LXDE, OPENBOX, KDE5, JWM and MATE"
+echo -e "Available kernels are kernel-414, kernel-419 (default), kernel-54 and kernel-510"
 }
 
 error() {
@@ -19,95 +19,108 @@ exit 3
 deps_check() {
 
 local PACKAGE COMMAND
-PACKAGE=$1
-COMMAND=$2
+PACKAGE=${1}
+COMMAND=${2}
 
-RESULT=$(which $COMMAND)
+RESULT=$(which ${COMMAND})
 if [[ -z $RESULT ]]; then
- if [[ $PACKAGE == cards ]] && [[ -z $RESULT ]]; then
+ if [[ ${PACKAGE} == cards ]] && [[ -z ${RESULT} ]]; then
   echo -e "You're in a other distro than NuTyX, please install packages manually"
   echo -e "Packages are git cdrtools syslinux libisoburn grub-efi dosfstools"
   exit 1
  fi
-        echo -e "$PACKAGE not installed, proceeding..."
-        cards install $PACKAGE || error "Cards can not install $PACKAGE"
-        RESULT_AFTER_INSTALL=$(which $COMMAND)
-        if [[ -z $RESULT_AFTER_INSTALL ]]; then
+        echo -e "${PACKAGE} not installed, proceeding..."
+        cards install ${PACKAGE} || error "Cards can not install ${PACKAGE}"
+        RESULT_AFTER_INSTALL=$(which ${COMMAND})
+        if [[ -z ${RESULT_AFTER_INSTALL} ]]; then
                 echo -e "Installation of $PACKAGE failed, exiting..."
                 exit 2
         fi
 fi
 }
 
-if [[ $1 == -h ]]; then
+if [[ ${UID} != 0 ]]; then
+        error "Must be in Super User mode to execute the script"
+fi
+
+case ${1} in
+        kernel*)
+                KERNEL_VERSION=${1}
+        ;;
+        MINI|mini|XFCE4|xfce4|LXDE|lxde|OPENBOX|openbox|KDE5|PLASMA5|kde5|plasma5|JWM|jwm|MATE|mate)
+                ISO_DEST=${1}
+        ;;
+        -h|--help|-u|--usage)
+                usage
+                exit 1
+        ;;
+esac
+
+if [[ -z ${ISO_DEST} ]]; then
         usage
- exit 1
+        echo -e "What is the iso's flavour ?"
+        read ISO_DEST
 fi
 
-if [[ $UID != 0 ]]; then
- error "Must be in Super User mode to execute the script"
-fi
-
-ISO_DEST=$1
-
-if [[ -z $ISO_DEST ]]; then
- echo -e "What is the destination of the iso ? (MINI (default), XFCE...)"
- read ISO_DEST
-fi
-
-[[ -z $ISO_DEST ]] && ISO_DEST=MINI
-[[ -z $BUILD_ISOFOLDER ]] && BUILD_ISOFOLDER=/ISO_${ISO_DEST}
-[[ -z $GIT_CLONE_HOME ]] && GIT_CLONE_HOME=$HOME
-[[ -z $GIT_FOLDER ]] && GIT_FOLDER=$GIT_CLONE_HOME/packages-x86_64
+[[ -z ${ISO_DEST} ]] && ISO_DEST=MINI
+[[ -z ${BUILD_ISOFOLDER} ]] && BUILD_ISOFOLDER=/ISO_${ISO_DEST}
+[[ -z ${GIT_CLONE_HOME} ]] && GIT_CLONE_HOME=${HOME}
+[[ -z ${GIT_FOLDER} ]] && GIT_FOLDER=${GIT_CLONE_HOME}/packages-x86_64
 GIT_ISOFOLDER=$GIT_FOLDER/iso
 GIT_SCRIPTSFOLDER=$GIT_FOLDER/scripts
+if [[ -z ${2} ]]; then
+        KERNEL_VERSION=${KERNEL_VERSION}
+else
+        KERNEL_VERSION=${2}
+fi
+[[ -z ${KERNEL_VERSION} ]] && KERNEL_VERSION=kernel-419
+
 [[ -z $GIT_URL ]] && GIT_URL='https://github.com/NuTyX/packages-x86_64'
 #[[ -z $SQUASH_COMP_OPTS ]] && SQUASH_COMP_OPTS='-comp zstd'
-KERNEL_VERSION="$2"
 
 case $ISO_DEST in
- MINI|mini)
-  INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm gpm.service"
- ;;
- XFCE4|xfce4)
-  INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm gpm.service \
-    lxdm xfce4 flcards make-ca mousepad orage ristretto xfburn parole xfce4-terminal gparted \
+        MINI|mini)
+                INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm gpm.service"
+        ;;
+        XFCE4|xfce4)
+                INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm gpm.service \
+                                lxdm xfce4 flcards make-ca mousepad orage ristretto xfburn parole xfce4-terminal gparted \
                                 thunar firefox gvfs xdg-user-dirs xorg-xf86-input-synaptics xorg-xf86-input-wacom \
                                 xorg-xf86-video-ati xorg-xf86-video-fbdev xorg-xf86-video-intel xorg-xf86-video-nouveau \
                                 xorg-xf86-video-vesa network-manager-applet"
- ;;
- LXDE|lxde)
+        ;;
+        LXDE|lxde)
                 INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm.service \
                                 lxde flcards make-ca leafpad lxde-appearance lxde-input lxde-randr lxde-gpicview lxde-terminal \
                                 lxdm gparted pcmanfm xdg-user-dirs firefox xorg-xf86-input-synaptics xorg-xf86-input-wacom \
                                 xorg-xf86-video-ati xorg-xf86-video-fbdev xorg-xf86-video-intel xorg-xf86-video-nouveau \
                                 xorg-xf86-video-vesa network-manager-applet"
         ;;
- OPENBOX|openbox)
-  INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm gpm.service \
+        OPENBOX|openbox)
+                INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm gpm.service \
                                 openbox dmenu flcards gnome-themes-extra gtk-engines gvfs inxi leafpad lxde-appearance \
                                 lxde-input lxde-randr lxde-terminal lxdm murrine nitrogen ntp papirus-icon-theme pavucontrol \
                                 pcmanfm scrot sound-theme-freedesktop volumeicon xdg-user-dirs xfce4-notifyd xfce4-power-manager \
                                 yad xorg-xf86-input-synaptics xorg-xf86-input-wacom xorg-xf86-video-ati xorg-xf86-video-fbdev \
                                 xorg-xf86-video-intel xorg-xf86-video-nouveau xorg-xf86-video-vesa network-manager-applet"
- ;;
- KDE5|PLASMA5|kde5|plasma5)
+        ;;
+        KDE5|PLASMA5|kde5|plasma5)
                 INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm \
                                 sddm kde5 make-ca flcards firefox thunderbird xdg-user-dirs clementine k3b \
                                 kdenlive vlc sound-theme-freedesktop network-manager-applet gparted xorg-setxkbmap \
                                 hardinfo xorg-xf86-input-synaptics xorg-xf86-input-wacom xorg-xf86-video-ati xorg-xf86-video-fbdev \
                                 xorg-xf86-video-intel xorg-xf86-video-nouveau xorg-xf86-video-vesa network-manager-applet"
         ;;
- JWM|jwm)
-  INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm \
+        JWM|jwm)
+                INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm \
                                 jwm dmenu flcards make-ca gnome-themes-extra gtk-engines gvfs inxi leafpad \
                                 lxde-appearance lxde-input lxde-randr lxde-terminal lxdm murrine nitrogen \
                                 ntp papirus-icon-theme pavucontrol pcmanfm scrot sound-theme-freedesktop \
                                 volumeicon xdg-user-dirs xfce4-notifyd xfce4-power-manager yad xorg-xf86-input-synaptics \
                                 xorg-xf86-input-wacom xorg-xf86-video-ati xorg-xf86-video-fbdev xorg-xf86-video-intel \
                                 xorg-xf86-video-nouveau xorg-xf86-video-vesa network-manager-applet"
- ;;
- MATE|mate)
+        ;;
+        MATE|mate)
                 INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm \
                                 lightdm flcards make-ca mate zip unzip pciutils usbutils cups openssh gvfs dejavu-ttf \
                                 system-config-printer firefox thunderbird libreoffice gnome-disk-utility hplip gimp \
@@ -117,41 +130,65 @@ case $ISO_DEST in
                                 ntp ntp.service xorg-xf86-input-synaptics xorg-xf86-input-wacom xorg-xf86-video-ati \
                                 xorg-xf86-video-fbdev xorg-xf86-video-intel xorg-xf86-video-nouveau xorg-xf86-video-vesa \
                                 network-manager-applet"
- ;;
- *)
-  usage
-  error "\n Unknown flavour, please select one between MINI, XFCE4, LXDE, OPENBOX, KDE5, JWM, MATE and restart the script"
+        ;;
+        *)
+                usage
+                error "\n Unknown flavour"
         ;;
 esac
 
 for DEP in cards git cdrtools syslinux libisoburn grub-efi dosfstools; do
- case $DEP in
-  cards)
-   deps_check cards cards
-  ;;
-  git)
-   deps_check git git
-  ;;
-  cdrtools)
-   deps_check cdrtools genisoimage
-  ;;
-  syslinux)
-   deps_check syslinux isohybrid
-  ;;
-  libisoburn)
-   deps_check libisoburn xorrisofs
-  ;;
-  grub-efi)
-   deps_check grub-efi grub-install-efi
-  ;;
-  dosfstools)
-   deps_check dosfstools mkfs.vfat
-  ;;
- esac
+        case ${DEP} in
+                cards)
+                        deps_check cards cards
+                ;;
+                git)
+                        deps_check git git
+                ;;
+                cdrtools)
+                        deps_check cdrtools genisoimage
+                ;;
+                syslinux)
+                        deps_check syslinux isohybrid
+                ;;
+                libisoburn)
+                        deps_check libisoburn xorrisofs
+                ;;
+                grub-efi)
+                        deps_check grub-efi grub-install-efi
+                ;;
+                dosfstools)
+                        deps_check dosfstools mkfs.vfat
+                ;;
+        esac
 done
 
-cat > /tmp/buildisoscript << "EOF"
-mkinitramfs "$(basename /lib/modules/*)" -nf || exit 1
+GITCMD=$(which git)
+CHROOTCMD=$(which chroot)
+INSTALL_NUTYXCMD=$(which install-nutyx)
+
+export LFS=${BUILD_ISOFOLDER}
+
+if [[ ! -d ${GIT_FOLDER} ]]; then
+        git clone ${GIT_URL} ${GIT_FOLDER} || error "Can not do git clone ${GIT_URL}"
+else
+        pushd ${GIT_FOLDER}
+        git pull || error "Can not do git pull in ${GITFOLDER}"
+        popd
+fi
+
+if [[ -d ${LFS} ]]; then
+        echo -e "Folder ${LFS} already exists, deleting..."
+        rm -rf ${LFS}
+fi
+
+VERSION=${VERSION} URL=${URL} KERNEL=${KERNEL_VERSION} ${INSTALL_NUTYXCMD}
+
+echo -e "KERNEL_VERSION=${KERNEL_VERSION}" > /tmp/buildisoscript
+
+cat >> /tmp/buildisoscript << "EOF"
+KERNEL="$(readlink /boot/${KERNEL_VERSION})"
+mkinitramfs "${KERNEL/kernel-/}" -nf || exit 1
 @@INSTALL_PACKAGES@@ || exit 1
 cards purge
 for directories in opt bin etc lib lib64 root run sbin usr var home
@@ -165,38 +202,16 @@ EOF
 sed -e "s/@@SQUASH_COMP_OPTS@@/${SQUASH_COMP_OPTS}/" -i /tmp/buildisoscript || error "Can not modify buildisoscript"
 sed -e "s/@@INSTALL_PACKAGES@@/${INSTALL_PACKAGES}/" -i /tmp/buildisoscript || error "Can not modify buildisoscript"
 
-GITCMD=$(which git)
-CHROOTCMD=$(which chroot)
-INSTALL_NUTYXCMD=$(which install-nutyx)
-
-export LFS=${BUILD_ISOFOLDER}
-
-if [[ ! -d $GIT_FOLDER ]]
- then
-  git clone $GIT_URL $GIT_FOLDER || error "Can not do git clone $GIT_URL"
- else
-  pushd $GIT_FOLDER
-  git pull || error "Can not do git pull in $GITFOLDER"
-  popd
-fi
-
-if [[ -d $LFS ]]; then
- echo -e "Folder $LFS already exists, deleting..."
- rm -rf $LFS
-fi
-
-VERSION=${VERSION} URL=${URL} ${INSTALL_NUTYXCMD}
-
-cp -av $GIT_ISOFOLDER $LFS/ISO || error "Can not copy in $LFS/ISO"
+cp -av ${GIT_ISOFOLDER} ${LFS}/ISO || error "Can not copy in $LFS/ISO"
 
 install -vm755 /tmp/buildisoscript ${BUILD_ISOFOLDER}/tmp || error "Can not install in ${BUILD_ISOFOLDER}/tmp"
 
 #cat ${BUILD_ISOFOLDER}/tmp/buildisoscript
 chroot ${BUILD_ISOFOLDER} /bin/bash -c "/tmp/buildisoscript" || error "Chroot was not executed normally"
 
-sed 's@SCRIPTDIR=$(pwd -P)@#SCRIPTDIR=$(pwd -P)@' $GIT_SCRIPTSFOLDER/mkiso > $GIT_SCRIPTSFOLDER/mkiso-script
-sed 's@SCRIPTDIR+="/$(dirname $0)"@SCRIPTDIR="$(dirname $0)"@' -i $GIT_SCRIPTSFOLDER/mkiso-script
+sed 's@SCRIPTDIR=$(pwd -P)@#SCRIPTDIR=$(pwd -P)@' ${GIT_SCRIPTSFOLDER}/mkiso > ${GIT_SCRIPTSFOLDER}/mkiso-script
+sed 's@SCRIPTDIR+="/$(dirname $0)"@SCRIPTDIR="$(dirname $0)"@' -i ${GIT_SCRIPTSFOLDER}/mkiso-script
 
-bash $GIT_SCRIPTSFOLDER/mkiso-script $ISO_DEST $KERNEL_VERSION || error "mkiso was not executed normally"
+bash ${GIT_SCRIPTSFOLDER}/mkiso-script ${ISO_DEST} $(basename ${BUILD_ISOFOLDER}/lib/modules/*) || error "mkiso was not executed normally"
 rm -f mkiso-script
 
