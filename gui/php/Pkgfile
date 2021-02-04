@@ -1,8 +1,8 @@
 description="PHP is PHP Hypertext Preprocesor."
 url="http://www.php.net"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Berlius, Jayce, Greg"
+packager="Schrodinger72 <schrodinger@nutyx.org>"
+contributors="Tnut, Berlius, Jayce, Greg"
 
 makedepends=(readline apache libxml2 aspell aspell-dict libxslt enchant
              pth freetype libexif libjpeg-turbo libpng libtiff pcre
@@ -11,7 +11,7 @@ makedepends=(readline apache libxml2 aspell aspell-dict libxslt enchant
 
 
 name=php
-version=8.0.1
+version=8.0.2
 
 source=(http://php.net/distributions/$name-$version.tar.xz)
 
@@ -25,8 +25,8 @@ build () {
             --datadir=/usr/share/php     \
             --mandir=/usr/share/man      \
             --enable-fpm                 \
-            --with-fpm-user=apache       \
-            --with-fpm-group=apache      \
+            --with-fpm-user=http         \
+            --with-fpm-group=http        \
             --with-config-file-path=/etc \
             --with-zlib                  \
             --enable-bcmath              \
