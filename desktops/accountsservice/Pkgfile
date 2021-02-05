@@ -11,6 +11,7 @@ set=(gnome)
 
 name=accountsservice
 version=0.6.55
+release=2
 
 source=(http://www.freedesktop.org/software/$name/$name-$version.tar.xz)
 
@@ -21,7 +22,6 @@ cd    build
 meson --prefix=/usr             \
       -Dadmin_group=adm         \
       -Delogind=true            \
-      -Dsystemdsystemunitdir=no \
       ..
 ninja
 DESTDIR=$PKG ninja install
