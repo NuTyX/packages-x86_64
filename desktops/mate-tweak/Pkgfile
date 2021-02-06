@@ -1,23 +1,26 @@
 description="Tweak tool for MATE (fork of MintDesktop)"
 url="https://github.com/ubuntu-mate/mate-tweak"
 
-packager="Rems <remy@nutyx.org>"
-maintainer="Dania, Tnut"
-
-name=mate-tweak
-version=20.10.0
-_umsver=19.10.2
+packager="tnut <tnut@nutyx.org>"
+contributors="Dania, Rems"
 
 set=(mate)
 
-makedepends=(tilda gtk3 libnotify mate-applets python-configobj python-gobject python-distutils-extra mate-menus mate-netbook)
-run=(python-psutil python-setproctitle python-distro)
+name=mate-tweak
+version=21.04.1
+_umsver=21.04.0
+
+makedepends=(tilda gtk3 libnotify python-configobj
+             python-distutils-extra
+             mate-menus mate-netbook)
+
+run=(python-gobject python-psutil python-setproctitle
+     python-distro compton)
 
 PKGMK_KEEP_SOURCES=no
 
 source=(https://github.com/ubuntu-mate/$name/archive/$version.tar.gz
         https://github.com/ubuntu-mate/ubuntu-mate-settings/archive/$_umsver.tar.gz)
-
 build() {
   cd $name-$version
   
@@ -28,7 +31,6 @@ build() {
 
   cp -r ../ubuntu-mate-settings-$_umsver/usr/share/mate-panel $PKG/usr/share
 }
-
 uptodate() {
 feed=https://github.com/mate-desktop/$name/releases.atom
 exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
