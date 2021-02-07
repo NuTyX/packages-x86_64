@@ -4,18 +4,22 @@ url="http://curl.haxx.se"
 maintainer="Daniel Stenberg"
 packager="tnut <tnut@nutyx.org>"
 
-name=curl
-version=7.74.0
 
-source=(https://curl.haxx.se/download/$name-$version.tar.xz)
+name=curl
+version=7.75.0
+
+PKGMK_KEEP_SOURCES="no"
+source=(https://curl.se/ca/cacert.pem
+	https://curl.haxx.se/download/$name-$version.tar.xz)
 
 PKGMK_GROUPS=(devel doc man)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr \
---bindir=/bin  \
---with-ca-path=/etc/ssl/certs \
+./configure --prefix=/usr            \
+--bindir=/bin                        \
+--with-ca-path=/etc/ssl/certs        \
+--with-ca-bundle=/etc/ssl/cacert.pem \
 --enable-threaded-resolver
 make
 make DESTDIR=$PKG install
@@ -45,4 +49,5 @@ ln -sv ../../lib/libcurl.so.4.7.0 \
 $PKG/usr/lib/libcurl.so.4.7.0
 
 rm $PKG/usr/lib/libcurl.la
+install -Dm 644 $SRC/cacert.pem $PKG/etc/ssl/cacert.pem
 }
