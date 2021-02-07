@@ -1,12 +1,12 @@
 description="Virtualbox Host modules for the 5.10 longterm support Linux Kernel version"
 url="http://www.virtualbox.org"
 
-packager="tnut <tnut@nutyx.org>"
+packager=" <spiky@nutyx.org>"
 
 run=(kernel-510)
 
-version=6.1.16
-buildr=140961
+version=6.1.18
+buildr=142142
 _VBARCH=amd64
 source=(linux-5.10-r0drv-memobj-fix-r0.patch
 http://download.virtualbox.org/virtualbox/${version}/VirtualBox-${version}-${buildr}-Linux_${_VBARCH}.run)
@@ -18,7 +18,6 @@ KERNEL_VERSION="$(basename /lib/modules/*)"
 sh VirtualBox-${version}-${buildr}-Linux_${_VBARCH}.run --target vb --keep --noexec
 cd vb
 tar xfj VirtualBox.tar.bz2
-patch -Np1 -i ../linux-5.10-r0drv-memobj-fix-r0.patch
 cd src/vboxhost
 
 KERN_VER=${KERNEL_VERSION} make
