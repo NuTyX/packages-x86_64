@@ -7,21 +7,21 @@ contributors="Greg, Tnut"
 makedepends=(sdl1)
 
 name=virtualbox
-version=6.1.16
-release=4
+version=6.1.18
+release=5
+buildr=142142
 
 _name=Oracle_VM_VirtualBox_Extension_Pack
-_release=140961
 
 [ "`uname -m`" == "i686"   ] && _ARCH=x86
 [ "`uname -m`" == "x86_64"   ] && _ARCH=amd64
 
-source=(http://download.virtualbox.org/virtualbox/$version/VirtualBox-${version}-${_release}-Linux_${_ARCH}.run
-	http://download.virtualbox.org/virtualbox/$version/${_name}-${version}-${_release}.vbox-extpack
+source=(http://download.virtualbox.org/virtualbox/$version/VirtualBox-${version}-${buildr}-Linux_${_ARCH}.run
+        http://download.virtualbox.org/virtualbox/$version/${_name}-${version}-${buildr}.vbox-extpack
 	virtualbox.60-vboxdrv.rules)
 
 build() {
-	sh VirtualBox-${version}-${_release}-Linux_${_ARCH}.run --keep --noexec --target $SRC/
+	sh VirtualBox-${version}-${buildr}-Linux_${_ARCH}.run --keep --noexec --target $SRC/
 	mkdir -p $PKG/opt/VirtualBox $PKG/etc/vbox $PKG/usr/bin $PKG/etc/udev/rules.d/ \
 	$PKG/usr/share/applications/ $PKG/usr/share/pixmaps/
 	cd $PKG/opt/VirtualBox
@@ -56,8 +56,8 @@ EOF
 	echo "INSTALL_DIR="\"/opt/VirtualBox\" >> \
 		$PKG/etc/vbox/vbox.cfg
 
-	install -D -m 644 $SRC/${_name}-$version-${_release}.vbox-extpack \
-		$PKG/opt/VirtualBox/ExtensionPacks/${_name}-$version-${_release}.vbox-extpack
+	install -D -m 644 $SRC/${_name}-$version-${buildr}.vbox-extpack \
+		$PKG/opt/VirtualBox/ExtensionPacks/${_name}-$version-${buildr}.vbox-extpack
 	mkdir -p $PKG/etc/ld.so.conf.d
 	echo /opt/VirtualBox > $PKG/etc/ld.so.conf.d/virtualbox.conf
 	# Icon
