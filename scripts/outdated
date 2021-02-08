@@ -226,8 +226,14 @@ font-ibm-type1|font-misc-ethiopic|font-xfree86-type1)
     dejavu-ttf)
      ARCHNAME="ttf-dejavu";;
 
-    python-cups)
-     ARCHNAME="pycups";;
+    python-cups|python-gobject|python-atspi|python-smbc)
+     ARCHNAME="${PKGNAME/python-/py}";;
+
+    python2-gobject2)
+      ARCHNAME="${PKGNAME/python2-/py}";;
+
+    python-qt)
+     ARCHNAME="${PKGNAME/python-/py}5";;
 
     python-dbus|python-dbus-data)
      ARCHNAME="dbus-python";;
@@ -259,7 +265,6 @@ font-ibm-type1|font-misc-ethiopic|font-xfree86-type1)
     tracker|tracker-miners)
      ARCHNAME=${PKGNAME/tracker/tracker3};;
 
-
     gtkmm2|graphite2|tracker2|tracker2-miners|python2-distutils-extra|\
 python2-evdev|python2-lxml|python2-ply|python2-pyparsing|\
 python2-simplejson|python2-six|python2-xdg)
@@ -288,6 +293,9 @@ python2-simplejson|python2-six|python2-xdg)
 
     libzeitgeist|libostree|librest)
      ARCHNAME=${PKGNAME/lib/};;
+
+    xorg-libxscrnsaver)
+     ARCHNAME="libxss";;
 
     xorg-lib*|xorg-xf86*)
      ARCHNAME=${PKGNAME/xorg-/};;
