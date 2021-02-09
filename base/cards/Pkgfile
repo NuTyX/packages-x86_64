@@ -8,7 +8,7 @@ alias=(card)
 
 
 PKGMK_IGNORE_RUNTIMEDEPS="no"
-makedepends=(bzip2 gettext xz)
+makedepends=(bzip2 gettext xz util-linux)
 run_devel=(curl.devel gcc.devel glibc.devel libarchive.devel \
 openssl.devel zlib.devel bash binutils coreutils file \
 findutils gawk gettext groff make patch pkg-config \
@@ -16,8 +16,7 @@ readline wget rsync xz)
 PKGMK_GROUPS=(devel doc man)
 
 name=cards
-version=2.4.124
-release=2
+version=2.4.125
 
 [ "$release" != "1" ] &&  patchname="$name-$version-consolidate-$release.patch"
 
