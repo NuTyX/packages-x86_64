@@ -1,16 +1,21 @@
 #!/usr/bin/env bash
 usage() {
+cat << EOF
+$(basename ${0}) -f [ISO_FLAVOUR] -k [Kernel-VERSION] -v [NuTyX Version] -u [URL for package source]
 
-echo -e "$(basename ${0}) [ISO_FLAVOUR] [Kernel-VERSION]"
-echo -e "Available official flavours are MINI, XFCE4, LXDE, OPENBOX, KDE5, JWM and MATE"
-echo -e "Available kernels are kernel-414, kernel-419 (default), kernel-54 and kernel-510"
+-f|--flavour => Available official flavours are MINI (default), XFCE4, LXDE, OPENBOX, KDE5, JWM and MATE
+-k|--kernel  => Available kernels are kernel-414, kernel-419, kernel-54, kernel-510 (default) and kernel
+-v|--version => Available versions are rolling (default) and testing
+-u|--url     => Default URL is http://downloads.nutyx.org
+
+EOF
 }
 
 error() {
 
 local ERROR
 
-ERROR="$1"
+ERROR=${1}
 
 echo -e "Error during proceeding, aborting due to ${ERROR}"
 exit 3
@@ -39,42 +44,83 @@ if [[ -z $RESULT ]]; then
 fi
 }
 
+while [[ $# -gt 0 ]]
+do
+	case ${1} in
+                -f|--flavour)
+                        ISO_DEST=${2}
+                        shift
+                ;;
+                -k|--kernel)
+                        KERNEL_VERSION=${2}
+                        shift
+                ;;
+                -v|--version)
+                        VERSION=${2}
+                        shift
+                ;;
+                -u|--url)
+                        URL=${2}
+                        shift
+                ;;
+                -h|--help|-u|--usage)
+                        usage
+                        exit 0
+                ;;
+        esac
+        shift
+done
+
 if [[ ${UID} != 0 ]]; then
         error "Must be in Super User mode to execute the script"
 fi
 
-case ${1} in
-        kernel*)
-                KERNEL_VERSION=${1}
-        ;;
+[[ -z ${ISO_DEST} ]] && ISO_DEST=MINI
+case ${ISO_DEST} in
         MINI|mini|XFCE4|xfce4|LXDE|lxde|OPENBOX|openbox|KDE5|PLASMA5|kde5|plasma5|JWM|jwm|MATE|mate)
-                ISO_DEST=${1}
+                echo -e "Will build this ${ISO_DEST} flavour"
         ;;
-        -h|--help|-u|--usage)
+        *)
                 usage
                 exit 1
         ;;
 esac
-
-if [[ -z ${ISO_DEST} ]]; then
-        usage
-        echo -e "What is the iso's flavour ?"
-        read ISO_DEST
-fi
-
-[[ -z ${ISO_DEST} ]] && ISO_DEST=MINI
 [[ -z ${BUILD_ISOFOLDER} ]] && BUILD_ISOFOLDER=/ISO_${ISO_DEST}
 [[ -z ${GIT_CLONE_HOME} ]] && GIT_CLONE_HOME=${HOME}
 [[ -z ${GIT_FOLDER} ]] && GIT_FOLDER=${GIT_CLONE_HOME}/packages-x86_64
 GIT_ISOFOLDER=$GIT_FOLDER/iso
 GIT_SCRIPTSFOLDER=$GIT_FOLDER/scripts
-if [[ -z ${2} ]]; then
-        KERNEL_VERSION=${KERNEL_VERSION}
-else
-        KERNEL_VERSION=${2}
-fi
-[[ -z ${KERNEL_VERSION} ]] && KERNEL_VERSION=kernel-419
-
+[[ -z ${KERNEL_VERSION} ]] && KERNEL_VERSION=kernel-510
+case ${KERNEL_VERSION} in
+        kernel|kernel-414|kernel-419|kernel-54|kernel-510)
+                echo -e "Will build this iso with ${KERNEL_VERSION}"
+        ;;
+        *)
+                usage
+                exit 1
+        ;;
+esac
+[[ -z ${VERSION} ]] && VERSION=rolling
+case ${VERSION} in
+        testing|rolling)
+                echo -e "Will build this iso in ${VERSION} version"
+        ;;
+        *)
+                usage
+                exit 1
+        ;;
+esac
+[[ -z ${URL} ]] && URL=http://downloads.nutyx.org
+case ${URL} in
+        http://*|https://*)
+                echo -e "Be sure that ${URL##*/} is accessible"
+                sleep 5
+        ;;
+        *)
+                usage
+                exit 1
+        ;;
+esac
 [[ -z $GIT_URL ]] && GIT_URL='https://github.com/NuTyX/packages-x86_64'
 #[[ -z $SQUASH_COMP_OPTS ]] && SQUASH_COMP_OPTS='-comp zstd'
 
