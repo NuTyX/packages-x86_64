@@ -458,6 +458,8 @@ setup_net()
 		HOSTNAME=$(tail -n 1 $TMP/NAME)
 		echo $HOSTNAME > /etc/hostname
 	fi
+  hostname $HOSTNAME
+
 NETWORK_MANAGER="$(which NetworkManager)"
 [ -z $NETWORK_MANAGER ] && NETWORK_MANAGER="$(which connmand)"
 [ -z $NETWORK_MANAGER ] && NETWORK_MANAGER="$(which wicd)"
