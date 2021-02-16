@@ -65,7 +65,7 @@ done
 	[ ! -f "`which xorriso`" ] && error "You need to install 'libisoburn'"
 	[ ! -f "`which isohybrid`" ] && error "You need to install 'syslinux'"
 	[ ! -f "`which mkdosfs`" ] && error "You need to install 'dosfstools'"
-	[ ! -d /usr/lib/grub/${GRUB_EFI_ARCH}-efi ] && error "You need to install 'grub-efi'"
+	#[ ! -d /usr/lib/grub/${GRUB_EFI_ARCH}-efi ] && error "You need to install 'grub-efi'"
 
 	# isolinux stufs
 	cd ${ISODIR} || error "cd ${ISODIR}"
@@ -169,7 +169,7 @@ EOF
 	do
 		[ -f isolinux/$FILE ] && mv -v isolinux/$FILE boot/
 	done
-	grub-mkimage-efi -c iso/grub-early.cfg -o iso/EFI/${GRUB_EFI_IMG} -O ${GRUB_EFI_ARCH}-efi -p "" iso9660 normal \
+	grub-mkimage -c iso/grub-early.cfg -o iso/EFI/${GRUB_EFI_IMG} -O ${GRUB_EFI_ARCH}-efi -p "" iso9660 normal \
 	search search_fs_file || error "grub-mkimage"
 
 	# efiboot.img
