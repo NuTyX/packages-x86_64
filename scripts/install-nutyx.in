@@ -651,12 +651,7 @@ if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
   return
 fi
 cat > ${FOLDER}/etc/$FILE << "EOF"
-# Begin /etc/hosts
-
 127.0.0.1 localhost.localdomain localhost
-127.0.0.1 nutyx
-
-# End /etc/hosts
 EOF
 }
 generate_shells() {
@@ -1143,12 +1138,10 @@ fi
 
 [ -z "$DEPOT" ] && DEPOT="/var/lib/pkg/depot"
 [ -z "$FOLDER" ] && FOLDER="/mnt/hd"
-[ -z "$KERNEL" ] && KERNEL="kernel-419"
 
-[ "$KERNEL" = "NONE" ] && unset KERNEL
-[ "$KERNEL" = "none" ] && unset KERNEL
+[ "$KERNEL" = "NONE" ] && KERNEL="none"
 
-if [ ! -z "$KERNEL" ]; then
+if [ "$KERNEL" != "none"  ]; then
 	INITS="eudev sysklogd sysvinit"
 	CORE=" acl attr bash coreutils readline \
 expat ncurses lzo gmp flex file gzip mpc mpfr \
@@ -1163,7 +1156,7 @@ iproute2 iana-etc \
 groff man-db \
 cards.man nutyx.man \
 dialog cpio squashfs \
-lsb-release grub"
+lsb-release grub $KERNEL"
 fi
 
 [ -z $LFS ] && LFS=$FOLDER
@@ -1362,7 +1355,6 @@ install_configuration_files() {
 	generate_readline_sh
 	generate_umask_sh
 	generate_profile
-	generate_hosts
 	generate_inputrc
 	generate_modules
 	generate_createfiles
