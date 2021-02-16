@@ -7,7 +7,7 @@ maintainer="Jakub Jelinek (jakub at redhat dot com),Manuel López-Ibáñez (manu
 
 name=gcc
 version=10.2.0
-release=2
+release=3
 
 PKGMK_KEEP_LA_LIBS="yes"
 source=(http://ftp.gnu.org/gnu/gcc/gcc-$version/gcc-$version.tar.xz)
@@ -18,8 +18,7 @@ cd gcc-$version
 
 case $(uname -m) in
   x86_64)
-    sed -e '/m64=/s/lib64/lib/' \
-    -i.orig gcc/config/i386/t-linux64
+    sed -i.orig '/m64=/s/lib64/lib/' gcc/config/i386/t-linux64
   ;;
 esac
 
@@ -28,7 +27,6 @@ esac
 mkdir -v build
 cd       build
 
-SED=sed \
 ../configure --prefix=/usr \
     --libdir=/usr/lib \
     --enable-languages=c,c++,d,fortran,go,objc,obj-c++ \
