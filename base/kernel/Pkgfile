@@ -3,7 +3,7 @@ description="The latest stable kernel version"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(bison flex perl)
+makedepends=(bison flex perl gmp mpc)
 run=(nutyx kmod busybox)
 
 PKGMK_IGNORE_UNPACK="yes"
@@ -11,7 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel
-version=5.10.15
+version=5.11
 
 alias=(linux)
 INITRD="initrd"
