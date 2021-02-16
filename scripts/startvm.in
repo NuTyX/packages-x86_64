@@ -22,7 +22,7 @@ _success() {
 
 check_var_file() {
 if [[ ! -f ${_FULLPATHNAME}/${_NAME}.var ]]; then
-        _error "VM configuration file does not exist, please use persokvm script to create it"
+        _error "VM configuration file does not exist, please use configvm script to create it"
 else
 	source ${_FULLPATHNAME}/${_NAME}.var
 	_success "The disk $HDD1_NAME will be used for the VM"
@@ -32,21 +32,21 @@ fi
 }
 
 check_hdd1_file() {
-[[ ! -f $HDD1_NAME ]] &&  _error "The VM hard disk does not exist, please use the persokvm script to create it"
+[[ ! -f $HDD1_NAME ]] &&  _error "The VM hard disk does not exist, please use the configvm script to create it"
 }
 
 check_hdd2() {
 if [[ -n $HDD2_NAME ]]
 	then
-		ADD_HDD2="-drive file=${HDD2_NAME},if=${HDD2_CONTROLLER_TYPE}"
+		ADD_HDD2="-drive file=${HDD2_NAME},if=${HDD2_CONTROLLER_TYPE,,}"
 		[[ ! -f $HDD2_NAME ]] &&  _error "The second hard disk of the VM does not exist"
 fi
 }
 
 check_hdd3() {
-if [[ -n $HDD2_NAME ]]
+if [[ -n $HDD3_NAME ]]
         then
-		ADD_HDD3="-drive file=${HDD3_NAME},if=${HDD3_CONTROLLER_TYPE}"
+		ADD_HDD3="-drive file=${HDD3_NAME},if=${HDD3_CONTROLLER_TYPE,,}"
 		[[ ! -f $HDD3_NAME ]] &&  _error "The third hard disk of the VM does not exist"
 fi
 }
@@ -161,7 +161,7 @@ $QEMU_BIN -enable-kvm -M q35 -m $SYSTEM_MEMORY_SIZE -cpu $CPU_TYPE -smp cores=$N
           -device $NETWORK_HARDWARE_TYPE,netdev=net0 -netdev $NETWORK_TYPE,id=net0 \
           -device virtio-balloon \
           ${_UEFI_CODE_CMDLINE} ${_UEFI_VAR_CMDLINE} \
-          -drive file=${HDD1_NAME},if=${HDD1_CONTROLLER_TYPE} \
+          -drive file=${HDD1_NAME},if=${HDD1_CONTROLLER_TYPE,,} \
           ${ADD_HDD2} \
           ${ADD_HDD3} \
           ${_ISO_CMDLINE} \
