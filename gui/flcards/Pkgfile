@@ -9,15 +9,15 @@ makedepends=(libcards xorgproto fltk xorg-libx11 xorg-libxext
 
 name=flcards
 version=2.4.126
-release=2
+release=3
 
-source=(consolidate-1.patch
+source=(consolidate-2.patch
 	https://github.com/NuTyX/cards/archive/cards-$version.tar.gz)
 
 build() {
 
 cd cards-$version
-patch -Np1 -i ../consolidate-1.patch
+patch -Np1 -i ../consolidate-2.patch
 make flcards
 cd fltk
 make DESTDIR=$PKG install
