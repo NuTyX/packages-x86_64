@@ -1,0 +1,336 @@
+diff --git a/fltk/cards_wrapper.cxx b/fltk/cards_wrapper.cxx
+index 35f7dd9..15c055d 100644
+--- a/fltk/cards_wrapper.cxx
++++ b/fltk/cards_wrapper.cxx
+@@ -290,8 +290,9 @@ namespace cards
+ 			else
+ 				s =  i->getCollection() + "\t";
+ 				s += i->getName() + "\t";
+-				s +=  i->getVersion() + "\t";
+-				s +=  i->getDescription();
++				s += i->getDescription() + "\t";
++				s += i->getVersion() + "\t";
++				s += i->getPackager()+ "\t";
+ 				AvailablePackages.insert(s);
+ 		}
+         set<string> InstalledPackages = Cards.ListOfInstalledPackages();
+@@ -315,19 +316,19 @@ namespace cards
+                         Pack->_name = token;
+                         break;
+                     }
+-                    case 2: //Version
++                    case 2: //Description
+                     {
+-                        Pack->_version = token;
++                        Pack->_description = token;
+                         break;
+                     }
+-                    case 3: //Packager
++                    case 3: //Version
+                     {
+-                        Pack->_packager = token;
++                        Pack->_version = token;
+                         break;
+                     }
+-                    case 4: //Description
++                    case 4: //Packager
+                     {
+-                        Pack->_description = token;
++                        Pack->_packager = token;
+                         break;
+                     }
+                     default:
+diff --git a/fltk/mainWindow.cxx b/fltk/mainWindow.cxx
+index 07af0aa..5b76cc7 100644
+--- a/fltk/mainWindow.cxx
++++ b/fltk/mainWindow.cxx
+@@ -63,13 +63,13 @@ mainWindow::mainWindow(bool pInstaller) :
+ 
+     _tabs = new Fl_Tabs(TabLeftCoord,MARGIN +50 , TabWidth,h()-325);
+     {
+-        _grpPackage = new Fl_Group(TabLeftCoord,MARGIN+80,TabWidth,h()-330,"Packages");
++        _grpPackage = new Fl_Group(TabLeftCoord,MARGIN+80,TabWidth,h()-330,"All Packages");
+         {
+             _tablePackages = reinterpret_cast<TableBase*>(new TablePackage(TabLeftCoord, MARGIN+80, TabWidth, h()-330));
+             resizable(_tablePackages);
+         }
+         _grpPackage->end();
+-        _grpCollection = new Fl_Group(TabLeftCoord,MARGIN+80,TabWidth,h()-330,"Collections");
++        _grpCollection = new Fl_Group(TabLeftCoord,MARGIN+80,TabWidth,h()-330,"Set of Packages");
+         {
+             _tableCollections = reinterpret_cast<TableBase*>(new TableCollection(TabLeftCoord, MARGIN+80, TabWidth, h()-330));
+             resizable (_tableCollections);
+@@ -223,11 +223,11 @@ void mainWindow::OnPackageInfo(CPackage& pPackage)
+             _infoBuff->append("No information available for this package");
+         else
+         {
+-            _infoBuff->append(string("Name : " + pPackage.getName()+"\n").c_str());
+-            _infoBuff->append(string("Description : " + pPackage.getDescription()+"\n").c_str());
+-            _infoBuff->append(string("Version : " + pPackage.getVersion()+"\n").c_str());
+-            _infoBuff->append(string("Packager : " + pPackage.getPackager()+"\n").c_str());
+-            _infoBuff->append(string("Collection : " + pPackage.getSet()+"\n").c_str());
++            _infoBuff->append(string(pPackage.getName()).c_str());
++            _infoBuff->append(string(" " + pPackage.getVersion()+"\n").c_str());
++            _infoBuff->append(string(pPackage.getDescription()+"\n").c_str());
++            _infoBuff->append(string("build by: " + pPackage.getPackager()+"\n").c_str());
++            _infoBuff->append(string("from     : " + pPackage.getSet()+" collection/set of packages").c_str());
+         }
+ 
+     }
+diff --git a/fltk/table_base.cxx b/fltk/table_base.cxx
+index 59ad7fc..2758735 100644
+--- a/fltk/table_base.cxx
++++ b/fltk/table_base.cxx
+@@ -59,11 +59,11 @@ TableBase::TableBase(int x, int y, int w, int h, const char *l)
+     callback(event_callback, reinterpret_cast<void*>(this));
+     selection_color(FL_YELLOW);
+     when(FL_WHEN_RELEASE|FL_WHEN_CHANGED);
+-    cols(4);
++    cols(6);
+     col_header(1);
+     col_header_height(25);
+     col_resize(1);
+-    col_width_all(30);
++    col_width_all(20);
+     row_height_all(18);
+     tooltip("Click on the header of the column to sort it");
+     color(FL_WHITE);
+@@ -121,7 +121,7 @@ void TableBase::draw_cell(TableContext context, int R, int C, int X, int Y, int
+                 {
+                     fl_font(FL_HELVETICA_BOLD, 16);
+                     fl_color(FL_BLACK);
+-                    fl_draw(colTitle[C].c_str(), X+2,Y,W,H, FL_ALIGN_LEFT, 0, 0); // +2=pad left
++                    fl_draw(colTitle[C].c_str(), X+2,Y,W,H, FL_ALIGN_CENTER, 0, 0); // +2=pad left
+                     if ( C == _sort_lastcol )
+                     {
+                         draw_sort_arrow(X,Y,W,H);
+@@ -137,24 +137,63 @@ void TableBase::draw_cell(TableContext context, int R, int C, int X, int Y, int
+ /// Automatically set columns widths to the longuest string.
+ void TableBase::autowidth(int pad)
+ {
+-    fl_font(FL_COURIER, 16);
+-    // initialize all column widhths to lower value
++    fl_font(FL_HELVETICA, 17);
++    // initialize all column widths to pad value
+     int c;
+-    for (c = 0;c<cols();c++) col_width(c,pad);
+-    col_width(c-1,500);
++//    for (c = 0;c<cols();c++)
++//		col_width(c,pad);
++	int n=0;
++	int w1 = 70;
++	int w2 = 80;
++	int w3 = 100;
++	int w4 = 80;
++	int w5 = 80;
+     for (auto r : _rowdata)
+     {
++		n++;
+         int w,h;
+-        for  ( c=0; c<r.cols.size();c++)
++        for  ( c=1; c<r.cols.size();c++)
+         {
+-            fl_measure(r.cols[c].c_str(), w, h, 0);// get pixel width of the text
+-            if ( (w) > col_width(c) )
+-            {
+-                col_width(c, w);
+-            }
++			// get pixel width of the text
++			w=fl_width(r.cols[c].c_str(),r.cols[c].size() );
++//			cout << n << " " << c << " " << w << endl;
++			switch (c)
++			{
++				case 1:  // name
++					if ( w > w1 )
++						w1=w;
++					continue;
++
++				case 2: //  version
++					if ( w2 < w )
++						w2=w;
++					continue;
++
++				case 3: //description
++					if ( w3 < w )
++						w3=w;
++					continue;
++
++				case 4: //set
++					if ( w4 < w )
++						w4=w;
++					continue;
++
++				case 5: //packager
++					if ( w5 < w )
++						w5=w;
++				continue;
++			}
+         }
+     }
+-    table_resized();
++    col_width(0, 25);
++    col_width(1, w1);
++    col_width(2, w2);
++    col_width(3, w3);
++    col_width(4, w4);
++    col_width(5, w5);
++
++ //   table_resized();
+ }
+ 
+ /// Resize parent widows to size of tableau
+diff --git a/fltk/table_collection.cxx b/fltk/table_collection.cxx
+index 1660cae..9b37a58 100644
+--- a/fltk/table_collection.cxx
++++ b/fltk/table_collection.cxx
+@@ -31,7 +31,7 @@ TableCollection::TableCollection(int x, int y, int w, int h, const char *l)
+     : TableBase(x,y,w,h,l)
+ {
+     colTitle.push_back("");
+-    colTitle.push_back("Collection");
++    colTitle.push_back("Set");
+     colTitle.push_back("Name");
+     colTitle.push_back("Description");
+ }
+@@ -52,7 +52,7 @@ void TableCollection::refresh_table()
+             {
+                 newrow.cols.push_back("LXDE");
+                 newrow.cols.push_back("Lxde");
+-                newrow.cols.push_back("Lightweight desktop environment based on X11");
++                newrow.cols.push_back("Lightweight desktop environment based on GTK+");
+                 newrow.data = &lxde_xpm;
+                 break;
+             }
+@@ -60,7 +60,7 @@ void TableCollection::refresh_table()
+             {
+                 newrow.cols.push_back("XFCE");
+                 newrow.cols.push_back("Xfce");
+-                newrow.cols.push_back("Lightweight desktop environment based on GTK+");
++                newrow.cols.push_back("Another lightweight desktop environment based on GTK+");
+                 newrow.data = &xfce_xpm;
+                 break;
+             }
+@@ -76,7 +76,7 @@ void TableCollection::refresh_table()
+             {
+                 newrow.cols.push_back("MATE");
+                 newrow.cols.push_back("Mate");
+-                newrow.cols.push_back("Gnome 2 based desktop environment fork, light and functional");
++                newrow.cols.push_back("Gnome 2 fork desktop environment based on GTK+");
+                 newrow.data = &mate_xpm;
+                 break;
+             }
+@@ -84,7 +84,7 @@ void TableCollection::refresh_table()
+             {
+                 newrow.cols.push_back("KDE");
+                 newrow.cols.push_back("Kde");
+-                newrow.cols.push_back("Heavy powerfull Desktop Environment");
++                newrow.cols.push_back("Heavy powerfull Desktop Environment based on Qt");
+                 newrow.data = &kde_xpm;
+                 break;
+             }
+@@ -92,7 +92,7 @@ void TableCollection::refresh_table()
+             {
+                 newrow.cols.push_back("GNOME");
+                 newrow.cols.push_back("Gnome");
+-                newrow.cols.push_back("Famous linux desktop environment");
++                newrow.cols.push_back("Famous linux desktop environment based on GTK+");
+                 newrow.data = &gnome_xpm;
+                 break;
+             }
+@@ -168,20 +168,24 @@ void TableCollection::OnEvent(TableContext context, int pCol, int pRow)
+                 set<string> Collec_List;
+                 if (Collection=="LXDE")
+                 {
+-                    Collec_List.insert("(lxde)");
++                    Collec_List.insert("lxde");
++                    Collec_List.insert("lxdm");
+                 }
+                 else if (Collection=="XFCE")
+                 {
+                     Collec_List.insert("xfce4");
+                     Collec_List.insert("xfce4-extra");
++                    Collec_List.insert("lxdm");
+                }
+-                else if (Collection=="E17")
++                else if (Collection=="E24")
+                 {
+                     Collec_List.insert("enlightenment");
++                    Collec_List.insert("lxdm");
+                 }
+                 else if (Collection=="MATE")
+                 {
+-                    Collec_List.insert("(mate)");
++                    Collec_List.insert("mate");
++                    Collec_List.insert("lightdm");
+                 }
+                 else if (Collection=="KDE")
+                 {
+@@ -204,14 +208,15 @@ void TableCollection::OnEvent(TableContext context, int pCol, int pRow)
+                 }
+                 else if ( strcmp(m->label(), "Install") == 0 )
+                 {
+-                    Collec_List.insert("xorg");
+-                    Collec_List.insert("lxdm");
+                     vector<CPackage*> Packages = Cards->getPackageList();
+                     for (CPackage* Package : Packages)
+                     {
+-                        if ((!Package->isInstalled()) && (Collec_List.count(Package->getSet())))
++                        if ((!Package->isInstalled()))
+                         {
+-                            Package->setStatus(TO_INSTALL);
++							if (Collec_List.count(Package->getSet()))
++								Package->setStatus(TO_INSTALL);
++							if (Collec_List.count(Package->getName()))
++								Package->setStatus(TO_INSTALL);
+                         }
+                     }
+                     Cards->refreshJobList();
+diff --git a/fltk/table_package.cxx b/fltk/table_package.cxx
+index bd0ba4d..db98828 100644
+--- a/fltk/table_package.cxx
++++ b/fltk/table_package.cxx
+@@ -31,9 +31,11 @@ TablePackage::TablePackage(int x, int y, int w, int h, const char *l)
+     : TableBase(x,y,w,h,l)
+ {
+     colTitle.push_back("");
+-    colTitle.push_back("Collection");
+     colTitle.push_back("Name");
++    colTitle.push_back("Version");
+     colTitle.push_back("Description");
++    colTitle.push_back("Set");
++    colTitle.push_back("Packager");
+     _cards->refreshPackageList();
+ }
+ 
+@@ -49,7 +51,8 @@ void TablePackage::refresh_table()
+         if (_filter.length()>0)
+             if ((S->getName().find(_filter)==string::npos) &&
+                 (S->getSet().find(_filter)==string::npos) &&
+-                (S->getDescription().find(_filter)==string::npos) ) continue;
++                (S->getDescription().find(_filter)==string::npos) &&
++                (S->getVersion().find(_filter)==string::npos) ) continue;
+         // Add a new row
+         Row newrow;
+         newrow.data=S;
+@@ -58,15 +61,18 @@ void TablePackage::refresh_table()
+             newrow.cols.push_back("I");
+         }
+         else newrow.cols.push_back("U");
+-        newrow.cols.push_back(S->getSet());
+         newrow.cols.push_back(S->getName());
++        newrow.cols.push_back(S->getVersion());
+         newrow.cols.push_back(S->getDescription());
++        newrow.cols.push_back(S->getSet());
++        newrow.cols.push_back(S->getPackager());
++
+         _rowdata.push_back(newrow);
+     }
+     // How many rows we loaded
+     rows((int)_rowdata.size());
+-    // Auto-calculate widths, with 20 pixel padding
+-    autowidth(40);
++    // Auto-calculate widths, with 50 pixel as a start
++    autowidth(50);
+ }
+ 
+ void TablePackage::OnDrawCell(TableContext context, int R, int C, int X, int Y, int W, int H)
