@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 usage() {
 cat << EOF
-$(basename ${0}) -f [ISO_FLAVOUR] -k [Kernel-VERSION] -v [NuTyX Version] -u [URL for package source]
+$(basename ${0}) -f [ISO_FLAVOUR] -k [Kernel-VERSION] -v [NuTyX Version] -u [URL for package source] -o [OUTPUT iso file]
 
 -f|--flavour => Available official flavours are STRICT, MINI (default), XFCE4, LXDE, OPENBOX, KDE5, JWM, MATE and GNOME
 -k|--kernel  => Available kernels are kernel-414, kernel-419, kernel-54, kernel-510 (default) and kernel
+-o|--output  => Output ISO path, default to /ISO_[ISO_FLAVOUR]/
 -v|--version => Available versions are rolling (default) and testing
 -u|--url     => Default URL is http://downloads.nutyx.org
 
@@ -61,6 +62,10 @@ do
                 ;;
                 -u|--url)
                         URL=${2}
+                        shift
+                ;;
+                -o|--output)
+                        OUTPUT=${2}
                         shift
                 ;;
                 -h|--help|-u|--usage)
@@ -190,6 +195,7 @@ case $ISO_DEST in
                                 epiphany gnome-chess balsa xorg-xf86-input-synaptics xorg-xf86-input-wacom xorg-xf86-video-ati \
                                 xorg-xf86-video-fbdev xorg-xf86-video-intel xorg-xf86-video-nouveau xorg-xf86-video-vesa \
                                 network-manager-applet linux-firmware systemd runyx"
+        ;;
         *)
                 usage
                 error "\n Unknown flavour"
@@ -274,3 +280,6 @@ sed 's@SCRIPTDIR+="/$(dirname $0)"@SCRIPTDIR="$(dirname $0)"@' -i ${GIT_SCRIPTSF
 bash ${GIT_SCRIPTSFOLDER}/mkiso-script ${ISO_DEST} $(basename ${BUILD_ISOFOLDER}/lib/modules/*) || error "mkiso was not executed normally"
 rm -f mkiso-script
 
+if [[ ! -z ${OUTPUT} ]]; then
+  mv ${BUILD_ISOFOLDER}/*.iso ${OUTPUT} || error "Can not move iso to ${OUTPUT}"
+fi
