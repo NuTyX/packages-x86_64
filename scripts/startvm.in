@@ -29,12 +29,12 @@ if [[ $# -lt 1 ]]; then
 	if [[ $INSTALLED_ZENITY != "no" ]]; then
 		_warning "The only argument needed seems to missing"
                 _warning "What is the VM you want to start ?"
-		_warning "A graphical window will open in 3 secs"
-		sleep 3
+		_warning "A graphical window will open in 2 secs"
+		sleep 2
 		_FULLPATHNAME=$(${ZENITY_BIN} --file-selection --title="Choose a VM" --filename=${_VM_FOLDER}/ --directory)
 		_NAME=${_FULLPATHNAME##*/}
 	else
-		ls ${_VM_FOLDER}
+		ls --color=auto ${_VM_FOLDER}
 		_warning "The only argument needed seems to missing"
 		_warning "What is the VM you want to start ?"
 		read _NAME
