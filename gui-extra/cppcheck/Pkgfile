@@ -1,0 +1,43 @@
+makedepends=(qtbase qttools cmake llvm)
+
+packager="Yaolinux team"
+maintainer="Rems"
+
+url="http://cppcheck.sourceforge.net/"
+description="A tool for static C/C++ code analysis"
+
+name=cppcheck
+version=2.3
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/danmar/cppcheck/archive/${version}.tar.gz
+        translations-location.patch)
+
+build() {
+cd $name-$version
+
+patch -Np1 -i ../translations-location.patch
+
+cd ..
+
+mkdir -p build && cd build
+
+export CXXFLAGS+=" -DNDEBUG"
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DUSE_MATCHCOMPILER=yes \
+      -DHAVE_RULES=yes \
+      -DBUILD_GUI=yes \
+      -DBUILD_SHARED_LIBS:BOOL=OFF \
+      -DFILESDIR=/usr/share/cppcheck \
+      ../$name-$version
+
+make
+make DESTDIR=$PKG install
+
+# Fix location of language files
+   install -vd "${PKG}"/usr/share/cppcheck/cfg/lang
+   mv "${PKG}"/usr/bin/cppcheck_*.qm "${PKG}"/usr/share/cppcheck/cfg/lang/
+}
