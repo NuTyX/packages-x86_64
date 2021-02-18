@@ -32,8 +32,9 @@ if [[ $# -lt 1 ]]; then
 		_warning "A graphical window will open in 3 secs"
 		sleep 3
 		_FULLPATHNAME=$(${ZENITY_BIN} --file-selection --title="Choose a VM" --filename=${_VM_FOLDER}/ --directory)
+		_NAME=${_FULLPATHNAME##*/}
 	else
-		ls -d ${_VM_FOLDER}/*
+		ls ${_VM_FOLDER}
 		_warning "The only argument needed seems to missing"
 		_warning "What is the VM you want to start ?"
 		read _NAME
@@ -200,7 +201,7 @@ $QEMU_BIN -enable-kvm -M q35 -m $SYSTEM_MEMORY_SIZE -cpu $CPU_TYPE -smp cores=$N
 
 main() {
 check_zenity_bin
-check_args
+check_args "$@"
 check_var_file
 check_hdd1_file
 check_hdd2
