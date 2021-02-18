@@ -20,6 +20,28 @@ _success() {
         $ECHOCMD "${GREEN}${1}${NORMAL}"
 }
 
+check_zenity_bin() {
+[[ $ZENITY_BIN == '' ]] && INSTALLED_ZENITY="no"
+}
+
+check_args() {
+if [[ $# -lt 1 ]]; then
+	if [[ $INSTALLED_ZENITY != "no" ]]; then
+		_warning "The only argument needed seems to missing"
+                _warning "What is the VM you want to start ?"
+		_warning "A graphical window will open in 3 secs"
+		sleep 3
+		_FULLPATHNAME=$(${ZENITY_BIN} --file-selection --title="Choose a VM" --filename=${_VM_FOLDER}/ --directory)
+	else
+		ls -d ${_VM_FOLDER}/*
+		_warning "The only argument needed seems to missing"
+		_warning "What is the VM you want to start ?"
+		read _NAME
+		_FULLPATHNAME=${_VM_FOLDER}/${_NAME}
+	fi
+fi
+}
+
 check_var_file() {
 if [[ ! -f ${_FULLPATHNAME}/${_NAME}.var ]]; then
         _error "VM configuration file does not exist, please use configvm script to create it"
@@ -177,6 +199,8 @@ $QEMU_BIN -enable-kvm -M q35 -m $SYSTEM_MEMORY_SIZE -cpu $CPU_TYPE -smp cores=$N
 }
 
 main() {
+check_zenity_bin
+check_args
 check_var_file
 check_hdd1_file
 check_hdd2
@@ -196,9 +220,11 @@ GREEN='\033[32m'
 
 QEMU_BIN=$(which qemu-system-x86_64)
 ECHOBIN=$(which echo)
+ZENITY_BIN=$(which zenity)
+
 ECHOCMD="$ECHOBIN -e"
 
 _NAME=$1
 _VM_FOLDER=$HOME/VM-qemu
 _FULLPATHNAME=${_VM_FOLDER}/${_NAME}
-main $@
+main "$@"
