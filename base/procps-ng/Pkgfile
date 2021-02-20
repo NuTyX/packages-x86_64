@@ -1,16 +1,19 @@
 description="Utilities for monitoring your system and its processes."
 url="http://procps.sourceforge.net/"
+
 contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(ncurses)
+
 name=procps-ng
-version=3.3.16
+version=3.3.17
 
 source=(http://downloads.sourceforge.net/project/$name/Production/$name-$version.tar.xz )
 
 build()
 {
-cd $name-$version
+cd procps-$version
 
 ./configure --prefix=/usr \
 --exec-prefix= --sbindir=/usr/sbin \
