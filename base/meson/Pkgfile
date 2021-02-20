@@ -7,13 +7,11 @@ packager="tnut <tnut@nutyx.org>"
 set=(devel)
 
 name=meson
-version=0.56.2
-release=2
+version=0.57.1
 
+PKGMK_DEPENDS=(sqlite expat libffi python)
 source=(https://github.com/mesonbuild/$name/releases/download/$version/$name-$version.tar.gz)
-prepare() {
-cards install python
-}
+
 build() {
   cd $name-$version
   python3 setup.py build
