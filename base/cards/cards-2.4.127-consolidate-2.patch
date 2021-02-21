@@ -1,0 +1,19 @@
+diff --git a/src/compile_dependencies_utils.cxx b/src/compile_dependencies_utils.cxx
+index 67d6f01..68f9bcb 100644
+--- a/src/compile_dependencies_utils.cxx
++++ b/src/compile_dependencies_utils.cxx
+@@ -126,12 +126,12 @@ int deps_tree (pkgList *packagesList, depList *dependenciesList,unsigned int nam
+ 		return 0;
+ 	}
+ 	depList *localDependenciesList = initDepsList();
+-	if ( dependenciesList->count > packagesList->count ) {
++/*	if ( dependenciesList->count > packagesList->count ) {
+ 		printf ("Dependencies List Bigger than Package List. \nDue to circular !!!\n");
+ 		freePkgList(packagesList);
+ 		freeDepList(dependenciesList);
+ 		exit(EXIT_FAILURE);
+-	}
++	} */
+ 	for ( unsigned int dInd=0; dInd < packagesList->pkgs[nameIndex]->dependences->count; dInd++) {
+ 		addDepToDepList(localDependenciesList,packagesList->pkgs[nameIndex]->dependences->depsIndex[dInd],0);
+ 	}
