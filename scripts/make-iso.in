@@ -3,11 +3,12 @@ usage() {
 cat << EOF
 $(basename ${0}) -f [ISO_FLAVOUR] -k [Kernel-VERSION] -v [NuTyX Version] -u [URL for package source] -o [OUTPUT iso file]
 
--f|--flavour => Available official flavours are STRICT, MINI (default), XFCE4, LXDE, OPENBOX, KDE5, JWM, MATE and GNOME
--k|--kernel  => Available kernels are kernel-414, kernel-419, kernel-54, kernel-510 (default) and kernel
--o|--output  => Output ISO path, default to /ISO_[ISO_FLAVOUR]/
--v|--version => Available versions are rolling (default) and testing
--u|--url     => Default URL is http://downloads.nutyx.org
+-f|--flavour    => Available official flavours are STRICT, MINI (default), XFCE4, LXDE, OPENBOX, KDE5, JWM, MATE and GNOME
+-k|--kernel     => Available kernels are kernel-414, kernel-419, kernel-54, kernel-510 (default) and kernel
+-o|--output     => Output ISO path, default to /ISO_[ISO_FLAVOUR]/
+-v|--version    => Available versions are rolling (default) and testing
+-u|--url        => Default URL is http://downloads.nutyx.org
+-fu|--final-url => Default URL for target cards.conf is http://downloads.nutyx.org
 
 EOF
 }
@@ -68,6 +69,10 @@ do
                         OUTPUT=${2}
                         shift
                 ;;
+                -fu|--final-url)
+                        FINAL_URL=${2}
+                        shift
+                ;;
                 -h|--help|-u|--usage)
                         usage
                         exit 0
@@ -116,6 +121,7 @@ case ${VERSION} in
         ;;
 esac
 [[ -z ${URL} ]] && URL=http://downloads.nutyx.org
+[[ -z ${FINAL_URL} ]] && FINAL_URL=http://downloads.nutyx.org
 case ${URL} in
         http://*|https://*)
                 echo -e "Be sure that ${URL##*/} is accessible"
@@ -257,6 +263,7 @@ KERNEL="$(readlink /boot/${KERNEL_VERSION})"
 mkinitramfs "${KERNEL/kernel-/}" -nf || exit 1
 @@INSTALL_PACKAGES@@ || exit 1
 cards purge
+sed "s@^url.*@url ${FINAL_URL}@g" -i /etc/cards.conf
 for directories in opt bin etc lib lib64 root run sbin usr var home
 do
   [[ -f /ISO/boot/"$directories".squashfs ]] && rm /ISO/boot/"$directories".squashfs
