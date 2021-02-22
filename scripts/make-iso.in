@@ -256,19 +256,16 @@ fi
 
 VERSION=${VERSION} URL=${URL} KERNEL=${KERNEL_VERSION} bash ${GIT_SCRIPTSFOLDER}/install-nutyx.in
 
-echo -e "KERNEL_VERSION=${KERNEL_VERSION}" > /tmp/buildisoscript
-echo -e "FINAL_URL=${FINAL_URL}" >> /tmp/buildisoscript
-
-cat >> /tmp/buildisoscript << "EOF"
-KERNEL="$(readlink /boot/${KERNEL_VERSION})"
-mkinitramfs "${KERNEL/kernel-/}" -nf || exit 1
+cat > /tmp/buildisoscript << EOF
+KERNEL="\$(readlink /boot/${KERNEL_VERSION})"
+mkinitramfs "\${KERNEL/kernel-/}" -nf || exit 1
 @@INSTALL_PACKAGES@@ || exit 1
 cards purge
 sed "s@^url.*@url ${FINAL_URL}@g" -i /etc/cards.conf
 for directories in opt bin etc lib lib64 root run sbin usr var home
 do
-  [[ -f /ISO/boot/"$directories".squashfs ]] && rm /ISO/boot/"$directories".squashfs
-  mksquashfs /"$directories" /ISO/boot/"$directories".squashfs @@SQUASH_COMP_OPTS@@
+  [[ -f /ISO/boot/"\$directories".squashfs ]] && rm /ISO/boot/"\$directories".squashfs
+  mksquashfs /"\$directories" /ISO/boot/"\$directories".squashfs @@SQUASH_COMP_OPTS@@
 done
 exit 0
 EOF
