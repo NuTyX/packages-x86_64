@@ -283,9 +283,9 @@ chroot ${BUILD_ISOFOLDER} /bin/bash -c "/tmp/buildisoscript" || error "Chroot wa
 sed 's@SCRIPTDIR=$(pwd -P)@#SCRIPTDIR=$(pwd -P)@' ${GIT_SCRIPTSFOLDER}/mkiso > ${GIT_SCRIPTSFOLDER}/mkiso-script
 sed 's@SCRIPTDIR+="/$(dirname $0)"@SCRIPTDIR="$(dirname $0)"@' -i ${GIT_SCRIPTSFOLDER}/mkiso-script
 
-bash ${GIT_SCRIPTSFOLDER}/mkiso-script ${ISO_DEST} $(basename ${BUILD_ISOFOLDER}/lib/modules/*) || error "mkiso was not executed normally"
+bash ${GIT_SCRIPTSFOLDER}/mkiso-script ${ISO_DEST}_$(date '+%Y%m%d') $(basename ${BUILD_ISOFOLDER}/lib/modules/*) || error "mkiso was not executed normally"
 rm -f mkiso-script
 
 if [[ ! -z ${OUTPUT} ]]; then
-  mv ${BUILD_ISOFOLDER}/*.iso ${OUTPUT} || error "Can not move iso to ${OUTPUT}"
+  mv ${BUILD_ISOFOLDER}/*.iso ${OUTPUT} && rm -rf ${BUILD_ISOFOLDER} || error "Can not move iso to ${OUTPUT}"
 fi
