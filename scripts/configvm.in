@@ -110,28 +110,28 @@ case $displayquery in
 		_success "No sound card"
 	;;
 	*)
-		_info "What type of sound card ? (ac97 by default, hda, sb16, rien)"
+		_info "What type of sound card ? (ac97 by default, hda, sb16, none)"
 		read sndhwquery
 
 		[[ -z $sndhwquery ]] && sndhwquery=ac97
 
 		case $sndhwquery in
-	        	ac97)
+      AC97|ac97)
 				sndhw="ac97"
 				$ECHOCMD "SOUND_CARD_TYPE=${sndhw}" >> ${_FULLPATHNAME}/${_NAME}.var
 				_success "The sound card will be $sndhwquery"
 			;;
-			hda)
+			HDA|hda)
 				sndhw="hda"
 				$ECHOCMD "SOUND_CARD_TYPE=${sndhw}" >> ${_FULLPATHNAME}/${_NAME}.var
 				_success "The sound card will be $sndhwquery"
 			;;
-			sb16)
+			SB16|sb16)
 				sndhw="sb16"
 				$ECHOCMD "SOUND_CARD_TYPE=${sndhw}" >> ${_FULLPATHNAME}/${_NAME}.var
 				_success "The sound card will be $sndhwquery"
 			;;
-			rien)
+			NONE|none)
 				sndhw=""
 				$ECHOCMD "SOUND_CARD_TYPE=NONE" >> ${_FULLPATHNAME}/${_NAME}.var
 				_success "No sound card"
@@ -219,7 +219,7 @@ esac
 displayquery() {
 if [[ -z $display ]]
 	then
-		_info "What kind of graphics output ? (default spice, vnc, egl-headless or local)"
+		_info "What kind of graphics output ? (spice, vnc, egl-headless or local (default))"
 		read displayquery
 		[[ -z $displayquery ]] && displayquery=local
 		case $displayquery in
