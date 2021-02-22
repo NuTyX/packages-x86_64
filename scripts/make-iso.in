@@ -32,7 +32,7 @@ RESULT=$(which ${COMMAND})
 if [[ -z $RESULT ]]; then
  if [[ ${PACKAGE} == cards ]] && [[ -z ${RESULT} ]]; then
   echo -e "You're in a other distro than NuTyX, please install packages manually"
-  echo -e "Packages are git cdrtools syslinux libisoburn grub-efi dosfstools"
+  echo -e "Packages are git cdrtools syslinux libisoburn grub dosfstools"
   exit 1
  fi
         echo -e "${PACKAGE} not installed, proceeding..."
@@ -190,7 +190,8 @@ case $ISO_DEST in
                                 network-manager-applet linux-firmware systemd runyx"
         ;;
         GNOME|gnome)
-                INSTALL_PACKAGES="gdm gnome make-ca flcards firefox thunderbird xdg-user-dirs vlc sound-theme-freedesktop \
+                INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm \
+                                gdm gnome make-ca flcards firefox thunderbird xdg-user-dirs vlc sound-theme-freedesktop \
                                 gparted xorg-setxkbmap telegram seahorse-nautilus evolution simple-scan gnome-weather gvfs \
                                 epiphany gnome-chess balsa xorg-xf86-input-synaptics xorg-xf86-input-wacom xorg-xf86-video-ati \
                                 xorg-xf86-video-fbdev xorg-xf86-video-intel xorg-xf86-video-nouveau xorg-xf86-video-vesa \
@@ -202,7 +203,7 @@ case $ISO_DEST in
         ;;
 esac
 
-for DEP in cards git cdrtools syslinux libisoburn grub-efi dosfstools; do
+for DEP in cards git cdrtools syslinux libisoburn grub dosfstools; do
         case ${DEP} in
                 cards)
                         deps_check cards cards
@@ -219,8 +220,8 @@ for DEP in cards git cdrtools syslinux libisoburn grub-efi dosfstools; do
                 libisoburn)
                         deps_check libisoburn xorrisofs
                 ;;
-                grub-efi)
-                        deps_check grub-efi grub-install-efi
+                grub)
+                        deps_check grub grub-install
                 ;;
                 dosfstools)
                         deps_check dosfstools mkfs.vfat
