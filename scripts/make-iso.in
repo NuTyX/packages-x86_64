@@ -257,6 +257,7 @@ fi
 VERSION=${VERSION} URL=${URL} KERNEL=${KERNEL_VERSION} bash ${GIT_SCRIPTSFOLDER}/install-nutyx.in
 
 echo -e "KERNEL_VERSION=${KERNEL_VERSION}" > /tmp/buildisoscript
+echo -e "FINAL_URL=${FINAL_URL}" >> /tmp/buildisoscript
 
 cat >> /tmp/buildisoscript << "EOF"
 KERNEL="$(readlink /boot/${KERNEL_VERSION})"
