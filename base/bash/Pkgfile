@@ -3,19 +3,20 @@ maintainer="Brian Fox,Chet Ramey and many more"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(ncurses readline)
+makedepends=(ncurses readline sed)
 
 name=bash
-version=5.0
-release=3
+version=5.1
 
-source=(http://www.linuxfromscratch.org/patches/lfs/development/bash-5.0-upstream_fixes-1.patch
-        http://ftp.gnu.org/gnu/bash/bash-$version.tar.gz)
+source=(http://ftp.gnu.org/gnu/bash/bash-$version.tar.gz)
 
+prepare() {
+sed -i  '/^bashline.o:.*shmbchar.h/a bashline.o: ${DEFDIR}/builtext.h' $name-$version/Makefile.in
+}
 build()
 {
 cd bash-$version
-patch -Np1 -i ../$name-$version-upstream_fixes-1.patch
+
 ./configure --prefix=/usr \
 --htmldir=/usr/share/doc/bash-$version \
 --docdir=/usr/share/doc/bash-$version \

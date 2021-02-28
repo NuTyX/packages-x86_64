@@ -1,18 +1,19 @@
-PKGMK_GROUPS=(man)
-PKGMK_IGNORE_RUNTIMEDEPS=yes
-
 description="Base system of NuTyX, contains all folders and startup scripts."
 url="https://github.com/nutyx"
+
 packager="tnut <tnut@nutyx.org>"
 maintainer="tnut <tnut@nutyx.org>"
 
+makedepends=(util-linux)
+
 name=nutyx
-version=21.02.0-rc1
-release=2
+version=21.03.0-rc1
 
 # nutyx patch version
 [ "$release" != "1" ] && patchname="$name-$version-consolidate-$release.patch"
 
+PKGMK_GROUPS=(man)
+PKGMK_IGNORE_RUNTIMEDEPS=yes
 
 source=(http://downloads.tuxfamily.org/nutyx/files/$name-$version.tar.xz)
 [ -z "$patchname" ] || source+=" $patchname"

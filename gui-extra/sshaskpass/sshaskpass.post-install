@@ -1,0 +1,8 @@
+. lib/lsb/init-functions
+if [ -f etc/sudo.conf ]; then
+ if ( ! grep openssh/ssh-askpass /etc/sudo.conf > /dev/null );then
+ 	echo "# Path to askpass helper program
+Path askpass /usr/libexec/openssh/ssh-askpass" >> etc/sudo.conf
+ 	log_info_msg "${INFO}/etc/sudo.conf adjusted${NORMAL}\n"
+ fi
+fi
