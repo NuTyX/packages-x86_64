@@ -1,8 +1,8 @@
 description="Tools which simplify and make the network more directly manageable."
 url="http://projects.gnome.org/NetworkManager/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, Greg"
+packager="Rems <remy@nutyx.org>"
+contributors="Pierre B, Greg, Tnut"
 
 makedepends=(libndp libsoup libgudev dbus-glib iptables libnl
              nss wireless-tools polkit upower vala grep
@@ -15,20 +15,16 @@ alias=(NetworkManager)
 _name=NetworkManager
 
 name=networkmanager
-version=1.26.4
-release=2
+version=1.30.0
 
-runyx_version=20200412
+runyx_version=20201011
 
-source=(http://download.tuxfamily.org/files/runyx-${runyx_version}.tar.xz
+source=(http://download.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	https://download.gnome.org/sources/$_name/${version:0:4}/$_name-$version.tar.xz)
 
 build() {
 
-grep -rl '^#!.*python$' | xargs sed -i '1s/python/&3/'
-
-mkdir build
-cd    build
+mkdir build && cd build
 
 CXXFLAGS+="-02 -fPIC"            \
 meson --prefix        /usr       \
