@@ -14,7 +14,9 @@ verlt() {
 }
 tobe_updated() {
   PODn=$((PODn + 1))
-  echo "$(basename $i) $pkgver ($version) [$packager]"
+  #echo "$(basename $i) $pkgver ($version) [$packager]"
+  #shows packager name only
+  echo "$(basename $i) $pkgver ($version) [$(cut -d'<' -f1 <<< $packager | xargs)]"
 }
 #up_to_date() {
 #  echo "$(basename $i) $pkgver ($version) [$packager] up to date"
