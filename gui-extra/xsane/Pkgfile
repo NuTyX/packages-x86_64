@@ -2,16 +2,16 @@ description="Front end for SANE-1.0.24. It has additional features to improve th
 url="http://www.xsane.org/"
 
 maintainer="Oliver dot Rauch at xsane dot org"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, tnut"
 
 makedepends=(gtk2 sane)
 
 name=xsane
 version=0.999
-release=5
+release=7
 
-source=(http://www.xsane.org/download/xsane-$version.tar.gz)
+source=(https://gitlab.com/sane-project/frontend/xsane/-/archive/$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
