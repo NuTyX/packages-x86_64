@@ -95,7 +95,7 @@ case ${ISO_DEST} in
                 exit 1
         ;;
 esac
-[[ -z ${BUILD_ISOFOLDER} ]] && BUILD_ISOFOLDER=/ISO_${ISO_DEST}
+[[ -z ${LFS} ]] && LFS=/$(date '+%Y%m%d')-${ISO_DEST}
 [[ -z ${GIT_CLONE_HOME} ]] && GIT_CLONE_HOME=${HOME}
 [[ -z ${GIT_FOLDER} ]] && GIT_FOLDER=${GIT_CLONE_HOME}/packages-x86_64
 GIT_ISOFOLDER=$GIT_FOLDER/iso
@@ -148,14 +148,14 @@ case $ISO_DEST in
                                 lxdm xfce4 flcards make-ca mousepad orage ristretto xfburn parole xfce4-terminal gparted \
                                 thunar firefox gvfs xdg-user-dirs xorg-xf86-input-synaptics xorg-xf86-input-wacom \
                                 xorg-xf86-video-ati xorg-xf86-video-fbdev xorg-xf86-video-intel xorg-xf86-video-nouveau \
-                                xorg-xf86-video-vesa network-manager-applet linux-firmware systemd runyx"
+                                xorg-xf86-video-vesa network-manager-applet linux-firmware systemd runyx gvfs xorg-xrandr"
         ;;
         LXDE|lxde)
                 INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm.service \
                                 lxde flcards make-ca leafpad lxde-appearance lxde-input lxde-randr lxde-gpicview lxde-terminal \
                                 lxdm gparted pcmanfm xdg-user-dirs firefox xorg-xf86-input-synaptics xorg-xf86-input-wacom \
                                 xorg-xf86-video-ati xorg-xf86-video-fbdev xorg-xf86-video-intel xorg-xf86-video-nouveau \
-                                xorg-xf86-video-vesa network-manager-applet linux-firmware systemd runyx gvfs"
+                                xorg-xf86-video-vesa network-manager-applet linux-firmware systemd runyx gvfs xorg-xrandr"
         ;;
         OPENBOX|openbox)
                 INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm gpm.service \
@@ -164,15 +164,15 @@ case $ISO_DEST in
                                 pcmanfm scrot sound-theme-freedesktop volumeicon xdg-user-dirs xfce4-notifyd xfce4-power-manager \
                                 yad xorg-xf86-input-synaptics xorg-xf86-input-wacom xorg-xf86-video-ati xorg-xf86-video-fbdev \
                                 xorg-xf86-video-intel xorg-xf86-video-nouveau xorg-xf86-video-vesa network-manager-applet \
-                                linux-firmware systemd runyx make-ca"
+                                linux-firmware systemd runyx make-ca xorg-xrandr"
         ;;
         KDE5|PLASMA5|kde5|plasma5)
                 INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm \
-                                sddm kde5 make-ca flcards firefox thunderbird xdg-user-dirs clementine k3b \
+                                kde5 make-ca flcards firefox thunderbird xdg-user-dirs clementine k3b \
                                 kdenlive vlc sound-theme-freedesktop network-manager-applet gparted xorg-setxkbmap \
                                 hardinfo xorg-xf86-input-synaptics xorg-xf86-input-wacom xorg-xf86-video-ati xorg-xf86-video-fbdev \
                                 xorg-xf86-video-intel xorg-xf86-video-nouveau xorg-xf86-video-vesa network-manager-applet \
-                                linux-firmware systemd runyx"
+                                linux-firmware systemd runyx xorg-xrandr"
         ;;
         JWM|jwm)
                 INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm \
@@ -182,7 +182,7 @@ case $ISO_DEST in
                                 volumeicon xdg-user-dirs xfce4-notifyd xfce4-power-manager yad xorg-xf86-input-synaptics \
                                 xorg-xf86-input-wacom xorg-xf86-video-ati xorg-xf86-video-fbdev xorg-xf86-video-intel \
                                 xorg-xf86-video-nouveau xorg-xf86-video-vesa network-manager-applet \
-                                linux-firmware systemd runyx"
+                                linux-firmware systemd runyx xorg-xrandr"
         ;;
         MATE|mate)
                 INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm \
@@ -193,15 +193,15 @@ case $ISO_DEST in
                                 alsa-utils alsa-plugins ntfs-3g vlc fuse xorg-xdpyinfo lm-sensors gparted xorg-setxkbmap \
                                 ntp ntp.service xorg-xf86-input-synaptics xorg-xf86-input-wacom xorg-xf86-video-ati \
                                 xorg-xf86-video-fbdev xorg-xf86-video-intel xorg-xf86-video-nouveau xorg-xf86-video-vesa \
-                                network-manager-applet linux-firmware systemd runyx"
+                                network-manager-applet linux-firmware systemd runyx xorg-xrandr"
         ;;
         GNOME|gnome)
                 INSTALL_PACKAGES="cards install efibootmgr dosfstools wireless-tools wpa-supplicant gpm \
-                                gdm gnome make-ca flcards firefox thunderbird xdg-user-dirs vlc sound-theme-freedesktop \
+                                gnome make-ca flcards firefox thunderbird xdg-user-dirs vlc sound-theme-freedesktop \
                                 gparted xorg-setxkbmap telegram seahorse-nautilus evolution simple-scan gnome-weather gvfs \
                                 epiphany gnome-chess balsa xorg-xf86-input-synaptics xorg-xf86-input-wacom xorg-xf86-video-ati \
                                 xorg-xf86-video-fbdev xorg-xf86-video-intel xorg-xf86-video-nouveau xorg-xf86-video-vesa \
-                                network-manager-applet linux-firmware systemd runyx"
+                                network-manager-applet linux-firmware systemd runyx xorg-xrandr"
         ;;
         *)
                 usage
@@ -239,7 +239,7 @@ GITCMD=$(which git)
 CHROOTCMD=$(which chroot)
 INSTALL_NUTYXCMD=$(which install-nutyx)
 
-export LFS=${BUILD_ISOFOLDER}
+export LFS
 
 if [[ ! -d ${GIT_FOLDER} ]]; then
         git clone ${GIT_URL} ${GIT_FOLDER} || error "Can not do git clone ${GIT_URL}"
@@ -257,9 +257,12 @@ fi
 VERSION=${VERSION} URL=${URL} KERNEL=${KERNEL_VERSION} bash ${GIT_SCRIPTSFOLDER}/install-nutyx.in
 
 cat > /tmp/buildisoscript << EOF
+sed -i "s@kernel-419@${KERNEL_VERSION}@g" /sbin/setup-nutyx
 KERNEL="\$(readlink /boot/${KERNEL_VERSION})"
 mkinitramfs "\${KERNEL/kernel-/}" -nf || exit 1
 @@INSTALL_PACKAGES@@ || exit 1
+cards install kernel
+mkinitramfs "\$(basename /lib/modules/*-NuTyX)" -nf || exit 1
 cards purge
 sed "s@^url.*@url ${FINAL_URL}@g" -i /etc/cards.conf
 for directories in opt bin etc lib lib64 root run sbin usr var home
@@ -275,17 +278,17 @@ sed -e "s/@@INSTALL_PACKAGES@@/${INSTALL_PACKAGES}/" -i /tmp/buildisoscript || e
 
 cp -av ${GIT_ISOFOLDER} ${LFS}/ISO || error "Can not copy in $LFS/ISO"
 
-install -vm755 /tmp/buildisoscript ${BUILD_ISOFOLDER}/tmp || error "Can not install in ${BUILD_ISOFOLDER}/tmp"
+install -vm755 /tmp/buildisoscript ${LFS}/tmp || error "Can not install in ${LFS}/tmp"
 
-#cat ${BUILD_ISOFOLDER}/tmp/buildisoscript
-chroot ${BUILD_ISOFOLDER} /bin/bash -c "/tmp/buildisoscript" || error "Chroot was not executed normally"
+#cat ${LFS}/tmp/buildisoscript
+chroot ${LFS} /bin/bash -c "/tmp/buildisoscript" || error "Chroot was not executed normally"
 
 sed 's@SCRIPTDIR=$(pwd -P)@#SCRIPTDIR=$(pwd -P)@' ${GIT_SCRIPTSFOLDER}/mkiso > ${GIT_SCRIPTSFOLDER}/mkiso-script
 sed 's@SCRIPTDIR+="/$(dirname $0)"@SCRIPTDIR="$(dirname $0)"@' -i ${GIT_SCRIPTSFOLDER}/mkiso-script
 
-bash ${GIT_SCRIPTSFOLDER}/mkiso-script ${ISO_DEST}_$(date '+%Y%m%d') $(basename ${BUILD_ISOFOLDER}/lib/modules/*) || error "mkiso was not executed normally"
+bash ${GIT_SCRIPTSFOLDER}/mkiso-script $(basename $LFS) $(basename ${LFS}/lib/modules/*-NuTyX) || error "mkiso was not executed normally"
 rm -f mkiso-script
 
 if [[ ! -z ${OUTPUT} ]]; then
-  mv ${BUILD_ISOFOLDER}/*.iso ${OUTPUT} && rm -rf ${BUILD_ISOFOLDER} || error "Can not move iso to ${OUTPUT}"
+  mv ${LFS}/*.iso ${OUTPUT} && rm -rf ${LFS} || error "Can not move iso to ${OUTPUT}"
 fi
