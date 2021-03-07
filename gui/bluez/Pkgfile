@@ -1,17 +1,16 @@
 description="The BlueZ package contains the Bluetooth protocol stack for Linux."
 url="http://www.bluez.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, tnut"
 
 makedepends=(readline dbus libical libvorbis alsa-lib
              libusb-compat libsndfile cups glib)
 
 name=bluez
-version=5.55
-release=2
+version=5.56
 
-runyx_version=20200412
+runyx_version=20201011
 
 PKGMK_GROUPS=(man devel doc)
 
@@ -76,7 +75,7 @@ rm $PKG/usr/lib/libbluetooth.la
 cd $SRC/runyx-${runyx_version}
 make DESTDIR=$PKG install-sysv-bluetooth
 mkdir -p $PKG/etc/sysconfig
-ln -sv ../sysv/sysconfig services/runyx/
+#ln -sv ../sysv/sysconfig services/runyx/
 sed -i 's@${EXTDIR}/@${PKG}/etc/@' services/runyx/Makefile
 make DESTDIR=$PKG install-runyx-bluetooth
 }
