@@ -1,18 +1,18 @@
 diff --git a/src/compile_dependencies_utils.cxx b/src/compile_dependencies_utils.cxx
-index 67d6f01..7eb57b4 100644
+index 67d6f01..15c2855 100644
 --- a/src/compile_dependencies_utils.cxx
 +++ b/src/compile_dependencies_utils.cxx
-@@ -55,10 +55,20 @@ void addDepToDepList(depList *list, unsigned int nameIndex, int niveau)
+@@ -55,10 +55,19 @@ void addDepToDepList(depList *list, unsigned int nameIndex, int niveau)
  void freeDepList(depList *list)
  {
  	for (unsigned int i = 0 ; i < list->count;i++) {
 -		free(list->niveau);
+-		free(list->depsIndex);
 +		if  (list->niveau != nullptr) {
 +			free(list->niveau);
 +			list->niveau=nullptr;
 +		}
- 		free(list->depsIndex);
-+		if  (list->depsIndex != nullptr) {
++		if (list->depsIndex !=nullptr) {
 +			free(list->depsIndex);
 +			list->depsIndex=nullptr;
 +		}
@@ -25,7 +25,7 @@ index 67d6f01..7eb57b4 100644
  }
  pkgInfo *initPkgInfo(void)
  {
-@@ -81,7 +91,10 @@ pkgInfo *addInfoToPkgInfo(unsigned int nameIndex)
+@@ -81,7 +90,10 @@ pkgInfo *addInfoToPkgInfo(unsigned int nameIndex)
  
  void freePkgInfo(pkgInfo *package)
  {
@@ -37,7 +37,7 @@ index 67d6f01..7eb57b4 100644
  }
  
  pkgList *initPkgList(void)
-@@ -112,10 +125,19 @@ void addPkgToPkgList(pkgList *list, pkgInfo *package)
+@@ -112,10 +124,19 @@ void addPkgToPkgList(pkgList *list, pkgInfo *package)
  void freePkgList(pkgList *packagesList)
  {
  	for (unsigned int i = 0 ; i < packagesList->count;i++) {
@@ -60,12 +60,37 @@ index 67d6f01..7eb57b4 100644
  }
  
  /* Get the tree dependencies of the dependencies recursively */
-@@ -127,7 +149,7 @@ int deps_tree (pkgList *packagesList, depList *dependenciesList,unsigned int nam
+@@ -126,12 +147,6 @@ int deps_tree (pkgList *packagesList, depList *dependenciesList,unsigned int nam
+ 		return 0;
  	}
  	depList *localDependenciesList = initDepsList();
- 	if ( dependenciesList->count > packagesList->count ) {
+-	if ( dependenciesList->count > packagesList->count ) {
 -		printf ("Dependencies List Bigger than Package List. \nDue to circular !!!\n");
-+		printf ("Dependencies List Bigger than Package List: %d dependencies. \nDue to circular !!!\n",dependenciesList->count);
- 		freePkgList(packagesList);
- 		freeDepList(dependenciesList);
- 		exit(EXIT_FAILURE);
+-		freePkgList(packagesList);
+-		freeDepList(dependenciesList);
+-		exit(EXIT_FAILURE);
+-	}
+ 	for ( unsigned int dInd=0; dInd < packagesList->pkgs[nameIndex]->dependences->count; dInd++) {
+ 		addDepToDepList(localDependenciesList,packagesList->pkgs[nameIndex]->dependences->depsIndex[dInd],0);
+ 	}
+diff --git a/src/string_utils.cxx b/src/string_utils.cxx
+index 8c76b13..103927b 100644
+--- a/src/string_utils.cxx
++++ b/src/string_utils.cxx
+@@ -61,10 +61,13 @@ void addItemToItemList(itemList *list, const char *item)
+ void freeItemList(itemList *list)
+ {
+ 	for (unsigned int i=0; i < list->count;i++) {
+-		free(list->items[i]);
++		if (list->items[i] != nullptr)
++			free(list->items[i]);
+ 	}
+-	free(list->items);
+-	free(list);
++	if (list->items != nullptr)
++		free(list->items);
++	if (list !=nullptr)
++		free(list);
+ }
+ 
+ keyValue splitKeyValue(string s, char delimiter)
