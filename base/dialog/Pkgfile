@@ -1,16 +1,20 @@
 [ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man)
 
-packager="tnut <tnut@nutyx.org>"
+packager="Rems <remy@nutyx.org>"
+contributors="Tnut"
 maintainer="Thomas E. Dickey dickey at invisible-island dot net"
+
 url="http://hightek.org/dialog/"
 description="To create nice user interfaces to shell scripts or other scripting languages."
+
+makedepends=(ncurses)
+
 name=dialog
-version=1.3-20190808
-release=2
+version=1.3-20210306
 
 PKGMK_LOCALES=()
 
-source=(ftp://ftp.us.debian.org/debian/pool/main/d/dialog/dialog_${version}.orig.tar.gz)
+source=(https://invisible-mirror.net/archives/$name/$name-${version}.tgz)
 
 build() {
 cd $name-$version
