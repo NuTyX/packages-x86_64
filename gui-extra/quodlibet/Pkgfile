@@ -14,15 +14,15 @@ run=(python-mutagen python-gobject dbus-python python-cairo
      gstreamer-plugins-bad python-feedparser)
 
 name=quodlibet
-version=4.3.0
+version=4.4.0
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/quodlibet/quodlibet/archive/release-$version.tar.gz)
+source=(https://github.com/quodlibet/quodlibet/releases/download/release-$version/quodlibet-$version.tar.gz)
 
 build() {
 
-  cd $name-release-$version/$name
+  cd $name-$version/
 
 sed -e 's|vendor-completions|site-functions|' -i gdist/zsh_completions.py
 
