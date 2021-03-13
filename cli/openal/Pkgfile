@@ -8,12 +8,12 @@ contributors="Pierre"
 makedepends=(alsa-lib cmake)
 
 name=openal
-version=1.21.0
+version=1.21.1
 
-source=(https://github.com/kcat/openal-soft/archive/openal-soft-$version.tar.gz )
+source=(https://github.com/kcat/openal-soft/archive/$version.tar.gz)
 
 build() {
-cd openal-soft-openal-soft-$version/build
+cd $name-soft-$version/build
 
 cmake ../ \
 	-DCMAKE_INSTALL_PREFIX=/usr \
