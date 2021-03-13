@@ -1186,7 +1186,7 @@ xorg-xf86-video-fbdev xorg-xf86-video-intel \
 xorg-xf86-video-nouveau xorg-xf86-video-vesa \
 xorg-xrandr xorg-setxkbmap"
 
-[ -z "$GUI_EXTRA" ] && GUI_EXTRA="firefox thunderbird gparted leagpad \
+[ -z "$GUI_EXTRA" ] && GUI_EXTRA="firefox thunderbird gparted leafpad \
 scrot vlc telegram"
 [ -z "$KDE5_EXTRA" ] && KDE5_EXTRA="kdenlive k3b"
 [ -z "$GNOME_EXTRA" ] && GNOME_EXTRA="epiphany seahorse-nautilus evolution \
@@ -1390,7 +1390,7 @@ mkdir -v ${FOLDER}/var/{mail,spool}
 
 mknod -m 600 ${FOLDER}/dev/console c 5 1
 mknod -m 666 ${FOLDER}/dev/null c 1 3
-if [ ! -z $ISO ]; then
+if [ ! -z "$ISO" ]; then
 	mkdir -p ${FOLDER}/ISO/{boot,iso,isolinux}
 	cat > $TMP/install.cfg << "EOF"
 default install
@@ -1824,7 +1824,7 @@ main() {
 
 	TMP=$(mktemp -d)
 	make_directories
-	[ -z $ISO ] || check_tools
+	[ -z "$ISO" ] || check_tools
 	check_mountfolder
 	check_mountpoint
 
