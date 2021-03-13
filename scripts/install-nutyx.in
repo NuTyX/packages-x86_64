@@ -227,7 +227,7 @@ end() {
 }
 #***********************************************************************
 # Function getPackageFileName
-# 
+#
 # Purpose:	Get the fullname of the package
 #		directory
 # Inputs:	$1 is the package name
@@ -525,7 +525,7 @@ cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 # 		if type is equal to "file" or "dir"
 #  		<filename> <type> <permissions> <user> <group>
 # 		if type is equal to "dev"
-#  		<filename> <type> <permissions> <user> <group> <devtype> 
+#  		<filename> <type> <permissions> <user> <group> <devtype>
 #             <major> <minor>
 #
 # 		<filename> is the name of the file which is to be created
@@ -536,9 +536,9 @@ cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 # 		<devtype> is either block, char or pipe
 #   			block creates a block device
 #   			char creates a character deivce
-#   			pipe creates a pipe, this will ignore the <major> and 
+#   			pipe creates a pipe, this will ignore the <major> and
 #           <minor> fields
-# 		<major> and <minor> are the major and minor numbers used for 
+# 		<major> and <minor> are the major and minor numbers used for
 #     the device.
 ########################################################################
 
@@ -642,7 +642,7 @@ set bell-style none
 "\e[H": beginning-of-line
 "\e[F": end-of-line
 
-# End /etc/inputrc 
+# End /etc/inputrc
 EOF
 }
 generate_hosts() {
@@ -1172,14 +1172,15 @@ fi
 
 [ -z "$DEPOT" ] && DEPOT="/var/lib/pkg/depot"
 [ -z "$FOLDER" ] && FOLDER="/mnt/hd"
+
 [ -z "$STRICT" ] && STRICT="kernel"
-[ -z "$MINI" ] && MINI="$STRICT dhcpcd"
-[ -z "$BASE" ] && BASE="$STRICT efibootmgr linux-firmware systemd runyx \
+[ -z "$MINI" ] && MINI="dhcpcd"
+[ -z "$BASE" ] && BASE="efibootmgr linux-firmware systemd runyx \
 wireless-tools wpa-supplicant"
-[ -z "$CLI" ] && CLI="$BASE gpm gpm.service dosfstools make-ca xdg-user-dirs \
+[ -z "$CLI" ] && CLI="gpm gpm.service dosfstools make-ca xdg-user-dirs \
 sound-theme-freedesktop ntp"
-[ -z "$GUI" ] && GUI="$CLI flcards gvfs network-manager-applet"
-[ -z "$XORG" ] && XORG="$GUI xorg-xf86-input-synaptics \
+[ -z "$GUI" ] && GUI="flcards gvfs network-manager-applet"
+[ -z "$XORG" ] && XORG="xorg-xf86-input-synaptics \
 xorg-xf86-input-wacom xorg-xf86-video-ati \
 xorg-xf86-video-fbdev xorg-xf86-video-intel \
 xorg-xf86-video-nouveau xorg-xf86-video-vesa \
@@ -1191,28 +1192,36 @@ scrot vlc telegram"
 [ -z "$GNOME_EXTRA" ] && GNOME_EXTRA="epiphany seahorse-nautilus evolution \
 simple-scan gnome-weather gnome-chess balsa"
 
-[ -z "$OPENBOX" ] && OPENBOX="$GUI openbox lxdm dmenu ${GUI_EXTRA}"
-[ -z "$JWM" ] && JWM="$GUI jwm lxdm ${GUI_EXTRA}"
-[ -z "$LXDE" ] && LXDE="$GUI lxdm lxde ${GUI_EXTRA}"
-[ -z "$XFCE4" ] && XFCE4="$GUI xfce4 xfce4-extra lxdm ${GUI_EXTRA}"
-[ -z "$MATE" ] && MATE="$GUI mate lightdm ${GUI_EXTRA}"
-[ -z "$GNOME" ] && GNOME="$GUI gnome ${GNOME_EXTRA} ${GUI_EXTRA}"
-[ -z "$KDE5" ] && KDE5="$GUI kde5 ${KDE5_EXTRA} ${GUI_EXTRA}"
-
+[ -z "$OPENBOX" ] && OPENBOX="openbox lxdm dmenu"
+[ -z "$JWM" ] && JWM="jwm lxdm"
+[ -z "$LXDE" ] && LXDE="lxdm lxde"
+[ -z "$XFCE4" ] && XFCE4="xfce4 xfce4-extra lxdm"
+[ -z "$MATE" ] && MATE="mate lightdm"
+[ -z "$GNOME" ] && GNOME="gnome"
+[ -z "$KDE5" ] && KDE5="kde5"
 
 if [ ! -z $ISO ]; then
 	SPLASH="splash-${VERSION_NUTYX}"
 	URL_SPLASH="https://download.tuxfamily.org/nutyx/files"
-	LABEL="nutyxcd"
-	GRUB_EFI_ARCH="x86_64"
-	GRUB_EFI_IMG="bootx64.efi"
-	ISODIR=$LFS/ISO
-	SCRIPTDIR=$(pwd -P)
 	ISO=${ISO^^}
-	if [ -z "${!ISO}" ]; then
-		echo "$ISO is not a valid ISO name"
-		exit 1
-	fi
+	case ${ISO} in
+		STRICT) ISO="$STRICT";;
+		MINI) ISO="$STRICT $MINI";;
+		BASE) ISO="$STRICT $BASE";;
+		CLI) ISO="$STRICT $BASE $CLI";;
+		GUI) ISO="$STRICT $BASE $CLI $GUI";;
+		XORG) ISO="$STRICT $BASE $CLI $GUI $XORG";;
+		GUI_EXTRA) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA}";;
+		OPENBOX) ISO="$STRICT $BASE $CLI $GUI ${GUI_EXTRA} $XORG $OPENBOX";;
+		JWM) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $JWM";;
+		LXDE) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $LXDE";;
+		XFCE4) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $XFCE4";;
+		MATE) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $MATE";;
+		GNOME) ISO="$STRICT $BASE $CLI $GUI $XORG $GUI_EXTRA $GNOME ${GNOME_EXTRA}";;
+		KDE5) ISO="$STRICT $BASE $CLI $GUI $XORG $GUI_EXTRA $KDE5 $KDE5_EXTRA";;
+		*) echo "Valid ISO names: strict, mini, base, cli, gui, xorg, \
+gui_extra, openbox, jwm, lxde, xfce4, mate, gnome, kde5" && exit 1;;
+	esac
 fi
 
 [ "$KERNEL" = "NONE" ] && KERNEL="none"
@@ -1232,16 +1241,11 @@ iproute2 iana-etc \
 groff man-db \
 cards.man nutyx.man \
 dialog cpio squashfs \
-lsb-release grub"
-	if [ -z "$DEVEL" ]; then
-		DEVEL="$KERNEL"
-	else
-		DEVEL="$KERNEL $DEVEL"
-	fi 
+lsb-release grub $KERNEL "
 fi
 
-if [ ! -z $ISO ];then
-	DEVEL+=" ${!ISO}
+if [ ! -z "$ISO" ];then
+	DEVEL+=" $ISO
 for k in \$(ls /lib/modules/)
 do
   mkinitramfs \$k -nf
@@ -1566,6 +1570,8 @@ install_configuration_files() {
 }
 show_variables() {
 echo "
+List of variables:
+
 LFS        : $LFS
 FOLDER     : $FOLDER
 DEVICE     : $DEVICE
@@ -1579,9 +1585,9 @@ DEPOT_BASE : $DEPOT_BASE
 CHROOT     : $CHROOT
 INITS      : $INITS
 CORE       : $CORE
-DEVEL      : $DEVEL"
-[ -z $ISO ] || echo "ISO        : $ISO
-STRICT     : $STRICT
+DEVEL      : $DEVEL
+ISO        : $ISO"
+[ -z "$ISO" ] || echo "STRICT     : $STRICT
 MINI       : $MINI
 BASE       : $BASE
 CLI        : $CLI
@@ -1652,7 +1658,15 @@ parse_options() {
 	done
 }
 generate_iso() {
-local FILE MD5SUM VERSION_KERNEL
+local FILE MD5SUM VERSION_KERNEL LABEL GRUB_EFI_ARCH GRUB_EFI_IMG ISODIR \
+SCRIPTDIR
+
+LABEL="nutyxcd"
+GRUB_EFI_ARCH="x86_64"
+GRUB_EFI_IMG="bootx64.efi"
+ISODIR=$LFS/ISO
+SCRIPTDIR=$(pwd -P)
+
 VERSION_KERNEL="$(basename $LFS/lib/modules/*-NuTyX)"
 ISO="NuTyX_${ARCH}-$VERSION_NUTYX-$ISO"
 cd ${ISODIR} || error "cd ${ISODIR}"
@@ -1676,24 +1690,25 @@ sed "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" \
 	> isolinux/install.cfg
 sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" isolinux/menu.cfg
 
-	# efi stufs
-	[ -d iso ] && rm -rv iso
-	[ -d boot/grub ] && rm -r boot/grub
-	mkdir -p {iso/EFI,boot/grub/{fonts,${GRUB_EFI_ARCH}-efi}}
-	# grub
-        if [ -f /usr/share/grub/unicode.pf2 ];then
-		cp /usr/share/grub/unicode.pf2 boot/grub/fonts
-        fi
-	if [ -f isolinux/splash.png ];then
+# efi stufs
+rm -rf iso
+rm -rf boot/grub
+mkdir -p {iso/EFI,boot/grub/{fonts,${GRUB_EFI_ARCH}-efi}}
+
+# grub
+[ -f /usr/share/grub/unicode.pf2 ] && \
+	cp /usr/share/grub/unicode.pf2 boot/grub/fonts
+
+[ -f isolinux/splash.png ] && \
 		mv isolinux/splash.png boot/grub
-	fi
-	echo "set prefix=/boot/grub" > iso/grub-early.cfg
 
-	cp -a /usr/lib/grub/${GRUB_EFI_ARCH}-efi/*.mod \
-		/usr/lib/grub/${GRUB_EFI_ARCH}-efi/*.lst \
-		boot/grub/${GRUB_EFI_ARCH}-efi
+echo "set prefix=/boot/grub" > iso/grub-early.cfg
 
-	cat  > boot/grub/grub.cfg << "EOF"
+cp -a /usr/lib/grub/${GRUB_EFI_ARCH}-efi/*.mod \
+	/usr/lib/grub/${GRUB_EFI_ARCH}-efi/*.lst \
+	boot/grub/${GRUB_EFI_ARCH}-efi
+
+cat  > boot/grub/grub.cfg << "EOF"
 set default=0
 set timeout=99
 
@@ -1757,30 +1772,33 @@ menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) debug live 
     initrd /boot/initrd-#VERSION_KERNEL#
 }
 EOF
-	sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" boot/grub/grub.cfg
-	sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" boot/grub/grub.cfg
-	sed -i "s|#ARCH#|${ARCH}|" boot/grub/grub.cfg
+sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" boot/grub/grub.cfg
+sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" boot/grub/grub.cfg
+sed -i "s|#ARCH#|${ARCH}|" boot/grub/grub.cfg
 
-	for FILE in kernel initrd
-	do
-		[ -f isolinux/$FILE ] && mv -v isolinux/$FILE boot/
-	done
-	grub-mkimage -c iso/grub-early.cfg -o iso/EFI/${GRUB_EFI_IMG} \
-		-O ${GRUB_EFI_ARCH}-efi -p "" iso9660 normal \
-		search search_fs_file || error "grub-mkimage"
+for FILE in kernel initrd
+do
+	[ -f isolinux/$FILE ] && mv -v isolinux/$FILE boot/
+done
 
-	# efiboot.img
-	modprobe loop
-	dd if=/dev/zero of=iso/efiboot.img count=4096
-	mkdosfs -n nutyxcd iso/efiboot.img || error "mkdosfs"
-	mkdir -pv iso/efiboot
-	mount -o loop iso/efiboot.img iso/efiboot || error "mount efiboot.img"
-	mkdir -pv iso/efiboot/EFI/boot
-	cp -v iso/EFI/${GRUB_EFI_IMG} iso/efiboot/EFI/boot
+grub-mkimage -c iso/grub-early.cfg -o iso/EFI/${GRUB_EFI_IMG} \
+	-O ${GRUB_EFI_ARCH}-efi -p "" iso9660 normal \
+	search search_fs_file || error "grub-mkimage"
 
-	umount iso/efiboot
+# efiboot.img
+modprobe loop
 
-	# Iso generation
+dd if=/dev/zero of=iso/efiboot.img count=4096
+
+mkdosfs -n nutyxcd iso/efiboot.img || error "mkdosfs"
+mkdir -p iso/efiboot
+mount -o loop iso/efiboot.img iso/efiboot || error "mount efiboot.img"
+mkdir -p iso/efiboot/EFI/boot
+cp       iso/EFI/${GRUB_EFI_IMG} iso/efiboot/EFI/boot
+
+umount iso/efiboot
+
+# Iso generation
 
 xorriso -as mkisofs -R -l -J -o ${LFS}/${ISO}.iso \
 -A NUTYX \
@@ -1825,8 +1843,7 @@ main() {
 
 }
 readonly BASE_COLLECTION=base
-# readonly VERSION_NUTYX=#VERSION#
-readonly VERSION_NUTYX="21.03.0-rc2"
+readonly VERSION_NUTYX=#VERSION#
 readonly RELEASE=1
 INSTALL_COMMAND="$(basename $0)"
 main "$@"
