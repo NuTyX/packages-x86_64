@@ -4,9 +4,11 @@ url="http://www.breakfastquay.com/rubberband/"
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg"
 
-makedepends=(ladspa libsamplerate fftw vamp-plugin-sdk)
+makedepends=(python ladspa libsamplerate fftw vamp-plugin-sdk)
 
 name=rubberband
-version=1.9.0
+version=1.9.1
 
 source=(https://breakfastquay.com/files/releases/$name-$version.tar.bz2)
+
+build=meson

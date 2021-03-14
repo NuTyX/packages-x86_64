@@ -1,17 +1,18 @@
 description="System Utilities Based on Sysfs"
 url="http://linux-diag.sourceforge.net/Sysfsutils.html"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg, tnut"
+makedepends=(automake libtool sed grep)
 
 name=sysfsutils
-version=2.1.0
-release=2
+version=2.1.1
 
-source=(http://downloads.sourceforge.net/sourceforge/linux-diag/${name}-${version}.tar.gz)
+source=(https://github.com/linux-ras/$name/archive/v$version.tar.gz)
 
 build() {
 cd $name-$version
+./autogen
 ./configure --prefix=/usr --mandir=/usr/share/man
 make
 make DESTDIR=$PKG install

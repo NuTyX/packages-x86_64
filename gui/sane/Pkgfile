@@ -1,17 +1,15 @@
 description="Scanner Access Now Easy"
 url="http://www.sane-project.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, tnut"
 
 makedepends=(libusb-compat libjpeg-turbo libtiff gtk2 libexif cups net-snmp avahi
 	poppler-glib)
 
 name=sane
-version=1.0.31
-release=2
-
-source=(http://fossies.org/linux/misc/sane-backends-$version.tar.gz)
+version=1.0.32
+source=(https://gitlab.com/sane-project/backends/uploads/104f09c07d35519cc8e72e604f11643f/sane-backends-$version.tar.gz)
 
 build() {
 	cd $name-backends-$version

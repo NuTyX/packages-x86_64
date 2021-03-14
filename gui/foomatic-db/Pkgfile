@@ -1,8 +1,8 @@
 description="The collected knowledge about printers, drivers, and driver options in XML files"
 url="http://www.linuxprinting.org/foomatic.html"
 
-packager="tnut <tnut@nutyx.org"
-contributors="Pierre B"
+packager="fabienwang <fabienwang@nutyx.org"
+contributors="Pierre B, tnut"
 
 makedepends=(libxml2)
 
@@ -10,8 +10,8 @@ PKGMK_KEEP_SOURCES="no"
 
 name=foomatic-db
 version=4.0
-release="$(date +%Y%m%d)"
-source=(http://www.openprinting.org/download/foomatic/$name-$version-$release.tar.gz)
+release=1
+source=(http://www.openprinting.org/download/foomatic/$name-$version-current.tar.gz)
 
 build() {
     cd $name-*

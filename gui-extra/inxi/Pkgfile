@@ -9,14 +9,14 @@ makedepends=(coreutils grep procps-ng sed
 run=(gawk pciutils usbutils xorg-xdpyinfo xorg-xprop xorg-xrandr lm-sensors)
 
 name=inxi
-version=3.2.02
+version=3.3.01
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/smxi/inxi/archive/${version:0:6}-2.tar.gz)
+source=(https://github.com/smxi/inxi/archive/${version:0:6}-1.tar.gz)
 
 build() {
-cd $name-${version:0:6}-2
+cd $name-${version:0:6}-1
   install -D -m755 inxi $PKG/usr/bin/inxi
   install -D -m755 inxi.1 $PKG/usr/share/man/man1/inxi.1
   

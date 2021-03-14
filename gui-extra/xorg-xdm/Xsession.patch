@@ -1,6 +1,6 @@
 diff -Naur a/config/Xsession.in b/config/Xsession.in
---- a/config/Xsession.in	2019-03-02 22:06:13.000000000 +0000
-+++ b/config/Xsession.in	2019-08-20 16:02:59.230984966 +0000
+--- a/config/Xsession.in	2019-03-02 23:06:13.000000000 +0100
++++ b/config/Xsession.in	2021-03-14 13:15:39.951866350 +0100
 @@ -51,6 +51,7 @@
  
  startup=$HOME/.xsession
@@ -9,17 +9,18 @@ diff -Naur a/config/Xsession.in b/config/Xsession.in
  
  if [ -s "$startup" ]; then
  	if [ -x "$startup" ]; then
-@@ -58,9 +59,15 @@
+@@ -58,9 +59,14 @@
  	else
  		exec /bin/sh "$startup"
  	fi
 +	exec /bin/sh -ls -c "$startup"
  else
- 	if [ -r "$resources" ]; then
+-	if [ -r "$resources" ]; then
++	if [ -r $resources ]; then
  		BINDIR/xrdb -load "$resources"
  	fi
- 	exec BINDIR/xsm
-+	if [ -r "$initrc" ]; then
+-	exec BINDIR/xsm
++	if [ -r $initrc ]; then
 +		exec /bin/sh -ls -c "$xinitrc"
 +	else
 +		exec /bin/sh -l /etc/X11/app-defaults/xinitrc

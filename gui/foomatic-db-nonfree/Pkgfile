@@ -1,18 +1,18 @@
 description="Non-free licenses database extension from manufacturer-supplied PPD files released"
 url="http://www.linuxprinting.org/foomatic.html"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="fabienwang <fabienwang@nutyx.org>"
+contributors="Pierre B, tnut"
 
 makedepends=(cups perl libxml2)
 
 name=foomatic-db-nonfree
 version=4.0
-release="$(date +%Y%m%d)"
+release=1
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(http://www.openprinting.org/download/foomatic/$name-$release.tar.gz)
+source=(http://www.openprinting.org/download/foomatic/$name-current.tar.gz)
 
 build() {
     cd $name-*

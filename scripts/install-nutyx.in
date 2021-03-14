@@ -1,9 +1,11 @@
-#******************************************************************************
+#***********************************************************************
 # Written by Thierry Nuttens
-# Copyright Thierry Nuttens 2010-2011-2012-2013-2014-2015-2016
+# Copyright Thierry Nuttens 2010 - 2021
 # Installation script for the NuTyX system
 # Based on LFS scripts
-#******************************************************************************
+#***********************************************************************
+
+#***********************************************************************
 # Function - boot_mesg()
 #
 # Purpose:      Sending information from bootup scripts to the console
@@ -17,73 +19,72 @@
 #               - grep for counting string length.
 #
 # Todo:
-#******************************************************************************
+#***********************************************************************
 boot_mesg() {
-        local ECHOPARM=""
+	local ECHOPARM=""
 
-        while true
-        do
-                case "${1}" in
-                        -n)
-                                ECHOPARM=" -n "
-                                shift 1
-                                ;;
-                        -*)
-                                echo "Unknown Option: ${1}"
-                                return 1
-                                ;;
-                        *)
-                                break
-                                ;;
-                esac
-        done
+	while true
+	do
+		case "${1}" in
+			-n)
+				ECHOPARM=" -n "
+				shift 1
+				;;
+			-*)
+				echo "Unknown Option: ${1}"
+				return 1
+				;;
+			*)
+				break
+				;;
+		esac
+	done
 
-        ## Figure out the length of what is to be printed to be used
-        ## for warning messages.
-        STRING_LENGTH=$((${#1} + 1))
+	## Figure out the length of what is to be printed to be used
+	## for warning messages.
+	STRING_LENGTH=$((${#1} + 1))
 
-        # Print the message to the screen
-        ${ECHO} ${ECHOPARM} -e "${2}${1}"
-
+	# Print the message to the screen
+	${ECHO} ${ECHOPARM} -e "${2}${1}"
 }
 boot_mesg_flush() {
-        # Reset STRING_LENGTH for next message
-        STRING_LENGTH="0"
+	# Reset STRING_LENGTH for next message
+	STRING_LENGTH="0"
 }
 echo_ok() {
-        ${ECHO} -n -e "${CURS_UP}${SET_COL}${BRACKET}[${SUCCESS}  OK  ${BRACKET}]"
-        ${ECHO} -e "${NORMAL}"
-        boot_mesg_flush
+	${ECHO} -n -e "${CURS_UP}${SET_COL}${BRACKET}[${SUCCESS}  OK  ${BRACKET}]"
+	${ECHO} -e "${NORMAL}"
+	boot_mesg_flush
 }
 echo_info() {
-        ${ECHO} -n -e "${CURS_UP}${SET_COL}${BRACKET}[${INFO} INFO ${BRACKET}]"
-        ${ECHO} -e "${NORMAL}"
-        boot_mesg_flush
+	${ECHO} -n -e "${CURS_UP}${SET_COL}${BRACKET}[${INFO} INFO ${BRACKET}]"
+	${ECHO} -e "${NORMAL}"
+	boot_mesg_flush
 }
 echo_failure() {
-        ${ECHO} -n -e "${CURS_UP}${SET_COL}${BRACKET}[${FAILURE} FAIL ${BRACKET}]"
-        ${ECHO} -e "${NORMAL}"
-        boot_mesg_flush
+	${ECHO} -n -e "${CURS_UP}${SET_COL}${BRACKET}[${FAILURE} FAIL ${BRACKET}]"
+	${ECHO} -e "${NORMAL}"
+	boot_mesg_flush
 }
 print_error_msg() {
-        echo_failure
+	echo_failure
 	ERREUR="yes"
-        # $i is inherited by the rc script
-        boot_mesg -n " FAILURE:\n\n You should not read this error.\n\n" ${FAILURE}
-        boot_mesg -n " It means something went wrong with the installation"
-        boot_mesg -n " of ${i} "
-        boot_mesg_flush
-        boot_mesg -n " Thanks to inform us"
-        boot_mesg -n " via the website http://www.nutyx.org."
-        boot_mesg " Thanks again for your collaboration.\n"
-        boot_mesg_flush
-        boot_mesg -n "Press Enter to continue..." ${INFO}
-        boot_mesg "" ${NORMAL}
-        read ENTER
-        end
+	# $i is inherited by the rc script
+	boot_mesg -n " FAILURE:\n\n You should not read this error.\n\n" ${FAILURE}
+	boot_mesg -n " It means something went wrong with the installation"
+	boot_mesg -n " of ${i} "
+	boot_mesg_flush
+	boot_mesg -n " Thanks to inform us"
+	boot_mesg -n " via the website http://www.nutyx.org."
+	boot_mesg " Thanks again for your collaboration.\n"
+	boot_mesg_flush
+	boot_mesg -n "Press Enter to continue..." ${INFO}
+	boot_mesg "" ${NORMAL}
+	read ENTER
+	end
 	exit 1
 }
-#******************************************************************************
+#***********************************************************************
 # Function - unmountall
 #
 # Purpose:	unmount all the mounted disks and partitions
@@ -94,20 +95,21 @@ print_error_msg() {
 #
 # Dependencies: chroot
 #
-#******************************************************************************
+#***********************************************************************
 unmountall() {
 if [ -d "$DEPOT_CD/depot" ]; then
 	umount ${FOLDER}/${DEPOT}
 	umount  $(cat /tmp/depot)
 fi
 [ ! -z $MOUNT ] && umount ${FOLDER}/${DEPOT}
+
 umount ${FOLDER}/run
 umount ${FOLDER}/dev/pts
 umount ${FOLDER}/dev
 umount ${FOLDER}/proc
 umount ${FOLDER}/sys
 }
-#******************************************************************************
+#***********************************************************************
 # Function - setup_chroot
 #
 # Purpose:	Enter the NuTyX Distribution
@@ -118,7 +120,7 @@ umount ${FOLDER}/sys
 #
 # Dependencies: chroot
 #
-#******************************************************************************
+#***********************************************************************
 setup_chroot() {
 cp /etc/resolv.conf ${FOLDER}/etc/resolv.conf
 mount --bind /dev ${FOLDER}/dev
@@ -147,7 +149,7 @@ PS1='\u:\w\$ ' \
 $LINUX_ARCH \
 $SHELL -l
 }
-#******************************************************************************
+#***********************************************************************
 # Function - download_pkg()
 #
 # Purpose:      Download the selected package
@@ -157,42 +159,45 @@ $SHELL -l
 # Dependencies: - curl
 #
 # Todo:
-#******************************************************************************
+#***********************************************************************
 download_pkg() {
 	getPackageFileName ${1}
-	if [ ! -f $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName ]; then
+	if [ ! -f $FOLDER/$DEPOT/${BASE_COLLECTION}/${1}/$PackageFileName ]; then
 		boot_mesg "Downloading $1..."
 		echo_info
 		curl -LC - -# --create-dirs \
-		${DEPOT_BASE}/${1}/$PackageFileName -o $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName || \
-		error "Cannot download ${DEPOT_BASE}/${1}/$PackageFileName ..., check URL"
+		${DEPOT_BASE}/${1}/$PackageFileName \
+		-o $FOLDER/$DEPOT/${BASE_COLLECTION}/${1}/$PackageFileName || \
+			error "Cannot download ${DEPOT_BASE}/${1}/$PackageFileName ..., check URL"
 		chmod -R 755 $FOLDER/$DEPOT
 		echo_ok
 	fi
 }
-#******************************************************************************
+#***********************************************************************
 # Function - install_pkg()
 #
-# Purpose:      Install the selected package
+# Purpose     : Install the selected package
 #
-# Inputs:       $1 is the package
+# Inputs      : $1 is the package
 #               $2 is the group
-#		$3 Option to install, normally nothing except for grub
-# Outputs:      Standard Output
+#		        $3 Option to install, normally nothing except for grub
+# Outputs     : Standard Output
 #
-# Dependencies: - boot_mesg
-#               - pkgadd
-# Todo:
-#******************************************************************************
+# Dependencies: boot_mesg
+#               pkgadd
+#***********************************************************************
 install_pkg() {
 	getPackageFileName ${1}
-	if $TMP/$(dirname $PKGADD)/pkginfo -r $FOLDER -i| grep "^$1 " > /dev/null; then
+	if $TMP/$(dirname $PKGADD)/pkginfo -r $FOLDER -i| grep "^$1 " \
+		> /dev/null; then
 		boot_mesg "$1 is already install on $DEVICE..."
 		echo_info
 	fi
-	if [ -f $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName ]; then
+	if [ -f $FOLDER/$DEPOT/${BASE_COLLECTION}/${1}/$PackageFileName ]; then
 		# Installing the package
-		$TMP/$PKGADD -r $FOLDER -i $FOLDER/$DEPOT/$BASE/${1}/$PackageFileName || print_error_msg
+		$TMP/$PKGADD -r $FOLDER -i \
+		$FOLDER/$DEPOT/${BASE_COLLECTION}/${1}/$PackageFileName \
+			|| print_error_msg
 		rm -f $FOLDER/.{PRE,POST,README}
 		echo_ok
 	else
@@ -200,9 +205,9 @@ install_pkg() {
 	fi
 }
 error() {
-	echo ""
-	echo " $1"
-	echo ""
+	echo "
+ $1
+"
 	ERREUR="yes"
 	end
 	exit 1
@@ -220,9 +225,9 @@ end() {
 
 	rm -rf $TMP
 }
-#******************************************************************************
+#***********************************************************************
 # Function getPackageFileName
-# 
+#
 # Purpose:	Get the fullname of the package
 #		directory
 # Inputs:	$1 is the package name
@@ -231,38 +236,36 @@ end() {
 #
 # Output:       PackageFileName= cpio1414074943i686.cards.tar.xz
 #
-#******************************************************************************
+#***********************************************************************
 getPackageFileName() {
 	local BUILD_DATE EXT HEAD
-	if [ ! -f $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO ]; then
+	if [ ! -f $FOLDER/$DEPOT/${BASE_COLLECTION}/${1}/.PKGREPO ]; then
 		if ! ($(which curl > /dev/null)); then
 			error " Command 'curl' not found, please install curl programm"
 		fi
 		curl -LC - -sS --create-dirs \
-		${DEPOT_BASE}/${1}/.PKGREPO -o $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO || \
+		${DEPOT_BASE}/${1}/.PKGREPO -o \
+		$FOLDER/$DEPOT/${BASE_COLLECTION}/${1}/.PKGREPO || \
 		error "Cannot download ${DEPOT_BASE}/${1}/.PKGREPO ..., check URL"
 		chmod -R 755 $FOLDER/$DEPOT
 	fi
-	if [ $(wc -l $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO|cut -d " " -f1) -eq 0 ]; then
+	if [ $(wc -l $FOLDER/$DEPOT/${BASE_COLLECTION}/${1}/.PKGREPO|cut -d " " -f1) -eq 0 ]; then
 		error "${DEPOT_BASE}/${1} not reacheable.."
 	fi
-	HEAD=$(head -1 $FOLDER/$DEPOT/$BASE/${1}/.PKGREPO)
+	HEAD=$(head -1 $FOLDER/$DEPOT/${BASE_COLLECTION}/${1}/.PKGREPO)
 	if [ "${HEAD:10:1}" == "#" ]; then
 		BUILD_DATE="$(echo $HEAD|cut -d "#" -f1)"
 		EXT="$(echo $HEAD|cut -d "#" -f2)"
 		PackageFileName="${1}${BUILD_DATE}${ARCH}${EXT}"
 	fi
 }
-
-download_base() {
+install_chroot() {
 for i in $CHROOT
 do
-        download_pkg "$i"
+	download_pkg "$i"
 done
-}
-install_base() {
 for i in $CHROOT
-do 
+do
 	install_pkg "$i"
 done
 }
@@ -454,7 +457,7 @@ if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
    return
 fi
 cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
-###############################################################################
+########################################################################
 # Begin /etc/sysconfig/udev_retry
 #
 # Description : udev_retry script configuration
@@ -463,12 +466,13 @@ cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 #
 # Version     : 00.00
 #
-# Notes       : Each subsystem that may need to be re-triggered after mountfs
-#               runs should be listed in this file.  Probable subsystems to be
-#               listed here are rtc (due to /var/lib/hwclock/adjtime) and sound
-#               (due to both /var/lib/alsa/asound.state and /usr/sbin/alsactl).
-#               Entries are whitespace-separated.
-###############################################################################
+#
+#	Each subsystem that may need to be re-triggered after mountfs
+#	runs should be listed in this file.  Probable subsystems to be
+#	listed here are rtc (due to /var/lib/hwclock/adjtime) and sound
+#	(due to both /var/lib/alsa/asound.state and /usr/sbin/alsactl).
+#	Entries are whitespace-separated.
+########################################################################
 
 rtc
 
@@ -488,6 +492,7 @@ fi
 cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 # Which display manager to use (full path):
 # DISPLAY_MANAGER=/usr/sbin/lxdm
+# DISPLAY_MANAGER=/usr/sbin/xdm
 # DISPLAY_MANAGER=/usr/bin/lightdm
 # DISPLAY_MANAGER=/usr/sbin/gdm
 # DISPLAY_MANAGER=/usr/bin/sddm
@@ -507,7 +512,7 @@ if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
    return
 fi
 cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
-###############################################################################
+########################################################################
 # Begin /etc/sysconfig/createfiles
 #
 # Description : Createfiles script config file
@@ -520,7 +525,7 @@ cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 # 		if type is equal to "file" or "dir"
 #  		<filename> <type> <permissions> <user> <group>
 # 		if type is equal to "dev"
-#  		<filename> <type> <permissions> <user> <group> <devtype> 
+#  		<filename> <type> <permissions> <user> <group> <devtype>
 #             <major> <minor>
 #
 # 		<filename> is the name of the file which is to be created
@@ -531,11 +536,11 @@ cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 # 		<devtype> is either block, char or pipe
 #   			block creates a block device
 #   			char creates a character deivce
-#   			pipe creates a pipe, this will ignore the <major> and 
+#   			pipe creates a pipe, this will ignore the <major> and
 #           <minor> fields
-# 		<major> and <minor> are the major and minor numbers used for 
+# 		<major> and <minor> are the major and minor numbers used for
 #     the device.
-###############################################################################
+########################################################################
 
 # End /etc/sysconfig/createfiles
 EOF
@@ -551,7 +556,7 @@ if [ -f /etc/${INSTALL_COMMAND}.conf.d/$FILE ]; then
    return
 fi
 cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
-###############################################################################
+########################################################################
 # Begin /etc/sysconfig/modules
 #
 # Description : Module auto-loading configuration
@@ -566,7 +571,7 @@ cat > ${FOLDER}/etc/sysconfig/$FILE << "EOF"
 # Each module should be on its own line, and any options that you want
 # passed to the module should follow it.  The line deliminator is either
 # a space or a tab.
-###############################################################################
+########################################################################
 
 # End /etc/sysconfig/modules
 EOF
@@ -637,7 +642,7 @@ set bell-style none
 "\e[H": beginning-of-line
 "\e[F": end-of-line
 
-# End /etc/inputrc 
+# End /etc/inputrc
 EOF
 }
 generate_hosts() {
@@ -1110,8 +1115,34 @@ echo "
 ****************************************************
 "
 }
+check_tools() {
+local FILE MD5SUM
+
+MD5SUM="6a7ef1e62191f6f458ddaacdd881772d"
+
+[ ! -f "$(which xorriso)" ] && error "You need to install 'libisoburn'"
+[ ! -f "$(which isohybrid)" ] && error "You need to install 'syslinux'"
+[ ! -f "$(which mkdosfs)" ] && error "You need to install 'dosfstools'"
+[ ! -f "$(which wget)" ] && error "You need to install 'wget'"
+for FILE in libutil.c32 libcom32.c32 ldlinux.c32 vesamenu.c32 isolinux.bin
+do
+	[ ! -f /usr/lib/syslinux/$FILE ] && \
+		error "syslinux not properly installed"
+done
+FILE="boot.$MD5SUM"
+wget $URL_SPLASH/$FILE
+echo  "${FILE/boot./}  $FILE" > $TMP/test
+md5sum -c $TMP/test || error "boot.cat wrong checksum"
+mv $FILE $LFS/ISO/isolinux/boot.cat
+
+}
 check_root() {
-[ "$UID" != "0" ] && error " You are not root, cannot continue"
+if [ "$UID" -ne 0 ]; then
+	echo "
+You are not root, cannot continue...
+"
+	exit 1
+fi
 }
 check_variables() {
 
@@ -1123,11 +1154,14 @@ if [ -z "$CHROOT" ]; then
 else
 	CHROOT="$CR $CHROOT"
 fi
-unset CR
 
 [ "$ARCH" = "i686" -a "$HOST_ARCH" = "x86_64" ] && \
-	CHROOT+=" util-linux"
+	CHROOT="$CR util-linux"
+unset CR
+
 [ -z "$URL" ] && URL="http://downloads.nutyx.org"
+
+[ -z "$MOUNT" ] || VERSION="$(basename $MOUNT)"
 
 [ -z "$VERSION" ] && VERSION="rolling"
 if [ "$VERSION" == "development" ]; then
@@ -1139,11 +1173,62 @@ fi
 [ -z "$DEPOT" ] && DEPOT="/var/lib/pkg/depot"
 [ -z "$FOLDER" ] && FOLDER="/mnt/hd"
 
+[ -z "$STRICT" ] && STRICT="kernel"
+[ -z "$MINI" ] && MINI="dhcpcd"
+[ -z "$BASE" ] && BASE="efibootmgr linux-firmware systemd runyx \
+wireless-tools wpa-supplicant"
+[ -z "$CLI" ] && CLI="gpm gpm.service dosfstools make-ca xdg-user-dirs \
+sound-theme-freedesktop ntp"
+[ -z "$GUI" ] && GUI="flcards gvfs network-manager-applet"
+[ -z "$XORG" ] && XORG="xorg-xf86-input-synaptics \
+xorg-xf86-input-wacom xorg-xf86-video-ati \
+xorg-xf86-video-fbdev xorg-xf86-video-intel \
+xorg-xf86-video-nouveau xorg-xf86-video-vesa \
+xorg-xrandr xorg-setxkbmap"
+
+[ -z "$GUI_EXTRA" ] && GUI_EXTRA="firefox thunderbird gparted leafpad \
+scrot vlc telegram"
+[ -z "$KDE5_EXTRA" ] && KDE5_EXTRA="kdenlive k3b"
+[ -z "$GNOME_EXTRA" ] && GNOME_EXTRA="epiphany seahorse-nautilus evolution \
+simple-scan gnome-weather gnome-chess balsa"
+
+[ -z "$OPENBOX" ] && OPENBOX="openbox lxdm dmenu"
+[ -z "$JWM" ] && JWM="jwm lxdm"
+[ -z "$LXDE" ] && LXDE="lxdm lxde"
+[ -z "$XFCE4" ] && XFCE4="xfce4 xfce4-extra lxdm"
+[ -z "$MATE" ] && MATE="mate lightdm"
+[ -z "$GNOME" ] && GNOME="gnome"
+[ -z "$KDE5" ] && KDE5="kde5"
+
+if [ ! -z $ISO ]; then
+	SPLASH="splash-${VERSION_NUTYX}"
+	URL_SPLASH="https://download.tuxfamily.org/nutyx/files"
+	ISO=${ISO^^}
+	case ${ISO} in
+		STRICT) ISO="$STRICT";;
+		MINI) ISO="$STRICT $MINI";;
+		BASE) ISO="$STRICT $BASE";;
+		CLI) ISO="$STRICT $BASE $CLI";;
+		GUI) ISO="$STRICT $BASE $CLI $GUI";;
+		XORG) ISO="$STRICT $BASE $CLI $GUI $XORG";;
+		GUI_EXTRA) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA}";;
+		OPENBOX) ISO="$STRICT $BASE $CLI $GUI ${GUI_EXTRA} $XORG $OPENBOX";;
+		JWM) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $JWM";;
+		LXDE) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $LXDE";;
+		XFCE4) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $XFCE4";;
+		MATE) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $MATE";;
+		GNOME) ISO="$STRICT $BASE $CLI $GUI $XORG $GUI_EXTRA $GNOME ${GNOME_EXTRA}";;
+		KDE5) ISO="$STRICT $BASE $CLI $GUI $XORG $GUI_EXTRA $KDE5 $KDE5_EXTRA";;
+		*) echo "Valid ISO names: strict, mini, base, cli, gui, xorg, \
+gui_extra, openbox, jwm, lxde, xfce4, mate, gnome, kde5" && exit 1;;
+	esac
+fi
+
 [ "$KERNEL" = "NONE" ] && KERNEL="none"
 
 if [ "$KERNEL" != "none"  ]; then
 	INITS="eudev sysklogd sysvinit"
-	CORE=" acl attr bash coreutils readline \
+	CORE="acl attr bash coreutils readline \
 expat ncurses lzo gmp flex file gzip mpc mpfr \
 grep sed findutils binutils \
 inetutils diffutils shadow \
@@ -1156,25 +1241,52 @@ iproute2 iana-etc \
 groff man-db \
 cards.man nutyx.man \
 dialog cpio squashfs \
-lsb-release grub $KERNEL"
+lsb-release grub $KERNEL "
+fi
+
+if [ ! -z "$ISO" ];then
+	DEVEL+=" $ISO
+for k in \$(ls /lib/modules/)
+do
+  mkinitramfs \$k -nf
+done
+sed -i \"s@kernel-419@\$KERNEL@g\" /sbin/setup-nutyx"
+	if [ -z $MOUNT ]; then
+		DEVEL+="
+cards purge"
+	else
+		DEVEL+="
+umount $DEPOT"
+	fi
+	DEVEL+="
+for DIR in opt bin etc lib lib64 root run sbin usr var home
+do
+  [[ -f /ISO/boot/"\$DIR".squashfs ]] && rm /ISO/boot/"\$DIR".squashfs
+  mksquashfs /\"\$DIR\" /ISO/boot/\"\$DIR\".squashfs
+done
+exit 0"
 fi
 
 [ -z $LFS ] && LFS=$FOLDER
 
-HOMEPAGE="${URL}"                      ## http://downloads.nutyx.org
-INSTALL_BASE="$ARCH/$VERSION"          ## x86_64/8.2
-DEPOT_ROOT="$HOMEPAGE/${INSTALL_BASE}" ## http://downloads.nutyx.org/x86_64/8.2
-DEPOT_BASE="$DEPOT_ROOT/$BASE"         ## http://downloads.nutyx.org/x86_64/8.2/base
+HOMEPAGE="${URL}"                           ## http://downloads.nutyx.org
+INSTALL_BASE="$ARCH/$VERSION"               ## x86_64/rolling
+DEPOT_ROOT="$HOMEPAGE/${INSTALL_BASE}"      ## http://downloads.nutyx.org/x86_64/rolling
+DEPOT_BASE="$DEPOT_ROOT/${BASE_COLLECTION}" ## http://downloads.nutyx.org/x86_64/rolling/base
 
-LOCAL_DEPOT_PACKAGES="$DEPOT/$BASE"
+LOCAL_DEPOT_PACKAGES="$DEPOT/${BASE_COLLECTION}"
 DEPOT_CD="/media/cdrom"
 
-SETUP_FILE=/tmp/setup
+SETUP_FILE="/tmp/setup"
 }
 config() {
+[ -f /etc/$(basename $INSTALL_COMMAND).conf ] && \
+		source /etc/$(basename $INSTALL_COMMAND).conf
+
 HOST_ARCH=$(uname -m)
 [ -z "$ARCH" ] && ARCH=$(uname -m)
-[ "$ARCH" = "i686" -a "$HOST_ARCH" = "x86_64" ] && LINUX_ARCH="linux32" || LINUX_ARCH=""
+[ "$ARCH" = "i686" -a "$HOST_ARCH" = "x86_64" ] && LINUX_ARCH="linux32" \
+	|| LINUX_ARCH=""
 
 # Number of seconds between STOPSIG and FALLBACK when stopping processes
 KILLDELAY="3"
@@ -1232,11 +1344,10 @@ STRING_LENGTH="0"   # the length of the current message
 check_lfs() {
 # LFS is set ?
 if [ ! -z "${LFS}" ]; then
-        DEVICE=${LFS}
+	DEVICE=${LFS}
 	FOLDER=${LFS}
 else
-
-        DEVICE=${FOLDER}
+	DEVICE=${FOLDER}
 fi
 }
 check_mountpoint() {
@@ -1245,11 +1356,13 @@ check_mountpoint() {
 mount_depot() {
 if [ ! -z $MOUNT ]; then
 	mkdir -p $FOLDER/$DEPOT
-	mount --bind $MOUNT  $FOLDER/$DEPOT || error "cannot mount $MOUNT on $FOLDER/$DEPOT"
+	mount --bind $MOUNT  $FOLDER/$DEPOT \
+		|| error "cannot mount $MOUNT on $FOLDER/$DEPOT"
 fi
 }
 check_arch() {
-if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ] && [ "$ARCH" != "aarch64" ]; then
+if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ] \
+	&& [ "$ARCH" != "aarch64" ]; then
 	boot_mesg "
  >>> This arch ($ARCH) is not supported"
 	echo_failure
@@ -1267,17 +1380,107 @@ if [ -d ${FOLDER}/usr/lib/locale ]; then
 fi
 }
 make_directories() {
-mkdir ${FOLDER}/{dev,sys,proc,run,tmp,srv,mnt}
+mkdir -p ${FOLDER}/{dev,sys,proc,run,tmp,srv,mnt}
 mkdir -p ${FOLDER}/var/tmp
 mkdir -p ${FOLDER}/usr/{,local/}lib
 
 chmod 1777 ${FOLDER}/{,var/}tmp
 
 mkdir -v ${FOLDER}/var/{mail,spool}
-mkdir -pv ${FOLDER}/var/run/lock
 
 mknod -m 600 ${FOLDER}/dev/console c 5 1
 mknod -m 666 ${FOLDER}/dev/null c 1 3
+if [ ! -z "$ISO" ]; then
+	mkdir -p ${FOLDER}/ISO/{boot,iso,isolinux}
+	cat > $TMP/install.cfg << "EOF"
+default install
+label install
+ menu label ^Install
+ kernel /boot/kernel-#VERSION_KERNEL#
+ append initrd=/boot/initrd-#VERSION_KERNEL# vga=788 ro quiet
+
+label install-debug
+ menu label install-^Debug
+ kernel /boot/kernel-#VERSION_KERNEL#
+ append initrd=/boot/initrd-#VERSION_KERNEL#  vga=788 ro testiso
+
+label install-toram
+ menu label Install copied to ^RAM
+ kernel /boot/kernel-#VERSION_KERNEL#
+ append initrd=/boot/initrd-#VERSION_KERNEL# vga=788 ro quiet toram
+
+label install-debug-toram
+ menu label install-Debug copied to RA^M
+ kernel /boot/kernel-#VERSION_KERNEL#
+ append initrd=/boot/initrd-#VERSION_KERNEL#  vga=788 ro testiso toram
+fi
+
+EOF
+	cat > ${FOLDER}/ISO/isolinux/isolinux.cfg << "EOF"
+path
+include menu.cfg
+default vesamenu.c32
+prompt 0
+timeout 100
+
+EOF
+	cat > $TMP/live.cfg << "EOF"
+label live
+ menu label ^Live
+ kernel /boot/kernel-#VERSION_KERNEL#
+ append initrd=/boot/initrd-#VERSION_KERNEL# vga=788 ro quiet live
+
+label live-debug
+ menu label li^ve-Debug
+ kernel /boot/kernel-#VERSION_KERNEL#
+ append initrd=/boot/initrd-#VERSION_KERNEL# vga=788 ro testiso live
+
+label live-toram
+ menu label live copied to ^RAM
+ kernel /boot/kernel-#VERSION_KERNEL#
+ append initrd=/boot/initrd-#VERSION_KERNEL# vga=788 ro quiet live toram
+
+label live-debug-toram
+ menu label live-Debug copied to ^RAM
+ kernel /boot/kernel-#VERSION_KERNEL#
+ append initrd=/boot/initrd-#VERSION_KERNEL# vga=788 ro testiso live toram
+
+EOF
+	cat > $TMP/menu.cfg << "EOF"
+menu hshift 7
+menu width 80
+
+menu title NuTyX GNU/Linux installer #VERSION_NUTYX# #VERSION_KERNEL#
+include stdmenu.cfg
+include install.cfg
+include live.cfg
+
+menu end
+
+EOF
+cat > ${FOLDER}/ISO/isolinux/stdmenu.cfg << "EOF"
+menu background ../boot/grub/splash.png
+menu color title	* #FFFFFFFF *
+menu color border	* #00000000 #00000000 none
+menu color sel		* #ffffffff #76a1d0ff *
+menu color hotsel	1;7;37;40 #ffffffff #76a1d0ff *
+menu color tabmsg	* #ffffffff #00000000 *
+menu color help		37;40 #ffdddd00 #00000000 none
+# XXX When adjusting vshift, take care that rows is set to a small
+# enough value so any possible menu will fit on the screen,
+# rather than falling off the bottom.
+menu vshift 8
+menu rows 12
+# The help line must be at least one line from the bottom.
+menu helpmsgrow 14
+# The command line must be at least one line from the help line.
+menu cmdlinerow 16
+menu timeoutrow 16
+menu tabmsgrow 18
+menu tabmsg Press ENTER to boot or TAB to edit a menu entry
+
+EOF
+fi
 }
 download_pkgadd() {
 	PKGADD="$(which pkgadd)"
@@ -1303,7 +1506,8 @@ download_pkgadd() {
 			fi
 			download_pkg cards
 			echo "Extraction of cards ..."
-			bsdtar -xf $FOLDER/$DEPOT/$BASE/cards/${PackageFileName} || print_error_msg
+			bsdtar -xf $FOLDER/$DEPOT/${BASE_COLLECTION}/cards/${PackageFileName} \
+				|| print_error_msg
 			echo_ok
 		fi
 	fi
@@ -1323,9 +1527,7 @@ if [[ -z "$INITS" && -z "$CORE" && -z "$DEVEL" ]];then
 else
 	echo "source /etc/profile
 cards sync
-cards install -n $CORE \
-$INITS \
-$DEVEL
+cards install -n $CORE $INITS $DEVEL
 exit" > $FOLDER/$SETUP_FILE
 fi
 chmod 177 $FOLDER/$SETUP_FILE
@@ -1334,6 +1536,7 @@ chroot ${FOLDER} env -i \
 HOME=/root \
 EUID=0 \
 TERM="$TERM"  \
+KERNEL="$KERNEL" \
 PS1='\u:\w\$ ' \
 $LINUX_ARCH \
 "$SHELL" -c "$SETUP_FILE"
@@ -1365,6 +1568,41 @@ install_configuration_files() {
 	generate_lsb
 	generate_nutyx_version
 }
+show_variables() {
+echo "
+List of variables:
+
+LFS        : $LFS
+FOLDER     : $FOLDER
+DEVICE     : $DEVICE
+URL        : $URL
+VERSION    : $VERSION
+KERNEL     : $KERNEL
+DEPOT      : $DEPOT
+MOUNT      : $MOUNT
+SHELL      : $SHELL
+DEPOT_BASE : $DEPOT_BASE
+CHROOT     : $CHROOT
+INITS      : $INITS
+CORE       : $CORE
+DEVEL      : $DEVEL
+ISO        : $ISO"
+[ -z "$ISO" ] || echo "STRICT     : $STRICT
+MINI       : $MINI
+BASE       : $BASE
+CLI        : $CLI
+GUI        : $GUI
+GUI_EXTRA  : $GUI_EXTRA
+XORG       : $XORG
+GNOME_EXTRA: ${GNOME_EXTRA}
+KDE5_EXTRA : ${KDE5_EXTRA}
+JWM        : $JWM
+LXDE       : $LXDE
+XFCE4      : $XFCE4
+MATE       : $MATE
+GNOME      : $GNOME
+KDE5       : $KDE5"
+}
 print_help() {
 	echo "
 usage: `basename ${INSTALL_COMMAND}` [options]
@@ -1372,6 +1610,7 @@ options
 
   -ec,  --enter-chroot    will enter in the chroot if exist
   -ic,  --install-config  will install all the configuration files only
+   -t,  --test            print all the variables and exit
    -h,  --help            print help and exit
    -v,  --version         print the version and exit
 "
@@ -1384,10 +1623,13 @@ parse_options() {
 			-h|--help)
 				print_help
 				exit 0;;
+			-t|--test)
+				show_variables
+				exit 0;;
 			-ec|--enter-chroot)
-				check_lfs "$@"
 				check_root
 				setup_chroot
+				mount_depot
 				enter_chroot
 				unmountall
 				exit 0;;
@@ -1401,7 +1643,7 @@ parse_options() {
 				install_configuration_files
 				exit 0;;
 			-v|--version)
-				echo "$(basename $INSTALL_COMMAND) #VERSION#-$RELEASE"
+				echo "$(basename $INSTALL_COMMAND) $VERSION_NUTYX-$RELEASE"
 				exit 0;;
 			/*)
 				boot_mesg "
@@ -1415,50 +1657,193 @@ parse_options() {
 		shift
 	done
 }
+generate_iso() {
+local FILE MD5SUM VERSION_KERNEL LABEL GRUB_EFI_ARCH GRUB_EFI_IMG ISODIR \
+SCRIPTDIR
+
+LABEL="nutyxcd"
+GRUB_EFI_ARCH="x86_64"
+GRUB_EFI_IMG="bootx64.efi"
+ISODIR=$LFS/ISO
+SCRIPTDIR=$(pwd -P)
+
+VERSION_KERNEL="$(basename $LFS/lib/modules/*-NuTyX)"
+ISO="NuTyX_${ARCH}-$VERSION_NUTYX-$ISO"
+cd ${ISODIR} || error "cd ${ISODIR}"
+
+wget ${URL_SPLASH}/$SPLASH.png
+[ -f $SPLASH.png ] && mv $SPLASH.png isolinux/splash.png
+
+for FILE in libutil.c32 libcom32.c32 ldlinux.c32 vesamenu.c32 isolinux.bin
+do
+	cp /usr/lib/syslinux/$FILE isolinux/
+done
+
+sed "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" \
+	$TMP/menu.cfg \
+	> isolinux/menu.cfg
+sed "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" \
+	$TMP/live.cfg \
+	> isolinux/live.cfg
+sed "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" \
+	$TMP/install.cfg \
+	> isolinux/install.cfg
+sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" isolinux/menu.cfg
+
+# efi stufs
+rm -rf iso
+rm -rf boot/grub
+mkdir -p {iso/EFI,boot/grub/{fonts,${GRUB_EFI_ARCH}-efi}}
+
+# grub
+[ -f /usr/share/grub/unicode.pf2 ] && \
+	cp /usr/share/grub/unicode.pf2 boot/grub/fonts
+
+[ -f isolinux/splash.png ] && \
+		mv isolinux/splash.png boot/grub
+
+echo "set prefix=/boot/grub" > iso/grub-early.cfg
+
+cp -a /usr/lib/grub/${GRUB_EFI_ARCH}-efi/*.mod \
+	/usr/lib/grub/${GRUB_EFI_ARCH}-efi/*.lst \
+	boot/grub/${GRUB_EFI_ARCH}-efi
+
+cat  > boot/grub/grub.cfg << "EOF"
+set default=0
+set timeout=99
+
+# set debug=all
+# set pager=1
+
+insmod all_video
+if loadfont /boot/grub/fonts/unicode.pf2; then
+  set gfxmode=800x600
+  insmod efi_gop
+  insmod efi_uga
+  insmod video_bochs
+  insmod video_cirrus
+  insmod gfxterm
+  insmod png
+  terminal_output gfxterm
+fi
+
+if background_image /boot/grub/splash.png; then
+  set color_normal=light-gray/black
+  set color_highlight=white/black
+else
+  set color_normal=cyan/blue
+  set color_highlight=white/blue
+fi
+
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) normal" {
+
+    linux /boot/kernel-#VERSION_KERNEL#  ro quiet
+    initrd /boot/initrd-#VERSION_KERNEL#
+}
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) debug" {
+    set background_color=black
+    linux /boot/kernel-#VERSION_KERNEL#  ro testiso rootdelay=3
+    initrd /boot/initrd-#VERSION_KERNEL#
+}
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) copied to RAM" {
+
+    linux /boot/kernel-#VERSION_KERNEL#  ro quiet toram
+    initrd /boot/initrd-#VERSION_KERNEL#
+}
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) debug copied to RAM" {
+    set background_color=black
+    linux /boot/kernel-#VERSION_KERNEL#  ro testiso rootdelay=3 toram
+    initrd /boot/initrd-#VERSION_KERNEL#
+}
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) installable live" {
+    linux /boot/kernel-#VERSION_KERNEL#  ro quiet rootdelay=5 live
+    initrd /boot/initrd-#VERSION_KERNEL#
+}
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) debug live" {
+    linux /boot/kernel-#VERSION_KERNEL#  ro testiso rootdelay=3 live
+    initrd /boot/initrd-#VERSION_KERNEL#
+}
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) installable live copied to RAM" {
+    linux /boot/kernel-#VERSION_KERNEL#  ro quiet rootdelay=5 live toram
+    initrd /boot/initrd-#VERSION_KERNEL#
+}
+menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) debug live copied to RAM" {
+    linux /boot/kernel-#VERSION_KERNEL#  ro testiso rootdelay=3 live toram
+    initrd /boot/initrd-#VERSION_KERNEL#
+}
+EOF
+sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" boot/grub/grub.cfg
+sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" boot/grub/grub.cfg
+sed -i "s|#ARCH#|${ARCH}|" boot/grub/grub.cfg
+
+for FILE in kernel initrd
+do
+	[ -f isolinux/$FILE ] && mv -v isolinux/$FILE boot/
+done
+
+grub-mkimage -c iso/grub-early.cfg -o iso/EFI/${GRUB_EFI_IMG} \
+	-O ${GRUB_EFI_ARCH}-efi -p "" iso9660 normal \
+	search search_fs_file || error "grub-mkimage"
+
+# efiboot.img
+modprobe loop
+
+dd if=/dev/zero of=iso/efiboot.img count=4096
+
+mkdosfs -n nutyxcd iso/efiboot.img || error "mkdosfs"
+mkdir -p iso/efiboot
+mount -o loop iso/efiboot.img iso/efiboot || error "mount efiboot.img"
+mkdir -p iso/efiboot/EFI/boot
+cp       iso/EFI/${GRUB_EFI_IMG} iso/efiboot/EFI/boot
+
+umount iso/efiboot
+
+# Iso generation
+
+xorriso -as mkisofs -R -l -J -o ${LFS}/${ISO}.iso \
+-A NUTYX \
+-b isolinux/isolinux.bin \
+-c isolinux/boot.cat -no-emul-boot -boot-load-size 4 \
+-boot-info-table \
+-eltorito-alt-boot -e iso/efiboot.img -no-emul-boot \
+-input-charset utf-8 -V "${LABEL}" .
+
+cd ${LFS}
+isohybrid -u ${ISO}.iso || error "isohybrid ${ISO}.iso"
+sha256sum ${ISO}.iso > ${ISO}.sha256sum
+}
 main() {
 	config
-	if [ -f /etc/$(basename $INSTALL_COMMAND).conf ]; then
-		source /etc/$(basename $INSTALL_COMMAND).conf
-	fi
 	check_variables  "$@"
-	parse_options "$@"
-	check_arch
 	check_lfs "$@"
+	check_arch
+	parse_options "$@"
 	mount_depot
-
-	echo "LFS        : $LFS
-DEVICE     : $DEVICE
-URL        : $URL
-VERSION    : $VERSION
-KERNEL     : $KERNEL
-DEPOT      : $DEPOT
-MOUNT      : $MOUNT
-FOLDER     : $FOLDER
-SHELL      : $SHELL
-DEPOT_BASE : $DEPOT_BASE
-DEVEL      : $DEVEL
-CHROOT     : $CHROOT"
+	show_variables
 	check_root
+
 	TMP=$(mktemp -d)
+	make_directories
+	[ -z "$ISO" ] || check_tools
 	check_mountfolder
 	check_mountpoint
 
 	download_pkgadd
 	create_database
-	download_base
-	install_base
+	install_chroot
 
 	create_locale_link
 
-	make_directories
 	install_configuration_files
 	install_resolv_conf
 	generate_setupfile
-	end
+	[ -z "$ISO" ] || generate_iso
 	successfull_installation
-}
+	end
 
-readonly BASE="base"
+}
+readonly BASE_COLLECTION=base
+readonly VERSION_NUTYX=#VERSION#
 readonly RELEASE=1
 INSTALL_COMMAND="$(basename $0)"
 main "$@"

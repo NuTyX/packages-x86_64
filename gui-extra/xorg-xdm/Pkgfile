@@ -1,15 +1,21 @@
 description="X display Manager"
 url="https://xorg.freedesktop.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="tnut, Greg"
 
 name=xorg-xdm
 version=1.1.12
+release=3
+
+runyx_version=20201011
+
 makedepends=(pam xorg-libxaw xorg-libxinerama xorg-xinit xorg-libxft)
 run=(xorg-xinit)
 
 source=($url/releases/individual/app/xdm-$version.tar.bz2
-	Xsession.patch)
+	Xsession.patch
+	http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz)
 build() {
 
    cd xdm-$version
@@ -40,4 +46,27 @@ session  include        system-session
 # End /etc/pam.d/xdm
 EOF
 
+
+# Service
+cd $SRC/runyx-${runyx_version}
+make DESTDIR=$PKG install-sysd-lightdm
+sed -e "s@Light Display Manager@Xorg Display Manager@" \
+    -e "/man:lightdm(1)/d"                             \
+    -e "s@/usr/bin/lightdm@/usr/sbin/xdm@"             \
+    -i $PKG/lib/systemd/system/lightdm.service
+
+mv $PKG/lib/systemd/system/lightdm.service \
+   $PKG/lib/systemd/system/xdm.service
+
+mkdir -p $PKG/{etc/init/multi,lib/init/services/xdm}
+cat > $PKG/lib/init/services/xdm/run << "EOF"
+#!/bin/sh
+[ -e /run/dbus/system_bus_socket ] || exit 1
+exec /usr/sbin/xdm
+EOF
+chmod 755 $PKG/lib/init/services/xdm/run
+ln -sv /lib/init/services/xdm $PKG/etc/init/multi/xdm
+
+# Obsolet lib
+rm $PKG/usr/lib/X11/xdm/libXdmGreet.la
 }
