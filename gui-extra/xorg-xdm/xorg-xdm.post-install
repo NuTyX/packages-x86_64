@@ -6,11 +6,11 @@ log_warning_msg "${WARNING} You need to create your own .xinitrc file and adapt 
 echo "
 ==> EXAMPLE FOR XFCE4
 cat > ~/.xinitrc << \"EOF\"
-ck-launch-session dbus-launch --exit-with-session startxfce4
+dbus-launch --exit-with-session startxfce4
 EOF
 ==> EXAMPLE FOR LXDE
 cat > ~/.xinitrc << \"EOF\"
-ck-launch-session `which startlxde`
+$(which startlxde)
 EOF
 chmod 700 ~/.xinitrc"
 

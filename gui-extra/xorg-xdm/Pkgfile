@@ -6,7 +6,7 @@ contributors="tnut, Greg"
 
 name=xorg-xdm
 version=1.1.12
-release=2
+release=3
 
 runyx_version=20201011
 
@@ -67,4 +67,6 @@ EOF
 chmod 755 $PKG/lib/init/services/xdm/run
 ln -sv /lib/init/services/xdm $PKG/etc/init/multi/xdm
 
+# Obsolet lib
+rm $PKG/usr/lib/X11/xdm/libXdmGreet.la
 }
