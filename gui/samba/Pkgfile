@@ -1,16 +1,17 @@
 description="SMB Fileserver and AD Domain server"
 url="https://www.samba.org"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre B, Tnut, Greg, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg, Spiky"
 
 makedepends=(acl pam perl-yapp jansson rpcsvc-proto libtirpc
-             docbook-xsl avahi gnutls libgpg-error popt
+             docbook-xsl avahi gnutls libgpg-error popt talloc
              python icu cups kerberos libcap openldap tdb)
 run=(samba.lib)
 
 name=samba
 version=4.13.5
+release=2
 
 runyx_version=20201011
 
@@ -37,7 +38,7 @@ LDFLAGS+=" -ltirpc"                     \
     --with-pammodulesdir=/lib/security  \
     --without-ad-dc                     \
     --enable-fhs                        \
-    --bundled-libraries=!tdb            \
+    --bundled-libraries=!tdb,!talloc,!pytalloc-util \
     --enable-selftest
 
 make
