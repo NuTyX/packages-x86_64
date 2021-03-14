@@ -1,8 +1,6 @@
 . lib/lsb/init-functions
 sed -i "s/^id:[3-5]/id:5/" etc/inittab
-sed -i "s/lxdm/xdm/" etc/inittab
 log_success_msg2  "Init default set to 5 in the ${WARNING}/etc/inittab ${NORMAL}file"
-log_warning_msg "${WARNING} xdm replacing lxdm in /etc/inittab file${NORMAL}"
 
 log_warning_msg "${WARNING} You need to create your own .xinitrc file and adapt it to your needs ${NORMAL}"
 echo "
@@ -15,3 +13,33 @@ cat > ~/.xinitrc << \"EOF\"
 ck-launch-session `which startlxde`
 EOF
 chmod 700 ~/.xinitrc"
+
+SERVICE="/lib/systemd/system/xdm.service"
+if [ ! -L etc/systemd/system/display-manager.service ];then
+  mkdir -p etc/systemd/system
+  ln -sf $SERVICE etc/systemd/system/display-manager.service && \
+  log_success_msg2  "${INFO} Created symlink /etc/systemd/system/display-manager.service -> $SERVICE${NORMAL}"
+else
+  ACTIVE_SERVICE="$(readlink /etc/systemd/system/display-manager.service)"
+  [ "${ACTIVE_SERVICE}" != "$SERVICE" ] && \
+  log_warning_msg "${WARNING} symlink /etc/systemd/system/display-manager.service -> ${ACTIVE_SERVICE} exist${NORMAL}"
+fi
+
+
+
+if [ ! -f etc/sysconfig/xdm ];then
+   mkdir -p etc/sysconfig
+   cat > etc/sysconfig/xdm << "EOF"
+# Which display manager to use (full path):
+# DISPLAY_MANAGER=/usr/sbin/gdm
+# DISPLAY_MANAGER=/usr/sbin/lxdm
+DISPLAY_MANAGER=/usr/sbin/xdm
+# DISPLAY_MANAGER=/usr/bin/lightdm
+# DISPLAY_MANAGER=/usr/bin/sddm
+
+
+# Options to pass to the display manager:
+DM_OPTIONS=""
+EOF
+   log_success_msg2  "${INFO} /etc/sysconfig/xdm file created ${NORMAL}"
+fi
