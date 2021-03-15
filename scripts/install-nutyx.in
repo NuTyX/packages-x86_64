@@ -1180,7 +1180,7 @@ wireless-tools wpa-supplicant"
 [ -z "$CLI" ] && CLI="gpm gpm.service dosfstools make-ca xdg-user-dirs \
 sound-theme-freedesktop ntp"
 [ -z "$GUI" ] && GUI="flcards gvfs network-manager-applet"
-[ -z "$XORG" ] && XORG="xorg-xf86-input-synaptics \
+[ -z "$XORG" ] && XORG="xorg-xinit xorg-xf86-input-synaptics \
 xorg-xf86-input-wacom xorg-xf86-video-ati \
 xorg-xf86-video-fbdev xorg-xf86-video-intel \
 xorg-xf86-video-nouveau xorg-xf86-video-vesa \
@@ -1205,20 +1205,20 @@ if [ ! -z $ISO ]; then
 	URL_SPLASH="https://download.tuxfamily.org/nutyx/files"
 	ISO=${ISO^^}
 	case ${ISO} in
-		STRICT) ISO="$STRICT";;
-		MINI) ISO="$STRICT $MINI";;
-		BASE) ISO="$STRICT $BASE";;
-		CLI) ISO="$STRICT $BASE $CLI";;
-		GUI) ISO="$STRICT $BASE $CLI $GUI";;
-		XORG) ISO="$STRICT $BASE $CLI $GUI $XORG";;
-		GUI_EXTRA) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA}";;
-		OPENBOX) ISO="$STRICT $BASE $CLI $GUI ${GUI_EXTRA} $XORG $OPENBOX";;
-		JWM) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $JWM";;
-		LXDE) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $LXDE";;
-		XFCE4) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $XFCE4";;
-		MATE) ISO="$STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $MATE";;
-		GNOME) ISO="$STRICT $BASE $CLI $GUI $XORG $GUI_EXTRA $GNOME ${GNOME_EXTRA}";;
-		KDE5) ISO="$STRICT $BASE $CLI $GUI $XORG $GUI_EXTRA $KDE5 $KDE5_EXTRA";;
+		STRICT) DEVEL+=" $STRICT";;
+		MINI) DEVEL+=" $STRICT $MINI";;
+		BASE) DEVEL+=" $STRICT $BASE";;
+		CLI) DEVEL+=" $STRICT $BASE $CLI";;
+		GUI) DEVEL+=" STRICT $BASE $CLI $GUI";;
+		XORG) DEVEL+=" $STRICT $BASE $CLI $GUI $XORG";;
+		GUI_EXTRA) DEVEL+=" $STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA}";;
+		OPENBOX) DEVEL+=" $STRICT $BASE $CLI $GUI ${GUI_EXTRA} $XORG $OPENBOX";;
+		JWM) DEVEL+=" $STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $JWM";;
+		LXDE) DEVEL+=" $STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $LXDE";;
+		XFCE4) DEVEL+=" $STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $XFCE4";;
+		MATE) DEVEL+=" $STRICT $BASE $CLI $GUI $XORG ${GUI_EXTRA} $MATE";;
+		GNOME) DEVEL+=" $STRICT $BASE $CLI $GUI $XORG $GUI_EXTRA $GNOME ${GNOME_EXTRA}";;
+		KDE5) DEVEL+=" $STRICT $BASE $CLI $GUI $XORG $GUI_EXTRA $KDE5 $KDE5_EXTRA";;
 		*) echo "Valid ISO names: strict, mini, base, cli, gui, xorg, \
 gui_extra, openbox, jwm, lxde, xfce4, mate, gnome, kde5" && exit 1;;
 	esac
@@ -1245,7 +1245,7 @@ lsb-release grub $KERNEL "
 fi
 
 if [ ! -z "$ISO" ];then
-	DEVEL+=" $ISO
+	DEVEL+="
 for k in \$(ls /lib/modules/)
 do
   mkinitramfs \$k -nf
@@ -1601,7 +1601,8 @@ LXDE       : $LXDE
 XFCE4      : $XFCE4
 MATE       : $MATE
 GNOME      : $GNOME
-KDE5       : $KDE5"
+KDE5       : $KDE5
+ISO Filename $LFS/NuTyX_${ARCH}-$VERSION_NUTYX-$ISO.iso"
 }
 print_help() {
 	echo "
