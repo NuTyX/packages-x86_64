@@ -1,0 +1,19 @@
+description="Parser for HTTP Request/Response written in C"
+url="https://github.com/nodejs/http-parser"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(glibc)
+run=()
+
+name=http-parser
+version=2.9.4
+
+source=(https://github.com/nodejs/http-parser/archive/refs/tags/v2.9.4.tar.gz)
+
+build() {
+cd $name-$version
+make library
+make PREFIX=$PKG/usr install
+}
