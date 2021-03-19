@@ -1,25 +1,18 @@
 description="The libgudev package contains GObject bindings for libudev."
 url="http://www.codeforge.com/s/0/libgudev"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Fanch"
 
-makedepends=(eudev glib gobject-introspection gtk-doc)
+makedepends=(meson ninja eudev glib gobject-introspection gtk-doc)
 
 name=libgudev
-version=234
+version=236
 
 source=(https://download.gnome.org/sources/libgudev/$version/libgudev-$version.tar.xz)
-build() {
-cd ${name}-$version
 
-./configure --prefix=/usr \
---disable-umockdev
-make
-make DESTDIR=$PKG install
+build=meson
 
-# Obsolet lib
-rm $PKG/usr/lib/libgudev-1.0.la
-}
 uptodate(){
 local latest lastversion url
 url="https://download.gnome.org/sources/$name"
