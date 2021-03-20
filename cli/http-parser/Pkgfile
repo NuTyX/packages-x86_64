@@ -2,15 +2,16 @@ description="Parser for HTTP Request/Response written in C"
 url="https://github.com/nodejs/http-parser"
 
 packager="spiky <spiky@nutyx.org>"
-contributors=""
+contributors="Rems"
 
 makedepends=(glibc)
 run=()
 
 name=http-parser
 version=2.9.4
+release=2
 
-source=(https://github.com/nodejs/http-parser/archive/refs/tags/v2.9.4.tar.gz)
+source=(https://github.com/nodejs/http-parser/archive/refs/tags/v${version}.tar.gz)
 
 build() {
 cd $name-$version
