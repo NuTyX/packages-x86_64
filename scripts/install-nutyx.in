@@ -1767,7 +1767,7 @@ modprobe loop
 
 dd if=/dev/zero of=iso/efiboot.img count=4096
 
-mkdosfs -n nutyxcd iso/efiboot.img || error "mkdosfs"
+mkdosfs -n "${LABEL}" iso/efiboot.img || error "mkdosfs"
 mkdir -p iso/efiboot
 mount -o loop iso/efiboot.img iso/efiboot || error "mount efiboot.img"
 mkdir -p iso/efiboot/EFI/boot
