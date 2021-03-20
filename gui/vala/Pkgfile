@@ -7,18 +7,18 @@ contributors="Pierre B, Rems"
 makedepends=(glib graphviz libxslt help2man)
 
 name=vala
-version=0.50.4
+version=0.52.0
 
 source=(https://download.gnome.org/sources/vala/${version:0:4}/$name-$version.tar.xz)
 
 package() {
 # Obsolets libs
 
-rm $PKG/usr/lib/libvala{,doc}-0.50.la
-rm $PKG/usr/lib/vala-0.50/libvalaccodegen.la
-rm $PKG/usr/lib/valadoc-0.50/doclets/html/libdoclet.la
-rm $PKG/usr/lib/valadoc-0.50/doclets/gtkdoc/libdoclet.la
-rm $PKG/usr/lib/valadoc-0.50/doclets/devhelp/libdoclet.la
+rm $PKG/usr/lib/libvala{,doc}-0.52.la
+rm $PKG/usr/lib/vala-0.52/libvalaccodegen.la
+rm $PKG/usr/lib/valadoc-0.52/doclets/html/libdoclet.la
+rm $PKG/usr/lib/valadoc-0.52/doclets/gtkdoc/libdoclet.la
+rm $PKG/usr/lib/valadoc-0.52/doclets/devhelp/libdoclet.la
 }
 
 uptodate(){
