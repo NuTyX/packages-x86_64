@@ -1,15 +1,17 @@
 description="Parser for HTTP Request/Response written in C"
 url="https://github.com/nodejs/http-parser"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Rems"
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems, Spiky"
 
 makedepends=(glibc)
 run=()
 
 name=http-parser
 version=2.9.4
-release=2
+release=3
+
+PKGMK_KEEP_SOURCES="no"
 
 source=(https://github.com/nodejs/http-parser/archive/refs/tags/v${version}.tar.gz)
 
