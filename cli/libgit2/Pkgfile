@@ -2,7 +2,7 @@ description="A linkable library for Git"
 url="https://libgit2.github.com/"
 
 packager="spiky <spiky@nutyx.org>"
-contributors=""
+contributors="Tnut"
 
 makedepends=(cmake libssh2 python)
 run=(glibc http-parser openssl pcre zlib)
@@ -11,7 +11,7 @@ name=libgit2
 version=1.1.0
 
 source=(https://github.com/libgit2/libgit2/releases/download/v$version/$name-$version.tar.gz
-         http://192.168.0.200/nutyx/patches/libgit2-0.99.0-remove_http-parse_incompatible_tests.patch)
+        libgit2-0.99.0-remove_http-parse_incompatible_tests.patch)
 
 build() {
 cd $name-$version
