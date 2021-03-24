@@ -4,21 +4,14 @@ url="http://recordmydesktop.sourceforge.net"
 packager="tnut <tnut@nutyx.org>"
 
 makedepends=(alsa-lib zlib libvorbis xorg-libxdamage xorg-libxext
-             libtheora xorg-libsm jack)
+             libtheora xorg-libsm jack popt)
 name=recordmydesktop
-version=0.3.8.1
-release=2
+version=0.4.0
 
-source=(http://downloads.sourceforge.net/${name}/${name}-${version}.tar.gz
-	shmstr-to-shmproto.patch
-	recordmydesktop-bitrate.patch)
-
+source=(https://github.com/Enselic/recordmydesktop/releases/download/v$version/recordmydesktop-$version.tar.gz)
 build() {
   cd ${name}-${version}
-  patch -p0 < ../shmstr-to-shmproto.patch
-  patch -p1 < ../recordmydesktop-bitrate.patch
-  ./configure --prefix=/usr --enable-jack=yes LIBS="`pkg-config --libs jack`" \
-	CFLAGS="`pkg-config --cflags jack` -DHAVE_LIBJACK"
+  ./configure --prefix=/usr --enable-jack=yes
   make
   make DESTDIR=$PKG install
 }
