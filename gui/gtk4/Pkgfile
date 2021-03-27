@@ -23,10 +23,10 @@ mkdir build
 cd build
 meson --prefix=/usr           \
 --sysconfdir=/etc             \
--Denable-broadway_backend=true \
--Denable-tracker=true          \
--Denable-colord=true           \
--Denable-man-pages=true        \
+-Dbroadway_backend=true \
+-Dtracker=true          \
+-Dcolord=true           \
+-Dman-pages=true        \
 ..
 ninja
 DESTDIR=$PKG ninja install
