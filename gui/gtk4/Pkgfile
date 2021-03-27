@@ -5,11 +5,11 @@ packager="spiky <spiky@nutyx.org>"
 contributors=""
 
 makedepends=(git meson gtk-doc glib2-docs python sassc gobject-introspection)
-run=(glib2 cairo pango fribidi gdk-pixbuf2 libepoxy libgl libegl harfbuzz
+run=(glib cairo pango fribidi gdk-pixbuf libepoxy mesa harfbuzz
      libxkbcommon graphene iso-codes tracker colord wayland wayland-protocols
-     desktop-file-utils adwaita-icon-theme cantarell-fonts shared-mime-info
+     desktop-file-utils adwaita-icon-theme shared-mime-info
      json-glib ffmpeg dconf gstreamer-plugins-bad librsvg xorg-libxinerama xorg-libxrandr
-     xorg-libxcursor xorg-libxi xorg-libxrender )
+     xorg-libxcursor xorg-libxi xorg-libxrender librest)
 set=()
 
 name=gtk4
@@ -21,15 +21,16 @@ build() {
 cd gtk-$version
 mkdir build
 cd build
-meson --prefix=/usr           \
---sysconfdir=/etc             \
--Dbroadway_backend=true \
--Dtracker=true          \
--Dcolord=true           \
--Dman-pages=true        \
+meson --prefix=/usr        \
+--sysconfdir=/etc          \
+-Dbroadway-backend=true    \
+-Dtracker=enabled          \
+-Dcolord=enabled           \
+-Dgtk-doc=true             \
+-Dman-pages=true           \
 ..
 ninja
+
 DESTDIR=$PKG ninja install
-rm $PKG/usr/bin/gtk-update-icon-cache
 }
 
