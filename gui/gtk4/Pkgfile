@@ -30,5 +30,6 @@ meson --prefix=/usr           \
 ..
 ninja
 DESTDIR=$PKG ninja install
+rm $PKG/usr/bin/gtk-update-icon-cache
 }
 
