@@ -1116,9 +1116,7 @@ echo "
 "
 }
 check_tools() {
-local FILE MD5SUM
-
-MD5SUM="6a7ef1e62191f6f458ddaacdd881772d"
+local FILE
 
 [ ! -f "$(which xorriso)" ] && error "You need to install 'libisoburn'"
 [ ! -f "$(which isohybrid)" ] && error "You need to install 'syslinux'"
@@ -1129,11 +1127,6 @@ do
 	[ ! -f /usr/lib/syslinux/$FILE ] && \
 		error "syslinux not properly installed"
 done
-FILE="boot.$MD5SUM"
-# wget $URL_SPLASH/$FILE
-# echo  "${FILE/boot./}  $FILE" > $TMP/test
-# md5sum -c $TMP/test || error "boot.cat wrong checksum"
-# mv $FILE $LFS/ISO/isolinux/boot.cat
 
 }
 check_root() {
@@ -1203,7 +1196,6 @@ simple-scan gnome-weather gnome-chess balsa"
 [ "$KERNEL" = "NONE" ] && KERNEL="none"
 
 if [ "$KERNEL" != "none"  ]; then
-	INITS="eudev sysklogd sysvinit"
 	CORE="acl attr bash coreutils readline \
 expat ncurses lzo gmp flex file gzip mpc mpfr \
 grep sed findutils binutils \
@@ -1217,7 +1209,8 @@ iproute2 iana-etc \
 groff man-db \
 cards.man nutyx.man \
 dialog cpio squashfs \
-lsb-release grub $KERNEL "
+lsb-release grub eudev \
+sysklogd sysvinit $KERNEL "
 fi
 
 if [ ! -z $ISO ]; then
@@ -1502,12 +1495,12 @@ if [ "$SHELL" == "/bin/bash" ]; then
 	SHELL=/bin/bash
   fi
 fi
-if [[ -z "$INITS" && -z "$CORE" && -z "$DEVEL" ]];then
+if [[ -z "$CORE" && -z "$DEVEL" ]];then
 	echo "exit" > $LFS/$SETUP_FILE
 else
 	echo "source /etc/profile
 cards sync
-cards install -n $CORE $INITS $DEVEL
+cards install -n $CORE $DEVEL
 exit" > $LFS/$SETUP_FILE
 fi
 chmod 177 $LFS/$SETUP_FILE
@@ -1561,7 +1554,6 @@ MOUNT      : $MOUNT
 SHELL      : $SHELL
 DEPOT_BASE : $DEPOT_BASE
 CHROOT     : $CHROOT
-INITS      : $INITS
 CORE       : $CORE
 DEVEL      : $DEVEL
 ISO        : $ISO"
