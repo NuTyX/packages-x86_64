@@ -1,0 +1,21 @@
+description="Google Maps plugin for QtLocation"
+url="https://github.com/vladest/googlemaps"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(git qttools)
+run=(qtlocation)
+
+name=googlemaps
+version=0.0.0.1
+
+source=(https://github.com/vladest/$name/archive/refs/tags/v.$version.tar.gz)
+
+build() {
+mkdir build
+cd    build
+qmake ../$name-v.$version
+make
+make INSTALL_ROOT=$PKG install
+}

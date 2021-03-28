@@ -1,18 +1,18 @@
 description="An image viewing/manipulation program"
 url="http://www.imagemagick.org/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(freetype ghostscript lcms libgsf giflib libxml2 libjpeg-turbo
               openexr libwmf libpng librsvg libwebp djvulibre)
 
 name=imagemagick
-version=7.0.11.2
-_version=7.0.11-2
+version=7.0.11.4
+_version=7.0.11-4
 
 PKGMK_KEEP_LA_LIBS="yes"
 
-source=(https://www.imagemagick.org/download/releases/ImageMagick-${_version}.tar.xz)
+source=(https://download.imagemagick.org/ImageMagick/download/releases/ImageMagick-${_version}.tar.xz)
 
 build () {
     cd ImageMagick-*

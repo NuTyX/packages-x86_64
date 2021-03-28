@@ -5,10 +5,10 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Fanch"
 
 makedepends=(meson dbus doxygen ffmpeg glib graphviz gstreamer
-             gstreamer-plugins-base sbc valgrind libsndfile) 
+             gstreamer-plugins-base sbc valgrind libsndfile xmltoman) 
 
 name=pipewire
-version=0.3.23
+version=0.3.24
 
 source=(https://github.com/PipeWire/pipewire/archive/$version/$name-$version.tar.gz)
 
@@ -18,11 +18,11 @@ build() {
   cd    build
   meson --prefix=/usr      \
     --sysconfdir=/etc      \
-    -Djack=false           \
-    -Dpipewire-jack=false  \
-    -Dvulkan=false         \
-    -Ddocs=true            \
-    -Dman=true ..
+    -Djack=disabled           \
+    -Dpipewire-jack=disabled  \
+    -Dvulkan=disabled         \
+    -Ddocs=enabled            \
+    -Dman=enabled ..
   ninja
   DESTDIR=$PKG ninja install
 }

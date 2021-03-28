@@ -4,10 +4,10 @@ url="https://alioth.debian.org/projects/pcsclite/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(python)
+makedepends=(python eudev pkg-config)
 
 name=pcsclite
-version=1.9.0
+version=1.9.1
 
 PKGMK_KEEP_SOURCES="No"
 source=(https://pcsclite.apdu.fr/files/pcsc-lite-$version.tar.bz2
@@ -21,7 +21,8 @@ build() {
               --disable-libsystemd \
               --sysconfdir=/etc \
               --enable-ipcdir=/run/pcscd \
-              --enable-usbdropdir=/usr/lib/pcsc/drivers
+              --enable-usbdropdir=/usr/lib/pcsc/drivers \
+              --disable-documentation
   make
   make DESTDIR=$PKG install
 

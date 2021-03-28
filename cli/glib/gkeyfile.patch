@@ -1,0 +1,20 @@
+diff -Naur a/glib/gkeyfile.c b/glib/gkeyfile.c
+--- a/glib/gkeyfile.c	2021-03-18 14:28:31.904625000 +0100
++++ b/glib/gkeyfile.c	2021-03-26 15:35:41.709979496 +0100
+@@ -648,6 +648,7 @@
+       g_strfreev (key_file->locales);
+       key_file->locales = NULL;
+     }
++  key_file->checked_locales = FALSE;
+ 
+   if (key_file->parse_buffer)
+     {
+@@ -1232,7 +1233,7 @@
+   if (key_file->flags & G_KEY_FILE_KEEP_TRANSLATIONS)
+     return TRUE;
+ 
+-  if (!key_file->checked_locales && !key_file->locales)
++  if (!key_file->checked_locales)
+     {
+       key_file->locales = g_strdupv ((gchar **)g_get_language_names ());
+       key_file->checked_locales = TRUE;

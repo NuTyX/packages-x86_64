@@ -11,7 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=linux-mainline
-version=5.11-rc7
+version=5.12-rc4
 
 INITRD="initrd-mainline"
 KERNEL=${name/-*/}
@@ -24,8 +24,7 @@ _version=${version}
 ## Download all the sources
 #
 
-source=(fix_virtualbox.patch
-	https://git.kernel.org/torvalds/t/linux-${_version}.tar.gz config_64)
+source=(https://git.kernel.org/torvalds/t/linux-${_version}.tar.gz config_64)
 
 [ -z $patchname ] || source+=" $url/pub/linux/kernel/v5.x/$patchname"
 ## Time to build everything
@@ -40,8 +39,6 @@ cd linux-${_version}
 if [ -f $SRC/patch-$version.xz ]; then
 	xz -d -c  $SRC/patch-$version.xz | patch -Np1
 fi
-
-patch -Np1 -i ../fix_virtualbox.patch
 
 make mrproper
 cp $SRC/config_64 ./.config

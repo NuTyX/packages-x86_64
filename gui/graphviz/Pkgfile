@@ -1,24 +1,24 @@
 description="Graphviz is open source graph visualization software"
 url="http://www.graphviz.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, Tnut, Rems"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, Tnut, Rems, tnut"
 
 makedepends=(gtk2 freetype xorg-fontconfig gdk-pixbuf libjpeg-turbo
              libpng pango libglade ghostscript swig guile openjdk
              lua python ruby tcl tk)
 
 name=graphviz
-version=2.44.1
+version=2.46.1
 
-source=(https://www2.graphviz.org/Packages/stable/portable_source//$name-$version.tar.gz)
+source=(https://gitlab.com/graphviz/graphviz/-/archive/$version/$name-$version.tar.gz)
 
 build () {
   cd $name-$version
 
   sed -i '/LIBPOSTFIX="64"/s/64//' configure.ac
 
-  autoreconf
+  ./autogen.sh NOCONFIG
   ./configure --prefix=/usr --disable-php
   make	
   make DESTDIR=$PKG install

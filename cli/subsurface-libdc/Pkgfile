@@ -1,0 +1,22 @@
+description="Library for communication with dive computers"
+url="https://github.com/Subsurface-divelog/libdc"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(autoconf automake libtool sed grep)
+run=(glibc)
+
+name=subsurface-libdc
+version=4.9.10
+
+source=(https://subsurface-divelog.org/downloads/libdivecomputer-subsurface-branch-$version.tgz)
+
+build() {
+mv libdivecomputer-subsurface-branch-4.9.10 $name-$version
+cd $name-$version
+ autoreconf --install
+./configure --prefix=/usr
+  make
+make DESTDIR=$PKG install
+}
