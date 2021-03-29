@@ -240,9 +240,6 @@ end() {
 getPackageFileName() {
 	local BUILD_DATE EXT HEAD
 	if [ ! -f $LFS/$DEPOT/${BASE_COLLECTION}/${1}/.PKGREPO ]; then
-		if ! ($(which curl > /dev/null)); then
-			error " Command 'curl' not found, please install curl programm"
-		fi
 		curl -LC - -sS --create-dirs \
 		${DEPOT_BASE}/${1}/.PKGREPO -o \
 		$LFS/$DEPOT/${BASE_COLLECTION}/${1}/.PKGREPO || \
@@ -1117,11 +1114,13 @@ echo "
 }
 check_tools() {
 local FILE
+[ ! -f "$(which curl)" ] && error "You need to install 'curl'"
+[ ! -f "$(which bsdtar)" ] && error "You need to install 'libarchive'"
+[ -z $ISO ] && return
 
 [ ! -f "$(which xorriso)" ] && error "You need to install 'libisoburn'"
 [ ! -f "$(which isohybrid)" ] && error "You need to install 'syslinux'"
 [ ! -f "$(which mkdosfs)" ] && error "You need to install 'dosfstools'"
-[ ! -f "$(which wget)" ] && error "You need to install 'wget'"
 for FILE in libutil.c32 libcom32.c32 ldlinux.c32 vesamenu.c32 isolinux.bin
 do
 	[ ! -f /usr/lib/syslinux/$FILE ] && \
@@ -1214,8 +1213,6 @@ sysklogd sysvinit $KERNEL "
 fi
 
 if [ ! -z $ISO ]; then
-	SPLASH="splash-${VERSION_NUTYX}"
-	URL_SPLASH="https://download.tuxfamily.org/nutyx/files"
 	ISO=${ISO^^}
 	case ${ISO} in
 		STRICT) CORE+="$STRICT";;
@@ -1465,10 +1462,6 @@ download_pkgadd() {
 		cp  $PKGADD $TMP/$(dirname $PKGADD)/
 		ln -s $TMP/$(dirname $PKGADD)/pkgadd  $TMP/$(dirname $PKGADD)/pkginfo
 	else
-		if ! ($(which bsdtar > /dev/null)); then
-			error " Command 'bsdtar' not found, please install libarchive"
-		fi
-
 		PKGADD="/bin/pkgadd"
 
 		getPackageFileName cards
@@ -1498,10 +1491,12 @@ fi
 if [[ -z "$CORE" && -z "$DEVEL" ]];then
 	echo "exit" > $LFS/$SETUP_FILE
 else
-	echo "source /etc/profile
-cards sync
-cards install -n $CORE $DEVEL
-exit" > $LFS/$SETUP_FILE
+	echo "source /etc/profile" \
+	 > $LFS/$SETUP_FILE
+	[ -z $MOUNT ] && echo "cards sync" >> \
+	$LFS/$SETUP_FILE
+	echo "cards install -n $CORE $DEVEL
+exit" >> $LFS/$SETUP_FILE
 fi
 chmod 177 $LFS/$SETUP_FILE
 setup_chroot
@@ -1640,9 +1635,6 @@ VERSION_KERNEL="$(basename $LFS/lib/modules/*-NuTyX)"
 ISO="NuTyX_${ARCH}-$VERSION_NUTYX-$ISO"
 cd ${ISODIR} || error "cd ${ISODIR}"
 
-wget ${URL_SPLASH}/$SPLASH.png
-[ -f $SPLASH.png ] && mv $SPLASH.png isolinux/splash.png
-
 for FILE in libutil.c32 libcom32.c32 ldlinux.c32 vesamenu.c32 isolinux.bin
 do
 	cp /usr/lib/syslinux/$FILE isolinux/
@@ -1668,8 +1660,8 @@ mkdir -p {iso/EFI,boot/grub/{fonts,${GRUB_EFI_ARCH}-efi}}
 [ -f /usr/share/grub/unicode.pf2 ] && \
 	cp /usr/share/grub/unicode.pf2 boot/grub/fonts
 
-[ -f isolinux/splash.png ] && \
-		mv isolinux/splash.png boot/grub
+[ -f /usr/share/grub/splash.png ] && \
+	cp /usr/share/grub/splash.png boot/grub/splash.png
 
 echo "set prefix=/boot/grub" > iso/grub-early.cfg
 
@@ -1792,7 +1784,7 @@ main() {
 
 	TMP=$(mktemp -d)
 	make_directories
-	[ -z "$ISO" ] || check_tools
+	check_tools
 	mkdir -p $LFS
 
 	download_pkgadd
