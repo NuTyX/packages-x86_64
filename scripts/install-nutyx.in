@@ -1250,7 +1250,7 @@ umount $DEPOT"
 	DEVEL+="
 for d in opt bin etc lib lib64 root run sbin usr var home
 do
-  [[ -f /ISO/boot/\$d.squashfs ]] && rm /ISO/boot/\$d.squashfs
+  rm -f /ISO/boot/\$d.squashfs
   mksquashfs /\$d /ISO/boot/\$d.squashfs
 done
 exit 0"
