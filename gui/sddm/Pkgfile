@@ -11,7 +11,8 @@ set=(kde5)
 name=sddm
 version=0.19.0
 
-source=(https://github.com/$name/$name/archive/v$version.tar.gz)
+source=(1324.patch 5fd5ed27.patch 68cc9e31.patch
+	https://github.com/$name/$name/archive/v$version.tar.gz)
 
 prepare() {
 groupadd -g 64 sddm
@@ -23,6 +24,10 @@ useradd -c "Simple Desktop Display manager" \
 
 build() {
 cd $name-$version
+patch -Np1 -i ../68cc9e31.patch
+patch -Np1 -i ../1324.patch
+patch -Np1 -i ../5fd5ed27.patch
+
 mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr             \
