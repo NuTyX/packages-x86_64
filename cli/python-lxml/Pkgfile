@@ -7,13 +7,14 @@ contributors=""
 makedepends=(python libxslt)
 run=()
 
-name=lxml
+name=python-lxml
 version=4.6.3
+release=2
 
-source=(https://files.pythonhosted.org/packages/source/l/$name/$name-$version.tar.gz)
+source=(https://files.pythonhosted.org/packages/source/l/lxml/lxml-$version.tar.gz)
 
 build() {
-cd $name-$version
+cd lxml-$version
 python setup.py build
 python setup.py install --optimize=1 --root=$PKG
 }
