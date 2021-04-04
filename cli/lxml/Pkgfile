@@ -1,0 +1,19 @@
+description="Python3 binding for the libxml2 and libxslt libraries"
+url=" https://files.pythonhosted.org/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python libxslt)
+run=()
+
+name=lxml
+version=4.6.3
+
+source=(https://files.pythonhosted.org/packages/source/l/$name/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+python setup.py build
+python setup.py install --optimize=1 --root=$PKG
+}
