@@ -1,12 +1,16 @@
 description="System Utilities Based on Sysfs"
 url="http://linux-diag.sourceforge.net/Sysfsutils.html"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Greg, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg, Spiky"
+
 makedepends=(automake libtool sed grep)
 
 name=sysfsutils
 version=2.1.1
+release=2
+
+PKGMK_KEEP_SOURCES="no"
 
 source=(https://github.com/linux-ras/$name/archive/v$version.tar.gz)
 
