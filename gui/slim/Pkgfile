@@ -1,0 +1,62 @@
+# Depends on: pam cmake git freeglut xorg-libxmu libpng libjpeg-turbo xorg-libxft xorg-libxrandr
+
+PKGMK_GROUPS=(man)
+
+name=slim
+version=1.3.6
+release=7
+
+description="Desktop-independent graphical login manager for X11"
+url="http://sourceforge.net/projects/slim.berlios/"
+
+run=(xorg-xinit)
+
+source=(http://downloads.tuxfamily.org/nutyx/files/lxdm-nutyx-12-beta3.jpg
+	https://downloads.sourceforge.net/project/slim.berlios/$name-$version.tar.gz
+        slim-1.3.6-conglo-3.patch panel.png)
+
+prepare() {
+  git clone https://github.com/adi1090x/slim_themes
+  mkdir -p {build,$PKG/usr/share/slim}
+  cp -a slim_themes/themes $PKG/usr/share/slim/themes 
+  cd $name-$version
+  patch -Np1 -i ../slim-1.3.6-conglo-3.patch
+}
+build() {
+  cd build
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release  \
+    -DCMAKE_SKIP_RPATH=ON       \
+    -DUSE_CONSOLEKIT=no         \
+    -DUSE_PAM=yes ../$name-$version
+  make
+  make DESTDIR=$PKG install
+  mkdir -p $PKG/etc/pam.d
+  cat > $PKG/etc/pam.d/slim << "EOF"
+#%PAM-1.0
+auth        required    pam_unix.so
+auth        requisite   pam_nologin.so
+account     required    pam_unix.so
+password    required    pam_unix.so
+session     required    pam_unix.so
+EOF
+
+
+  for i in panel.png
+  do
+   install -m 644 $SRC/$i $PKG/usr/share/slim/themes/default/$i
+  done
+  install -m 644 $SRC/lxdm-nutyx-12-beta3.jpg $PKG/usr/share/slim/themes/default/background.jpg
+
+# Runyx service
+mkdir -p $PKG/{etc/init/multi,lib/init/services/slim}
+cat > $PKG/lib/init/services/slim/run << "EOF"
+#!/bin/sh
+[ -e /run/dbus/system_bus_socket ] || exit 1
+exec /usr/bin/slim -nodeamon
+EOF
+chmod 755 $PKG/lib/init/services/slim/run
+ln -sv /lib/init/services/slim $PKG/etc/init/multi/slim
+
+}
