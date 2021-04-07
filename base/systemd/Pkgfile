@@ -5,13 +5,13 @@ packager="tnut <tnut@nutyx.org>"
 
 # Those dependencies are need to compile the package
 # but not listed to avoid circular dependencies:
-# python meson and ninja
+PKGMK_DEPENDS=(python meson ninja util-linux)
 
-makedepends=(libcap kmod)
+makedepends=(libcap kmod m4 gperf pam)
 
 name=systemd
 version=246
-release=13
+release=14
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -66,6 +66,8 @@ cp units/systemd-initctl.service.tmp \
 $PKG/lib/systemd/system/systemd-initctl.service
 ln -sv ../systemd-initctl.socket  \
 $PKG/lib/systemd/system/sockets.target.wants/systemd-initctl.socket
+
+install -m0644 ../tmpfiles.d/legacy.conf $PKG/usr/lib/tmpfiles.d
 
 mv $PKG/{,s}bin/udevadm
 ln -sv ../lib/systemd/systemd $PKG/sbin/systemd-init
