@@ -6,14 +6,16 @@ contributors="Pierre B, Schrodinger72"
 
 name=grub
 version=2.04
-release=4
+release=5
 
 dejavu_version=2.37
+splash_version=21.03.0-rc3
 
 makedepends=(automake m4 bison flex gettext texinfo python
              xz efibootmgr efivar freetype lvm2)
 
-source=(https://ftp.gnu.org/gnu/unifont/unifont-13.0.06/unifont-13.0.06.pcf.gz
+source=(https://download.tuxfamily.org/nutyx/files/splash-${splash_version}.png
+	https://ftp.gnu.org/gnu/unifont/unifont-13.0.06/unifont-13.0.06.pcf.gz
 	http://downloads.sourceforge.net/dejavu/dejavu-fonts-ttf-${dejavu_version}.tar.bz2
         https://ftp.gnu.org/gnu/grub/grub-$version.tar.xz
 	grub.cfg)
@@ -61,4 +63,7 @@ build() {
 	$PKG/boot/grub/grub.cfg.exemple
 
 	cp -r $SRC/dest/usr/lib/grub/x86_64-efi $PKG/usr/lib/grub/
+
+	install -Dm644 ../splash-${splash_version}.png \
+	$PKG/usr/share/grub/splash.png
 }

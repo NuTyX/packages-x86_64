@@ -15,7 +15,7 @@ makedepends=(tar python perl-archive-zip unzip zip icu gtk3 cups poppler-glib
 run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache)
 
 name=libreoffice
-version=7.1.1.2
+version=7.1.2.2
 
 categories=(Office Graphics Education)
 
@@ -23,7 +23,7 @@ PKGMK_IGNORE_UNPACK="yes"
 _url="https://download.documentfoundation.org/libreoffice/src/${version%.*}/"
 
 source=(Remove-check-if-root-due-to-issue-with-fakeroot.patch
-http://dev-www.libreoffice.org/extern/884ed41809687c3e168fc7c19b16585149ff058eca79acbf3ee784f6630704cc-opens___.ttf
+http://dev-www.libreoffice.org/extern/f543e6e2d7275557a839a164941c0a86e5f2c3f2a0042bfc434c88c6dde9e140-opens___.ttf
 	${_url}$name-$version.tar.xz
 	${_url}$name-dictionaries-$version.tar.xz
 	${_url}$name-help-$version.tar.xz
@@ -42,7 +42,7 @@ prepare() {
   ln -sv ../../../$name-dictionaries-$version.tar.xz  external/tarballs/
   ln -sv ../../../$name-help-$version.tar.xz          external/tarballs/
   ln -sv ../../../$name-translations-$version.tar.xz  external/tarballs/
-  ln -sv ../../../884ed41809687c3e168fc7c19b16585149ff058eca79acbf3ee784f6630704cc-opens___.ttf \
+  ln -sv ../../../f543e6e2d7275557a839a164941c0a86e5f2c3f2a0042bfc434c88c6dde9e140-opens___.ttf \
   external/tarballs/
 
   sed -e "/gzip -f/d" -e "s|.1.gz|.1|g" \

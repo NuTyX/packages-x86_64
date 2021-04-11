@@ -1,14 +1,15 @@
 description="Simple scanning utility"
 url="https://launchpad.net/simple-scan"
 
-packager="Rems <remy@nutyx.org>"
-contributors="Pierre B., Greg, Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B., Greg, Spiky, Rems"
 
 makedepends=(sane dconf gtk3 colord libgusb ninja meson yelp-tools)
+depends=(libhandy)
 
 name=simple-scan
-version=3.38.5
+version=40.0
 
-source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build=meson

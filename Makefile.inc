@@ -1,7 +1,7 @@
 #
 #  nutyx
 #
-#  Copyright (c) 2016 - 2017 by NuTyX team (http://nutyx.org)
+#  Copyright (c) 2016 - 2021 by NuTyX team (http://nutyx.org)
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ ROOTDIR=${DESTDIR}/root
 VARDIR=${DESTDIR}/var
 EXTDIR=${ETCDIR}
 
-VERSION = 21.03.0-rc3
+VERSION = 21.03.0-rc4
 
 NAME = nutyx-$(VERSION)
 

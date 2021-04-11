@@ -1,17 +1,18 @@
+
 description="Free sound set for openttd"
 url="http://www.openttd.org"
 
-contributors="Tsgeek, Greg"
-packager="tnut <tnut@nutyx.org>"
+contributors="Tsgeek, Greg, tnut"
+packager="spiky <spiky@nutyx.org>"
 
 name=openttd-opensfx
-version=0.2.3
-release=2
+version=1.0.1
 
-source=(http://bundles.openttdcoop.org/opensfx/releases/opensfx-${version}.zip)
+source=(https://cdn.openttd.org/opensfx-releases/$version/opensfx-$version-all.zip)
 
 build() {
-	cd ${SRC}/opensfx-${version}
+        bsdtar xvf opensfx-$version.tar
+	cd opensfx-$version
 
 	chmod 0644 *
 

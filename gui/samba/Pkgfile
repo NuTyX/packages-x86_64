@@ -1,8 +1,8 @@
 description="SMB Fileserver and AD Domain server"
 url="https://www.samba.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, Greg, Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, Greg, Spiky, tnut"
 
 makedepends=(acl pam perl-yapp jansson rpcsvc-proto libtirpc
              docbook-xsl avahi gnutls libgpg-error popt talloc
@@ -10,7 +10,7 @@ makedepends=(acl pam perl-yapp jansson rpcsvc-proto libtirpc
 run=(samba.lib)
 
 name=samba
-version=4.13.5
+version=4.14.2
 release=2
 
 runyx_version=20201011
@@ -26,8 +26,12 @@ cd $name-$version
 sed -r 's/nss_(setpw|endpw|setgr|endgr)ent/my_&/' \
     -i nsswitch/nsstest.c
 
+python3 -m venv pyvenv &&
+./pyvenv/bin/pip3 install cryptography pyasn1 iso8601
+
 echo "^samba4.rpc.echo.*on.*ncacn_np.*with.*object.*nt4_dc" >> selftest/knownfail
 
+PYTHON=$PWD/pyvenv/bin/python           \
 CFLAGS+=" -I/usr/include/tirpc"         \
 LDFLAGS+=" -ltirpc"                     \
 ./configure                             \
@@ -67,6 +71,10 @@ $PKG/etc/openldap/schema
 cd $PKG/usr/lib/
 install -d cups/backend
 ln -v -sf /usr/bin/smbspool $PKG/usr/lib/cups/backend/smb
+
+# Part of tdb
+rm $PKG/usr/lib/python3.9/site-packages/_tdb_text.py
+rm $PKG/usr/lib/python3.9/site-packages/tdb.cpython-39-x86_64-linux-gnu.so
 
 # service
 cd $SRC/runyx-${runyx_version}

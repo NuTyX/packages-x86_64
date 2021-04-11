@@ -10,8 +10,12 @@ set=(kde5)
 
 name=sddm
 version=0.19.0
+release=2
 
-source=(https://github.com/$name/$name/archive/v$version.tar.gz)
+PKGMK_KEEP_SOURCES="no"
+
+source=(sdm-0.19.0-consolidate-1.patch
+	https://github.com/$name/$name/archive/v$version.tar.gz)
 
 prepare() {
 groupadd -g 64 sddm
@@ -23,12 +27,15 @@ useradd -c "Simple Desktop Display manager" \
 
 build() {
 cd $name-$version
+patch -Np1 -i ../sdm-0.19.0-consolidate-1.patch
+
 mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -DCMAKE_BUILD_TYPE=Release              \
       -DDBUS_CONFIG_FILENAME=sddm_org.freedesktop.DisplayManager.conf \
-      -DKDE_INSTALL_LIBEXECDIR=/usr/lib/$name \
+      -DKDE_INSTALL_LIBEXECDIR=/usr/lib/$name      \
+      -DDBUS_CONFIG_DIR=/usr/share/dbus-1/system.d \
       -DBUILD_TESTING=OFF  \
       -DBUILD_MAN_PAGES=ON \
       -Wno-dev ..
@@ -38,9 +45,6 @@ make DESTDIR=$PKG install
 mkdir -p $PKG/var/lib/sddm
 chown -R sddm:sddm $PKG/var/lib/sddm
 chmod -R 0755 $PKG/var/lib/sddm
-
-sed -i "s@pam_tally2.so file=/var/log/tallylog onerr=succeed@pam_faillock.so preauth@" \
-$PKG/etc/pam.d/sddm-autologin
 
 # runyx service
 SERVICEDIR=lib/init/services/${name}

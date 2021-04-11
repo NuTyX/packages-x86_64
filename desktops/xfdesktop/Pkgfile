@@ -12,6 +12,7 @@ set=(xfce4)
 
 name=xfdesktop
 version=4.16.0
+release=2
 
 source=(https://archive.xfce.org/src/xfce/${name}/${version:0:4}/${name}-$version.tar.bz2)
 
@@ -19,7 +20,7 @@ build() {
 
 cd ${name}-$version
 
-sed -i "s@xfce/xfce-stripes.png@nutyx/nutyx.jpg@" common/xfdesktop-common.h
+sed -i "s@xfce/xfce-verticals.png@nutyx/nutyx.jpg@" common/xfdesktop-common.h
 
 ./configure --prefix=/usr
 

@@ -5,16 +5,22 @@ maintainer="phillip at lougher.demon.co.uk"
 contributors="Guy"
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(zlib lzo xz lz4)
+makedepends=(sed zlib lzo xz lz4 zstd)
 
 name=squashfs
 version=4.4
+release=2
 
 source=(http://downloads.sourceforge.net/sourceforge/$name/$name$version.tar.gz)
 
 build() {
 cd $name$version/squashfs-tools
-make XZ_SUPPORT=1 LZO_SUPPORT=1 LZMA_XZ_SUPPORT=1 LZA_SUPPORT=1
+
+sed -i 's@^struct cache@extern struct cache@' mksquashfs.h
+sed -i '1,1i#include <sys/sysmacros.h>' mksquashfs.c unsquashfs.c
+
+make XZ_SUPPORT=1 LZO_SUPPORT=1 LZMA_XZ_SUPPORT=1 LZA_SUPPORT= \
+ZSTD_SUPPORT=1 GZIP_SUPPORT=1 LZ4_SUPPORT=1 COMP_DEFAULT=zstd
 mkdir -p $PKG/bin
 make INSTALL_DIR=$PKG/bin install
 }

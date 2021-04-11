@@ -240,9 +240,6 @@ end() {
 getPackageFileName() {
 	local BUILD_DATE EXT HEAD
 	if [ ! -f $LFS/$DEPOT/${BASE_COLLECTION}/${1}/.PKGREPO ]; then
-		if ! ($(which curl > /dev/null)); then
-			error " Command 'curl' not found, please install curl programm"
-		fi
 		curl -LC - -sS --create-dirs \
 		${DEPOT_BASE}/${1}/.PKGREPO -o \
 		$LFS/$DEPOT/${BASE_COLLECTION}/${1}/.PKGREPO || \
@@ -493,6 +490,7 @@ cat > ${LFS}/etc/sysconfig/$FILE << "EOF"
 # Which display manager to use (full path):
 # DISPLAY_MANAGER=/usr/sbin/lxdm
 # DISPLAY_MANAGER=/usr/sbin/xdm
+# DISPLAY_MANAGER="/usr/bin/slim -d"
 # DISPLAY_MANAGER=/usr/bin/lightdm
 # DISPLAY_MANAGER=/usr/sbin/gdm
 # DISPLAY_MANAGER=/usr/bin/sddm
@@ -827,9 +825,9 @@ export HISTSIZE=1000
 export HISTIGNORE="&:[bf]g:exit"
 
 # Set some defaults for graphical systems
-export XDG_DATA_DIRS=/usr/share
-export XDG_CONFIG_DIRS=/etc/xdg/
-export XDG_RUNTIME_DIR=/tmp/xdg-$USER
+export XDG_DATA_DIRS=${XDG_DATA_DIRS:-/usr/share}
+export XDG_CONFIG_DIRS=${XDG_CONFIG_DIRS:-/etc/xdg}
+export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/tmp/xdg-$USER}
 
 # Setup a red prompt for root and a green one for users.
 NORMAL="\[\e[0m\]"
@@ -1117,11 +1115,13 @@ echo "
 }
 check_tools() {
 local FILE
+[ ! -f "$(which curl)" ] && error "You need to install 'curl'"
+[ ! -f "$(which bsdtar)" ] && error "You need to install 'libarchive'"
+[ -z $ISO ] && return
 
 [ ! -f "$(which xorriso)" ] && error "You need to install 'libisoburn'"
 [ ! -f "$(which isohybrid)" ] && error "You need to install 'syslinux'"
 [ ! -f "$(which mkdosfs)" ] && error "You need to install 'dosfstools'"
-[ ! -f "$(which wget)" ] && error "You need to install 'wget'"
 for FILE in libutil.c32 libcom32.c32 ldlinux.c32 vesamenu.c32 isolinux.bin
 do
 	[ ! -f /usr/lib/syslinux/$FILE ] && \
@@ -1171,7 +1171,7 @@ fi
 [ -z "$BASE" ] && BASE="efibootmgr linux-firmware systemd runyx \
 wireless-tools wpa-supplicant"
 [ -z "$CLI" ] && CLI="gpm gpm.service dosfstools make-ca xdg-user-dirs \
-sound-theme-freedesktop ntp"
+sound-theme-freedesktop ntp ntp.service"
 [ -z "$GUI" ] && GUI="flcards gvfs network-manager-applet"
 [ -z "$XORG" ] && XORG="xorg-xinit xorg-xf86-input-synaptics \
 xorg-xf86-input-wacom xorg-xf86-video-ati \
@@ -1185,7 +1185,7 @@ scrot vlc telegram"
 [ -z "$GNOME_EXTRA" ] && GNOME_EXTRA="epiphany seahorse-nautilus evolution \
 simple-scan gnome-weather gnome-chess balsa"
 
-[ -z "$OPENBOX" ] && OPENBOX="openbox lxdm dmenu"
+[ -z "$OPENBOX" ] && OPENBOX="lxdm openbox dmenu"
 [ -z "$JWM" ] && JWM="lxdm jwm"
 [ -z "$LXDE" ] && LXDE="lxdm lxde"
 [ -z "$XFCE4" ] && XFCE4="lxdm xfce4 xfce4-extra"
@@ -1214,8 +1214,6 @@ sysklogd sysvinit $KERNEL "
 fi
 
 if [ ! -z $ISO ]; then
-	SPLASH="splash-${VERSION_NUTYX}"
-	URL_SPLASH="https://download.tuxfamily.org/nutyx/files"
 	ISO=${ISO^^}
 	case ${ISO} in
 		STRICT) CORE+="$STRICT";;
@@ -1253,7 +1251,7 @@ umount $DEPOT"
 	DEVEL+="
 for d in opt bin etc lib lib64 root run sbin usr var home
 do
-  [[ -f /ISO/boot/\$d.squashfs ]] && rm /ISO/boot/\$d.squashfs
+  rm -f /ISO/boot/\$d.squashfs
   mksquashfs /\$d /ISO/boot/\$d.squashfs
 done
 exit 0"
@@ -1363,6 +1361,7 @@ mkdir -p ${LFS}/usr/{,local/}lib
 chmod 1777 ${LFS}/{,var/}tmp
 
 mkdir -p ${LFS}/var/{mail,spool}
+mkdir -p ${LFS}/var/run/lock
 
 mknod -m 600 ${LFS}/dev/console c 5 1
 mknod -m 666 ${LFS}/dev/null c 1 3
@@ -1465,10 +1464,6 @@ download_pkgadd() {
 		cp  $PKGADD $TMP/$(dirname $PKGADD)/
 		ln -s $TMP/$(dirname $PKGADD)/pkgadd  $TMP/$(dirname $PKGADD)/pkginfo
 	else
-		if ! ($(which bsdtar > /dev/null)); then
-			error " Command 'bsdtar' not found, please install libarchive"
-		fi
-
 		PKGADD="/bin/pkgadd"
 
 		getPackageFileName cards
@@ -1498,10 +1493,12 @@ fi
 if [[ -z "$CORE" && -z "$DEVEL" ]];then
 	echo "exit" > $LFS/$SETUP_FILE
 else
-	echo "source /etc/profile
-cards sync
-cards install -n $CORE $DEVEL
-exit" > $LFS/$SETUP_FILE
+	echo "source /etc/profile" \
+	 > $LFS/$SETUP_FILE
+	[ -z $MOUNT ] && echo "cards sync" >> \
+	$LFS/$SETUP_FILE
+	echo "cards install -n $CORE $DEVEL
+exit" >> $LFS/$SETUP_FILE
 fi
 chmod 177 $LFS/$SETUP_FILE
 setup_chroot
@@ -1640,15 +1637,12 @@ VERSION_KERNEL="$(basename $LFS/lib/modules/*-NuTyX)"
 ISO="NuTyX_${ARCH}-$VERSION_NUTYX-$ISO"
 cd ${ISODIR} || error "cd ${ISODIR}"
 
-wget ${URL_SPLASH}/$SPLASH.png
-[ -f $SPLASH.png ] && mv $SPLASH.png isolinux/splash.png
-
 for FILE in libutil.c32 libcom32.c32 ldlinux.c32 vesamenu.c32 isolinux.bin
 do
 	cp /usr/lib/syslinux/$FILE isolinux/
 done
 
-sed "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" \
+sed "s|#VERSION_NUTYX#|${VERSION_NUTYX}-$ISO|" \
 	$TMP/menu.cfg \
 	> isolinux/menu.cfg
 sed "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" \
@@ -1668,8 +1662,8 @@ mkdir -p {iso/EFI,boot/grub/{fonts,${GRUB_EFI_ARCH}-efi}}
 [ -f /usr/share/grub/unicode.pf2 ] && \
 	cp /usr/share/grub/unicode.pf2 boot/grub/fonts
 
-[ -f isolinux/splash.png ] && \
-		mv isolinux/splash.png boot/grub
+[ -f /usr/share/grub/splash.png ] && \
+	cp /usr/share/grub/splash.png boot/grub/splash.png
 
 echo "set prefix=/boot/grub" > iso/grub-early.cfg
 
@@ -1741,7 +1735,7 @@ menuentry "NuTyX #ARCH# #VERSION_NUTYX# #VERSION_KERNEL# (UEFI mode) debug live 
     initrd /boot/initrd-#VERSION_KERNEL#
 }
 EOF
-sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}|" boot/grub/grub.cfg
+sed -i "s|#VERSION_NUTYX#|${VERSION_NUTYX}-$ISO|" boot/grub/grub.cfg
 sed -i "s|#VERSION_KERNEL#|${VERSION_KERNEL}|" boot/grub/grub.cfg
 sed -i "s|#ARCH#|${ARCH}|" boot/grub/grub.cfg
 
@@ -1791,8 +1785,7 @@ main() {
 	check_root
 
 	TMP=$(mktemp -d)
-	make_directories
-	[ -z "$ISO" ] || check_tools
+	check_tools
 	mkdir -p $LFS
 
 	download_pkgadd
@@ -1800,7 +1793,7 @@ main() {
 	install_chroot
 
 	create_locale_link
-
+	make_directories
 	install_configuration_files
 	install_resolv_conf
 	generate_setupfile
