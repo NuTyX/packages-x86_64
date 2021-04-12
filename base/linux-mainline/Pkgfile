@@ -9,9 +9,10 @@ run=(nutyx kmod busybox)
 PKGMK_IGNORE_UNPACK="yes"
 PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
+PKGMK_KEEP_SOURCES="no"
 
 name=linux-mainline
-version=5.12-rc4
+version=5.12-rc7
 
 INITRD="initrd-mainline"
 KERNEL=${name/-*/}
