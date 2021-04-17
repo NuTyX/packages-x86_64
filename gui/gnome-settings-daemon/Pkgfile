@@ -1,8 +1,8 @@
 description="The GNOME Settings daemon"
 url="http://www.gnome.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch, Tnut, jayce, Remy"
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch, Tnut, jayce, Remy, tnut"
 
 makedepends=(geoclue2 geocode-glib libgweather librsvg meson
              networkmanager ninja nss intltool cups colord
@@ -11,8 +11,8 @@ makedepends=(geoclue2 geocode-glib libgweather librsvg meson
 run=(gtk-update-icon-cache gsettings-desktop-schemas)
 
 name=gnome-settings-daemon
-version=3.38.1
+version=40.0.1
 
-source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/40/$name-$version.tar.xz)
 
 build=meson
