@@ -4,15 +4,15 @@ url="http://www.gnome.org/"
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut, jayce, Remy"
 
-makedepends=(libdazzle meson intltool libhandy0
+makedepends=(libdazzle meson intltool libhandy
              evolution-data-server python)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
 set=(gnome)
 
 name=gnome-calendar
-version=3.38.2
+version=40.0
 
-source=(https://download.gnome.org/sources/${name}/${version:0:4}/${name}-$version.tar.xz)
+source=(https://download.gnome.org/sources/${name}/${version%.*}/${name}-$version.tar.xz)
 
 build=meson
