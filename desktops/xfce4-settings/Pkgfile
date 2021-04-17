@@ -1,8 +1,8 @@
 description="Settings manager for xfce"
 url="http://www.xfce.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Tyrry, Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Tyrry, Greg, tnut"
 
 makedepends=(exo libxfce4ui garcon xorg-libxklavier
              xorg-libxkbfile libcanberra xfconf)
@@ -11,8 +11,7 @@ run=(adwaita-icon-theme colord gnome-themes-extra )
 set=(xfce4)
 
 name=xfce4-settings
-version=4.16.0
-release=2
+version=4.16.1
 
 source=(default-xsettings-xml.patch
         https://archive.xfce.org/src/xfce/${name}/${version%.*}/$name-$version.tar.bz2)
