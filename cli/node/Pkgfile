@@ -1,17 +1,22 @@
 description="Evented I/O for V8 JavaScript"
 url="http://nodejs.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Alienus, tnut, Greg, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus, spiky, Greg"
 
 makedepends=(python c-ares icu zlib libuv nghttp2)
 
 name=node
 alias=(nodejs node-js)
 version=15.14.0
+release=2
 
-source=(https://nodejs.org/dist/v$version/node-v$version.tar.xz)
-
+source=(v8-call-new-ListFormatter-createInstance.patch
+	https://nodejs.org/dist/v$version/node-v$version.tar.xz)
+prepare() {
+  cd node-v$version
+  patch -Np1 -d deps/v8 <../v8-call-new-ListFormatter-createInstance.patch
+}
 build() {
 
 	cd node-v$version
