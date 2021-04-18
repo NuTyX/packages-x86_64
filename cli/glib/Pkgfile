@@ -8,17 +8,19 @@ makedepends=(libffi pcre python elfutils meson ninja libxslt docbook-xsl)
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.68.0
+version=2.68.1
+release=2
 
 source=(https://download.gnome.org/sources/glib/${version:0:4}/$name-$version.tar.xz
 	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-12-beta2.jpg
-	glib-skip_warnings-1.patch gkeyfile.patch)
+	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-21-red.jpg
+	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-21-green.jpg
+	glib-skip_warnings-2.patch)
 
 build () {
   cd $name-$version
 
-  patch -Np1 -i ../gkeyfile.patch
-  patch -Np1 -i ../glib-skip_warnings-1.patch
+  patch -Np1 -i ../glib-skip_warnings-2.patch
 
   mkdir build-glib
   cd    build-glib
@@ -30,8 +32,13 @@ build () {
 
 
   # Default NuTyX Wallpaper
-  install -D -m644 ../../nutyx-12-beta2.jpg \
-  $PKG/usr/share/backgrounds/nutyx/nutyx.jpg
+  for i in nutyx-12-beta2.jpg nutyx-21-green.jpg nutyx-21-red.jpg
+  do
+    install -D -m644 ../../$i \
+    $PKG/usr/share/backgrounds/nutyx/$i
+  done
+  ln -sv nutyx-21-red.jpg $PKG/usr/share/backgrounds/nutyx/nutyx.jpg
+
 
 }
 uptodate(){
