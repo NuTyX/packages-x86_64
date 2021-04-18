@@ -9,14 +9,22 @@ PKGMK_GROUPS=(man devel doc )
 
 name=glib
 version=2.68.1
-release=2
+release=1
 
 source=(https://download.gnome.org/sources/glib/${version:0:4}/$name-$version.tar.xz
-	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-12-beta2.jpg
-	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-21-red.jpg
-	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-21-green.jpg
 	glib-skip_warnings-2.patch)
-
+prepare () {
+  URL="http://downloads.tuxfamily.org/nutyx/WallPapers"
+  for i in nutyx-12-beta2.jpg nutyx-21-red.jpg nutyx-21-green.jpg \
+  nutyx-black.jpg nutyx-dreamy-sky.jpg lxde-black.jpg nutyx-10.0.jpg \
+  nutyx-11.0.jpg nutyx-9.0.94.jpg nutyx-9.0.95.jpg nutyx-eagle.jpg \
+  nutyx2.png nutyx9.png NuTyX-vide.jpg NuTyX-LXDE-10.0.jpg NuTyX-9.92.jpg \
+  NuTyX-9.91-2.jpg
+  do
+   wget $URL/$i
+   install -D -m644 $i $PKG/usr/share/backgrounds/nutyx/$i
+  done
+}
 build () {
   cd $name-$version
 
@@ -32,11 +40,6 @@ build () {
 
 
   # Default NuTyX Wallpaper
-  for i in nutyx-12-beta2.jpg nutyx-21-green.jpg nutyx-21-red.jpg
-  do
-    install -D -m644 ../../$i \
-    $PKG/usr/share/backgrounds/nutyx/$i
-  done
   ln -sv nutyx-21-red.jpg $PKG/usr/share/backgrounds/nutyx/nutyx.jpg
 
 
