@@ -3,20 +3,21 @@ url="http://qt-project.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Greg, Rems"
 
-makedepends=(ruby icu gperf python2 qtdoc qttools cmake
+makedepends=(ruby icu gperf python qtdoc qttools cmake
      qtlocation qtsensors qtwebchannel libwebp woff2
      libxslt xorg-libxcomposite hyphen
      gstreamer-plugins-base)
 
 name=qtwebkit
 version=5.212.0-alpha4
+release=2
 
-source=($name-consolidate-1.patch
+source=($name-consolidate-2.patch
 https://github.com/annulen/webkit/releases/download/$name-$version/$name-$version.tar.xz)
 
 prepare() {
 cd qtwebkit-$version
-patch -Np1 -i ../$name-consolidate-1.patch
+patch -Np1 -i ../$name-consolidate-2.patch
 }
 build() {
 
