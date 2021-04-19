@@ -3,14 +3,18 @@ url="https://github.com/rockdaboot/libpsl"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(python2 libidn libunistring)
+makedepends=(python libidn libunistring)
 
 name=libpsl
 version=0.21.1
+release=2
 
 source=(https://github.com/rockdaboot/libpsl/releases/download/$version/$name-$version.tar.gz)
 build() {
 cd $name-$version
+
+sed -i 's/env python/&3/' src/psl-make-dafsa
+
 ./configure --prefix=/usr --disable-static
 make
 make DESTDIR=$PKG install
