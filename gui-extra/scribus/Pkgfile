@@ -10,12 +10,14 @@ run=(shared-mime-info)
 
 name=scribus
 version=1.5.6.1
-release=2
+release=3
 
-source=(https://sourceforge.net/projects/scribus/files/scribus-devel/$version/scribus-$version.tar.xz)
+source=(scribus-consolidate-1.patch
+	https://sourceforge.net/projects/scribus/files/scribus-devel/$version/scribus-$version.tar.xz)
 
 build() {
 	cd $name-$version
+	patch -Np1 -i ../scribus-consolidate-1.patch
 	mkdir build
 	cd build
 	cmake ../ -DCMAKE_INSTALL_PREFIX=/usr \
