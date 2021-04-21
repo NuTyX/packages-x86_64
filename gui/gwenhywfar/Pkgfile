@@ -4,9 +4,7 @@ url="https://www.aquamaniac.de/"
 packager="spiky <spiky@nutyx.org>"
 contributors=""
 
-makedepends=(gnutls libgcrypt openssl)
-run=()
-set=()
+makedepends=(gnutls libgcrypt openssl gtk3)
 
 name=gwenhywfar
 version=5.6.0
@@ -18,7 +16,7 @@ cd $name-$version
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
 --enable-system-certs \
---with-guis="none"
+--with-guis="gtk3"
 make
 make DESTDIR=$PKG install
 }
