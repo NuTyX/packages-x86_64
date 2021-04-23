@@ -62,6 +62,6 @@ match_Anything() {
 
 commit_it_all() {
   for i in $(git diff-files --name-only --diff-filter=M | sed -e 's#/Pkgfile##'); do
-    commit "$i";
+    commit $i;
   done
 }
