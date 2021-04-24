@@ -1,19 +1,13 @@
 description="Actions, Menus and Toolbars Kit for GTK+ applications"
 url="https://wiki.gnome.org/Projects/Amtk"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(gtk3 autoconf-archive gobject-introspection gtk-doc)
 
 name=amtk
-version=5.2.0
+version=5.3.1
 
 source=(https://download.gnome.org/sources/$name/${version:0:3}/$name-$version.tar.xz)
 
-build() {
-cd $name-$version
-./configure --prefix=/usr \
---enable-gtk-doc --disable-Werror
-make
-make DESTDIR=$PKG install
-}
+build=meson

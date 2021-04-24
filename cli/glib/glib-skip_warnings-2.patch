@@ -1,0 +1,21 @@
+diff -Naur a/gio/glib-compile-schemas.c b/gio/glib-compile-schemas.c
+--- a/gio/glib-compile-schemas.c	2021-04-08 16:00:16.752500500 +0200
++++ b/gio/glib-compile-schemas.c	2021-04-17 18:13:08.126766350 +0200
+@@ -1231,7 +1231,7 @@
+                    _("The path of a list must end with “:/”"));
+       return;
+     }
+-
++/*
+   if (path && (g_str_has_prefix (path, "/apps/") ||
+                g_str_has_prefix (path, "/desktop/") ||
+                g_str_has_prefix (path, "/system/")))
+@@ -1244,7 +1244,7 @@
+       g_printerr ("%s\n", message);
+       g_free (message);
+     }
+-
++*/
+   state->schema_state = schema_state_new (path, gettext_domain,
+                                           extends, extends_name, list_of);
+ 

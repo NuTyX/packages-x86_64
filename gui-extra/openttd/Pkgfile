@@ -2,34 +2,33 @@ description="An engine for running Transport Tycoon Deluxe."
 url="http://www.openttd.org"
 
 maintainers="tsgeek at mailoo dot org"
-contributors="Remy"
-packager="tnut <tnut@nutyx.org>"
+contributors="Remy, tnut"
+packager="spiky <spiky@nutyx.org>"
 
-makedepends=(libpng sdl1 icu xorg-fontconfig lzo
+makedepends=(cmake ninja libpng sdl1 icu xorg-fontconfig lzo
              xz openttd-opengfx openttd-opensfx)
-run=(desktop-file-utils hicolor-icon-theme)
+run=(desktop-file-utils hicolor-icon-theme openttd-opengfx openttd-opensfx)
 
 
 name=openttd
-version=1.10.3
+version=1.11.1
 
 source=(https://proxy.binaries.openttd.org/openttd-releases/${version}/${name}-${version}-source.tar.xz)
 
 build() {
   cd $name-$version
 
-CXXFLAGS+=' -DU_USING_ICU_NAMESPACE=1'
+  mkdir build
+  cd    build
 
- ./configure \
-    --prefix-dir=/usr \
-    --binary-name=$name \
-    --binary-dir=bin \
-    --data-dir=share/$name \
-    --install-dir=$PKG \
-    --doc-dir=share/doc/$name \
-    --menu-name="OpenTTD" \
-    --personal-dir=.${name}    
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+     -DCMAKE_INSTALL_BINDIR=bin \
+     -DCMAKE_INSTALL_DATADIR=/usr/share \
+     -DGLOBAL_DATA_DIR=/usr/share/openttd \
+     -DPERSONAL_DIR=.${name} \
+     -G Ninja ..
 
-make
-make DESTDIR=$PKG install
+ninja
+
+DESTDIR=$PKG ninja install
 }

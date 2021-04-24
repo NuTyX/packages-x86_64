@@ -8,17 +8,27 @@ makedepends=(libffi pcre python elfutils meson ninja libxslt docbook-xsl)
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.68.0
+version=2.68.1
+release=1
 
 source=(https://download.gnome.org/sources/glib/${version:0:4}/$name-$version.tar.xz
-	https://download.tuxfamily.org/nutyx/WallPapers/nutyx-12-beta2.jpg
-	glib-skip_warnings-1.patch gkeyfile.patch)
-
+	glib-skip_warnings-2.patch)
+prepare () {
+  URL="http://downloads.tuxfamily.org/nutyx/WallPapers"
+  for i in nutyx-12-beta2.jpg nutyx-21-red.jpg nutyx-21-green.jpg \
+  nutyx-black.jpg nutyx-dreamy-sky.jpg lxde-black.jpg nutyx-10.0.jpg \
+  nutyx-11.0.jpg nutyx-9.0.94.jpg nutyx-9.0.95.jpg nutyx-eagle.jpg \
+  nutyx2.png nutyx9.png NuTyX-vide.jpg NuTyX-LXDE-10.0.jpg NuTyX-9.92.jpg \
+  NuTyX-9.91-2.jpg
+  do
+   wget $URL/$i
+   install -D -m644 $i $PKG/usr/share/backgrounds/nutyx/$i
+  done
+}
 build () {
   cd $name-$version
 
-  patch -Np1 -i ../gkeyfile.patch
-  patch -Np1 -i ../glib-skip_warnings-1.patch
+  patch -Np1 -i ../glib-skip_warnings-2.patch
 
   mkdir build-glib
   cd    build-glib
@@ -30,8 +40,8 @@ build () {
 
 
   # Default NuTyX Wallpaper
-  install -D -m644 ../../nutyx-12-beta2.jpg \
-  $PKG/usr/share/backgrounds/nutyx/nutyx.jpg
+  ln -sv nutyx-21-red.jpg $PKG/usr/share/backgrounds/nutyx/nutyx.jpg
+
 
 }
 uptodate(){

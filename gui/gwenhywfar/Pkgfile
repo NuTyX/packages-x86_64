@@ -4,21 +4,19 @@ url="https://www.aquamaniac.de/"
 packager="spiky <spiky@nutyx.org>"
 contributors=""
 
-makedepends=(gnutls libgcrypt openssl)
-run=()
-set=()
+makedepends=(gnutls libgcrypt openssl gtk3)
 
 name=gwenhywfar
-version=5.4.1
+version=5.6.0
 
-source=(https://www.aquamaniac.de/rdm/attachments/download/344/$name-$version.tar.gz)
+source=(https://www.aquamaniac.de/rdm/attachments/download/364/$name-$version.tar.gz)
 
 build() {
 cd $name-$version 
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
 --enable-system-certs \
---with-guis="none"
+--with-guis="gtk3"
 make
 make DESTDIR=$PKG install
 }

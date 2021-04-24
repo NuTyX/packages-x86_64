@@ -1,14 +1,14 @@
 description="Libraries and utilities used for parsing XML files."
 url="http://xmlsoft.org/"
 
-packager="Schrodinger72 <schrodinger@nutyx.org>"
-contributors="tnut, Pierre B, Fanch"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Fanch, Schrodinger72"
 
-makedepends=(python2)
+makedepends=(python)
 
 name=libxml2
 version=2.9.10
-release=5
+release=6
 
 PKGMK_GROUPS=(lib man devel doc)
 source=(http://www.linuxfromscratch.org/patches/blfs/svn/libxml2-2.9.10-security_fixes-1.patch
@@ -25,7 +25,7 @@ sed -i 's/ TRUE/ true/' encoding.c
     --prefix=/usr \
     --disable-static \
     --with-history \
-    --with-python=/usr/bin/python2
+    --with-python=/usr/bin/python3
 make
 make DESTDIR=$PKG install
 rm $PKG/usr/lib/$name.la

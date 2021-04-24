@@ -1,16 +1,16 @@
 description="The MATE Settings daemon"
 url="https://mate-desktop.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch, Tnut, Jayce, Remy, Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch, Tnut, Jayce, Remy, Greg, tnut"
 
 makedepends=(dconf gtk3 libcanberra libnotify mate-desktop mate-libkbd
-             mate-libmixer nss xorg-libxt)
+             mate-libmixer nss xorg-libxt dbus-glib)
 
 set=(mate)
 
 name=mate-settings-daemon
-version=1.24.1
+version=1.24.2
 
 source=(https://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 

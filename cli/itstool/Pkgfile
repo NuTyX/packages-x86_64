@@ -1,27 +1,21 @@
 description="XML to PO template files and back"
 url="http://itstool.org/"
 
-packager="Schrodinger72 <schrodinger@nutyx.org>"
-contributors="Pierre B, Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Tnut, Schrodinger72"
 
 makedepends=(autoconf automake libtool sed
-             docbook-xml docbook-xsl libxml2 python2)
+             docbook-xml docbook-xsl libxml2 python)
 
 name=itstool
 version=2.0.6
-release=4
+release=5
 
 source=(http://files.itstool.org/itstool/$name-$version.tar.bz2)
 
-prepare() {
-  cd $name-$version
-  sed -i 's/| python/&2/' configure.ac
-  autoreconf -fvi
-}
-
 build() {
   cd $name-$version
-  PYTHON=/usr/bin/python2 ./configure --prefix=/usr
+  PYTHON=/usr/bin/python3 ./configure --prefix=/usr
   make
   make DESTDIR=$PKG install
 }

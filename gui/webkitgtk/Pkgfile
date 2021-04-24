@@ -13,12 +13,14 @@ makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              
 name=webkitgtk
 version=2.32.0
+release=2
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 prepare() {
 echo 'add_compile_definitions("U_DEFINE_FALSE_AND_TRUE=1")' >> $name-$version/Source/WTF/wtf/CMakeLists.txt
 pkgrm python2
 pkgrm python2.devel
+sed -i /U_HIDE_DEPRECATE/d $name-$version/Source/WTF/wtf/Platform.h
 }
 build() {
 cd $name-$version

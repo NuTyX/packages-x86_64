@@ -8,15 +8,12 @@ makedepends=(cmake boost guile libdbi webkitgtk gtest
 run=(desktop-file-utils)
 
 name=gnucash
-version=3.10
-release=2
+version=4.5
 
-source=(gnucash-3.10-consolidate-1.patch
-        https://downloads.sourceforge.net/$name/$name-${version}.tar.gz)
+source=(https://downloads.sourceforge.net/$name/$name-${version}.tar.bz2)
 
 build() {
 cd $name-$version
-patch -Np1 -i ../gnucash-3.10-consolidate-1.patch
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_INSTALL_LIBDIR=/usr/lib \
       -DCOMPILE_GSCHEMAS=OFF

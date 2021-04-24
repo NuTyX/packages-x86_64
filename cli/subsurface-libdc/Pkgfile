@@ -8,12 +8,12 @@ makedepends=(autoconf automake libtool sed grep)
 run=(glibc)
 
 name=subsurface-libdc
-version=4.9.10
+version=5.0.1
 
 source=(https://subsurface-divelog.org/downloads/libdivecomputer-subsurface-branch-$version.tgz)
 
 build() {
-mv libdivecomputer-subsurface-branch-4.9.10 $name-$version
+mv libdivecomputer-subsurface-branch-$version $name-$version
 cd $name-$version
  autoreconf --install
 ./configure --prefix=/usr
