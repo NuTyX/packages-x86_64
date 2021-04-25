@@ -1,12 +1,12 @@
 description="Processor emulator using dynamic translation to achieve good emulation speed"
 url="http://www.qemu.org"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Rems, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems, Spiky"
 
 name=qemu
 version=5.2.0
-release=3
+release=4
 
 makedepends=(gtk2 gtk3 sdl glib libseccomp libcap-ng
              jemalloc python vte mesa virglrenderer lzo nettle
@@ -15,12 +15,17 @@ makedepends=(gtk2 gtk3 sdl glib libseccomp libcap-ng
              usbredir bridge-utils xorg-libdrm spice spice-protocol libaio)
 run=(desktop-file-utils)
 
-source=(https://download.qemu-project.org/qemu-$version.tar.xz)
+source=(configvm startvm
+        https://download.qemu-project.org/qemu-$version.tar.xz)
 
 prepare() {
 if ! (getent group kvm > /dev/null); then
    groupadd -g 61 kvm
 fi
+for i in configvm startvm
+do
+ install -D -m755 $i $PKG/usr/bin/$i
+done
 }
 build() {
 
