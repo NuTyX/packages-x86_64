@@ -2,18 +2,19 @@
 description="Storage volume encryption keys and storing them separately from volumes to handle forgotten passphrases."
 url="https://releases.pagure.org/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
-makedepends=(nss cryptsetup glib gpgme swig)
-run=(python python2)
+makedepends=(python nss cryptsetup glib gpgme swig)
+run=(python)
 
 name=volume_key
 version=0.3.12
-release=3
+release=5
 
 source=(  https://releases.pagure.org/volume_key/volume_key-$version.tar.xz )
 build() {
 cd ${name}-$version
+export CFLAGS+=" $(python3-config --includes)"
 ./configure --prefix=/usr
 make
 make DESTDIR=$PKG install
@@ -21,5 +22,4 @@ sed -i '/config.h/d' $PKG/usr/include/volume_key/libvolume_key.h
 
 # Obsolet lib
 rm $PKG/usr/lib/libvolume_key.la
-rm $PKG/usr/lib/python2.7/site-packages/_volume_key.la
 }
