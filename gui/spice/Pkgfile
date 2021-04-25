@@ -1,17 +1,26 @@
 description="A spice server"
 url="https://www.spice-space.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Rems"
+packager="spiky <spiky@nutyx.org>"
+contributors="Rems, tnut"
 
 makedepends=(meson ninja glib libjpeg-turbo cyrus-sasl
-lz4 opus xorg-pixman git libcacard python2-pyparsing
-python2-six spice-protocol gdk-pixbuf)
+lz4 opus xorg-pixman git libcacard python-parsing
+python-six spice-protocol gdk-pixbuf)
 
 
 name=spice
 version=0.14.3
+release=3
 
 source=(https://www.spice-space.org/download/releases/$name-server/$name-$version.tar.bz2)
 
-build=meson
+build() {
+cd $name-$version
+mkdir build
+cd build
+meson --prefix=/usr -Dgstreamer=no
+ninja
+DESTDIR=$PKG ninja install
+}
+
