@@ -1,26 +1,21 @@
 description="A library written in C that allows you to create and run audio and video streams"
 url="https://github.com/BelledonneCommunications/bctoolbox"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Rems"
+packager="spiky <spiky@nutyx.org>"
+contributors="Rems, tnut"
 
 makedepends=(mbedtls bcunit cmake)
 
 name=bctoolbox
-version=0.6.0
-release=3
+version=4.5.3
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/BelledonneCommunications/bctoolbox/archive/$version.tar.gz
-        https://sources.debian.org/data/main/b/bctoolbox/0.6.0-2/debian/patches/fix-ftbfs-with-mbedtls-2.7.patch
-        https://sources.debian.org/data/main/b/bctoolbox/0.6.0-2/debian/patches/deprecated_mbedtls_header)
+source=(https://github.com/BelledonneCommunications/bctoolbox/archive/$version.tar.gz)
 
 build() {
 
 cd $name-$version
-patch -Np1 -i ../fix-ftbfs-with-mbedtls-2.7.patch
-patch -Np1 -i ../deprecated_mbedtls_header
 mkdir -pv build
 cd build
 cmake -DCMAKE_SKIP_RPATH=ON -DENABLE_TESTS_COMPONENT=OFF \
