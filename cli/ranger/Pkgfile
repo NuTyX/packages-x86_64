@@ -1,17 +1,18 @@
 description="File manager with VI key bindings."
 url="http://ranger.nongnu.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Alienus"
+packager="spiky <spiky@nutyx.org>"
+contributors="Alienus, tnut"
 
-makedepends=(python2)
+makedepends=(python)
 
 name=ranger
 version=1.9.3
+release=2
 
 source=(https://ranger.github.io/$name-$version.tar.gz)
 
 build() {
     cd $name-$version
-    python2 setup.py install --prefix=/usr --root=$PKG
+    python setup.py install --prefix=/usr --root=$PKG
 }
