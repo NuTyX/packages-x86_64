@@ -12,7 +12,7 @@ run=(hicolor-icon-theme desktop-file-utils)
 name=chromium
 version=90.0.4430.93
 icuversion=67.1
-re2version=2020-10-01
+re2version=2021-04-01
 
 source=(
         https://github.com/unicode-org/icu/releases/download/\
@@ -45,5 +45,5 @@ do
 done
 cd -
 cd re2-$re2version
-install obj/so/libre2.so $PKG/usr/lib/chromium/libre2.so.8
+install obj/so/libre2.so $PKG/usr/lib/chromium/libre2.so.9
 }
