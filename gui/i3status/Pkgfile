@@ -1,0 +1,21 @@
+description="i3status - Generates status bar to use with i3bar, dzen2 or xmobar"
+url="https://github.com/i3/i3status"
+
+PKGMK_KEEP_SOURCES="no"
+
+packager="sundev79 <sun@nutyx.org>"
+makedepends=(yajl confuse pulse alsa-lib libnl pulseaudio asciidoc)
+
+name=i3status
+version=2.13
+
+source=(https://github.com/i3/i3status/archive/refs/tags/$version.tar.gz)
+
+build() {
+cd $name-$version
+autoreconf -fi
+mkdir build && cd build
+../configure --disable-sanitizers --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
