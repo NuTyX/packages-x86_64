@@ -1,0 +1,20 @@
+description="Vim-fork focused on extensibility and usability"
+url="https://neovim.io/"
+
+packager="sundev79 <sun@nutyx.org>"
+
+makedepends=(cmake unzip)
+
+name=neovim
+version=nightly
+
+source=(https://github.com/neovim/neovim/archive/refs/tags/$version.tar.gz)
+
+build() {
+cd $name-$version
+mkdir .deps && cd .deps
+cmake ../third-party && make -j1
+cd ../ && mkdir build && cd build
+cmake ../ -DCMAKE_BUILD_TYPE=Release && make
+make DESTDIR=$PKG install
+}
