@@ -12,6 +12,7 @@ PKGMK_GROUPS=(devel doc)
 
 name=kernel
 version=5.12.2
+release=2
 
 alias=(linux)
 INITRD="initrd"
@@ -75,6 +76,8 @@ cp  .config    \
 $PKG/boot/config_64-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
 $PKG/boot/$KERNEL
+ln -sv $KERNEL \
+$PKG/boot/$name-${KERNEL_VERSION}
 
 # Reorgenise the sources
 cd $PKG/lib/modules/${KERNEL_VERSION}/
