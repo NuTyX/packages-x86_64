@@ -12,10 +12,10 @@ PKGMK_GROUPS=(devel doc)
 PKGMK_KEEP_SOURCES="no"
 
 name=linux-mainline
-version=5.12-rc7
-
-INITRD="initrd-mainline"
-KERNEL=${name/-*/}
+version=5.13-rc1
+SUFFIX="${name/*-/}"
+INITRD="initrd-$SUFFIX"
+KERNEL="bzImage-$SUFFIX"
 
 _version=${version}
 
@@ -71,7 +71,7 @@ $PKG/boot/System_64.map-${KERNEL_VERSION}
 cp  .config    \
 $PKG/boot/config_64-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
-$PKG/boot/$KERNEL-${KERNEL_VERSION}
+$PKG/boot/$KERNEL
 
 # Reorgenise the sources
 cd $PKG/lib/modules/${KERNEL_VERSION}/
@@ -98,18 +98,19 @@ if [ \"\$(dirname \$LK)\" != \".\" ]; then
   echo \"This is an efi installation\"
   ln -sf \$LK boot/$name
   if [ -f boot/\$LK ]; then
-    mv boot/$KERNEL-${KERNEL_VERSION} boot/\$LK 2>/dev/null
-    ln -sf \$LK boot/$KERNEL-${KERNEL_VERSION}
+    mv boot/$KERNEL boot/\$LK 2>/dev/null
+    ln -sf \$LK boot/$KERNEL
   else
     echo \"EFI Partition not found, mount EFI Partition and re-install the kernel\"
   fi
 else
   echo \"This is a bios installation\"
-  if [ -L boot/$INITRD ]; then
+  if [ -f boot/$INITRD ]; then
+    rm boot/$INITRD
     mkinitramfs ${KERNEL_VERSION}
-    ln -sf initrd-${KERNEL_VERSION} boot/$INITRD
+    mv boot/initrd-${KERNEL_VERSION} boot/$INITRD
   fi
-  ln -sf $KERNEL-${KERNEL_VERSION} boot/$name
+  ln -sf $KERNEL boot/$name
 fi" > $PKGMK_ROOT/$name.post-install
 
 }
