@@ -1,20 +1,20 @@
 description="Text-based Web browser as well as pager"
 url="https://salsa.debian.org/debian/w3m"
 
-packager="Schrodinger72 <schrodinger@nutyx.org>"
+packager="fabienwang <fabienwang@nutyx.org>"
 contributors="tnut, Greg, Berlius"
 
 makedepends=(openssl gc ncurses gpm git imlib2 xorgproto)
 
 name=w3m
-version=0.5.3.git20200507
-_gitcommit=aa078ed98ab58e961761c077472c1219dcbc738e
+version=0.5.3+git20210102
+_releasetag=v0.5.3+git20210102+deb11u0.5
 release=1
 
-source=(https://salsa.debian.org/debian/w3m/-/archive/${_gitcommit}/w3m-${_gitcommit}.tar.gz)
+source=(https://salsa.debian.org/debian/w3m/-/archive/${_releasetag}/w3m-${_releasetag}.tar.gz)
 
 build() {
-	cd "${name}-${_gitcommit}"
+	cd "${name}-${_releasetag}"
 	./configure \
 		--prefix=/usr \
 		--libexecdir=/usr/lib \
