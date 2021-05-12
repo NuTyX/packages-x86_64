@@ -6,19 +6,21 @@ PKGMK_KEEP_SOURCES="no"
 packager="tnut <tnut@nutyx.org>"
 contributors="Sundev79"
 
+set=(i3)
+
 makedepends=(yajl confuse alsa-lib libnl pulseaudio asciidoc)
 
 name=i3status
 version=2.13
-release=2
+release=3
 
 source=(https://github.com/i3/i3status/archive/refs/tags/$version.tar.gz)
 
 build() {
-cd $name-$version
-autoreconf -fi
-mkdir build && cd build
-../configure --disable-sanitizers --prefix=/usr
-make
-make DESTDIR=$PKG install
+  cd $name-$version
+  autoreconf -fi
+  mkdir build && cd build
+  ../configure --disable-sanitizers --prefix=/usr
+  make
+  make DESTDIR=$PKG install
 }
