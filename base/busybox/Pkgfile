@@ -6,15 +6,14 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(git musl)
 
 name=busybox
-version=1.32.1
-release=4
+version=1.33.1
 
 source=($name.config
 	https://busybox.net/downloads/busybox-$version.tar.bz2)
 
 prepare() {
 git clone git://github.com/slashbeast/mdev-like-a-boss.git
-sed -i "s@/opt/mdev@/etc/mdev.c@g" mdev-like-a-boss/mdev.conf
+sed -i "s@/opt/mdev@/etc/mdev.d@g" mdev-like-a-boss/mdev.conf
 
 }
 build() {
