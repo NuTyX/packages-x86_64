@@ -15,6 +15,6 @@ cd $name-$version
 mkdir .deps && cd .deps
 cmake ../third-party && make -j1
 cd ../ && mkdir build && cd build
-cmake ../ -DCMAKE_BUILD_TYPE=Release && make
+cmake ../ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr && make
 make DESTDIR=$PKG install
 }
