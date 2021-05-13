@@ -1,17 +1,17 @@
 description="An efficient cross platform serialization library for C++, with support for Java, C-sharp and Go"
 url="https://google.github.io/flatbuffers/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre Bi, Rems"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre Bi, Rems, tnut"
 
 makedepends=(cmake)
 
 name=flatbuffers
-version=1.12.0
+version=2.0.0
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/google/$name/archive/v$version.tar.gz)
+source=(https://github.com/google/$name/archive/refs/tags/v$version.tar.gz)
 
 build() {
 cd $name-$version
