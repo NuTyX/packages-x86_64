@@ -1,23 +1,22 @@
 description="Xorg X11 qxl video driver"
-packager="tnut <tnut@nutyx.org>"
-contributors="Rems"
+packager="fabienwang <fabienwang@nutyx.org>"
+contributors="tnut, Rems"
 name=xorg-xf86-video-qxl
 version=0.1.5
-makedepends=(xorg-server xorgproto spice python2 git libcacard)
+release=2
+makedepends=(xorg-server xorgproto spice python git libcacard)
 source=(https://xorg.freedesktop.org/releases/individual/driver/xf86-video-qxl-$version.tar.bz2)
 
 build () {
-cd xf86-video-qxl-$version
-# this is python 2.x
-	sed -i '1c #!/usr/bin/python2' scripts/Xspice
-autoreconf -fi
-./configure --prefix=/usr \
-            --enable-xspice
-make
-make DESTDIR=$PKG install
-install -v -D -m0755 scripts/Xspice "${PKG}"/usr/bin/Xspice
+  cd xf86-video-qxl-$version
+  autoreconf -fi
+  ./configure --prefix=/usr \
+              --enable-xspice
+  make
+  make DESTDIR=$PKG install
+  install -v -D -m0755 scripts/Xspice "${PKG}"/usr/bin/Xspice
 
-# Obsolets libs
-rm $PKG/usr/lib/xorg/modules/drivers/qxl_drv.la
-rm $PKG/usr/lib/xorg/modules/drivers/spiceqxl_drv.la
+  # Obsolets libs
+  rm $PKG/usr/lib/xorg/modules/drivers/qxl_drv.la
+  rm $PKG/usr/lib/xorg/modules/drivers/spiceqxl_drv.la
 }
