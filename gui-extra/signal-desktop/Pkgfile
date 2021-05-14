@@ -1,0 +1,12 @@
+description="Signal — Private Messenger for Windows, Mac, and Linux"
+url="https://signal.org/"
+
+packager="sundev79 <sun@nutyx.org>"
+
+name=signal-desktop
+version=5.0.0
+source=(https://ftp.nluug.nl/pub/os/Linux/distr/pclinuxos/pclinuxos/apt/pclinuxos/64bit/RPMS.x86_64/signal-desktop-$version-1pclos2021.x86_64.rpm)
+
+build() {
+   cp -rvf * $PKG/
+}
