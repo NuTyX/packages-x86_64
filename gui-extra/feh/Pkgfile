@@ -1,21 +1,20 @@
 description="X11 image viewer aimed mostly at console users. It is controlled via commandline arguments"
 url="https://feh.finalrewind.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Greg, Geantbrun"
+packager="fabienwang <fabienwang@nutyx.org>"
+contributors="Greg, Geantbrun, spiky"
 
 makedepends=(libpng giblib libexif xorg-libxt xorg-libxcursor
              xorg-libxdamage xorg-libxrandr xorg-libxinerama curl)
 
 name=feh
-version=3.6.3
+version=3.7
 
 source=(http://feh.finalrewind.org/$name-$version.tar.bz2)
 
 build() {
-
-cd $name-$version
-sed -i "s:doc/feh:&-$version:" config.mk
-make PREFIX=/usr exif=1 help=1 stat64=1
-make DESTDIR=$PKG PREFIX=/usr install        
+  cd $name-$version
+  sed -i "s:doc/feh:&-$version:" config.mk
+  make PREFIX=/usr exif=1 help=1 stat64=1
+  make DESTDIR=$PKG PREFIX=/usr install        
 }
