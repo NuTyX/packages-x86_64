@@ -1,0 +1,15 @@
+description="Visual Studio Code"
+url="https://code.visualstudio.com/"
+
+packager="sundev79 <sun@nutyx.org>"
+
+name=vscode
+version=1.56.2
+
+# Source package has a unstable name !!!
+packagename=code_$version-1620838498_amd64.deb
+source=(https://az764295.vo.msecnd.net/stable/054a9295330880ed74ceaedda236253b4f39a335/$packagename)
+
+build() {
+   tar -xf data.tar.xz -C "$PKG/"
+}

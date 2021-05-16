@@ -1,0 +1,40 @@
+description="Tweak tool for MATE (fork of MintDesktop)"
+url="https://github.com/ubuntu-mate/mate-tweak"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Dania, Rems"
+
+set=(mate)
+
+name=mate-tweak
+version=21.04.1
+_umsver=21.04.0
+release=2
+
+makedepends=(tilda gtk3 libnotify python-configobj
+             python-distutils-extra
+             mate-menus mate-netbook)
+
+run=(python-gobject python-psutil python-setproctitle
+     python-distro picom)
+
+PKGMK_KEEP_SOURCES=no
+
+source=(https://github.com/ubuntu-mate/$name/archive/$version.tar.gz
+        https://github.com/ubuntu-mate/ubuntu-mate-settings/archive/$_umsver.tar.gz)
+build() {
+  cd $name-$version
+  
+  sed -i 's|/usr/lib/mate-applets/topmenu-mate-panel-applet|/usr/lib/topmenu-gtk/topmenu-mate-panel-applet|' mate-tweak
+
+  python3 setup.py build
+  python3 setup.py install --root=$PKG --optimize=1 --skip-build
+
+  cp -r ../ubuntu-mate-settings-$_umsver/usr/share/mate-panel $PKG/usr/share
+}
+uptodate() {
+feed=https://github.com/mate-desktop/$name/releases.atom
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+$exec $feed | grep release | grep title | head -1 | \
+sed -e "s@ @@g" -e "s@<title>$name@@" -e "s@release</title>@@"
+}

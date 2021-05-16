@@ -14,14 +14,14 @@ makedepends=(xorgproto pkg-config libtool xorg-xrandr wayland python-mako
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=21.0.2
+version=21.1.0
 
-source=(http://www.linuxfromscratch.org/patches/blfs/svn/mesa-20.3.4-add_xdemos-1.patch
+source=(http://www.linuxfromscratch.org/patches/blfs/svn/mesa-$version-add_xdemos-1.patch
 	https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
 
 build() {
 cd mesa-$version
-patch -Np1 -i ../mesa-20.3.4-add_xdemos-1.patch
+patch -Np1 -i ../mesa-$version-add_xdemos-1.patch
 GALLIUM_DRV="i915,iris,nouveau,r600,radeonsi,svga,swrast,virgl"
 DRI_DRIVERS="i965,nouveau"
 

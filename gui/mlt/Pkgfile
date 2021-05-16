@@ -4,11 +4,12 @@ url="http://www.mltframework.org"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre B, Rems, tnut"
 
-makedepends=(python2 ladspa frei0r-plugins libdv sdl-image libsamplerate sox
+makedepends=(python ladspa frei0r-plugins libdv sdl-image libsamplerate sox
              ffmpeg vid-stab qtsvg jack libexif swig movit eigen3)
 
 name=mlt
 version=6.26.1
+release=2
 
 source=(https://github.com/mltframework/mlt/releases/download/v$version/mlt-$version.tar.gz)
 
@@ -23,8 +24,8 @@ build() {
   # mlt python bindings
   cd src/swig/python
   ./build
-  mkdir -p $PKG/usr/lib/python2.7/
-  install -m755 mlt.py $PKG/usr/lib/python2.7/
-  install -m755 _mlt.so $PKG/usr/lib/python2.7/
-  install -m755 mlt_wrap.o $PKG/usr/lib/python2.7/
+  mkdir -p $PKG/usr/lib/python3.9/
+  install -m755 mlt.py $PKG/usr/lib/python3.9/
+  install -m755 _mlt.so $PKG/usr/lib/python3.9/
+  install -m755 mlt_wrap.o $PKG/usr/lib/python3.9/
 }

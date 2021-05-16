@@ -13,14 +13,13 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
      shared-mime-info gnome-icon-theme adwaita-icon-theme)
 
 name=evolution
-version=3.40.0
+version=3.40.1
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz
-        3.38-PrintableOptions.cmake-Correct-variable-name-compari.patch)
+source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-patch -Np1 -i ../3.38-PrintableOptions.cmake-Correct-variable-name-compari.patch
+
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DSYSCONF_INSTALL_DIR=/etc  \
       -DENABLE_INSTALLED_TESTS=ON \

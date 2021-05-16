@@ -8,14 +8,14 @@ makedepends=(autoconf automake grep doxygen)
 
 name=yaml
 version=0.2.5
+release=2
 
-
-source=(https://github.com/yaml/libyaml/archive/$version/libyaml-dist-$version.tar.gz)
+source=(https://pyyaml.org/download/libyaml/$name-$version.tar.gz)
 
 build() {
-cd libyaml-$version
-./bootstrap
-./configure --prefix=/usr --disable-static 
+cd $name-$version
+
+./configure --prefix=/usr
 make DESTDIR=$PKG install
 rm $PKG/usr/lib/libyaml.la
 } 

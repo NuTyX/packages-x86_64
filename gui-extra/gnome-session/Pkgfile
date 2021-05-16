@@ -1,0 +1,25 @@
+description="start up the GNOME Desktop environment"
+url="http://www.gnome.org/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch, Tnut, Remy, rems"
+
+makedepends=(dconf dbus-glib docbook-xml docbook-xsl elogind
+             gnome-desktop json-glib libxslt mesa meson upower xmlto)
+
+set=(gnome)
+
+name=gnome-session
+version=40.1.1
+
+source=(https://download.gnome.org/sources/$name/40/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+sed 's@/bin/sh@/bin/sh -l@' -i gnome-session/gnome-session.in
+mkdir build
+cd build
+meson --prefix=/usr -Dsystemd_journal=false
+ninja
+DESTDIR=$PKG ninja install
+}

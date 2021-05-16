@@ -1,15 +1,16 @@
 description="GTK3 Bluetooth manager"
 url="https://github.com/blueman-project/blueman"
 
-contributors="Remy"
-packager="tnut <tnut@nutyx.org>"
+contributors="Remy, tnut"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(gtk3 libnotify cython intltool)
-run=(python-cairo python2-cairo dbus-python
-     python2-gobject python-gobject bluez)
+run=(python-cairo dbus-python
+     python-gobject bluez)
 
 name=blueman
 version=2.1.4
+release=2
 
 source=(https://github.com/blueman-project/$name/releases/download/$version/$name-$version.tar.xz)
 

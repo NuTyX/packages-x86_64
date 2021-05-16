@@ -1,20 +1,20 @@
 description="Epson Inkjet Printer Driver (ESC/P-R) for Linux"
 url="http://download.ebz.epson.net/dsc/search/01/search/?OSC=LX"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, tnut"
 
 makedepends=(cups ghostscript)
 
 name=epson-inkjet-printer-escpr
-version=1.6.5
-release=3
+version=1.7.9
 
-source=(https://download3.ebz.epson.net/dsc/f/03/00/04/54/27/b73564748bfde7b7ce625e20d4a3257d447bec79/epson-inkjet-printer-escpr-$version-1lsb3.2.tar.gz)
+source=(https://download3.ebz.epson.net/dsc/f/03/00/12/50/95/322b8d6b915ab85add33d41f04ba5130866aadbe/$name-$version-1lsb3.2.tar.gz
+        bug_x86_64.patch)
 
 build() {
   cd $name-$version
-
+patch -Np1 -i ../bug_x86_64.patch
   ./configure --prefix=/usr \
               --with-cupsfilterdir=/usr/lib/cups/filter \
               --with-cupsppddir=/usr/share/ppd

@@ -1,0 +1,41 @@
+description="Qt Platform Theme integration plugins for the Plasma workspaces"
+url="https://www.kde.org/"
+
+packager="fabienwang <fabienwang@nutyx.org>"
+contributors="Pierre B, tnut, fabienwang, spiky"
+
+makedepends=(xorg-libxcursor noto-fonts ttf-hack kio kwayland breeze)
+
+set=(kde5)
+
+name=plasma-integration
+version=5.21.5
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr    \
+      -DCMAKE_BUILD_TYPE=Release     \
+      -DKDE_INSTALL_LIBDIR=lib       \
+      -DBUILD_TESTING=OFF            \
+      -DCMAKE_DISABLE_FIND_PACKAGE_FontNotoSans=false \
+      -DCMAKE_DISABLE_FIND_PACKAGE_FontHack=false     \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

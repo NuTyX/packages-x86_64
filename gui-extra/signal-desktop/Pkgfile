@@ -1,0 +1,22 @@
+description="Signal — Private Messenger for Windows, Mac, and Linux"
+url="https://signal.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Sun"
+
+name=signal-desktop
+version=5.1.0
+
+run=(gtk3 alsa-lib at-spi2-atk at-spi2-core
+     atk cairo cups.lib dbus expat gdk-pixbuf
+     glib gtk3 libxcb libxkbcommon mesa nspr nss
+     pango xorg-libdrm xorg-libx11
+     xorg-libxcomposite xorg-libxdamage
+     xorg-libxext xorg-libxfixes xorg-libxrandr
+     xorg-libxshmfence)
+
+source=(https://ftp.nluug.nl/pub/os/Linux/distr/pclinuxos/pclinuxos/apt/pclinuxos/64bit/RPMS.x86_64/signal-desktop-$version-1pclos2021.x86_64.rpm)
+
+build() {
+   cp -rvf * $PKG/
+}

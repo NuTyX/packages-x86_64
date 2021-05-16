@@ -1,23 +1,21 @@
 description="Programs that work with contacts, tasks, and calendar information"
 url="http://www.gnome.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch, Spiky, Jayce, Remy"
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch, Spiky, Jayce, Remy, tnut"
 
 makedepends=(vim db libcanberra gnome-online-accounts gnome-common gperf icu
              libgdata libical libsecret libsoup nss libgweather vala 
              gobject-introspection kerberos gtk3 openldap)
 
 name=evolution-data-server
-version=3.40.0
-release=2
+version=3.40.1
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz
-        3.38-PrintableOptions.cmake-Correct-variable-name-compari.patch)
+source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-patch -Np1 -i ../3.38-PrintableOptions.cmake-Correct-variable-name-compari.patch
+
 mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr   \

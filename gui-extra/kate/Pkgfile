@@ -1,0 +1,33 @@
+description="Text editor of KDE"
+url="https://www.kde.org/"
+
+packager="fabienwang <fabienwang@nutyx.org>"
+contributors="Pierre B, tnut"
+
+makedepends=(qtsvg extra-cmake-modules kconfig kcrash ki18n
+             kjobwidgets kio kparts ktexteditor kwindowsystem
+             kxmlgui kiconthemes kactivities kwallet kdoctools
+             plasma-framework knewstuff threadweaver kitemmodels
+             kded)
+
+run=(hicolor-icon-theme)
+set=(kde5)
+
+name=kate
+version=21.04.1
+
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

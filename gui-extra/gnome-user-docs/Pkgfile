@@ -1,0 +1,152 @@
+description="The GNOME User Docs package contains documentation for GNOME"
+url="http://www.gnome.org/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch, tnut, Remy, Schrodinger72"
+
+makedepends=(itstool)
+
+set=(gnome)
+
+name=gnome-user-docs
+version=40.1
+
+PKGMK_LOCALES=(as ca cs da de el fi fr es gl gu he hi hr hu id it ja kn ko lv mr nl pa pl pt ro ru sl sr sv te vi ta zh)
+
+source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+pack_remove_locale() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.${1}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/share/help/${1}
+
+rm -r usr/share/help/${1}
+
+}
+
+locale_as() {
+pack_remove_locale as
+}
+locale_ca() {
+pack_remove_locale ca
+}
+locale_cs() {
+pack_remove_locale cs
+}
+locale_da() {
+pack_remove_locale da
+}
+locale_de() {
+pack_remove_locale de
+}
+locale_el() {
+pack_remove_locale el
+}
+locale_fi() {
+pack_remove_locale fi
+}
+locale_fr() {
+pack_remove_locale fr
+}
+locale_es() {
+pack_remove_locale es
+}
+locale_gl() {
+pack_remove_locale gl
+}
+locale_gu() {
+pack_remove_locale gu
+}
+locale_he() {
+pack_remove_locale he
+}
+locale_hi() {
+pack_remove_locale hi
+}
+locale_hr() {
+pack_remove_locale hr
+}
+locale_hu() {
+pack_remove_locale hu
+}
+locale_id() {
+pack_remove_locale id
+}
+locale_it() {
+pack_remove_locale it
+}
+locale_ja() {
+pack_remove_locale ja
+}
+locale_kn() {
+pack_remove_locale kn
+}
+locale_ko() {
+pack_remove_locale ko
+}
+locale_lv() {
+pack_remove_locale lv
+}
+locale_mr() {
+pack_remove_locale mr
+}
+locale_nl() {
+pack_remove_locale nl
+}
+locale_pa() {
+pack_remove_locale pa
+}
+locale_pl() {
+pack_remove_locale pl
+}
+locale_pt() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.pt${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/share/help/pt_BR usr/share/help/pt
+
+rm -r usr/share/help/pt
+rm -r usr/share/help/pt_BR
+
+}
+locale_ro() {
+pack_remove_locale ro
+}
+locale_ru() {
+pack_remove_locale ru
+}
+locale_sl() {
+pack_remove_locale sl
+}
+locale_sr() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.sr${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/share/help/sr \
+usr/share/help/sr@latin
+
+rm -r usr/share/help/sr
+rm -r usr/share/help/sr@latin
+}
+locale_sv() {
+pack_remove_locale sv
+}
+locale_te() {
+pack_remove_locale te
+}
+locale_vi() {
+pack_remove_locale vi
+}
+locale_ta() {
+pack_remove_locale ta
+}
+locale_zh() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.zh${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/share/help/zh_CN
+
+rm -r usr/share/help/zh_CN
+
+}

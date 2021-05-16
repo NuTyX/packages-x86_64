@@ -1,23 +1,26 @@
 description="Secret Rabbit Code (aka libsamplerate) is a Sample Rate Converter for audio."
 url="http://www.mega-nerd.com/SRC/index.html"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, tnut"
 
-makedepends=(libsndfile flac)
+makedepends=(libsndfile flac opus alsa-lib)
 
 name=libsamplerate
-version=0.1.9
-release=3
+version=0.2.1
 
-source=(http://www.mega-nerd.com/SRC/$name-$version.tar.gz)
+source=(https://github.com/libsndfile/$name/archive/refs/tags/$version.tar.gz)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr
-make
-make htmldocdir=/usr/share/doc/libsamplerate-$version \
-DESTDIR=$PKG install
-
-rm $PKG/usr/lib/$name.la
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE='None' \
+        -DBUILD_SHARED_LIBS=ON \
+        -Wno-dev \
+        -B build \
+        -S .
+  make VERBOSE=1 -C build
+make DESTDIR=$PKG install -C build
+  install -vDm 644 {AUTHORS,NEWS,README.md,ChangeLog} \
+    -t $PKG/usr/share/doc/$name
 }

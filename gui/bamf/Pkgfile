@@ -1,21 +1,20 @@
 description="Application matching framework"
 url="https://launchpad.net/bamf"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
-makedepends=(gnome-common gobject-introspection vala)
+makedepends=(gnome-common gobject-introspection vala python-lxml)
 run=(libgtop libwnck)
 
 name=bamf
-version=0.5.4
-release=2
+version=0.5.5
 
-source=(https://launchpad.net/bamf/${version%.*}/$version/+download/$name-$version.tar.gz)
+source=(https://launchpad.net/bamf/${version%.*}/$version/+download/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
 
-export PYTHON='/usr/bin/python2'
+export PYTHON='/usr/bin/python'
 
 sed -i "s@-Werror @@" configure.ac
 

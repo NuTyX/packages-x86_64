@@ -1,0 +1,28 @@
+description="NVIDIA modules for the latest development kernel version."
+url="https://www.nvidia.com"
+
+packager="tnut <tnut@nutyx.org>"
+
+version=465.27
+
+run=(linux-mainline)
+
+source=(nvidia-kernel-5.7.patch
+	https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
+
+build()
+{
+ sh NVIDIA-Linux-x86_64-$version.run --extract-only
+
+
+ cd NVIDIA-Linux-x86_64-$version/kernel
+ patch -Np1 -i ../../nvidia-kernel-5.7.patch
+
+ modules_dir="$(basename /lib/modules/*)"
+
+ SYSSRC="/usr/src/*" make modules
+ install -dm0755 $PKG/lib/modules/${modules_dir}/kernel/drivers/video
+ install -m 0644 *.ko $PKG/lib/modules/${modules_dir}/kernel/drivers/video
+ echo "depmod -a ${modules_dir}" > $PKGMK_ROOT/$name.post-install
+ 
+}

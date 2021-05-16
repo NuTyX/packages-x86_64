@@ -1,0 +1,33 @@
+description="KDE Plasma Desktop "
+url="https://www.kde.org/"
+
+packager="fabienwang <fabienwang@nutyx.org>"
+contributors="Pierre B, tnut, fabienwang, spiky"
+
+makedepends=(desktop-file-utils xdg-utils ibus baloo breeze
+             polkit-kde-agent-1 systemsettings kemoticons
+             kcmutils kdeclarative kxmlgui knewstuff
+             knotifications knotifyconfig kpeople
+             kdbusaddons kdesignerplugin kpackage)
+run=(desktop-file-utils xdg-utils)
+
+set=(kde5)
+
+name=plasma-desktop
+version=5.21.5
+
+source=(https://download.kde.org/stable/plasma/${version:0:6}/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

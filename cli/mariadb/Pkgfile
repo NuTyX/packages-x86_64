@@ -1,16 +1,16 @@
 description="MariaDB is a fork and a replacement for the MySQL relational database management system."
 url="http://www.mariadb.org/en/about/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, tnut"
 
 makedepends=(lzo cmake libevent boost libxml2 cracklib pcre ruby libaio openssl)
 run=(shadow)
 
 name=mariadb
-version=10.5.9
+version=10.5.10
 
-runyx_version=20200412
+runyx_version=20201011
 
 source=(https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	https://downloads.mariadb.org/interstitial/$name-$version/source/$name-$version.tar.gz)

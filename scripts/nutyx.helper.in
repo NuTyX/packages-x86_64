@@ -20,7 +20,7 @@ change_version() {
     if [ "$packager" != "$newpackager" ]; then
       sed -e 's/^\(packager=\).*/\1/g' \
           -e "s/packager=/packager=\"$newpackager\"/" \
-          -i "$i"                                                                                                                                        [11:40 x86_64 5.11.15-NuTyX cat@nutyx]
+          -i "$i"
       sed -e 's/^\(contributors=\).*/\1/g' \
           -e "s/contributors=/contributors=\"$newcontributors\"/" \
           -i "$i"

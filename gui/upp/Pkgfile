@@ -1,0 +1,41 @@
+description="C++ cross-platform rapid application development framework focused on programmers productivity"
+
+name=upp
+version=15945
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(libnotify gtk3)
+run=(git cards.devel)
+
+source=(https://www.ultimatepp.org/downloads/upp-posix-$version.tar.xz)
+
+build() {
+cd upp
+make
+
+mkdir -p $PKG/usr/{bin,share/{applications,man/man1}}
+mkdir -p $PKG/usr/share/icons/hicolor/{48x48,32x32,16x16}/apps
+
+install -m755 uppsrc/ide/icon16x16.png \
+$PKG/usr/share/icons/hicolor/16x16/apps/theide.png
+
+install -m755 uppsrc/ide/icon32x32.png \
+$PKG/usr/share/icons/hicolor/32x32/apps/theide.png
+
+install -m755 uppsrc/ide/theide-48.png \
+$PKG/usr/share/icons/hicolor/48x48/apps/theide.png
+
+
+
+
+install -m755 theide \
+$PKG/usr/bin/theide
+
+install -m644 uppsrc/ide/theide.1 \
+$PKG/usr/share/man/man1/theide.1
+
+install -m644 uppsrc/ide/theide.desktop \
+$PKG/usr/share/applications/theide.desktop
+
+}

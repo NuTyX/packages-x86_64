@@ -1,0 +1,30 @@
+description="Remote Desktop Client"
+url="https://kde.org/applications/internet/krdc/"
+
+packager="fabienwang <fabienwang@nutyx.org>"
+contributors="Pierre B, tnut"
+
+makedepends=(knotifications kwallet kcmutils kdnssd knotifyconfig
+             kdoctools libvncserver python keditbookmarks freerdp)
+run=(freerdp libvncserver)
+
+set=(kde5)
+
+name=krdc
+version=21.04.1
+
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

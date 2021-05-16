@@ -1,0 +1,33 @@
+description="Virtualbox Host modules for the 4.9 longterm support Linux Kernel version"
+url="http://www.virtualbox.org"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+run=(kernel-49)
+
+version=6.1.22
+buildr=144080
+_VBARCH=amd64
+source=(\
+http://download.virtualbox.org/virtualbox/${version}/VirtualBox-${version}-${buildr}-Linux_${_VBARCH}.run)
+
+build(){
+
+KERNEL_VERSION="$(basename /lib/modules/*)"
+
+sh VirtualBox-${version}-${buildr}-Linux_${_VBARCH}.run --target vb --keep --noexec
+cd vb
+tar xfj VirtualBox.tar.bz2
+cd src/vboxhost
+
+KERN_VER=${KERNEL_VERSION} make
+
+for i in *.ko
+do
+	install -D -m0644 $i \
+	$PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/virt/vboxhost/$i
+done
+
+echo "depmod -a ${KERNEL_VERSION}" > $PKGMK_ROOT/$name.post-install
+}

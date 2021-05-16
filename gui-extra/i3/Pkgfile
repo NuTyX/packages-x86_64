@@ -1,0 +1,23 @@
+description="i3 - A tiling window manager"
+url="https://github.com/Airblader/i3"
+
+packager="Sundev79 <sun@nutyx.org>"
+
+PKGMK_KEEP_SOURCES="no"
+
+set=(i3)
+
+makedepends=(meson xmlto)
+
+run=(pango libxkbcommon startup-notification
+xcb-util-cursor xcb-util xcb-util-image 
+xcb-util-wm xcb-util-keysyms xcb-util-xrm
+yajl libev)
+
+name=i3
+version=4.19.2
+release=2
+
+source=(https://github.com/i3/i3/archive/refs/tags/${version}.tar.gz)
+
+build=meson
