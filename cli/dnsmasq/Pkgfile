@@ -1,0 +1,23 @@
+description="Dnsmasq provides network infrastructure for small networks: DNS, DHCP, router advertisement and network boot."
+url="https://thekelleys.org.uk/dnsmasq"
+
+packager="sundev79 <sun@nutyx.org>"
+
+makedepends=(nettle)
+
+name=dnsmasq
+version=2.85
+
+source=(https://thekelleys.org.uk/dnsmasq/$name-$version.tar.xz $name-config.patch dnsmasq.init)
+
+build() {
+   cd $name-$version
+   patch -p1 -i $SRC/$name-config.patch
+   make COPTS="-DHAVE_DNSSEC" PREFIX=/usr
+   make COPTS="-DHAVE_DNSSEC" PREFIX=/usr DESTDIR=$PKG install
+
+   install -d $PKG/{var/lib/dhcp,etc/init.d,usr/share/dnsmasq}
+   install -m 755 $SRC/dnsmasq.init $PKG/etc/init.d/dnsmasq
+   install -m 644 dnsmasq.conf.example $PKG/etc/dnsmasq.conf
+   install -m 644 trust-anchors.conf $PKG/usr/share/dnsmasq/
+}
