@@ -3,23 +3,16 @@ url="http://www.riverbankcomputing.co.uk/software/sip/intro"
 
 packager="spiky <spiky@nutyx.org>"
 
-run=(python python2)
+run=(python)
 
 name=sip
-version=4.19.25
+version=6.1.0
 
-source=(https://www.riverbankcomputing.com/static/Downloads/sip/$version/sip-$version.tar.gz )
+source=(https://files.pythonhosted.org/packages/44/76/d9722bb934c7ca31f4bcf471d5f781b7ffed3a60f10c858a676d3a9aa1a0/$name-$version.tar.gz)
 
 build() {
 	cd sip-$version
-	mkdir build{,-python2}
-	cd build
-        python3 ../configure.py CFLAGS="$CFLAGS" LFLAGS="$LDFLAGS" --sip-module PyQt5.sip
-	make
-        make DESTDIR=$PKG install
-	cd ../build-python2
-	python ../configure.py CFLAGS="$CFLAGS" LFLAGS="$LDFLAGS" --sip-module PyQt5.sip
-	make
-	make DESTDIR=$PKG install
-#        mv "$PKG"/usr/include/{python*/sip.h,}
+	python setup.py build
+
+        python setup.py install --skip-build --root="$pkgdir" --optimize=1
 }
