@@ -1,15 +1,15 @@
 description="Open Source H265/HEVC video encoder."
 url="https://bitbucket.org/multicoreware/x265/wiki/Home"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contriutors="Chris Farrell"
 
-makedepends=(yasm cmake)
+makedepends=(nasm git make-ca cmake)
 
 name=x265
-version=3.4
+version=3.5
 
-source=(http://anduin.linuxfromscratch.org/BLFS/x265/${name}_${version}.tar.gz)
+source=(https://bitbucket.org/multicoreware/x265_git/downloads/${name}_$version.tar.gz)
 build() {
   mkdir build
   cd    build
