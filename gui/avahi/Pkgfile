@@ -1,14 +1,13 @@
 description="Multicast/unicast DNS-SD framework"
 url="http://www.avahi.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, jayce, Rems"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, jayce, Rems, tnut"
 
-makedepends=(intltool glib gobject-introspection libdaemon dbus)
+makedepends=(intltool libevent glib gobject-introspection libdaemon dbus)
 
 name=avahi
-version=0.7
-release=5
+version=0.8
 
 source=( https://github.com/lathiat/avahi/releases/download/v$version/avahi-$version.tar.gz)
 
@@ -18,15 +17,16 @@ cd $name-$version
 --prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \
+--with-distro=none   \
+--disable-mono \
 --disable-python \
+--disable-gtk3 \
 --disable-qt3 \
 --disable-qt4 \
---disable-monodoc \
+--disable-qt5 \
 --disable-gtk \
---disable-gtk3 \
---disable-mono \
+--disable-monodoc \
 --enable-core-docs \
---with-distro=none \
 --with-systemdsystemunitdir=/lib/systemd/system
 make
 make DESTDIR=$PKG install
