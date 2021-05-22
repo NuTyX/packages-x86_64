@@ -1,0 +1,20 @@
+description="Cross-Platform QUI Library."
+url="https://www.wxwidgets.org/"
+
+packager="sundev79 <sun@nutyx.org>"
+contributors=""
+
+makedepends=(gtk3 gtk2)
+run=(gtk3 gtk2)
+
+name=wxwidgets
+version=3.0.5
+
+source=(https://github.com/wxWidgets/wxWidgets/releases/download/v3.0.5/wxWidgets-$version.tar.bz2)
+
+build() {
+cd wxWidgets-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
