@@ -6,13 +6,16 @@ packager="spiky <spiky@nutyx.org>"
 run=(python)
 
 name=sip
-version=6.1.0
+version=4.19.25
+release=2
 
-source=(https://files.pythonhosted.org/packages/44/76/d9722bb934c7ca31f4bcf471d5f781b7ffed3a60f10c858a676d3a9aa1a0/$name-$version.tar.gz)
+source=(https://www.riverbankcomputing.com/static/Downloads/sip/$version/sip-$version.tar.gz)
 
 build() {
 	cd sip-$version
-	python setup.py build
-
-        python setup.py install --skip-build --root="$pkgdir" --optimize=1
+	mkdir build
+	cd build
+        python3 ../configure.py CFLAGS="$CFLAGS" LFLAGS="$LDFLAGS" --sip-module PyQt5.sip
+	make
+        make DESTDIR=$PKG install
 }
