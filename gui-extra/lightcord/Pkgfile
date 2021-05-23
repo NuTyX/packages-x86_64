@@ -1,0 +1,36 @@
+description="A simple - customizable - Discord Client"
+url="https://github.com/Lightcord/Lightcord"
+
+packager="sundev79 <sun@nutyx.org>"
+contributors=""
+
+run=(gtk2 libnotify xorg-libxscrnsaver glibc alsa-lib nspr nss pulseaudio)
+
+name=lightcord
+version=0.1.5
+
+source=(
+https://github.com/Lightcord/Lightcord/releases/download/$version/lightcord-linux-x64.zip 
+lightcord.desktop
+lightcord.png
+)
+
+prepare() {
+  sed -i "s|Exec=.*|Exec=/usr/bin/$name|" $name.desktop
+}
+build() {
+   install -d $PKG/opt/$name
+   cp -a * $PKG/opt/$name
+   chmod 755 $PKG/opt/$name/
+
+   install -d $PKG/usr/share/applications
+   ln -s /opt/$name/$name.desktop $PKG/usr/share/applications
+
+   install -d $PKG/usr/bin
+   ln -s /opt/$name/$name $PKG/usr/bin/$name
+
+   install -d $PKG/usr/share/pixmaps
+   ln -s /opt/$name/$name.png $PKG/usr/share/pixmaps/$name.png
+
+   chmod u+s $PKG/opt/$name/chrome-sandbox
+}
