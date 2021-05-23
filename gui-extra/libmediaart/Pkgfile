@@ -1,25 +1,23 @@
 description="Library tasked with managing, extracting and handling media art caches"
 url="https://github.com/curlybeast/libmediaart"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Jayce"
+packager="spiky <spiky@nutyx.org>"
+contributors="Jayce, tnut"
 
-makedepends=(gdk-pixbuf)
+makedepends=(meson gobject-introspection vala gdk-pixbuf gtk-doc)
 
 set=(gnome)
 
 name=libmediaart
-version=1.9.4
-release=5
+version=1.9.5
 
-source=(https://download.gnome.org/sources/$name/${version:0:3}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/1.9/$name-$version.tar.xz)
 
 build() {
  cd $name-$version
- ./configure --prefix=/usr \
- 	--disable-static --enable-gdkpixbuf --disable-qt
-  make
-  make DESTDIR=$PKG install
-
-
+     mkdir build
+cd build
+meson --prefix=/usr -Dgtk_doc=true
+ninja
+DESTDIR=$PKG ninja install
 }
