@@ -1,8 +1,8 @@
 description="Advanced object-relational database management system (ORDBMS)."
 url="http://www.postgresql.org/docs"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, tnut"
 
 makedepends=(readline flex bison perl python libxml2 libxslt openldap pam kerberos)
 run=(shadow)
@@ -10,8 +10,8 @@ run=(shadow)
 PKGMK_GROUPS=(lib doc man devel service)
 
 name=postgresql
-version=13.2
-runyx_version=20200412
+version=13.3
+runyx_version=20201011
 
 source=(https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	https://ftp.postgresql.org/pub/source/v$version/$name-$version.tar.bz2)
