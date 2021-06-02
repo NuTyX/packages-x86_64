@@ -10,7 +10,7 @@ set=(kde5)
 
 name=sddm
 version=0.19.0
-release=2
+release=3
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -41,6 +41,8 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr             \
       -Wno-dev ..
 make
 make DESTDIR=$PKG install
+
+sed -i "s@system-local-login@system-login@" $PKG/etc/pam.d/sddm-autologin
 
 mkdir -p $PKG/var/lib/sddm
 chown -R sddm:sddm $PKG/var/lib/sddm

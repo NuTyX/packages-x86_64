@@ -31,3 +31,4 @@ DM_OPTIONS=""
 EOF
    log_success_msg2  "${INFO} /etc/sysconfig/xdm file created ${NORMAL}"
 fi
+sed -i "s@system-local-login@system-login@" etc/pam.d/sddm-autologin
