@@ -3,15 +3,14 @@ description="The linux kernel firmware set of files. More and more hardware requ
 packager="tnut <tnut@nutyx.org>"
 
 name=linux-firmware
-version=20200916
+version=20210511
 
 unset MAKEFLAGS
 
-source=(http://download.tuxfamily.org/nutyx/files/$name-$version.tar.bz2)
+PKGMK_NO_STRIP="yes"
+source=(https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-$version.tar.gz)
 
 build() {
-mkdir $PKG/lib
-cp -a $name-$version/ \
-$PKG/lib/firmware
-
+cd $name-$version
+make DESTDIR=$PKG FIRMWAREDIR=/lib/firmware install
 }
