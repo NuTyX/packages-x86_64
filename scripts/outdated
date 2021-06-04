@@ -577,28 +577,27 @@ $COLLECTION : $val packages
 fi
 
 ########################################################################
+# TOTAL line
+########################################################################
+wowoutput+=("
+TOTAL: $PODn / $PFn outdated packages")
+
+########################################################################
 # packages not found
 ########################################################################
 
-if [ "$NOTFOUND" == "1" ]; then
-
-  [ $((PNFn)) -gt 0 ] && wowoutput+=("
-===> NOT FOUND : $PNFn packages
+[ $((PNFn)) -gt 0 ] && wowoutput+=("
+NOT FOUND : $PNFn packages
 ")
+
+if [ "$NOTFOUND" == "1" ]; then
 
   for i in ${T_NOTFOUND[@]}
   do
     wowoutput+=("    $i")
   done
+  
 fi
-
-########################################################################
-# TOTAL line
-########################################################################
-wowoutput+=("
-
-TOTAL: $PODn / $PFn outdated packages
-")
 
 ########################################################################
 # Actual OUTPUT
@@ -609,5 +608,4 @@ do
   echo "$i"
 done
 
-echo "
-Thank you for choosing outdated ≧◔◡◔≦ 🄯 NuTyX"
+echo "Thank you for choosing outdated ≧◔◡◔≦ 🄯 NuTyX"
