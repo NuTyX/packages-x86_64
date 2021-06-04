@@ -2,8 +2,48 @@
 
 PACKAGES_FOLDER="$PWD"
 COLLECTIONS="base cli cli-extra gui gui-extra"
-[ ! -z $1 ] && COLLECTIONS="$1"
 ARCHGIT="/devel/git/archlinux"
+
+PARAMS=""
+UPDATE=0
+SUMMARY=0
+FIRST=1
+DEBUG=0
+NOTFOUND=0
+
+T_NOTFOUND=""
+PNFn=0
+PFn=0
+PODn=0
+wowoutput=()
+
+declare -A outdpkgcount
+
+########################################################################
+# FUNCTIONS
+########################################################################
+
+showhelp() {
+echo "
+Script to find outdated packages / collections
+Usage:
+-u|--update    : clone or update arch packages to allow comparison
+
+-s|--summary   : do not show outdated packages but just number / collection
+
+-nf|--notfound : show not found packages (not shown by default)
+
+-h|--help      : show this help
+
+--debug        : show debug messages (useful for dev this script)
+"
+}
+
+debug() {
+  if [ "$DEBUG" == "1" ]; then
+    echo "debug >>> $1"
+  fi
+}
 
 ## the 4 following functions are used to version comparison
 verlte() {
@@ -14,108 +54,64 @@ verlt() {
 }
 tobe_updated() {
   PODn=$((PODn + 1))
+
   #echo "$(basename $i) $pkgver ($version) [$packager]"
   #shows packager name only
-  echo "$(basename $i) $pkgver ($version) [$(cut -d'<' -f1 <<< $packager | xargs)]"
+  tmpCOLLECTION=$(echo "$COLLECTION" | tr -dc '[[:alpha:]]')
+  declare -g -n ref="wowoutput$tmpCOLLECTION"
+  ref+=("$(basename $i) $pkgver ($version) [$(cut -d'<' -f1 <<< $packager | xargs)]")
+  
+  ((outdpkgcount[$tmpCOLLECTION]++))
+  
 }
 #up_to_date() {
 #  echo "$(basename $i) $pkgver ($version) [$packager] up to date"
 #}
 
-echo '-------------------- ARCH PACKAGES REPOSITORY --------------------' >&2
-if  [ ! -d "$HOME$ARCHGIT/packages/" ] ; then
-  echo "Repository not found in $HOME$ARCHGIT/packages/"
-  while true; do
-    read -p "Would you like to clone packages repository? [y/n]" yn
-    case $yn in
-      [Yy]* )
-        mkdir -p "$HOME$ARCHGIT"
-        cd $HOME$ARCHGIT >&2
-        git clone git://git.archlinux.org/svntogit/packages.git >&2
-        cd - >&2
-        break;;
-      [Nn]* )
-        exit;;
-      * )
-        echo "Cannot continue without packages repository"
-        exit;;
-    esac
-  done
-else
-  while true; do
-    read -p "Would you like to update packages repository? [y/N]" yn
-    case $yn in
-      [Yy]* )
-        cd $HOME$ARCHGIT/packages/ >&2
-        git pull --ff-only >&2
-        cd - >&2
-        break;;
-      [Nn]* )
-        break;;
-      * )
-        break;;
-    esac
-  done
-fi
+datediff() {
+    d1=$(date -d "$1" +%s)
+    d2=$(date -d "$2" +%s)
+    diff=$(( (d1 - d2) / 86400 ))
+    if [ $diff -lt 0 ]
+    then
+        diff=$((-$diff))
+    fi
+    echo $diff
+}
 
-echo '-------------------- ARCH COMMUNITY REPOSITORY --------------------' >&2
-if  [ ! -d "$HOME$ARCHGIT/community/" ] ; then
-  echo "Repository not found in $HOME$ARCHGIT/community/"
-  while true; do
-      read -p "Would you like to clone community repository? [y/n]" yn
-      case $yn in
-          [Yy]* )
-            mkdir -p "$HOME$ARCHGIT"
-            cd $HOME$ARCHGIT >&2
-            git clone git://git.archlinux.org/svntogit/community.git >&2
-            cd - >&2
-            break;;
-          [Nn]* )
-            exit;;
-          * )
-            echo "Cannot continue without community repository"
-            exit;;
-      esac
-  done
-else
-  while true; do
-    read -p "Would you like to update community repository? [y/N]" yn
-    case $yn in
-      [Yy]* )
-        cd $HOME$ARCHGIT/community/ >&2
-        git pull --ff-only >&2
-        cd - >&2
-        break;;
-      [Nn]* )
-        break;;
-      * )
-        break;;
-    esac
-  done
-fi
-
-NOTFOUND=""
-PFn=0
-PNFn=0
-PODn=0
-for COLLECTION in ${COLLECTIONS[@]}
-do
- echo "
-===> COLLECTION: $COLLECTION
-"
- for i in $PACKAGES_FOLDER/$COLLECTION/*
- do
-  PKGNAME=$(basename $i)
-  NOTEXIST="no"
+clone_packages_repo() {
+  mkdir -p "$HOME$ARCHGIT"
+  cd $HOME$ARCHGIT >&2
+  git clone git://git.archlinux.org/svntogit/packages.git >&2
+  cd - > /dev/null 2>&1
+}
+clone_community_repo() {
+  mkdir -p "$HOME$ARCHGIT"
+  cd $HOME$ARCHGIT >&2
+  git clone git://git.archlinux.org/svntogit/community.git >&2
+  cd - > /dev/null 2>&1
+}
+update_packages_repo() {
+  cd $HOME$ARCHGIT/packages/ >&2
+  git pull -q --ff-only >&2
+  cd - > /dev/null 2>&1
+}
+update_community_repo() {
+  cd $HOME$ARCHGIT/community/ >&2
+  git pull -q --ff-only >&2
+  cd - > /dev/null 2>&1
+}
+# this function replaces package name to "match" with arch repos
+getarchname() {
   case $PKGNAME in
     gnulib|gstreamer-0|gstreamer-plugins-base-0|liblinear|ovmf|\
-openjdk|libatomic-ops|eigen2|make-ca|qt2|xfce4-appmenu-plugin|\
-grub-efi|linux-mainline|cards|*cards|eudev|runyx|lcms|\
-sysvinit|sysklogd|elogind|nutyx|kernel|kernel*|\
-vboxhost*|nvidia*|virtualbox-guest|font-adobe-utopia-type1|\
-font-arabic-misc|font-bh-type1|font-bitstream-speedo|\
-font-ibm-type1|font-misc-ethiopic|font-xfree86-type1)
-     continue;;
+    openjdk|libatomic-ops|eigen2|make-ca|qt2|xfce4-appmenu-plugin|\
+    grub-efi|linux-mainline|cards|*cards|eudev|runyx|lcms|\
+    sysvinit|sysklogd|elogind|nutyx|kernel|kernel*|\
+    vboxhost*|nvidia*|virtualbox-guest|font-adobe-utopia-type1|\
+    font-arabic-misc|font-bh-type1|font-bitstream-speedo|\
+    font-ibm-type1|font-misc-ethiopic|font-xfree86-type1)
+     ARCHNAME="";;
 
     gtk-update-icon-cache)
      ARCHNAME="gtk3";;
@@ -268,8 +264,8 @@ font-ibm-type1|font-misc-ethiopic|font-xfree86-type1)
      ARCHNAME=${PKGNAME/tracker/tracker3};;
 
     gtkmm2|graphite2|tracker2|tracker2-miners|python2-distutils-extra|\
-python2-evdev|python2-lxml|python2-ply|python2-pyparsing|\
-python2-simplejson|python2-six|python2-xdg)
+    python2-evdev|python2-lxml|python2-ply|python2-pyparsing|\
+    python2-simplejson|python2-six|python2-xdg)
      ARCHNAME=${PKGNAME/2/};;
 
     oxygen-icons5)
@@ -332,75 +328,286 @@ python2-simplejson|python2-six|python2-xdg)
     lua54-lgi)
      ARCHNAME="lgi";;
 
-
     *)
      ARCHNAME=$PKGNAME;;
 
   esac
+}
 
-  PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/extra-x86_64/PKGBUILD"
-  if  [ ! -f $PKGBUILD ] ; then
-  	PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/extra-any/PKGBUILD"
-  fi
-  if  [ ! -f $PKGBUILD ] ; then
-  	PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/core-x86_64/PKGBUILD"
-  fi
-  if  [ ! -f $PKGBUILD ] ; then
-  	PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/core-any/PKGBUILD"
-  fi
+########################################################################
+# ARGUMENTS PARSING
+########################################################################
 
-  if  [ ! -f $PKGBUILD ] ; then
-  	PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/trunk/PKGBUILD"
-  fi
-
-  if  [ ! -f $PKGBUILD ] ; then
-  	PKGBUILD="$HOME$ARCHGIT/community/$ARCHNAME/repos/community-x86_64/PKGBUILD"
-  fi
-  if  [ ! -f $PKGBUILD ] ; then
-  	PKGBUILD="$HOME$ARCHGIT/community/$ARCHNAME/repos/community-any/PKGBUILD"
-  fi
-
-  if  [ ! -f $PKGBUILD ] ; then
-  	PKGBUILD="$HOME$ARCHGIT/community/$ARCHNAME/trunk/PKGBUILD"
-  fi
-  if  [ ! -f $PKGBUILD ] ; then
-  	PKGBUILD="$HOME$ARCHGIT/$ARCHNAME/PKGBUILD"
-  fi
-
-
-  if [ ! -f $PKGBUILD ];then
-     PNFn=$((PNFn + 1))
-     NOTFOUND+="$(basename $i) "
-     continue
-  fi
-   PFn=$((PFn + 1))
-   . $i/Pkgfile
-   . $PKGBUILD 2>/dev/null
-   if [ -z "$pkgver" ]; then
-      PNFn=$((PNFn + 1))
-     NOTFOUND+="$(basename $i) "
-     continue
-   fi
-   if [ ${pkgver%%+*} != "$version" ]; then
-
-     #keep this line for debugging
-     #verlt ${version//[!0-9.]/} ${pkgver//[!0-9.]/} && tobe_updated || up_to_date
-     verlt ${version//[!0-9.]/} ${pkgver//[!0-9.]/} && tobe_updated
-
-   fi
-   unset pkgver version packager
- done
+while (( "$#" )); do
+  case "$1" in
+    -u|--update)
+      UPDATE=1
+      shift
+      ;;
+    -s|--summary)
+      SUMMARY=1
+      shift
+      ;;
+    -nf|--notfound)
+      NOTFOUND=1
+      shift
+      ;;
+    -h|--help)
+      showhelp
+      exit 0
+      ;;
+    --debug)
+      DEBUG=1
+      shift
+      ;;
+    -*|--*=)
+      echo "Error: unrecognized option $1" >&2
+      exit 1
+      ;;
+    *)
+      if [[ "$COLLECTIONS" =~ .*"$1".* ]]; then
+        if [[ $FIRST = 1 ]]; then
+          PARAMS+="$1"
+          FIRST=0
+        else
+          PARAMS+=" $1"
+        fi
+        shift
+    else
+    echo "Error: unknown collection $1"
+    exit 1
+    fi
+      ;;
+  esac
 done
 
-[ $((PNFn)) -gt 0 ] && echo "
-===> PACKAGES NOT FOUND : "$PNFn"
+eval set -- "$PARAMS"
+
+if [ -z "$PARAMS" ]; then
+  PARAMS=$COLLECTIONS
+else
+  PARAMS=$(echo "$PARAMS" | tr ' ' '\n' | sort | tr '\n' ' ')
+fi
+
+debug "update:$UPDATE summary:$SUMMARY notfound:$NOTFOUND collections:$PARAMS
 "
 
-for i in ${NOTFOUND[@]}
+
+########################################################################
+# -u|--update  =>  UPDATE REPOS
+########################################################################
+
+if [ "$UPDATE" == "1" ]; then
+
+  if  [ ! -d "$HOME$ARCHGIT/packages/" ] ; then
+    wowoutput+=("cloning packages repository")
+    clone_packages_repo
+  else
+    update_packages_repo
+    if [ $? == 0 ]; then
+    wowoutput+=("updated packages repository")
+    else
+    wowoutput+=("failed updating packages repository")
+    fi
+  fi
+  if  [ ! -d "$HOME$ARCHGIT/community/" ] ; then
+    wowoutput+=("cloning community repository")
+    clone_community_repo
+  else
+    update_community_repo
+    if [ $? == 0 ]; then
+    wowoutput+=("updated community repository")
+    else
+    wowoutput+=("failed updating community repository")
+    fi
+  fi
+  wowoutput+=("")
+
+else
+  
+  if  [ -d "$HOME$ARCHGIT/packages/" ] ; then
+    
+    # retrieve last commit date
+    cd $HOME$ARCHGIT/packages/ >&2
+    gitdate=$(git log -1 --format=%cd --date=format:"%Y%m%d") >&2
+    cd - > /dev/null 2>&1
+    
+    # compare it with today - 10 days
+    minusten=$(date -d 'now' +%Y%m%d)
+    
+    # output a nice message to suggest an update with -u ;)
+    ecart=0
+    ecart=$(datediff $gitdate $minusten)
+    
+    debug "gitdate: $gitdate  minusten:$minusten datediff: $ecart"
+    
+    if [ $ecart -gt 10 ]; then
+      wowoutput+=("you might consider using -u option to get repositories updated
+")
+    fi
+    
+
+  else
+  
+    wowoutput+=("you might consider using -u option to get repositories...
+")
+    
+  fi
+  
+
+fi
+
+
+#
+# LOOP ON COLLECTIONS AND PACKAGES
+#
+
+MAX=0
+for COLLECTION in ${PARAMS[@]}
 do
- echo -n "$i "
+  #count collection with more chars
+  [ ${#COLLECTION} -gt ${MAX} ] && MAX=${#COLLECTION}
+  
+  tmpCOLLECTION=$(echo "wowoutput$COLLECTION" | tr -dc '[[:alpha:]]')
+  declare -g -x -n ref="$tmpCOLLECTION"
+  ref=()
+  
+  tmpCOLLECTION=$(echo "$COLLECTION" | tr -dc '[[:alpha:]]')
+  declare -g -x -i ref2="nb$tmpCOLLECTION"
+  ref2=0
+  
+  for i in $PACKAGES_FOLDER/$COLLECTION/*
+  do
+    PKGNAME=$(basename $i)
+    NOTEXIST="no"
+
+    getarchname
+
+    PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/extra-x86_64/PKGBUILD"
+    if  [ ! -f $PKGBUILD ] ; then
+      PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/extra-any/PKGBUILD"
+    fi
+    if  [ ! -f $PKGBUILD ] ; then
+      PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/core-x86_64/PKGBUILD"
+    fi
+    if  [ ! -f $PKGBUILD ] ; then
+      PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/core-any/PKGBUILD"
+    fi
+    if  [ ! -f $PKGBUILD ] ; then
+      PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/trunk/PKGBUILD"
+    fi
+    if  [ ! -f $PKGBUILD ] ; then
+      PKGBUILD="$HOME$ARCHGIT/community/$ARCHNAME/repos/community-x86_64/PKGBUILD"
+    fi
+    if  [ ! -f $PKGBUILD ] ; then
+      PKGBUILD="$HOME$ARCHGIT/community/$ARCHNAME/repos/community-any/PKGBUILD"
+    fi
+    if  [ ! -f $PKGBUILD ] ; then
+      PKGBUILD="$HOME$ARCHGIT/community/$ARCHNAME/trunk/PKGBUILD"
+    fi
+    if  [ ! -f $PKGBUILD ] ; then
+      PKGBUILD="$HOME$ARCHGIT/$ARCHNAME/PKGBUILD"
+    fi
+
+    if [ ! -f $PKGBUILD ];then
+      PNFn=$((PNFn + 1))
+      T_NOTFOUND+="$(basename $i) "
+      continue
+    fi
+    PFn=$((PFn + 1))
+    . $i/Pkgfile
+    . $PKGBUILD 2>/dev/null
+    if [ -z "$pkgver" ]; then
+      PNFn=$((PNFn + 1))
+      T_NOTFOUND+="$(basename $i) "
+      continue
+    fi
+    if [ ${pkgver%%+*} != "$version" ]; then
+
+      #keep this line for debugging
+      #verlt ${version//[!0-9.]/} ${pkgver//[!0-9.]/} && tobe_updated || up_to_date
+      verlt ${version//[!0-9.]/} ${pkgver//[!0-9.]/} && tobe_updated
+
+    fi
+    unset pkgver version packager
+  done
 done
+
+
+########################################################################
+# -s|--summary  =>  LIST NUMBER OF PACKAGES / COLLECTIONS
+########################################################################
+
+if [ "$SUMMARY" == "1" ]; then
+
+  for COLLECTION in ${PARAMS[@]}
+  do
+    outcol=$(printf "%*s" "$MAX" "$COLLECTION")
+    tmpCOLLECTION=$(echo "$COLLECTION" | tr -dc '[[:alpha:]]')
+    val=${outdpkgcount[$tmpCOLLECTION]}
+    wowoutput+=("$outcol : $val packages
+")
+
+  done
+ 
+else
+
+########################################################################
+# no summary => all outdated packages / collection
+########################################################################
+
+  for COLLECTION in ${PARAMS[@]}
+  do
+    tmpCOLLECTION=$(echo "$COLLECTION" | tr -dc '[[:alpha:]]')
+    val=${outdpkgcount[$tmpCOLLECTION]}
+
+    wowoutput+=("
+$COLLECTION : $val packages
+")
+
+    tmpCOLLECTION=$(echo "wowoutput$COLLECTION" | tr -dc '[[:alpha:]]')
+    declare -g -n ref="$tmpCOLLECTION"
+
+    for i in "${ref[@]}"
+    do
+      wowoutput+=("    $i")
+    done
+  done
+  
+fi
+
+########################################################################
+# packages not found
+########################################################################
+
+if [ "$NOTFOUND" == "1" ]; then
+
+  [ $((PNFn)) -gt 0 ] && wowoutput+=("
+===> NOT FOUND : $PNFn packages
+")
+
+  for i in ${T_NOTFOUND[@]}
+  do
+    wowoutput+=("    $i")
+  done
+fi
+
+########################################################################
+# TOTAL line
+########################################################################
+wowoutput+=("
+
+TOTAL: $PODn / $PFn outdated packages
+")
+
+########################################################################
+# Actual OUTPUT
+########################################################################
+
+for i in "${wowoutput[@]}"
+do
+  echo "$i"
+done
+
 echo "
----------------------------------"
-echo "Packages founds: $PFn"
-echo "Packages Out of date: $PODn"
+Thank you for choosing outdated ≧◔◡◔≦ 🄯 NuTyX"
