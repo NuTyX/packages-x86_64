@@ -1,0 +1,27 @@
+description="Chromium Embedded Framework minimal binary release"
+url="https://bitbucket.org/chromiumembedded/cef"
+
+packager="fabienwang <fabienwang@nutyx.org>"
+contributors=""
+
+makedepends=(cmake)
+run=()
+
+name=cef-minimal
+version=88.2.8
+_commit=ge484012
+_chromium_version=88.0.4324.150
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://cef-builds.spotifycdn.com/cef_binary_${version}+${_commit}+chromium-${_chromium_version}_linux64_minimal.tar.bz2)
+
+build() {
+  cd cef_binary_${version}+${_commit}+chromium-${_chromium_version}_linux64_minimal
+  sed -i 's/-Werror/#-Werror/g' cmake/cef_variables.cmake
+  cmake .
+  make DESTDIR=$PKG libcef_dll_wrapper
+  
+  mkdir -p $PKG/opt/cef
+  cp -R * $PKG/opt/cef
+  chmod 644 $PKG/opt/cef/libcef_dll_wrapper/libcef_dll_wrapper.a
+}
