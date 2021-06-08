@@ -330,6 +330,9 @@ getarchname() {
 
     lua54-lgi)
      ARCHNAME="lgi";;
+    
+    skypeforlinux)
+     ARCHNAME="skypeforlinux-stable-bin";;
 
     *)
      ARCHNAME=$PKGNAME;;
@@ -512,6 +515,18 @@ do
       PKGBUILD="$HOME$ARCHGIT/$ARCHNAME/PKGBUILD"
     fi
 
+    # test AUR existence?
+    if [ ! -f $PKGBUILD ];then
+      if [ ! -z "$ARCHNAME" ]; then
+        #debug "curl -s -o /tmp/PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=$ARCHNAME"
+        $(curl -s -o /tmp/PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=$ARCHNAME)
+        if [ "$?" -eq 0 ]; then
+          #debug "AUR package found: $ARCHNAME"
+	      PKGBUILD="/tmp/PKGBUILD"
+        fi
+      fi
+    fi
+    
     if [ ! -f $PKGBUILD ];then
       PNFn=$((PNFn + 1))
       T_NOTFOUND+="$(basename $i) "
@@ -528,8 +543,9 @@ do
     if [ ${pkgver%%+*} != "$version" ]; then
 
       #keep this line for debugging
+      #debug "verlt ${version//[!0-9]/} ${pkgver//[!0-9]/} && tobe_updated"
       #verlt ${version//[!0-9.]/} ${pkgver//[!0-9.]/} && tobe_updated || up_to_date
-      verlt ${version//[!0-9]/} ${pkgver//[!0-9]/} && tobe_updated
+      verlt ${version//[!0-9.]/} ${pkgver//[!0-9.]/} && tobe_updated
 
     fi
     unset pkgver version packager
