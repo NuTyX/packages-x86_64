@@ -529,7 +529,7 @@ do
 
       #keep this line for debugging
       #verlt ${version//[!0-9.]/} ${pkgver//[!0-9.]/} && tobe_updated || up_to_date
-      verlt ${version//[!0-9.]/} ${pkgver//[!0-9.]/} && tobe_updated
+      verlt ${version//[!0-9]/} ${pkgver//[!0-9]/} && tobe_updated
 
     fi
     unset pkgver version packager
