@@ -1,0 +1,29 @@
+description="Qt component to allow applications to make use of the Wayland wl-layer-shell protocol"
+url="https://www.kde.org/"
+
+packager="fabienwang <fabienwang@nutyx.org>"
+contributors=""
+
+makedepends=(extra-cmake-modules plasma-wayland-protocols)
+
+set=(kde5)
+
+name=layer-shell-qt
+version=5.22.0
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build() {
+  cd $name-$version
+  mkdir build
+  cd    build
+  cmake -DCMAKE_INSTALL_PREFIX=/usr        \
+        -DCMAKE_BUILD_TYPE=Release         \
+        -DKDE_INSTALL_LIBDIR=lib           \
+        -DBUILD_TESTING=OFF                \
+        -DLIBEXEC_INSTALL_DIR=/usr/lib     \
+        -DSYSCONF_INSTALL_DIR=/etc         \
+        -Wno-dev ..
+  make
+  make DESTDIR=$PKG install
+}
