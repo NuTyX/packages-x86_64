@@ -1,16 +1,17 @@
 description="A scalable distributed SCM tool"
 url="http://mercurial.selenic.com"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Berlius, Greg"
+packager="tnut <tnut@nutyx.org>"
+contributors="Berlius, Greg, Spiky"
 
 makedepends=(gnupg subversion
-             bzr python-docutils
-             ca-certificates)
+             bzr python-docutils)
+
 run=(openssh python)
 
 name=mercurial
 version=5.8
+release=2
 
 source=(https://www.mercurial-scm.org/release/mercurial-$version.tar.gz
 mercurial.profile
