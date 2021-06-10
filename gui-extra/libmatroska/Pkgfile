@@ -1,0 +1,24 @@
+description="Matroska library"
+url="https://github.com/Matroska-Org/libmatroska"
+
+packager="fabienwang <fabienwang@nutyx.org>"
+contributors=""
+
+makedepends=()
+run=(libebml)
+set=()
+
+name=libmatroska
+version=1.6.3
+
+source=(https://github.com/Matroska-Org/libmatroska/archive/refs/tags/release-$version.zip)
+
+build() {
+  cd $name-release-$version
+  mkdir build
+  cd build
+  cmake ..
+
+  make
+  make DESTDIR=$PKG install
+}
