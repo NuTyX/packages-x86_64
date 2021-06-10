@@ -11,7 +11,7 @@ makedepends=(tar qtbase qtsvg qtx11extras x264 flac libmad glib librsvg
              lua libdv speex samba libupnp nfs-utils libshout libnotify
              speex sdl-image libcaca chromaprint libmtp taglib libsecret
              libva libvdpau libdvbpsi)
-run=(desktop-file-utils)
+run=(desktop-file-utils libmatroska)
 
 name=vlc
 version=3.0.14
@@ -35,19 +35,21 @@ BUILDCC=gcc ./configure --prefix=/usr \
             --disable-rpath \
             --sysconfdir=/etc \
             --disable-ncurses \
+            --disable-opencv \
+            --disable-update-check \
+            --disable-vpx \
             --enable-aa \
-            --enable-upnp \
-            --enable-opus \
+            --enable-bluray \
             --enable-dvbpsi \
-            --enable-x264 \
-            --enable-x265 \
-            --enable-vdpau \
-            --enable-sdl-image \
             --enable-fribidi \
             --enable-gnutls \
-            --enable-bluray \
-            --disable-vpx \
-            --disable-opencv
+            --enable-matroska \
+            --enable-opus \
+            --enable-sdl-image \
+            --enable-upnp \
+            --enable-vdpau \
+            --enable-x264 \
+            --enable-x265
 
 make
 
