@@ -17,8 +17,14 @@ build() {
   cd $name-release-$version
   mkdir build
   cd build
-  cmake ..
+  
+  cmake .. -G Ninja \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build .
 
-  make
-  make DESTDIR=$PKG install
+  DESTDIR=$PKG  cmake --build . --target install
+
 }
