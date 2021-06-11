@@ -10,7 +10,7 @@ run=(gtk3 nss xorg-libxtst xorg-libx11 freetype freefont-ttf
 name=vivaldi
 _name=vivaldi-ffmpeg-codecs
 version=4.0
-release=1
+release=2
 _version=2312.25-1
 
 source=(https://downloads.vivaldi.com/stable/$name-stable-$version.${_version}.x86_64.rpm
@@ -36,5 +36,5 @@ build() {
             $PKG/usr/share/icons/hicolor/${res}x${res}/apps/vivaldi.png
     done
     
-    cp $SRC/libffmpeg.so $PKG/opt/vivaldi/libffmpeg.so 
+    cp $SRC/libffmpeg.so.4.0 $PKG/opt/vivaldi/libffmpeg.so.4.0
 }
