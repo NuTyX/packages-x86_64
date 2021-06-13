@@ -1,0 +1,21 @@
+description="KDE Config Module for SDDM"
+url="https://kde.org/plasma-desktop/"
+
+packager="fabienwang <fabienwang@nutyx.org>"
+contributors=""
+
+makedepends=(kdoctools extra-cmake-modules)
+run=(sddm knewstuff systemsettings)
+set=(kde5)
+
+name=sddm-kcm
+version=5.22.0
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build() {
+  cmake -B build -S $name-$version \
+    -DBUILD_TESTING=OFF
+  cmake --build build
+  DESTDIR=$PKG cmake --install build
+}

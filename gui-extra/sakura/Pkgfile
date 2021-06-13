@@ -1,0 +1,23 @@
+description="A terminal emulator based on GTK and VTE"
+url="https://launchpad.net/sakura"
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(cmake gtk3 vte xorg-libxft)
+
+name=sakura
+version=3.8.2
+release=2
+
+source=(https://launchpad.net/sakura/trunk/$version/+download/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+sed -i \
+'s|Ubuntu Mono,monospace 13|Ubuntu Mono,monospace 10|g' \
+src/sakura.c
+cmake -DCMAKE_INSTALL_PREFIX=/usr .
+make
+make DESTDIR=$PKG install
+}

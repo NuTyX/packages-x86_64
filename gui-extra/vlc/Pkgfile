@@ -2,7 +2,7 @@ description="Media player, streamer, and encoder. It can play from many inputs"
 url="http://www.slackware.com/~alien/slackbuilds/vlc/"
 
 packager="fabienwang <fabienwang@nutyx.org>"
-contributors="Pierre B, tnut, Remy, spiky"
+contributors="Pierre B, tnut, Remy, spiky, fabienwang, tnut"
 
 makedepends=(tar qtbase qtsvg qtx11extras x264 flac libmad glib librsvg
              alsa-lib xorg-libxinerama xorg-libxpm libcdio vcdimager
@@ -11,10 +11,11 @@ makedepends=(tar qtbase qtsvg qtx11extras x264 flac libmad glib librsvg
              lua libdv speex samba libupnp nfs-utils libshout libnotify
              speex sdl-image libcaca chromaprint libmtp taglib libsecret
              libva libvdpau libdvbpsi)
-run=(desktop-file-utils)
+run=(desktop-file-utils libmatroska)
 
 name=vlc
-version=3.0.14
+version=3.0.15
+release=2
 
 source=(https://download.videolan.org/$name/$version/$name-$version.tar.xz)
 
@@ -34,19 +35,21 @@ BUILDCC=gcc ./configure --prefix=/usr \
             --disable-rpath \
             --sysconfdir=/etc \
             --disable-ncurses \
+            --disable-opencv \
+            --disable-update-check \
+            --disable-vpx \
             --enable-aa \
-            --enable-upnp \
-            --enable-opus \
+            --enable-bluray \
             --enable-dvbpsi \
-            --enable-x264 \
-            --enable-x265 \
-            --enable-vdpau \
-            --enable-sdl-image \
             --enable-fribidi \
             --enable-gnutls \
-            --enable-bluray \
-            --disable-vpx \
-            --disable-opencv
+            --enable-matroska \
+            --enable-opus \
+            --enable-sdl-image \
+            --enable-upnp \
+            --enable-vdpau \
+            --enable-x264 \
+            --enable-x265
 
 make
 

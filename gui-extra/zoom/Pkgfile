@@ -1,7 +1,7 @@
 description='Video Conferencing and Web Conferencing Service'
 url='https://zoom.us/'
 
-packager="tnut <tnut@nutyx.org>"
+packager="fabienwang <fabienwang@nutyx.org>"
 
 run=(xorg-fontconfig glib pulseaudio xorg-libsm xorg-libx11 libxcb
      xorg-libxcomposite xorg-libxfixes xorg-libxi xorg-libxrandr
@@ -9,9 +9,10 @@ run=(xorg-fontconfig glib pulseaudio xorg-libsm xorg-libx11 libxcb
      xcb-util-image xcb-util-keysyms)
 
 name=zoom
-version=5.4.57862.0110
+version=5.6.7
+_build=20278.0524
 
-source=(https://zoom.us/client/${version}/zoom_x86_64.pkg.tar.xz )
+source=(https://zoom.us/client/${version:0:-1}${_build}/zoom_x86_64.pkg.tar.xz )
 
 build () {
 cp -dpr --no-preserve=ownership opt usr $PKG

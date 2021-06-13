@@ -1,34 +1,28 @@
 description="FFmpeg version of headers required to interface with Nvidias codec APIs"
 url="https://git.videolan.org/?p=ffmpeg/nv-codec-headers"
 
-contributors=", rems"
-packager="spiky <spiky@nutyx.org>"
+contributors="spiky, Rems"
+packager="fabienwang <fabienwang@nutyx.org>"
 
 name=ffnvcodec-headers
 version=11.0.10.1
+release=2
 
 source=()
 
 PKGMK_DEPENDS=(git make-ca)
 
 prepare() {
-
-git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git $name-$version
-
-cd $name-$version
-
-git checkout 7a81595786463d1c7efcb03aa85def69fc2cad41
+  git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git $name-$version
+  cd $name-$version
+  git checkout 315ad740ac77282c7cea67ba31f2e4b373132919
 }
 
 build() {
-
-cd $name-$version
-
-make PREFIX=/usr
-
-sed -n '4,25p' include/ffnvcodec/nvEncodeAPI.h > LICENSE # Extract license
-sed -i '1,22s/^.\{,3\}//' LICENSE || true # Delete C comments if it can
-
-make PREFIX=/usr DESTDIR="${PKG}" install
-install -Dm 644 LICENSE -t "${PKG}"/usr/share/licenses/$name-$version/
+  cd $name-$version
+  make PREFIX=/usr
+  sed -n '4,25p' include/ffnvcodec/nvEncodeAPI.h > LICENSE # Extract license
+  sed -i '1,22s/^.\{,3\}//' LICENSE || true # Delete C comments if it can
+  make PREFIX=/usr DESTDIR="${PKG}" install
+  install -Dm 644 LICENSE -t "${PKG}"/usr/share/licenses/$name/
 }

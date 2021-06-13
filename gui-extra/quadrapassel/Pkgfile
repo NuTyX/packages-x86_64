@@ -1,8 +1,8 @@
 description="Fit falling blocks together (Tetris-like game for GNOME)"
 url="https://live.gnome.org/Quadrapassel"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Jayce"
+packager="spiky <spiky@nutyx.org>"
+contributors="Jayce, tnut"
 
 makedepends=(meson ninja intltool itstool gobject-introspection
              clutter-gtk libcanberra librsvg libmanette gsound)
@@ -12,8 +12,8 @@ run=(gsettings-desktop-schemas desktop-file-utils
 set=(gnome)
 
 name=quadrapassel
-version=3.38.1
+version=40.1
 
-source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build=meson

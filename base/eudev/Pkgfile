@@ -3,13 +3,13 @@ url="https://www.freedesktop.org/wiki/Software/systemd/"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(libcap kmod meson ninja python)
+makedepends=(libcap kmod meson ninja)
 
 name=eudev
 _name=systemd
 version=246
-release=7
-
+release=8
+PKGMK_DEPENDS=(perl python m4 gperf util-linux pam systemd acl)
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
 
@@ -79,6 +79,7 @@ mv $PKG/udevadm $PKG/usr/share/bash-completion/completions
 mv $PKG/_udevadm $PKG/usr/share/zsh/site-functions
 mv $PKG/99-default.link $PKG/lib/systemd/network
 
+rm -r $PKG/usr/share/locale
 rm $PKG/usr/share/pkgconfig/systemd.pc
 rm $PKG/usr/lib/pkgconfig/libsystemd.pc
 

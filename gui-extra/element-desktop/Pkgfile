@@ -1,0 +1,16 @@
+description="A feature-rich client for Matrix.org"
+url="https://element.io/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=", sundev79"
+
+run=(gtk3 libnotify nss libsecret xorg-libxtst xdg-utils)
+
+name=element-desktop
+version=1.7.29
+
+source=(https://packages.riot.im/debian/pool/main/e/element-desktop/element-desktop_${version}_amd64.deb)
+
+build() {
+   tar -xvf data.tar.xz -C $PKG/
+}

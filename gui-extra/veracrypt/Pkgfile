@@ -1,0 +1,18 @@
+description="Disk encryption with strong security based on TrueCrypt"
+url="https://github.com/veracrypt/VeraCrypt"
+
+packager="sundev79 <sun@nutyx.org>"
+contributors=""
+
+makedepends=()
+run=(fuse wxgtk sudo)
+
+name=veracrypt
+version=1.24
+release=7
+
+source=(https://github.com/veracrypt/VeraCrypt/releases/download/VeraCrypt_1.24-Update7/VeraCrypt_1.24-Update7_Bundle.7z)
+
+build() {
+   cd $PKG/ && rpm2cpio $SRC/veracrypt-1.24-Update7-CentOS-8-x86_64.rpm | cpio -idmv
+}

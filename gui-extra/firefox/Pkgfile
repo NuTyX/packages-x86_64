@@ -7,14 +7,14 @@ contributors="Pierre B, Remy, tnut, fabienwang"
 categories=(Network WebBrowser)
 
 makedepends=(python node cbindgen libwebp nspr libevent rustc
-             dbus-glib autoconf2-13 libnotify yasm)
+             dbus-glib autoconf2-13 libnotify yasm llvm)
 run=(pulseaudio icu sqlite libvpx nss gtk3 zip unzip
      gstreamer gstreamer-plugins-base gstreamer-plugins-good
      gstreamer-plugins-libav shared-mime-info)
 
 
 name=firefox
-version=88.0.1
+version=89.0
 
 locale_version=$version
 
@@ -37,6 +37,12 @@ rm usr/lib/firefox/browser/extensions/langpack-${1}@firefox.mozilla.org.xpi
 }
 
 build() {
+
+export AR=llvm-ar
+export NM=llvm-nm
+export RANLIB=llvm-ranlib
+export CC=clang
+export CXX=clang++
 
 cd $name-$version
 # Locale autodetect
@@ -135,7 +141,7 @@ unset MOZ_TELEMETRY_REPORTING
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 EOF
 sed -e 's/checkImpl/checkFFImpl/g' -i js/src/vm/JSContext*.h
-export CC=gcc CXX=g++
+
 export MOZBUILD_STATE_PATH=${PWD}/mozbuild
 export MACH_USE_SYSTEM_PYTHON=1
 

@@ -5,7 +5,7 @@ packager="fabienwang <fabienwang@nutyx.org>"
 contributors="tnut"
 
 name=skypeforlinux
-version=8.69.76.76
+version=8.73.0.92
 libxss_version=1.2.3
 release=1
 
@@ -20,8 +20,7 @@ prepare() {
   make
 }
 build() {
-  tar -xJC "$PKG" -f data.tar.xz
-
+  tar -xzC "$PKG" -f data.tar.gz
   install -d "$PKG/usr/share/licenses/$name"
   mv $PKG/usr/share/$name/LICENSES.chromium.html $PKG/usr/share/licenses/$name/
 

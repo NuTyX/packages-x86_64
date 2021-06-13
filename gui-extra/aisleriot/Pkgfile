@@ -1,29 +1,29 @@
 description="A gnome card patience game" 
 url="https://www.gnome.org/"
-contributors="Remy"
-packager="tnut <tnut@nutyx.org>"
+contributors="Remy, tnut"
+packager="spiky <spiky@nutyx.org>"
 
-makedepends=(gtk3 libcanberra librsvg yelp-tools)
+makedepends=(meson gtk3 libcanberra librsvg yelp-tools appstream-glib)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache guile)
 
 set=(gnome)
 
 name=aisleriot
-version=3.22.9
-release=3
+version=3.22.16
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://gitlab.gnome.org/GNOME/$name/-/archive/$version/$name-$version.tar.gz)
 
 build() {
 
 cd $name-$version
+   mkdir build
+   cd build
 
-./configure --prefix=/usr \
-            --sysconfdir=/etc \
-            --with-card-theme-formats=svg \
-            --disable-static \
-            --with-platform=gtk-only
+    meson --prefix=/usr \
+           -D theme_kde=false \
+           -D theme_svg_rsvg=true \
+           ..
+    ninja
 
-make
-make DESTDIR=$PKG install
+    DESTDIR=$PKG ninja install
 }
