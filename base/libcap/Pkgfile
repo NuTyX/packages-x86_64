@@ -1,28 +1,23 @@
 description="POSIX 1003.1e capabilities library"
 url="http://www.kernel.org/pub/linux/libs/security/linux-privs/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(pam)
+
 name=libcap
-version=2.26
+version=2.50
 
 source=(https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-$version.tar.xz)
 
 build() {
 cd libcap-$version
-sed -i 's:LIBDIR:PAM_&:g' pam_cap/Makefile
-sed -i '/install.*STALIBNAME/d' libcap/Makefile
-make
-make RAISE_SETFCAP=no \
-lib=lib \
-prefix=/usr \
-LIBDIR=/usr/lib \
-SBINDIR=/sbin \
-PAM_LIBDIR=/lib \
-DESTDIR=$PKG install
+sed -i 's/ $(PROGS)/& capsh/' progs/Makefile
+sed -i '/install -m.*STA/d' libcap/Makefile
+make prefix=/usr lib=lib
 
-mkdir -p $PKG/lib
-mv -v $PKG/usr/lib/libcap.so.* \
-$PKG/lib
-ln -sfv ../../lib/libcap.so.2 $PKG/usr/lib/libcap.so
+make prefix=$PKG/usr lib=lib install
+chmod -v 755 $PKG/usr/lib/lib{cap,psx}.so.2.50
+
 }
