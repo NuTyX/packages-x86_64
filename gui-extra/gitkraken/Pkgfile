@@ -1,0 +1,35 @@
+description="The intuitive, fast, and beautiful cross-platform Git client."
+url="https://www.gitkraken.com/"
+
+packager="Greg"
+contributors=""
+
+makedepends=(nss gtk3 libsecret xorg-libxkbfile)
+
+name=gitkraken
+version=7.6.1
+
+source=(
+    "https://release.axocdn.com/linux/GitKraken-v${version}.tar.gz"
+    "GitKraken.desktop"
+    "eula.html"
+    "gitkraken.sh"
+)
+
+
+build() {
+    install -d "$PKG"/opt
+    cp -R "$SRC"/gitkraken "$PKG"/opt/gitkraken
+
+    find "$PKG"/opt/gitkraken/ -type f -exec chmod 644 {} \;
+    chmod 755 "$PKG"/opt/gitkraken/gitkraken
+    chmod 755 "$PKG"/opt/gitkraken/resources/app.asar.unpacked/src/js/redux/domain/AskPass/AskPass.sh
+    chmod 4755 "$PKG"/opt/gitkraken/chrome-sandbox
+
+    install -d "$PKG"/usr/bin
+
+    install -D -m755 "./gitkraken.sh" "${PKG}/usr/bin/gitkraken"
+    install -D -m644 "./eula.html" "${PKG}/usr/share/licenses/${name}/eula.html"
+    install -D -m644 "./GitKraken.desktop" "${PKG}/usr/share/applications/GitKraken.desktop"
+    install -D -m644 "$PKG/opt/gitkraken/gitkraken.png" "$PKG/usr/share/pixmaps/gitkraken.png"
+}
