@@ -1,0 +1,25 @@
+description="a regular expressions library"
+url="https://github.com/kkos/oniguruma"
+
+
+packager="Greg"
+contributors=""
+
+makedepends=()
+
+name=oniguruma
+version=6.9.7.1
+
+source=(https://github.com/kkos/oniguruma/releases/download/v$version/onig-${version/_/-}.tar.gz)
+
+
+build() {
+	cd "$SRC"/onig-${version%.1}
+	./configure --prefix=/usr --enable-posix-api
+	make
+}
+
+package() {
+	cd "$SRC"/onig-${version%.1}
+	make DESTDIR="$PKG" install
+}
