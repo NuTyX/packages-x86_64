@@ -1,14 +1,17 @@
-url="http://savannah.nongnu.org/projects/acl"
 description="Commands for Manipulating POSIX Access Control Lists."
+url="http://savannah.nongnu.org/projects/acl"
+
 contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
+
 name=acl
-version=2.2.53
+version=2.3.1
+makedepends=(attr)
 
 source=( http://download.savannah.gnu.org/releases/$name/$name-$version.tar.gz)
 
 build() {
-cd acl-*
+cd $name-$version
 
 INSTALL_USER=root  \
 INSTALL_GROUP=root \
