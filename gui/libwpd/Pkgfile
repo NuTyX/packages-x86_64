@@ -1,0 +1,17 @@
+description='Library for importing WordPerfect (tm) documents'
+url='https://libwpd.sourceforge.net/'
+
+packager="tnut <tnut@nutyx.org>"
+
+name=libwpd
+version=0.10.3
+
+makedepends=(libgsf librevenge)
+
+source=(https://downloads.sourceforge.net/sourceforge/$name/$name-$version.tar.xz
+        libwpd-gcc11.patch)
+
+prepare() {
+cd $name-$version
+patch -Np1 -i ../libwpd-gcc11.patch
+}
