@@ -3,13 +3,15 @@ url="https://www.kde.org/"
 packager="fabienwang <fabienwang@nutyx.org>"
 contributors="Pierre B, tnut, fabienwang, spiky"
 
-makedepends=(mesa libxcb qtquickcontrols2 kactivities
-             kdeclarative kdoctools kwayland knotifications)
+makedepends=(mesa libxcb qtquickcontrols2 kactivities karchive kconfig kconfigwidgets
+             kcoreaddons kdbusaddons kdeclarative kglobalaccel kguiaddons ki18n kiconthemes
+             kio kservice kwindowsystem kxmlgui knotifications kirigami2
+             kdoctools kwayland)
 run=(kirigami2)
 
 
 name=plasma-framework
-version=5.82.0
+version=5.83.0
 
 source=(https://downloads.tuxfamily.org/nutyx/files/kde-wallpaper-nutyx-11.0.tar.xz
 	https://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
