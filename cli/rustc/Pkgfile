@@ -2,13 +2,14 @@ description="The Rust programming language is designed to be a safe, \
 concurrent, practical language."
 url="http://static.rust-lang.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre B., Rémy, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B., Rémy, Spiky"
 
 makedepends=(make-ca cmake curl llvm python libssh2)
 
 name=rustc
 version=1.52.1
+release=2
 
 source=(http://static.rust-lang.org/dist/$name-$version-src.tar.gz)
 
@@ -32,7 +33,7 @@ extended = true
 
 [install]
 prefix = "/usr"
-docdir = "share/doc/rustc-1.50.0"
+docdir = "share/doc/rustc-1.52.1"
 
 [rust]
 channel = "stable"
