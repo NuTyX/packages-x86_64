@@ -8,7 +8,7 @@ makedepends=(pcsclite perl)
 
 name=perl-pcsc
 version=1.4.14
-release=2
+release=3
 
 source=(http://ludovic.rousseau.free.fr/softwares/pcsc-perl/pcsc-perl-$version.tar.bz2)
 
@@ -22,6 +22,5 @@ build() {
 	_perlver_min=$(perl -e '$v = $^V->{version}; print $v->[0].".".($v->[1]);')
 	_perlver_max=$(perl -e '$v = $^V->{version}; print $v->[0].".".($v->[1]+1);')
 	depends+=("perl>=$_perlver_min" "perl<$_perlver_max")
-fi
- rm $PKG/usr/lib/share/perl5/base/perllocal.pod
+  fi
 }
