@@ -1,12 +1,16 @@
 description="C/C++ configuration file library
 url="http://www.hyperrealm.com/libconfig/
+
 contributors="berlius, Greg"
 packager="tnut <tnut@nutyx.org>"
+
+makedepends=(grep sed autoconf automake m4 libtool
+             texinfo)
 
 PKGMK_KEEP_SOURCES="no"
 
 name=libconfig
-version=1.7.2
+version=1.7.3
 
 source=(https://github.com/hyperrealm/libconfig/archive/v$version.tar.gz)
 
