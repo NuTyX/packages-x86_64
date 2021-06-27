@@ -6,8 +6,9 @@ packager="tnut <tnut@nutyx.org>"
 
 name=dhcpcd
 version=9.4.0
+release=2
 
-runyx_version=20200412
+runyx_version=20201011
 source=(http://download.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	https://roy.marples.name/downloads/$name/$name-$version.tar.xz)
 
@@ -25,8 +26,13 @@ cd $name-$version
 --privsepuser=dhcpcd
 make
 make DESTDIR=$PKG install
+
 #
 ## service
+cd ../runyx-${runyx_version}
+make DESTDIR=$PKG -C services/sysv install-service-dhcpcd
+
+
 SERVICEDIR=/lib/init/services/${name}
 mkdir -p $PKG/{var/log/${name},$SERVICEDIR/{,log}}
 cat > $PKG/$SERVICEDIR/run << "EOF"
@@ -51,7 +57,7 @@ do
   mkdir -p $PKG/etc/init/$i
   ln -sv /lib/init/services/$name $PKG/etc/init/$i/$name
 done
-cd  ../runyx-${runyx_version}
+
 make DESTDIR=$PKG install-sysd-dhcpcd
 sed -i "s@^Before@# Before@" $PKG/lib/systemd/system/dhcpcd@.service
 }
