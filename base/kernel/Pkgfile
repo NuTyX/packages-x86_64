@@ -11,7 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel
-version=5.12.10
+version=5.13
 
 alias=(linux)
 INITRD="initrd"
@@ -25,8 +25,7 @@ _version=${version:0:4}
 ## Download all the sources
 #
 
-source=(fix_virtualbox.patch
-	$url/pub/linux/kernel/v5.x/linux-${_version}.tar.xz config_64)
+source=($url/pub/linux/kernel/v5.x/linux-${_version}.tar.xz config_64)
 
 [ -z $patchname ] || source+=" $url/pub/linux/kernel/v5.x/$patchname"
 ## Time to build everything
@@ -41,8 +40,6 @@ cd linux-${_version}
 if [ -f $SRC/patch-$version.xz ]; then
 	xz -d -c  $SRC/patch-$version.xz | patch -Np1
 fi
-
-patch -Np1 -i ../fix_virtualbox.patch
 
 make mrproper
 cp $SRC/config_64 ./.config
