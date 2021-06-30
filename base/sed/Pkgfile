@@ -1,11 +1,17 @@
 description="Takes text input, do some operation on it, and outputs the modified text."
 url="http://www.gnu.org/software/sed//sed.html"
+
 maintainer="Ken Pizzini ken at gnu dot org,Paolo Bonzini bonzini at gnu dot org"
 contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(texinfo)
+
 name=sed
 version=4.8
+release=2
+
+PKGMK_LOCALES=()
 
 source=(http://ftp.gnu.org/gnu/sed/sed-$version.tar.xz)
 
