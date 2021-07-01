@@ -4,17 +4,25 @@ url="http://upower.freedesktop.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, tnut, Greg"
 
-makedepends=(dbus-glib libusb intltool perl-xml-parser
+makedepends=(autoconf automake m4 sed grep
+             dbus-glib libusb intltool perl-xml-parser
              polkit gobject-introspection libgudev pm-utils)
 
 name=upower
-version=0.99.11
+version=0.99.12
+_version=${version//./_}
+source=(https://gitlab.freedesktop.org/$name/$name/-/archive/UPOWER_${_version}/$name-UPOWER_${_version}.tar.gz)
 
-source=(http://deb.debian.org/debian/pool/main/u/upower/"$name"_"$version".orig.tar.xz)
+prepare() {
+
+cd $name-UPOWER_${_version}
+NOCONFIGURE=1 ./autogen.sh
+
+}
 
 build() {
 
-cd $name-$version
+cd $name-UPOWER_${_version}
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
 --enable-deprecated \
