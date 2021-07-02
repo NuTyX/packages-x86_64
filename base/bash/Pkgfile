@@ -1,20 +1,17 @@
 description="The Bash package contains the Bourne-Again SHell."
-maintainer="Brian Fox,Chet Ramey and many more"
+url='https://www.gnu.org/software/bash/'
 
+maintainer="Brian Fox,Chet Ramey and many more"
 packager="tnut <tnut@nutyx.org>"
 
 makedepends=(ncurses readline sed)
 
 name=bash
-version=5.1
-release=2
+version=5.1.8
 PKGMK_LOCALES=()
 
 source=(http://ftp.gnu.org/gnu/bash/bash-$version.tar.gz)
 
-prepare() {
-sed -i  '/^bashline.o:.*shmbchar.h/a bashline.o: ${DEFDIR}/builtext.h' $name-$version/Makefile.in
-}
 build()
 {
 cd bash-$version
