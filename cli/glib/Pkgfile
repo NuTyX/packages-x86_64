@@ -9,6 +9,7 @@ PKGMK_GROUPS=(man devel doc )
 
 name=glib
 version=2.68.3
+release=2
 
 source=(https://download.gnome.org/sources/glib/${version:0:4}/$name-$version.tar.xz
 	glib-skip_warnings-2.patch)
@@ -18,7 +19,7 @@ prepare () {
   nutyx-black.jpg nutyx-dreamy-sky.jpg lxde-black.jpg nutyx-10.0.jpg \
   nutyx-11.0.jpg nutyx-9.0.94.jpg nutyx-9.0.95.jpg nutyx-eagle.jpg \
   nutyx2.png nutyx9.png NuTyX-vide.jpg NuTyX-LXDE-10.0.jpg NuTyX-9.92.jpg \
-  NuTyX-9.91-2.jpg
+  NuTyX-9.91-2.jpg NuTyX-bad-jocker.jpg
   do
    wget $URL/$i
    install -D -m644 $i $PKG/usr/share/backgrounds/nutyx/$i
