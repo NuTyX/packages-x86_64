@@ -1,18 +1,17 @@
 description="Deletes unneeded files to free disk space and maintain privacy"
 url="http://bleachbit.sourceforge.net/"
 
-packager="Schrodinger72 <schrodinger@nutyx.org>"
-contributors="tnut, Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut,Greg,Schrodinger72"
 
 run=(python python-gobject python-chardet gtk3 desktop-file-utils
      hicolor-icon-theme)
 
 name=bleachbit
-version=4.2.0
-release=1
+version=4.4.0
 
 PKGMK_KEEP_SOURCES="no"
-source=(https://github.com/bleachbit/bleachbit/archive/v$version.tar.gz)
+source=(https://github.com/bleachbit/bleachbit/archive/refs/tags/v${version}.tar.gz)
 
 build() {
   cd $name-$version
