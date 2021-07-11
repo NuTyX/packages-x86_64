@@ -1,8 +1,8 @@
 description="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet"
 url="http://hplipopensource.com"
 
-contributors="Greg, tnut"
-packager="spiky <spiky@nutyx.org>"
+contributors="Greg, Spiky"
+packager="tnut <tnut@nutyx.org>"
 
 makedepends=(avahi python ghostscript foomatic-db usbutils
              sane cups cups-filters cups-pk-helper libusb net-snmp)
@@ -12,7 +12,7 @@ run=(sip dbus-python python-qt python-pillow foomatic-db-engine
 
 
 name=hplip
-version=3.21.4
+version=3.20.11
 
 source=(https://downloads.sourceforge.net/$name/$name-$version.tar.gz
 	https://launchpadlibrarian.net/480406888/hplip-configure-python.patch
@@ -29,6 +29,9 @@ prepare() {
 
  # fix some handling unicode file names FS#58412
  patch -Np1 -i ../0023-Fix-handling-of-unicode-filenames-in-sixext.py.patch
+
+ # remove binary blob libImageProcessor and all linking - FS#59681
+ patch -Np1 -i ../0025-Remove-all-ImageProcessor-functionality-which-is-clo.patch
 
  # https://bugs.launchpad.net/hplip/+bug/1879445
  patch -Np1 -i ../hplip-configure-python.patch
