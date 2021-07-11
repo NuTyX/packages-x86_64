@@ -4,16 +4,16 @@ url="https://bitbucket.org/logilab/astroid"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre B., tnut"
 
-makedepends=(python-six)
+makedepends=(python python-six)
 run=(python)
 
 name=python-astroid
-version=2.5.6
+version=2.5.8
 
-source=(https://github.com/PyCQA/astroid/archive/refs/tags/astroid-$version.tar.gz)
+source=(https://files.pythonhosted.org/packages/5b/b7/e2aa3bf1e05a799d0ff0c8d97dd02fcb46d0f5dcba0a0a1cb3e20e40c369/astroid-$version.tar.gz)
 
 build() {
-    cd astroid-astroid-$version
+    cd astroid-$version
     python3 setup.py check
     python3 setup.py install --prefix=/usr --root=$PKG
 }

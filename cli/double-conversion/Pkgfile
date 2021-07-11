@@ -1,0 +1,22 @@
+description='Binary-decimal and decimal-binary routines for IEEE doubles'
+url='https://github.com/google/double-conversion'
+
+name=double-conversion
+version=3.1.5
+
+makedepends=(cmake)
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/google/double-conversion/archive/v$version.tar.gz)
+
+build() {
+  mkdir build
+  cd build
+  cmake ../$name-$version \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DBUILD_SHARED_LIBS=ON
+  make
+  make DESTDIR=$PKG install
+}

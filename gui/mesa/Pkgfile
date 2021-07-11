@@ -3,8 +3,8 @@
 description="Mesa is an OpenGL compatible 3D graphics library."
 url="http://www.xorg-mesa3d.org"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre B, Rems, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Rems,Spiky"
 
 makedepends=(xorgproto pkg-config libtool xorg-xrandr wayland python-mako
              wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext
@@ -14,14 +14,14 @@ makedepends=(xorgproto pkg-config libtool xorg-xrandr wayland python-mako
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=21.1.2
+version=21.1.4
 
-source=(http://www.linuxfromscratch.org/patches/blfs/svn/mesa-$version-add_xdemos-1.patch
+source=(add_xdemos-1.patch
 	https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
 
 build() {
 cd mesa-$version
-patch -Np1 -i ../mesa-$version-add_xdemos-1.patch
+patch -Np1 -i ../add_xdemos-1.patch
 GALLIUM_DRV="i915,iris,nouveau,r600,radeonsi,svga,swrast,virgl"
 DRI_DRIVERS="i965,nouveau"
 

@@ -1,24 +1,27 @@
 description="A lightweight interface for interacting with the graphical display of virtualized guest OS."
 url="http://virt-manager.org/"
 
-contributors="Rems,Tnut"
-packager="rems <remy@nutyx.org>"
+contributors="Tnut,Rems"
+packager="spiky <spiky@nutyx.org>"
 
-makedepends=(intltool gtk-vnc spice-gtk spice-protocol)
+makedepends=(intltool meson ninja gtk-vnc spice-gtk spice-protocol vte)
 run=(desktop-file-utils) 
 
 name=virt-viewer
-version=9.0
+version=10.0
 
-source=(https://virt-manager.org/download/sources/$name/$name-$version.tar.gz)
+source=(https://virt-manager.org/download/sources/$name/$name-$version.tar.xz)
 
 build() {
 
 cd $name-$version
+mkdir build
+cd    build
+meson --prefix=/usr \
+-Dvnc=enabled \
+-Dspice=enabled \
+-Dvte=enabled
+ninja
 
-  ./configure --prefix=/usr \
-              --disable-update-mimedb
-
-  make
-  make DESTDIR=$PKG install
+DESTDIR=$PKG ninja install
 }

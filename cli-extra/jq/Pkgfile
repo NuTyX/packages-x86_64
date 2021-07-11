@@ -1,0 +1,25 @@
+description="Command-line JSON processor"
+url="https://stedolan.github.io/jq/"
+
+
+packager="Greg"
+contributors=""
+
+makedepends=(oniguruma)
+
+name=jq
+version=1.6
+
+source=(https://github.com/stedolan/jq/releases/download/${name}-${version}/${name}-${version}.tar.gz)
+
+
+build() {
+    cd "${name}-${version}"
+    ./configure --prefix=/usr
+    make
+}
+
+package() {
+    cd "${name}-${version}"
+    make DESTDIR="${PKG}" prefix=/usr install
+}

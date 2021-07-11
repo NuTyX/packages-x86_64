@@ -4,10 +4,10 @@ url="http://www.iodbc.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
-makedepends=(autoconf automake m4)
+makedepends=(grep sed autoconf automake m4 libtool)
 
 name=libiodbc
-version=3.52.14
+version=3.52.15
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -15,6 +15,7 @@ source=(https://github.com/openlink/iODBC/archive/v$version.tar.gz)
 build() {
 
 cd iODBC-$version
+unset MAKEFLAGS
 
 ./autogen.sh
 

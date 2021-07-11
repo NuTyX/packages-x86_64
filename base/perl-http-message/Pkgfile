@@ -3,14 +3,15 @@ url="https://metacpan.org/pod/HTTP::Message"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre B, tnut, Rems"
 
-makedepends=(perl perl-encode-locale perl-html-parser
+makedepends=(perl-encode-locale perl-html-parser
              perl-http-date perl-lwp-mediatypes perl-uri)
 run=(perl)
 
 name=perl-http-message
 version=6.32
+release=2
 
-source=(http://search.cpan.org/CPAN/authors/id/O/OA/OALDERS/HTTP-Message-$version.tar.gz)
+source=(https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Message-$version.tar.gz)
 
 build() {
 ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""  \

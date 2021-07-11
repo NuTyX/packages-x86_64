@@ -15,12 +15,12 @@ makedepends=(tar python perl-archive-zip unzip zip icu gtk3 cups poppler-glib
 run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache)
 
 name=libreoffice
-version=7.1.3.2
+version=7.1.4.2
 
 categories=(Office Graphics Education)
 
 PKGMK_IGNORE_UNPACK="yes"
-_url="https://download.documentfoundation.org/libreoffice/src/${version%.*}/"
+_url="https://download.documentfoundation.org/libreoffice/src/${version:0:5}/"
 
 source=(Remove-check-if-root-due-to-issue-with-fakeroot.patch
 http://dev-www.libreoffice.org/extern/f543e6e2d7275557a839a164941c0a86e5f2c3f2a0042bfc434c88c6dde9e140-opens___.ttf

@@ -1,0 +1,31 @@
+description="Custom build of ndi-sdk from obs-ndi"
+url="https://github.com/Palakis/${_name}"
+
+
+packager="Greg"
+contributors=""
+
+
+makedepends=()
+
+
+name=libndi-bin
+_name=obs-ndi
+version=4.5.1
+_version=4.9.0
+release=6
+_release=1
+
+
+source=(https://github.com/Palakis/${_name}/releases/download/${_version}/libndi4_${version}-${_release}_amd64.deb)
+
+
+ build() {
+
+	cd "${SRC}"
+	tar -xJf data.tar.xz -C "${PKG}"
+	rm "${PKG}"/usr/lib/libndi.so.4
+	chmod 755 $(find "${PKG}" -type d)
+
+}
+

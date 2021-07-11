@@ -1,8 +1,8 @@
 description="Window manager for gnome."
 url="http://www.gnome.org/"
 
-packager="fabienwang <fabienwang@nutyx.org>"
-contributors="Jayce, Fanch, Remy, tnut, spiky, fabienwang, spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Jayce,Fanch,Remy,Tnut,Fabienwang"
 
 makedepends=(clutter meson ninja glib  xorg-libsm graphene
              gnome-desktop gnome-settings-daemon libwacom libxkbcommon upower
@@ -12,10 +12,9 @@ makedepends=(clutter meson ninja glib  xorg-libsm graphene
 set=(gnome)
 
 name=mutter
-version=40.2
-release=2
+version=40.2.1
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version

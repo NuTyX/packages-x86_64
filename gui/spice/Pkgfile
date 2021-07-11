@@ -10,13 +10,15 @@ python-six spice-protocol gdk-pixbuf)
 
 
 name=spice
-version=0.14.3
-release=3
+version=0.15.0
 
 source=(https://www.spice-space.org/download/releases/$name-server/$name-$version.tar.bz2)
 
+
 build() {
 cd $name-$version
+
+sed -i "/doxygen.sh/d" meson.build
 mkdir build
 cd build
 meson --prefix=/usr -Dgstreamer=no

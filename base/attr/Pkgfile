@@ -1,11 +1,12 @@
 description="Utilities to administer the extended attributes on filesystem objects"
 url="http://savannah.nongnu.org/projects/attr"
+
 maintainer="Andreas Gruenbacher <agruen>, Brandon Philips <philips>"
 contributors="Pierre B"
 packager="tnut <tnut@nutyx.org>"
 
 name=attr
-version=2.4.48
+version=2.5.1
 
 PKGMK_GROUPS=(devel man doc)
 
@@ -13,7 +14,7 @@ source=(http://download.savannah.gnu.org/releases/$name/$name-$version.tar.gz)
 
 
 build() {
-cd attr-$version
+cd $name-$version
 
 INSTALL_USER=root  \
 INSTALL_GROUP=root \
