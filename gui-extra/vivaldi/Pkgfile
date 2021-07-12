@@ -1,19 +1,18 @@
 description="An advanced browser made with the power user in mind."
 url="https://vivaldi.com"
 
-packager="fabienwang <fabienwang@nutyx.org>"
-contributors="rems, Tnut, fabienwang, Rems, spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Rems,Tnut,Rems,Fabienwang"
 
 run=(gtk3 nss xorg-libxtst xorg-libx11 freetype freefont-ttf
      desktop-file-utils shared-mime-info alsa-lib hicolor-icon-theme x264 fdk-aac)
 
 name=vivaldi
 _name=vivaldi-ffmpeg-codecs
-version=4.0
-release=2
-_version=2312.25-1
+version=4.0.2312.38
+_version=2312.38-1
 
-source=(https://downloads.vivaldi.com/stable/$name-stable-$version.${_version}.x86_64.rpm
+source=(https://downloads.vivaldi.com/stable/$name-stable-4.0.${_version}.x86_64.rpm
         libffmpeg.so.4.0)
 
 build() {
