@@ -7,11 +7,13 @@ packager="tnut <tnut@nutyx.org>"
 
 name=man-db
 version=2.9.4
+release=2
 
 makedepends=(gdbm libpipeline)
 run=(groff less)
 
 PKGMK_GROUPS=(man locale)
+PKGMK_LOCALES=()
 source=(http://download.savannah.gnu.org/releases/$name/$name-$version.tar.xz)
 
 build()
