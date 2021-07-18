@@ -1,6 +1,6 @@
 description="The KDE Music player suite"
 url="http://amarok.kde.org"
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(git cmake gtest libmtp qtbase extra-cmake-modules
              qtscript qtsvg qtdeclarative solid karchive
@@ -11,16 +11,15 @@ makedepends=(git cmake gtest libmtp qtbase extra-cmake-modules
              knotifications kpackage kservice ktexteditor
              ktextwidgets kwidgetsaddons kwindowsystem kxmlgui
              threadweaver ffmpeg mariadb taglib-extras
-             gstreamer-plugins-libav)
+             gstreamer-plugins-libav syndication)
 
 name=amarok
-version=2.9.0-f0d3e6
-release=2
+version=2.9.71
 
+source=(https://download.kde.org/unstable/$name/$version/$name-$version.tar.xz)
 build() {
-   git clone git://anongit.kde.org/amarok.git $name-$version
+   
    cd $name-$version
-   git checkout ${version/*-/}
    mkdir  build
    cd     build
    cmake  -DKDE4_BUILD_TESTS=OFF \
