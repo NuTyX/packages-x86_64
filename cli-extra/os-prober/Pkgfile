@@ -7,14 +7,14 @@ packager="spiky <spiky@nutyx.org>"
 makedepends=(bash)
 
 name=os-prober
-version=1.78
+version=1.79
 
 source=(http://ftp.de.debian.org/debian/pool/main/o/os-prober/os-prober_$version.tar.xz)
 
 
 build() {
 
-  cd $name-$version
+  cd $name
 
   # adjust lib dir to allow detection of 64-bit distros
   sed -i -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" os-probes/mounted/common/90linux-distro
