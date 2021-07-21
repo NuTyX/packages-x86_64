@@ -69,3 +69,5 @@ UseDomains=true
         log_success_msg2  "${INFO} Created /etc/systemd/network/$interface.network file ${NORMAL}"
     done
 fi
+[ -f /etc/profile.d/i18n.sh ]  && setup-nutyx -ul
+sed -i "/dir \/var\/lib\/pkg\/depot\/desktops$/d" etc/cards.conf
