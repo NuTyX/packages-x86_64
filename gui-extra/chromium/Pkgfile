@@ -10,15 +10,15 @@ makedepends=(gtk3 ffmpeg flac dbus freetype xorg-libxscrnsaver
 run=(hicolor-icon-theme desktop-file-utils)
 
 name=chromium
-version=91.0.4472.164
+version=92.0.4515.107
 icuversion=67.1
-re2version=2021-04-01
+re2version=2021-06-01
 
 source=(
         https://github.com/unicode-org/icu/releases/download/\
 release-${icuversion//./-}/icu4c-${icuversion//./_}-src.tgz \
 	https://downloads.tuxfamily.org/nutyx/files/libminizip.so.1.0.0 
-        https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-1-x86_64.pkg.tar.zst
+        https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-3-x86_64.pkg.tar.zst
         https://github.com/google/re2/archive/${re2version}.tar.gz)
 prepare() {
 cd icu/source
