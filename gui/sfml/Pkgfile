@@ -1,15 +1,16 @@
-idescription="A simple, fast, cross-platform, and object-oriented multimedia API"
+description="A simple, fast, cross-platform, and object-oriented multimedia API"
 url="http://www.sfml-dev.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors=""
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(mesa cmake doxygen systemd libsndfile xorg-xrandr openal glew freetype xorg-libx11)
-run=()
-set=()
 
 name=sfml
 version=2.5.1
+release=2
+
+PKGMK_KEEP_SOURCES="no"
 
 source=(https://github.com/SFML/SFML/archive/$version.tar.gz)
 
