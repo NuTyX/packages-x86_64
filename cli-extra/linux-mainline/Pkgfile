@@ -3,7 +3,7 @@ description="The latest development kernel version"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(gmp mpc bison flex perl)
+makedepends=(gmp mpc bison flex perl libelf)
 run=(nutyx kmod busybox)
 
 PKGMK_IGNORE_UNPACK="yes"
@@ -12,7 +12,7 @@ PKGMK_GROUPS=(devel doc)
 PKGMK_KEEP_SOURCES="no"
 
 name=linux-mainline
-version=5.13-rc7
+version=5.14-rc3
 SUFFIX="${name/*-/}"
 INITRD="initrd-$SUFFIX"
 KERNEL="bzImage-$SUFFIX"
