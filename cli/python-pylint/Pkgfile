@@ -8,11 +8,11 @@ makedepends=(git python-astroid python-six)
 alias=(pylint)
 
 name=python-pylint
-version=2.7.4
+version=2.9.5
 
-source=(https://github.com/PyCQA/pylint/archive/pylint-$version.tar.gz)
+source=(https://github.com/PyCQA/pylint/archive/refs/tags/v${version}.tar.gz)
 build() {
-    cd pylint-pylint-$version
+    cd pylint-$version
     python3 setup.py check
     python3 setup.py install --prefix=/usr --root=$PKG
 }
