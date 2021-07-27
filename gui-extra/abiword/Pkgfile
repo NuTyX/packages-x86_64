@@ -1,8 +1,8 @@
 description="Word processing similar to MS® Word, suitable for a wide variety of word processing tasks"
 url="http://www.abisource.com/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B., Tnut, Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre.,Greg,Tnut"
 
 makedepends=(icu boost cairo aspell fribidi enchant wv
              librsvg gtk2 redland
@@ -10,16 +10,15 @@ makedepends=(icu boost cairo aspell fribidi enchant wv
 run=(desktop-file-utils)
 
 name=abiword
-version=3.0.4
-release=2
+version=3.0.5
 
 source=(${url}downloads/$name/$version/source/$name-$version.tar.gz
-        https://download.tuxfamily.org/nutyx/files/$name-$version-consolidate-1.patch)
+        https://download.tuxfamily.org/nutyx/files/$name-3.0.4-consolidate-1.patch)
 		
 prepare() {
 
 cd $name-$version
-patch -Np1 -i ../$name-$version-consolidate-1.patch
+patch -Np1 -i ../$name-3.0.4-consolidate-1.patch
 
 find plugins -name plugin.m4 | xargs cat > plugin-configure.m4
 sed -i 's/enchant >=/enchant-2 >=/' configure.ac
