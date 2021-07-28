@@ -1,14 +1,15 @@
 description="Python bindings for DBUS"
 url="http://dbus.freedesktop.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
 makedepends=(dbus glib python-dbus-data)
 run=(python2)
 
 name=dbus-python
 version=1.2.18
+release=2
 
 source=( http://dbus.freedesktop.org/releases/$name/$name-$version.tar.gz )
 
@@ -16,14 +17,15 @@ build() {
 	cd $name-$version
 	mkdir build
 	cd    build
+ 	PYTHON=/usr/bin/python2 \
 	../configure --prefix=/usr \
 		--docdir=/usr/share/doc/$name-$version
 	make
 	make DESTDIR=$PKG install
 
 # Obsolets libs
-#rm $PKG/usr/lib/python2.7/site-packages/_dbus_bindings.la
-#rm $PKG/usr/lib/python2.7/site-packages/_dbus_glib_bindings.la
+rm $PKG/usr/lib/python2.7/site-packages/_dbus_bindings.la
+rm $PKG/usr/lib/python2.7/site-packages/_dbus_glib_bindings.la
 
 # python-dbus-data
 rm -r $PKG/usr/include
