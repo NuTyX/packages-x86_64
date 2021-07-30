@@ -1,14 +1,14 @@
 description="library for the management d'images of way more effective that imlib"
 url="http://sourceforge.net/projects/enlightenment"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(aalib giflib xorg-libxext libtiff freetype
               xorg-libsm libpng libjpeg-turbo libid3tag )
 
 name=imlib2
-version=1.7.1
+version=1.7.2
 
 source=(http://downloads.sourceforge.net/enlightenment/$name-$version.tar.bz2)
 build() {
@@ -32,7 +32,7 @@ rm $PKG/usr/lib/imlib2/filters/colormod.la
 rm $PKG/usr/lib/imlib2/filters/testfilter.la
 rm $PKG/usr/lib/imlib2/loaders/argb.la
 rm $PKG/usr/lib/imlib2/loaders/bmp.la
-rm $PKG/usr/lib/imlib2/loaders/bz2.la
+#rm $PKG/usr/lib/imlib2/loaders/bz2.la
 rm $PKG/usr/lib/imlib2/loaders/ff.la
 rm $PKG/usr/lib/imlib2/loaders/gif.la
 rm $PKG/usr/lib/imlib2/loaders/id3.la
