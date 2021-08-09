@@ -12,7 +12,7 @@ index 818fb4c..f298b13 100755
  [ -z "$XORG" ] && XORG="xorg-xinit xorg-xf86-input-synaptics \
  xorg-xf86-input-wacom xorg-xf86-video-ati \
 diff --git a/scripts/upgrade-nutyx.in b/scripts/upgrade-nutyx.in
-index 87525cc..a402f3a 100755
+index 87525cc..6679db3 100755
 --- a/scripts/upgrade-nutyx.in
 +++ b/scripts/upgrade-nutyx.in
 @@ -58,6 +58,15 @@ base ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/base" > \
@@ -42,7 +42,15 @@ index 87525cc..a402f3a 100755
  	if [ $UID -eq 0 ]; then
  		check_user_exist || create_cards_user
  		check_conf_exist || generate_conf
-@@ -98,5 +111,5 @@ UPGRADE_CARDS_CONF=/pkg/cards.conf
+@@ -85,6 +98,7 @@ main()
+ 		download_only
+ 		[ $(cards upgrade -c --conf=${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_CARDS_CONF}) == "yes" ] && \
+ 		touch ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/${UPGRADE_READY}
++		chown -R ${UPGRADE_USER}:${UPGRADE_USER} ${UPGRADE_HOME}/${UPGRADE_USER}
+ 		exit 0
+ 	fi
+ 	echo "Cannot run this script with $USER account"
+@@ -98,5 +112,5 @@ UPGRADE_CARDS_CONF=/pkg/cards.conf
  UPGRADE_DEPOT=/pkg/depot
  UPGRADE_READY=.ready
  UPGRADE_UID="96"
