@@ -1,0 +1,20 @@
+description="Message Digest functions from BSD systems"
+url="https://www.hadrons.org/software/libmd"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(glibc)
+
+
+name=libmd
+version=1.0.3
+
+source=(https://libbsd.freedesktop.org/releases/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
