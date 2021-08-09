@@ -7,11 +7,16 @@ packager="fabienwang <fabienwang@nutyx.org>"
 set=(devel)
 
 name=meson
-version=0.58.1
+version=0.59.0
 
 PKGMK_DEPENDS=(sqlite expat libffi python)
-source=(https://github.com/mesonbuild/$name/releases/download/$version/$name-$version.tar.gz)
-
+source=(0001-gnome-Always-pass-absolute-L-paths-to-g-ir-scanner.patch
+	https://github.com/mesonbuild/$name/releases/download/$version/$name-$version.tar.gz)
+prepare()
+{
+ cd $name-$version
+ patch -Np1 -i ../0001-gnome-Always-pass-absolute-L-paths-to-g-ir-scanner.patch
+}
 build() {
   cd $name-$version
   python3 setup.py build
