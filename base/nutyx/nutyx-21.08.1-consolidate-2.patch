@@ -1,0 +1,61 @@
+diff --git a/scripts/install-nutyx.in b/scripts/install-nutyx.in
+index 818fb4c..f298b13 100755
+--- a/scripts/install-nutyx.in
++++ b/scripts/install-nutyx.in
+@@ -1167,7 +1167,7 @@ fi
+ [ -z "$BASE" ] && BASE="efibootmgr linux-firmware systemd runyx \
+ wireless-tools wpa-supplicant"
+ [ -z "$CLI" ] && CLI="gpm gpm.service dosfstools make-ca xdg-user-dirs \
+-sound-theme-freedesktop ntp ntp.service fcron fcron.service"
++sound-theme-freedesktop ntp ntp.service fcron"
+ [ -z "$GUI" ] && GUI="flcards gvfs network-manager-applet"
+ [ -z "$XORG" ] && XORG="xorg-xinit xorg-xf86-input-synaptics \
+ xorg-xf86-input-wacom xorg-xf86-video-ati \
+diff --git a/scripts/upgrade-nutyx.in b/scripts/upgrade-nutyx.in
+index 87525cc..a402f3a 100755
+--- a/scripts/upgrade-nutyx.in
++++ b/scripts/upgrade-nutyx.in
+@@ -58,6 +58,15 @@ base ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/base" > \
+ ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_CARDS_CONF}
+ 	chown -R ${UPGRADE_USER}:${UPGRADE_USER} ${UPGRADE_HOME}/${UPGRADE_USER}
+ }
++generate_fcron()
++{
++	[ -d /var/spool/fcron ] || return 0
++	echo "%midhourly 57-37 /sbin/upgrade-nutyx" > \
++	/var/spool/fcron/${UPGRADE_USER}.orig && \
++	chown fcron:fcron /var/spool/fcron/${UPGRADE_USER}.orig && \
++	chmod 640 /var/spool/fcron/${UPGRADE_USER}.orig && \
++	${FCRONTAB_COMMAND} -z -u ${UPGRADE_USER}
++}
+ download_only()
+ {
+ 	check_conf_exist || generate_conf
+@@ -73,6 +82,10 @@ download_ready()
+ }
+ main()
+ {
++	if [ -z ${FCRONTAB_COMMAND} ];then
++		echo "Please install 'fcron' package first !!!"
++		exit 1
++	fi
+ 	if [ $UID -eq 0 ]; then
+ 		check_user_exist || create_cards_user
+ 		check_conf_exist || generate_conf
+@@ -98,5 +111,5 @@ UPGRADE_CARDS_CONF=/pkg/cards.conf
+ UPGRADE_DEPOT=/pkg/depot
+ UPGRADE_READY=.ready
+ UPGRADE_UID="96"
+-
++FCRONTAB_COMMAND="$(which fcrontab)"
+ main "$@"
+diff --git a/scripts/wget_nutyx_list b/scripts/wget_nutyx_list
+index 8ae1361..a53d15e 100644
+--- a/scripts/wget_nutyx_list
++++ b/scripts/wget_nutyx_list
+@@ -86,4 +86,4 @@ f78419af679ac9678190ad961eb3cf27  util-linux-2.36.2.tar.xz
+ db4e6dc7977cbddcd543b240079a4899  wget-1.20.3.tar.gz
+ aa1621ec7013a19abab52a8aff04fe5b  xz-5.2.5.tar.xz
+ 85adef240c5f370b308da8c938951a68  zlib-1.2.11.tar.xz
+-0996c3d1ccc4ba5659b1eca8d2b5cdec  nutyx-21.07.3.tar.xz
++c5b72994973657e71a362466cc22e7be  nutyx-21.08.1.tar.xz
