@@ -18,6 +18,7 @@
 #
 #
 
+source /lib/lsb/init-functions
 
 check_group_exist()
 {
@@ -76,8 +77,10 @@ download_only()
 }
 download_ready()
 {
+	killproc $(which cards-upgrade-notifier)
 	cards upgrade --ready --conf=${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_CARDS_CONF} || return 1
 	touch ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/${UPGRADE_READY}
+	$(which cards-upgrade-notifier) ready
 	return 0
 }
 main()

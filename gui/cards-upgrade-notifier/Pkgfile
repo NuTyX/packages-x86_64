@@ -17,12 +17,12 @@ source=(cards-upgrade-notifier-updates.png cards-upgrade-notifier.c upgrade-nuty
 build() {
 
 # cd $version/src
-cc $name.c -DPIXMAPS_DIR "/usr/share/pixmaps" \
+cc $name.c \
 `pkg-config --cflags gtk+-3.0` `pkg-config --libs gtk+-3.0` -o $name
 
 mkdir -p $PKG/{sbin,usr/{bin,share/pixmaps}}
 install -m755 upgrade-nutyx.in $PKG/sbin/upgrade-nutyx
 install -m755 $name $PKG/usr/bin/$name
-install -755 $name-updates.png \
+install -m755 $name-updates.png \
 $PKG/usr/share/pixmaps/$name-updates.png
 }
