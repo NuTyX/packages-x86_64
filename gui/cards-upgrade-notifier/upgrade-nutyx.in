@@ -1,0 +1,116 @@
+#!/bin/sh
+#
+#  Copyright (c) 2021 by NuTyX team (http://nutyx.org)
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, 
+#  USA.
+#
+#
+
+
+check_group_exist()
+{
+	(getent group "${UPGRADE_USER}" > /dev/null) && return 0
+	return 1
+}
+check_user_exist()
+{
+	(getent passwd "${UPGRADE_USER}" > /dev/null) && return 0
+	return 1
+}
+create_cards_user()
+{
+	check_group_exist ${UPGRADE_USER} || groupadd -g ${UPGRADE_UID} ${UPGRADE_USER}
+	useradd -c "cards upgrade Service" -m \
+	-d ${UPGRADE_HOME}/${UPGRADE_USER} -g ${UPGRADE_UID} -s /bin/sh -u ${UPGRADE_UID} ${UPGRADE_USER}
+	
+}
+check_conf_exist()
+{
+	[ -f ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_CARDS_CONF} ] && return 0
+	return 1
+}
+generate_conf()
+{
+	check_user_exist || create_cards_user
+	mkdir -p ${UPGRADE_HOME}/${UPGRADE_USER}/pkg/depot
+	echo "
+	
+url http://download.nutyx.org
+
+dir ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/gui-extra
+dir ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/gui
+dir ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/cli-extra
+dir ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/cli
+dir ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/base
+base ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/base" > \
+${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_CARDS_CONF}
+	chown -R ${UPGRADE_USER}:${UPGRADE_USER} ${UPGRADE_HOME}/${UPGRADE_USER}
+}
+generate_fcron()
+{
+	[ -d /var/spool/fcron ] || return 0
+	echo "%midhourly 57-37 /sbin/upgrade-nutyx" > \
+	/var/spool/fcron/${UPGRADE_USER}.orig && \
+	chown fcron:fcron /var/spool/fcron/${UPGRADE_USER}.orig && \
+	chmod 640 /var/spool/fcron/${UPGRADE_USER}.orig && \
+	${FCRONTAB_COMMAND} -z -u ${UPGRADE_USER}
+}
+download_only()
+{
+	check_conf_exist || generate_conf
+	cards upgrade --download-only --conf=${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_CARDS_CONF} \
+	|| return 1
+	return 0
+}
+download_ready()
+{
+	cards upgrade --ready --conf=${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_CARDS_CONF} || return 1
+	touch ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/${UPGRADE_READY}
+	return 0
+}
+main()
+{
+	if [ -z ${FCRONTAB_COMMAND} ];then
+		echo "Please install 'fcron' package first !!!"
+		exit 1
+	fi
+	if [ $UID -eq 0 ]; then
+		check_user_exist || create_cards_user
+		check_conf_exist || generate_conf
+		[ -f ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/${UPGRADE_READY} ] || return 0
+		cards upgrade --no-sync --conf=${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_CARDS_CONF} && \
+		rm  -f ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/${UPGRADE_READY}
+		exit 0
+	fi
+	if [ "$UID" == "$UPGRADE_UID" ]; then
+		download_only
+		[ $(cards upgrade -c --conf=${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_CARDS_CONF}) == "yes" ] && \
+		touch ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}/${UPGRADE_READY}
+		chown -R ${UPGRADE_USER}:${UPGRADE_USER} ${UPGRADE_HOME}/${UPGRADE_USER}
+		exit 0
+	fi
+	echo "Cannot run this script with $USER account"
+	exit 1
+}
+
+# Global variables
+UPGRADE_USER=cards
+UPGRADE_HOME=/home
+UPGRADE_CARDS_CONF=/pkg/cards.conf
+UPGRADE_DEPOT=/pkg/depot
+UPGRADE_READY=.ready
+UPGRADE_UID="96"
+FCRONTAB_COMMAND="$(which fcrontab)"
+main "$@"
