@@ -1,6 +1,6 @@
 echo "Make sure you have a crontab running with: 
 
-%midhourly 57-37 /sbin/upgrade-nutyx 
+%midhourly 57-37 DISPLAY=:0.0 /sbin/upgrade-nutyx
 
 as an example for running the task twice an hour
 at xx:57 and xx:37 time
@@ -11,7 +11,7 @@ Use command:
 
 or 
 
-echo \"%midhourly 57-37 /sbin/upgrade-nutyx\"| \
+echo \"%midhourly 57-37 DISPLAY=:0.0 /sbin/upgrade-nutyx\"| \
 sudo tee -a /var/spool/fcron/<username>.orig
 sudo chown fcron:fcron /var/spool/fcron/<username>.orig
 sudo chmod 640 /var/spool/fcron/<username>.orig

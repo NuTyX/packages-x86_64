@@ -9,9 +9,14 @@ makedepends=(autoconf automake libtool sed
 
 name=itstool
 version=2.0.6
-release=5
+release=6
 
-source=(http://files.itstool.org/itstool/$name-$version.tar.bz2)
+source=(fix-crash-wrong-encoding.patch
+	http://files.itstool.org/itstool/$name-$version.tar.bz2)
+prepare() {
+cd $name-$version
+patch -Np1 -i ../fix-crash-wrong-encoding.patch
+}
 
 build() {
   cd $name-$version

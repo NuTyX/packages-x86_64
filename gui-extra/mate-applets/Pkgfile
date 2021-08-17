@@ -19,8 +19,8 @@ build() {
   unset MAKEFLAGS
   cd $name-$version
   # somes locales makes segmentation fault
-  rm -r mateweather/docs/ru
-  sed -i "s@IGNORE_HELP_LINGUAS =@IGNORE_HELP_LINGUAS = ar tk ru@" mateweather/docs/Makefile.am
+  rm -r mateweather/docs/sr
+  sed -i "s@IGNORE_HELP_LINGUAS =@IGNORE_HELP_LINGUAS = sr@" mateweather/docs/Makefile.am
    ./configure \
           --prefix=/usr \
           --sysconfdir=/etc \

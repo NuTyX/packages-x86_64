@@ -67,6 +67,7 @@ main()
 		source ${UPGRADE_READY}
 		cards upgrade --no-sync --conf=${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_CARDS_CONF} && \
 		rm  -f ${UPGRADE_READY}
+		chown -R  ${UPGRADE_USER}:${UPGRADE_USER} ${UPGRADE_HOME}/${UPGRADE_USER}${UPGRADE_DEPOT}
 		exit 0
 	else
 		check_conf_exist || generate_conf
