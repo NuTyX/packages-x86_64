@@ -1,17 +1,21 @@
 description="Mate calculator"
 url="https://mate-desktop.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Fanch, Tnut, Greg, Remy, Jayce, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch, Greg, Remy, Jayce, Spiky"
 
-makedepends=(gtk3)
+makedepends=(mpc gtk3)
 
 set=(mate)
 
 name=mate-calc
-version=1.24.2
+version=1.26.0
 
 source=(https://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
+
+prepare() {
+rm -r $name-$version/help/ja
+}
 
 uptodate() {
 feed=https://github.com/mate-desktop/$name/releases.atom
