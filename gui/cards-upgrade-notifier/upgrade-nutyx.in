@@ -27,7 +27,6 @@ check_conf_exist()
 }
 generate_conf()
 {
-	check_user_exist || create_cards_user
 	mkdir -p ${UPGRADE_HOME}/${UPGRADE_USER}/pkg/depot
 	echo "
 	
