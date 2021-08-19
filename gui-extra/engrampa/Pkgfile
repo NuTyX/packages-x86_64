@@ -1,18 +1,21 @@
 description="Archive manipulator for MATE"
 url="https://mate-desktop.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="fanch,tnut,jayce,greg, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch,Spiky,Jayce,Greg"
 
 set=(mate)
 makedepends=(caja json-glib)
-run=(cpio)
+run=(cpio tar unzip zip gzip)
 
 name=engrampa
-version=1.24.2
+version=1.26.0
 
 source=(https://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
+prepare() {
+rm -r $name-$version/help/ja
+}
 build() {
 
   cd $name-$version
