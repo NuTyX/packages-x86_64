@@ -9,6 +9,7 @@ makedepends=(gmp texinfo)
 
 name=mpfr
 version=4.1.0
+release=2
 
 source=(http://www.mpfr.org/mpfr-current/mpfr-$version.tar.xz)
 
@@ -17,7 +18,6 @@ build()
 cd mpfr-$version
 ./configure --prefix=/usr \
 	--enable-thread-safe \
-	--libdir=/lib \
 	--docdir=/usr/share/doc/mpfr-$version
 make
 make check
@@ -30,8 +30,8 @@ devel()
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
-lib/pkgconfig \
+usr/lib/pkgconfig \
 usr/include
 
-rm -r {usr/include,lib/pkgconfig}
+rm -r usr/{include,lib/pkgconfig}
 }
