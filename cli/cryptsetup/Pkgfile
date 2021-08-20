@@ -1,15 +1,15 @@
 description="Cryptsetup is used to set up transparent encryption of block devices using the kernel crypto API."
 url="https://www.kernel.org/pub/linux/utils/cryptsetup"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Rems"
+packager="spiky <spiky@nutyx.org>"
+contributors="Rems,Tnut"
 
-makedepends=(util-linux lvm2 popt json-c)
+makedepends=(util-linux lvm2 popt json-c libssh)
 
 name=cryptsetup
-version=2.3.6
+version=2.4.0
 
-source=(https://www.kernel.org/pub/linux/utils/cryptsetup/v${version:0:3}/$name-$version.tar.xz)
+source=(https://www.kernel.org/pub/linux/utils/cryptsetup/v2.4/$name-$version.tar.xz)
 build() {
 cd ${name}-$version
 ./configure --prefix=/usr \
