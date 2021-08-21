@@ -27,6 +27,10 @@ mkdir -p $PKG/usr/include
 cp -rv usr/include/* $PKG/usr/include
 
 cd ../glibc-$version
+
+sed -e '/NOTIFY_REMOVED)/s/)/ \&\& data.attr != NULL)/' \
+    -i sysdeps/unix/sysv/linux/mq_notify.c
+
 patch -Np1 -i ../glibc-$version-fhs-1.patch
 
 mkdir $PKG/lib64
