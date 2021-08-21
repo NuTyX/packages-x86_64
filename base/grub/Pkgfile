@@ -6,6 +6,7 @@ contributors="Pierre,Schrodinger72,Tnut"
 
 name=grub
 version=2.06
+release=4
 
 dejavu_version=2.37
 splash_version=21.03.0-rc4
@@ -17,6 +18,7 @@ source=(https://download.tuxfamily.org/nutyx/files/splash-${splash_version}.png
 	https://ftp.gnu.org/gnu/unifont/unifont-13.0.06/unifont-13.0.06.pcf.gz
 	http://downloads.sourceforge.net/dejavu/dejavu-fonts-ttf-${dejavu_version}.tar.bz2
         https://ftp.gnu.org/gnu/grub/grub-$version.tar.xz
+        grub
 	grub.cfg)
 
 PKGMK_GROUPS=(man)
@@ -64,6 +66,8 @@ build() {
 
 	cp -r $SRC/dest/usr/lib/grub/x86_64-efi $PKG/usr/lib/grub/
 
+        install -Dm644 ../grub $PKG/etc/default/grub
 	install -Dm644 ../splash-${splash_version}.png \
-	$PKG/usr/share/grub/splash.png
+        $PKG/boot/grub/splash.png
+##	$PKG/usr/share/grub/splash.png
 }
