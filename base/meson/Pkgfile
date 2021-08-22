@@ -1,21 +1,21 @@
 description="Meson is an open source build system meant to be both extremely fast, as user friendly as possible"
 url="http://mesonbuild.com/"
 
-contributors="Jayce, Greg, tnut"
-packager="fabienwang <fabienwang@nutyx.org>"
+contributors="Jayce,Greg,Fabienwang"
+packager="tnut <tnut@nutyx.org>"
 
 set=(devel)
 
 name=meson
-version=0.59.0
+version=0.59.1
 
 PKGMK_DEPENDS=(sqlite expat libffi python)
-source=(0001-gnome-Always-pass-absolute-L-paths-to-g-ir-scanner.patch
+source=(skip-test.diff
 	https://github.com/mesonbuild/$name/releases/download/$version/$name-$version.tar.gz)
 prepare()
 {
  cd $name-$version
- patch -Np1 -i ../0001-gnome-Always-pass-absolute-L-paths-to-g-ir-scanner.patch
+ patch -Np1 -i ../skip-test.diff
 }
 build() {
   cd $name-$version
