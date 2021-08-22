@@ -1,24 +1,30 @@
 description="A fast compressor/decompressor library"
 url="http://code.google.com/p/snappy/"
 maintainers="https://code.google.com/p/snappy/people/list"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 PKGMK_KEEP_SOURCES="no"
-makedepends=(cmake)
+makedepends=(cmake clang gtest benchmark)
 
 name=snappy
-version=1.1.8
+version=1.1.9
 
 source=(snappy.pc
-        https://github.com/google/snappy/archive/$version.tar.gz)
+        https://github.com/google/snappy/archive/$version.tar.gz
+        system_gtest.patch
+        fix_inline.patch)
 
 build () {
 cd $name-$version
+patch -Np1 -i ../system_gtest.patch
+patch -Np1 -i ../fix_inline.patch
 cmake \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=/usr/lib \
     -DBUILD_SHARED_LIBS=yes \
+    -DSNAPPY_USE_BUNDLED_GTEST=OFF \
+    -DSNAPPY_USE_BUNDLED_BENCHMARK_LIB=OFF \
     .
 make
 make DESTDIR=$PKG install
