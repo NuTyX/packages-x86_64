@@ -1,20 +1,20 @@
 description="USB Device Utilities"
 url="http://downloads.sourceforge.net/linux-usb/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(libusb-compat hwids)
 run=(hwids)
 
 name=usbutils
-version=013
+version=014
 
 source=(http://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-$version.tar.xz)
 
 build() {
 cd $name-$version
 
-./autogen.sh --prefix=/usr \
+./configure --prefix=/usr \
 --datadir=/usr/share/hwdata
 
 mkdir -p $PKG/usr/share/hwdata
