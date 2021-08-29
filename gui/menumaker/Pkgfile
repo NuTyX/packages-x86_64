@@ -1,18 +1,16 @@
 description="MenuMaker is a menu generation utility for X window managers on *NIX systems. "
 url="http://menumaker.sourceforge.net/"
 
-packager="sundev79 <sun@nutyx.org>"
-
+packager="tnut <tnut@nutyx.org>"
+contributors="Sundev79"
 makedepends=(python)
 run=(python)
 
 name=menumaker
-version=0.99.12
-downloadUrl=https://sourceforge.net/projects/menumaker/files/menumaker-$version.tar.gz/download
+version=0.99.13
+source=(https://sourceforge.net/projects/menumaker/files/menumaker-$version.tar.gz)
 
 build() {
-curl -Lo $name-$version.tar.gz $downloadUrl
-tar xvf $name-$version.tar.gz
 cd $name-$version
 ./configure --prefix=$PKG/usr
 make
