@@ -8,7 +8,7 @@ makedepends=(readline dbus libical libvorbis alsa-lib
              libusb-compat libsndfile cups glib)
 
 name=bluez
-version=5.60
+version=5.61
 
 runyx_version=20201011
 
@@ -16,8 +16,13 @@ PKGMK_GROUPS=(man devel doc)
 
 source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	    https://www.kernel.org/pub/linux/bluetooth/$name-$version.tar.xz)
+
+
 build() {
 cd $name-$version
+
+sed 's/pause(/bluez_&/' -i profiles/audio/media.c
+
 ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
