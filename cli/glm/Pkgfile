@@ -1,0 +1,19 @@
+description="OpenGL Mathematics (GLM) is a header-only C++ mathematics library based on OpenGL."
+url="https://github.com/g-truc/glm"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=glm
+version=0.9.9.8
+
+source=(https://github.com/g-truc/glm/archive/$version/glm-$version.tar.gz)
+
+PKGMK_GROUPS=(doc)
+build()
+{
+cd $name-$version
+mkdir -p $PKG/usr/{include,share/doc/$name-$version}
+
+cp -r glm $PKG/usr/include/
+cp -r doc $PKG/usr/share/doc/$name-$version
+}
