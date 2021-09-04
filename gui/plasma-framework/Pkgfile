@@ -1,7 +1,8 @@
 description="Plasma library and runtime components based upon KF5 and Qt5 "
 url="https://www.kde.org/"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, fabienwang, spiky"
+contributors="Pierre B, Fabienwang, Spiky"
 
 makedepends=(tar mesa libxcb qtquickcontrols2 kactivities karchive kconfig kconfigwidgets
              kcoreaddons kdbusaddons kdeclarative kglobalaccel kguiaddons ki18n kiconthemes
@@ -10,7 +11,7 @@ run=(kirigami2)
 
 
 name=plasma-framework
-version=5.82.0
+version=5.85.0
 
 source=(https://downloads.tuxfamily.org/nutyx/files/kde-wallpaper-nutyx-11.0.tar.xz
 	https://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
@@ -18,6 +19,9 @@ source=(https://downloads.tuxfamily.org/nutyx/files/kde-wallpaper-nutyx-11.0.tar
 build() {
 
 cd $name-$version
+
+sed -i 's/${EGL_TARGET}/GL EGL/' src/declarativeimports/core/CMakeLists.txt
+
 mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
