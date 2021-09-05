@@ -8,9 +8,10 @@ makedepends=(vim pam)
 
 name=fcron
 version=3.2.1
-release=5
-runyx_version=20200412
+release=6
+runyx_version=20201011
 
+PKGMK_GROUPS=(doc man)
 source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
         http://fcron.free.fr/archives/$name-$version.src.tar.gz)
 
@@ -61,11 +62,4 @@ done
 cd $SRC/runyx-${runyx_version}
 make DESTDIR=$PKG install-sysv-fcron
 make DESTDIR=$PKG install-runyx-fcron
-}
-service() {
-cd $PKG
-bsdtar -r -f \
-$PKGMK_PACKAGE_DIR/${name}.${group}${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
-etc/rc.d etc/init lib/init
-rm -r etc/rc.d etc/init lib/init
 }

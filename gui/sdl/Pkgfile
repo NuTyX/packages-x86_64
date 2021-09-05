@@ -2,14 +2,15 @@ description='A library for portable low-level access to a video framebuffer, aud
 url="http://www.libsdl.org"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, Rems"
+contributors="Pierre,Rems,Spiky"
 
 makedepends=(xorg-libxext xorg-libxrender xorg-libx11
              xorg-libxcursor alsa-lib mesa pulseaudio
              xorg-libxrandr xorg-libxinerama libxkbcommon wayland)
 
 name=sdl
-version=2.0.14
+version=2.0.16
+release=2
 
 source=(${url}/release/SDL2-$version.tar.gz)
 
@@ -21,7 +22,7 @@ build() {
 package() {
   cd SDL2-$version
   make DESTDIR=$PKG install
-  install -Dm644 ../SDL2-$version/COPYING.txt $PKG/usr/share/licenses/$name/LICENSE
+  install -Dm644 ../SDL2-$version/LICENSE.txt $PKG/usr/share/licenses/$name/LICENSE
 
   # Obsolet libs
   rm $PKG/usr/lib/libSDL2.la

@@ -1,32 +1,34 @@
 description="Google Test - C++ testing utility"
 url="https://github.com/google/googletest/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(python sed cmake)
 
 name=gtest
-version=1.10.0
+version=1.11.0
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/google/googletest/archive/release-${version}.tar.gz
         gtest-PR2491-Fix-gnu-install-dirs-pkg-config.patch
         gtest-$version-libversion.patch
-        gtest-$version-add-missing-pkgconfig-requires.patch)
+        gtest-$version-add-missing-pkgconfig-requires.patch
+        gtest-version.patch)
 
 prepare() {
  cd googletest-release-${version}
- sed "s|__GOOGLETEST_VERSION__|${version}|g" -i ../gtest-$version-libversion.patch
+ sed "s|__GOOGLETEST_VERSION__|${version}|g" -i ../gtest-version.patch
+  patch -Np1 -i ../gtest-version.patch
 
         # From: https://github.com/google/googletest/pull/2491
- patch -Np1 -i ../gtest-PR2491-Fix-gnu-install-dirs-pkg-config.patch
+# patch -Np1 -i ../gtest-PR2491-Fix-gnu-install-dirs-pkg-config.patch
 
  # https://src.fedoraproject.org/rpms/gtest/tree/master
- patch -Np1 -i ../gtest-$version-libversion.patch
+# patch -Np1 -i ../gtest-$version-libversion.patch
 
  # https://github.com/google/googletest/pull/2756
- patch -Np1 -i ../gtest-$version-add-missing-pkgconfig-requires.patch
+# patch -Np1 -i ../gtest-$version-add-missing-pkgconfig-requires.patch
 
  # fixup version as they are never correct
  sed -E "s|(GOOGLETEST_VERSION) [0-9\\.]+|\\1 ${version}|" -i CMakeLists.txt
@@ -49,10 +51,12 @@ build () {
   # Shouldn't be present
   find "${PKG}" -name '*.pump' -printf 'Removing %P\n' -delete
 
-  # Install some googletest files
-  cd ../googletest-release-${version}/googletest
+  cd ../googletest-release-${version}
   install -Dm 644 LICENSE -t "${PKG}/usr/share/licenses/${name}-$version"
   install -Dm 644 README.md CONTRIBUTORS -t "${PKG}/usr/share/doc/${name}-$version"
+
+  # Install some googletest files
+  cd googletest
   install -Dm 755 scripts/gtest-config.in -t "${PKG}/usr/bin"
   install -Dm 644 cmake/* -t "${PKG}/usr/src/googletest/cmake"
   install -Dm 644 src/* -t "${PKG}/usr/src/googletest/src"
@@ -61,9 +65,6 @@ build () {
 
   # Install some gmock files
   cd ../googlemock
-  install -Dm 644 LICENSE -t "$PKG/usr/share/licenses/gmock-$version"
-  install -Dm 644 README.md CONTRIBUTORS -t "${PKG}/usr/share/doc/gmock-$version"
-  install -Dm 755 scripts/gmock-config.in -t "${PKG}/usr/bin"
   install -Dm 644 cmake/* -t "${PKG}/usr/src/gmock/cmake"
   install -Dm 644 src/* -t "${PKG}/usr/src/gmock/src"
   install -Dm 644 CMakeLists.txt -t "${PKG}/usr/src/gmock"

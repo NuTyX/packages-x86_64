@@ -8,18 +8,17 @@ makedepends=(python c-ares icu zlib libuv nghttp2)
 
 name=node
 alias=(nodejs node-js)
-version=16.5.0
+version=16.8.0
 
-source=(v8-call-new-ListFormatter-createInstance.patch
-	https://nodejs.org/dist/v$version/node-v$version.tar.xz)
+source=(https://nodejs.org/dist/v$version/node-v$version.tar.xz
+        system-c-ares.patch)
+
 prepare() {
-  cd node-v$version
-#  patch -Np1 -d deps/v8 <../v8-call-new-ListFormatter-createInstance.patch
+  patch -d node-v$version -Rp1 < system-c-ares.patch
 }
 build() {
 
 	cd node-v$version
-
 	./configure \
 		--prefix=/usr \
 		--shared-zlib \

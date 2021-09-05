@@ -2,13 +2,13 @@ description="Python bindings for DBUS"
 url="http://dbus.freedesktop.org/"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+contributors="Pierre,Spiky"
 
 makedepends=(dbus glib python-dbus-data)
 run=(python2)
 
 name=dbus-python
-version=1.2.16
+version=1.2.18
 release=2
 
 source=( http://dbus.freedesktop.org/releases/$name/$name-$version.tar.gz )
@@ -17,6 +17,7 @@ build() {
 	cd $name-$version
 	mkdir build
 	cd    build
+ 	PYTHON=/usr/bin/python2 \
 	../configure --prefix=/usr \
 		--docdir=/usr/share/doc/$name-$version
 	make

@@ -4,14 +4,14 @@ url="https://mate-desktop.org/"
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch, Tnut, Jayce, Greg, Remy, tnut"
 
-makedepends=(enchant gtk3 libsoup gtksourceview libpeas)
-run=(mate-desktop python2-gobject2 python2-gtk
+makedepends=(enchant gtk3 libsoup gtksourceview4 libpeas gobject-introspection )
+run=(mate-desktop python-gobject python2-gtk
      python2-gtksourceview2 iso-codes)
 
 set=(mate)
 
 name=pluma
-version=1.24.2
+version=1.26.0
 
 source=(https://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 

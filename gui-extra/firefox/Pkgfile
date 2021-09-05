@@ -14,11 +14,11 @@ run=(pulseaudio icu sqlite libvpx nss gtk3 zip unzip
 
 
 name=firefox
-version=90.0.1
+version=91.0.2
 
 locale_version=$version
 
-source=(firefox.desktop
+source=(glibc234-1.patch firefox.desktop
 	https://archive.mozilla.org/pub/firefox/releases/$version/source/$name-$version.source.tar.xz)
 
 pack_remove_locale() {
@@ -45,6 +45,9 @@ export CC=clang
 export CXX=clang++
 
 cd $name-$version
+
+patch -Np1 -i ../glibc234-1.patch
+
 # Locale autodetect
 sed -i '/intl.locale.matchOS/s/false/true/' modules/libpref/init/all.js
 

@@ -1,12 +1,12 @@
 description="SELinux binary policy manipulation library"
 url="http://userspace.selinuxproject.org"
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
+makedepends=(flex)
 name=libsepol
-version=2.4
-release=2
+version=3.2
 
-source=(https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20150202/${name}-${version}.tar.gz)
+source=(https://github.com/SELinuxProject/selinux/releases/download/$version/$name-$version.tar.gz)
 build() {
   cd ${name}-${version}
   make

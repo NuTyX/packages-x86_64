@@ -2,30 +2,24 @@ description="An open source multimedia framework"
 url="http://www.mltframework.org"
 
 packager="spiky <spiky@nutyx.org>"
-contributors="Pierre B, Rems, tnut"
+contributors="Tnut"
 
-makedepends=(python ladspa frei0r-plugins libdv sdl-image libsamplerate sox
+makedepends=(cmake python ladspa frei0r-plugins libdv sdl-image libsamplerate sox
              ffmpeg vid-stab qtsvg jack libexif swig movit eigen3)
 
-name=mlt
-version=6.26.1
-release=2
 
-source=(https://github.com/mltframework/mlt/releases/download/v$version/mlt-$version.tar.gz)
+name=mlt
+version=7.0.1
+
+source=(https://github.com/mltframework/mlt/releases/download/v${version}/mlt-$version.tar.gz)
 
 build() {
-  cd $name-$version
-  ./configure --prefix=/usr --disable-gtk2 \
-  --enable-gpl --enable-gpl3 --enable-opengl \
-  --qt-libdir=/usr/lib --qt-includedir=/usr/include/qt
-  make
-  make DESTDIR=$PKG install
-
-  # mlt python bindings
-  cd src/swig/python
-  ./build
-  mkdir -p $PKG/usr/lib/python3.9/
-  install -m755 mlt.py $PKG/usr/lib/python3.9/
-  install -m755 _mlt.so $PKG/usr/lib/python3.9/
-  install -m755 mlt_wrap.o $PKG/usr/lib/python3.9/
+cd mlt-$version
+mkdir build
+  cd build
+    cmake -DCMAKE_INSTALL_PREFIX=/usr  \
+          -DSWIG_PYTHON=ON             \
+          ..
+    make
+    make DESTDIR=$PKG install
 }

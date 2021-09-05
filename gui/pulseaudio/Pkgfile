@@ -1,34 +1,31 @@
 description="A featureful, general-purpose sound server"
 url="http://www.pulseaudio.org"
 
-packager="Rems <remy@nutyx.org"
-contributors="Pierre B, Tnut"
+packager="tnut <tnut@nutyx.org"
+contributors="Pierre B, Rems"
 
-makedepends=(fftw intltool json-c libsndfile alsa-lib dbus glib libcap
+makedepends=(python meson ninja doxygen gdbm check elogind
+             fftw intltool json-c libsndfile vala
+             alsa-lib dbus glib libcap xorg-libxtst
              openssl speex speexdsp libsamplerate
-             webrtc-audio-processing jack)
+             webrtc-audio-processing jack
+             gstreamer-plugins-base)
 run=(bluez sbc)
 
 name=pulseaudio
-version=14.2
+version=15.0
 
-source=(https://freedesktop.org/software/pulseaudio/releases/pulseaudio-$version.tar.xz)
+source=(https://freedesktop.org/software/$name/releases/$name-$version.tar.xz)
 
 build() {
 unset MAKEFLAGS
 cd $name-$version
 
-./configure --prefix=/usr        \
-            --sysconfdir=/etc    \
-            --localstatedir=/var \
-            --disable-bluez4     \
-            --disable-rpath      \
-            --enable-gsettings   \
-            --enable-jack        \
-            --enable-webrtc-aec  \
-            --with-systemduserunitdir=no
-make
-make DESTDIR=$PKG install
+mkdir build
+cd    build
+meson --prefix=/usr --buildtype=release -Ddatabase=gdbm
+ninja
+DESTDIR=$PKG ninja install
 
 mkdir -p $PKG/usr/share/icons/hicolor/scalable/devices
 for size in 16 22 32 48 64 128; do
@@ -37,11 +34,4 @@ for size in 16 22 32 48 64 128; do
 done
 rm -fv $PKG/etc/dbus-1/system.d/pulseaudio-system.conf
 
-# Obsolets libs
-rm $PKG/usr/lib/libpulse-mainloop-glib.la
-rm $PKG/usr/lib/libpulse-simple.la
-rm $PKG/usr/lib/libpulse.la
-rm $PKG/usr/lib/pulseaudio/libpulsecommon-$version.la
-rm $PKG/usr/lib/pulseaudio/libpulsecore-$version.la
-rm $PKG/usr/lib/pulseaudio/libpulsedsp.la
 }

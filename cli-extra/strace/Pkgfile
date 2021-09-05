@@ -1,0 +1,20 @@
+description="A diagnostic, debugging and instructional userspace tracer"
+url="https://strace.io/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(perl libunwind)
+
+name=strace
+version=5.13
+
+source=(https://github.com/strace/strace/releases/download/v${version}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--with-libunwind --enable-mpers=no
+make
+make DESTDIR=$PKG install
+}

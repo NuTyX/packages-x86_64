@@ -1,15 +1,15 @@
 description="Python HTTP for Humans"
 url="https://pypi.python.org/pypi/requests"
-packager="tnut <tnut@nutyx.org>"
-contributors="Hugo"
+packager="spiky <spiky@nutyx.org>"
+contributors="Hugo,Tnut"
 
 run=(python-urllib3 python-chardet python-certifi python-idna)
 
 name=python-requests
-version=2.25.1
+version=2.26.0
 
 PKGMK_KEEP_SOURCES="no"
-source=(https://github.com/kennethreitz/requests/archive/v$version.tar.gz )
+source=(https://github.com/psf/requests/archive/refs/tags/v${version}.tar.gz)
 
 build(){
 cd requests-$version

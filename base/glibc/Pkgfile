@@ -1,12 +1,15 @@
 description="The Glibc package contains the main C library."
 url="https://www.gnu.org/software/libc/"
-packager="tnut <tnut@nutyx.org>"
-kernelversion=5.12
 
+packager="tnut <tnut@nutyx.org>"
+kernelversion=5.13
+
+makedepends=(python bison grep)
 
 name=glibc
-version=2.33
+version=2.34
 
+PKGMK_LOCALES=()
 source=(https://www.kernel.org/pub/linux/kernel/v5.x/linux-$kernelversion.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
 	https://ftp.gnu.org/gnu/$name/$name-$version.tar.xz
@@ -24,26 +27,20 @@ mkdir -p $PKG/usr/include
 cp -rv usr/include/* $PKG/usr/include
 
 cd ../glibc-$version
+
+sed -e '/NOTIFY_REMOVED)/s/)/ \&\& data.attr != NULL)/' \
+    -i sysdeps/unix/sysv/linux/mq_notify.c
+
 patch -Np1 -i ../glibc-$version-fhs-1.patch
 
-case $(uname -m) in
-   i?86)
-     mkdir $PKG/lib
-     GCC_INCDIR=/usr/lib/gcc/$(uname -m)-pc-linux-gnu/8.2.0/include
-     ln -s ld-linux.so.2 $PKG/lib/ld-lsb.so.3
-   ;;
-   x86_64) 
-     mkdir $PKG/lib64
-     GCC_INCDIR=/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.0/include
-     ln -s ../lib/ld-linux-x86-64.so.2 $PKG/lib64
-     ln -s ../lib/ld-linux-x86-64.so.2 $PKG/lib64/ld-lsb-x86-64.so.3
-   ;;
-esac
+mkdir $PKG/lib64
+
+ln -s ../lib/ld-linux-x86-64.so.2 $PKG/lib64
+ln -s ../lib/ld-linux-x86-64.so.2 $PKG/lib64/ld-lsb-x86-64.so.3
 
 mkdir -v build
 cd       build
 
-CC="gcc -isystem $GCC_INCDIR -isystem /usr/include"       \
 ../configure --prefix=/usr                                \
 --with-bugurl=https://bugs.nutyx.org \
 --disable-werror                \

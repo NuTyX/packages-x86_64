@@ -5,12 +5,18 @@ packager="fabienwang <fabienwang@nutyx.org>"
 contributors="Pierre B, Tnut"
 maintainer="Jakub Jelinek (jakub at redhat dot com),Manuel López-Ibáñez (manu at gcc dot gnu.org,Giovanni Bajo,Peter Barada,Gerald Baumgartner and a lot more."
 
-makedepends=(gmp mpfr mpc)
+makedepends=(gmp mpfr mpc tar)
 name=gcc
-version=11.1.0
+version=11.2.0
 
 PKGMK_KEEP_LA_LIBS="yes"
+PKGMK_IGNORE_UNPACK="yes"
+PKGMK_LOCALES=()
 source=(http://ftp.gnu.org/gnu/gcc/gcc-$version/gcc-$version.tar.xz)
+
+prepare() {
+tar -xf $name-$version.tar.xz
+}
 
 build()
 {
@@ -21,8 +27,6 @@ case $(uname -m) in
     sed -i.orig '/m64=/s/lib64/lib/' gcc/config/i386/t-linux64
   ;;
 esac
-
-[ -L /tools ] && rm -f /usr/lib/gcc
 
 mkdir -v build
 cd       build

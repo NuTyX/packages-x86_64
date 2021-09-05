@@ -1,24 +1,19 @@
 description="Libraries used by some programs to manage email submission to a mail transport layer."
 url="http://www.stafford.uklinux.net/libesmtp/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(python meson ninja)
+
 name=libesmtp
-version=1.0.6
-release=2
+version=1.1.0
 
-source=(http://pkgs.fedoraproject.org/repo/pkgs/$name/$name-$version.tar.bz2/bf3915e627fd8f35524a8fdfeed979c8/$name-$version.tar.bz2)
-
-build() {
-	cd $name-$version
-	./configure --prefix=/usr\
-		--mandir=/usr/share/man\
-		--infodir=/usr/share/info
-	make
-	make DESTDIR=$PKG install
-
-# Obsolets libs
-rm $PKG/usr/lib/esmtp-plugins/sasl-{login,plain,cram-md5}.la
-rm $PKG/usr/lib/libesmtp.la
-
+source=(https://github.com/libesmtp/libESMTP/archive/v$version/$name-$version.tar.gz)
+prepare() {
+mv libESMTP-$version \
+$name-$version
 }
+
+build=meson
+

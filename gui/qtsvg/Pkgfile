@@ -8,10 +8,17 @@ makedepends=(qtbase)
 
 name=qtsvg
 version=5.15.2
+release=2
+
 _name="${name}-everywhere-src"
 
-source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
+source=(CVE-2021-3481-1.patch
+	https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
+prepare() {
+cd ${_name}-${version}
+patch -Np1 -i ../CVE-2021-3481-1.patch
+}
 build() {
 mkdir build
 cd    build

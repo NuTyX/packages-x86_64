@@ -1,20 +1,19 @@
 description="C bindings for sfml"
 url="http://www.sfml-dev.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
 makedepends=(sfml cmake doxygen ninja)
 run=()
 set=()
 
 name=csfml
-version=2.5
-release=2
+version=2.5.1
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/SFML/CSFML/archive/2.5.tar.gz)
+source=(https://github.com/SFML/CSFML/archive/refs/tags/2.5.1.tar.gz)
 
 build() {
 cd CSFML-$version

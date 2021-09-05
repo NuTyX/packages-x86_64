@@ -4,12 +4,18 @@ maintainer="Tristan Gingold ( gingold at adacore dot com ),Alan Modra ( amodra a
 packager="tnut <tnut@nutyx.org>"
 
 name=binutils
-version=2.34
+version=2.37
 
-source=(http://ftp.gnu.org/gnu/binutils/binutils-$version.tar.xz)
+source=(https://www.linuxfromscratch.org/patches/lfs/development/binutils-$version-upstream_fix-1.patch
+	http://ftp.gnu.org/gnu/binutils/binutils-$version.tar.xz)
 build()
 {
 cd binutils-$version
+
+patch -Np1 -i ../binutils-$version-upstream_fix-1.patch
+
+sed -i '63d' etc/texi2pod.pl
+find -name \*.1 -delete
 
 mkdir -v build
 cd build
@@ -25,9 +31,7 @@ cd build
 
 make tooldir=/usr
 
-# make  LDFLAGS="" -k check || true
-
-make tooldir=/usr DESTDIR=$PKG install
+make tooldir=/usr DESTDIR=$PKG install -j1
 }
 devel()
 {

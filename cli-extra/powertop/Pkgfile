@@ -4,17 +4,20 @@ url="https://bellard.org/tcc/tcc-doc.html#Invoke"
 packager="spiky <spiky@nutyx.org>"
 contributors="Cbarth, Tnut"
 
-makedepends=(libnl ncurses pciutils)
+makedepends=(libnl ncurses pciutils gettext libtool autoconf automake autoconf-archive patch)
 
 name=powertop
 
-version=2.13
+version=2.14
 
-source=(https://01.org/sites/default/files/downloads//powertop-2.13.tar.gz)
+source=(https://github.com/fenrus75/$name/archive/refs/tags/v${version}.tar.gz
+        $name-$version-undefined-symbol.patch)
 
 build() {
 
 	cd $name-$version
+        patch -Np0 -i ../$name-$version-undefined-symbol.patch
+        ./autogen.sh
 	./configure --prefix=/usr \
 		--disable-static
 	make

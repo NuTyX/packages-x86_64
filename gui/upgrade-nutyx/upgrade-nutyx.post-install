@@ -1,0 +1,22 @@
+echo "Make sure you have a crontab running with: 
+
+%midhourly 57-37 DISPLAY=:0.0 /sbin/upgrade-nutyx
+
+as an example for running the task twice an hour
+at xx:57 and xx:37 time
+
+Use command:
+
+ sudo EDITOR=/sbin/vi fcrontab -u <username> -e
+
+ or if you not familiar with vi, install your favorit editor and
+ adjutst EDITOR varible above or do: 
+
+echo \"%midhourly 57-37 DISPLAY=:0.0 /sbin/upgrade-nutyx\"| \
+sudo tee -a /var/spool/fcron/<username>.orig
+sudo chown fcron:fcron /var/spool/fcron/<username>.orig
+sudo chmod 640 /var/spool/fcron/<username>.orig
+sudo fcrontab -z -u <username>
+
+When you're done run once '/sbin/upgrade-nutyx' in non root account.
+"

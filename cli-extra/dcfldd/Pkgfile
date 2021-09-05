@@ -1,18 +1,20 @@
 description="DCFL (DoD Computer Forensics Lab) dd replacement with hashing"
 url="http://dcfldd.sourceforge.net/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Tnut"
 
+makedepends=(autoconf automake)
+depends=(glibc)
 name=dcfldd
-version=1.3.4.1
-release=2
+version=1.7.1
 
-source=(http://downloads.sourceforge.net/sourceforge/$name/$name-${version%.*}-${version##*.}.tar.gz)
+source=(https://github.com/resurrecting-open-source-projects/$name/archive/refs/tags/v${version}.tar.gz)
 
 build() {
 
-  cd $name-${version%.*}-${version##*.}
+  cd $name-$version
+  ./autogen.sh
   ./configure --prefix=/usr --mandir=/usr/share/man
   make
   make DESTDIR=$PKG install

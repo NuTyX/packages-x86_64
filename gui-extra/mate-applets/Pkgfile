@@ -1,17 +1,17 @@
 description="Applets for MATE panel"
 url="https://mate-desktop.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch, Tnut, Greg, Jayce, Remy"
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch,Greg,Jayce,Remy,Tnut"
 
 makedepends=(gtksourceview libgtop libnotify mate-panel mate-icon-theme
-             upower wireless-tools upower)
+             upower wireless-tools upower libnl)
 run=(python-gobject)
 
 set=(mate)
 
 name=mate-applets
-version=1.24.1
+version=1.26.0
 
 source=(https://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
@@ -19,8 +19,8 @@ build() {
   unset MAKEFLAGS
   cd $name-$version
   # somes locales makes segmentation fault
-  rm -r mateweather/docs/ru
-  sed -i "s@IGNORE_HELP_LINGUAS =@IGNORE_HELP_LINGUAS = ar tk ru@" mateweather/docs/Makefile.am
+  rm -r mateweather/docs/sr
+  sed -i "s@IGNORE_HELP_LINGUAS =@IGNORE_HELP_LINGUAS = sr@" mateweather/docs/Makefile.am
    ./configure \
           --prefix=/usr \
           --sysconfdir=/etc \

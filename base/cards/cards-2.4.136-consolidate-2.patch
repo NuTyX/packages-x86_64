@@ -1,0 +1,17 @@
+diff --git a/scripts/pkgmk.in b/scripts/pkgmk.in
+index 3e00623..be1edc5 100755
+--- a/scripts/pkgmk.in
++++ b/scripts/pkgmk.in
+@@ -1308,7 +1308,11 @@ ALIAS GROUP CONTRIBUTORS SET CATEGORY
+ 		for i in $(tail -n +2  $PKGMK_REPO)
+ 		do
+ 			if [ "$(echo $i|cut -d "#" -f3)" != "" ];then
+-				GROUP="$(echo $i|cut -d "#" -f2|cut -d "." -f2) $GROUP"
++				for j in ${PKGMK_GROUPS[@]}; do
++					k=$(echo $i|cut -d "#" -f2|cut -d "." -f2)
++					[ $k == $j ] && \
++					GROUP="$k $GROUP"
++				done
+ 			fi
+ 		done
+ 		HEAD="$(head -1 $PKGMK_REPO)"

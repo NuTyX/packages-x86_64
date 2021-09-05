@@ -1,0 +1,20 @@
+description="A text widget adding syntax highlighting and more to GNOME"
+url="https://gitlab.gnome.org/GNOME/gtksourceview"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(meson gobject-introspection vala gtk-doc pcre2)
+run=(gtk4)
+set=()
+
+name=gtksourceview5
+version=5.1.0
+
+source=(https://gitlab.gnome.org/GNOME/gtksourceview/-/archive/$version/gtksourceview-$version.tar.gz)
+
+prepare() {
+mv gtksourceview-$version $name-$version
+}
+build=meson
+

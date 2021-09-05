@@ -1,0 +1,28 @@
+description="A microbenchmark support library"
+url="https://github.com/google/benchmark"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake)
+
+name=benchmark
+version=1.5.6
+
+source=(https://github.com/google/$name/archive/refs/tags/v${version}.tar.gz)
+
+build() {
+cd $name-$version
+mkdir build && cd build
+cmake \
+    -DCMAKE_BUILD_TYPE=None \
+   -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_SHARED_LIBS=ON \
+    -DBENCHMARK_ENABLE_LTO=ON \
+    -DBENCHMARK_ENABLE_GTEST_TESTS=OFF \
+    ..
+
+  make
+  make DESTDIR=$PKG install
+}
