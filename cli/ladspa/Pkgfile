@@ -1,10 +1,13 @@
 description="Linux Audio Developer's Simple Plugin API (LADSPA)"
 url="http://www.ladspa.org/"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
+makedepends=(libsndfile)
+
 name=ladspa
-version=1.15
+version=1.16
 
 source=(https://ladspa.org/download/ladspa_sdk_${version}.tgz
        ladspa-fix-memleak-in-plugin-scanning.patch)
