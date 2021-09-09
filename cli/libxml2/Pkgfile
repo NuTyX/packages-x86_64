@@ -7,19 +7,14 @@ contributors="Pierre B, Fanch, Schrodinger72"
 makedepends=(python)
 
 name=libxml2
-version=2.9.10
-release=6
+version=2.9.12
 
 PKGMK_GROUPS=(lib man devel doc)
-source=(http://www.linuxfromscratch.org/patches/blfs/svn/libxml2-2.9.10-security_fixes-1.patch
-	ftp://xmlsoft.org/libxml2/$name-$version.tar.gz)
+source=(http://xmlsoft.org/sources/$name-$version.tar.gz)
 
 
 build() {
 cd $name-$version
-patch -p1 -i ../libxml2-2.9.10-security_fixes-1.patch
-sed -i '/if Py/{s/Py/(Py/;s/)/))/}' python/{types.c,libxml.c}
-sed -i 's/ TRUE/ true/' encoding.c
 
 ./configure \
     --prefix=/usr \
