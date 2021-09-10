@@ -6,23 +6,20 @@ contributors="Pierre,Tnut"
 
 makedepends=(asciidoc babl gtk2 librsvg ruby lua ffmpeg librsvg meson \
              openexr exiv2 graphviz libjpeg-turbo libwebp libraw \
-             python-gobject sdl gobject-introspection json-glib \
-             gtk-doc)
+             python-gobject sdl gobject-introspection json-glib )
 run=(vala)
 
 name=gegl
-version=0.4.30
-release=6
+version=0.4.32
 
-source=(https://download.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.xz
-        gegl-openexr3.patch)
+source=(https://download.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-patch -Np1 -i ../gegl-openexr3.patch
+
 mkdir build
 cd build
-meson --prefix=/usr
+meson --prefix=/usr -Ddocs=false
 ninja
 DESTDIR=$PKG ninja install
 }
