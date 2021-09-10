@@ -4,17 +4,15 @@ url="http://packages.debian.org/fakeroot"
 contributors="Alienus, Greg, Rems"
 packager="tnut <tnut@nutyx.org>"
 
-name=fakeroot
-version=1.23
-release=3
+makedepends=(libcap attr)
 
-source=(http://ftp.debian.org/debian/pool/main/f/$name/${name}_${version}.orig.tar.xz
-		silence-dlerror.patch)
+name=fakeroot
+version=1.26
+
+source=(http://ftp.debian.org/debian/pool/main/f/$name/${name}_${version}.orig.tar.gz)
 
 build() {
 	cd $name-$version
-	patch -Np1 -i ../silence-dlerror.patch
-	./bootstrap
 
 	./configure --prefix=/usr \
 	--disable-static \
