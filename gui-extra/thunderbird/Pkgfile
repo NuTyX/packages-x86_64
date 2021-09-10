@@ -12,7 +12,7 @@ run=(startup-notification hunspell desktop-file-utils hicolor-icon-theme
      shared-mime-info)
 
 name=thunderbird
-version=78.13.0
+version=91.1.0
 
 locale_version=$version
 
@@ -74,7 +74,6 @@ ac_add_options --with-system-zlib
 # The BLFS editors recommend not changing anything below this line:
 ac_add_options --prefix=/usr
 ac_add_options --enable-application=comm/mail
-ac_add_options --enable-calendar
 
 
 ac_add_options --disable-crashreporter
@@ -93,11 +92,17 @@ ac_add_options --enable-official-branding
 
 EOF
 
+mountpoint -q /dev/shm || mount -t tmpfs devshm /dev/shm
 
-SHELL=/bin/sh ./mach configure
-SHELL=/bin/sh ./mach build
-SHELL=/bin/sh ./mach buildsymbols
-SHELL=/bin/sh DESTDIR=$PKG ./mach install
+export SHELL=/bin/sh
+export CC=gcc CXX=g++
+export MACH_USE_SYSTEM_PYTHON=1
+./mach create-mach-environment
+
+./mach configure
+./mach build
+./mach buildsymbols
+MACH_USE_SYSTEM_PYTHON=1 DESTDIR=$PKG ./mach install
 
 mkdir -pv $PKG/usr/bin
 ln -sfv ../lib/$name/thunderbird $PKG/usr/bin
