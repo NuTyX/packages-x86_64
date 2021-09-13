@@ -6,7 +6,7 @@ contributors="Pierre,Schrodinger72,Tnut"
 
 name=grub
 version=2.06
-release=4
+release=5
 
 dejavu_version=2.37
 splash_version=21.03.0-rc4
@@ -25,6 +25,8 @@ PKGMK_GROUPS=(man)
 PKGMK_LOCALES=()
 
 unset MAKEFLAGS
+unset CFLAGS
+unset CXXFLAGS
 
 prepare() {
 mv dejavu-fonts-ttf-${dejavu_version}/ttf/Deja* \
@@ -68,6 +70,5 @@ build() {
 
         install -Dm644 ../grub $PKG/etc/default/grub
 	install -Dm644 ../splash-${splash_version}.png \
-        $PKG/boot/grub/splash.png
-##	$PKG/usr/share/grub/splash.png
+	$PKG/usr/share/grub/splash.png
 }
