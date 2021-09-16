@@ -3,10 +3,10 @@ url="http://www.sourceware.org/gdb/"
 
 packager="spiky <spiky@nutyx.org>"
 
-makedepends=(ncurses readline expat texinfo)
+makedepends=(ncurses gmp readline expat texinfo)
 
 name=gdb
-version=10.2
+version=11.1
 
 source=(https://ftp.gnu.org/gnu/gdb/$name-$version.tar.xz)
 build() {
@@ -21,7 +21,7 @@ rm $PKG/usr/include/bfd.h
 rm $PKG/usr/include/bfdlink.h
 rm $PKG/usr/include/dis-asm.h
 rm $PKG/usr/include/symcat.h
-rm $PKG/usr/include/bfd_stdint.h
+#rm $PKG/usr/include/bfd_stdint.h
 rm $PKG/usr/lib/libbfd.a
 rm $PKG/usr/lib/libbfd.la
 rm $PKG/usr/lib/libopcodes.a
@@ -31,7 +31,7 @@ rm $PKG/usr/lib/libctf-nobfd.la
 rm $PKG/usr/lib/libctf.a
 rm $PKG/usr/lib/libctf.la
 
-# Most of the locale are allready present from binnutils, beter get rid of all of them
+# Most of the locale are allready present from binutils, beter get rid of all of them
 rm -r $PKG/usr/share/locale
 rm $PKG/usr/include/diagnostics.h
 }
