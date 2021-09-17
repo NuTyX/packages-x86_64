@@ -1,8 +1,14 @@
 description="Xorg Synaptics drivers for notebook touchpads."
+url="https://xorg.freedesktop.org/"
+
 packager="tnut <tnut@nutyx.org>"
+
 name=xorg-xf86-input-synaptics
 version=1.9.1
+release=2
+
 _name=${name/xorg-/}
+
 makedepends=(libevdev xorg-libxtst xorg-libx11 xorg-libxi xorg-server)
 source=(http://ftp.x.org/pub/individual//driver/${_name}-$version.tar.bz2)
 
