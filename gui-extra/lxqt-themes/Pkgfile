@@ -1,0 +1,28 @@
+description="LXQt themes, graphics and icons."
+url="https://github.com/lxqt/lxqt-themes"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+makedepends=(lxqt-build-tools)
+run=(hicolor-icon-theme)
+
+set=(lxqt)
+
+name=lxqt-themes
+version=0.17.0
+
+source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/lxde/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
