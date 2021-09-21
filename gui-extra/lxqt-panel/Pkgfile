@@ -1,0 +1,30 @@
+description="The LXQt desktop panel"
+url="https://github.com/lxqt/lxqt-panel"
+
+packager="tnut<tnut@nutyx.org>"
+contributors="Greg"
+
+makedepends=(cmake kwindowsystem libsysstat lxqt-build-tools libdbusmenu-qt
+             menu-cache lxqt-globalkeys kguiaddons solid xorg-libxcomposite)
+
+run=(lxde-menu-data lm-sensors sysstat libstatgrab pulseaudio)
+
+set=(lxqt)
+
+name=lxqt-panel
+version=0.17.1
+
+source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/lxde/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

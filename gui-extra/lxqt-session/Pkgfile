@@ -1,0 +1,35 @@
+description="The LXQt session"
+url="https://github.com/lxqt/lxqt-session"
+
+packager="tnut<tnut@nutyx.org>"
+contributors="Greg"
+
+makedepends=(liblxqt xdg-user-dirs lxqt-build-tools procps-ng)
+
+run=(breeze-icons oxygen-icons5 sddm)
+
+set=(lxqt)
+
+name=lxqt-session
+version=0.17.1
+release=2
+
+source=(startlxqt.in.patch
+        https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
+prepare()
+{
+cd $name-$version
+patch -Np1 -i ../startlxqt.in.patch
+}
+build=kde5
+
+uptodate() {
+feed=https://github.com/lxde/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
