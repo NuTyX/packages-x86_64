@@ -8,9 +8,11 @@ contributors="Dania,Rems"
 
 name=connman
 version=1.40
+release=2
 
 set=(enlightenment)
 
+PKGMK_GROUPS=(devel man)
 source=(https://www.kernel.org/pub/linux/network/$name/$name-$version.tar.xz
         allow_group_network.diff)
 
@@ -45,4 +47,61 @@ build() {
   sed -i 's/ProtectSystem=full/ProtectSystem=true/' $PKG/lib/systemd/system/connman.service
 
   rm -r $PKG/usr/lib/tmpfiles.d
+
+  ## Services
+  # runyx
+  SERVICEDIR=lib/init/services/${name}
+  
+  mkdir -p $PKG/$SERVICEDIR
+  cat > $PKG/$SERVICEDIR/run << "EOF"
+#!/bin/sh
+[ -e /run/dbus/system_bus_socket ] || exit 1
+exec /usr/bin/connmand -n
+EOF
+  chmod 755 $PKG/$SERVICEDIR/run
+  install -d -m 755 $PKG/etc/init/{multi,single}
+  ln -sv /$SERVICEDIR $PKG/etc/init/multi/${name}
+  ln -sv /$SERVICEDIR $PKG/etc/init/single/${name}
+
+  #
+  # sysvinit
+  mkdir -p $PKG/etc/rc.d/rc{0,1,2,3,4,5,6,S}.d
+  mkdir -p $PKG/etc/rc.d/init.d
+  cat > $PKG/etc/rc.d/init.d/connmand << "EOF"
+#!/bin/sh
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+   start)
+     log_info_msg "Starting connmand ..."
+     start_daemon /usr/bin/connmand
+     ;;
+   stop)
+     log_info_msg "Stopping connmand ..."
+     killproc /usr/bin/connmand
+     ;;
+   restart)
+    ${0} stop
+    sleep 1
+    {0} start
+    ;;
+
+  *)
+    echo "Usage: ${0} {start|stop|restart}"
+    exit 1
+
+esac
+
+exit 0
+EOF
+chmod 755 $PKG/etc/rc.d/init.d/connmand
+    for i in 3 4 5
+    do
+      ln -sv ../init.d/connmand $PKG/etc/rc.d/rc$i.d/S20connmand
+    done
+    for i in 1 6
+    do
+      ln -sv ../init.d/connmand $PKG/etc/rc.d/rc$i.d/K80connmand
+    done
 }
