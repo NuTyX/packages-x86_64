@@ -1,13 +1,14 @@
 description="A simple - customizable - Discord Client"
 url="https://github.com/Lightcord/Lightcord"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Sundev79"
+packager="tnut <tnut@nutyx.org>"
+contributors="Sundev79,Spiky"
 
 run=(gtk2 libnotify xorg-libxscrnsaver glibc alsa-lib nspr nss pulseaudio)
 
 name=lightcord
 version=0.1.9
+release=2
 
 source=(
 https://github.com/Lightcord/Lightcord/releases/download/v${version}/lightcord-linux-x64.zip 
@@ -33,5 +34,5 @@ build() {
    ln -s /opt/$name/$name.png $PKG/usr/share/pixmaps/$name.png
 
    chmod u+s $PKG/opt/$name/chrome-sandbox
-   chmod 1755 $PKG/usr/bin/lightcord
+   chmod 1755 $PKG/opt/$name/$name
 }
