@@ -1,10 +1,12 @@
 description='Professional vector graphics editor'
 url='https://inkscape.org/'
 
-packager="spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 name=inkscape
 version=1.1.1
+release=2
 
 makedepends=(cmake boost git gtkmm python lcms2 gsl libxslt gc
              dbus-glib lcms2 libjpeg-turbo poppler-glib gspell
@@ -15,7 +17,7 @@ makedepends=(cmake boost git gtkmm python lcms2 gsl libxslt gc
 prepare() {
 	git clone https://gitlab.com/inkscape/inkscape.git
 	cd $name
-	git checkout INKSCAPE_1_1
+	git checkout INKSCAPE_${version//./_}
 	git submodule init
 	git submodule update
 }
