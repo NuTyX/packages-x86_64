@@ -1,15 +1,22 @@
 description="A completely flexible, totally extensible daemon for delivering ACPI events."
-url="http://sourceforge.net/projects/acpid2/"
+url="https://sourceforge.net/projects/acpid2/"
 
-contributors="Berlius,Fanch,Greg,Tnut"
-packager="spiky <spiky@nutyx.org>"
+contributors="Berlius,Fanch,Greg,Tnut,Spiky"
+packager="tnut <tnut@nutyx.org>"
 
 run=(pm-utils)
 
+# Makes installation of enlightenment desktop happy :)
+#
+set=(enlightenment)
+
 name=acpid
 version=2.0.33
+release=2
+
 runyx_version=20201011
 
+PKGMK_GROUPS=(doc devel man)
 source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	http://downloads.sourceforge.net/acpid2/$name-$version.tar.xz 
 	lid lid.sh)
@@ -35,11 +42,4 @@ cd $SRC/runyx-${runyx_version}
 make DESTDIR=$PKG install-sysv-acpid
 make DESTDIR=$PKG install-sysd-acpid
 make DESTDIR=$PKG install-runyx-acpid
-}
-
-service() {
-bsdtar -r -f \
-$PKGMK_PACKAGE_DIR/${name}.${group}${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
-etc/rc.d etc/init lib/init lib/systemd
-rm -r etc/rc.d etc/init lib/init lib/systemd
 }
