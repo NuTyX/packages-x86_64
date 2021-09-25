@@ -3,7 +3,7 @@
 PACKAGES_FOLDER="$PWD"
 COLLECTIONS="base cli cli-extra gui gui-extra"
 ARCHGIT="/devel/git/archlinux"
-
+ARCHGITURL="git://github.com/archlinux"
 PARAMS=""
 UPDATE=0
 SUMMARY=0
@@ -82,13 +82,13 @@ datediff() {
 clone_packages_repo() {
   mkdir -p "$HOME$ARCHGIT"
   cd $HOME$ARCHGIT >&2
-  git clone git://git.archlinux.org/svntogit/packages.git >&2
+  git clone "$ARCHGITURL"/svntogit-packages.git >&2
   cd - > /dev/null 2>&1
 }
 clone_community_repo() {
   mkdir -p "$HOME$ARCHGIT"
   cd $HOME$ARCHGIT >&2
-  git clone git://git.archlinux.org/svntogit/community.git >&2
+  git clone "$ARCHGITURL"/svntogit-community.git >&2
   cd - > /dev/null 2>&1
 }
 update_packages_repo() {
