@@ -79,25 +79,14 @@ datediff() {
     echo $diff
 }
 
-clone_packages_repo() {
+clone_repo() {
   mkdir -p "$HOME$ARCHGIT"
   cd $HOME$ARCHGIT >&2
-  git clone "$ARCHGITURL"/svntogit-packages.git >&2
+  git clone "$ARCHGITURL"/svntogit-${1}.git ${1} >&2
   cd - > /dev/null 2>&1
 }
-clone_community_repo() {
-  mkdir -p "$HOME$ARCHGIT"
-  cd $HOME$ARCHGIT >&2
-  git clone "$ARCHGITURL"/svntogit-community.git >&2
-  cd - > /dev/null 2>&1
-}
-update_packages_repo() {
-  cd $HOME$ARCHGIT/packages/ >&2
-  git pull -q --ff-only >&2
-  cd - > /dev/null 2>&1
-}
-update_community_repo() {
-  cd $HOME$ARCHGIT/community/ >&2
+update_repo() {
+  cd $HOME$ARCHGIT/${1}/ >&2
   git pull -q --ff-only >&2
   cd - > /dev/null 2>&1
 }
@@ -405,28 +394,20 @@ debug "update:$UPDATE summary:$SUMMARY notfound:$NOTFOUND collections:$PARAMS
 
 if [ "$UPDATE" == "1" ]; then
 
-  if  [ ! -d "$HOME$ARCHGIT/packages/" ] ; then
-    wowoutput+=("cloning packages repository")
-    clone_packages_repo
-  else
-    update_packages_repo
-    if [ $? == 0 ]; then
-    wowoutput+=("updated packages repository")
-    else
-    wowoutput+=("failed updating packages repository")
-    fi
-  fi
-  if  [ ! -d "$HOME$ARCHGIT/community/" ] ; then
-    wowoutput+=("cloning community repository")
-    clone_community_repo
-  else
-    update_community_repo
-    if [ $? == 0 ]; then
-    wowoutput+=("updated community repository")
-    else
-    wowoutput+=("failed updating community repository")
-    fi
-  fi
+  for ALG in packages community
+  do
+    if  [ ! -d "$HOME$ARCHGIT/$ALG/" ] ; then
+      wowoutput+=("cloning $ALG repository")
+      clone_repo $ALG
+   else
+      update_repo $ALG
+      if [ $? == 0 ]; then
+        wowoutput+=("updated $ALG repository")
+      else
+        wowoutput+=("failed updating $ALG repository")
+      fi
+   fi
+  done
   wowoutput+=("")
 
 else
