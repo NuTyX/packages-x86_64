@@ -8,14 +8,14 @@ makedepends=(cmake libssh2 python)
 run=(glibc http-parser openssl pcre zlib)
 
 name=libgit2
-version=1.1.1
+version=1.2.0
 
 source=(https://github.com/libgit2/libgit2/archive/refs/tags/v${version}.tar.gz
-        libgit2-0.99.0-remove_http-parse_incompatible_tests.patch)
+        libgit2-1.2.0-remove_http-parse_incompatible_tests.patch)
 
 build() {
 cd $name-$version
-patch -Np1 -i ../libgit2-0.99.0-remove_http-parse_incompatible_tests.patch
+patch -Np1 -i ../libgit2-1.2.0-remove_http-parse_incompatible_tests.patch
 mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
