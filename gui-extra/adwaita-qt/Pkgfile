@@ -1,0 +1,30 @@
+description="A style to bend Qt applications to look like they belong into GNOME Shell"
+url="https://github.com/MartinBriza/adwaita-qt"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+makedepends=(cmake qtbase qtx11extras)
+
+set=(lxqt)
+
+name=adwaita-qt
+version=1.4.0
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/MartinBriza/$name/archive/$version.tar.gz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/MartinBriza/adwaita-qt/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
+
