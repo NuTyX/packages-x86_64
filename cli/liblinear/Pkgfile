@@ -1,12 +1,12 @@
 description="Library for learning linear classifiers for large scale applications."
 url="http://www.csie.ntu.edu.tw/~cjlin/liblinear/"
 
-packager="tnut <tnut@nutyxorg>"
+packager="spiky <spiky@nutyx.org>"
 
 name=liblinear
-version=241
+version=243
 
-source=(https://github.com/cjlin1/$name/archive/v$version/$name-$version.tar.gz)
+source=(https://github.com/cjlin1/liblinear/archive/refs/tags/v${version}.tar.gz)
 build() {
 cd $name-$version
 make lib
