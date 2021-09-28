@@ -6,20 +6,21 @@ contributors="Greg"
 
 makedepends=(liblxqt xdg-user-dirs lxqt-build-tools procps-ng)
 
-run=(breeze-icons oxygen-icons5 sddm)
+run=(adwaita-icon-theme)
 
 set=(lxqt)
 
 name=lxqt-session
 version=0.17.1
-release=2
+release=3
 
-source=(startlxqt.in.patch
+source=(consolidate-1.patch
         https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 prepare()
 {
 cd $name-$version
-patch -Np1 -i ../startlxqt.in.patch
+patch -Np1 -i ../consolidate-1.patch
+
 }
 build=kde5
 

@@ -1,0 +1,30 @@
+diff -Naur a/config/lxqt.conf b/config/lxqt.conf
+--- a/config/lxqt.conf	2021-04-16 18:36:14.000000000 +0200
++++ b/config/lxqt.conf	2021-09-28 13:25:23.253299418 +0200
+@@ -1,11 +1,11 @@
+ [General]
+ theme=frost
+-icon_theme=oxygen
++icon_theme=Adwaita
+ single_click_activate=false
+ tool_button_style=ToolButtonTextBesideIcon
+ 
+ [Qt]
+ font="Sans,11,-1,5,50,0,0,0,0,0"
+ doubleClickInterval=400
+-style=Fusion
++style=Adwaita
+ wheelScrollLines=3
+diff -Naur a/startlxqt.in b/startlxqt.in
+--- a/startlxqt.in	2021-04-16 18:36:14.000000000 +0200
++++ b/startlxqt.in	2021-09-28 13:24:42.689966276 +0200
+@@ -29,6 +29,9 @@
+     if ! contains "$XDG_CONFIG_DIRS" '@LXQT_ETC_XDG_DIR@'; then
+         XDG_CONFIG_DIRS="$XDG_CONFIG_DIRS:@LXQT_ETC_XDG_DIR@"
+     fi
++    if ! contains "$XDG_CONFIG_DIRS" '@LXQT_DATA_DIR@'; then
++        XDG_CONFIG_DIRS="$XDG_CONFIG_DIRS:@LXQT_DATA_DIR@"
++    fi
+ fi
+ 
+ if [ -z "$XDG_CACHE_HOME" ]; then
