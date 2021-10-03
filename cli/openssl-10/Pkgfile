@@ -3,11 +3,13 @@ url="http://www.openssl.org/"
 
 packager="tnut <tnut@nutyx.org>"
 
+makedepends=(perl)
+
 name=openssl-10
 version=1.0.2u
 release=2
 
-source=(ftp://ftp.openssl.org/source/old/1.0.2/openssl-$version.tar.gz)
+source=(https://ftp.openssl.org/source/old/1.0.2/openssl-$version.tar.gz)
 
 PKGMK_GROUPS=(devel man doc lib)
 
