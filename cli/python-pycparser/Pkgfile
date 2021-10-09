@@ -1,0 +1,18 @@
+description="C parser and AST generator written in Python"
+url="https://github.com/eliben/pycparser"
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+makedepends=(python python-ply)
+
+name=python-pycparser
+version=2.20
+source=(https://github.com/eliben/pycparser/archive/refs/tags/release_v${version}.tar.gz)
+build() {
+cd pycparser-release_v${version}
+python setup.py build
+  cd pycparser
+  python _build_tables.py
+
+ cd ../
+python setup.py install --root="$pkgdir" --optimize=1
+}
