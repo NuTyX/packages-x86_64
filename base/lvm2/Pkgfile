@@ -7,7 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(eudev libaio)
 
 name=lvm2
-version=2.03.12
+version=2.03.13
 
 source=(https://sourceware.org/ftp/lvm2/LVM2.$version.tgz)
 build() {
@@ -17,7 +17,6 @@ cd LVM2.$version
 --exec-prefix= \
 --with-confdir=/etc \
 --mandir=/usr/share/man \
---enable-applib \
 --enable-cmdlib \
 --enable-pkgconfig \
 --enable-udev_sync

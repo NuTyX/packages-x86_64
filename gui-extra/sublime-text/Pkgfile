@@ -2,31 +2,24 @@
 description="A sophisticated text editor for code, markup and prose"
 url="https://www.sublimetext.com/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Hugo"
+packager="sundev79 <sundev79@nutdevs.org>"
+contributors="Sundev79, Hugo"
 
 makedepends=(libpng gtk2)
-
+run=(python)
 name=sublime-text
-version=3-3176
-release=2
+version=4113
 
-source=(https://download.sublimetext.com/sublime_text_3_build_"${version:2}"_x64.tar.bz2)
+source=(https://download.sublimetext.com/sublime_text_build_${version}_x64.tar.xz)
 
 build(){
- cd sublime_text_3
+ cd sublime_text
  install -dm755 $PKG/opt/sublime_text/
  cp --preserve=mode -r sublime_text $PKG/opt/sublime_text/
  cp -r Packages/ $PKG/opt/sublime_text/ 
  cp -r Icon/ $PKG/opt/sublime_text/
- cp -r python3.3.zip $PKG/opt/sublime_text/
- cp plugin_host $PKG/opt/sublime_text/
- cp sublime_plugin.py $PKG/opt/sublime_text/
- cp sublime.py $PKG/opt/sublime_text/ 
-
  install -dm755 $PKG/usr/share/applications
  install -Dm644 sublime_text.desktop $PKG/usr/share/applications/sublime_text.desktop
-
  install -dm755 $PKG/usr/bin
- ln -s /opt/sublime_text $PKG/usr/bin/subl3
+ ln -s /opt/sublime_text/sublime_text $PKG/usr/bin/subl
 }

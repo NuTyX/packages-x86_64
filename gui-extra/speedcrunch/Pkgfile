@@ -1,0 +1,24 @@
+description="Simple but powerful calculator using Qt"
+url="http://speedcrunch.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg,Rems"
+
+makedepends=(cmake qttools)
+
+name=speedcrunch
+version=0.12.0
+
+source=(https://bitbucket.org/heldercorreia/speedcrunch/get/release-$version.tar.bz2)
+
+build() {
+cd */src
+mkdir -pv build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+make
+make DESTDIR=$PKG install
+}
+
+
+

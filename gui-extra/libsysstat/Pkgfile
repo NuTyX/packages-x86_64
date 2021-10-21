@@ -1,0 +1,28 @@
+description="Library to query system statistics (net, resource usage)"
+url="https://github.com/lxqt/libsysstat"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+makedepends=(qtbase cmake lxqt-build-tools)
+
+set=(lxqt)
+
+name=libsysstat
+version=0.4.5
+
+source=(https://github.com/lxqt/libsysstat/releases/download/$version/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/lxde/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@libsysstat@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

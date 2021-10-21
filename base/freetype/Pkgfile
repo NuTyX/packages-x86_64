@@ -6,15 +6,19 @@ contributors="Pierre B"
 
 name=freetype
 version=2.11.0
+release=2
 
 makedepends=(bzip2 libpng zlib)
 
-source=( https://downloads.sourceforge.net/$name/$name-$version.tar.xz
+source=(consolidate-1.patch
+        https://downloads.sourceforge.net/$name/$name-$version.tar.xz
 	https://downloads.sourceforge.net/freetype/freetype-doc-$version.tar.xz)
 
 
 build() {
 cd $name-$version
+
+patch -Np1 -i ../consolidate-1.patch
 
 sed -ri "s:.*(AUX_MODULES.*valid):\1:" modules.cfg
 

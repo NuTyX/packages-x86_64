@@ -1,0 +1,21 @@
+description="Decoder implementation of the JBIG2 image compression format"
+url="https://jbig2dec.com/"
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+makedepends=(autoconf intltool libtool automake)
+depends=(libpng)
+name=jbig2dec
+version=0.19
+source=(https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs9533/$name-$version.tar.gz)
+
+prepare() {
+        cd $name-$version
+	autoreconf -vfi
+}
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}

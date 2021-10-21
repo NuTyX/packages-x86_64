@@ -1,12 +1,12 @@
 description="C library for encoding, decoding and manipulating JSON data."
 url="http://www.digip.org/jansson/"
-contributors="Alan M., Greg"
-packager="tnut <tnut@nutyx.org>"
+contributors="Alan,M.,Greg,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
 name=jansson
-version=2.13.1
+version=2.14
 
-source=(http://www.digip.org/$name/releases/$name-$version.tar.bz2)
+source=(https://github.com/akheron/jansson/releases/download/v${version}/jansson-$version.tar.bz2)
 
 package() {
   install -Dm644 $name-$version/LICENSE $PKG/usr/share/licenses/$name/LICENSE

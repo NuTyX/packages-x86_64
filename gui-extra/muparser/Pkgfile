@@ -1,0 +1,38 @@
+description="A fast math parser library"
+url="http://muparser.sourceforge.net/"
+
+packager="tnut<tnut@nutyx.org>"
+contributors="Greg"
+
+makedepends=(cmake)
+
+set=(lxqt)
+
+PKGMK_KEEP_SOURCES="no"
+
+name=muparser
+version=2.3.2
+
+source=(https://github.com/beltoforion/muparser/archive/v$version.tar.gz)
+
+build() {
+
+unset MAKEFLAGS
+
+cmake -B build -S $name-$version -DCMAKE_INSTALL_PREFIX=/usr
+cmake --build build
+DESTDIR=$PKG cmake --install build
+}
+
+uptodate() {
+feed=https://github.com/beltoforion/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@muparser@@" | \
+sed "s@V@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}

@@ -1,0 +1,29 @@
+description="Library for passing menus over DBus"
+url="https://launchpad.net/libdbusmenu"
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+makedepends=(gnome-common gobject-introspection gtk3 intltool vala valgrind glib)
+
+name=libdbusmenu-gtk
+version=16.04.0
+source=(https://launchpad.net/libdbusmenu/16.04/16.04.0/+download/libdbusmenu-16.04.0.tar.gz)
+
+prepare() {
+cd libdbusmenu-$version
+sed -i 's/-Werror//' libdbusmenu-*/Makefile.{am,in}
+cd ..
+}
+build() {
+  export HAVE_VALGRIND_TRUE='#'
+  export HAVE_VALGRIND_FALSE=''
+
+cd libdbusmenu-$version
+    ./configure --prefix=/usr \
+      --sysconfdir=/etc \
+      --localstatedir=/var \
+      --disable-{dumper,static,tests} \
+      --with-gtk=3
+make
+make -j1 -C libdbusmenu-glib DESTDIR=$PKG install
+make -j1 -C libdbusmenu-gtk DESTDIR=$PKG install
+}

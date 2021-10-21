@@ -1,0 +1,15 @@
+description="Foreign Function Interface for Python calling C code"
+url="https://cffi.readthedocs.org/"
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+makedepends=(python python-pycparser)
+
+name=python-cffi
+version=1.14.6
+source=(https://foss.heptapod.net/pypy/cffi/-/archive/v${version}/cffi-v${version}.tar.bz2)
+build() {
+cd cffi-v${version}
+    python setup.py build
+
+    python setup.py install --root="$pkgdir" --optimize=1
+}
