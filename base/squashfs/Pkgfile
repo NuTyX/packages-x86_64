@@ -2,19 +2,18 @@ description="Squashfs is a compressed read-only filesystem for Linux."
 url="http://squashfs.sourceforge.net/"
 
 maintainer="phillip at lougher.demon.co.uk"
-contributors="Guy"
-packager="tnut <tnut@nutyx.org>"
+contributors="Guy,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(sed zlib lzo xz lz4 zstd)
 
 name=squashfs
-version=4.4
-release=2
+version=4.5
 
 source=(http://downloads.sourceforge.net/sourceforge/$name/$name$version.tar.gz)
 
 build() {
-cd $name$version/squashfs-tools
+cd $name-tools-$version/squashfs-tools
 
 sed -i 's@^struct cache@extern struct cache@' mksquashfs.h
 sed -i '1,1i#include <sys/sysmacros.h>' mksquashfs.c unsquashfs.c
