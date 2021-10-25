@@ -1,0 +1,23 @@
+diff --git a/scripts/setup-nutyx.in b/scripts/setup-nutyx.in
+index 9e5a89d..6a60bca 100755
+--- a/scripts/setup-nutyx.in
++++ b/scripts/setup-nutyx.in
+@@ -1417,13 +1417,13 @@ check_available_partition() {
+ 			echo "device: $DISK" >> $TMP/PARTITIONNING
+ 			if [ -d "$EFIVARS" ];then
+ 				echo "
+-${DISK}1 size=100M,type=uefi
+-${DISK}2 size=4G,type=swap
+-${DISK}3 type=linux" >> $TMP/PARTITIONNING
++${DISK}1: size=100M,type=uefi
++${DISK}2: size=4G,type=swap
++${DISK}3: type=linux" >> $TMP/PARTITIONNING
+ 			else
+ 				echo "
+-${DISK}1 size=4G,type=swap
+-${DISK}2 type=linux" >> $TMP/PARTITIONNING
++${DISK}1: size=4G,type=swap
++${DISK}2: type=linux" >> $TMP/PARTITIONNING
+ 			fi
+ 			CHECK_PART_OK="yes"
+ 			sfdisk ${DISK} < $TMP/PARTITIONNING > /dev/tty2 || CHECK_PART_OK="new"
