@@ -1,0 +1,30 @@
+description="Messaging app with a focus on speed and security, it’s super-fast, simple and free."
+url="https://telegram.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch,Fabienwang,Spiki"
+
+makedepends=(cmake ninja python qtsvg qtwayland jemalloc
+             ffmpeg glibmm kwayland rnnoise tg_owt
+             extra-cmake-modules gtk3 webkitgtk)
+run=(desktop-file-utils)
+
+name=telegram-desktop
+version=3.1.9
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tdesktop-$version-full.tar.gz)
+
+build() {
+
+  cd tdesktop-$version-full
+
+  cmake -B build -G Ninja \
+	-DTDESKTOP_API_ID=611335 \
+	-DTDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c \
+	-DCMAKE_INSTALL_PREFIX="/usr" \
+        -DCMAKE_BUILD_TYPE=Release
+  ninja -C build
+  DESTDIR=$PKG ninja -C build install
+} 

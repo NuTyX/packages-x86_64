@@ -1,0 +1,38 @@
+description="WebRTC library for Telegram-desktop"
+url="https://github.com/desktop-app/tg_owt"
+
+name=tg_owt
+version=20211027
+
+_commit=575fb17
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(protobuf xorg-libxrandr xorg-libxcomposite openssl ffmpeg libva
+             opus yasm libjpeg-turbo pipewire xorg-libxtst
+             git ninja cmake)
+
+prepare() {
+git clone https://github.com/desktop-app/$name $name
+git clone https://chromium.googlesource.com/webm/libvpx.git libvpx
+git clone https://chromium.googlesource.com/libyuv/libyuv.git libyuv
+git clone https://github.com/PipeWire/pipewire.git pipewire
+cd $name
+git checkout ${_commit}
+git submodule init
+git config submodule.src/third_party/libvpx/source/libvpx.url ../libvpx
+git config submodule.src/third_party/libyuv.url  ../libyuv
+git config submodule.src/third_party/pipewire.url ../pipewire
+git submodule update
+}
+
+build() {
+cd tg_owt
+cmake \
+    -B build \
+    -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
+ninja -C build
+DESTDIR=$PKG ninja -C build install
+}
