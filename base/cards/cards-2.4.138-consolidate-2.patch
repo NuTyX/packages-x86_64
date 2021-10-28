@@ -1,0 +1,13 @@
+diff --git a/scripts/mybld.in b/scripts/mybld.in
+index 163b937..eba222b 100755
+--- a/scripts/mybld.in
++++ b/scripts/mybld.in
+@@ -358,7 +358,7 @@ base /DEPOT/$1"
+ setup_cards_conf() {
+   CARDS_CONF=""
+   FOUND="no"
+-  MYCOLLECTION="${COLLECTION%-*}"
++  MYCOLLECTION="${COLLECTION%-extra}"
+   for i in "${COLLECTIONS[@]}"
+   do
+      [ $i == $MYCOLLECTION ] && FOUND="yes"
