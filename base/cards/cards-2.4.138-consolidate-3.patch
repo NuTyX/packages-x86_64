@@ -11,3 +11,15 @@ index 163b937..eba222b 100755
    for i in "${COLLECTIONS[@]}"
    do
       [ $i == $MYCOLLECTION ] && FOUND="yes"
+diff --git a/scripts/build-port.in b/scripts/build-port.in
+index d03d51a..7485b57 100644
+--- a/scripts/build-port.in
++++ b/scripts/build-port.in
+@@ -473,3 +473,7 @@ GIT="$(pwd)"
+ PROJECT="$(basename $GIT)"
+ PKGMK_CONFFILE=".pkgmk.conf"
+ main "$@"
++[ -f /etc/pkgmk.conf ] && . /etc/pkgmk.conf
++[ ! ${PKGMK_WORK_DIR} ] && exit 0
++cd ${PKGMK_WORK_DIR}
++bash
