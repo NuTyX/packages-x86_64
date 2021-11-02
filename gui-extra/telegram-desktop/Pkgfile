@@ -1,19 +1,18 @@
 description="Messaging app with a focus on speed and security, it’s super-fast, simple and free."
 url="https://telegram.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Fanch,Fabienwang,Spiki,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch,Fabienwang,Spiki"
 
-makedepends=(cmake ninja python qtsvg qtwayland jemalloc
-             ffmpeg glibmm kwayland rnnoise tg_owt
-             extra-cmake-modules gtk3 webkitgtk)
-run=(desktop-file-utils)
+makedepends=(cmake ninja python qtsvg qtwayland qtimageformats
+             ffmpeg glibmm kwayland rnnoise tg_owt jemalloc
+             extra-cmake-modules gtk3 webkitgtk libdbusmenu-qt)
+run=(desktop-file-utils ttf-opensans qtimageformats)
 alias=(telegram)
 
 name=telegram-desktop
 version=3.1.11
-
-PKGMK_KEEP_SOURCES="no"
+release=3
 
 source=(https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tdesktop-$version-full.tar.gz)
 
