@@ -1,8 +1,8 @@
 description="Messaging app with a focus on speed and security, it’s super-fast, simple and free."
 url="https://telegram.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch,Fabienwang,Spiki"
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch,Fabienwang,Spiki,Tnut"
 
 makedepends=(cmake ninja python qtsvg qtwayland qtimageformats
              ffmpeg glibmm kwayland rnnoise tg_owt jemalloc
@@ -11,8 +11,7 @@ run=(desktop-file-utils ttf-opensans qtimageformats)
 alias=(telegram)
 
 name=telegram-desktop
-version=3.1.11
-release=3
+version=3.2.1
 
 source=(https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tdesktop-$version-full.tar.gz)
 
@@ -21,6 +20,7 @@ build() {
   cd tdesktop-$version-full
 
   cmake -B build -G Ninja \
+        -DDESKTOP_APP_QT6=off \
 	-DTDESKTOP_API_ID=611335 \
 	-DTDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c \
 	-DCMAKE_INSTALL_PREFIX="/usr" \
