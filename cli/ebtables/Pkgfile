@@ -1,0 +1,44 @@
+description="Ethernet bridge filtering utilities"
+url="http://ebtables.sourceforge.net/"
+packager="spiky <spiky@nutyx.org>"
+contributors="Yaolinux Team"
+makedepends=(iptables)
+
+name=ebtables
+version=2.0.10_4
+source=(https://downloads.sourceforge.net/${name}/${name}-v${version/_/-}.tar.gz
+        ebtables.service
+        ebtables.systemd)
+build() {
+cd $name-v${version/_/-}
+
+make CFLAGS='-Wunused -Wall -Werror -Wno-error=unused-but-set-variable'
+
+
+  pushd ../$name-v${version/_/-}
+  make install \
+    DESTDIR=$PKG \
+    LIBDIR=/usr/lib \
+    MANDIR=/usr/share/man \
+    BINDIR=/usr/bin \
+    INITDIR=/etc/rc.d \
+    SYSCONFIGDIR=/etc
+  popd
+
+# rm package ebtables rc.d scripts
+#  rm $PKG/etc/ebtables-config
+#  rm -r $PKG/etc/rc.d
+
+  # systemd
+  install -Dm 755 $SRC/$name.systemd \
+    $PKG/usr/lib/systemd/scripts/$name
+  install -Dm 644 $SRC/$name.service \
+    $PKG/usr/lib/systemd/system/$name.service
+
+  # default config file
+  install -Dm 644 /dev/null $PKG/etc/$name.conf
+
+  # since iptables 1.6.0 /etc/ethertype is provided by iptables
+  # see https://bugs.archlinux.org/task/48648
+  rm $PKG/etc/ethertypes
+}
