@@ -1,0 +1,26 @@
+description="A library for configuring network interfaces"
+url="https://pagure.io/netcf"
+packager="spiky <spiky@nutyx.org>"
+contributors="Yaolinux Team"
+makedepends=(augeas libxml2 libnl libxslt)
+
+name=netcf
+version=0.2.8
+source=(https://releases.pagure.org/netcf/$name-$version.tar.gz)
+build() {
+cd $name-$version
+
+  aclocal
+  automake --add-missing || true
+  autoreconf
+
+  ./configure --prefix=/usr \
+	--disable-static \
+	--with-driver=redhat \
+	--libexecdir=/usr/lib/$name
+
+  make
+  make DESTDIR=$PKG install
+
+  rm -rf $PKG/etc/rc.d
+}
