@@ -1,0 +1,23 @@
+description="doas is a minimal replacement for the venerable sudo"
+url="https://github.com/Duncaen/OpenDoas"
+
+contributors="Wilsson M"
+packager="Wilsson Martee <wilssonm@gmail.com>"
+
+makedepends=(pam)
+
+name=opendoas
+version=6.8.1
+release=1
+
+source=($url/releases/download/v$version/$name-$version.tar.gz)
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr --with-timestamp
+	make
+	make DESTDIR=$PKG install
+	mkdir $PKG/etc/
+	echo "permit :wheel" >> $PKG/etc/doas.conf
+
+}
