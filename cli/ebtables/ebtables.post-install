@@ -1,0 +1,6 @@
+. lib/lsb/init-functions
+if [ ! -f etc/ebtables.conf ]; then
+   cp etc/ebtables.conf{.default,}
+   log_success_msg "${WARNING} /etc/ebtables.conf created ${NORMAL}"
+   log_warning_msg "${WARNING} Double check /etc/ebtables.conf and adapted to your needs ${NORMAL}"
+fi
