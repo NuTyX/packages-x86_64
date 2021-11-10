@@ -10,7 +10,7 @@ makedepends=(acl pam perl-yapp jansson rpcsvc-proto libtirpc
 run=(samba.lib)
 
 name=samba
-version=4.15.1
+version=4.15.2
 
 runyx_version=20201011
 
@@ -72,8 +72,8 @@ install -d cups/backend
 ln -v -sf /usr/bin/smbspool $PKG/usr/lib/cups/backend/smb
 
 # Part of tdb
-rm $PKG/usr/lib/python3.9/site-packages/_tdb_text.py
-rm $PKG/usr/lib/python3.9/site-packages/tdb.cpython-39-x86_64-linux-gnu.so
+rm $PKG/usr/lib/python3.10/site-packages/_tdb_text.py
+rm $PKG/usr/lib/python3.10/site-packages/tdb.cpython-310-x86_64-linux-gnu.so
 
 # service
 cd $SRC/runyx-${runyx_version}
