@@ -1,7 +1,7 @@
 description="VS Code without MS branding/telemetry/licensing"
 url="https://vscodium.com/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 run=(ffmpeg glib nspr atk gtk3 pango cairo xorg-libx11
      wayland libepoxy fribidi harfbuzz xorg-fontconfig
@@ -13,9 +13,8 @@ run=(ffmpeg glib nspr atk gtk3 pango cairo xorg-libx11
      cups.lib alsa-lib at-spi2-core)
 
 name=vscodium
-version=1.62.0
-release=2
-packagename=codium_$version-1636200891_amd64.deb
+version=1.62.1
+packagename=codium_$version-1636503850_amd64.deb
 source=(https://github.com/VSCodium/vscodium/releases/download/$version/$packagename)
 
 build() {
