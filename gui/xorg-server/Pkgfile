@@ -4,12 +4,12 @@ url="http://xorg.freedesktop.org"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre B, Greg, tnut"
 
-makedepends=(nettle xorgproto xorg-xkbcomp xorg-font-util xcb-util-keysyms \
+makedepends=(nettle xorgproto xorg-xkbcomp xorg-font-util xcb-util-keysyms libxcvt \
 libepoxy xcb-util-image xcb-util-renderutil xcb-util-wm mesa xorg-glu \
 xorg-pixman xorg-libdmx xorg-libxres xorg-libxfont2 xorg-xkeyboard-config wayland)
 
 name=xorg-server
-version=1.20.13
+version=21.1.1
 
 source=(https://ftp.x.org/pub/individual/xserver/$name-$version.tar.xz)
 
@@ -29,8 +29,8 @@ sed -i 's/malloc(pScreen/calloc(1, pScreen/' dix/pixmap.c
 make
 make DESTDIR=$PKG install
 rm -rf $PKG/var
-rm $PKG/usr/lib/xorg/modules/{libexa,libfb,libfbdevhw,libglamoregl,\
-libint10,libshadow,libshadowfb,libvbe,libvgahw,libwfb}.la
+rm $PKG/usr/lib/xorg/modules/{libexa,libfbdevhw,libglamoregl,\
+libint10,libshadow,libshadowfb,libvgahw,libwfb}.la
 rm $PKG/usr/lib/xorg/modules/drivers/modesetting_drv.la
 rm $PKG/usr/lib/xorg/modules/extensions/libglx.la
 }
