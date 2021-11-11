@@ -8,6 +8,7 @@ makedepends=(python bison grep)
 
 name=glibc
 version=2.34
+release=2
 
 PKGMK_LOCALES=()
 source=(https://www.kernel.org/pub/linux/kernel/v5.x/linux-$kernelversion.tar.xz
@@ -41,10 +42,11 @@ ln -s ../lib/ld-linux-x86-64.so.2 $PKG/lib64/ld-lsb-x86-64.so.3
 mkdir -v build
 cd       build
 
-../configure --prefix=/usr                                \
---with-bugurl=https://bugs.nutyx.org \
+../configure --prefix=/usr                                    \
+--with-bugurl=https://github.com/NuTyX/packages-x86_64/issues \
 --disable-werror                \
 --enable-kernel=3.2             \
+--with-headers=/usr/include     \
 --enable-stack-protector=strong \
 libc_cv_slibdir=/lib
 
