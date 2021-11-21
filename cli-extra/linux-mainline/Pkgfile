@@ -119,7 +119,7 @@ devel() {
 cd $PKG
 rm -r usr/src/linux-${_version}/{ipc,init,drivers,fs,mm,samples,security,sound,virt}
 find usr/src/linux-${_version}/ -type f -name "*.o" \
--o -name "*.ko" -o name "*.cmd" -o name "*.gcno"  -delete
+-o -name "*.ko" -o -name "*.cmd" -o -name "*.gcno"  -delete
 mv  usr/src/linux-${_version}/arch/x86 \
 usr/src/linux-${_version}/arch/.x86
 
