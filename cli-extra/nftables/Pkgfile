@@ -7,7 +7,7 @@ packager="spiky <spiky@nutyx.org>"
 makedepends=(gmp readline docbook2x asciidoc libmnl  libnftnl jansson)
 
 name=nftables
-version=1.0.0
+version=1.0.1
 
 source=($url/files/nftables-$version.tar.bz2
         nftables.conf)
@@ -18,7 +18,8 @@ cd $name-$version
 ./configure --prefix=/usr \
 	--sysconfdir=/etc/nftables \
 	--mandir=/usr/share/man \
-        --with-json
+        --with-json \
+        --with-cli=readline
 make
 make DESTDIR=$PKG install
 install -Dm644 ../nftables.conf "$PKG/etc/nftables/nftables.conf"
