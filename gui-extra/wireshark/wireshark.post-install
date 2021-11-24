@@ -20,4 +20,4 @@ setfattr -x user.xattr_test usr/bin/dumpcap
 
 chgrp wireshark usr/bin/dumpcap
 chmod 754 usr/bin/dumpcap
-sbin/setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' usr/bin/dumpcap
+usr/sbin/setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' usr/bin/dumpcap
