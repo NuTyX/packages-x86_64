@@ -10,7 +10,7 @@ run=(shared-mime-info hicolor-icon-theme)
 
 
 name=wireshark
-version=3.4.10
+version=3.6.0
 
 source=(https://www.wireshark.org/download/src/all-versions/wireshark-$version.tar.xz)
 
@@ -31,7 +31,7 @@ build() {
   DESTDIR=$PKG ninja install
 
   install -v -m755 -d $PKG/usr/share/doc/wireshark-$version
-  install -v -m644    ../README.linux ../doc/README.* ../doc/{*.pod,randpkt.txt} \
+  install -v -m644    ../README.linux ../doc/README.* ../doc/{*.adoc,randpkt.txt} \
                       $PKG/usr/share/doc/wireshark-$version
 
   pushd $PKG/usr/share/doc/wireshark-$version
