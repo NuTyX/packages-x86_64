@@ -1,0 +1,16 @@
+description="Desktop user interface for managing virtual machines"
+url="https://virt-manager.org/"
+packager="spiky <spiky@nutyx.org>"
+contributors="Yaolinux Team"
+makedepends=(gtk-vnc gtksourceview4 intltool libosinfo libvirt-glib libvirt-python python-cairo python-gobject python-lxml python-requests spice-gtk vte)
+run=(gtk-vnc gtksourceview4 libxml2 libosinfo libvirt libvirt-glib libvirt-python python-cairo python-gobject python-lxml python-requests spice-gtk vte)
+
+name=virt-manager
+version=3.2.0
+release=5
+source=(https://virt-manager.org/download/sources/$name/$name-$version.tar.gz)
+build() {
+cd $name-$version
+
+ python3 setup.py --no-update-icon-cache --no-compile-schemas install --root=$PKG
+}

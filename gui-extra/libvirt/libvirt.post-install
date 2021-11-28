@@ -1,0 +1,16 @@
+. lib/lsb/init-functions
+
+UN=kvm
+if ! (getent group $UN > /dev/null); then
+        log_info_msg "${INFO}Creating $UN group${NORMAL}\n"
+        groupadd -g 61 $UN
+fi
+
+log_warning_msg "${WARNING}
+
+Your account need to be part of the 'kvm' group
+to be able to use virtualisation:
+
+  gpasswd -a <username> $UN
+
+${NORMAL}"

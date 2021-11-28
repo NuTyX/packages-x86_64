@@ -77,7 +77,7 @@ fi
 uefi_bioscmdline() {
 case $BIOS_TYPE_INFO in
 	uefi|UEFI)
-		_UEFI_CODE_CMDLINE="-drive if=pflash,format=raw,readonly,file=/usr/share/ovmf/x64/OVMF_CODE.fd"
+		_UEFI_CODE_CMDLINE="-drive if=pflash,format=raw,readonly=on,file=/usr/share/ovmf/x64/OVMF_CODE.fd"
                 _UEFI_VAR_CMDLINE="-drive if=pflash,format=raw,file=$OVMF_VAR_DISK_INFO"
 	;;
 	*)

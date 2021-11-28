@@ -1,0 +1,21 @@
+description="Clean and modern sans-serif typeface"
+url="https://fonts.google.com/specimen/Open+Sans"
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+version="20211101"
+
+run=(xorg-mkfontscale)
+PKGMK_KEEP_SOURCES="no"
+
+_commit="c071e9696751f2d69925d66f3b8c581f2dc041c2"
+source=(https://github.com/googlefonts/opensans/archive/${_commit}.tar.gz)
+
+
+build() {
+
+ mkdir -p $PKG/usr/share/fonts/TTF
+ find opensans-*/fonts/ttf/ -type f -name '*.ttf' -exec install -Dm644 '{}' \
+ $PKG/usr/share/fonts/TTF \;
+}

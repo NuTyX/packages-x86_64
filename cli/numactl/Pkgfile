@@ -1,0 +1,25 @@
+description="Simple NUMA policy support"
+url="http://oss.sgi.com/projects/libnuma/"
+packager="spiky <spiky@nutyx.org>"
+contributors="Yaolinux Team"
+
+makedepends=(autoconf libtool  automake perl)
+
+name=numactl
+version=2.0.14
+source=(https://github.com/numactl/numactl/releases/download/v${version}/${name}-${version}.tar.gz
+)
+build() {
+cd $name-$version
+
+autoreconf -fiv
+
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+
+# move_pages(2) is provided by man-pages and is more up-to-date there anyway
+rm -rf "$PKG/usr/share/man/man2"
+
+install -vDm 644 README.md -t "${PKG}/usr/share/doc/${pkgname}-${version}"
+}

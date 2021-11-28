@@ -1,16 +1,15 @@
 description="Color ASCII Art Library"
 url="http://libcaca.zoy.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(imlib2)
 
 name=libcaca
-version=0.99.beta19
-release=3
+version=0.99.beta20
 
-source=(http://libcaca.zoy.org/files/libcaca/libcaca-$version.tar.gz)
+source=(https://github.com/cacalabs/libcaca/releases/download/v0.99.beta20/$name-$version.tar.bz2)
 
 build() {
 	cd $name-$version

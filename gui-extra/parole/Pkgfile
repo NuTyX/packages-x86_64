@@ -1,15 +1,16 @@
 description="A modern media player based on the GStreamer framework"
 url="http://goodies.xfce.org/projects/applications/parole"
 
-packager="Schrodinger72 <schrodinger@nutyx.org>"
-contributors="tnut, Tyrry, Greg"
+packager="tnut <tnut@nutyx.org>"
+contributors="Tyrry,Greg,Schrodinger72"
 
-makedepends=(libxfce4ui libnotify dbus-glib gstreamer-plugins-base
-             gstreamer-plugins-good libdvdcss libdvdnav libdvdread)
-run=(startup-notification)
+makedepends=(libxfce4ui libnotify dbus-glib libdvdcss libdvdnav libdvdread)
+run=(startup-notification gstreamer-plugins-base gstreamer-plugins-good)
+
 set=(xfce4-extra)
 
 name=parole
 version=4.16.0
+release=2
 
 source=(https://archive.xfce.org/src/apps/parole/${version:0:4}/parole-$version.tar.bz2)

@@ -1,0 +1,70 @@
+description="Ethernet bridge filtering utilities"
+url="http://ebtables.sourceforge.net/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Yaolinux,Spiky"
+
+makedepends=(iptables)
+
+name=ebtables
+version=2.0.10_4
+release=3
+
+source=(https://downloads.sourceforge.net/${name}/${name}-v${version/_/-}.tar.gz
+        ${name}.service ${name} )
+build() {
+cd $name-v${version/_/-}
+
+make CFLAGS='-Wunused -Wall -Werror -Wno-error=unused-but-set-variable'
+
+
+  pushd ../$name-v${version/_/-}
+  make install \
+    DESTDIR=$PKG \
+    LIBDIR=/usr/lib \
+    MANDIR=/usr/share/man \
+    BINDIR=/usr/bin \
+    INITDIR=/etc/rc.d/init.d \
+    SYSCONFIGDIR=/etc
+  popd
+
+# rm package ebtables rc.d scripts
+
+
+  # default config file
+  mv $PKG/etc/$name-config $PKG/etc/$name.conf.default
+
+  # since iptables 1.6.0 /etc/ethertype is provided by iptables
+  # see https://bugs.archlinux.org/task/48648
+  rm $PKG/etc/ethertypes
+
+  # services
+  mkdir -p $PKG/etc/{rc.d/init.d,init/multi}
+  mkdir -p $PKG/lib/systemd/system
+  mkdir -p $PKG/lib/init/services/$name
+  install -Dm 755 $SRC/$name \
+  $PKG/etc/rc.d/init.d/$name
+  install -Dm 644 $SRC/$name.service \
+  $PKG/lib/systemd/system/$name.service
+
+  cat > $PKG/lib/init/services/$name/run << "EOF"
+#!/bin/sh
+CONFIG_FILE='/etc/ebtables.conf'
+ebtables-restore < "$CONFIG_FILE"
+exec pause
+EOF
+  chmod 755 $PKG/lib/init/services/$name/run
+  ln -s /lib/init/services/$name $PKG/etc/init/multi/$name
+
+  for i in 3 4 5
+  do
+    mkdir -p $PKG/etc/rc.d/rc$i.d
+    ln -s ../init.d/$name $PKG/etc/rc.d/rc$i.d/S21$name
+  done
+  for i in 0 2 6
+  do
+    mkdir -p $PKG/etc/rc.d/rc$i.d
+    ln -s ../init.d/$name $PKG/etc/rc.d/rc$i.d/K97$name
+  done
+
+}

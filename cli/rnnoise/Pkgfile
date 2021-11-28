@@ -1,0 +1,22 @@
+description="A noise suppression lib based on recurrent neural network"
+url="https://gitlab.xiph.org/xiph/rnnoise"
+
+packager="tnut <tnut@nutyx.org"
+contributors=""
+
+name=rnnoise
+version=0.4.1
+
+makedepends=(autoconf automake m4 grep sed libtool)
+
+_commit="1cbdbcf1283499bbb2230a6b0f126eb9b236defd"
+source=(https://gitlab.xiph.org/xiph/rnnoise/-/archive/${_commit}/$name-${_commit}.tar.gz)
+
+build() {
+
+cd $name-${_commit}
+./autogen.sh
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}

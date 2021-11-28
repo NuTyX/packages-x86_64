@@ -1,19 +1,19 @@
 description="GLib/GObject wrapper for the Facebook Graph API"
 url="http://www.gnome.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Jayce"
+packager="spiky <spiky@nutyx.org>"
+contributors="Jayce,Tnut"
 
 makedepends=(librest json-glib gobject-introspection gnome-online-accounts)
 
 name=gfbgraph
-version=0.2.4
+version=0.2.5
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-./autogen.sh --prefix=/usr --disable-static
+./configure --prefix=/usr --disable-static
 make
 make DESTDIR=$PKG install
 }

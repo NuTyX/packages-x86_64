@@ -1,0 +1,22 @@
+description="GLib bindings for libvirt"
+url="https://libvirt.org"
+packager="spiky <spiky@nutyx.org>"
+contributors="Yaolinux Team"
+makedepends=(libvirt gobject-introspection vala)
+
+name=libvirt-glib
+version=4.0.0
+release=5
+source=(https://libvirt.org/sources/glib/$name-$version.tar.xz)
+build() {
+
+cd $name-$version
+
+ mkdir build
+  cd build
+
+  meson     --prefix=/usr
+             
+  ninja
+  DESTDIR=$PKG ninja  install
+}

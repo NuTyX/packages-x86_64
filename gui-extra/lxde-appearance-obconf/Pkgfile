@@ -1,7 +1,7 @@
 description="Plugin for LXAppearance to configure OpenBox"
 url="http://lxde.org/"
 
-contributors="Geantbrun, Greg"
+contributors="Geantbrun, Greg, Fabien"
 packager="tnut <tnut@nutyx.org>"
 
 makedepends=(intltool lxde-appearance openbox)
@@ -11,13 +11,15 @@ name=lxde-appearance-obconf
 alias=(lxappearance-obconf)
 _name=lxappearance-obconf
 version=0.2.3
-release=2
+release=3
 
-source=(http://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz)
+source=(http://downloads.sourceforge.net/lxde/${_name}-$version.tar.xz
+        gtk3-theme-preview-segfault.patch)
 
 prepare() {
 
   cd ${_name}-$version
+  patch -Np1 -i ../gtk3-theme-preview-segfault.patch
   sed -i /frame1/,+19d src/obconf.glade 
 }
 build() {

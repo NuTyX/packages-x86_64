@@ -1,0 +1,29 @@
+#!/bin/sh
+
+. /lib/lsb/init-functions
+
+CONFIG_FILE='/etc/ebtables.conf'
+
+case "$1" in
+  start)
+    log_info_msg "Starting ebtable..."
+    ebtables-restore < "$CONFIG_FILE"
+    evaluate_retval
+    ;;
+
+  stop)
+    log_info_msg "Stopping ebtables..."
+    ebtables -F
+    evaluate_retval
+    ;;
+
+  save)
+    log_info_msg "Saving ebtables..."
+    ebtables-save > "$CONFIG_FILE"
+    evaluate_retval
+    ;;
+  *)
+    echo "usage: ${0##*/} {start|stop|save}" >&2
+    exit 1
+    ;;
+esac

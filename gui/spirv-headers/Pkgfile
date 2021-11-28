@@ -1,0 +1,16 @@
+description='SPIR-V Headers'
+url='https://www.khronos.org/regitstry/spir-v/'
+
+packager="tnut <tnut@nutyx.org>"
+
+name=spirv-headers
+version=1.2.198.0
+
+makedepends=(cmake)
+
+source=(https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/sdk-$version.tar.gz)
+
+prepare() {
+mv SPIRV-Headers-sdk-$version $name-$version
+}
+build=cmake
