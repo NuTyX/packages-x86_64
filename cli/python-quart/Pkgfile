@@ -1,0 +1,20 @@
+description="A Python ASGI web microframework with the same API as Flask"
+url="https://files.pythonhosted.org"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python)
+
+name=python-quart
+version=0.16.1
+
+source=(https://files.pythonhosted.org/packages/be/e4/2cc730793bc8635ed7ba3f8cc87ca92d3089150aecc015311fcc3d9e2b82/Quart-$version.tar.gz)
+
+build() {
+      cd Quart-$version
+
+      python setup.py build
+
+      python3 setup.py install --prefix=/usr --root=$PKG
+}
