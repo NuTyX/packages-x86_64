@@ -12,8 +12,8 @@ makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              harfbuzz gtk-doc libnotify wayland woff2 libmanette)
              
 name=webkitgtk
-version=2.32.0
-release=2
+version=2.34.2
+release=3
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 prepare() {
@@ -37,6 +37,7 @@ cmake -G Ninja                     \
       -DUSE_LIBHYPHEN=OFF          \
       -DENABLE_MINIBROWSER=ON      \
       -DUSE_WOFF2=ON               \
+      -DUSE_SOUP2=ON               \
       -DENABLE_GTKDOC=ON           \
       -DUSE_WPE_RENDERER=OFF       \
       -DENABLE_BUBBLEWRAP_SANDBOX=OFF \
