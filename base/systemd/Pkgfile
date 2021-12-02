@@ -11,7 +11,7 @@ makedepends=(acl libcap kmod m4 gperf pam)
 
 name=systemd
 version=246
-release=15
+release=16
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -53,7 +53,6 @@ meson --prefix=/usr           \
 -Dumount-path=/bin/umount     \
 -Dman=true                    \
 -Dresolve=false               \
--Dnetworkd=false              \
 -Dsysvinit-path=              \
 -Dsysvrcnd-path=              \
 -Dtimesyncd=false             \
