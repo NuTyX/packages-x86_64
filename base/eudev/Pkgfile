@@ -8,7 +8,7 @@ makedepends=(libcap kmod meson ninja)
 name=eudev
 _name=systemd
 version=246
-release=8
+release=9
 PKGMK_DEPENDS=(perl python m4 gperf util-linux pam systemd acl)
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -20,7 +20,7 @@ prepare() {
 
 sed '177,$ d' -i ${_name}-$version/src/resolve/meson.build
 sed -i 's/GROUP="render", //' ${_name}-$version/rules.d/50-udev-default.rules.in
-
+sed -i 's/+ want_libfuzzer.*$/and want_libfuzzer/' ${_name}-$version/meson.build
 }
 build() {
 
@@ -61,7 +61,7 @@ mv $PKG/lib/systemd/network/99-default.link \
 $PKG/99-default.link
 
 # systemd Package files
-rm $PKG/bin/{journalctl,loginctl,machinectl,portablectl,systemctl}
+rm $PKG/bin/{journalctl,loginctl,machinectl,portablectl,systemctl,networkctl}
 rm $PKG/bin/systemd-*
 rm -r $PKG/etc/{pam,sysctl}.d
 
