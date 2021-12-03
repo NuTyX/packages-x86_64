@@ -10,6 +10,7 @@ xorg-pixman xorg-libdmx xorg-libxres xorg-libxfont2 xorg-xkeyboard-config waylan
 
 name=xorg-server
 version=21.1.1
+release=2
 
 source=(https://ftp.x.org/pub/individual/xserver/$name-$version.tar.xz)
 
@@ -28,6 +29,9 @@ sed -i 's/malloc(pScreen/calloc(1, pScreen/' dix/pixmap.c
 --enable-suid-wrapper
 make
 make DESTDIR=$PKG install
+
+install -m755 $PKG/usr/bin/Xvfb $PKG/usr/bin/xvfb-run
+
 rm -rf $PKG/var
 rm $PKG/usr/lib/xorg/modules/{libexa,libfbdevhw,libglamoregl,\
 libint10,libshadow,libshadowfb,libvgahw,libwfb}.la
