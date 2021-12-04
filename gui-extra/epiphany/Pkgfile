@@ -20,7 +20,7 @@ build() {
 cd $name-$version
 mkdir build
 cd    build
-meson --prefix=/usr -Ddistributor_name=NuTyX -Dunit_tests=disabled -Dsoup2=disabled
+meson --prefix=/usr -Dunit_tests=disabled -Dsoup2=disabled
 ninja
 DESTDIR=$PKG ninja install
 }
