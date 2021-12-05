@@ -2,8 +2,8 @@ description="Office suite. It is largely compatible with Microsoft Office \
 (fork from OpenOffice.org)."
 url="http://www.libreoffice.org"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre B, tnut, Greg, fabienwang, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg, fabienwang, Spiky"
 
 makedepends=(tar python perl-archive-zip unzip zip icu gtk3 cups poppler-glib
              xorg-fontconfig libxslt kerberos xorgproto dbus-glib mesa
@@ -11,12 +11,11 @@ makedepends=(tar python perl-archive-zip unzip zip icu gtk3 cups poppler-glib
              libepoxy libjpeg-turbo xorg-glu gstreamer-plugins-base
              libatomic-ops lcms2 librsvg libxml2 libxslt mesa neon nss
              redland serf unixodbc doxygen gdb gnutls nasm telepathy-glib
-             xmlsec gpgme libabw libcmis cppunit hunspell hyphen mariadb)
+             xmlsec gpgme libabw cppunit hunspell hyphen mariadb)
 run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache)
 
 name=libreoffice
-version=7.1.5.2
-release=2
+version=7.2.3.2
 
 categories=(Office Graphics Education)
 
@@ -37,6 +36,7 @@ prepare() {
 
   cd $name-$version
 
+  sed -i 's/yyn/yyrule/' connectivity/source/parse/sqlbison.y
   patch -Np1 -i ../Remove-check-if-root-due-to-issue-with-fakeroot.patch
 
   install -dm755 external/tarballs/
@@ -45,6 +45,10 @@ prepare() {
   ln -sv ../../../$name-translations-$version.tar.xz  external/tarballs/
   ln -sv ../../../f543e6e2d7275557a839a164941c0a86e5f2c3f2a0042bfc434c88c6dde9e140-opens___.ttf \
   external/tarballs/
+
+  ln -sv src/libreoffice-help-${version}/helpcontent2/
+  ln -sv src/libreoffice-dictionaries-${version}/dictionaries/
+  ln -sv src/libreoffice-translations-${version}/translations/
 
   sed -e "/gzip -f/d" -e "s|.1.gz|.1|g" \
 	-i bin/distro-install-desktop-integration
@@ -95,7 +99,6 @@ build() {
 	--with-system-hunspell      \
 	--with-system-icu           \
 	--with-system-jpeg          \
-	--with-system-libcmis       \
 	--with-system-lcms2         \
 	--with-system-libabw        \
 	--with-system-libatomic_ops \
