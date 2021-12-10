@@ -1,0 +1,31 @@
+description="Latte is a dock based on plasma frameworks"
+url="https://invent.kde.org/plasma/latte-dock"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake extra-cmake-modules python)
+run=(plasma-framework kirigami2 knewstuff syndication hicolor-icon-theme)
+set=(kde5)
+
+name=latte-dock
+version=0.10.4
+
+source=(https://invent.kde.org/plasma/$name/-/archive/v${version}/$name-v${version}.tar.gz)
+
+build() {
+
+cd $name-v${version}
+
+mkdir build 
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DKDE_INSTALL_LIBDIR=lib    \
+      -DBUILD_TESTING=OFF         \
+      -Wno-dev ..
+
+make
+make DESTDIR=$PKG install
+}
