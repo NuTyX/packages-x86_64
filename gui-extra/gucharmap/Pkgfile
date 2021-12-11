@@ -1,27 +1,42 @@
 description="Gucharmap is a Unicode character map and font viewer"
 url="http://www.gnome.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Tnut, Jayce"
+packager="spiky <spiky@nutyx.org>"
+contributors="Jayce,Tnut"
 
 makedepends=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
-             gtk3 itstool gobject-introspection vala)
+             gtk3 itstool gobject-introspection vala pcre2)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
 set=(gnome)
 
 name=gucharmap
-version=12.0.1
-release=3
+version=14.0.1
 
-source=(http://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=( https://gitlab.gnome.org/GNOME/gucharmap/-/archive/$version/$name-$version.tar.bz2)
 
 build() {
         cd $name-$version
-	LIBS="-ldl" \
-	./configure --prefix=/usr \
-	--enable-vala \
-	--with-unicode-data=download
-        make
-        make DESTDIR=$PKG install
+	
+        mkdir build
+        cd    build
+        mkdir ucd
+         pushd ucd
+
+         wget https://www.unicode.org/Public/zipped/14.0.0/UCD.zip
+         wget https://www.unicode.org/Public/zipped/14.0.0/Unihan.zip
+          unzip UCD.zip
+        popd
+
+ meson --prefix=/usr         \
+       --strip               \
+       --buildtype=release   \
+       -Ducd_path=./ucd      \
+       -Ddocs=false ..
+
+ ninja
+
+ rm  -fv /usr/share/glib-2.0/schemas/org.gnome.Charmap.enums.xml
+
+ DESTDIR=$PKG ninja install
 }
