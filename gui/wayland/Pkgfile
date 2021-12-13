@@ -4,23 +4,23 @@ url="http://wayland.freedesktop.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B, Greg"
 
-makedepends=(libffi doxygen xmlto docbook-xml libxslt)
+makedepends=(meson ninja libffi doxygen xmlto docbook-xml libxslt)
 
 name=wayland
-version=1.19.0
-release=2
+version=1.20.0
 
 source=(https://wayland.freedesktop.org/releases/$name-$version.tar.xz)
 
 build() {
   cd $name-$version
-  ./configure --prefix=/usr    \
-              --disable-static \
-              --disable-documentation
-  make
-  make DESTDIR=$PKG install
+  mkdir build
+  cd    build
 
-  rm $PKG/usr/lib/libwayland-{client,cursor,server,egl}.la
+  meson --prefix=/usr       \
+      --buildtype=release   \
+       -Ddocumentation=false
+  ninja
+  DESTDIR=$PKG ninja install
 }
 uptodate() {
 local url ext
