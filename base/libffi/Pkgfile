@@ -5,17 +5,17 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=libffi
-version=3.3
-release=2
+version=3.4.2
 
-source=( ftp://sourceware.org/pub/$name/$name-$version.tar.gz )
+source=(https://github.com/$name/$name/releases/download/v$version/$name-$version.tar.gz )
 
 build() {
 cd $name-$version
 
 ./configure --prefix=/usr \
 --disable-static \
---with-gcc-arch=native
+--with-gcc-arch=native \
+--disable-exec-static-tramp
 make
 make check || true
 make DESTDIR=$PKG install
