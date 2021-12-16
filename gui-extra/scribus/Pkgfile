@@ -10,9 +10,15 @@ run=(shared-mime-info)
 
 name=scribus
 version=1.5.7
-release=2
+release=3
 
-source=(https://sourceforge.net/projects/scribus/files/scribus-devel/$version/scribus-$version.tar.xz)
+source=(harfbuzz-3.0.0.patch
+        https://sourceforge.net/projects/scribus/files/scribus-devel/$version/scribus-$version.tar.xz)
+
+prepare() {
+ cd $name-$version
+ patch -Np1 -i ../harfbuzz-3.0.0.patch
+}
 
 build() {
 	cd $name-$version
