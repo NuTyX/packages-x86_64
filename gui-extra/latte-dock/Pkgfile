@@ -9,13 +9,13 @@ run=(plasma-framework kirigami2 knewstuff syndication hicolor-icon-theme)
 set=(kde5)
 
 name=latte-dock
-version=0.10.5
+version=0.10.6
 
-source=(https://invent.kde.org/plasma/$name/-/archive/v${version}/$name-v${version}.tar.gz)
+source=(https://download.kde.org/stable/$name/$name-$version.tar.xz)
 
 build() {
 
-cd $name-v${version}
+cd $name-${version}
 
 mkdir build 
 cd    build
