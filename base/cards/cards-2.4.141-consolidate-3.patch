@@ -1,0 +1,151 @@
+diff --git a/scripts/build-port.in b/scripts/build-port.in
+index 17c2722..93e4c22 100644
+--- a/scripts/build-port.in
++++ b/scripts/build-port.in
+@@ -410,20 +410,20 @@ build_binaries () {
+ 		if [  -z "$(ls ${BINARY_BASE}/$package/*$ARCH.cards.tar.xz 2>/dev/null )" ];then
+ 			cd $currentdir
+ 			[ "$DRY" == "yes" ] && continue
+-			bash scripts/$COLLECTION $package || manual_fix
++			bash scripts/$COLLECTION $package || exit 1
+ 			continue
+ 		fi
+ 		if [ ! -f ${BINARY_BASE}/$package/.PKGREPO ]; then
+ 			cd $currentdir
+ 			[ "$DRY" == "yes" ] && continue
+-			bash scripts/$COLLECTION $package || manual_fix
++			bash scripts/$COLLECTION $package || exit 1
+ 			continue
+ 		fi
+ 		if [ ! -z "$(diff ${BINARY_BASE}/$package/Pkgfile ${PORT_BASE}/$package/Pkgfile)" ]; then
+ 			echo " ${BINARY_BASE}/$package/Pkgfile AND ${PORT_BASE}/$package/Pkgfile are different ...WILL BUILD NEW.."
+ 			cd $currentdir
+ 			[ "$DRY" == "yes" ] && continue
+-			bash scripts/$COLLECTION $package || manual_fix
++			bash scripts/$COLLECTION $package || exit 1
+ 			continue
+ 		fi
+ 		get_port_version
+@@ -432,7 +432,7 @@ build_binaries () {
+ 			echo "$package: Port: $port_version, Binary: $binary_version"
+ 			cd $currentdir
+ 			[ "$DRY" == "yes" ] && continue
+-			bash scripts/$COLLECTION $package || manual_fix
++			bash scripts/$COLLECTION $package || exit 1
+ 			continue
+ 		fi
+ 		[ "$DRY" == "yes" ] || echo "WILL NOT BUILD '$package' AGAIN.."
+@@ -442,11 +442,6 @@ list_binaries () {
+ 	cards level -I |grep ${BINARY_BASE}
+ 
+ }
+-manual_fix () {
+-	cd $currentdir
+-	bash
+-	bash scripts/$COLLECTION $package || exit 1
+-}
+ main() {
+ 	parse_options "$@"
+ 	check_tools
+diff --git a/scripts/mybld.in b/scripts/mybld.in
+index 9f11ea7..86accf0 100755
+--- a/scripts/mybld.in
++++ b/scripts/mybld.in
+@@ -334,7 +334,6 @@ find_runtime () {
+ setup_pkgmk_conf() {
+ [ -z  $PKGMK_PACK_SOURCE_DIR ] && PKGMK_PACK_SOURCE_DIR="/var/lib/pkg/src"
+ [ -z  $PKGMK_GROUPS ] && PKGMK_GROUPS="devel man doc service"
+-[ -z  $PKGMK_PACK_SOURCE_DIR ] PKGMK_PACK_SOURCE_DIR="/var/lib/pkg/src"
+ [ -z  $PKGMK_WGET_OPTS ] && PKGMK_WGET_OPTS="--quiet"
+ [ -z  $PKGMK_KEEP_SOURCES ] && PKGMK_KEEP_SOURCES="yes"
+ [ -z  $PKGMK_WORK_DIR ] && PKGMK_WORK_DIR="/tmp/work"
+@@ -672,16 +671,6 @@ if [ "${PARAM[1]}" = "" ]; then
+             echo ">>> version variable not set !"
+             exit 1
+         fi
+-	if ( $(which pkgmk > /dev/null) ); then
+-		cd "$COLLECTION/${PARAM[0]}/"
+-		pkgmk -td
+-		rc=$?
+-		cd - > /dev/null
+-		[ $rc -ne 0 ] && exit 1
+-	else
+-		echo "=====> cards.devel is not install !
+-=====> Cannot check if URL source(s) is valid"
+-        fi
+     fi
+ fi
+ 
+@@ -698,6 +687,22 @@ if [ "$INCREMENT" == "yes" ]; then
+   fi
+ fi
+ 
++if [ "${PARAM[1]}" = "" ]; then
++    if [ -f "$COLLECTION/${PARAM[0]}/Pkgfile" ]; then
++        . "$COLLECTION"/"${PARAM[0]}"/Pkgfile
++	if ( $(which pkgmk > /dev/null) ); then
++		cd "$COLLECTION/${PARAM[0]}/"
++		pkgmk -td
++		rc=$?
++		cd - > /dev/null
++		[ $rc -ne 0 ] && exit 1
++	else
++		echo "=====> cards.devel is not install !
++=====> Cannot check if URL source(s) is valid"
++        fi
++    fi
++fi
++
+ mkdir -p $ROOT/${VERSION}/${COLLECTION}/DEPOT || error /${VERSION}/${COLLECTION}
+ if [ -d ${ROOTMOUNT}/$(uname -m)/${VERSION} ]; then
+   sudo mount --bind ${ROOTMOUNT}/$(uname -m)/${VERSION} $ROOT/${VERSION}/${COLLECTION}/DEPOT || error /${VERSION}/${COLLECTION}
+diff --git a/src/cards_remove.cxx b/src/cards_remove.cxx
+index dcbd10d..4f77749 100644
+--- a/src/cards_remove.cxx
++++ b/src/cards_remove.cxx
+@@ -55,15 +55,15 @@ Cards_remove::Cards_remove(const string& commandName,
+ 			throw runtime_error(_("No package found for the base System") );
+ 
+ 		// Retrieve info about all the packages
+-		buildSimpleDatabase();
++		buildCompleteDatabase(false);
+ 
+ 		set< pair<string,string> > listOfPackagesToRemove;
+ 		pair<string,string> PackageToRemove;
+ 
+ 		for ( auto i : m_argParser.otherArguments() ) {
+ 			for (auto j : m_listOfInstPackages) {
+-				if ( j.first == i) {
+-					if ( j.second.dependency == true ) {
++				for (auto k : j.second.dependencies ){
++					if ( i == k.first) {
+ 						m_actualError = PACKAGE_IN_USE;
+ 						treatErrors(i);
+ 					}
+diff --git a/src/pkgdbh.cxx b/src/pkgdbh.cxx
+index d522d9c..d171b83 100644
+--- a/src/pkgdbh.cxx
++++ b/src/pkgdbh.cxx
+@@ -283,10 +283,6 @@ set<string> Pkgdbh::getListOfPackageName()
+ {
+ 	return m_packageNamesList;
+ }
+-int Pkgdbh::getNumberOfPackages()
+-{
+-  return getListOfPackageNames("");
+-}
+ /* Append to the "DB" the number of packages founds
+  * (directory containing a file named files
+  * */
+diff --git a/src/pkgdbh.h b/src/pkgdbh.h
+index 051d08e..8d37392 100644
+--- a/src/pkgdbh.h
++++ b/src/pkgdbh.h
+@@ -196,7 +196,6 @@ public:
+ 
+ 
+ 	void print_version() const;
+-	int getNumberOfPackages();
+ 	std::set<std::string> getListOfPackageName();
+ 
+ 	bool checkPackageNameExist(const std::string& name) const;
