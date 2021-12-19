@@ -12,10 +12,10 @@ PKGMK_GROUPS=(devel doc)
 PKGMK_KEEP_SOURCES="no"
 
 name=linux-mainline
-version=5.16-rc5
+version=5.16-rc6
 SUFFIX="${name/*-/}"
 INITRD="initrd-$SUFFIX"
-KERNEL="bzImage-$SUFFIX"
+KERNEL="kernel-$SUFFIX"
 
 _version=${version}
 
@@ -72,6 +72,7 @@ cp  .config    \
 $PKG/boot/config_64-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
 $PKG/boot/$KERNEL
+ln -sf $KERNEL boot/$name
 
 # Reorgenise the sources
 cd $PKG/lib/modules/${KERNEL_VERSION}/
@@ -110,7 +111,6 @@ else
     mkinitramfs ${KERNEL_VERSION}
     mv boot/initrd-${KERNEL_VERSION} boot/$INITRD
   fi
-  ln -sf $KERNEL boot/$name
 fi" > $PKGMK_ROOT/$name.post-install
 
 }
