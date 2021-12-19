@@ -2,8 +2,9 @@
 description="A web browser built for speed, simplicity, and security"
 url="https://www.chromium.org/Home"
 
-packager="spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 maintainer="Arch Linux"
+contributors="Spiky"
 
 makedepends=(gtk3 ffmpeg flac dbus freetype xorg-libxscrnsaver
              libxslt nss snappy json-glib llvm)
@@ -11,21 +12,14 @@ run=(hicolor-icon-theme desktop-file-utils)
 
 name=chromium
 version=96.0.4664.93
-icuversion=69.1
 re2version=2021-06-01
+release=2
 
 source=(
-        https://github.com/unicode-org/icu/releases/download/\
-release-${icuversion//./-}/icu4c-${icuversion//./_}-src.tgz \
 	https://downloads.tuxfamily.org/nutyx/files/libminizip.so.1.0.0 
         https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-1-x86_64.pkg.tar.zst
         https://github.com/google/re2/archive/${re2version}.tar.gz)
 prepare() {
-cd icu/source
-./configure
-make
-cd -
-
 cd re2-$re2version
 make
 }
@@ -38,12 +32,6 @@ mkdir -p $PKG/etc/ld.so.conf.d
 echo "/usr/lib/chromium" > $PKG/etc/ld.so.conf.d/$name.conf
 }
 package() {
-cd icu/source
-for LIB in libicui18n.so libicuuc.so libicudata.so
-do
-   cp lib/$LIB.$icuversion $PKG/usr/lib/chromium/$LIB.${icuversion:0:2}
-done
-cd -
 cd re2-$re2version
 install obj/so/libre2.so $PKG/usr/lib/chromium/libre2.so.9
 }
