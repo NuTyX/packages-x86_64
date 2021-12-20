@@ -12,6 +12,7 @@ PKGMK_GROUPS=(devel doc)
 
 name=kernel
 version=5.15.10
+release=2
 
 alias=(linux)
 INITRD="initrd"
@@ -72,6 +73,7 @@ cp  .config    \
 $PKG/boot/config_64-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
 $PKG/boot/$KERNEL
+ln -sf $KERNEL $PKG/boot/${name}-stable
 
 # Reorgenise the sources
 cd $PKG/lib/modules/${KERNEL_VERSION}/
@@ -95,7 +97,9 @@ rm -rf $PKG/lib/firmware
 echo "LK=\".\"
 [ -L boot/$name ] && LK=\"\$(readlink boot/$name)\"
 if [ \"\$(dirname \$LK)\" != \".\" ]; then
-  echo \"This is an efi installation\"
+  echo \"This is a depreciate efi installation\"
+  echo \"Use grub-install command to fix this !!!\"
+  echo \"This way of installing won't be support in the future.\"
   ln -sf \$LK boot/$name
   if [ -f boot/\$LK ]; then
     mv boot/$KERNEL boot/\$LK 2>/dev/null
@@ -104,13 +108,11 @@ if [ \"\$(dirname \$LK)\" != \".\" ]; then
     echo \"EFI Partition not found, mount EFI Partition and re-install the kernel\"
   fi
 else
-  echo \"This is a bios installation\"
   if [ -f boot/$INITRD ]; then
     rm boot/$INITRD
     mkinitramfs ${KERNEL_VERSION}
     mv boot/initrd-${KERNEL_VERSION} boot/$INITRD
   fi
-  ln -sf $KERNEL boot/$name
 fi" > $PKGMK_ROOT/$name.post-install
 
 }

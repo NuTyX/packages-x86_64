@@ -1,0 +1,26 @@
+diff --git a/fltk/cards_client.cxx b/fltk/cards_client.cxx
+index a56c9f0..866dfdb 100644
+--- a/fltk/cards_client.cxx
++++ b/fltk/cards_client.cxx
+@@ -174,7 +174,7 @@ namespace cards
+         {
+ 			case DB_OPEN_RUN:
+ 			{
+-				i = j / ( getNumberOfPackages() / 100);
++				i = j / ( getListOfPackageNames("") / 100);
+ 				Value = i;
+ 				j++;
+ 				break;
+diff --git a/fltk/flcards_info.cxx b/fltk/flcards_info.cxx
+index a065ffd..82a81eb 100644
+--- a/fltk/flcards_info.cxx
++++ b/fltk/flcards_info.cxx
+@@ -35,7 +35,7 @@ void Flcards_info::progressInfo()
+ 
+ 	static int j = 0;
+ 	int i,n;
+-	n = getNumberOfPackages();
++	n = getListOfPackageNames("");
+ 	switch ( m_actualAction )
+ 	{
+ 		case DB_OPEN_START:
