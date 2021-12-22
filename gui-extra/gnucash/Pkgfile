@@ -1,7 +1,7 @@
 description="Personal and small-business financial-accounting application"
 url="https://gnucash.org/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(cmake boost guile libdbi webkitgtk gtest
             gwenhywfar aqbanking libofx libdbi-drivers)
@@ -9,11 +9,13 @@ run=(desktop-file-utils)
 
 name=gnucash
 version=4.8
+release=3
 
 source=(https://downloads.sourceforge.net/$name/$name-${version}.tar.bz2)
 
 build() {
 cd $name-$version
+
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_INSTALL_LIBDIR=/usr/lib \
       -DCOMPILE_GSCHEMAS=OFF
