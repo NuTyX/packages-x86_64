@@ -2,9 +2,10 @@ description="WebRTC library for Telegram-desktop"
 url="https://github.com/desktop-app/tg_owt"
 
 name=tg_owt
-version=20211101
+version=20211223
+release=2
 
-_commit=d578c76
+_commit=d5c3d43
 
 packager="tnut <tnut@nutyx.org>"
 
@@ -31,8 +32,9 @@ cd tg_owt
 cmake \
     -B build \
     -G Ninja \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr
+    -DCMAKE_BUILD_TYPE=Release  \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_SHARED_LIBS=OFF
 ninja -C build
 DESTDIR=$PKG ninja -C build install
 }
