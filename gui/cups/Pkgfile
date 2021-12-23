@@ -1,8 +1,8 @@
 description="The Common Unix Printing System (CUPS) is a print spooler and associated utilities"
 url="http://www.cups.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(pam libusb avahi python gnutls)
 run=(xdg-utils gtk-update-icon-cache
@@ -13,13 +13,12 @@ set=(cups printer)
 PKGMK_GROUPS=(devel man lib)
 
 name=cups
-version=2.3.3
-release=3
+version=2.4.0
 
-runyx_version=20200412
+runyx_version=20201011
 
 source=(https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz \
-	https://github.com/apple/cups/releases/download/v${version}/cups-${version}-source.tar.gz \
+	https://github.com/OpenPrinting/cups/releases/download/v${version}/$name-$version-source.tar.gz \
 	99-printer.rules)
 prepare() {
 
