@@ -1,8 +1,8 @@
 description="engine of made Web free for the browsers web version 3"
 url="http://webkitgtk.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre B, Greg, Fanch, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, Greg, Fanch, Spiky"
 
 makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              gstreamer-plugins-bad xorg-libxt gtk2 gtk3 gtk-doc
@@ -12,8 +12,8 @@ makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              harfbuzz gtk-doc libnotify wayland woff2 libmanette)
              
 name=webkitgtk
-version=2.32.0
-release=2
+version=2.34.2
+release=4
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 prepare() {
@@ -37,6 +37,7 @@ cmake -G Ninja                     \
       -DUSE_LIBHYPHEN=OFF          \
       -DENABLE_MINIBROWSER=ON      \
       -DUSE_WOFF2=ON               \
+      -DUSE_SOUP2=ON               \
       -DENABLE_GTKDOC=ON           \
       -DUSE_WPE_RENDERER=OFF       \
       -DENABLE_BUBBLEWRAP_SANDBOX=OFF \
@@ -44,10 +45,13 @@ cmake -G Ninja                     \
 ninja || ninja -j1
 DESTDIR=$PKG ninja install || DESTDIR=$PKG ninja -j1 install
 
-install -vdm755 $PKG/usr/share/gtk-doc/html/webkit{2,dom}gtk-4.0
+install -vdm755 $PKG/usr/share/gtk-doc/html/webkit{2,dom}gtk
 install -vm644  ../Documentation/webkit2gtk-4.0/html/* \
-$PKG/usr/share/gtk-doc/html/webkit2gtk-4.0
+$PKG/usr/share/gtk-doc/html/webkit2gtk
 install -vm644  ../Documentation/webkitdomgtk-4.0/html/* \
-$PKG/usr/share/gtk-doc/html/webkit2gtk-4.0
+$PKG/usr/share/gtk-doc/html/webkit2gtk
 
+# avoid conflict with webkit2gtk-4
+mv $PKG/usr/share/gtk-doc/html/jsc-glib-4.0 \
+$PKG/usr/share/gtk-doc/html/jsc-glib
 }

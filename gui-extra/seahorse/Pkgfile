@@ -1,8 +1,8 @@
 description="GNOME application for managing PGP keys"
 url="http://www.gnome.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut, Jayce, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Jayce,Spiky"
 
 makedepends=(libpwquality meson gtk3 gcr libsoup libsecret
              dconf gpgme openldap intltool yelp-tools openssh
@@ -11,7 +11,8 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 set=(gnome)
 
 name=seahorse
-version=40.0
+version=41.0
+release=2
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 

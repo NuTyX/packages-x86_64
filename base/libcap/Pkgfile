@@ -7,13 +7,12 @@ contributors="Pierre B"
 makedepends=(pam)
 
 name=libcap
-version=2.58
+version=2.61
 
 source=(https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-$version.tar.xz)
 
 build() {
 cd libcap-$version
-sed -i 's/ $(PROGS)/& capsh/' progs/Makefile
 sed -i '/install -m.*STA/d' libcap/Makefile
 make prefix=/usr lib=lib
 

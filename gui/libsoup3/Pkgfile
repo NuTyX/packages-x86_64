@@ -1,0 +1,27 @@
+description="HTTP client/server library for GNOME"
+url="https://wiki.gnome.org/Projects/libsoup"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(gobject-introspection python vala git gtk-doc meson samba
+             python-quart libnghttp2)
+run=(glib-networking libpsl)
+
+name=libsoup3
+version=3.0.3
+
+source=(https://gitlab.gnome.org/GNOME/libsoup/-/archive/$version/libsoup-$version.tar.gz)
+
+build() {
+cd libsoup-$version
+mkdir build
+cd    build
+meson --prefix=/usr \
+      -Dvapi=enabled \
+      -Dhttp2_tests=disabled \
+      -Dgssapi=disabled \
+      ..
+ninja
+DESTDIR=$PKG ninja install
+}

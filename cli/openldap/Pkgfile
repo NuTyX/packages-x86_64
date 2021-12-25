@@ -1,18 +1,18 @@
 description="Lightweight Directory Access Protocol (LDAP) client and server"
 url="http://www.openldap.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(autoconf m4)
 
 name=openldap
-version=2.4.59
+version=2.6.0
 runyx_version=20201011
 
 source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	https://www.openldap.org/software/download/OpenLDAP/openldap-release/$name-$version.tgz
-	consolidated-1.patch)
+	openldap-2.6.0-consolidated-1.patch)
 prepare() {
 
 (getent group  ldap > /dev/null) || groupadd -g 83 ldap
@@ -22,7 +22,7 @@ prepare() {
 }
 build() {
 cd $name-$version
-patch -Np1 -i ../consolidated-1.patch
+patch -Np1 -i ../openldap-2.6.0-consolidated-1.patch
 autoconf
 ./configure --prefix=/usr \
             --sysconfdir=/etc \
@@ -34,7 +34,6 @@ make depend
 make
 make DESTDIR=$PKG install
 
-rm $PKG/usr/lib/libldap{,_r}.la
 rm $PKG/usr/lib/liblber.la
 
 # Service

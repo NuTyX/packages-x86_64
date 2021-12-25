@@ -11,7 +11,7 @@ makedepends=(acl libcap kmod m4 gperf pam)
 
 name=systemd
 version=246
-release=14
+release=16
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -25,6 +25,12 @@ ln -sf /bin/true /usr/bin/xsltproc
 sed -i "s@: (conf.get('HAVE_SYSV_COMPAT') == 1)@: true@" $name-$version/meson.build
 sed '177,$ d' -i $name-$version/src/resolve/meson.build
 sed -i 's/GROUP="render", //' $name-$version/rules.d/50-udev-default.rules.in
+sed -i 's@/sbin/swap@/usr/sbin/swap@' $name-$version/src/core/swap.c
+sed -i 's@/sbin/swap@/usr/sbin/swap@' $name-$version/src/basic/unit-def.h
+sed -i 's/+ want_libfuzzer.*$/and want_libfuzzer/' $name-$version/meson.build
+sed -i 's@/sbin/modprobe@modprobe@' $name-$version/units/modprobe@.service
+sed -i 's/sbin:" x "bin"/bin:" x "sbin"/' $name-$version/src/basic/path-util.h
+sed -i 's/sbin\\0" x "bin\\0"/bin\\0" x "sbin\\0"/' $name-$version/src/basic/path-util.h
 
 }
 build() {
@@ -47,7 +53,6 @@ meson --prefix=/usr           \
 -Dumount-path=/bin/umount     \
 -Dman=true                    \
 -Dresolve=false               \
--Dnetworkd=false              \
 -Dsysvinit-path=              \
 -Dsysvrcnd-path=              \
 -Dtimesyncd=false             \

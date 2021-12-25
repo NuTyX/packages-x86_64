@@ -7,13 +7,13 @@ makedepends=(sed grep pcre apr-util sqlite expat)
 run=(shadow)
 
 name=apache
-version=2.4.51
+version=2.4.52
 
 runyx_version=20201011
 
 source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	http://archive.apache.org/dist/httpd/httpd-$version.tar.bz2
-	httpd-layout-1.patch)
+	httpd-2.4.52-layout-1.patch)
 
 prepare(){
 UN=apache
@@ -40,7 +40,7 @@ cd httpd-$version
 
 unset MAKEFLAGS
 
-patch -Np1 -i ../httpd-layout-1.patch
+patch -Np1 -i ../httpd-2.4.52-layout-1.patch
 sed '/dir.*CFG_PREFIX/s@^@#@' -i support/apxs.in
 ./configure --enable-authnz-fcgi                            \
             --enable-layout=BLFS                            \
