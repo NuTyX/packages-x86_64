@@ -1,0 +1,26 @@
+description='provides GIO-style async APIs for most Flatpak portals.'
+url='https://github.com/flatpak/libportal'
+
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(meson ninja glib gtk-doc vala gobject-introspection gtk3 gtk4
+             qtbase qtx11extras)
+
+name=libportal
+version=0.5
+
+source=(https://github.com/flatpak/libportal/releases/download/$version/libportal-$version.tar.xz)
+
+build() {
+
+         cd $name-$version
+         mkdir build
+         cd    build
+
+         meson --prefix=/usr  \
+         -Ddocs=false         
+
+ninja
+DESTDIR=$PKG ninja install
+}
+          
