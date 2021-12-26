@@ -1,0 +1,67 @@
+diff --git a/fltk/cards_client.cxx b/fltk/cards_client.cxx
+index a56c9f0..866dfdb 100644
+--- a/fltk/cards_client.cxx
++++ b/fltk/cards_client.cxx
+@@ -174,7 +174,7 @@ namespace cards
+         {
+ 			case DB_OPEN_RUN:
+ 			{
+-				i = j / ( getNumberOfPackages() / 100);
++				i = j / ( getListOfPackageNames("") / 100);
+ 				Value = i;
+ 				j++;
+ 				break;
+diff --git a/fltk/flcards_info.cxx b/fltk/flcards_info.cxx
+index a065ffd..82a81eb 100644
+--- a/fltk/flcards_info.cxx
++++ b/fltk/flcards_info.cxx
+@@ -35,7 +35,7 @@ void Flcards_info::progressInfo()
+ 
+ 	static int j = 0;
+ 	int i,n;
+-	n = getNumberOfPackages();
++	n = getListOfPackageNames("");
+ 	switch ( m_actualAction )
+ 	{
+ 		case DB_OPEN_START:
+diff --git a/scripts/mybld.in b/scripts/mybld.in
+index 2b39851..91248ef 100755
+--- a/scripts/mybld.in
++++ b/scripts/mybld.in
+@@ -189,17 +189,15 @@ parse_arguments() {
+       shift
+       COLLECTION="$(echo ${1}|cut -d '/' -f1)"
+       PARAM="$(echo ${1}|cut -d '/' -f2)"
+-      find_collection
+-      if [ -z "${COLLECTION}" ]; then
++      if [ ! -f "${COLLECTION}/${PARAM}/Pkgfile" ]; then
+         COLLECTION="$(echo ${1}|cut -d '/' -f1)"
+         generate_Pkgfile "$@"
+         exit 0
+-      else
+-        echo "
++      fi
++      echo "
+   >>>     The package '${PARAM}' already exist in the '${COLLECTION}' collection !!!
+   "
+-        exit 1
+-      fi;;
++      exit 1;;
+ 
+     -R|--runtime)
+       RUNTIME="yes"
+@@ -827,5 +825,13 @@ answer
+ 
+ cd "${GIT_PROJECT}"
+ source /etc/profile.d/cards.sh
+-commit "$COLLECTION/${PARAM[0]}"
++
++if [ -z ${PACKAGES_LIST} ]; then
++   commit "$COLLECTION/${PARAM[0]}"
++else
++   for i in ${PACKAGES_LIST[@]}
++   do
++       commit "$i"
++   done
++fi
+ exit 0
