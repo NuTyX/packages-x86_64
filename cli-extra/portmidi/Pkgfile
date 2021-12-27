@@ -1,37 +1,30 @@
 description="Platform independent library for real-time MIDI input/output"
 url="http://portmedia.sourceforge.net"
 
-contributors="Pierre B, Greg"
-packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Greg,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
-makedepends=(cmake glib alsa-lib openjdk)
+makedepends=(cmake glib alsa-lib)
 
 name=portmidi
-version=217
-release=2
+version=236
 
-source=(http://downloads.sourceforge.net/project/portmedia/$name/$version/$name-src-$version.zip \
-        portmidi-217-build-fix.patch)
+source=(https://github.com/mixxxdj/portmidi/archive/refs/tags/$version.tar.gz)
 
 build() {
 
-	unset MAKEFLAGS
+	cd $name-$version
+	   mkdir build
+           cd    build
 
-	cd $name
-	sed -i "s#/usr/local#/usr#" */CMakeLists.txt pm_python/setup.py
-
-	mkdir -p pm_java/Release
-	patch -p1 -i $SRC/portmidi-217-build-fix.patch
-
-	cmake . -DCMAKE_INSTALL_PREFIX=/usr \
+	cmake           -DCMAKE_INSTALL_PREFIX=/usr \
 			-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=Release \
 			-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=Release \
-			-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=Release
+			-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=Release \
+                        -DBUILD_TESTING=OFF \
+                        ..
 
 make
 make DESTDIR=$PKG install
-
-# Fix missing symlink for libporttime.so (FS#21528)
-ln -s libportmidi.so $PKG/usr/lib/libporttime.so
 
 }
