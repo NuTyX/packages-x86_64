@@ -1,13 +1,13 @@
 description="Parse RSS and Atom feeds in Python
 url="https://github.com/kurtmckee/feedparser
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Rems"
+packager="spiky <spiky@nutyx.org>"
+contributors="Rems,Tnut"
 
 makedepends=(libxml2)
 
 name=python-feedparser
-version=5.2.1
+version=6.0.2
 
 PKGMK_KEEP_SOURCES="no"
 source=(base64.patch
@@ -15,14 +15,14 @@ source=(base64.patch
 
 build() {
   cd feedparser-$version
-  patch -Np1 -i ../base64.patch
-  python3 /usr/lib/python3.9/compileall.py feedparser/sgmllib3.py
+##  patch -Np1 -i ../base64.patch
+  python3 /usr/lib/python3.10/compileall.py feedparser/sgml.py
   python3 setup.py build
   python3 setup.py install --prefix=/usr --root=$PKG
 
- install -Dm644 feedparser/sgmllib3.py \
- $PKG/usr/lib/python3.9/site-packages/sgmllib.py
+ install -Dm644 feedparser/sgml.py \
+ $PKG/usr/lib/python3.10/site-packages/sgml.py
 
- install -Dm644 feedparser/__pycache__/sgmllib3.cpython-39.pyc \
- $PKG/usr/lib/python3.9/site-packages/__pycache__/sgmllib.cpython-39.pyc
+ install -Dm644 feedparser/__pycache__/sgml.cpython-310.pyc \
+ $PKG/usr/lib/python3.10/site-packages/__pycache__/sgml.cpython-310.pyc
 }
