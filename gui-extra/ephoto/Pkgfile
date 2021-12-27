@@ -1,15 +1,16 @@
 description="Image viewer/editor/manipulator/slideshow creator for enlightenment"
 url="http://www.enlightenment.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Berlius"
+packager="spiky <spiky@nutyx.org>"
+contributors="Berlius,Tnut"
 
-makedepends=(efl)
+makedepends=(efl meson ninja)
 set=(enlightenment)
 
 name=ephoto
-version=1.5
-release=2
+version=1.6.0
+
+build=meson
 
 source=(http://download.enlightenment.org/rel/apps/$name/$name-$version.tar.xz)
 uptodate() {
