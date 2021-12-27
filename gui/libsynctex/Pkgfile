@@ -1,20 +1,20 @@
 description="Library for synchronization between TeX files and resulting file"
 url="https://tug.org/texlive/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors=""
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
-makedepends=(cairo icu xorg-pixman xorg-libxaw)
+makedepends=(cairo gmp mpfr icu xorg-pixman xorg-libxaw)
 
 name=libsynctex
-version=20190410
+version=20210325
 
-source=(http://www.linuxfromscratch.org/patches/blfs/svn/texlive-20190410-source-upstream_fixes-1.patch
-        ftp://tug.org/texlive/historic/2019/texlive-$version-source.tar.xz)
+source=(https://www.linuxfromscratch.org/patches/blfs/svn/texlive-20210325-upstream_fixes-1.patch
+        ftp://tug.org/texlive/historic/2021/texlive-$version-source.tar.xz)
 
 build() {
 cd texlive-$version-source
-patch -Np1 -i ../texlive-20190410-source-upstream_fixes-1.patch
+patch -Np1 -i ../texlive-20210325-upstream_fixes-1.patch
 mkdir build
 cd    build
 
