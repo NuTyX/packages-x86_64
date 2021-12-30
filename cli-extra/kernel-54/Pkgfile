@@ -11,7 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-54
-version=5.4.168
+version=5.4.169
 
 alias=(linux-5.4)
 INITRD="initrd-${name/*-/}"
@@ -95,7 +95,7 @@ rm -rf $PKG/lib/firmware
 echo "LK=\".\"
 [ -L boot/$name ] && LK=\"\$(readlink boot/$name)\"
 if [ \"\$(dirname \$LK)\" != \".\" ]; then
-  echo \"This is an efi installation\"
+  echo \"This is an obsolet efi installation\"
   ln -sf \$LK boot/$name
   if [ -f boot/\$LK ]; then
     mv boot/$KERNEL-${KERNEL_VERSION} boot/\$LK 2>/dev/null
@@ -104,7 +104,6 @@ if [ \"\$(dirname \$LK)\" != \".\" ]; then
     echo \"EFI Partition not found, mount EFI Partition and re-install the kernel\"
   fi
 else
-  echo \"This is a bios installation\"
   if [ -L boot/$INITRD ]; then
     mkinitramfs ${KERNEL_VERSION}
     ln -sf initrd-${KERNEL_VERSION} boot/$INITRD
