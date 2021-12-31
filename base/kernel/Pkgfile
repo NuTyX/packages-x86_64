@@ -11,7 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel
-version=5.15.11
+version=5.15.12
 
 alias=(linux)
 INITRD="initrd"
@@ -96,7 +96,7 @@ rm -rf $PKG/lib/firmware
 echo "LK=\".\"
 [ -L boot/$name ] && LK=\"\$(readlink boot/$name)\"
 if [ \"\$(dirname \$LK)\" != \".\" ]; then
-  echo \"This is a depreciate efi installation\"
+  echo \"This is an obsolet efi installation\"
   echo \"Use grub-install command to fix this !!!\"
   echo \"This way of installing won't be support in the future.\"
   ln -sf \$LK boot/$name
