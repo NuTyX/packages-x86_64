@@ -1,46 +1,31 @@
 description="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet"
 url="http://hplipopensource.com"
 
-contributors="Greg, Spiky"
+contributors="Greg, Spiky, Rems"
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(avahi python ghostscript foomatic-db usbutils
-             sane cups cups-filters cups-pk-helper libusb net-snmp)
+makedepends=(avahi python ghostscript usbutils
+             sane cups cups-filters cups-pk-helper libusb net-snmp
+             libjpeg-turbo rpcbind libtool autoconf grep)
 
 run=(sip dbus-python python-qt python-pillow foomatic-db-engine
-     python-distro python-dbus)
+     python-distro python-dbus python-gobject foomatic-db polkit)
 
 
 name=hplip
-version=3.20.11
+version=3.21.12
 
-source=(https://downloads.sourceforge.net/$name/$name-$version.tar.gz
-	https://launchpadlibrarian.net/480406888/hplip-configure-python.patch
-        0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
-        0023-Fix-handling-of-unicode-filenames-in-sixext.py.patch
-        0025-Remove-all-ImageProcessor-functionality-which-is-clo.patch
-	reproducible-gzip.patch)
-
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz
+       consolidate.patch)
 prepare() {
  cd $name-$version
- 
- # add missing 'include <cups/ppd.h>' at various places
- patch -Np1 -i ../0022-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch
 
- # fix some handling unicode file names FS#58412
- patch -Np1 -i ../0023-Fix-handling-of-unicode-filenames-in-sixext.py.patch
+ patch -Np1 -i ../consolidate.patch
 
- # remove binary blob libImageProcessor and all linking - FS#59681
- patch -Np1 -i ../0025-Remove-all-ImageProcessor-functionality-which-is-clo.patch
+ libtoolize -f
+ autoreconf -fi
+ autoupdate
 
- # https://bugs.launchpad.net/hplip/+bug/1879445
- patch -Np1 -i ../hplip-configure-python.patch
-
- # make gzip creation reproducible by removing the timestamp
- patch -Np1 -i ../reproducible-gzip.patch
-
- export AUTOMAKE='automake --foreign'
- autoreconf --force --install
 }
 
 build() {
@@ -75,16 +60,5 @@ package() {
 
  python3 -m compileall -d /usr/share $PKG/usr/share
  python3 -O -m compileall -d /usr/share $PKG/usr/share
-
- rm $PKG/usr/lib/python3.9/site-packages/hpmudext.la
- rm $PKG/usr/lib/python3.9/site-packages/pcardext.la
- rm $PKG/usr/lib/python3.9/site-packages/cupsext.la
- rm $PKG/usr/lib/python3.9/site-packages/scanext.la
- rm $PKG/usr/lib/libhpdiscovery.la
- rm $PKG/usr/lib/sane/libsane-hpaio.la
- rm $PKG/usr/lib/libhpmud.la
- rm $PKG/usr/lib/libhpipp.la
- rm $PKG/usr/lib/libhpip.la
-
 
 }
