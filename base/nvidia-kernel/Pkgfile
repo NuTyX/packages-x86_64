@@ -5,11 +5,11 @@ packager="tnut <tnut@nutyx.org>"
 
 name=nvidia-kernel
 version=495.46
-release=4
+release=5
 
 run=(kernel)
 
-source=(nvidia-kernel-5.7.patch
+source=(kernel-5.16.patch
 	https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
 
 build()
@@ -17,9 +17,10 @@ build()
  sh NVIDIA-Linux-x86_64-$version.run --extract-only
 
 
- cd NVIDIA-Linux-x86_64-$version/kernel
- patch -Np1 -i ../../nvidia-kernel-5.7.patch
+ cd NVIDIA-Linux-x86_64-$version
+ patch -Np1 -i ../kernel-5.16.patch
 
+ cd kernel
  modules_dir="$(basename /lib/modules/*)"
 
  SYSSRC="/usr/src/*" make modules
