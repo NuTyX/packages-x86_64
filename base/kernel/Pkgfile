@@ -11,7 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel
-version=5.15.13
+version=5.16
 
 alias=(linux)
 INITRD="initrd"
@@ -73,6 +73,8 @@ $PKG/boot/config_64-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
 $PKG/boot/$KERNEL
 ln -sf $KERNEL $PKG/boot/${name}-stable
+ln -sf $KERNEL $PKG/boot/${name}
+
 
 # Reorgenise the sources
 cd $PKG/lib/modules/${KERNEL_VERSION}/
@@ -93,25 +95,10 @@ $SRC/linux-${_version}
 rm -rf $PKG/lib/firmware
 
 # post-install autogen
-echo "LK=\".\"
-[ -L boot/$name ] && LK=\"\$(readlink boot/$name)\"
-if [ \"\$(dirname \$LK)\" != \".\" ]; then
-  echo \"This is an obsolet efi installation\"
-  echo \"Use grub-install command to fix this !!!\"
-  echo \"This way of installing won't be support in the future.\"
-  ln -sf \$LK boot/$name
-  if [ -f boot/\$LK ]; then
-    mv boot/$KERNEL boot/\$LK 2>/dev/null
-    ln -sf \$LK boot/$KERNEL
-  else
-    echo \"EFI Partition not found, mount EFI Partition and re-install the kernel\"
-  fi
-else
-  if [ -f boot/$INITRD ]; then
+echo "if [ -f boot/$INITRD ]; then
     rm boot/$INITRD
     mkinitramfs ${KERNEL_VERSION}
     mv boot/initrd-${KERNEL_VERSION} boot/$INITRD
-  fi
 fi" > $PKGMK_ROOT/$name.post-install
 
 }
