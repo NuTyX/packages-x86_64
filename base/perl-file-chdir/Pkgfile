@@ -1,0 +1,21 @@
+description="a more sensible way to change directories"
+url="https://search.cpan.org/dist/File-chdir"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(perl)
+
+name=perl-file-chdir
+version=0.1011
+
+source=(https://www.cpan.org/authors/id/D/DA/DAGOLDEN/File-chdir-$version.tar.gz)
+
+build() {
+cd File-chdir-$version
+PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+find $PKG -name '.packlist' -delete
+  find $PKG -name '*.pod' -delete
+}
