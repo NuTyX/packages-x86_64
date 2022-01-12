@@ -1,0 +1,20 @@
+description="automatically give your module the ability to have plugins"
+url="https://metacpan.org/release/Module-Pluggable"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(perl)
+
+name=perl-module-pluggable
+version=5.2
+
+source=(https://cpan.metacpan.org/authors/id/S/SI/SIMONW/Module-Pluggable-$version.tar.gz)
+
+build() {
+cd Module-Pluggable-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make test
+make DESTDIR=$PKG install
+}
