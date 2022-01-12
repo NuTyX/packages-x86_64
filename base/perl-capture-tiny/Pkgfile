@@ -1,0 +1,19 @@
+description="Capture STDOUT and STDERR from Perl, XS or external programs"
+url="https://metacpan.org/release/Capture-Tiny"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(perl)
+
+name=perl-capture-tiny
+version=0.48
+
+source=(https://cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/Capture-Tiny-$version.tar.gz)
+
+build() {
+cd Capture-Tiny-$version
+PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+}
