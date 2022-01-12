@@ -1,0 +1,21 @@
+description="Build external dependencies for use in CPAN"
+url="https://metacpan.org/release/Alien-Build"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(perl-capture-tiny perl-ffi-checklib perl-file-chdir perl-file-which
+            perl-path-tiny perl-test2-suite)
+
+name=perl-alien-build
+version=2.46
+
+source=(https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/Alien-Build-$version.tar.gz)
+
+build() {
+cd Alien-Build-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make test
+make DESTDIR=$PKG install
+}
