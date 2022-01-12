@@ -1,0 +1,20 @@
+description="Lexically-scoped resource management"
+url="https://metacpan.org/release/Scope-Guard"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(perl)
+
+name=perl-scope-guard
+version=0.21
+
+source=(https://cpan.metacpan.org/authors/id/C/CH/CHOCOLATE/Scope-Guard-$version.tar.gz)
+
+build() {
+cd Scope-Guard-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make test
+make DESTDIR=$PKG install
+}
