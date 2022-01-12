@@ -95,10 +95,10 @@ $SRC/linux-${_version}
 rm -rf $PKG/lib/firmware
 
 # post-install autogen
-echo "if [ -f boot/$INITRD ]; then
-    rm boot/$INITRD
+echo "if [ -L boot/$INITRD ]; then
+    rm boot/$(readlink boot/$INITRD)
     mkinitramfs ${KERNEL_VERSION}
-    mv boot/initrd-${KERNEL_VERSION} boot/$INITRD
+    ln -sf initrd-${KERNEL_VERSION} boot/$INITRD
 fi" > $PKGMK_ROOT/$name.post-install
 
 }
