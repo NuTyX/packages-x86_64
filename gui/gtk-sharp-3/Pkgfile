@@ -1,0 +1,31 @@
+description="C bindings for GTK+ 3"
+url="https://www.mono-project.com/docs/gui/gtksharp/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(mono gtk3)
+
+name=gtk-sharp-3
+version=2.99.3
+
+source=(https://download.gnome.org/sources/gtk-sharp/2.99/gtk-sharp-$version.tar.xz
+       fix-build.patch)
+
+prepare() {
+
+  cd gtk-sharp-$version
+ 
+  patch -Np1 -i ../fix-build.patch
+  sed -i 's/gmcs/mcs/' configure{,.ac}
+  sed -e '/MONO_PROFILE_ENTER_LEAVE/d' -i gtk/gui-thread-check/profiler/gui-thread-check.c # Fix build with newer mono
+}
+
+build() {
+cd gtk-sharp-$version
+
+./configure --prefix=/usr
+sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+make
+make DESTDIR=$PKG install
+}
