@@ -1,8 +1,8 @@
 description="Stand-alone mail/news client based on the Mozilla codebase."
 url="http://www.mozilla.org/thunderbird"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Fabienwang,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Fabienwang,Spiky"
 
 makedepends=(autoconf2-13 icu alsa-lib gtk2 zip unzip libevent libvpx nspr
              nss yasm dbus-glib doxygen libnotify openjdk sqlite wireless-tools
@@ -12,12 +12,12 @@ run=(startup-notification hunspell desktop-file-utils hicolor-icon-theme
      shared-mime-info)
 
 name=thunderbird
-version=91.4.1
+version=91.5.0
 
 locale_version=$version
 
 source=(https://archive.mozilla.org/pub/thunderbird/releases/$version/source/$name-$version.source.tar.xz
-	$name.desktop )
+	$name.desktop buildfix-1.patch )
 
 pack_remove_locale() {
 
@@ -92,7 +92,7 @@ ac_add_options --enable-official-branding
 
 EOF
 
-mountpoint -q /dev/shm || mount -t tmpfs devshm /dev/shm
+patch -Np1 -i ../buildfix-1.patch
 
 export SHELL=/bin/sh
 export CC=gcc CXX=g++
