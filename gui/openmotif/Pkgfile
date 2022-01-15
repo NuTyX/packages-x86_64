@@ -1,0 +1,20 @@
+description="Open Motif"
+url='https://sourceforge.net/projects/motif/'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(flex xorgproto
+             xorg-xbitmaps xorg-libxp xorg-libxft xorg-libxmu libpng libjpeg-turbo)
+
+name=openmotif
+version=2.3.8
+
+source=(https://sourceforge.net/projects/motif/files/Motif%20${version}%20Source%20Code/motif-${version}.tar.gz)
+
+build() {
+cd motif-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
