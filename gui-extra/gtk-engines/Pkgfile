@@ -1,19 +1,21 @@
 description="The GTK Engines package contains eight themes/engines and two additional engines for GTK2"
 url="https://download.gnome.org/sources/gtk-engines"
 
-contributors="Berlius, Greg"
-packager="tnut <tnut@nutyx.org>"
+contributors="Berlius,Greg,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
-makedepends=(gtk2 lua)
+makedepends=(gtk2 gtk3 lua gnome-common)
 
 name=gtk-engines
-version=2.20.2
+version=2.21.0
+_commit=e23eb81ade8c815dcd4da026ab7a2b7307a4f326
 
-source=(https://download.gnome.org/sources/gtk-engines/${version:0:4}/$name-$version.tar.bz2)
+source=(https://gitlab.gnome.org/Archive/$name/-/archive/${_commit}/$name-${_commit}.tar.gz)
  
 build() {
 
-cd $name-$version
+cd $name-${_commit}
+./autogen.sh
 ./configure --prefix=/usr 	
 make
 make DESTDIR=$PKG install
