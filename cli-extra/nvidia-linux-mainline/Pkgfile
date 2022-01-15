@@ -7,15 +7,18 @@ version=495.46
 
 run=(linux-mainline)
 
-source=(https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
+source=(kernel-5.16.patch
+        https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
 
 build()
 {
  sh NVIDIA-Linux-x86_64-$version.run --extract-only
 
 
- cd NVIDIA-Linux-x86_64-$version/kernel
+ cd NVIDIA-Linux-x86_64-$version
+ patch -Np1 -i ../kernel-5.16.patch
 
+ cd kernel
  modules_dir="$(basename /lib/modules/*)"
 
  SYSSRC="/usr/src/*" make modules
