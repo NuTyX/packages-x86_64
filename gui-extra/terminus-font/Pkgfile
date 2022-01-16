@@ -1,13 +1,18 @@
 description="Monospace bitmap font (for X11 and console)"
 url="http://sourceforge.net/projects/terminus-font/"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg"
 
 name=terminus-font
 version=4.49.1
-makedepends=(python xorg-server xorg-fontconfig xorg-font-util
-             xorg-mkfontscale xorg-font-alias xorg-encodings
+release=2
+
+makedepends=(python xorg-server xorg-font-util
+              xorg-font-alias xorg-encodings
              xorg-bdftopcf)
+run=(xorg-mkfontscale xorg-fontconfig)
+
 source=(http://downloads.sourceforge.net/project/$name/$name-4.49/$name-$version.tar.gz)
 
 prepare() {
