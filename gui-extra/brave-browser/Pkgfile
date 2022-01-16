@@ -3,6 +3,7 @@ PKGMK_KEEP_SOURCES="no"
 name=brave-browser
 description="The web browser from Brave Browse faster by blocking ads and trackers."
 version="1.34.80"
+release=2
 url="https://brave.com/"
 packager="Sundev79 <sundev79@nutdevs.org>"
 
@@ -14,7 +15,7 @@ build() {
 	tar -xf data.tar.xz -C "$PKG/"
 	
 	# Icons
-  for i in 16 24 32 48 64 128 256; do
+  for i in 16x16 24x24 32x32 48x48 64x64 128x128 256x256; do
     install -Dm644 "$PKG"/opt/brave.com/brave/product_logo_${i/x*}.png \
                    "$PKG"/usr/share/icons/hicolor/$i/apps/brave-browser.png
   done
