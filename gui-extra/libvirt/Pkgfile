@@ -15,7 +15,7 @@ run=(qemu dmidecode dnsmasq ebtables iptables libxml2)
 
 name=libvirt
 version=8.0.0
-release=2
+release=3
 
 source=(libvirtd
          https://libvirt.org/sources/$name-$version.tar.xz)
@@ -32,6 +32,12 @@ build() {
         -Dqemu_group=kvm
   ninja
   DESTDIR=$PKG ninja  install
+
+  mkdir -p $PKG/etc/sysconfig/modules.d
+  cat > $PKG/etc/sysconfig/modules.d/libvirt.conf << "EOF"
+tun
+EOF
+
 
   # service
   mkdir -p $PKG/etc/rc.d/init.d
