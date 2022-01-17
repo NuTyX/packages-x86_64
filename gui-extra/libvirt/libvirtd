@@ -3,10 +3,11 @@
 . /lib/lsb/init-functions
 [ -f /etc/sysconfig/virtlogd ] && . /etc/sysconfig/virtlogd
 [ -f /etc/sysconfig/libvirtd ] && . /etc/sysconfig/libvirtd
-[ -f /etc/sysconfig/liblxcd ] && . /etc/sysconfig/liblxcdd
-[ -f /etc/sysconfig/liblockd ] && . /etc/sysconfig/liblockd
-[ -f /etc/sysconfig/libnetworkd ] && . /etc/sysconfig/libnetworkd
+[ -f /etc/sysconfig/virtlxcd ] && . /etc/sysconfig/virtlxcd
+[ -f /etc/sysconfig/virtlockd ] && . /etc/sysconfig/virtlockd
+[ -f /etc/sysconfig/virtnetworkd ] && . /etc/sysconfig/virtnetworkd
 [ -f /etc/sysconfig/virtstoraged ] && . /etc/sysconfig/virtstoraged
+[ -f /etc/sysconfig/virtqemud ] && . /etc/sysconfig/virtqemud
 
 case "$1" in
    start)
@@ -17,7 +18,7 @@ case "$1" in
       start_daemon /usr/sbin/libvirtd $LIBVIRTD_ARGS -d
       evaluate_retval
       log_info_msg "Starting virtlxcd..."
-      start_daemon /usr/sbin/virtlxcd $LIBVIRTD_ARGS -d
+      start_daemon /usr/sbin/virtlxcd $VIRTLXCD_ARGS -d
       evaluate_retval
       log_info_msg "Starting virtqemud..."
       start_daemon /usr/sbin/virtqemud $VIRTQEMUD_ARGS -d
@@ -25,17 +26,13 @@ case "$1" in
       log_info_msg "Starting virtlockd..."
       start_daemon /usr/sbin/virtlockd $VIRTLOCKD_ARGS -d
       evaluate_retval
+      log_info_msg "Starting virtstoraged..."
+      start_daemon /usr/sbin/virtstoraged $VIRTSTORAGED_ARGS -d
+      evaluate_retval
+      sleep 1
       log_info_msg "Starting virtnetworkd..."
       start_daemon /usr/sbin/virtnetworkd $VIRTNETWORKD_ARGS -d
       evaluate_retval
-      log_info_msg "Starting virtstoraged..."
-      start_daemon /usr/sbin/virtstoraged $VIRTSTORAGED_ARGS -d
-      evaluate_retval
-      log_info_msg "Starting virtstoraged..."
-      start_daemon /usr/sbin/virtstoraged $VIRTSTORAGED_ARGS -d
-      evaluate_retval
-
-
 
       ;;
 
