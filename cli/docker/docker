@@ -1,0 +1,57 @@
+#!/bin/sh
+#
+# /etc/rc.d/init.d/docker: start/stop docker daemon
+#
+. /lib/lsb/init-functions
+
+SSD=/usr/sbin/start-stop-daemon
+PROG=/usr/bin/dockerd
+PID=/var/run/docker.pid
+CONF=/etc/docker.conf
+LOG=/var/log/docker.log
+
+if [ -f $CONF ]; then
+    . $CONF
+else
+    if [ -z $OPTS ]; then
+        OPTS="-p $PID -g docker"
+    fi
+fi
+
+case $1 in
+  start)
+    if [ ! -f $LOG ]; then
+        touch $LOG
+        chgrp docker $LOG
+        chmod 640 $LOG
+    fi
+
+    /usr/bin/cgroupfs-mount
+    log_info_msg "Starting docker daemon..."
+    $SSD --start --pidfile $PID --background --exec $PROG $OPTS -O $LOG
+    evaluate_retval 
+   ;;
+  stop)
+    log_info_msg "Stopping docker daemon..."
+    $SSD --stop --retry 10 --pidfile $PID
+    evaluate_retval
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  status)
+    $SSD --status --pidfile $PID
+    case $? in
+      0) log_success_msg "$PROG is running with pid $(cat $PID)" ;;
+      1) log_warning_msg "$PROG is not running but the pid file $PID exists" ;;
+      3) log_warning_msg "$PROG is not running" ;;
+      4) log_failure_msg "Unable to determine the program status" ;;
+    esac
+    ;;
+  *)
+    echo "usage: $0 [start|stop|restart|status]"
+    ;;
+esac
+
+# End of file

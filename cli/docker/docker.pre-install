@@ -1,0 +1,8 @@
+. lib/lsb/init-functions
+
+UN=docker
+
+if ! (getent group $UN > /dev/null); then
+        log_info_msg "${INFO}Creating $UN group${NORMAL}\n"
+        groupadd  $UN
+fi

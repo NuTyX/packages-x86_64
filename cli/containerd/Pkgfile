@@ -1,0 +1,27 @@
+description='A daemon to control runC'
+url='https://containerd.io/'
+
+contributors="MattHoush"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(go btrfs-progs git libseccomp)
+
+name=containerd
+version=1.5.9
+release=1
+
+source=(http://jaeger.morpheus.net/linux/crux/files/$name-$version.tar.xz)
+
+build() {
+    export GO111MODULE=auto
+    export PATH=/usr/lib/go/bin:$PATH
+    mkdir -p src/github.com/$name
+    cd src/github.com/$name
+    ln -s $SRC/$name-$version $name
+    cd $name
+    export GOPATH=$SRC
+    # use the long commit hash here
+    make GIT_COMMIT=1407cab509ff0d96baa4f0eb6ff9980270e6e620
+    install -d -m 0755 $PKG/usr/bin
+    install -m 0755 bin/* $PKG/usr/bin/
+}
