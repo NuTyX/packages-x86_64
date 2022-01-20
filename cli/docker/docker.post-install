@@ -1,0 +1,11 @@
+. lib/lsb/init-functions
+
+UN=docker
+
+log_info_msg "${WARNING}
+Your account needs to be part of the '$UN' group
+to be able to use docker in unprivileged mode:
+
+  usermod -a -G $UN ${NORMAL} <username>
+
+"
