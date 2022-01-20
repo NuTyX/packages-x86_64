@@ -1,0 +1,62 @@
+description="The GRUB package contains the GRand Unified Bootloader."
+url="http://www.gnu.org/software/grub/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Schrodinger72,Spiky"
+
+name=grub-efi-ia32
+version=2.06
+release=6
+
+dejavu_version=2.37
+splash_version=21.03.0-rc4
+
+makedepends=(automake m4 bison flex gettext texinfo python
+             xz efibootmgr efivar freetype lvm2)
+
+source=(https://download.tuxfamily.org/nutyx/files/splash-${splash_version}.png
+	https://ftp.gnu.org/gnu/unifont/unifont-13.0.06/unifont-13.0.06.pcf.gz
+	http://downloads.sourceforge.net/dejavu/dejavu-fonts-ttf-${dejavu_version}.tar.bz2
+        https://ftp.gnu.org/gnu/grub/grub-$version.tar.xz
+        grub
+	grub.cfg)
+
+PKGMK_GROUPS=(man)
+PKGMK_LOCALES=()
+
+unset MAKEFLAGS
+unset CFLAGS
+unset CXXFLAGS
+
+prepare() {
+mv dejavu-fonts-ttf-${dejavu_version}/ttf/Deja* \
+grub-$version
+gunzip -c unifont-13.0.06.pcf.gz \
+> grub-$version/unifont.pcf
+}
+
+build() {
+  cp -a grub-$version grub-efi-$version-ia32
+
+  cd ./grub-efi-$version-ia32
+	./configure --prefix=/usr \
+		--sysconfdir=/etc       \
+		--sbindir=/sbin        \
+		--disable-efiemu \
+		--infodir=/usr/share/info \
+                --with-platform=efi \
+		--target=i386 \
+		--disable-werror
+	make
+	mkdir $SRC/dest
+	make DESTDIR=$SRC/dest install
+        install -d $PKG/boot/grub
+	install -Dm644 ../grub.cfg \
+	$PKG/boot/grub/grub.cfg.exemple
+	
+	mkdir -p $PKG/usr/lib/grub/ && cp -r $SRC/dest/usr/lib/grub/i386-efi $PKG/usr/lib/grub/
+
+        install -Dm644 ../grub $PKG/etc/default/grub
+	install -Dm644 ../splash-${splash_version}.png \
+	$PKG/usr/share/grub/splash.png
+}
