@@ -17,11 +17,13 @@ set=(gnome)
 
 name=gnome-shell
 version=41.3
+release=2
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
+sed -i '/i18n.merge_file/s/(.*/(/' $(find -name meson.build)
 sed -i '/isGreeter/,+2 d' js/ui/status/keyboard.js 
 mkdir build
 cd build
