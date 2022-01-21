@@ -11,7 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel
-version=5.16.1
+version=5.16.2
 
 alias=(linux)
 INITRD="initrd"
@@ -97,7 +97,7 @@ rm -rf $PKG/lib/firmware
 # post-install autogen
 echo "if [ -L boot/$INITRD ]; then
     mkinitramfs ${KERNEL_VERSION}
-    rm boot/$(readlink boot/$INITRD)
+    rm -f boot/$(readlink boot/$INITRD)
     ln -sf initrd-${KERNEL_VERSION} boot/$INITRD
 fi" > $PKGMK_ROOT/$name.post-install
 
