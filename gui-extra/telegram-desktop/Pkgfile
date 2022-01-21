@@ -19,6 +19,8 @@ build() {
 
   cd tdesktop-$version-full
 
+  export CXXFLAGS+=" -Wp,-U_GLIBCXX_ASSERTIONS"
+
   cmake -B build -G Ninja \
         -DDESKTOP_APP_QT6=off \
 	-DTDESKTOP_API_ID=611335 \
