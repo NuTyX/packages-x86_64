@@ -7,21 +7,26 @@ contributors="Alienus,Remy,Tnut"
 makedepends=(autoconf docbook-xsl libxslt python)
 
 name=asciidoc
-version=9.1.1
+version=10.1.1
 
 source=(https://github.com/${name}/${name}-py3/archive/$version/$name-$version.tar.gz)
 
+prepare() {
+  cd ${name}-py-$version
+  autoconf
+  # https://github.com/asciidoc-py/asciidoc-py/issues/201
+sed -i -e '/pip install/s/\.$/--root $(DESTDIR) ./' Makefile.in
+}
 
 build(){
     SITE=$(python -c 'import sysconfig; print(sysconfig.get_paths()["platlib"])')
 
     cd ${name}-py-$version
-    autoconf
     ./configure --prefix=/usr \
                 --sysconfdir=/etc
     make
     make DESTDIR=$PKG install
     make docs DESTDIR=$PKG
-    install -Dm644 asciidocapi.py \
+    install -Dm644 asciidoc/api.py \
     $PKG/${SITE}/asciidocapi.py  
 }
