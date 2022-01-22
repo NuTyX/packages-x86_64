@@ -1,16 +1,16 @@
 description="The sendmail package contains a Mail Transport Agent (MTA)."
 url="ftp://ftp.sendmail.org/pub/sendmail/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="berlius"
+packager="spiky <spiky@nutyx.org>"
+contributors="Berlius,Tnut"
 
 name=sendmail
-version=8.16.1
+version=8.17.1
 
-runyx_version=20200412
+runyx_version=20201011
 makedepends=(ghostscript cyrus-sasl openssl procmail openldap)
 
-source=(http://downloads.tuxfamily.org/files/runyx-${runyx_version}.tar.xz
+source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	ftp://ftp.sendmail.org/pub/$name/$name.$version.tar.gz site.config.m4)
 
 build() {
