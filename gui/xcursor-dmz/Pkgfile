@@ -1,0 +1,39 @@
+description="Style neutral, scalable cursor theme"
+url="https://packages.debian.org/sid/dmz-cursor-theme"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(xorg-xcursorgen)
+run=()
+set=()
+
+name=xcursor-dmz
+_name=dmz-cursor-theme
+version=0.4.5
+
+source=(http://deb.debian.org/debian/pool/main/d/${_name}/${_name}_$version.tar.xz)
+
+build() {
+cd ${_name}-$version
+
+rm -r debian renderpngs.py
+
+cd DMZ-White/pngs
+	./make.sh
+	cd ..
+	mv xcursors cursors
+	rm -r dmz.svg index.theme pngs
+	cd ..
+
+	cd DMZ-Black/pngs
+	./make.sh
+	cd ..
+	mv xcursors cursors
+	rm -r dmz-aa.svg index.theme pngs
+	cd ..
+
+  install -dm755 $PKG/usr/share/icons/
+  cp -R DMZ-Black $PKG/usr/share/icons/
+  cp -R DMZ-White $PKG/usr/share/icons/
+}
