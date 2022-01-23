@@ -1,2 +1,16 @@
+. lib/lsb/init-functions
+
+SN=smmsp
+IDN=26
+if ! (getent group $SN > /dev/null); then
+   log_info_msg "${INFO}Creating $SN group${NORMAL}\n"
+   groupadd -g $IDN $SN
+fi
+
+if ! (getent passwd $SN > /dev/null); then
+   log_info_msg "${INFO}Creating $SN user${NORMAL}\n"
+   useradd -c "Sendmail Daemon" -g $IDN -d /dev/null \
+      -s /bin/false -u $IDN $SN
+fi
 chmod -v 1777 var/mail
 install -v -m700 -d var/spool/mqueue
