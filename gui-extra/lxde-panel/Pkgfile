@@ -11,13 +11,15 @@ name=lxde-panel
 alias=(lxpanel)
 _name=lxpanel
 version=0.10.1
+release=2
 
-source=(http://downloads.sourceforge.net/lxde/files/${_name}-$version.tar.xz)
+source=(volume-fix-mouse-scrolling.patch
+	http://downloads.sourceforge.net/lxde/files/${_name}-$version.tar.xz)
 
 prepare() {
 
   cd $_name-$version
-  
+  patch -Np1 -i  ../volume-fix-mouse-scrolling.patch
   sed -i '/pager.c/d' plugins/Makefile.am
   sed -i '/STATIC_PAGER/d' src/private.h
   sed -i 's/libwnck-3.0//' configure.ac
