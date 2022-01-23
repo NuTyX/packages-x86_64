@@ -1,5 +1,12 @@
 . lib/lsb/init-functions
 
+if [ ! -L etc/systemd/system/docker.service ]; then
+   mkdir -p etc/systemd/system/multi-user.target.wants
+   ln -svf /lib/systemd/system/docker.service \
+      etc/systemd/system/multi-user.target.wants/docker.service
+   log_success_msg2  "${INFO} Created symlink /etc/systemd/system/multi-user.target.wants/docker.service -> /lib/systemd/system/docker.service${NORMAL}"
+fi
+
 UN=docker
 
 log_info_msg "${WARNING}
