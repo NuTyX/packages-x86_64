@@ -10,6 +10,7 @@ run=(start-stop-daemon iptables runc containerd cgroupfs-mount)
 
 name=docker
 version=20.10.12
+release=2
 
 PKGMK_GROUPS=(man)
 
@@ -88,5 +89,10 @@ build() {
       ln -sv ../init.d/$name $PKG/etc/rc.d/rc$i.d/K10$name
     done
 
+   mkdir -p $PKG/lib/systemd/system
+   install -Dm644  moby-$version/contrib/init/systemd/docker.service \
+     $PKG/lib/systemd/system/docker.service
+   install -Dm644  moby-$version/contrib/init/systemd/docker.socket \
+     $PKG/lib/systemd/system/docker.socket
 
 }
