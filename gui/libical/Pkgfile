@@ -23,6 +23,6 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
 -DICAL_GLIB_VAPI=true        \
 -DICAL_BUILD_DOCS=false \
 ..
-make
+make -j1
 make DESTDIR=$PKG install
 }
