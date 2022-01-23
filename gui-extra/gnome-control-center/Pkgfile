@@ -17,8 +17,13 @@ set=(gnome)
 
 name=gnome-control-center
 version=41.2
-release=3
+release=4
 
 source=(https://ftp.acc.umu.se/pub/GNOME/sources/$name/41/$name-$version.tar.xz)
+
+prepare() {
+cd  $name-$version
+find . -name meson.build | xargs sed -i '/merge_file/{n;d}'
+}
 
 build=meson
