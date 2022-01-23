@@ -1,11 +1,12 @@
 description="System daemon for managing color devices"
 url="http://www.freedesktop.org/software/colord/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 name=colord
 version=1.4.5
-makedepends=(meson libgudev sqlite polkit lcms2 gobject-introspection libusb dbus vala libgusb)
+release=2
+makedepends=(meson libgudev sqlite polkit lcms2 argyllcms gobject-introspection libusb dbus vala libgusb)
 source=(http://www.freedesktop.org/software/$name/releases/$name-$version.tar.xz)
 
 prepare() {
@@ -34,7 +35,6 @@ meson --prefix=/usr              \
         -Dvapi=true              \
 	-Dsystemd=false          \
 	-Dlibcolordcompat=true   \
-	-Dargyllcms_sensor=false \
 	-Dbash_completion=false  \
 	-Ddocs=false             \
 	-Dman=false ..
