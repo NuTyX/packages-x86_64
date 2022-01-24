@@ -1,8 +1,8 @@
 description="A fast math parser library"
 url="http://muparser.sourceforge.net/"
 
-packager="tnut<tnut@nutyx.org>"
-contributors="Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Tnut"
 
 makedepends=(cmake)
 
@@ -11,12 +11,12 @@ set=(lxqt)
 PKGMK_KEEP_SOURCES="no"
 
 name=muparser
-version=2.3.2
+version=2.3.3
 
-source=(https://github.com/beltoforion/muparser/archive/v$version.tar.gz)
+source=(https://github.com/beltoforion/$name/archive/refs/tags/v${version}-1.tar.gz)
 
 build() {
-
+mv $name-$version-1 $name-$version
 unset MAKEFLAGS
 
 cmake -B build -S $name-$version -DCMAKE_INSTALL_PREFIX=/usr
