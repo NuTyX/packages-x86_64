@@ -1,0 +1,18 @@
+description="Chrome OS core fonts"
+url="https://www.google.com/get/noto/"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=ttf-croscore
+version=20201206
+
+run=(xorg-mkfontscale xorg-fontconfig)
+
+source=(https://download.tuxfamily.org/nutyx/files/noto-fonts-$version.tar.xz)
+
+build() {
+
+mkdir -p $PKG/usr/share/fonts/croscore
+install -Dm644 ttf/{Arimo,Cousine,Tinos}/*.ttf -t \
+$PKG/usr/share/fonts/croscore
+}
