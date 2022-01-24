@@ -1,0 +1,71 @@
+commit 69be68c93acbb3ab5deb458f81656de8d5c359b8
+Author: tnut <tnut@nutyx.org>
+Date:   Mon Jan 24 22:32:06 2022 +0100
+
+    cards list
+    
+    new -S, --sets option for listing the sets of packages
+
+diff --git a/src/cards_argument_parser.cxx b/src/cards_argument_parser.cxx
+index 39a57ff..cfcb0ed 100644
+--- a/src/cards_argument_parser.cxx
++++ b/src/cards_argument_parser.cxx
+@@ -57,6 +57,8 @@ ArgParser::APOpt CardsArgumentParser::OPT_ALL;
+ ArgParser::APOpt CardsArgumentParser::OPT_INSTALLED;
+ ArgParser::APOpt CardsArgumentParser::OPT_BINARIES;
+ ArgParser::APOpt CardsArgumentParser::OPT_PORTS;
++ArgParser::APOpt CardsArgumentParser::OPT_SETS;
++
+ 
+ ArgParser::APOpt CardsArgumentParser::OPT_DISABLE;
+ ArgParser::APOpt CardsArgumentParser::OPT_IGNORE;
+@@ -229,6 +231,10 @@ _("This command can upgrade at onces alls your installed out of date packages.")
+ 		'p',
+ 		_("    Local available ports."));
+ 
++	OPT_SETS.init("sets",
++		'S',
++		_("     Available sets of packages in depot server."));
++
+ 	OPT_DRY.init("dry",
+ 		0,
+ 		_("\t   Not doing the action. Only simulate (if possible) what will be done."));
+@@ -290,6 +296,7 @@ _("This command can upgrade at onces alls your installed out of date packages.")
+ 	addOption(CMD_LIST, OPT_FULL, false);
+ 	addOption(CMD_LIST, OPT_BINARIES, false);
+ 	addOption(CMD_LIST, OPT_PORTS, false);
++	addOption(CMD_LIST, OPT_SETS, false);
+ 	addOption(CMD_LIST, OPT_ROOT,false);
+ 	addOption(CMD_LIST, OPT_CONFIG_FILE,false);
+ 
+diff --git a/src/cards_argument_parser.h b/src/cards_argument_parser.h
+index be80042..efa7995 100644
+--- a/src/cards_argument_parser.h
++++ b/src/cards_argument_parser.h
+@@ -64,6 +64,7 @@ class CardsArgumentParser : public ArgParser
+ 		static ArgParser::APOpt OPT_INSTALLED;
+ 		static ArgParser::APOpt OPT_BINARIES;
+ 		static ArgParser::APOpt OPT_PORTS;
++		static ArgParser::APOpt OPT_SETS;
+ 
+ 		static ArgParser::APOpt OPT_IGNORE;
+ 		static ArgParser::APOpt OPT_NOLOGENTRY;
+diff --git a/src/cards_info.cxx b/src/cards_info.cxx
+index b90c90d..18a5766 100644
+--- a/src/cards_info.cxx
++++ b/src/cards_info.cxx
+@@ -65,6 +65,14 @@ Cards_info::Cards_info(const CardsArgumentParser& argParser, const std::string&
+ 
+ 		} else if (m_argParser.isSet(CardsArgumentParser::OPT_PORTS)) {
+ 			getPortsList();
++		} else if (m_argParser.isSet(CardsArgumentParser::OPT_SETS)) {
++			set<string> sortedSetList;
++			set<Pkg*> binaryList = getBinaryPackageSet();
++			for ( auto i : binaryList )
++				if ( i->getSet().size() > 0 )
++					sortedSetList.insert(i->getPrimarySet());
++			for ( auto i : sortedSetList )
++				cout << i << endl;
+ 		} else {
+ 			m_installed_mode=1;
+ 			if (m_argParser.isSet(CardsArgumentParser::OPT_FULL))
