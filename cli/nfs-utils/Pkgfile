@@ -1,18 +1,18 @@
 description="Userspace server and client tools necessary to use the kernel's NFS abilities."
 url="http://nfs.sourceforge.net"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(util-linux libtirpc rpcbind rpcsvc-proto)
 run=(rpcbind)
 
 name=nfs-utils
-version=2.5.4
+version=2.6.1
 
-runyx_version=20200412
+runyx_version=20201011
 
 source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
-	http://downloads.sourceforge.net/nfs/$name-$version.tar.xz)
+	http://downloads.sourceforge.net/nfs/$name-$version.tar.gz)
 
 run=(rpcbind)
 
