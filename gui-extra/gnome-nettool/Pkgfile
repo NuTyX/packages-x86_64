@@ -11,6 +11,11 @@ set=(gnome)
 
 name=gnome-nettool
 version=3.8.1
-release=7
+release=8
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+
+prepare() {
+sed -i "s@s odipodi-0.dtd@sodipodi-0.dtd@" \
+$name-$version/pixmaps/icons/scalable/apps/gnome-nettool.svg
+}
