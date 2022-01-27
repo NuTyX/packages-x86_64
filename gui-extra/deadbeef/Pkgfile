@@ -1,8 +1,8 @@
 description="A GTK+ audio player for GNU/Linux"
 url="http://deadbeef.sourceforge.net"
 
-contributors="Pierre,Greg,Spiky"
-packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Greg,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(intltool perl-xml-parser gtk3
              x264 flac libmad glib librsvg libcaca
@@ -15,16 +15,13 @@ run=(desktop-file-utils gtk-update-icon-cache)
 
 name=deadbeef
 version=1.8.8
-release=3
 
 PKGMK_GROUPS=(devel)
 
-source=(1.patch
-        https://sourceforge.net/projects/deadbeef/files/travis/linux/1.8.8/deadbeef-1.8.8.tar.bz2)
+source=(https://sourceforge.net/projects/deadbeef/files/travis/linux/1.8.8/deadbeef-1.8.8.tar.bz2)
 
 build () {
     cd $name-$version
-    patch -Np1 -i ../1.patch
     export CC=clang CXX=clang++
     ./configure --prefix=/usr --disable-ffmpeg --disable-notify --disable-lfm --enable-gtk3
   make 
