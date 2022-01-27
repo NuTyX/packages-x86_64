@@ -1,0 +1,73 @@
+diff -Naur a/plugins/gtkui/callbacks.c b/plugins/gtkui/callbacks.c
+--- a/plugins/gtkui/callbacks.c	2021-08-01 19:00:05.000000000 +0200
++++ b/plugins/gtkui/callbacks.c	2022-01-27 17:12:59.963764563 +0100
+@@ -548,6 +548,21 @@
+     }
+     deadbeef->sendmessage (DB_EV_CONFIGCHANGED, 0, 0, 0);
+ }
++void
++on_toggle_playlist_activate            (GtkMenuItem     *menuitem,
++                                        gpointer         user_data)
++{
++    if (!gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (menuitem))) {
++        deadbeef->conf_set_int ("gtkui.eq.visible", 0);
++        eq_window_hide ();
++    }
++    else {
++        deadbeef->conf_set_int ("gtkui.eq.visible", 1);
++        eq_window_show ();
++    }
++    deadbeef->sendmessage (DB_EV_CONFIGCHANGED, 0, 0, 0);
++}
++
+ 
+ 
+ 
+diff -Naur a/plugins/gtkui/callbacks.h b/plugins/gtkui/callbacks.h
+--- a/plugins/gtkui/callbacks.h	2021-08-01 19:00:05.000000000 +0200
++++ b/plugins/gtkui/callbacks.h	2022-01-27 17:11:21.210427897 +0100
+@@ -645,6 +645,10 @@
+                                         gpointer         user_data);
+ 
+ void
++on_toggle_playlist_activate            (GtkMenuItem     *menuitem,
++                                        gpointer         user_data);
++
++void
+ on_toggle_eq                           (GtkMenuItem     *menuitem,
+                                         gpointer         user_data);
+ 
+diff -Naur a/plugins/gtkui/deadbeef.glade b/plugins/gtkui/deadbeef.glade
+--- a/plugins/gtkui/deadbeef.glade	2021-08-01 19:00:05.000000000 +0200
++++ b/plugins/gtkui/deadbeef.glade	2022-01-27 16:19:42.530323842 +0100
+@@ -404,6 +404,17 @@
+ 
+ 	      <child>
+ 		<widget class="GtkMenu" id="View_menu">
++      
++		<child>
++		    <widget class="GtkCheckMenuItem" id="view_playlist">
++		      <property name="visible">True</property>
++		      <property name="label" translatable="yes">PlayList</property>
++		      <property name="use_underline">True</property>
++		      <property name="active">False</property>
++		      <signal name="activate" handler="on_toggle_playlist_activate" last_modification_time="Thu, 27 Jan 2022 16:23:50 GMT"/>
++		    </widget>
++		  </child>
++
+ 
+ 		  <child>
+ 		    <widget class="GtkCheckMenuItem" id="view_status_bar">
+diff -Naur a/plugins/gtkui/interface.c b/plugins/gtkui/interface.c
+--- a/plugins/gtkui/interface.c	2021-08-01 19:00:05.000000000 +0200
++++ b/plugins/gtkui/interface.c	2022-01-27 17:09:45.727091365 +0100
+@@ -556,6 +556,9 @@
+   g_signal_connect ((gpointer) view_status_bar, "activate",
+                     G_CALLBACK (on_toggle_status_bar_activate),
+                     NULL);
++  g_signal_connect ((gpointer) view_status_bar, "activate",
++                    G_CALLBACK (on_toggle_playlist_activate),
++                    NULL);
+   g_signal_connect ((gpointer) view_eq, "activate",
+                     G_CALLBACK (on_toggle_eq),
+                     NULL);
