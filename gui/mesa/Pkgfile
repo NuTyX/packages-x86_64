@@ -15,6 +15,7 @@ alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
 version=21.3.4
+release=2
 
 source=(add_xdemos-1.patch
 	https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
@@ -22,7 +23,7 @@ source=(add_xdemos-1.patch
 build() {
 cd mesa-$version
 patch -Np1 -i ../add_xdemos-1.patch
-GALLIUM_DRV="i915,iris,nouveau,r600,radeonsi,svga,swrast,virgl"
+GALLIUM_DRV="crocus,i915,iris,nouveau,r600,radeonsi,svga,swrast,virgl"
 DRI_DRIVERS="i965,nouveau"
 
 mkdir build
