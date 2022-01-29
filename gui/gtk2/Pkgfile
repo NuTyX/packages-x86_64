@@ -19,8 +19,10 @@ run=(gtk-update-icon-cache shared-mime-info desktop-file-utils)
 
 name=gtk2
 version=2.24.33
+release=2
 
-source=(https://download.gnome.org/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
+source=(gtkrc.example
+        https://download.gnome.org/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
 
 build() {
 cd gtk+-$version
@@ -33,7 +35,8 @@ sed -i 's#l \(gtk-.*\).sgml#& -o \1#' docs/{faq,tutorial}/Makefile.in
 make
 make DESTDIR=$PKG install
 mkdir -p $PKG/etc/gtk-2.0
-echo 'gtk-fallback-icon-theme = "Tango"' > $PKG/etc/gtk-2.0/gtkrc
+
+install -m644 ../gtkrc.example $PKG/etc/gtk-2.0/gtkrc.example
 
 # Construit dans gtk-update-icon-cache
 rm -f $PKG/usr/bin/gtk-update-icon-cache
