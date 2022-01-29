@@ -7,15 +7,14 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(git fltk)
 
 name=flwm
-version=git
-release=3
+version=02904d9
 
 source=(flwm.desktop)
 
 build() {
 
-  git clone https://github.com/bbidulock/flwm.git flwm
-  cd flwm
+  git clone https://github.com/bbidulock/flwm.git flwm-$version
+  cd flwm-$version
   make || return 1
   mkdir -p $PKG/usr/share/xsessions
   cp $SRC/$name.desktop $PKG/usr/share/xsessions/
