@@ -1,0 +1,22 @@
+description="Window Navigator Construction Kit (GTK2)."
+url="http://www.gnome.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B"
+
+makedepends=(gtk2 perl-xml-parser xorg-libxt xorg-libxres
+             startup-notification xorg-libxinerama xorg-libxrandr
+             xorg-libxcursor xorg-libxdamage intltool
+             gobject-introspection)
+
+name=libwnck1
+version=2.31.0
+
+source=(https://download.gnome.org/sources/libwnck/${version:0:4}/libwnck-$version.tar.xz)
+
+build() {
+cd libwnck-$version
+./configure --prefix=/usr --program-suffix=-1
+make GETTEXT_PACKAGE=libwnck1
+make DESTDIR=$PKG GETTEXT_PACKAGE=libwnck-1 install
+}
