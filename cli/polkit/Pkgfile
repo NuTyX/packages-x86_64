@@ -6,10 +6,12 @@ contributors="Pierre,Tnut"
 
 name=polkit
 version=0.120
+release=2
 
 makedepends=(pam systemd gettext glib js78 gobject-introspection elogind
              patch autoconf intltool perl-xml-parser libxslt docbook-xsl)
 source=($name-fix_elogind_detection-1.patch
+        $name-security_fix-1.patch
         http://www.freedesktop.org/software/polkit/releases/$name-$version.tar.gz)
 
 prepare() {
@@ -28,6 +30,7 @@ build() {
 cd $name-$version
 
 patch -Np1 -i ../$name-fix_elogind_detection-1.patch
+patch -Np1 -i ../$name-security_fix-1.patch
 autoreconf -fi
 
 ./configure --prefix=/usr \
