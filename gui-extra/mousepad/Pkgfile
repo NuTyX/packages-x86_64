@@ -5,12 +5,13 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Tyrry,Fabienwang"
 
 makedepends=(dbus-glib xorg-libxrandr xorg-libxinerama
-             xorg-libsm gtksourceview xfconf)
-run=(gtk-update-icon-cache desktop-file-utils startup-notification)
+             xorg-libsm xfconf gspell)
+run=(gtk-update-icon-cache desktop-file-utils startup-notification gtksourceview4)
 
 set=(xfce4)
 
 name=mousepad
 version=0.5.8
+release=2
 
 source=(http://archive.xfce.org/src/apps/$name/${version%.*}/$name-$version.tar.bz2)
