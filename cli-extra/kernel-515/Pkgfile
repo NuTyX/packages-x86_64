@@ -10,11 +10,11 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-515
-version=5.15.15
+version=5.15.18
 
 alias=(linux-515)
 INITRD="initrd-${name/*-/}"
-KERNEL=${name/-*/}
+KERNEL="bzImage-${name/*-/}"
 
 _version=${version:0:4}
 
@@ -71,7 +71,7 @@ cp  .config    \
 $PKG/boot/config_64-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
 $PKG/boot/$KERNEL
-ln -sf $KERNEL $PKG/boot/${name}-stable
+ln -sf $KERNEL $PKG/boot/${name}
 
 # Reorgenise the sources
 cd $PKG/lib/modules/${KERNEL_VERSION}/
