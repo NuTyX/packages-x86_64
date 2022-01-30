@@ -1,0 +1,26 @@
+description="Mount/umount plugin for the Xfce panel."
+url="https://docs.xfce.org/panel-plugins/xfce4-mount-plugin"
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(intltool xfce4-panel)
+run=(hicolor-icon-theme)
+
+set=(xfce4-extra)
+
+name=xfce4-mount-plugin
+version=1.1.5
+
+source=(https://archive.xfce.org/src/panel-plugins/$name/${version:0:3}/$name-$version.tar.bz2)
+
+build() {
+
+cd $name-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--disable-static
+make
+make DESTDIR=$PKG install
+}
