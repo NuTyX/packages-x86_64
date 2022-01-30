@@ -1,8 +1,8 @@
 description="Accessing the list of user accounts and information attached to those accounts." 
 url="http://www.freedesktop.org/wiki/Software/AccountsService/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierrei, Jayce"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierrei,Jayce,Tnut"
 
 makedepends=(meson ninja xmlto libxslt polkit
              elogind gobject-introspection vala)
@@ -10,10 +10,19 @@ makedepends=(meson ninja xmlto libxslt polkit
 set=(gnome)
 
 name=accountsservice
-version=0.6.55
+version=22.04.62
 release=2
 
-source=(http://www.freedesktop.org/software/$name/$name-$version.tar.xz)
+source=(http://www.freedesktop.org/software/$name/$name-$version.tar.xz
+        0001-build-Properly-apply-modes-in-meson_post_install.py.patch)
+
+prepare() {
+cd $name-$version
+
+ # Fix permissions to match the ones the daemon sets
+  # https://gitlab.freedesktop.org/accountsservice/accountsservice/-/merge_requests/88
+  patch -Np1 -i ../0001-build-Properly-apply-modes-in-meson_post_install.py.patch
+}
 
 build() {
 cd $name-$version
