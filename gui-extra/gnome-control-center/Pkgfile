@@ -1,23 +1,23 @@
 description="The Control Center for GNOME"
 url="http://www.gnome.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Fanch, tnut, jayce, Remy, fabienwang"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch, tnut, jayce, Remy, fabienwang, Spiky"
 
 makedepends=(autoconf git udisks2 accountsservice clutter-gtk libhandy
              colord-gtk gnome-online-accounts gsound gnome-settings-daemon
              grilo libgtop libpwquality kerberos shared-mime-info cheese
              cups samba gnome-bluetooth ibus meson modemmanager
              network-manager-applet ninja gnome-color-manager
-             sound-theme-freedesktop cups-pk-helper
-             wayland gdk-pixbuf)
-run=(iso-codes gsettings-desktop-schemas)
+             cups-pk-helper wayland gdk-pixbuf)
+run=(iso-codes gsettings-desktop-schemas libgnomekbd
+     sound-theme-freedesktop)
 
 set=(gnome)
 
 name=gnome-control-center
 version=41.2
-release=5
+release=6
 
 source=(https://ftp.acc.umu.se/pub/GNOME/sources/$name/41/$name-$version.tar.xz)
 
