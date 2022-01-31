@@ -18,7 +18,7 @@ build=meson
 
 package() {
   # strip $PKG from embedded paths:
-  python -m compileall -d"/usr/lib $PKG/usr/lib
+  python -m compileall -d /usr/lib $PKG/usr/lib
   python -O -m compileall -d /usr/lib $PKG/usr/lib
 
   install -vDm 644 $name/{AUTHORS,ChangeLog,NEWS,README} \
