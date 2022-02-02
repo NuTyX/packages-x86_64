@@ -72,6 +72,9 @@ install -d cups/backend
 ln -v -sf /usr/bin/smbspool $PKG/usr/lib/cups/backend/smb
 
 # Part of tdb
+
+_ARCH="x86_64"
+[ "$PKGMK_ARCH" = "i686" ] && _ARCH=i386
 rm $PKG/usr/lib/python3.10/site-packages/_tdb_text.py
 rm $PKG/usr/lib/python3.10/site-packages/tdb.cpython-310-x86_64-linux-gnu.so
 
