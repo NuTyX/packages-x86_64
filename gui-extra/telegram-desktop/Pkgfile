@@ -1,23 +1,30 @@
 description="Messaging app with a focus on speed and security, it’s super-fast, simple and free."
 url="https://telegram.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Fanch,Fabienwang,Spiki,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch,Fabienwang,Spiki,Spiky"
 
 makedepends=(cmake ninja python qtsvg qtwayland qtimageformats
-             ffmpeg glibmm kwayland rnnoise tg_owt jemalloc
+             ffmpeg glibmm kwayland rnnoise tg_owt jemalloc abseil-cpp
              extra-cmake-modules gtk3 webkitgtk libdbusmenu-qt)
 run=(desktop-file-utils ttf-opensans qtimageformats)
 alias=(telegram)
 
 name=telegram-desktop
-version=3.4.8
+version=3.5.0
 
 source=(https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tdesktop-$version-full.tar.gz)
 
 build() {
 
   cd tdesktop-$version-full
+
+  sed -i "s@private/qaction_p.h@QtWidgets/private/qaction_p.h@" \
+  Telegram/SourceFiles/platform/linux/main_window_linux.cpp
+
+  # hopefully this will be fixed upstream
+  ln -sv /usr/include/qt/QtWidgets/5.15.2/QtWidgets/private \
+  /usr/include/qt/QtWidgets/private
 
   export CXXFLAGS+=" -Wp,-U_GLIBCXX_ASSERTIONS"
 
