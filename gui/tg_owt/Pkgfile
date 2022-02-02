@@ -5,13 +5,13 @@ name=tg_owt
 version=20211223
 release=2
 
-_commit=d5c3d43
+_commit=1fd131d
 
 packager="tnut <tnut@nutyx.org>"
 
 makedepends=(protobuf xorg-libxrandr xorg-libxcomposite openssl ffmpeg libva
-             opus yasm libjpeg-turbo pipewire xorg-libxtst
-             git ninja cmake)
+             opus yasm libjpeg-turbo pipewire xorg-libxtst git ninja cmake
+             libepoxy)
 
 prepare() {
 git clone https://github.com/desktop-app/$name $name
@@ -29,6 +29,9 @@ git submodule update
 
 build() {
 cd tg_owt
+
+export CFLAGS+=" -ffat-lto-objects"
+export CXXFLAGS+=" -ffat-lto-objects -I/usr/include/libdrm"
 cmake \
     -B build \
     -G Ninja \
