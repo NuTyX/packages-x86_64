@@ -1,0 +1,17 @@
+description="diff wrapper produce the same output but with prety syntax."
+url='https://www.colordiff.org/'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Hakerdefo"
+
+run=(perl)
+
+name=colordiff
+version=1.0.19
+
+source=(https://www.colordiff.org/colordiff-$version.tar.gz)
+
+build() {
+cd $name-$version
+make DESTDIR=$PKG INSTALL_DIR=/usr/bin MAN_DIR=/usr/share/man/man1 install
+}

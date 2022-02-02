@@ -1,0 +1,28 @@
+description='Collection of C++ library code designed to augment the C++ standard library'
+url='https://abseil.io'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(cmake)
+
+name=abseil-cpp
+version=20211102.0
+
+source=(https://github.com/abseil/abseil-cpp/archive/$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+cmake -Bbuild \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_CXX_FLAGS="-DNDEBUG" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_CXX_STANDARD=17 \
+    -DBUILD_SHARED_LIBS=ON \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+
+cd build
+cmake --build .
+
+DESTDIR=$PKG cmake --install .
+}

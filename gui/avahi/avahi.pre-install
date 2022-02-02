@@ -1,0 +1,11 @@
+. lib/lsb/init-functions
+
+if ! (getent group avahi > /dev/null); then
+   log_info_msg "${INFO}Creating avahi group${NORMAL}\n"
+   groupadd -g 84 avahi
+fi
+if ! (getent passwd avahi > /dev/null); then
+   log_info_msg "${INFO}Creating avahi user${NORMAL}\n"
+   useradd  -c  "Avahi Daemon Owner" \
+   -d /var/run/avahi-daemon -u 84 -g avahi -s /bin/false avahi
+fi
