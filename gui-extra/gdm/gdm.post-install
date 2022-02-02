@@ -21,10 +21,12 @@ if [ ! -f etc/sysconfig/xdm ];then
    cat > etc/sysconfig/xdm << "EOF"
 # Which display manager to use (full path):
 DISPLAY_MANAGER=/usr/sbin/gdm
+# DISPLAY_MANAGER=/usr/sbin/xdm
+# DISPLAY_MANAGER="/usr/bin/slim -d"
 # DISPLAY_MANAGER=/usr/sbin/lxdm
 # DISPLAY_MANAGER=/usr/bin/lightdm
 # DISPLAY_MANAGER=/usr/bin/sddm
-
+# DISPLAY_MANAGER="/usr/dt/bin/dtlogin -daemon"
 
 # Options to pass to the display manager:
 DM_OPTIONS=""
