@@ -80,8 +80,11 @@ PYTHONPATH=$PKG/usr/lib/python${version%.*} \
   $PKG/usr/lib/python${version%.*}
 
 # and finaly the shared librairy
+_ARCH="x86_64"
+[ "$PKGMK_ARCH" == "i686" ] && _ARCH="i386"
+
 install -m 755 -d $PKG/usr/lib/python${version%.*}/lib-dynload
-install build/lib.linux-$(uname -m)-${version%.*}/_tkinter.cpython-310-$(uname -m)-linux-gnu.so \
+install build/lib.linux-$(uname -m)-${version%.*}/_tkinter.cpython-310-${_ARCH}-linux-gnu.so \
 $PKG/usr/lib/python${version%.*}/lib-dynload
 
 }
