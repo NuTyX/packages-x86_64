@@ -1,0 +1,98 @@
+diff -Naur a/desktop.conf b/desktop.conf
+--- a/desktop.conf	2014-09-01 16:17:11.000000000 +0200
++++ b/desktop.conf	2022-02-03 18:27:47.926522907 +0100
+@@ -2,8 +2,8 @@
+ window_manager=openbox-lxde
+ 
+ [GTK]
+-sNet/ThemeName=Clearlooks
+-sNet/IconThemeName=nuoveXT2
++sNet/ThemeName=Adwaita
++sNet/IconThemeName=Adwaita
+ sGtk/FontName=Sans 10
+ iGtk/ToolbarStyle=3
+ iGtk/ButtonImages=1
+diff -Naur a/lxde-logout.in b/lxde-logout.in
+--- a/lxde-logout.in	2014-09-01 16:17:11.000000000 +0200
++++ b/lxde-logout.in	2022-02-03 18:39:44.529852881 +0100
+@@ -1,2 +1,2 @@
+ #!/bin/sh
+-lxsession-logout --banner "@prefix@/share/lxde/images/logout-banner.png" --side=top
++lxsession-logout --banner "@prefix@/share/lxde/images/icon-sekong.png" --side=top
+diff -Naur a/lxpanel/panel.in b/lxpanel/panel.in
+--- a/lxpanel/panel.in	2016-11-21 23:47:05.000000000 +0100
++++ b/lxpanel/panel.in	2022-02-03 18:40:43.526519271 +0100
+@@ -31,7 +31,7 @@
+ Plugin {
+     type = menu
+     Config {
+-        image=@prefix@/share/lxde/images/lxde-icon.png
++        image=@prefix@/share/lxde/images/icon-sekong.png
+         system {
+         }
+         separator {
+diff -Naur a/Makefile.am b/Makefile.am
+--- a/Makefile.am	2014-10-23 16:08:00.000000000 +0200
++++ b/Makefile.am	2022-02-03 19:19:52.253174926 +0100
+@@ -22,6 +22,7 @@
+ 
+ imagesdir=$(datadir)/lxde/images
+ images_DATA= \
++	images/icon-sekong.png \
+ 	images/logout-banner.png \
+ 	images/lxde-icon.png
+ 
+diff -Naur a/Makefile.in b/Makefile.in
+--- a/Makefile.in	2016-11-21 23:59:15.000000000 +0100
++++ b/Makefile.in	2022-02-03 19:18:52.083175209 +0100
+@@ -370,6 +370,7 @@
+ 
+ imagesdir = $(datadir)/lxde/images
+ images_DATA = \
++	images/icon-sekong.png \
+ 	images/logout-banner.png \
+ 	images/lxde-icon.png
+ 
+diff -Naur a/pcmanfm/pcmanfm.conf.in b/pcmanfm/pcmanfm.conf.in
+--- a/pcmanfm/pcmanfm.conf.in	2016-11-21 23:47:05.000000000 +0100
++++ b/pcmanfm/pcmanfm.conf.in	2022-02-03 18:33:51.029854538 +0100
+@@ -2,18 +2,36 @@
+ bm_open_method=0
+ su_cmd=xdg-su -c '%s'
+ 
++[volume]
++mount_on_startup=1
++mount_removable=1
++autorun=1
++
+ [desktop]
+ wallpaper_mode=crop
+-wallpaper=@prefix@/share/lxde/wallpapers/lxde_blue.jpg
++wallpaper=@prefix@/share/backgrounds/nutyx/nutyx.jpg
+ desktop_bg=#000000
+ desktop_fg=#ffffff
+ desktop_shadow=#000000
+ 
++[autorun]
++x-content/bootable-media=pcmanfm
++
+ [ui]
+ always_show_tabs=0
+ hide_close_btn=0
+-win_width=640
+-win_height=480
++win_width=672
++win_height=483
++splitter_pos=175
++media_in_new_tab=0
++desktop_folder_new_win=0
++change_tab_on_drop=
++close_on_unmount=1
++focus_previous=0
++side_pane_mode=places
+ view_mode=icon
+ show_hidden=0
+ sort=name;ascending;
++toolbar=newwin;newtab;navigation;home;
++show_statusbar=1
++pathbar_mode_buttons=0
