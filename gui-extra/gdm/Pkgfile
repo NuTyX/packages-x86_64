@@ -1,19 +1,20 @@
 description="Library for Graphical logins and managing local and remote displays."
 url="http://www.gnome.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="tnut, Fanch, Schrodinger72"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky,Fanch,Schrodinger72"
 
-makedepends=(pam accountsservice nss libcanberra upower
+makedepends=(pam accountsservice nss libcanberra
              gnome-session gnome-shell)
-run=(xorg-xinit)
+run=(xorg-xinit xorg-xhost xorg-xrdb upower)
 
 set=(gnome)
 
 name=gdm
 version=41.3
+release=3
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz )
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 prepare() {
 groupadd -g 21 gdm &&

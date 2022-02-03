@@ -1,8 +1,8 @@
 description="Web content engine for GTK"
 url="https://webkitgtk.org"
 
-packager="spiky <spiky@nutyx.org>"
-contributors=""
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(cmake mesa ninja gtk-doc python ruby gobject-introspection
              wayland-protocols  gstreamer-plugins-bad gperf)
@@ -15,6 +15,7 @@ run=(cairo xorg-fontconfig freetype libgcrypt glib gtk3 harfbuzz icu
 
 name=webkit2gtk-4
 version=2.34.2
+release=2
 
 source=(https://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 
@@ -45,4 +46,7 @@ $PKG/usr/share/gtk-doc/html/webkit2gtk-4.0
 install -vm644  ../Documentation/webkitdomgtk-4.0/html/* \
 $PKG/usr/share/gtk-doc/html/webkit2gtk-4.0
 
+# Binaries belongs to webkitgtk package
+# No conflics please !!! :)
+rm -rf $PKG/usr/bin
 }
