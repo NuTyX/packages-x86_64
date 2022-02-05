@@ -5,15 +5,20 @@ contributors="Pierre B, Greg"
 packager="tnut <tnut@nutyx.org>"
 
 makedepends=(automake autoconf m4 libtool
-             python libnl openssl pciutils)
+             libnl openssl pciutils)
+
+run=(python perl)
 
 name=net-snmp
 version=5.9.1
+release=2
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
-
 build() {
+
+unset MAKEFLAGS
+
 cd $name-$version
 
 autoreconf -i
