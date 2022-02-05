@@ -96,7 +96,7 @@ rm -rf $PKG/lib/firmware
 # post-install autogen
 echo "if [ -f boot/$INITRD ]; then
     mkinitramfs ${KERNEL_VERSION}
-    rm -f boot/$INITRD
+    rm boot/$INITRD
     mv boot/initrd-${KERNEL_VERSION} boot/$INITRD
 fi" > $PKGMK_ROOT/$name.post-install
 
