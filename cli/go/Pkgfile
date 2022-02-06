@@ -1,0 +1,42 @@
+description="The Go Programming Language"
+url="https://go.dev/"
+contributors="MattHoush"
+packager="tnut <tnut@nutyx.org>"
+
+
+name=go
+version=1.17.6
+release=2
+
+source=(https://golang.org/dl/go${version}.src.tar.gz \
+    https://golang.org/dl/go${version}.linux-amd64.tar.gz)
+
+PKGMK_IGNORE_RUNTIMEDEPS="yes"
+PKGMK_IGNORE_UNPACK="yes"
+PKGMK_NO_STRIP="yes"
+
+prepare() {
+    localedef -i en_US -f UTF-8 en_US.UTF-8
+    install -d $SRC/go${version}
+    LC_ALL=en_US.UTF-8 LANG=en_US.utf-8 \
+    bsdtar -xf $PKGMK_SOURCE_DIR/go${version}.linux-amd64.tar.gz \
+        -C $SRC/go${version} --strip-components=1
+    LC_ALL=en_US.UTF-8 LANG=en_US.utf-8 \
+    bsdtar -xf $PKGMK_SOURCE_DIR/go${version}.src.tar.gz \
+        -C $SRC
+}
+
+build() {
+    export GOCACHE=$SRC/go-build
+    export GOROOT_BOOTSTRAP=$SRC/go${version}
+    export GOROOT_FINAL=/usr/lib/go
+
+    cd go/src
+    ./make.bash
+
+    install -d $PKG/usr/lib
+    mv $SRC/go $PKG/usr/lib/
+
+    find $PKG \( -name "README*" -o -name "AUTHORS" -o -name "TODO" \) -delete
+    rm $PKG/usr/lib/go/src/*.bat
+}

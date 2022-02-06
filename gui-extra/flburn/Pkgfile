@@ -7,13 +7,12 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(git fltk libburn libisoburn)
 
 name=flburn
-version=git
-release=3
+version=3cc464
 
 build() {
 
-	git clone git://git.code.sf.net/p/flburn/code flburn-code
-	cd flburn-code
+	git clone git://git.code.sf.net/p/flburn/code flburn-$version
+	cd flburn-$version
 	make
 	
 	install -D -m755 "$name" "$PKG/usr/bin/$name"

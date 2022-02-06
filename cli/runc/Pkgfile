@@ -1,0 +1,28 @@
+description='a lightweight universal runtime container'
+url='https://github.com/opencontainers/runc'
+contributors="MattHoush,Tnut"
+packager="spiky <spiky@nutyx.org>"
+
+makedepends=(go libseccomp git)
+
+name=runc
+version=1.1.0
+
+source=(https://github.com/opencontainers/runc/archive/v${version}/$name-${version}.tar.gz \
+    http://jaeger.morpheus.net/linux/crux/files/$name-man-pages-1.0.3.tar.xz)
+
+build() {
+    mkdir -pv src/github.com/opencontainers
+    cd src/github.com/opencontainers
+    ln -sf $SRC/$name-$version $name
+    cd $name
+    export GOPATH=$SRC
+    export PATH=/usr/lib/go/bin:$PATH
+    export BUILDTAGS="seccomp"
+    # use the long commit hash here
+    make COMMIT=52b36a2dd837e8462de8e01458bf02cf9eea47dd
+
+    install -D -m 0755 $name $PKG/usr/bin/$name
+    install -d -m 0755 $PKG/usr/share/man/man8
+    install -m 0644 $SRC/man8/* $PKG/usr/share/man/man8/
+}

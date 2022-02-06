@@ -7,7 +7,7 @@ contributors="Pierre B, tnut"
 makedepends=(libxml2 cmake db gobject-introspection icu doxygen glib vala)
 
 name=libical
-version=3.0.12
+version=3.0.13
 
 source=(https://github.com/libical/libical/releases/download/v$version/$name-$version.tar.gz)
 
@@ -23,6 +23,6 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
 -DICAL_GLIB_VAPI=true        \
 -DICAL_BUILD_DOCS=false \
 ..
-make
+make -j1
 make DESTDIR=$PKG install
 }

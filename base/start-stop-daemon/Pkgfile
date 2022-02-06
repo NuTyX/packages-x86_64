@@ -1,0 +1,20 @@
+description='Control the creation and termination of system-level processes'
+url='https://man7.org/linux/man-pages/man8/start-stop-daemon.8.html'
+
+contributors="CRUX"
+
+makedepends=(perl)
+
+name=start-stop-daemon
+version=20210417
+release=1
+
+source=(start-stop-daemon.c start-stop-daemon.pod nutyx-patch.diff makefile)
+
+build () {
+	patch -p1 -i nutyx-patch.diff
+	make
+	install -d $PKG/usr/{sbin,share/man/man8}
+	install -m 755 $name $PKG/usr/sbin/
+	install -m 644 $name.8 $PKG/usr/share/man/man8/
+}

@@ -5,17 +5,30 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Jayce,Remy,Fanch,Tnut,Fabienwang"
 
 makedepends=(icu ninja meson lsb-release libwnck avahi gcr
-             libgnome-keyring libnotify json-glib 
+             libgnome-keyring libnotify json-glib webkit2gtk-4
              nss gnome-desktop libdazzle libhandy libportal)
 run=(adwaita-icon-theme gsettings-desktop-schemas woff2 libxslt.lib
-     gstreamer-plugins-base openjpeg libwebp enchant webkit2gtk-4
-     desktop-file-utils gtk-update-icon-cache iso-codes)
+     gstreamer-plugins-base openjpeg libwebp enchant
+     desktop-file-utils gtk-update-icon-cache iso-codes make-ca)
+
+set=(gnome)
 
 name=epiphany
 version=41.3
+release=4
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
+prepare() {
+cd $name-$version
+
+# First, fix building with newer versions of meson: 
+sed -i '/merge_file/{n;d}' data/meson.build
+
+# fix an issue building Epiphany with libportal-0.5 or later.
+sed "/dependency/s@'libportal'@'libportal-gtk3'@" -i meson.build
+sed "/portal-gtk3/s@portal/@portal-gtk3/@" -i lib/ephy-flatpak-utils.c
+}
 build() {
 cd $name-$version
 mkdir build

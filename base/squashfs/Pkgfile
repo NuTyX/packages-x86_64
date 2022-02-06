@@ -2,21 +2,24 @@ description="Squashfs is a compressed read-only filesystem for Linux."
 url="http://squashfs.sourceforge.net/"
 
 maintainer="phillip at lougher.demon.co.uk"
-contributors="Guy,Tnut"
-packager="spiky <spiky@nutyx.org>"
+contributors="Guy,Spiky"
+packager="tnut <tnut@nutyx.org>"
 
 makedepends=(sed zlib lzo xz lz4 zstd)
 
 name=squashfs
 version=4.5
+release=3
 
 source=(http://downloads.sourceforge.net/sourceforge/$name/$name$version.tar.gz)
-
+prepare() {
+ cd $name-tools-$version/squashfs-tools
+ sed -i 's@^struct cache@extern struct cache@' mksquashfs.h
+ sed -i '1,1i#include <sys/sysmacros.h>' mksquashfs.c unsquashfs.c
+ sed -i 's@ln -fs $(INSTALL_DIR)/@ln -s @' Makefile
+}
 build() {
 cd $name-tools-$version/squashfs-tools
-
-sed -i 's@^struct cache@extern struct cache@' mksquashfs.h
-sed -i '1,1i#include <sys/sysmacros.h>' mksquashfs.c unsquashfs.c
 
 make XZ_SUPPORT=1 LZO_SUPPORT=1 LZMA_XZ_SUPPORT=1 LZA_SUPPORT= \
 ZSTD_SUPPORT=1 GZIP_SUPPORT=1 LZ4_SUPPORT=1 COMP_DEFAULT=zstd

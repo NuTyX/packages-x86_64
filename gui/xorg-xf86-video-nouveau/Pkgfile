@@ -1,11 +1,18 @@
 description="Open Source 2D acceleration driver for nVidia cards."
 packager="spiky <spiky@nutyx.org>"
+
 name=xorg-xf86-video-nouveau
 version=1.0.17
+release=2
+
 _name=${name/xorg-/}
 makedepends=(mesa xorg-server)
 source=(http://ftp.x.org/pub/individual//driver/${_name}-$version.tar.bz2)
 
+prepare() {
+cd ${_name}-$version
+grep -rl slave | xargs sed -i s/slave/secondary/
+}
 build=xorg
 
 package() {

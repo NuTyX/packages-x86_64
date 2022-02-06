@@ -1,0 +1,19 @@
+description="Portable implementation of which"
+url="https://metacpan.org/release/File-Which"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(perl)
+
+name=perl-file-which
+version=1.27
+
+source=(https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/File-Which-$version.tar.gz)
+
+build() {
+cd File-Which-$version
+PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+}

@@ -1,0 +1,24 @@
+description="GLib wrapper for libgit2"
+url="https://wiki.gnome.org/Projects/Libgit2-glib"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(gobject-introspection glib libgit2 meson python-gobject
+             vala git )
+run=()
+set=()
+
+name=libgit2-glib
+version=1.0.0.1
+
+source=(https://download.gnome.org/sources/$name/1.0/$name-$version.tar.xz)
+
+build=meson
+
+package() {
+  # strip $PKG from embedded paths:
+  python -m compileall -d /usr/lib $PKG/usr/lib
+  python -O -m compileall -d /usr/lib $PKG/usr/lib
+
+}

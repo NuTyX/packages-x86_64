@@ -1,0 +1,29 @@
+description="Ayatana Indicator Display Objects"
+url="https://github.com/AyatanaIndicators/ayatana-ido"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(git extra-cmake-modules gobject-introspection vala)
+run=(gtk3 glib)
+
+name=ayatana-ido
+version=0.9.0
+
+prepare() {
+git clone https://github.com/AyatanaIndicators/ayatana-ido.git
+}
+
+build() {
+
+cd $name
+
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+..
+
+make
+make DESTDIR=$PKG install
+}

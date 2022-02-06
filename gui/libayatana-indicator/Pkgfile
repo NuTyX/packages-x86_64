@@ -1,0 +1,26 @@
+description="Ayatana Indicators (Shared Library)"
+url="https://github.com/AyatanaIndicators/libayatana-indicator"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(extra-cmake-modules gobject-introspection vala)
+run=(gtk3 glib ayatana-ido)
+
+name=libayatana-indicator
+version=0.9.0
+
+prepare() {
+git clone https://github.com/AyatanaIndicators/libayatana-indicator.git
+}
+build() {
+cd $name
+
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr  \
+..
+make
+make DESTDIR=$PKG install
+}

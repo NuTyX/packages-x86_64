@@ -12,13 +12,16 @@ makedepends=(gnome-autoar libnotify gnome-desktop tracker
 set=(gnome)
 
 name=nautilus
-version=41.1
+version=41.2
 
 
 source=(https://ftp.acc.umu.se/pub/GNOME/sources/$name/41/$name-$version.tar.xz)
 
 build() {
   cd $name-$version
+
+sed "/dependency/s@'libportal'@'libportal-gtk3'@" -i meson.build
+sed "/portal-gtk3/s@portal/@portal-gtk3/@" -i src/nautilus-files-view.c
   mkdir -p build
   cd build
   meson --prefix=/usr  \

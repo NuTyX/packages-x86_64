@@ -7,7 +7,7 @@ packager="spiky <spiky@nutyx.org>"
 makedepends=(ncurses zlib)
 
 name=atop
-version=2.6.0
+version=2.7.1
 
 source=(http://www.atoptool.nl/download/atop-${version/_/-}.tar.gz)
 
@@ -17,7 +17,7 @@ prepare() {
 
 build() {
   cd $name-$version
-  make DESTDIR=$PKG systemdinstall SBINPATH=/usr/bin
+  make DESTDIR=$PKG install SBINPATH=/usr/bin
 }
 
 package() {

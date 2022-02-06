@@ -1,0 +1,19 @@
+description="Check that a library is available for FFI"
+url="https://metacpan.org/release/FFI-CheckLib"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(perl)
+
+name=perl-ffi-checklib
+version=0.28
+
+source=(https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/FFI-CheckLib-$version.tar.gz)
+
+build() {
+cd FFI-CheckLib-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+}

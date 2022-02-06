@@ -1,0 +1,19 @@
+Submitted By:            Douglas R. Reno <renodr at linuxfromscratch dot org>
+Date:                    2021-12-22
+Initial Package Version: 91.4.1
+Origin:                  Alpine Linux (https://git.alpinelinux.org/aports/tree/community/firefox-esr/mozwayland-add-missing-stub.patch)
+Upstream Status:         Applied
+Description:             Fixes building Thunderbird-91.4.1 with Wayland-1.20.
+
+diff -Naurp thunderbird-91.4.1.orig/widget/gtk/mozwayland/mozwayland.c thunderbird-91.4.1/widget/gtk/mozwayland/mozwayland.c
+--- thunderbird-91.4.1.orig/widget/gtk/mozwayland/mozwayland.c	2021-12-17 05:59:17.000000000 -0600
++++ thunderbird-91.4.1/widget/gtk/mozwayland/mozwayland.c	2021-12-20 18:40:10.836727941 -0600
+@@ -200,3 +200,8 @@ MOZ_EXPORT int wl_list_empty(const struc
+ 
+ MOZ_EXPORT void wl_list_insert_list(struct wl_list* list,
+                                     struct wl_list* other) {}
++
++MOZ_EXPORT struct wl_proxy *
++wl_proxy_marshal_flags(struct wl_proxy *proxy, uint32_t opcode,
++                       const struct wl_interface *interface, uint32_t version,
++                       uint32_t flags, ...) { return NULL; }

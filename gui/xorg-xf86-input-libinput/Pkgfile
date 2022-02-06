@@ -1,11 +1,11 @@
 description="Generic input driver for Xorg server based on libinput."
 packager="spiky <spiky@nutyx.org>"
 name=xorg-xf86-input-libinput
-version=1.2.0
+version=1.2.1
 _name=${name/xorg-/}
 makedepends=(xorg-server libinput)
 
-source=(http://ftp.x.org/pub/individual//driver/${_name}-$version.tar.bz2)
+source=(https://www.x.org/archive/individual/driver/${_name}-$version.tar.xz)
 
 build() {
 	cd ${_name}-$version

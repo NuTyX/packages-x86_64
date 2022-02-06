@@ -1,4 +1,10 @@
 . lib/lsb/init-functions
+log_warning_msg "${WARNING}
+
+libvirt is only fully operationnal on systemd system.
+Please use systemd as init system if you want to use libvirt
+
+${NORMAL}"
 
 UN=kvm
 if ! (getent group $UN > /dev/null); then

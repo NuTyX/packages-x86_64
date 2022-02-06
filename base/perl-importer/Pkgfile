@@ -1,0 +1,21 @@
+description="Alternative but compatible interface to modules that export symbols"
+url="https://metacpan.org/release/Importer"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(perl)
+
+name=perl-importer
+version=0.026
+
+source=(https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Importer-$version.tar.gz)
+
+build() {
+cd Importer-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+
+make test
+make DESTDIR=$PKG install
+}

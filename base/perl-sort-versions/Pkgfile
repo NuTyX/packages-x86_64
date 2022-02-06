@@ -1,0 +1,29 @@
+description="a perl 5 module for sorting of revision-like numbers"
+url="https://search.cpan.org/dist/Sort-Versions"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(perl)
+
+name=perl-sort-versions
+version=1.62
+
+source=(https://cpan.metacpan.org/authors/id/N/NE/NEILB/Sort-Versions-1.62.tar.gz)
+
+prepare() {
+
+unset PERL5LIB PERL_MM_OPT PERL_MB_OPT PERL_LOCAL_LIB_ROOT
+export PERL_MM_USE_DEFAULT=1
+}
+build() {
+cd Sort-Versions-$version
+
+  perl Makefile.PL INSTALLDIRS=vendor
+make
+make DESTDIR=$PKG install
+
+# remove perllocal.pod and .packlist
+find $PKG -name .packlist -o -name perllocal.pod -delete
+}
+

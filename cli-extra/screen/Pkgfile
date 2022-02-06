@@ -1,21 +1,25 @@
 description="Runs several separate processes on a single physical character-based terminal."
 url="http://www.gnu.org/software/screen/screen.html"
 
-contributors="Pierre B, Greg"
-packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Greg,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
-makedepends=(patch)
+makedepends=(patch autoconf automake)
 
 name=screen
-version=4.8.0
-release=2
+version=4.9.0
 
 source=(upstream_fixes-1.patch
-	ftp://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
+	https://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
+
+prepare() {
+  cd $name-$version
+  NOCONFIGURE=1 ./autogen.sh
+}
 
 build() {
 cd $name-$version
-patch -Np1 -i ../upstream_fixes-1.patch
+
 ./configure --prefix=/usr         \
 --infodir=/usr/share/info         \
 --mandir=/usr/share/man           \

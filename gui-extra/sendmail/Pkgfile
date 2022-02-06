@@ -2,17 +2,30 @@ description="The sendmail package contains a Mail Transport Agent (MTA)."
 url="ftp://ftp.sendmail.org/pub/sendmail/"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="berlius"
+contributors="Berlius,Spiky"
 
 name=sendmail
-version=8.16.1
+version=8.17.1
+release=2
 
-runyx_version=20200412
+runyx_version=20201011
 makedepends=(ghostscript cyrus-sasl openssl procmail openldap)
 
-source=(http://downloads.tuxfamily.org/files/runyx-${runyx_version}.tar.xz
+source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	ftp://ftp.sendmail.org/pub/$name/$name.$version.tar.gz site.config.m4)
+prepare() {
+SN=smmsp
+IDN=26
 
+ if ! (getent group $SN > /dev/null); then
+   groupadd -g $IDN $SN
+ fi
+
+ if ! (getent passwd $SN > /dev/null); then
+   useradd -c "Sendmail Daemon" -g $IDN -d /dev/null \
+      -s /bin/false -u $IDN $SN
+ fi
+}
 build() {
 
 	cd $name-$version

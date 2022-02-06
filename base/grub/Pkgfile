@@ -6,7 +6,7 @@ contributors="Pierre,Schrodinger72,Spiky"
 
 name=grub
 version=2.06
-release=6
+release=7
 
 dejavu_version=2.37
 splash_version=21.03.0-rc4
@@ -37,6 +37,7 @@ gunzip -c unifont-13.0.06.pcf.gz \
 
 build() {
   cp -a grub-$version grub-efi-$version
+  cp -a grub-$version grub-efi-$version-i386
 
 	cd grub-$version
 	./configure --prefix=/usr \
@@ -51,7 +52,7 @@ build() {
 	make
 	make DESTDIR=$PKG install
 
-  cd ../grub-efi-$version
+	cd ../grub-efi-$version
 	./configure --prefix=/usr \
 		--sysconfdir=/etc       \
 		--sbindir=/sbin        \
@@ -62,11 +63,27 @@ build() {
 	make
 	mkdir $SRC/dest
 	make DESTDIR=$SRC/dest install
+	cp -r $SRC/dest/usr/lib/grub/x86_64-efi $PKG/usr/lib/grub/
+	rm -r $SRC/dest
+
+	cd ../grub-efi-$version-i386
+	./configure --prefix=/usr \
+		--sysconfdir=/etc       \
+		--sbindir=/sbin        \
+		--disable-efiemu \
+		--infodir=/usr/share/info \
+                --with-platform=efi \
+		--target=i386 \
+		--disable-werror
+	make
+	mkdir $SRC/dest
+	make DESTDIR=$SRC/dest install
+	cp -r $SRC/dest/usr/lib/grub/i386-efi $PKG/usr/lib/grub/
+
+
         install -d $PKG/boot/grub
 	install -Dm644 ../grub.cfg \
 	$PKG/boot/grub/grub.cfg.exemple
-
-	cp -r $SRC/dest/usr/lib/grub/x86_64-efi $PKG/usr/lib/grub/
 
         install -Dm644 ../grub $PKG/etc/default/grub
 	install -Dm644 ../splash-${splash_version}.png \

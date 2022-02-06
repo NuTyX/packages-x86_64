@@ -1,0 +1,27 @@
+description="Small, clear and fast audio player for Linux written in C++, supported by the Qt framework"
+url="https://sayonara-player.com/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+makedepends=(cmake qtbase qttools qtsvg)
+run=(taglib gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-libav
+     gstreamer-plugins-ugly gstreamer-plugins-bad )
+
+name=sayonara-player
+version=1.7.0-stable3
+
+source=(https://gitlab.com/luciocarreras/sayonara-player/-/archive/$version/sayonara-player-$version.tar.bz2)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DWITH_TESTS=1 \
+    ..
+make
+make DESTDIR=$PKG install
+}

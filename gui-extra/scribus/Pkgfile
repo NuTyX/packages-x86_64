@@ -4,20 +4,21 @@ url="http://www.scribus.net"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre B, spiky, tnut"
 
-makedepends=(icu cmake boost aspell cups qttools qtdeclarative gnutls kerberos
+makedepends=(icu cmake boost aspell cups qttools qtdeclarative gnutls kerberos podofo
              boost ghostscript lcms libxml2 cairo desktop-file-utils shared-mime-info poppler)
 run=(shared-mime-info)
 
 name=scribus
-version=1.5.7
-release=4
+version=1.5.8
+release=2
 
-source=(harfbuzz-3.0.0.patch
-        https://sourceforge.net/projects/scribus/files/scribus-devel/$version/scribus-$version.tar.xz)
+source=(https://downloads.sourceforge.net/$name/$name-$version.tar.xz
+        poppler-22.2.0.patch)
 
 prepare() {
  cd $name-$version
- patch -Np1 -i ../harfbuzz-3.0.0.patch
+patch -Np1 -i ../poppler-22.2.0.patch
+
 }
 
 build() {
@@ -26,6 +27,7 @@ build() {
 	cd build
 	cmake ../ -DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_SKIP_RPATH=ON \
+                -DWANT_CPP17=ON \
                 -DLIB_SUFFIX=""
 	make
 	make DESTDIR=$PKG install

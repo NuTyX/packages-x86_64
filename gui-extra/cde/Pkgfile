@@ -1,0 +1,52 @@
+description='The Common desktop Environment (CDE)'
+url='https://sourceforge.net/projects/cdesktopenv/'
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(git m4 tcl flex bison ncompress printproto rpcsvc-proto libjpeg-turbo libtirpc
+             libutempter openmotif pam xorg-libice xorg-libsm xorg-libx11 xorg-libxau xorg-xrdb
+             xorg-libxdmcp xorg-libxext xorg-bdftopcf xorg-mkfontscale xorg-libxaw
+             xorg-libxinerama xorg-libxmu xorg-libxpm xorg-libxscrnsaver xorg-libxt)
+
+run=(font-adobe-100dpi font-adobe-utopia-100dpi font-bh-100dpi font-bitstream-100dpi
+     font-bh-lucidatypewriter-100dpi xorg-xsetroot ksh gawk rpcbind)
+
+source=(cde.service)
+
+name=cde
+version=git-75c377
+
+prepare() {
+  git clone http://git.code.sf.net/p/cdesktopenv/code
+  cd code/$name
+  ./autogen.sh
+}
+build() {
+  cd code/$name
+
+  ./configure
+  
+  make -j1
+  make -j1 DESTDIR=$PKG install
+
+mkdir -p $PKG/usr/share/xsessions
+cp contrib/desktopentry/cde.desktop \
+$PKG/usr/share/xsessions
+
+# service
+mkdir -p $PKG/lib/systemd/system
+install -m644 ../../cde.service \
+$PKG/lib/systemd/system/cde.service
+
+SERVICEDIR=lib/init/services/${name}
+mkdir -p $PKG/$SERVICEDIR
+cat > $PKG/$SERVICEDIR/run << "EOF"
+#!/bin/sh
+sv check dbus >/dev/null || exit 1
+exec /usr/dt/bin/dtlogin
+EOF
+chmod 755 $PKG/$SERVICEDIR/run
+install -d -m 755 $PKG/etc/init/multi
+ln -sv /$SERVICEDIR $PKG/etc/init/multi/${name}
+}
+

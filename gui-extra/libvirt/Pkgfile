@@ -1,28 +1,30 @@
 description="The virtualization API"
 url="https://libvirt.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Yaolinux,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Yaolinux,Spiky"
 
 makedepends=(bash-completion bridge-utils cyrus-sasl dbus
              fuse gettext gnutls libcap-ng libgcrypt libnl
              libpcap libssh libssh2 libtirpc libxcb libxslt
-             libxml2 lvm2 netcat numactl openssl parted
+             lvm2 netcat numactl openssl parted
              perl-xml-xpath pm-utils polkit python-docutils
              rpcsvc-proto xorg-libpciaccess xorg-libx11 xorg-libxau
              xorg-libxdmcp xfsprogs yajl)
-run=(qemu dmidecode dnsmasq ebtables iptables)
+run=(qemu dmidecode dnsmasq ebtables iptables libxml2)
 
 name=libvirt
-version=7.10.0
+version=8.0.0
+release=3
 
-source=(https://libvirt.org/sources/$name-$version.tar.xz)
+source=(libvirtd
+         https://libvirt.org/sources/$name-$version.tar.xz)
 
 build() {
 
-cd $name-$version
+  cd $name-$version
 
-mkdir build
+  mkdir build
   cd build
   meson --prefix=/usr                 \
         --libexecdir=/usr/lib/${name} \
@@ -31,49 +33,21 @@ mkdir build
   ninja
   DESTDIR=$PKG ninja  install
 
-  # service
-  mkdir -p $PKG/etc/rc.d/init.d
-  cat > $PKG/etc/rc.d/init.d/libvirtd << "EOF"
-# Begin of libvirtd
-
-. /lib/lsb/init-functions
-[ -f /etc/sysconfig/libvirtd ] && . /etc/sysconfig/libvirtd
-
-case "$1" in
-   start)
-      log_info_msg "Starting libvirtd..."
-      start_daemon /usr/sbin/libvirtd $LIBVIRTD_ARGS -d
-      evaluate_retval
-      ;;
-
-   stop)
-      log_info_msg "Stopping libvirtd.."
-      killproc /usr/sbin/libvirtd
-      evaluate_retval
-      ;;
-
-   restart)
-      $0 stop
-      sleep 1
-      $0 start
-      ;;
-
-   status)
-      statusproc /usr/sbin/libvirtd
-      ;;
-  *)
-      echo "Usage: $0 {start|stop|restart|status}"
-      exit 1
-      ;;
-esac
-
-# End of libvirtd
+  mkdir -p $PKG/etc/sysconfig/modules.d
+  cat > $PKG/etc/sysconfig/modules.d/libvirt.conf << "EOF"
+tun
 EOF
 
-   for i in 4 5
+
+  # service
+  mkdir -p $PKG/etc/rc.d/init.d
+
+  install -m0755 ../../libvirtd \
+  $PKG/etc/rc.d/init.d/libvirtd
+
+   for i in 3 4 5
    do
       mkdir -p $PKG/etc/rc.d/rc$i.d
       ln -sv ../init.d/libvirtd $PKG/etc/rc.d/rc$i.d/S45libvirtd
    done
 }
-

@@ -1,0 +1,78 @@
+# Begin of libvirtd
+
+. /lib/lsb/init-functions
+[ -f /etc/sysconfig/virtlogd ] && . /etc/sysconfig/virtlogd
+[ -f /etc/sysconfig/libvirtd ] && . /etc/sysconfig/libvirtd
+[ -f /etc/sysconfig/virtlxcd ] && . /etc/sysconfig/virtlxcd
+[ -f /etc/sysconfig/virtlockd ] && . /etc/sysconfig/virtlockd
+[ -f /etc/sysconfig/virtnetworkd ] && . /etc/sysconfig/virtnetworkd
+[ -f /etc/sysconfig/virtstoraged ] && . /etc/sysconfig/virtstoraged
+[ -f /etc/sysconfig/virtqemud ] && . /etc/sysconfig/virtqemud
+
+case "$1" in
+   start)
+      log_info_msg "Starting virtlogd..."
+      start_daemon /usr/sbin/virtlogd $VIRTLOGD_ARGS -d
+      evaluate_retval
+      log_info_msg "Starting libvirtd..."
+      start_daemon /usr/sbin/libvirtd $LIBVIRTD_ARGS -d
+      evaluate_retval
+      log_info_msg "Starting virtlxcd..."
+      start_daemon /usr/sbin/virtlxcd $VIRTLXCD_ARGS -d
+      evaluate_retval
+      log_info_msg "Starting virtqemud..."
+      start_daemon /usr/sbin/virtqemud $VIRTQEMUD_ARGS -d
+      evaluate_retval
+      log_info_msg "Starting virtlockd..."
+      start_daemon /usr/sbin/virtlockd $VIRTLOCKD_ARGS -d
+      evaluate_retval
+      log_info_msg "Starting virtstoraged..."
+      start_daemon /usr/sbin/virtstoraged $VIRTSTORAGED_ARGS -d
+      evaluate_retval
+      sleep 1
+      log_info_msg "Starting virtnetworkd..."
+      start_daemon /usr/sbin/virtnetworkd $VIRTNETWORKD_ARGS -d
+      evaluate_retval
+
+      ;;
+
+   stop)
+      log_info_msg "Stopping libvirtd.."
+      killproc /usr/sbin/libvirtd
+      evaluate_retval
+      log_info_msg "Stopping virtlxcd.."
+      killproc /usr/sbin/virtlxcd
+      evaluate_retval
+      log_info_msg "Stopping virtlogd.."
+      killproc /usr/sbin/virtlogd
+      evaluate_retval
+      log_info_msg "Stopping virtqemud.."
+      killproc /usr/sbin/virtqemud
+      evaluate_retval
+      log_info_msg "Stopping virtnetworkd.."
+      killproc /usr/sbin/virtnetworkd
+      evaluate_retval
+      log_info_msg "Stopping virtstoraged.."
+      killproc /usr/sbin/virtstoraged
+      evaluate_retval
+      log_info_msg "Stopping virtlockd.."
+      killproc /usr/sbin/virtlockd
+      evaluate_retval
+      ;;
+
+   restart)
+      $0 stop
+      sleep 1
+      $0 start
+      ;;
+
+   status)
+      statusproc /usr/sbin/libvirtd
+      ;;
+  *)
+      echo "Usage: $0 {start|stop|restart|status}"
+      exit 1
+      ;;
+esac
+
+# End of libvirtd

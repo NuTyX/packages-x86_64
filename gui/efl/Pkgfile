@@ -1,18 +1,18 @@
 description="Enlightenment Foundatation Libraries"
 url="https://www.enlightenment.org"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(check meson ninja scim luajit giflib librsvg
              libraw libwebp libjpeg-turbo xorg-libxrender
-             xorg-fontconfig
+             xorg-fontconfig libinput
              gstreamer-plugins-base fribidi poppler pulseaudio
              xorg-libxp libspectre xorg-libxscrnsaver bullet)
 run=(shared-mime-info)
 
 
 name=efl
-version=1.25.1
+version=1.26.1
 
 source=(https://download.enlightenment.org/rel/libs/$name/$name-$version.tar.xz)
 build() {
@@ -23,7 +23,6 @@ meson --prefix=/usr \
       -Dsystemd=false \
       -Dfb=true \
       -Dwl=true \
-      -Dscim=false \
       ../$name-$version
 ninja
 DESTDIR=$PKG ninja install

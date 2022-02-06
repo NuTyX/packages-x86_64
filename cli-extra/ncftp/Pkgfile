@@ -1,21 +1,40 @@
 description="Powerful and flexible interface to the Internet standard File Transfer Protocol."
 url="http://www.ncftp.com/"
-contributors="berlius tnut"
-packager="greg<greg@nutyx.org>"
+
+contributors="Berlius,Greg"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(ncurses inetutils)
 
 name=ncftp
 version=3.2.6	
-release=1
+release=2
 
-source=(ftp://ftp.ncftp.com/ncftp/$name-$version-src.tar.xz)
+source=(ncftp-reproducible.patch
+        ftp://ftp.ncftp.com/ncftp/$name-$version-src.tar.xz)
  
 build() {
 
-cd $name-$version	
-./configure --prefix=/usr --sysconfdir=/etc/ncftp 
+cd $name-$version
+patch -Np1 -i ../ncftp-reproducible.patch
+
+# https://wiki.gentoo.org/wiki/Gcc_10_porting_notes/fno_common
+CFLAGS+=' -fcommon'
+
+# FS#39211
+unset CPPFLAGS
+
+CPP=/usr/bin/cpp \
+./configure --prefix=/usr \
+  --sysconfdir=/etc/ncftp
+
 make -C libncftp shared
 make
-make -C libncftp soinstall 
-make DESTDIR=$PKG install
 
+install -d $PKG/usr/{share,include}
+
+make PREFIX=$PKG/usr \
+ -C libncftp soinstall
+
+make prefix=$PKG/usr mandir=$PKG/usr/share/man install
 }

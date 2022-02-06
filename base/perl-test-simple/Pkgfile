@@ -1,0 +1,20 @@
+description="Basic utilities for writing tests"
+url="https://metacpan.org/release/Test-Simple"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(perl)
+
+name=perl-test-simple
+version=1.302188
+
+source=(https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-$version.tar.gz)
+
+build() {
+cd Test-Simple-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make test
+make DESTDIR=$PKG install
+}

@@ -4,13 +4,13 @@ url="https://www.samba.org"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Greg,Tnut"
 
-makedepends=(acl pam perl-yapp jansson rpcsvc-proto libtirpc
+makedepends=(acl pam perl-yapp jansson rustc rpcsvc-proto libtirpc
              docbook-xsl avahi gnutls libgpg-error popt talloc
              python icu cups kerberos libcap openldap tdb)
 run=(samba.lib)
 
 name=samba
-version=4.15.3
+version=4.15.5
 
 runyx_version=20201011
 
@@ -72,8 +72,11 @@ install -d cups/backend
 ln -v -sf /usr/bin/smbspool $PKG/usr/lib/cups/backend/smb
 
 # Part of tdb
+
+_ARCH="x86_64"
+[ "$PKGMK_ARCH" = "i686" ] && _ARCH=i386
 rm $PKG/usr/lib/python3.10/site-packages/_tdb_text.py
-rm $PKG/usr/lib/python3.10/site-packages/tdb.cpython-310-x86_64-linux-gnu.so
+rm $PKG/usr/lib/python3.10/site-packages/tdb.cpython-310-${_ARCH}-linux-gnu.so
 
 # service
 cd $SRC/runyx-${runyx_version}

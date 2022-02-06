@@ -1,21 +1,22 @@
 description="An implementation of the Progressive Graphics File (PGF)"
 url="http://www.libpgf.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
-makedepends=(dos2unix)
+makedepends=(dos2unix autoconf libtool automake)
 
 name=libpgf
-version=7.19.3
+version=7.21.7
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(http://sourceforge.net/projects/$name/files/$name/$version-latest/libPGF-codec-and-console-src.zip)
+source=(https://sourceforge.net/projects/libpgf/files/$name/$version/$name.zip)
 
 build() {
- cd libPGF-codec-and-console-src/PGF/Codec
- dos2unix configure.ac
+ cd libpgf
+ find . -type f | xargs dos2unix
+ mv README{.txt,}
  sh ./autogen.sh
  ./configure --prefix=/usr
  make

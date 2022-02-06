@@ -1,14 +1,13 @@
 description="st is a simple terminal implementation for X"
 url="http://st.suckless.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Alienus, Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Alienus,Greg,Tnut"
 
 makedepends=(xorg-libxext xorg-libxft)
 
 name=st
-version=0.8.1
-release=2
+version=0.8.5
 
 source=(http://dl.suckless.org/st/$name-$version.tar.gz
 		config.h)
@@ -17,7 +16,7 @@ prepare() {
 
   cd $name-$version
   sed -i '/\@tic /d' Makefile
-  cp ../config.h config.h
+##  cp ../config.h config.h
 }
 
 build() {

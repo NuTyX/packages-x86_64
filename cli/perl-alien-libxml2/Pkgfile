@@ -1,0 +1,22 @@
+description="Install the C libxml2 library on your system"
+url="https://metacpan.org/release/Alien-Libxml2"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=( perl-html-parser perl-sort-versions
+            perl-test2-suite perl-uri)
+run=(libxml2 perl-alien-build)
+
+name=perl-alien-libxml2
+version=0.17
+
+source=(https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/Alien-Libxml2-$version.tar.gz)
+
+build() {
+cd Alien-Libxml2-$version
+perl Makefile.PL INSTALLDIRS=vendor
+make
+make test
+make DESTDIR=$PKG install
+}

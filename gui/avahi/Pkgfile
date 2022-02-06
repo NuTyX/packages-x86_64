@@ -1,15 +1,23 @@
 description="Multicast/unicast DNS-SD framework"
 url="http://www.avahi.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre B, jayce, Rems, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B, jayce, Rems, Spiky"
 
 makedepends=(intltool libevent glib gobject-introspection libdaemon dbus)
 
 name=avahi
 version=0.8
+release=2
 
 source=( https://github.com/lathiat/avahi/releases/download/v$version/avahi-$version.tar.gz)
+
+prepare() {
+(getent group $name > /dev/null) || groupadd -fg 84 $name
+(getent passwd $name > /dev/null) || useradd  -c  "Avahi Daemon Owner" \
+-d /var/run/avahi-daemon -u 84 -g $name -s /bin/false $name
+
+}
 
 build() {
 cd $name-$version
