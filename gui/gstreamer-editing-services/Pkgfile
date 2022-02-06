@@ -5,10 +5,11 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Rems,Spiky"
 
 makedepends=(bash-completion gobject-introspection gtk-doc python-gobject
-             gstreamer-plugins-base gstreamer-plugins-bad)
+             gstreamer-plugins-base gstreamer-plugins-bad gstreamer-plugins-good)
 
 name=gstreamer-editing-services
 version=1.18.5
+release=2
 
 source=(https://gstreamer.freedesktop.org/src/gst-editing-services/gst-editing-services-$version.tar.xz)
 
@@ -18,8 +19,8 @@ mkdir build
 cd    build
 meson --prefix=/usr \
 -Dbuildtype=release \
--Dpackage-name="GStreamer Editing Services $version NuTyX" \
--Dpackage-origin="http://downloads.nutyx.org/"
+-Ddoc=disabled \
+-Dvalidate=disabled
 ninja
 DESTDIR=$PKG ninja install
 }
