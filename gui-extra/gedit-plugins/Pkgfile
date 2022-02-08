@@ -1,16 +1,17 @@
 description="A text editor for GNOME"
 url="http://www.gnome.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Jayce, Fanch, tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Jayce, Fanch, Spiky"
 
-makedepends=(gedit vte ligit2-glib)
+makedepends=(gedit vte libgit2-glib)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
 set=(gnome)
 
 name=gedit-plugins
 version=40.1
+release=2
 
 source=(https://gitlab.gnome.org/GNOME/gedit-plugins/-/archive/40.1/gedit-plugins-40.1.tar.gz
         gedit-plugins-40.1-meson-0.61.patch)
