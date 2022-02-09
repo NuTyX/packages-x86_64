@@ -12,13 +12,18 @@ set=(lxde)
 name=epdfview
 alias=(ePDFView)
 version=0.1.8
-release=5
+release=6
 
 source=(http://anduin.linuxfromscratch.org/BLFS/epdfview/$name-$version.tar.bz2
 	$name-$version-fixes-2.patch)
 prepare() {
-
-cp $SRC/$name-$version-fixes-2.patch $SRC/$name-$version/$name-$version-fixes-2.patch
-cd $name-$version
-patch -Np1 -i ../epdfview-0.1.8-fixes-2.patch
+  cd $name-$version
+  patch -Np1 -i ../epdfview-0.1.8-fixes-2.patch
+}
+package() {
+  cd $name-$version
+  for size in 24 32 48; do
+    install -Dm644 data/icon_$name-$size.png \
+    $PKG/usr/share/icons/hicolor/${size}x${size}/apps/$name.png
+  done
 }
