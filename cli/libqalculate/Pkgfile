@@ -1,0 +1,21 @@
+description="Multi-purpose desktop calculator"
+url="https://qalculate.github.io"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(intltool icu doxygen libxml2 curl mpfr)
+run=()
+set=()
+
+name=libqalculate
+version=3.22.0
+
+source=(https://github.com/Qalculate/libqalculate/releases/download/v${version}/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
