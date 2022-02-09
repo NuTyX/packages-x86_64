@@ -12,12 +12,12 @@ run=(startup-notification hunspell desktop-file-utils hicolor-icon-theme
      shared-mime-info)
 
 name=thunderbird
-version=91.5.1
+version=91.6.0
 
 locale_version=$version
 
 source=(https://archive.mozilla.org/pub/thunderbird/releases/$version/source/$name-$version.source.tar.xz
-	$name.desktop buildfix-1.patch )
+	$name.desktop )
 
 pack_remove_locale() {
 
@@ -32,9 +32,6 @@ usr/lib/$name/extensions/langpack-${1}@$name.mozilla.org.xpi
 
 rm usr/lib/$name/extensions/langpack-${1}@$name.mozilla.org.xpi
 
-}
-prepare() {
-cd $name-$version
 }
 build() {
 
@@ -91,8 +88,6 @@ ac_add_options --enable-install-strip
 ac_add_options --enable-official-branding
 
 EOF
-
-patch -Np1 -i ../buildfix-1.patch
 
 export SHELL=/bin/sh
 export CC=gcc CXX=g++
