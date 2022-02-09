@@ -11,18 +11,27 @@ makedepends=(intltool xorgproto xorg-libx11 perl-xml-parser)
 
 _name=xkeyboard-config
 name=xorg-xkeyboard-config
-version=2.34
+version=2.35.1
 
 alias=(xkeyboard-config)
 
-source=( http://xorg.freedesktop.org/archive/individual/data/${_name}/${_name}-$version.tar.bz2)
+source=( http://xorg.freedesktop.org/archive/individual/data/${_name}/${_name}-$version.tar.xz)
+
+prepare() {
+cd ${_name}-$version
+sed -i -E 's/(ln -s)/\1f/' rules/meson.build
+}
 
 build() {
 
 cd ${_name}-$version
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --with-xkb-rules-symlink=xorg
+mkdir build
+cd    build
 
-make
-make DESTDIR=$PKG install
+meson --prefix=/usr \
+--buildtype=release ..
+
+ninja
+DESTDIR=$PKG ninja install
 
 }
