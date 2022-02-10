@@ -1,7 +1,7 @@
 description="A lightweight compositor for X11"
 url="https://github.com/yshui/picom"
 
-packager="sundev79 <sun@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 makedepends=(
 	meson cmake ninja python libev xorg-libx11
 	libxcb xcb-util xcb-util-image xcb-util-renderutil
@@ -9,11 +9,11 @@ makedepends=(
 )
 
 name=picom
-version=8.2
-release=2
-source=(https://github.com/yshui/picom/archive/refs/tags/v$version.tar.gz)
+version=9.0
+source=(https://github.com/yshui/picom/archive/refs/tags/v9.tar.gz)
 
 build() {
+mv $name-9 $name-$version
 cd $name-$version
 meson --buildtype=release -Dprefix=$PKG/usr . build
 ninja -C build
