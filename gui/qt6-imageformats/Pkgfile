@@ -1,0 +1,25 @@
+description='Plugins for additional image formats: TIFF, MNG, TGA, WBMP'
+url='https://www.qt.io/'
+
+packager="tnut <tnut@nutyx.org>"
+
+name=qt6-imageformats
+version=6.2.3
+makedepends=(cmake ninja qt6-base
+             jasper libmng libwebp )
+
+source=(https://download.qt.io/official_releases/qt/${version:0:3}/$version/submodules/qtimageformats-everywhere-src-$version.tar.xz)
+
+build() {
+ cmake -S qtimageformats-everywhere-src-$version -B build -G Ninja
+ cmake --build build
+ DESTDIR=$PKG cmake --install build
+}
+devel() {
+  cd $PKG
+  bsdtar -cf \
+  $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
+  usr/lib/cmake
+  
+  rm -r usr/lib/cmake
+}

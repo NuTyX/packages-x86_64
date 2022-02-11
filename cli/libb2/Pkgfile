@@ -1,0 +1,18 @@
+description='C library providing BLAKE2b, BLAKE2s, BLAKE2bp, BLAKE2sp hash functions'
+url='https://blake2.net/'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+name=libb2
+version=0.98.1
+
+source=(https://github.com/BLAKE2/libb2/releases/download/v$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--disable-native --enable-fat
+make
+make DESTDIR=$PKG install
+}

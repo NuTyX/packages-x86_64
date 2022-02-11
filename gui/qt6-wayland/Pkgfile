@@ -1,0 +1,28 @@
+description='Provides APIs for Wayland'
+url='https://www.qt.io/'
+
+packager="tnut <tnut@nutyx.org>"
+
+name=qt6-wayland
+version=6.2.3
+makedepends=(cmake ninja qt6-base
+             qt6-declarative xorg-libxcomposite)
+
+source=(https://download.qt.io/official_releases/qt/${version:0:3}/$version/submodules/qtwayland-everywhere-src-$version.tar.xz)
+
+build() {
+ cmake -S qtwayland-everywhere-src-$version -B build -G Ninja
+ cmake --build build
+ DESTDIR=$PKG cmake --install build
+}
+devel() {
+  cd $PKG
+  bsdtar -cf \
+  $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
+  usr/include \
+  usr/lib/qt6/mkspecs \
+  usr/lib/cmake/
+  
+  rm -r usr/include usr/lib/qt6/mkspecs \
+  usr/lib/cmake
+}

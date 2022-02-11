@@ -1,0 +1,27 @@
+description='Allows Qt Quick to operate on Vulkan, Metal, and Direct3D, in addition to OpenGL'
+url='https://www.qt.io/'
+
+packager="tnut <tnut@nutyx.org>"
+
+name=qt6-shadertools
+version=6.2.3
+makedepends=(cmake ninja qt6-base)
+
+source=(https://download.qt.io/official_releases/qt/${version:0:3}/$version/submodules/qtshadertools-everywhere-src-$version.tar.xz)
+
+build() {
+ cmake -S qtshadertools-everywhere-src-$version -B build -G Ninja
+ cmake --build build
+ DESTDIR=$PKG cmake --install build
+}
+devel() {
+  cd $PKG
+  bsdtar -cf \
+  $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
+  usr/include \
+  usr/lib/qt6/mkspecs \
+  usr/lib/cmake/
+  
+  rm -r usr/include usr/lib/qt6/mkspecs \
+  usr/lib/cmake
+}

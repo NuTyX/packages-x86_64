@@ -1,0 +1,41 @@
+description='A cross-platform application and UI framework'
+url='https://www.qt.io/'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+name=qt6-base
+version=6.2.3
+makedepends=(libb2 cmake ninja systemd icu brotli at-spi2-core mtdev 
+             cups gstreamer-plugins-base xcb-util xcb-util-renderutil
+             vulkan-headers shared-mime-info sqlite libinput
+             double-conversion alsa-lib
+             mesa xorg-libxrender libxkbcommon gtk3 mariadb postgresql)
+
+source=(https://download.qt.io/official_releases/qt/${version%.*}/$version/submodules/qtbase-everywhere-src-$version.tar.xz)
+
+build() {
+ cmake -S qtbase-everywhere-src-$version -B build -G Ninja    \
+ -D CMAKE_INSTALL_PREFIX=/usr -D INSTALL_BINDIR=lib/qt6/bin    \
+ -D INSTALL_PUBLICBINDIR=usr/bin -D INSTALL_LIBEXECDIR=lib/qt6 \
+ -DINSTALL_DOCDIR=share/doc/qt6  -DINSTALL_ARCHDATADIR=lib/qt6 \
+ -DINSTALL_DATADIR=share/qt6 -DINSTALL_INCLUDEDIR=include/qt6  \
+ -DINSTALL_MKSPECSDIR=lib/qt6/mkspecs -DQT_FEATURE_openssl_linked=ON   \
+ -DINSTALL_EXAMPLESDIR=share/doc/qt6/examples -DQT_FEATURE_journald=ON \
+ -DQT_FEATURE_system_sqlite=ON -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
+
+ cmake --build build
+
+  DESTDIR=$PKG cmake --install build
+}
+devel() {
+  cd $PKG
+  bsdtar -cf \
+  $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
+  usr/include \
+  usr/lib/qt6/mkspecs \
+  usr/lib/cmake/
+  
+  rm -r usr/include usr/lib/qt6/mkspecs \
+  usr/lib/cmake
+}
