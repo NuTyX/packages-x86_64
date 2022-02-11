@@ -1,0 +1,30 @@
+description='Classes for QML and JavaScript languages'
+url='https://www.qt.io/'
+
+packager="tnut <tnut@nutyx.org>"
+
+name=qt6-declarative
+version=6.2.3
+makedepends=(cmake ninja qt6-base qt6-shadertools
+            at-spi2-core python)
+
+source=(https://download.qt.io/official_releases/qt/${version:0:3}/$version/submodules/qtdeclarative-everywhere-src-$version.tar.xz)
+
+build() {
+ export CXXFLAGS+=" -ffat-lto-objects"
+ cmake -S qtdeclarative-everywhere-src-$version -B build -G Ninja \
+ -DINSTALL_PUBLICBINDIR=usr/bin
+ cmake --build build
+ DESTDIR=$PKG cmake --install build
+}
+devel() {
+  cd $PKG
+  bsdtar -cf \
+  $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
+  usr/include \
+  usr/lib/qt6/mkspecs \
+  usr/lib/cmake/
+  
+  rm -r usr/include usr/lib/qt6/mkspecs \
+  usr/lib/cmake
+}
