@@ -4,13 +4,11 @@ url="https://www.nvidia.com"
 packager="tnut <tnut@nutyx.org>"
 
 name=nvidia-kernel
-version=495.46
-release=10
+version=510.47.03
 
 run=(kernel)
 
-source=(kernel-5.16.patch
-	https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
+source=(https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
 
 build()
 {
@@ -18,7 +16,6 @@ build()
 
 
  cd NVIDIA-Linux-x86_64-$version
- patch -Np1 -i ../kernel-5.16.patch
 
  cd kernel
  modules_dir="$(basename /lib/modules/*)"
