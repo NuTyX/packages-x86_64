@@ -2,12 +2,15 @@ description='A cross-platform application and UI framework'
 url='https://www.qt.io/'
 
 packager="tnut <tnut@nutyx.org>"
+contributors=""
 
 name=qt6-base
 version=6.2.3
-makedepends=(cmake ninja systemd icu brotli at-spi2-core mtdev 
+makedepends=(libb2 cmake ninja systemd icu brotli at-spi2-core mtdev 
              cups gstreamer-plugins-base xcb-util xcb-util-renderutil
-             libxkbcommon gtk3 mariadb postgresql)
+             vulkan-headers shared-mime-info sqlite libinput
+             double-conversion alsa-lib
+             mesa xorg-libxrender libxkbcommon gtk3 mariadb postgresql)
 
 source=(https://download.qt.io/official_releases/qt/${version%.*}/$version/submodules/qtbase-everywhere-src-$version.tar.xz)
 
