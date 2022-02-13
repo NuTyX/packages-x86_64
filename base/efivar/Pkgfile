@@ -1,27 +1,26 @@
 description="Tools and library to manipulate EFI variables"
 url="https://github.com/rhboot/efivar/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
-makedepends=(popt)
+makedepends=(popt mandoc)
 
 name=efivar
-version=37
+version=38
 _commit=cff88dd96b9d43e2c5875a24ba6180b196890ded
-release=3
 
 source=(efivar-${version}.patch
-			  https://github.com/rhboot/efivar/archive/${_commit}.tar.gz)
+			  https://github.com/rhboot/efivar/archive/refs/tags/$version.tar.gz)
 
 build() {
 
 unset MAKEFLAGS
-cd $name-${_commit}
+cd $name-$version
 
 patch -Np1 -i ../efivar-$version.patch
 
 # remove insecure rpath in efivar-tester
-sed 's|-rpath,$(TOPDIR)/src|-rpath,$(libdir)|g' -i src/test/Makefile
+#sed 's|-rpath,$(TOPDIR)/src|-rpath,$(libdir)|g' -i src/test/Makefile
 
 make -j1 V=1 \
   libdir=/usr/lib/ \
@@ -42,7 +41,7 @@ make -j1 V=1 \
 	libdir=/usr/lib/ \
 	bindir=/usr/bin/ \
 	mandir=/usr/share/man \
-	includedir=/usr/include/
+#	includedir=/usr/include/
 
 install -v -D -m0755 src/test/tester ${PKG}/usr/bin/efivar-tester
 
