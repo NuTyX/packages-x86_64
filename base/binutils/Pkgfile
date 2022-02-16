@@ -1,20 +1,22 @@
 description="Linker, assembler, and other tools for handling object files."
 url="http://sources.redhat.com/binutils/"
 maintainer="Tristan Gingold ( gingold at adacore dot com ),Alan Modra ( amodra at bigpond dot net dot au )"
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 name=binutils
-version=2.37
+version=2.38
 
-source=(https://www.linuxfromscratch.org/patches/lfs/development/binutils-$version-upstream_fix-1.patch
+makedepends=(perl texinfo)
+source=(https://www.linuxfromscratch.org/patches/lfs/11.1-rc1/binutils-2.38-lto_fix-1.patch
 	http://ftp.gnu.org/gnu/binutils/binutils-$version.tar.xz)
 build()
 {
 cd binutils-$version
 
-patch -Np1 -i ../binutils-$version-upstream_fix-1.patch
+patch -Np1 -i ../binutils-2.38-lto_fix-1.patch
 
-sed -i '63d' etc/texi2pod.pl
+#sed -i '63d' etc/texi2pod.pl
+sed '6009s/$add_dir//' -i ltmain.sh
 find -name \*.1 -delete
 
 mkdir -v build
