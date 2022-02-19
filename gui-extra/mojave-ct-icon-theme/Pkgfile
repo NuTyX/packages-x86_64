@@ -1,0 +1,26 @@
+description='MacOS Mojave icon pack by zayronxio'
+url='https://github.com/zayronxio/Mojave-CT'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(git)
+run=(gtk-update-icon-cache hicolor-icon-theme)
+set=()
+
+name=mojave-ct-icon-theme
+version=51da5e4
+
+source=()
+
+prepare() {
+git clone https://github.com/zayronxio/Mojave-CT.git \
+$name-$version
+}
+
+
+build() {
+install -d $PKG/usr/share/icons
+cp -a --no-preserve=ownership $name-$version $PKG/usr/share/icons/Mojave-CT
+rm -r $PKG/usr/share/icons/Mojave-CT/.git
+}
