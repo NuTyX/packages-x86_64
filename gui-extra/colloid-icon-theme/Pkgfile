@@ -10,6 +10,7 @@ set=()
 
 name=colloid-icon-theme
 version=a0f82e2
+release=2
 
 source=()
 
@@ -21,5 +22,9 @@ $name-$version
 build() {
 cd $name-$version
 install -d $PKG/usr/share/icons
+
+sed -i /gtk-update-icon-cache/d install.sh
+
 ./install.sh -t all -d $PKG/usr/share/icons
+
 }
