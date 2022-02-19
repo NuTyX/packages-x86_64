@@ -10,7 +10,21 @@ set=()
 
 name=gnome-shell-extension-appindicator
 version=41
+release=2
 
 source=(https://github.com/ubuntu/$name/archive/refs/tags/v${version}.tar.gz)
 
-build=meson
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson --prefix=/usr \
+..
+ninja
+
+DESTDIR=$PKG ninja install
+
+rm $PKG/usr/share/glib-2.0/schemas/gschemas.compiled
+}
