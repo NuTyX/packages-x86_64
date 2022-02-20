@@ -42,7 +42,7 @@
        following: 'Mouse' - where the mouse is, or
                   'Active' - where the active window is -->
     <theme>
-        <name>Bear2</name>
+        <name>JP</name>
         <titleLayout>NLIMC</titleLayout>
         <!--       available characters are NDSLIMC, each can occur at most once.
       N: window icon
@@ -56,26 +56,26 @@
         <keepBorder>no</keepBorder>
         <animateIconify>no</animateIconify>
         <font place='ActiveWindow'>
-            <name>sans</name>
-            <size>8</size>
+            <name>DejaVu Sans</name>
+            <size>12</size>
             <!-- font size in points -->
-            <weight>bold</weight>
+            <weight>normal</weight>
             <!-- 'bold' or 'normal' -->
             <slant>normal</slant>
         </font>
         <!-- 'italic' or 'normal' -->
         <font place='InactiveWindow'>
-            <name>sans</name>
-            <size>8</size>
+            <name>DejaVu Sans</name>
+            <size>12</size>
             <!-- font size in points -->
-            <weight>bold</weight>
+            <weight>normal</weight>
             <!-- 'bold' or 'normal' -->
             <slant>normal</slant>
         </font>
         <!-- 'italic' or 'normal' -->
         <font place='MenuHeader'>
-            <name>sans</name>
-            <size>9</size>
+            <name>Arimo</name>
+            <size>11</size>
             <!-- font size in points -->
             <weight>normal</weight>
             <!-- 'bold' or 'normal' -->
@@ -83,8 +83,8 @@
         </font>
         <!-- 'italic' or 'normal' -->
         <font place='MenuItem'>
-            <name>sans</name>
-            <size>9</size>
+            <name>Arimo</name>
+            <size>11</size>
             <!-- font size in points -->
             <weight>normal</weight>
             <!-- 'bold' or 'normal' -->
@@ -92,8 +92,8 @@
         </font>
         <!-- 'italic' or 'normal' -->
         <font place='ActiveOnScreenDisplay'>
-            <name>sans</name>
-            <size>9</size>
+            <name>Arimo</name>
+            <size>11</size>
             <!-- font size in points -->
             <weight>bold</weight>
             <!-- 'bold' or 'normal' -->
@@ -101,8 +101,8 @@
         </font>
         <!-- 'italic' or 'normal' -->
         <font place='InactiveOnScreenDisplay'>
-            <name>sans</name>
-            <size>9</size>
+            <name>Arimo</name>
+            <size>11</size>
             <!-- font size in points -->
             <weight>bold</weight>
             <!-- 'bold' or 'normal' -->
@@ -311,31 +311,66 @@
                 <direction>down</direction>
             </action>
         </keybind>
-        <keybind key='F7'>
-            <action name='Execute'>
-                <command>pcmanfm</command>
-            </action>
+        <!-- Keybindings for running applications in NuTyX -->
+        <keybind key="W-b">
+         <action name="Execute">
+           <startupnotify>
+            <enabled>false</enabled>
+             <name>Browser</name>
+           </startupnotify>
+           <command>x-www-browser</command>
+         </action>
         </keybind>
-        <keybind key='F10'>
-            <action name='Execute'>
-                <command>telegram-desktop</command>
-            </action>
-        </keybind>
-        <keybind key='F12'>
-            <action name='Execute'>
-                <command>google-chrome-stable</command>
-            </action>
-        </keybind>
-        <keybind key='F8'>
-            <action name='Execute'>
-                <command>/opt/FreeTube/freetube</command>
-            </action>
-        </keybind>
-        <keybind key='F9'>
-            <action name='Execute'>
-                <command>xterm</command>
-            </action>
-        </keybind>
+    <!-- Launch scrot when Print is pressed -->
+    <keybind key="Print">
+      <action name="Execute">
+        <command>scrot -q 90 -d 1 -e 'mv $f ~/$f'</command>
+      </action>
+    </keybind>
+    <keybind key="A-Print">
+      <action name="Execute">
+        <command>scrot -s -q 90 -d 1 -e 'mv $f ~/$f'</command>
+      </action>
+    </keybind>
+       <keybind key="F7">
+         <action name="Execute">
+           <command>pcmanfm</command>
+         </action>
+       </keybind>
+       <keybind key="F10">
+         <action name="Execute">
+           <command>telegram-desktop</command>
+         </action>
+       </keybind>
+       <keybind key="F12">
+         <action name="Execute">
+           <command>google-chrome-stable</command>
+         </action>
+       </keybind>
+       <keybind key="F8">
+         <action name="Execute">
+           <command>/opt/FreeTube/freetube</command>
+         </action>
+       </keybind>
+       <keybind key="F9">
+         <action name="Execute">
+           <command>xterm</command>
+         </action>
+       </keybind>
+       <keybind key="C-A-T">
+         <action name="Execute">
+           <command>sakura</command>
+         </action>
+       </keybind>
+       <keybind key="W-f">
+         <action name="Execute">
+           <command>pcmanfm</command>
+           <startupnotify>
+             <enabled>false</enabled>
+             <name>PCManFM</name>
+            </startupnotify>
+          </action>
+       </keybind>
     </keyboard>
     <mouse>
         <dragThreshold>1</dragThreshold>

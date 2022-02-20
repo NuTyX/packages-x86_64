@@ -4,19 +4,44 @@ url="https://www.gnome-look.org/p/1661959"
 packager="tnut <tnut@nutyx.org>"
 
 name=openbox-jp-theme
-version=0.1
+version=0.2
+release=2
 
-run=(mojave-ct-icon-theme colloid-icon-theme dmenu obconf nitrogen
-     lxde-appearance file-roller gnome-screenshot imlib2
+run=(mojave-ct-icon-theme colloid-icon-theme dmenu obconf
+     lxde-appearance file-roller gnome-screenshot hsetroot
      pcmanfm leafpad volumeicon sakura tint2 lxde-appearance-obconf)
 
-source=(autostart menu.xml rc.xml)
+source=(autostart menu.xml rc.xml themerc tint2rc close.xbm close_pressed.xbm
+        desk.xbm desk_toggled.xbm iconify.xbm iconify_pressed.xbm max.xbm
+        max_pressed.xbm max_toggled.xbm shade.xbm shade_pressed.xbm
+        settings.ini)
 
 build() {
 install -d $PKG/etc/skel/.config/openbox
+install -d $PKG/etc/skel/.config/tint2
+
+install -m644 tint2rc \
+$PKG/etc/skel/.config/tint2/tint2rc
+
 for i in autostart menu.xml rc.xml
 do
  install -m644 $i \
  $PKG/etc/skel/.config/openbox/$i
 done
+
+mkdir -p $PKG/usr/share/themes/JP/openbox-3
+
+# JP openbox theme
+for i in themerc close.xbm close_pressed.xbm desk.xbm desk_toggled.xbm \
+   iconify.xbm iconify_pressed.xbm max.xbm max_pressed.xbm max_toggled.xbm \
+   shade.xbm shade_pressed.xbm
+do
+   install -m644 $i \
+   $PKG/usr/share/themes/JP/openbox-3/$i
+done
+
+# GTK3 settings
+install -d $PKG/usr/share/themes/JP/gtk-3.0
+install -m644 settings.ini \
+$PKG/usr/share/themes/JP/gtk-3.0/settings.ini
 }
