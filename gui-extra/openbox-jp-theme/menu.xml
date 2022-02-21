@@ -3,25 +3,14 @@
 <openbox_menu xmlns="http://openbox.org/3.4/menu">
 
 <menu id="apps-accessories-menu" label="Accessories">
-  <item icon="/usr/share/icons/hicolor/scalable/apps/org.gnome.ArchiveManager.svg" label="Gnome Archiver">
+  <item icon="/usr/share/icons/hicolor/16x16/apps/xarchiver.png" label="Archive manager">
     <action name="Execute">
-      <command>file-roller</command>
+      <command>xarchiver</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>
     </action>
   </item>
-  <item icon="/usr/share/icons/hicolor/scalable/apps/org.gnome.Screenshot.svg" label="Gnome Screenshot">
-    <action name="Execute">
-      <command>gnome-screenshot --interactive</command>
-      <startupnotify>
-        <enabled>yes</enabled>
-      </startupnotify>
-    </action>
-  </item>
-</menu>
-
-<menu id="apps-editors-menu" label="Editors">
   <item icon="/usr/share/icons/hicolor/16x16/apps/leafpad.png" label="Leafpad">
     <action name="Execute">
       <command>leafpad</command>
@@ -29,22 +18,6 @@
         <enabled>yes</enabled>
       </startupnotify>
     </action>
-  </item>
-</menu>
-
-<menu id="apps-term-menu" label="Terminals">
-  <item icon="/usr/share/pixmaps/terminal-tango.svg" label="Sakura Terminal">
-    <action name="Execute">
-      <command>sakura</command>
-      <startupnotify>
-        <enabled>yes</enabled>
-      </startupnotify>
-    </action>
-  </item>
-  <item icon="/usr/share/pixmaps/xterm_48x48.xpm" label="Xterm">
-    <action name="Execute">
-		<command>xterm</command>
-	</action>
   </item>
 </menu>
 
@@ -87,19 +60,13 @@
   </item>
 </menu>
 
-<menu id="apps-fileman-menu" label="File Managers">
-  <item icon="/usr/share/icons/Adwaita/32x32/legacy/system-file-manager.png" label="PCMan File Manager">
-    <action name="Execute">
-      <command>pcmanfm</command>
-      <startupnotify>
-        <enabled>yes</enabled>
-      </startupnotify>
-    </action>
-  </item>
-</menu>
-
 <menu id="system-menu" label="System">
-  <item label="Openbox Configuration Manager">
+  <item icon="/usr/share/pixmaps/xterm_48x48.xpm" label="Xterm">
+    <action name="Execute">
+		<command>xterm</command>
+	</action>
+  </item>
+  <item icon="/usr/share/pixmaps/obconf.png" label="Openbox Configuration Manager">
     <action name="Execute">
       <command>obconf</command>
       <startupnotify><enabled>yes</enabled></startupnotify>
@@ -115,17 +82,8 @@
   </item>
   <item icon="/usr/share/icons/hicolor/16x16/apps/gparted.png" label="Gnome Partition Editor">
     <action name="Execute">
-      <command>/usr/bin/gparted %f</command>
+      <command>/usr/bin/gparted</command>
       <startupnotify><enabled>yes</enabled></startupnotify>
-    </action>
-  </item>
-  <item icon="/usr/share/icons/hicolor/16x16/apps/cups.png" label="Manage Cups Printers">
-    <action name="Execute">
-      <command>xdg-open http://localhost:631/</command>
-      <startupnotify>
-        <enabled>no</enabled>
-        <icon>cups</icon>
-      </startupnotify>
     </action>
   </item>
   <item icon="/usr/share/pixmaps/flcards.xpm" label="NuTyX Package Manager">
@@ -142,8 +100,42 @@
     <action name="Reconfigure" />
   </item>
 </menu>
-
+<menu id="system-exit" label="Exit">
+  <item label="Logout">
+    <action name="Exit">
+      <prompt>yes</prompt>
+    </action>
+  </item>
+  <item label="Reboot">
+      <action name="Execute">
+      <command>"/bin/loginctl reboot"</command>
+    </action>
+  </item>
+  <item label="Shutdown">
+      <action name="Execute">
+      <command>"/bin/loginctl poweroff"</command>
+    </action>
+  </item>
+</menu>
 <menu id="root-menu" label="Openbox 3">
+  <separator label="Main" />
+  <item icon="/usr/share/icons/Adwaita/32x32/legacy/system-file-manager.png" label="PCMan File Manager">
+    <action name="Execute">
+      <command>pcmanfm</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+</item>
+  <item icon="/usr/share/pixmaps/terminal-tango.svg" label="Sakura Terminal">
+    <action name="Execute">
+      <command>sakura</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+</item>
+
   <separator label="Applications" />
   <menu id="apps-accessories-menu"/>
   <menu id="apps-editors-menu"/>
@@ -151,15 +143,10 @@
   <menu id="apps-net-menu"/>
   <menu id="apps-multimedia-menu"/>
   <menu id="apps-term-menu"/>
-  <menu id="apps-fileman-menu"/>
   <separator label="System" />
   <menu id="system-menu"/>
   <separator />
-  <item label="Log Out">
-    <action name="Exit">
-      <prompt>yes</prompt>
-    </action>
-  </item>
+  <menu id="system-exit" />
 </menu>
 
 </openbox_menu>

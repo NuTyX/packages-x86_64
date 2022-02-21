@@ -4,17 +4,15 @@ url="https://www.gnome-look.org/p/1661959"
 packager="tnut <tnut@nutyx.org>"
 
 name=openbox-jp-theme
-version=0.2
-release=2
+version=0.3
 
-run=(mojave-ct-icon-theme colloid-icon-theme dmenu obconf
-     lxde-appearance file-roller gnome-screenshot hsetroot
-     pcmanfm leafpad volumeicon sakura tint2 lxde-appearance-obconf)
+run=(colloid-icon-theme dmenu obconf
+     lxde-appearance hsetroot pcmanfm leafpad xarchiver
+     volumeicon sakura tint2 lxde-appearance-obconf)
 
 source=(autostart menu.xml rc.xml themerc tint2rc close.xbm close_pressed.xbm
         desk.xbm desk_toggled.xbm iconify.xbm iconify_pressed.xbm max.xbm
-        max_pressed.xbm max_toggled.xbm shade.xbm shade_pressed.xbm
-        settings.ini)
+        max_pressed.xbm max_toggled.xbm shade.xbm shade_pressed.xbm)
 
 build() {
 install -d $PKG/etc/skel/.config/openbox
@@ -40,8 +38,4 @@ do
    $PKG/usr/share/themes/JP/openbox-3/$i
 done
 
-# GTK3 settings
-install -d $PKG/usr/share/themes/JP/gtk-3.0
-install -m644 settings.ini \
-$PKG/usr/share/themes/JP/gtk-3.0/settings.ini
 }
