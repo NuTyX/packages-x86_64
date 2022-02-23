@@ -15,7 +15,9 @@ run=(qemu dmidecode dnsmasq ebtables iptables libxml2)
 
 name=libvirt
 version=8.0.0
-release=3
+release=4
+
+PKGMK_GROUPS=(doc man devel)
 
 source=(libvirtd
          https://libvirt.org/sources/$name-$version.tar.xz)
@@ -29,6 +31,7 @@ build() {
   meson --prefix=/usr                 \
         --libexecdir=/usr/lib/${name} \
         -Dnetcf=disabled              \
+	-Ddocs=disabled               \
         -Dqemu_group=kvm
   ninja
   DESTDIR=$PKG ninja  install
