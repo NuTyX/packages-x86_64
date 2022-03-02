@@ -9,29 +9,21 @@ makedepends=(autoconf automake m4 sed grep
              polkit gobject-introspection libgudev pm-utils)
 
 name=upower
-version=0.99.13
+version=0.99.16
 _version=${version//./_}
-source=(https://gitlab.freedesktop.org/$name/$name/-/archive/UPOWER_${_version}/$name-UPOWER_${_version}.tar.gz)
-
-prepare() {
-
-cd $name-UPOWER_${_version}
-NOCONFIGURE=1 ./autogen.sh
-
-}
+source=(https://gitlab.freedesktop.org/$name/$name/-/archive/v${version}/$name-v${version}.tar.gz)
 
 build() {
+ cd $name-v${version}
 
-cd $name-UPOWER_${_version}
-./configure --prefix=/usr \
---sysconfdir=/etc \
---enable-deprecated \
---localstatedir=/var \
---disable-static
+mkdir build
+cd    build
 
-make
-make DESTDIR=$PKG install
+meson --prefix=/usr \
+      ..
 
-# Obsolet lib
-rm $PKG/usr/lib/libupower-glib.la
+ninja
+
+DESTDIR=$PKG ninja install
+
 }
