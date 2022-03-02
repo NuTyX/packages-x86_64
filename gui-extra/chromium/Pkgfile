@@ -11,12 +11,12 @@ makedepends=(gtk3 ffmpeg flac dbus freetype xorg-libxscrnsaver
 run=(hicolor-icon-theme desktop-file-utils)
 
 name=chromium
-version=98.0.4758.102
+version=99.0.4844.51
 re2version=2021-06-01
 
 source=(
 	https://downloads.tuxfamily.org/nutyx/files/libminizip.so.1.0.0 
-        https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-2-x86_64.pkg.tar.zst
+        https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-1-x86_64.pkg.tar.zst
         https://github.com/google/re2/archive/${re2version}.tar.gz)
 prepare() {
 cd re2-$re2version
