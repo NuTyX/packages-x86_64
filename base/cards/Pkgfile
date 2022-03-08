@@ -12,13 +12,13 @@ makedepends=(bzip2 gettext xz util-linux)
 run_devel=(curl.devel gcc.devel glibc.devel libarchive.devel \
 openssl.devel zlib.devel bash binutils coreutils file \
 findutils gawk gettext groff make patch pkg-config \
-readline wget rsync xz)
+readline wget rsync bzip2.devel xz.devel)
 
-PKGMK_GROUPS=(devel doc man)
+PKGMK_GROUPS=(devel doc man lib)
 PKGMK_LOCALES=()
 
 name=cards
-version=2.4.147
+version=2.5.0
 
 [ "$release" != "1" ] &&  patchname="$name-$version-consolidate-$release.patch"
 
@@ -28,27 +28,38 @@ source=(https://downloads.tuxfamily.org/nutyx/files/$name-$version.tar.gz)
 
 
 build () {
+
+unset MAKEFLAGS
+
 cd $name-$version
 [ -z "$patchname" ] || patch -Np1 -i ../$patchname
 
 
 make all
 make DESTDIR=$PKG install
-mkdir -p $PKG/{etc,usr}/ports
 
 mkdir -p $PKG/usr/share/doc/cards-$version
 install -m644 ChangeLog \
 $PKG/usr/share/doc/cards-$version/ChangeLog
+}
+lib() {
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+usr/lib
+
+rm usr/lib/libcards*
+rm -d usr/lib || true
 }
 devel()
 {
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/$name.${group}${PKGMK_BUILDVER}${PKGMK_ARCH}.$PKGMK_PACKAGE_EXT \
+usr/include \
 usr/bin \
-usr/ports \
 var/lib/pkg/drivers \
-etc/ports \
 etc/pkgmk.conf.example
-rm -rf var/lib/pkg/drivers usr/bin usr/ports etc/pkgmk.conf.example etc/ports 
+rm -rf var/lib/pkg/drivers usr/bin usr/ports \
+usr/include etc/pkgmk.conf.example etc/ports 
 }
