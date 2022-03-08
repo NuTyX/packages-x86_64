@@ -4,12 +4,11 @@ url="https://github.com/NuTyX/cards"
 maintainer="tnut at nutyx dot org, Artemia76 at nutyx dot org"
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(libcards xorgproto fltk xorg-libx11 xorg-libxext
+makedepends=(cards doxygen xorgproto fltk xorg-libx11 xorg-libxext
              xorg-libxfixes xorg-libxft xorg-libxinerama mesa)
 
 name=flcards
-version=2.4.142
-release=2
+version=2.5.0
 
 [ "$release" != "1" ] &&  patchname="flcards-$version-consolidate-$release.patch"
 
@@ -25,4 +24,7 @@ cd cards-$version
 make flcards
 cd fltk
 make DESTDIR=$PKG install
+
+cd ../documentation
+make DESTDIR=$PKG html install
 }
