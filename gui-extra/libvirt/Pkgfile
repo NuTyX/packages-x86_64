@@ -1,21 +1,21 @@
 description="The virtualization API"
 url="https://libvirt.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Yaolinux,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Yaolinux,Tnut"
 
 makedepends=(bash-completion bridge-utils cyrus-sasl dbus
              fuse gettext gnutls libcap-ng libgcrypt libnl
              libpcap libssh libssh2 libtirpc libxcb libxslt
-             lvm2 netcat numactl openssl parted
+             lvm2 netcat numactl openssl parted libxml2
              perl-xml-xpath pm-utils polkit python-docutils
              rpcsvc-proto xorg-libpciaccess xorg-libx11 xorg-libxau
              xorg-libxdmcp xfsprogs yajl)
-run=(qemu dmidecode dnsmasq ebtables iptables libxml2)
+run=(qemu dmidecode dnsmasq ebtables iptables)
 
 name=libvirt
-version=8.0.0
-release=4
+version=8.1.0
+release=3
 
 PKGMK_GROUPS=(doc man devel)
 
@@ -30,9 +30,7 @@ build() {
   cd build
   meson --prefix=/usr                 \
         --libexecdir=/usr/lib/${name} \
-        -Dnetcf=disabled              \
-	-Ddocs=disabled               \
-        -Dqemu_group=kvm
+        -Dnetcf=disabled              
   ninja
   DESTDIR=$PKG ninja  install
 
