@@ -4,10 +4,10 @@ url="http://assimp.sourceforge.net/index.html"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Rems,Tnut"
 
-makedepends=(cmake boost)
+makedepends=(cmake boost ninja)
 
 name=assimp
-version=5.1.4
+version=5.2.2
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/assimp/assimp/archive/v${version}.tar.gz)
@@ -15,10 +15,11 @@ source=(https://github.com/assimp/assimp/archive/v${version}.tar.gz)
 build() {
   cd $name-$version
   mkdir build && cd build
-  cmake .. \
-     -DCMAKE_INSTALL_PREFIX=/usr \
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
      -DCMAKE_BUILD_TYPE=Release \
-     -DASSIMP_BUILD_SAMPLES=OFF
-  make
-  make DESTDIR=$PKG install
+     -DASSIMP_BUILD_SAMPLES=OFF \
+     -Wno-dev -G Ninja ..
+ninja
+  DESTDIR=$PKG ninja install
+
 }
