@@ -1,6 +1,6 @@
 diff -Naur a/base/password.py b/base/password.py
 --- a/base/password.py	2021-12-13 10:07:36.000000000 +0100
-+++ b/base/password.py	2022-01-04 11:29:17.569605724 +0100
++++ b/base/password.py	2022-03-12 19:04:47.253326711 +0100
 @@ -56,6 +56,7 @@
                'gos': 'sudo',
                'boss': 'su',
@@ -11,7 +11,7 @@ diff -Naur a/base/password.py b/base/password.py
                'zorinos': 'sudo',
 diff -Naur a/base/sixext.py b/base/sixext.py
 --- a/base/sixext.py	2021-12-13 10:07:36.000000000 +0100
-+++ b/base/sixext.py	2022-01-03 22:07:49.386497971 +0100
++++ b/base/sixext.py	2022-03-12 19:04:47.256660044 +0100
 @@ -110,11 +110,11 @@
  
  
@@ -28,7 +28,7 @@ diff -Naur a/base/sixext.py b/base/sixext.py
      def to_unicode(s, enc=None):
 diff -Naur a/configure.in b/configure.in
 --- a/configure.in	2021-12-13 10:07:36.000000000 +0100
-+++ b/configure.in	2022-01-05 09:30:57.243236686 +0100
++++ b/configure.in	2022-03-12 19:04:47.256660044 +0100
 @@ -27,8 +27,7 @@
  
  #AC_PREREQ(2.59)
@@ -99,7 +99,7 @@ diff -Naur a/configure.in b/configure.in
     AC_CHECK_LIB([sane], [sane_open], [LIBS="$LIBS"], [AC_MSG_ERROR([cannot find sane-backends-devel support (or --disable-scan-build)], 12)])
 diff -Naur a/installer/distros.dat b/installer/distros.dat
 --- a/installer/distros.dat	2021-12-13 10:07:36.000000000 +0100
-+++ b/installer/distros.dat	2022-01-05 10:31:00.319854582 +0100
++++ b/installer/distros.dat	2022-03-12 19:04:47.256660044 +0100
 @@ -94,7 +94,7 @@
  # ****************************************
  
@@ -390,9 +390,123 @@ diff -Naur a/installer/distros.dat b/installer/distros.dat
  
  
  # ****************************************
+diff -Naur a/Makefile.am b/Makefile.am
+--- a/Makefile.am	2021-12-13 10:07:36.000000000 +0100
++++ b/Makefile.am	2022-03-12 22:12:05.933274795 +0100
+@@ -687,19 +687,19 @@
+ 
+ install-data-hook:
+ if HPLIP_BUILD
+-	if [ \( "$(UNAME)" = "x86_64" -a  -d "$(libdir)/" \) ]; then \
+-		cp prnt/hpcups/libImageProcessor-x86_64.so $(libdir)/ ; \
+-		chmod 775 $(libdir)/libImageProcessor-x86_64.so ; \
+-		ln -sf $(libdir)/libImageProcessor-x86_64.so $(libdir)/libImageProcessor.so ; \
++	if [ \( "$(UNAME)" = "x86_64" -a  -d "$(DESTDIR)$(libdir)/" \) ]; then \
++		cp prnt/hpcups/libImageProcessor-x86_64.so $(DESTDIR)$(libdir)/ ; \
++		chmod 775 $(DESTDIR)$(libdir)/libImageProcessor-x86_64.so ; \
++		ln -sf $(libdir)/libImageProcessor-x86_64.so $(DESTDIR)$(libdir)/libImageProcessor.so ; \
+ 	fi; \
+-	if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(libdir)/" \) ]; then \
+-		cp prnt/hpcups/libImageProcessor-x86_32.so $(libdir)/ ; \
+-		chmod 775 $(libdir)/libImageProcessor-x86_32.so ; \
+-		ln -sf $(libdir)/libImageProcessor-x86_32.so $(libdir)/libImageProcessor.so ; \
++	if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(DESTDIR)$(libdir)/" \) ]; then \
++		cp prnt/hpcups/libImageProcessor-x86_32.so $(DESTDIR)$(libdir)/ ; \
++		chmod 775 $(DESTDIR)$(libdir)/libImageProcessor-x86_32.so ; \
++		ln -sf $(libdir)/libImageProcessor-x86_32.so $(DESTDIR)$(libdir)/libImageProcessor.so ; \
+ 	fi
+-	if [ -d "/usr/share/ipp-usb/quirks/" ]; then \
++	if [ -d "$(DESTDIR)/usr/share/ipp-usb/quirks/" ]; then \
+ 		echo "ipp-usb directory exists"; \
+-		cp prnt/ipp-usb/HPLIP.conf /usr/share/ipp-usb/quirks/ ; \
++		cp prnt/ipp-usb/HPLIP.conf $(DESTDIR)/usr/share/ipp-usb/quirks/ ; \
+ 	fi
+ if !HPLIP_CLASS_DRIVER
+ #	   If scanner build, add hpaio entry to sane dll.conf.
+@@ -712,15 +712,15 @@
+ 		  echo "Adding hpaio entry to /etc/sane.d/dll.conf." ; \
+ 		  echo hpaio >>$(DESTDIR)/etc/sane.d/dll.conf ; \
+ 	   fi; \
+- 	   if [ \( "$(UNAME)" = "x86_64" -a  -d "$(libdir)/x86_64-linux-gnu/sane" \) ]; then \
+-	  	ln -sf $(libdir)/sane/libsane-hpaio.so $(libdir)/x86_64-linux-gnu/sane/ ; \
+-	  	ln -sf $(libdir)/sane/libsane-hpaio.so.1 $(libdir)/x86_64-linux-gnu/sane/ ; \
++ 	   if [ \( "$(UNAME)" = "x86_64" -a  -d "$(DESTDIR)$(libdir)/x86_64-linux-gnu/sane" \) ]; then \
++	  	ln -sf $(libdir)/sane/libsane-hpaio.so $(DESTDIR)$(libdir)/x86_64-linux-gnu/sane/ ; \
++	  	ln -sf $(libdir)/sane/libsane-hpaio.so.1 $(DESTDIR)$(libdir)/x86_64-linux-gnu/sane/ ; \
+ 	   fi; \
+-	   if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(libdir)/i386-linux-gnu" \) ]; then \
+-	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(libdir)/i386-linux-gnu/libhpmud.so ; \
+-	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(libdir)/i386-linux-gnu/libhpmud.so.0 ; \
+-	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(libdir)/i386-linux-gnu/sane/libsane-hpaio.so.1 ; \
+-	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(libdir)/i386-linux-gnu/sane/libsane-hpaio.so ; \
++	   if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(DESTDIR)$(libdir)/i386-linux-gnu" \) ]; then \
++	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(DESTDIR)$(libdir)/i386-linux-gnu/libhpmud.so ; \
++	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(DESTDIR)$(libdir)/i386-linux-gnu/libhpmud.so.0 ; \
++	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(DESTDIR)$(libdir)/i386-linux-gnu/sane/libsane-hpaio.so.1 ; \
++	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(DESTDIR)$(libdir)/i386-linux-gnu/sane/libsane-hpaio.so ; \
+ 	   fi \
+ 	fi
+ endif #HPLIP_CLASS_DRIVER
+diff -Naur a/Makefile.in b/Makefile.in
+--- a/Makefile.in	2021-12-13 10:09:02.000000000 +0100
++++ b/Makefile.in	2022-03-12 19:11:48.613324853 +0100
+@@ -9782,19 +9782,19 @@
+ 
+ 
+ install-data-hook:
+-@HPLIP_BUILD_TRUE@	if [ \( "$(UNAME)" = "x86_64" -a  -d "$(libdir)/" \) ]; then \
+-@HPLIP_BUILD_TRUE@		cp prnt/hpcups/libImageProcessor-x86_64.so $(libdir)/ ; \
+-@HPLIP_BUILD_TRUE@		chmod 775 $(libdir)/libImageProcessor-x86_64.so ; \
+-@HPLIP_BUILD_TRUE@		ln -sf $(libdir)/libImageProcessor-x86_64.so $(libdir)/libImageProcessor.so ; \
++@HPLIP_BUILD_TRUE@	if [ \( "$(UNAME)" = "x86_64" -a  -d "$(DESTDIR)$(libdir)/" \) ]; then \
++@HPLIP_BUILD_TRUE@		cp prnt/hpcups/libImageProcessor-x86_64.so $(DESTDIR)$(libdir)/ ; \
++@HPLIP_BUILD_TRUE@		chmod 775 $(DESTDIR)$(libdir)/libImageProcessor-x86_64.so ; \
++@HPLIP_BUILD_TRUE@		ln -sf $(libdir)/libImageProcessor-x86_64.so $(DESTDIR)$(libdir)/libImageProcessor.so ; \
+ @HPLIP_BUILD_TRUE@	fi; \
+-@HPLIP_BUILD_TRUE@	if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(libdir)/" \) ]; then \
+-@HPLIP_BUILD_TRUE@		cp prnt/hpcups/libImageProcessor-x86_32.so $(libdir)/ ; \
+-@HPLIP_BUILD_TRUE@		chmod 775 $(libdir)/libImageProcessor-x86_32.so ; \
+-@HPLIP_BUILD_TRUE@		ln -sf $(libdir)/libImageProcessor-x86_32.so $(libdir)/libImageProcessor.so ; \
++@HPLIP_BUILD_TRUE@	if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(DESTDIR)$(libdir)/" \) ]; then \
++@HPLIP_BUILD_TRUE@		cp prnt/hpcups/libImageProcessor-x86_32.so $(DESTDIR)$(libdir)/ ; \
++@HPLIP_BUILD_TRUE@		chmod 775 $(DESTDIR)$(libdir)/libImageProcessor-x86_32.so ; \
++@HPLIP_BUILD_TRUE@		ln -sf $(libdir)/libImageProcessor-x86_32.so $(DESTDIR)$(libdir)/libImageProcessor.so ; \
+ @HPLIP_BUILD_TRUE@	fi
+-@HPLIP_BUILD_TRUE@	if [ -d "/usr/share/ipp-usb/quirks/" ]; then \
++@HPLIP_BUILD_TRUE@	if [ -d "$(DESTDIR)/usr/share/ipp-usb/quirks/" ]; then \
+ @HPLIP_BUILD_TRUE@		echo "ipp-usb directory exists"; \
+-@HPLIP_BUILD_TRUE@		cp prnt/ipp-usb/HPLIP.conf /usr/share/ipp-usb/quirks/ ; \
++@HPLIP_BUILD_TRUE@		cp prnt/ipp-usb/HPLIP.conf $(DESTDIR)/usr/share/ipp-usb/quirks/ ; \
+ @HPLIP_BUILD_TRUE@	fi
+ #	   If scanner build, add hpaio entry to sane dll.conf.
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	if [ "$(scan_build)" = "yes" ]; then \
+@@ -9806,15 +9806,15 @@
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@		  echo "Adding hpaio entry to /etc/sane.d/dll.conf." ; \
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@		  echo hpaio >>$(DESTDIR)/etc/sane.d/dll.conf ; \
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	   fi; \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@ 	   if [ \( "$(UNAME)" = "x86_64" -a  -d "$(libdir)/x86_64-linux-gnu/sane" \) ]; then \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	  	ln -sf $(libdir)/sane/libsane-hpaio.so $(libdir)/x86_64-linux-gnu/sane/ ; \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	  	ln -sf $(libdir)/sane/libsane-hpaio.so.1 $(libdir)/x86_64-linux-gnu/sane/ ; \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@ 	   if [ \( "$(UNAME)" = "x86_64" -a  -d "$(DESTDIR)$(libdir)/x86_64-linux-gnu/sane" \) ]; then \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	  	ln -sf $(libdir)/sane/libsane-hpaio.so $(DESTDIR)$(libdir)/x86_64-linux-gnu/sane/ ; \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	  	ln -sf $(libdir)/sane/libsane-hpaio.so.1 $(DESTDIR)$(libdir)/x86_64-linux-gnu/sane/ ; \
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	   fi; \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	   if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(libdir)/i386-linux-gnu" \) ]; then \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(libdir)/i386-linux-gnu/libhpmud.so ; \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(libdir)/i386-linux-gnu/libhpmud.so.0 ; \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(libdir)/i386-linux-gnu/sane/libsane-hpaio.so.1 ; \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(libdir)/i386-linux-gnu/sane/libsane-hpaio.so ; \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	   if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(DESTDIR)$(libdir)/i386-linux-gnu" \) ]; then \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(DESTDIR)$(libdir)/i386-linux-gnu/libhpmud.so ; \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(DESTDIR)$(libdir)/i386-linux-gnu/libhpmud.so.0 ; \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(DESTDIR)$(libdir)/i386-linux-gnu/sane/libsane-hpaio.so.1 ; \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(DESTDIR)$(libdir)/i386-linux-gnu/sane/libsane-hpaio.so ; \
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	   fi \
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	fi
+ #	   Create hp-xxx commands in bindir.
 diff -Naur a/prnt/hpcups/CommonDefinitions.h b/prnt/hpcups/CommonDefinitions.h
 --- a/prnt/hpcups/CommonDefinitions.h	2021-12-13 10:07:36.000000000 +0100
-+++ b/prnt/hpcups/CommonDefinitions.h	2022-01-03 20:35:47.376523398 +0100
++++ b/prnt/hpcups/CommonDefinitions.h	2022-03-12 19:04:47.259993377 +0100
 @@ -40,6 +40,7 @@
  #include <fcntl.h>
  #include <sys/stat.h>
@@ -403,7 +517,7 @@ diff -Naur a/prnt/hpcups/CommonDefinitions.h b/prnt/hpcups/CommonDefinitions.h
  #include <stdio.h>
 diff -Naur a/prnt/hpijs/hpcupsfax.cpp b/prnt/hpijs/hpcupsfax.cpp
 --- a/prnt/hpijs/hpcupsfax.cpp	2021-12-13 10:07:36.000000000 +0100
-+++ b/prnt/hpijs/hpcupsfax.cpp	2022-01-03 20:36:29.616523250 +0100
++++ b/prnt/hpijs/hpcupsfax.cpp	2022-03-12 19:04:47.259993377 +0100
 @@ -43,6 +43,7 @@
  #include <arpa/inet.h>
  #include <math.h>
@@ -414,7 +528,7 @@ diff -Naur a/prnt/hpijs/hpcupsfax.cpp b/prnt/hpijs/hpcupsfax.cpp
  #ifdef FALSE
 diff -Naur a/setup.py b/setup.py
 --- a/setup.py	2021-12-13 10:07:37.000000000 +0100
-+++ b/setup.py	2022-01-03 20:37:48.346522919 +0100
++++ b/setup.py	2022-03-12 19:04:47.259993377 +0100
 @@ -552,7 +552,7 @@
                          if os.path.exists(file_path) and os.path.isfile(file_path):
  
