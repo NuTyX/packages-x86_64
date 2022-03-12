@@ -1,0 +1,35 @@
+description='A real-time, low latency audio daemon'
+url='https://jackaudio.org/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(dbus libsamplerate python alsa-lib)
+run=()
+set=()
+
+name=jack2
+version=1.9.20
+
+source=(https://github.com/jackaudio/$name/archive/refs/tags/v${version}.tar.gz
+        jack-99-audio.conf
+        jack-40-hpet-permissions.rules)
+
+build() {
+cd $name-$version
+
+./waf configure \
+		--prefix=/usr \
+		--alsa \
+		--dbus \
+		--classic
+
+	./waf build -j ${JOBS-1}
+	./waf install --destdir=$PKG
+
+install -Dm644 $SRC/jack-99-audio.conf \
+      $PKG/etc/security/limits.d/99-audio.conf
+
+install -Dm644 $SRC/jack-40-hpet-permissions.rules \
+    $PKG/etc/udev/rules.d/40-hpet-permissions.rules
+}
