@@ -1,17 +1,17 @@
 description="Messaging app with a focus on speed and security, it’s super-fast, simple and free."
 url="https://telegram.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch,Fabienwang,Spiki,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch,Fabienwang,Spiki,Tnut"
 
-makedepends=(cmake ninja python qtsvg qtwayland qtimageformats
+makedepends=(cmake ninja python qt6-svg qt6-wayland qt6-imageformats
              ffmpeg glibmm kwayland rnnoise tg_owt jemalloc abseil-cpp
-             extra-cmake-modules gtk3 webkitgtk libdbusmenu-qt)
+             extra-cmake-modules gtk3 webkitgtk libdbusmenu-qt qt6-5compat)
 run=(desktop-file-utils ttf-opensans qtimageformats)
 alias=(telegram)
 
 name=telegram-desktop
-version=3.5.2
+version=3.6.0
 
 source=(https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tdesktop-$version-full.tar.gz)
 
@@ -23,13 +23,12 @@ build() {
   Telegram/SourceFiles/platform/linux/main_window_linux.cpp
 
   # hopefully this will be fixed upstream
-  ln -sv /usr/include/qt/QtWidgets/5.15.2/QtWidgets/private \
+  ln -sv /usr/include/qt/QtWidgets/6.2.3/QtWidgets/private \
   /usr/include/qt/QtWidgets/private
 
   export CXXFLAGS+=" -Wp,-U_GLIBCXX_ASSERTIONS"
 
   cmake -B build -G Ninja \
-        -DDESKTOP_APP_QT6=off \
 	-DTDESKTOP_API_ID=611335 \
 	-DTDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c \
 	-DCMAKE_INSTALL_PREFIX="/usr" \
