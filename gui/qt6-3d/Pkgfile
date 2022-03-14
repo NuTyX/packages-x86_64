@@ -1,0 +1,28 @@
+description='APIs for easy inclusion of 3D graphics'
+url='https://www.qt.io/'
+
+packager="tnut <tnut@nutyx.org>"
+
+name=qt6-3d
+version=6.2.3
+makedepends=(cmake ninja qt6-base qt6-declarative qt6-sharetools
+             qt6-multimedia assimp vulkan-headers)
+
+source=(https://download.qt.io/official_releases/qt/${version:0:3}/$version/submodules/qt3d-everywhere-src-$version.tar.xz)
+
+build() {
+ cmake -S qt3d-everywhere-src-$version -B build -G Ninja
+ cmake --build build
+ DESTDIR=$PKG cmake --install build
+}
+devel() {
+  cd $PKG
+  bsdtar -cf \
+  $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
+  usr/include \
+  usr/lib/qt6/mkspecs \
+  usr/lib/cmake/
+  
+  rm -r usr/include usr/lib/qt6/mkspecs \
+  usr/lib/cmake
+}
