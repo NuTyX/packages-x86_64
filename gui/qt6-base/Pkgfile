@@ -6,11 +6,14 @@ contributors=""
 
 name=qt6-base
 version=6.2.3
+release=2
+
 makedepends=(libb2 cmake ninja systemd icu brotli at-spi2-core mtdev 
              cups gstreamer-plugins-base xcb-util xcb-util-renderutil
              vulkan-headers shared-mime-info sqlite libinput
-             double-conversion alsa-lib
-             mesa xorg-libxrender libxkbcommon gtk3 mariadb postgresql)
+             double-conversion alsa-lib xcb-util-image xcb-util-keysyms
+             xcb-util-cursor mesa pcre2 xdg-utils xcb-util-wm
+             xorg-libxrender libxkbcommon gtk3 mariadb postgresql)
 
 source=(https://download.qt.io/official_releases/qt/${version%.*}/$version/submodules/qtbase-everywhere-src-$version.tar.xz)
 
