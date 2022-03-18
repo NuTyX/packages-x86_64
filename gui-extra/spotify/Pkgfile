@@ -1,0 +1,59 @@
+description='A proprietary music streaming service'
+url='http://www.spotify.com'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+run=(alsa-lib gtk3 desktop-file-utils openssl nss at-spi2-atk xorg-libsm
+    xorg-libxscrnsaver gnutls)
+
+_commit=gc3dac750
+name=spotify
+version=1.1.80.699
+
+source=(https://curl.haxx.se/download/curl-7.82.0.tar.gz
+        http://repository.spotify.com/pool/non-free/s/spotify-client/spotify-client_${version}.${_commit}_amd64.deb)
+
+prepare() {
+cd curl-7.82.0
+./configure --with-gnutls
+make -C lib
+}
+
+build() {
+ bsdtar -xf data.tar.gz -C $PKG
+}
+
+package() {
+
+sed -i 's/^Exec=.*/Exec=spotify --uri=%U/' $PKG/usr/share/spotify/spotify.desktop
+
+mkdir -p ${PKG}/usr/share/applications
+
+mv ${PKG}/usr/share/spotify/spotify.desktop \
+${PKG}/usr/share/applications
+
+for size in 22 24 32 48 64 128 256 512
+do
+   install -D ${PKG}/usr/share/spotify/icons/spotify-linux-$size.png \
+     ${PKG}/usr/share/icons/hicolor/${size}x${size}/apps/spotify.png
+done
+
+install -D ${SRC}/curl-7.82.0/lib/.libs/libcurl.so.4.7.0 \
+    ${PKG}/usr/share/spotify/libcurl-gnutls.so.4
+
+mkdir -p $PKG/usr/share/kservices5
+echo > $PKG/usr/share/kservices5/spotify.protocol << "EOF"
+[Protocol]
+exec=/usr/bin/spotify -uri "%u"
+protocol=spotify
+input=none
+output=none
+helper=true
+listing=false
+reading=false
+writing=false
+makedir=false
+deleting=false
+EOF
+}
