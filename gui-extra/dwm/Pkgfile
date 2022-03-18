@@ -9,11 +9,12 @@ run=(st)
 
 name=dwm
 version=6.3
+release=2
 
 source=(http://dl.suckless.org/dwm/dwm-6.3.tar.gz)
 
 build() {
 cd $name-$version
 make
-make DESTDIR=$PKG install
+make DESTDIR=$PKG PREFIX=/usr install
 }
