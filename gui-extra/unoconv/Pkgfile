@@ -1,0 +1,25 @@
+description="Libreoffice-based document converter"
+url="http://dag.wiee.rs/home-made/unoconv"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(asciidoc git python libreoffice)
+run=()
+set=()
+
+name=unoconv
+version=0.9
+
+source=()
+
+prepare() {
+git clone https://github.com/unoconv/unoconv.git
+
+mv unoconv unoconv-0.9
+}
+build() {
+cd $name-$version
+
+make DESTDIR=$PKG install
+}
