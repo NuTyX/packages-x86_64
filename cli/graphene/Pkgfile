@@ -6,8 +6,10 @@ packager="spiky <spiky@nutyx.org>"
 makedepends=(gtk-doc gobject-introspection meson ninja )
 
 name=graphene
-version=1.10.6
+version=1.10.8
 
-source=(https://github.com/ebassi/$name/releases/download/$version/$name-$version.tar.xz)
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/ebassi/$name/archive/refs/tags/$version.tar.gz)
 
 build=meson
