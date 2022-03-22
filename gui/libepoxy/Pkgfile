@@ -7,8 +7,10 @@ contributors="Pierre B, tnut"
 makedepends=(mesa python xorg-util-macros)
 
 name=libepoxy
-version=1.5.9
+version=1.5.10
 
-source=(https://github.com/anholt/${name}/releases/download/$version/$name-$version.tar.xz)
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/anholt/$name/archive/refs/tags/$version.tar.gz)
 
 build=meson
