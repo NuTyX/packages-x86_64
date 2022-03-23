@@ -11,6 +11,8 @@ set=(android)
 
 name=android-tools
 version=31.0.3
+release=2
+
 _version=${version}p1
 
 source=(https://github.com/nmeum/android-tools/releases/download/${_version}/android-tools-${_version}.tar.xz)
@@ -19,9 +21,10 @@ build() {
 export PATH=/usr/lib/go/bin:$PATH
 cd $name-${_version}
 cmake \
--DMAKE_INSTALL_PREFIX=/usr   \
--DMAKE_BUILD_TYPE=Release    \
--DMAKE_CXX_FLAGS="$CXXFLAGS" \
+-DCMAKE_INSTALL_PREFIX=/usr   \
+-DCMAKE_BUILD_TYPE=Release    \
+-DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+-DCMAKE_C_FLAGS="$CFLAGS"     \
 -G Ninja -S . -B build
 
 DESTDIR=$PKG ninja -C build install
