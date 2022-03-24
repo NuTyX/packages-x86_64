@@ -1,0 +1,23 @@
+description='Implementation of the org.freedesktop.locale1 D-Bus protocol'
+url='https://github.com/lfs-book/blocaled'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
+
+name=blocaled
+version=0.4
+
+run=(polkit libdaemon)
+
+source=(https://github.com/lfs-book/blocaled/releases/download/v0.4/$name-$version.tar.xz)
+
+build() {
+
+cd $name-$version
+./configure --prefix=/usr --sysconfdir=/etc \
+--with-xkbdconfig=/etc/X11/xorg.conf.d/00-keyboard.conf \
+--with-keyboardconfig=/etc/vconsole.conf
+make
+make check || true
+make DESTDIR=$PKG install
+}
