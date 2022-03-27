@@ -2,20 +2,20 @@
 description="A web browser built for speed, simplicity, and security"
 url="https://www.chromium.org/Home"
 
-packager="spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 maintainer="Arch Linux"
-contributors="Tnut"
+contributors="Spiky"
 
-makedepends=(gtk3 ffmpeg flac dbus freetype xorg-libxscrnsaver
-             libxslt nss snappy json-glib llvm)
-run=(hicolor-icon-theme desktop-file-utils)
+run=(minizip gtk3 ffmpeg flac dbus freetype
+     xorg-libxscrnsaver libxslt nss snappy json-glib llvm
+     hicolor-icon-theme desktop-file-utils)
 
 name=chromium
 version=99.0.4844.84
+release=2
 re2version=2021-06-01
 
 source=(
-	https://downloads.tuxfamily.org/nutyx/files/libminizip.so.1.0.0 
         https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-1-x86_64.pkg.tar.zst
         https://github.com/google/re2/archive/${re2version}.tar.gz)
 prepare() {
@@ -25,8 +25,6 @@ make
 build() {
 
 mv usr $PKG
-cp libminizip.so.1.0.0 $PKG/usr/lib/chromium
-ln -sv libminizip.so.1.0.0 $PKG/usr/lib/chromium/libminizip.so.1
 mkdir -p $PKG/etc/ld.so.conf.d
 echo "/usr/lib/chromium" > $PKG/etc/ld.so.conf.d/$name.conf
 }
