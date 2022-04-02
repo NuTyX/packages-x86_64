@@ -1,0 +1,19 @@
+description="Play chess against the computer on a terminal and an engine for graphical chess frontends"
+url="https://www.gnu.org/software/chess/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(bash)
+
+name=gnuchess
+version=6.2.9
+
+source=(https://ftp.gnu.org/pub/gnu/chess/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
