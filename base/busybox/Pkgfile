@@ -16,7 +16,11 @@ source=(busybox-1.33.0_modprobe.patch
 prepare() {
 git clone https://github.com/slashbeast/mdev-like-a-boss.git
 sed -i "s@/opt/mdev@/etc/mdev.d@g" mdev-like-a-boss/mdev.conf
+sed -i "s@uucp@dialout@g" mdev-like-a-boss/mdev.conf
 cd $name-$version
+# Anti-future-proofing patch: when kernel will learn how to finit_module(fd)
+# a gzipped module in addition to uncompressed ones, this patch needs to be
+# removed
 patch -Np1 -i ../busybox-1.33.0_modprobe.patch
 }
 build() {
