@@ -8,6 +8,7 @@ makedepends=(kernel-515)
 
 name=broadcom-wl-kernel-515
 version=6.30.223.271
+release=2
 
 source=(https://github.com/Skythrew/broadcom-wl/releases/download/release/broadcom-wl-source.tar)
 
@@ -24,7 +25,7 @@ xz $PKG/$(echo /lib/modules/*)/kernel/drivers/net/wireless/wl.ko
 #Blacklist some kernel modules
 mkdir -pv $PKG/etc/modprobe.d
 
-cat > $PKG/etc/modprobe.d/broadcom-wl.conf << EOF
+cat > $PKG/etc/modprobe.d/broadcom-wl-kernel-515.conf << EOF
 # wireless drivers (conflict with Broadcom hybrid wireless driver 'wl')
 blacklist ssb
 blacklist bcma
