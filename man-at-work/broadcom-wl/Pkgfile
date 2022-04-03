@@ -1,0 +1,16 @@
+name=broadcom-wl
+version=6.30.223.271
+release=1
+description="Broadcom Wireless driver"
+url="https://docs.broadcom.com/docs/12358410"
+packager="skythrew <skythrew@protonmail.com>"
+
+source=(https://github.com/Skythrew/broadcom-wl/releases/download/release/broadcom-wl-source.tar)
+
+build() {
+KBASE=/lib/modules/`uname -r`
+mkdir -p $PKG/$KBASE/kernel/drivers/net/wireless
+cd broadcom-wl
+make
+make MDEST_DIR=$PKG/$KBASE/kernel/drivers/net/wireless/ install
+}
