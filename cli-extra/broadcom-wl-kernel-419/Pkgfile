@@ -1,0 +1,35 @@
+description='Broadcom Wireless driver for LTS kernel 4.19.x'
+url='https://docs.broadcom.com/docs/12358410'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Skythrew"
+
+makedepends=(kernel-419)
+
+name=broadcom-wl-kernel-419
+version=6.30.223.271
+
+source=(https://github.com/Skythrew/broadcom-wl/releases/download/release/broadcom-wl-source.tar)
+
+build() {
+
+cd broadcom-wl
+make -C $(echo /lib/modules/*)/build M=$(pwd)
+
+install -Dm755 wl.ko \
+$PKG/$(echo /lib/modules/*)/kernel/drivers/net/wireless/wl.ko
+
+xz $PKG/$(echo /lib/modules/*)/kernel/drivers/net/wireless/wl.ko
+
+#Blacklist some kernel modules
+mkdir -pv $PKG/etc/modprobe.d
+
+cat > $PKG/etc/modprobe.d/broadcom-wl-kernel-419.conf << EOF
+# wireless drivers (conflict with Broadcom hybrid wireless driver 'wl')
+blacklist ssb
+blacklist bcma
+blacklist b43
+blacklist brcmsmac
+EOF
+
+}
