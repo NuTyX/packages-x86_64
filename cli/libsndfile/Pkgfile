@@ -1,15 +1,15 @@
 description="A C library for reading and writing files containing sampled sound"
 url="http://www.mega-nerd.com/libsndfile/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
-makedepends=(flac alsa-lib libogg libvorbis cmake)
+makedepends=(flac alsa-lib libogg libvorbis cmake opus)
 
 name=libsndfile
-version=1.0.31
+version=1.1.0
 
-source=(https://github.com/libsndfile/libsndfile/releases/download/$version/libsndfile-$version.tar.bz2)
+source=(https://github.com/libsndfile/libsndfile/releases/download/$version/libsndfile-$version.tar.xz)
 
 build() {
 cd $name-$version
