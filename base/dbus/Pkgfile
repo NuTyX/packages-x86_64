@@ -8,6 +8,7 @@ makedepends=(systemd expat)
 
 name=dbus
 version=1.14.0
+release=2
 
 runyx_version=20201011
 
@@ -34,6 +35,7 @@ build() {
 	make DESTDIR=$PKG install
 
 	# Adjust some files
+        mkdir -p $PKG/lib
 	mv -v $PKG/usr/lib/libdbus-1.so.* $PKG/lib
 	ln -sfv ../../lib/$(readlink $PKG/usr/lib/libdbus-1.so) \
 	$PKG/usr/lib/libdbus-1.so
