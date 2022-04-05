@@ -1,16 +1,17 @@
 description="Enlightenment window manager"
 url="http://www.enlightenment.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Berlius,Sh4d0w,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Berlius,Sh4d0w,Spiky"
 
 makedepends=(meson ninja libexif)
 run=(efl xcb-util-keysyms hicolor-icon-theme
-     desktop-file-utils)
+     desktop-file-utils xorg-xwayland)
 set=(enlightenment)
 
 name=enlightenment
 version=0.25.3
+release=2
 
 source=(https://download.enlightenment.org/rel/apps/enlightenment/$name-$version.tar.xz)
 
@@ -19,7 +20,10 @@ mkdir build
 cd    build
 
 meson --prefix=/usr \
+      -Dbuildtype=release \
       -Dsystemd=false \
+      -Dwl=true \
+      -Dxwayland-bin=/usr/bin/Xwayland \
       ../$name-$version
 ninja
 DESTDIR=$PKG ninja install
