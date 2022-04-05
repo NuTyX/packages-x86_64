@@ -12,7 +12,7 @@ set=(gnome)
 
 name=gdm
 version=41.3
-release=5
+release=4
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
@@ -28,7 +28,7 @@ build() {
 cd $name-$version
 
 sed -e 's@systemd@elogind@'                                \
-    -e '/elogind/isession  required       pam_loginuid.so' \
+    -e 's@-session@session @' \
     -i data/pam-lfs/gdm-launch-environment.pam
 
 mkdir build
