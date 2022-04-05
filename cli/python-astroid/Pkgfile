@@ -1,5 +1,5 @@
 description="Python 3 Useful miscellaneous modules used by Logilab projects."
-url="https://files.pythonhosted.org"
+url="https://github.com/PyCQA/"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre B., tnut"
@@ -7,10 +7,12 @@ contributors="Pierre B., tnut"
 makedepends=(python python-six)
 run=(python)
 
-name=python-astroid
-version=2.9.3
+PKGMK_KEEP_SOURCES="no"
 
-source=(https://files.pythonhosted.org/packages/2d/be/33923f5dee9f7119abbaa688833b0c71c2ef4b66af3b06ffc64fc8c341ae/astroid-2.9.3.tar.gz)
+name=python-astroid
+version=2.11.2
+
+source=(https://github.com/PyCQA/astroid/archive/refs/tags/v${version}.tar.gz)
 
 build() {
     cd astroid-$version

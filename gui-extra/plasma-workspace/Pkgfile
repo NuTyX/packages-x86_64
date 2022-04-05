@@ -2,18 +2,20 @@ description="KDE Plasma Workspace"
 url="https://www.kde.org/"
 
 packager="spiky <spiky@nutyx.org>"
-contributors="Pierre B, tnut, fabienwang, spiky, fabienwang"
+contributors="PierreB,Fabienwang,Tnut"
 
-makedepends=(prison baloo milou networkmanager-qt plasma-integration
+makedepends=(xorg-libxres prison baloo milou networkmanager-qt plasma-integration libqalculate
              kitemmodels kjsembed kwin krunner knotifyconfig kdesu kwallet kscreen
-             kdelibs4support ktexteditor kholidays kactivities-stats kpeople syndication)
+             kdelibs4support ktexteditor kholidays kactivities-stats kpeople syndication
+             plasma-wayland-protocols pipewire)
 run=(pm-utils gvfs xorg-xrdb xorg-xsetroot xorg-xprop xorg-xmessage
-    kquickcharts)
+    kquickcharts xorg-xwayland)
 
 set=(kde5)
 
 name=plasma-workspace
-version=5.23.5
+version=5.24.4
+release=2
 
 source=(https://download.kde.org/stable/plasma/${version:0:6}/$name-$version.tar.xz)
 

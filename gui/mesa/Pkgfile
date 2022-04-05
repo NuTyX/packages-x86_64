@@ -3,18 +3,18 @@
 description="Mesa is an OpenGL compatible 3D graphics library."
 url="http://www.xorg-mesa3d.org"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Rems,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Rems,Spiky"
 
 makedepends=(xorgproto pkg-config libtool xorg-xrandr wayland python-mako
              wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext
              xorg-libxdamage expat llvm elfutils xorg-libxshmfence
-             libva libvdpau valgrind lm-sensors xorg-libxvmc libunwind)
+             libva libvdpau valgrind lm-sensors xorg-libxvmc libunwind vulkan-icd-loader)
 
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=21.3.5
+version=22.0.1
 
 source=(add_xdemos-1.patch
 	https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
@@ -22,21 +22,23 @@ source=(add_xdemos-1.patch
 build() {
 cd mesa-$version
 patch -Np1 -i ../add_xdemos-1.patch
-GALLIUM_DRV="crocus,i915,iris,nouveau,r600,radeonsi,svga,swrast,virgl"
-DRI_DRIVERS="i965,nouveau"
 
 mkdir build
 cd    build
 
 meson --prefix=/usr                  \
       -Dbuildtype=release            \
-      -Ddri-drivers=$DRI_DRIVERS     \
-      -Dgallium-drivers=$GALLIUM_DRV \
-      -Dgallium-nine=false           \
-      -Dglx=dri                      \
-      -Dosmesa=true               \
-      -Dvalgrind=false               \
-      -Dlibunwind=false              \
+      -Dgallium-drivers="nouveau,virgl,r300,r600,radeonsi,svga,swrast,iris,zink,crocus" \
+      -Dvulkan-drivers="intel,amd,swrast" \
+      -Dgles1=disabled           \
+      -Dgles2=enabled            \
+      -Dgallium-nine=false       \
+      -Dgallium-vdpau=true       \
+      -Dgallium-va=enabled       \
+      -Dglx=dri                  \
+      -Dosmesa=true              \
+      -Dvalgrind=false           \
+      -Dlibunwind=false          \
       ..
 
 ninja
@@ -45,4 +47,6 @@ DESTDIR=$PKG ninja install
 install -v -dm755 $PKG/usr/share/doc/mesa-$version
 cp -rfv ../docs/* $PKG/usr/share/doc/mesa-$version
 
+	# indirect rendering symlink
+	ln -s libGLX_mesa.so.0 $PKG/usr/lib/libGLX_indirect.so.0
 }

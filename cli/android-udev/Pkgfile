@@ -1,0 +1,20 @@
+description='Udev rules to connect Android devices to your linux box'
+url='https://github.com/M0Rf30/android-udev-rules'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(libmtp)
+run=()
+set=(android)
+
+name=android-udev
+version=20220102
+
+source=(https://github.com/M0Rf30/android-udev-rules/archive/$version.zip)
+
+build() {
+cd $name-rules-$version
+install -Dm 644 51-android.rules $PKG/lib/udev/rules.d/51-android.rules
+install -Dm 644 android-udev.conf $PKG/usr/lib/sysusers.d/android-udev.conf
+}

@@ -1,0 +1,14 @@
+description="Building blocks for modern adaptive GNOME applications"
+url="https://gnome.pages.gitlab.gnome.org/libadwaita/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(meson gi-docgen sassc gobject-introspection vala gtk4)
+
+name=libadwaita
+version=1.1.0
+
+source=(https://gitlab.gnome.org/GNOME/libadwaita/-/archive/$version/$name-$version.tar.gz)
+
+build=meson

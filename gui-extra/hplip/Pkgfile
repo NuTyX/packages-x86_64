@@ -13,8 +13,8 @@ run=(sip dbus-python python-qt python-pillow foomatic-db-engine
 
 
 name=hplip
-version=3.21.12
-release=2
+version=3.22.2
+
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz
        consolidate.patch)
@@ -23,9 +23,8 @@ prepare() {
 
  patch -Np1 -i ../consolidate.patch
 
- libtoolize -f
+ export AUTOMAKE='automake --foreign'
  autoreconf -fi
- autoupdate
 
 }
 

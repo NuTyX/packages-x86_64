@@ -8,6 +8,7 @@ maintainer="Jakub Jelinek (jakub at redhat dot com),Manuel López-Ibáñez (manu
 makedepends=(gmp mpfr mpc tar)
 name=gcc
 version=11.2.0
+release=2
 
 PKGMK_KEEP_LA_LIBS="yes"
 PKGMK_IGNORE_UNPACK="yes"
@@ -33,7 +34,7 @@ cd       build
 
 ../configure --prefix=/usr \
     --libdir=/usr/lib \
-    --enable-languages=c,c++,d,fortran,go,objc,obj-c++ \
+    --enable-languages=c,c++,d,fortran,objc,obj-c++ \
     --disable-multilib \
     --disable-bootstrap \
     --with-system-zlib

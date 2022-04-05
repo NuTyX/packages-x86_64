@@ -15,9 +15,15 @@ run=(shared-mime-info cdrdao dvd+rw-tools cdrtools libburn
      libkcddb)
 
 name=k3b
-version=21.12.2
+version=21.12.3
 
-source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz
+        ffmpeg5.patch)
+
+prepare() {
+cd $name-$version
+patch -Np1 -i ../ffmpeg5.patch
+}
 
 build=kde5
 

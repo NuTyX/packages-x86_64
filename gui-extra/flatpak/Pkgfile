@@ -2,14 +2,14 @@ description='Next generation technology for building and distributing desktop ap
 url='https://flatpak.org/'
 
 packager="spiky <spiky@nutyx.org>"
-contributors="Tnut,Fabienwang"
+contributors="Fabienwang,Tnut"
 
 makedepends=(glib libsoup gpgme polkit fuse2 libostree json-glib
              appstream-glib libseccomp python-parsing)
 run=(bubblewrap gnupg)
 
 name=flatpak
-version=1.12.4
+version=1.12.7
 source=(https://dl.flathub.org/repo/flathub.flatpakrepo
         https://github.com/flatpak/flatpak/releases/download/$version/flatpak-$version.tar.xz)
 
@@ -20,6 +20,8 @@ cd $name-$version
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \
+--with-priv-mode=setuid \
+--with-system-helper-user=flatpak \
 --with-system-bubblewrap
 
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool

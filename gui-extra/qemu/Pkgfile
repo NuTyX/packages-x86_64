@@ -6,13 +6,14 @@ contributors="Rems,Tnut"
 
 name=qemu
 version=6.2.0
+release=2
 
 makedepends=(gtk2 gtk3 sdl glib libseccomp libcap-ng
              jemalloc python vte mesa virglrenderer lzo nettle
              cyrus-sasl libssh2 pulseaudio alsa-lib alsa-plugins
              alsa-utils check bluez libgcrypt gnutls libusb usbutils
              usbredir bridge-utils xorg-libdrm spice spice-protocol libaio)
-run=(desktop-file-utils)
+run=(desktop-file-utils ovmf)
 
 source=(configvm startvm
         https://download.qemu-project.org/qemu-$version.tar.xz)

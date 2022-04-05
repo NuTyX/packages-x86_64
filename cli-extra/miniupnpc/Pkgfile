@@ -1,12 +1,19 @@
 description="A small UPnP client library/tool to access Internet Gateway Devices"
 url="http://miniupnp.free.fr"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 name=miniupnpc
-version=2.2.2
+version=2.2.3
 
-source=(http://miniupnp.free.fr/files/$name-$version.tar.gz)
+source=(http://miniupnp.free.fr/files/$name-$version.tar.gz
+        ed1dc4bb.patch)
+
+prepare() {
+cd $name-$version
+
+patch -p2 -i ../ed1dc4bb.patch # Fix make install
+}
 
 build() {
   cd $SRC/$name-$version

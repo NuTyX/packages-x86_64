@@ -1,0 +1,29 @@
+description='Classes for audio, video, radio and camera functionality'
+url='https://www.qt.io/'
+
+packager="tnut <tnut@nutyx.org>"
+
+name=qt6-multimedia
+version=6.2.4
+makedepends=(cmake ninja qt6-base qt6-declarative qt6-shadertools qt6-svg
+             gstreamer-plugins-base gstreamer-plugins-good gstreamer-plugins-bad
+             gstreamer-plugins-ugly gstreamer-plugins-libav vulkan-headers)
+
+source=(https://download.qt.io/official_releases/qt/${version:0:3}/$version/submodules/qtmultimedia-everywhere-src-$version.tar.xz)
+
+build() {
+ cmake -S qtmultimedia-everywhere-src-$version -B build -G Ninja
+ cmake --build build
+ DESTDIR=$PKG cmake --install build
+}
+devel() {
+  cd $PKG
+  bsdtar -cf \
+  $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
+  usr/include \
+  usr/lib/qt6/mkspecs \
+  usr/lib/cmake/
+  
+  rm -r usr/include usr/lib/qt6/mkspecs \
+  usr/lib/cmake
+}

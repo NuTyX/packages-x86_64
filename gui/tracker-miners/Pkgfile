@@ -11,9 +11,21 @@ makedepends=(meson ninja exempi libgrss flac libexif
 
 
 name=tracker-miners
-version=3.2.1
-release=2
+version=3.3.0
 
 source=(https://download.gnome.org/sources/$name/${version:0:3}/$name-$version.tar.xz)
 
-build=meson
+build() {
+cd $name-$version
+mkdir build
+cd    build
+
+meson --prefix=/usr \
+      --buildtype=release \
+      -Dman=false \
+      ..
+
+ninja
+
+DESTDIR=$PKG ninja install
+}

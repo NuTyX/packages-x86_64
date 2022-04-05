@@ -5,9 +5,13 @@ packager="spiky <spiky@nutyx.org>"
 
 name=vscode
 version=1.63.2
+release=2
 
 source=(https://az764295.vo.msecnd.net/stable/899d46d82c4c95423fb7e10e68eba52050e30ba3/code_1.63.2-1639562499_amd64.deb)
 
 build() {
    tar -xf data.tar.xz -C "$PKG/"
+
+   mkdir -p $PKG/usr/bin
+   ln -sv /usr/share/code/bin/code $PKG/usr/bin/code
 }

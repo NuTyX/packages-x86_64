@@ -1,0 +1,18 @@
+description="A simple pythonic template language written in python 2&3"
+url="http://jinja.pocoo.org/"
+
+packager="tnut <tnut@nutyx.org"
+
+makedepends=(python-markupsafe)
+
+name=python-jinja2
+version=3.0.1
+
+source=(https://pypi.org/packages/source/J/Jinja2/Jinja2-$version.tar.gz)
+
+build() {
+
+cd Jinja2-$version
+python setup.py build
+python setup.py install --root="$PKG" --optimize=1
+}

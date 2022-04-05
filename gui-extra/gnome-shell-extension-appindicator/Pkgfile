@@ -1,0 +1,30 @@
+description="AppIndicator/KStatusNotifierItem support for GNOME Shell"
+url="https://github.com/ubuntu/gnome-shell-extension-appindicator"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(jq libappindicator-gtk3)
+run=()
+set=()
+
+name=gnome-shell-extension-appindicator
+version=41
+release=2
+
+source=(https://github.com/ubuntu/$name/archive/refs/tags/v${version}.tar.gz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson --prefix=/usr \
+..
+ninja
+
+DESTDIR=$PKG ninja install
+
+rm $PKG/usr/share/glib-2.0/schemas/gschemas.compiled
+}

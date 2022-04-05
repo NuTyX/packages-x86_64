@@ -1,0 +1,18 @@
+description='Modernized fork of NEdit, with unicode support and AA text rendering'
+url='https://sourceforge.net/projects/xnedit/'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(pcre openmotif xorg-libx11 xorg-libxrender xorg-libxft xorg-libxpm)
+
+name=xnedit
+version=1.4.0
+
+source=(https://sourceforge.net/projects/xnedit/files/$name-$version.tar.gz)
+
+build() {
+cd $name
+make linux
+make DESTDIR=$PKG install
+}

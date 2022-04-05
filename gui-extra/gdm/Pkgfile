@@ -5,29 +5,33 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Spiky,Fanch,Schrodinger72"
 
 makedepends=(pam accountsservice nss libcanberra
-             gnome-session gnome-shell)
-run=(xorg-xinit xorg-xhost xorg-xrdb upower)
+             gnome-session gnome-shell libdaemon
+             libhandy)
+run=(xorg-xinit xorg-xhost xorg-xrdb upower iso-codes)
 
 set=(gnome)
 
 name=gdm
 version=41.3
-release=3
+release=5
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 prepare() {
-groupadd -g 21 gdm &&
-useradd -c "GDM Daemon Owner" -d /var/lib/gdm -u 21 \
-        -g gdm -s /bin/false gdm &&
+getent group gdm || groupadd -g 21 gdm
+getent passwd gdm || ( useradd -c "GDM Daemon Owner" \
+        -d /var/lib/gdm -u 21 \
+        -g gdm -s /bin/false gdm )
 passwd -ql gdm
 }
 build() {
 
 cd $name-$version
 
-sed -i 's@systemd@elogind@' data/pam-lfs/gdm-launch-environment.pam
-sed -i 's@-session@session @' data/pam-lfs/gdm-launch-environment.pam
+sed -e 's@systemd@elogind@'                                \
+    -e 's@-session@session @' \
+    -i data/pam-lfs/gdm-launch-environment.pam
+
 mkdir build
 cd    build
 meson --prefix=/usr               \

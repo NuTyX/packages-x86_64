@@ -1,0 +1,27 @@
+description="Native browser connector for integration with extensions.gnome.org"
+url="https://wiki.gnome.org/Projects/GnomeShellIntegrationForChrome"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake jq git gnome-shell python-requests python-gobject)
+
+set=(gnome)
+
+name=chrome-gnome-shell
+version=10.1
+
+source=(https://gitlab.gnome.org/GNOME/chrome-gnome-shell/-/archive/v${version}/$name-v${version}.tar.gz)
+
+build() {
+cd $name-v${version}
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DBUILD_EXTENSION=OFF \
+      ..
+make
+make DESTDIR=$PKG install
+}

@@ -10,19 +10,9 @@ makedepends=(meson ninja xmlto libxslt polkit
 set=(gnome)
 
 name=accountsservice
-version=22.04.62
-release=2
+version=22.08.8
 
-source=(http://www.freedesktop.org/software/$name/$name-$version.tar.xz
-        0001-build-Properly-apply-modes-in-meson_post_install.py.patch)
-
-prepare() {
-cd $name-$version
-
- # Fix permissions to match the ones the daemon sets
-  # https://gitlab.freedesktop.org/accountsservice/accountsservice/-/merge_requests/88
-  patch -Np1 -i ../0001-build-Properly-apply-modes-in-meson_post_install.py.patch
-}
+source=(http://www.freedesktop.org/software/$name/$name-$version.tar.xz)
 
 build() {
 cd $name-$version

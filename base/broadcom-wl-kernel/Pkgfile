@@ -1,0 +1,37 @@
+description='Broadcom Wireless driver for kernel stable'
+url='https://docs.broadcom.com/docs/12358410'
+
+packager="Skythrew <skythrew@protonmail.com>"
+contributors="Skythrew"
+
+makedepends=(kernel)
+
+name=broadcom-wl-kernel
+version=6.30.223.271
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/Skythrew/broadcom-wl/releases/download/v1.1.0/broadcom-wl-source-v1.1.0.tar)
+
+build() {
+
+cd broadcom-wl
+make -C $(echo /lib/modules/*)/build M=$(pwd)
+
+install -Dm755 wl.ko \
+$PKG/$(echo /lib/modules/*)/kernel/drivers/net/wireless/wl.ko
+
+xz $PKG/$(echo /lib/modules/*)/kernel/drivers/net/wireless/wl.ko
+
+#Blacklist some kernel modules
+mkdir -pv $PKG/etc/modprobe.d
+
+cat > $PKG/etc/modprobe.d/broadcom-wl-kernel.conf << EOF
+# wireless drivers (conflict with Broadcom hybrid wireless driver 'wl')
+blacklist ssb
+blacklist bcma
+blacklist b43
+blacklist brcmsmac
+EOF
+
+}

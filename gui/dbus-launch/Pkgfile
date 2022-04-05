@@ -1,17 +1,16 @@
 description="Freedesktop.org message bus system"
 url="http://www.freedesktop.org/wiki/Software/dbus/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, Jayce"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Jayce,Tnut"
 
 makedepends=(systemd expat xorg-libx11)
 
 name=dbus-launch
 _name=dbus
-version=1.12.20
-release=2
+version=1.14.0
 
-source=(http://dbus.freedesktop.org/releases/dbus/${_name}-$version.tar.gz)
+source=(http://dbus.freedesktop.org/releases/dbus/${_name}-$version.tar.xz)
 
 build() {
 	cd ${_name}-$version

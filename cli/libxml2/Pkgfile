@@ -4,19 +4,22 @@ url="http://xmlsoft.org/"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Fanch,Schrodinger72,Tnut"
 
-makedepends=(python)
+makedepends=(libtool automake python)
 
 name=libxml2
-version=2.9.12
-release=2
+version=2.9.13
 
 PKGMK_GROUPS=(lib man devel doc)
-source=(http://xmlsoft.org/sources/$name-$version.tar.gz)
+source=(https://gitlab.gnome.org/GNOME/libxml2/-/archive/v${version}/$name-v${version}.tar.gz)
 
+prepare() {
+mv $name-v2.9.13 $name-$version
+}
 
 build() {
 cd $name-$version
 
+autoreconf -fiv
 ./configure \
     --prefix=/usr \
     --disable-static \

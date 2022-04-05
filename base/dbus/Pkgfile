@@ -1,20 +1,20 @@
 description="Freedesktop.org message bus system"
 url="http://www.freedesktop.org/wiki/Software/dbus/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, Jayce"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Jayce,Tnut"
 
 makedepends=(systemd expat)
 
 name=dbus
-version=1.12.20
-release=5
+version=1.14.0
+release=2
 
-runyx_version=20200412
+runyx_version=20201011
 
 PKGMK_GROUPS=(doc devel)
-source=(http://downloads.nutyx.org/files/runyx-${runyx_version}.tar.xz
-		http://dbus.freedesktop.org/releases/dbus/$name-$version.tar.gz
+source=(https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
+		http://dbus.freedesktop.org/releases/dbus/$name-$version.tar.xz
 		dbus.system-local.conf)
 
 build() {
@@ -35,6 +35,7 @@ build() {
 	make DESTDIR=$PKG install
 
 	# Adjust some files
+        mkdir -p $PKG/lib
 	mv -v $PKG/usr/lib/libdbus-1.so.* $PKG/lib
 	ln -sfv ../../lib/$(readlink $PKG/usr/lib/libdbus-1.so) \
 	$PKG/usr/lib/libdbus-1.so

@@ -7,6 +7,7 @@ makedepends=(aspell)
 
 name=aspell-dict
 version=0.60.8
+release=2
 
 fr_ver=0.50-3
 de_ver=0.50-2
@@ -17,20 +18,22 @@ pt_ver=0.50-2
 nn_ver=0.50.1-1
 da_ver=0.50.1-0
 sv_ver=0.51-0
+en_ver=0.51-1
 
-source=(ftp://ftp.gnu.org/gnu/aspell/dict/fr/aspell-fr-${fr_ver}.tar.bz2
-	ftp://ftp.gnu.org/gnu/aspell/dict/de/aspell-de-${de_ver}.tar.bz2
-	ftp://ftp.gnu.org/gnu/aspell/dict/es/aspell-es-${es_ver}.tar.bz2
-	ftp://ftp.gnu.org/gnu/aspell/dict/it/aspell-it-${it_ver}.tar.bz2
-	ftp://ftp.gnu.org/gnu/aspell/dict/nl/aspell-nl-${nl_ver}.tar.bz2
-	ftp://ftp.gnu.org/gnu/aspell/dict/nn/aspell-nn-${nn_ver}.tar.bz2
-	ftp://ftp.gnu.org/gnu/aspell/dict/pt/aspell-pt-${pt_ver}.tar.bz2
-	ftp://ftp.gnu.org/gnu/aspell/dict/da/aspell-da-${da_ver}.tar.bz2
-	ftp://ftp.gnu.org/gnu/aspell/dict/sv/aspell-sv-${sv_ver}.tar.bz2
+source=(https://ftp.gnu.org/gnu/aspell/dict/fr/aspell-fr-${fr_ver}.tar.bz2
+	https://ftp.gnu.org/gnu/aspell/dict/de/aspell-de-${de_ver}.tar.bz2
+	https://ftp.gnu.org/gnu/aspell/dict/es/aspell-es-${es_ver}.tar.bz2
+	https://ftp.gnu.org/gnu/aspell/dict/it/aspell-it-${it_ver}.tar.bz2
+	https://ftp.gnu.org/gnu/aspell/dict/nl/aspell-nl-${nl_ver}.tar.bz2
+	https://ftp.gnu.org/gnu/aspell/dict/nn/aspell-nn-${nn_ver}.tar.bz2
+	https://ftp.gnu.org/gnu/aspell/dict/pt/aspell-pt-${pt_ver}.tar.bz2
+	https://ftp.gnu.org/gnu/aspell/dict/da/aspell-da-${da_ver}.tar.bz2
+	https://ftp.gnu.org/gnu/aspell/dict/sv/aspell-sv-${sv_ver}.tar.bz2
+	https://ftp.gnu.org/gnu/aspell/dict/en/aspell-en-${en_ver}.tar.bz2
 	)
 
 build() {
-for i in fr de es it nl pt nn da sv
+for i in fr de es it nl pt nn da sv en
 do
   cd aspell-$i*
   ./configure

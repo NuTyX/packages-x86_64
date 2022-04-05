@@ -1,0 +1,47 @@
+description="First @jp openbox theme"
+url="https://www.gnome-look.org/p/1661959"
+
+packager="tnut <tnut@nutyx.org>"
+
+name=openbox-jp-theme
+version=0.5
+
+run=(dmenu obconf lxde-appearance hsetroot pcmanfm leafpad
+     xarchiver volumeicon sakura tint2 lxde-appearance-obconf)
+
+source=(https://downloads.tuxfamily.org/nutyx/files/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+
+install -d $PKG/etc/skel/.config/openbox
+install -d $PKG/etc/skel/.config/tint2
+
+install -m644 tint2rc \
+$PKG/etc/skel/.config/tint2/tint2rc
+
+for i in autostart menu.xml rc.xml
+do
+ install -m644 $i \
+ $PKG/etc/skel/.config/openbox/$i
+done
+
+mkdir -p $PKG/usr/share/themes/JP/openbox-3
+mkdir -p $PKG/usr/share/icons/hicolor/16x16/actions
+
+for i in *.png
+do
+   install -m644 $i \
+    $PKG/usr/share/icons/hicolor/16x16/actions/$i
+done
+
+# JP openbox theme
+for i in themerc close.xbm close_pressed.xbm desk.xbm desk_toggled.xbm \
+   iconify.xbm iconify_pressed.xbm max.xbm max_pressed.xbm max_toggled.xbm \
+   shade.xbm shade_pressed.xbm
+do
+   install -m644 $i \
+   $PKG/usr/share/themes/JP/openbox-3/$i
+done
+
+}
