@@ -1,19 +1,18 @@
 description="X display Manager"
 url="https://xorg.freedesktop.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="tnut, Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Tnut"
 
 name=xorg-xdm
-version=1.1.12
-release=3
+version=1.1.13
 
 runyx_version=20201011
 
 makedepends=(pam xorg-libxaw xorg-libxinerama xorg-xinit xorg-libxft)
 run=(xorg-xinit)
 
-source=($url/releases/individual/app/xdm-$version.tar.bz2
+source=($url/releases/individual/app/xdm-$version.tar.xz
 	Xsession.patch
 	http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz)
 build() {
