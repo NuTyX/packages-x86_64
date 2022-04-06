@@ -7,11 +7,12 @@ contributors="Fanch,Fabienwang,Spiki,Tnut"
 makedepends=(cmake ninja python qt6-svg qt6-wayland qt6-imageformats qt6-5compat
              ffmpeg glibmm kwayland rnnoise tg_owt jemalloc abseil-cpp
              extra-cmake-modules gtk3 webkitgtk libdbusmenu-qt qt6-5compat)
-run=(desktop-file-utils ttf-opensans qtimageformats)
+run=(desktop-file-utils ttf-opensans qt6-imageformats)
 alias=(telegram)
 
 name=telegram-desktop
 version=3.6.1
+release=2
 
 source=(consolidate.patch
         https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tdesktop-$version-full.tar.gz)
