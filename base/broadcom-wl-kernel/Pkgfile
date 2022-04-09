@@ -1,27 +1,28 @@
 description='Broadcom Wireless driver for kernel stable'
 url='https://docs.broadcom.com/docs/12358410'
 
-packager="Skythrew <skythrew@protonmail.com>"
+packager="tnut <tnut@nutyx.org>"
 contributors="Skythrew"
 
 makedepends=(kernel)
 
 name=broadcom-wl-kernel
 version=6.30.223.271
+release=2
 
 PKGMK_KEEP_SOURCES="no"
 
 source=(https://github.com/Skythrew/broadcom-wl/releases/download/v1.1.0/broadcom-wl-source-v1.1.0.tar)
 
 build() {
-
+KERNEL_VERSION="$(basename /lib/modules/*)"
 cd broadcom-wl
-make -C $(echo /lib/modules/*)/build M=$(pwd)
+make -C /lib/modules/${KERNEL_VERSION}/build M=$(pwd)
 
 install -Dm755 wl.ko \
-$PKG/$(echo /lib/modules/*)/kernel/drivers/net/wireless/wl.ko
+$PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/net/wireless/wl.ko
 
-xz $PKG/$(echo /lib/modules/*)/kernel/drivers/net/wireless/wl.ko
+xz $PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/net/wireless/wl.ko
 
 #Blacklist some kernel modules
 mkdir -pv $PKG/etc/modprobe.d
@@ -33,5 +34,5 @@ blacklist bcma
 blacklist b43
 blacklist brcmsmac
 EOF
-
+echo "depmod -a ${KERNEL_VERSION}" > $PKGMK_ROOT/$name.post-install
 }
