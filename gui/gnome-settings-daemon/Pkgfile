@@ -1,23 +1,22 @@
 description="The GNOME Settings daemon"
 url="http://www.gnome.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Fanch, Tnut, jayce, Remy, tnut"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fanch,Tnut,Jayce,Remy,Tnut,Spiky"
 
-makedepends=(geoclue2 geocode-glib libgweather librsvg meson
+makedepends=(geoclue2 geocode-glib libgweather-4 librsvg meson
              networkmanager ninja nss intltool cups colord
              gnome-desktop libcanberra libnotify libgnomekbd
              libwacom pulseaudio upower elogind  gcr)
 run=(gtk-update-icon-cache gsettings-desktop-schemas)
 
 name=gnome-settings-daemon
-version=41.0
-release=3
+version=42.1
 
-source=(https://download.gnome.org/sources/$name/41/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/42/$name-$version.tar.xz)
 
 prepare() {
 cd $name-$version
-sed "/  policy,/d" -i plugins/{power,wacom}/meson.build
+
 }
 build=meson
