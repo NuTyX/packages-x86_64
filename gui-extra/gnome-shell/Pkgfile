@@ -1,32 +1,32 @@
 description="provides the core user interface functions for the GNOME 3 Desktop"
 url="http://www.gnome.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Fanch,Remy,Tnut,Fabienwang"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fanch,Remy,Tnut,Fabienwang,Spiky"
 
 makedepends=(systemd meson sassc caribou evolution-data-server gjs gnome-control-center
-             gnome-themes-extra libcroco mutter startup-notification
+             gnome-themes-extra libcroco mutter startup-notification gtk4
              gstreamer-plugins-base network-manager-applet gtk-doc
              gnome-autoar asciidoc gnome-bluetooth)
 
 run=(adwaita-icon-theme dconf gnome-backgrounds gnome-menus
      telepathy-mission-control gtk-update-icon-cache
-     gnome-settings-daemon gtk4 libsoup3)
+     gnome-settings-daemon libsoup3)
 
 set=(gnome)
 
 name=gnome-shell
-version=41.5
+version=42.0
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-sed -i '/i18n.merge_file/s/(.*/(/' $(find -name meson.build)
-sed -i '/isGreeter/,+2 d' js/ui/status/keyboard.js 
 mkdir build
 cd build
-meson --prefix=/usr
+meson --prefix=/usr \
+--buildtype=release \
+-Dtests=false
 ninja
 DESTDIR=$PKG ninja install
 }
