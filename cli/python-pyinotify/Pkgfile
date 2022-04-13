@@ -1,0 +1,21 @@
+description='Python module used for monitoring filesystems events on Linux platforms with inotify.'
+url='https://github.com/seb-m/pyinotify'
+
+run=(python)
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
+
+name=python-pyinotify
+version=0.9.6
+
+source=(https://github.com/seb-m/pyinotify/archive/${version}.tar.gz)
+
+build() {
+
+  cd pyinotify-$version
+
+  python setup.py build
+  python setup.py install --root=$PKG -O1
+
+}

@@ -1,0 +1,25 @@
+description='Cross platform time zone library for Python.'
+url='https://pypi.python.org/pypi/pytz'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
+
+makedepends=(python)
+
+name=python-pytz
+version=2022.1
+
+source=(https://pypi.io/packages/source/p/pytz/pytz-${version}.tar.gz
+       0001-Use-the-system-zoneinfo-from-the-tzdata-package.patch)
+prepare() {
+  cd pytz-$version
+  patch -p2 -i ../0001-Use-the-system-zoneinfo-from-the-tzdata-package.patch
+  rm -r pytz/zoneinfo/
+}
+
+
+build() {
+  cd pytz-$version
+  python setup.py build
+  python setup.py install --prefix=/usr --root=$PKG
+}

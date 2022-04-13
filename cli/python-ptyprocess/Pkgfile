@@ -1,0 +1,18 @@
+description='Run a subprocess in a pseudo terminal.'
+url='https://github.com/pexpect/ptyprocess'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
+
+makedepends=(python)
+
+name=python-ptyprocess
+_name=ptyprocess
+version=0.7.0
+
+source=(https://pypi.io/packages/source/p/${_name}/${_name}-$version.tar.gz)
+
+build() {
+    cd ptyprocess-$version
+    python setup.py install --prefix=/usr --root=$PKG
+}

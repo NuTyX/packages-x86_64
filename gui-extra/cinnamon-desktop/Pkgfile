@@ -1,0 +1,30 @@
+description=' Library with common API for various Cinnamon modules.'
+makedepends=(python ninja meson accountsservice
+             gdk-pixbuf gtk3 xorg-libxkbfile pulseaudio)
+
+set=(cinnamon)
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
+
+name=cinnamon-desktop
+version=5.2.1
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/linuxmint/cinnamon-desktop/archive/$version.tar.gz
+        config.patch)
+
+prepare() {
+  cd $name-$version
+  patch -Np1 -i ../config.patch
+}
+
+build() {
+  mkdir build
+  cd build
+  meson --prefix=/usr --buildtype=plain \
+  ../$name-$version
+  ninja
+  DESTDIR=$PKG ninja install
+}   
