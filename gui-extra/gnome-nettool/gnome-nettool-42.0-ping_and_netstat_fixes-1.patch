@@ -1,0 +1,43 @@
+Submitted By:            Douglas R. Reno <renodr at linuxfromscratch dot org>
+Date:                    2020-10-21
+Initial Package Version: 3.8.1
+Upstream Status:         Submitted
+Origin:                  Self
+Description:             Adapts gnome-nettool's usage of netstat to allow for
+                         the Active Network Services to be returned properly
+                         and adapts gnome-nettool's usage of ping and ping6 to
+                         work properly with those installed with inetutils.
+
+diff -Naurp gnome-nettool-3.8.1.orig/src/netstat.c gnome-nettool-3.8.1/src/netstat.c
+--- gnome-nettool-3.8.1.orig/src/netstat.c	2012-01-03 03:38:09.000000000 -0600
++++ gnome-nettool-3.8.1/src/netstat.c	2020-10-21 12:38:03.007898216 -0500
+@@ -199,8 +199,13 @@ netstat_do (Netinfo * netinfo)
+ 	program = util_find_program_dialog ("netstat", parent);
+ 
+ 	if (program != NULL) {
+-		command =
+-			g_strdup_printf ("%s netstat %s", program, option);
++      if (noption == ROUTE || noption == MULTICAST) {
++   		command =
++	   		g_strdup_printf ("%s netstat %s", program, option);
++      } else {
++         command = 
++            g_strdup_printf("%s %s", program, option);
++      }
+ 	
+ 		g_strfreev (netinfo->command_line);
+ 		netinfo->command_line = g_strsplit (command, " ", -1);
+diff -Naurp gnome-nettool-3.8.1.orig/src/ping.h gnome-nettool-3.8.1/src/ping.h
+--- gnome-nettool-3.8.1.orig/src/ping.h	2011-12-31 17:54:24.000000000 -0600
++++ gnome-nettool-3.8.1/src/ping.h	2020-10-21 12:32:42.355901748 -0500
+@@ -23,8 +23,8 @@
+ /* The ping usage and output is different between Unix flavours */
+ #if defined(__linux__)
+     /*  <path to program> ping -b [-c <count>] -n <host> */
+-#   define PING_PROGRAM_FORMAT "%s ping -b%s-n %s"
+-#   define PING_PROGRAM_FORMAT_6 "%s ping6%s-n %s"
++#   define PING_PROGRAM_FORMAT "%s -b%s-n %s"
++#   define PING_PROGRAM_FORMAT_6 "%s %s-n %s"
+ #   define PING_FORMAT "%d bytes from %s icmp_%3c=%d ttl=%d time=%s %s"
+ #   define PING_PARAMS_7
+ #elif defined(__OSF__) || defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
