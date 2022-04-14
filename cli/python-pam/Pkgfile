@@ -1,0 +1,19 @@
+description=' Pure Python interface to the Pluggable Authentication Modules system on Linux.'
+url='https://github.com/FirefighterBlu3/python-pam'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
+
+makedepends=(python pam)
+
+name=python-pam
+version=1.8.4
+
+
+source=(https://files.pythonhosted.org/packages/source/${name:0:1}/$name/$name-$version.tar.gz)
+
+build() {
+  cd python-pam-$version
+  python setup.py build
+  python setup.py install --prefix=/usr --root=$PKG
+}

@@ -1,0 +1,29 @@
+description='Javascript Bindings for Cinnamon.'
+url='https://github.com/linuxmint/cjs'
+
+set=(cinnamon)
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
+
+makedepends=(meson ninja gtk3 gobject-introspection js78)
+
+name=cjs
+version=5.2.0
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/linuxmint/$name/archive/$version.tar.gz)
+
+build() {
+mkdir builddir
+cd    builddir
+
+meson --prefix=/usr \
+--libexecdir=/usr/lib \
+--buildtype=plain \
+-Dinstalled_tests=false \
+../$name-$version
+
+ninja
+DESTDIR=${PKG} ninja install
+}

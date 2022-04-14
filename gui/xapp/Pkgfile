@@ -1,0 +1,37 @@
+description='Common library for X-Apps project.'
+url='https://github.com/linuxmint/xapp'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
+
+makedepends=(meson gobject-introspection gtk3
+            python-gobject libgnomekbd vala libdbusmenu-gtk)
+
+name=xapp
+version=2.2.8
+
+PKGMK_KEEP_SOURCES="no"
+source=(https://github.com/linuxmint/xapp/archive/$version.tar.gz)
+
+build() {
+  mkdir build
+  cd build
+  meson --prefix=/usr \
+  --libexecdir=lib \
+  --buildtype=plain \
+  ../$name-$version
+  ninja
+  DESTDIR=${PKG} ninja install
+    
+# rm useless scripts
+  rm -r ${PKG}/usr/bin
+
+# byte-compile python modules since meson does not implement autotools'
+# py-compile.
+# This is kind of ugly but removes traces of the build root.
+  while read -rd '' _file; do
+    _destdir="$(dirname "${_file#${PKG}}")"
+    python -m compileall -d "${_destdir}" "${_file}"
+    python -O -m compileall -d "${_destdir}" "${_file}"
+  done < <(find "${PKG}"/usr/lib/python* -name '*.py' -print0)
+}
