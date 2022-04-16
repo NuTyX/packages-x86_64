@@ -1,15 +1,15 @@
 description='Desktop integration portals for sandboxed apps'
 url='https://github.com/flatpak/xdg-desktop-portal'
 
-packager="tnut <tnut@nutyx.org>"
-contributors=""
+packager="Spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
 makedepends=(python xmlto docbook-xsl git libportal
              geoclue2 glib pipewire)
 run=(fuse)
 
 name=xdg-desktop-portal
-version=1.14.2
+version=1.14.3
 
 prepare () {
 git clone https://github.com/flatpak/$name $name-$version
