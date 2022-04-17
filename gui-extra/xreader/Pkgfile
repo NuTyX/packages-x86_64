@@ -1,0 +1,34 @@
+description='Document viewer for files like PDF and Postscript. X-Apps Project.'
+url='https://github.com/linuxmint/xreader'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(meson samurai intltool itstool gobject-introspection djvulibre
+            libgxps libspectre)
+run=(poppler-glib webkitgtk xapp)
+
+name=xreader
+version=3.3.0
+
+source=(https://github.com/linuxmint/$name/archive/$version/$name-$version.tar.gz)
+
+build() {
+  mkdir build
+  cd build
+  meson --prefix=/usr \
+  --libexecdir=lib/$name \
+  -Dmathjax-directory=/usr/share/mathjax2 \
+  -Dcomics=true \
+  -Ddjvu=true \
+  -Dt1lib=true \
+  -Dpixbuf=true \
+  -Dhelp_files=true \
+  -Dintrospection=true \
+  ../$name-$version
+
+  samu
+
+  DESTDIR=${PKG} samu install
+    
+}
