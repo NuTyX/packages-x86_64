@@ -1,25 +1,22 @@
 description="An open source multimedia framework"
 url="http://www.mltframework.org"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(cmake python ladspa frei0r-plugins libdv sdl-image libsamplerate sox
              ffmpeg vid-stab qtsvg jack libexif swig movit eigen3)
 
 
 name=mlt
-version=7.4.0
+version=7.6.0
 
 source=(https://github.com/mltframework/mlt/releases/download/v${version}/mlt-$version.tar.gz)
 
 build() {
-cd mlt-$version
-mkdir build
-  cd build
-    cmake -DCMAKE_INSTALL_PREFIX=/usr  \
-          -DSWIG_PYTHON=ON             \
-          ..
-    make
-    make DESTDIR=$PKG install
+ cmake -B build -S $name-$version  \
+       -DCMAKE_INSTALL_PREFIX=/usr \
+       -DSWIG_PYTHON=ON
+ cmake --build build
+ DESTDIR=$PKG cmake --install build
 }
