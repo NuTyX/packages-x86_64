@@ -1,8 +1,8 @@
 description="engine of made Web free for the browsers web version 3"
 url="http://webkitgtk.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Greg,Fanch,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Greg,Fanch,Spiky"
 
 makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              gstreamer-plugins-bad xorg-libxt gtk2 gtk3 gtk-doc
@@ -13,6 +13,7 @@ makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              
 name=webkitgtk
 version=2.36.0
+release=2
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 prepare() {
@@ -53,4 +54,9 @@ $PKG/usr/share/gtk-doc/html/webkit2gtk
 # avoid conflict with webkit2gtk-4
 mv $PKG/usr/share/gtk-doc/html/jsc-glib-4.0 \
 $PKG/usr/share/gtk-doc/html/jsc-glib
+
+# part of webkit2gtk-4
+rm -r $PKG/usr/share/gtk-doc/html/webkit2gtk-4.0
+rm -r $PKG/usr/share/gtk-doc/html/webkitdomgtk-4.0
+
 }
