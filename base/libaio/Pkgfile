@@ -1,16 +1,21 @@
-description="The Linux-native asynchronous I/O facility (aio) library"
-url="http://lse.sourceforge.net/io/aio.html"
+description='The Linux-native asynchronous I/O facility (aio) library'
+url='https://pagure.io/libaio'
+
 contributors="Greg, Rems"
 packager="tnut <tnut@nutyx.org>"
 
 name=libaio
-version=0.3.112
+version=0.3.113
 
-source=(http://ftp.de.debian.org/debian/pool/main/liba/$name/${name}_${version}.orig.tar.xz)
+source=($url/archive/$name-$version/$name-$name-$version.tar.gz)
 
 build() {
-cd $name-$version
-sed '/install.*libaio.a/s/^/#/' src/Makefile
+cd $name-$name-$version
+CFLAGS="-march=${PKGMK_ARCH/_/-} -mtune=generic -O2 -pipe"
+
 make
 make prefix=$PKG/usr install
+
+install -vDm 644 {ChangeLog,README.md} -t $PKG/usr/share/doc/$name/
+install -vDm 644 man/*.3 -t $PKG/usr/share/man/man3/
 }
