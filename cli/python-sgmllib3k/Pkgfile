@@ -1,0 +1,21 @@
+description="Port of sgmllib to Python3"
+url='https://pypi.org/project/sgmllib3k/#description'
+
+packager="tnut <tnut@nutyx.org>"
+
+name=python-sgmllib3k
+version=1.0.0
+
+run=(python)
+
+PKGMK_KEEP_SOURCES="no"
+_name=${name#python-}
+source=(https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-$version.tar.gz)
+
+build() {
+
+cd ${_name}-$version
+
+python setup.py build
+python setup.py install --root=$PKG --optimize=1 --skip-build
+}

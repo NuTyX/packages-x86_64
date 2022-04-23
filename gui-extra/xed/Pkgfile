@@ -1,0 +1,28 @@
+description='X-Apps Text Editor'
+url='https://github.com/linuxmint/xed'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(gzip meson samurai gobject-introspection
+             intltool itstool)
+run=(gspell gtksourceview4 libpeas xapp)
+set=(cinnamon)
+
+name=xed
+version=3.2.2
+
+source=(https://github.com/linuxmint/xed/archive/$version.tar.gz)
+
+build() {
+mkdir build
+cd    build
+meson --prefix=/usr \
+ --libexecdir=lib/$name \
+ --buildtype=plain \
+ ../$name-$version
+
+samu
+
+DESTDIR=$PKG samu install
+}

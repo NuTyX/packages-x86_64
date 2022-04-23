@@ -1,17 +1,17 @@
 description="Messaging app with a focus on speed and security, it’s super-fast, simple and free."
 url="https://telegram.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Fanch,Fabienwang,Spiki,Tnut"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fanch,Fabienwang,Spiki,Tnut,Spiky"
 
 makedepends=(cmake ninja python qt6-svg qt6-wayland qt6-imageformats qt6-5compat
              ffmpeg glibmm kwayland rnnoise tg_owt jemalloc abseil-cpp
              extra-cmake-modules gtk3 webkitgtk libdbusmenu-qt qt6-5compat)
-run=(desktop-file-utils ttf-opensans qtimageformats)
+run=(desktop-file-utils ttf-opensans qt6-imageformats)
 alias=(telegram)
 
 name=telegram-desktop
-version=3.6.1
+version=3.7.1
 
 source=(consolidate.patch
         https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tdesktop-$version-full.tar.gz)
@@ -19,7 +19,6 @@ source=(consolidate.patch
 build() {
 
   cd tdesktop-$version-full
-  patch -Np1 -i ../consolidate.patch
 
   export CXXFLAGS+=" -Wp,-U_GLIBCXX_ASSERTIONS"
 

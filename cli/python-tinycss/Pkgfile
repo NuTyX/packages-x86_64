@@ -1,0 +1,19 @@
+description='A complete yet simple CSS parser for Python.'
+url='https://pypi.python.org/pypi/tinycss'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
+
+makedepends=(python cython)
+
+name=python-tinycss
+version=0.4
+release=2
+
+source=(https://pypi.io/packages/source/t/tinycss/tinycss-$version.tar.gz)
+
+build() {
+    cd tinycss-$version
+    python setup.py build
+    python setup.py install --prefix=/usr --root=$PKG
+}

@@ -1,0 +1,38 @@
+description='Cross-platform Qt based Video Editor'
+url='https://www.shotcut.org'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors="Tnut"
+
+makedepends=(qtbase qttools qtdeclarative qtmultimedia
+             qtquickcontrols2 qtwebsockets qtx11extras)
+run=(mlt movit ffmpeg x264 libvpx lame frei0r-plugins ladspa
+     qtgraphicaleffects qtquickcontrols)
+set=()
+
+name=shotcut
+version=22.04.22
+
+PKGMK_KEEP_SOURCES="no"
+source=(https://github.com/mltframework/shotcut/archive/v$version.tar.gz)
+
+build() {
+
+mkdir build
+cd    build
+
+qmake ../$name-$version \
+PREFIX='/usr' \
+QMAKE_CFLAGS_RELEASE="$CFLAGS" \
+QMAKE_CXXFLAGS_RELEASE="$CXXFLAGS" \
+SHOTCUT_VERSION=$version \
+DEFINES+=SHOTCUT_NOUPGRADE
+
+make
+
+cd ../$name-$version
+lrelease translations/*.ts
+
+cd -
+make INSTALL_ROOT=$PKG install
+}

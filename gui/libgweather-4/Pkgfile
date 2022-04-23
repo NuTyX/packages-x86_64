@@ -1,0 +1,31 @@
+description="Location and timezone database and weather-lookup library"
+url="https://wiki.gnome.org/Projects/LibGWeather"
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(geocode-glib gobject-introspection libsoup meson ninja
+             vala python-gobject gi-docgen)
+run=(gtk-update-icon-cache)
+
+name=libgweather-4
+version=4.0.0
+
+source=(https://gitlab.gnome.org/GNOME/libgweather/-/archive/$version/libgweather-$version.tar.gz
+        disable-metar-test.patch)
+
+prepare() {
+cd libgweather-$version
+patch -Np1 -i ../disable-metar-test.patch
+}
+
+build() {
+cd libgweather-$version
+mkdir build
+cd    build
+
+meson --prefix=/usr \
+      -Dgtk_doc=false
+ninja
+DESTDIR=$PKG ninja install
+}

@@ -1,0 +1,26 @@
+description='XPS Documents library'
+url='https://wiki.gnome.org/Projects/libgxps'
+name=libgxps
+version=0.3.2
+
+makedepends=(gtk3 libarchive libjpeg-turbo libtiff lcms2
+             gobject-introspection gtk-doc git meson)
+
+prepare() {
+  git clone https://gitlab.gnome.org/GNOME/libgxps.git $name-$version
+  cd $name-$version
+  git checkout $version
+}
+
+build() {
+  meson  --prefix=/usr      \
+         $name-$version     \
+         build              \
+         -D enable-man=true \
+         -D enable-gtk-doc=true
+  meson compile -C build
+}
+
+package() {
+  DESTDIR=$PKG meson install -C build
+}

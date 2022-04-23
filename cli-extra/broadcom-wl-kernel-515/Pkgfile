@@ -8,19 +8,19 @@ makedepends=(kernel-515)
 
 name=broadcom-wl-kernel-515
 version=6.30.223.271
-release=2
+release=5
 
 source=(https://github.com/Skythrew/broadcom-wl/releases/download/v1.0.0/broadcom-wl-source-v1.0.0.tar)
 
 build() {
-
+KERNEL_VERSION="$(basename /lib/modules/*)"
 cd broadcom-wl
-make -C $(echo /lib/modules/*)/build M=$(pwd)
+make -C /lib/modules/${KERNEL_VERSION}/build M=$(pwd)
 
 install -Dm755 wl.ko \
-$PKG/$(echo /lib/modules/*)/kernel/drivers/net/wireless/wl.ko
+$PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/net/wireless/wl.ko
 
-xz $PKG/$(echo /lib/modules/*)/kernel/drivers/net/wireless/wl.ko
+xz $PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/net/wireless/wl.ko
 
 #Blacklist some kernel modules
 mkdir -pv $PKG/etc/modprobe.d
@@ -32,5 +32,5 @@ blacklist bcma
 blacklist b43
 blacklist brcmsmac
 EOF
-
+echo "depmod -a ${KERNEL_VERSION}" > $PKGMK_ROOT/$name.post-install
 }

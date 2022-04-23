@@ -1,0 +1,21 @@
+description='For controlling and automating applications.'
+url='https://pexpect.readthedocs.org/en/stable/'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch"
+
+makedepends=(git python)
+
+name=python-pexpect
+version=4.8.0
+
+prepare() {
+git clone https://github.com/pexpect/pexpect.git
+cd pexpect
+git checkout $version
+}
+
+build() {
+    cd pexpect
+    python setup.py install --root=$PKG
+}

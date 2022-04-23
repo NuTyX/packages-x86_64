@@ -1,24 +1,25 @@
 description="The Control Center for GNOME"
 url="http://www.gnome.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Fanch,Jayce,Remy,Fabienwang,Tnut"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fanch,Jayce,Remy,Fabienwang,Tnut,Spiky"
 
 makedepends=(autoconf git udisks2 accountsservice clutter-gtk libhandy
              colord-gtk gnome-online-accounts gsound gnome-settings-daemon
              grilo libgtop libpwquality kerberos shared-mime-info cheese
              cups samba gnome-bluetooth ibus meson modemmanager
              network-manager-applet ninja gnome-color-manager
-             cups-pk-helper wayland gdk-pixbuf)
+             cups-pk-helper wayland gdk-pixbuf libadwaita)
 run=(iso-codes gsettings-desktop-schemas libgnomekbd
-     sound-theme-freedesktop)
+     sound-theme-freedesktop libnma libadwaita)
 
 set=(gnome)
 
 name=gnome-control-center
-version=41.4
+version=42.0
+release=2
 
-source=(https://ftp.acc.umu.se/pub/GNOME/sources/$name/41/$name-$version.tar.xz)
+source=(https://ftp.acc.umu.se/pub/GNOME/sources/$name/42/$name-$version.tar.xz)
 
 
 build=meson

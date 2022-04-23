@@ -1,16 +1,16 @@
 description="Collection of Libraries providing APIs to netlink protocol based Linux kernel interfaces"
 url="http://people.suug.ch/~tgr/libnl"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(bison flex)
 
 name=libnl
-version=3.5.0
+version=3.6.0
 
-source=(https://github.com/thom311/libnl/releases/download/libnl${version/./_/}/$name-doc-$version.tar.gz
-        https://github.com/thom311/libnl/releases/download/libnl${version/./_/}/$name-$version.tar.gz)
+source=(https://github.com/thom311/libnl/releases/download/libnl3_6_0/$name-doc-$version.tar.gz
+        https://github.com/thom311/libnl/releases/download/libnl3_6_0/$name-$version.tar.gz)
 build() {
 cd $name-$version
 ./configure --prefix=/usr \

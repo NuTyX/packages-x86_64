@@ -1,17 +1,17 @@
 description="GNOME calendar"
 url="http://www.gnome.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut, jayce, Remy"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Tnut,Jayce,Remy,Spiky"
 
 makedepends=(libdazzle meson intltool libhandy
              evolution-data-server python)
-run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache libgweather-4 libadwaita)
 
 set=(gnome)
 
 name=gnome-calendar
-version=41.2
+version=42.0
 
 source=(https://download.gnome.org/sources/${name}/${version%.*}/${name}-$version.tar.xz)
 

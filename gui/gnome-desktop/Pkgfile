@@ -1,18 +1,19 @@
 description="Library with common API for various GNOME modules"
 url="http://www.gnome.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Fanch, Jayce, Remy, tnut"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fanch,Jayce,Remy,Tnut,Spiky"
 
-makedepends=(meson ninja itstool gtk3 docbook-xml libxml2
+makedepends=(meson ninja itstool gtk3 gtk4 docbook-xml libxml2
              libseccomp gobject-introspection startup-notification)
 run=(gsettings-desktop-schemas freefont-ttf iso-codes
-     xorg-xkeyboard-config)
+     xorg-xkeyboard-config bubblewrap libxkbcommon)
 
 name=gnome-desktop
-version=41.5
+version=42.0
+release=2
 
-source=(https://download.gnome.org/sources/$name/41/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/42/$name-$version.tar.xz)
 
 build() {
 mkdir build
@@ -20,6 +21,7 @@ cd    build
 meson --prefix=/usr  \
 -Dgtk_doc=false      \
 -Ddesktop_docs=false \
+-Dgnome_distributor="NuTyX" \
 ../$name-$version
 ninja
 DESTDIR=$PKG ninja install

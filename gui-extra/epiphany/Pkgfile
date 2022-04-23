@@ -1,8 +1,8 @@
 description="A GNOME web browser based on the WebKit rendering engine."
 url="http://www.gnome.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Jayce,Remy,Fanch,Tnut,Fabienwang"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Jayce,Remy,Fanch,Tnut,Fabienwang,Spiky"
 
 makedepends=(icu ninja meson lsb-release libwnck avahi gcr
              libgnome-keyring libnotify json-glib webkit2gtk-4
@@ -14,21 +14,10 @@ run=(adwaita-icon-theme gsettings-desktop-schemas woff2 libxslt.lib
 set=(gnome)
 
 name=epiphany
-version=41.3
-release=4
+version=42.2
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
-prepare() {
-cd $name-$version
-
-# First, fix building with newer versions of meson: 
-sed -i '/merge_file/{n;d}' data/meson.build
-
-# fix an issue building Epiphany with libportal-0.5 or later.
-sed "/dependency/s@'libportal'@'libportal-gtk3'@" -i meson.build
-sed "/portal-gtk3/s@portal/@portal-gtk3/@" -i lib/ephy-flatpak-utils.c
-}
 build() {
 cd $name-$version
 mkdir build

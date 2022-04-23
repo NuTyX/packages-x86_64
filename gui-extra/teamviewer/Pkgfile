@@ -1,0 +1,31 @@
+description='Real-time remote access and support'
+url='https://www.teamviewer.com'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=()
+run=(minizip desktop-file-utils gtk-update-icon-cache
+     hicolor-icon-theme nss xorg-libxdamage xorg-libx11
+     sqlite xorg-libxi nspr glib pcre )
+set=()
+
+PKGMK_GROUPS=()
+
+name=teamviewer
+version=15.28.8
+
+PKGMK_KEEP_SOURCES="no"
+source=(https://download.teamviewer.com/download/linux/teamviewer_amd64.deb)
+
+package() {
+
+mkdir -p $PKG/etc/rc.d/{init.d,rc5.d}
+
+ln -sv /opt/teamviewer/tv_bin/teamviewerd \
+$PKG/etc/rc.d/init.d/teamviewerd
+
+ln -sv  ../init.d/teamviewerd \
+$PKG/etc/rc.d/rc5.d/S50teamviewerd
+}
+
