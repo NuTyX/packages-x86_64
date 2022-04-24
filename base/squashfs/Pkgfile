@@ -8,10 +8,9 @@ packager="tnut <tnut@nutyx.org>"
 makedepends=(sed zlib lzo xz lz4 zstd)
 
 name=squashfs
-version=4.5
-release=3
+version=4.5.1
 
-source=(http://downloads.sourceforge.net/sourceforge/$name/$name$version.tar.gz)
+source=(https://sourceforge.net/projects/squashfs/files/squashfs/$name$version/$name-tools-$version.tar.gz)
 prepare() {
  cd $name-tools-$version/squashfs-tools
  sed -i 's@^struct cache@extern struct cache@' mksquashfs.h
