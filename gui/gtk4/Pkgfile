@@ -1,8 +1,8 @@
 description="GObject-based multi-platform GUI toolkit"
 url="https://www.gtk.org"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Tnut,Spiky"
 
 makedepends=(git meson python python-docutils sassc gobject-introspection docbook-xsl)
 
@@ -14,9 +14,9 @@ run=(glib cairo pango fribidi gdk-pixbuf libpng libtiff libjpeg-turbo libepoxy m
 set=()
 
 name=gtk4
-version=4.6.2
+version=4.6.3
 
-source=(https://download.gnome.org/sources/gtk/${version%.*}/gtk-$version.tar.xz)
+source=(https://gitlab.gnome.org/GNOME/gtk/-/archive/$version/gtk-$version.tar.gz)
 
 build() {
 cd gtk-$version
