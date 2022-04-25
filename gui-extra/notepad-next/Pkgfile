@@ -1,0 +1,29 @@
+description='A cross-platform, reimplementation of Notepad++'
+url='https://github.com/dail8859/NotepadNext'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(qtbase qtx11extras git)
+run=(gtk-update-icon-cache shared-mime-info
+     desktop-file-utils hicolor-icon-theme)
+
+name=notepad-next
+version=0.5
+
+prepare() {
+
+git clone --recurse-submodules https://github.com/dail8859/NotepadNext.git $name-$version
+
+cd $name-$version
+git checkout v$version
+}
+
+build() {
+
+mkdir build
+cd    build
+qmake ../$name-$version/src/NotepadNext.pro
+make
+make INSTALL_ROOT=$PKG install 
+}
