@@ -1,0 +1,21 @@
+description='Mint-Y icon theme'
+url="http://packages.linuxmint.com/pool/main/m/$name"
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+run=(gtk-update-icon-cache gdk-pixbuf hicolor-icon-theme)
+set=(cinnamon)
+
+name=mint-y-icons
+version=1.5.9
+
+url="http://packages.linuxmint.com/pool/main/m/$name"
+
+
+source=($url/${name}_$version.tar.xz)
+
+build() {
+cd $name
+cp -r usr $PKG
+}
