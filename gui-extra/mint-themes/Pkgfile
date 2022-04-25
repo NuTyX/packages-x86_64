@@ -1,0 +1,22 @@
+description='Mint themes'
+url="http://packages.linuxmint.com/pool/main/m/$name"
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+makedepends=(python sassc)
+
+set=(cinnamon)
+
+name=mint-themes
+version=1.9.8
+
+url="http://packages.linuxmint.com/pool/main/m/$name"
+
+
+source=($url/${name}_$version.tar.xz)
+
+build() {
+cd $name
+make all
+cp -r usr $PKG
+}
