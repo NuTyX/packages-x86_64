@@ -1,24 +1,71 @@
-diff -Naur cinnamon-desktop-2.8.0.orig/schemas/org.cinnamon.desktop.background.gschema.xml.in cinnamon-desktop-2.8.0/schemas/org.cinnamon.desktop.background.gschema.xml.in.in
---- cinnamon-desktop-2.8.0.orig/schemas/org.cinnamon.desktop.background.gschema.xml.in	2015-10-16 13:00:30.000000000 +0000
-+++ cinnamon-desktop-2.8.0/schemas/org.cinnamon.desktop.background.gschema.xml.in	2015-11-20 19:04:16.543027956 +0000
-@@ -10,7 +10,7 @@
+diff -Naur a/schemas/org.cinnamon.desktop.background.gschema.xml.in b/schemas/org.cinnamon.desktop.background.gschema.xml.in
+--- a/schemas/org.cinnamon.desktop.background.gschema.xml.in	2022-01-11 17:04:50.000000000 +0100
++++ b/schemas/org.cinnamon.desktop.background.gschema.xml.in	2022-04-27 11:35:33.263652536 +0200
+@@ -11,7 +11,7 @@
        </description>
      </key>
      <key name="picture-uri" type="s">
 -      <default>'file://@datadir@/themes/Adwaita/backgrounds/adwaita-timed.xml'</default>
-+      <default>'file://@datadir@/backgrounds/gnome/adwaita-timed.xml'</default>
++      <default>'file://@datadir@/backgrounds/nutyx/nutyx.jpg'</default>
        <summary>Picture URI</summary>
        <description>
          URI to use for the background image. Not that the backend only supports
-diff -Naur cinnamon-desktop-2.8.0.orig/schemas/org.cinnamon.desktop.interface.gschema.xml.in cinnamon-desktop-2.8.0/schemas/org.cinnamon.desktop.interface.gschema.xml.in.in
---- cinnamon-desktop-2.8.0.orig/schemas/org.cinnamon.desktop.interface.gschema.xml.in	2015-10-16 13:00:30.000000000 +0000
-+++ cinnamon-desktop-2.8.0/schemas/org.cinnamon.desktop.interface.gschema.xml.in	2015-11-20 19:04:16.543027956 +0000
-@@ -97,7 +97,7 @@
+diff -Naur a/schemas/org.cinnamon.desktop.interface.gschema.xml.in b/schemas/org.cinnamon.desktop.interface.gschema.xml.in
+--- a/schemas/org.cinnamon.desktop.interface.gschema.xml.in	2022-01-11 17:04:50.000000000 +0100
++++ b/schemas/org.cinnamon.desktop.interface.gschema.xml.in	2022-04-27 11:55:55.961344082 +0200
+@@ -98,7 +98,7 @@
        </description>
      </key>
      <key name="icon-theme" type="s">
 -      <default>'gnome'</default>
-+      <default>'Adwaita'</default>
++      <default>'Mint-Y-Dark-Blue'</default>
        <summary>Icon Theme</summary>
        <description>
          Icon theme to use for the panel, nautilus etc.
+@@ -112,14 +112,14 @@
+       </description>
+     </key>
+     <key name="gtk-theme" type="s">
+-      <default>'Adwaita'</default>
++      <default>'Mint-Y-Dark-Blue'</default>
+       <summary>Gtk+ Theme</summary>
+       <description>
+         Basename of the default theme used by gtk+.
+       </description>
+     </key>
+     <key name="gtk-theme-backup" type="s">
+-      <default>'Adwaita'</default>
++      <default>'Mint-Y'</default>
+       <summary>Gtk+ Theme Backup</summary>
+       <description>
+         This is used to store the current theme when enabling high contrast.
+@@ -207,7 +207,7 @@
+       </description>
+     </key>
+     <key name="cursor-theme" type="s">
+-      <default>'Adwaita'</default>
++      <default>'DMZ-White'</default>
+       <summary>Cursor theme</summary>
+       <description>Cursor theme name. Used only by Xservers that support the Xcursor extension.</description>
+     </key>
+diff -Naur a/schemas/org.cinnamon.desktop.wm.preferences.gschema.xml.in b/schemas/org.cinnamon.desktop.wm.preferences.gschema.xml.in
+--- a/schemas/org.cinnamon.desktop.wm.preferences.gschema.xml.in	2022-01-11 17:04:50.000000000 +0100
++++ b/schemas/org.cinnamon.desktop.wm.preferences.gschema.xml.in	2022-04-27 11:57:01.680134684 +0200
+@@ -213,7 +213,7 @@
+       </description>
+     </key>
+     <key name="theme" type="s">
+-      <default>'Adwaita'</default>
++      <default>'Mint-Y'</default>
+       <summary>Current theme</summary>
+       <description>
+         The theme determines the appearance of window borders, titlebar,
+@@ -221,7 +221,7 @@
+       </description>
+     </key>
+     <key name="theme-backup" type="s">
+-      <default>'Adwaita'</default>
++      <default>'Mint-Y'</default>
+       <summary>Current theme backup</summary>
+       <description>
+         This is used to store the current theme when enabling high contrast.
