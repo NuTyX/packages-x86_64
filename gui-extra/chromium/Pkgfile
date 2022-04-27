@@ -11,13 +11,12 @@ run=(minizip gtk3 ffmpeg flac dbus freetype
      hicolor-icon-theme desktop-file-utils)
 
 name=chromium
-version=100.0.4896.127
+version=101.0.4951.41
 re2version=2021-06-01
 icuversion=71.1
-release=2
 
 source=(https://github.com/unicode-org/icu/releases/download/release-${icuversion//./-}/icu4c-${icuversion//./_}-src.tgz
-        https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-2-x86_64.pkg.tar.zst
+        https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-1-x86_64.pkg.tar.zst
         https://github.com/google/re2/archive/${re2version}.tar.gz)
 prepare() {
 cd re2-$re2version
