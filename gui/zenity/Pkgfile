@@ -8,6 +8,7 @@ makedepends=(itstool gtk3 libnotify yelp-tools)
 
 name=zenity
 version=3.42.1
+release=2
 
 source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
@@ -20,6 +21,8 @@ cd $name-$version
 meson --prefix=/usr           \
 --sysconfdir=/etc             \
 --localstatedir=/var          \
+--buildtype=release           \
+-Dlibnotify=true              \
 ..
 ninja
 
