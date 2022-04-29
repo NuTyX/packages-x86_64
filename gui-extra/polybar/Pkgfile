@@ -1,15 +1,15 @@
 description='A fast and easy-to-use status bar'
 url='https://github.com/jaagr/polybar'
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fanch,Tnut"
 
 makedepends=(cairo libxcb xcb-proto xcb-util-image xcb-util-wm pulseaudio libnl
              xcb-util-cursor xcb-util-xrm cmake python pkg-config jsoncpp i3
-             python-packaging)
+             python-packaging python-sphinx)
 
 name=polybar
-version=3.5.7
+version=3.6.2
 
 source=(https://github.com/$name/$name/releases/download/$version/$name-$version.tar.gz)
 
@@ -19,6 +19,7 @@ cd build
 cmake ../$name-$version \
 -DCMAKE_INSTALL_PREFIX=/usr \
 -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_BUILD_DOCS=FASLSE  \
 -DPYTHON_EXECUTABLE=/usr/bin/python3
 make
 make DESTDIR=$PKG install
