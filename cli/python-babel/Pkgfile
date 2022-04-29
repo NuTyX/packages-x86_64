@@ -1,0 +1,27 @@
+description='A collection of tools for internationalizing Python applications'
+url='http://babel.pocoo.org/'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python python-pytz)
+
+name=python-babel
+version=2.10.1
+
+
+source=(https://github.com/python-babel/babel/archive/v$version/$name-$version.tar.gz
+        https://unicode.org/Public/cldr/41/core.zip)
+
+prepare() {
+cp /sources/core.zip $SRC/babel-$version/cldr/cldr-core-41.zip
+}
+
+build() {
+cd babel-$version
+
+python setup.py import_cldr
+python setup.py build
+
+python setup.py install --root=$PKG --optimize=1 --skip-build
+}
