@@ -1,0 +1,19 @@
+description="Sphinx default theme"
+url='https://github.com/bitprophet/alabaster'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python)
+
+name=python-sphinx-alabaster-theme
+version=0.7.12
+
+source=(https://pypi.org/packages/source/a/alabaster/alabaster-$version.tar.gz)
+
+build() {
+cd alabaster-$version
+python setup.py build
+
+python setup.py install --root=$PKG --optimize=1
+}
