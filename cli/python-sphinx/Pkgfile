@@ -1,0 +1,33 @@
+description='Python documentation generator'
+url='http://www.sphinx-doc.org/'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python python-docutils python-jinja python-packaging 
+             python-pygments python-requests)
+
+
+name=python-sphinx
+version=4.5.0
+
+source=(https://pypi.org/packages/source/S/Sphinx/Sphinx-$version.tar.gz)
+
+
+PKGMK_IGNORE_UNPACK="yes"
+
+
+prepare() {
+localedef -i en_US -f UTF-8 en_US.UTF-8
+    install -d $SRC/Sphinx-${version}
+    LC_ALL=en_US.UTF-8 LANG=en_US.utf-8 \
+    bsdtar -xf $PKGMK_SOURCE_DIR/Sphinx-${version}.tar.gz \
+        -C $SRC
+}
+build() {
+cd Sphinx-$version
+
+python3 setup.py build
+
+python3 setup.py install --root="$PKG" --optimize=1 --skip-build
+}
