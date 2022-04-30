@@ -1,0 +1,35 @@
+description='A free, fast and small automatic formatter for C, C++, C sharp, and Java source code.'
+url='http://astyle.sourceforge.net/'
+
+packager='tnut <tnut@nutyx.org>'
+contributors=''
+
+name=astyle
+version=3.1
+_version=3.1.0
+source=("https://downloads.sourceforge.net/sourceforge/astyle/${name}_${version}_linux.tar.gz")
+
+build() {
+
+cd $name/build/gcc
+make release shared
+
+install -Dm0755 bin/astyle $PKG/usr/bin/astyle
+install -Dm0755 bin/libastyle.so.${_version} \
+$PKG/usr/lib/libastyle.so.${_version}
+
+ln -s libastyle.so.${_version} \
+$PKG/usr/lib/libastyle.so.${_version%%\.*}
+
+ln -s libastyle.so.${_version} \
+$PKG/usr/lib/libastyle.so
+
+install -Dm0644 ../../src/astyle.h -t \
+$PKG/usr/include
+
+install -d $PKG/usr/share/doc/$name
+for i in ../../doc/*.html; do
+  install -m0644 $i \
+  $PKG/usr/share/doc/$name
+done
+}
