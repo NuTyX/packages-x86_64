@@ -8,6 +8,7 @@ makedepends=(python)
 
 name=python-sphinxcontrib-jsmath
 version=1.0.1
+release=2
 _name=sphinxcontrib-jsmath
 
 source=(https://files.pythonhosted.org/packages/b2/e8/9ed3830aeed71f17c026a07a5097edcf44b692850ef215b161b8ad875729/${_name}-$version.tar.gz)
@@ -15,5 +16,5 @@ source=(https://files.pythonhosted.org/packages/b2/e8/9ed3830aeed71f17c026a07a50
 build() {
 cd ${_name}-$version
 python setup.py build
-python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+python setup.py install --root=$PKG --optimize=1 --skip-build
 }
