@@ -1,0 +1,32 @@
+description="Integrated Developmenet Environment (IDE)"
+url="https://apps.kde.org/kdevelop/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(kcmutils knotifyconfig ktexteditor libksysguard 
+             threadweaver grantlee-qt extra-cmake-modules kdoctools
+             llvm qttools plasma-framework krunner boost purpose
+             subversion cmake meson kio-extras kitemmodels
+             qtwebkit libkomparediff2 syndication)
+
+run=(hicolor-icon-theme astyle)
+
+name=kdevelop
+version=22.04.0
+
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
