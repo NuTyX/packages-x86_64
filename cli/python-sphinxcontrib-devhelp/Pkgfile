@@ -8,6 +8,7 @@ makedepends=(python)
 
 name=python-sphinxcontrib-devhelp
 version=1.0.2
+release=2
 _name=sphinxcontrib-devhelp
 
 source=(https://files.pythonhosted.org/packages/98/33/dc28393f16385f722c893cb55539c641c9aaec8d1bc1c15b69ce0ac2dbb3/${_name}-$version.tar.gz)
@@ -15,5 +16,5 @@ source=(https://files.pythonhosted.org/packages/98/33/dc28393f16385f722c893cb555
 build() {
 cd ${_name}-$version
  python setup.py build
-python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+python setup.py install --root=$PKG --optimize=1 --skip-build
 }
