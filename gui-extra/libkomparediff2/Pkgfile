@@ -1,0 +1,27 @@
+description='Library to compare files and strings'
+url="http://www.kde.org"
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(extra-cmake-modules)
+run=(kio)
+
+name=libkomparediff2
+version=22.04.0
+
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
