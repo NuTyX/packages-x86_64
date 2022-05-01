@@ -1,10 +1,12 @@
 description="A small UPnP client library/tool to access Internet Gateway Devices"
 url="http://miniupnp.free.fr"
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre, Spiky"
 
 name=miniupnpc
 version=2.2.3
+release=2
 
 source=(http://miniupnp.free.fr/files/$name-$version.tar.gz
         ed1dc4bb.patch)
@@ -20,5 +22,5 @@ build() {
   make
   make DESTDIR=$PKG install
   install -Dm644 man3/miniupnpc.3 $PKG/usr/share/man/man3/miniupnpc.3
-  install -Dm644 LICENSE $PKG/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
