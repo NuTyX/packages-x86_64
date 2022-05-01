@@ -1,11 +1,14 @@
 description="C parser and AST generator written in Python"
 url="https://github.com/eliben/pycparser"
-packager="spiky <spiky@nutyx.org>"
-contributors=""
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
 makedepends=(python python-ply)
 
 name=python-pycparser
 version=2.21
+release=2
 
 source=(https://github.com/eliben/pycparser/archive/refs/tags/release_v${version}.tar.gz)
 build() {
@@ -15,5 +18,5 @@ python setup.py build
   python _build_tables.py
 
  cd ../
-python setup.py install --root="$pkgdir" --optimize=1
+python setup.py install --root=$PKG --optimize=1
 }
