@@ -4,6 +4,7 @@ contributors="Rémy"
 
 name=jemalloc
 version=5.2.1
+release=2
 
 description='General-purpose scalable concurrent malloc implementation'
 
@@ -15,6 +16,6 @@ build() {
   cd $name-$version
   ./configure --prefix=/usr --enable-autogen
   make
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=$PKG install
   find "$PKG" -name \*.a -type f -exec chmod 644 '{}' \;
 }
