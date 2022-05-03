@@ -1,0 +1,19 @@
+description="Partition manager from KDE"
+url="https://apps.kde.org/partitionmanager/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(extra-cmake-modules qtbase kjobwidgets ki18n kconfigwidgets
+             kio kxmlgui kdoctools kwidgetsaddons kcoreaddons kcrash kpmcore)
+run=(btrfs-progs reiserfsprogs xfsprogs ntfs-3g
+     e2fsprogs dosfstools jfsutils)
+
+set=(kde5)
+
+name=partitionmanager
+version=22.04.0
+
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+
+build=kde5
