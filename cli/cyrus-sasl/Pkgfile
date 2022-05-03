@@ -1,21 +1,25 @@
 description="Cyrus saslauthd SASL authentication daemon"
 url="http://cyrusimap.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
-makedepends=(db)
+makedepends=(db automake libtool)
 
 name=cyrus-sasl
-version=2.1.27
-release=2
+version=2.1.28
 
-runyx_version=20200412
+runyx_version=20201011
 
-source=(ftp://ftp.cyrusimap.org/cyrus-sasl/$name-$version.tar.gz
+source=(https://github.com/cyrusimap/$name/archive/refs/tags/$name-$version.tar.gz
         http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz)
+
+prepare() {
+cd $name-$name-$version
+autoreconf -fiv
+}
 build() {
-	cd $name-$version
+	cd $name-$name-$version
 	./configure --prefix=/usr \
 		--sysconfdir=/etc \
 		--mandir=/usr/share/man \
