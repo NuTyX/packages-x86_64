@@ -13,15 +13,14 @@ run=(xorg-server zenity pipewire xorg-xwayland)
 set=(gnome)
 
 name=mutter
-version=42.0
-release=2
+version=42.1
 
 source=(https://download.gnome.org/sources/$name/42/$name-$version.tar.xz
         mutter-42.0-consolidated_fixes-1.patch)
 
 prepare() {
 cd $name-$version
-patch -Np1 -i ../mutter-42.0-consolidated_fixes-1.patch
+# patch -Np1 -i ../mutter-42.0-consolidated_fixes-1.patch
 }
 
 build() {
