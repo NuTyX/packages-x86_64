@@ -1,15 +1,16 @@
 description='Professional vector graphics editor'
 url='https://inkscape.org/'
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Spiky"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Spiky,Tnut"
 
 name=inkscape
 version=1.1.2
-release=2
+release=3
 
 source=(https://inkscape.org/gallery/item/31668/inkscape-$version.tar.xz
-        poppler-22.03.0.patch)
+        poppler-22.03.0.patch
+        poppler_22_04_fixes-1.patch)
 
 makedepends=(cmake boost git gtkmm python lcms2 gsl libxslt gc
              dbus-glib lcms2 libjpeg-turbo poppler-glib gspell
@@ -21,6 +22,7 @@ prepare() {
 	mv $name-$version* $name
 	cd $name
 	patch -Np1 -i ../poppler-22.03.0.patch
+        patch -Np1 -i ../poppler_22_04_fixes-1.patch
 }
 
 build() {
