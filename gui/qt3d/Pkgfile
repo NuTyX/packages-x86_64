@@ -5,11 +5,10 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre B"
 
 name=qt3d
-version=5.15.2
-release=2
+version=5.15.4
 makedepends=(qtdeclarative assimp)
 
-_name="${name}-everywhere-src"
+_name="${name}-everywhere-opensource-src"
 
 source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
@@ -17,7 +16,7 @@ build() {
 mkdir build
 cd build
 
-qmake ../${_name}-${version}
+qmake ../${_name/-opensource/}-${version}
 
 make
 
