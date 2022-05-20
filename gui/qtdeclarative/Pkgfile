@@ -7,19 +7,16 @@ contributors="Pierre B, Rems"
 makedepends=(mesa qtbase)
 
 name=qtdeclarative 
-version=5.15.2
-_name="${name}-everywhere-src"
+version=5.15.4
+_name="${name}-everywhere-opensource-src"
 
 source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 build() {
 
-sed -i 's/python /python3 /' ${_name}-${version}/qtdeclarative.pro \
-${_name}-${version}/src/3rdparty/masm/masm.pri
-
 mkdir build
 cd    build
-qmake ../${_name}-${version}
+qmake ../${_name/-opensource/}-${version}
 make
 make INSTALL_ROOT=$PKG install
 
