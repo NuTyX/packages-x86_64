@@ -7,20 +7,20 @@ contributors="Pierre B, Rems"
 makedepends=(qtbase)
 
 name=qtscript
-version=5.15.2
+version=5.15.4
 
-_name="${name}-everywhere-src"
+_name="${name}-everywhere-opensource-src"
 
 source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 prepare() {
-cd ${_name}-${version}
+cd ${_name/-opensource/}-${version}
 sed -i 's|^asm volatile ($|asm (|' src/3rdparty/javascriptcore/JavaScriptCore/jit/JITStubs.cpp
 }
 build() {
 mkdir build
 cd    build
-qmake ../${_name}-${version}
+qmake ../${_name/-opensource/}-${version}
 make
 make INSTALL_ROOT=$PKG install
 
