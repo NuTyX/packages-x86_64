@@ -12,10 +12,10 @@ PKGMK_GROUPS=()
 
 name=lxdm
 version=0.5.3
-release=30
+release=31
 
 runyx_version=20201011
-source=(lxdm-$version-nutyx-1.patch login.png
+source=(lxdm-$version-nutyx-2.patch login.png
 	https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	http://downloads.tuxfamily.org/nutyx/files/lxdm-nutyx-12-beta3.jpg
 	http://downloads.sourceforge.net/$name/$name-$version.tar.xz)
@@ -23,7 +23,7 @@ source=(lxdm-$version-nutyx-1.patch login.png
 build() {
 
 cd $name-$version
-patch -Np1 -i ../lxdm-$version-nutyx-1.patch
+patch -Np1 -i ../lxdm-$version-nutyx-2.patch
 cat > pam/lxdm << "EOF"
 # Begin /etc/pam.d/lxdm
 

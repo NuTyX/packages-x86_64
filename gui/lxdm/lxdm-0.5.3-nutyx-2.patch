@@ -1,18 +1,6 @@
-diff -Naur a/data/Xsession b/data/Xsession
---- a/data/Xsession	2013-04-29 04:24:50.000000000 +0000
-+++ b/data/Xsession	2018-05-26 17:17:58.674666570 +0000
-@@ -9,7 +9,7 @@
- 	LXSESSION=/usr/bin/startlxde
- fi
- 
--[ -f /etc/xprofile ] && . /etc/xprofile
-+[ -f /etc/profile ] && . /etc/profile
- [ -f ~/.xprofile ] && . ~/.xprofile
- 
- if [ -f /etc/X11/xinit/xinitrc-common ]; then
 diff -Naur a/data/lxdm.conf.in b/data/lxdm.conf.in
---- a/data/lxdm.conf.in	2014-11-23 09:56:36.000000000 +0000
-+++ b/data/lxdm.conf.in	2018-05-26 17:18:00.181328769 +0000
+--- a/data/lxdm.conf.in	2014-11-23 10:56:36.000000000 +0100
++++ b/data/lxdm.conf.in	2022-05-21 12:03:47.758016731 +0200
 @@ -24,17 +24,18 @@
  [server]
  ## arg used to start xserver, not fully function
@@ -36,8 +24,8 @@ diff -Naur a/data/lxdm.conf.in b/data/lxdm.conf.in
  ## if show bottom pane
  bottom_pane=1
 diff -Naur a/data/lxdm.in b/data/lxdm.in
---- a/data/lxdm.in	2011-11-03 12:52:31.000000000 +0000
-+++ b/data/lxdm.in	2018-05-26 17:17:58.601333459 +0000
+--- a/data/lxdm.in	2011-11-03 13:52:31.000000000 +0100
++++ b/data/lxdm.in	2022-05-21 12:03:47.758016731 +0200
 @@ -1,6 +1,6 @@
  #!/bin/sh
  
@@ -47,8 +35,8 @@ diff -Naur a/data/lxdm.in b/data/lxdm.in
  if [ -z "$LANG" -a -e /etc/sysconfig/language ]; then
  	. /etc/sysconfig/language
 diff -Naur a/data/themes/Industrial/greeter.ui b/data/themes/Industrial/greeter.ui
---- a/data/themes/Industrial/greeter.ui	2013-03-27 12:11:40.000000000 +0000
-+++ b/data/themes/Industrial/greeter.ui	2018-05-26 17:21:47.344666939 +0000
+--- a/data/themes/Industrial/greeter.ui	2013-03-27 13:11:40.000000000 +0100
++++ b/data/themes/Industrial/greeter.ui	2022-05-21 12:03:47.761349995 +0200
 @@ -34,7 +34,7 @@
                    <object class="GtkImage" id="image1">
                      <property name="visible">True</property>
@@ -59,8 +47,8 @@ diff -Naur a/data/themes/Industrial/greeter.ui b/data/themes/Industrial/greeter.
                    <packing>
                      <property name="position">0</property>
 diff -Naur a/data/themes/Industrial/gtkrc b/data/themes/Industrial/gtkrc
---- a/data/themes/Industrial/gtkrc	2012-05-29 11:31:02.000000000 +0000
-+++ b/data/themes/Industrial/gtkrc	2018-05-26 17:22:09.354719323 +0000
+--- a/data/themes/Industrial/gtkrc	2012-05-29 13:31:02.000000000 +0200
++++ b/data/themes/Industrial/gtkrc	2022-05-21 12:03:47.761349995 +0200
 @@ -7,7 +7,7 @@
  			function = FLAT_BOX
  			shadow=NONE
@@ -79,9 +67,21 @@ diff -Naur a/data/themes/Industrial/gtkrc b/data/themes/Industrial/gtkrc
  	font_name="Sans Bold 14"
  }
  
+diff -Naur a/data/Xsession b/data/Xsession
+--- a/data/Xsession	2013-04-29 06:24:50.000000000 +0200
++++ b/data/Xsession	2022-05-21 12:03:47.758016731 +0200
+@@ -9,7 +9,7 @@
+ 	LXSESSION=/usr/bin/startlxde
+ fi
+ 
+-[ -f /etc/xprofile ] && . /etc/xprofile
++[ -f /etc/profile ] && . /etc/profile
+ [ -f ~/.xprofile ] && . ~/.xprofile
+ 
+ if [ -f /etc/X11/xinit/xinitrc-common ]; then
 diff -Naur a/src/greeter.c b/src/greeter.c
---- a/src/greeter.c	2015-08-04 11:57:07.000000000 +0000
-+++ b/src/greeter.c	2018-05-26 19:18:11.143802173 +0000
+--- a/src/greeter.c	2015-08-04 13:57:07.000000000 +0200
++++ b/src/greeter.c	2022-05-21 12:03:47.761349995 +0200
 @@ -55,7 +55,7 @@
      N_LANG_COLS
  };
@@ -153,3 +153,19 @@ diff -Naur a/src/greeter.c b/src/greeter.c
  	g_free(last);
  	gtk_combo_box_set_model( GTK_COMBO_BOX(sessions), GTK_TREE_MODEL(list) );
  #if GTK_CHECK_VERSION(2,24,0)
+diff -Naur a/src/lxdm.c b/src/lxdm.c
+--- a/src/lxdm.c	2015-11-23 12:15:52.000000000 +0100
++++ b/src/lxdm.c	2022-05-21 12:05:49.702183037 +0200
+@@ -484,7 +484,11 @@
+ 	arg[arc++] = g_strdup_printf(":%d",s->display);
+ 	if(s->tty>0)
+ 		arg[arc++] = g_strdup_printf("vt%02d", s->tty);
+-	if(g_key_file_get_integer(config,"server","tcp_listen",0)!=1)
++	if(g_key_file_get_integer(config,"server","tcp_listen",0)==1)
++	{	arg[arc++] = g_strdup("-listen");
++		arg[arc++] = g_strdup("tcp");
++	}
++	else
+ 	{
+ 		arg[arc++] = g_strdup("-nolisten");
+ 		arg[arc++] = g_strdup("tcp");
