@@ -1,16 +1,16 @@
 description="API for the OFX banking standard"
 url="https://github.com/libofx"
 
-packager="spiky <spiky@nutyx.org>"
+packager="Spiky <spiky@nutyx.org>"
 
 makedepends=(opensp)
 run=()
 set=()
 
 name=libofx
-version=0.10.3
+version=0.10.5
 
-source=(https://downloads.sourceforge.net/$name/$name-$version.tar.gz)
+source=(https://github.com/libofx/libofx/releases/download/$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
