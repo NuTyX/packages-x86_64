@@ -7,7 +7,7 @@ contributors="Spiky"
 run=(kernel)
 name=vboxhost-kernel
 version=6.1.34
-release=5
+release=6
 
 buildr=150636
 _VBARCH=amd64
@@ -21,6 +21,8 @@ sh VirtualBox-${version}-${buildr}-Linux_${_VBARCH}.run --target vb --keep --noe
 cd vb
 tar xfj VirtualBox.tar.bz2
 cd src/vboxhost
+
+sed -i "s/netif_rx_ni/netif_rx/" vboxnetflt/linux/VBoxNetFlt-linux.c
 
 KERN_VER=${KERNEL_VERSION} make
 
