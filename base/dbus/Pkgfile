@@ -4,11 +4,18 @@ url="http://www.freedesktop.org/wiki/Software/dbus/"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Jayce,Tnut"
 
+# In case of rebuild systemd
+# dbus needs do be build once without systemd
+# 1/ dbus without systemd with following makedepends
+# makedepends=(expat) and --disable-systemd
+# 2/ build systemd with dbus
+# 3/ build dbus with systemd with folling makedepends
+# makedepends=(systemd expat) and --enable-systemd
 makedepends=(systemd expat)
 
 name=dbus
 version=1.14.0
-release=2
+release=3
 
 runyx_version=20201011
 
