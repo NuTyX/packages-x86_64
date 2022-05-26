@@ -6,9 +6,10 @@ packager="tnut <tnut@nutyx.org>"
 # Those dependencies are need to compile the package
 # but not listed to avoid circular dependencies:
 # When rebuild systemd:
-# 1/ rebuild dbus first without dbus 
-# 2/ build systemd with dbus 
-# 3/ rebuild dbus with systemd
+# 1/ rebuild dbus first without systemd --disable-systemd in dbus package
+# 2/ remove all the systemd archives cards.tar packages
+# 2/ build systemd with dbus that has no systemd libs
+# 3/ rebuild dbus with systemd so that dbus gets links to systemd
 
 PKGMK_DEPENDS=(python meson ninja util-linux dbus)
 
@@ -16,7 +17,7 @@ makedepends=(acl libcap kmod m4 gperf pam)
 
 name=systemd
 version=246
-release=17
+release=18
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -56,6 +57,7 @@ meson --prefix=/usr           \
 -Dtimesyncd=false             \
 -Dsysusers=false              \
 -Duserdb=false                \
+-Dlocaled=false               \
 ..
 
 ninja
