@@ -1,8 +1,8 @@
 description="The Control Center for GNOME"
 url="http://www.gnome.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Fanch,Jayce,Remy,Fabienwang,Tnut,Spiky"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Fanch,Jayce,Remy,Fabienwang,Spiky"
 
 makedepends=(autoconf git udisks2 accountsservice clutter-gtk libhandy
              colord-gtk gnome-online-accounts gsound gnome-settings-daemon
@@ -11,13 +11,13 @@ makedepends=(autoconf git udisks2 accountsservice clutter-gtk libhandy
              network-manager-applet ninja gnome-color-manager
              cups-pk-helper wayland gdk-pixbuf libadwaita)
 run=(iso-codes gsettings-desktop-schemas libgnomekbd
-     sound-theme-freedesktop libnma libadwaita)
+     sound-theme-freedesktop libnma libadwaita blocaled)
 
 set=(gnome)
 
 name=gnome-control-center
 version=42.1
-
+release=2
 source=(https://ftp.acc.umu.se/pub/GNOME/sources/$name/42/$name-$version.tar.xz)
 
 
