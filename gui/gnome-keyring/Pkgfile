@@ -8,6 +8,7 @@ makedepends=(dbus gcr pam libxslt libcap-ng gnupg openssh valgrind)
 
 name=gnome-keyring
 version=42.0
+release=2
 
 source=(https://gitlab.gnome.org/GNOME/$name/-/archive/42.0/$name-$version.tar.gz)
 
@@ -23,7 +24,7 @@ cd $name-$version
     --sysconfdir=/etc \
     --localstatedir=/var \
     --libexecdir=/usr/lib \
-    --with-pam-dir=/usr/lib/security \
+    --with-pam-dir=/lib/security \
     --disable-static \
     --disable-schemas-compile
 make
@@ -36,5 +37,5 @@ rm $PKG/usr/lib/gnome-keyring/devel/gkm-secret-store-standalone.la
 rm $PKG/usr/lib/gnome-keyring/devel/gkm-ssh-store-standalone.la
 rm $PKG/usr/lib/gnome-keyring/devel/gkm-xdg-store-standalone.la
 rm $PKG/usr/lib/pkcs11/gnome-keyring-pkcs11.la
-rm $PKG/usr/lib/security/pam_gnome_keyring.la
+rm $PKG/lib/security/pam_gnome_keyring.la
 }
