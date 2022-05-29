@@ -470,9 +470,9 @@ if [[ ! -f ${_FULLPATHNAME}/${_NAME}.qcow2 ]]
                                 $ECHOCMD "OVMF_VAR_DISK_INFO=${_FULLPATHNAME}/OVMF_VARS_${_NAME}.fd" >> ${_FULLPATHNAME}/${_NAME}.var
                                 if [[ $VERBOSE == yes ]]
                                         then
-                                                cp -v /usr/share/ovmf/x64/OVMF_VARS.fd ${_FULLPATHNAME}/OVMF_VARS_${_NAME}.fd
+                                                cp -v $EFIVARS ${_FULLPATHNAME}/OVMF_VARS_${_NAME}.fd
                                         else
-                                                cp /usr/share/ovmf/x64/OVMF_VARS.fd ${_FULLPATHNAME}/OVMF_VARS_${_NAME}.fd
+                                                cp $EFIVARS ${_FULLPATHNAME}/OVMF_VARS_${_NAME}.fd
                                 fi
                         else
                                 _error "The command ${_QEMU_IMG_BIN} did not execute correctly"
@@ -527,7 +527,7 @@ fi
 
 iffirstdiskquery() {
 
-_info "What interface for the disc 1 ? IDE (by default) or virtio"
+_info "What interface for the disc 1 ? IDE (by default), virtio or NVMe"
 read _IF_QUERY
 
 [[ -z ${_IF_QUERY} ]] && _IF_QUERY=ide
@@ -539,7 +539,12 @@ case ${_IF_QUERY} in
         ;;
         virtio|VIRTIO)
             $ECHOCMD "HDD1_CONTROLLER_TYPE=${_IF_QUERY}" >> ${_FULLPATHNAME}/${_NAME}.var
-            _success " The disk interface will be VIRTIO"
+            _success "The disk interface will be VIRTIO"
+        ;;
+        nvme|NVME)
+            $ECHOCMD "HDD1_CONTROLLER_TYPE=none,id=nvme1" >> ${_FULLPATHNAME}/${_NAME}.var
+            $ECHOCMD "HDD1_CONTROLLER_EXTRA=-device nvme,serial=0ABC1,drive=nvme1" >> ${_FULLPATHNAME}/${_NAME}.var
+            _success " The disk interface will be NVMe"
         ;;
         exit)
             exit 1
@@ -552,7 +557,11 @@ esac
 }
 
 cdromfolder_check() {
-[[ ! -d ${_FULLISOPATH} ]] && _error "The folder ${_FULLISOPATH} does not exist, please create it and put your ISOS there"
+if [[ ! -d ${_FULLISOPATH} ]]
+	then
+		$ECHOCMD "The folder ${_FULLISOPATH} does not exist, please create it and put your ISOS there"
+		exit 1
+fi
 }
 
 cdromquery() {
@@ -596,6 +605,7 @@ fi
 
 main() {
 [[ -z ${_VMFOLDER} ]] && _VMFOLDER=$HOME/VM-qemu
+EFIVARS=/usr/share/ovmf/x64/OVMF_VARS.fd
 LSBIN=$(which ls)
 ECHOBIN=$(which echo)
 ECHOCMD="$ECHOBIN -e"

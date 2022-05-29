@@ -165,6 +165,7 @@ cat << EOF
 ${_UEFI_CODE_CMDLINE}
 ${_UEFI_VAR_CMDLINE}
 -drive file=$HDD1_NAME,if=$HDD1_CONTROLLER_TYPE
+$HDD1_CONTROLLER_EXTRA
 ${ADD_HDD2}
 ${ADD_HDD3}
 ${_ISO_CMDLINE}
@@ -185,6 +186,7 @@ $QEMU_BIN -enable-kvm -M q35 -m $SYSTEM_MEMORY_SIZE -cpu $CPU_TYPE -smp cores=$N
           -device virtio-balloon \
           ${_UEFI_CODE_CMDLINE} ${_UEFI_VAR_CMDLINE} \
           -drive file=${HDD1_NAME},if=${HDD1_CONTROLLER_TYPE,,} \
+          $HDD1_CONTROLLER_EXTRA \
           ${ADD_HDD2} \
           ${ADD_HDD3} \
           ${_ISO_CMDLINE} \
