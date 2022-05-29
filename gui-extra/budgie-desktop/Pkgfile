@@ -1,17 +1,20 @@
 description="Budgie desktop environnement"
 url="https://github.com/BuddiesOfBudgie/budgie-desktop"
 
-packager="BlogofraisFR <blogofrais@nutyx.org>"
-contributors=""
+packager="tnut <tnut@nutyx.org>"
+contributors="BlogofraisFR" 
 
-makedepends=(gobject-introspection intltool meson sassc vala budgie-screensaver 
-            budgie-control-center budgie-desktop-view libpeas libwnck mutter gnome-menus)
-run=(gnome-desktop mutter gnome-menus libpeas libwnck budgie-screensaver 
-     budgie-control-center budgie-desktop-view numix-gtk-theme numix-icon-theme gnome-session nome-bluethooth-3 gnome-themes-extra) 
+makedepends=(gobject-introspection intltool meson sassc libpeas libwnck)
+
+run=(gnome-desktop mutter gnome-menus budgie-screensaver vala
+     budgie-control-center budgie-desktop-view numix-gtk-theme
+     numix-icon-theme gnome-session gnome-themes-extra)
+
 set=(budgie)
 
 name=budgie-desktop
 version=10.6.1
+release=2
 
 source=(https://github.com/BuddiesOfBudgie/budgie-desktop/releases/download/v$version/budgie-desktop-v$version.tar.xz)
 
