@@ -1,15 +1,14 @@
 description="The GLib package contains a low-level libraries useful for providing data structure handling"
 url="http://www.gtk.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch,Spiky"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fanch,Spiky,Tnut"
 
 makedepends=(libffi pcre python elfutils meson ninja libxslt docbook-xsl)
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.72.1
-release=2
+version=2.72.2
 
 source=(https://download.gnome.org/sources/glib/${version:0:4}/$name-$version.tar.xz
 	glib-skip_warnings-2.patch)
