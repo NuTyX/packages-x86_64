@@ -1,19 +1,19 @@
 description="A featureful, general-purpose sound server"
 url="http://www.pulseaudio.org"
 
-packager="tnut <tnut@nutyx.org"
-contributors="Pierre B, Rems"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Pierre,Rems,Tnut"
 
 makedepends=(python meson ninja doxygen gdbm check elogind
              fftw intltool json-c libsndfile vala
              alsa-lib dbus glib libcap xorg-libxtst
              openssl speex speexdsp libsamplerate
-             webrtc-audio-processing jack
+             webrtc-audio-processing jack2 xmltoman
              gstreamer-plugins-base)
 run=(bluez sbc)
 
 name=pulseaudio
-version=15.0
+version=16.0
 
 source=(https://freedesktop.org/software/$name/releases/$name-$version.tar.xz)
 
