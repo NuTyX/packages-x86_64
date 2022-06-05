@@ -1,14 +1,14 @@
 description='A C++ crypto library'
 url='http://botan.randombit.net/'
 
-packager="spiky <spiky@nutyx.org>"
-contributors=""
+packager="Spiky <spiky@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(gmp python)
 run=()
 
 name=botan
-version=2.19.1
+version=2.19.2
 
 source=(https://botan.randombit.net/releases/Botan-$version.tar.xz)
 
@@ -18,8 +18,7 @@ cd Botan-$version
 ./configure.py \
     --prefix=/usr \
     --with-bzip \
-    --with-zlib \
-    --with-openssl
+    --with-zlib 
 
 make
 make DESTDIR=$PKG install
