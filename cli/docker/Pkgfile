@@ -1,8 +1,8 @@
 description='An open platform for distributed applications for developers and sysadmins'
 url='https://www.docker.com/community-edition'
 
-contributors="MattHoush,Tnut,Spiky"
-packager="Spiky <spiky@nutyx.org>"
+contributors="MattHoush,Spiky"
+packager="tnut <tnut@nutyx.org>"
 
 makedepends=(lvm2 btrfs-progs)
 
@@ -10,6 +10,7 @@ run=(start-stop-daemon iptables runc containerd cgroupfs-mount)
 
 name=docker
 version=20.10.16
+release=2
 
 PKGMK_GROUPS=(man)
 
