@@ -1,8 +1,8 @@
 description="start up the GNOME Desktop environment"
 url="http://www.gnome.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Fanch,Tnut,Remy,Rems,Spiky"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Fanch,Rems,Spiky"
 
 makedepends=(dconf dbus-glib docbook-xml docbook-xsl elogind
              gnome-desktop json-glib libxslt mesa meson upower xmlto)
@@ -11,6 +11,7 @@ set=(gnome)
 
 name=gnome-session
 version=42.0
+release=2
 
 source=(https://download.gnome.org/sources/$name/42/$name-$version.tar.xz)
 
@@ -22,4 +23,7 @@ cd build
 meson --prefix=/usr -Dsystemd_journal=false
 ninja
 DESTDIR=$PKG ninja install
+
+# Uneeded duplicated entries
+rm $PKG/usr/share/{xsessions,wayland-sessions}/gnome.desktop
 }
