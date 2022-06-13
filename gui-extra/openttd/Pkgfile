@@ -2,8 +2,8 @@ description="An engine for running Transport Tycoon Deluxe."
 url="http://www.openttd.org"
 
 maintainers="tsgeek at mailoo dot org"
-contributors="Remy, tnut"
-packager="spiky <spiky@nutyx.org>"
+contributors="Remy,Spiky"
+packager="tnut <tnut@nutyx.org>"
 
 makedepends=(cmake ninja libpng sdl1 icu xorg-fontconfig lzo
              xz openttd-opengfx openttd-opensfx)
@@ -11,10 +11,14 @@ run=(desktop-file-utils hicolor-icon-theme openttd-opengfx openttd-opensfx)
 
 
 name=openttd
-version=12.1
-release=2
+version=12.2
 
 source=(https://proxy.binaries.openttd.org/openttd-releases/${version}/${name}-${version}-source.tar.xz)
+
+
+prepare() {
+  sed -i '/sse/d;/SSE/d' $name-$version/CMakeLists.txt
+}
 
 build() {
   cd $name-$version
@@ -23,11 +27,12 @@ build() {
   cd    build
 
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
-     -DCMAKE_INSTALL_BINDIR=bin \
-     -DCMAKE_INSTALL_DATADIR=/usr/share \
-     -DGLOBAL_DATA_DIR=/usr/share/openttd \
-     -DPERSONAL_DIR=.${name} \
-     -G Ninja ..
+      -D CMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_BINDIR=bin \
+      -DCMAKE_INSTALL_DATADIR=/usr/share \
+      -DGLOBAL_DATA_DIR=/usr/share/openttd \
+      -DPERSONAL_DIR=.${name} \
+      -G Ninja ..
 
 ninja
 
