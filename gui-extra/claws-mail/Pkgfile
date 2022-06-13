@@ -1,19 +1,24 @@
 description="A GTK+ based e-mail client."
 url="http://www.claws-mail.org"
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre B., Tnut, Greg, Schrodinger72"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre B., Spiky, Greg, Schrodinger72"
 
 name=claws-mail
 version=4.1.0
+release=2
+
 makedepends=(bogofilter enchant aspell libetpan gnupg gpgme gnutls
              dbus gtk3 libtasn1 enchant xorg-libsm hicolor-icon-theme
              desktop-file-utils xorgproto nettle)
 
 
-source=(${url}/download.php?file=releases/$name-$version.tar.xz)
+source=(perl-5.36.patch
+        ${url}/download.php?file=releases/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
+patch -Np1 -i ../perl-5.36.patch
 ./configure --prefix=/usr --mandir=/usr/share/man \
 --disable-compface --disable-ldap \
 --disable-jpilot --enable-enchant --disable-dillo-viewer-plugin \
