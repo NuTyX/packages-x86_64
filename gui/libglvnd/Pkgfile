@@ -1,0 +1,22 @@
+description='The GL Vendor-Neutral Dispatch library'
+url='https://github.com/NVIDIA/libglvnd'
+
+packager="Llamatron 2112 <llamatron2112@gmail.com>"
+contributors=""
+
+makedepends=(xorg-libxext.devel xorg-libx11.devel xorgproto python meson)
+run=()
+set=()
+
+name=libglvnd
+version=1.4.0
+
+source=(https://gitlab.com/freedesktop-sdk/mirrors/github/NVIDIA/$name/-/archive/v$version/$name-v$version.tar.gz)
+
+build() {
+cd $name-v$version
+./autogen.sh
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
