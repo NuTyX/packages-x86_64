@@ -63,6 +63,10 @@ cd NVIDIA-Linux-x86_64-${version}
     ln -s "libnvidia-vulkan-producer.so.${version}" "${PKG}/usr/lib/libnvidia-vulkan-producer.so.1"
     ln -s "libnvidia-vulkan-producer.so.${version}" "${PKG}/usr/lib/libnvidia-vulkan-producer.so"
 
+    # GTK
+    install -Dm755 "libnvidia-gtk3.so.${version}" "${PKG}/usr/lib/libnvidia-gtk3.so.${version}"
+    install -Dm755 "libnvidia-gtk2.so.${version}" "${PKG}/usr/lib/libnvidia-gtk2.so.${version}"
+
     # Vulkan ICD
     install -Dm644 "nvidia_icd.json" "${PKG}/usr/share/vulkan/icd.d/nvidia_icd.json"
     install -Dm644 "nvidia_layers.json" "${PKG}/usr/share/vulkan/implicit_layer.d/nvidia_layers.json"
