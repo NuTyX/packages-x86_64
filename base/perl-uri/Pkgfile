@@ -13,7 +13,7 @@ source=(http://www.cpan.org/authors/id/O/OA/OALDERS/URI-$version.tar.gz)
 
 build() {
 cd URI-$version
-	perl Makefile.PL
+	perl Makefile.PL  --aliases INSTALLDIRS=vendor
 	make
 	make DESTDIR=$PKG install
 find $PKG \
