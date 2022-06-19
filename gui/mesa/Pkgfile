@@ -9,13 +9,15 @@ contributors="Pierre,Rems,Spiky"
 makedepends=(python meson ninja
              xorgproto pkg-config libtool xorg-xrandr wayland python-mako
              wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext
-             xorg-libxdamage expat llvm elfutils xorg-libxshmfence libglvnd
+             xorg-libxdamage expat llvm elfutils xorg-libxshmfence
              libva libvdpau valgrind lm-sensors xorg-libxvmc libunwind vulkan-icd-loader)
 
+run=(libglvnd)
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
 version=22.1.2
+release=2
 
 source=(add_xdemos-1.patch
 	https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
