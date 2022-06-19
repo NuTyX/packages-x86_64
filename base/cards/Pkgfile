@@ -18,7 +18,7 @@ PKGMK_GROUPS=(devel doc man lib)
 PKGMK_LOCALES=()
 
 name=cards
-version=2.5.0
+version=2.5.1
 
 [ "$release" != "1" ] &&  patchname="$name-$version-consolidate-$release.patch"
 
@@ -58,8 +58,8 @@ bsdtar -cf \
 $PKGMK_PACKAGE_DIR/$name.${group}${PKGMK_BUILDVER}${PKGMK_ARCH}.$PKGMK_PACKAGE_EXT \
 usr/include \
 usr/bin \
-var/lib/pkg/drivers \
 etc/pkgmk.conf.example
-rm -rf var/lib/pkg/drivers usr/bin usr/ports \
-usr/include etc/pkgmk.conf.example etc/ports 
+
+rm -rf usr/bin \
+usr/include etc/pkgmk.conf.example
 }
