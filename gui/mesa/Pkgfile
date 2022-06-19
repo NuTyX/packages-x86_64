@@ -6,16 +6,16 @@ url="http://www.xorg-mesa3d.org"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre,Rems,Spiky"
 
-makedepends=(xorgproto pkg-config libtool xorg-xrandr wayland python-mako
+makedepends=(python meson ninja
+             xorgproto pkg-config libtool xorg-xrandr wayland python-mako
              wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext
-             xorg-libxdamage expat llvm elfutils xorg-libxshmfence
-             libva libvdpau valgrind lm-sensors xorg-libxvmc libunwind vulkan-icd-loader libglvnd)
+             xorg-libxdamage expat llvm elfutils xorg-libxshmfence libglvnd
+             libva libvdpau valgrind lm-sensors xorg-libxvmc libunwind vulkan-icd-loader)
 
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=22.1.1
-release=2
+version=22.1.2
 
 source=(add_xdemos-1.patch
 	https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
@@ -49,6 +49,6 @@ DESTDIR=$PKG ninja install
 install -v -dm755 $PKG/usr/share/doc/mesa-$version
 cp -rfv ../docs/* $PKG/usr/share/doc/mesa-$version
 
-	# indirect rendering symlink
-	ln -s libGLX_mesa.so.0 $PKG/usr/lib/libGLX_indirect.so.0
+# indirect rendering symlink
+ln -s libGLX_mesa.so.0 $PKG/usr/lib/libGLX_indirect.so.0
 }
