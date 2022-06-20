@@ -1,12 +1,14 @@
 description="The GNU Project debugger, allows you to see what is going on “inside” another program while it executes."
 url="http://www.sourceware.org/gdb/"
 
-packager="Spiky <spiky@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(ncurses gmp readline expat texinfo)
 
 name=gdb
 version=12.1
+release=2
 
 source=(https://ftp.gnu.org/gnu/gdb/$name-$version.tar.xz)
 build() {
@@ -21,7 +23,8 @@ rm $PKG/usr/include/bfd.h
 rm $PKG/usr/include/bfdlink.h
 rm $PKG/usr/include/dis-asm.h
 rm $PKG/usr/include/symcat.h
-#rm $PKG/usr/include/bfd_stdint.h
+rm $PKG/usr/include/ctf-api.h
+rm $PKG/usr/include/ctf.h
 rm $PKG/usr/lib/libbfd.a
 rm $PKG/usr/lib/libbfd.la
 rm $PKG/usr/lib/libopcodes.a
