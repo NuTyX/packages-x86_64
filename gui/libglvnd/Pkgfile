@@ -1,0 +1,27 @@
+description='The GL Vendor-Neutral Dispatch library'
+url='https://github.com/NVIDIA/libglvnd'
+
+packager="Tnut <tnut@nutyx.org>"
+contributors="Llamatron"
+
+makedepends=(xorg-libxext xorg-libx11 xorgproto python meson)
+
+name=libglvnd
+version=1.4.0
+release=3
+
+source=(https://gitlab.com/freedesktop-sdk/mirrors/github/NVIDIA/$name/-/archive/v$version/$name-v$version.tar.gz)
+
+build() {
+meson setup $name-v$version build -D x11=enabled -D glx=enabled \
+--prefix=/usr \
+--buildtype=plain \
+--wrap-mode nodownload \
+-D b_lto=true \
+-D b_pie=true \
+-D gles1=false \
+-D egl=true \
+-D tls=false
+meson compile -C build
+DESTDIR=$PKG meson install -C build
+}
