@@ -1,0 +1,50 @@
+diff --git a/src/cards_install.cxx b/src/cards_install.cxx
+index 16db469..aa9e8fb 100644
+--- a/src/cards_install.cxx
++++ b/src/cards_install.cxx
+@@ -104,6 +104,7 @@ Cards_install::Cards_install(const CardsArgumentParser& argParser,
+ 	: Pkginst("cards install",configFileName),m_argParser(argParser)
+ {
+ 	parseArguments();
++	Pkgrepo::parseConfig(configFileName, m_config);
+ 	buildCompleteDatabase(false);
+ 	for (auto i : listOfPackages) {
+ 		std::string packageName = basename(const_cast<char*>(i.c_str()));
+@@ -115,24 +116,34 @@ Cards_install::Cards_install(const CardsArgumentParser& argParser,
+ 			treatErrors(i);
+ 		}
+ 		for (auto j : listofBinaries ) {
+-			if (j.find("cards.tar")== std::string::npos )
++			if ( j.find("cards.tar") == std::string::npos )
+ 				continue;
++
+ 			m_packageArchiveName = i + "/" + j;
+ 			ArchiveUtils packageArchive(m_packageArchiveName.c_str());
+ 			std::string name = packageArchive.name();
+ 			if ( checkPackageNameExist(name) )
+ 				continue;
++
+ 			if ( m_config.group.empty() ) {
+ 				m_upgrade=0;
+ 				m_force=0;
+ 				run();
+ 				continue;
++
++			}
++			if ( packageArchive.group() == "" ) {
++				m_upgrade=0;
++				m_force=0;
++				run();
++				continue;
+ 			}
+-			for (auto i : m_config.group) {
+-				if ( (packageArchive.group() == "" ) || (packageArchive.group() == i) ) {
++			for (auto k : m_config.group) {
++				if ( packageArchive.group() == k ) {
+ 					m_upgrade=0;
+ 					m_force=0;
+ 					run();
++					continue;
+ 				}
+ 			}
+ 		}
