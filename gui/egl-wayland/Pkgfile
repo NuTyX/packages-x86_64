@@ -1,0 +1,25 @@
+description='The EGLStream-based Wayland external platform'
+url='https://github.com/NVIDIA/egl-wayland'
+
+packager="Llamatron 2112 <llamatron2112@nutyx.org>"
+contributors=""
+
+makedepends=(meson xorg-libdrm.devel wayland.devel libglvnd.devel eglexternalplatform wayland-protocols)
+run=(eglexternalplatform wayland)
+set=()
+
+name=egl-wayland
+version=1.1.10
+
+source=(https://github.com/NVIDIA/egl-wayland/archive/refs/tags/${version}.tar.gz 10_nvidia_wayland.json)
+
+build() {
+cd $name-$version
+mkdir build
+cd build
+meson .. build --prefix=/usr
+meson compile -C build
+meson install -C build --destdir ${PKG}
+install -Dt "${PKG}/usr/share/egl/egl_external_platform.d" -m644 ../../10_nvidia_wayland.json
+install -Dt "${PKG}/usr/share/licenses/${name}" -m644 ../COPYING
+}
