@@ -1,20 +1,20 @@
 description="Can probe disks on the system for other operating systems, and add them to the boot loader"
 url="http://joeyh.name/code/os-prober/"
 
-contributors="Chris Farrell,timcowchip,tnut, Greg"
-packager="spiky <spiky@nutyx.org>"
+contributors="Chris,Farrell,Timcowchip,Tnut,Greg,Spiky"
+packager="Spiky <spiky@nutyx.org>"
 
 makedepends=(bash)
 
 name=os-prober
-version=1.79
+version=1.80
 
 source=(http://ftp.de.debian.org/debian/pool/main/o/os-prober/os-prober_$version.tar.xz)
 
 
 build() {
 
-  cd $name
+  cd $name-$version
 
   # adjust lib dir to allow detection of 64-bit distros
   sed -i -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" os-probes/mounted/common/90linux-distro
