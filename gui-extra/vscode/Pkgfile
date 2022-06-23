@@ -7,4 +7,12 @@ contributors="Spiky"
 name=vscode
 version=1.68.1
 
+release=2
+
 source=(https://az764295.vo.msecnd.net/stable/30d9c6cd9483b2cc586687151bcbcd635f373630/code_1.68.1-1655263094_amd64.deb)
+
+build() {
+   tar -xf data.tar.xz -C "$PKG/"
+   mkdir -p $PKG/usr/bin
+   ln -sv /usr/share/code/bin/code $PKG/usr/bin/code
+}
