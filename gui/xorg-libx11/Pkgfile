@@ -1,8 +1,8 @@
 description="libx11, library for client X"
 url="http://xorg.freedesktop.org"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut,Greg,Tnut,Spiky"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Pierre,Greg,Spiky"
 
 makedepends=(xorgproto libxcb xorg-xtrans)
 
@@ -10,10 +10,19 @@ name=xorg-libx11
 alias=(libX11)
 version=1.8.1
 _name=libX11
+release=2
 
 source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.xz)
 
-build=xorg
+build() {
+cd ${_name}-$version
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--disable-static \
+--disable-thread-safety-constructor
+make DESTDIR=$PKG install
+}
 
 package() {
 rm $PKG/usr/lib/${_name}{,-xcb}.la
