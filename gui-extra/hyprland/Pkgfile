@@ -1,0 +1,26 @@
+description="Hyprland is a dynamic tiling Wayland compositor that doesn't sacrifice on its looks"
+url="https://github.com/vaxerski/Hyprland"
+
+packager="BlogofraisFR <blogofrais@nutyx.org>"
+contributors=""
+
+makedepends=(seatd eudev libxcb libinput make meson libxkbcommon xcb-util wayland-protocols gegl egl-wayland)
+run=(mesa wayland xorg-pixman xorg-libdrm xorg-xwayland)
+
+name=hyprland
+version=0.6.0beta
+
+prepare() {
+ git clone https://github.com/hyprwm/Hyprland.git --branch v$version
+ cd Hyprland
+ git submodule update --init
+}
+build() {
+  cd Hyprland
+  mkdir build
+  cd build
+meson --prefix=/usr \
+..
+ninja
+DESTDIR=$PKG ninja install
+}
