@@ -1,0 +1,16 @@
+description="A minimal seat management daemon, and a universal seat management library"
+url="https://git.sr.ht/~kennylevinsen/seatd/"
+
+packager="BlogofraisFR <blogofrais@nutyx.org>"
+contributors=""
+
+makedepends=(meson python elogind)
+
+name=seatd
+version=0.7.0
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://git.sr.ht/~kennylevinsen/$name/archive/$version.tar.gz)
+
+build=meson
