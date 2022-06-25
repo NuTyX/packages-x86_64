@@ -1,32 +1,28 @@
 description="Simple GTK interface for capturing and viewing video from UVC devices"
 url="http://guvcview.sourceforge.net/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Daniel,Spiky"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Daniel,Spiky,Tnut"
 
 makedepends=(eudev libusb ffmpeg gtk3 v4l-utils portaudio gsl desktop-file-utils)
 run=(desktop-file-utils)
 
 
 name=guvcview
-version=2.0.7
-release=2
+version=2.0.8
 
 makedepends=(eudev libusb ffmpeg gtk3 v4l-utils portaudio gsl desktop-file-utils)
 run=(desktop-file-utils)
 
-source=(https://sourceforge.net/projects/$name/files/source/$name-src-$version-2.tar.bz2)
-noextract=($name-src-$version-2.tar.bz2)
+source=(https://sourceforge.net/projects/$name/files/source/$name-src-$version.tar.bz2)
+
 prepare() {
-cp /sources/$name-src-$version-2.tar.bz2 /tmp/work/src
-mkdir $name-$version
-tar xf $name-src-$version-2.tar.bz2 -C $name-$version
+mv $name-src-$version $name-$version
+
 }
 build() {
 
 cd $name-$version
-
-autoreconf -fi
 
 ./configure --prefix=/usr \
 --disable-static --disable-debian-menu
