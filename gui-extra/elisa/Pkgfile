@@ -1,0 +1,29 @@
+description='A simple music player application'
+url="https://apps.kde.org/elisa/"
+
+packager="Spiky <spiky@nutyx.org>"
+contributors="Pierre,Fabienwang,Spiky,Tnut"
+
+makedepends=(qtbase extra-cmake-modules baloo
+             vlc kdeclarative kirigami2
+             kdoctools qtmultimedia)
+run=(shared-mime-info kirigami2)
+
+name=elisa
+version=22.04.2
+
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+
+build=kde5
+
+uptodate() {
+feed=https://github.com/KDE/$name/releases.atom 
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep title | \
+sed "s@<title>@@" | \
+sed "s@</title>@@" | \
+sed "s@v@@" | sed "s@ @@g" | \
+head -n $(($ligne+1 )) | \
+tail -n $(($ligne))
+}
