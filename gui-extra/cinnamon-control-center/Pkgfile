@@ -8,21 +8,15 @@ run=(colord libgnomekbd modemmanager)
 
 set=(cinnamon)
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fanch,Tnut"
 
 name=cinnamon-control-center
-version=5.2.1
+version=5.4.2
 
 PKGMK_KEEP_SOURCES="no"
-source=(https://github.com/linuxmint/cinnamon-control-center/archive/$version.tar.gz
-        $name-openvpn-widget-fix.patch)
+source=(https://github.com/linuxmint/cinnamon-control-center/archive/$version.tar.gz)
 
-
-prepare() {
-cd $name-$version
-patch -p1 < ../${name}-openvpn-widget-fix.patch
-}
 
 build() {
 mkdir build
