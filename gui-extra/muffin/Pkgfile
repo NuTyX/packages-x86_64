@@ -1,42 +1,29 @@
 description='Cinnamon window manager based on Mutter.'
 url='https://github.com/linuxmint/muffin'
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fanch,Tnut"
 
 set=(cinnamon)
 
-makedepends=(cinnamon-desktop startup-notification gdk-pixbuf
+makedepends=(cinnamon-desktop startup-notification gdk-pixbuf pipewire
              gtk-doc xorg-libxcomposite gobject-introspection)
 
 run=(libcanberra libinput zenity)
 
 name=muffin
-version=5.2.1
+version=5.4.1
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/linuxmint/$name/archive/$version.tar.gz)
 
-prepare() {
- cd $name-${version}
- sed -i 's/--warn-error//g' src/Makefile.am
- NOCONFIGURE=1 ./autogen.sh
-}
 build() {
-  cd $name-$version    
-  ./configure --prefix=/usr \
-              --sysconfdir=/etc \
-              --libexecdir=/usr/lib/$name \
-              --localstatedir=/var \
-              --disable-static \
-              --disable-schemas-compile\
-              --disable-gtk-doc \
-              --enable-compile-warnings=minimum
+mkdir build
+cd build
+meson --prefix=/usr \
+--buildtype=plain   \
+../$name-$version
 
-    make
-    make DESTDIR=$PKG install
-
-    make -C src DESTDIR=$PKG uninstall-binPROGRAMS uninstall-desktopfilesDATA
-    make -C src/tools DESTDIR=$PKG uninstall
-    make -C src/compositor/plugins DESTDIR=$PKG uninstall
+ninja
+DESTDIR=$PKG ninja install
 }
