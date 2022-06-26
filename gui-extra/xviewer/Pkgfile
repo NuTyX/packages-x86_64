@@ -1,8 +1,8 @@
 description='A simple and easy to use image viewer. X-Apps Project.'
 url='https://github.com/linuxmint/xviewer'
 
-packager="tnut <tnut@nutyx.org>"
-contributors=""
+packager="Spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
 makedepends=(m4 autoconf automake sed grep yelp-tools
              gnome-common gobject-introspection librsvg)
@@ -11,18 +11,24 @@ run=(xapp gtk3 cinnamon-desktop libpeas libexif libjpeg-turbo)
 set=(cinnamon)
 
 name=xviewer
-version=3.2.4
+version=3.2.5
 
 PKGMK_KEEP_SOURCES="no"
 source=($url/archive/$version.tar.gz)
 
 build() {
 cd $name-$version
-NOCONFIGURE=1 gnome-autogen.sh
 
-gnome-autogen.sh --prefix=/usr \
+mkdir build
+cd    build
+
+meson --prefix=/usr \
 --localstatedir="/var" \
---libexecdir="/usr/lib"
-make
-make DESTDIR=$PKG install
+--libexecdir="/usr/lib" \
+--buildtype=plain \
+..
+
+ninja
+
+DESTDIR=$PKG ninja install
 }
