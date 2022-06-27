@@ -2,9 +2,9 @@
 description="A web browser built for speed, simplicity, and security"
 url="https://www.chromium.org/Home"
 
-packager="Spiky <spiky@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 maintainer="Arch Linux"
-contributors="Tnut,Spiky"
+contributors="Spiky"
 
 run=(minizip gtk3 ffmpeg flac dbus freetype
      xorg-libxscrnsaver libxslt nss snappy json-glib llvm
@@ -12,17 +12,12 @@ run=(minizip gtk3 ffmpeg flac dbus freetype
 
 name=chromium
 version=103.0.5060.53
-re2version=2021-06-01
-icuversion=71.1
+re2version=2022-06-01
 
-source=(https://github.com/unicode-org/icu/releases/download/release-${icuversion//./-}/icu4c-${icuversion//./_}-src.tgz
-        https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-1-x86_64.pkg.tar.zst
+source=(https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-1-x86_64.pkg.tar.zst
         https://github.com/google/re2/archive/${re2version}.tar.gz)
 prepare() {
 cd re2-$re2version
-make
-cd ../icu/source
-./configure
 make
 }
 build() {
@@ -34,10 +29,4 @@ echo "/usr/lib/chromium" > $PKG/etc/ld.so.conf.d/$name.conf
 package() {
 cd re2-$re2version
 install obj/so/libre2.so $PKG/usr/lib/chromium/libre2.so.9
-cd ../icu/source
-for i in libicuuc libicuio libicudata libicui18n libicutu
-do
-  install lib/$i.so.71.1  \
-  $PKG/usr/lib/chromium/$i.so.71 
-done
 }
