@@ -1,56 +1,11 @@
-diff -Naur a/Telegram/ThirdParty/tgcalls/tgcalls/group/AudioStreamingPartInternal.cpp b/Telegram/ThirdParty/tgcalls/tgcalls/group/AudioStreamingPartInternal.cpp
---- a/Telegram/ThirdParty/tgcalls/tgcalls/group/AudioStreamingPartInternal.cpp	2022-03-08 15:18:27.000000000 +0100
-+++ b/Telegram/ThirdParty/tgcalls/tgcalls/group/AudioStreamingPartInternal.cpp	2022-03-13 23:19:50.834580623 +0100
-@@ -103,6 +103,9 @@
-     int ret = 0;
+diff -Naur a/Telegram/ThirdParty/tgcalls/tgcalls/utils/gzip.h b/Telegram/ThirdParty/tgcalls/tgcalls/utils/gzip.h
+--- a/Telegram/ThirdParty/tgcalls/tgcalls/utils/gzip.h	2022-06-20 18:24:08.000000000 +0200
++++ b/Telegram/ThirdParty/tgcalls/tgcalls/utils/gzip.h	2022-06-28 13:04:24.343374836 +0200
+@@ -3,6 +3,7 @@
  
-     _frame = av_frame_alloc();
-+#if LIBAVFORMAT_VERSION_MAJOR >= 59
-+    const
-+#endif
+ #include <absl/types/optional.h>
+ #include <vector>
++#include <cstdint>
  
-     AVInputFormat *inputFormat = av_find_input_format(container.c_str());
-     if (!inputFormat) {
-@@ -144,7 +147,7 @@
-         
-         _streamId = i;
+ namespace tgcalls {
  
--        _durationInMilliseconds = (int)((inStream->duration + inStream->first_dts) * 1000 / 48000);
-+        _durationInMilliseconds = (int)(inStream->duration * av_q2d(inStream->time_base) * 1000 );
- 
-         if (inStream->metadata) {
-             AVDictionaryEntry *entry = av_dict_get(inStream->metadata, "TG_META", nullptr, 0);
-diff -Naur a/Telegram/ThirdParty/tgcalls/tgcalls/group/AudioStreamingPartPersistentDecoder.cpp b/Telegram/ThirdParty/tgcalls/tgcalls/group/AudioStreamingPartPersistentDecoder.cpp
---- a/Telegram/ThirdParty/tgcalls/tgcalls/group/AudioStreamingPartPersistentDecoder.cpp	2022-03-08 15:18:27.000000000 +0100
-+++ b/Telegram/ThirdParty/tgcalls/tgcalls/group/AudioStreamingPartPersistentDecoder.cpp	2022-03-13 23:15:05.429990359 +0100
-@@ -32,7 +32,7 @@
-     AudioStreamingPartPersistentDecoderState(AVCodecParameters const *codecParameters, AVRational timeBase) :
-     _codecParameters(codecParameters),
-     _timeBase(timeBase) {
--        AVCodec *codec = avcodec_find_decoder(codecParameters->codec_id);
-+        const AVCodec *codec = avcodec_find_decoder(codecParameters->codec_id);
-         if (codec) {
-             _codecContext = avcodec_alloc_context3(codec);
-             int ret = avcodec_parameters_to_context(_codecContext, codecParameters);
-diff -Naur a/Telegram/ThirdParty/tgcalls/tgcalls/group/VideoStreamingPart.cpp b/Telegram/ThirdParty/tgcalls/tgcalls/group/VideoStreamingPart.cpp
---- a/Telegram/ThirdParty/tgcalls/tgcalls/group/VideoStreamingPart.cpp	2022-03-08 15:18:27.000000000 +0100
-+++ b/Telegram/ThirdParty/tgcalls/tgcalls/group/VideoStreamingPart.cpp	2022-03-13 23:18:21.966261830 +0100
-@@ -280,6 +280,9 @@
- 
-         int ret = 0;
- 
-+#if LIBAVFORMAT_VERSION_MAJOR >= 59
-+        const
-+#endif
-         AVInputFormat *inputFormat = av_find_input_format(container.c_str());
-         if (!inputFormat) {
-             _didReadToEnd = true;
-@@ -323,7 +326,7 @@
-         }
- 
-         if (videoCodecParameters && videoStream) {
--            AVCodec *codec = avcodec_find_decoder(videoCodecParameters->codec_id);
-+            const AVCodec *codec = avcodec_find_decoder(videoCodecParameters->codec_id);
-             if (codec) {
-                 _codecContext = avcodec_alloc_context3(codec);
-                 ret = avcodec_parameters_to_context(_codecContext, videoCodecParameters);
