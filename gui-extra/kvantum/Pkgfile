@@ -1,0 +1,27 @@
+description='SVG-based Qt5 theme engine plus a config tool and extra themes'
+url='https://github.com/tsujan/Kvantum'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(git qtsvg qtx11extras kwindowsystem)
+run=(hicolor-icon-theme)
+set=()
+
+name=kvantum
+version=1.0.1
+
+source=()
+prepare() {
+git clone $url.git
+}
+build() {
+cd Kvantum/Kvantum
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      ..
+make
+
+make DESTDIR=$PKG install
+}
