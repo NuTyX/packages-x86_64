@@ -1,8 +1,8 @@
 description="An ICC compatible color management system with support for different colorimeter hardware"
 url="https://www.argyllcms.com/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors=""
+packager="Spiky <spiky@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(ftjam libpng libtiff xorg-libxinerama xorg-libxrandr xorg-libxscrnsaver xorg-libxxf86vm zstd)
 run=()
@@ -10,12 +10,12 @@ set=()
 
 name=argyllcms
 _name=Argyll
-version=2.3.0
+version=2.3.1
 
 source=(https://www.argyllcms.com/${_name}_V${version}_src.zip)
 
 build() {
-cd ${_name}_V2.3.0
+cd ${_name}_V${version}
     # Use hwdb builtin, instead of the obsolete usb-db in the udev rules.
     sed -i 's:^TEST=="/lib/udev/usb-db", IMPORT{program}="usb-db %p":IMPORT{builtin}="hwdb --subsystem=usb":' usb/55-Argyll.rules
 
