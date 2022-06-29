@@ -20,6 +20,8 @@ build() {
 
   cd tdesktop-$version-full
 
+  patch -Np1 -i ../consolidate.patch
+
   export CXXFLAGS+=" -Wp,-U_GLIBCXX_ASSERTIONS"
 
   cmake -B build -G Ninja \
