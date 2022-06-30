@@ -1,0 +1,31 @@
+description="Complete painting application"
+url="https://apps.kde.org/krita"
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(opencolorio libraw qtmultimedia quazip poppler-qt
+             eigen3 extra-cmake-modules kdelibs4support libksane
+             vc libkexiv2 openexr kitemmodels)
+
+run=(hicolor-icon-theme python-qt)
+name=krita
+version=5.0.8
+
+source=(https://download.kde.org/stable/$name/$version/krita-$version.tar.gz)
+
+build() {
+sed -e "/CMAKE_CXX_STANDARD/s/11/14/" -i $name-$version/CMakeLists.txt
+
+mkdir -p build
+cd       build
+
+cmake ../$name-$version \
+      -DBUILD_TESTING=OFF \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DBUILD_KRITA_QT_DESIGNER_PLUGINS=ON
+
+cmake --build .
+DESTDIR="$PKG" cmake --install .
+}
