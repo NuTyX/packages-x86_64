@@ -2,18 +2,17 @@ description="The Kbd package contains key-table files, console fonts, and keyboa
 url="ftp://devel.altlinux.org/legion/kbd/"
 
 maintainer="Risto Kankkunen's"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(autoconf check m4 perl)
 
 name=kbd
-version=2.4.0
-release=2
+version=2.5.1
 PKGMK_LOCALES=()
 
 source=(https://www.kernel.org/pub/linux/utils/kbd/kbd-$version.tar.xz \
-	http://www.linuxfromscratch.org/patches/downloads/$name/$name-$version-backspace-1.patch)
+	https://www.linuxfromscratch.org/patches/lfs/development/$name-$version-backspace-1.patch)
 
 build()
 {
