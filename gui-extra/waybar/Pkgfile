@@ -1,0 +1,25 @@
+description='Highly customizable Wayland bar for Sway and Wlroots based compositors.'
+url='https://github.com/Alexays/Waybar'
+
+packager="BlogofraisFR <Blogofrais@nutyx.org>"
+contributors=""
+
+makedepends=(meson wayland-protocols)
+run=(gtkmm)
+
+name=waybar
+version=0.9.13
+
+source=(https://github.com/Alexays/Waybar/archive/refs/tags/$version.tar.gz)
+
+prepare() {
+
+mv Waybar-$version $name-$version
+
+cd $name-$version
+
+sed -i '1i#define HAVE_WLR' include/factory.hpp
+sed -i '2i#define USE_EXPERIMENTAL' include/factory.hpp
+}
+
+build=meson
