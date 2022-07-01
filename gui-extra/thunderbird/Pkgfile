@@ -12,12 +12,12 @@ run=(startup-notification hunspell desktop-file-utils hicolor-icon-theme
      shared-mime-info)
 
 name=thunderbird
-version=91.10.0
+version=102.0
 
 locale_version=$version
 
 source=(https://archive.mozilla.org/pub/thunderbird/releases/$version/source/$name-$version.source.tar.xz
-	$name.desktop thunderbird-gcc12_fix-1.patch)
+	$name.desktop)
 
 pack_remove_locale() {
 
@@ -38,21 +38,11 @@ build() {
 cd $name-$version
 
 cat > mozconfig << "EOF"
-# If you have a multicore machine, the build may be faster if using parallel
-# jobs. The build system automatically adds -jN to the "make" flags, where N
-# is the number of CPU cores. The option below is therefore useless, unless
-# you want to use a smaller number of jobs:
-#mk_add_options MOZ_MAKE_FLAGS="-j1"
 
-# If you have installed dbus-glib, comment out this line:
-#ac_add_options --disable-dbus
+ac_add_options --without-wasm-sandboxed-libraries
 
 # If you have installed wireless-tools comment out this line:
 ac_add_options --disable-necko-wifi
-
-
-# Comment out following option if you have gconf installed
-#ac_add_options --disable-gconf
 
 # Comment out following options if you have not installed
 # recommended dependencies:
@@ -80,26 +70,28 @@ ac_add_options --disable-debug-symbols
 ac_add_options --disable-tests
 ac_add_options --disable-jack
 
+# by a few MB - comment this if you know your machine is not affected.
+ac_add_options --disable-elf-hack
 
 ac_add_options --enable-optimize=-O2
 ac_add_options --enable-strip
 ac_add_options --enable-install-strip
-
+ac_add_options --enable-linker=gold
 ac_add_options --enable-official-branding
 
 EOF
 
-patch -Np1 -i ../thunderbird-gcc12_fix-1.patch
+sed -i '/ROOT_CLIP_CHAIN/d' gfx/webrender_bindings/webrender_ffi.h
 
 export SHELL=/bin/sh
 export CC=gcc CXX=g++
-export MACH_USE_SYSTEM_PYTHON=1
-./mach create-mach-environment
+export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=system
 
 ./mach configure
 ./mach build
-./mach buildsymbols
-MACH_USE_SYSTEM_PYTHON=1 DESTDIR=$PKG ./mach install
+
+MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=system \
+DESTDIR=$PKG ./mach install
 
 mkdir -pv $PKG/usr/bin
 ln -sfv ../lib/$name/thunderbird $PKG/usr/bin
