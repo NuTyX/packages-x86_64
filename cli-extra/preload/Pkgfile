@@ -1,0 +1,41 @@
+description='Makes applications run faster by prefetching binaries and shared objects'
+url='http://sourceforge.net/projects/preload'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(automake m4 sed grep
+             glib bash help2man)
+
+name=preload
+version=0.6.4
+PKGMK_GROUPS=(doc man)
+
+source=(consolidate.patch
+        http://downloads.sourceforge.net/sourceforge/$name/$name-$version.tar.gz)
+
+build() {
+
+cd $name-$version
+
+patch -Np1 -i ../consolidate.patch
+
+autoreconf -i
+
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--mandir=/usr/share/man \
+--localstatedir=/var
+
+make -j 1
+make DESTDIR=$PKG install
+
+mv $PKG/etc/sysconfig/preload{,.example}
+
+# service launcher
+for i in 3 4 5
+do
+   mkdir -p $PKG/etc/rc.d/rc$i.d
+   ln -sv ../init.d/$name $PKG/etc/rc.d/rc$i.d/S75$name
+done
+}

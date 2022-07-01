@@ -1,0 +1,7 @@
+. lib/lsb/init-functions
+if [ ! -f etc/sysconfig/preload ]; then
+	cp etc/sysconfig/preload{.example,}
+      log_success_msg "${WARNING} /etc/sysconfig/preload created ${NORMAL}"
+      log_warning_msg "${WARNING} Double check /etc/sysconfig/preload and adapted to your needs ${NORMAL}"
+fi
+

@@ -1,0 +1,98 @@
+diff -Naur a/configure b/configure
+--- a/configure	2009-04-15 23:49:29.000000000 +0200
++++ b/configure	2022-07-01 14:51:56.210833543 +0200
+@@ -6285,7 +6285,7 @@
+ sysconfigdir='${sysconfdir}/sysconfig'
+ logrotatedir='${sysconfdir}/logrotate.d'
+ logdir='${localstatedir}/log'
+-subsysdir='${localstatedir}/lock/subsys'
++subsysdir='${localstatedir}/lock'
+ pkglocalstatedir='${localstatedir}/lib/'${PACKAGE_NAME}
+ 
+ 
+diff -Naur a/configure.ac b/configure.ac
+--- a/configure.ac	2009-04-15 23:47:52.000000000 +0200
++++ b/configure.ac	2022-07-01 15:04:44.990865669 +0200
+@@ -24,6 +24,11 @@
+ AC_PROG_CC
+ AC_PROG_INSTALL
+ 
++AC_CHECK_PROG([have_help2man],[help2man],[yes],[no],[/usr/bin])
++if test $have_help2man = no; then
++	AC_MSG_ERROR([Missing help2man.])
++fi
++
+ # Checks for header files.
+ AC_HEADER_STDC
+ AC_HEADER_TIME
+@@ -59,8 +64,8 @@
+ sysconfigdir='${sysconfdir}/sysconfig'
+ logrotatedir='${sysconfdir}/logrotate.d'
+ logdir='${localstatedir}/log'
+-subsysdir='${localstatedir}/lock/subsys'
+-pkglocalstatedir='${localstatedir}/lib/'${PACKAGE_NAME}
++subsysdir='${localstatedir}/lock'
++pkglocalstatedir='${localstatedir}/cache/'${PACKAGE_NAME}
+ AC_SUBST(pkgdocdir)
+ AC_SUBST(initddir)
+ AC_SUBST(sysconfigdir)
+diff -Naur a/preload.init.in b/preload.init.in
+--- a/preload.init.in	2008-10-23 03:08:20.000000000 +0200
++++ b/preload.init.in	2022-07-01 15:25:44.744251795 +0200
+@@ -22,7 +22,7 @@
+ 
+ 
+ # Source function library.
+-. /etc/rc.d/init.d/functions
++. /lib/lsb/init-functions
+ 
+ [ -x @sbindir@/@PACKAGE@ ] || exit 0
+ 
+@@ -54,21 +54,21 @@
+ start() {
+ 	# Check if it is already running
+ 	if [ ! -f @subsysdir@/@PACKAGE@ ]; then
+-	    echo -n $"Starting @PACKAGE@ daemon: "
+-	    daemon $RUNAS @sbindir@/@PACKAGE@ $PRELOAD_OPTS
++	    log_info_msg "Starting @PACKAGE@ daemon... "
++	    start_daemon $RUNAS @sbindir@/@PACKAGE@ $PRELOAD_OPTS
+ 	    RETVAL=$?
+ 	    [ $RETVAL -eq 0 ] && touch @subsysdir@/@PACKAGE@
+-	    echo
++	    evaluate_retval
+ 	fi
+ 	return $RETVAL
+ }
+ 
+ stop() {
+-	echo -n $"Stopping @PACKAGE@ daemon: "
++	log_info_msg "Stopping @PACKAGE@ daemon... "
+ 	killproc /usr/sbin/@PACKAGE@
+ 	RETVAL=$?
+ 	[ $RETVAL -eq 0 ] && rm -f @subsysdir@/@PACKAGE@
+-	echo
++	evaluate_retval
+         return $RETVAL
+ }
+ 
+@@ -102,7 +102,7 @@
+ 	fi
+ 	;;
+ status)
+-	status @PACKAGE@
++	statusproc @PACKAGE@
+ 	;;
+ *)
+ 	echo $"Usage: $0 {start|stop|status|restart|condrestart|reload}"
+diff -Naur a/src/confkeys.h b/src/confkeys.h
+--- a/src/confkeys.h	2008-10-23 03:08:21.000000000 +0200
++++ b/src/confkeys.h	2022-07-01 14:17:30.837413835 +0200
+@@ -3,7 +3,7 @@
+ confkey(model,	integer,	minsize,	2000000,	bytes)
+ confkey(model,	integer,	memtotal,	    -10,	signed_integer_percent)
+ confkey(model,	integer,	memfree,	     50,	signed_integer_percent)
+-confkey(model,	integer,	memcached,	      0,	signed_integer_percent)
++confkey(model,	integer,	memcached,	      30,	signed_integer_percent)
+ confkey(system,	boolean,	doscan,		   true,	-)
+ confkey(system,	boolean,	dopredict,	   true,	-)
+ confkey(system,	integer,	autosave,	   3600,	seconds)
