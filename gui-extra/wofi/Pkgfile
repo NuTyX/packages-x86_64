@@ -1,0 +1,17 @@
+description='Wofi is a launcher/menu program for wlroots based wayland compositors'
+url='https://hg.sr.ht/~scoopta/wofi'
+
+packager="BlogofraisFR <Blogofrais@nutyx.org>"
+contributors=""
+
+makedepends=(meson python gtk3)
+run=(gtk3)
+
+PKGMK_KEEP_SOURCES="no" 
+
+name=wofi
+version=v1.2.4
+
+source=(https://hg.sr.ht/~scoopta/$name/archive/$version.tar.gz)
+
+build=meson
