@@ -1,18 +1,20 @@
 description="A documentation system for C++, C, Java, IDL and PHP languages"
 url="http://www.doxygen.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
 makedepends=(flex bison python cmake xapian git)
 
 name=doxygen
-version=1.9.3
+version=1.9.4
 
 source=(http://doxygen.nl/files/$name-$version.src.tar.gz)
 
 build() {
 cd $name-$version
+
+sed -i '/mutex/a#include <utility>' src/cache.h
 
 mkdir build
 cd    build
