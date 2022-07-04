@@ -1,11 +1,14 @@
 description="A software for reading and writing Data Matrix 2D barcodes"
 url="https://libdmtx.sourceforge.net/"
-packager="tnut <tnut@nutyx.org>"
+packager="Spiky <spiky@nutyx.org>"
 
 name=libdmtx
-version=0.7.5
+version=0.7.7
 
-source=(https://github.com/dmtx/$name/archive/v$version/$name-$version.tar.gz)
+makedepends=(autoconf automake libtool)
+
+source=(https://github.com/dmtx/$name/archive/refs/tags/v${version}.tar.gz)
+
 prepare() {
 cd $name-$version
 ./autogen.sh
