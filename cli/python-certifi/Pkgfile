@@ -1,15 +1,18 @@
 description="Python package for providing Mozilla's CA Bundle"
 url="https://pypi.python.org/pypi/certifi"
 
-packager="spiky <spiky@nutyx.org>"
+packager="Spiky <spiky@nutyx.org>"
 
 run=(python)
 
 name=python-certifi
-version=2021.10.8
-release=2
-
+version=2022.06.15
+PKGMK_KEEP_SOURCES="no"
 _name=certifi
-source=(https://pypi.io/packages/source/c/certifi/certifi-$version.tar.gz)
+source=(https://github.com/certifi/python-certifi/archive/refs/tags/$version.tar.gz)
 
-build=python3
+build() {
+cd $name-$version
+python3 setup.py build
+python3 setup.py install --root=$PKG --optimize=1
+}
