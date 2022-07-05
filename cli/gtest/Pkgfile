@@ -1,34 +1,19 @@
 description="Google Test - C++ testing utility"
 url="https://github.com/google/googletest/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut,Spiky"
 
 makedepends=(python sed cmake)
 
 name=gtest
-version=1.11.0
+version=1.12.0
 
 PKGMK_KEEP_SOURCES="no"
-source=(https://github.com/google/googletest/archive/release-${version}.tar.gz
-        gtest-PR2491-Fix-gnu-install-dirs-pkg-config.patch
-        gtest-$version-libversion.patch
-        gtest-$version-add-missing-pkgconfig-requires.patch
-        gtest-version.patch)
+source=(https://github.com/google/googletest/archive/release-${version}.tar.gz)
 
 prepare() {
  cd googletest-release-${version}
- sed "s|__GOOGLETEST_VERSION__|${version}|g" -i ../gtest-version.patch
-  patch -Np1 -i ../gtest-version.patch
-
-        # From: https://github.com/google/googletest/pull/2491
-# patch -Np1 -i ../gtest-PR2491-Fix-gnu-install-dirs-pkg-config.patch
-
- # https://src.fedoraproject.org/rpms/gtest/tree/master
-# patch -Np1 -i ../gtest-$version-libversion.patch
-
- # https://github.com/google/googletest/pull/2756
-# patch -Np1 -i ../gtest-$version-add-missing-pkgconfig-requires.patch
 
  # fixup version as they are never correct
  sed -E "s|(GOOGLETEST_VERSION) [0-9\\.]+|\\1 ${version}|" -i CMakeLists.txt
@@ -57,7 +42,6 @@ build () {
 
   # Install some googletest files
   cd googletest
-  install -Dm 755 scripts/gtest-config.in -t "${PKG}/usr/bin"
   install -Dm 644 cmake/* -t "${PKG}/usr/src/googletest/cmake"
   install -Dm 644 src/* -t "${PKG}/usr/src/googletest/src"
   install -Dm 644 CMakeLists.txt -t "${PKG}/usr/src/googletest"
@@ -68,8 +52,6 @@ build () {
   install -Dm 644 cmake/* -t "${PKG}/usr/src/gmock/cmake"
   install -Dm 644 src/* -t "${PKG}/usr/src/gmock/src"
   install -Dm 644 CMakeLists.txt -t "${PKG}/usr/src/gmock"
-  install -Dm 644 scripts/generator/{*.py,LICENSE,README*} -t "${PKG}/usr/share/gmock-$version/generator"
-  install -Dm 644 scripts/generator/cpp/* -t "${PKG}/usr/share/gmock-$version/generator/cpp"
 
   sed -i 's|src/||' "${PKG}/usr/src/gmock/src/gmock-all.cc"
 
