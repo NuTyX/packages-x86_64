@@ -2,14 +2,13 @@ PKGMK_KEEP_SOURCES="no"
 
 name=brave-browser
 description="The web browser from Brave Browse faster by blocking ads and trackers."
-version=1.38.109
+version=1.41.93
 url="https://brave.com/"
 packager="Spiky <spiky@nutyx.org>"
 
 run=(make-ca ttf-liberation dejavu-ttf)
 
-source=(https://github.com/brave/brave-browser/releases/download/v$version/brave-browser_${version}_amd64.deb)
-
+source=(https://github.com/brave/brave-browser/releases/download/v${version}/${name}_${version}_amd64.deb)
 build() {
 	tar -xf data.tar.xz -C "$PKG/"
 	
