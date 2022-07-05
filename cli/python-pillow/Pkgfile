@@ -2,19 +2,21 @@ description="Python Imaging Library"
 url="https://pypi.python.org/pypi/Pillow"
 
 maintainer="https://github.com/python-pillow/Pillow/releases.atom"
-packager="spiky <spiky@nutyx.org>"
-contributors="hugo, Rémy, tnut"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Hugo,Rémy,Tnut,Spiky"
 
 makedepends=(lcms2 libtiff freetype openjpeg libwebp)
 run=(python)
 
 name=python-pillow
-version=9.1.0
+version=9.2.0
+_name=Pillow
 
-source=(https://files.pythonhosted.org/packages/4b/83/090146d7871d90a2643d469c319c1d014e41b315ab5cf0f8b4b6a764ef31/Pillow-9.1.0.tar.gz)
+source=(https://github.com/python-pillow/Pillow/archive/$version/${_name}-$version.tar.gz)
 
-build(){
-cd Pillow-$version
+
+build() {
+cd ${_name}-$version
 python3 setup.py build
 python3 setup.py install --root=$PKG --optimize=1
 }
