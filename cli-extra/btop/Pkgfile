@@ -1,0 +1,17 @@
+description='A monitor of system resources, bpytop ported to C++'
+url='https://github.com/aristocratos/btop'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+
+name=btop
+version=1.2.8
+
+source=($url/archive/v$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+make all
+make DESTDIR=$PKG PREFIX=/usr install
+}
