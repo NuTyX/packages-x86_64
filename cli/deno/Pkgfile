@@ -1,0 +1,19 @@
+description='A modern runtime for JavaScript and TypeScript'
+url='https://deno.land/'
+
+packager="BlogofraisFR <Blogofrais@nutyx.org>"
+contributors=""
+
+makedepends=(rustc)
+run=()
+
+name=deno
+version=1.23.3
+
+source=(https://github.com/denoland/$name/archive/refs/tags/v$version.tar.gz)
+
+build() {
+  cd $name-$version
+  cargo build --release --manifest-path Cargo.toml
+  install -Dm 755 target/release/deno -t "${PKG}"/usr/bin/
+}
