@@ -8,12 +8,12 @@ makedepends=(freetype ghostscript lcms libgsf giflib libxml2 libjpeg-turbo
               openexr libwmf libpng librsvg libwebp djvulibre)
 
 name=imagemagick
-version=7.1.0.41
+version=7.1.0.43
 
 PKGMK_KEEP_SOURCES="no"
 PKGMK_KEEP_LA_LIBS="yes"
 
-source=(https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${version%.*}-${version##*.}.tar.gz)
+source=(https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${version}.tar.gz)
 build () {
     cd ImageMagick-*
     ./configure --prefix=/usr \
