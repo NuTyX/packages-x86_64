@@ -1,15 +1,15 @@
 description="TrueType library for libsdl."
 url="http://www.libsdl.org/projects/SDL_ttf/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Fanch,Tnut"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fanch,Tnut,Spiky"
 
 makedepends=(freetype sdl)
 
 name=sdl-ttf
-version=2.0.18
+version=2.20.0
 
-source=(http://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-$version.tar.gz)
+source=(https://github.com/libsdl-org/SDL_ttf/releases/download/release-$version/SDL2_ttf-$version.tar.gz)
 
 build() {
 	cd SDL2_ttf-$version
