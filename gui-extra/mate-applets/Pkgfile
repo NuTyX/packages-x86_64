@@ -1,8 +1,8 @@
 description="Applets for MATE panel"
 url="https://mate-desktop.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Fanch,Greg,Jayce,Remy,Tnut"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fanch,Greg,Jayce,Remy,Tnut,Spiky"
 
 makedepends=(gtksourceview libgtop libnotify mate-panel mate-icon-theme
              upower wireless-tools upower libnl)
@@ -11,7 +11,7 @@ run=(python-gobject)
 set=(mate)
 
 name=mate-applets
-version=1.26.0
+version=1.26.1
 
 source=(https://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
@@ -21,6 +21,10 @@ build() {
   # somes locales makes segmentation fault
   rm -r mateweather/docs/sr
   sed -i "s@IGNORE_HELP_LINGUAS =@IGNORE_HELP_LINGUAS = sr@" mateweather/docs/Makefile.am
+  rm -r drivemount/help/tr
+  sed -i "s@IGNORE_HELP_LINGUAS =@IGNORE_HELP_LINGUAS = tr@" drivemount/help/Makefile.am
+  rm -r accessx-status/docs/hy
+  sed -i "s@IGNORE_HELP_LINGUAS =@IGNORE_HELP_LINGUAS = hy@" accessx-status/docs/Makefile.am
    ./configure \
           --prefix=/usr \
           --sysconfdir=/etc \
