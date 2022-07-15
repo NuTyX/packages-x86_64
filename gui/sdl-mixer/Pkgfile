@@ -1,15 +1,15 @@
 description="A sample multi-channel audio mixer library."
 url="http://www.libsdl.org/projects/SDL_mixer"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fanch,Tnut"
 
 makedepends=(libvorbis sdl libmikmod flac)
 
 name=sdl-mixer
-version=2.0.4
+version=2.6.1
 
-source=(http://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-$version.tar.gz)
+source=(https://github.com/libsdl-org/SDL_mixer/releases/download/release-$version/SDL2_mixer-$version.tar.gz)
 
 build() {
 	cd SDL2_mixer-$version
