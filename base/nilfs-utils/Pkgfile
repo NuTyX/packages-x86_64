@@ -1,0 +1,25 @@
+description='nilfs-utils'
+url='http://nilfs.sourceforge.net/'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(util-linux)
+run=()
+set=()
+
+name=nilfs-utils
+version=2.2.9
+
+source=(http://nilfs.sourceforge.net/download/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+
+sed -i -e 's#root_sbindir=/sbin#root_sbindir=/usr/bin#' configure
+./configure --prefix=/usr \
+            --sbindir=/usr/bin \
+            --with-libmount
+make
+make DESTDIR=$PKG sbindir=/usr/bin install LDCONFIG=/bin/true
+}
