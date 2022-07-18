@@ -12,7 +12,7 @@ makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              harfbuzz gtk-doc libnotify wayland woff2 libmanette)
              
 name=webkitgtk
-version=2.36.3
+version=2.37.1
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 prepare() {
@@ -44,18 +44,18 @@ cmake -G Ninja                     \
 ninja || ninja -j1
 DESTDIR=$PKG ninja install || DESTDIR=$PKG ninja -j1 install
 
-install -vdm755 $PKG/usr/share/gtk-doc/html/webkit{2,dom}gtk
-install -vm644  ../Documentation/webkit2gtk-4.0/html/* \
+install -vdm755 $PKG/usr/share/gtk-doc/html/webkit{2,web-extension}gtk
+install -vm644  ../Documentation/webkit2gtk-4.1/* \
 $PKG/usr/share/gtk-doc/html/webkit2gtk
-install -vm644  ../Documentation/webkitdomgtk-4.0/html/* \
+install -vm644  ../Documentation/webkit2gtk-web-extension-4.1/* \
 $PKG/usr/share/gtk-doc/html/webkit2gtk
 
 # avoid conflict with webkit2gtk-4
-mv $PKG/usr/share/gtk-doc/html/jsc-glib-4.0 \
-$PKG/usr/share/gtk-doc/html/jsc-glib
+mv $PKG/usr/share/gtk-doc/html/javascriptcoregtk-4.0 \
+$PKG/usr/share/gtk-doc/html/javascriptcoregtk
 
 # part of webkit2gtk-4
 rm -r $PKG/usr/share/gtk-doc/html/webkit2gtk-4.0
-rm -r $PKG/usr/share/gtk-doc/html/webkitdomgtk-4.0
+rm -r $PKG/usr/share/gtk-doc/html/webkit2gtk-web-extension-4.0
 
 }
