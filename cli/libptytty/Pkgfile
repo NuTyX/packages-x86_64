@@ -1,0 +1,24 @@
+description='An offspring of rxvt-unicode that handles pty/tty/utmp/wtmp/lastlog handling in mostly OS-independent ways'
+url='http://software.schmorp.de/pkg/libptytty.html'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake)
+
+name=libptytty
+version=2.0
+
+source=(http://dist.schmorp.de/$name/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DBUILD_SHARED_LIBS=ON \
+      ..
+make
+make DESTDIR=$PKG install
+}
