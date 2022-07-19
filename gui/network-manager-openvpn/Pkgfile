@@ -1,0 +1,24 @@
+description='OpenVPN support for NetworkManager.'
+url='https://www.gnome.org/projects/NetworkManager'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fanch"
+
+makedepends=(networkmanager openvpn libsecret gtk4 libnma)
+run=()
+set=()
+
+name=network-manager-openvpn
+version=1.8.19
+
+source=()
+
+build() {
+git clone https://github.com/NetworkManager/NetworkManager-openvpn.git network-manager-openvpn-$version
+cd $name-$version
+./autogen.sh
+./configure --prefix=/usr \
+--enable-maintainer-mode
+make
+make DESTDIR=$PKG install
+}
