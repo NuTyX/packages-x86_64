@@ -14,7 +14,7 @@ run=(cairo xorg-fontconfig freetype libgcrypt glib gtk3 harfbuzz icu
           gstreamer-plugins-base libmanette)
 
 name=webkit2gtk-4
-version=2.36.3
+version=2.37.1
 
 source=(https://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 
@@ -39,11 +39,11 @@ cmake -G Ninja                     \
 ninja || ninja -j1
 DESTDIR=$PKG ninja install || DESTDIR=$PKG ninja -j1 install
 
-install -vdm755 $PKG/usr/share/gtk-doc/html/webkit{2,dom}gtk-4.0
-install -vm644  ../Documentation/webkit2gtk-4.0/html/* \
-$PKG/usr/share/gtk-doc/html/webkit2gtk-4.0
-install -vm644  ../Documentation/webkitdomgtk-4.0/html/* \
-$PKG/usr/share/gtk-doc/html/webkit2gtk-4.0
+install -vdm755 $PKG/usr/share/gtk-doc/html/webkit{2,web-extension}gtk-4.1
+install -vm644  ../Documentation/webkit2gtk-4.1/* \
+$PKG/usr/share/gtk-doc/html/webkit2gtk-4.1
+install -vm644  ../Documentation/webkit2gtk-web-extension-4.1/* \
+$PKG/usr/share/gtk-doc/html/webkit2gtk-4.1
 
 # Binaries belongs to webkitgtk package
 # No conflics please !!! :)
