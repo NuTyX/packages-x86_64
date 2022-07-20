@@ -1,0 +1,19 @@
+description='D-Bus debugger for GNOME'
+url='https://wiki.gnome.org/Apps/DFeet'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(meson ninja gobject-introspection yelp-tools python-codestyle)
+run=(gtk3 python-gobject)
+
+name=d-feet
+version=0.3.16
+
+source=(meson.patch
+        https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+prepare() {
+  cd $name-$version
+  patch -Np1 -i ../meson.patch
+}
+build=meson

@@ -1,0 +1,19 @@
+diff -Naur a/data/meson.build b/data/meson.build
+--- a/data/meson.build	2021-05-07 10:46:33.364616200 +0200
++++ b/data/meson.build	2022-07-20 18:09:05.422642288 +0200
+@@ -13,7 +13,6 @@
+ )
+ 
+ i18n.merge_file(
+-  desktop,
+   type: 'desktop',
+   input: desktop_in,
+   output: '@BASENAME@',
+@@ -25,7 +24,6 @@
+ appdata = df_namespace + '.appdata.xml'
+ 
+ i18n.merge_file(
+-  appdata,
+   input: appdata + '.in',
+   output: '@BASENAME@',
+   po_dir: po_dir,
