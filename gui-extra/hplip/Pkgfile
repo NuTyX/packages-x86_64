@@ -1,8 +1,8 @@
 description="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet"
 url="http://hplipopensource.com"
 
-contributors="Greg,Spiky,Rems,Tnut"
-packager="BlogofraisFR <Blogofrais@nutyx.org>"
+contributors="Greg,Spiky,Rems,BlogofraisFR"
+packager="tnut <tnut@nutyx.org>"
 
 makedepends=(avahi python ghostscript usbutils
              sane cups cups-filters cups-pk-helper libusb net-snmp
@@ -13,13 +13,15 @@ run=(sip dbus-python python-qt python-pillow foomatic-db-engine
 
 
 name=hplip
-version=3.22.4
+version=3.22.2
 
 
-source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz
+        consolidate.patch)
 prepare() {
  cd $name-$version
 
+ patch -Np1 -i ../consolidate.patch
  export AUTOMAKE='automake --foreign'
  autoreconf -fi
 
