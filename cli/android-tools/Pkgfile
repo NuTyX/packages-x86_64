@@ -4,28 +4,27 @@ url='Android platform tools'
 packager="tnut <tnut@nutyx.org>"
 contributors=""
 
-makedepends=(make-ca libusb protobuf brotli zstd android-udev
-             pcre2 gtest cmake go ninja libunwind git)
 run=()
 set=(android)
 
 name=android-tools
-version=31.0.3
-release=3
+version=r33.0.1
 
-_version=${version}p1
-
-source=(https://github.com/nmeum/android-tools/releases/download/${_version}/android-tools-${_version}.tar.xz)
+source=(http://dl-ssl.google.com/android/repository/platform-tools_${version}-linux.zip)
 
 build() {
-export PATH=/usr/lib/go/bin:$PATH
-cd $name-${_version}
-cmake \
--DCMAKE_INSTALL_PREFIX=/usr   \
--DCMAKE_BUILD_TYPE=Release    \
--DCMAKE_CXX_FLAGS="$CXXFLAGS" \
--DCMAKE_C_FLAGS="$CFLAGS"     \
--G Ninja -S . -B build
 
-DESTDIR=$PKG ninja -C build install
+  mkdir -p "${PKG}"/opt/{$name,bin}
+
+  cp -a $SRC/platform-tools/* $PKG/opt/$name
+
+  chmod +Xr -R $PKG/opt/$name
+  mkdir -p $PKG/opt/$name/bin
+
+  for i in $(ls $PKG/opt/$name); do
+    ln -sf  /opt/$name/$i $PKG/opt/$name/bin/$i
+  done
+  for i in lib64 NOTICE.txt source.properties mke2fs.conf; do
+     rm $PKG/opt/$name/bin/$i
+  done
 }
