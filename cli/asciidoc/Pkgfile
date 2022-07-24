@@ -1,13 +1,14 @@
 description="Text document format for short documents, articles, books and UNIX man pages"
 url="http://www.methods.co.nz/asciidoc/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Alienus,Remy,Tnut,Spiky"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Alienus,Remy,Spiky"
 
 makedepends=(autoconf docbook-xsl libxslt python)
 
 name=asciidoc
 version=10.2.0
+release=2
 
 source=(https://github.com/${name}/${name}-py3/archive/$version/$name-$version.tar.gz)
 
@@ -23,10 +24,11 @@ build(){
 
     cd ${name}-py-$version
     ./configure --prefix=/usr \
+                --docdir /usr/share/doc/$name \
                 --sysconfdir=/etc
     make
     make DESTDIR=$PKG install
-    make docs DESTDIR=$PKG
+    make DESTDIR=$PKG docs
     install -Dm644 asciidoc/api.py \
     $PKG/${SITE}/asciidocapi.py  
 }
