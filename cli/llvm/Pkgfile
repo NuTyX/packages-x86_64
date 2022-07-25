@@ -2,13 +2,13 @@ description="Low Level Virtual Machine, collection of modular and \
 reusable compiler and toolchain."
 url="https://llvm.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Remy,Tnut"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Pierre,Remy,Tnut,Spiky"
 
-makedepends=(grep python cmake ninja)
+makedepends=(grep python cmake ninja libxml2)
 
 name=llvm
-version=13.0.1
+version=14.0.6
 
 PKGMK_GROUPS=(lib man devel doc)
 _url="https://github.com/llvm/llvm-project/releases/download/llvmorg-$version"
@@ -38,6 +38,7 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr  \
 	-DLLVM_ENABLE_RTTI=ON      \
 	-DLLVM_TARGETS_TO_BUILD="host;AMDGPU;BPF" \
 	-DLLVM_BUILD_TESTS=ON                     \
+        -DLLVM_INCLUDE_BENCHMARKS=OFF \
 	-Wno-dev -G Ninja ..
 
 ninja
