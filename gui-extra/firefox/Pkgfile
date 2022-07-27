@@ -16,7 +16,7 @@ run=(pulseaudio icu sqlite libvpx nss gtk3 zip unzip
 
 
 name=firefox
-version=102.0.1
+version=103.0
 
 locale_version=$version
 
@@ -40,7 +40,6 @@ rm usr/lib/firefox/browser/extensions/langpack-${1}@firefox.mozilla.org.xpi
 
 prepare() {
 cd $name-$version
-sed -i '/ROOT_CLIP_CHAIN/d' gfx/webrender_bindings/webrender_ffi.h
 }
 
 build() {
