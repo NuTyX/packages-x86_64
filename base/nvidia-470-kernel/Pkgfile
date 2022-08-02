@@ -18,6 +18,10 @@ build()
 
  cd NVIDIA-Linux-x86_64-$version/kernel
 
+ sed -i "s@nv_dma_resv_add_excl_fence@dma_resv_add_excl_fence@" nvidia-drm/nvidia-dma-resv-helper.h
+ sed -i "s@nv_dma_resv_add_excl_fence@dma_resv_add_excl_fence@" nvidia-drm/nvidia-drm-prime-fence.c
+
+
  modules_dir="$(basename /lib/modules/*)"
 
  SYSSRC="/usr/src/*" make modules
