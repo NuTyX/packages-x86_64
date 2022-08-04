@@ -4,19 +4,24 @@ url="https://github.com/tsujan/FeatherPad"
 packager="Spiky <spiky@nutyx.org>"
 contributors="Rems,Spiky"
 
-makedepends=(qtbase qtsvg qttools qttranslations qtx11extras)
+makedepends=(qtbase qtsvg qttools xorg-libx11 hunspell cmake qtx11extras qttranslations)
 run=(desktop-file-utils)
 
 name=featherpad
-version=1.3.0
+_name=FeatherPad
+version=1.3.1
 
 PKGM_KEEP_SOURCES="no"
-source=(https://github.com/tsujan/FeatherPad/archive/V$version.tar.gz)
+source=(https://github.com/tsujan/${_name}/archive/refs/tags/V${version}.tar.gz)
 
 build() {
 
-mkdir build && cd build
-qmake ../FeatherPad-$version
+cd ${_name}-$version
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      ..
 make
-make INSTALL_ROOT=$PKG install
+make DESTDIR=$PKG install
 }
