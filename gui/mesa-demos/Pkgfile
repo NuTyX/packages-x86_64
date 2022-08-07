@@ -1,0 +1,27 @@
+description='Mesa demos and tools incl. glxinfo + glxgears'
+url='https://mesa3d.org'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(glew glu meson ninja)
+
+name=mesa-demos
+version=8.5.0
+
+source=(https://archive.mesa3d.org/demos/$version/$name-$version.tar.bz2)
+
+build() {
+
+meson setup build $name-$version \
+--prefix=/usr  \
+--buildtype=plain \
+		--wrap-mode nodownload \
+		-D b_lto=true \
+		-D b_pie=true \
+		-D osmesa=disabled
+
+meson compile -C build
+install -d $PKG/usr/bin
+	install -m 0755 -t $PKG/usr/bin build/src/xdemos/glx{gears,info}
+}
