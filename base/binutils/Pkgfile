@@ -1,23 +1,22 @@
 description="Linker, assembler, and other tools for handling object files."
 url="http://sources.redhat.com/binutils/"
 maintainer="Tristan Gingold ( gingold at adacore dot com ),Alan Modra ( amodra at bigpond dot net dot au )"
-packager="spiky <spiky@nutyx.org>"
+packager="Spiky <spiky@nutyx.org>"
 
 name=binutils
-version=2.38
+version=2.39
 
 makedepends=(perl texinfo)
-source=(https://www.linuxfromscratch.org/patches/lfs/11.1-rc1/binutils-2.38-lto_fix-1.patch
-	http://ftp.gnu.org/gnu/binutils/binutils-$version.tar.xz)
+source=(http://ftp.gnu.org/gnu/binutils/binutils-$version.tar.xz)
+
 build()
 {
 cd binutils-$version
 
-patch -Np1 -i ../binutils-2.38-lto_fix-1.patch
 
-#sed -i '63d' etc/texi2pod.pl
-sed '6009s/$add_dir//' -i ltmain.sh
-find -name \*.1 -delete
+
+sed -e '/R_386_TLS_LE /i \   || (TYPE) == R_386_TLS_IE \\' \
+    -i ./bfd/elfxx-x86.h
 
 mkdir -v build
 cd build
@@ -29,7 +28,9 @@ cd build
 --enable-shared \
 --disable-werror \
 --enable-64-bit-bfd \
---with-system-zlib
+--with-system-zlib \
+--enable-gprofng=no
+
 
 make tooldir=/usr
 
