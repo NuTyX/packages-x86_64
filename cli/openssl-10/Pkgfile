@@ -6,16 +6,17 @@ packager="Spiky <spiky@nutyx.org>"
 makedepends=(perl)
 
 name=openssl-10
-version=1.0.2u
+version=1.0.2.u
+_version=1.0.2u
 release=3
 
-source=(https://ftp.openssl.org/source/old/1.0.2/openssl-$version.tar.gz)
+source=(https://ftp.openssl.org/source/old/1.0.2/openssl-${_version}.tar.gz)
 
 PKGMK_GROUPS=(devel man doc lib)
 
 build() {
 
-cd openssl-$version
+cd openssl-${_version}
 
 ./Configure --prefix=/usr \
 	--openssldir=/etc/ssl \
