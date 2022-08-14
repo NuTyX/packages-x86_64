@@ -1,18 +1,18 @@
 description="Client and server to keep the time synchronized between various computers over a network."
 url="http://www.ntp.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B, Minzords"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Pierre,Minzords,Tnut"
 
-makedepends=(libcap)
+makedepends=(libcap perl-io-socket-ssl perl-net-ssleay)
 run=(wget shadow)
 
 name=ntp
 version=4.2.8p15
-runyx_version=20200412
-release=2
+release=3
+runyx_version=20201011
 
-source=(http://downloads.nutyx.org/files/runyx-${runyx_version}.tar.xz
+source=(https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/$name-4.2/$name-$version.tar.gz)
 
 prepare() {
@@ -32,6 +32,9 @@ cd $name-$version
 sed -e 's/"(\\S+)"/"?([^\\s"]+)"?/' \
     -i scripts/update-leap/update-leap.in
 
+sed -e 's/#ifndef __sun/#if !defined(__sun) \&\& !defined(__GLIBC__)/' \
+    -i libntp/work_thread.c
+
 ./configure --prefix=/usr \
 --bindir=/usr/sbin \
 --sysconfdir=/etc \
@@ -41,7 +44,7 @@ sed -e 's/"(\\S+)"/"?([^\\s"]+)"?/' \
 --with-lineeditlibs=readline \
 --docdir=/usr/share/doc/$name-$version
 
-make
+make 
 make DESTDIR=$PKG install
 mkdir -p $PKG/var/lib/ntp
 install -v -o ntp -g ntp -d $PKG/var/lib/ntp
