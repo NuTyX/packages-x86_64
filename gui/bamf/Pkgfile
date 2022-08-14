@@ -1,15 +1,15 @@
 description="Application matching framework"
 url="https://launchpad.net/bamf"
 
-packager="spiky <spiky@nutyx.org>"
+packager="Spiky <spiky@nutyx.org>"
 
 makedepends=(gnome-common gobject-introspection vala python-lxml)
 run=(libgtop libwnck)
 
 name=bamf
-version=0.5.5
+version=0.5.6
 
-source=(https://launchpad.net/bamf/${version%.*}/$version/+download/$name-$version.tar.xz)
+source=(https://launchpad.net/bamf/0.5/$version/+download/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
