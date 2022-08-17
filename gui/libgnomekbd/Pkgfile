@@ -1,19 +1,18 @@
 description="Gnome keyboard library"
 url="http://www.gnome.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre, jayce, Remy"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Pierre,Jayce,Remy,Tnut"
 
 makedepends=(gtk3 intltool xorg-libxkbfile xorg-libxklavier gobject-introspection)
 
 name=libgnomekbd
-version=3.26.1
-release=3
+version=3.28.0
 
-source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=(https://gitlab.gnome.org/GNOME/libgnomekbd/-/archive/$version/$name-$version.tar.gz)
 
-package() {
+build=meson
 # Obsolet lib
 rm $PKG/usr/lib/libgnomekbd.la
 rm $PKG/usr/lib/libgnomekbdui.la
-}
+
