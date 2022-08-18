@@ -4,11 +4,11 @@ url="http://www.gnupg.org/related_software/gpgme/"
 packager="Spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut,Spiky"
 
-makedepends=(libassuan)
+makedepends=(libassuan libgpg-error gnupg swig qt5-base python)
 
 name=gpgme
 version=1.18.0
-release=2
+release=3
 
 source=(https://www.gnupg.org/ftp/gcrypt/$name/$name-$version.tar.bz2)
 build() {
