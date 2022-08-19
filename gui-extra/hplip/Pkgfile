@@ -1,19 +1,20 @@
 description="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet"
 url="http://hplipopensource.com"
 
-contributors="Greg,Spiky,Rems,BlogofraisFR"
-packager="tnut <tnut@nutyx.org>"
+contributors="Greg,Spiky,Rems,BlogofraisFR,Tnut"
+packager="Spiky <spiky@nutyx.org>"
 
 makedepends=(avahi python ghostscript usbutils
              sane cups cups-filters cups-pk-helper libusb net-snmp
              libjpeg-turbo rpcbind libtool autoconf grep)
 
-run=(sip dbus-python python-qt python-pillow foomatic-db-engine
+run=(sip6 dbus-python python-qt python-pillow foomatic-db-engine
      python-distro python-dbus python-gobject foomatic-db polkit)
 
 
 name=hplip
 version=3.22.2
+release=3
 
 
 source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz
