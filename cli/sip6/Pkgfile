@@ -1,0 +1,22 @@
+description='A tool that makes it easy to create Python bindings for C and C++ libraries'
+url='https://www.riverbankcomputing.com/software/sip/intro'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python-toml python-ply)
+run=()
+set=()
+
+name=sip6
+version=6.6.2
+
+source=(https://files.pythonhosted.org/packages/5b/cb/c27c925ae07bd03a2597fa1db17bfc2a4ac57da61aeb90f8ec98ffbb975b/sip-$version.tar.gz)
+
+build() {
+cd sip-$version
+python setup.py build
+python setup.py install --skip-build --root="$PKG" --optimize=1
+
+install -Dm644 LICENSE "$PKG/usr/share/licenses/$name/LICENSE"
+}
