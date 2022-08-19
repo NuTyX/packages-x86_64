@@ -1,0 +1,18 @@
+description='The PEP 517 compliant PyQt build system'
+url='https://pypi.org/project/PyQt-builder/'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python)
+
+name=pyqt-builder
+version=1.13.0
+
+source=(https://pypi.io/packages/source/P/PyQt-builder/PyQt-builder-$version.tar.gz)
+
+build() {
+cd PyQt-builder-$version
+python setup.py build
+python setup.py install --root=$PKG
+}
