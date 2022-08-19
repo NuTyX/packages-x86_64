@@ -1,0 +1,24 @@
+description='Easily download, build, install, upgrade, and uninstall Python packages'
+url='https://pypi.python.org/pypi/setuptools'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python python3-setuptools)
+
+name=python3-setuptools
+version=65.1.0
+PKGMK_KEEP_SOURCES='no'
+
+source=(https://github.com/pypa/setuptools/archive/refs/tags/v${version}.tar.gz)
+
+build() {
+cd setuptools-$version
+
+	export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
+
+	/usr/bin/python setup.py build
+
+	/usr/bin/python setup.py install \
+		--prefix=/usr --root=$PKG --optimize=1
+}
