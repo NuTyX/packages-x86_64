@@ -7,24 +7,21 @@ maintainer="Jakub Jelinek (jakub at redhat dot com),Manuel López-Ibáñez (manu
 
 makedepends=(gmp mpfr mpc tar flex)
 name=gcc
-version=12.1.1
+version=12.2.0
 
 PKGMK_KEEP_LA_LIBS="yes"
 PKGMK_IGNORE_UNPACK="yes"
 PKGMK_LOCALES=()
-#source=(http://ftp.gnu.org/gnu/gcc/gcc-$version/gcc-$version.tar.xz)
-source=(https://gcc.gnu.org/pub/gcc/snapshots/LATEST-12/gcc-12-20220806.tar.xz)
+source=(http://ftp.gnu.org/gnu/gcc/gcc-$version/gcc-$version.tar.xz)
 
 prepare() {
-#tar -xf $name-$version.tar.xz
-tar -xf gcc-12-20220806.tar.xz
-#mv gcc-12-20220860 $name-$version
+tar -xf $name-$version.tar.xz
 }
 
 build()
 {
 
-cd gcc-12-20220806
+cd gcc-$version
 
 sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
 case $(uname -m) in
