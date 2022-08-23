@@ -1,8 +1,8 @@
 description="The BIND package includes the client side programs nslookup, dig and host."
 url="http://www.isc.org/downloads/bind/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Spiky,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(libuv kerberos libxml2 openssl libcap libnghttp2)
 run=(python-ply)
@@ -10,6 +10,7 @@ run=(python-ply)
 
 name=bind
 version=9.18.6
+release=2
 
 runyx_version=20201011
 
@@ -17,17 +18,16 @@ source=(https://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.x
 	https://downloads.isc.org/isc/bind9/$version/$name-$version.tar.xz)
 
 build(){
-    cd $name-$version
-    ./configure --prefix=/usr           \
+  cd $name-$version
+  ./configure --prefix=/usr           \
                 --sysconfdir=/etc/bind  \
                 --disable-static        \
                 --mandir=/usr/share/man \
                 --localstatedir=/var    \
-                --without-python        \
-                --enable-threads        \
                 --with-openssl
 
-	make DESTDIR=$PKG install
+  make
+  make DESTDIR=$PKG install
 
 # Service
 cd $SRC/runyx-${runyx_version}
