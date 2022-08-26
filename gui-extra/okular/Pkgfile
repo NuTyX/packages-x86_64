@@ -7,13 +7,13 @@ contributors="Pierre,Fabienwang,Spiky,Tnut"
 makedepends=(qtspeech extra-cmake-modules khtml kirigami2 threadweaver kactivities
              kdelibs4support kpty libkscreen freetype poppler-qt libspectre
              djvulibre qca-qt libkexiv2 chmlib  zlib ebook-tools kdoctools
-             phonon-qt)
+             phonon-qt purpose)
 run=(kdegraphics-mobipocket)
 
 set=(kde5)
 
 name=okular
-version=22.04.3
+version=22.08.0
 release=2
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
@@ -22,11 +22,15 @@ build() {
   cd $name-$version
   mkdir build
   cd build
+
+SKIP_OPTIONAL='LibZip;EPub;Discount'
+
   cmake -DCMAKE_BUILD_TYPE=Release   \
         -DCMAKE_INSTALL_PREFIX=/usr  \
         -DSYSCONF_INSTALL_DIR=/etc   \
         -DPLUGIN_INSTALL_DIR=/usr/lib/qt/plugins \
         -DKDE_INSTALL_LIBDIR=lib         \
+        -DFORCE_NOT_REQUIRED_DEPENDENCIES="$SKIP_OPTIONAL" \
         -Wno-dev ..
   make
   make DESTDIR=$PKG install
