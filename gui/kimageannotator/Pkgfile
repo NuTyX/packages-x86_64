@@ -1,0 +1,25 @@
+description='Tool for annotating images'
+url='https://github.com/ksnip/kImageAnnotator'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(qttools qtsvg cmake kcolorpicker)
+
+name=kimageannotator
+version=0.6.0
+_name=kImageAnnotator
+
+source=(https://github.com/ksnip/${_name}/archive/refs/tags/v${version}/${_name}-$version.tar.gz)
+
+build() {
+cd ${_name}-$version
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      ..
+make
+make DESTDIR=$PKG install
+}
