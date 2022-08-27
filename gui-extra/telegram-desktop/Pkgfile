@@ -4,14 +4,18 @@ url="https://telegram.org/"
 packager="Spiky <spiky@nutyx.org>"
 contributors="Fanch,Fabienwang,Spiki,Tnut,Spiky"
 
-makedepends=(cmake ninja python qt6-svg qt6-wayland qt6-imageformats qt6-5compat
-             ffmpeg glibmm kwayland rnnoise tg_owt jemalloc abseil-cpp
-             extra-cmake-modules gtk3 webkitgtk libdbusmenu-qt qt6-5compat)
-run=(desktop-file-utils ttf-opensans qt6-imageformats)
+makedepends=(cmake ninja python
+             ffmpeg glibmm kwayland rnnoise tg_owt jemalloc abseil-cpp qtsvg
+             extra-cmake-modules gtk3 webkitgtk libdbusmenu-qt)
+
+run=(desktop-file-utils ttf-opensans qt6-imageformats qt6-5compat
+     qt6-svg qt6-wayland)
+
 alias=(telegram)
 
 name=telegram-desktop
 version=4.1.1
+release=2
 
 source=(consolidate.patch
         https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tdesktop-$version-full.tar.gz)
