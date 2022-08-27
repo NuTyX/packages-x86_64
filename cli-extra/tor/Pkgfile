@@ -54,5 +54,5 @@ build() {
 	touch $PKG/var/log/tor/notices.log
 	find $PKG/var/log/tor/ -type f -exec chown root:root {} \; -execdir chmod 0640 {} \;
 
-	install -m 0750 -D $SRC/tor.rc $PKG/etc/rc.d/tor
+	install -m 0750 -D $SRC/tor.rc $PKG/etc/rc.d/init.d/tor
 }
