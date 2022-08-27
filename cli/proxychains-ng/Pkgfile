@@ -1,0 +1,25 @@
+description="Allows to redirect TCP traffic of existing dynamically linked programs through one or more SOCKS/HTTP proxies"
+url="https://github.com/rofl0r/proxychains-ng"
+
+packager="Spiky <spiky@nutyx.org>"
+contributors="DocWOPR"
+
+makedepends=()
+run=(glibc)
+
+name=proxychains-ng
+version=4.16
+
+source=("${url}/archive/v${version}/${name}-${version}.tar.gz")
+
+build() {
+  cd ${name}-${version}
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make
+}
+
+package() {
+  cd ${name}-${version}
+  make DESTDIR="${PKG}/" install install-config
+  ln -s proxychains4 "${PKG}/usr/bin/proxychains"
+}
