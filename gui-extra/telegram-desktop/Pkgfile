@@ -4,9 +4,8 @@ url="https://telegram.org/"
 packager="Spiky <spiky@nutyx.org>"
 contributors="Fanch,Fabienwang,Spiki,Tnut,Spiky"
 
-makedepends=(cmake ninja python
-             ffmpeg glibmm kwayland rnnoise tg_owt jemalloc abseil-cpp qtsvg
-             extra-cmake-modules gtk3 webkitgtk libdbusmenu-qt)
+makedepends=(cmake ninja python ffmpeg glibmm kwayland rnnoise tg_owt
+             jemalloc abseil-cpp extra-cmake-modules gtk3 webkitgtk libdbusmenu-qt)
 
 run=(desktop-file-utils ttf-opensans qt6-imageformats qt6-5compat
      qt6-svg qt6-wayland)
@@ -22,6 +21,8 @@ source=(consolidate.patch
 
 build() {
 
+  export QT_DIR=/usr/lib/cmake/Qt6
+
   cd tdesktop-$version-full
 
   patch -Np1 -i ../consolidate.patch
@@ -29,6 +30,7 @@ build() {
   export CXXFLAGS+=" -Wp,-U_GLIBCXX_ASSERTIONS"
 
   cmake -B build -G Ninja \
+	-DQT_DIR="/usr/lib/cmake/Qt6" \
 	-DTDESKTOP_API_ID=611335 \
 	-DTDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c \
 	-DCMAKE_INSTALL_PREFIX="/usr" \
