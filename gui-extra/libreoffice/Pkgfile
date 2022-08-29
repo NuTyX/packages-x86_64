@@ -2,8 +2,8 @@ description="Office suite. It is largely compatible with Microsoft Office \
 (fork from OpenOffice.org)."
 url="http://www.libreoffice.org"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Pierre,Greg,Fabienwang,Spiky,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Greg,Fabienwang,Spiky"
 
 makedepends=(tar python perl-archive-zip unzip zip icu gtk3 cups poppler-glib
              xorg-fontconfig libxslt kerberos xorgproto dbus-glib mesa
@@ -15,8 +15,7 @@ makedepends=(tar python perl-archive-zip unzip zip icu gtk3 cups poppler-glib
 run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache)
 
 name=libreoffice
-version=7.3.5.2
-release=2
+version=7.4.0.3
 
 categories=(Office Graphics Education)
 
@@ -38,10 +37,7 @@ prepare() {
 
   cd $name-$version
 
-  sed -i 's/yyn/yyrule/' connectivity/source/parse/sqlbison.y
   patch -Np1 -i ../Remove-check-if-root-due-to-issue-with-fakeroot.patch
-#  patch -Np1 -i ../libreoffice-7.3.3.2-poppler_2204_fix-1.patch
-
 
   install -dm755 external/tarballs/
   ln -sv ../../../$name-dictionaries-$version.tar.xz  external/tarballs/
@@ -59,18 +55,11 @@ prepare() {
 
   sed -e "/distro-install-file-lists/d" -i Makefile.in
 
-  sed -i 29a\
-'\\t\t&&sed -i "s/TRUE/true/g" src/lib/libcdr_utils.cpp \\' \
-  external/libcdr/ExternalProject_libcdr.mk
-
-  sed -i 30a\
-'\\t\t&&sed -i "s/TRUE/true/g" src/lib/EBOOKCharsetConverter.cpp \\' \
-  external/libebook/ExternalProject_libebook.mk
-
-  sed -i 's/TRUE/true/' i18npool/source/calendar/calendar_gregorian.cxx
 }
 build() {
    cd $name-$version
+
+   export ac_cv_lib_gpgmepp_progress_callback=yes
 
    ./autogen.sh --prefix=/usr \
 	--sysconfdir=/etc \
@@ -92,7 +81,6 @@ build() {
 	--without-java              \
 	--enable-release-build=yes  \
 	--enable-python=system      \
-	--with-system-apr           \
 	--with-system-boost         \
 	--with-system-clucene       \
 	--with-system-cppunit       \
@@ -109,7 +97,6 @@ build() {
 	--with-system-libpng        \
 	--with-system-libxml        \
 	--with-system-mariadb       \
-	--with-system-neon          \
 	--with-system-nss           \
 	--with-system-odbc          \
 	--with-system-openldap      \
@@ -117,12 +104,11 @@ build() {
 	--with-system-poppler       \
 	--with-system-postgresql    \
 	--with-system-redland       \
-	--with-system-serf          \
 	--with-system-xmlsec        \
 	--with-system-zlib          \
 	--with-parallelism=$(getconf _NPROCESSORS_ONLN)
 
-	make build-nocheck
+	make build
 	make DESTDIR=$PKG distro-pack-install
         
 	# Nettoyage
