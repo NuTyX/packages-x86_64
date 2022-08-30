@@ -14,4 +14,8 @@ source=(https://gitlab.gnome.org/GNOME/libgnomekbd/-/archive/$version/$name-$ver
 
 build=meson
 
+package() {
+ln -sv libgnomekbdui.so.3.28.0 $PKG/usr/lib/libgnomekbdui.so.8
+ln -sv libgnomekbd.so.3.28.0 $PKG/usr/lib/libgnomekbd.so.8
 
+}
