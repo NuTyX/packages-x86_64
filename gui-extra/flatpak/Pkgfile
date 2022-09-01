@@ -1,15 +1,15 @@
 description='Next generation technology for building and distributing desktop applications'
 url='https://flatpak.org/'
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Fabienwang,Tnut"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Fabienwang,Tnut,Spiky"
 
 makedepends=(glib libsoup gpgme polkit fuse2 libostree json-glib
-             appstream-glib libseccomp python-parsing)
+             appstream libseccomp python-parsing)
 run=(bubblewrap gnupg)
 
 name=flatpak
-version=1.12.7
+version=1.14.0
 source=(https://dl.flathub.org/repo/flathub.flatpakrepo
         https://github.com/flatpak/flatpak/releases/download/$version/flatpak-$version.tar.xz)
 
