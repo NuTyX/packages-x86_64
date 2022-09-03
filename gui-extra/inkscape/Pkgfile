@@ -9,8 +9,7 @@ version=1.2.1
 release=3
 
 source=(https://inkscape.org/gallery/item/34673/$name-$version.tar.xz
-        poppler-22.03.0.patch
-        poppler_22_04_fixes-1.patch)
+        poppler-22.09.0.patch)
 
 makedepends=(cmake boost git gtkmm python lcms2 gsl libxslt gc
              dbus-glib lcms2 libjpeg-turbo poppler-glib gspell
@@ -21,8 +20,8 @@ makedepends=(cmake boost git gtkmm python lcms2 gsl libxslt gc
 prepare() {
 	mv $name-$version* $name
 	cd $name
-#	patch -Np1 -i ../poppler-22.03.0.patch
-#        patch -Np1 -i ../poppler_22_04_fixes-1.patch
+	patch -Np1 -i ../poppler-22.09.0.patch
+
 }
 
 build() {
