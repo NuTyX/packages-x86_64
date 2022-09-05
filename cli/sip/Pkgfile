@@ -1,21 +1,22 @@
-description="A tool that makes it easy to create Python bindings for C and C++ libraries"
-url="http://www.riverbankcomputing.co.uk/software/sip/intro"
+description='A tool that makes it easy to create Python bindings for C and C++ libraries'
+url='https://www.riverbankcomputing.com/software/sip/intro'
 
-packager="spiky <spiky@nutyx.org>"
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
 
-run=(python)
+makedepends=(python-toml python-ply)
+run=()
+set=()
 
 name=sip
-version=4.19.25
-release=3
+version=6.6.2
 
-source=(https://www.riverbankcomputing.com/static/Downloads/sip/$version/sip-$version.tar.gz)
+source=(https://files.pythonhosted.org/packages/5b/cb/c27c925ae07bd03a2597fa1db17bfc2a4ac57da61aeb90f8ec98ffbb975b/sip-$version.tar.gz)
 
 build() {
-	cd sip-$version
-	mkdir build
-	cd build
-        python3 ../configure.py CFLAGS="$CFLAGS" LFLAGS="$LDFLAGS" --sip-module PyQt5.sip
-	make
-        make DESTDIR=$PKG install
+cd sip-$version
+python setup.py build
+python setup.py install --skip-build --root="$PKG" --optimize=1
+
+install -Dm644 LICENSE "$PKG/usr/share/licenses/$name/LICENSE"
 }

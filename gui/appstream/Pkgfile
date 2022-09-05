@@ -1,0 +1,32 @@
+description='Provides a standard for creating app stores across distributions'
+url='https://distributions.freedesktop.org/wiki/AppStream'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(meson xmlto gobject-introspection gtk-doc qttools itstool vala gperf
+             curl librsvg yaml libsoup)
+
+name=appstream
+version=0.15.5
+
+source=(https://www.freedesktop.org/software/appstream/releases/AppStream-$version.tar.xz)
+
+prepare() {
+mv AppStream-$version $name-$version
+}
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+
+meson --prefix=/usr \
+      -Dstemming=false \
+      -Dqt=true  \
+      -Dvapi=true \
+      -Dcompose=true \
+      ..
+ninja
+DESTDIR=$PKG ninja install
+}

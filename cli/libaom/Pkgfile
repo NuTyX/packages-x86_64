@@ -1,0 +1,25 @@
+description='Alliance for Open Media video codec'
+url='https://aomedia.org/'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake ninja doxygen yasm)
+
+name=libaom
+version=3.4.0
+
+source=(https://storage.googleapis.com/aom-releases/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+   mkdir libaom-build
+   cd    libaom-build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DBUILD_SHARED_LIBS=1 \
+      -DENABLE_TESTS=0 \
+      ..
+
+make DESTDIR=$PKG install
+}
