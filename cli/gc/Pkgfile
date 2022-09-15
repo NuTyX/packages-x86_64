@@ -1,22 +1,19 @@
 description="A garbage collector for C and C++"
 url="http://www.hpl.hp.com/personal/Hans_Boehm/gc/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Spiky"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Pierre,Spiky,Tnut"
 
 makedepends=(libtool sed grep m4
              libatomic-ops autoconf automake)
 
 name=gc
-version=8.2.0
-release=2
+version=8.2.2
 
-source=(389.patch
-        http://www.hboehm.info/gc/gc_source/gc-$version.tar.gz)
+source=(http://www.hboehm.info/gc/gc_source/gc-$version.tar.gz)
 
 prepare() {
 cd $name-*
-patch -Np1 -i ../389.patch
 ./autogen.sh
 }
 
