@@ -1,17 +1,16 @@
 description="Simple NUMA policy support"
 url="http://oss.sgi.com/projects/libnuma/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Yaolinux Team, Spiky"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Yaolinux,Team,Spiky,Tnut"
 
 makedepends=(autoconf libtool automake perl)
 
 name=numactl
-version=2.0.14
-release=2
+version=2.0.15
 
-source=(https://github.com/numactl/numactl/releases/download/v${version}/${name}-${version}.tar.gz
-)
+source=(https://github.com/numactl/numactl/archive/refs/tags/v${version}.tar.gz)
+
 build() {
 cd $name-$version
 
