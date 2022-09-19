@@ -1,19 +1,20 @@
 description='Worker is a two-pane file manager for the X Window System on UN*X'
 url='http://www.boomerangsworld.de/cms/worker/index.html'
 
-packager="tnut <tnut@nutyx.org>"
-contributors=""
+packager="Spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
-makedepends=(file xorg-libx11 xorg-libxinerama udisks2)
+makedepends=(file xorg-libx11 xorg-libxinerama udisks2 avfs xorg-libxft)
 
 name=worker
-version=4.10.1
+version=4.11.0
 
 source=(http://www.boomerangsworld.de/cms/worker/downloads/$name-$version.tar.bz2)
 
 build() {
 cd $name-$version
-./configure --prefix=/usr
+./configure --prefix=/usr \
+            --enable-xft
 make
 make DESTDIR=$PKG install
 }
