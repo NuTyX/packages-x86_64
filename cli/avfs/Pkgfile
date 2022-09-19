@@ -1,0 +1,22 @@
+description='Virtual filesystem that allows browsing compressed files'
+url='http://avf.sourceforge.net/'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(fuse2 perl zlib xz zstd)
+
+name=avfs
+version=1.1.4
+
+source=(https://downloads.sourceforge.net/sourceforge/avf/$name-$version.tar.bz2)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+            --enable-library \
+            --enable-fuse \
+            --disable-static
+make
+make DESTDIR=$PKG install
+}
