@@ -7,22 +7,22 @@ contributors="Pierre,Tnut,Spiky"
 makedepends=(libogg)
 
 name=flac
-version=1.4.0
+version=1.3.4
 
 source=(http://downloads.xiph.org/releases/$name/$name-$version.tar.xz)
 
-unpack_source() {
-  mkdir $SRC/tarballs
-  for file in ${source[@]}; do
-    case ${file##*/} in
-      $name-$version.tar.xz)
-        echo "Unpacking $(get_filename $file)"
-        bsdtar -p -o -C $SRC -xf $(get_filename $file) ;;
-      *)
-        cp $(get_filename $file) $SRC ;;
-    esac
-  done
-}
+#unpack_source() {
+#  mkdir $SRC/tarballs
+#  for file in ${source[@]}; do
+#    case ${file##*/} in
+#      $name-$version.tar.xz)
+#        echo "Unpacking $(get_filename $file)"
+#        bsdtar -p -o -C $SRC -xf $(get_filename $file) ;;
+#      *)
+#        cp $(get_filename $file) $SRC ;;
+#    esac
+#  done
+#}
 
 build() {
 cd $name-$version
