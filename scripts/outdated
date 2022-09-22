@@ -95,11 +95,12 @@ getarchname() {
   case $PKGNAME in
     gnulib|gstreamer-0|gstreamer-plugins-base-0|liblinear|ovmf|\
     openjdk|libatomic-ops|eigen2|make-ca|qt2|xfce4-appmenu-plugin|\
-    grub-efi|linux-mainline|cards|*cards|eudev|runyx|lcms|\
-    sysvinit|sysklogd|elogind|nutyx|kernel|kernel*|\
-    vboxhost*|nvidia*|virtualbox-guest|font-adobe-utopia-type1|\
-    font-arabic-misc|font-bh-type1|font-bitstream-speedo|\
-    font-ibm-type1|font-misc-ethiopic|font-xfree86-type1)
+    grub-efi|linux-mainline|cards|*cards|eudev|runyx|lcms|noip2|\
+    sysvinit|sysklogd|elogind|nutyx|kernel|kernel*|broadcom-wl-*|\
+    vboxhost*|nvidia*|virtualbox-guest|font-adobe-*|blocaled|qtkeychain|\
+    font-arabic-misc|font-bh-*|font-bitstream-*|upgrade-nutyx|\
+    font-ibm-type1|font-misc-ethiopic|font-xfree86-type1|\
+    rox-filer|sshaskpass|xquisite|openbox-jp-theme)
      ARCHNAME="";;
 
     gtk-update-icon-cache)
@@ -272,7 +273,12 @@ getarchname() {
     sdl1-*)
      ARCHNAME=${PKGNAME/sdl1-/sdl_};;
 
-    qt*)
+    qtbase|qtcharts|qtconnectivity|qtdatavis3d|qtdeclarative|qtgamepad|\
+    qtgraphicaleffects|qtimageformats|qtlocation|qtmultimedia|\
+    qtnetworkauth|qtquickcontrols|qtquickcontrols2|qtremoteobjects|qtscript|\
+    qtscxml|qtsensors|qtserialbus|qtserialport|qtspeech|qtsvg|qttools|\
+    qttranslations|qtwayland|qtwebchannel|qtwebkit|qtwebsockets|qtx11extras|\
+    qtxmlpatterns|qt3d|qtdoc|qtvirtualkeyboard)
      ARCHNAME=${PKGNAME/qt/qt5-};;
 
     liba52)
@@ -319,6 +325,9 @@ getarchname() {
 
     lua54-lgi)
      ARCHNAME="lgi";;
+
+	gvim)
+     ARCHNAME="vim";;
     
     skypeforlinux)
      ARCHNAME="skypeforlinux-stable-bin";;
@@ -469,6 +478,8 @@ do
     NOTEXIST="no"
 
     getarchname
+
+    [ "$ARCHNAME" == "" ] && continue
 
     PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/extra-x86_64/PKGBUILD"
     if  [ ! -f $PKGBUILD ] ; then
