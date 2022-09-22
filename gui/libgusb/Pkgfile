@@ -4,14 +4,24 @@ url="https://gitorious.org/gusb/"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre B, tnut"
 
-makedepends=(ninja meson libusb gperf glib gobject-introspection libgudev vala)
+makedepends=(ninja meson libusb gperf glib json-glib gobject-introspection libgudev vala)
 
 name=libgusb
 version=0.3.10
 
 source=(http://people.freedesktop.org/~hughsient/releases/$name-$version.tar.xz)
 
-build=meson
+build() {
+cd $name-$version
+
+mkdir build &&
+cd    build &&
+
+meson --prefix=/usr --buildtype=release -Ddocs=false \
+      ..
+ninja
+DESTDIR=$PKG ninja install
+}
 
 uptodate() {
 local url ext
