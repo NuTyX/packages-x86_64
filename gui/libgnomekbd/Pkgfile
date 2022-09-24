@@ -1,13 +1,13 @@
 description="Gnome keyboard library"
 url="http://www.gnome.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Jayce,Remy,Spiky"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Pierre,Jayce,Remy,Spiky,Tnut"
 
 makedepends=(gtk3 intltool xorg-libxkbfile xorg-libxklavier gobject-introspection)
 
 name=libgnomekbd
-version=3.28.0
+version=3.28.1
 release=2
 
 source=(https://gitlab.gnome.org/GNOME/libgnomekbd/-/archive/$version/$name-$version.tar.gz)
@@ -15,7 +15,7 @@ source=(https://gitlab.gnome.org/GNOME/libgnomekbd/-/archive/$version/$name-$ver
 build=meson
 
 package() {
-ln -sv libgnomekbdui.so.3.28.0 $PKG/usr/lib/libgnomekbdui.so.8
-ln -sv libgnomekbd.so.3.28.0 $PKG/usr/lib/libgnomekbd.so.8
+#ln -sv libgnomekbdui.so.3.28.1 $PKG/usr/lib/libgnomekbdui.so.8
+#ln -sv libgnomekbd.so.3.28.1 $PKG/usr/lib/libgnomekbd.so.8
 
 }
