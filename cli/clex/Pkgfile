@@ -1,11 +1,20 @@
 description="clex (light file manager)"
 url="http://www.clex.sk/"
 
-packager="spiky <spiky@nutyx.org>"
+packager="Spiky <spiky@nutyx.org>"
 
 makedepends=(ncurses)
 
 name=clex
-version=4.6.patch10
+version=4.7
 
-source=(http://www.clex.sk/download/$name-${version}.tar.gz)
+source=(https://github.com/xitop/clex/releases/download/v${version}/$name-$version.tar.gz)
+
+build() {
+
+cd $name-$version
+
+    ./configure --prefix=/usr
+  make
+  make DESTDIR=$PKG install
+}
