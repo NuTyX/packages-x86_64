@@ -8,6 +8,7 @@ makedepends=(perl-alien-build perl-path-tiny perl-uri perl-test2-suite)
 
 name=perl-alien-build-plugin-download-gitlab
 version=0.01
+release=2
 
 source=(https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/Alien-Build-Plugin-Download-GitLab-$version.tar.gz)
 
@@ -15,14 +16,6 @@ build() {
 cd Alien-Build-Plugin-Download-GitLab-$version
   perl Makefile.PL INSTALLDIRS=vendor
   make
-}
-
-check() {
-  cd Alien-Build-Plugin-Download-GitLab-$version
   make test
-}
-
-package() {
-  cd Alien-Build-Plugin-Download-GitLab-$version
   make DESTDIR=$PKG install
 }
