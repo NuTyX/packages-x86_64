@@ -1,0 +1,31 @@
+description='An efficient object serialization library'
+url='https://msgpack.org/'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake doxygen graphviz gtest)
+
+name=msgpack-c
+version=4.0.0
+
+source=(https://github.com/msgpack/msgpack-c/releases/download/c-${version}/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_C_STANDARD='17' \
+        -DBUILD_SHARED_LIBS=ON \
+        -DMSGPACK_ENABLE_STATIC=OFF \
+        -DMSGPACK_BUILD_EXAMPLES=OFF \
+        -DMSGPACK_BUILD_TESTS=ON \
+        ..
+
+make
+make DESTDIR=$PKG install
+}
