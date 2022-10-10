@@ -1,15 +1,15 @@
 description="A forensic tool to find processes hidden by rootkits, LKMs or by other techniques."
 url="http://sourceforge.net/projects/unhide/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Greg,Tnut"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Greg,Tnut,Spiky"
 
 makedepends=(iproute2 lsof psmisc net-tool-cvs procps-ng)
 
 name=unhide
-version=20210124
+version=20220611
 
-source=(https://sourceforge.net/projects/$name/files/Unhide-$version.tar.gz)
+source=(https://github.com/YJesus/Unhide/archive/refs/tags/v${version}.tar.gz)
 
 build() {
 cd Unhide-$version
