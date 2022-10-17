@@ -8,8 +8,16 @@ contributor="Tnut"
 
 name=filezilla
 version=3.61.0
+release=2
 
-source=(https://download.filezilla-project.org/client/FileZilla_${version}_src.tar.bz2)
+source=(https://download.filezilla-project.org/client/FileZilla_${version}_src.tar.bz2
+        wxwidgets-3.2.patch)
+
+prepare() {
+cd $name-$version
+patch -p1 -i ../wxwidgets-3.2.patch
+autoreconf -vif
+}
 
 build() {
 cd $name-$version
