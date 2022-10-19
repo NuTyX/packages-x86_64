@@ -1,16 +1,15 @@
 description="Allow X applications that do not support X11R6 session to participate in a X11R6 session."
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 PKGMK_GROUPS=(doc man)
 url="http://xorg.freedesktop.org"
 
 name=xorg-smproxy
-version=1.0.6
+version=1.0.7
 _name=${name/xorg-/}
-release=2
 makedepends=(xorg-libsm xorg-libice xorg-libxt xorg-libxmu)
-source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
+source=(https://ftp.x.org/archive//individual/app/smproxy-$version.tar.xz)
 
 build=xorg
 
