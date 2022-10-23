@@ -1,16 +1,17 @@
 description="Synchronizing files over a network by sending just the differences in the files."
 url="http://samba.anu.edu.au/rsync/"
 
-packager="Spiky <spiky@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 run=(shadow)
 
 name=rsync
 version=3.2.7
+release=2
 runyx_version=20201011
 
 source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
-	http://rsync.samba.org/ftp/$name/$name-$version.tar.gz
-	rsync.driver )
+	http://rsync.samba.org/ftp/$name/$name-$version.tar.gz)
 
 prepare(){
 UN=rsyncd
@@ -35,11 +36,6 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 
-# drivers
-
-mkdir -p $PKG/var/lib/pkg/drivers
-install -m 755 $SRC/rsync.driver \
-$PKG/var/lib/pkg/drivers/rsync
 
 # Service
 
