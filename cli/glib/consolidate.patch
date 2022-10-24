@@ -1,0 +1,13 @@
+diff -Naur a/gobject/gparamspecs.c b/gobject/gparamspecs.c
+--- a/gobject/gparamspecs.c	2022-09-17 20:38:17.000000000 +0200
++++ b/gobject/gparamspecs.c	2022-10-08 16:50:51.134175611 +0200
+@@ -894,6 +894,9 @@
+ {
+   GParamSpec *param = value->data[0].v_pointer;
+ 
++  if (param == NULL)
++    return FALSE;
++
+   return g_value_type_compatible (G_PARAM_SPEC_TYPE (param), G_PARAM_SPEC_VALUE_TYPE (pspec));
+ }
+ 

@@ -1,17 +1,18 @@
 description="The GLib package contains a low-level libraries useful for providing data structure handling"
 url="http://www.gtk.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Fanch,Spiky,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Fanch,Spiky"
 
 makedepends=(libffi pcre2 python elfutils meson ninja libxslt docbook-xsl)
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
 version=2.74.0
+release=2
 
 source=(https://download.gnome.org/sources/glib/${version:0:4}/$name-$version.tar.xz
-	glib-skip_warnings-2.patch)
+	glib-skip_warnings-2.patch consolidate.patch)
 prepare () {
   URL="http://downloads.tuxfamily.org/nutyx/WallPapers"
   for i in nutyx-12-beta2.jpg nutyx-21-red.jpg nutyx-21-green.jpg \
@@ -23,11 +24,14 @@ prepare () {
    wget $URL/$i
    install -D -m644 $i $PKG/usr/share/backgrounds/nutyx/$i
   done
+  
+
 }
 build () {
   cd $name-$version
 
   patch -Np1 -i ../glib-skip_warnings-2.patch
+  patch -Np1 -i ../consolidate.patch
 
   mkdir build-glib
   cd    build-glib
