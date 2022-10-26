@@ -5,22 +5,21 @@ packager="Spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut,Spiky"
 
 name=libmbim
-version=1.26.4
+version=1.28.0
 
-makedepends=(libgudev gtk-doc glib python help2man gtk-doc)
+makedepends=(meson ninja libgudev gtk-doc glib python help2man gtk-doc
+            bash-completion)
 
-source=(http://www.freedesktop.org/software/$name/$name-$version.tar.xz)
+source=(https://gitlab.freedesktop.org/mobile-broadband/libmbim/-/archive/$version/$name-$version.tar.gz)
 
 build() {
   cd $name-$version
-  ./configure --prefix=/usr    \
-              --sysconfdir=/etc/libmbim \
-              --localstatedir=/var \
-              --enable-gtk-doc \
-              --disable-static
-  make
-  make DESTDIR=$PKG install
+mkdir build
+cd    build
 
-# Obsolet lib
-rm $PKG/usr/lib/libmbim-glib.la
+meson --prefix=/usr \
+..
+
+ninja
+DESTDIR=$PKG ninja install
 }
