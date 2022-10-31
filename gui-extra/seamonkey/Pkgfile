@@ -1,10 +1,10 @@
 description="Browser suite, the Open Source sibling of Netscape"
 url="https://www.seamonkey-project.org/"
 
-packager="Spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 
 makedepends=(autoconf2-13 python python2 gtk2 gtk3 unzip yasm zip icu
-             python2-setuptools python2-psutil
+             python2-setuptools python2-psutil cbindgen llvm
              libevent nspr nss pulseaudio rustc dbus-glib
              gstreamer-plugins-base startup-notification libwebp)
 
@@ -12,7 +12,7 @@ run=(startup-notification desktop-file-utils hicolor-icon-theme
      shared-mime-info)
 
 name=seamonkey
-version=2.53.13
+version=2.53.14
 
 locale_version=$version
 
@@ -105,8 +105,8 @@ ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 EOF
 
-export CC=gcc
-export CXX=g++
+export CC=clang
+export CXX=clang++
 
 SHELL=/bin/sh ./mach configure
 SHELL=/bin/sh ./mach build

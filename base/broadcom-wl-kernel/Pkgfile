@@ -8,15 +8,17 @@ makedepends=(kernel)
 
 name=broadcom-wl-kernel
 version=6.30.223.271
-release=33
+release=35
+_version=1.3.0
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/Skythrew/broadcom-wl/releases/download/v1.2.0/broadcom-wl-source-v1.2.0.tar)
+source=(https://github.com/Skythrew/broadcom-wl/archive/refs/tags/${_version}.tar.gz)
 
 build() {
 KERNEL_VERSION="$(basename /lib/modules/*)"
-cd broadcom-wl
+cd broadcom-wl-${_version}
+
 make -C /lib/modules/${KERNEL_VERSION}/build M=$(pwd)
 
 install -Dm755 wl.ko \

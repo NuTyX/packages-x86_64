@@ -1,0 +1,25 @@
+description='Qualcomm IPC Router protocol helper library'
+url='https://gitlab.freedesktop.org/mobile-broadband/libqrtr-glib'
+
+packager="Spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(meson ninja git gobject-introspection)
+
+name=libqrtr-glib
+version=1.2.2
+
+source=(https://gitlab.freedesktop.org/mobile-broadband/libqrtr-glib/-/archive/$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+
+meson --prefix=/usr \
+      -Dgtk_doc=false \
+..
+
+ninja
+DESTDIR=$PKG ninja install
+}

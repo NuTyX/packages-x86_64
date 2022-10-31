@@ -2,18 +2,54 @@ description="a cross-platform Integrated Development Environment (IDE)."
 url="http://www.codeblocks.org/"
 
 maintainer="The Code::Blocks Team"
-packager="tnut <tnut@nutyx.org>"
-contributors="tnut, Rémy"
+packager="Spiky <spiky@nutyx.org>"
+contributors="Rémy,Tnut"
 
 makedepends=(zip boost gamin hunspell shared-mime-info wxgtk)
 run=(desktop-file-utils gtk-update-icon-cache hicolor-icon-theme)
 
 name=codeblocks
 version=20.03
+release=2
 
-source=(https://downloads.sourceforge.net/codeblocks/$name-$version.tar.xz)
+source=(https://downloads.sourceforge.net/codeblocks/$name-$version.tar.xz
+        codeblocks-gcc11.patch
+         https://github.com/arnholm/codeblocks_sfmirror/commit/40eb88e3f2b933f19f9933e06c8d0899c54f5e25.patch
+         https://github.com/arnholm/codeblocks_sfmirror/commit/56ac0396fad7a5b4bbb40bb8c4b5fe1755078aef.patch
+         https://github.com/arnholm/codeblocks_sfmirror/commit/a4aacc92640b587ad049cd6aa68c637e536e9ab5.patch
+         https://github.com/arnholm/codeblocks_sfmirror/commit/f2f127cf5cd97c7da6a957a3f7764cb25cc9017e.patch
+         https://github.com/arnholm/codeblocks_sfmirror/commit/04b7c50fb8c6a29b2d84579ee448d2498414d855.patch
+         https://github.com/arnholm/codeblocks_sfmirror/commit/dbdf5c5ea9e3161233f0588a7616b7e4fedc7870.patch
+         https://github.com/arnholm/codeblocks_sfmirror/commit/8035dfdff321754819f79e3165401aa59bd8c7f7.patch
+         https://github.com/arnholm/codeblocks_sfmirror/commit/9a9c6a9d5e3e0f6eff5594ecd61a2222f073be9c.patch
+         https://github.com/arnholm/codeblocks_sfmirror/commit/c28746f4887f10e6f9f10eeafae0fb22ecdbf9c7.patch
+         https://github.com/arnholm/codeblocks_sfmirror/commit/b2e4f1279804e1d11b71bc75eeb37072c3589296.patch
+         https://github.com/arnholm/codeblocks_sfmirror/commit/29315df024251850832583f73e67e515dae10830.patch
+         https://github.com/arnholm/codeblocks_sfmirror/commit/46720043319758cb0e798eb23520063583c40eaa.patch 
+        wxWidgets-3.2.patch
+        sc_wxtypes-normalize.patch)
+
+prepare() {
+cd $name-$version
+patch -p1 -i ../codeblocks-gcc11.patch
+patch -p1 -i ../wxWidgets-3.2.patch
+patch -p1 -i ../sc_wxtypes-normalize.patch
+  patch -p1 -i ../40eb88e3f2b933f19f9933e06c8d0899c54f5e25.patch
+  patch -p1 -F3 < ../56ac0396fad7a5b4bbb40bb8c4b5fe1755078aef.patch
+  patch -p1 -i ../a4aacc92640b587ad049cd6aa68c637e536e9ab5.patch
+  patch -p1 -i ../f2f127cf5cd97c7da6a957a3f7764cb25cc9017e.patch
+  patch -p1 -i ../dbdf5c5ea9e3161233f0588a7616b7e4fedc7870.patch
+  patch -p1 -i ../04b7c50fb8c6a29b2d84579ee448d2498414d855.patch
+  patch -p1 -i ../8035dfdff321754819f79e3165401aa59bd8c7f7.patch
+  patch -p1 -i ../9a9c6a9d5e3e0f6eff5594ecd61a2222f073be9c.patch
+  patch -p1 -i ../c28746f4887f10e6f9f10eeafae0fb22ecdbf9c7.patch
+  patch -p1 -i ../b2e4f1279804e1d11b71bc75eeb37072c3589296.patch
+  patch -p1 -i ../29315df024251850832583f73e67e515dae10830.patch
+  patch -p1 -i ../46720043319758cb0e798eb23520063583c40eaa.patch
+}
+
 build () {
-cd $name-*
+cd $name-$version
 
 ./configure --prefix=/usr    \
   --with-contrib-plugins=all \

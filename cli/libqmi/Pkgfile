@@ -4,22 +4,24 @@ url="http://www.freedesktop.org/software/libqmi/"
 packager="Spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut,Spiky"
 
-makedepends=(python glib libgudev libmbim)
+makedepends=(meson ninja python glib libgudev libmbim bash-completion 
+             perl-locale-gettext libqrtr-glib help2man)
 
 name=libqmi
-version=1.30.8
+version=1.32.0
 
-source=( http://www.freedesktop.org/software/libqmi/libqmi-$version.tar.xz)
+source=(https://gitlab.freedesktop.org/mobile-broadband/libqmi/-/archive/$version/$name-$version.tar.gz)
 
-build=autotools
-package() {
-# Obsolet lib
-rm $PKG/usr/lib/libqmi-glib.la
-}
-uptodate() {
-local url ext
-ext=".tar.xz"
-url="https://www.freedesktop.org/software/$name/"
-lynx -read_timeout=20 -dump -listonly -nonumbers \
-$url/?C=N\;O=D|grep $name|grep $ext$|head -1|sed "s@$url/$name-@@"|sed "s/$ext//"
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+
+meson --prefix=/usr \
+      -Dgtk_doc=false \
+..
+
+ninja
+DESTDIR=$PKG ninja install
 }

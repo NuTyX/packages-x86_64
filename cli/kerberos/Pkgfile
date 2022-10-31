@@ -6,7 +6,7 @@ packager="Spiky <spiky@nutyx.org>"
 makedepends=(perl e2fsprogs bison)
 
 name=kerberos
-version=1.19.3
+version=1.20
 runyx_version=20201011
 
 source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
@@ -15,7 +15,8 @@ source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 build()  {
 cd krb5-$version/src
 
-sed -i -e 's@\^u}@^u cols 300}@' tests/dejagnu/config/default.exp
+#sed -i -e 's@\^u}@^u cols 300}@' tests/dejagnu/config/default.exp
+sed -i '/t_kadm5.py/d'           lib/kadm5/Makefile.in
 sed -i -e '/eq 0/{N;s/12 //}'    plugins/kdb/db2/libdb2/test/run.test
 
 ./configure --prefix=/usr            \
