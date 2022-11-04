@@ -1,25 +1,28 @@
 description="The uhttpmock package contains a library for mocking web service APIs which use HTTP or HTTPS"
 url="https://github.com/Distrotech/uhttpmock"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Jayce"
+packager="spiky <spiky@nutyx.org>"
+contributors="Jayce,Tnut"
 
-makedepends=(libsoup gobject-introspection vala gtk-doc)
+makedepends=(meson libsoup glib vala gtk-doc)
 
 name=uhttpmock
-version=0.5.3
+version=0.5.5
 
-source=(http://tecnocode.co.uk/downloads/$name/$name-$version.tar.xz)
+source=(https://gitlab.freedesktop.org/pwithnall/uhttpmock/-/archive/$version/$name-$version.tar.gz)
 
 build() {
 	cd ${name}-$version
-	./configure --prefix=/usr     \
-            --disable-static
-	make
-	make DESTDIR=$PKG install
+	mkdir build
+        cd    build
 
-# Obsolet libs
-rm $PKG/usr/lib/libuhttpmock-0.0.la
+       meson --prefix=/usr  \
+             -D introspection=false \
+             -D gtk_doc=false \
+             ..
+ninja
+
+DESTDIR=$PKG ninja install
 }
 uptodate() {
 local url ext
