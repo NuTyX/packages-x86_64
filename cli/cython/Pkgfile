@@ -1,41 +1,23 @@
 description="C extensions for Python."
 url="http://www.cython.org/"
-contributors="Berlius,Greg,Hackrf,Spiky,Tnut"
-packager="Spiky <spiky@nutyx.org>"
+
+contributors="Berlius,Greg,Hackrf,Spiky"
+packager="Tnut <tnut@nutyx.org>"
 
 PKGMK_KEEP_SOURCES="no"
 
 name=cython
 version=0.29.32
+release=2
 
-makedepends=(python python2 python2-setuptools)
-run=(python python2 python2-setuptools)
+makedepends=(python)
+run=(python)
 
 source=(https://github.com/$name/$name/archive/$version.tar.gz)
 
-prepare() {
-cp -r cython-$version cython2-$version
-find cython2-$version -name '*.py' | \
-xargs sed -e 's|/usr/bin/env python|/usr/bin/env python2|' -e \
-'s|/usr/bin/python|/usr/bin/python2|' -i
-}
-
 build() {
-cd cython2-$version
-python2 setup.py build
-python2 setup.py install --root=$PKG --skip-build
-
-for f in cygdb cython cythonize; do
-        mv -v $PKG/usr/bin/$f $PKG/usr/bin/${f}2
-done
-
-cd ../cython-$version
+cd $name-$version
 python setup.py build
 python setup.py install --root=$PKG --skip-build
-
-for f in cygdb cython cythonize; do
-	mv -v $PKG/usr/bin/$f $PKG/usr/bin/${f}3
-	ln -sv ${f}3 $PKG/usr/bin/$f
-done
 
 }
