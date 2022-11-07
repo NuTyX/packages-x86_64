@@ -15,8 +15,6 @@ source=(https://pypi.org/packages/source/P/Pygments/Pygments-${version}.tar.gz)
 build() {
     cd Pygments-$version
     python3 setup.py install --root=$PKG -O1
-    # Part of pygmentize
-    rm -rv $PKG/usr/bin
 }
 uptodate() {
 lynx -read_timeout=20 -dump -listonly -nonumbers \
