@@ -1,8 +1,8 @@
 description="SMB Fileserver and AD Domain server"
 url="https://www.samba.org"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Pierre,Greg,Spiky,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Greg,Spiky"
 
 makedepends=(acl pam perl-yapp jansson rustc rpcsvc-proto libtirpc
              docbook-xsl avahi gnutls libgpg-error popt talloc
@@ -11,6 +11,7 @@ run=(samba.lib)
 
 name=samba
 version=4.17.2
+release=2
 
 runyx_version=20201011
 
@@ -75,8 +76,8 @@ ln -v -sf /usr/bin/smbspool $PKG/usr/lib/cups/backend/smb
 
 _ARCH="x86_64"
 [ "$PKGMK_ARCH" = "i686" ] && _ARCH=i386
-rm $PKG/usr/lib/python3.10/site-packages/_tdb_text.py
-rm $PKG/usr/lib/python3.10/site-packages/tdb.cpython-310-${_ARCH}-linux-gnu.so
+rm $PKG/usr/lib/python3.11/site-packages/_tdb_text.py
+rm $PKG/usr/lib/python3.11/site-packages/tdb.cpython-311-${_ARCH}-linux-gnu.so
 
 # service
 cd $SRC/runyx-${runyx_version}
