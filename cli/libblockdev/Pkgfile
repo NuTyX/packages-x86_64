@@ -1,7 +1,8 @@
 description="C library supporting GObject introspection for manipulation of block devices"
 url="https://github.com/storaged-project/libblockdev"
 
-packager="Spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(python glib gobject-introspection libbytesize lvm2
              volume_key parted gtk-doc yaml)
@@ -10,6 +11,7 @@ run=(gptfdisk)
 
 name=libblockdev
 version=2.28
+release=2
 
 source=( https://github.com/storaged-project/$name/releases/download/$version-1/$name-$version.tar.gz)
 build() {
