@@ -1,0 +1,14 @@
+description='A simple, correct PEP517 package builder'
+url='https://github.com/pypa/build'
+
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(python)
+
+name=python-build
+version=0.9.0
+_name=build
+source=(https://files.pythonhosted.org/packages/source/${name:7:1}/${name#*-}/${name#*-}-$version.tar.gz)
+
+build=python3
