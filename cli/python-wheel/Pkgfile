@@ -1,0 +1,22 @@
+description='A built-package format for Python'
+url='https://pypi.python.org/pypi/wheel'
+
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(python)
+
+name=python-wheel
+version=0.38.2
+_name=wheel
+
+source=(https://files.pythonhosted.org/packages/source/${name:7:1}/${name#*-}/${name#*-}-$version.tar.gz)
+
+PKGMK_IGNORE_UNPACK="yes"
+prepare() {
+  localedef -i en_US -f UTF-8 en_US.UTF-8
+  LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
+  bsdtar -xf $PKGMK_SOURCE_DIR/${name#*-}-$version.tar.gz
+}
+build=python3
+
