@@ -11,6 +11,7 @@ set=(devel)
 
 name=python
 version=3.11.0
+release=2
 
 source=(https://www.python.org/ftp/python/$version/Python-$version.tar.xz
         https://www.python.org/ftp/python/doc/$version/python-$version-docs-html.tar.bz2
@@ -36,13 +37,19 @@ rm -r Lib/tkinter
 
 	make DESTDIR=$PKG install
 
-	chmod -v 755 $PKG/usr/lib/libpython3.11.so
+	chmod -v 755 $PKG/usr/lib/libpython${version%.*}.so
 	chmod -v 755 $PKG//usr/lib/libpython3.so
 
 	ln -s python3          $PKG/usr/bin/python
 	ln -s python3-config   $PKG/usr/bin/python-config
 	ln -s idle3            $PKG/usr/bin/idle
 	ln -s pydoc3           $PKG/usr/bin/pydoc
+	for i in pep517 tomli
+	do
+
+		ln -s /usr/lib/python${version%.*}/site-packages/pip/_vendor/$i \
+			$PKG//usr/lib/python${version%.*}/site-packages/$i
+	done
 	ln -s python${version%.*}.1 $PKG/usr/share/man/man1/python.1
 
 # Install all HTML Docs files with desktop menu integration
