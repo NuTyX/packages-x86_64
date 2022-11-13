@@ -3,27 +3,25 @@
 description="Mesa is an OpenGL compatible 3D graphics library."
 url="http://www.xorg-mesa3d.org"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Pierre,Rems,Spiky,Tnut"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Rems,Tnut"
 
 makedepends=(python meson ninja
              xorgproto pkg-config libtool xorg-xrandr wayland python-mako
              wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext
              xorg-libxdamage expat llvm elfutils xorg-libxshmfence
-             libva libvdpau valgrind lm-sensors xorg-libxvmc libunwind vulkan-icd-loader)
+             libva libvdpau valgrind lm-sensors xorg-libxvmc libunwind vulkan-icd-loader glslang)
 
 run=(libglvnd)
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=22.1.7
+version=22.2.3
 
-source=(add_xdemos-1.patch
-	https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
+source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
 
 build() {
 cd mesa-$version
-#patch -Np1 -i ../add_xdemos-1.patch
 
 mkdir build
 cd    build
