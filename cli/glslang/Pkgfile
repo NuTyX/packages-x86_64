@@ -1,0 +1,39 @@
+description='OpenGL and OpenGL ES shader front end and validator'
+url='https://github.com/KhronosGroup/glslang'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake ninja spirv-tools)
+
+name=glslang
+version=11.12.0
+
+source=(https://github.com/KhronosGroup/glslang/archive/$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+
+cmake \
+		-Bbuild-shared \
+		-GNinja \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DBUILD_SHARED_LIBS=ON
+		ninja -Cbuild-shared
+	cmake \
+		-Bbuild-static \
+		-GNinja \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DBUILD_SHARED_LIBS=OFF
+		ninja -Cbuild-static
+
+	DESTDIR=$PKG ninja -C build-shared install
+	DESTDIR=$PKG ninja -C build-static install
+
+	cd $PKG/usr/lib
+	for lib in *.so; do
+		ln -sf "${lib}" "${lib}.0"
+	done
+}
