@@ -1,0 +1,52 @@
+description='Web content engine for GTK'
+url='https://webkitgtk.org'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake mesa ninja gtk-doc python ruby gobject-introspection
+             wayland-protocols  gstreamer-plugins-bad gperf)
+run=(cairo xorg-fontconfig freetype libgcrypt glib gtk4 harfbuzz icu
+          libjpeg-turbo libsoup3 libxml2 zlib libpng sqlite atk libwebp at-spi2-core
+          libwpe wpebackend-fdo libxslt libsecret libtasn1 enchant xorg-libx11 
+          xorg-libxext xorg-libice xorg-libxt wayland libnotify hyphen openjpeg
+          woff2  bubblewrap libseccomp  gstreamer
+          gstreamer-plugins-base libmanette)
+
+name=webkit2gtk-5
+version=2.38.2
+
+source=(https://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
+
+build() {
+cd webkitgtk-$version
+mkdir -p build
+cd       build
+CFLAGS=-Wno-expansion-to-defined   \
+CXXFLAGS=-Wno-expansion-to-defined \
+cmake -G Ninja                     \
+      -DCMAKE_BUILD_TYPE=Release   \
+      -DCMAKE_INSTALL_PREFIX=/usr  \
+      -DCMAKE_SKIP_RPATH=ON        \
+      -DPORT=GTK                   \
+      -DLIB_INSTALL_DIR=/usr/lib   \
+      -DUSE_LIBHYPHEN=OFF          \
+      -DENABLE_MINIBROWSER=ON      \
+      -DUSE_WOFF2=ON               \
+      -DUSE_GTK4=ON                \
+      -DENABLE_GTKDOC=ON           \
+      -DENABLE_BUBBLEWRAP_SANDBOX=OFF \
+      -Wno-dev ..
+ninja || ninja -j1
+DESTDIR=$PKG ninja install || DESTDIR=$PKG ninja -j1 install
+
+install -vdm755 $PKG/usr/share/gtk-doc/html/webkit{2,web-extension}gtk-4.1
+install -vm644  ../Documentation/webkit2gtk-4.1/* \
+$PKG/usr/share/gtk-doc/html/webkit2gtk-4.1
+install -vm644  ../Documentation/webkit2gtk-web-extension-4.1/* \
+$PKG/usr/share/gtk-doc/html/webkit2gtk-4.1
+
+# Binaries belongs to webkitgtk package
+# No conflics please !!! :)
+rm -rf $PKG/usr/bin
+}
