@@ -1,0 +1,44 @@
+description='iAPI and commands for processing SPIR-V modules'
+url='https://www.khronos.org/vulkan/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake git)
+
+name=spirv-tools
+version=2022.4
+
+#source=(https://github.com/KhronosGroup/SPIRV-Tools/archive/v$version/SPIRV-Tools-v$version.tar.gz)
+
+
+
+prepare() {
+#mv SPIRV-Tools-$version $name-$version
+
+GIT_SSL_NO_VERIFY=true git clone https://github.com/KhronosGroup/SPIRV-Headers.git
+GIT_SSL_NO_VERIFY=true git clone https://github.com/KhronosGroup/SPIRV-Tools.git $name-$version
+
+cd $name-$version
+git tag $version
+}
+
+
+build() {
+cd $name-$version
+mkdir build
+cd    build
+
+cmake -GNinja \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DSPIRV_WERROR=Off \
+      -DBUILD_SHARED_LIBS=ON \
+      -DSPIRV_TOOLS_BUILD_STATIC=OFF \
+      -DSPIRV-Headers_SOURCE_DIR="$SRC/SPIRV-Headers" \
+      ..
+
+ninja
+DESTDIR="${PKG}" ninja install
+}
