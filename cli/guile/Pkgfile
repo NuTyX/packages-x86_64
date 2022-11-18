@@ -1,14 +1,13 @@
 description="Guile is an interpreter and compiler for the Scheme programming language."
 url="http://www.gnu.org/software/guile/guile.html"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Berlius,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Berlius,Tnut"
 
 makedepends=(gc libunistring libffi gdb libtool gmp)
 
 name=guile
-version=2.2.7
-release=2
+version=3.0.8
 
 source=(https://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
@@ -44,8 +43,8 @@ build() {
     done
     unset DIRNAME
 # Obsolets libs
-rm $PKG/usr/lib/guile/2.2/extensions/guile-readline.la
-rm $PKG/usr/lib/libguile-2.2.la
+rm $PKG/usr/lib/guile/3.0/extensions/guile-readline.la
+rm $PKG/usr/lib/libguile-3.0.la
 
 }
 uptodate() {
