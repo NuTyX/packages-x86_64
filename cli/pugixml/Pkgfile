@@ -7,24 +7,20 @@ packager="spiky <spiky@nutyx.org>"
 makedepends=(cmake)
 
 name=pugixml
-version=1.12.1
+version=1.13
 
 source=(http://github.com/zeux/pugixml/releases/download/v${version}/pugixml-${version}.tar.gz)
 
-prepare() {
-
-mv pugixml-1.12 pugixml-1.12.1
-}
-
 build() {
-  mkdir -p build
-  cd $SRC/build
+cd $name-$version
+  mkdir  build
+  cd     build
 
-  cmake $SRC/pugixml-$version \
-    -DCMAKE_BUILD_TYPE=Release \
+  cmake -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DBUILD_SHARED_LIBS=ON
+    -DBUILD_SHARED_LIBS=ON \
+    ..
   make
   make DESTDIR=$PKG install  
 }
