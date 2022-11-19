@@ -1,15 +1,14 @@
 description="Documentation generator for GObject-based libraries"
 url="https://gnome.pages.gitlab.gnome.org/gi-docgen/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors=""
-
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
+makedepends=(python)
 run=(python-jinja2 python-markdown python-markupsafe
      python-pygments python-toml python-typogrify)
 
 name=gi-docgen
-version=2022.1
-release=2
+version=2022.2
 
 source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
