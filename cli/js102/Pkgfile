@@ -1,0 +1,45 @@
+description='JavaScript interpreter and libraries - Version 102'
+url='https://spidermonkey.dev/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(autoconf2-13 readline llvm icu rustc libffi python zlib zip)
+
+name=js102
+version=102.5.0
+
+source=(https://archive.mozilla.org/pub/firefox/releases/${version}esr/source/firefox-${version}esr.source.tar.xz)
+
+## First remove an obsolete flag in python code, that has been removed in python-3.11: 
+prepare() {
+cd firefox-$version
+
+grep -rl \"rU\" | xargs sed -i 's/"rU"/"r"/'
+}
+
+build() {
+
+cd firefox-$version
+ mkdir obj
+  cd    obj
+
+  SHELL=/bin/sh CC=gcc CXX=g++ \
+sh ../js/src/configure.in --prefix=/usr       \
+              --with-intl-api     \
+              --with-system-zlib  \
+              --with-system-icu   \
+              --disable-jemalloc  \
+              --disable-debug-symbols  \
+              --enable-readline
+
+  SHELL=/bin/sh make
+
+  SHELL=/bin/sh make DESTDIR=$PKG install
+
+
+  # conflict with js60
+  rm $PKG/usr/lib/libjs_static.ajs
+ 
+  sed -i '/@NSPR_CFLAGS@/d' $PKG/usr/bin/js102-config
+}
