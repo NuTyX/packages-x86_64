@@ -1,8 +1,8 @@
 description="engine of made Web free for the browsers web version 3"
 url="http://webkitgtk.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Pierre,Greg,Fanch,Spiky,Tnut"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Greg,Fanch,Tnut"
 
 makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              gstreamer-plugins-bad xorg-libxt gtk2 gtk3 gtk-doc
@@ -12,7 +12,7 @@ makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              harfbuzz gtk-doc libnotify wayland woff2 libmanette)
              
 name=webkitgtk
-version=2.38.1
+version=2.38.2
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 prepare() {
@@ -20,6 +20,7 @@ echo 'add_compile_definitions("U_DEFINE_FALSE_AND_TRUE=1")' >> $name-$version/So
 pkgrm python2
 pkgrm python2.devel
 sed -i /U_HIDE_DEPRECATE/d $name-$version/Source/WTF/wtf/Platform.h
+export NINJAJOBS=25
 }
 build() {
 cd $name-$version
