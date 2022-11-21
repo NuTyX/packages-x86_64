@@ -1,8 +1,8 @@
 description="GEneric Graphics Library, which is a graph base image processing format"
 url="http://gegl.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Pierre,Spiky,Tnut"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(asciidoc babl gtk2 librsvg ruby lua ffmpeg librsvg meson \
              openexr exiv2 graphviz libjpeg-turbo libwebp libraw \
@@ -10,10 +10,9 @@ makedepends=(asciidoc babl gtk2 librsvg ruby lua ffmpeg librsvg meson \
 run=(vala)
 
 name=gegl
-version=0.4.38
+version=0.4.40
 
-source=(gegl-ffmpeg-5.patch
-        https://download.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.xz)
+source=(https://download.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
