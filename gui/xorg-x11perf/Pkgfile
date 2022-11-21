@@ -1,15 +1,15 @@
 description="Simple X server perfomance benchmarker."
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 PKGMK_GROUPS=(doc man)
 url="http://xorg.freedesktop.org"
 
 name=xorg-x11perf
-version=1.6.1
+version=1.6.2
 _name=${name/xorg-/}
 makedepends=(xorgproto xorg-libx11 xorg-libxmu xorg-libxrender)
-source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
+source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.xz)
 
 build=xorg
 
