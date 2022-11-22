@@ -12,21 +12,16 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Fanch"
 
 name=nemo-extensions
-version=5.2.0
+version=5.6.0
 
 LIST=(nemo-preview nemo-terminal nemo-audio-tab nemo-python
       nemo-emblems nemo-fileroller nemo-image-converter nemo-share)
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://download.tuxfamily.org/nutyx/files/cinnamon-translations-5.2.2.tar.gz
-        https://github.com/linuxmint/$name/archive/$version.tar.gz
-	https://github.com/linuxmint/nemo-extensions/commit/5880e6e6.patch)
+        https://github.com/linuxmint/$name/archive/$version.tar.gz)
 
 
-prepare() {
-  cd $name-${version}
-  patch -Np1 -i ../5880e6e6.patch
-}	
 build() {
 
 cd $name-${version}
