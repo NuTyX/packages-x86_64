@@ -1,10 +1,10 @@
 description="Messaging app with a focus on speed and security, it’s super-fast, simple and free."
 url="https://telegram.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Fanch,Fabienwang,Spiki,Tnut,Spiky"
+packager="tnut <tnut@nutyx.org>"
+contributors="Fanch,Fabienwang,Spiki,Spiky"
 
-makedepends=(cmake ninja python ffmpeg glibmm kwayland rnnoise tg_owt
+makedepends=(cmake ninja python ffmpeg glibmm kwayland rnnoise tg_owt tl-expected
              jemalloc abseil-cpp extra-cmake-modules gtk3 webkitgtk libdbusmenu-qt)
 
 run=(desktop-file-utils ttf-opensans qt6-imageformats qt6-5compat
@@ -13,19 +13,15 @@ run=(desktop-file-utils ttf-opensans qt6-imageformats qt6-5compat
 alias=(telegram)
 
 name=telegram-desktop
-version=4.1.1
-release=2
+version=4.2.4
 
-source=(consolidate.patch
-        https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tdesktop-$version-full.tar.gz)
+source=(https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tdesktop-$version-full.tar.gz)
 
 build() {
 
   export QT_DIR=/usr/lib/cmake/Qt6
 
   cd tdesktop-$version-full
-
-  patch -Np1 -i ../consolidate.patch
 
   export CXXFLAGS+=" -Wp,-U_GLIBCXX_ASSERTIONS"
 
@@ -37,4 +33,4 @@ build() {
         -DCMAKE_BUILD_TYPE=Release
   ninja -C build
   DESTDIR=$PKG ninja -C build install
-} 
+}
