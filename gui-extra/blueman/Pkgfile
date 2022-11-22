@@ -1,8 +1,8 @@
 description="GTK3 Bluetooth manager"
 url="https://github.com/blueman-project/blueman"
 
-contributors="Remy,Tnut,Spiky"
-packager="Spiky <spiky@nutyx.org>"
+contributors="Remy,Spiky"
+packager="tnut <tnut@nutyx.org>"
 
 makedepends=(gtk3 libnotify cython intltool)
 run=(python-cairo dbus-python
@@ -10,7 +10,7 @@ run=(python-cairo dbus-python
 
 name=blueman
 version=2.3.2
-release=2
+release=3
 
 source=(https://github.com/blueman-project/$name/releases/download/$version/$name-$version.tar.xz)
 prepare() {
@@ -26,8 +26,7 @@ cd $name-$version
     --prefix=/usr \
     --sysconfdir=/etc \
     --libexecdir=/usr/lib/$name \
-    --disable-schemas-compile \
-    CYTHONEXEC=/usr/bin/cython3
+    --disable-schemas-compile
   make
   make DESTDIR=$PKG install
 }
