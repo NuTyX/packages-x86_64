@@ -15,7 +15,13 @@ source=(https://github.com/$name/$name/releases/download/v$version/$name-$versio
 prepare() {
 sed '/linux\/fs\.h/d' -i $name-$version/libarchive/archive_read_disk_posix.c
 }
-
+build() {
+cd $name-$version
+./configure --prefix=/usr  \
+   --disable-xattr --disable-acl
+make
+make DESTDIR=$PKG install
+}
 package() {
 # Obsolet lib
 rm $PKG/usr/lib/libarchive.la
