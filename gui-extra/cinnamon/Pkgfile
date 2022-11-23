@@ -22,13 +22,9 @@ version=5.6.1
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/linuxmint/Cinnamon/archive/$version.tar.gz
-		0001-cinanmon-settings-don-t-rely-on-the-presence-of-cinn.patch
 		set_wheel.patch  default-theme.patch)
 prepare() {
   cd $name-${version}
-
-  # Check for the cc-panel module path, not for the irrelevant binary
-#  patch  -p1 -i $SRC/0001-cinanmon-settings-don-t-rely-on-the-presence-of-cinn.patch
 
   # Use wheel group instread of sudo (taken from Fedora)
   patch -Np1 -i $SRC/set_wheel.patch
