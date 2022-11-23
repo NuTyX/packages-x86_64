@@ -1,24 +1,23 @@
 description="The Open Source toolkit for Secure Sockets Layer and Transport Layer Security."
 url="http://www.openssl.org/"
 
-packager="Spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 
 makedepends=(perl)
 
 name=openssl
-version=1.1.1.q
-_version=1.1.1q
+version=3.0.7
 
-source=(ftp://ftp.openssl.org/source/$name-${_version}.tar.gz)
+source=(ftp://ftp.openssl.org/source/$name-${version}.tar.gz)
 
 PKGMK_GROUPS=(devel man doc)
 
 build() {
 unset MAKEFLAGS
 
-cd $name-${_version}
+cd $name-${version}
 
-./config --prefix=/usr \
+./config --prefix=/usr --libdir=lib \
 	--openssldir=/etc/ssl \
 	shared zlib-dynamic
 
