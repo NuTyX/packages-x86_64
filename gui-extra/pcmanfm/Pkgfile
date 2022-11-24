@@ -1,8 +1,8 @@
 description="Extremely fast and lightweight file manager"
 url="http://lxde.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Greg,Fabien"
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Fabien,Tnut"
 
 run=(libfm lxde-menu-data)
 makedepends=(gtk2 perl-xml-parser libfm intltool)
@@ -11,13 +11,15 @@ set=(lxde)
 
 name=pcmanfm
 version=1.3.2
-release=3
+release=4
 
 source=(https://downloads.sourceforge.net/$name/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-./configure --sysconfdir=/etc --prefix=/usr
+./configure --sysconfdir=/etc --prefix=/usr \
+--with-gtk=3
+
 make
 make DESTDIR=$PKG install
 }
