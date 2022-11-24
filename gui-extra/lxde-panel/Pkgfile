@@ -1,11 +1,11 @@
 description="Contains a lightweight X11 desktop panel"
 url="http://lxde.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Geantbrun,Greg,Fabien"
+packager="spiky <spiky@nutyx.org>"
+contributors="Geantbrun,Greg,Fabien,Tnut"
 
-makedepends=(gtk2 menu-cache alsa-lib libwnck1 wireless-tools
-             keybinder2 libfm lxde-menu-data)
+makedepends=(gtk3 menu-cache alsa-lib libwnck1 wireless-tools
+             keybinder3 libfm lxde-menu-data)
 
 set=(lxde)
 
@@ -14,7 +14,7 @@ alias=(lxpanel)
 _name=lxpanel
 
 version=0.10.1
-release=3
+release=4
 
 source=(http://downloads.sourceforge.net/lxde/files/${_name}-$version.tar.xz)
 
@@ -31,7 +31,8 @@ build() {
   
   ./configure \
     --sysconfdir=/etc \
-    --prefix=/usr
+    --prefix=/usr \
+    --enable-gtk3
     
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 
