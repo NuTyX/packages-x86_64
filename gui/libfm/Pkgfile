@@ -1,15 +1,15 @@
 description="Library used to develop file managers providing some file management utilities"
 url="http://pcmanfm.sourceforge.net/"
 
-contributors="Geantbrun,Greg,Spiky"
-packager="tnut <tnut@nutyx.org>"
+contributors="Geantbrun,Greg,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
 
 name=libfm
 version=1.3.2
-release=2
+release=3
 
-makedepends=(gtk2 libexif gtk-doc)
+makedepends=(gtk2 gtk3 libexif gtk-doc)
 run=(shared-mime-info menu-cache)
 
 source=(http://downloads.sourceforge.net/pcmanfm/${name}-$version.tar.xz)
@@ -26,6 +26,7 @@ build() {
     ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --with-gnu-ld \
+    --with-gtk=3  \
     --disable-static
 
     make
