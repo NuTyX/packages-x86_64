@@ -9,11 +9,14 @@ makedepends=(
 )
 
 name=picom
-version=10
-source=(https://github.com/yshui/picom/archive/refs/tags/v9.tar.gz)
+version=10.1
+
+source=(https://github.com/yshui/picom/archive/refs/tags/v${version}.tar.gz)
+
+PKG_KEEP_SOURCES=no
 
 build() {
-mv $name-9 $name-$version
+
 cd $name-$version
 meson --buildtype=release -Dprefix=$PKG/usr . build
 ninja -C build
