@@ -8,12 +8,15 @@ run=()
 
 name=libebml
 version=1.4.4
-_commit=4039c7b8051cee78df4f9e486ef71a18b1775c9d
                                                                                                                                                 
-source=(https://github.com/Matroska-Org/libebml/archive/$_commit.zip)
+source=(https://github.com/Matroska-Org/libebml/archive/refs/tags/release-$version.tar.gz)
+
+prepare() {
+mv $name-release-$version $name-$version
+}
 
 build() {
-  cd $name-$_commit
+  cd $name-$version
   mkdir build
   cd build
   cmake .. \
