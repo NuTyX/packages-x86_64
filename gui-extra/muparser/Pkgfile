@@ -11,12 +11,11 @@ set=(lxqt)
 PKGMK_KEEP_SOURCES="no"
 
 name=muparser
-version=2.3.3
+version=2.3.4
 
-source=(https://github.com/beltoforion/$name/archive/refs/tags/v${version}-1.tar.gz)
+source=(https://github.com/beltoforion/$name/archive/refs/tags/v${version}.tar.gz)
 
 build() {
-mv $name-$version-1 $name-$version
 unset MAKEFLAGS
 
 cmake -B build -S $name-$version -DCMAKE_INSTALL_PREFIX=/usr
