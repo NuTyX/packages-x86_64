@@ -1,14 +1,14 @@
 description="Integration of Frameworks widgets in Qt Designer/Creator "
 url="https://www.kde.org/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Fabienwang,Tnut"
 
 name=kdesignerplugin
-version=5.99.0
+version=5.100.0
 makedepends=(kcoreaddons kconfig kdoctools kcompletion kconfigwidgets
              kiconthemes kio kitemviews kplotting ktextwidgets
              kwidgetsaddons kxmlgui sonnet)
-source=(https://download.kde.org/stable/frameworks/${version:0:4}/portingAids/$name-$version.tar.xz)
+source=(https://download.kde.org/stable/frameworks/${version%.*}/portingAids/$name-$version.tar.xz)
 
 build=kde5
 
