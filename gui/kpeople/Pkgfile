@@ -1,12 +1,12 @@
 description="A library that provides access to all contacts and the people who hold them "
 url="https://www.kde.org/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Fabienwang,Tnut"
 
 name=kpeople
-version=5.99.0
+version=5.100.0
 makedepends=(kcoreaddons kwidgetsaddons ki18n kitemviews kservice)
-source=(https://download.kde.org/stable/frameworks/${version:0:4}/$name-$version.tar.xz)
+source=(https://download.kde.org/stable/frameworks/${version%.*}/$name-$version.tar.xz)
 
 build=kde5
 
