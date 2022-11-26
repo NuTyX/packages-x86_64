@@ -4,39 +4,41 @@ url="http://www.gtk.org/"
 packager="tnut <tnut@nutyx.org>"
 contributor="Pierre B, Greg, Minzord, Spiky"
 
-makedepends=(gtk-doc libepoxy xorg-libxinerama xorg-libxrandr \
+makedepends=(python meson ninja
+             gtk-doc libepoxy xorg-libxinerama xorg-libxrandr \
              xorg-libxcursor at-spi2-atk cups colord xorg-libxi \
              atk cairo pango gdk-pixbuf wayland-protocols libxkbcommon)
 run=(xcursor-dmz adwaita-icon-theme dejavu-ttf gtk-update-icon-cache)
 
 name=gtk3
-version=3.24.34
+version=3.24.35
 
-source=(settings.ini.example
+source=(settings.ini.example consolidate.patch
         https://download.gnome.org/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
+prepare() {
+cd gtk+-$version
+patch -Np1 -i ../consolidate.patch
+}
 
 build() {
-cd gtk+-$version
+mkdir build
+cd    build
 
-./configure --prefix=/usr \
---sysconfdir=/etc         \
---mandir=/usr/share/man   \
---infodir=/usr/share/info \
---enable-broadway-backend \
---enable-x11-backend      \
---enable-wayland-backend
+meson --prefix=/usr     \
+--buildtype=release     \
+--sysconfdir=/etc       \
+-Dbroadway_backend=true \
+-Dcolord=yes         \
+-Dgtk_doc=true       \
+-Dman=true           \
+-Dintrospection=true \
+../gtk+-$version
 
-make || make -j1
-make DESTDIR=$PKG install
+ninja
+
+DESTDIR=$PKG ninja install
 
 install -m644 ../settings.ini.example $PKG/etc/gtk-3.0/settings.ini.example
-
-# Obsolets libs
-rm $PKG/usr/lib/{libgailutil-3,libgdk-3,libgtk-3}.la
-rm $PKG/usr/lib/gtk-3.0/3.0.0/immodules/*.la
-rm $PKG/usr/lib/gtk-3.0/3.0.0/printbackends/libprintbackend-cups.la
-rm $PKG/usr/lib/gtk-3.0/3.0.0/printbackends/libprintbackend-file.la
-rm $PKG/usr/lib/gtk-3.0/3.0.0/printbackends/libprintbackend-lpr.la
 
 # Empaqueté ds gtk-update-icon-cache
 rm $PKG/{usr/bin/gtk-update-icon-cache,usr/share/man/man1/gtk-update-icon-cache.1}
