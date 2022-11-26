@@ -1,0 +1,28 @@
+description='A small program for drawing chemical structures'
+url='http://ruby.chemie.uni-freiburg.de/~martin/chemtool/chemtool.html'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(gtk2 desktop-file-utils)
+run=()
+set=()
+
+name=chemtool
+version=1.6.14
+
+source=(http://ruby.chemie.uni-freiburg.de/~martin/chemtool/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+
+CFLAGS+=' -fcommon'
+./configure --prefix=/usr \
+--mandir=/usr/share/man
+
+make
+make DESTDIR=$PKG install
+
+install -D -m644 gnome/chemtool.png $PKG//usr/share/pixmaps/chemtool.png
+install -D -m644  chemtool.desktop $PKG//usr/share/applications/chemtool.desktop
+}
