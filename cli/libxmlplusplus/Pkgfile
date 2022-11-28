@@ -1,0 +1,16 @@
+description='C++ bindings to libxml2'
+url='https://libxmlplusplus.github.io/libxmlplusplus/'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(glibmm libxml2 meson ninja python)
+
+PKGMK_KEEP_SOURCES="no"
+name=libxmlplusplus
+version=5.0.2
+
+PKGMK_GROUPS=(lib man devel doc)
+source=(https://github.com/libxmlplusplus/libxmlplusplus/archive/refs/tags/$version.tar.gz)
+
+build=meson
