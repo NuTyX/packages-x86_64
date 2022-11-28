@@ -2,10 +2,10 @@ description="Browser suite, the Open Source sibling of Netscape"
 url="https://www.seamonkey-project.org/"
 
 packager="tnut <tnut@nutyx.org>"
+contributors=""
 
-makedepends=(autoconf2-13 python python2 gtk2 gtk3 unzip yasm zip icu
-             python2-setuptools python2-psutil cbindgen llvm
-             libevent nspr nss pulseaudio rustc dbus-glib
+makedepends=(autoconf2-13 python gtk2 gtk3 unzip yasm zip icu llvm
+             cbindgen libevent nspr nss pulseaudio rustc dbus-glib
              gstreamer-plugins-base startup-notification libwebp)
 
 run=(startup-notification desktop-file-utils hicolor-icon-theme
@@ -13,10 +13,13 @@ run=(startup-notification desktop-file-utils hicolor-icon-theme
 
 name=seamonkey
 version=2.53.14
+release=2
 
 locale_version=$version
+python2_version=2.7.18
 
-source=( https://ftp.mozilla.org/pub/$name/releases/$version/source/$name-$version.source.tar.xz )
+source=(https://www.python.org/ftp/python/${python2_version}/Python-${python2_version}.tar.xz 
+        https://ftp.mozilla.org/pub/$name/releases/$version/source/$name-$version.source.tar.xz )
 
 pack_remove_locale() {
 wget https://ftp.mozilla.org/pub/seamonkey/releases/${locale_version}/langpack/$name-${locale_version}.${1}.langpack.xpi
@@ -30,7 +33,13 @@ usr/lib/$name-$version/extensions/langpack-${1}@$name.mozilla.org.xpi
 
 rm usr/lib/$name-$version/extensions/langpack-${1}@$name.mozilla.org.xpi
 }
+prepare() {
+cd Python-${python2_version}
+./configure --prefix=/usr --disable-optimizations \
+            --without-lto --without-ensurepip
 
+DESTDIR=$SRC make install
+} 
 build()  {
 
 cd $name-$version
@@ -105,10 +114,18 @@ ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 EOF
 
+grep -rl \"rU\" | xargs sed -i 's/"rU"/"r"/'
+sed -e 's/?s)\./?s:.)/'               \
+    -e '/?m)/{s/?m)/?m:/;s/\$"/$)"/}' \
+    -e '/?s)%/{s/?s)/?s:/;s/?"/?)"/}' \
+    -i xpcom/idl-parser/xpidl/xpidl.py
+
+
 export CC=clang
 export CXX=clang++
 
-SHELL=/bin/sh ./mach configure
+export PATH=$SRC/usr/bin:$PATH
+
 SHELL=/bin/sh ./mach build
 
 SHELL=/bin/sh DESTDIR=$PKG ./mach install
