@@ -4,16 +4,15 @@ url="http://www.gimp.org/"
 contributors="Pierre.,Greg,Spiky"
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(gtk2 python2-gtk curl libexif
-             xorg-libxmu xorg-libxpm openexr gegl poppler-glib
-             glib-networking libmng alsa-lib babl libmypaint
-             mypaint-brushes lcms2 libgexiv2 harfbuzz
-             libjpeg-turbo librsvg libtiff libxml2)
-run=(python2-gtk shared-mime-info desktop-file-utils)
+makedepends=(gtk2 curl libexif xorg-libxmu xorg-libxpm openexr
+             gegl poppler-glib glib-networking libmng alsa-lib
+             babl libmypaint mypaint-brushes lcms2 libgexiv2
+             harfbuzz libjpeg-turbo librsvg libtiff libxml2)
+run=(shared-mime-info desktop-file-utils)
 
 name=gimp
 version=2.10.32
-release=2
+release=3
 
 source=(https://download.gimp.org/pub/gimp/v2.10/gimp-$version.tar.bz2)
 
@@ -23,7 +22,7 @@ build() {
 cd $name-$version
 
 
-./configure --prefix=/usr --sysconfdir=/etc
+./configure --prefix=/usr --sysconfdir=/etc --disable-python
 make
 
 make DESTDIR=$PKG install
