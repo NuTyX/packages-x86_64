@@ -1,25 +1,27 @@
-description="Prise de note" 
-url="https://www.giuspen.com/cherrytree/" 
+description='Hierarchical note-taking application'
+url='https://www.giuspen.com/cherrytree/'
 
 packager="tnut <tnut@nutyx.org>"
 contributors="indoo"
 
-run=( python2-gtksourceview2 dbus-python p7zip python2 python2-gtk)
-
+makedepends=(cmake python fmt gspell
+             gtkmm gtksourceviewmm
+             libxmlplusplus vte)
 
 name=cherrytree 
-version=0.38.9
+version=0.99.52
 
-PKGMK_KEEP_SOURCES="no"
-source=(https://github.com/giuspen/$name/archive/$version.tar.gz )
+source=(https://www.giuspen.com/software/${name}_${version}.tar.xz )
 
 build() { 
-cd $name-$version 
-sed -r -e '/\bupdate-desktop-database\b/d' -i -- 'setup.py'
-python2 setup.py build 
+cmake -B build -S ${name}_${version} \
+ -DINSTALL_GTEST:BOOL='OFF' \
+ -DAUTO_RUN_TESTING:BOOL='OFF' \
+ -DCMAKE_BUILD_TYPE='None' \
+ -DCMAKE_INSTALL_PREFIX='/usr' \
+ -Wno-dev
+ cmake --build build
+
+ DESTDIR=$PKG cmake --install build
 }
  
-package() { 
-cd $name-$version 
-python2 setup.py install --root=$PKG --optimize=1 
-}
