@@ -9,7 +9,7 @@ run=(libglvnd)
 set=()
 
 name=nvidia
-version=520.56.06
+version=525.60.11
 
 source=(https://us.download.nvidia.com/XFree86/Linux-x86_64/${version}/NVIDIA-Linux-x86_64-${version}.run
         20-nvidia.conf
@@ -29,7 +29,8 @@ cd NVIDIA-Linux-x86_64-${version}
     ln -sr "${PKG}/usr/lib/libnvidia-allocator.so.${version}" "${PKG}/usr/lib/gbm/nvidia-drm_gbm.so"
 
     # firmware
-    install -Dm644 firmware/gsp.bin "${PKG}/usr/lib/firmware/nvidia/${version}/gsp.bin"
+    # is gone
+    # install -Dm644 firmware/gsp.bin "${PKG}/usr/lib/firmware/nvidia/${version}/gsp.bin"
 
     # GLX extension module for X
     install -Dm755 "libglxserver_nvidia.so.${version}" "${PKG}/usr/lib/nvidia/xorg/libglxserver_nvidia.so.${version}"
