@@ -1,8 +1,8 @@
 description="GTK+ frontend to various command line archivers"
 url="https://github.com/ib/xarchive"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Rems,Greg,Schrodinger72,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Rems,Greg,Schrodinger72,Spiky"
 
 makedepends=(gtk3 docbook-xsl xmlto)
 run=(tar zip p7zip lzop cpio unrar)
@@ -20,19 +20,8 @@ unset MAKEFLAGS
 
 build() {
 
-  # Bon..pour la version GTK3...
-  [ -d gtk3 ] || cp -r $name-$version gtk3
-  cd gtk3
-  ./configure --prefix=/usr --libexecdir=/usr/lib/xfce4
+  cd $name-$version
+  ./configure --prefix=/usr --libexecdir=/usr/lib/xfce4 --disable-gtk2
   make
-
-}
-
-  # Empaquetage de la version GTK3...
-
-package() {
-
-  cd gtk3
   make DESTDIR=$PKG install
-
 }
