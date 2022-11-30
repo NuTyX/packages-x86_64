@@ -1,13 +1,12 @@
 description='Operating system and container binary deployment and upgrades'
 url='https://ostree.readthedocs.io/en/latest/'
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(openssl glib gpgme fuse2 libsoup e2fsprogs)
 
 name=libostree
-version=2022.6
-release=2
+version=2022.7
 source=(https://github.com/ostreedev/ostree/releases/download/v$version/libostree-$version.tar.xz)
 
 build() {
