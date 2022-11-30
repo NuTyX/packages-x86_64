@@ -2,18 +2,18 @@ description="The Gawk package contains programs for manipulating text files."
 url="http://www.gnu.org/software/gawk/"
 
 maintainer="Paul Rubin,Paul Finlason,Richard Stallman,David Trueman and,Arnold Robbins"
-packager="Spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 name=gawk
-version=5.2.0
+version=5.2.1
 
 source=(http://ftp.gnu.org/gnu/gawk/gawk-$version.tar.xz
         upref.patch)
 
 prepare() {
 cd $name-$version
-patch -Np1 -i ../upref.patch
+#patch -Np1 -i ../upref.patch
 }
 
 build()
