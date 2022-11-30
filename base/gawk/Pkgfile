@@ -8,13 +8,7 @@ contributors="Pierre,Tnut"
 name=gawk
 version=5.2.1
 
-source=(http://ftp.gnu.org/gnu/gawk/gawk-$version.tar.xz
-        upref.patch)
-
-prepare() {
-cd $name-$version
-#patch -Np1 -i ../upref.patch
-}
+source=(http://ftp.gnu.org/gnu/gawk/gawk-$version.tar.xz)
 
 build()
 {
