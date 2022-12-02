@@ -9,7 +9,7 @@ run=(python)
 
 name=pybind11
 version=2.10.1
-release=1
+release=2
 source=(https://github.com/pybind/${name}/archive/refs/tags/v${version}.tar.gz)
 
 build() {
@@ -17,5 +17,14 @@ cd $name-$version
 
 python setup.py build
 python setup.py install --root="$PKG" --skip-build --optimize='1'
+
+local _pyver
+_pyver="$(python -c 'import sys; print("%s.%s" %sys.version_info[0:2])')"
+install -d -m755 "${PKG}/usr"/{include,lib/cmake}
+ln -s "../lib/python${_pyver}/site-packages/pybind11/include/pybind11" "${PKG}/usr/include/pybind11"
+ln -s "../../lib/python${_pyver}/site-packages/pybind11/share/cmake/pybind11" "${PKG}/usr/lib/cmake/pybind11"
+    
+# license
+install -D -m644 LICENSE -t "${PKG}/usr/share/licenses/${name}"
 
 }
