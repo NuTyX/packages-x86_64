@@ -1,0 +1,23 @@
+description="Reading, writing, and processing images in a wide variety of file formats, using a format-agnostic API."
+url="http://www.openimageio.org/"
+
+maintainer="OpenImageIO Team"
+packager="Skythrew <mael.guerin@outlook.fr>"
+
+makedepends=(cmake boost)
+run=(openexr libpng libtiff libjpeg-turbo fmt pybind11)
+
+name=openimageio
+version=2.4.5.0
+release=1
+source=(https://github.com/OpenImageIO/oiio/archive/refs/tags/v${version}.tar.gz)
+
+build() {
+
+cd oiio-$version
+
+make
+
+make DESTDIR=$PKG install
+
+}
