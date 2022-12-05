@@ -18,6 +18,7 @@ cd oiio-$version
 
 make
 
-make DESTDIR=$PKG install
+mkdir -p $PKG/usr
+cp -r dist/* $PKG/usr/
 
 }
