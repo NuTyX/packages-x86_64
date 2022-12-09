@@ -5,10 +5,9 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 name=inkscape
-version=1.2.1
-release=6
+version=1.2.2
 
-source=(https://inkscape.org/gallery/item/34673/$name-$version.tar.xz
+source=(https://inkscape.org/gallery/item/37360/$name-$version.tar.xz
         poppler-22.09.0.patch)
 
 makedepends=(cmake boost git gtkmm python lcms2 gsl libxslt gc
@@ -20,7 +19,6 @@ makedepends=(cmake boost git gtkmm python lcms2 gsl libxslt gc
 prepare() {
 	mv $name-$version* $name
 	cd $name
-	patch -Np1 -i ../poppler-22.09.0.patch
 
 }
 
