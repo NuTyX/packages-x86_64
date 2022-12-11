@@ -1,0 +1,17 @@
+description="DBus API that allows cloud storage sync clients to expose their services"
+url="https://gitlab.gnome.org/World/libcloudproviders"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+makedepends=(meson git gobject-introspection vala gtk-doc)
+
+name=libcloudproviders
+version=0.3.1
+
+
+prepare() {
+  git clone https://gitlab.gnome.org/World/libcloudproviders.git \
+  $name-$version
+}
+build=meson

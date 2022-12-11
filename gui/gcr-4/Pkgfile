@@ -4,25 +4,26 @@ url="http://www.gnome.org/"
 packager="Tnut <tnut@nutyx.org>"
 contributors="Pierre,Spiky"
 
-makedepends=(meson ninja icu gtk3 intltool libgcrypt libtasn1
-             p11-kit gobject-introspection
-             gnupg libxslt vala openssh)
+makedepends=(meson ninja icu gtk4 intltool libgcrypt libsecret vala
+             p11-kit gobject-introspection openssh gnupg)
+
 run=(shared-mime-info desktop-file-utils)
 
-name=gcr
-version=3.41.1
-release=4
+name=gcr-4
+version=4.0.0
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/gcr/${version:0:3}/gcr-$version.tar.xz)
 
+prepare() {
+ mv gcr-$version $name-$version
+}
 build() {
 mkdir build
 cd    build
 meson --prefix=/usr \
-	--buildtype=release \
-	-Dgtk_doc=false \
-	-Dssh_agent=false \
-	../$name-$version
+        --buildtype=release \
+        -Dgtk_doc=false \
+        ../$name-$version
 
 ninja
 DESTDIR=$PKG ninja install

@@ -1,8 +1,8 @@
 description="Clocks applications for GNOME"
 url="http://www.gnome.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Tnut,Jayce,Remy,Tnut,Spiky"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Jayce,Remy,Spiky"
 
 makedepends=(meson ninja gtk4 libcanberra gnome-desktop libhandy
              libnotify libgweather-4 geoclue2 geocode-glib gsound)
@@ -11,8 +11,8 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache libadwai
 set=(gnome)
 
 name=gnome-clocks
-version=42.0
+version=43.0
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build=meson

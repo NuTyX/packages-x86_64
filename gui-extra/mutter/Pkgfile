@@ -1,10 +1,10 @@
 description="Window manager for gnome."
 url="http://www.gnome.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Jayce,Fanch,Remy,Spiky,Fabienwang,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Jayce,Fanch,Remy,Spiky,Fabienwang"
 
-makedepends=(clutter meson ninja glib   xorg-libsm graphene
+makedepends=(clutter meson ninja glib xorg-libsm graphene
              gnome-desktop gnome-settings-daemon libwacom libxkbcommon upower
              gobject-introspection libcanberra startup-notification
              xorg-libxcursor xorg-libxcomposite wayland-protocols)
@@ -13,15 +13,9 @@ run=(xorg-server zenity pipewire xorg-xwayland)
 set=(gnome)
 
 name=mutter
-version=42.5
+version=43.2
 
-source=(https://download.gnome.org/sources/$name/42/$name-$version.tar.xz
-        mutter-42.0-consolidated_fixes-1.patch)
-
-prepare() {
-cd $name-$version
-# patch -Np1 -i ../mutter-42.0-consolidated_fixes-1.patch
-}
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version

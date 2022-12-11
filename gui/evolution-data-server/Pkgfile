@@ -1,16 +1,15 @@
 description="Programs that work with contacts, tasks, and calendar information"
 url="http://www.gnome.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Fanch,Jayce,Remy,Spiky,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Fanch,Jayce,Remy,Spiky"
 
 makedepends=(vim db libcanberra gnome-online-accounts gnome-common gperf icu
-             libgdata libical libsecret libsoup nss libgweather vala 
-             gobject-introspection kerberos gtk3 openldap)
+             libgdata libical libsecret libsoup nss libgweather-4 vala 
+             gobject-introspection kerberos gtk4 openldap gcr-4 webkit2gtk-4)
 
 name=evolution-data-server
-version=3.44.4
-release=2
+version=3.46.2
 
 source=(https://gitlab.gnome.org/GNOME/$name/-/archive/$version/$name-$version.tar.gz)
 
@@ -20,6 +19,7 @@ cd $name-$version
 mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr   \
+      -DENABLE_OAUTH2_WEBKITGTK4=OFF\
       -DENABLE_UOA=OFF              \
       -DENABLE_VALA_BINDINGS=ON     \
       -DENABLE_INSTALLED_TESTS=ON   \
