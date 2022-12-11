@@ -1,15 +1,16 @@
 description="The GNOME Bluetooth Subsystem"
 url="https://wiki.gnome.org/Projects/GnomeBluetooth"
-packager="Spiky <spiky@nutyx.org>"
-contributors="Fanch,Tnut,Jayce,Remy,Tnut,Spiky"
 
-makedepends=(itstool libnotify gtk3 gtk4 gobject-introspection meson bluez
-             gtk-doc libcanberra gtk-update-icon-cache gsound libadwaita)
+packager="Tnut <tnut@nutyx.org>"
+contributors="Fanch,Jayce,Remy,Spiky"
+
+makedepends=(itstool libnotify gtk3 gtk4 gobject-introspection
+             meson gtk-doc libcanberra gsound libadwaita)
 run=(gtk-update-icon-cache bluez)
 
 name=gnome-bluetooth
-version=42.0
+version=42.4
 
-source=(https://download.gnome.org/sources/$name/42/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build=meson
