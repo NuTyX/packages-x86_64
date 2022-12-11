@@ -1,21 +1,21 @@
 description="GNOME file manager"
 url="http://live.gnome.org/Nautilus"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Fanch,Jayce,Remy,Tnut,Fabienwang,Spiky"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Fanch,Jayce,Remy,Fabienwang,Spiky"
 
 run=(desktop-file-utils gtk-update-icon-cache tracker-miners
      shared-mime-info libportal)
-makedepends=(gnome-autoar libnotify gnome-desktop tracker
-             gobject-introspection exempi libexif libgexiv2
-             gvfs meson gtk-doc libhandy bubblewrap)
+makedepends=(gnome-autoar libnotify gnome-desktop tracker gvfs
+             gobject-introspection exempi libexif libgexiv2 
+             libcloudproviders meson gtk-doc libhandy bubblewrap libadwaita)
 set=(gnome)
 
 name=nautilus
-version=42.2
+version=43.1
 
 
-source=(https://ftp.acc.umu.se/pub/GNOME/sources/$name/42/$name-$version.tar.xz)
+source=(https://ftp.acc.umu.se/pub/GNOME/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build() {
   cd $name-$version
