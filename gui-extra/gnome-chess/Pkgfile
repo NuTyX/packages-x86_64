@@ -1,15 +1,15 @@
 description="Play the classic two-player boardgame of chess."
 url="http://www.gnome.org/"
 
-packager="Spiky <spiky@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 contributors="Fanch,Jayce,Spiky"
 
 makedepends=(meson ninja hicolor-icon-theme gtk4 librsvg libadwaita)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache gnuchess)
 
 name=gnome-chess
-version=42.1
+version=43.0
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build=meson
