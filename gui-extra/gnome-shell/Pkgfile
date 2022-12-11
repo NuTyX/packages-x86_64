@@ -1,11 +1,11 @@
 description="provides the core user interface functions for the GNOME 3 Desktop"
 url="http://www.gnome.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Fanch,Remy,Tnut,Fabienwang,Spiky"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Fanch,Remy,Fabienwang,Spiky"
 
 makedepends=(systemd meson sassc caribou evolution-data-server gjs gnome-control-center
-             gnome-themes-extra libcroco mutter startup-notification gtk4
+             gnome-themes-extra libcroco mutter startup-notification gtk4 gcr-4
              gstreamer-plugins-base network-manager-applet gtk-doc
              gnome-autoar asciidoc gnome-bluetooth)
 
@@ -16,9 +16,10 @@ run=(adwaita-icon-theme dconf gnome-backgrounds gnome-menus
 set=(gnome)
 
 name=gnome-shell
-version=42.5
+version=43.2
+release=2
 
-source=(https://download.gnome.org/sources/$name/42/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
