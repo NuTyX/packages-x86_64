@@ -1,16 +1,16 @@
 description="Access current weather conditions and forecasts"
 url="http://www.gnome.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Jayce,Remy,Tnut,Spiky"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Jayce,Remy,Spiky"
 
 makedepends=(gtk4 geoclue2 libhandy)
 run=(gnome-desktop gjs libgweather-4 gsettings-desktop-schemas
      desktop-file-utils gtk-update-icon-cache libadwaita)
 
 name=gnome-weather
-version=42.0
+version=43.0
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build=meson
