@@ -1,19 +1,19 @@
 description="The GNOME User Docs package contains documentation for GNOME"
 url="http://www.gnome.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Fanch,Tnut,Remy,Schrodinger72,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch,Tnut,Remy,Schrodinger72"
 
 makedepends=(itstool)
 
 set=(gnome)
 
 name=gnome-user-docs
-version=42.0
+version=43.0
 
 PKGMK_LOCALES=(as ca cs da de el fi fr es gl gu he hi hr hu id it ja kn ko lv mr nl pa pl pt ro ru sl sr sv te vi ta zh)
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 pack_remove_locale() {
 cd $PKG
