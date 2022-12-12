@@ -1,0 +1,17 @@
+description='Map widget for GTK 4'
+url='https://wiki.gnome.org/Projects/libshumate'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(gobject-introspection gi-docgen vala meson
+             glib2 cairo sqlite gtk4 libsoup3)
+run=()
+set=()
+
+name=libshumate
+version=1.0.3
+
+source=(https://download.gnome.org/sources/libshumate/1.0/$name-$version.tar.xz)
+
+build=meson
