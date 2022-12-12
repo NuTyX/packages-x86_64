@@ -10,10 +10,9 @@ makedepends=(dconf dbus-glib docbook-xml docbook-xsl elogind
 set=(gnome)
 
 name=gnome-session
-version=42.0
-release=2
+version=43.0
 
-source=(https://download.gnome.org/sources/$name/42/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
