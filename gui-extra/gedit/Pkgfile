@@ -1,20 +1,19 @@
 description="A text editor for GNOME"
 url="http://www.gnome.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Jayce,Fanch,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Jayce,Fanch,Spiky"
 
 set=(gnome)
 
 makedepends=(meson ninja libpeas yelp-xsl enchant iso-codes
              gtksourceview4 gspell enchant gtk3 gtksourceview gvfs
-             libsoup python-gobject python)
+             libsoup python-gobject python amtk tepl)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
 name=gedit
-version=42.2
-release=2
+version=43.2
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build=meson
