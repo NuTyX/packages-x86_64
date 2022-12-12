@@ -8,24 +8,23 @@ makedepends=(dbus libsamplerate python alsa-lib)
 run=()
 set=()
 
-name=jack2
+name=jack
 version=1.9.21
-release=2
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/jackaudio/$name/archive/refs/tags/v${version}.tar.gz
+source=(https://github.com/jackaudio/${name}2/archive/refs/tags/v${version}.tar.gz
         jack-99-audio.conf
         jack-40-hpet-permissions.rules)
 
 
 prepare() {
-  sed -i "s/rU/r/" $name-$version/waflib/Context.py
-  sed -i "s/rU/r/" $name-$version/waflib/ConfigSet.py
+  sed -i "s/rU/r/" ${name}2-$version/waflib/Context.py
+  sed -i "s/rU/r/" ${name}2-$version/waflib/ConfigSet.py
 }
 
 build() {
-cd $name-$version
+cd ${name}2-$version
 
 ./waf configure \
 		--prefix=/usr \
