@@ -1,7 +1,7 @@
 description="The GNOME Terminal Emulator"
 url="http://www.gnome.org/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 contributors="Jayce,Fanch,Rems,Spiky"
 
 makedepends=(dconf gtk3 vte nautilus gnome-shell yelp-tools)
@@ -10,9 +10,8 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 set=(gnome cinnamon budgie)
 
 name=gnome-terminal
-version=3.44.1
-release=2
+version=3.46.7
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://gitlab.gnome.org/GNOME/$name/-/archive/$version/$name-$version.tar.bz2)
 
 build=meson
