@@ -1,8 +1,8 @@
 description="System power information and statistics"
 url="http://www.gnome.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Tnut, Jayce"
+packager="spiky <spiky@nutyx.org>"
+contributors="Jayce,Tnut"
 
 makedepends=(gtk3 upower dconf hicolor-icon-theme)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
@@ -10,9 +10,8 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 set=(gnome)
 
 name=gnome-power-manager
-version=3.32.0
-release=3
+version=43.0
 
-source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build=meson
