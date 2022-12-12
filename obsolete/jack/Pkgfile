@@ -1,0 +1,33 @@
+description="A low-latency audio server"
+url="http://jackaudio.org"
+
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(db libsamplerate readline doxygen celt)
+
+_longname=jack-audio-connection-kit
+
+name=jack
+version=0.125.0
+release=2
+
+source=(http://jackaudio.org/downloads/${_longname}-$version.tar.gz
+        jack-99-audio.conf
+        jack-40-hpet-permissions.rules)
+
+build() {
+cd ${_longname}-$version
+./configure --prefix=/usr --libdir=/usr/lib
+make
+make DESTDIR=$PKG install
+
+install -Dm644 $SRC/jack-99-audio.conf \
+      $PKG/etc/security/limits.d/99-audio.conf
+
+install -Dm644 $SRC/jack-40-hpet-permissions.rules \
+    $PKG/etc/udev/rules.d/40-hpet-permissions.rules
+
+# Remove la files
+rm $PKG/usr/lib/libjack{,server}.la
+rm $PKG/usr/lib/jack/{inprocess,intime,jack_{alsa{,_midi},dummy,net,oss}}.la
+}

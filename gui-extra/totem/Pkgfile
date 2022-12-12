@@ -1,23 +1,23 @@
 description="GNOME3 movie player based on GStreamer"
 url="http://www.gnome.org/projects/totem/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Tnut,Jayce,Fanch,Remy,Rems,Spiky"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Jayce,Fanch,Rems,Spiky"
 
 makedepends=(appstream-glib meson ninja grilo libpeas
              gnome-icon-theme iso-codes gnome-desktop python-xdg
              clutter-gst clutter-gtk xorg-libsm libpeas python-gobject
              libgdata gstreamer-plugins-good gstreamer-plugins-bad
-             totem-pl-parser)
+             totem-pl-parser libportal)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
      python-pylint python-xdg libhandy)
 
 set=(gnome)
 
 name=totem
-version=42.0
+version=43.0
 
-source=(https://download.gnome.org/sources/$name/42/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build() {
 mkdir build

@@ -1,33 +1,43 @@
-description="A low-latency audio server"
-url="http://jackaudio.org"
+description='A real-time, low latency audio daemon'
+url='https://jackaudio.org/'
 
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
-makedepends=(db libsamplerate readline doxygen celt)
-
-_longname=jack-audio-connection-kit
+makedepends=(dbus libsamplerate python alsa-lib)
+run=()
+set=()
 
 name=jack
-version=0.125.0
-release=2
+version=1.9.21
 
-source=(http://jackaudio.org/downloads/${_longname}-$version.tar.gz
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/jackaudio/${name}2/archive/refs/tags/v${version}.tar.gz
         jack-99-audio.conf
         jack-40-hpet-permissions.rules)
 
+
+prepare() {
+  sed -i "s/rU/r/" ${name}2-$version/waflib/Context.py
+  sed -i "s/rU/r/" ${name}2-$version/waflib/ConfigSet.py
+}
+
 build() {
-cd ${_longname}-$version
-./configure --prefix=/usr --libdir=/usr/lib
-make
-make DESTDIR=$PKG install
+cd ${name}2-$version
+
+./waf configure \
+		--prefix=/usr \
+		--alsa \
+		--dbus \
+		--classic
+
+	./waf build -j ${JOBS-1}
+	./waf install --destdir=$PKG
 
 install -Dm644 $SRC/jack-99-audio.conf \
       $PKG/etc/security/limits.d/99-audio.conf
 
 install -Dm644 $SRC/jack-40-hpet-permissions.rules \
     $PKG/etc/udev/rules.d/40-hpet-permissions.rules
-
-# Remove la files
-rm $PKG/usr/lib/libjack{,server}.la
-rm $PKG/usr/lib/jack/{inprocess,intime,jack_{alsa{,_midi},dummy,net,oss}}.la
 }
