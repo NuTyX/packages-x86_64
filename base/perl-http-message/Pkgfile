@@ -1,16 +1,17 @@
 description="HTTP style messages"
 url="https://metacpan.org/pod/HTTP::Message"
-packager="Spiky <spiky@nutyx.org>"
-contributors="Pierre,Rems,Tnut,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Rems,Tnut"
 
 makedepends=(perl-encode-locale perl-html-parser
              perl-http-date perl-lwp-mediatypes perl-uri)
 run=(perl)
 
 name=perl-http-message
-version=6.43
+version=6.44
+PKGMK_KEEP_SOURCES="no"
 
-source=(https://cpan.metacpan.org/authors/id/S/SI/SIMBABQUE/HTTP-Message-$version.tar.gz)
+source=(https://github.com/libwww-perl/HTTP-Message/archive/refs/tags/v${version}.tar.gz)
 
 build() {
 ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""  \
