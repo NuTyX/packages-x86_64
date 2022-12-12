@@ -1,19 +1,19 @@
 description="The GNOME Settings daemon"
 url="http://www.gnome.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Fanch,Tnut,Jayce,Remy,Tnut,Spiky"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Fanch,Jayce,Remy,Spiky"
 
 makedepends=(geoclue2 geocode-glib libgweather-4 librsvg meson
              networkmanager ninja nss intltool cups colord
              gnome-desktop libcanberra libnotify libgnomekbd
-             libwacom pulseaudio upower elogind  gcr)
+             libwacom pulseaudio upower elogind  gcr-4)
 run=(gtk-update-icon-cache gsettings-desktop-schemas)
 
 name=gnome-settings-daemon
-version=42.2
+version=43.0
 
-source=(https://download.gnome.org/sources/$name/42/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 prepare() {
 cd $name-$version
