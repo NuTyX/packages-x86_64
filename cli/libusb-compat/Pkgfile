@@ -1,15 +1,20 @@
 description="Aims to look, feel and behave exactly like libusb-0.1."
 url="http://libusb.wiki.sourceforge.net/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(libusb)
 
 name=libusb-compat
-version=0.1.7
+version=0.1.8
 
 source=(https://github.com/libusb/libusb-compat-0.1/releases/download/v$version/$name-$version.tar.gz)
+
+prepare() {
+  cd $name-$version
+  ./autogen.sh
+}
 
 build() {
 cd $name-$version
