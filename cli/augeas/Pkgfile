@@ -1,20 +1,18 @@
 description="A configuration editing tool that parses config files and transforms them into a tree"
 url="http://augeas.net"
 
-contributors="Berlius,Greg,Remy,Spiky"
-packager="Spiky <spiky@nutyx.org>"
+contributors="Berlius,Greg,Remy"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(libxml2 readline)
 
 name=augeas
-version=1.13.0
+version=1.14.0
 
-source=(https://github.com/hercules-team/augeas/releases/download/release-$version/$name-$version.tar.gz
-        23f7b550.patch)
+source=(https://github.com/hercules-team/augeas/releases/download/release-$version/$name-$version.tar.gz)
 
 prepare() {
-  cd $name-$version
-  patch -p1 -i ../23f7b550.patch
+
 }
 
 build() {
