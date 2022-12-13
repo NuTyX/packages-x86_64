@@ -1,22 +1,21 @@
 description="Server access control program for X."
 url="https://xorg.freedesktop.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Pierre,Tnut"
 
 set=(xorg)
 
 PKGMK_GROUPS=(doc man)
 
 name=xorg-xhost
-version=1.0.8
-release=2
+version=1.0.9
 
 _name=${name/xorg-/}
 
 makedepends=(xorgproto xorg-util-macros xorg-libx11 xorg-libxmu)
 
-source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
+source=(https://ftp.x.org/pub/individual/app/${_name}-$version.tar.xz)
 
 build=xorg
 
