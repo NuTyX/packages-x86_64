@@ -12,9 +12,9 @@ makedepends=(libcanberra clutter-gst clutter-gtk gnome-desktop gnome-video-effec
 run=(gtk-update-icon-cache)
 
 name=cheese
-version=41.1
+version=43.0
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 build() {
 cd $name-$version
 sed -i "s/&version;/$version/" docs/reference/cheese{,-docs}.xml
