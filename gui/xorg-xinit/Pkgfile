@@ -1,8 +1,8 @@
 description="The xinit package contains a usable script to start the xserver."
 url="https://xorg.freedesktop.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Tnut"
 
 set=(xorg)
 
@@ -12,10 +12,9 @@ run=(font-bh-ttf xorg-server xorg-xkbcomp xorg-xkeyboard-config
 
 _name=xinit
 name=xorg-xinit
-version=1.4.1
-release=3
+version=1.4.2
 
-source=(http://ftp.x.org/pub/individual//app/${_name}-$version.tar.bz2)
+source=(http://ftp.x.org/pub/individual//app/${_name}-$version.tar.xz)
 
 build() {
 
