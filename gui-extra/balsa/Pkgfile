@@ -10,9 +10,15 @@ makedepends=(aspell enchant gmime3 libesmtp rarian pcre gtksourceview2
 
 
 name=balsa
-version=2.6.3
+version=2.6.4
 
-source=(http://pawsa.fedorapeople.org/balsa/$name-$version.tar.xz)
+source=(http://pawsa.fedorapeople.org/balsa/$name-$version.tar.xz
+        balsa-2.6.4-upstream_fixes-2.patch)
+
+prepare() {
+cd $name-$version
+patch -Np1 -i ../balsa-2.6.4-upstream_fixes-2.patch
+}
  
 build() {
 

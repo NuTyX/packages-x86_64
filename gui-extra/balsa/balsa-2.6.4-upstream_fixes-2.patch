@@ -1,0 +1,167 @@
+Submitted By:            Bruce Dubbs <bdubbs@linuxfromscratch.org>
+Updated Patch By:        Douglas R. Reno <renodr at linuxfromscratch.org>
+Date:                    2022-09-23
+Updated on:              2022-12-15
+Initial Package Version: 2.6.4
+Upstream Status:         Committted
+Origin:                  Upstream + Self (build modification)
+Description:             Fix build error if HTML support is disabled
+                         [renodr]: Updated patch to include fixes to allow use
+                         of WebKitGTK-4.1 (webkit with libsoup3).
+
+diff -Naurp balsa-2.6.4.orig/configure balsa-2.6.4/configure
+--- balsa-2.6.4.orig/configure	2022-09-20 13:44:49.000000000 -0500
++++ balsa-2.6.4/configure	2022-12-15 13:06:45.081890606 -0600
+@@ -15979,23 +15979,23 @@ printf "%s\n" "$use_html_widget" >&6; }
+         # note: sqlite3 is needed to manage html vs. plain and image download preferences
+ 
+ pkg_failed=no
+-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for  webkit2gtk-4.0 >= 2.28.0
++{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for  webkit2gtk-4.1 >= 2.32.0
+                                   sqlite3 >= 3.24.0" >&5
+-printf %s "checking for  webkit2gtk-4.0 >= 2.28.0
++printf %s "checking for  webkit2gtk-4.1 >= 2.32.0
+                                   sqlite3 >= 3.24.0... " >&6; }
+ 
+ if test -n "$HTML_CFLAGS"; then
+     pkg_cv_HTML_CFLAGS="$HTML_CFLAGS"
+  elif test -n "$PKG_CONFIG"; then
+     if test -n "$PKG_CONFIG" && \
+-    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \" webkit2gtk-4.0 >= 2.28.0
++    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \" webkit2gtk-4.1 >= 2.32.0
+                                   sqlite3 >= 3.24.0\""; } >&5
+-  ($PKG_CONFIG --exists --print-errors " webkit2gtk-4.0 >= 2.28.0
++  ($PKG_CONFIG --exists --print-errors " webkit2gtk-4.1 >= 2.32.0
+                                   sqlite3 >= 3.24.0") 2>&5
+   ac_status=$?
+   printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+   test $ac_status = 0; }; then
+-  pkg_cv_HTML_CFLAGS=`$PKG_CONFIG --cflags " webkit2gtk-4.0 >= 2.28.0
++  pkg_cv_HTML_CFLAGS=`$PKG_CONFIG --cflags " webkit2gtk-4.1 >= 2.32.0
+                                   sqlite3 >= 3.24.0" 2>/dev/null`
+ 		      test "x$?" != "x0" && pkg_failed=yes
+ else
+@@ -16008,14 +16008,14 @@ if test -n "$HTML_LIBS"; then
+     pkg_cv_HTML_LIBS="$HTML_LIBS"
+  elif test -n "$PKG_CONFIG"; then
+     if test -n "$PKG_CONFIG" && \
+-    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \" webkit2gtk-4.0 >= 2.28.0
++    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \" webkit2gtk-4.1 >= 2.32.0
+                                   sqlite3 >= 3.24.0\""; } >&5
+-  ($PKG_CONFIG --exists --print-errors " webkit2gtk-4.0 >= 2.28.0
++  ($PKG_CONFIG --exists --print-errors " webkit2gtk-4.1 >= 2.32.0
+                                   sqlite3 >= 3.24.0") 2>&5
+   ac_status=$?
+   printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+   test $ac_status = 0; }; then
+-  pkg_cv_HTML_LIBS=`$PKG_CONFIG --libs " webkit2gtk-4.0 >= 2.28.0
++  pkg_cv_HTML_LIBS=`$PKG_CONFIG --libs " webkit2gtk-4.1 >= 2.32.0
+                                   sqlite3 >= 3.24.0" 2>/dev/null`
+ 		      test "x$?" != "x0" && pkg_failed=yes
+ else
+@@ -16037,16 +16037,16 @@ else
+         _pkg_short_errors_supported=no
+ fi
+         if test $_pkg_short_errors_supported = yes; then
+-	        HTML_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs " webkit2gtk-4.0 >= 2.28.0
++	        HTML_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs " webkit2gtk-4.1 >= 2.32.0
+                                   sqlite3 >= 3.24.0" 2>&1`
+         else
+-	        HTML_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs " webkit2gtk-4.0 >= 2.28.0
++	        HTML_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs " webkit2gtk-4.1 >= 2.32.0
+                                   sqlite3 >= 3.24.0" 2>&1`
+         fi
+ 	# Put the nasty error message in config.log where it belongs
+ 	echo "$HTML_PKG_ERRORS" >&5
+ 
+-	as_fn_error $? "Package requirements ( webkit2gtk-4.0 >= 2.28.0
++	as_fn_error $? "Package requirements ( webkit2gtk-4.1 >= 2.32.0
+                                   sqlite3 >= 3.24.0) were not met:
+ 
+ $HTML_PKG_ERRORS
+diff -Naurp balsa-2.6.4.orig/libbalsa/body.c balsa-2.6.4/libbalsa/body.c
+--- balsa-2.6.4.orig/libbalsa/body.c	2022-09-11 10:04:53.000000000 -0500
++++ balsa-2.6.4/libbalsa/body.c	2022-12-15 12:59:56.061200616 -0600
+@@ -65,6 +65,7 @@ libbalsa_message_body_new(LibBalsaMessag
+     return body;
+ }
+ 
++#ifdef HAVE_HTML_WIDGET
+ static void
+ body_weak_notify(gpointer  data,
+                  GObject  *key)
+@@ -81,6 +82,7 @@ selection_table_foreach(gpointer key,
+ {
+     g_object_weak_unref(key, body_weak_notify, user_data);
+ }
++#endif
+ 
+ void
+ libbalsa_message_body_free(LibBalsaMessageBody * body)
+@@ -111,10 +113,12 @@ libbalsa_message_body_free(LibBalsaMessa
+     if (body->mime_part)
+ 	g_object_unref(body->mime_part);
+ 
++#ifdef HAVE_HTML_WIDGET
+     if (body->selection_table != NULL) {
+         g_hash_table_foreach(body->selection_table, selection_table_foreach, body);
+         g_hash_table_destroy(body->selection_table);
+     }
++#endif
+ 
+     g_free(body);
+ }
+diff -Naurp balsa-2.6.4.orig/libbalsa/body.h balsa-2.6.4/libbalsa/body.h
+--- balsa-2.6.4.orig/libbalsa/body.h	2022-09-11 10:04:53.000000000 -0500
++++ balsa-2.6.4/libbalsa/body.h	2022-12-15 12:59:56.062200612 -0600
+@@ -155,8 +155,8 @@ void libbalsa_message_body_set_mp_alt_se
+ LibBalsaMpAltSelection libbalsa_message_body_get_mp_alt_selection(LibBalsaMessageBody *body,
+                                                                   gpointer key);
+ #else
+-#define libbalsa_message_body_set_mp_alt_selection(x)
+-#define libbalsa_message_body_get_mp_alt_selection(x)	LIBBALSA_MP_ALT_AUTO
++#define libbalsa_message_body_set_mp_alt_selection(x, y)
++#define libbalsa_message_body_get_mp_alt_selection(x, y)	LIBBALSA_MP_ALT_AUTO
+ #endif /*HAVE_HTML_WIDGET*/
+ 
+ guint libbalsa_message_body_protect_mode(const LibBalsaMessageBody * body);
+diff -Naurp balsa-2.6.4.orig/libbalsa/html.c balsa-2.6.4/libbalsa/html.c
+--- balsa-2.6.4.orig/libbalsa/html.c	2022-09-20 13:01:55.000000000 -0500
++++ balsa-2.6.4/libbalsa/html.c	2022-12-15 13:01:35.452707349 -0600
+@@ -729,13 +729,17 @@ lbh_web_view_new(LibBalsaWebKitInfo *inf
+ 	settings = webkit_web_view_get_settings(view);
+ 	/* might be paranoid - see note in function lbh_get_web_view_context() above */
+ 	webkit_settings_set_hardware_acceleration_policy(settings, WEBKIT_HARDWARE_ACCELERATION_POLICY_NEVER);
+-#if WEBKIT_CHECK_VERSION(2, 31, 91)
++#if WEBKIT_CHECK_VERSION(2, 32, 0)
+     g_object_set(G_OBJECT(settings), "enable-plugins", FALSE, NULL);
+-#else  /* WEBKIT_CHECK_VERSION(2, 31, 91) */
++#else  /* WEBKIT_CHECK_VERSION(2, 32, 0) */
+     webkit_settings_set_enable_plugins(settings, FALSE);
+-#endif /* WEBKIT_CHECK_VERSION(2, 31, 91) */
++#endif /* WEBKIT_CHECK_VERSION(2, 32, 0) */
++#if WEBKIT_CHECK_VERSION(2, 38, 0)
++    g_object_set(G_OBJECT(settings), "enable-java", FALSE, NULL);
++#else /* WEBKIT_CHECK_VERSION(2,38,0) */
++    webkit_settings_set_enable_java(settings, FALSE);
++#endif /* WEBKIT_CHECK_VERSION(2,38,0) */
+     webkit_settings_set_enable_javascript(settings, FALSE);
+-	webkit_settings_set_enable_java(settings, FALSE);
+ 	webkit_settings_set_enable_hyperlink_auditing(settings, TRUE);
+ 	webkit_settings_set_auto_load_images(settings,
+ 		auto_load_ext_content || (g_atomic_int_get(&html_filter_found) != 0));
+diff -Naurp balsa-2.6.4.orig/meson.build balsa-2.6.4/meson.build
+--- balsa-2.6.4.orig/meson.build	2022-09-20 13:43:44.000000000 -0500
++++ balsa-2.6.4/meson.build	2022-12-15 13:02:52.993287638 -0600
+@@ -169,7 +169,10 @@ libnetclient_deps = [glib_dep,
+ # HTML widget
+ #
+ if html_widget == 'webkit2'
+-  html_dep = dependency('webkit2gtk-4.0', version : '>= 2.28.0')
++  html_dep = dependency('webkit2gtk-4.1', required : false)
++  if not html_dep.found()
++    html_dep = dependency('webkit2gtk-4.0', version : '>=2.28.0')
++  endif
+   htmlpref_dep = dependency('sqlite3', version : '>= 3.24.0')
+   balsa_web_extensions = join_paths(get_option('prefix'), get_option('libdir'), 'balsa')
+   add_project_arguments('-DBALSA_WEB_EXTENSIONS="' + balsa_web_extensions + '"', language : 'c')
