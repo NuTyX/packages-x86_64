@@ -1,0 +1,36 @@
+description="Python obsolet version 2 high-level scripting language"
+url="http://www.python.org"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus"
+
+makedepends=(bzip2 libffi sqlite expat ncurses)
+
+PKGMK_GROUPS=(devel man doc)
+_pybasever=2.7
+
+name=python2
+version=2.7.18
+
+source=(${url}/ftp/python/$version/Python-$version.tar.xz)
+
+build() {
+    cd Python-$version
+
+    sed -i '/2to3/d' ./setup.py
+
+    ./configure --prefix=/usr        \
+                --with-system-expat  \
+                --with-system-ffi    \
+                --enable-shared      \
+                --enable-unicode=ucs4
+    make
+    make DESTDIR=$PKG altinstall
+
+    ln -s python2.7  $PKG/usr/bin/python2 
+    ln -s python2.7-config $PKG/usr/bin/python2-config
+
+    rm $PKG/usr/bin/{idle,pydoc}
+
+    chmod -v 755 $PKG/usr/lib/libpython2.7.so.1.0
+}
