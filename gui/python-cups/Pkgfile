@@ -9,7 +9,7 @@ run=(python python-requests)
 
 name=python-cups
 version=2.0.1
-release=3
+release=4
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -18,5 +18,6 @@ https://github.com/OpenPrinting/pycups/archive/v$version.tar.gz)
 
 build() {
     cd pycups-$version
-    python3 setup.py install --prefix=/usr --root=$PKG
+    python setup.py build
+    python setup.py install --prefix=/usr --root=$PKG --optimize=1
 }
