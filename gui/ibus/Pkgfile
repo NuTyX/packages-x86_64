@@ -1,16 +1,16 @@
 description="IBus is an Intelligent Input Bus."
 url="http://ibus.googlecode.com"
 
-packager="tnut <tnut@nutyx.org>"
-contributor="Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributor=""
 
 makedepends=(dconf iso-codes gobject-introspection gtk2
-             libnotify vala python python-gobject
-             libxkbcommon dbus-python)
+             libnotify vala python libxkbcommon)
+run=(python-dbus python-gobject)
 
 name=ibus
 version=1.5.27
-release=2
+release=3
 
 source=(https://github.com/ibus/ibus/releases/download/$version/$name-$version.tar.gz)
 
