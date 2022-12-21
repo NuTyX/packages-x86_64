@@ -1,7 +1,7 @@
 url="https://www.kernel.org"
 description="The 4.14 longterm support Linux Kernel version"
 
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 
 makedepends=(bison flex perl)
 run=(nutyx kmod busybox)
@@ -11,7 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-414
-version=4.14.296
+version=4.14.302
 
 alias=(linux-4.14)
 INITRD="initrd-${name/*-/}"
@@ -95,7 +95,20 @@ echo "if [ -f boot/$INITRD ]; then
     mkinitramfs ${KERNEL_VERSION}
     rm boot/$INITRD
     mv boot/initrd-${KERNEL_VERSION} boot/$INITRD
-fi" > $PKGMK_ROOT/$name.post-install
+fi
+
+echo \"
+
+******************************************************
+* This kernel-414 version is obsolet from 01.01.2024.*
+* After this date it will be removed from the system.*
+* You should replace this version before this date.  *
+* See https://www.nutyx.org/en/upgrade-kernel-lts    *
+* or                                                 *
+* https://www.nutyx.org/fr/upgrade-kernel-lts        *
+******************************************************
+
+\"" > $PKGMK_ROOT/$name.post-install
 
 }
 devel() {

@@ -1,14 +1,14 @@
 description="VirtualBox is a powerfull 32 and 64 bits virtualization product (binary version)"
 url="http://virtualbox.org"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Greg,Tnut,Spiky"
-
-run=(sdl1)
+packager="Tnut <tnut@nutyx.org>"
+contributors="Greg,Spiky"
 
 name=virtualbox
-version=6.1.40
-buildr=154048
+version=7.0.4
+release=2
+
+buildr=154605
 
 _name=Oracle_VM_VirtualBox_Extension_Pack
 
@@ -36,7 +36,7 @@ build() {
 	ln -s /opt/VirtualBox/rdesktop-vrdp $PKG/usr/bin/rdesktop-vrdp
 	mv $PKG/opt/VirtualBox/VBox.png $PKG/usr/share/pixmaps/VBox.png
 	mv $PKG/opt/VirtualBox/virtualbox.desktop $PKG/usr/share/applications/virtualbox.desktop
-	chmod +s $PKG/opt/VirtualBox/{VirtualBoxVM,VBoxSDL,VBoxHeadless,VBoxVolInfo,VBoxNetDHCP,VBoxNetAdpCtl}
+	chmod +s $PKG/opt/VirtualBox/{VirtualBoxVM,VBoxHeadless,VBoxVolInfo,VBoxNetDHCP,VBoxNetAdpCtl}
 
 	for DIR in sysconfig/modules.d modules-load.d
 	do	
