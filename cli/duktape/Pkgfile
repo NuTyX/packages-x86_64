@@ -1,0 +1,19 @@
+description='embeddable Javascript engine, with a focus on portability and compact footprint'
+url='https://duktape.org/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=()
+
+name=duktape
+version=2.7.0
+
+source=(https://duktape.org/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+  export CFLAGS="$CFLAGS -DDUK_USE_FASTINT"
+  make -f Makefile.sharedlibrary INSTALL_PREFIX=/usr
+  make -f Makefile.sharedlibrary INSTALL_PREFIX=/usr DESTDIR=$PKG install
+}
