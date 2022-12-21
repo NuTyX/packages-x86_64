@@ -12,10 +12,9 @@ run=(xorg-xinit xorg-xhost xorg-xrdb upower iso-codes)
 set=(gnome)
 
 name=gdm
-version=42.0
-release=3
+version=43.0
 
-source=(https://download.gnome.org/sources/$name/42/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 prepare() {
 getent group gdm || groupadd -g 21 gdm
