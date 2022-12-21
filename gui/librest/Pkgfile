@@ -1,29 +1,40 @@
 description="Gives more easily access to internet services which says be 'RESTful'."
 url="http://www.gnome.org/"
 
-packager="fanch <fanch@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Fanch"
 
-makedepends=(libsoup gobject-introspection)
+makedepends=(libsoup3 gobject-introspection)
+run=(json-glib)
 
 name=librest
-version=0.8.1
-release=4
+version=0.9.1
 
 source=(https://download.gnome.org/sources/rest/${version%.*}/rest-$version.tar.xz)
 
+prepare() {
+mv rest-$version $name-$version
+}
+
 build() {
-cd rest-$version
-./configure \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --with-ca-certificates=/etc/ssl/certs
-make
-make DESTDIR=$PKG install
+cd $name-$version
+mkdir build
+cd    build
+
+meson --prefix=/usr  \
+      -Dgtk_doc=false \
+    -Dexamples=false \
+    -Dtests=false \
+    -Dca_certificates=true \
+    -Dca_certificates_path=/etc/ssl/certs \
+    ..
+
+ninja
+DESTDIR=$PKG ninja install
 
 # Obsolets libs
-rm $PKG/usr/lib/librest-0.7.la
-rm $PKG/usr/lib/librest-extras-0.7.la
+#rm $PKG/usr/lib/librest-1.0.la
+#rm $PKG/usr/lib/librest-extras-1.0.la
 }
 uptodate(){
 local latest lastversion url
