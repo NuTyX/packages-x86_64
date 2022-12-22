@@ -1,43 +1,35 @@
 description="Network Sniffer with nice GUI"
 url="http://www.wireshark.org"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Fanch,Tnut,Greg,Rémy,Fabienwang,Spiky"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Fanch,Greg,Rémy,Fabienwang,Spiky"
 
-makedepends=(cmake c-ares ninja shared-mime-info gtk3 libpcap pcre hicolor-icon-theme
-             qtbase qttranslations qtmultimedia qtsvg)
+makedepends=(cmake c-ares ninja gtk3 libpcap pcre qtbase gnutls 
+             qttranslations qtmultimedia qtsvg qttools libssh libgcrypt)
 run=(shared-mime-info hicolor-icon-theme)
 
 
 name=wireshark
-version=3.6.8
+version=4.0.2
 
-source=(https://www.wireshark.org/download/src/all-versions/wireshark-$version.tar.xz)
+source=(https://www.wireshark.org/download/src/$name-$version.tar.xz)
 
 prepare() {
 getent group wireshark ||groupadd -g 62 wireshark
 }
 build() {
-  cd $name-$version
 
   mkdir build
   cd    build
   cmake  -DCMAKE_INSTALL_PREFIX=/usr \
          -DCMAKE_BUILD_TYPE=Release \
-         -DMAKE_INSTALL_DOCDIR=/usr/share/doc/$name-$version \
-         -G Ninja ..
+         -DCMAKE_INSTALL_LIBDIR=lib \
+         -DCMAKE_INSTALL_RPATH= \
+         -DCMAKE_SKIP_RPATH=ON \
+         -G Ninja ../$name-$version
 
   ninja
   DESTDIR=$PKG ninja install
 
-  install -v -m755 -d $PKG/usr/share/doc/wireshark-$version
-  install -v -m644    ../README.linux ../doc/README.* ../doc/{*.adoc,randpkt.txt} \
-                      $PKG/usr/share/doc/wireshark-$version
-
-  pushd $PKG/usr/share/doc/wireshark-$version
-     for FILENAME in ../../wireshark/*.html; do
-         ln -s -v -f $FILENAME .
-     done
-  popd
-  unset FILENAME
+  chmod -v 6550 $PKG/usr/bin/{tshark,dumpcap}
 }
