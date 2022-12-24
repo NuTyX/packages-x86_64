@@ -1,15 +1,14 @@
 description="The Shadow package contains programs for handling passwords in a secure way."
-url="http://shadow.pld.org.pl/"
+url="https://shadow-maint.github.io/shadow/"
 
 maintainer="pkg-shadow-devel@lists.alioth.debian.org"
 contributors="Pierre, Spiky"
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 
 makedepends=(pam)
 
 name=shadow
-version=4.8.1
-release=2
+version=4.13
 
 PKGMK_LOCALES=()
 source=(https://github.com/shadow-maint/shadow/releases/download/$version/shadow-$version.tar.xz)
@@ -24,15 +23,14 @@ find man -name Makefile.in -exec sed -i 's/getspnam\.3 / /' {} \;
 find man -name Makefile.in -exec sed -i 's/passwd\.5 / /'   {} \;
 
 sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
+       -e 's@#\(SHA_CRYPT_..._ROUNDS 5000\)@\100@'       \
        -e 's@/var/spool/mail@/var/mail@' -i etc/login.defs
-sed -i 's/1000/999/' etc/useradd
 
 ./configure --sysconfdir=/etc --with-group-name-max-length=32
 make
 make DESTDIR=$PKG install
-sed -i 's/yes/no/' $PKG/etc/default/useradd
-# sed -i 's/GROUP/# GROUP/' $PKG/etc/default/useradd
 mv -v $PKG/usr/bin/passwd $PKG/bin
+
 #
 # Following sed comment appropriate lines in etc/login.defs, and stop login
 # from performing these functions. First backup the etc/login.defs
@@ -269,6 +267,5 @@ fi
 if [ -f $PKG/etc/limits ]; then
  mv -v $PKG/etc/limits{,.NOUSE}
 fi
-rm $PKG/usr/share/man/man8/nologin.8
 rm $PKG/sbin/nologin
 }
