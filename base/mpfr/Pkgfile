@@ -3,15 +3,14 @@ url="http://www.mpfr.org"
 
 maintainer="Guillaume Hanrot,Vincent Lefèvre,Patrick Pélissier,Philippe Théveny and Paul Zimmermann"
 contributors="Pierre B"
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 
 makedepends=(gmp texinfo)
 
 name=mpfr
-version=4.1.0
-release=2
+version=4.1.1
 
-source=(http://www.mpfr.org/mpfr-current/mpfr-$version.tar.xz)
+source=(https://ftp.gnu.org/gnu/$name/$name-$version.tar.xz)
 
 build()
 {
@@ -20,6 +19,8 @@ cd mpfr-$version
 	--enable-thread-safe \
 	--docdir=/usr/share/doc/mpfr-$version
 make
+# build ones first then
+# again with make check below
 make check
 make DESTDIR=$PKG install
 make html
