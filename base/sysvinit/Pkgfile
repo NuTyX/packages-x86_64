@@ -2,12 +2,12 @@ description="Programs for controlling the startup, running, and shutdown of the 
 url="ftp://ftp.cistron.nl/pub/people/miquels/sysvinit/"
 maintainer="sysvinit-devel@nongnu.org"
 contributors="Pierre B"
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 
 name=sysvinit
-version=3.04
+version=3.06
 
-source=(http://download.savannah.nongnu.org/releases/sysvinit/sysvinit-$version.tar.xz
+source=(https://github.com/slicer69/$name/releases/download/$version/$name-$version.tar.xz
 	$name-consolidated-1.patch)
 
 build()
@@ -51,11 +51,6 @@ ca:12345:ctrlaltdel:/sbin/shutdown -t1 -a -h now
 su:S016:once:/sbin/sulogin
 
 1:2345:respawn:/sbin/agetty --noclear tty1 9600
-2:2345:respawn:/sbin/agetty tty2 9600
-3:2345:respawn:/sbin/agetty tty3 9600
-4:2345:respawn:/sbin/agetty tty4 9600
-5:2345:respawn:/sbin/agetty tty5 9600
-6:2345:respawn:/sbin/agetty tty6 9600
 
 20:5:respawn:/usr/sbin/xdm-nutyx
 
