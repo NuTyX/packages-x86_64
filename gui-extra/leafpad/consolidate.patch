@@ -1,0 +1,33 @@
+diff -Naur a/src/dialog.c b/src/dialog.c
+--- a/src/dialog.c	2005-04-28 15:58:00.000000000 +0200
++++ b/src/dialog.c	2022-12-25 15:28:47.880477631 +0100
+@@ -36,7 +36,7 @@
+ 		GTK_DIALOG_DESTROY_WITH_PARENT,
+ 		type,
+ 		GTK_BUTTONS_NONE,
+-		str);
++		"%s", str);
+ 	gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
+ 	gtk_dialog_add_buttons(GTK_DIALOG(dialog),
+ 		GTK_STOCK_OK, GTK_RESPONSE_CANCEL, NULL);
+@@ -61,7 +61,7 @@
+ 		GTK_DIALOG_DESTROY_WITH_PARENT,
+ 		GTK_MESSAGE_QUESTION,
+ 		GTK_BUTTONS_NONE,
+-		str);
++		"%", str);
+ 	gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
+ 	gtk_dialog_add_buttons(GTK_DIALOG(dialog),
+ 		GTK_STOCK_NO, GTK_RESPONSE_NO,
+diff -Naur a/src/gtkprint.c b/src/gtkprint.c
+--- a/src/gtkprint.c	2007-09-11 16:58:39.000000000 +0200
++++ b/src/gtkprint.c	2022-12-25 15:27:44.661185723 +0100
+@@ -165,7 +165,7 @@
+ 		GTK_DIALOG_DESTROY_WITH_PARENT,
+ 		GTK_MESSAGE_ERROR,
+ 		GTK_BUTTONS_NONE,
+-		message);
++		"%s", message);
+ 	gtk_window_set_resizable(GTK_WINDOW(dialog), FALSE);
+ 	gtk_dialog_add_buttons(GTK_DIALOG(dialog),
+ 		GTK_STOCK_OK, GTK_RESPONSE_CANCEL, NULL);
