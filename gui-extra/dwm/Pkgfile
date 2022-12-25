@@ -1,17 +1,16 @@
 description='dynamic window manager for X.'
 url='https://dwm.suckless.org/'
 
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 contributors=""
 
 makedepends=(xorg-libxinerama)
 run=(st)
 
 name=dwm
-version=6.3
-release=2
+version=6.4
 
-source=(http://dl.suckless.org/dwm/dwm-6.3.tar.gz)
+source=(http://dl.suckless.org/dwm/dwm-$version.tar.gz)
 
 build() {
 cd $name-$version
