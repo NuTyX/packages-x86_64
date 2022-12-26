@@ -1,26 +1,18 @@
 description="Netfilter nftables userspace tools"
 url="http://netfilter.org/projects/nftables/"
 
-contributors="Alienus,Fanch,Greg,Spiky"
-packager="tnut <tnut@nutyx.org>"
+contributors="Alienus,Fanch,Greg,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(gmp readline docbook2x asciidoc libmnl  libnftnl jansson)
 
 name=nftables
-version=1.0.5
-release=2
+version=1.0.6
 
-source=($url/files/nftables-$version.tar.bz2
-        libnftables.patch
+source=($url/files/nftables-$version.tar.xz
         nftables.conf)
 
-prepare() {
-cd $name-$version
 
-#patch -Np1 -i ../libnftables.patch
-
-  autoreconf -fiv
-}
 build(){
 
 cd $name-$version
