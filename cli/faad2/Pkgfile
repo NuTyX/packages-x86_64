@@ -1,20 +1,20 @@
 description="ISO AAC audio decoder"
 url="http://www.audiocoding.com"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(autoconf automake libtool)
 
 name=faad2
-version=2.10.0
+version=2.10.1
 
 _version=${version//./_}
 
-source=(https://github.com/knik0/faad2/archive/${_version}/$name-${_version}.tar.gz)
+source=(https://github.com/knik0/faad2/archive/${version}/$name-${version}.tar.gz)
 
 build() {
-cd $name-${_version}
+cd $name-${version}
 ./bootstrap
 ./configure --prefix=/usr --disable-static
 make
