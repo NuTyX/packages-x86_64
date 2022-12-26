@@ -1,17 +1,15 @@
 description="Filter that can be run between an arbitrary application and UTF8 emulator."
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 PKGMK_GROUPS=(doc man)
 url="http://xorg.freedesktop.org"
 
 name=xorg-luit
-version=1.1.1
+version=20221028
 _name=${name/xorg-/}
-release=2
 makedepends=(xorg-libfontenc)
-source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
-
+source=(https://invisible-mirror.net/archives/${_name}/${_name}-20221028.tgz)
 build=xorg
 prepare() {
 	cd ${_name}-$version
