@@ -1,52 +1,32 @@
 diff -Naur a/meson.build b/meson.build
---- a/meson.build	2020-07-30 21:02:36.000000000 +0200
-+++ b/meson.build	2022-04-04 20:28:34.044272454 +0200
-@@ -40,7 +40,7 @@
- 
- want_ossfuzz = get_option('oss-fuzz')
- want_libfuzzer = get_option('llvm-fuzz')
--if want_ossfuzz + want_libfuzzer > 1
-+if want_ossfuzz and want_libfuzzer
-         error('only one of oss-fuzz or llvm-fuzz can be specified')
- endif
- 
-@@ -2904,7 +2904,7 @@
+--- a/meson.build	2022-12-20 19:15:44.000000000 +0100
++++ b/meson.build	2022-12-26 21:41:13.671772944 +0100
+@@ -3515,7 +3515,7 @@
          include_directories : includes,
          link_with : [libshared],
-         install_rpath : rootlibexecdir,
+         install_rpath : rootpkglibdir,
 -        install : (conf.get('HAVE_SYSV_COMPAT') == 1),
 +        install : true,
          install_dir : rootlibexecdir)
  
  public_programs += executable(
 diff -Naur a/rules.d/50-udev-default.rules.in b/rules.d/50-udev-default.rules.in
---- a/rules.d/50-udev-default.rules.in	2020-07-30 21:02:36.000000000 +0200
-+++ b/rules.d/50-udev-default.rules.in	2022-04-04 20:28:16.377956293 +0200
-@@ -37,8 +37,8 @@
+--- a/rules.d/50-udev-default.rules.in	2022-12-20 19:15:44.000000000 +0100
++++ b/rules.d/50-udev-default.rules.in	2022-12-26 21:43:05.163000639 +0100
+@@ -40,8 +40,8 @@
  SUBSYSTEM=="media", GROUP="video"
  SUBSYSTEM=="cec", GROUP="video"
  
--SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="render", MODE="@GROUP_RENDER_MODE@"
--SUBSYSTEM=="kfd", GROUP="render", MODE="@GROUP_RENDER_MODE@"
-+SUBSYSTEM=="drm", KERNEL=="renderD*", MODE="@GROUP_RENDER_MODE@"
-+SUBSYSTEM=="kfd", MODE="@GROUP_RENDER_MODE@"
+-SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="render", MODE="{{GROUP_RENDER_MODE}}"
+-SUBSYSTEM=="kfd", GROUP="render", MODE="{{GROUP_RENDER_MODE}}"
++SUBSYSTEM=="drm", KERNEL=="renderD*", MODE="{{GROUP_RENDER_MODE}}"
++SUBSYSTEM=="kfd", MODE="{{GROUP_RENDER_MODE}}"
  
- # When using static_node= with non-default permissions, also update
- # tmpfiles.d/static-nodes-permissions.conf.in to keep permissions synchronized.
-diff -Naur a/src/basic/linux/if_arp.h b/src/basic/linux/if_arp.h
---- a/src/basic/linux/if_arp.h	2020-07-30 21:02:36.000000000 +0200
-+++ b/src/basic/linux/if_arp.h	2022-04-04 20:29:44.339544663 +0200
-@@ -54,6 +54,7 @@
- #define ARPHRD_X25	271		/* CCITT X.25			*/
- #define ARPHRD_HWX25	272		/* Boards with X.25 in firmware	*/
- #define ARPHRD_CAN	280		/* Controller Area Network      */
-+#define ARPHRD_MCTP	290
- #define ARPHRD_PPP	512
- #define ARPHRD_CISCO	513		/* Cisco HDLC	 		*/
- #define ARPHRD_HDLC	ARPHRD_CISCO
+ SUBSYSTEM=="misc", KERNEL=="sgx_enclave", GROUP="sgx", MODE="0660"
+ SUBSYSTEM=="misc", KERNEL=="sgx_vepc", GROUP="sgx", MODE="0660"
 diff -Naur a/src/basic/path-util.h b/src/basic/path-util.h
---- a/src/basic/path-util.h	2020-07-30 21:02:36.000000000 +0200
-+++ b/src/basic/path-util.h	2022-04-04 20:28:50.093954046 +0200
+--- a/src/basic/path-util.h	2022-12-20 19:15:44.000000000 +0100
++++ b/src/basic/path-util.h	2022-12-26 21:44:57.767540138 +0100
 @@ -10,8 +10,8 @@
  #include "strv.h"
  #include "time-util.h"
@@ -59,9 +39,9 @@ diff -Naur a/src/basic/path-util.h b/src/basic/path-util.h
  #define PATH_NORMAL_SBIN_BIN(x) x "bin"
  #define PATH_NORMAL_SBIN_BIN_NULSTR(x) x "bin\0"
 diff -Naur a/src/basic/unit-def.h b/src/basic/unit-def.h
---- a/src/basic/unit-def.h	2020-07-30 21:02:36.000000000 +0200
-+++ b/src/basic/unit-def.h	2022-04-04 20:28:29.087704128 +0200
-@@ -165,8 +165,8 @@
+--- a/src/basic/unit-def.h	2022-12-20 19:15:44.000000000 +0100
++++ b/src/basic/unit-def.h	2022-12-26 21:46:01.426337340 +0100
+@@ -176,8 +176,8 @@
  
  typedef enum SwapState {
          SWAP_DEAD,
@@ -73,9 +53,9 @@ diff -Naur a/src/basic/unit-def.h b/src/basic/unit-def.h
          SWAP_DEACTIVATING,
          SWAP_DEACTIVATING_SIGTERM,
 diff -Naur a/src/core/swap.c b/src/core/swap.c
---- a/src/core/swap.c	2020-07-30 21:02:36.000000000 +0200
-+++ b/src/core/swap.c	2022-04-04 20:28:20.777868996 +0200
-@@ -815,7 +815,7 @@
+--- a/src/core/swap.c	2022-12-20 19:15:44.000000000 +0100
++++ b/src/core/swap.c	2022-12-26 21:47:39.564482790 +0100
+@@ -827,7 +827,7 @@
                  }
          }
  
@@ -84,7 +64,7 @@ diff -Naur a/src/core/swap.c b/src/core/swap.c
          if (r < 0)
                  goto fail;
  
-@@ -853,7 +853,7 @@
+@@ -865,7 +865,7 @@
          s->control_command = s->exec_command + SWAP_EXEC_DEACTIVATE;
  
          r = exec_command_set(s->control_command,
@@ -93,7 +73,7 @@ diff -Naur a/src/core/swap.c b/src/core/swap.c
                               s->what,
                               NULL);
          if (r < 0)
-@@ -1401,7 +1401,7 @@
+@@ -1385,7 +1385,7 @@
  
                  /* Dispatch this before we dispatch SIGCHLD, so that
                   * we always get the events from /proc/swaps before
@@ -103,70 +83,67 @@ diff -Naur a/src/core/swap.c b/src/core/swap.c
                  if (r < 0) {
                          log_error_errno(r, "Failed to change /proc/swaps priority: %m");
 diff -Naur a/src/resolve/meson.build b/src/resolve/meson.build
---- a/src/resolve/meson.build	2020-07-30 21:02:36.000000000 +0200
-+++ b/src/resolve/meson.build	2022-04-04 20:28:11.311390155 +0200
-@@ -174,58 +174,3 @@
-                      install_dir : rootlibexecdir)
- endif
+--- a/src/resolve/meson.build	2022-12-20 19:15:44.000000000 +0100
++++ b/src/resolve/meson.build	2022-12-26 21:50:03.088436551 +0100
+@@ -174,55 +174,6 @@
+ 
+ ############################################################
  
 -tests += [
--        [['src/resolve/test-resolve-tables.c',
--          dns_type_headers,
--          'src/shared/test-tables.h'],
+-        [files('test-resolve-tables.c'),
 -         [libsystemd_resolve_core,
 -          libshared],
--         [libgcrypt,
--          libgpg_error,
--          libm],
--         'ENABLE_RESOLVE'],
+-         [lib_openssl_or_gcrypt,
+-          libm]],
 -
--        [['src/resolve/test-dns-packet.c',
--          dns_type_headers],
+-        [files('test-dns-packet.c'),
 -         [libsystemd_resolve_core,
 -          libshared],
--         [libgcrypt,
--          libgpg_error,
--          libm],
--         'ENABLE_RESOLVE'],
+-         [lib_openssl_or_gcrypt,
+-          libm]],
 -
--        [['src/resolve/test-resolved-etc-hosts.c',
--          'src/resolve/resolved-etc-hosts.c',
--          'src/resolve/resolved-etc-hosts.h'],
+-        [files('test-resolved-etc-hosts.c',
+-               'resolved-etc-hosts.c',
+-               'resolved-etc-hosts.h'),
 -         [libsystemd_resolve_core,
 -          libshared],
--         [libgcrypt,
--          libgpg_error,
--          libm],
--         'ENABLE_RESOLVE'],
+-         [lib_openssl_or_gcrypt,
+-          libm]],
 -
--        [['src/resolve/test-resolved-packet.c',
--          dns_type_headers],
+-        [files('test-resolved-packet.c'),
 -         [libsystemd_resolve_core,
 -          libshared],
--         [libgcrypt,
--          libgpg_error,
--          libm],
--         'ENABLE_RESOLVE'],
+-         [lib_openssl_or_gcrypt,
+-          libm]],
 -
--        [['src/resolve/test-dnssec.c',
--          dns_type_headers],
+-        [files('test-resolved-stream.c')
+-         + basic_dns_sources + systemd_resolved_sources,
+-         [libshared],
+-         [lib_openssl_or_gcrypt,
+-          libm]
+-         + systemd_resolved_dependencies,
+-         resolve_includes],
+-
+-        [files('test-dnssec.c'),
 -         [libsystemd_resolve_core,
 -          libshared],
--         [libgcrypt,
--          libgpg_error,
+-         [lib_openssl_or_gcrypt,
 -          libm],
--         'ENABLE_RESOLVE'],
+-         [], 'HAVE_OPENSSL_OR_GCRYPT'],
 -
--        [['src/resolve/test-dnssec-complex.c',
--          'src/resolve/dns-type.c',
--          dns_type_headers],
--         [],
--         [],
--         'ENABLE_RESOLVE', 'manual'],
+-        [files('test-dnssec-complex.c'),
+-         [libsystemd_resolve_core,
+-          libshared],
+-         [lib_openssl_or_gcrypt,
+-          libm],
+-         [], '', 'manual'],
 -]
+ 
+ fuzzers += [
+         [files('fuzz-dns-packet.c'),
 diff -Naur a/units/modprobe@.service b/units/modprobe@.service
---- a/units/modprobe@.service	2020-07-30 21:02:36.000000000 +0200
-+++ b/units/modprobe@.service	2022-04-04 20:28:38.600848717 +0200
+--- a/units/modprobe@.service	2022-12-20 19:15:44.000000000 +0100
++++ b/units/modprobe@.service	2022-12-26 21:50:34.894501916 +0100
 @@ -17,4 +17,4 @@
  
  [Service]

@@ -11,13 +11,12 @@ packager="tnut <tnut@nutyx.org>"
 # 2/ build systemd with dbus that has no systemd libs
 # 3/ rebuild dbus with systemd so that dbus gets links to systemd
 
-PKGMK_DEPENDS=(python meson ninja util-linux dbus)
+PKGMK_DEPENDS=(python python-markupsafe python-jinja meson ninja util-linux dbus)
 
 makedepends=(acl libcap kmod m4 gperf pam)
 
 name=systemd
-version=246
-release=18
+version=252.4
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
@@ -25,19 +24,18 @@ PKGMK_GROUPS=(devel doc man lib)
 
 source=(consolidate.patch
         http://download.tuxfamily.org/nutyx/files/$name-man-pages-$version.tar.xz
-	https://github.com/systemd/systemd/archive/v$version/systemd-$version.tar.gz)
+	https://github.com/systemd/systemd/archive/v${version:0:3}/systemd-$version.tar.gz)
 
 prepare() {
 ln -sf /bin/true /usr/bin/xsltproc
-cd $name-$version
+cd $name-stable-$version
 patch -Np1 -i ../consolidate.patch
 }
 build() {
+cd $name-stable-$version
 
-
-cd $name-$version
-mv ../build build
-cd          build
+mkdir build
+cd    build
 
 meson --prefix=/usr           \
 --sysconfdir=/etc             \
@@ -50,7 +48,7 @@ meson --prefix=/usr           \
 -Drpmmacrosdir=no             \
 -Dsulogin-path=/sbin/sulogin  \
 -Dumount-path=/bin/umount     \
--Dman=true                    \
+-Dman=false                   \
 -Dresolve=false               \
 -Dsysvinit-path=              \
 -Dsysvrcnd-path=              \
@@ -64,15 +62,25 @@ ninja
 
 DESTDIR=$PKG ninja install
 
+mkdir -p $PKG/usr/share/man
+for i in 1 3 5 7 8
+do
+  mv ../../man$i \
+   $PKG/usr/share/man
+done
+
+
 # systemd-initclt hack
 cp ../units/systemd-initctl.socket \
 $PKG/lib/systemd/system
-cp units/systemd-initctl.service.tmp \
-$PKG/lib/systemd/system/systemd-initctl.service
+sed s@{{ROOTLIBEXECDIR}}@/lib/systemd@ \
+ ../units/systemd-initctl.service.in \
+> $PKG/lib/systemd/system/systemd-initctl.service
 ln -sv ../systemd-initctl.socket  \
 $PKG/lib/systemd/system/sockets.target.wants/systemd-initctl.socket
 
-install -m0644 ../tmpfiles.d/legacy.conf $PKG/usr/lib/tmpfiles.d
+# Figure out what this file was for
+# install -m0644 ../tmpfiles.d/legacy.conf $PKG/usr/lib/tmpfiles.d
 
 mv $PKG/{,s}bin/udevadm
 ln -sv ../lib/systemd/systemd $PKG/sbin/systemd-init
