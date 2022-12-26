@@ -95,7 +95,18 @@ echo "if [ -f boot/$INITRD ]; then
     mkinitramfs ${KERNEL_VERSION}
     rm boot/$INITRD
     mv boot/initrd-${KERNEL_VERSION} boot/$INITRD
-fi" > $PKGMK_ROOT/$name.post-install
+fi
+
+******************************************************
+* This kernel-515 version is obsolet from Oct, 2023. *
+* After this date it will be removed from the system.*
+* You should replace this version before this date.  *
+* See https://www.nutyx.org/en/upgrade-kernel-lts    *
+* or                                                 *
+* https://www.nutyx.org/fr/upgrade-kernel-lts        *
+******************************************************
+
+\"" > $PKGMK_ROOT/$name.post-install
 
 
 }
