@@ -12,13 +12,11 @@ makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              harfbuzz gtk-doc libnotify wayland woff2 libmanette)
              
 name=webkitgtk
-version=2.38.2
+version=2.38.3
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 prepare() {
 echo 'add_compile_definitions("U_DEFINE_FALSE_AND_TRUE=1")' >> $name-$version/Source/WTF/wtf/CMakeLists.txt
-pkgrm python2
-pkgrm python2.devel
 sed -i /U_HIDE_DEPRECATE/d $name-$version/Source/WTF/wtf/Platform.h
 export NINJAJOBS=25
 }
