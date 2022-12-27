@@ -3,6 +3,8 @@ url="https://www.freedesktop.org/wiki/Software/systemd/"
 
 packager="tnut <tnut@nutyx.org>"
 
+# 1/ remove all the eudev archives cards.tar packages
+
 makedepends=(libcap kmod meson ninja)
 
 name=eudev
@@ -42,6 +44,9 @@ meson --prefix=/usr           \
 -Dsysusers=false              \
 -Duserdb=false                \
 -Dresolve=false               \
+-Dpam=true                    \
+-Dpamconfdir=/etc/pam.d       \
+-Dmode=release                \
 ..
 
 ninja
@@ -63,7 +68,7 @@ $PKG/99-default.link
 # systemd Package files
 rm $PKG/bin/{journalctl,loginctl,machinectl,portablectl,systemctl,networkctl}
 rm $PKG/bin/systemd-*
-rm -r $PKG/etc/sysctl.d
+rm -r $PKG/etc/{pam,sysctl}.d
 
 rm -r $PKG/usr/bin
 rm -r $PKG/usr/lib/{{environment,binfmt,sysctl,tmpfiles,modules-load}.d,kernel,systemd}
