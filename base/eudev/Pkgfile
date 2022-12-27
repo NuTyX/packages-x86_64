@@ -7,25 +7,24 @@ makedepends=(libcap kmod meson ninja)
 
 name=eudev
 _name=systemd
-version=246
-release=9
-PKGMK_DEPENDS=(perl python m4 gperf util-linux pam systemd acl)
+version=252.4
+
+PKGMK_DEPENDS=(perl python python-markupsafe python-jinja m4 gperf util-linux pam systemd acl)
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
 
 source=(http://anduin.linuxfromscratch.org/LFS/udev-lfs-20171102.tar.bz2
-        https://github.com/systemd/systemd/archive/v$version/systemd-$version.tar.gz)
+        https://github.com/systemd/systemd/archive/v${version:0:3}/systemd-$version.tar.gz)
 
 prepare() {
 
-sed '177,$ d' -i ${_name}-$version/src/resolve/meson.build
-sed -i 's/GROUP="render", //' ${_name}-$version/rules.d/50-udev-default.rules.in
-sed -i 's/+ want_libfuzzer.*$/and want_libfuzzer/' ${_name}-$version/meson.build
+sed '177,$ d' -i ${_name}-stable-$version/src/resolve/meson.build
+sed -i 's/GROUP="render", //' ${_name}-stable-$version/rules.d/50-udev-default.rules.in
 }
 build() {
 
 
-cd ${_name}-$version
+cd ${_name}-stable-$version
 mkdir build
 cd    build
 
@@ -42,6 +41,7 @@ meson --prefix=/usr           \
 -Dumount-path=/bin/umount     \
 -Dsysusers=false              \
 -Duserdb=false                \
+-Dresolve=false               \
 ..
 
 ninja
@@ -63,7 +63,7 @@ $PKG/99-default.link
 # systemd Package files
 rm $PKG/bin/{journalctl,loginctl,machinectl,portablectl,systemctl,networkctl}
 rm $PKG/bin/systemd-*
-rm -r $PKG/etc/{pam,sysctl}.d
+rm -r $PKG/etc/sysctl.d
 
 rm -r $PKG/usr/bin
 rm -r $PKG/usr/lib/{{environment,binfmt,sysctl,tmpfiles,modules-load}.d,kernel,systemd}
