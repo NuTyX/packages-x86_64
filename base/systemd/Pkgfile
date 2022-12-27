@@ -8,8 +8,8 @@ packager="tnut <tnut@nutyx.org>"
 # When rebuild systemd:
 # 1/ rebuild dbus first without systemd --disable-systemd in dbus package
 # 2/ remove all the systemd archives cards.tar packages
-# 2/ build systemd with dbus that has no systemd libs
-# 3/ rebuild dbus with systemd so that dbus gets links to systemd
+# 3/ build systemd with dbus that has no systemd libs
+# 4/ rebuild dbus with systemd so that dbus gets links to systemd
 
 PKGMK_DEPENDS=(python python-markupsafe python-jinja meson ninja util-linux dbus)
 
@@ -56,6 +56,9 @@ meson --prefix=/usr           \
 -Dsysusers=false              \
 -Duserdb=false                \
 -Dlocaled=false               \
+-Dpam=true                    \
+-Dpamconfdir=/etc/pam.d       \
+-Dmode=release                \
 ..
 
 ninja
