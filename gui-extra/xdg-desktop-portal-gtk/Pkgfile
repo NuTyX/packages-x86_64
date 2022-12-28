@@ -1,14 +1,14 @@
 description='A backend implementation for xdg-desktop-portal using GTK'
 url='https://github.com/flatpak/xdg-desktop-portal-gtk'
 
-packager="tnut <tnut@nutyx.org>"
-contributors=""
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
 makedepends=(xdg-desktop-portal python git)
 run=(gtk3 gsettings-desktop-schemas)
 
 name=xdg-desktop-portal-gtk
-version=1.14.0
+version=1.14.1
 
 prepare () {
 git clone https://github.com/flatpak/$name $name-$version
