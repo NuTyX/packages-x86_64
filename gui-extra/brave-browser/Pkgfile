@@ -2,15 +2,15 @@ PKGMK_KEEP_SOURCES="no"
 
 name=brave-browser
 description="The web browser from Brave Browse faster by blocking ads and trackers."
-version=1.42.97
+version=1.46.144
 url="https://brave.com/"
-packager="Spiky <spiky@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 run=(make-ca ttf-liberation dejavu-ttf)
 
 source=(https://github.com/brave/brave-browser/releases/download/v${version}/${name}_${version}_amd64.deb)
 build() {
-	tar -xf data.tar.xz -C "$PKG/"
+	bsdtar -xf data.tar.xz -C "$PKG/"
 	
 	# Icons
   for i in 16x16 24x24 32x32 48x48 64x64 128x128 256x256; do
