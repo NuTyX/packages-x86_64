@@ -11,7 +11,7 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 set=(gnome)
 
 name=gucharmap
-version=14.0.3
+version=15.0.2
 
 source=( https://gitlab.gnome.org/GNOME/gucharmap/-/archive/$version/$name-$version.tar.bz2)
 
@@ -23,8 +23,8 @@ build() {
         mkdir ucd
          pushd ucd
 
-         wget https://www.unicode.org/Public/zipped/14.0.0/UCD.zip
-         wget https://www.unicode.org/Public/zipped/14.0.0/Unihan.zip
+         wget https://www.unicode.org/Public/zipped/15.0.0/UCD.zip
+         wget https://www.unicode.org/Public/zipped/15.0.0/Unihan.zip
           unzip UCD.zip
         popd
 
