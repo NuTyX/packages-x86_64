@@ -1,15 +1,15 @@
 url="http://mama.indstate.edu/users/ice/tree/"
-packager="Spiky <spiky@nutyx.org>"
-contributors="Berlius,Tnut,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Berlius,Tnut"
 description="A directory listing program displaying a depth indented list of files"
 name=tree
-version=2.0.4
-
-source=(http://mirror.koddos.net/blfs/svn/t/$name-$version.tgz)
+version=2.1.0
+_name=unix-tree
+source=(https://gitlab.com/OldManProgrammer/unix-tree/-/archive/$version/${_name}-$version.tar.gz)
 
 build () {
 
-cd $name-$version
+cd ${_name}-$version
 
 make
 
