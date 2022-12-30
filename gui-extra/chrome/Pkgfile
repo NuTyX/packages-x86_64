@@ -1,7 +1,7 @@
 makedepends=(alsa-lib gtk3 cups xorg-libxscrnsaver xorg-libxtst nss)
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Tnut,Rems,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut,Rems"
 
 description="The popular and trusted web browser by Google (Stable Channel)"
 url="https://www.google.com/chrome"
@@ -9,7 +9,7 @@ url="https://www.google.com/chrome"
 run=(xorg-libxscrnsaver)
 
 name=chrome
-version=105.0.5195.52
+version=108.0.5359.124
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -17,7 +17,7 @@ source=(https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.de
 
 build(){
 
-  tar -xf data.tar.xz -C "$PKG/"
+ bsdtar -xf data.tar.xz -C "$PKG/"
 
   # Icons
   for i in 16x16 24x24 32x32 48x48 64x64 128x128 256x256; do
