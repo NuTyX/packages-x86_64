@@ -1,0 +1,47 @@
+description='The one stop solution to all your e-book needs'
+url='https://calibre-ebook.com/'
+
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
+
+name=calibre
+version=6.10.0
+
+makedepends=(bash-completion xdg-utils)
+run=(libglvnd xorg-fontconfig libxkbcommon xorg-libxcomposite
+     xorg-libxdamage xorg-libxrandr xorg-libxtst xorg-libxshmfence
+     xorg-libxkbfile hicolor-icon-theme desktop-file-utils
+     gtk-update-icon-cache shared-mime-info) 
+
+PKGMK_IGNORE_UNPACK="yes"
+source=(https://download.calibre-ebook.com/$version/$name-$version-x86_64.txz)
+
+
+prepare() {
+  mkdir -p \
+$PKG/usr/{bin,share/{icons/hicolor,mime/packages,metainfo,applications,desktop-directories,$name}}
+}
+
+build() {
+ cd $PKG/usr/share/$name
+ bsdtar xf $SRC/$name-$version-x86_64.txz
+ export XDG_DATA_DIRS=$PKG/usr/share
+ ./calibre_postinstall \
+     --root=$PKG/usr   \
+     --bindir=$PKG/usr/bin \
+     --sharedir=$PKG/usr/share/calibre \
+     --make-errors-fatal 
+
+}
+package() {
+
+for i in $PKG/usr/bin/*
+do
+  ln -svf /usr/share/$name/$(basename $i) \
+  $PKG/usr/bin/$(basename $i)
+done
+rm $PKG/usr/share/mime/application/x-mobipocket-ebook.xml
+rm $PKG/usr/share/mime/text/lrs.xml
+rm $PKG/usr/share/applications/mimeinfo.cache
+rm $PKG/usr/share/mime/* || true
+}
