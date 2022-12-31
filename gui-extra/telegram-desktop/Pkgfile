@@ -1,40 +1,52 @@
 description="Messaging app with a focus on speed and security, it’s super-fast, simple and free."
 url="https://telegram.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Fanch,Fabienwang,Spiki,Tnut,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch,Fabienwang,Spiki,Tnut"
 
-makedepends=(cmake ninja python ffmpeg glibmm kwayland rnnoise tg_owt
-             jemalloc abseil-cpp extra-cmake-modules gtk3 webkitgtk libdbusmenu-qt)
+makedepends=(libdrm xorg-libice xorg-libsm fontconfig freetype xorg-libxcb 
+             xorg-libx11 glib dbus libpng expat xorg-libxau xorg-libxdmcp chrpath)
 
-run=(desktop-file-utils ttf-opensans qt6-imageformats qt6-5compat
-     qt6-svg qt6-wayland)
+run=()
 
 alias=(telegram)
 
 name=telegram-desktop
-version=4.1.1
-release=2
+version=4.5.0
 
-source=(consolidate.patch
-        https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tdesktop-$version-full.tar.gz)
+source=(https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tsetup.$version.tar.xz
+       	tg.protocol https://github.com/telegramdesktop/tdesktop/raw/master/Telegram/Resources/art/icon16.png
+	https://github.com/telegramdesktop/tdesktop/raw/master/Telegram/Resources/art/icon32.png
+	https://github.com/telegramdesktop/tdesktop/raw/master/Telegram/Resources/art/icon48.png
+	https://github.com/telegramdesktop/tdesktop/raw/master/Telegram/Resources/art/icon64.png
+	https://github.com/telegramdesktop/tdesktop/raw/master/Telegram/Resources/art/icon128.png
+	https://github.com/telegramdesktop/tdesktop/raw/master/Telegram/Resources/art/icon256.png
+	https://github.com/telegramdesktop/tdesktop/raw/master/Telegram/Resources/art/icon512.png
+        telegram-desktop.desktop)
 
 build() {
 
-  export QT_DIR=/usr/lib/cmake/Qt6
+	# Creating needed directories
+	install -dm755 "$PKG/usr/bin"
+	install -dm755 "$PKG/usr/share/pixmaps/"
+	install -dm755 "$PKG/usr/share/applications/"
 
-  cd tdesktop-$version-full
+	# Program
+	install -Dm755 Telegram/Telegram "$PKG/usr/bin/telegram-desktop"
 
-  patch -Np1 -i ../consolidate.patch
+	# Remove RPATH informations
+	chrpath --delete "$PKG/usr/bin/telegram-desktop"
 
-  export CXXFLAGS+=" -Wp,-U_GLIBCXX_ASSERTIONS"
+	# Desktop launcher
+	install -Dm644 icon256.png "$PKG/usr/share/pixmaps/telegram.png"
+	install -Dm644 $name.desktop "$PKG/usr/share/applications/telegramdesktop.desktop"
 
-  cmake -B build -G Ninja \
-	-DQT_DIR="/usr/lib/cmake/Qt6" \
-	-DTDESKTOP_API_ID=611335 \
-	-DTDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c \
-	-DCMAKE_INSTALL_PREFIX="/usr" \
-        -DCMAKE_BUILD_TYPE=Release
-  ninja -C build
-  DESTDIR=$PKG ninja -C build install
+
+	# Icons
+	local icon_size icon_dir
+	for icon_size in 16 32 48 64 128 256 512; do
+		icon_dir="$PKG/usr/share/icons/hicolor/${icon_size}x${icon_size}/apps"
+		install -d "$icon_dir"
+		install -m644 "$SRC/icon${icon_size}.png" "$icon_dir/telegram.png"
+	done
 } 
