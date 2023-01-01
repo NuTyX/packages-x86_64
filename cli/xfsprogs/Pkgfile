@@ -7,9 +7,13 @@ packager="spiky <spiky@nutyx.org>"
 makedepends=(git gzip gettext inih util-linux liburcu)
 
 name=xfsprogs
-version=6.0.0
+version=6.1.0
 
-source=(https://www.kernel.org/pub/linux/utils/fs/xfs/$name/$name-$version.tar.xz)
+source=(https://www.kernel.org/pub/linux/utils/fs/xfs/$name/$name-$version.tag.xz)
+
+prepare() {
+bsdtar -xf $name-$version.tag.xz
+}
 
 build() {
 cd $name-$version
