@@ -6,14 +6,17 @@ packager="spiky <spiky@nutyx.org>"
 makedepends=(flex bison)
 
 name=acpica
-version=20220331
+version=20221020
 
-source=(https://acpica.org/sites/acpica/files/acpica-unix-$version.tar.gz)
+source=(https://acpica.org/sites/acpica/files/acpica-unix-$version.tar_0.gz)
 
+prepare() {
 
+bsdtar -xf acpica-unix-$version.tar_0.gz
+}
 build() {
 
 cd acpica-unix-$version
-make
+NOWERROR=TRUE make
 make DESTDIR=$PKG install
 }
