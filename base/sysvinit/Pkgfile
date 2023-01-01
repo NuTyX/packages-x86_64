@@ -1,11 +1,15 @@
 description="Programs for controlling the startup, running, and shutdown of the system."
 url="ftp://ftp.cistron.nl/pub/people/miquels/sysvinit/"
+
 maintainer="sysvinit-devel@nongnu.org"
 contributors="Pierre B"
 packager="Tnut <tnut@nutyx.org>"
 
+makedepends=(sed)
+
 name=sysvinit
 version=3.06
+release=2
 
 source=(https://github.com/slicer69/$name/releases/download/$version/$name-$version.tar.xz
 	$name-consolidated-1.patch)
@@ -15,11 +19,11 @@ build()
 cd $name-$version
 patch -Np1 -i ../$name-consolidated-1.patch
 
-make -C src
+make
 
 mkdir -pv $PKG/{sbin,bin,usr/{sbin,include,share/man/man{1,5,8}}}
 
-make -C src  ROOT=$PKG install
+make  ROOT=$PKG install
 
 rm -r $PKG/usr/bin
 for FILE in killall5
