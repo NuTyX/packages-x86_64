@@ -11,7 +11,9 @@ run=(alsa-lib gtk3 desktop-file-utils openssl nss at-spi2-atk
 _commit=gc5f8b819-2
 name=spotify
 version=1.1.84.716
-_curl_version="curl-7.86.0"
+release=2
+
+_curl_version="curl-7.82.0"
 
 source=(https://curl.haxx.se/download/${_curl_version}.tar.gz
         http://repository.spotify.com/pool/non-free/s/spotify-client/spotify-client_${version}.${_commit}_amd64.deb)
@@ -41,7 +43,7 @@ do
      ${PKG}/usr/share/icons/hicolor/${size}x${size}/apps/spotify-client.png
 done
 
-install -D ${SRC}/${_curl_version}/lib/.libs/libcurl.so.4.8.0 \
+install -D ${SRC}/${_curl_version}/lib/.libs/libcurl.so.4.7.0 \
     ${PKG}/usr/share/spotify/libcurl-gnutls.so.4
 
 mkdir -p $PKG/usr/share/kservices5
