@@ -1,8 +1,8 @@
 description="Messaging app with a focus on speed and security, it’s super-fast, simple and free."
 url="https://telegram.org/"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Fanch,Fabienwang,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch,Fabienwang,Tnut"
 
 makedepends=(xorg-libdrm xorg-libice xorg-libsm xorg-fontconfig freetype libxcb
              xorg-libx11 glib dbus libpng expat xorg-libxau xorg-libxdmcp chrpath)
@@ -12,8 +12,7 @@ run=(gtk-update-icon-cache shared-mime-info hicolor-icon-theme desktop-file-util
 alias=(telegram)
 
 name=telegram-desktop
-version=4.5.0
-release=2
+version=4.5.1
 
 source=(https://github.com/telegramdesktop/tdesktop/releases/download/v${version}/tsetup.$version.tar.xz
        	tg.protocol https://github.com/telegramdesktop/tdesktop/raw/master/Telegram/Resources/art/icon16.png
