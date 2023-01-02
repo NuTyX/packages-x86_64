@@ -1,0 +1,19 @@
+description='Noto Emoji fonts'
+url='https://github.com/googlefonts/noto-emoji'
+
+packager="Skythrew <mael.guerin@outlook.fr>"
+contributors=""
+
+name=noto-fonts-emoji
+version=2.038
+
+source=(https://github.com/googlefonts/noto-emoji/archive/refs/tags/v2.038.tar.gz)
+
+build() {
+cd noto-emoji-$version
+
+mkdir -p $PKG/usr/share/fonts/noto
+
+install -m644 fonts/NotoColorEmoji.ttf $PKG/usr/share/fonts/noto
+install -Dm644 LICENSE $PKG/usr/share/licenses/noto-emoji/LICENSE
+}
