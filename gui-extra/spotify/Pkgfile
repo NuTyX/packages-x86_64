@@ -1,21 +1,23 @@
 description='A proprietary music streaming service'
 url='http://www.spotify.com'
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
-run=(alsa-lib gtk3 desktop-file-utils openssl nss at-spi2-atk xorg-libsm
-    xorg-libxscrnsaver gnutls)
+run=(alsa-lib gtk3 desktop-file-utils openssl nss at-spi2-atk
+     xorg-libsm xorg-libxscrnsaver gnutls hicolor-icon-theme
+     gtk-update-icon-cache shared-mime-info)
 
-_commit=gc5f8b819
+_commit=gc5f8b819-2
 name=spotify
 version=1.1.84.716
+_curl_version="curl-7.86.0"
 
-source=(https://curl.haxx.se/download/curl-7.82.0.tar.gz
+source=(https://curl.haxx.se/download/${_curl_version}.tar.gz
         http://repository.spotify.com/pool/non-free/s/spotify-client/spotify-client_${version}.${_commit}_amd64.deb)
 
 prepare() {
-cd curl-7.82.0
+cd ${_curl_version}
 ./configure --with-gnutls
 make -C lib
 }
@@ -36,10 +38,10 @@ ${PKG}/usr/share/applications
 for size in 22 24 32 48 64 128 256 512
 do
    install -D ${PKG}/usr/share/spotify/icons/spotify-linux-$size.png \
-     ${PKG}/usr/share/icons/hicolor/${size}x${size}/apps/spotify.png
+     ${PKG}/usr/share/icons/hicolor/${size}x${size}/apps/spotify-client.png
 done
 
-install -D ${SRC}/curl-7.82.0/lib/.libs/libcurl.so.4.7.0 \
+install -D ${SRC}/${_curl_version}/lib/.libs/libcurl.so.4.8.0 \
     ${PKG}/usr/share/spotify/libcurl-gnutls.so.4
 
 mkdir -p $PKG/usr/share/kservices5
