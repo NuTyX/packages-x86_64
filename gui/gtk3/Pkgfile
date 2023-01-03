@@ -4,14 +4,15 @@ url="http://www.gtk.org/"
 packager="spiky <spiky@nutyx.org>"
 contributor="Pierre B, Greg, Minzord, Spiky"
 
-makedepends=(python meson ninja
-             gtk-doc libepoxy xorg-libxinerama xorg-libxrandr \
-             xorg-libxcursor at-spi2-atk cups colord xorg-libxi \
-             atk cairo pango gdk-pixbuf wayland-protocols libxkbcommon)
+makedepends=(python meson ninja iso-codes docbook-xsl libxslt glib
+             gtk-doc libepoxy xorg-libxinerama xorg-libxrandr
+             xorg-libxcursor cups colord xorg-libxi
+             cairo pango gdk-pixbuf wayland-protocols libxkbcommon)
 run=(xcursor-dmz adwaita-icon-theme dejavu-ttf gtk-update-icon-cache)
 
 name=gtk3
 version=3.24.36
+release=3
 
 source=(settings.ini.example consolidate.patch
         https://download.gnome.org/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
