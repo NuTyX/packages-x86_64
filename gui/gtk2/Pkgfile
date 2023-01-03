@@ -1,11 +1,11 @@
 description="GTK+ is a multi-platform toolkit (version 2)"
 url="http://www.gtk.org/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 # The makedepends variable define the compilation dependencies
 makedepends=(gtk-doc shared-mime-info xorg-libxinerama xorg-libxrandr 
-             cairo pango atk libtiff cups gdk-pixbuf xorg-libxi
+             cairo pango at-spi2-core libtiff cups gdk-pixbuf xorg-libxi
              xorg-libxcursor hicolor-icon-theme 
              gtk-update-icon-cache desktop-file-utils)
 # The run variable define the runtime dependencies
@@ -19,7 +19,7 @@ run=(gtk-update-icon-cache shared-mime-info desktop-file-utils)
 
 name=gtk2
 version=2.24.33
-release=2
+release=3
 
 source=(gtkrc.example
         https://download.gnome.org/sources/gtk+/${version%.*}/gtk+-$version.tar.xz)
