@@ -1,21 +1,27 @@
 description="JS is Mozilla's JavaScript engine written in C."
 url="https://people.mozilla.org"
 
-packager="Spiky <spiky@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(autoconf2-13 readline llvm icu rustc libffi python zlib zip)
 
 name=js78
 version=78.15.0
-release=4
+release=5
 
 source=(https://archive.mozilla.org/pub/firefox/releases/${version}esr/source/firefox-${version}esr.source.tar.xz
-        js-78.15.0-python_3_10-1.patch)
+        https://download.nus.edu.sg/mirror/gentoo/distfiles/32/firefox-78esr-patches-19.tar.xz)
 
 build() {
 
   cd firefox-$version
-  patch -Np1 -i ../js-78.15.0-python_3_10-1.patch
+  for i in ../firefox-patches/*
+  do 
+    patch -Np1 -i $i
+  done
+
+  grep -rl \'rU\' | xargs sed -i "s/'rU'/'r'/"
 
   mkdir obj
   cd    obj
