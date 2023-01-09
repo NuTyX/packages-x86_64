@@ -1,0 +1,37 @@
+description="A set of symbols and convience functions for Ayatana indicators."
+url="https://launchpad.net/libindicator"
+
+packager="Tnut <tnut@nutyx.org>"
+contributors="Jayce"
+
+makedepends=(python automake autoconf sed grep gtk3
+             gdk-pixbuf)
+
+name=libindicator-gtk3
+version=12.10.1
+release=3
+
+source=(http://launchpad.net/libindicator/${version%.*}/$version/+download/libindicator-$version.tar.gz)
+prepare() {
+ cd libindicator-$version
+ sed -i 's/-Werror//' {libindicator,tools}/Makefile.am
+ autoreconf -fi
+
+}
+build() {
+
+cd libindicator-$version
+
+./configure --prefix=/usr                \
+            --sysconfdir=/etc            \
+            --localstatedir=/var         \
+            --libexecdir=/usr/lib/$name  \
+            --disable-static             \
+            --disable-tests              \
+            --with-gtk=3
+make -j1
+make -j1 DESTDIR=$PKG install
+
+# Obsolet lib
+rm $PKG/usr/lib/libindicator3.la
+}
