@@ -1,7 +1,7 @@
 description="GUI for managing Conky config files with options to browse and edit theme"
 url="https://launchpad.net/conky-manager"
 contributors="Rems"
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 
 makedepends=(cairo conky desktop-file-utils gtk3 imagemagick json-glib
              libgee p7zip rsync vala)
@@ -9,6 +9,8 @@ run=(p7zip imagemagick desktop-file-utils conky cairo gtk3 rsync libgee)
  
 name=conky-manager
 version=2.4
+release=2
+
 _version=~136~ubuntu16.04.1
 source=(https://launchpad.net/~teejee2008/+archive/ubuntu/ppa/+files/${name}_${version}${_version}.tar.xz
         makefile-roundup.patch)
