@@ -1,19 +1,21 @@
 description="Instant messaging client that can connect with a wide range of networks"
-url="http://www.pidgin.im"
+url="https://www.pidgin.im"
 
-packager="spiky <spiky@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(cyrus-sasl gtk2 gstreamer libxml2
              perl-xml-parser gnutls nss nspr xorg-libxscrnsaver
              xorg-libxrandr xorg-libxinerama xorg-libsm xscreensaver
-             startup-notification hicolor-icon-theme libidn dbus
-             networkmanager)
-run=(desktop-file-utils)
+             libidn dbus networkmanager)
+
+run=(desktop-file-utils startup-notification hicolor-icon-theme)
 
 name=pidgin
 version=2.14.12
+release=2
 
-source=(http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
+source=(https://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
 
 build() {
 cd $name-$version
