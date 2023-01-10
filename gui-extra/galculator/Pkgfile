@@ -2,24 +2,22 @@ description="GTK+ based scientific calculator"
 url="http://galculator.sourceforge.net/"
 
 contributors="Pierre B., Greg"
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 
 makedepends=(gtk3)
 run=(hicolor-icon-theme desktop-file-utils)
 
 name=galculator
 version=2.1.4
-release=2
+release=3
 
 source=(http://galculator.mnim.org/downloads/$name-$version.tar.bz2)
 
 build() {
 
-cd $name-$version
-
-  [ -d gtk3 ] || mkdir gtk3
-  cd gtk3
-  ../configure \
+  CFLAGS+=' -fcommon'
+  cd $name-$version
+  ./configure \
     --prefix=/usr
   make
   
