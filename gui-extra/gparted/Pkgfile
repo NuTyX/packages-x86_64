@@ -1,8 +1,8 @@
 description="Gparted is the Gnome Partition Editor, a Gtk GUI that can create, reorganise or delete disk partitions."
 url="http://gparted.sourceforge.net/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Greg,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Pierre,Greg,Spiky"
 
 makedepends=(gtk2 parted gtkmm libsigc++ lvm2 docbook-xsl polkit intltool
              perl-xml-parser)
@@ -11,6 +11,7 @@ run=(polkit ntfs-3g jfsutils btrfs-progs reiserfsprogs xfsprogs dosfstools mtool
 
 name=gparted
 version=1.4.0
+release=2
 
 source=(https://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
