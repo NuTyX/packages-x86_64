@@ -2,7 +2,7 @@ description="Remote desktop client for Gnome"
 url="https://gnome.org"
 
 contributors="Remy"
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 
 makedepends=(gnome-common yelp yelp-tools yelp-xsl
              docbook-xsl vte gnutls itstool gtk-vnc
@@ -13,8 +13,9 @@ set=(gnome)
 
 name=vinagre
 version=3.22.0
+release=2
 
-source=(http://ftp.gnome.org/pub/gnome/sources/vinagre/${version:0:4}/vinagre-$version.tar.xz)
+source=(https://ftp.gnome.org/pub/gnome/sources/vinagre/${version:0:4}/vinagre-$version.tar.xz)
 
 build() {
 cd $name-$version
