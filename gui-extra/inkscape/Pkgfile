@@ -1,11 +1,12 @@
 description='Professional vector graphics editor'
 url='https://inkscape.org/'
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 name=inkscape
 version=1.2.2
+release=2
 
 source=(https://inkscape.org/gallery/item/37360/$name-$version.tar.xz
         poppler-22.09.0.patch)
@@ -14,7 +15,8 @@ makedepends=(cmake boost git gtkmm python lcms2 gsl libxslt gc
              dbus-glib lcms2 libjpeg-turbo poppler-glib gspell
              graphicsmagick libsoup double-conversion potrace
              librevenge libcdr gzip readline jemalloc)
-
+run=(desktop-file-utils hicolor-icon-theme gtk-update-icon-cache
+     shared-mime-info)
 
 prepare() {
 	mv $name-$version* $name
