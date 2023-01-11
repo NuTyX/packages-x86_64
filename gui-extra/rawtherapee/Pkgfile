@@ -1,16 +1,18 @@
 description="A powerful cross-platform raw image processing program" 
-url="http://www.rawtherapee.com/" 
+url="https://www.rawtherapee.com/" 
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Indootime,Remy,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Indootime,Remy,Spiky"
 
 makedepends=(fftw glibmm gtk3 gtkmm lcms2 lensfun cmake libcanberra libiptcdata)
-run=(desktop-file-utils hicolor-icon-theme)
+run=(desktop-file-utils hicolor-icon-theme
+     gtk-update-icon-cache shared-mime-info)
 
 name=rawtherapee
 version=5.9
+release=2
 
-source=("http://rawtherapee.com/shared/source/$name-$version.tar.xz" )
+source=("https://rawtherapee.com/shared/source/$name-$version.tar.xz" )
 
 build() { 
   cd $name-$version
