@@ -1,13 +1,15 @@
 description="Personal financial management program"
-url="http://www.grisbi.org"
+url="https://www.grisbi.org"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Rems, Sloteur"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Rems,Sloteur,Spiky"
 
 makedepends=(gtk3 gettext grep intltool goffice)
-run=(desktop-file-utils)
+run=(desktop-file-utils hicolor-icon-theme
+     gtk-update-icon-cache shared-mime-info)
 
 name=grisbi
 version=2.0.5
+release=2
 
 source=(https://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
