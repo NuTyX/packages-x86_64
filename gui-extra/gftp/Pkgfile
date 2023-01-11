@@ -1,12 +1,15 @@
 description="A multithreaded ftp client for X Windows"
-url="http://gftp.seul.org/"
+url="https://gftp.seul.org/"
 
-contributors="Pierre B, Greg, tnut"
-packager="spiky <spiky@nutyx.org>"
+contributors="Pierre B, Greg, Spiky"
+packager="Tnut <tnut@nutyx.org>"
 
 makedepends=(gtk2 xorg-libxcursor xorg-libxdamage xorg-libxrandr xorg-libxinerama)
+run=(hicolor-icon-theme desktop-file-utils gtk-update-icon-cache
+     shared-mime-info)
 
 name=gftp
 version=2.9.1b
+release=2
 
 source=(https://github.com/masneyb/$name/releases/download/$version/$name-$version.tar.xz)
