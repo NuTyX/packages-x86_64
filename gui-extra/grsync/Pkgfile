@@ -1,17 +1,18 @@
 description="GUI for rsync"
 url="https://github.com/FreeRDP/Remmina/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Remy"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Remy,Spiky"
 
 makedepends=(gtk3 rsync intltool)
-run=(rsync)
+run=(rsync hicolor-icon-theme gtk-update-icon-cache
+     shared-mime-info desktop-file-utils)
 
 name=grsync
 version=1.3.0
-release=2
+release=3
 
-source=(http://www.opbyte.it/release/$name-$version.tar.gz
+source=(https://www.opbyte.it/release/$name-$version.tar.gz
         gtk3-port.patch)
 
 build() {
