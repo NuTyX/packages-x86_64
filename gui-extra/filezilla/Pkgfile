@@ -1,13 +1,16 @@
-makedepends=(wxgtk libidn gnutls xdg-utils tinyxml dbus libfilezilla pugixml)
-
 description="Fast and reliable FTP, FTPS and SFTP client"
-url="http://filezilla-project.org"
+url="https://filezilla-project.org"
 
-packager="spiky <spiky@nutyx.org>"
-contributor="Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributor="Spiky"
 
 name=filezilla
 version=3.62.2
+release=2
+
+makedepends=(wxgtk libidn gnutls xdg-utils tinyxml dbus libfilezilla pugixml)
+run=(hicolor-icon-theme desktop-file-utils
+     gtk-update-icon-cache shared-mime-info)
 
 source=(https://download.filezilla-project.org/client/FileZilla_${version}_src.tar.bz2
         wxwidgets-3.2.patch)
