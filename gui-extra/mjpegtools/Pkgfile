@@ -1,12 +1,15 @@
 description="Set of tools that can do recording of videos and playback, simple cut-and-paste editing"
-url="http://mjpeg.sourceforge.net/"
+url="https://mjpeg.sourceforge.net/"
 
-packager="spiky <spiky@nutyx.org>"
-
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 makedepends=(v4l-utils libdv libjpeg-turbo sdl1 gtk2)
+run=(hicolor-icon-theme desktop-file-utils
+    gtk-update-icon-cache shared-mime-info)
 
 name=mjpegtools
 version=2.2.1
+release=2
 
 source=(https://sourceforge.net/projects/mjpeg/files/$name/$version/$name-$version.tar.gz)
 
