@@ -1,7 +1,7 @@
 url="http://www.mplayerhq.hu"
 description="CLI and GUI audio/video Player able to play every popular audio and video file"
 
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 contributors="Berlius"
 
 makedepends=(gtk2 yasm desktop-file-utils libdvdnav libdvdcss
@@ -13,10 +13,12 @@ makedepends=(gtk2 yasm desktop-file-utils libdvdnav libdvdcss
              libmpcdec xorg-fontconfig freetype gnutls openssl opus
              unrar libxslt docbook-xsl docbook-xml enca glib
              xorg-libxxf86dga)
+run=(hicolor-icon-theme gtk-update-icon-cache shared-mime-info
+     desktop-file-utils)
 
 name=mplayer
 version=1.4
-release=2
+release=3
 
 alias=(MPlayer)
 
