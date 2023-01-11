@@ -1,14 +1,15 @@
 description="X service to grab password for packages"
-url="http://www.openssh.org/"
+url="https://www.openssh.org/"
 
-packager="Spiky <spiky@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 contributors="Tnut,Spiky"
 
 makedepends=(gtk2 sudo xorg-libx11)
-
+run=(hicolor-icon-theme gtk-update-icon-cache)
 
 name=sshaskpass
 version=9.1p1
+release=2
 
 source=(https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$version.tar.gz)
 
