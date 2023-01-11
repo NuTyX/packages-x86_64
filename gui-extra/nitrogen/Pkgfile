@@ -1,15 +1,16 @@
 description="Background browser and setter for X windows"
-url="http://projects.l3ib.org/nitrogen/"
+url="https://projects.l3ib.org/nitrogen/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 contributors="Greg"
 
 makedepends=(gtk2 gtkmm2 librsvg)
-run=(hicolor-icon-theme)
+run=(hicolor-icon-theme desktop-file-utils
+     gtk-update-icon-cache shared-mime-info)
 
 name=nitrogen
 version=1.6.1
-release=2
+release=3
 
 source=(https://github.com/l3ib/$name/releases/download/$version/$name-$version.tar.gz)
 
