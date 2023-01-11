@@ -1,16 +1,17 @@
 description="a cross-platform Integrated Development Environment (IDE)."
-url="http://www.codeblocks.org/"
+url="https://www.codeblocks.org/"
 
 maintainer="The Code::Blocks Team"
-packager="Spiky <spiky@nutyx.org>"
-contributors="Rémy,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Rems,Tnut,Spiky"
 
-makedepends=(zip boost gamin hunspell shared-mime-info wxgtk)
-run=(desktop-file-utils gtk-update-icon-cache hicolor-icon-theme)
+makedepends=(zip boost gamin hunspell wxgtk)
+run=(desktop-file-utils gtk-update-icon-cache hicolor-icon-theme
+     shared-mime-info)
 
 name=codeblocks
 version=20.03
-release=2
+release=3
 
 source=(https://downloads.sourceforge.net/codeblocks/$name-$version.tar.xz
         codeblocks-gcc11.patch
