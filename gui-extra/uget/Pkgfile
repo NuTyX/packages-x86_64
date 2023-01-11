@@ -1,13 +1,16 @@
 description="administrator of downloading with importation HTML"
-url="http://urlget.sourceforge.net/"
+url="https://urlget.sourceforge.net/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre B"
+packager="Tnut <tnut@nutyx.org>"
+contributors="PierreB,Spiky"
 
 makedepends=(libnotify gtk3 gstreamer curl)
+run=(gtk-update-icon-cache shared-mime-info
+     hicolor-icon-theme desktop-file-utils)
 
 name=uget
 version=2.2.3
+release=2
 
 source=(http://downloads.sourceforge.net/urlget/$name-$version-1.tar.gz)
 build() {
