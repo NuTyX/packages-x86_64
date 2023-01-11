@@ -1,12 +1,18 @@
-PKGMK_KEEP_SOURCES="no"
+description="The web browser from Brave Browse faster by blocking ads and trackers."
+url="https://brave.com/"
 
 name=brave-browser
-description="The web browser from Brave Browse faster by blocking ads and trackers."
 version=1.46.144
-url="https://brave.com/"
-packager="spiky <spiky@nutyx.org>"
+release=2
 
-run=(make-ca ttf-liberation dejavu-ttf)
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+run=(make-ca ttf-liberation dejavu-ttf
+    hicolor-icon-theme desktop-file-utils
+    gtk-update-icon-cache shared-mime-info)
+
+PKGMK_KEEP_SOURCES="no"
 
 source=(https://github.com/brave/brave-browser/releases/download/v${version}/${name}_${version}_amd64.deb)
 build() {
