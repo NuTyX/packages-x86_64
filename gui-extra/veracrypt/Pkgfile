@@ -1,14 +1,17 @@
 description="Disk encryption with strong security based on TrueCrypt"
 url="https://github.com/veracrypt/VeraCrypt"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Sundev79"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Sundev79, Spiky"
 
 makedepends=()
-run=(fuse wxgtk sudo)
+run=(fuse wxgtk sudo
+     hicolor-icon-theme desktop-file-utils
+     gtk-update-icon-cache shared-mime-info)
 
 name=veracrypt
 version=1.25.9
+release=2
 
 source=(https://github.com/veracrypt/VeraCrypt/releases/download/VeraCrypt_${version}/VeraCrypt_${version}_Bundle.7z)
 build() {
