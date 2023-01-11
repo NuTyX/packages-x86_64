@@ -1,15 +1,18 @@
 description="A free source code editing component for Win32, GTK+, and OS X"
-url="http://scintilla.org/"
+url="https://scintilla.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Renaud,C.,Greg,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Renaud,Greg,Spiky"
 
 makedepends=(setconf gtk3)
+run=(hicolor-icon-theme desktop-file-utils
+     gtk-update-icon-cache shared-mime-info) 
 
 name=scite
 version=5.3.2
+release=2
 
-source=(http://downloads.sourceforge.net/sourceforge/scintilla/${name}${version//./}.tgz)
+source=(https://downloads.sourceforge.net/sourceforge/scintilla/${name}${version//./}.tgz)
 
 
 build() {
