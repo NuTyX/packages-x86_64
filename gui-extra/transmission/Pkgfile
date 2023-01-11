@@ -1,14 +1,16 @@
 description="Light and fast Bittorent client (GTK Interface)"
-url="http://www.transmissionbt.com/"
+url="https://www.transmissionbt.com/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 contributors="Alienus, Tnut, Remy"
 
 makedepends=(curl libevent openssl gtk3 doxygen gdb)
-run=(desktop-file-utils gtk-update-icon-cache)
+run=(desktop-file-utils gtk-update-icon-cache
+     hicolor-icon-theme shared-mime-info)
 name=transmission
 
 version=3.00
+release=2
 
 source=(https://raw.githubusercontent.com/transmission/transmission-releases/master/$name-$version.tar.xz)
 
