@@ -1,17 +1,18 @@
 description="A fast and secure web browser"
-url="http://www.opera.com/"
+url="https://www.opera.com/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Fabienwang,BlogofraisFR,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Fabienwang,BlogofraisFR,Spiky"
 
 categories=(Network WebBrowser)
 
 makedepends=(gtk3 alsa-lib libnotify curl nss cups xorg-libxscrnsaver desktop-file-utils shared-mime-info hicolor-icon-theme upower)
-run=(desktop-file-utils shared-mime-info hicolor-icon-theme)
-set=()
+run=(desktop-file-utils shared-mime-info hicolor-icon-theme
+     gtk-update-icon-cache)
 
 name=opera
 version=94.0.4606.38
+release=2
 
 source=(https://get.geo.opera.com/pub/opera/desktop/$version/linux/$name-stable_${version}_amd64.deb
          default
