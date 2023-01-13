@@ -10,7 +10,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-515
-version=5.15.84
+version=5.15.87
 
 alias=(linux-515)
 INITRD="initrd-${name/*-/}"
@@ -96,7 +96,7 @@ echo "if [ -f boot/$INITRD ]; then
     rm boot/$INITRD
     mv boot/initrd-${KERNEL_VERSION} boot/$INITRD
 fi
-
+echo \"
 ******************************************************
 * This kernel-515 version is obsolet from Oct, 2023. *
 * After this date it will be removed from the system.*
