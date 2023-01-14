@@ -2,21 +2,26 @@ description="Low Level Virtual Machine, collection of modular and \
 reusable compiler and toolchain."
 url="https://llvm.org/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Pierre,Remy,Tnut,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Remy,Tnut"
 
 makedepends=(grep python cmake ninja libxml2)
 
 name=llvm
-version=14.0.6
+version=15.0.7
 
 PKGMK_GROUPS=(lib man devel doc)
 _url="https://github.com/llvm/llvm-project/releases/download/llvmorg-$version"
 
 source=(${_url}/$name-$version.src.tar.xz
 		${_url}/clang-$version.src.tar.xz
-		${_url}/compiler-rt-$version.src.tar.xz)
+		${_url}/compiler-rt-$version.src.tar.xz
+                ${_url}/cmake-$version.src.tar.xz)
 
+prepare() {
+
+mv cmake-$version.src cmake
+}
 build() {
 
 cd $name-$version.src
