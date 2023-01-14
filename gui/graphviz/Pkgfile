@@ -1,16 +1,15 @@
 description="Graphviz is open source graph visualization software"
 url="http://www.graphviz.org"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Pierre,Rems,Tnuti,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Rems,I,Tnut"
 
 makedepends=(gtk2 freetype xorg-fontconfig gdk-pixbuf libjpeg-turbo
              libpng pango libglade ghostscript swig guile openjdk
              lua python ruby tcl tk)
 
 name=graphviz
-version=7.0.5
-release=2
+version=7.0.6
 
 source=(https://gitlab.com/graphviz/graphviz/-/archive/$version/$name-$version.tar.gz)
 
@@ -29,7 +28,7 @@ build () {
            $PKG/usr/share/doc/graphviz-$version
 
 # Obsolets libs
-rm $PKG/usr/lib/graphviz/guile/libgv_guile.la
+#rm $PKG/usr/lib/graphviz/guile/libgv_guile.la
 rm $PKG/usr/lib/graphviz/libgvplugin_core.la
 rm $PKG/usr/lib/graphviz/libgvplugin_dot_layout.la
 rm $PKG/usr/lib/graphviz/libgvplugin_gdk.la
@@ -40,7 +39,7 @@ rm $PKG/usr/lib/graphviz/libgvplugin_pango.la
 rm $PKG/usr/lib/graphviz/libgvplugin_xlib.la
 rm $PKG/usr/lib/graphviz/lua/libgv_lua.la
 rm $PKG/usr/lib/graphviz/perl/libgv_perl.la
-rm $PKG/usr/lib/graphviz/python/libgv_python.la
+#rm $PKG/usr/lib/graphviz/python/libgv_python.la
 rm $PKG/usr/lib/graphviz/tcl/libgv_tcl.la
 rm $PKG/usr/lib/graphviz/tcl/libtcldot.la
 rm $PKG/usr/lib/graphviz/tcl/libtcldot_builtin.la
