@@ -1,17 +1,17 @@
 description="The Balsa package contains a GNOME based mail client."
 url="https://pawsa.fedorapeople.org/balsa/"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Berlius, Spiky, Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Berlius,Greg,Tnut"
 
-makedepends=(aspell enchant gmime3 libesmtp rarian pcre gtksourceview2
-             gtksourceview libnotify kerberos sendmail openldap openssl
+makedepends=(aspell enchant gmime3 libesmtp rarian pcre
+             gtksourceview4 libnotify kerberos sendmail openldap openssl
              sqlite webkitgtk procmail gpgme libical)
 
 
 name=balsa
 version=2.6.4
-release=2
+release=3
 
 source=(http://pawsa.fedorapeople.org/balsa/$name-$version.tar.xz
         balsa-2.6.4-upstream_fixes-2.patch)
