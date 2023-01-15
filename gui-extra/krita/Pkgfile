@@ -10,14 +10,14 @@ makedepends=(opencolorio libraw qtmultimedia quazip poppler-qt
 
 run=(hicolor-icon-theme python-qt)
 name=krita
-version=5.1.4
+version=5.1.5
 
 source=(https://download.kde.org/stable/$name/$version/krita-$version.tar.gz
         libraw-0.21.patch)
 
 prepare() {
 cd $name-$version
-patch -Np1 -i ../libraw-0.21.patch
+#patch -Np1 -i ../libraw-0.21.patch
 }
 build() {
 sed -e "/CMAKE_CXX_STANDARD/s/11/14/" -i $name-$version/CMakeLists.txt
