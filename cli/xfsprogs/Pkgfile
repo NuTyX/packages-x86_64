@@ -1,19 +1,15 @@
 description="XFS filesystem administration and debugging tools"
 url="http://oss.sgi.com/projects/xfs/"
 
-contributors="Pierre,Tnut"
-packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Spiky"
+packager="Tnut <tnut@nutyx.org>"
 
 makedepends=(git gzip gettext inih util-linux liburcu)
 
 name=xfsprogs
-version=6.1.0
+version=6.1.1
 
-source=(https://www.kernel.org/pub/linux/utils/fs/xfs/$name/$name-$version.tag.xz)
-
-prepare() {
-bsdtar -xf $name-$version.tag.xz
-}
+source=(https://www.kernel.org/pub/linux/utils/fs/xfs/$name/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
