@@ -1,10 +1,12 @@
 description="Linker, assembler, and other tools for handling object files."
 url="http://sources.redhat.com/binutils/"
+
 maintainer="Tristan Gingold ( gingold at adacore dot com ),Alan Modra ( amodra at bigpond dot net dot au )"
-packager="Spiky <spiky@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 name=binutils
-version=2.39
+version=2.40
 
 makedepends=(perl texinfo)
 source=(http://ftp.gnu.org/gnu/binutils/binutils-$version.tar.xz)
@@ -12,11 +14,6 @@ source=(http://ftp.gnu.org/gnu/binutils/binutils-$version.tar.xz)
 build()
 {
 cd binutils-$version
-
-
-
-sed -e '/R_386_TLS_LE /i \   || (TYPE) == R_386_TLS_IE \\' \
-    -i ./bfd/elfxx-x86.h
 
 mkdir -v build
 cd build
@@ -35,6 +32,8 @@ cd build
 make tooldir=/usr
 
 make tooldir=/usr DESTDIR=$PKG install -j1
+
+
 }
 devel()
 {
