@@ -1,16 +1,27 @@
 description="libXpm, library Xorg"
 url="http://xorg.freedesktop.org"
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Greg,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Pierre,Greg,Tnut,Spiky"
 
 name=xorg-libxpm
 alias=(libXpm)
-version=3.5.14
+version=3.5.15
 _name=libXpm
 makedepends=(xorgproto xorg-libx11 xorg-libxt xorg-libxext)
 source=(http://ftp.x.org/pub/individual/lib/${_name}-$version.tar.xz)
 
-build=xorg
+build() {
+ cd ${_name}-$version
+ ./configure --prefix=/usr \
+ --sysconfdir=/etc    \
+ --localstatedir=/var \
+ --disable-static     \
+ --disable-open-zfile
+
+ make
+
+ make DESTDIR=$PKG install
+}
 
 package() {
 rm $PKG/usr/lib/${_name}.la
