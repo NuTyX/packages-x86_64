@@ -11,16 +11,23 @@ run=(vala)
 
 name=gegl
 version=0.4.40
-release=2
+release=3
 
 source=(https://download.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.xz)
+
+prepare() {
+
+ sed -e '/shot_select/s/params/raw&/' \
+    -i $name-$version/operations/external/raw-load.c
+
+}
 
 build() {
 cd $name-$version
 
 mkdir build
 cd build
-meson --prefix=/usr -Ddocs=false
+meson --prefix=/usr -Ddocs=false --buildtype=release
 ninja
 DESTDIR=$PKG ninja install
 }
