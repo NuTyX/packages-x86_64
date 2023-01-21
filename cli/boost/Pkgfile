@@ -1,17 +1,20 @@
 description="Boost provides a set of free peer-reviewed portable C++ source libraries."
 url="http://boost.sourceforge.net/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Rems,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Rems,Spiky"
 
 makedepends=(icu python)
 
 name=boost
 version=1.81.0
-release=2
+release=3
 
 source=(https://boostorg.jfrog.io/artifactory/main/release/$version/source/${name}_${version//./_}.tar.bz2)
-
+prepare() {
+ sed -i '/#include.*phoenix.*tuple.hpp.*/d' \
+ ${name}_${version//./_}/boost/phoenix/stl.hpp
+}
 build() {
 cd ${name}_${version//./_}
 
