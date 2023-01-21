@@ -13,7 +13,8 @@ run=(minizip gtk3 ffmpeg flac dbus freetype brotli woff2
 
 name=chromium
 version=109.0.5414.74
-re2version=2022-06-01
+re2version=2022-12-01
+release=2
 
 source=(https://pkg.adfinis-sygroup.ch/archlinux/extra/os/x86_64/chromium-$version-1-x86_64.pkg.tar.zst
         https://github.com/google/re2/archive/${re2version}.tar.gz)
@@ -29,5 +30,5 @@ echo "/usr/lib/chromium" > $PKG/etc/ld.so.conf.d/$name.conf
 }
 package() {
 cd re2-$re2version
-install obj/so/libre2.so $PKG/usr/lib/chromium/libre2.so.9
+install obj/so/libre2.so $PKG/usr/lib/chromium/libre2.so.10
 }
