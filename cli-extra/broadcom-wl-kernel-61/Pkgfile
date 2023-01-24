@@ -1,0 +1,37 @@
+description='Broadcom Wireless driver for LTS kernel 6.1.x'
+url='https://docs.broadcom.com/docs/12358410'
+
+packager="Tnut <tnut@nutyx.org>"
+contributors="Skythrew,Tnut"
+
+makedepends=(kernel-61)
+
+name=broadcom-wl-kernel-61
+version=6.30.223.271
+
+
+source=(http://download.tuxfamily.org/nutyx/files/broadcom-wl-$version.tar.xz)
+
+build() {
+KERNEL_VERSION="$(basename /lib/modules/*)"
+cd broadcom-wl-${version}
+
+make -C /lib/modules/${KERNEL_VERSION}/build M=$(pwd)
+
+install -Dm755 wl.ko \
+$PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/net/wireless/wl.ko
+
+xz $PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/net/wireless/wl.ko
+
+#Blacklist some kernel modules
+mkdir -pv $PKG/etc/modprobe.d
+
+cat > $PKG/etc/modprobe.d/broadcom-wl-kernel.conf << EOF
+# wireless drivers (conflict with Broadcom hybrid wireless driver 'wl')
+blacklist ssb
+blacklist bcma
+blacklist b43
+blacklist brcmsmac
+EOF
+echo "depmod -a ${KERNEL_VERSION}" > $PKGMK_ROOT/$name.post-install
+}
