@@ -1,7 +1,7 @@
 url="https://www.kernel.org"
 description="The latest development kernel version"
 
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 
 makedepends=(gmp mpc bison flex perl libelf diffutils)
 run=(nutyx kmod busybox)
@@ -14,7 +14,7 @@ PKGMK_GROUPS=(devel doc)
 PKGMK_KEEP_SOURCES="no"
 
 name=kernel-mainline
-version=6.2-rc2
+version=6.2-rc5
 SUFFIX="${name/*-/}"
 INITRD="initrd-$SUFFIX"
 KERNEL="$name"
