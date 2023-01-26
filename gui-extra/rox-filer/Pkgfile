@@ -10,13 +10,18 @@ run=(shared-mime-info hicolor-icon-theme
 
 name=rox-filer
 version=2.11
-release=6
+release=7
 
 source=(http://downloads.sourceforge.net/rox/rox-filer-2.11.tar.bz2)
+prepare() {
+cd $name-$version/ROX-Filer
 
+sed -i 's:g_strdup(getenv("APP_DIR")):"/usr/share/rox":' src/main.c
+sed -i 's/gboolean/extern &/' src/session.h 
+}
 build() {
 cd $name-$version/ROX-Filer
-sed -i 's:g_strdup(getenv("APP_DIR")):"/usr/share/rox":' src/main.c
+
 mkdir build
 pushd build 
 ../src/configure LIBS="-lm -ldl"
