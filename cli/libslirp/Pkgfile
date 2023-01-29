@@ -1,0 +1,23 @@
+description='General purpose TCP-IP emulator'
+url='https://gitlab.freedesktop.org/slirp/libslirp'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(glib)
+
+name=libslirp
+version=4.7.0
+
+source=(https://gitlab.freedesktop.org/slirp/libslirp/-/archive/v$version/$name-v$version.tar.gz)
+
+build() {
+cd $name-v$version
+
+  mkdir build && cd build
+
+  meson  --prefix=/usr  
+
+  ninja
+  DESTDIR=$PKG ninja install
+}
