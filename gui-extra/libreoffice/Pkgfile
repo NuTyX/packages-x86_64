@@ -2,8 +2,8 @@ description="Office suite. It is largely compatible with Microsoft Office \
 (fork from OpenOffice.org)."
 url="https://www.libreoffice.org"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Pierre,Greg,Fabienwang,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Greg,Fabienwang,Tnut"
 
 makedepends=(tar python perl-archive-zip unzip zip icu gtk3 cups poppler-glib
              libtiff xorg-fontconfig libxslt kerberos xorgproto dbus-glib mesa
@@ -16,8 +16,7 @@ run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache
      hicolor-icon-theme)
 
 name=libreoffice
-version=7.4.4.2
-release=2
+version=7.4.5.1
 
 categories=(Office Graphics Education)
 
@@ -38,7 +37,7 @@ prepare() {
 
   cd $name-$version
 
-  patch -Np1 -i ../Remove-check-if-root-due-to-issue-with-fakeroot.patch
+#  patch -Np1 -i ../Remove-check-if-root-due-to-issue-with-fakeroot.patch
   patch -Np1 -i ../boost1810-1.patch
 
   install -dm755 external/tarballs/
