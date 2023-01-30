@@ -40,8 +40,6 @@ rsync -r --exclude doc \
 
 install -vDm 644 cmake/modules/*.cmake -t $PKG/usr/lib/cmake/$name/
 
-rm -r $PKG/usr/share/$name/cmake/modules/*.cmake
-
  install -vdm 755 $PKG/usr/share/doc/$name/
  cd doc
  rsync -r --exclude .git \
