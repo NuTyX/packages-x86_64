@@ -1,0 +1,52 @@
+description='VST 3 Plug-In SDK'
+url='https://github.com/steinbergmedia/vst3sdk'
+
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
+
+name=vst3sdk
+version=3.7.7_build_19
+
+_commit=358b72ee61bc67fb4592b0d492e0c6a1211ebf11
+
+makedepends=(git rsync)
+
+prepare() {
+
+git clone https://github.com/steinbergmedia/$name
+
+cd $name
+# git checkout ${_commit}
+git submodule init
+git submodule update
+}
+
+build() {
+mkdir -p $PKG/usr/lib/pkgconfig
+
+echo "Name: vst3sdk
+Description: VST 3 Plug-In SDK
+Version: $version
+Cflags: -I/usr/share/vst3sdk
+Libs:" > $PKG/usr/lib/pkgconfig/$name.pc
+
+cd $name
+
+install -vdm 755 $PKG/usr/share/$name/
+rsync -r --exclude doc \
+  --exclude .git \
+  --exclude .github \
+  --exclude .gitignore \
+  --exclude .gitattributes . \
+  $PKG/usr/share/$name/
+
+install -vDm 644 cmake/modules/*.cmake -t $PKG/usr/lib/cmake/$name/
+
+ install -vdm 755 $PKG/usr/share/doc/$name/
+ cd doc
+ rsync -r --exclude .git \
+   --exclude .github \
+   --exclude .gitignore \
+   --exclude .gitattributes . \
+   $PKG/usr/share/doc/$name/
+}
