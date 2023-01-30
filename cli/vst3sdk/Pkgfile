@@ -5,9 +5,7 @@ packager="Tnut <tnut@nutyx.org>"
 contributors=""
 
 name=vst3sdk
-version=3.7.7_build_19
-
-_commit=358b72ee61bc67fb4592b0d492e0c6a1211ebf11
+version=3.7.6_build_18
 
 makedepends=(git rsync)
 
@@ -16,7 +14,7 @@ prepare() {
 git clone https://github.com/steinbergmedia/$name
 
 cd $name
-# git checkout ${_commit}
+git checkout v${version}
 git submodule init
 git submodule update
 }
@@ -41,6 +39,8 @@ rsync -r --exclude doc \
   $PKG/usr/share/$name/
 
 install -vDm 644 cmake/modules/*.cmake -t $PKG/usr/lib/cmake/$name/
+
+rm -r $PKG/usr/share/$name/cmake/modules/*.cmake
 
  install -vdm 755 $PKG/usr/share/doc/$name/
  cd doc
