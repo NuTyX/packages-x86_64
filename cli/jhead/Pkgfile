@@ -1,0 +1,19 @@
+description='EXIF JPEG info parser and thumbnail remover'
+url='http://www.sentex.net/~mwandel/jhead/'
+
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
+
+run=(libjpeg-turbo)
+
+name=jhead
+version=3.06.0.1
+
+source=(https://github.com/Matthias-Wandel/jhead/archive/$version/$name-$version.tar.gz)
+
+build() {
+ cd $name-$version
+ make
+ install -Dm755 $name $PKG/usr/bin/$name
+ install -Dm644 jhead.1 $PKG/usr/share/man/man1/jhead.1
+}
