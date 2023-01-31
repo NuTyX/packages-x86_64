@@ -1,0 +1,19 @@
+description='The GNOME Bluetooth Subsystem (legacy)'
+url='https://wiki.gnome.org/Projects/GnomeBluetooth'
+
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(itstool libnotify gtk3 gobject-introspection
+             meson gtk-doc libcanberra)
+run=(gtk-update-icon-cache bluez)
+
+name=gnome-bluetooth-1
+version=3.34.5
+
+source=(https://download.gnome.org/sources/${name%-*}/${version:0:4}/${name%-*}-$version.tar.gz)
+prepare() {
+  mv ${name%-*}-$version $name-$version
+  sed -i "/'sendto'/d" $name-$version/meson.build
+}
+build=meson
