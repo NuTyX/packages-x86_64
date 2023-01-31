@@ -1,0 +1,35 @@
+description='A program that lets you manipulate digital audio waveforms'
+url='https://audacityteam.org'
+
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
+
+name=audacity
+version=3.2.4
+
+makedepends=(libvorbis libmad libid3tag wxgtk lame ffmpeg redland jack
+             soundtouch cmake zip python vst3sdk wavpack libogg sqlite
+             portaudio chrpath libsndfile portmidi libsbsms flac mpg123
+             vamp-plugin-sdk)
+run=(shared-mime-info desktop-file-utils hicolor-icon-theme)
+
+source=(https://github.com/audacity/audacity/archive/refs/tags/Audacity-$version.tar.gz)
+build() {
+  export VST3SDK='/usr/share/vst3sdk'
+#  export CFLAGS+=" -DNDEBUG"
+#  export CXXFLAGS+=" -DNDEBUG"
+
+  cmake -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_INSTALL_PREFIX=/usr    \
+    -D AUDACITY_BUILD_LEVEL=2 \
+    -D audacity_conan_enabled=OFF \
+    -D audacity_has_networking=OFF \
+    -D audacity_has_crashreports=OFF \
+    -D audacity_has_updates_check=OFF \
+    -D audacity_has_sentry_reporting=OFF \
+    -D audacity_use_vst3sdk=system \
+    -B build -S $name-Audacity-$version -Wno-dev
+  cmake --build build
+
+  DESTDIR=$PKG cmake --install build
+}
