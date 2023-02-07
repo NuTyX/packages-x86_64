@@ -5,35 +5,31 @@ url="http://www.cairographics.org/"
 packager="spiky <spiky@nutyx.org>"
 contributors="Rems,Tnut"
 
-makedepends=(autoconf automake m4 sed grep gtk-doc
+makedepends=( m4 sed grep gtk-doc meson
              lzo libpng glib xorg-pixman xorg-fontconfig
              xcb-util xorg-libxrender xorg-libxxf86vm)
 
 name=cairo
-version=1.17.6
+version=1.17.8
 
 source=(https://gitlab.freedesktop.org/cairo/cairo/-/archive/$version/cairo-$version.tar.bz2)
-prepare() {
-cd $name-$version
-
-# Fix typo
-sed -i 's/have_png/use_png/g' configure.ac
-
-NOCONFIGURE=1 ./autogen.sh
-}
 
 build() {
-cd $name-$version
 
-./configure --prefix=/usr \
-            --disable-static \
-            --enable-tee \
-            --disable-gl
+meson setup build $name-$version $PKGMK_CAIRO \
+                --prefix=/usr \
+		--buildtype=plain \
+		--wrap-mode nodownload \
+		-D b_lto=true \
+		-D b_pie=true \
+		-D dwrite=disabled \
+		-D spectre=disabled \
+		-D symbol-lookup=disabled \
+		-D tests=disabled
+        meson compile -C build
+	DESTDIR=$PKG meson install -C build
 
-sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-
-make
-make DESTDIR=$PKG install
+	chmod +x $PKG/usr/bin/cairo-trace
 
 }
 
