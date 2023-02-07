@@ -1,0 +1,34 @@
+From 8ba3da9bcae03d3c44a6cb066e4e6a64c1540773 Mon Sep 17 00:00:00 2001
+From: Vincent Torri <vincent.torri@gmail.com>
+Date: Wed, 23 Feb 2022 15:14:37 +0000
+Subject: [PATCH] meson: fix build with meson 0.61.0
+
+Summary: input requires a file, not a dir. Anyway, @INPUT@is not used
+
+Test Plan: compilation
+
+Reviewers: raster, netstar
+
+Subscribers: juippis
+
+Differential Revision: https://phab.enlightenment.org/D12324
+---
+ data/extra/templates/meson.build | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/data/extra/templates/meson.build b/data/extra/templates/meson.build
+index 54dddae..be5bcf4 100644
+--- a/data/extra/templates/meson.build
++++ b/data/extra/templates/meson.build
+@@ -6,10 +6,9 @@ skeleton_names = ['eflproject', 'eflproject_python']
+ foreach skeleton_name : skeleton_names
+ 
+   custom_target('skeleton ' + skeleton_name,
+-    command : [tar, 'zcf', '@OUTPUT@', '-C', 
++    command : [tar, 'zcf', '@OUTPUT@', '-C',
+       join_paths(meson.source_root(), 'data', 'extra', 'templates', 'skeletons'),
+       skeleton_name],
+-    input : join_paths('skeletons', skeleton_name),
+     output : skeleton_name + '.tar.gz',
+     install_dir: join_paths(get_option('prefix'), get_option('datadir'), 'edi', 'templates'),
+     install : true,
