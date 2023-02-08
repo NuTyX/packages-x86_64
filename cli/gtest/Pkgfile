@@ -1,19 +1,19 @@
 description="Google Test - C++ testing utility"
 url="https://github.com/google/googletest/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(python sed cmake)
 
 name=gtest
-version=1.12.1
+version=1.13.0
 
 PKGMK_KEEP_SOURCES="no"
-source=(https://github.com/google/googletest/archive/release-${version}.tar.gz)
+source=(https://github.com/google/googletest/archive/refs/tags/v$version.tar.gz)
 
 prepare() {
- cd googletest-release-${version}
+ cd googletest-${version}
 
  # fixup version as they are never correct
  sed -E "s|(GOOGLETEST_VERSION) [0-9\\.]+|\\1 ${version}|" -i CMakeLists.txt
@@ -27,7 +27,7 @@ build () {
         -DBUILD_SHARED_LIBS=ON \
         -Dgtest_build_tests=ON \
         -DPYTHON_EXECUTABLE=$(which python3) \
-        ../googletest-release-${version}
+        ../googletest-${version}
 
   cmake --build .
 
@@ -36,7 +36,7 @@ build () {
   # Shouldn't be present
   find "${PKG}" -name '*.pump' -printf 'Removing %P\n' -delete
 
-  cd ../googletest-release-${version}
+  cd ../googletest-${version}
   install -Dm 644 LICENSE -t "${PKG}/usr/share/licenses/${name}-$version"
   install -Dm 644 README.md CONTRIBUTORS -t "${PKG}/usr/share/doc/${name}-$version"
 
