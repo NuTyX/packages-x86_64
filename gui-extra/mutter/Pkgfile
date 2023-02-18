@@ -1,8 +1,8 @@
 description="Window manager for gnome."
 url="https://www.gnome.org/"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Jayce,Fanch,Remy,Spiky,Fabienwang"
+packager="spiky <spiky@nutyx.org>"
+contributors="Jayce,Fanch,Remy,Fabienwang,Tnut"
 
 makedepends=(clutter meson ninja glib xorg-libsm graphene
              gnome-desktop gnome-settings-daemon libwacom libxkbcommon upower
@@ -13,8 +13,7 @@ run=(xorg-server zenity pipewire xorg-xwayland)
 set=(gnome)
 
 name=mutter
-version=43.2
-release=2
+version=43.3
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
