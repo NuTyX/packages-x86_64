@@ -5,11 +5,11 @@ packager="Tnut <tnut@nutyx.org>"
 
 name=nvidia-470-kernel
 version=470.161.03
-release=3
+release=4
 
 run=(kernel)
 
-source=(kernel-6.x.patch
+source=(kernel-6.x.patch kernel-6.2.patch
 	https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
 
 build()
@@ -20,6 +20,7 @@ build()
  cd NVIDIA-Linux-x86_64-$version/kernel
 
  patch -Np1 -i ../../kernel-6.x.patch
+ patch -Np1 -i ../../kernel-6.2.patch
 
  sed -i "s@nv_dma_resv_add_excl_fence@dma_resv_add_excl_fence@" nvidia-drm/nvidia-dma-resv-helper.h
  sed -i "s@nv_dma_resv_add_excl_fence@dma_resv_add_excl_fence@" nvidia-drm/nvidia-drm-prime-fence.c
