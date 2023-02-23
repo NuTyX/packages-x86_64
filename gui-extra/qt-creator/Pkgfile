@@ -1,0 +1,20 @@
+description='A cross-platform IDE for software development'
+url='https://www.qt.io/product/development-tools'
+
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(qt6-base qt6-svg qt6-shadertools qt6-5compat cmake)
+run=(hicolor-icon-theme gtk-update-icon-cache
+     desktop-file-utils shared-mime-info)
+
+name=qt-creator
+version=9.0.2
+
+source=(https://download.qt.io/official_releases/qtcreator/${version:0:3}/$version/qt-creator-opensource-src-$version.tar.gz)
+
+prepare() {
+mv $name-opensource-src-$version $name-$version
+}
+
+build=cmake
