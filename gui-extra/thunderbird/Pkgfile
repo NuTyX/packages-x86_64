@@ -82,22 +82,17 @@ ac_add_options --enable-official-branding
 EOF
 
 sed -i '/ROOT_CLIP_CHAIN/d' gfx/webrender_bindings/webrender_ffi.h
-grep -rl \"rU\" | xargs sed -i 's/"rU"/"r"/'
-
-sed -e 's/?s)\./?s:.)/'               \
-    -e '/?m)/{s/?m)/?m:/;s/\$"/$)"/}' \
-    -e '/?s)%/{s/?s)/?s:/;s/?"/?)"/}' \
-    -i xpcom/idl-parser/xpidl/xpidl.py
-
 
 export SHELL=/bin/sh
 export CC=gcc CXX=g++
-export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=system
+export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
+export MOZBUILD_STATE_PATH=./mozbuild
+
 
 ./mach configure
 ./mach build
 
-MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=system \
+MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none \
 DESTDIR=$PKG ./mach install
 
 mkdir -pv $PKG/usr/bin
