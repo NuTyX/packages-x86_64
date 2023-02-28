@@ -1,12 +1,12 @@
 description="The GRUB package contains the GRand Unified Bootloader."
 url="http://www.gnu.org/software/grub/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
 contributors="Pierre,Schrodinger72,Spiky"
 
 name=grub
 version=2.06
-release=7
+release=8
 
 dejavu_version=2.37
 splash_version=21.03.0-rc4
@@ -18,7 +18,7 @@ source=(https://download.tuxfamily.org/nutyx/files/splash-${splash_version}.png
 	https://ftp.gnu.org/gnu/unifont/unifont-13.0.06/unifont-13.0.06.pcf.gz
 	http://downloads.sourceforge.net/dejavu/dejavu-fonts-ttf-${dejavu_version}.tar.bz2
         https://ftp.gnu.org/gnu/grub/grub-$version.tar.xz
-        grub
+        grub ext2-fixe.patch
 	grub.cfg)
 
 PKGMK_GROUPS=(man)
@@ -33,6 +33,8 @@ mv dejavu-fonts-ttf-${dejavu_version}/ttf/Deja* \
 grub-$version
 gunzip -c unifont-13.0.06.pcf.gz \
 > grub-$version/unifont.pcf
+cd grub-$version
+patch -Np1 -i ../ext2-fixe.patch
 }
 
 build() {
