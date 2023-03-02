@@ -1,7 +1,7 @@
 description="Programs for controlling the startup, running, and shutdown of the system."
 url="https://www.freedesktop.org/wiki/Software/systemd/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 # Those dependencies are need to compile the package
 # but not listed to avoid circular dependencies:
@@ -16,24 +16,24 @@ PKGMK_DEPENDS=(python python-markupsafe python-jinja meson ninja util-linux dbus
 makedepends=(acl libcap kmod m4 gperf pam)
 
 name=systemd
-version=252.4
-release=2
+version=253
 
 PKGMK_IGNORE_FOOTPRINT='no'
 PKGMK_IGNORE_RUNTIMEDEPS='yes'
 PKGMK_GROUPS=(devel doc man lib)
 
 source=(consolidate.patch
-        http://download.tuxfamily.org/nutyx/files/$name-man-pages-$version.tar.xz
-	https://github.com/systemd/systemd/archive/v${version:0:3}/systemd-$version.tar.gz)
+       # http://download.tuxfamily.org/nutyx/files/$name-man-pages-$version.tar.xz
+        http://download.tuxfamily.org/nutyx/files/$name-man-pages-252.4.tar.xz
+        https://github.com/systemd/systemd/archive/v${version:0:3}/systemd-$version.tar.gz)
 
 prepare() {
 ln -sf /bin/true /usr/bin/xsltproc
-cd $name-stable-$version
+cd $name-$version
 patch -Np1 -i ../consolidate.patch
 }
 build() {
-cd $name-stable-$version
+cd $name-$version
 
 mkdir build
 cd    build
