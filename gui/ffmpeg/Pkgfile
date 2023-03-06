@@ -1,8 +1,8 @@
 description="Complete and free Internet live audio and video broadcasting solution"
 url="http://ffmpeg.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Remy,Greg,Fabienwang,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Remy,Greg,Fabienwang,Tnut"
 
 makedepends=(doxygen alsa-lib bzip2 fribidi gmp gsm jack ladspa lame
     libavc1394 libiec61883 libmodplug libraw1394 libssh libtheora
@@ -13,7 +13,7 @@ makedepends=(doxygen alsa-lib bzip2 fribidi gmp gsm jack ladspa lame
     xorg-libxfixes zlib libva libvdpau ffnvcodec-headers)
 
 name=ffmpeg
-version=5.0.1
+version=6.0
 
 _CONF_OPTS="    --prefix=/usr \
     --disable-static \
@@ -53,8 +53,7 @@ _CONF_OPTS="    --prefix=/usr \
     --enable-libxvid \
     --enable-nvdec \
     --enable-nvenc \
-    --enable-openssl \
-    --enable-sdl2 "
+    --enable-openssl "
 
 source=(${url}releases/ffmpeg-{$version,4.4.1}.tar.xz
         add-av_stream_get_first_dts-for-chromium.patch)
