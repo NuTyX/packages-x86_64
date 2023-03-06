@@ -1,17 +1,26 @@
 description="The Open Source toolkit for Secure Sockets Layer and Transport Layer Security."
 url="http://www.openssl.org/"
 
-packager="spiky <spiky@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(perl)
 
 name=openssl
 version=3.0.8
-release=2
+_version=1.1.1t
+release=3
 
-source=(ftp://ftp.openssl.org/source/$name-${version}.tar.gz)
+source=(ftp://ftp.openssl.org/source/$name-${_version}.tar.gz
+        ftp://ftp.openssl.org/source/$name-${version}.tar.gz)
 
 PKGMK_GROUPS=(devel man doc)
+prepare() {
+  cd $name-${_version}
+  ./config --prefix=/usr --libdir=lib/openssl-1.1 \
+  shared zlib-dynamic --openssldir=/etc/ssl
+  make
+}
 build() {
 unset MAKEFLAGS
 
@@ -31,6 +40,14 @@ MANSUFFIX=ssl install
 mv -v $PKG/usr/share/doc/openssl{,-$version}
 cp -vfr doc/*     $PKG/usr/share/doc/openssl-$version
 
+}
+package() {
+mkdir -p $PKG/usr/lib/openssl-1.1
+for i in libcrypto.so libssl.so
+ do install $name-${_version}/$i.1.1 \
+    $PKG/usr/lib/$i.1.1
+    ln -sv ../$i.1.1 $PKG/usr/lib/openssl-1.1/$i
+done
 }
 devel()
 {
