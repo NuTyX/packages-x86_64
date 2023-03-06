@@ -4,30 +4,40 @@ url="http://www.libsdl.org"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Rems,Tnut"
 
-makedepends=(xorg-libxext xorg-libxrender xorg-libx11
+makedepends=(cmake ninja xorg-libxext xorg-libxrender xorg-libx11
              xorg-libxcursor alsa-lib mesa pulseaudio
              xorg-libxrandr xorg-libxinerama libxkbcommon wayland)
 
 name=sdl
 version=2.26.3
+release=2
 
 source=(${url}/release/SDL2-$version.tar.gz)
 
 build() {
   cd SDL2-$version
-  ./configure --prefix=/usr
-  make
-}
-package() {
-  cd SDL2-$version
+  mkdir build 
+  cd build
+  
+  cmake -D CMAKE_INSTALL_PREFIX=/usr \
+        -D SDL_STATIC=OFF \
+        -D SDL_RPATH=OFF \
+        ..
+ make
+
+
   make DESTDIR=$PKG install
-  install -Dm644 ../SDL2-$version/LICENSE.txt $PKG/usr/share/licenses/$name/LICENSE
+
+ # For some reason, this isn't named correctly and we have to fix it to reflect the actual staticlib name.
+  sed -i "s/libSDL2\.a/libSDL2main.a/g" "$pkgdir"/usr/lib/cmake/SDL2/SDL2Targets-noconfig.cmake
+
+#  install -Dm644 SDL2-$version/LICENSE.txt $PKG/usr/share/licenses/$name/LICENSE
 
   # Obsolet libs
-  rm $PKG/usr/lib/libSDL2.la
-  rm $PKG/usr/lib/libSDL2_test.la
-  rm $PKG/usr/lib/libSDL2main.la
+#  rm $PKG/usr/lib/libSDL2.la
+#  rm $PKG/usr/lib/libSDL2_test.la
+#  rm $PKG/usr/lib/libSDL2main.la
 
   # Static obsolet libs
-  rm $PKG/usr/lib/libSDL2*.a
+#  rm $PKG/usr/lib/libSDL2*.a
 }
