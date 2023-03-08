@@ -12,16 +12,19 @@ run=(gtk-update-icon-cache x264 curl jack)
 
 name=obs-studio
 version=29.0.2
+release=2
 
 PKGMK_KEEP_SOURCES="no"
 
 source=(ignore_unused_submodules.patch
-        https://github.com/obsproject/obs-studio/archive/refs/tags/$version.tar.gz)
+        https://github.com/obsproject/obs-studio/archive/refs/tags/$version.tar.gz
+        2e79d4c9.patch)
 
 build() {
   cd $name-$version
 
   patch -Np1 -i ../ignore_unused_submodules.patch
+  patch -Np1 -i ../2e79d4c9.patch
   
   mkdir build
   cd build
