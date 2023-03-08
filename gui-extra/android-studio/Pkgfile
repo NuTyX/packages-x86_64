@@ -1,0 +1,49 @@
+description="Android Studio is the official integrated development environment (IDE) for Google's Android operating system."
+url='https://developer.android.com/studio'
+
+packager="Skythrew <mael.guerin@outlook.fr>"
+contributors=""
+
+makedepends=(tar)
+PKGMK_NO_STRIP="yes"
+
+name=android-studio
+version=2022.1.1.21
+
+source=(https://redirector.gvt1.com/edgedl/android/studio/ide-zips/$version/$name-$version-linux.tar.gz)
+
+build() {
+
+cd $name
+
+install -d $PKG/{opt/$name,usr/bin}
+
+cp -a bin lib jbr plugins license LICENSE.txt build.txt product-info.json $PKG/opt/$name
+ln -s /opt/android-studio/bin/studio.sh $PKG/usr/bin/$name
+
+# Copy licenses
+install -Dm644 LICENSE.txt "$PKG/usr/share/licenses/$name/LICENSE.txt"
+
+# Add the icon
+install -Dm644 bin/studio.png $PKG/usr/share/pixmaps/$pkgname.png
+
+# Add the desktop file
+mkdir -p $PKG/usr/share/applications
+cat > $PKG/usr/share/applications/$name.desktop <<EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Android Studio
+Exec=android-studio %f
+Icon=android-studio
+Comment=The official Android IDE
+Categories=Development;IDE;
+Terminal=false
+StartupNotify=true
+StartupWMClass=jetbrains-studio
+MimeType=application/x-extension-iml;
+EOF
+
+chmod -R ugo+rX $PKG/opt
+
+}
