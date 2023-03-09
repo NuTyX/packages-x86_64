@@ -1,22 +1,19 @@
 description="The GNU Project debugger, allows you to see what is going on “inside” another program while it executes."
 url="http://www.sourceware.org/gdb/"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Spiky"
+packager="Artemia76 <neophile76@gmail.com>"
+contributors="Spiky,Tnut"
 
-makedepends=(python ncurses gmp readline expat texinfo)
+makedepends=(ncurses gmp readline expat texinfo python)
 
 name=gdb
 version=12.1
-release=3
+release=9
 
 source=(https://ftp.gnu.org/gnu/gdb/$name-$version.tar.xz)
 build() {
-CXXFLAGS+=" -fpermissive"
-
 cd $name-$version
-./configure --prefix=/usr --with-system-readline \
---with-python
+./configure --prefix=/usr --with-system-readline --with-python CXXFLAGS="-fpermissive"
 make
 make DESTDIR=$PKG install
 rm $PKG/usr/include/plugin-api.h
