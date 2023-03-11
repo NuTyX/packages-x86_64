@@ -1,0 +1,30 @@
+description='Cantarell font family'
+url='https://gitlab.gnome.org/GNOME/cantarell-fonts'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(meson appstream-glib)
+
+set=(gnome)
+
+name=cantarell-fonts
+version=0.303.1
+
+source=(https://download.gnome.org/sources/$name/${version:0:5}/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson --prefix=/usr \
+      -Duseprebuilt=true \
+      ..
+
+ninja
+
+DESTDIR=$PKG ninja install
+}
+
