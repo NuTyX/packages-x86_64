@@ -1,18 +1,21 @@
 description="A cross-platform networking library for SDL."
 url="http://www.libsdl.org/projects/SDL_net"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch"
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch,Tnut"
 
 makedepends=(sdl)
 
 name=sdl-net
-version=2.0.1
+version=2.2.0
 
-source=(http://www.libsdl.org/projects/SDL_net/release/SDL2_net-$version.tar.gz)
+PKGMK_KEEP_SOURCE="no"
+
+source=(https://github.com/libsdl-org/SDL_net/archive/refs/tags/release-$version.tar.gz)
+
 
 build() {
-	cd SDL2_net-$version
+	cd SDL_net-release-$version
 	./configure --prefix=/usr
 	make
 	make DESTDIR=$PKG install
