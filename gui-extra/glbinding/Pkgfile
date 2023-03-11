@@ -1,13 +1,13 @@
 description="A C++ binding for the OpenGL API, generated using the gl.xml specification." 
 url="http://www.glbinding.org"
 
-contributors="berlius, tnut, greg"
-packager="tnut <tnut@nutyx.org>"
+contributors="Berlius,Greg,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(cmake doxygen mesa libglade)
 
 name=glbinding
-version=3.1.0
+version=3.3.0
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/cginternals/$name/archive/v$version.tar.gz)
@@ -21,7 +21,7 @@ prepare() {
 }
 build() {
   cd $name-$version/build
-  cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release \
+  cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=None \
     -DOPTION_BUILD_TESTS=OFF
   make
   make DESTDIR=$PKG install
