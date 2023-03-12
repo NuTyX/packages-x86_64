@@ -15,6 +15,7 @@ set=()
 
 name=gtk4
 version=4.10.0
+release=4
 
 PKGMK_GROUPS=(devel doc lib man)
 source=(https://gitlab.gnome.org/GNOME/gtk/-/archive/$version/gtk-$version.tar.gz)
@@ -29,6 +30,7 @@ meson --prefix=/usr        \
 -Dbroadway-backend=true    \
 -Dtracker=enabled          \
 -Dcolord=enabled           \
+-Dintrospection=enabled    \
 ..
 ninja
 
