@@ -1,7 +1,7 @@
 diff -Naur a/meson.build b/meson.build
---- a/meson.build	2022-12-20 19:15:44.000000000 +0100
-+++ b/meson.build	2022-12-26 21:41:13.671772944 +0100
-@@ -3515,7 +3515,7 @@
+--- a/meson.build	2023-02-15 20:11:52.000000000 +0100
++++ b/meson.build	2023-03-12 20:11:12.806763373 +0100
+@@ -3648,7 +3648,7 @@
          include_directories : includes,
          link_with : [libshared],
          install_rpath : rootpkglibdir,
@@ -11,8 +11,8 @@ diff -Naur a/meson.build b/meson.build
  
  public_programs += executable(
 diff -Naur a/rules.d/50-udev-default.rules.in b/rules.d/50-udev-default.rules.in
---- a/rules.d/50-udev-default.rules.in	2022-12-20 19:15:44.000000000 +0100
-+++ b/rules.d/50-udev-default.rules.in	2022-12-26 21:43:05.163000639 +0100
+--- a/rules.d/50-udev-default.rules.in	2023-02-15 20:11:52.000000000 +0100
++++ b/rules.d/50-udev-default.rules.in	2023-03-12 20:12:58.286766578 +0100
 @@ -40,8 +40,8 @@
  SUBSYSTEM=="media", GROUP="video"
  SUBSYSTEM=="cec", GROUP="video"
@@ -25,8 +25,8 @@ diff -Naur a/rules.d/50-udev-default.rules.in b/rules.d/50-udev-default.rules.in
  SUBSYSTEM=="misc", KERNEL=="sgx_enclave", GROUP="sgx", MODE="0660"
  SUBSYSTEM=="misc", KERNEL=="sgx_vepc", GROUP="sgx", MODE="0660"
 diff -Naur a/src/basic/path-util.h b/src/basic/path-util.h
---- a/src/basic/path-util.h	2022-12-20 19:15:44.000000000 +0100
-+++ b/src/basic/path-util.h	2022-12-26 21:44:57.767540138 +0100
+--- a/src/basic/path-util.h	2023-02-15 20:11:52.000000000 +0100
++++ b/src/basic/path-util.h	2023-03-12 20:14:41.060103035 +0100
 @@ -10,8 +10,8 @@
  #include "strv.h"
  #include "time-util.h"
@@ -39,9 +39,9 @@ diff -Naur a/src/basic/path-util.h b/src/basic/path-util.h
  #define PATH_NORMAL_SBIN_BIN(x) x "bin"
  #define PATH_NORMAL_SBIN_BIN_NULSTR(x) x "bin\0"
 diff -Naur a/src/basic/unit-def.h b/src/basic/unit-def.h
---- a/src/basic/unit-def.h	2022-12-20 19:15:44.000000000 +0100
-+++ b/src/basic/unit-def.h	2022-12-26 21:46:01.426337340 +0100
-@@ -176,8 +176,8 @@
+--- a/src/basic/unit-def.h	2023-02-15 20:11:52.000000000 +0100
++++ b/src/basic/unit-def.h	2023-03-12 20:16:10.276772413 +0100
+@@ -178,8 +178,8 @@
  
  typedef enum SwapState {
          SWAP_DEAD,
@@ -53,14 +53,14 @@ diff -Naur a/src/basic/unit-def.h b/src/basic/unit-def.h
          SWAP_DEACTIVATING,
          SWAP_DEACTIVATING_SIGTERM,
 diff -Naur a/src/core/swap.c b/src/core/swap.c
---- a/src/core/swap.c	2022-12-20 19:15:44.000000000 +0100
-+++ b/src/core/swap.c	2022-12-26 21:47:39.564482790 +0100
+--- a/src/core/swap.c	2023-02-15 20:11:52.000000000 +0100
++++ b/src/core/swap.c	2023-03-12 20:18:42.373443702 +0100
 @@ -827,7 +827,7 @@
                  }
          }
  
--        r = exec_command_set(s->control_command, "/sbin/swapon", NULL);
-+        r = exec_command_set(s->control_command, "/usr/sbin/swapon", NULL);
+-        r = exec_command_set(s->control_command, "/sbin/swapon", "--fixpgsz", NULL);
++        r = exec_command_set(s->control_command, "/usr/sbin/swapon", "--fixpgsz", NULL);
          if (r < 0)
                  goto fail;
  
@@ -83,9 +83,9 @@ diff -Naur a/src/core/swap.c b/src/core/swap.c
                  if (r < 0) {
                          log_error_errno(r, "Failed to change /proc/swaps priority: %m");
 diff -Naur a/src/resolve/meson.build b/src/resolve/meson.build
---- a/src/resolve/meson.build	2022-12-20 19:15:44.000000000 +0100
-+++ b/src/resolve/meson.build	2022-12-26 21:50:03.088436551 +0100
-@@ -174,55 +174,6 @@
+--- a/src/resolve/meson.build	2023-02-15 20:11:52.000000000 +0100
++++ b/src/resolve/meson.build	2023-03-12 20:20:15.026779852 +0100
+@@ -137,54 +137,7 @@
  
  ############################################################
  
@@ -95,7 +95,7 @@ diff -Naur a/src/resolve/meson.build b/src/resolve/meson.build
 -          libshared],
 -         [lib_openssl_or_gcrypt,
 -          libm]],
--
+ 
 -        [files('test-dns-packet.c'),
 -         [libsystemd_resolve_core,
 -          libshared],
@@ -103,8 +103,7 @@ diff -Naur a/src/resolve/meson.build b/src/resolve/meson.build
 -          libm]],
 -
 -        [files('test-resolved-etc-hosts.c',
--               'resolved-etc-hosts.c',
--               'resolved-etc-hosts.h'),
+-               'resolved-etc-hosts.c'),
 -         [libsystemd_resolve_core,
 -          libshared],
 -         [lib_openssl_or_gcrypt,
@@ -142,8 +141,8 @@ diff -Naur a/src/resolve/meson.build b/src/resolve/meson.build
  fuzzers += [
          [files('fuzz-dns-packet.c'),
 diff -Naur a/units/modprobe@.service b/units/modprobe@.service
---- a/units/modprobe@.service	2022-12-20 19:15:44.000000000 +0100
-+++ b/units/modprobe@.service	2022-12-26 21:50:34.894501916 +0100
+--- a/units/modprobe@.service	2023-02-15 20:11:52.000000000 +0100
++++ b/units/modprobe@.service	2023-03-12 20:21:36.663449000 +0100
 @@ -17,4 +17,4 @@
  
  [Service]

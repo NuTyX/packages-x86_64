@@ -1,7 +1,8 @@
 description="Programs for controlling the startup, running, and shutdown of the system."
 url="https://www.freedesktop.org/wiki/Software/systemd/"
 
-packager="spiky <spiky@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 # Those dependencies are need to compile the package
 # but not listed to avoid circular dependencies:
@@ -23,9 +24,8 @@ PKGMK_IGNORE_RUNTIMEDEPS='yes'
 PKGMK_GROUPS=(devel doc man lib)
 
 source=(consolidate.patch
-       # http://download.tuxfamily.org/nutyx/files/$name-man-pages-$version.tar.xz
-        http://download.tuxfamily.org/nutyx/files/$name-man-pages-252.4.tar.xz
-        https://github.com/systemd/systemd/archive/v${version:0:3}/systemd-$version.tar.gz)
+        http://download.tuxfamily.org/nutyx/files/$name-man-pages-$version.tar.xz
+        https://github.com/systemd/systemd/archive/v$version/systemd-$version.tar.gz)
 
 prepare() {
 ln -sf /bin/true /usr/bin/xsltproc
@@ -69,7 +69,7 @@ DESTDIR=$PKG ninja install
 mkdir -p $PKG/usr/share/man
 for i in 1 3 5 7 8
 do
-  mv ../../man$i \
+  mv ../../$name-man-pages-$version/man$i \
    $PKG/usr/share/man
 done
 
