@@ -1,7 +1,8 @@
 description="The Eudev package contains programs for dynamic creation of device nodes."
 url="https://www.freedesktop.org/wiki/Software/systemd/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
 
 # 1/ remove all the eudev archives cards.tar packages
 
@@ -9,7 +10,7 @@ makedepends=(libcap kmod meson ninja)
 
 name=eudev
 _name=systemd
-version=252.4
+version=253
 
 PKGMK_DEPENDS=(perl python python-markupsafe python-jinja m4 gperf util-linux pam systemd acl)
 PKGMK_IGNORE_FOOTPRINT='no'
@@ -20,13 +21,13 @@ source=(http://anduin.linuxfromscratch.org/LFS/udev-lfs-20171102.tar.bz2
 
 prepare() {
 
-sed '177,$ d' -i ${_name}-stable-$version/src/resolve/meson.build
-sed -i 's/GROUP="render", //' ${_name}-stable-$version/rules.d/50-udev-default.rules.in
+sed '140,$ d' -i ${_name}-$version/src/resolve/meson.build
+sed -i 's/GROUP="render", //' ${_name}-$version/rules.d/50-udev-default.rules.in
 }
 build() {
 
 
-cd ${_name}-stable-$version
+cd ${_name}-$version
 mkdir build
 cd    build
 
