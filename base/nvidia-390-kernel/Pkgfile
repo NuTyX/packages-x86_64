@@ -1,8 +1,8 @@
 description='NVIDIA modules for the latest stable Linux Kernel version.'
 url='https://www.nvidia.com'
 
-packager="spiky <spiky@nutyx.org>"
-contributors=""
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=()
 run=(kernel)
@@ -18,11 +18,12 @@ build() {
 sh NVIDIA-Linux-x86_64-$version.run --extract-only
 
 
- cd NVIDIA-Linux-x86_64-$version/kernel
+ cd NVIDIA-Linux-x86_64-$version
 
-#patch -Np1 -i ../../kernel-4.16+-memory-encryption.patch
-patch -Np1 -i ../../kernel-6.2.patch
+ patch -Np1 -i ../kernel-4.16+-memory-encryption.patch
+ patch -Np1 -i ../kernel-6.2.patch
 
+ cd kernel
  modules_dir="$(basename /lib/modules/*)"
 
  SYSSRC="/usr/src/*" make modules
