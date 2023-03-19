@@ -1,15 +1,14 @@
 description="Libraries and utilities used for parsing XML files."
 url="http://xmlsoft.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fanch,Schrodinger72,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Fanch,Schrodinger72,Tnut"
 
 makedepends=(libtool automake python)
 
 PKGMK_KEEP_SOURCES="no"
 name=libxml2
-version=2.9.14
-release=3
+version=2.10.3
 
 PKGMK_GROUPS=(lib man devel doc)
 source=(https://gitlab.gnome.org/GNOME/libxml2/-/archive/v${version}/$name-v${version}.tar.gz)
@@ -47,9 +46,9 @@ cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
 usr/lib/cmake usr/lib/pkgconfig usr/lib/cmake \
-usr/include usr/lib/xml2Conf.sh usr/share/aclocal
+usr/include usr/share/aclocal
 
-rm -r usr/{share/aclocal,include,lib/{cmake,pkgconfig,xml2Conf.sh}}
+rm -r usr/{share/aclocal,include,lib/{cmake,pkgconfig}}
 rm -d usr/lib || true
 }
 
