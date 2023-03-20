@@ -1,0 +1,32 @@
+description='Intel Media Driver for VAAPI — Broadwell+ iGPUs'
+url='https://github.com/intel/media-driver/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake intel-gmmlib libva libpciaccess)
+
+name=intel-media-driver
+version=23.1.2
+
+source=(https://github.com/intel/media-driver/archive/refs/tags/intel-media-$version.tar.gz)
+
+prepare() {
+
+mv media-driver-intel-media-$version $name-$version
+}
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr   \
+      -DINSTALL_DRIVER_SYSCONF=OFF  \
+      -DBUILD_TYPE=Release          \
+      -Wno-dev ..
+
+make
+make DESTDIR=$PKG install
+}
