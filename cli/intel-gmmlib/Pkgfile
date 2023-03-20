@@ -1,0 +1,31 @@
+description='Intel Graphics Memory Management Library'
+url='https://github.com/intel/gmmlib/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake)
+
+name=intel-gmmlib
+version=22.3.4
+
+source=(https://github.com/intel/gmmlib/archive/refs/tags/$name-$version.tar.gz)
+
+prepare() {
+
+mv gmmlib-intel-gmmlib-$version $name-$version
+}
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr   \
+      -DBUILD_TYPE=Release          \
+      -Wno-dev ..
+
+make
+make DESTDIR=$PKG install
+}
