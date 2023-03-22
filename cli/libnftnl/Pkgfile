@@ -7,9 +7,10 @@ contributors="Alienus"
 makedepends=(libmnl)
 
 name=libnftnl
-version=1.2.4
+version=1.2.5
 
-source=(http://netfilter.org/projects/libnftnl/files/libnftnl-$version.tar.bz2)
+source=(https://www.netfilter.org/pub/$name/$name-$version.tar.xz)
+
 package() {
     # Obsolet lib
     rm $PKG/usr/lib/libnftnl.la
