@@ -8,7 +8,7 @@ makedepends=(libffi pcre2 python elfutils meson ninja libxslt docbook-xsl)
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
-version=2.76.0
+version=2.76.1
 
 source=(https://download.gnome.org/sources/glib/${version:0:4}/$name-$version.tar.xz
 	glib-skip_warnings-2.patch consolidate.patch)
@@ -35,7 +35,9 @@ build () {
   mkdir build-glib
   cd    build-glib
 
-  meson --prefix=/usr -Dman=true -Dselinux=auto ..
+  meson --prefix=/usr \
+         -Dman=false \
+         -Dselinux=auto ..
   ninja
 
   DESTDIR=$PKG ninja install
