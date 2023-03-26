@@ -1,11 +1,26 @@
 description="A terminal multiplexer"
 url="https://tmux.github.io"
 
-packager="Spiky <spiky@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(libevent)
 
 name=tmux
-version=3.3
+version=3.3a
 
-source=(https://github.com/tmux/tmux/releases/download/$version/$name-$version.tar.gz)
+source=(https://github.com/tmux/tmux/releases/download/$version/$name-$version.tar.gz
+        CVE-2022-47016.patch)
+
+prepare() {
+cd $name-$version
+
+patch -Np1 -i ../CVE-2022-47016.patch
+}
+
+build() {
+	cd $name-$version
+	./configure --prefix=/usr
+	make
+	make DESTDIR=$PKG install
+}
+
