@@ -11,6 +11,7 @@ set=(gnome)
 
 name=gnome-session
 version=44.0
+release=3
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
@@ -19,7 +20,9 @@ cd $name-$version
 sed 's@/bin/sh@/bin/sh -l@' -i gnome-session/gnome-session.in
 mkdir build
 cd build
-meson --prefix=/usr -Dsystemd_journal=false
+meson --prefix=/usr -Dsystemd_journal=false \
+      -Dman=false \
+      -Ddocbook=false
 ninja
 DESTDIR=$PKG ninja install
 
