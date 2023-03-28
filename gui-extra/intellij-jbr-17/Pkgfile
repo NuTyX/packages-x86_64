@@ -1,0 +1,29 @@
+description='Runtime environment based on OpenJDK for running IntelliJ Platform-based products on Windows, macOS, and Linux'
+url='https://github.com/JetBrains/JetBrainsRuntime'
+
+packager="Skythrew <mael.guerin@outlook.fr>"
+contributors=""
+
+name=intellij-jbr-17
+version=17.0.6-b469.82
+
+source=(https://cache-redirector.jetbrains.com/intellij-jbr/jbr_jcef-17.0.6-linux-x64-b469.82.tar.gz)
+
+build() {
+
+jbr_version=$(echo $version | cut -d'-' -f1)
+jbr_build=$(echo $version | cut -d'-' -f2 | cut -d'.' -f1)
+
+cd jbr_jcef-$jbr_version-x64-$jbr_build
+
+mkdir -p $PKG/opt/intellij-jbr-17
+mv * $PKG/opt/intellij-jbr-17
+
+mkdir -p $PKG/etc/profile.d
+
+# Add the profile.d file to set the needed environment variable to start IntelliJ Idea correctly
+cat > $PKG/etc/profile.d/10_jbrsdk-17.sh <<EOF
+export IDEA_JDK=/opt/intellij-jbr-17
+EOF
+
+}
