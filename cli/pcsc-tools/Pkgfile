@@ -1,15 +1,15 @@
 description="PC/SC Architecture smartcard tools"
 url="http://ludovic.rousseau.free.fr/softwares/pcsc-tools/"
-packager="Spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(pcsclite perl-pcsc perl-glib pkg-config)
 run=(perl-pcsc)
 
 name=pcsc-tools
-version=1.6.0
+version=1.6.2
 
-source=(http://ludovic.rousseau.free.fr/softwares/$name/$name-$version.tar.bz2)
+source=(https://pcsc-tools.apdu.fr/$name-$version.tar.bz2)
 
 build() {
   cd $name-$version
