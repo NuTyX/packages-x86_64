@@ -1,0 +1,19 @@
+makedepends=(girara meson python-babel python-docutils python-imagesize python-jinja python-packaging python-pygments python-requests python-six python-snowballstemmer)
+
+description='Minimalistic document viewer'
+url='https://pwmt.org/projects/zathura/'
+
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
+
+name=zathura
+version=0.5.2
+
+makedepends=(girara meson sqlite ninja meson
+             appstream-glib)
+
+run=(desktop-file-utils)
+
+source=(https://pwmt.org/projects/$name/download/$name-$version.tar.xz)
+
+build=meson
