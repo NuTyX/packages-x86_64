@@ -1,8 +1,8 @@
 description="KDE Plasma Workspace"
 url="https://www.kde.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="PierreB,Fabienwang,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="PierreB,Fabienwang,Tnut,Spiky"
 
 makedepends=(xorg-libxres prison baloo milou networkmanager-qt plasma-integration libqalculate
              kitemmodels kjsembed kwin krunner knotifyconfig kdesu kwallet kscreen
@@ -14,7 +14,7 @@ run=(pm-utils gvfs xorg-xrdb xorg-xsetroot xorg-xprop xorg-xmessage
 set=(kde5)
 
 name=plasma-workspace
-version=5.27.3
+version=5.27.4.1
 
 source=(https://download.kde.org/stable/plasma/${version:0:6}/$name-$version.tar.xz)
 
@@ -73,16 +73,4 @@ account include system-account
 # End /etc/pam.d/kscreensaver
 EOF
 
-}
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
 }
