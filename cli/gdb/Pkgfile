@@ -8,7 +8,7 @@ makedepends=(ncurses gmp readline expat texinfo)
 
 name=gdb
 version=13.1
-release=2
+release=3
 
 source=(https://ftp.gnu.org/gnu/gdb/$name-$version.tar.xz)
 build() {
@@ -25,6 +25,8 @@ rm $PKG/usr/include/dis-asm.h
 rm $PKG/usr/include/symcat.h
 rm $PKG/usr/include/ctf-api.h
 rm $PKG/usr/include/ctf.h
+rm $PKG/usr/include/sframe-api.h
+rm $PKG/usr/include/sframe.h
 rm $PKG/usr/lib/libbfd.a
 rm $PKG/usr/lib/libbfd.la
 rm $PKG/usr/lib/libopcodes.a
