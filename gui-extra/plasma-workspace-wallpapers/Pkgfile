@@ -1,28 +1,16 @@
 description="Additional wallpapers for the Plasma Workspace "
 url="https://www.kde.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Fabienwang,Fabienwang,Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Pierre,Fabienwang,Fabienwang,Tnut,Spiky"
 
 makedepends=(extra-cmake-modules)
 
 set=(kde5)
 
 name=plasma-workspace-wallpapers
-version=5.27.3
+version=5.27.4.1
 
-source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+source=(https://download.kde.org/stable/plasma/${version:0:6}/$name-$version.tar.xz)
 
 build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
