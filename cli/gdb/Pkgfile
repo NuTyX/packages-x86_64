@@ -1,13 +1,14 @@
 description="The GNU Project debugger, allows you to see what is going on “inside” another program while it executes."
 url="http://www.sourceware.org/gdb/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(ncurses gmp readline expat texinfo)
 
 name=gdb
 version=13.1
+release=2
 
 source=(https://ftp.gnu.org/gnu/gdb/$name-$version.tar.xz)
 build() {
@@ -32,17 +33,9 @@ rm $PKG/usr/lib/libctf-nobfd.a
 rm $PKG/usr/lib/libctf-nobfd.la
 rm $PKG/usr/lib/libctf.a
 rm $PKG/usr/lib/libctf.la
+rm $PKG/usr/lib/libsframe.a
 
 # Most of the locale are allready present from binutils, beter get rid of all of them
 rm -r $PKG/usr/share/locale
 rm $PKG/usr/include/diagnostics.h
-}
-
-uptodate() {
-local url ext
-url="https://ftp.gnu.org/gnu/$name/"
-ext=".tar.xz"
-lynx -read_timeout=20 -dump -listonly -nonumbers \
-$url?C=M\;O=A|grep $name-[0-9]|grep [0-9]$ext$| \
-sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
 }
