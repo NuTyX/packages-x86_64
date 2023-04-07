@@ -3,21 +3,26 @@ url="http://openbox.org/wiki/Main_Page"
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(pcre pango freetype libpng xorg-fontconfig harfbuzz dbus
-             imlib2 librsvg startup-notification xcb-util libxcb libxml2)
+makedepends=(autoconf sed grep
+             pcre pango freetype libpng xorg-fontconfig harfbuzz
+             imlib2 librsvg xcb-util libxcb libxml2)
 run=( startup-notification dbus )
 
 name=openbox
 version=3.6.1
-release=7
+release=8
 
 source=(http://openbox.org/dist/openbox/$name-$version.tar.gz \
-        openbox.xinitrc openbox-3.6.1-flcards-1.patch)
+        openbox.xinitrc openbox-3.6.1-consolidate-1.patch)
 
+prepare(){
+  cd $name-$version
+  patch -Np1 -i ../openbox-3.6.1-consolidate-1.patch
+  autoreconf -ifv
+}
 build()
 {
    cd $name-$version
-   patch -Np1 -i ../openbox-3.6.1-flcards-1.patch
 
    ./configure --prefix=/usr \
 	--sysconfdir=/etc \
