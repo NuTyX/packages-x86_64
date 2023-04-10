@@ -8,7 +8,7 @@ contributors="Pierre.,Rémy,Tnut"
 makedepends=(make-ca cmake curl llvm python libssh2)
 
 name=rustc
-version=1.67.1
+version=1.68.2
 
 source=(http://static.rust-lang.org/dist/$name-$version-src.tar.gz)
 
@@ -29,6 +29,17 @@ docs = false
 
 # install cargo as well as rust
 extended = true
+
+# Do not query new versions of dependencies online.
+locked-deps = true
+
+# Specify which extended tools (those from the default install).
+tools = ["cargo", "clippy", "rustfmt"]
+
+# Use the source code shipped in the tarball for the dependencies.
+# The combination of this and the "locked-deps" entry avoids downloading
+# many crates from Internet, and makes the Rustc build more stable.
+vendor = true
 
 [install]
 prefix = "/usr"
