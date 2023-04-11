@@ -6,10 +6,10 @@ PKGMK_GROUPS=(doc man)
 url="http://xorg.freedesktop.org"
 
 name=xorg-luit
-version=20221028
+version=20230201
 _name=${name/xorg-/}
 makedepends=(xorg-libfontenc)
-source=(https://invisible-mirror.net/archives/${_name}/${_name}-20221028.tgz)
+source=(https://invisible-mirror.net/archives/${_name}/${_name}-$version.tgz)
 build=xorg
 prepare() {
 	cd ${_name}-$version
