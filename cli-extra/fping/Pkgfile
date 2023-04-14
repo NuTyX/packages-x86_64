@@ -1,0 +1,25 @@
+description='A program to send ICMP echo probes to network hosts'
+url='https://fping.org/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=()
+run=()
+set=()
+
+name=fping
+version=5.1
+
+source=(https://fping.org/dist/$name-$version.tar.gz)
+
+build() {
+
+cd $name-$version
+
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+
+chmod 4755 ${PKG}/usr/sbin/fping
+}
