@@ -1,0 +1,24 @@
+description='Securely erase disks using a variety of recognised methods'
+url='http://www.andybev.com/index.php/Nwipe'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=()
+run=(dmidecode smartmontools parted)
+name=nwipe
+version=0.33
+release=2
+
+source=(https://github.com/martijnvanbrummelen/$name/archive/v${version}/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+
+./autogen.sh
+
+./configure --prefix=/usr
+
+make
+make DESTDIR=$PKG install
+}
