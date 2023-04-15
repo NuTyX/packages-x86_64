@@ -4,16 +4,18 @@ url="http://www.sourceware.org/gdb/"
 packager="Tnut <tnut@nutyx.org>"
 contributors="Spiky"
 
-makedepends=(ncurses gmp readline expat texinfo)
+makedepends=(ncurses gmp readline expat texinfo
+             python)
 
 name=gdb
 version=13.1
-release=3
+release=4
 
 source=(https://ftp.gnu.org/gnu/gdb/$name-$version.tar.xz)
 build() {
+CXXFLAGS+=' -fpermissive'
 cd $name-$version
-./configure --prefix=/usr --with-system-readline
+./configure --prefix=/usr --with-system-readline --with-python
 make
 make DESTDIR=$PKG install
 rm $PKG/usr/include/plugin-api.h
