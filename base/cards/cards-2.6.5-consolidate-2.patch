@@ -1,0 +1,20 @@
+diff --git a/scripts/mybld.in b/scripts/mybld.in
+index 86da101..75a0059 100755
+--- a/scripts/mybld.in
++++ b/scripts/mybld.in
+@@ -780,6 +780,7 @@ else
+        -e "s/contributors=/contributors=\"$newcontributors\"/" \
+        -i "${i}"/Pkgfile
+      fi
++     release=1
+      . $i/Pkgfile
+      cd $i
+      check_download_sources
+@@ -812,6 +813,7 @@ if [ "$INCREMENT" == "yes" ]; then
+ fi
+ 
+ if [ -f "$COLLECTION/${PARAM[0]}/Pkgfile" ]; then
++   release=1
+    . "$COLLECTION"/"${PARAM[0]}"/Pkgfile
+    cd "$COLLECTION/${PARAM[0]}/"
+    check_download_sources
