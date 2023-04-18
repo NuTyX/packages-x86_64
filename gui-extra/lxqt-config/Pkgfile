@@ -1,8 +1,8 @@
 description="LXQt system configuration."
 url="https://github.com/lxqt/lxqt-config"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Greg,Tnut,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Tnut"
 
 makedepends=(lxqt-build-tools liblxqt qtsvg libkscreen xorg-libxcursor
              xorg-xf86-input-libinput)
@@ -10,15 +10,14 @@ makedepends=(lxqt-build-tools liblxqt qtsvg libkscreen xorg-libxcursor
 set=(lxqt)
 
 name=lxqt-config
-version=1.2.0
-release=2
+version=1.3.0
 
 source=(libkscreen.patch
         https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
 prepare() {
 cd $name-$version
-patch -Np1 -i ../libkscreen.patch
+#patch -Np1 -i ../libkscreen.patch
 }
 build=kde5
 
