@@ -1,0 +1,16 @@
+description='Components relating to pipewire use in Plasma'
+url='https://kde.org/plasma-desktop/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(extra-cmake-modules plasma-wayland-protocols)
+run=(kwayland ki18n kcoreaddons pipewire libepoxy ffmpeg)
+set=(kde5)
+
+name=kpipewire
+version=5.27.4
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build=kde5
