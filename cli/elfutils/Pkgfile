@@ -3,10 +3,11 @@ url="http://xiph.org/ao/"
 
 packager="spiky <spiky@nutyx.org>"
 
-makedepends=(libelf)
+makedepends=(libelf zlib bzip2 xz)
 
 name=elfutils
 version=0.189
+release=2
 
 source=(https://sourceware.org/elfutils/ftp/$version/elfutils-$version.tar.bz2 )
 
@@ -18,7 +19,10 @@ cd $name-$version
 make
 make prefix=$PKG/usr install
 # Already present in libelf
-rm -r "${PKG}"/usr/include
+rm -r "${PKG}"/usr/include/elfutils/elf-knowledge.h
+rm -r "${PKG}"/usr/include/gelf.h
+rm -r "${PKG}"/usr/include/libelf.h
+rm -r "${PKG}"/usr/include/nlist.h
 rm -f ${PKG}/usr/lib/pkgconfig/libelf.pc
 rm -f "${PKG}"/usr/lib/libelf*
 }
