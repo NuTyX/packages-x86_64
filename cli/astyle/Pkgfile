@@ -1,17 +1,17 @@
 description='A free, fast and small automatic formatter for C, C++, C sharp, and Java source code.'
 url='http://astyle.sourceforge.net/'
 
-packager='tnut <tnut@nutyx.org>'
-contributors=''
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
 name=astyle
-version=3.1
-_version=3.1.0
-source=("https://downloads.sourceforge.net/sourceforge/astyle/${name}_${version}_linux.tar.gz")
+version=3.2.1
+_version=3.2.0
+source=(https://sourceforge.net/projects/astyle/files/astyle/astyle%203.2/$name-$version.tar.bz2)
 
 build() {
 
-cd $name/build/gcc
+cd $name-$version/build/gcc
 make release shared
 
 install -Dm0755 bin/astyle $PKG/usr/bin/astyle
