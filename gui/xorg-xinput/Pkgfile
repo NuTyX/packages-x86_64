@@ -1,17 +1,17 @@
 description="Small commandline tool to configure devices."
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 PKGMK_GROUPS=(doc man)
 url="http://xorg.freedesktop.org"
 
 name=xorg-xinput
-version=1.6.3
+version=1.6.4
 _name=${name/xorg-/}
 makedepends=(xorg-libx11 xorg-libxext xorg-libxi xorgproto xorg-libxrandr xorg-libxinerama xorg-xrandr)
 run=(xorg-xrandr)
 
-source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.bz2)
+source=(http://ftp.x.org/pub/individual/app/${_name}-$version.tar.xz)
 
 build=xorg
 
