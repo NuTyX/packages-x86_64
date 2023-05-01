@@ -1,17 +1,17 @@
 description="A password-hashing function (reference C implementation)"
 url="https://github.com/P-H-C/phc-winner-argon2"
 
-packager="Schrodinger72 <schrodinger@nutyx.org>"
-contributors=""
+packager="spiky <spiky@nutyx.org>"
+contributors="Schrodinger72"
 
-name="argon2"
-version="20190702"
+name=argon2
+version=20190702
+release=2
 
 source=(https://github.com/P-H-C/phc-winner-argon2/archive/${version}/${name}-${version}.tar.gz)
 
 makedepends=(glibc)
 
-run=()
 
 build() {
   cd phc-winner-${name}-${version}
