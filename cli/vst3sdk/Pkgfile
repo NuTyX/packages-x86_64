@@ -6,8 +6,11 @@ contributors="Tnut"
 
 name=vst3sdk
 version=3.7.7_build_19
+release=2
 
 makedepends=(git rsync)
+
+source=(vst3sdk-3.7.7_build_19-public_sdk_gcc13.patch)
 
 prepare() {
 
@@ -17,7 +20,11 @@ cd $name
 git checkout v${version}
 git submodule init
 git submodule update
+
+cd public.sdk
+patch -Np1 -i ../../vst3sdk-3.7.7_build_19-public_sdk_gcc13.patch
 }
+
 
 build() {
 mkdir -p $PKG/usr/lib/pkgconfig
