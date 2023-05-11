@@ -1,8 +1,8 @@
 description='Android MTP client with minimalistic UI'
 url='https://github.com/whoozle/android-file-transfer-linux'
 
-packager="tnut <tnut@nutyx.org>"
-contributors=""
+packager="Tnut <tnut@nutyx.org>"
+contributors="Tnut"
 
 makedepends=(qtbase fuse2 libxkbcommon cmake qttranslations qttools)
 run=(hicolor-icon-theme)
@@ -10,12 +10,20 @@ set=(android)
 
 name=android-file-transfer
 version=4.2
+release=3
 
-source=(https://github.com/whoozle/android-file-transfer-linux/archive/v$version.tar.gz)
+source=(gcc13.patch 
+        https://github.com/whoozle/android-file-transfer-linux/archive/v$version.tar.gz)
 
+prepare() {
+cd $name-linux-$version
+patch -Np1 -i ../gcc13.patch
+}
 build() {
 cd $name-linux-$version
-cmake -DCMAKE_INSTALL_PREFIX=/usr .
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS -ffat-lto-objects" \
+ . 
 make
 make DESTDIR=$PKG/ install
 }
