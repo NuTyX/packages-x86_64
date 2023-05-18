@@ -1,0 +1,22 @@
+diff --git a/scripts/mybld.in b/scripts/mybld.in
+index 75a0059..9dfdf75 100755
+--- a/scripts/mybld.in
++++ b/scripts/mybld.in
+@@ -875,14 +875,16 @@ fi
+ echo -n "  Commit ? (y) : "
+ answer
+ 
+-cd "${GIT_PROJECT}"
++cd "${GIT_PROJ}"
+ source /etc/profile.d/cards.sh
+ 
+ if [ -z ${PACKAGES_LIST} ]; then
++   echo "commit $COLLECTION/${PARAM[0]}"
+    commit "$COLLECTION/${PARAM[0]}"
+ else
+    for i in ${PACKAGES_LIST[@]}
+    do
++       echo "commit $i"
+        commit "$i"
+    done
+ fi
