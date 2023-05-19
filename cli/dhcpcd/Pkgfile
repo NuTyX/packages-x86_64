@@ -5,11 +5,11 @@ maintainer="Roy Marples"
 packager="spiky <spiky@nutyx.org>"
 
 name=dhcpcd
-version=9.4.1
+version=10.0.1
 
 runyx_version=20201011
 source=(http://download.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
-	https://roy.marples.name/downloads/$name/$name-$version.tar.xz)
+	https://github.com/NetworkConfiguration/dhcpcd/releases/download/v${version}/$name-$version.tar.xz)
 
 prepare() {
 groupadd -g 52 $name
