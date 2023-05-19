@@ -7,16 +7,18 @@ contributors="Pierre,Tnut"
 makedepends=(meson ninja glib libgudev)
 
 name=libwacom
-version=2.6.0
+version=2.7.0
 
 source=(https://github.com/linuxwacom/libwacom/releases/download/$name-$version/$name-$version.tar.xz)
 
 build() {
-mkdir build && cd build
-meson --prefix=/usr \
--Dudev-dir=/lib/udev \
--Dtests=disabled \
-../$name-$version
-ninja
-DESTDIR=$PKG ninja install
+
+meson setup $name-$version build \
+            --prefix=/usr        \
+            -Dudev-dir=/lib/udev \
+            -Dtests=disabled
+
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
 }
