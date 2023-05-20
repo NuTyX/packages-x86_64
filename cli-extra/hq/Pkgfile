@@ -2,21 +2,21 @@ description="HTML processor inspired by jq"
 url="https://github.com/coderobe/hq"
 
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Tnut"
 
 makedepends=(meson ninja python)
 run=(modest)
 
 name=hq
 version=3.1
-release=2
+release=3
 
 source=(https://github.com/coderobe/$name/archive/refs/tags/$version.tar.gz)
 
 build() {
  cd $name-$version
- meson build
+ meson setup build
  ninja -C build
  install -Dm755 build/hq $PKG/usr/bin/hq
 }
