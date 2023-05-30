@@ -5,7 +5,7 @@ packager="Tnut <tnut@nutyx.org>"
 contributors="Tnut,Spiky"
 
 name=qt6-base
-version=6.5.1
+version=6.5.0
 
 makedepends=(libb2 cmake ninja systemd icu brotli at-spi2-core mtdev 
              cups gstreamer-plugins-base xcb-util xcb-util-renderutil
@@ -24,7 +24,8 @@ build() {
  -DINSTALL_DATADIR=share/qt6 -DINSTALL_INCLUDEDIR=include/qt6  \
  -DINSTALL_MKSPECSDIR=lib/qt6/mkspecs -DQT_FEATURE_openssl_linked=ON   \
  -DINSTALL_EXAMPLESDIR=share/doc/qt6/examples -DQT_FEATURE_journald=ON \
- -DQT_FEATURE_system_sqlite=ON -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
+ -DQT_FEATURE_system_sqlite=ON -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
+ -DFEATURE_no_direct_extern_access=ON
 
  cmake --build build
 
