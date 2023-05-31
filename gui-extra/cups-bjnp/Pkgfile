@@ -1,0 +1,22 @@
+description='CUPS backend for the Canon BJNP network printers'
+url='https://github.com/bitwiseworks/cups-bjnp-os2'
+
+packager="Skythrew <mael.guerin@outlook.fr>"
+contributors=""
+
+makedepends=(cups)
+run=()
+set=(cups printer)
+
+name=cups-bjnp
+version=2.0.3
+release=2
+
+source=(https://sourceforge.net/projects/$name/files/$name/$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr --disable-Werror
+make
+make DESTDIR=$PKG install
+}
