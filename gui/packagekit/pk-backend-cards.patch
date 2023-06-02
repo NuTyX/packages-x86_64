@@ -1,0 +1,350 @@
+diff -Naur a/backends/cards/meson.build b/backends/cards/meson.build
+--- a/backends/cards/meson.build	1970-01-01 01:00:00.000000000 +0100
++++ b/backends/cards/meson.build	2023-06-02 09:51:30.226823178 +0200
+@@ -0,0 +1,15 @@
++shared_module(
++  'pk_backend_cards',
++  'pk-backend-cards.c',
++  include_directories: packagekit_src_include,
++  dependencies: [
++    packagekit_glib2_dep,
++    gmodule_dep,
++  ],
++  c_args: [
++    '-DG_LOG_DOMAIN="PackageKit-Cards"',
++  ],
++  override_options: ['cpp_std=c++0x'],
++  install: true,
++  install_dir: pk_plugin_dir,
++)
+diff -Naur a/backends/cards/pk-backend-cards.c b/backends/cards/pk-backend-cards.c
+--- a/backends/cards/pk-backend-cards.c	1970-01-01 01:00:00.000000000 +0100
++++ b/backends/cards/pk-backend-cards.c	2023-06-02 14:02:20.217152952 +0200
+@@ -0,0 +1,315 @@
++/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
++ *
++ * Copyright (C) 2007-2014 Richard Hughes <richard@hughsie.com>
++ *
++ * Licensed under the GNU General Public License Version 2
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++
++#include <gmodule.h>
++#include <glib.h>
++#include <string.h>
++#include <stdlib.h>
++#include <gio/gio.h>
++#include <gio/gunixsocketaddress.h>
++
++#include <pk-backend.h>
++#include <pk-backend-job.h>
++
++typedef struct {
++	gboolean	 has_signature;
++	gboolean	 repo_enabled_dev;
++	gboolean	 repo_enabled_man;
++	gboolean	 repo_enabled_doc;
++	gboolean	 updated_gtkhtml;
++	gboolean	 updated_kernel;
++	gboolean	 updated_powertop;
++	gboolean	 use_blocked;
++	gboolean	 use_distro_upgrade;
++	gboolean	 use_eula;
++	gboolean	 use_gpg;
++	gboolean	 use_media;
++	gchar		**package_ids;
++	gchar		**values;
++	PkBitfield	 filters;
++	gboolean	 fake_db_locked;
++} PkBackendCardsPrivate;
++
++typedef struct {
++	guint		 progress_percentage;
++	GSocket		*socket;
++	guint		 socket_listen_id;
++	GCancellable	*cancellable;
++	gulong		 signal_timeout;
++} PkBackendCardsJobData;
++
++static PkBackendCardsPrivate *priv;
++
++void
++pk_backend_initialize (GKeyFile *conf, PkBackend *backend)
++{
++	/* create private area */
++	priv = g_new0 (PkBackendCardsPrivate, 1);
++	priv->repo_enabled_man = TRUE;
++	priv->repo_enabled_doc = FALSE;
++	priv->repo_enabled_dev = FALSE;
++}
++
++void
++pk_backend_destroy (PkBackend *backend)
++{
++	g_free (priv);
++	g_debug("Cards backend being destroyed");
++}
++
++PkBitfield
++pk_backend_get_groups (PkBackend *backend)
++{
++	return pk_bitfield_from_enums (PK_GROUP_ENUM_DOCUMENTATION,
++		PK_GROUP_ENUM_DESKTOP_KDE,
++		PK_GROUP_ENUM_DESKTOP_XFCE,
++		-1);
++}
++
++PkBitfield
++pk_backend_get_filters (PkBackend *backend)
++{
++	return pk_bitfield_from_enums (PK_FILTER_ENUM_BASENAME,
++		PK_FILTER_ENUM_GUI,
++		PK_FILTER_ENUM_APPLICATION,
++		PK_FILTER_ENUM_INSTALLED,
++		PK_FILTER_ENUM_NOT_INSTALLED,
++		-1);
++}
++
++gchar **
++pk_backend_get_mime_types (PkBackend *backend)
++{
++	const gchar *mime_types[] = {
++				"application/x-xz-compressed-tar",
++				NULL };
++	return g_strdupv ((gchar **) mime_types);
++}
++
++static gboolean
++pk_backend_cancel_timeout (gpointer data)
++{
++	PkBackendJob *job = (PkBackendJob *) data;
++	PkBackendCardsJobData *job_data = pk_backend_job_get_user_data (job);
++
++	/* we can now cancel again */
++	job_data->signal_timeout = 0;
++
++	/* now mark as finished */
++	pk_backend_job_error_code (job, PK_ERROR_ENUM_TRANSACTION_CANCELLED,
++				   "The task was stopped successfully");
++	pk_backend_job_finished (job);
++	return FALSE;
++}
++
++void
++pk_backend_cancel (PkBackend *backend, PkBackendJob *job)
++{
++	PkBackendCardsJobData *job_data = pk_backend_job_get_user_data (job);
++
++	/* try to cancel the transaction */
++	g_debug ("cancelling transaction");
++	g_cancellable_cancel (job_data->cancellable);
++	if (job_data->signal_timeout != 0) {
++		g_source_remove (job_data->signal_timeout);
++
++		/* emulate that it takes us a few ms to cancel */
++		g_timeout_add (1500, pk_backend_cancel_timeout, job);
++	}
++}
++
++void
++pk_backend_get_files (PkBackend *backend, PkBackendJob *job, gchar **package_ids)
++{
++
++	pk_backend_job_set_status (job, PK_STATUS_ENUM_QUERY);
++	pk_backend_job_finished (job);
++}
++
++void
++pk_backend_get_updates (PkBackend *backend, PkBackendJob *job, PkBitfield filters)
++{
++	PkBackendCardsJobData *job_data = pk_backend_job_get_user_data (job);
++	pk_backend_job_set_status (job, PK_STATUS_ENUM_QUERY);
++	pk_backend_job_set_percentage (job, PK_BACKEND_PERCENTAGE_INVALID);
++	/* check network state */
++	if (!pk_backend_is_online (backend)) {
++		pk_backend_job_error_code (job, PK_ERROR_ENUM_NO_NETWORK, "Cannot check when offline");
++		pk_backend_job_finished (job);
++		return;
++	}
++}
++
++
++void
++pk_backend_install_packages (PkBackend *backend, PkBackendJob *job, PkBitfield transaction_flags, gchar **package_ids)
++{
++}
++
++void
++pk_backend_remove_packages (PkBackend *backend, PkBackendJob *job,
++			    PkBitfield transaction_flags,
++			    gchar **package_ids,
++			    gboolean allow_deps,
++			    gboolean autoremove)
++{
++
++	pk_backend_job_set_locked (job, TRUE);
++
++	pk_backend_job_set_status (job, PK_STATUS_ENUM_REMOVE);
++	pk_backend_job_finished (job);
++
++	/* unlock backend again */
++	pk_backend_job_set_locked (job, FALSE);
++}
++
++
++void
++pk_backend_search_details (PkBackend *backend, PkBackendJob *job, PkBitfield filters, gchar **values)
++{
++}
++
++void
++pk_backend_search_files (PkBackend *backend, PkBackendJob *job, PkBitfield filters, gchar **values)
++{
++	pk_backend_job_set_status (job, PK_STATUS_ENUM_QUERY);
++	pk_backend_job_set_allow_cancel (job, TRUE);
++	pk_backend_job_finished (job);
++}
++
++void
++pk_backend_search_groups (PkBackend *backend, PkBackendJob *job, PkBitfield filters, gchar **values)
++{
++	pk_backend_job_set_status (job, PK_STATUS_ENUM_QUERY);
++	pk_backend_job_set_allow_cancel (job, TRUE);
++	pk_backend_job_finished (job);
++}
++
++void
++pk_backend_search_names (PkBackend *backend, PkBackendJob *job, PkBitfield filters, gchar **values)
++{
++	pk_backend_job_set_percentage (job, PK_BACKEND_PERCENTAGE_INVALID);
++	pk_backend_job_set_allow_cancel (job, TRUE);
++	pk_backend_job_set_status (job, PK_STATUS_ENUM_QUERY);
++
++}
++
++void
++pk_backend_get_repo_list (PkBackend *backend, PkBackendJob *job, PkBitfield filters)
++{
++	pk_backend_job_set_status (job, PK_STATUS_ENUM_QUERY);
++	pk_backend_job_repo_detail (job, "doc",
++				    "Documentation packages", priv->repo_enabled_doc);
++	pk_backend_job_repo_detail (job, "man",
++				    "Man pages packages", priv->repo_enabled_man);
++	if (!pk_bitfield_contain (filters, PK_FILTER_ENUM_NOT_DEVELOPMENT)) {
++		pk_backend_job_repo_detail (job, "dev",
++					    "Development packages",
++					    priv->repo_enabled_dev);
++	}
++	pk_backend_job_finished (job);
++}
++
++void
++pk_backend_repo_enable (PkBackend *backend, PkBackendJob *job, const gchar *rid, gboolean enabled)
++{
++	pk_backend_job_set_status (job, PK_STATUS_ENUM_REQUEST);
++
++	if (g_strcmp0 (rid, "doc") == 0) {
++		g_debug ("documentation repo: %i", enabled);
++		priv->repo_enabled_doc = enabled;
++	} else if (g_strcmp0 (rid, "dev") == 0) {
++		g_debug ("development repo: %i", enabled);
++		priv->repo_enabled_dev = enabled;
++	} else if (g_strcmp0 (rid, "man") == 0) {
++		g_debug ("man pages repo: %i", enabled);
++		priv->repo_enabled_man = enabled;
++	} else {
++		g_warning ("unknown repo: %s", rid);
++	}
++	pk_backend_job_finished (job);
++}
++
++void
++pk_backend_download_packages (PkBackend *backend, PkBackendJob *job, gchar **package_ids, const gchar *directory)
++{
++
++	pk_backend_job_set_status (job, PK_STATUS_ENUM_DOWNLOAD);
++
++	pk_backend_job_finished (job);
++}
++
++
++
++void
++pk_backend_repair_system (PkBackend *backend, PkBackendJob *job, PkBitfield transaction_flags)
++{
++	pk_backend_job_finished (job);
++}
++
++void
++pk_backend_start_job (PkBackend *backend, PkBackendJob *job)
++{
++	PkBackendCardsJobData *job_data;
++
++	/* create private state for this job */
++	job_data = g_new0 (PkBackendCardsJobData, 1);
++	job_data->progress_percentage = 0;
++	job_data->cancellable = g_cancellable_new ();
++
++	/* you can use pk_backend_job_error_code() here too */
++	pk_backend_job_set_user_data (job, job_data);
++}
++
++void
++pk_backend_stop_job (PkBackend *backend, PkBackendJob *job)
++{
++	PkBackendCardsJobData *job_data = pk_backend_job_get_user_data (job);
++
++	/* you *cannot* use pk_backend_job_error_code() here,
++	 * unless pk_backend_get_is_error_set() returns FALSE, and
++	 * even then it's probably just best to clean up silently */
++
++	/* you cannot do pk_backend_job_finished() here as well as this is
++	 * needed to fire the job_stop() vfunc */
++	g_object_unref (job_data->cancellable);
++
++	/* destroy state for this job */
++	g_free (job_data);
++}
++
++gboolean
++pk_backend_supports_parallelization (PkBackend *backend)
++{
++	return FALSE;
++}
++
++const gchar *
++pk_backend_get_description (PkBackend *backend)
++{
++	return "Cards backend";
++}
++
++const gchar *
++pk_backend_get_author (PkBackend *backend)
++{
++	return "Thierry Nuttens <tnut@nutyx.org>";
++}
+diff -Naur a/etc/PackageKit.conf b/etc/PackageKit.conf
+--- a/etc/PackageKit.conf	2022-12-01 19:47:48.000000000 +0100
++++ b/etc/PackageKit.conf	2023-06-02 10:20:06.313527666 +0200
+@@ -9,7 +9,7 @@
+ # The order they are specified is the order they are tried, so for the
+ # value "foo,bar" first "foo" will be attempted and then "bar" if the
+ # libpk_backend_foo.so module load failed.
+-#DefaultBackend=auto
++DefaultBackend=cards
+ 
+ # Unlock the backend after this many seconds idle.
+ #BackendShutdownTimeout=5

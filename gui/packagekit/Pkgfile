@@ -1,0 +1,22 @@
+description='A system designed to make installation and updates of packages easier'
+url='https://www.freedesktop.org/software/PackageKit/'
+
+name=packagekit
+version=1.2.6
+
+packager="Tnut <tnut@nutyx.org"
+contributors=""
+
+makedepends=(sqlite gobject-introspection vala polkit intltool
+              meson ninja)
+
+source=(https://www.freedesktop.org/software/PackageKit/releases/PackageKit-$version.tar.xz
+	meson_options.txt pk-backend-cards.patch)
+
+prepare() {
+	mv PackageKit-$version $name-$version
+	cp meson_options.txt $name-$version
+	cd $name-$version
+	patch -Np1 -i ../pk-backend-cards.patch
+}
+build=meson
