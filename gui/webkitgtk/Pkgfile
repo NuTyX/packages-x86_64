@@ -12,12 +12,13 @@ makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              harfbuzz gtk-doc libnotify wayland woff2 libmanette unifdef)
              
 name=webkitgtk
-version=2.40.1
+version=2.40.2
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 prepare() {
 echo 'add_compile_definitions("U_DEFINE_FALSE_AND_TRUE=1")' >> $name-$version/Source/WTF/wtf/CMakeLists.txt
 sed -i /U_HIDE_DEPRECATE/d $name-$version/Source/WTF/wtf/Platform.h
+sed -i '39,66 s:^://:' $name-$version/Source/WTF/wtf/glib/Sandbox.cpp
 export NINJAJOBS=25
 }
 build() {
