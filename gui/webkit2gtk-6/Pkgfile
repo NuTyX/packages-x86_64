@@ -14,9 +14,14 @@ run=(cairo xorg-fontconfig freetype libgcrypt glib gtk4 harfbuzz icu
           gstreamer-plugins-base libmanette)
 
 name=webkit2gtk-6
-version=2.40.1
+version=2.40.2
 
 source=(https://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
+
+prepare() {
+cd webkitgtk-$version
+sed -i '39,66 s:^://:' Source/WTF/wtf/glib/Sandbox.cpp
+}
 
 build() {
 cd webkitgtk-$version
