@@ -1,29 +1,160 @@
+diff -Naur a/backends/cards/cards-job.cpp b/backends/cards/cards-job.cpp
+--- a/backends/cards/cards-job.cpp	1970-01-01 01:00:00.000000000 +0100
++++ b/backends/cards/cards-job.cpp	2023-06-05 14:32:31.351578569 +0200
+@@ -0,0 +1,51 @@
++#include "cards-job.h"
++
++CardsJob::CardsJob(PkBackendJob *job) :
++	m_cache(nullptr),
++	m_job(job),
++	m_cancel(false)
++{
++}
++CardsJob::~CardsJob()
++{
++	delete m_cache;
++}
++bool CardsJob::init()
++{
++	m_cache = new Pkgdbh("CardsJob");
++
++	if (m_cache->getListOfPackageName().size() > 0)
++		return true;
++
++	return false;
++}
++void CardsJob::cancel()
++{
++    if (!m_cancel) {
++        m_cancel = true;
++        pk_backend_job_set_status(m_job, PK_STATUS_ENUM_CANCEL);
++    }
++
++    if (m_child_pid > 0) {
++        kill(m_child_pid, SIGTERM);
++    }
++}
++
++bool CardsJob::cancelled() const
++{
++	return m_cancel;
++}
++
++PkBackendJob *CardsJob::pkJob() const
++{
++	return m_job;
++}
++bool CardsJob::matchPackage(const std::string& PackageName, PkBitfield filters)
++{
++	return true;
++}
++void CardsJob::refreshCache()
++{
++	pk_backend_job_set_status(m_job, PK_STATUS_ENUM_REFRESH_CACHE);
++}
++// vim:set ts=2 :
+diff -Naur a/backends/cards/cards-job.h b/backends/cards/cards-job.h
+--- a/backends/cards/cards-job.h	1970-01-01 01:00:00.000000000 +0100
++++ b/backends/cards/cards-job.h	2023-06-05 14:33:57.129980859 +0200
+@@ -0,0 +1,61 @@
++/* cards-job.h  - Interface to Cards
++ *
++ * Copyright (c) 2023 Thiery Nuttens <tnut@nutyx.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; see the file COPYING.  If not, write to
++ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++
++#pragma once
++
++#include <libcards.h>
++
++#include <pk-backend.h>
++
++class CardsJob
++{
++public:
++	CardsJob(PkBackendJob *job);
++	~CardsJob();
++
++	bool init();
++	void cancel();
++	bool cancelled() const;
++
++	/**
++	  * Returns the PackageKit backend job associated with this CARDS job.
++	*/
++	PkBackendJob *pkJob() const;
++
++	/**
++	  * Check if a given package matches the filters
++	  *  @return true if it passed the filters
++	  */
++	bool matchPackage(const std::string &PackageName, PkBitfield filters);
++
++	/**
++	  * Refreshes the sources of packages
++	  */
++	void refreshCache();
++
++
++
++private:
++	Pkgdbh *m_cache;
++	PkBackendJob *m_job;
++	bool	m_cancel;
++	pid_t m_child_pid;
++};
++// vim:set ts=2 :
 diff -Naur a/backends/cards/meson.build b/backends/cards/meson.build
 --- a/backends/cards/meson.build	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/meson.build	2023-06-02 09:51:30.226823178 +0200
-@@ -0,0 +1,15 @@
++++ b/backends/cards/meson.build	2023-06-05 14:30:55.220035626 +0200
+@@ -0,0 +1,25 @@
++add_languages('cpp')
++
++cpp_compiler = meson.get_compiler('cpp')
++
++cards_dep = meson.get_compiler('c').find_library('cards')
++
 +shared_module(
 +  'pk_backend_cards',
-+  'pk-backend-cards.c',
++  'pk-backend-cards.cpp',
++  'cards-job.cpp',
++  'cards-job.h',
 +  include_directories: packagekit_src_include,
 +  dependencies: [
 +    packagekit_glib2_dep,
++    cards_dep,
 +    gmodule_dep,
 +  ],
-+  c_args: [
++  cpp_args: [
++    '-DPK_COMPILATION',
 +    '-DG_LOG_DOMAIN="PackageKit-Cards"',
 +  ],
-+  override_options: ['cpp_std=c++0x'],
++  override_options: ['cpp_std=c++17'],
 +  install: true,
 +  install_dir: pk_plugin_dir,
 +)
-diff -Naur a/backends/cards/pk-backend-cards.c b/backends/cards/pk-backend-cards.c
---- a/backends/cards/pk-backend-cards.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/pk-backend-cards.c	2023-06-02 14:02:20.217152952 +0200
-@@ -0,0 +1,315 @@
-+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
+diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-cards.cpp
+--- a/backends/cards/pk-backend-cards.cpp	1970-01-01 01:00:00.000000000 +0100
++++ b/backends/cards/pk-backend-cards.cpp	2023-06-05 14:34:15.999629376 +0200
+@@ -0,0 +1,285 @@
++/* pk-backend-cards.cpp
 + *
 + * Copyright (C) 2007-2014 Richard Hughes <richard@hughsie.com>
++ * Copyright (C) 2023 Thierry Nuttens <tnut@nutyx.org>
 + *
 + * Licensed under the GNU General Public License Version 2
 + *
@@ -42,15 +173,14 @@ diff -Naur a/backends/cards/pk-backend-cards.c b/backends/cards/pk-backend-cards
 + * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 + */
 +
-+#include <gmodule.h>
-+#include <glib.h>
-+#include <string.h>
 +#include <stdlib.h>
-+#include <gio/gio.h>
-+#include <gio/gunixsocketaddress.h>
 +
 +#include <pk-backend.h>
-+#include <pk-backend-job.h>
++#include <packagekit-glib2/pk-debug.h>
++
++#include <libcards.h>
++
++#include "cards-job.h"
 +
 +typedef struct {
 +	gboolean	 has_signature;
@@ -71,20 +201,12 @@ diff -Naur a/backends/cards/pk-backend-cards.c b/backends/cards/pk-backend-cards
 +	gboolean	 fake_db_locked;
 +} PkBackendCardsPrivate;
 +
-+typedef struct {
-+	guint		 progress_percentage;
-+	GSocket		*socket;
-+	guint		 socket_listen_id;
-+	GCancellable	*cancellable;
-+	gulong		 signal_timeout;
-+} PkBackendCardsJobData;
-+
 +static PkBackendCardsPrivate *priv;
 +
 +void
 +pk_backend_initialize (GKeyFile *conf, PkBackend *backend)
 +{
-+	/* create private area */
++
 +	priv = g_new0 (PkBackendCardsPrivate, 1);
 +	priv->repo_enabled_man = TRUE;
 +	priv->repo_enabled_doc = FALSE;
@@ -104,6 +226,8 @@ diff -Naur a/backends/cards/pk-backend-cards.c b/backends/cards/pk-backend-cards
 +	return pk_bitfield_from_enums (PK_GROUP_ENUM_DOCUMENTATION,
 +		PK_GROUP_ENUM_DESKTOP_KDE,
 +		PK_GROUP_ENUM_DESKTOP_XFCE,
++		PK_GROUP_ENUM_DESKTOP_GNOME,
++		PK_GROUP_ENUM_DESKTOP_OTHER,
 +		-1);
 +}
 +
@@ -115,6 +239,7 @@ diff -Naur a/backends/cards/pk-backend-cards.c b/backends/cards/pk-backend-cards
 +		PK_FILTER_ENUM_APPLICATION,
 +		PK_FILTER_ENUM_INSTALLED,
 +		PK_FILTER_ENUM_NOT_INSTALLED,
++		PK_FILTER_ENUM_DEVELOPMENT,
 +		-1);
 +}
 +
@@ -127,36 +252,15 @@ diff -Naur a/backends/cards/pk-backend-cards.c b/backends/cards/pk-backend-cards
 +	return g_strdupv ((gchar **) mime_types);
 +}
 +
-+static gboolean
-+pk_backend_cancel_timeout (gpointer data)
-+{
-+	PkBackendJob *job = (PkBackendJob *) data;
-+	PkBackendCardsJobData *job_data = pk_backend_job_get_user_data (job);
-+
-+	/* we can now cancel again */
-+	job_data->signal_timeout = 0;
-+
-+	/* now mark as finished */
-+	pk_backend_job_error_code (job, PK_ERROR_ENUM_TRANSACTION_CANCELLED,
-+				   "The task was stopped successfully");
-+	pk_backend_job_finished (job);
-+	return FALSE;
-+}
-+
 +void
 +pk_backend_cancel (PkBackend *backend, PkBackendJob *job)
 +{
-+	PkBackendCardsJobData *job_data = pk_backend_job_get_user_data (job);
-+
-+	/* try to cancel the transaction */
-+	g_debug ("cancelling transaction");
-+	g_cancellable_cancel (job_data->cancellable);
-+	if (job_data->signal_timeout != 0) {
-+		g_source_remove (job_data->signal_timeout);
-+
-+		/* emulate that it takes us a few ms to cancel */
-+		g_timeout_add (1500, pk_backend_cancel_timeout, job);
-+	}
++    auto cards = static_cast<CardsJob*>(pk_backend_job_get_user_data(job));
++    if (cards) {
++        /* try to cancel the thread */
++        g_debug ("cancelling transaction");
++        cards->cancel();
++    }
 +}
 +
 +void
@@ -170,7 +274,11 @@ diff -Naur a/backends/cards/pk-backend-cards.c b/backends/cards/pk-backend-cards
 +void
 +pk_backend_get_updates (PkBackend *backend, PkBackendJob *job, PkBitfield filters)
 +{
-+	PkBackendCardsJobData *job_data = pk_backend_job_get_user_data (job);
++	auto cards = static_cast<CardsJob*>(pk_backend_job_get_user_data(job));
++	if(!cards->init()) {
++		g_debug("Failed to create CARDS cache");
++		return;
++	}
 +	pk_backend_job_set_status (job, PK_STATUS_ENUM_QUERY);
 +	pk_backend_job_set_percentage (job, PK_BACKEND_PERCENTAGE_INVALID);
 +	/* check network state */
@@ -291,32 +399,23 @@ diff -Naur a/backends/cards/pk-backend-cards.c b/backends/cards/pk-backend-cards
 +void
 +pk_backend_start_job (PkBackend *backend, PkBackendJob *job)
 +{
-+	PkBackendCardsJobData *job_data;
 +
 +	/* create private state for this job */
-+	job_data = g_new0 (PkBackendCardsJobData, 1);
-+	job_data->progress_percentage = 0;
-+	job_data->cancellable = g_cancellable_new ();
++	auto cards = new CardsJob(job);
 +
 +	/* you can use pk_backend_job_error_code() here too */
-+	pk_backend_job_set_user_data (job, job_data);
++	pk_backend_job_set_user_data (job, cards);
 +}
 +
 +void
 +pk_backend_stop_job (PkBackend *backend, PkBackendJob *job)
 +{
-+	PkBackendCardsJobData *job_data = pk_backend_job_get_user_data (job);
++	auto cards = static_cast<CardsJob*>(pk_backend_job_get_user_data (job));
 +
-+	/* you *cannot* use pk_backend_job_error_code() here,
-+	 * unless pk_backend_get_is_error_set() returns FALSE, and
-+	 * even then it's probably just best to clean up silently */
++	if (cards)
++		delete cards;
 +
-+	/* you cannot do pk_backend_job_finished() here as well as this is
-+	 * needed to fire the job_stop() vfunc */
-+	g_object_unref (job_data->cancellable);
-+
-+	/* destroy state for this job */
-+	g_free (job_data);
++	pk_backend_job_set_user_data (job, NULL);
 +}
 +
 +gboolean
@@ -336,9 +435,10 @@ diff -Naur a/backends/cards/pk-backend-cards.c b/backends/cards/pk-backend-cards
 +{
 +	return "Thierry Nuttens <tnut@nutyx.org>";
 +}
++// vim:set ts=2 :
 diff -Naur a/etc/PackageKit.conf b/etc/PackageKit.conf
 --- a/etc/PackageKit.conf	2022-12-01 19:47:48.000000000 +0100
-+++ b/etc/PackageKit.conf	2023-06-02 10:20:06.313527666 +0200
++++ b/etc/PackageKit.conf	2023-06-02 23:40:45.845320481 +0200
 @@ -9,7 +9,7 @@
  # The order they are specified is the order they are tried, so for the
  # value "foo,bar" first "foo" will be attempted and then "bar" if the
