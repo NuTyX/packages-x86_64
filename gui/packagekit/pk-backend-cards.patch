@@ -1,8 +1,14 @@
 diff -Naur a/backends/cards/cards-job.cpp b/backends/cards/cards-job.cpp
 --- a/backends/cards/cards-job.cpp	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/cards-job.cpp	2023-06-05 14:32:31.351578569 +0200
-@@ -0,0 +1,51 @@
++++ b/backends/cards/cards-job.cpp	2023-06-05 23:09:07.596006571 +0200
+@@ -0,0 +1,88 @@
 +#include "cards-job.h"
++
++#include <iostream>
++#include <sstream>
++#include <memory>
++#include <fstream>
++#include <dirent.h>
 +
 +CardsJob::CardsJob(PkBackendJob *job) :
 +	m_cache(nullptr),
@@ -52,11 +58,42 @@ diff -Naur a/backends/cards/cards-job.cpp b/backends/cards/cards-job.cpp
 +{
 +	pk_backend_job_set_status(m_job, PK_STATUS_ENUM_REFRESH_CACHE);
 +}
++void CardsJob::emitPackageFiles(const gchar *pi)
++{
++	using namespace std;
++	GPtrArray *files;
++	string line;
++
++	g_auto(GStrv) parts = pk_package_id_split(pi);
++	string fName;
++	fName = "/var/lib/pkg/DB/" + string(parts[PK_PACKAGE_ID_NAME]) + "/files";
++
++	if (checkFileExist(fName)) {
++		ifstream in(fName.c_str());
++		if (!in != 0) {
++			return;
++		}
++
++		files = g_ptr_array_new_with_free_func(g_free);
++		while (in.eof() == false) {
++			getline(in, line);
++			if (!line.empty()) {
++				g_ptr_array_add(files, g_strdup(line.c_str()));
++			}
++		}
++
++		if (files->len) {
++			g_ptr_array_add(files, NULL);
++			pk_backend_job_files(m_job, pi, (gchar **) files->pdata);
++		}
++		g_ptr_array_unref(files);
++	}
++}
 +// vim:set ts=2 :
 diff -Naur a/backends/cards/cards-job.h b/backends/cards/cards-job.h
 --- a/backends/cards/cards-job.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/cards-job.h	2023-06-05 14:33:57.129980859 +0200
-@@ -0,0 +1,61 @@
++++ b/backends/cards/cards-job.h	2023-06-05 21:18:07.649626509 +0200
+@@ -0,0 +1,72 @@
 +/* cards-job.h  - Interface to Cards
 + *
 + * Copyright (c) 2023 Thiery Nuttens <tnut@nutyx.org>
@@ -109,6 +146,17 @@ diff -Naur a/backends/cards/cards-job.h b/backends/cards/cards-job.h
 +	  */
 +	void refreshCache();
 +
++	/**
++	  *  Emits the files of a package
++	  */
++	void emitPackageFiles(const gchar *pi);
++
++	/**
++	  *  Emits the files of a package
++	  */
++	void emitPackageFilesLocal(const gchar *pi);
++
++
 +
 +
 +private:
@@ -120,12 +168,14 @@ diff -Naur a/backends/cards/cards-job.h b/backends/cards/cards-job.h
 +// vim:set ts=2 :
 diff -Naur a/backends/cards/meson.build b/backends/cards/meson.build
 --- a/backends/cards/meson.build	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/meson.build	2023-06-05 14:30:55.220035626 +0200
-@@ -0,0 +1,25 @@
++++ b/backends/cards/meson.build	2023-06-05 20:13:31.297373937 +0200
+@@ -0,0 +1,29 @@
 +add_languages('cpp')
 +
 +cpp_compiler = meson.get_compiler('cpp')
 +
++archive_dep = meson.get_compiler('c').find_library('libarchive')
++curl_dep = meson.get_compiler('c').find_library('curl')
 +cards_dep = meson.get_compiler('c').find_library('cards')
 +
 +shared_module(
@@ -136,6 +186,8 @@ diff -Naur a/backends/cards/meson.build b/backends/cards/meson.build
 +  include_directories: packagekit_src_include,
 +  dependencies: [
 +    packagekit_glib2_dep,
++    archive_dep,
++    curl_dep,
 +    cards_dep,
 +    gmodule_dep,
 +  ],
@@ -149,8 +201,8 @@ diff -Naur a/backends/cards/meson.build b/backends/cards/meson.build
 +)
 diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-cards.cpp
 --- a/backends/cards/pk-backend-cards.cpp	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/pk-backend-cards.cpp	2023-06-05 14:34:15.999629376 +0200
-@@ -0,0 +1,285 @@
++++ b/backends/cards/pk-backend-cards.cpp	2023-06-06 00:06:50.378666857 +0200
+@@ -0,0 +1,188 @@
 +/* pk-backend-cards.cpp
 + *
 + * Copyright (C) 2007-2014 Richard Hughes <richard@hughsie.com>
@@ -182,46 +234,33 @@ diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-car
 +
 +#include "cards-job.h"
 +
-+typedef struct {
-+	gboolean	 has_signature;
-+	gboolean	 repo_enabled_dev;
-+	gboolean	 repo_enabled_man;
-+	gboolean	 repo_enabled_doc;
-+	gboolean	 updated_gtkhtml;
-+	gboolean	 updated_kernel;
-+	gboolean	 updated_powertop;
-+	gboolean	 use_blocked;
-+	gboolean	 use_distro_upgrade;
-+	gboolean	 use_eula;
-+	gboolean	 use_gpg;
-+	gboolean	 use_media;
-+	gchar		**package_ids;
-+	gchar		**values;
-+	PkBitfield	 filters;
-+	gboolean	 fake_db_locked;
-+} PkBackendCardsPrivate;
-+
-+static PkBackendCardsPrivate *priv;
-+
-+void
-+pk_backend_initialize (GKeyFile *conf, PkBackend *backend)
++const gchar * pk_backend_get_description (PkBackend *backend)
 +{
-+
-+	priv = g_new0 (PkBackendCardsPrivate, 1);
-+	priv->repo_enabled_man = TRUE;
-+	priv->repo_enabled_doc = FALSE;
-+	priv->repo_enabled_dev = FALSE;
++	return "Cards backend";
 +}
 +
-+void
-+pk_backend_destroy (PkBackend *backend)
++const gchar * pk_backend_get_author (PkBackend *backend)
 +{
-+	g_free (priv);
++	return "Thierry Nuttens <tnut@nutyx.org>";
++}
++
++gboolean pk_backend_supports_parallelization (PkBackend *backend)
++{
++	return FALSE;
++}
++
++void pk_backend_initialize (GKeyFile *conf, PkBackend *backend)
++{
++	pk_debug_add_log_domain (G_LOG_DOMAIN);
++	pk_debug_add_log_domain ("CARDS");
++}
++
++void pk_backend_destroy (PkBackend *backend)
++{
 +	g_debug("Cards backend being destroyed");
 +}
 +
-+PkBitfield
-+pk_backend_get_groups (PkBackend *backend)
++PkBitfield pk_backend_get_groups (PkBackend *backend)
 +{
 +	return pk_bitfield_from_enums (PK_GROUP_ENUM_DOCUMENTATION,
 +		PK_GROUP_ENUM_DESKTOP_KDE,
@@ -231,8 +270,7 @@ diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-car
 +		-1);
 +}
 +
-+PkBitfield
-+pk_backend_get_filters (PkBackend *backend)
++PkBitfield pk_backend_get_filters (PkBackend *backend)
 +{
 +	return pk_bitfield_from_enums (PK_FILTER_ENUM_BASENAME,
 +		PK_FILTER_ENUM_GUI,
@@ -243,8 +281,7 @@ diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-car
 +		-1);
 +}
 +
-+gchar **
-+pk_backend_get_mime_types (PkBackend *backend)
++gchar ** pk_backend_get_mime_types (PkBackend *backend)
 +{
 +	const gchar *mime_types[] = {
 +				"application/x-xz-compressed-tar",
@@ -252,152 +289,7 @@ diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-car
 +	return g_strdupv ((gchar **) mime_types);
 +}
 +
-+void
-+pk_backend_cancel (PkBackend *backend, PkBackendJob *job)
-+{
-+    auto cards = static_cast<CardsJob*>(pk_backend_job_get_user_data(job));
-+    if (cards) {
-+        /* try to cancel the thread */
-+        g_debug ("cancelling transaction");
-+        cards->cancel();
-+    }
-+}
-+
-+void
-+pk_backend_get_files (PkBackend *backend, PkBackendJob *job, gchar **package_ids)
-+{
-+
-+	pk_backend_job_set_status (job, PK_STATUS_ENUM_QUERY);
-+	pk_backend_job_finished (job);
-+}
-+
-+void
-+pk_backend_get_updates (PkBackend *backend, PkBackendJob *job, PkBitfield filters)
-+{
-+	auto cards = static_cast<CardsJob*>(pk_backend_job_get_user_data(job));
-+	if(!cards->init()) {
-+		g_debug("Failed to create CARDS cache");
-+		return;
-+	}
-+	pk_backend_job_set_status (job, PK_STATUS_ENUM_QUERY);
-+	pk_backend_job_set_percentage (job, PK_BACKEND_PERCENTAGE_INVALID);
-+	/* check network state */
-+	if (!pk_backend_is_online (backend)) {
-+		pk_backend_job_error_code (job, PK_ERROR_ENUM_NO_NETWORK, "Cannot check when offline");
-+		pk_backend_job_finished (job);
-+		return;
-+	}
-+}
-+
-+
-+void
-+pk_backend_install_packages (PkBackend *backend, PkBackendJob *job, PkBitfield transaction_flags, gchar **package_ids)
-+{
-+}
-+
-+void
-+pk_backend_remove_packages (PkBackend *backend, PkBackendJob *job,
-+			    PkBitfield transaction_flags,
-+			    gchar **package_ids,
-+			    gboolean allow_deps,
-+			    gboolean autoremove)
-+{
-+
-+	pk_backend_job_set_locked (job, TRUE);
-+
-+	pk_backend_job_set_status (job, PK_STATUS_ENUM_REMOVE);
-+	pk_backend_job_finished (job);
-+
-+	/* unlock backend again */
-+	pk_backend_job_set_locked (job, FALSE);
-+}
-+
-+
-+void
-+pk_backend_search_details (PkBackend *backend, PkBackendJob *job, PkBitfield filters, gchar **values)
-+{
-+}
-+
-+void
-+pk_backend_search_files (PkBackend *backend, PkBackendJob *job, PkBitfield filters, gchar **values)
-+{
-+	pk_backend_job_set_status (job, PK_STATUS_ENUM_QUERY);
-+	pk_backend_job_set_allow_cancel (job, TRUE);
-+	pk_backend_job_finished (job);
-+}
-+
-+void
-+pk_backend_search_groups (PkBackend *backend, PkBackendJob *job, PkBitfield filters, gchar **values)
-+{
-+	pk_backend_job_set_status (job, PK_STATUS_ENUM_QUERY);
-+	pk_backend_job_set_allow_cancel (job, TRUE);
-+	pk_backend_job_finished (job);
-+}
-+
-+void
-+pk_backend_search_names (PkBackend *backend, PkBackendJob *job, PkBitfield filters, gchar **values)
-+{
-+	pk_backend_job_set_percentage (job, PK_BACKEND_PERCENTAGE_INVALID);
-+	pk_backend_job_set_allow_cancel (job, TRUE);
-+	pk_backend_job_set_status (job, PK_STATUS_ENUM_QUERY);
-+
-+}
-+
-+void
-+pk_backend_get_repo_list (PkBackend *backend, PkBackendJob *job, PkBitfield filters)
-+{
-+	pk_backend_job_set_status (job, PK_STATUS_ENUM_QUERY);
-+	pk_backend_job_repo_detail (job, "doc",
-+				    "Documentation packages", priv->repo_enabled_doc);
-+	pk_backend_job_repo_detail (job, "man",
-+				    "Man pages packages", priv->repo_enabled_man);
-+	if (!pk_bitfield_contain (filters, PK_FILTER_ENUM_NOT_DEVELOPMENT)) {
-+		pk_backend_job_repo_detail (job, "dev",
-+					    "Development packages",
-+					    priv->repo_enabled_dev);
-+	}
-+	pk_backend_job_finished (job);
-+}
-+
-+void
-+pk_backend_repo_enable (PkBackend *backend, PkBackendJob *job, const gchar *rid, gboolean enabled)
-+{
-+	pk_backend_job_set_status (job, PK_STATUS_ENUM_REQUEST);
-+
-+	if (g_strcmp0 (rid, "doc") == 0) {
-+		g_debug ("documentation repo: %i", enabled);
-+		priv->repo_enabled_doc = enabled;
-+	} else if (g_strcmp0 (rid, "dev") == 0) {
-+		g_debug ("development repo: %i", enabled);
-+		priv->repo_enabled_dev = enabled;
-+	} else if (g_strcmp0 (rid, "man") == 0) {
-+		g_debug ("man pages repo: %i", enabled);
-+		priv->repo_enabled_man = enabled;
-+	} else {
-+		g_warning ("unknown repo: %s", rid);
-+	}
-+	pk_backend_job_finished (job);
-+}
-+
-+void
-+pk_backend_download_packages (PkBackend *backend, PkBackendJob *job, gchar **package_ids, const gchar *directory)
-+{
-+
-+	pk_backend_job_set_status (job, PK_STATUS_ENUM_DOWNLOAD);
-+
-+	pk_backend_job_finished (job);
-+}
-+
-+
-+
-+void
-+pk_backend_repair_system (PkBackend *backend, PkBackendJob *job, PkBitfield transaction_flags)
-+{
-+	pk_backend_job_finished (job);
-+}
-+
-+void
-+pk_backend_start_job (PkBackend *backend, PkBackendJob *job)
++void pk_backend_start_job (PkBackend *backend, PkBackendJob *job)
 +{
 +
 +	/* create private state for this job */
@@ -407,8 +299,7 @@ diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-car
 +	pk_backend_job_set_user_data (job, cards);
 +}
 +
-+void
-+pk_backend_stop_job (PkBackend *backend, PkBackendJob *job)
++void pk_backend_stop_job (PkBackend *backend, PkBackendJob *job)
 +{
 +	auto cards = static_cast<CardsJob*>(pk_backend_job_get_user_data (job));
 +
@@ -418,22 +309,86 @@ diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-car
 +	pk_backend_job_set_user_data (job, NULL);
 +}
 +
-+gboolean
-+pk_backend_supports_parallelization (PkBackend *backend)
++void pk_backend_cancel (PkBackend *backend, PkBackendJob *job)
 +{
-+	return FALSE;
++	auto cards = static_cast<CardsJob*>(pk_backend_job_get_user_data(job));
++	if (cards) {
++		/* try to cancel the thread */
++		g_debug ("cancelling transaction");
++		cards->cancel();
++	}
 +}
 +
-+const gchar *
-+pk_backend_get_description (PkBackend *backend)
++static void backend_get_files_thread(PkBackendJob *job, GVariant *params, gpointer user_data)
 +{
-+	return "Cards backend";
++	gchar **package_ids;	// List of packages
++	gchar *pi;	// Package installed
++
++	g_variant_get(params, "(^a&s)",
++		&package_ids);
++
++	auto cards = static_cast<CardsJob*>(pk_backend_job_get_user_data(job));
++	if (!cards->init()) {
++		g_debug("Failed to create cards cache");
++		return;
++	}
++	pk_backend_job_set_status(job, PK_STATUS_ENUM_QUERY);
++	for (uint i = 0; i < g_strv_length(package_ids); ++i) {
++		pi = package_ids[i];
++		cards->emitPackageFiles(pi);
++	}
 +}
 +
-+const gchar *
-+pk_backend_get_author (PkBackend *backend)
++void pk_backend_get_files(PkBackend *backend, PkBackendJob *job, gchar **package_ids)
 +{
-+	return "Thierry Nuttens <tnut@nutyx.org>";
++	pk_backend_job_thread_create(job, backend_get_files_thread, NULL, NULL);
++}
++
++void pk_backend_install_packages (PkBackend *backend, PkBackendJob *job, PkBitfield transaction_flags, gchar **package_ids)
++{
++}
++
++void pk_backend_remove_packages (PkBackend *backend, PkBackendJob *job,
++			    PkBitfield transaction_flags,
++			    gchar **package_ids,
++			    gboolean allow_deps,
++			    gboolean autoremove)
++{
++}
++PkBitfield pk_backend_get_roles(PkBackend *backend)
++{
++	PkBitfield roles;
++	roles = pk_bitfield_from_enums(
++                PK_ROLE_ENUM_CANCEL,
++                PK_ROLE_ENUM_GET_DETAILS,
++                PK_ROLE_ENUM_GET_DETAILS_LOCAL,
++                PK_ROLE_ENUM_GET_FILES,
++                PK_ROLE_ENUM_GET_FILES_LOCAL,
++                PK_ROLE_ENUM_GET_PACKAGES,
++                PK_ROLE_ENUM_RESOLVE,
++                -1);
++
++	return roles;
++}
++
++void pk_backend_search_details (PkBackend *backend, PkBackendJob *job, PkBitfield filters, gchar **values)
++{
++}
++
++void pk_backend_search_files (PkBackend *backend, PkBackendJob *job, PkBitfield filters, gchar **values)
++{
++}
++
++void pk_backend_search_groups (PkBackend *backend, PkBackendJob *job, PkBitfield filters, gchar **values)
++{
++}
++
++void pk_backend_search_names (PkBackend *backend, PkBackendJob *job, PkBitfield filters, gchar **values)
++{
++}
++
++void pk_backend_download_packages (PkBackend *backend, PkBackendJob *job, gchar **package_ids, const gchar *directory)
++{
 +}
 +// vim:set ts=2 :
 diff -Naur a/etc/PackageKit.conf b/etc/PackageKit.conf
