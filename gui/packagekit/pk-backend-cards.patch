@@ -1,7 +1,7 @@
 diff -Naur a/backends/cards/cards-job.cpp b/backends/cards/cards-job.cpp
 --- a/backends/cards/cards-job.cpp	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/cards-job.cpp	2023-06-07 13:51:49.924463979 +0200
-@@ -0,0 +1,103 @@
++++ b/backends/cards/cards-job.cpp	2023-06-07 22:55:45.805338168 +0200
+@@ -0,0 +1,109 @@
 +#include "cards-job.h"
 +
 +#include <iostream>
@@ -22,9 +22,9 @@ diff -Naur a/backends/cards/cards-job.cpp b/backends/cards/cards-job.cpp
 +}
 +bool CardsJob::init()
 +{
-+	m_cache = new Pkgdbh("CardsJob");
++	m_cache = new Pkgdbh;
 +
-+	if (m_cache->getListOfPackageName().size() > 0)
++	if (m_cache->getListOfPackagesNames().size() > 0)
 +		return true;
 +
 +	return false;
@@ -50,9 +50,11 @@ diff -Naur a/backends/cards/cards-job.cpp b/backends/cards/cards-job.cpp
 +{
 +	return m_job;
 +}
-+std::set<std::string> CardsJob::resolvePackageIds(gchar **package_ids, PkBitfield filters)
++std::set<std::string> CardsJob::resolvePackageIds(const gchar **package_ids, PkBitfield filters)
 +{
-+	return m_cache->getListOfPackageName();
++	g_debug("resolvePackgesIds");
++
++	return m_cache->getListOfPackagesNames();
 +}
 +
 +bool CardsJob::matchPackage(const std::string& PackageName, PkBitfield filters)
@@ -98,8 +100,12 @@ diff -Naur a/backends/cards/cards-job.cpp b/backends/cards/cards-job.cpp
 +{
 +	g_autoptr(GPtrArray) pkgArray = g_ptr_array_new_full (listOfPackages.size(), (GDestroyNotify) g_object_unref);
 +
++	g_debug("emitPackages started");
++
 +	for (auto p : listOfPackages) {
-+		g_ptr_array_add (pkgArray,p.c_str());
++		if(m_cancel)
++			break;
++		g_ptr_array_add (pkgArray,(void*)p.c_str());
 +	}
 +	if (pkgArray->len > 0)
 +		pk_backend_job_packages(m_job, pkgArray);
@@ -107,7 +113,7 @@ diff -Naur a/backends/cards/cards-job.cpp b/backends/cards/cards-job.cpp
 +// vim:set ts=2 :
 diff -Naur a/backends/cards/cards-job.h b/backends/cards/cards-job.h
 --- a/backends/cards/cards-job.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/cards-job.h	2023-06-07 13:51:05.601955780 +0200
++++ b/backends/cards/cards-job.h	2023-06-07 15:44:11.134710192 +0200
 @@ -0,0 +1,84 @@
 +/* cards-job.h  - Interface to Cards
 + *
@@ -154,7 +160,7 @@ diff -Naur a/backends/cards/cards-job.h b/backends/cards/cards-job.h
 +	  * Tries to find a list of packages mathing the package ids
 +	  *  @returns a list of set of string, if the list is empty no package was found
 +	  */
-+	std::set<std::string> resolvePackageIds(gchar **package_ids, PkBitfield filters = PK_FILTER_ENUM_NONE);
++	std::set<std::string> resolvePackageIds(const gchar **package_ids, PkBitfield filters = PK_FILTER_ENUM_NONE);
 +	/**
 +	  * Check if a given package matches the filters
 +	  *  @return true if it passed the filters
@@ -195,7 +201,7 @@ diff -Naur a/backends/cards/cards-job.h b/backends/cards/cards-job.h
 +// vim:set ts=2 :
 diff -Naur a/backends/cards/meson.build b/backends/cards/meson.build
 --- a/backends/cards/meson.build	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/meson.build	2023-06-05 20:13:31.297373937 +0200
++++ b/backends/cards/meson.build	2023-06-07 14:22:21.870230554 +0200
 @@ -0,0 +1,29 @@
 +add_languages('cpp')
 +
@@ -222,14 +228,14 @@ diff -Naur a/backends/cards/meson.build b/backends/cards/meson.build
 +    '-DPK_COMPILATION',
 +    '-DG_LOG_DOMAIN="PackageKit-Cards"',
 +  ],
-+  override_options: ['cpp_std=c++17'],
++  override_options: ['c_std=c11','cpp_std=c++17'],
 +  install: true,
 +  install_dir: pk_plugin_dir,
 +)
 diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-cards.cpp
 --- a/backends/cards/pk-backend-cards.cpp	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/pk-backend-cards.cpp	2023-06-07 14:12:58.997436513 +0200
-@@ -0,0 +1,213 @@
++++ b/backends/cards/pk-backend-cards.cpp	2023-06-07 18:27:47.473882867 +0200
+@@ -0,0 +1,212 @@
 +/* pk-backend-cards.cpp
 + *
 + * Copyright (C) 2007-2014 Richard Hughes <richard@hughsie.com>
@@ -374,6 +380,8 @@ diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-car
 +static void
 +pk_backend_resolve_thread(PkBackendJob *job, GVariant *params, gpointer user_data)
 +{
++	g_debug("pk_backend_resolve_tread started");
++
 +	const gchar **search;
 +	PkBitfield filters;
 +
@@ -413,10 +421,7 @@ diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-car
 +	roles = pk_bitfield_from_enums(
 +                PK_ROLE_ENUM_CANCEL,
 +                PK_ROLE_ENUM_GET_DETAILS,
-+                PK_ROLE_ENUM_GET_DETAILS_LOCAL,
 +                PK_ROLE_ENUM_GET_FILES,
-+                PK_ROLE_ENUM_GET_FILES_LOCAL,
-+                PK_ROLE_ENUM_GET_PACKAGES,
 +                PK_ROLE_ENUM_RESOLVE,
 +                -1);
 +
