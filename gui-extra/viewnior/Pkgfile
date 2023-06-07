@@ -8,13 +8,20 @@ makedepends=(gtk2 exiv2 meson ninja)
 
 name=viewnior
 version=1.8
+release=2
 
-source=(https://github.com/hellosiyan/Viewnior/archive/viewnior-$version.tar.gz)
+source=(https://github.com/hellosiyan/Viewnior/archive/viewnior-$version.tar.gz
+        exiv2-0.28.patch)
+
+prepare() {
+cd Viewnior-$name-$version
+patch -Np1 -i ../exiv2-0.28.patch
+}
 
 build() {
 
 cd Viewnior-$name-$version
-meson --prefix=/usr build
+meson setup  --prefix=/usr build
 ninja -C build
 DESTDIR=$PKG ninja -C build install
 }
