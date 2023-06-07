@@ -1,7 +1,7 @@
 diff -Naur a/backends/cards/cards-job.cpp b/backends/cards/cards-job.cpp
 --- a/backends/cards/cards-job.cpp	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/cards-job.cpp	2023-06-05 23:09:07.596006571 +0200
-@@ -0,0 +1,88 @@
++++ b/backends/cards/cards-job.cpp	2023-06-07 13:51:49.924463979 +0200
+@@ -0,0 +1,103 @@
 +#include "cards-job.h"
 +
 +#include <iostream>
@@ -50,6 +50,11 @@ diff -Naur a/backends/cards/cards-job.cpp b/backends/cards/cards-job.cpp
 +{
 +	return m_job;
 +}
++std::set<std::string> CardsJob::resolvePackageIds(gchar **package_ids, PkBitfield filters)
++{
++	return m_cache->getListOfPackageName();
++}
++
 +bool CardsJob::matchPackage(const std::string& PackageName, PkBitfield filters)
 +{
 +	return true;
@@ -89,11 +94,21 @@ diff -Naur a/backends/cards/cards-job.cpp b/backends/cards/cards-job.cpp
 +		g_ptr_array_unref(files);
 +	}
 +}
++void CardsJob::emitPackages(std::set<std::string> listOfPackages, PkBitfield filters, PkInfoEnum state, bool multiversion)
++{
++	g_autoptr(GPtrArray) pkgArray = g_ptr_array_new_full (listOfPackages.size(), (GDestroyNotify) g_object_unref);
++
++	for (auto p : listOfPackages) {
++		g_ptr_array_add (pkgArray,p.c_str());
++	}
++	if (pkgArray->len > 0)
++		pk_backend_job_packages(m_job, pkgArray);
++}
 +// vim:set ts=2 :
 diff -Naur a/backends/cards/cards-job.h b/backends/cards/cards-job.h
 --- a/backends/cards/cards-job.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/cards-job.h	2023-06-05 21:18:07.649626509 +0200
-@@ -0,0 +1,72 @@
++++ b/backends/cards/cards-job.h	2023-06-07 13:51:05.601955780 +0200
+@@ -0,0 +1,84 @@
 +/* cards-job.h  - Interface to Cards
 + *
 + * Copyright (c) 2023 Thiery Nuttens <tnut@nutyx.org>
@@ -136,6 +151,11 @@ diff -Naur a/backends/cards/cards-job.h b/backends/cards/cards-job.h
 +	PkBackendJob *pkJob() const;
 +
 +	/**
++	  * Tries to find a list of packages mathing the package ids
++	  *  @returns a list of set of string, if the list is empty no package was found
++	  */
++	std::set<std::string> resolvePackageIds(gchar **package_ids, PkBitfield filters = PK_FILTER_ENUM_NONE);
++	/**
 +	  * Check if a given package matches the filters
 +	  *  @return true if it passed the filters
 +	  */
@@ -157,6 +177,13 @@ diff -Naur a/backends/cards/cards-job.h b/backends/cards/cards-job.h
 +	void emitPackageFilesLocal(const gchar *pi);
 +
 +
++	/**
++		* Emit a list of packages that matches the given filters
++	  */
++	void emitPackages(std::set<std::string>,
++		PkBitfield filters = PK_FILTER_ENUM_NONE,
++		PkInfoEnum state = PK_INFO_ENUM_UNKNOWN,
++		bool multiversion = false);
 +
 +
 +private:
@@ -201,8 +228,8 @@ diff -Naur a/backends/cards/meson.build b/backends/cards/meson.build
 +)
 diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-cards.cpp
 --- a/backends/cards/pk-backend-cards.cpp	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/pk-backend-cards.cpp	2023-06-06 00:06:50.378666857 +0200
-@@ -0,0 +1,188 @@
++++ b/backends/cards/pk-backend-cards.cpp	2023-06-07 14:12:58.997436513 +0200
+@@ -0,0 +1,213 @@
 +/* pk-backend-cards.cpp
 + *
 + * Copyright (C) 2007-2014 Richard Hughes <richard@hughsie.com>
@@ -319,7 +346,8 @@ diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-car
 +	}
 +}
 +
-+static void backend_get_files_thread(PkBackendJob *job, GVariant *params, gpointer user_data)
++static void
++backend_get_files_thread(PkBackendJob *job, GVariant *params, gpointer user_data)
 +{
 +	gchar **package_ids;	// List of packages
 +	gchar *pi;	// Package installed
@@ -343,7 +371,31 @@ diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-car
 +{
 +	pk_backend_job_thread_create(job, backend_get_files_thread, NULL, NULL);
 +}
++static void
++pk_backend_resolve_thread(PkBackendJob *job, GVariant *params, gpointer user_data)
++{
++	const gchar **search;
++	PkBitfield filters;
 +
++	g_variant_get(params, "(t^a&s)",
++		&filters,
++		&search);
++	pk_backend_job_set_allow_cancel(job, true);
++
++	auto cards = static_cast<CardsJob*>(pk_backend_job_get_user_data(job));
++	if (!cards->init()) {
++		g_debug("Failed to initialize CARDS job");
++		return;
++	}
++	std::set<std::string> ListOfPackages = cards->resolvePackageIds(search);
++	
++	cards->emitPackages(ListOfPackages, filters,PK_INFO_ENUM_UNKNOWN, true);
++}
++void
++pk_backend_resolve (PkBackend *backend, PkBackendJob *job, PkBitfield filters, gchar **package_ids)
++{
++	pk_backend_job_thread_create(job, pk_backend_resolve_thread, NULL, NULL);
++}
 +void pk_backend_install_packages (PkBackend *backend, PkBackendJob *job, PkBitfield transaction_flags, gchar **package_ids)
 +{
 +}
@@ -393,8 +445,8 @@ diff -Naur a/backends/cards/pk-backend-cards.cpp b/backends/cards/pk-backend-car
 +// vim:set ts=2 :
 diff -Naur a/etc/PackageKit.conf b/etc/PackageKit.conf
 --- a/etc/PackageKit.conf	2022-12-01 19:47:48.000000000 +0100
-+++ b/etc/PackageKit.conf	2023-06-02 23:40:45.845320481 +0200
-@@ -9,7 +9,7 @@
++++ b/etc/PackageKit.conf	2023-06-07 13:46:00.390969073 +0200
+@@ -9,13 +9,13 @@
  # The order they are specified is the order they are tried, so for the
  # value "foo,bar" first "foo" will be attempted and then "bar" if the
  # libpk_backend_foo.so module load failed.
@@ -403,3 +455,10 @@ diff -Naur a/etc/PackageKit.conf b/etc/PackageKit.conf
  
  # Unlock the backend after this many seconds idle.
  #BackendShutdownTimeout=5
+ 
+ # Shut down the daemon after this many seconds idle. 0 means don't shutdown.
+-#ShutdownTimeout=300
++ShutdownTimeout=5
+ 
+ # Keep the packages after they have been downloaded
+ #KeepCache=false
