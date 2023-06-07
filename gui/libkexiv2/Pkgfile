@@ -1,16 +1,23 @@
 description="A library to manipulate pictures metadata"
 url="http://www.kde.org"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Tnut,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Fabienwang,Tnut"
 
 set=(kde5)
 makedepends=(exiv2 extra-cmake-modules)
 
 name=libkexiv2
 version=23.04.1
+release=2
 
-source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz
+        libkexiv2-23.04.1-exiv_0_28-1.patch)
+
+prepare() {
+cd $name-$version
+patch -Np1 -i ../libkexiv2-23.04.1-exiv_0_28-1.patch
+}
 
 build=kde5
 
