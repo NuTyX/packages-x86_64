@@ -1,22 +1,28 @@
 description="GObject-based Wrapper around Exiv2 library."
 url="http://www.exiv2.org/index.html"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contributor="Jayce"
 
 makedepends=(meson ninja exiv2 vala gobject-introspection python-gobject)
 
 name=libgexiv2
-version=0.14.0
-release=2
+version=0.14.1
 
-source=(https://download.gnome.org/sources/${name/lib/}/${version%.*}/${name/lib/}-$version.tar.xz)
+source=(https://download.gnome.org/sources/${name/lib/}/${version%.*}/${name/lib/}-$version.tar.xz
+        gexiv2-0.14.1-exiv_0_28-1.patch)
+
+prepare() {
+cd gexiv2-$version
+patch -Np1 -i ../gexiv2-0.14.1-exiv_0_28-1.patch
+}
 
 build() {
-cd gexiv2-$version
-mkdir build
-cd    build
-meson --prefix=/usr
-ninja
-DESTDIR=$PKG ninja install
+
+meson setup gexiv2-$version build \
+            --prefix=/usr   
+
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
 }
