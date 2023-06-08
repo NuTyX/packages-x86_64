@@ -1,7 +1,7 @@
 diff -Naur a/backends/cards/cards-job.cpp b/backends/cards/cards-job.cpp
 --- a/backends/cards/cards-job.cpp	1970-01-01 01:00:00.000000000 +0100
-+++ b/backends/cards/cards-job.cpp	2023-06-07 22:55:45.805338168 +0200
-@@ -0,0 +1,109 @@
++++ b/backends/cards/cards-job.cpp	2023-06-08 09:01:42.027237868 +0200
+@@ -0,0 +1,112 @@
 +#include "cards-job.h"
 +
 +#include <iostream>
@@ -98,17 +98,20 @@ diff -Naur a/backends/cards/cards-job.cpp b/backends/cards/cards-job.cpp
 +}
 +void CardsJob::emitPackages(std::set<std::string> listOfPackages, PkBitfield filters, PkInfoEnum state, bool multiversion)
 +{
-+	g_autoptr(GPtrArray) pkgArray = g_ptr_array_new_full (listOfPackages.size(), (GDestroyNotify) g_object_unref);
 +
 +	g_debug("emitPackages started");
 +
-+	for (auto p : listOfPackages) {
++	for (auto p:listOfPackages) {
 +		if(m_cancel)
 +			break;
-+		g_ptr_array_add (pkgArray,(void*)p.c_str());
++		std::string d = m_cache->getDescription(p);
++		std::string v = m_cache->getVersion(p);
++		std::string a = m_cache->getArch(p);
++		std::string c = m_cache->getCollection(p);
++		std::string pi = p + ";" + v + ";" + a + ";" + c;
++		g_debug("Package: %s", pi.c_str());
++		pk_backend_job_package(m_job, PK_INFO_ENUM_INSTALLED, pi.c_str(), d.c_str());
 +	}
-+	if (pkgArray->len > 0)
-+		pk_backend_job_packages(m_job, pkgArray);
 +}
 +// vim:set ts=2 :
 diff -Naur a/backends/cards/cards-job.h b/backends/cards/cards-job.h
