@@ -1,0 +1,20 @@
+description='A cross-platform application and UI framework, QtWebsokets files'
+url='https://www.qt.io/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(qt6-base cmake qt6-declarative)
+
+
+name=qt6-websockets
+version=6.5.0
+
+source=(https://download.qt.io/official_releases/qt/${version%.*}/$version/submodules/qtwebsockets-everywhere-src-$version.tar.xz)
+
+build() {
+
+cmake -S qtwebsockets-everywhere-src-$version -B build -G Ninja
+ cmake --build build
+ DESTDIR=$PKG cmake --install build
+}
