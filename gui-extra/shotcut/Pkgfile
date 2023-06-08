@@ -4,36 +4,36 @@ url='https://www.shotcut.org'
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(qtbase qttools qtdeclarative qtmultimedia
-             qtquickcontrols2 qtwebsockets qtx11extras)
-run=(mlt movit ffmpeg x264 libvpx lame frei0r-plugins ladspa
-     qtgraphicaleffects qtquickcontrols)
+makedepends=(qt6-base qt6-tools qt6-declarative qt6-multimedia
+              qt6-websockets )
+run=(mlt movit ffmpeg x264 libvpx lame frei0r-plugins ladspa)
 set=()
 
 name=shotcut
-version=22.04.25
-release=2
+version=23.05.14
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/mltframework/shotcut/archive/v$version.tar.gz)
 
 build() {
+cd $name-$version
 
-mkdir build
-cd    build
+export CXXFLAGS+=" -D SHOTCUT_NOUPGRADE"
 
-qmake ../$name-$version \
-PREFIX='/usr' \
-QMAKE_CFLAGS_RELEASE="$CFLAGS" \
-QMAKE_CXXFLAGS_RELEASE="$CXXFLAGS" \
-SHOTCUT_VERSION=$version \
-DEFINES+=SHOTCUT_NOUPGRADE
+  cmake \
+        -B build                                       \
+        -G Ninja                                       \
+        -D CMAKE_BUILD_TYPE=Release                    \
+        -D SHOTCUT_VERSION="${version}"                \
+        -D CMAKE_INSTALL_PREFIX:PATH=/usr              \
+        -D CMAKE_C_FLAGS_RELEASE="$CFLAGS -DNDEBUG"    \
+        -D CMAKE_CXX_FLAGS_RELEASE="$CXXFLAGS -DNDEBUG"
 
-make
+  cmake --build build
 
-cd ../$name-$version
-lrelease translations/*.ts
+#cd $name-$version
+#lrelease translations/*.ts
 
-cd -
-make INSTALL_ROOT=$PKG install
+  DESTDIR=$PKG cmake --install build
+
 }
