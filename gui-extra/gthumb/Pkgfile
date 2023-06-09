@@ -1,0 +1,33 @@
+description='Image browser and viewer for the GNOME Desktop'
+url='https://wiki.gnome.org/Apps/gthumb'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(clutter-gtk dconf gsettings-desktop-schemas gst-plugin-gtk gst-plugins-base-libs
+             json-glib libheif libjxl librsvg libsecret libsoup libwebp webkit2gtk brasero
+             docbook-xsl exiv2 liboauth meson yelp-tools)
+run=()
+set=(gnome)
+
+name=gthumb
+version=3.12.2
+
+source=(https://gitlab.gnome.org/GNOME/gthumb/-/archive/$version/$name-$version.tar.gz
+        exiv2-0.28.patch)
+
+prepare() {
+cd $name-$version
+patch -Np1 -i ../exiv2-0.28.patch
+
+}
+build() {
+
+meson setup $name-$version build \
+       --prefix=/usr          \
+            --buildtype=release
+
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
+}
