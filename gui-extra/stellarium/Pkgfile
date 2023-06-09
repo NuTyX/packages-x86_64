@@ -4,11 +4,12 @@ URL="http://stellarium.org"
 packager="spiky <spiky@nutyx.org>"
 contributor="Dania"
 
-makedepends=(cmake qtbase qtlocation qtmultimedia qtscript qttools 
-             qtserialport qtcharts)
+makedepends=(cmake qt6-base qt6-location qt6-multimedia qt6-tools 
+             qt6-serialport qt6-charts openssl)
 
 name=stellarium
 version=23.1
+release=4
 
 source=(https://github.com/Stellarium/stellarium/releases/download/v"$version"/$name-$version.tar.gz)
 
@@ -17,7 +18,7 @@ build() {
     mkdir -p builds/unix && cd builds/unix
 
     cmake   -DCMAKE_INSTALL_PREFIX=/usr \
-            -DENABLE_QT6=0 \
+            -DENABLE_QT6=1 \
             ../..
     make
     make DESTDIR=$PKG install
