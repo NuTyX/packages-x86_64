@@ -8,7 +8,7 @@ makedepends=(cmake qtbase qtlocation qtmultimedia qtscript qttools
              qtserialport qtcharts)
 
 name=stellarium
-version=1.2
+version=23.1
 
 source=(https://github.com/Stellarium/stellarium/releases/download/v"$version"/$name-$version.tar.gz)
 
@@ -16,7 +16,9 @@ build() {
     cd $name-$version
     mkdir -p builds/unix && cd builds/unix
 
-    cmake   -DCMAKE_INSTALL_PREFIX=/usr ../..
+    cmake   -DCMAKE_INSTALL_PREFIX=/usr \
+            -DENABLE_QT6=0 \
+            ../..
     make
     make DESTDIR=$PKG install
 }
