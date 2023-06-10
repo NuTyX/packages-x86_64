@@ -1,0 +1,21 @@
+description='hardware identification databases'
+url='https://github.com/vcrhonek/hwdata'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=()
+
+name=hwdata
+version=0.371
+
+source=(https://github.com/vcrhonek/hwdata/archive/refs/tags/v0.371.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+--disable-blacklist
+
+make
+make DESTDIR=$PKG install
+}
