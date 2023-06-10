@@ -1,0 +1,27 @@
+description='Modular Wayland compositor library'
+url='https://gitlab.freedesktop.org/wlroots/wlroots'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(meson ninja vulkan-headers wayland-protocols xorg-xwayland glslang
+             libxkbcommon xorg-libdrm mesa hwdata seatd libglvnd
+             xcb-util-renderutil xcb-util-wm xorg-pixman)
+run=(libinput)
+
+name=wlroots
+version=0.16.2
+
+source=(https://gitlab.freedesktop.org/wlroots/wlroots/-/archive/0.16.2/wlroots-0.16.2.tar.gz)
+
+build() {
+
+meson setup $name-$version build \
+       --prefix=/usr          \
+            --buildtype=release \
+            -Dexamples=false
+
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
+}
