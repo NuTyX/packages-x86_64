@@ -16,18 +16,18 @@ run=(libglvnd)
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=23.0.3
-release=2
+version=23.1.2
 
 source=(https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
 
 build() {
-cd mesa-$version
+cd $name-$version
 
 mkdir build
 cd    build
 
-meson --prefix=/usr                  \
+meson setup                          \
+      --prefix=/usr                  \
       -Dbuildtype=release            \
       -Dgallium-drivers="nouveau,virgl,r300,r600,radeonsi,svga,swrast,iris,zink,crocus" \
       -Dvulkan-drivers="intel,amd,swrast" \
@@ -42,7 +42,6 @@ meson --prefix=/usr                  \
       -Dglvnd=true               \
       -Dglx-direct=true          \
       ..
-
 ninja
 DESTDIR=$PKG ninja install
 
