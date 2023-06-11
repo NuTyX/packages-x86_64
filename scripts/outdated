@@ -1,9 +1,9 @@
 #!/bin/bash
 
 PACKAGES_FOLDER="$PWD"
-COLLECTIONS="base cli cli-extra gui gui-extra"
-ARCHGIT="/devel/git/archlinux"
-ARCHGITURL="https://github.com/archlinux"
+COLLECTIONS="base cli cli-extra gui gui-extras"
+ARCHTMP="$(mktemp -d /tmp/archlinux.XXXX)"
+ARCHDEPOTURL="https://mirror.puzzle.ch/archlinux"
 PARAMS=""
 UPDATE=0
 SUMMARY=0
@@ -78,17 +78,12 @@ datediff() {
     fi
     echo $diff
 }
-
-clone_repo() {
-  mkdir -p "$HOME$ARCHGIT"
-  cd $HOME$ARCHGIT >&2
-  git clone "$ARCHGITURL"/svntogit-${1}.git ${1} >&2
-  cd - > /dev/null 2>&1
-}
 update_repo() {
-  cd $HOME$ARCHGIT/${1}/ >&2
-  git pull -q --ff-only >&2
-  cd - > /dev/null 2>&1
+  mkdir -p "$ARCHTMP"
+  cd "$ARCHTMP"
+  wget $ARCHDEPOTURL/$1/os/x86_64/$1.db
+  bsdtar xf $1.db
+  rm $1.db
 }
 # this function replaces package name to "match" with arch repos
 getarchname() {
@@ -403,53 +398,16 @@ debug "update:$UPDATE summary:$SUMMARY notfound:$NOTFOUND collections:$PARAMS
 
 if [ "$UPDATE" == "1" ]; then
 
-  for ALG in packages community
+  for ALG in core extra community
   do
-    if  [ ! -d "$HOME$ARCHGIT/$ALG/" ] ; then
-      wowoutput+=("cloning $ALG repository")
-      clone_repo $ALG
-   else
-      update_repo $ALG
+    update_repo $ALG
       if [ $? == 0 ]; then
-        wowoutput+=("updated $ALG repository")
+        echo "updated $ALG repository"
       else
         wowoutput+=("failed updating $ALG repository")
-      fi
-   fi
+    fi
   done
   wowoutput+=("")
-
-else
-  
-  if  [ -d "$HOME$ARCHGIT/packages/" ] ; then
-    
-    # retrieve last commit date
-    cd $HOME$ARCHGIT/packages/ >&2
-    gitdate=$(git log -1 --format=%cd --date=format:"%Y%m%d") >&2
-    cd - > /dev/null 2>&1
-    
-    # compare it with today - 10 days
-    minusten=$(date -d 'now' +%Y%m%d)
-    
-    # output a nice message to suggest an update with -u ;)
-    ecart=0
-    ecart=$(datediff $gitdate $minusten)
-    
-    debug "gitdate: $gitdate  minusten:$minusten datediff: $ecart"
-    
-    if [ $ecart -gt 10 ]; then
-      wowoutput+=("you might consider using -u option to get repositories updated
-")
-    fi
-    
-
-  else
-  
-    wowoutput+=("you might consider using -u option to get repositories...
-")
-    
-  fi
-  
 
 fi
 
@@ -481,52 +439,38 @@ do
 
     [ "$ARCHNAME" == "" ] && continue
 
-    PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/extra-x86_64/PKGBUILD"
-    if  [ ! -f $PKGBUILD ] ; then
-      PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/extra-any/PKGBUILD"
-    fi
-    if  [ ! -f $PKGBUILD ] ; then
-      PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/core-x86_64/PKGBUILD"
-    fi
-    if  [ ! -f $PKGBUILD ] ; then
-      PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/repos/core-any/PKGBUILD"
-    fi
-    if  [ ! -f $PKGBUILD ] ; then
-      PKGBUILD="$HOME$ARCHGIT/packages/$ARCHNAME/trunk/PKGBUILD"
-    fi
-    if  [ ! -f $PKGBUILD ] ; then
-      PKGBUILD="$HOME$ARCHGIT/community/$ARCHNAME/repos/community-x86_64/PKGBUILD"
-    fi
-    if  [ ! -f $PKGBUILD ] ; then
-      PKGBUILD="$HOME$ARCHGIT/community/$ARCHNAME/repos/community-any/PKGBUILD"
-    fi
-    if  [ ! -f $PKGBUILD ] ; then
-      PKGBUILD="$HOME$ARCHGIT/community/$ARCHNAME/trunk/PKGBUILD"
-    fi
-    if  [ ! -f $PKGBUILD ] ; then
-      PKGBUILD="$HOME$ARCHGIT/$ARCHNAME/PKGBUILD"
-    fi
-
     # test AUR existence?
-    if [ ! -f $PKGBUILD ];then
-      if [ ! -z "$ARCHNAME" ]; then
-        #debug "curl -s -o /tmp/PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=$ARCHNAME"
-        $(curl -s -o /tmp/PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=$ARCHNAME)
-        if [ "$?" -eq 0 ]; then
-          #debug "AUR package found: $ARCHNAME"
-	      PKGBUILD="/tmp/PKGBUILD"
-        fi
-      fi
-    fi
+#    if [ ! -f $PKGBUILD ];then
+#      if [ ! -z "$ARCHNAME" ]; then
+#        #debug "curl -s -o /tmp/PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=$ARCHNAME"
+#        $(curl -s -o /tmp/PKGBUILD https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=$ARCHNAME)
+#        if [ "$?" -eq 0 ]; then
+#         #debug "AUR package found: $ARCHNAME"
+#	      PKGBUILD="/tmp/PKGBUILD"
+#        fi
+#      fi
+#    fi
+	
     
     if [ ! -f $PKGBUILD ];then
       PNFn=$((PNFn + 1))
       T_NOTFOUND+="$(basename $i) "
       continue
     fi
+
     PFn=$((PFn + 1))
     . $i/Pkgfile
-    . $PKGBUILD 2>/dev/null
+    
+    for AFULLNAME in $(ls $ARCHTMP/|grep ^$PKGNAME)
+    do
+	    ANAME=${AFULLNAME%-*-*}
+	    AVERSION=${AFULLNAME/$ANAME-/}
+	    [ -d $ARCHTMP/$ANAME-$AVERSION ] && break
+	    unset ANAME AVERSION
+    done
+    echo "checking $ANAME $AVERSION ..."
+    pkgver=${AVERSION%-*}
+
     if [ -z "$pkgver" ]; then
       PNFn=$((PNFn + 1))
       T_NOTFOUND+="$(basename $i) "
@@ -618,5 +562,7 @@ for i in "${wowoutput[@]}"
 do
   echo "$i"
 done
+
+rm -rf $ARCHTM
 
 echo "Thank you for choosing outdated ≧◔◡◔≦ 🄯 NuTyX"
