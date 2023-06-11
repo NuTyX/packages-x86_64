@@ -5,27 +5,26 @@ packager="spiky <spiky@nutyx.org>"
 
 set=(cinnamon)
 
-makedepends=(cinnamon-desktop libnotify
+makedepends=(cinnamon-desktop samurai libnotify
              libwacom libcanberra libgudev
              xorg-xf86-input-wacom librsvg)
 run=(polkit nss upower libgnomekbd)
 
 name=cinnamon-settings-daemon
-version=5.6.2
+version=5.8.0
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/linuxmint/$name/archive/$version.tar.gz)
 
 build() {
-mkdir build
-cd build
-meson --prefix=/usr \
---libexecdir=/usr/lib/$name \
---buildtype=plain \
-../$name-$version
 
-ninja
-DESTDIR=${PKG} ninja install
+meson setup $name-$version build \
+      --prefix=/usr \
+      --libexecdir=/usr/lib/$name \
+      --buildtype=plain
+
+samu -C build
+DESTDIR=${PKG} samu -C build install
 }
 package() {
 wget https://download.tuxfamily.org/nutyx/files/cinnamon-translations-5.2.2.tar.gz
