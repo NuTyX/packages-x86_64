@@ -1,0 +1,23 @@
+description='A command line tool that generates XDG menus for several window managers'
+url='https://github.com/gapan/xdgmenumaker'
+
+license="GPL3"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Miyo"
+
+name=xdgmenumaker
+version=2.0
+release=2
+
+makedepends=(gtk3 txt2tags)
+run=(python-xdg python-gobject python-pillow)
+
+PKGMK_KEEP_SOURCES="no"
+source=($url/archive/$version.tar.gz)
+
+build() {
+
+cd $name-$version
+make
+make DESTDIR=$PKG/ PREFIX=/usr install
+}
