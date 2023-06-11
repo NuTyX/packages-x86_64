@@ -6,22 +6,20 @@ contributors="Fanch,Tnut"
 
 set=(cinnamon)
 
-makedepends=(gobject-introspection libnotify)
+makedepends=(gobject-introspection samurai libnotify)
 
 name=cinnamon-menus
-version=5.6.0
+version=5.8.0
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/linuxmint/cinnamon-menus/archive/$version.tar.gz)
 
 build() {
-mkdir build
-cd    build
 
-meson --prefix=/usr \
---buildtype=plain \
-../$name-$version
+meson setup $name-$version build \
+      --prefix=/usr \
+      --buildtype=plain
 
-ninja
-DESTDIR=${PKG} ninja install
+samu -C build
+DESTDIR=${PKG} samu -C build install
 }
