@@ -1,5 +1,5 @@
 description='Cinnamon file manager (Nautilus fork).'
-makedepends=(meson libgsf cinnamon-desktop xapp exempi libexif
+makedepends=(meson samurai libgsf cinnamon-desktop xapp exempi libexif
              libnotify gvfs)
 
 set=(cinnamon)
@@ -8,7 +8,7 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Tnut"
 
 name=nemo
-version=5.6.5
+version=5.8.1
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://download.tuxfamily.org/nutyx/files/cinnamon-translations-5.2.2.tar.gz
@@ -21,16 +21,14 @@ prepare() {
   sed -i '/^\[Desktop Entry/,/^\[Desktop Action/ s/^Name\(.*\)=.*/Name\1=Nemo/' data/nemo.desktop.in
 }	
 build() {
-mkdir build
-cd build
 
-meson --prefix=/usr \
---libexecdir=lib/${name} \
---buildtype=plain \
-../$name-$version
+meson setup $name-$version build \
+      --prefix=/usr \
+      --libexecdir=lib/${name} \
+      --buildtype=plain
 
-ninja
-DESTDIR=${PKG} ninja install
+samu -C build
+DESTDIR=${PKG} samu -C build install
 }
 package() {
 wget https://download.tuxfamily.org/nutyx/files/cinnamon-translations-5.2.2.tar.gz
