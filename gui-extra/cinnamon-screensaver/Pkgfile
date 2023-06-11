@@ -1,5 +1,5 @@
 description='Screensaver designed to integrate well with the Cinnamon desktop.'
-makedepends=(cinnamon-desktop meson python gtk3 xdotool)
+makedepends=(cinnamon-desktop meson samurai python gtk3 xdotool)
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Tnut"
@@ -7,21 +7,20 @@ contributors="Fanch,Tnut"
 set=(cinnamon)
 
 name=cinnamon-screensaver
-version=5.6.3
+version=5.8.0
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/linuxmint/cinnamon-screensaver/archive/$version.tar.gz)
 
 build() {
-mkdir build
-cd build
-meson --prefix=/usr \
---libexecdir=lib/cinnamon-screensaver \
---buildtype=plain \
-../$name-$version
 
-ninja
-DESTDIR=$PKG ninja install
+meson setup $name-$version build \
+      --prefix=/usr \
+      --libexecdir=lib/cinnamon-screensaver \
+      --buildtype=plain
+
+samu -C build
+DESTDIR=$PKG samu -C build install
 }
 package() {
 wget https://download.tuxfamily.org/nutyx/files/cinnamon-translations-5.2.2.tar.gz
