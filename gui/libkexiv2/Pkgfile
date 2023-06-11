@@ -8,16 +8,10 @@ set=(kde5)
 makedepends=(exiv2 extra-cmake-modules)
 
 name=libkexiv2
-version=23.04.1
-release=2
+version=23.04.2
 
-source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz
-        libkexiv2-23.04.1-exiv_0_28-1.patch)
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-prepare() {
-cd $name-$version
-patch -Np1 -i ../libkexiv2-23.04.1-exiv_0_28-1.patch
-}
 
 build=kde5
 
