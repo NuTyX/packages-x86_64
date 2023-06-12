@@ -8,13 +8,16 @@ makedepends=(gtk3 alsa-lib libnotify)
 
 name=volumeicon
 version=0.5.1
-release=3
+release=4
 
-source=(http://nullwise.com/files/volumeicon/volumeicon-$version.tar.gz)
+source=(http://download.tuxfamily.org/nutyx/files/volumeicon-nutyx-jwm.tar.xz
+        http://nullwise.com/files/volumeicon/volumeicon-$version.tar.gz)
 
 build() {
   cd $name-$version
   ./configure --prefix=/usr --enable-notify
   make
   make DESTDIR=$PKG install
+
+  cp -a ../usr $PKG/
 }
