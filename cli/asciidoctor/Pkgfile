@@ -8,14 +8,37 @@ run=(ruby)
 set=()
 
 name=asciidoctor
-version=2.0.18
+version=2.0.20
 
-source=(https://rubygems.org/downloads/${name}-${version}.gem)
+source=(https://github.com/asciidoctor/asciidoctor/archive/v${version}/$name-$version.tar.gz)
 
 build() {
-local _gemdir="$(ruby -e'puts Gem.default_dir')"
-HOME="/tmp" GEM_HOME="$_gemdir" GEM_PATH="$_gemdir" gem install --no-user-install --ignore-dependencies \
-     -i "$PKG/$_gemdir" -n "$PKG/usr/bin" "asciidoctor-$version.gem"
-rm "$PKG/$_gemdir/cache/asciidoctor-$version.gem"
-rm -rf "$PKG/$_gemdir/gems/asciidoctor-$version/man"
+
+cd $name-$version
+
+	# Install the main asciidoctor scripts
+	install -D bin/asciidoctor $PKG/usr/bin/asciidoctor
+
+	# Install libraries
+	install -D lib/asciidoctor.rb $PKG/usr/lib/ruby/vendor_ruby/asciidoctor.rb
+	cp -r lib/asciidoctor $PKG/usr/lib/ruby/vendor_ruby/asciidoctor
+
+	# Install shared stylesheets
+	install -D \
+		data/stylesheets/asciidoctor-default.css \
+		$PKG/usr/lib/ruby/data/stylesheets/asciidoctor-default.css
+	install -D \
+		data/stylesheets/coderay-asciidoctor.css \
+		$PKG/usr/lib/ruby/data/stylesheets/coderay-asciidoctor.css
+
+	# Compress and install the man page
+	#gzip man/asciidoctor.1
+	#install -D man/asciidoctor.1.gz $PKG/usr/share/man/man1/asciidoctor.1.gz
+
+
+#local _gemdir="$(ruby -e'puts Gem.default_dir')"
+#HOME="/tmp" GEM_HOME="$_gemdir" GEM_PATH="$_gemdir" gem install --no-user-install --ignore-dependencies \
+ #    -i "$PKG/$_gemdir" -n "$PKG/usr/bin" "asciidoctor-$version.gem"
+#rm "$PKG/$_gemdir/cache/asciidoctor-$version.gem"
+#rm -rf "$PKG/$_gemdir/gems/asciidoctor-$version/man"
 }
