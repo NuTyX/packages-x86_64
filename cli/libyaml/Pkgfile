@@ -1,0 +1,19 @@
+description='A YAML parser and emitter library'
+url='https://pyyaml.org/wiki/LibYAML'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=()
+
+name=libyaml
+version=0.2.5
+
+source=(https://pyyaml.org/download/$name/yaml-$version.tar.gz)
+
+build() {
+cd yaml-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
