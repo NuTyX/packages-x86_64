@@ -1,0 +1,25 @@
+description='sans-serif font set from Ubuntu'
+url='https://design.ubuntu.com/font/'
+
+
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
+
+license="UBUNTU FONT LICENCE Version 1.0"
+
+name=fonts-ubuntu
+version=0.83
+
+run=(xorg-mkfontscale)
+
+source=(http://ftp.debian.org/debian/pool/non-free/f/fonts-ubuntu/${name}_${version}.orig.tar.gz)
+
+build() {
+mkdir -p $PKG/usr/share/fonts/TTF
+cp ubuntu-font-family-sources-$version/*.ttf \
+$PKG/usr/share/fonts/TTF/
+
+mkdir -p $PKG/usr/share/licenses/fonts-ubuntu
+cp ubuntu-font-family-sources-$version/LICENCE.txt \
+$PKG/usr/share/licenses/fonts-ubuntu/LICENCE.txt
+}
