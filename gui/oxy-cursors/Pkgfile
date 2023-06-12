@@ -1,0 +1,16 @@
+description='Oxy cursors theme'
+url='https://nutyx.org'
+
+packager="Tnut <tnut@nutyx.org"
+contributors=""
+
+name=oxy-cursors
+version=0.1
+
+source=(http://download.tuxfamily.org/nutyx/files/oxy-cursors.tar.xz)
+
+build() {
+
+mkdir -p $PKG/usr/share/icons
+cp -a oxy-* $PKG/usr/share/icons/
+}
