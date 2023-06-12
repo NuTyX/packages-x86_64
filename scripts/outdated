@@ -2,7 +2,7 @@
 
 PACKAGES_FOLDER="$PWD"
 COLLECTIONS="base cli cli-extra gui gui-extras"
-ARCHTMP="$(mktemp -d /tmp/archlinux.XXXX)"
+ARCHDIR="/devel/archlinux"
 ARCHDEPOTURL="https://mirror.puzzle.ch/archlinux"
 PARAMS=""
 UPDATE=0
@@ -79,25 +79,26 @@ datediff() {
     echo $diff
 }
 update_repo() {
-  mkdir -p "$ARCHTMP"
-  cd "$ARCHTMP"
+  rm -rf "$HOME$ARCHDIR"
+  mkdir -p "$HOME$ARCHDIR"
+  cd "$HOME$ARCHDIR"
   for ALG in core extra community
   do
-	wget $ARCHDEPOTURL/$ALG/os/x86_64/$ALG.db
-	bsdtar xf $ALG.db
-	rm $ALG.db
+	curl -s $ARCHDEPOTURL/$ALG/os/x86_64/$ALG.db -o $ALG.db|| continue
+	if [ -f $ALG.db ];then
+	   bsdtar --list --file $ALG.db|grep /$ >> list
+	fi
   done
-  for AFULLNAME in $(ls $ARCHTMP/)
-    do
+  for AFULLNAME in $(cat $HOME$ARCHDIR/list)
+  do
       ANAME=${AFULLNAME%-*-*}
-	    AVERSION=${AFULLNAME/$ANAME-/}
-	    if [ -d $ARCHTMP/$ANAME-$AVERSION ];then
-          mv $ARCHTMP/$AFULLNAME $ARCHTMP/$ANAME
-          echo "${AVERSION%-*}" > $ARCHTMP/$ANAME/pkgver
-	    fi
-	    unset ANAME AVERSION
-    done
- 
+	  AVERSION=${AFULLNAME/$ANAME-/}
+	  pkgver=${AVERSION%-*}
+      [ ! -z $ANAME ] && echo "pkgver=${pkgver##*:}" > \
+      $HOME$ARCHDIR/$ANAME
+	  unset ANAME AVERSION
+  done
+  rm list
 }
 # this function replaces package name to "match" with arch repos
 getarchname() {
@@ -470,9 +471,8 @@ do
     PFn=$((PFn + 1))
     . $i/Pkgfile
     
-    echo "checking $PKGNAME $pkgver ..."
-    [ -f $ARCHTMP/$PKGNAME/pkgver ] && \
-    pkgver=$(cat $ARCHTMP/$PKGNAME/pkgver)
+    [ -f "$HOME$ARCHDIR/$PKGNAME" ] && \
+    . $HOME$ARCHDIR/$PKGNAME
 
     if [ -z "$pkgver" ]; then
       PNFn=$((PNFn + 1))
@@ -565,7 +565,5 @@ for i in "${wowoutput[@]}"
 do
   echo "$i"
 done
-
-rm -rf $ARCHTMP
 
 echo "Thank you for choosing outdated ≧◔◡◔≦ 🄯 NuTyX"
