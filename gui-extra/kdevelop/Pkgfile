@@ -14,8 +14,15 @@ run=(hicolor-icon-theme astyle)
 
 name=kdevelop
 version=23.04.2
+release=2
 
-source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz
+        astyle-3.3.patch)
+
+prepare() {
+cd $name-$version
+patch -Np1 -i ../astyle-3.3.patch
+}
 
 build=kde5
 
