@@ -1,0 +1,24 @@
+description='A simple user-friendly terminal emulator for the GNOME desktop.'
+url='https://apps.gnome.org/fr/app/org.gnome.Console/'
+
+packager="Skythrew <mael.guerin@outlook.fr>"
+contributors=""
+
+makedepends=(vte libgtop libadwaita meson)
+run=()
+set=(gnome)
+
+name=gnome-console
+version=44.0
+
+source=(https://gitlab.gnome.org/GNOME/console/-/archive/$version/console-$version.tar.gz)
+
+build() {
+mkdir build
+cd build
+
+meson --prefix=/usr \
+      ../console-$version
+ninja
+DESTDIR=$PKG ninja install
+}
