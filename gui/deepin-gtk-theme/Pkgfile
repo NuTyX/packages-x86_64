@@ -1,0 +1,22 @@
+description='Deepin GTK Theme'
+url='https://github.com/linuxdeepin/deepin-gtk-theme'
+
+license="LGPL3"
+
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
+
+name=deepin-gtk-theme
+version=2020.06.10
+
+run=(murrine)
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/linuxdeepin/deepin-gtk-theme/archive/$version.tar.gz)
+
+build() {
+
+cd $name-$version
+make DESTDIR=$PKG install
+}

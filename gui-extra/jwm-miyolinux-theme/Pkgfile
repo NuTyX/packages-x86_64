@@ -1,0 +1,19 @@
+description='Miyo Linux jwm theme'
+url='https://www.youtube.com/channel/UCYiPwGBGTJFQg_GggFfvfig'
+
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
+
+name=jwm-miyolinux-theme
+version=0.3
+
+run=(xdgmenumaker dmenu oxy-cursors deepin-gtk-theme pavucontrol
+     picom ttf-liberation yad lxde-appearance papirus-icon-theme
+     pcmanfm leafpad volumeicon xfce4-notifyd conky nitrogen)
+
+source=(https://downloads.tuxfamily.org/nutyx/files/$name-$version.tar.xz)
+
+build() {
+   mv * $PKG/
+
+}
