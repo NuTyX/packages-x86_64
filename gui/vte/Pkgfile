@@ -4,7 +4,7 @@ url="http://developer.gnome.org/arch/gnome/widgets/vte.html"
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Pierre,Jayce,Tnut"
 
-makedepends=(pcre2 gnutls vala gtk3 perl-xml-parser gobject-introspection)
+makedepends=(pcre2 gnutls vala gtk3 gtk4 perl-xml-parser gobject-introspection)
 
 name=vte
 version=0.72.1
@@ -20,7 +20,8 @@ cd    build
 
 meson  --prefix=/usr \
 --sysconfdir=/etc \
--Dfribidi=false
+-Dfribidi=false \
+-Dgtk4=true
 
 ninja
 
