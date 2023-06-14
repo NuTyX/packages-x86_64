@@ -1,19 +1,26 @@
-description='Miyo Linux jwm theme'
+description='Miyo Linux JWM theme'
 url='https://www.youtube.com/channel/UCYiPwGBGTJFQg_GggFfvfig'
 
+license="WTFPL"
+
 packager="Tnut <tnut@nutyx.org>"
-contributors=""
+contributors="Miyo Linux"
 
 name=jwm-miyolinux-theme
-version=0.3
+version=0.4
 
-run=(xdgmenumaker dmenu oxy-cursors deepin-gtk-theme pavucontrol
-     picom ttf-liberation yad lxde-appearance papirus-icon-theme
+run=(xdgmenumaker fonts-ubuntu dmenu oxy-cursors deepin-gtk-theme
+     pavucontrol picom ttf-liberation yad lxde-appearance papirus-icon-theme
      pcmanfm leafpad volumeicon xfce4-notifyd conky nitrogen)
 
-source=(https://downloads.tuxfamily.org/nutyx/files/$name-$version.tar.xz)
+
+source=(https://github.com/NuTyX/$name/archive/refs/tags/$name-$version.tar.gz)
 
 build() {
+   cd $name-$name-$version
    mv * $PKG/
+   install -D -m644 $PKG/LICENSE $PKG/usr/share/licences/$name/LICENSE
+   install -D -m644 $PKG/README.md $PKG/usr/share/doc/$name/README
 
+   rm $PKG/{LICENSE,README.md}
 }
