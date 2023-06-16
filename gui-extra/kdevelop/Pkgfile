@@ -1,8 +1,8 @@
 description="Integrated Developmenet Environment (IDE)"
 url="https://apps.kde.org/kdevelop/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(kcmutils knotifyconfig ktexteditor libksysguard 
              threadweaver grantlee-qt extra-cmake-modules kdoctools
@@ -16,14 +16,11 @@ name=kdevelop
 version=23.04.2
 release=2
 
-source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz
-        astyle-3.3.patch)
-
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 prepare() {
-cd $name-$version
-patch -Np1 -i ../astyle-3.3.patch
+  sed -i "s@astyle::streamoff@std::streamoff@g" \
+      $name-$version/plugins/astyle/astyle_stringiterator.{h,cpp}
 }
-
 build=kde5
 
 uptodate() {

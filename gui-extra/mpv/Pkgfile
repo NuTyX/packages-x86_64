@@ -1,21 +1,23 @@
 description="a free, open source, and cross-platform media player"
 url="https://mpv.io/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut, Greg"
+license="GPL3"
 
-makedepends=(ffmpeg lcms2 libcdio-paranoia libglade
-             xorg-libxscrnsaver xorg-libxinerama
-             xorg-libxv libxkbcommon libva wayland libcaca
+packager="Tnut <tnut@nutyx.org>"
+contributors="Spiky, Greg"
+
+makedepends=(ffmpeg lcms2 libcdio-paranoia libglade xorg-libxext
+             xorg-libxscrnsaver xorg-libxinerama xorg-libx11 xorg-libxpresent
+             xorg-libxv libxkbcommon libva wayland libcaca pipewire libva
              samba libdvdnav xorg-libxrandr jack rubberband
-             uchardet mesa python-docutils ladspa)
-run=(desktop-file-utils hicolor-icon-theme xdg-utils lua)
+             uchardet mesa python-docutils ladspa libvdpau)
+run=(desktop-file-utils hicolor-icon-theme xdg-utils luajit)
 
 
 name=mpv
 _waf_version=2.0.24
 version=0.35.1
-release=2
+release=3
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/mpv-player/mpv/archive/v${version}.tar.gz
