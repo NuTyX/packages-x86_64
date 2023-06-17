@@ -13,7 +13,7 @@ PKGMK_IGNORE_UNPACK="yes"
 source=(http://doxygen.nl/files/$name-$version.src.tar.gz)
 
 prepare() {
-tar xf /sources/$name-$version.src.tar.gz -C /tmp/work/src
+tar xf $name-$version.src.tar.gz -C /tmp/work/src
 }
 
 build() {
