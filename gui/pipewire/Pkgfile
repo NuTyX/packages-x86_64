@@ -8,21 +8,22 @@ makedepends=(meson dbus doxygen python-docutils ffmpeg glib graphviz gstreamer
              gstreamer-plugins-base sbc valgrind libsndfile xmltoman) 
 
 name=pipewire
-version=0.3.70
+version=0.3.71
 
 source=(https://github.com/PipeWire/pipewire/archive/$version/$name-$version.tar.gz)
 
 build() {
-  cd $name-$version
-  mkdir build
-  cd    build
-  meson --prefix=/usr      \
+
+  meson setup $name-$version build \
+    --prefix=/usr      \
     --sysconfdir=/etc      \
     -Djack=disabled           \
     -Dpipewire-jack=disabled  \
     -Dvulkan=disabled         \
     -Ddocs=enabled            \
-    -Dman=enabled ..
-  ninja
-  DESTDIR=$PKG ninja install
+    -Dman=enabled
+
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
 }
