@@ -1,16 +1,17 @@
 description="The GNOME Terminal Emulator"
 url="https://www.gnome.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Jayce,Fanch,Rems,Tnut"
+packager="Skythrew <mael.guerin@outlook.fr>"
+contributors="Jayce,Fanch,Rems,Tnut,Spiky"
 
 makedepends=(dconf gtk3 vte nautilus gnome-shell yelp-tools)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 
-set=(gnome cinnamon)
+set=(cinnamon)
 
 name=gnome-terminal
 version=3.48.1
+release=2
 
 source=(https://gitlab.gnome.org/GNOME/$name/-/archive/$version/$name-$version.tar.bz2)
 
