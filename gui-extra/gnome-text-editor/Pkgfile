@@ -1,0 +1,16 @@
+description='A simple text editor for the GNOME DE'
+url='https://gitlab.gnome.org/GNOME/gnome-text-editor'
+
+packager="Skythrew <mael.guerin@outlook.fr>"
+contributors=""
+
+makedepends=(gtk4 gtksourceview5 libadwaita libeditorconfig enchant icu)
+run=()
+set=()
+
+name=gnome-text-editor
+version=44.0
+
+source=(https://gitlab.gnome.org/GNOME/gnome-text-editor/-/archive/$version/$name-$version.tar.bz2)
+
+build=meson

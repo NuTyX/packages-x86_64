@@ -1,0 +1,24 @@
+description='EditorConfig core library'
+url='https://github.com/editorconfig/editorconfig-core-c'
+
+packager="Skythrew <mael.guerin@outlook.fr>"
+contributors=""
+
+makedepends=(pcre2 cmake)
+run=()
+set=()
+
+name=libeditorconfig
+version=0.12.6
+
+source=(https://github.com/editorconfig/editorconfig-core-c/archive/refs/tags/v$version.tar.gz)
+
+build() {
+    cd editorconfig-core-c-$version
+    mkdir build
+    cd build
+
+    cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_TESTING=OFF -Wno-dev ..
+    make
+    make DESTDIR=$PKG install
+}
