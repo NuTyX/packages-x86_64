@@ -1,0 +1,33 @@
+description='Modern, C++-native, header-only, test framework for unit-tests, TDD and BDD'
+url='https://github.com/catchorg/catch2'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake python)
+
+name=catch2
+version=2.13.9
+
+source=(https://github.com/catchorg/Catch2/archive/refs/tags/v2.13.9.tar.gz)
+
+prepare() {
+mv Catch2-$version $name-$version
+}
+
+
+build() {
+cd $name-$version
+
+cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCATCH_USE_VALGRIND=OFF \
+    -DCATCH_BUILD_EXAMPLES=OFF \
+    -DCATCH_ENABLE_COVERAGE=OFF \
+    -DCATCH_ENABLE_WERROR=OFF \
+    -DBUILD_TESTING=OFF
+
+make -C build
+make -C build DESTDIR=$PKG install
+}
