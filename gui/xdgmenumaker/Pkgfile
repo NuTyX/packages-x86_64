@@ -7,13 +7,18 @@ contributors="Miyo"
 
 name=xdgmenumaker
 version=2.0
-release=2
+release=3
 
 makedepends=(gtk3 txt2tags)
 run=(python-xdg python-gobject python-pillow)
 
 PKGMK_KEEP_SOURCES="no"
 source=($url/archive/$version.tar.gz)
+
+prepare() {
+  sed -i "s@name.lower @name.lower() @" \
+  $name-$version/src/xdgmenumaker
+}
 
 build() {
 
