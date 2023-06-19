@@ -4,6 +4,8 @@ url="https://www.mozilla.org/thunderbird"
 packager="Tnut <tnut@nutyx.org>"
 contributors="Pierre,Fabienwang,Spiky"
 
+license="GPL, LGPL, MPL"
+
 makedepends=(autoconf2-13 icu alsa-lib gtk2 zip unzip libevent libvpx nspr
              nss yasm dbus-glib doxygen libnotify openjdk sqlite wireless-tools
              xorg-libx11 xorg-libxt xorg-libxrandr pulseaudio python
@@ -12,12 +14,18 @@ run=(startup-notification hunspell desktop-file-utils hicolor-icon-theme
      shared-mime-info gtk-update-icon-cache)
 
 name=thunderbird
-version=102.9.1
+version=102.12.0
+release=1
 
 locale_version=$version
 
 source=(https://archive.mozilla.org/pub/thunderbird/releases/$version/source/$name-$version.source.tar.xz
-	$name.desktop)
+	$name.desktop $name-$version-consolidated-$release.patch)
+
+prepare() {
+  cd $name-$version
+  patch -Np1 -i ../$name-$version-consolidated-$release.patch
+}
 
 pack_remove_locale() {
 
@@ -44,12 +52,11 @@ ac_add_options --without-wasm-sandboxed-libraries
 # If you have installed wireless-tools comment out this line:
 ac_add_options --disable-necko-wifi
 
-# Comment out following options if you have not installed
-# recommended dependencies:
 ac_add_options --enable-system-ffi
 ac_add_options --enable-system-pixman
 
 ac_add_options --with-system-libevent
+ac_add_options --with-system-libvpx
 ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
 ac_add_options --with-system-icu
@@ -57,11 +64,8 @@ ac_add_options --with-system-jpeg
 ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 
-
-# The BLFS editors recommend not changing anything below this line:
 ac_add_options --prefix=/usr
 ac_add_options --enable-application=comm/mail
-
 
 ac_add_options --disable-crashreporter
 ac_add_options --disable-updater
@@ -70,7 +74,8 @@ ac_add_options --disable-debug-symbols
 ac_add_options --disable-tests
 ac_add_options --disable-jack
 
-# by a few MB - comment this if you know your machine is not affected.
+# The elf-hack causes failed installs on some machines.
+
 ac_add_options --disable-elf-hack
 
 ac_add_options --enable-optimize=-O2
@@ -81,13 +86,10 @@ ac_add_options --enable-official-branding
 
 EOF
 
-sed -i '/ROOT_CLIP_CHAIN/d' gfx/webrender_bindings/webrender_ffi.h
-
 export SHELL=/bin/sh
 export CC=gcc CXX=g++
 export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
 export MOZBUILD_STATE_PATH=./mozbuild
-
 
 ./mach configure
 ./mach build
