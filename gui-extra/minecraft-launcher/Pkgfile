@@ -1,0 +1,21 @@
+description='Official Minecraft Launcher'
+url='https://minecraft.net'
+license='All rights reserved'
+
+packager="Skythrew <mael.guerin@outlook.fr>"
+contributors=""
+
+makedepends=()
+run=()
+set=()
+
+name=minecraft-launcher
+version=1.0.1221
+
+source=(https://launcher.mojang.com/download/linux/x86_64/${name}_$version.tar.gz https://launcher.mojang.com/download/$name.svg $name.desktop)
+
+build() {
+  install -Dm644 "minecraft-launcher.svg" "$PKG/usr/share/icons/hicolor/symbolic/apps/minecraft-launcher.svg"
+  install -Dm644 "minecraft-launcher.desktop" "$PKG/usr/share/applications/minecraft-launcher.desktop"
+  install -Dm755 "minecraft-launcher/minecraft-launcher" "$PKG/usr/bin/minecraft-launcher"
+}
