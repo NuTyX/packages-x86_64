@@ -11,10 +11,14 @@ set=(lxde)
 
 name=pcmanfm
 version=1.3.2
-release=5
+release=6
 
 source=(https://downloads.sourceforge.net/$name/$name-$version.tar.xz)
 
+prepare() {
+sed -i  "s@GNOME;XFCE;KDE;MATE;@GNOME;XFCE;KDE;MATE;JWM;@" \
+$name-$version/data/pcmanfm-desktop-pref.desktop
+}
 build() {
 cd $name-$version
 ./configure --sysconfdir=/etc --prefix=/usr \
