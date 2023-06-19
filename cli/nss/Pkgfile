@@ -8,9 +8,17 @@ makedepends=(perl nspr sqlite)
 
 name=nss
 version=3.90
+release=2
 
 source=(https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_${version//./_}_RTM/src/nss-$version.tar.gz \
-	nss-standalone-1.patch)
+	nss-standalone-1.patch
+        nss-3.90-illegal_instruction-1.patch)
+
+prepare() {
+        cd $name-$version
+        grep -q adx /proc/cpuinfo || \
+        patch -Np1 -i ../nss-3.90-illegal_instruction-1.patch
+}
 
 build () {
 	cd $name-$version

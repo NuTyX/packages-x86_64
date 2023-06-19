@@ -7,9 +7,14 @@ contributors="Pierre,Tnut"
 makedepends=(flex bison python cmake xapian git)
 
 name=doxygen
-version=1.9.6
+version=1.9.7
+PKGMK_IGNORE_UNPACK="yes"
 
 source=(http://doxygen.nl/files/$name-$version.src.tar.gz)
+
+prepare() {
+tar xf $name-$version.src.tar.gz -C /tmp/work/src
+}
 
 build() {
 cd $name-$version
