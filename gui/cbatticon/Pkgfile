@@ -1,0 +1,25 @@
+description='https://github.com/valr/cbatticon'
+url='https://github.com/valr/cbatticon'
+
+packager="Tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(gtk3 libnotify git)
+run=()
+set=()
+
+name=cbatticon
+version=1.6.13
+
+prepare() {
+  git clone $url
+  mv $name $name-$version
+  
+}
+
+build() {
+cd $name-$version
+git checkout 2b87a0f033a6c
+make WITH_NOTIFY=1 WITH_GTK3=1
+make PREFIX=$PKG/usr install
+}
