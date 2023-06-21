@@ -1,11 +1,14 @@
 description='A cross-platform application and UI framework'
 url='https://www.qt.io/'
 
+license="GPL3 LGPL3 FDL custom"
+
 packager="Tnut <tnut@nutyx.org>"
 contributors="Tnut,Spiky"
 
 name=qt6-base
-version=6.5.0
+version=6.5.1
+
 
 makedepends=(libb2 cmake ninja systemd icu brotli at-spi2-core mtdev 
              cups gstreamer-plugins-base xcb-util xcb-util-renderutil
@@ -14,22 +17,30 @@ makedepends=(libb2 cmake ninja systemd icu brotli at-spi2-core mtdev
              xcb-util-cursor mesa pcre2 xdg-utils xcb-util-wm
              xorg-libxrender libxkbcommon gtk3 mariadb postgresql)
 
-source=(https://download.qt.io/official_releases/qt/${version%.*}/$version/submodules/qtbase-everywhere-src-$version.tar.xz)
-
+source=(qt6-base-cflags.patch
+        https://download.qt.io/official_releases/qt/${version%.*}/$version/submodules/qtbase-everywhere-src-$version.tar.xz)
+prepare() {
+ cd qtbase-everywhere-src-$version
+ patch -Np1 -i ../qt6-base-cflags.patch
+}
 build() {
- cmake -S qtbase-everywhere-src-$version -B build -G Ninja    \
- -D CMAKE_INSTALL_PREFIX=/usr -D INSTALL_BINDIR=lib/qt6/bin    \
- -D INSTALL_PUBLICBINDIR=usr/bin -D INSTALL_LIBEXECDIR=lib/qt6 \
- -DINSTALL_DOCDIR=share/doc/qt6  -DINSTALL_ARCHDATADIR=lib/qt6 \
- -DINSTALL_DATADIR=share/qt6 -DINSTALL_INCLUDEDIR=include/qt6  \
- -DINSTALL_MKSPECSDIR=lib/qt6/mkspecs -DQT_FEATURE_openssl_linked=ON   \
- -DINSTALL_EXAMPLESDIR=share/doc/qt6/examples -DQT_FEATURE_journald=ON \
- -DQT_FEATURE_system_sqlite=ON -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
- -DFEATURE_no_direct_extern_access=ON
+ mkdir build
+ cd    build
+ cmake \
+ -DCMAKE_INSTALL_PREFIX=/usr                  -DINSTALL_BINDIR=lib/qt6/bin     \
+ -DINSTALL_PUBLICBINDIR=usr/bin               -DINSTALL_LIBEXECDIR=lib/qt6     \
+ -DINSTALL_DOCDIR=share/doc/qt6               -DINSTALL_ARCHDATADIR=lib/qt6    \
+ -DINSTALL_DATADIR=share/qt6                  -DINSTALL_INCLUDEDIR=include/qt6 \
+ -DINSTALL_MKSPECSDIR=lib/qt6/mkspecs         -DFEATURE_openssl_linked=ON      \
+ -DINSTALL_EXAMPLESDIR=share/doc/qt6/examples -DFEATURE_journald=ON            \
+ -DFEATURE_system_sqlite=ON                   -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON  \
+ -DFEATURE_no_direct_extern_access=ON         -DFEATURE_system_xcb_xinput=ON   \
+ -DFEATURE_qmake=ON                           -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+ ../qtbase-everywhere-src-$version
 
- cmake --build build
+ make
 
-  DESTDIR=$PKG cmake --install build
+ make DESTDIR=$PKG install
 }
 devel() {
   cd $PKG
