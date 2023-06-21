@@ -10,7 +10,7 @@ name=qt6-base
 version=6.5.1
 
 
-makedepends=(libb2 cmake ninja systemd icu brotli at-spi2-core mtdev 
+makedepends=(libb2 cmake ninja systemd icu at-spi2-core mtdev 
              cups gstreamer-plugins-base xcb-util xcb-util-renderutil
              vulkan-headers shared-mime-info sqlite libinput
              double-conversion alsa-lib xcb-util-image xcb-util-keysyms
@@ -26,7 +26,7 @@ prepare() {
 build() {
  mkdir build
  cd    build
- cmake \
+ cmake -G Ninja \
  -DCMAKE_INSTALL_PREFIX=/usr                  -DINSTALL_BINDIR=lib/qt6/bin     \
  -DINSTALL_PUBLICBINDIR=usr/bin               -DINSTALL_LIBEXECDIR=lib/qt6     \
  -DINSTALL_DOCDIR=share/doc/qt6               -DINSTALL_ARCHDATADIR=lib/qt6    \
@@ -35,12 +35,12 @@ build() {
  -DINSTALL_EXAMPLESDIR=share/doc/qt6/examples -DFEATURE_journald=ON            \
  -DFEATURE_system_sqlite=ON                   -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON  \
  -DFEATURE_no_direct_extern_access=ON         -DFEATURE_system_xcb_xinput=ON   \
- -DFEATURE_qmake=ON                           -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+ -DFEATURE_qmake=ON                           -DCMAKE_BUILD_TYPE=Release       \
  ../qtbase-everywhere-src-$version
 
- make
+ ninja
 
- make DESTDIR=$PKG install
+ DESTDIR=$PKG ninja install
 }
 devel() {
   cd $PKG
