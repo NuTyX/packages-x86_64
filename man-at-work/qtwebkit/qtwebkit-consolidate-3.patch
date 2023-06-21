@@ -1,6 +1,6 @@
 diff -Naur a/Source/JavaScriptCore/generate-bytecode-files b/Source/JavaScriptCore/generate-bytecode-files
 --- a/Source/JavaScriptCore/generate-bytecode-files	2020-03-04 18:16:37.000000000 +0100
-+++ b/Source/JavaScriptCore/generate-bytecode-files	2021-04-19 16:42:50.234458274 +0200
++++ b/Source/JavaScriptCore/generate-bytecode-files	2023-06-21 17:48:42.898401046 +0200
 @@ -163,7 +163,7 @@
          initBytecodesFile = openOrExit(initASMFileName, "w")
  
@@ -10,9 +10,20 @@ diff -Naur a/Source/JavaScriptCore/generate-bytecode-files b/Source/JavaScriptCo
      except:
          print("Unexpected error parsing {0}: {1}".format(bytecodeJSONFile, sys.exc_info()))
  
+diff -Naur a/Source/ThirdParty/ANGLE/src/common/mathutil.h b/Source/ThirdParty/ANGLE/src/common/mathutil.h
+--- a/Source/ThirdParty/ANGLE/src/common/mathutil.h	2020-03-04 18:16:37.000000000 +0100
++++ b/Source/ThirdParty/ANGLE/src/common/mathutil.h	2023-06-21 17:49:38.237354957 +0200
+@@ -16,6 +16,7 @@
+ #include <algorithm>
+ #include <string.h>
+ #include <stdlib.h>
++#include <cstdint>
+ 
+ namespace gl
+ {
 diff -Naur a/Source/WebCore/css/makegrammar.pl b/Source/WebCore/css/makegrammar.pl
 --- a/Source/WebCore/css/makegrammar.pl	2020-03-04 18:16:37.000000000 +0100
-+++ b/Source/WebCore/css/makegrammar.pl	2021-04-19 16:40:59.169942598 +0200
++++ b/Source/WebCore/css/makegrammar.pl	2023-06-21 17:48:42.898401046 +0200
 @@ -73,25 +73,6 @@
  }
  
@@ -42,7 +53,7 @@ diff -Naur a/Source/WebCore/css/makegrammar.pl b/Source/WebCore/css/makegrammar.
 -
 diff -Naur a/Source/WebCore/platform/text/icu/UTextProvider.h b/Source/WebCore/platform/text/icu/UTextProvider.h
 --- a/Source/WebCore/platform/text/icu/UTextProvider.h	2020-03-04 18:16:37.000000000 +0100
-+++ b/Source/WebCore/platform/text/icu/UTextProvider.h	2021-04-19 16:40:59.169942598 +0200
++++ b/Source/WebCore/platform/text/icu/UTextProvider.h	2023-06-21 17:48:42.898401046 +0200
 @@ -80,12 +80,12 @@
              // Ensure chunk offset is well formed if computed offset exceeds int32_t range.
              ASSERT(offset < std::numeric_limits<int32_t>::max());
@@ -75,7 +86,7 @@ diff -Naur a/Source/WebCore/platform/text/icu/UTextProvider.h b/Source/WebCore/p
      }
 diff -Naur a/Source/WebCore/platform/text/icu/UTextProviderLatin1.cpp b/Source/WebCore/platform/text/icu/UTextProviderLatin1.cpp
 --- a/Source/WebCore/platform/text/icu/UTextProviderLatin1.cpp	2020-03-04 18:16:37.000000000 +0100
-+++ b/Source/WebCore/platform/text/icu/UTextProviderLatin1.cpp	2021-04-19 16:40:59.169942598 +0200
++++ b/Source/WebCore/platform/text/icu/UTextProviderLatin1.cpp	2023-06-21 17:48:42.898401046 +0200
 @@ -100,23 +100,23 @@
          if (index < uText->chunkNativeLimit && index >= uText->chunkNativeStart) {
              // Already inside the buffer. Set the new offset.
@@ -133,7 +144,7 @@ diff -Naur a/Source/WebCore/platform/text/icu/UTextProviderLatin1.cpp b/Source/W
  static int32_t uTextLatin1ContextAwareExtract(UText*, int64_t, int64_t, UChar*, int32_t, UErrorCode* errorCode)
 diff -Naur a/Source/WebCore/platform/text/icu/UTextProviderUTF16.cpp b/Source/WebCore/platform/text/icu/UTextProviderUTF16.cpp
 --- a/Source/WebCore/platform/text/icu/UTextProviderUTF16.cpp	2020-03-04 18:16:37.000000000 +0100
-+++ b/Source/WebCore/platform/text/icu/UTextProviderUTF16.cpp	2021-04-19 16:40:59.169942598 +0200
++++ b/Source/WebCore/platform/text/icu/UTextProviderUTF16.cpp	2023-06-21 17:48:42.901734317 +0200
 @@ -125,7 +125,7 @@
  static UBool uTextUTF16ContextAwareAccess(UText* text, int64_t nativeIndex, UBool forward)
  {
@@ -154,7 +165,7 @@ diff -Naur a/Source/WebCore/platform/text/icu/UTextProviderUTF16.cpp b/Source/We
  static int32_t uTextUTF16ContextAwareExtract(UText*, int64_t, int64_t, UChar*, int32_t, UErrorCode* errorCode)
 diff -Naur a/Source/WebCore/platform/text/TextCodecICU.cpp b/Source/WebCore/platform/text/TextCodecICU.cpp
 --- a/Source/WebCore/platform/text/TextCodecICU.cpp	2020-03-04 18:16:37.000000000 +0100
-+++ b/Source/WebCore/platform/text/TextCodecICU.cpp	2021-04-19 16:40:59.169942598 +0200
++++ b/Source/WebCore/platform/text/TextCodecICU.cpp	2023-06-21 17:48:42.901734317 +0200
 @@ -308,7 +308,7 @@
      m_converterICU = ucnv_open(m_canonicalConverterName, &err);
      ASSERT(U_SUCCESS(err));
@@ -166,7 +177,7 @@ diff -Naur a/Source/WebCore/platform/text/TextCodecICU.cpp b/Source/WebCore/plat
  int TextCodecICU::decodeToBuffer(UChar* target, UChar* targetLimit, const char*& source, const char* sourceLimit, int32_t* offsets, bool flush, UErrorCode& err)
 diff -Naur a/Source/WTF/wtf/glib/GRefPtr.h b/Source/WTF/wtf/glib/GRefPtr.h
 --- a/Source/WTF/wtf/glib/GRefPtr.h	2020-03-04 18:16:37.000000000 +0100
-+++ b/Source/WTF/wtf/glib/GRefPtr.h	2021-04-19 18:30:15.524470841 +0200
++++ b/Source/WTF/wtf/glib/GRefPtr.h	2023-06-21 17:48:42.901734317 +0200
 @@ -29,8 +29,6 @@
  #include <wtf/RefPtr.h>
  #include <algorithm>
