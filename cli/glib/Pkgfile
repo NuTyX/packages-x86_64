@@ -5,12 +5,14 @@ license="LGPL"
 packager="Tnut <tnut@nutyx.org>"
 contributors="Fanch,Spiky"
 
+license="LGPL"
+
 makedepends=(libffi pcre2 python elfutils meson ninja libxslt docbook-xsl)
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
 version=2.76.3
-release=2
+release=3
 
 source=(https://download.gnome.org/sources/glib/${version:0:4}/$name-$version.tar.xz
 	glib-skip_warnings-2.patch)
@@ -20,9 +22,8 @@ prepare () {
   nutyx-black.jpg nutyx-dreamy-sky.jpg lxde-black.jpg nutyx-10.0.jpg \
   nutyx-11.0.jpg nutyx-9.0.94.jpg nutyx-9.0.95.jpg nutyx-eagle.jpg \
   nutyx2.png nutyx9.png NuTyX-vide.jpg NuTyX-LXDE-10.0.jpg NuTyX-9.92.jpg \
-  NuTyX-9.91-2.jpg NuTyX-bad-jocker.jpg NuTyX-20.12.1.jpg NuTyX-2023-06.jpg \
-  NuTyX-2023-06-1.jpg NuTyX-2023-06-1-dark.jpg nutyx-12-beta2-flat.jpg \
-  NuTyX-23.06-3.jpg NuTyX-23.06-4.jpg
+  NuTyX-9.91-2.jpg NuTyX-bad-jocker.jpg NuTyX-20.12.1.jpg NuTyX-23.06-1.jpg \
+  NuTyX-20.12.1-dark.jpg nutyx-12-beta2-flat.jpg NuTyX-23.06-3.jpg NuTyX-23.06-4.jpg
   do
    wget $URL/$i
    install -D -m644 $i $PKG/usr/share/backgrounds/nutyx/$i
