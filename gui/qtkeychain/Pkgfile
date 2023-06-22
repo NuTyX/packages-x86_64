@@ -1,18 +1,19 @@
 description="Provides support for secure credentials storage"
 url="https://github.com/frankosterfeld/qtkeychain"
 
-packager="tnut <tnut@nutyx.org>"
+license="BSD"
+
+packager="Tnut <tnut@nutyx.org>"
 contributors="Greg"
 
-makedepends=(qtbase cmake qttools)
+makedepends=(libsecret qtbase cmake qttools)
 
 name=qtkeychain
-version=0.9.1
-release=2
+version=0.14.1
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/frankosterfeld/qtkeychain/archive/v$version.tar.gz)
+source=(https://github.com/frankosterfeld/qtkeychain/archive/$version.tar.gz)
 
 prepare() {
 mkdir -p build
@@ -25,15 +26,7 @@ cmake ../$name-$version \
 -DCMAKE_INSTALL_PREFIX=/usr
 make
 make DESTDIR=$PKG install
-}
 
-uptodate() {
-feed=https://github.com/frankosterfeld/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 
-$exec $feed | grep title | \
-sed "s@<title>@@" | sed "s@</title>@@" | \
-sed "s@v@@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
+install -Dm644 ../$name-$version/COPYING \
+$PKG/usr/share/licenses/$pkgname/LICENSE
 }
