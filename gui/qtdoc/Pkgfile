@@ -1,5 +1,8 @@
 description="A cross-platform application and UI framework, QtDoc files"
 url="http://qt-project.org/"
+
+license="GPL3, LGPL3, FDL, custom"
+
 packager="Spiky <spiky@nutyx.org>"
 contributors="Pierre,Rems,Tnut"
 
@@ -8,15 +11,33 @@ makedepends=(qtbase qtdeclarative qttools pciutils xorg-libxtst xorg-libxcursor 
 PKGMK_GROUPS=()
 
 name=qtdoc
-version=5.15.5
-_name="${name}-everywhere-opensource-src"
+version=5.15.10
+_name="qt-everywhere-opensource-src"
 
-source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
+source=(no-qmake.patch qt5-webengine-python3.patch 
+        https://download.qt.io/official_releases/qt/${version:0:4}/$version/single/${_name}-${version}.tar.xz)
 
+prepare() {
+ cd ${_name/-opensource/}-${version}/qtbase
+ ln -s /usr/bin/{rcc,uic,moc,qmake} bin/
+ patch -Np1 -i ../../no-qmake.patch
+ cd ../qtwebengine
+ patch -Np1 -i ../../qt5-webengine-python3.patch
+ cd ../qttools
+ ln -s /usr/bin
+}
 build() {
 export PATH="$SCR/bin:$PATH"
 cd ${_name/-opensource/}-${version}
-qmake
+
+./configure -confirm-license -opensource \
+     -prefix /usr \
+     -docdir /usr/share/doc/qt \
+     -headerdir /usr/include/qt \
+     -archdatadir /usr/lib/qt \
+     -datadir /usr/share/qt \
+     -sysconfdir /etc/xdg \
+     -nomake examples
 make docs
 make INSTALL_ROOT=$PKG install_docs
 }
