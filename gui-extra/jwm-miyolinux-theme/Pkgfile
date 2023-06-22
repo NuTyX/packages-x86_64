@@ -7,17 +7,18 @@ packager="Tnut <tnut@nutyx.org>"
 contributors="Miyo Linux"
 
 name=jwm-miyolinux-theme
-version=0.4
+version=0.5
 
 run=(xdgmenumaker fonts-ubuntu dmenu oxy-cursors deepin-gtk-theme
      pavucontrol picom ttf-liberation yad lxde-appearance papirus-icon-theme
      pcmanfm leafpad volumeicon xfce4-notifyd conky nitrogen)
 
 
-source=(https://github.com/NuTyX/$name/archive/refs/tags/$name-$version.tar.gz)
+source=(https://github.com/NuTyX/$name/archive/refs/tags/$version.tar.gz)
+PKGMK_KEEP_SOURCES="no"
 
 build() {
-   cd $name-$name-$version
+   cd $name-$version
    mv * $PKG/
    install -D -m644 $PKG/LICENSE $PKG/usr/share/licences/$name/LICENSE
    install -D -m644 $PKG/README.md $PKG/usr/share/doc/$name/README
