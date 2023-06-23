@@ -4,24 +4,25 @@ url="http://owncloud.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre, Rems"
 
-makedepends=(cmake extra-cmake-modules sqlite qtbase qtkeychain qtwebkit)
+makedepends=(cmake extra-cmake-modules sqlite qtbase qtkeychain qttools
+             doxygen kio)
+run=(hicolor-icon-theme)
 
 name=owncloudclient
-version=2.5.0.10650
+version=4.1.0.11250
 
-source=(https://download.owncloud.com/desktop/stable/${name}-$version.tar.xz)
+source=(https://download.owncloud.com/desktop/ownCloud/stable/$version/source/ownCloud-$version.tar.xz)
 
 build() {
 
 mkdir build
 cd    build
 
-cmake ../$name-$version            \
+cmake ../ownCloud-$version            \
         -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_INSTALL_LIBDIR=lib  \
+        -DDATADIR=share  \
         -DCMAKE_BUILD_TYPE=Release  \
-        -DCMAKE_INSTALL_SYSCONFDIR=/etc/$name \
-        
-make
-make DESTDIR=$PKG install
+        -DCMAKE_INSTALL_SYSCONFDIR=/etc/$name
+cmake --build .
+DESTDIR=$PKG cmake --install .
 }
