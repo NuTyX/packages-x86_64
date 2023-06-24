@@ -1,7 +1,7 @@
 url="https://www.kernel.org"
 description="The 5.15 longterm support Linux Kernel version"
 
-packager="Tnut <tnut@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 makedepends=(bison flex perl gmp mpc libelf diffutils)
 run=(nutyx kmod busybox)
 
@@ -10,7 +10,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-515
-version=5.15.111
+version=5.15.118
 
 alias=(linux-515)
 INITRD="initrd-${name/*-/}"
@@ -38,7 +38,7 @@ bsdtar -p -o -C $SRC -xf linux-${_version}.tar.xz
 cd linux-${_version}
 patch -Np1 -i ../gcc.patch
 if [ -f $SRC/patch-$version.xz ]; then
-	xz -d -c  $SRC/patch-$version.xz | patch -Np1
+	xz -d -c  $SRC/patch-$version.xz | patch -Np1 || true
 fi
 
 make mrproper
