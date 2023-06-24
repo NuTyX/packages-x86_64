@@ -1,0 +1,57 @@
+description='Provides support for web applications using the Chromium browser project'
+url='http://qt-project.org/'
+
+license="LGPL3 LGPL2.1 BSD"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Rems,Spiky"
+
+makedepends=(qtbase qtwebchannel qtlocation python
+             nss snappy libevent libxslt re2 libvpx
+             poppler pipewire node)
+
+name=qtwebengine
+version=5.15.14
+
+PKGMK_GROUPS=(devel doc lib man)
+
+source=(build_fixes-1.patch
+        ffmpeg5_fixes-1.patch
+         https://anduin.linuxfromscratch.org/BLFS/$name/$name-$version.tar.xz)
+prepare() {
+ cd $name-$version
+ patch -Np1 -i ../build_fixes-1.patch
+ patch -Np1 -i ../ffmpeg5_fixes-1.patch
+
+ mkdir -pv .git src/3rdparty/chromium/.git
+
+ sed -e '/^MODULE_VERSION/s/5.*/5.15.10/' -i .qmake.conf
+ find -type f -name "*.pr[io]" |
+  xargs sed -i -e 's|INCLUDEPATH += |&$$QTWEBENGINE_ROOT/include |'
+
+ sed -e '/link_pulseaudio/s/false/true/' \
+    -i src/3rdparty/chromium/media/media_options.gni
+
+ sed -e 's/\^(?i)/(?i)^/' \
+    -i src/3rdparty/chromium/tools/metrics/ukm/ukm_model.py &&
+ sed -e "s/'rU'/'r'/" \
+    -i src/3rdparty/chromium/tools/grit/grit/util.py
+
+ sed -i 's/NINJAJOBS/NINJA_JOBS/' src/core/gn_run.pro
+}
+
+build() {
+mkdir build
+cd    build
+
+qmake ../$name-$version -- \
+       -system-ffmpeg      \
+       -proprietary-codecs \
+       -webengine-icu
+make
+make INSTALL_ROOT=$PKG install
+
+# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
+  find "$PKG/usr/lib" -type f -name '*.prl' \
+       -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+}
