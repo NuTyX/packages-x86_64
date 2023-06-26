@@ -1,20 +1,20 @@
 description="Integrated Developmenet Environment (IDE)"
 url="https://apps.kde.org/kdevelop/"
 
-packager="Tnut <tnut@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 contributors="Spiky"
 
-makedepends=(kcmutils knotifyconfig ktexteditor libksysguard 
+makedepends=(kcmutils knotifyconfig ktexteditor libksysguard qtdoc
              threadweaver grantlee-qt extra-cmake-modules kdoctools
              llvm qttools plasma-framework krunner boost purpose
              subversion cmake meson kio-extras kitemmodels
-             qtwebkit libkomparediff2 syndication)
+             libkomparediff2 syndication qtwebengine)
 
 run=(hicolor-icon-theme astyle)
 
 name=kdevelop
 version=23.04.2
-release=2
+release=3
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 prepare() {
@@ -22,15 +22,3 @@ prepare() {
       $name-$version/plugins/astyle/astyle_stringiterator.{h,cpp}
 }
 build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
