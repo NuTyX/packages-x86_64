@@ -9,7 +9,7 @@ run=(gnutls libgcrypt openssl)
 set=()
 
 name=weechat
-version=3.8
+version=4.0.0
 
 source=(https://www.weechat.org/files/src/${name}-${version}.tar.xz)
 
@@ -20,7 +20,8 @@ cmake -Wno-dev . \
       -DENABLE_MAN=ON \
       -DENABLE_DOC=ON \
       -DENABLE_JAVASCRIPT=OFF \
-      -DENABLE_PHP=OFF
+      -DENABLE_PHP=OFF \
+      -DENABLE_DOC_INCOMPLETE=ON
 make
 make DESTDIR=$PKG install
 }
