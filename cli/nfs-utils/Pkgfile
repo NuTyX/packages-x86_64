@@ -1,13 +1,13 @@
 description="Userspace server and client tools necessary to use the kernel's NFS abilities."
 url="http://nfs.sourceforge.net"
 
-packager="Spiky <spiky@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
-makedepends=(util-linux libtirpc rpcbind rpcsvc-proto)
+makedepends=(util-linux sqlite libevent libtirpc rpcbind rpcsvc-proto)
 run=(rpcbind)
 
 name=nfs-utils
-version=2.6.2
+version=2.6.3
 
 runyx_version=20201011
 
@@ -34,7 +34,8 @@ cd $name-$version
 --sysconfdir=/etc         \
 --sbindir=/sbin           \
 --disable-nfsv4           \
---disable-gss
+--disable-gss             \
+LIBS="-lsqlite3 -levent_core"
 
 make
 mkdir $PKG/sbin
