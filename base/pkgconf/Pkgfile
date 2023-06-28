@@ -1,0 +1,26 @@
+description='Package compiler and linker metadata toolkit'
+url='http://pkgconf.org/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=()
+run=()
+set=()
+
+name=pkgconf
+version=1.9.5
+
+source=(https://distfiles.dereferenced.org/pkgconf/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr \
+            --disable-static           \
+            --docdir=/usr/share/doc/$name-$version
+make
+make DESTDIR=$PKG install
+
+ln -sv pkgconf   $PKG/usr/bin/pkg-config
+ln -sv pkgconf.1 $PKG/usr/share/man/man1/pkg-config.1
+}
