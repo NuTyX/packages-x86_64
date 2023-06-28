@@ -3,14 +3,14 @@ url="http://www.libpng.org/pub/png/libpng.html"
 packager="spiky <spiky@nutyx.org>"
 
 name=libpng
-version=1.6.39
+version=1.6.40
 
 source=( http://downloads.sourceforge.net/$name/$name-$version.tar.xz
-	https://downloads.sourceforge.net/sourceforge/libpng-apng/$name-$version-apng.patch.gz)
+	https://downloads.sourceforge.net/sourceforge/libpng-apng/$name-1.6.39-apng.patch.gz)
 
 build() {
 cd $name-$version
-gzip -cd ../$name-$version-apng.patch.gz | patch -p1
+gzip -cd ../$name-1.6.39-apng.patch.gz | patch -p1
 
 ./configure --prefix=/usr \
 --disable-static
