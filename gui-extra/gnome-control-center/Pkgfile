@@ -16,8 +16,17 @@ run=(iso-codes gsettings-desktop-schemas libgnomekbd
 set=(gnome)
 
 name=gnome-control-center
-version=44.2
+version=44.3
 source=(https://ftp.acc.umu.se/pub/GNOME/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 
-build=meson
+build() {
+
+meson setup $name-$version build \
+       --prefix=/usr          \
+            --buildtype=release
+
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
+}
