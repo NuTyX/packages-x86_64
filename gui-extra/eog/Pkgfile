@@ -13,17 +13,17 @@ run=(adwaita-icon-theme gsettings-desktop-schemas
 set=(gnome)
 
 name=eog
-version=44.2
+version=44.3
 
 source=(https://gitlab.gnome.org/GNOME/$name/-/archive/$version/$name-$version.tar.gz)
 
 build() {
 
-mkdir build
-cd    build
-meson --prefix=/usr \
-      -D libportal=false \
-      ../$name-$version
-ninja
-DESTDIR=$PKG ninja install
+meson setup $name-$version build \
+      --prefix=/usr \
+      -D libportal=false
+
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
 }
