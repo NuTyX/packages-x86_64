@@ -1,15 +1,15 @@
 description="Used to make X.509 certificates as well as making the CMS (Cryptographic Message Syntax)"
 url="http://www.gnupg.org/related_software/libksba/"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Pierre,Tnut,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(libgpg-error)
 
 name=libksba
-version=1.6.3
+version=1.6.4
 
-source=(ftp://ftp.gnupg.org/gcrypt/$name/$name-$version.tar.bz2 )
+source=(https://www.gnupg.org/ftp/gcrypt/$name/$name-$version.tar.bz2 )
 
 build() {
 cd $name-$version
