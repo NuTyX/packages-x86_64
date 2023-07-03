@@ -1,16 +1,16 @@
 description="Media player that can play virtually all video and audio formats"
 url="http://smplayer.info/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Remy,Greg,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Remy,Greg"
 
 makedepends=(qtscript mpv qttools xorg-libx11 zlib)
 run=(hicolor-icon-theme desktop-file-utils shared-mime-info)
 
 name=smplayer
-version=22.7.0
+version=23.6.0
 
-source=(https://downloads.sourceforge.net/${name}/${name}-${version}.tar.bz2)
+source=(https://github.com/smplayer-dev/smplayer/archive/refs/tags/v${version}.tar.gz)
 
 build() {
 
