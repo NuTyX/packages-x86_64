@@ -16,17 +16,18 @@ run=(adwaita-icon-theme dconf gnome-backgrounds gnome-menus
 set=(gnome budgie)
 
 name=gnome-shell
-version=44.2
+version=44.3
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build() {
-cd $name-$version
-mkdir build
-cd build
-meson --prefix=/usr \
---buildtype=release \
--Dtests=false
-ninja
-DESTDIR=$PKG ninja install
+
+meson setup $name-$version build \
+      --prefix=/usr \
+      --buildtype=release \
+      -Dtests=false
+
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
 }
