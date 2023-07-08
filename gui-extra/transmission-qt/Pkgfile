@@ -1,40 +1,47 @@
 description="Light and fast Bittorent client (QT Interface)"
 url="http://www.transmissionbt.com/"
 
-packager="Tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contributors="Alienus,Remy,Tnut"
 
 makedepends=(e2fsprogs kerberos intltool curl
-             libevent openssl qtbase qttools doxygen gdb)
+             libevent openssl qt6-base qt6-tools qt6-svg doxygen gdb)
 run=(desktop-file-utils gtk-update-icon-cache)
 
 name=transmission-qt
-version=3.00
-release=2
+version=4.0.3
 
-source=(https://raw.githubusercontent.com/transmission/transmission-releases/master/transmission-$version.tar.xz)
+source=(https://github.com/transmission/transmission/releases/download/$version/transmission-$version.tar.xz)
 
 build() {
-cd transmission-$version
-./configure --prefix=/usr \
-                --disable-cli \
-                --disable-daemon \
-                --without-gtk
-make
-pushd qt
-   qmake qtr.pro \
-   DEFINES+=TRANSLATIONS_DIR=\\\\\\\"/usr/share/transmission-qt/translations\\\\\\\"
-   lrelease translations/*.ts
-   make
-popd
-make  INSTALL_ROOT=$PKG/usr -C qt install
+
+cmake -S transmission-$version -B build -G Ninja \
+		-D CMAKE_BUILD_TYPE=Release \
+		-D CMAKE_INSTALL_PREFIX=/usr \
+		-D RUN_CLANG_TIDY=OFF \
+		-D ENABLE_TESTS=OFF \
+		-D ENABLE_NLS=OFF \
+		-D INSTALL_DOC=ON \
+		-D INSTALL_LIB=OFF \
+		-D ENABLE_WEB=OFF \
+		-D ENABLE_GTK=OFF \
+		-D ENABLE_CLI=OFF \
+		-D ENABLE_DAEMON=OFF \
+		-D ENABLE_UTILS=OFF \
+		-D ENABLE_QT=ON \
+		-D USE_QT_VERSION=6 \
+
+	cmake --build build
+
+        DESTDIR=$PKG cmake --install build
+
 cd $SRC/transmission-$version
 mkdir -pv $PKG/usr/share/applications/
 mkdir -pv $PKG/usr/share/pixmaps/
 mkdir -pv $PKG/usr/share/transmission-qt/translations
-install -Dm644 -t $PKG/usr/share/transmission-qt/translations qt/translations/*.qm
+install -Dm644 -t $PKG/usr/share/transmission-qt/translations qt/translations/*.ts
     
 install -m644 ./qt/transmission-qt.desktop $PKG/usr/share/applications/transmission-qt.desktop
-install -m644 ./qt/icons/transmission.png  $PKG/usr/share/pixmaps/transmission-qt.png
+install -m644 icon.png  $PKG/usr/share/pixmaps/transmission-qt.svg
 
 }
