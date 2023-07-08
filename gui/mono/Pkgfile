@@ -1,14 +1,14 @@
 description="Free implementation of the .NET"
 url="http://www.mono-project.com/"
 
-packager="BlogofraisFR <Blogofrais@nutyx.org>"
-contributors="Tnut,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut,BlogofraisFR"
 
 makedepends=(cmake libgdiplus python zlib git)
 name=mono
-version=6.12.0.182
+version=6.12.0.199
 
-source=(https://download.mono-project.com/sources/mono/mono-$version.tar.xz
+source=(https://download.mono-project.com/sources/$name/preview/$name-$version.tar.xz
         mono.binfmt.d)
 build() {
 cd $name-$version
