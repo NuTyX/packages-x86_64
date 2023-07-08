@@ -8,14 +8,27 @@ contributors="Pierre,Spiky"
 
 makedepends=(git)
 
-# PKGMK_KEEP_SOURCES="no"
+PKGMK_LOCALES+=" et eu"
 
 name=hunspell
 version=1.7.2
-release=2
+release=3
 
 source=(https://github.com/hunspell/hunspell/releases/download/v${version}/$name-$version.tar.gz )
 
+pack_locale() {
+	bsdtar -cf \
+	$PKGMK_PACKAGE_DIR/${name}.$1${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+	$(find usr/share/myspell/dicts/$1*) \
+	$(find usr/share/hunspell/$1*) \
+	$(find usr/share/locale/$1)    \
+	usr/share/licenses/$name-$1
+
+	rm -r usr/share/myspell/dicts/$1* \
+	usr/share/hunspell/$1*      \
+	$(find usr/share/locale/$1) \
+	usr/share/licenses/$name-$1
+}
 prepare() {
 	git clone https://github.com/titoBouzout/Dictionaries
 }
@@ -35,6 +48,104 @@ popd
 
 # Obsolet lib
   rm $PKG/usr/lib/libhunspell-1.?.la
+
+# English dictionaries
+cd $PKG
+
+install -dm755 usr/share/myspell/dicts
+install -Dm644 "$SRC/Dictionaries/English (American).dic" usr/share/hunspell/en_US.dic
+install -Dm644 "$SRC/Dictionaries/English (American).aff" usr/share/hunspell/en_US.aff
+
+install -Dm644 "$SRC/Dictionaries/English (Australian).dic" usr/share/hunspell/en_AU.dic
+install -Dm644 "$SRC/Dictionaries/English (Australian).aff" usr/share/hunspell/en_AU.aff
+
+install -Dm644 "$SRC/Dictionaries/English (British).dic" usr/share/hunspell/en_GB.dic
+install -Dm644 "$SRC/Dictionaries/English (British).aff" usr/share/hunspell/en_GB.aff
+
+install -Dm644 "$SRC/Dictionaries/English (Canadian).dic" usr/share/hunspell/en_CA.dic
+install -Dm644 "$SRC/Dictionaries/English (Canadian).aff" usr/share/hunspell/en_CA.aff
+
+install -Dm644 "$SRC/Dictionaries/English (South African).dic" usr/share/hunspell/en_ZA.dic
+install -Dm644 "$SRC/Dictionaries/English (South African).aff" usr/share/hunspell/en_ZA.aff
+
+for f in usr/share/hunspell/*
+do
+	ln -s /$f \
+	usr/share/myspell/dicts/$(basename $f)
+done
+install -dm755 $PKG/usr/share/licenses/$name-en
+install -Dm644 "$SRC/Dictionaries/English (American).txt" \
+$PKG/usr/share/licenses/$name-en/LICENCE-US.txt
+install -Dm644 "$SRC/Dictionaries/English (Australian).txt" \
+$PKG/usr/share/licenses/$name-en/LICENCE-AU.txt
+install -Dm644 "$SRC/Dictionaries/English (British).txt" \
+$PKG/usr/share/licenses/$name-en/LICENCE-GB.txt
+install -Dm644 "$SRC/Dictionaries/English (Canadian).txt" \
+$PKG/usr/share/licenses/$name-en/LICENCE-CA.txt
+install -Dm644 "$SRC/Dictionaries/English (South African).txt" \
+$PKG/usr/share/licenses/$name-en/LICENCE-ZA.txt
+}
+locale_ar() {
+	local LANG=ar
+	cd $PKG
+	install -dm755 usr/share/myspell/dicts
+	install -Dm644 $SRC/Dictionaries/Arabic.dic usr/share/hunspell/${LANG}_AE.dic
+	install -Dm644 $SRC/Dictionaries/Arabic.aff usr/share/hunspell/${LANG}_AE.aff
+	
+	i="${LANG}_DZ ${LANG}_EG ${LANG}_IN ${LANG}_IQ ${LANG}_JO ${LANG}_KW ${LANG}_LB \
+	${LANG}_LY ${LANG}_MA ${LANG}_OM ${LANG}_QA ${LANG}_SA ${LANG}_SD ${LANG}_SS \
+	${LANG}_SY ${LANG}_TN ${LANG}_YE ${LANG}_AZ"
+	for l in ${i}
+	do
+		ln -s ${LANG}_AE.aff usr/share/hunspell/$l.aff
+		ln -s ${LANG}_AE.dic usr/share/hunspell/$l.dic
+	done
+
+
+	for f in usr/share/hunspell/${LANG}*
+	do
+		ln -s /$f \
+		usr/share/myspell/dicts/$(basename $f)
+	done
+	install -dm755 usr/share/licenses/$name-${LANG}
+	install -Dm644 $SRC/Dictionaries/Arabic.txt \
+	usr/share/licenses/$name-${LANG}/LICENSE.txt
+
+	pack_locale $LANG
+}
+locale_ca() {
+	local LANG=ca
+	cd $PKG
+	install -dm755 usr/share/myspell/dicts
+	install -Dm644 $SRC/Dictionaries/Catalan.dic usr/share/hunspell/${LANG}_ES.dic
+	install -Dm644 $SRC/Dictionaries/Catalan.aff usr/share/hunspell/${LANG}_ES.aff
+	for f in usr/share/hunspell/${LANG}*
+	do
+		ln -s /$f \
+		usr/share/myspell/dicts/$(basename $f)
+	done
+	install -dm755 usr/share/licenses/$name-${LANG}
+	install -Dm644 $SRC/Dictionaries/Catalan.txt \
+	usr/share/licenses/$name-${LANG}/LICENSE.txt
+
+	pack_locale $LANG
+}
+locale_cs() {
+	local LANG=cs
+	cd $PKG
+	install -dm755 usr/share/myspell/dicts
+	install -Dm644 $SRC/Dictionaries/Czech.dic usr/share/hunspell/${LANG}_CZ.dic
+	install -Dm644 $SRC/Dictionaries/Czech.aff usr/share/hunspell/${LANG}_CZ.aff
+	for f in usr/share/hunspell/${LANG}*
+	do
+		ln -s /$f \
+		usr/share/myspell/dicts/$(basename $f)
+	done
+	install -dm755 usr/share/licenses/$name-${LANG}
+	install -Dm644 $SRC/Dictionaries/Czech.txt \
+	usr/share/licenses/$name-${LANG}/LICENSE.txt
+
+	pack_locale $LANG
 }
 locale_da() {
 	local LANG=da
@@ -42,7 +153,7 @@ locale_da() {
 	install -dm755 usr/share/myspell/dicts
 	install -Dm644 $SRC/Dictionaries/Danish.dic usr/share/hunspell/${LANG}_DA.dic
 	install -Dm644 $SRC/Dictionaries/Danish.aff usr/share/hunspell/${LANG}_DA.aff
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -50,17 +161,8 @@ locale_da() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/Danish.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale $LANG
 }
 locale_de() {
 	local LANG=de
@@ -79,7 +181,7 @@ locale_de() {
 		ln -s ${LANG}_DE.dic usr/share/hunspell/$l.dic
 	done
 
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -87,28 +189,38 @@ locale_de() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/German_${LANG}_DE.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
+}
+locale_el() {
+	local LANG=el
+	cd $PKG
+	install -dm755 usr/share/myspell/dicts
+	install -Dm644 $SRC/Dictionaries/Greek.dic usr/share/hunspell/${LANG}_GR.dic
+	install -Dm644 $SRC/Dictionaries/Greek.aff usr/share/hunspell/${LANG}_GR.aff
+	i="${LANG}_CY"
+	for l in ${i}
+	do
+		ln -s ${LANG}_ES.aff usr/share/hunspell/$l.aff
+		ln -s ${LANG}_ES.dic usr/share/hunspell/$l.dic
+	done
+
+
+	for f in usr/share/hunspell/${LANG}*
+	do
+		ln -s /$f \
+		usr/share/myspell/dicts/$(basename $f)
+	done
+	install -dm755 usr/share/licenses/$name-${LANG}
+	install -Dm644 $SRC/Dictionaries/Greek.txt \
+	usr/share/licenses/$name-${LANG}/LICENSE-${LANG}.txt
+
+	pack_locale ${LANG}
 }
 locale_es() {
 	local LANG=es
 	cd $PKG
 	install -dm755 usr/share/myspell/dicts
-	install -Dm644 $SRC/Dictionaries/Catalan.dic usr/share/hunspell/ca_ES.dic
-	install -Dm644 $SRC/Dictionaries/Catalan.aff usr/share/hunspell/ca_ES.aff
-	install -Dm644 $SRC/Dictionaries/Galego.dic usr/share/hunspell/gl_ES.dic
-	install -Dm644 $SRC/Dictionaries/Galego.aff usr/share/hunspell/gl_ES.aff
-	install -Dm644 $SRC/Dictionaries/Basque.dic usr/share/hunspell/eu_ES.dic
-	install -Dm644 $SRC/Dictionaries/Basque.aff usr/share/hunspell/eu_ES.aff
 	install -Dm644 $SRC/Dictionaries/Spanish.dic usr/share/hunspell/${LANG}_ES.dic
 	install -Dm644 $SRC/Dictionaries/Spanish.aff usr/share/hunspell/${LANG}_ES.aff
 	i="${LANG}_AR ${LANG}_BO ${LANG}_CL ${LANG}_CO ${LANG}_CR ${LANG}_CU ${LANG}_DO \
@@ -121,42 +233,110 @@ locale_es() {
 	done
 
 
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
 	done
 	install -dm755 usr/share/licenses/$name-${LANG}
-	install -dm755 usr/share/licenses/$name-${LANG}
-	install -Dm644 $SRC/Dictionaries/Catalan.txt \
-	usr/share/licenses/$name-${LANG}/LICENSE-ca.txt
-	install -Dm644 $SRC/Dictionaries/Galego.txt \
-	usr/share/licenses/$name-${LANG}/LICENSE-ga.txt
-	install -Dm644 $SRC/Dictionaries/Basque.txt \
-	usr/share/licenses/$name-${LANG}/LICENSE-ba.txt
-
 	install -Dm644 $SRC/Dictionaries/Spanish.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE-${LANG}.txt
 
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
-
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
 }
+locale_et() {
+	local LANG=et
+	cd $PKG
+	install -dm755 usr/share/myspell/dicts
+	install -Dm644 $SRC/Dictionaries/Estonian.dic usr/share/hunspell/${LANG}_EE.dic
+	install -Dm644 $SRC/Dictionaries/Estonian.aff usr/share/hunspell/${LANG}_EE.aff
+	for f in usr/share/hunspell/${LANG}*
+	do
+		ln -s /$f \
+		usr/share/myspell/dicts/$(basename $f)
+	done
+	install -dm755 usr/share/licenses/$name-${LANG}
+	install -Dm644 $SRC/Dictionaries/Estonian.txt \
+	usr/share/licenses/$name-${LANG}/LICENSE.txt
+
+	pack_locale ${LANG}
+}
+locale_eu() {
+	local LANG=eu
+	cd $PKG
+	install -dm755 usr/share/myspell/dicts
+	install -Dm644 $SRC/Dictionaries/Basque.dic usr/share/hunspell/${LANG}_ES.dic
+	install -Dm644 $SRC/Dictionaries/Basque.aff usr/share/hunspell/${LANG}_ES.aff
+	for f in usr/share/hunspell/${LANG}*
+	do
+		ln -s /$f \
+		usr/share/myspell/dicts/$(basename $f)
+	done
+	install -dm755 usr/share/licenses/$name-${LANG}
+	install -Dm644 $SRC/Dictionaries/Basque.txt \
+	usr/share/licenses/$name-${LANG}/LICENSE.txt
+
+	pack_locale $LANG
+}
+locale_he() {
+	local LANG=he
+	cd $PKG
+	install -dm755 usr/share/myspell/dicts
+	install -Dm644 "$SRC/Dictionaries/Hebrew (Israel).dic" usr/share/hunspell/${LANG}_IL.dic
+	install -Dm644 "$SRC/Dictionaries/Hebrew (Israel).aff" usr/share/hunspell/${LANG}_IL.aff
+	for f in usr/share/hunspell/${LANG}*
+	do
+		ln -s /$f \
+		usr/share/myspell/dicts/$(basename $f)
+	done
+	install -dm755 usr/share/licenses/$name-${LANG}
+	install -Dm644 "$SRC/Dictionaries/Hebrew (Israel).txt" \
+	usr/share/licenses/$name-${LANG}/LICENSE.txt
+
+	pack_locale $LANG
+}
+locale_gl() {
+	local LANG=gl
+	cd $PKG
+	install -dm755 usr/share/myspell/dicts
+	install -Dm644 $SRC/Dictionaries/Galego.dic usr/share/hunspell/${LANG}_ES.dic
+	install -Dm644 $SRC/Dictionaries/Galego.aff usr/share/hunspell/${LANG}_ES.aff
+	for f in usr/share/hunspell/${LANG}*
+	do
+		ln -s /$f \
+		usr/share/myspell/dicts/$(basename $f)
+	done
+	install -dm755 usr/share/licenses/$name-${LANG}
+	install -Dm644 $SRC/Dictionaries/Galego.txt \
+	usr/share/licenses/$name-${LANG}/LICENSE.txt
+
+	pack_locale $LANG
+}
+locale_hr() {
+	local LANG=hr
+	cd $PKG
+	install -dm755 usr/share/myspell/dicts
+	install -Dm644 $SRC/Dictionaries/Croatian.dic usr/share/hunspell/${LANG}_HR.dic
+	install -Dm644 $SRC/Dictionaries/Croatian.aff usr/share/hunspell/${LANG}_HR.aff
+	for f in usr/share/hunspell/${LANG}*
+	do
+		ln -s /$f \
+		usr/share/myspell/dicts/$(basename $f)
+	done
+	install -dm755 usr/share/licenses/$name-${LANG}
+	install -Dm644 $SRC/Dictionaries/Croatian.txt \
+	usr/share/licenses/$name-${LANG}/LICENSE.txt
+
+	pack_locale ${LANG}
+}
+
 locale_hu() {
 	local LANG=hu
 	cd $PKG
 	install -dm755 usr/share/myspell/dicts
 	install -Dm644 $SRC/Dictionaries/Hungarian.dic usr/share/hunspell/${LANG}_HU.dic
 	install -Dm644 $SRC/Dictionaries/Hungarian.aff usr/share/hunspell/${LANG}_HU.aff
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -164,17 +344,43 @@ locale_hu() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/Hungarian.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
+}
+locale_id() {
+	local LANG=id
+	cd $PKG
+	install -dm755 usr/share/myspell/dicts
+	install -Dm644 $SRC/Dictionaries/Indonesia.dic usr/share/hunspell/${LANG}_ID.dic
+	install -Dm644 $SRC/Dictionaries/Indonesia.aff usr/share/hunspell/${LANG}_ID.aff
+	for f in usr/share/hunspell/${LANG}*
+	do
+		ln -s /$f \
+		usr/share/myspell/dicts/$(basename $f)
+	done
+	install -dm755 usr/share/licenses/$name-${LANG}
+	install -Dm644 $SRC/Dictionaries/Indonesia.txt \
+	usr/share/licenses/$name-${LANG}/LICENSE.txt
+
+	pack_locale ${LANG}
+}
+
+locale_is() {
+	local LANG=is
+	cd $PKG
+	install -dm755 usr/share/myspell/dicts
+	install -Dm644 $SRC/Dictionaries/Icelandic.dic usr/share/hunspell/${LANG}_IS.dic
+	install -Dm644 $SRC/Dictionaries/Icelandic.aff usr/share/hunspell/${LANG}_IS.aff
+	for f in usr/share/hunspell/${LANG}*
+	do
+		ln -s /$f \
+		usr/share/myspell/dicts/$(basename $f)
+	done
+	install -dm755 usr/share/licenses/$name-${LANG}
+	install -Dm644 $SRC/Dictionaries/Icelandic.txt \
+	usr/share/licenses/$name-${LANG}/LICENSE.txt
+
+	pack_locale ${LANG}
 }
 locale_it() {
 	local LANG=it
@@ -188,7 +394,7 @@ locale_it() {
 		ln -s ${LANG}_IT.aff usr/share/hunspell/$l.aff
 		ln -s ${LANG}_IT.dic usr/share/hunspell/$l.dic
 	done
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -196,17 +402,8 @@ locale_it() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/Italian.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell/dicts \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
 }
 locale_fr() {
 	local LANG=fr
@@ -220,7 +417,7 @@ locale_fr() {
 		ln -s ${LANG}_FR.aff usr/share/hunspell/$l.aff
 		ln -s ${LANG}_FR.dic usr/share/hunspell/$l.dic
 	done
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -228,17 +425,8 @@ locale_fr() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/French.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
 }
 locale_lt() {
 	local LANG=lt
@@ -246,7 +434,7 @@ locale_lt() {
 	install -dm755 usr/share/myspell/dicts
 	install -Dm644 $SRC/Dictionaries/Lithuanian.dic usr/share/hunspell/${LANG}_LT.dic
 	install -Dm644 $SRC/Dictionaries/Lithuanian.aff usr/share/hunspell/${LANG}_LT.aff
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -254,19 +442,43 @@ locale_lt() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/Lithuanian.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
 }
+locale_lv() {
+	local LANG=lv
+	cd $PKG
+	install -dm755 usr/share/myspell/dicts
+	install -Dm644 $SRC/Dictionaries/Latvian.dic usr/share/hunspell/${LANG}_LV.dic
+	install -Dm644 $SRC/Dictionaries/Latvian.aff usr/share/hunspell/${LANG}_LV.aff
+	for f in usr/share/hunspell/${LANG}*
+	do
+		ln -s /$f \
+		usr/share/myspell/dicts/$(basename $f)
+	done
+	install -dm755 usr/share/licenses/$name-${LANG}
+	install -Dm644 $SRC/Dictionaries/Latvian.txt \
+	usr/share/licenses/$name-${LANG}/LICENSE.txt
 
+	pack_locale ${LANG}
+}
+locale_ms() {
+	local LANG=ms
+	cd $PKG
+	install -dm755 usr/share/myspell/dicts
+	install -Dm644 $SRC/Dictionaries/Malays.dic usr/share/hunspell/${LANG}_MY.dic
+	install -Dm644 $SRC/Dictionaries/Malays.aff usr/share/hunspell/${LANG}_MY.aff
+	for f in usr/share/hunspell/${LANG}*
+	do
+		ln -s /$f \
+		usr/share/myspell/dicts/$(basename $f)
+	done
+	install -dm755 usr/share/licenses/$name-${LANG}
+	install -Dm644 $SRC/Dictionaries/Malays.txt \
+	usr/share/licenses/$name-${LANG}/LICENSE.txt
+
+	pack_locale ${LANG}
+}
 locale_nl() {
 	local LANG=nl
 	cd $PKG
@@ -279,7 +491,7 @@ locale_nl() {
 		ln -s ${LANG}_NL.aff usr/share/hunspell/$l.aff
 		ln -s ${LANG}_NL.dic usr/share/hunspell/$l.dic
 	done
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -287,17 +499,8 @@ locale_nl() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/Dutch.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
 }
 locale_sl() {
 	local LANG=sl
@@ -305,7 +508,7 @@ locale_sl() {
 	install -dm755 usr/share/myspell/dicts
 	install -Dm644 $SRC/Dictionaries/Slovenian.dic usr/share/hunspell/${LANG}_SL.dic
 	install -Dm644 $SRC/Dictionaries/Slovenian.aff usr/share/hunspell/${LANG}_SL.aff
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -313,17 +516,8 @@ locale_sl() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/Slovenian.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
 }
 locale_sv() {
 	local LANG=sv
@@ -331,7 +525,7 @@ locale_sv() {
 	install -dm755 usr/share/myspell/dicts
 	install -Dm644 $SRC/Dictionaries/Swedish.dic usr/share/hunspell/${LANG}_SV.dic
 	install -Dm644 $SRC/Dictionaries/Swedish.aff usr/share/hunspell/${LANG}_SV.aff
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -339,17 +533,8 @@ locale_sv() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/Swedish.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
 }
 locale_tr() {
 	local LANG=tr
@@ -364,7 +549,7 @@ locale_tr() {
 		ln -s ${LANG}_TR.dic usr/share/hunspell/$l.dic
 	done
 
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -372,17 +557,8 @@ locale_tr() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/Turkish.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
 }
 locale_pl() {
 	local LANG=pl
@@ -390,7 +566,7 @@ locale_pl() {
 	install -dm755 usr/share/myspell/dicts
 	install -Dm644 $SRC/Dictionaries/Polish.dic usr/share/hunspell/${LANG}_PL.dic
 	install -Dm644 $SRC/Dictionaries/Polish.aff usr/share/hunspell/${LANG}_PL.aff
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -398,17 +574,8 @@ locale_pl() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/Polish.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
 }
 locale_pt() {
 	local LANG=pt
@@ -423,7 +590,7 @@ locale_pt() {
 		ln -s ${LANG}_PT.dic usr/share/hunspell/$l.dic
 	done
 
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -431,17 +598,8 @@ locale_pt() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/Portuguese\ \(European\).txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
 }
 locale_ru() {
 	local LANG=ru
@@ -457,7 +615,7 @@ locale_ru() {
 	done
 
 
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -465,17 +623,8 @@ locale_ru() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/Russian.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
 }
 locale_uk() {
 	local LANG=uk
@@ -483,7 +632,7 @@ locale_uk() {
 	install -dm755 usr/share/myspell/dicts
 	install -Dm644 $SRC/Dictionaries/Ukrainian_uk_UA.dic usr/share/hunspell/${LANG}_UA.dic
 	install -Dm644 $SRC/Dictionaries/Ukrainian_uk_UA.aff usr/share/hunspell/${LANG}_UA.aff
-	for f in usr/share/hunspell/*
+	for f in usr/share/hunspell/${LANG}*
 	do
 		ln -s /$f \
 		usr/share/myspell/dicts/$(basename $f)
@@ -491,15 +640,6 @@ locale_uk() {
 	install -dm755 usr/share/licenses/$name-${LANG}
 	install -Dm644 $SRC/Dictionaries/Ukrainian_uk_UA.txt \
 	usr/share/licenses/$name-${LANG}/LICENSE.txt
-	bsdtar -cf \
-	$PKGMK_PACKAGE_DIR/${name}.${LANG}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
-	usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
 
-	rm -r usr/share/myspell \
-	usr/share/hunspell \
-	usr/share/locale/${LANG} \
-	usr/share/licenses
+	pack_locale ${LANG}
 }
