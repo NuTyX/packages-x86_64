@@ -8,7 +8,7 @@ makedepends=(meson wayland-protocols catch2)
 run=(gtkmm)
 
 name=waybar
-version=0.9.18
+version=0.9.19
 
 source=(https://github.com/Alexays/Waybar/archive/refs/tags/$version.tar.gz)
 
@@ -22,4 +22,13 @@ sed -i '1i#define HAVE_WLR' include/factory.hpp
 sed -i '2i#define USE_EXPERIMENTAL' include/factory.hpp
 }
 
-build=meson
+build() {
+
+meson setup $name-$version build \
+       --prefix=/usr          \
+            --buildtype=release
+
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
+}
