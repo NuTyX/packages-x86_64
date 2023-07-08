@@ -1,0 +1,40 @@
+description='An office suite that combines text, spreadsheet and presentation editors'
+url='https://www.onlyoffice.com/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(gtk3 nss gstreamer gstreamer-plugins-base gstreamer-plugins-ugly ttf-liberation 
+             dejavu-ttf ttf-carlito ttf-ms-fonts desktop-file-utils hicolor-icon-theme libreoffice)
+run=()
+set=()
+
+name=onlyoffice
+version=7.4.0
+PKGMK_IGNORE_UNPACK="yes"
+source=(https://github.com/ONLYOFFICE/DesktopEditors/releases/download/v${version}/$name-desktopeditors_amd64.deb)
+
+prepare() {
+mkdir -p $name-$version
+bsdtar -xf $SRC/onlyoffice-desktopeditors_amd64.deb -C $name-$version
+}
+
+build() {
+
+bsdtar -xf $name-$version/data.tar.xz -C "$PKG/"
+
+   # icons
+    local _file
+    local _res
+    while read -r -d '' _file
+    do
+        _res="$(sed 's/\.png$//;s/^.*-//' <<< "$_file")"
+        install -d -m755 "$PKG/usr/share/icons/hicolor/${_res}x${_res}/apps"
+        ln -s "../../../../../../opt/onlyoffice/desktopeditors/asc-de-${_res}.png" \
+            "$PKG/usr/share/icons/hicolor/${_res}x${_res}/apps/onlyoffice-desktopeditors.png"
+    done < <(find "$PKG/opt/onlyoffice/desktopeditors" -maxdepth 1 -type f -name 'asc-de-*.png' -print0)
+
+    # 3rd party licenses
+    install -d -m755 "$PKG/usr/share/licenses/$name"
+    ln -s ../../../../opt/onlyoffice/desktopeditors/3DPARTYLICENSE "$PKG/usr/share/licenses/$name/3DPARTYLICENSE"
+}
