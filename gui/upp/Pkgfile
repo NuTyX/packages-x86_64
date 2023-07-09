@@ -1,15 +1,19 @@
 description="C++ cross-platform rapid application development framework focused on programmers productivity"
+url='https://www.ultimatepp.org/'
+
+license="BSD"
 
 name=upp
-version=16684
+version=2023.1
+_version=16883
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(libnotify gtk3)
 run=(git cards.devel)
 
-source=(https://www.ultimatepp.org/downloads/upp-posix-$version.tar.xz)
+source=(https://www.ultimatepp.org/downloads/upp-posix-${_version}.tar.xz)
 
 build() {
 cd upp
