@@ -1,13 +1,16 @@
 description="PC/SC Architecture smartcard middleware library"
 url="https://alioth.debian.org/projects/pcsclite/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+license="BSD"
 
-makedepends=(python eudev pkg-config flex)
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
+
+makedepends=(python eudev pkgconf flex)
 
 name=pcsclite
 version=2.0.0
+release=2
 
 PKGMK_KEEP_SOURCES="No"
 source=(https://pcsclite.apdu.fr/files/pcsc-lite-$version.tar.bz2
@@ -32,6 +35,8 @@ build() {
   rm $PKG/usr/lib/libpcsclite.la
   rm $PKG/usr/lib/libpcscspy.la
 
+  install -D -m0644 COPYING \
+  $PKG/usr/share/licenses/$name/LICENSE
 
   # Service
   mkdir -p $PKG/etc/rc.d/init.d
