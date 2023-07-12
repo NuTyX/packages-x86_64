@@ -9,7 +9,7 @@ contributors="Spiky"
 
 name=ncurses
 version=6.4
-release=3
+release=4
 
 source=(http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 build()
@@ -40,7 +40,7 @@ for lib in ncurses form panel menu ; do \
         rm -vf $PKG/lib/lib${lib}.so ; \
         echo "INPUT(-l${lib}w)" >$PKG/lib/lib${lib}.so ; \
         ln -sfv lib${lib}w.a $PKG/lib/lib${lib}.a ; \
-	ln -sfv ${lib}w.pc        /usr/lib/pkgconfig/${lib}.pc
+	ln -sfv ${lib}w.pc   $PKG/usr/lib/pkgconfig/${lib}.pc
 done
 ln -sfv libncurses++w.a $PKG/lib/libncurses++.a
 rm -vf $PKG/usr/lib/libcursesw.so
