@@ -1,8 +1,10 @@
 description="Utilities for monitoring your system and its processes."
 url="http://procps.sourceforge.net/"
 
-contributors="Pierre,Tnut"
-packager="spiky <spiky@nutyx.org>"
+license="GPL LGPL"
+
+contributors="Pierre,Spiky"
+packager="tnut <spiky@nutyx.org>"
 
 makedepends=(pkgconf ncurses)
 
@@ -10,7 +12,7 @@ name=procps-ng
 version=4.0.3
 
 PKGMK_LOCALES=()
-source=(https://sourceforge.net/project/$name/files/Production/$name-$version.tar.xz)
+source=(https://sourceforge.net/projects/$name/files/Production/$name-$version.tar.xz)
 
 build()
 {
@@ -25,7 +27,4 @@ cd $name-$version
 
 make
 make DESTDIR=$PKG install
-mkdir $PKG/lib
-mv -v $PKG/usr/lib/libprocps.so.* $PKG/lib
-ln -sf ../../lib/$(readlink $PKG/usr/lib/libprocps.so) $PKG/usr/lib/libprocps.so
 }
