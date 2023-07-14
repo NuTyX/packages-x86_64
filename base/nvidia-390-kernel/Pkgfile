@@ -12,7 +12,7 @@ version=390.157
 release=6
 
 source=(https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run
-        kernel-4.16+-memory-encryption.patch
+        kernel-4.16+-memory-encryption.patch kernel-6.4.patch
         kernel-6.2.patch kernel-6.3.patch)
 
 build() {
@@ -23,8 +23,10 @@ sh NVIDIA-Linux-x86_64-$version.run --extract-only
 
  patch -Np1 -i ../kernel-4.16+-memory-encryption.patch
  patch -Np1 -i ../kernel-6.2.patch
+ patch -Np1 -i ../kernel-6.3.patch
+ patch -Np1 -i ../kernel-6.4.patch
+
  cd kernel
- patch -Np1 -i ../../kernel-6.3.patch
 
  modules_dir="$(basename /lib/modules/*)"
 
