@@ -1,11 +1,13 @@
 description="All-in-one voice and text chat for gamers that's free and secure."
 url="https://discordapp.com/"
 
-packager="Tnut <tnut@nutyx.org>"
+license="MIT"
+
+packager="tnut <tnut@nutyx.org>"
 contributors="Rems,Sundev79,Spiky,Skythrew"
 
 name=discord
-version=0.0.27
+version=0.0.28
 
 run=(gtk3 libnotify xorg-libxscrnsaver
      glibc alsa-lib nspr nss pulseaudio
@@ -15,7 +17,7 @@ run=(gtk3 libnotify xorg-libxscrnsaver
 PKGMK_KEEP_SOURCES="no"
 
 source=(https://dl.discordapp.net/apps/linux/$version/$name-$version.tar.gz
-        https://discordapp.com/terms https://discordapp.com/licenses)
+        https://discord.com/terms https://discord.com/licenses)
 
 prepare() {
   sed -i "s|Exec=.*|Exec=/usr/bin/$name|" Discord/$name.desktop
