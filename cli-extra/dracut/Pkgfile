@@ -4,12 +4,12 @@ url="https://www.kernel.org/pub/linux/utils/boot/dracut/dracut.html"
 contributors="Tnut, Greg, tnut"
 packager="spiky <spiky@nutyx.org>"
 
-makedepends=(kmod)
+makedepends=(pkgconf kmod asciidoc)
 
 name=dracut
-version=056
+version=059
 
-source=(http://kernel.org/pub/linux/utils/boot/dracut/$name-$version.tar.xz)
+source=(https://github.com/dracutdevs/dracut/archive/refs/tags/$version.tar.gz)
 
 build() {
 
