@@ -12,17 +12,21 @@ makedepends=(libcanberra clutter-gst clutter-gtk gnome-desktop gnome-video-effec
 run=(gtk-update-icon-cache)
 
 name=cheese
-version=44.0.1
+version=44.1
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
-build() {
+prepare() {
 cd $name-$version
 sed -i "s/&version;/$version/" docs/reference/cheese{,-docs}.xml
+}
 
-mkdir build
-cd    build
+build() {
 
-meson --prefix=/usr -Dgtk_doc=false ..
-ninja
-DESTDIR=$PKG ninja install
+meson setup $name-$version build \
+            --prefix=/usr        \
+            -Dgtk_doc=false
+
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
 }
