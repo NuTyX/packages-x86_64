@@ -4,12 +4,19 @@ url="http://mosh.mit.edu/"
 contributors="Alienus,Fanch,Greg,Tnut"
 packager="spiky <spiky@nutyx.org>"
 
-makedepends=(protobuf ncurses zlib openssh perl-io-tty libutempter)
+makedepends=(pkgconf protobuf ncurses zlib openssh openssl perl-io-tty libutempter)
 
 name=mosh
 version=1.4.0
+release=2
 
-source=(https://github.com/mobile-shell/$name/archive/$name-$version.tar.gz)
+source=(https://github.com/mobile-shell/mosh/archive/refs/tags/$name-$version.tar.gz)
+
+prepare() {
+  cd $name-$name-$version
+  # protobuf 23 requires C++17
+  sed -e 's|\[11\]|\[17\]|' -i configure.ac
+}
 
 build() {
   
