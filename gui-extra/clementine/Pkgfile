@@ -1,10 +1,10 @@
 description="A music player and library organizer"
 url="http://www.clementine-player.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
-makedepends=(cmake boost qtbase qtx11extras qttools sparsehash mesa
+makedepends=(pkgconf cmake boost qtbase qtx11extras qttools sparsehash mesa
              libcdio libmtp protobuf taglib chromaprint glew gstreamer
              gstreamer-plugins-base gstreamer-plugins-good
              gstreamer-plugins-ugly gstreamer-plugins-bad
@@ -15,7 +15,7 @@ run=(crypto++ gstreamer-plugins-base gstreamer-plugins-good
 
 name=clementine
 version=1.4.0rc1-758-g2469763b9
-release=4
+release=5
 
 source=(https://github.com/clementine-player/Clementine/releases/download/$version/$name-$version.tar.xz)
 
@@ -34,6 +34,7 @@ build() {
    -DCMAKE_INSTALL_PREFIX=/usr  \
    -DUSE_SYSTEM_TAGLIB=ON       \
    -DCMAKE_BUILD_TYPE='Release' \
+   -DCMAKE_CXX_STANDARD=17 \
    -Wno-dev
 
    make || make -j1
