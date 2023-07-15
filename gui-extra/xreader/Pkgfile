@@ -9,15 +9,14 @@ makedepends=(meson samurai intltool itstool gobject-introspection djvulibre
 run=(poppler-glib webkit2gtk-4 xapp)
 
 name=xreader
-version=3.8.1
-release=2
+version=3.8.2
 
 source=(https://github.com/linuxmint/$name/archive/$version/$name-$version.tar.gz)
 
 build() {
-  mkdir build
-  cd build
-  meson --prefix=/usr \
+
+meson setup $name-$version build \
+  --prefix=/usr \
   --libexecdir=lib/$name \
   -Dmathjax-directory=/usr/share/mathjax2 \
   -Dcomics=true \
@@ -25,11 +24,10 @@ build() {
   -Dt1lib=true \
   -Dpixbuf=true \
   -Dhelp_files=true \
-  -Dintrospection=true \
-  ../$name-$version
+  -Dintrospection=true
 
-  samu
+  samu -C build
 
-  DESTDIR=${PKG} samu install
+  DESTDIR=${PKG} samu -C build install
     
 }
