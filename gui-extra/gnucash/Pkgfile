@@ -3,14 +3,14 @@ url="https://gnucash.org/"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
+license=(GPL2)
 
 makedepends=(cmake boost guile libdbi webkitgtk gtest
             gwenhywfar aqbanking libofx libdbi-drivers)
 run=(desktop-file-utils)
 
 name=gnucash
-version=5.1
-release=2
+version=5.3
 
 source=(https://downloads.sourceforge.net/$name/$name-${version}.tar.bz2)
 
@@ -22,4 +22,6 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DCOMPILE_GSCHEMAS=OFF
 make
 make DESTDIR=$PKG install
+
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
