@@ -1,8 +1,8 @@
 description="Stand-alone mail/news client based on the Mozilla codebase."
 url="https://www.mozilla.org/thunderbird"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Fabienwang,Tnut"
 
 license="GPL, LGPL, MPL"
 
@@ -14,16 +14,18 @@ run=(startup-notification hunspell desktop-file-utils hicolor-icon-theme
      shared-mime-info gtk-update-icon-cache)
 
 name=thunderbird
-version=102.13.0
+version=115.0
 
 locale_version=$version
 
 source=(https://archive.mozilla.org/pub/thunderbird/releases/$version/source/$name-$version.source.tar.xz
-	$name.desktop $name-$version-consolidated-$release.patch)
+       $name.desktop)
 
 prepare() {
   cd $name-$version
-  patch -Np1 -i ../$name-$version-consolidated-$release.patch
+
+sed -e '/<exception>/i#include <cstdint>' \
+    -i comm/third_party/rnp/src/libsexp/include/sexp/sexp-error.h
 }
 
 pack_remove_locale() {
