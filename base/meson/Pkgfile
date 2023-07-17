@@ -3,12 +3,12 @@ url="http://mesonbuild.com/"
 
 contributors="Jayce,Greg,Fabienwang,Tnut"
 packager="spiky <spiky@nutyx.org>"
+license="Apache"
 
 set=(devel)
 
 name=meson
-version=1.1.1
-release=2
+version=1.2.0
 
 PKGMK_DEPENDS=(sqlite expat libffi python)
 source=(skip-test.diff
@@ -22,4 +22,6 @@ build() {
   cd $name-$version
   python3 setup.py build
   python3 setup.py install --root=$PKG --optimize=1 --skip-build
+
+  install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
