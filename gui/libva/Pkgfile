@@ -3,9 +3,9 @@ url="https://github.com/intel/libva"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Remy,Tnut"
-
+license="MIT"
 name=libva
-version=2.18.0
+version=2.19.0
 
 makedepends=(libglade xorg-libdrm xorg-libxfixes)
 
@@ -24,4 +24,6 @@ make DESTDIR=$PKG install
 rm $PKG/usr/lib/libva-drm.la
 rm $PKG/usr/lib/libva-x11.la
 rm $PKG/usr/lib/libva.la
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
