@@ -7,8 +7,8 @@ contributors=""
 makedepends=(cmake intel-gmmlib libva xorg-libpciaccess)
 
 name=intel-media-driver
-version=23.2.3
-
+version=23.3.0
+license="MLT BSD"
 source=(https://github.com/intel/media-driver/archive/refs/tags/intel-media-$version.tar.gz
         intel-media-driver-23.2.3-upstream_fixes-1.patch)
 
@@ -17,7 +17,7 @@ prepare() {
 mv media-driver-intel-media-$version $name-$version
 
 cd $name-$version
-patch -Np1 -i ../intel-media-driver-23.2.3-upstream_fixes-1.patch
+#patch -Np1 -i ../intel-media-driver-23.2.3-upstream_fixes-1.patch
 }
 
 build() {
@@ -33,4 +33,6 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr   \
 
 make
 make DESTDIR=$PKG install
+
+install -Dm644 ../LICENSE.md $PKG/usr/share/licenses/$name/LICENSE.md
 }
