@@ -3,13 +3,13 @@ url='https://github.com/M0Rf30/android-udev-rules'
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
-
+license="GPL3"
 makedepends=(libmtp)
 run=()
 set=(android)
 
 name=android-udev
-version=20230303
+version=20230614
 
 source=(https://github.com/M0Rf30/android-udev-rules/archive/$version.zip)
 
@@ -17,4 +17,6 @@ build() {
 cd $name-rules-$version
 install -Dm 644 51-android.rules $PKG/lib/udev/rules.d/51-android.rules
 install -Dm 644 android-udev.conf $PKG/usr/lib/sysusers.d/android-udev.conf
+
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
