@@ -3,11 +3,12 @@ url="https://strace.io/"
 
 packager="spiky <spiky@nutyx.org>"
 contributors=""
+license="GPL"
 
 makedepends=(perl libunwind)
 
 name=strace
-version=6.3
+version=6.4
 
 source=(https://github.com/strace/strace/releases/download/v${version}/$name-$version.tar.xz)
 
@@ -17,4 +18,6 @@ cd $name-$version
 --with-libunwind --enable-mpers=no
 make
 make DESTDIR=$PKG install
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
