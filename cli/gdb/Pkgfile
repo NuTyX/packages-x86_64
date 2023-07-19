@@ -1,15 +1,15 @@
 description="The GNU Project debugger, allows you to see what is going on “inside” another program while it executes."
 url="http://www.sourceware.org/gdb/"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
+license="GPL3"
 
 makedepends=(ncurses gmp readline expat texinfo
              python)
 
 name=gdb
-version=13.1
-release=4
+version=13.2
 
 source=(https://ftp.gnu.org/gnu/gdb/$name-$version.tar.xz)
 build() {
@@ -42,4 +42,9 @@ rm $PKG/usr/lib/libsframe.a
 # Most of the locale are allready present from binutils, beter get rid of all of them
 rm -r $PKG/usr/share/locale
 rm $PKG/usr/include/diagnostics.h
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 COPYING3 $PKG/usr/share/licenses/$name/COPYING3
+install -Dm644 COPYING.LIB $PKG/usr/share/licenses/$name/COPYING.LIB
+install -Dm644 COPYING3.LIB $PKG/usr/share/licenses/$name/COPYING3.LIB
 }
