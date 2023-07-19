@@ -3,11 +3,12 @@ url="http://www.cython.org/"
 
 contributors="Berlius,Greg,Hackrf,Tnut"
 packager="spiky <spiky@nutyx.org>"
+license="Apache"
 
 PKGMK_KEEP_SOURCES="no"
 
 name=cython
-version=0.29.36
+version=3.0.0
 
 makedepends=(python)
 run=(python)
@@ -19,4 +20,6 @@ cd $name-$version
 python setup.py build
 python setup.py install --root=$PKG --skip-build
 
+install -Dm644 LICENSE.txt $PKG/usr/share/licenses/$name/LICENSE.txt
+install -Dm644 COPYING.txt $PKG/usr/share/licenses/$name/COPYING.txt
 }
