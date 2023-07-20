@@ -3,12 +3,13 @@ url='https://wiki.gnome.org/Projects/libshumate'
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
+license="LGPL"
 
 makedepends=(gobject-introspection gi-docgen vala meson
              glib cairo sqlite gtk4 libsoup3)
 
 name=libshumate
-version=1.0.4
+version=1.0.5
 
 source=(https://download.gnome.org/sources/libshumate/1.0/$name-$version.tar.xz)
 
@@ -20,4 +21,7 @@ meson setup $name-$version build \
 meson compile -C build
 
 DESTDIR=$PKG meson install -C build
+
+cd $name-$version
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
