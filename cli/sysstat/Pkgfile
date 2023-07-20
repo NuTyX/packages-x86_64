@@ -1,13 +1,15 @@
 description="Utilities to monitor system performance and usage activity."
-url=" http://sebastien.godard.pagesperso-orange.fr"
+url="http://pagesperso-orange.fr/sebastien.godard/"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Pierre,Tnut"
+license="GPL2"
 
 name=sysstat
-version=12.7.2
+version=12.7.4
+PKGMK_KEEP_SOURCES="no"
 
-source=($url/$name-$version.tar.xz)
+source=(https://github.com/sysstat/sysstat/archive/refs/tags/v$version.tar.gz)
 
 build() {
 
@@ -28,4 +30,5 @@ install -vdm755 $PKG/lib/systemd/system/
 install -v -m644 sysstat.service $PKG/lib/systemd/system/sysstat.service
 sed -i "/^Also=/d" $PKG/lib/systemd/system/sysstat.service
 
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
