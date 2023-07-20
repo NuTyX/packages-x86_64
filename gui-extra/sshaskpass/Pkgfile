@@ -3,12 +3,13 @@ url="https://www.openssh.org/"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
+license="BSD"
 
 makedepends=(gtk2 sudo xorg-libx11)
 run=(hicolor-icon-theme gtk-update-icon-cache)
 
 name=sshaskpass
-version=9.3p1
+version=9.3p2
 
 source=(https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$version.tar.gz)
 
@@ -28,4 +29,5 @@ cd $name-$version
       ln -sv -f contrib/gnome-ssh-askpass2 \
                 $PKG/usr/libexec/openssh/ssh-askpass
 
+install -Dm644 ../LICENCE $PKG/usr/share/licenses/$name/LICENSE
 }
