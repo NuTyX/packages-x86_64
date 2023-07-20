@@ -2,9 +2,10 @@ description="Extraction utility used for extracting files from RAR archives."
 url="http://www.rarlab.com/"
 
 packager="spiky <spiky@nutyx.org>"
+license="custom"
 
 name=unrar
-version=6.2.8
+version=6.2.9
 
 source=(
 http://www.rarlab.com/rar/unrarsrc-$version.tar.gz
@@ -17,6 +18,8 @@ install -Dm755 unrar $PKG/usr/bin/unrar
 
 # doc & license
 mkdir -p $PKG/usr/share/doc/$name-$version
-install -m644 {license.txt,readme.txt} \
+install -m644 readme.txt \
 $PKG/usr/share/doc/$name-$version
+
+install -Dm644 license.txt $PKG/usr/share/licenses/$name/LICENSE
 }
