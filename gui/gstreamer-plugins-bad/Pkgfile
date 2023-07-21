@@ -3,26 +3,31 @@ url="http://gstreamer.freedesktop.org/modules/gst-plugins-base.html"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
+license="LGPL"
 
-makedepends=(meson ninja gstreamer-plugins-base libdvdread libdvdnav
+makedepends=(pkgconf meson ninja gstreamer-plugins-base libdvdread libdvdnav
              faac faad2 libexif libmpeg2 mpg123)
 
 name=gstreamer-plugins-bad
-version=1.22.4
+version=1.22.5
 
 source=(https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-$version.tar.xz )
 
 build() {
 cd gst-plugins*
-mkdir build
-cd    build
 
-meson --prefix=/usr \
+meson setup build \
+--prefix=/usr \
 -Dbuildtype=release \
+-Dgpl=enabled       \
 -Dpackage-name="Gstreamer Bad Plugins $version NuTyX" \
 -Dpackage-origin="http://downloads.nutyx.org/"
-ninja
-DESTDIR=$PKG ninja install
+
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
 uptodate() {
 local url ext
