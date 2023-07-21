@@ -3,25 +3,27 @@ url="http://gstreamer.freedesktop.org/"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Jayce,Tnut"
-
-makedepends=(gmp libcap meson ninja glib libxml2 gsl gobject-introspection)
+license="LGPL"
+makedepends=(pkgconf gmp libcap meson ninja glib libxml2 gsl gobject-introspection)
 
 name=gstreamer
-version=1.22.4
+version=1.22.5
 
 source=(https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-$version.tar.xz)
 
 build() {
-cd gstreamer-$version
-mkdir build
-cd    build
-meson --prefix=/usr \
+cd $name-$version
+
+meson setup build \
 -Dbuildtype=release \
 -Dpackage-name="GStreamer $version NuTyX" \
 -Dpackage-origin="http://downloads.nutyx.org/"
-ninja
 
-DESTDIR=$PKG ninja install
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 
 }
 uptodate() {
