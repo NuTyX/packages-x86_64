@@ -3,6 +3,7 @@ url="http://gstreamer.freedesktop.org/"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
+license="LGPL"
 
 makedepends=(meson ninja gstreamer alsa-lib gobject-introspection
              libtheora libvorbis pango mesa graphene)
@@ -11,22 +12,24 @@ run=(iso-codes)
 name=gstreamer-plugins-base
 _name=gst-plugins-base
 
-version=1.22.4
+version=1.22.5
 
 source=(https://gstreamer.freedesktop.org/src/${_name}/${_name}-$version.tar.xz)
 
 build() {
 cd ${_name}-$version
-mkdir build
-cd    build
 
-meson --prefix=/usr \
+meson setup build \
+--prefix=/usr \
 -Dbuildtype=release \
 -Dpackage-name="GStreamer Base Plugins $version NuTyX" \
 -Dpackage-origin="http://downloads.nutyx.org/"
-ninja
-DESTDIR=$PKG ninja install
 
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 } 
 uptodate() {
 local url ext
