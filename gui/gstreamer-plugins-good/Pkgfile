@@ -3,6 +3,7 @@ url="http://gstreamer.freedesktop.org/"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
+license="LGPL"
 
 makedepends=(meson ninja aalib jack lame libcaca libdv libgudev
              mpg123 speex wavpack v4l-utils taglib libshout
@@ -13,20 +14,24 @@ makedepends=(meson ninja aalib jack lame libcaca libdv libgudev
 name=gstreamer-plugins-good
 _name=gst-plugins-good
 
-version=1.22.4
+version=1.22.5
 
 source=(https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-$version.tar.xz)
 
 build() {
 cd ${_name}-$version
-mkdir build
-cd    build
-meson --prefix=/usr \
+
+meson setup build \
+--prefix=/usr \
 -Dbuildtype=release \
 -Dpackage-name="GStreamer Good Plugins $version NuTyX" \
 -Dpackage-origin="http://downloads.nutyx.org/"
-ninja
-DESTDIR=$PKG ninja install
+
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 
 }
 uptodate() {
