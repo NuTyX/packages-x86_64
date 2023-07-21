@@ -3,23 +3,28 @@ url="https://gstreamer.freedesktop.org/modules/gst-editing-services.html"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Rems,Tnut"
+license="LGPL"
 
 makedepends=(bash-completion gobject-introspection gtk-doc python-gobject
              gstreamer-plugins-base gstreamer-plugins-bad gstreamer-plugins-good)
 
 name=gstreamer-editing-services
-version=1.22.4
+version=1.22.5
 
 source=(https://gstreamer.freedesktop.org/src/gst-editing-services/gst-editing-services-$version.tar.xz)
 
 build() {
 cd gst-editing-services-$version
-mkdir build
-cd    build
-meson --prefix=/usr \
+
+meson setup build \
+--prefix=/usr \
 -Dbuildtype=release \
 -Ddoc=disabled \
 -Dvalidate=disabled
-ninja
-DESTDIR=$PKG ninja install
+
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
