@@ -3,26 +3,30 @@ url="http://gstreamer.freedesktop.org/modules/gst-plugins-ugly.html"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
+license="LGPL"
 
 makedepends=(meson ninja gstreamer-plugins-base lame libdvdread liba52 libmad libmpeg2 x264)
 _name=gst-plugins-ugly
 
 name=gstreamer-plugins-ugly
-version=1.22.4
+version=1.22.5
 
 source=(https://gstreamer.freedesktop.org/src/${_name}/gst-plugins-ugly-$version.tar.xz )
 
 build() {
 cd gst-plugins*
-mkdir build
-cd    build
-meson --prefix=/usr \
+
+meson setup build \
+--prefix=/usr \
 -Dbuildtype=release \
 -Dpackage-name="GStreamer Ugly Plugins $version NuTyX" \
 -Dpackage-origin="http://downloads.nutyx.org/"
-ninja
 
-DESTDIR=$PKG ninja install
+meson compile -C build
+
+DESTDIR=$PKG meson install -C build
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 
 }
 uptodate() {
