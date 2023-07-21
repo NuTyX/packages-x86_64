@@ -3,12 +3,13 @@ url="http://www.cmake.org/"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Fanch,Greg,Tnut"
+license="custom"
 
 set=(devel)
 makedepends=(ncurses expat libuv curl libarchive jsoncpp rhash)
 
 name=cmake
-version=3.26.4
+version=3.27.0
 
 source=($url/files/v${version%.*}/$name-$version.tar.gz)
 
@@ -20,9 +21,15 @@ sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake
 ./bootstrap --prefix=/usr \
 --mandir=/share/man \
 --system-libs \
+--no-system-cppdap   \
 --docdir=/share/doc/cmake-$version
 
 make
 
 make DESTDIR=$PKG install
+
+install -Dm644 Copyright.txt $PKG/usr/share/licenses/$name/Copyright.txt
+install -Dm644 Licenses/LGPLv2.1.txt $PKG/usr/share/licenses/$name/LGPLv2.1.txt
+install -Dm644 Licenses/LGPLv3.txt $PKG/usr/share/licenses/$name/LGPLv3.txt
+install -Dm644 Licenses/README.rst $PKG/usr/share/licenses/$name/README.rst
 }
