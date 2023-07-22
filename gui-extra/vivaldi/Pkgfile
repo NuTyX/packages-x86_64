@@ -3,6 +3,7 @@ url="https://vivaldi.com"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Rems,Fabienwang,Tnut"
+license="custom"
 
 run=(gtk3 nss xorg-libxtst xorg-libx11 freetype freefont-ttf
      desktop-file-utils shared-mime-info alsa-lib
@@ -10,10 +11,10 @@ run=(gtk3 nss xorg-libxtst xorg-libx11 freetype freefont-ttf
 
 name=vivaldi
 _name=vivaldi-ffmpeg-codecs
-version=6.1.3035.111
+version=6.1.3035.204
 
 source=(https://downloads.vivaldi.com/stable/$name-stable_${version}-1_amd64.deb
-        libffmpeg.so.4.0)
+        libffmpeg.so.4.0 https://vivaldi.com/privacy/vivaldi-end-user-license-agreement)
 
 package() {
 
@@ -33,4 +34,6 @@ package() {
     done
     
     cp $SRC/libffmpeg.so.4.0 $PKG/opt/vivaldi/libffmpeg.so.4.0
+
+    install -Dm644 vivaldi-end-user-license-agreement $PKG/usr/share/licenses/$name/LICENSE.html
 }
