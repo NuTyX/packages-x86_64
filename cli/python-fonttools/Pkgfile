@@ -3,12 +3,13 @@ url="https://github.com/fonttools/fonttools"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
+license="MLT"
 
 makedepends=(cython)
 run=(python)
 
 name=python-fonttools
-version=4.41.0
+version=4.41.1
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/fonttools/fonttools/archive/refs/tags/$version.tar.gz)
@@ -20,4 +21,6 @@ build() {
 
  python3 setup.py install --skip-build --root=$PKG --optimize=1
 
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
+install -Dm644 LICENSE.external $PKG/usr/share/licenses/$name/LICENSE.external
 }
