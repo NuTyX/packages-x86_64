@@ -3,24 +3,27 @@ url=" https://wayland.freedesktop.org/"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Greg,Tnut"
+license="MIT"
 
-makedepends=(wayland)
+makedepends=(pkgconf wayland)
 
 name=wayland-protocols
-version=1.31
+version=1.32
 
 source=(https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/$version/downloads/$name-$version.tar.xz)
 
 build() {
 
   cd $name-$version
-  mkdir build
-  cd    build
-  meson --prefix=/usr --buildtype=release
   
-  ninja
-  DESTDIR=$PKG ninja install
+  meson setup build \
+  --prefix=/usr --buildtype=release
   
+  meson compile -C build
+
+  DESTDIR=$PKG meson install -C build
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING  
 }
 uptodate() {
 local url ext
