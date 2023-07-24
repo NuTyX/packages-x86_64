@@ -1,29 +1,34 @@
 description="GStreamer Multimedia Framework"
 url="http://gstreamer.freedesktop.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Jayce,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Jayce,Spiky"
+
 license="LGPL"
 makedepends=(pkgconf gmp libcap meson ninja glib libxml2 gsl gobject-introspection)
 
 name=gstreamer
 version=1.22.5
+release=2
 
 source=(https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-$version.tar.xz)
 
 build() {
 cd $name-$version
+mkdir build
+cd    build
+meson setup ..       \
+ --prefix=/usr       \
+ --buildtype=release \
+ -Dgst_debug=false   \
+ -Dpackage-name="GStreamer $version NuTyX" \
+ -Dpackage-origin="http://downloads.nutyx.org/"
 
-meson setup build \
--Dbuildtype=release \
--Dpackage-name="GStreamer $version NuTyX" \
--Dpackage-origin="http://downloads.nutyx.org/"
+ninja
 
-meson compile -C build
+DESTDIR=$PKG ninja install
 
-DESTDIR=$PKG meson install -C build
-
-install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 
 }
 uptodate() {
