@@ -1,12 +1,13 @@
 description="GStreamer Multimedia Framework Bad Plugins"
 url="http://gstreamer.freedesktop.org/modules/gst-plugins-base.html"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
+
 license="LGPL"
 
 makedepends=(pkgconf meson ninja gstreamer-plugins-base libdvdread libdvdnav
-             faac faad2 libexif libmpeg2 mpg123)
+             faac faad2 libexif libmpeg2 mpg123 libnice libsoup soundtouch)
 
 name=gstreamer-plugins-bad
 version=1.22.5
@@ -15,25 +16,18 @@ source=(https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-$v
 
 build() {
 cd gst-plugins*
+mkdir build
+cd    build
+meson setup ..       \
+ --prefix=/usr       \
+ --buildtype=release \
+ -Dgpl=enabled       \
+ -Dpackage-name="Gstreamer Bad Plugins $version NuTyX" \
+ -Dpackage-origin="http://downloads.nutyx.org/"
 
-meson setup build \
---prefix=/usr \
--Dbuildtype=release \
--Dgpl=enabled       \
--Dpackage-name="Gstreamer Bad Plugins $version NuTyX" \
--Dpackage-origin="http://downloads.nutyx.org/"
+ninja
 
-meson compile -C build
+DESTDIR=$PKG ninja install
 
-DESTDIR=$PKG meson install -C build
-
-install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
-}
-uptodate() {
-local url ext
-name=gst-plugins-bad
-url="https://gstreamer.freedesktop.org/src/$name/"
-ext=".tar.xz"
-lynx -read_timeout=20 -dump -listonly -nonumbers \
-$url|grep $name-[0-9]|grep $ext$|sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
