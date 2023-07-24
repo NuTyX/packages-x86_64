@@ -9,7 +9,8 @@ makedepends=(unzip)
 name=crypto++
 version=8.8.0
 
-source=(${url}cryptopp${version//./}.zip
+source=(https://github.com/weidai11/cryptopp/releases/\
+download/CRYPTOPP_${version//./_}/cryptopp${version//./}.zip
         libcrypto++.pc)
 
 build() {
