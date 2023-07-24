@@ -1,8 +1,9 @@
 description="GStreamer Multimedia Framework Base Plugins"
 url="http://gstreamer.freedesktop.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
+
 license="LGPL"
 
 makedepends=(meson ninja gstreamer alsa-lib gobject-introspection
@@ -13,29 +14,23 @@ name=gstreamer-plugins-base
 _name=gst-plugins-base
 
 version=1.22.5
+release=2
 
 source=(https://gstreamer.freedesktop.org/src/${_name}/${_name}-$version.tar.xz)
 
 build() {
 cd ${_name}-$version
-
-meson setup build \
+mkdir build
+cd    build
+meson setup .. \
 --prefix=/usr \
 -Dbuildtype=release \
 -Dpackage-name="GStreamer Base Plugins $version NuTyX" \
 -Dpackage-origin="http://downloads.nutyx.org/"
 
-meson compile -C build
+ninja
 
-DESTDIR=$PKG meson install -C build
+DESTDIR=$PKG ninja install
 
-install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 } 
-uptodate() {
-local url ext
-name=${_name}
-url="https://gstreamer.freedesktop.org/src/$name/"
-ext=".tar.xz"
-lynx -read_timeout=20 -dump -listonly -nonumbers \
-$url|grep $name-[0-9]|grep $ext$|sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
-}
