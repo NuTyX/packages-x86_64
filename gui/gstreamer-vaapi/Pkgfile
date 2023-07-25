@@ -1,8 +1,9 @@
 description="GStreamer Multimedia Framework"
 url="http://gstreamer.freedesktop.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Remy,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Remy,Spiky"
+
 license="LGPL"
 
 makedepends=(meson ninja
@@ -15,24 +16,17 @@ source=(https://gstreamer.freedesktop.org/src/$name/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
-
-meson setup build \
+mkdir build
+cd    build
+meson setup .. \
 --prefix=/usr \
 -Dbuildtype=release \
 -Dpackage-origin="http://downloads.nutyx.org/"
 
-meson compile -C build
+ninja
 
-DESTDIR=$PKG meson install -C build
+DESTDIR=$PKG ninja install
 
-install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 ../COPYING.LIB $PKG/usr/share/licenses/$name/COPYING
 
-}
-uptodate() {
-local url ext
-
-url="https://gstreamer.freedesktop.org/src/$name/"
-ext=".tar.xz"
-lynx -read_timeout=20 -dump -listonly -nonumbers \
-$url|grep $name-[0-9]|grep $ext$|sed "s@$url$name-@@"|sed "s@$ext@@"|tail -1
 }
