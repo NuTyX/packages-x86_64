@@ -1,28 +1,30 @@
-# Depends on: pam cmake git freeglut xorg-libxmu libpng libjpeg-turbo xorg-libxft xorg-libxrandr
+description='Desktop-independent graphical login manager for X11'
+url='http://sourceforge.net/projects/slim.berlios/'
 
-PKGMK_GROUPS=(man)
+license="GPL2"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 name=slim
 version=1.4.0
 
-description="Desktop-independent graphical login manager for X11"
-url="http://sourceforge.net/projects/slim.berlios/"
-
+makedepends=(pam cmake git freeglut xorg-libxmu libpng
+             libjpeg-turbo xorg-libxft xorg-libxrandr)
 run=(xorg-xinit)
+
+PKGMK_GROUPS=(man)
 
 source=(http://downloads.tuxfamily.org/nutyx/files/lxdm-nutyx-12-beta3.jpg
 	https://sourceforge.net/projects/slim-fork/files/$name-$version.tar.gz
-        slim-1.3.6-conglo-3.patch panel.png)
+        $name-$version-conglo-1.patch panel.png)
 
 prepare() {
   git clone https://github.com/adi1090x/slim_themes
   mkdir -p {build,$PKG/usr/share/slim}
   cp -a slim_themes/themes $PKG/usr/share/slim/themes 
   cd $name-$version
-  patch -Np1 -i ../slim-1.3.6-conglo-3.patch
+  patch -Np1 -i ../$name-$version-conglo-1.patch
 }
 build() {
   cd build
