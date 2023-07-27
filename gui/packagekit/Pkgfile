@@ -2,22 +2,21 @@ description='A system designed to make installation and updates of packages easi
 url='https://www.freedesktop.org/software/PackageKit/'
 
 name=packagekit
-version=1.2.6
-release=4
+version=1.2.6-git
 
-packager="Tnut <tnut@nutyx.org>"
+
+packager="tnut <tnut@nutyx.org>"
 contributors=""
 
 makedepends=(sqlite gobject-introspection vala polkit intltool
-              meson ninja cards.lib)
+             meson ninja cards.lib git)
 
-source=(https://www.freedesktop.org/software/PackageKit/releases/PackageKit-$version.tar.xz
-	meson_options.txt pk-backend-cards.patch)
+source=(config.patch)
 
 prepare() {
-	mv PackageKit-$version $name-$version
-	cp meson_options.txt $name-$version
+	git clone https://github.com/nutyx/packagekit
+	mv $name $name-$version
 	cd $name-$version
-	patch -Np1 -i ../pk-backend-cards.patch
+	patch -Np1 -i ../config.patch
 }
 build=meson

@@ -1,0 +1,54 @@
+diff -Naur a/etc/PackageKit.conf b/etc/PackageKit.conf
+--- a/etc/PackageKit.conf	2022-12-01 19:47:48.000000000 +0100
++++ b/etc/PackageKit.conf	2023-06-29 21:34:52.619660791 +0200
+@@ -9,13 +9,13 @@
+ # The order they are specified is the order they are tried, so for the
+ # value "foo,bar" first "foo" will be attempted and then "bar" if the
+ # libpk_backend_foo.so module load failed.
+-#DefaultBackend=auto
++DefaultBackend=cards
+ 
+ # Unlock the backend after this many seconds idle.
+ #BackendShutdownTimeout=5
+ 
+ # Shut down the daemon after this many seconds idle. 0 means don't shutdown.
+-#ShutdownTimeout=300
++ShutdownTimeout=5
+ 
+ # Keep the packages after they have been downloaded
+ #KeepCache=false
+diff -Naur a/meson_options.txt b/meson_options.txt
+--- a/meson_options.txt	2022-12-01 19:47:48.000000000 +0100
++++ b/meson_options.txt	2023-06-29 21:35:48.041966365 +0200
+@@ -1,22 +1,22 @@
+-option('packaging_backend', type : 'array', choices : ['alpm', 'apt', 'dnf', 'dummy', 'entropy', 'poldek', 'portage', 'slack', 'zypp', 'nix'], value : ['dummy'], description : 'The name of the backend to use')
++option('packaging_backend', type : 'array', choices : ['alpm', 'apt', 'cards', 'dnf', 'dummy', 'entropy', 'poldek', 'portage', 'slack', 'zypp', 'nix'], value : ['cards'], description : 'The name of the backend to use')
+ option('dnf_vendor', type : 'combo', choices : ['fedora', 'mageia', 'openmandriva', 'rosa', 'opensuse'], value : 'fedora', description : 'Vendor configuration when using the dnf backend')
+-option('systemd', type : 'boolean', value : true, description : 'Use systemd and logind')
++option('systemd', type : 'boolean', value : false, description : 'Use systemd and logind')
+ option('systemdsystemunitdir', type : 'string', value : '', description : 'Directory for systemd service files')
+ option('systemduserunitdir', type : 'string', value : '', description : 'Directory for systemd user service files')
+-option('offline_update', type : 'boolean', value : true, description : 'Use systemd offline update')
++option('offline_update', type : 'boolean', value : false, description : 'Use systemd offline update')
+ option('elogind', type : 'boolean', value : false, description : 'Use elogind instead of systemd-login')
+ option('gobject_introspection', type : 'boolean', value : true, description : 'Build GObject Introspection data')
+ option('man_pages', type : 'boolean', value : true, description : 'Generate man pages')
+ option('gtk_doc', type : 'boolean', value : false, description : 'Generate API reference')
+-option('bash_completion', type : 'boolean', value : true, description : 'Bash completion')
+-option('bash_command_not_found', type : 'boolean', value : true, description : 'Build Bash command-not-found functionality')
++option('bash_completion', type : 'boolean', value : false, description : 'Bash completion')
++option('bash_command_not_found', type : 'boolean', value : false, description : 'Build Bash command-not-found functionality')
+ option('packagekit_user', type : 'string', value : 'root', description : 'User for running the PackageKit daemon')
+ option('local_checkout', type : 'boolean', value : false, description : 'Allow running in local checkout')
+-option('gstreamer_plugin', type : 'boolean', value : true, description : 'Build gstreamer plugin functionality')
+-option('gtk_module', type : 'boolean', value : true, description : 'Build GTK+-3 module functionality')
+-option('cron', type : 'boolean', value : true, description : 'Build cron background functionality')
++option('gstreamer_plugin', type : 'boolean', value : false, description : 'Build gstreamer plugin functionality')
++option('gtk_module', type : 'boolean', value : false, description : 'Build GTK+-3 module functionality')
++option('cron', type : 'boolean', value : false, description : 'Build cron background functionality')
+ option('dbus_sys', type : 'string', value : '', description : 'D-BUS system.d directory')
+ option('dbus_services', type : 'string', value : '', description : 'D-BUS system-services directory')
+ option('python_backend', type : 'boolean', value : true, description : 'Provide a python backend')
+ option('pythonpackagedir', type : 'string', value : '', description : 'Location for python modules')
+-option('daemon_tests', type : 'boolean', value : true, description : 'Test the daemon using the dummy backend')
++option('daemon_tests', type : 'boolean', value : false, description : 'Test the daemon using the dummy backend')
