@@ -1,13 +1,15 @@
 description="Base system of NuTyX, contains all folders and startup scripts."
 url="https://github.com/nutyx"
 
-packager="Tnut <tnut@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 maintainer="tnut <tnut@nutyx.org>"
 
 makedepends=(zstd util-linux)
 
 name=nutyx
-version=23.06.1
+version=23.07.0
+release=1
+
 # nutyx patch version
 [ "$release" != "1" ] && patchname="$name-$version-consolidate-$release.patch"
 
