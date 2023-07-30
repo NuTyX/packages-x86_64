@@ -4,19 +4,17 @@ url="https://github.com/NuTyX/cards"
 maintainer="tnut at nutyx dot org, Artemia76 at nutyx dot org"
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(git cards doxygen xorgproto fltk xorg-libx11 xorg-libxext
+makedepends=(cards doxygen xorgproto fltk xorg-libx11 xorg-libxext
              xorg-libxfixes xorg-libxft xorg-libxinerama mesa)
 
 name=flcards
-version=git
+version=2.6.99
 
 # [ "$release" != "1" ] &&  patchname="flcards-$version-consolidate-$release.patch"
 
+source=(https://downloads.tuxfamily.org/nutyx/files/cards-$version.tar.gz)
 
 [ -z "$patchname" ] || source+=" $patchname"
-prepare() {
- git clone https://github.com/nutyx/cards cards-$version
-}
 
 build() {
 
