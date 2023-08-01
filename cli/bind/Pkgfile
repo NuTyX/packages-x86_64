@@ -1,15 +1,18 @@
 description="The BIND package includes the client side programs nslookup, dig and host."
 url="http://www.isc.org/downloads/bind/"
 
+license="MPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
+
 
 makedepends=(libuv kerberos libxml2 openssl libcap libnghttp2)
 run=(python-ply)
 
 
 name=bind
-version=9.18.16
+version=9.18.17
 
 runyx_version=20201011
 
@@ -27,6 +30,10 @@ build(){
 
   make
   make DESTDIR=$PKG install
+
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 COPYRIGHT $PKG/usr/share/licenses/$name/COPYRIGHT
 
 # Service
 cd $SRC/runyx-${runyx_version}
