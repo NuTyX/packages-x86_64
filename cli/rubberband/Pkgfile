@@ -1,14 +1,31 @@
 description="Time-stretching and pitch-shifting audio library and utility"
 url="http://www.breakfastquay.com/rubberband/"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg"
 
-makedepends=(python ladspa libsamplerate fftw vamp-plugin-sdk)
+makedepends=(meson ninja python ladspa libsamplerate fftw vamp-plugin-sdk)
 
 name=rubberband
-version=3.2.1
+version=3.3.0
 
 source=(https://breakfastquay.com/files/releases/$name-$version.tar.bz2)
 
-build=meson
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup ..   \
+      --prefix=/usr \
+      --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+}
