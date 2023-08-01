@@ -1,13 +1,14 @@
 description='OpenGL and OpenGL ES shader front end and validator'
 url='https://github.com/KhronosGroup/glslang'
 
+license="BSD"
 packager="spiky <spiky@nutyx.org>"
 contributors=""
 
 makedepends=(cmake ninja spirv-tools)
 
 name=glslang
-version=12.2.0
+version=12.3.1
 
 source=(https://github.com/KhronosGroup/glslang/archive/$version/$name-$version.tar.gz)
 
@@ -32,8 +33,11 @@ cmake \
 	DESTDIR=$PKG ninja -C build-shared install
 	DESTDIR=$PKG ninja -C build-static install
 
+install -Dm644 LICENSE.txt $PKG/usr/share/licenses/$name/LICENSE
+
 	cd $PKG/usr/lib
 	for lib in *.so; do
 		ln -sf "${lib}" "${lib}.0"
 	done
+
 }
