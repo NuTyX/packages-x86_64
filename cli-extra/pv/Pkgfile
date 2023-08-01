@@ -1,18 +1,22 @@
 description="A terminal-based tool for monitoring the progress of data through a pipeline."
 url="http://www.ivarch.com/programs/pv.shtml"
 
+license="Artistic 2.0"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Tnut"
 
 name=pv
-version=1.6.20
+version=1.7.24
 
-source=(https://www.ivarch.com/programs/sources/$name-$version.tar.bz2)
+source=(https://www.ivarch.com/programs/sources/$name-$version.tar.gz)
 
 build() {
 
-  cd $SRC/$name-$version
+  cd $name-$version
   ./configure --prefix=/usr --mandir=/usr/share/man
   make
   make DESTDIR=$PKG install 
+
+install -Dm644 -t $PKG/usr/share/licenses/$name doc/COPYING
 }
