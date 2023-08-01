@@ -1,13 +1,15 @@
 description="Open-source formatting library for C++"
 url="http://fmtlib.net"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Rems,Tnut,Spiky"
+license="MIT"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Rems,Tnut"
 
 makedepends=(ninja cmake)
 
 name=fmt
-version=9.1.0
+version=10.0.0
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -31,4 +33,6 @@ cmake .. -G Ninja \
 cmake --build .
 
 DESTDIR=$PKG cmake --build . --target install
+
+install -Dm644 ../LICENSE.rst $PKG/usr/share/licenses/$name/LICENSE
 }
