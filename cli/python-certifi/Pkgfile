@@ -1,13 +1,15 @@
 description="Python package for providing Mozilla's CA Bundle"
 url="https://pypi.python.org/pypi/certifi"
 
+license="MPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 run=(python)
 
 name=python-certifi
-version=2023.05.07
+version=2023.07.22
 PKGMK_KEEP_SOURCES="no"
 _name=certifi
 source=(https://github.com/certifi/python-certifi/archive/refs/tags/$version.tar.gz)
@@ -16,4 +18,6 @@ build() {
 cd $name-$version
 python3 setup.py build
 python3 setup.py install --root=$PKG --optimize=1
+
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
