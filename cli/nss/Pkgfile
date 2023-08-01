@@ -1,13 +1,13 @@
 description="Cross-platform development of security-enabled client and server applications."
 url="http://www.mozilla.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Fabienwang,Tnut"
 
 makedepends=(perl nspr sqlite)
 
 name=nss
-version=3.91
+version=3.92
 
 source=(https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_${version//./_}_RTM/src/nss-$version.tar.gz \
 	nss-standalone-1.patch)
@@ -36,4 +36,5 @@ build () {
 	chmod 644 $PKG/usr/include/nss/*
 	install -v -m755 Linux*/bin/{certutil,nss-config,pk12util} $PKG/usr/bin
 	install -v -m644 Linux*/lib/pkgconfig/nss.pc $PKG/usr/lib/pkgconfig
+
 }
