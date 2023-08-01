@@ -1,11 +1,12 @@
 description="Cross-platform IDE focused on Python application development"
 url="http://martine.github.io/ninja/"
 
-contributors="Pierre,Greg,Tnut,Spiky"
-packager="Spiky <spiky@nutyx.org>"
+contributors="Pierre,Greg,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
 name=ninja
 version=1.11.1
+release=2
 
 set=(devel)
 
@@ -13,6 +14,14 @@ source=(https://github.com/ninja-build/$name/archive/v$version/$name-$version.ta
 
 prepare() {
 cards install python
+
+cd $name-$version
+sed -i '/int Guess/a \
+  int   j = 0;\
+  char* jobs = getenv( "NINJAJOBS" );\
+  if ( jobs != NULL ) j = atoi( jobs );\
+  if ( j > 0 ) return j;\
+' src/ninja.cc
 }
 build() {
 
