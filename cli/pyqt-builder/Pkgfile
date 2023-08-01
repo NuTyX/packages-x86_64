@@ -1,13 +1,14 @@
 description='The PEP 517 compliant PyQt build system'
 url='https://pypi.org/project/PyQt-builder/'
 
+license="GPL"
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 makedepends=(python)
 
 name=pyqt-builder
-version=1.15.1
+version=1.15.2
 
 source=(https://pypi.io/packages/source/P/PyQt-builder/PyQt-builder-$version.tar.gz)
 
@@ -15,4 +16,8 @@ build() {
 cd PyQt-builder-$version
 python setup.py build
 python setup.py install --root=$PKG
+
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
+install -Dm644 LICENSE-GPL2 $PKG/usr/share/licenses/$name/LICENSE-GPL2
+install -Dm644 LICENSE-GPL3 $PKG/usr/share/licenses/$name/LICENSE-GPL3
 }
