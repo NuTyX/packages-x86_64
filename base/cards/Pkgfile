@@ -8,7 +8,7 @@ alias=(card)
 
 
 PKGMK_IGNORE_RUNTIMEDEPS="no"
-makedepends=(git bzip2 gettext xz util-linux pkgconf)
+makedepends=(git bzip2 gettext xz util-linux)
 run_devel=(curl.devel gcc.devel glibc.devel libarchive.devel \
 openssl.devel zlib.devel bash binutils coreutils file \
 findutils gawk gettext groff make patch pkgconf \
@@ -18,18 +18,14 @@ PKGMK_GROUPS=(devel doc man lib)
 PKGMK_LOCALES=()
 
 name=cards
-version=git
+version=2.6.99
 
 # [ "$release" != "1" ] &&  patchname="$name-$version-consolidate-$release.patch"
 
+source=(https://downloads.tuxfamily.org/nutyx/files/$name-$version.tar.gz)
 
 [ -z "$patchname" ] || source+=" $patchname"
 
-prepare() {
- git clone https://github.com/NuTyX/cards cards-$version
- cd cards-$version
- git log > ChangeLog
-}
 build () {
 
 unset MAKEFLAGS
