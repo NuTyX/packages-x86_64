@@ -1,0 +1,42 @@
+description='Modern library for one-way hashing of passwords'
+url='https://github.com/besser82/libxcrypt/'
+
+license='LGPL'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(pkgconf glibc perl)
+
+name=libxcrypt
+version=4.4.36
+
+source=(https://github.com/besser82/libxcrypt/releases/download/v$version/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr                \
+            --enable-hashes=strong,glibc \
+            --enable-obsolete-api=no     \
+            --disable-static             \
+            --disable-failure-tokens
+
+make
+make DESTDIR=$PKG install
+
+
+# Required for binutils#
+
+make distclean
+./configure --prefix=/usr                \
+            --enable-hashes=strong,glibc \
+            --enable-obsolete-api=glibc  \
+            --disable-static             \
+            --disable-failure-tokens
+make
+cp -av .libs/libcrypt.so.1* $PKG/usr/lib
+
+install -Dm644 LICENSING $PKG/usr/share/licenses/$name/LICENSING
+
+}
+
