@@ -3,10 +3,12 @@ url="http://www.abisource.com/enchant/"
 
 packager="spiky <spiky@nutyx.org>"
 
+license="GPL"
+
 makedepends=(glib aspell dbus-glib)
 
 name=enchant
-version=2.3.4
+version=2.5.0
 
 source=(https://github.com/AbiWord/$name/releases/download/v$version/$name-$version.tar.gz)
 
@@ -31,4 +33,5 @@ build() {
 rm $PKG/usr/lib/enchant-2/enchant_aspell.la
 rm $PKG/usr/lib/libenchant-2.la
 
+install -Dm644 COPYING.LIB $PKG/usr/share/licenses/$name/COPYING.LIB
 }
