@@ -3,8 +3,10 @@ url="http://smartmontools.sourceforge.net"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
+licesne="GPL"
+
 name=smartmontools
-version=7.3
+version=7.4
 
 source=(http://downloads.sourceforge.net/sourceforge/$name/$name-$version.tar.gz )
 
@@ -17,4 +19,6 @@ build() {
 	--docdir=/usr/share/doc/smartmontools-$version
 	make
 	make DESTDIR=$PKG install
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
