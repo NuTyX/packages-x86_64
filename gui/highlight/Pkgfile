@@ -4,10 +4,12 @@ url="http://www.andre-simon.de/doku/highlight/highlight.html"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre B, Remy, tnut"
 
+license="GPL3"
+
 makedepends=(boost lua qtbase)
 
 name=highlight
-version=4.6
+version=4.7
 
 source=(http://www.andre-simon.de/zip/$name-$version.tar.bz2)
 
@@ -17,4 +19,6 @@ build(){
     make gui
     make DESTDIR=$PKG install
     make DESTDIR=$PKG install-gui
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
