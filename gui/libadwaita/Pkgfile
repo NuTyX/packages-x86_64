@@ -1,25 +1,32 @@
 description="Building blocks for modern adaptive GNOME applications"
 url="https://gnome.pages.gitlab.gnome.org/libadwaita/"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 makedepends=(meson sassc gobject-introspection vala gtk4)
 
 name=libadwaita
-version=1.3.3
-release=2
+version=1.3.4
 
 source=(https://gitlab.gnome.org/GNOME/libadwaita/-/archive/$version/$name-$version.tar.gz)
 
 build() {
+cd $name-$version
 
-meson setup $name-$version build \
+mkdir build
+cd    build
+
+meson setup .. \
        --prefix=/usr          \
             --buildtype=release
 
-meson compile -C build
+meson
 
-DESTDIR=$PKG meson install -C build
+DESTDIR=$PKG meson install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
 
