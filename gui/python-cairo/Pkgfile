@@ -1,14 +1,15 @@
 description="connector Python (3) for the library cairo"
 url="http://www.cairographics.org/"
 
+license="LGPL MPL"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,<,Tnut"
 
 run=(python cairo)
 
 name=python-cairo
-version=1.23.0
-release=3
+version=1.24.0
 
 source=(https://github.com/pygobject/pycairo/releases/download/v$version/pycairo-$version.tar.gz)
 
@@ -16,4 +17,8 @@ build() {
 	cd pycairo-$version
 	python3 setup.py build
 	python3 setup.py install --optimize=1 --root=$PKG
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 COPYING-LGPL-2.1 $PKG/usr/share/licenses/$name/COPYING-LGPL-2.1
+install -Dm644 COPYING-MPL-1.1 $PKG/usr/share/licenses/$name/COPYING-MPL-1.1
 }  
