@@ -1,19 +1,28 @@
 description='A program that lets you manipulate digital audio waveforms'
 url='https://audacityteam.org'
 
+license="GPL3"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 name=audacity
-version=3.3.2
+version=3.3.3
 
 makedepends=(libvorbis libmad libid3tag wxgtk lame ffmpeg redland jack
              soundtouch cmake zip python vst3sdk wavpack libogg sqlite
              portaudio chrpath libsndfile portmidi libsbsms flac mpg123
-             vamp-plugin-sdk vst3sdk)
+             vamp-plugin-sdk vst3sdk xcb-util-cursor xcb-util-keysyms
+             gtkmm)
 run=(shared-mime-info desktop-file-utils hicolor-icon-theme)
 
-source=(https://github.com/audacity/audacity/archive/refs/tags/Audacity-$version.tar.gz)
+source=(https://github.com/audacity/audacity/archive/refs/tags/Audacity-$version.tar.gz
+        remove_obsolete_printf_specifier.patch)
+
+prepare() {
+cd $name-Audacity-$version
+patch -Np1 -i ../remove_obsolete_printf_specifier.patch
+}
 build() {
   export VST3SDK='/usr/share/vst3sdk'
 #  export CFLAGS+=" -DNDEBUG"
@@ -32,4 +41,7 @@ build() {
   cmake --build build
 
   DESTDIR=$PKG cmake --install build
+
+cd $name-Audacity-$version
+install -Dm644 LICENSE.txt $PKG/usr/share/licenses/$name/LICENSE.txt
 }
