@@ -1,12 +1,15 @@
 description="libvirt python binding"
 url="https://pypi.python.org/pypi/libvirt-python"
+
+license="LGPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Yaolinux,DocWOPR,Tnut"
 makedepends=(libvirt)
 run=( libvirt)
 
 name=libvirt-python
-version=9.5.0
+version=9.6.0
 
 source=(https://libvirt.org/sources/python/$name-$version.tar.gz
 )
@@ -15,4 +18,6 @@ cd $name-$version
 
   python3 setup.py build
   python3 setup.py install --root=$PKG --optimize=1 --skip-build
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
