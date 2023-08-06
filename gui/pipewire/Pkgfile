@@ -1,6 +1,8 @@
 description="Server and user space API to deal with multimedia pipelines"
 url="https://pipewire.org"
 
+license="MIT"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Tnut"
 
@@ -8,13 +10,14 @@ makedepends=(meson dbus doxygen python-docutils ffmpeg glib graphviz gstreamer
              gstreamer-plugins-base sbc valgrind libsndfile xmltoman) 
 
 name=pipewire
-version=0.3.74
+version=0.3.77
 
 source=(https://github.com/PipeWire/pipewire/archive/$version/$name-$version.tar.gz)
 
 build() {
+cd $name-$version
 
-  meson setup $name-$version build \
+  meson setup build \
     --prefix=/usr      \
     --sysconfdir=/etc      \
     -Djack=disabled           \
@@ -26,4 +29,7 @@ build() {
 meson compile -C build
 
 DESTDIR=$PKG meson install -C build
+
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
