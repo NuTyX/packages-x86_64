@@ -4,6 +4,8 @@ url="https://www.gtk.org"
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
+license="GPL2"
+
 makedepends=(git meson python python-docutils sassc gobject-introspection docbook-xsl)
 
 run=(glib cairo pango fribidi gdk-pixbuf libpng libtiff libjpeg-turbo libepoxy mesa harfbuzz
@@ -14,7 +16,7 @@ run=(glib cairo pango fribidi gdk-pixbuf libpng libtiff libjpeg-turbo libepoxy m
 set=()
 
 name=gtk4
-version=4.10.4
+version=4.12.0
 
 PKGMK_GROUPS=(devel doc lib man)
 source=(https://gitlab.gnome.org/GNOME/gtk/-/archive/$version/gtk-$version.tar.gz)
@@ -22,17 +24,21 @@ source=(https://gitlab.gnome.org/GNOME/gtk/-/archive/$version/gtk-$version.tar.g
 build() {
 cd gtk-$version
 mkdir build
-cd build
-meson --prefix=/usr        \
+cd    build
+
+meson setup .. \
+--prefix=/usr        \
 --buildtype=release        \
 --sysconfdir=/etc          \
 -Dbroadway-backend=true    \
 -Dtracker=enabled          \
 -Dcolord=enabled           \
--Dintrospection=enabled    \
-..
+-Dintrospection=enabled
+
 ninja
 
 DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
 
