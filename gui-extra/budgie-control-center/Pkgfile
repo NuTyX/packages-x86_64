@@ -1,8 +1,10 @@
 description="Budgie Control Center is a fork of GNOME Control Center for the Budgie 10 Series."
 url="https://github.com/BuddiesOfBudgie/budgie-control-center"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="BlogofraisFR,Spiky"
+license="GPL2"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="BlogofraisFR,Tnut"
 
 makedepends=(docbook-xsl meson modemmanager accountsservice ibus cheese
              samba cups libgtop libhandy libnma libpwquality)
@@ -11,8 +13,24 @@ run=(gnome-desktop gnome-settings-daemon colord-gtk gnome-online-accounts
 set=(budgie)
 
 name=budgie-control-center
-version=1.2.0
+version=1.3.0
 
 source=(https://github.com/BuddiesOfBudgie/budgie-control-center/releases/download/v$version/$name-$version.tar.xz)
 
-build=meson
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup ..  \
+      --prefix=/usr   \
+      --buildtype=release
+
+meson
+
+DESTDIR=$PKG meson install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
+
+}
