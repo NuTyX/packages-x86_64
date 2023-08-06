@@ -1,5 +1,6 @@
 description="Programming language which bring news features of languages of programming modern to developers GNOME"
 url="http://live.gnome.org/Vala"
+license="GPL2"
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Rems,Tnut"
@@ -7,11 +8,19 @@ contributors="Pierre,Rems,Tnut"
 makedepends=(glib graphviz libxslt help2man)
 
 name=vala
-version=0.56.9
+version=0.56.10
 
 source=(https://download.gnome.org/sources/vala/${version:0:4}/$name-$version.tar.xz)
 
-package() {
+build() {
+cd $name-$version
+
+   ./configure --prefix=/usr
+
+make
+
+make DESTDIR=$PKG install
+
 # Obsolets libs
 
 rm $PKG/usr/lib/libvala{,doc}-0.56.la
@@ -19,6 +28,8 @@ rm $PKG/usr/lib/vala-0.56/libvalaccodegen.la
 rm $PKG/usr/lib/valadoc-0.56/doclets/html/libdoclet.la
 rm $PKG/usr/lib/valadoc-0.56/doclets/gtkdoc/libdoclet.la
 rm $PKG/usr/lib/valadoc-0.56/doclets/devhelp/libdoclet.la
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
 
 uptodate(){
