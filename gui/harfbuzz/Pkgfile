@@ -1,6 +1,8 @@
 description="OpenType text shaping engine"
 url="http://www.freedesktop.org/software/harfbuzz"
 
+license="MIT"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Remy,Tnut"
 
@@ -8,7 +10,7 @@ makedepends=(pkgconf cairo glib icu freetype gobject-introspection gtk-doc pytho
 
 
 name=harfbuzz
-version=8.0.1
+version=8.1.1
 
 source=(https://github.com/harfbuzz/harfbuzz/releases/download/$version/$name-$version.tar.xz)
 
@@ -29,4 +31,5 @@ make DESTDIR=$PKG install
 #Obsolets libs
 rm $PKG/usr/lib/libharfbuzz{,-{icu,gobject,subset}}.la
 
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
