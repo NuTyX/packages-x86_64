@@ -1,16 +1,21 @@
 description="A feature-rich client for Matrix.org"
 url="https://element.io/"
 
+license="Apache"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Sundev79,Tnut"
 
 run=(gtk3 libnotify nss libsecret xorg-libxtst xdg-utils)
 
 name=element-desktop
-version=1.11.35
+version=1.11.38
 
 source=(https://packages.riot.im/debian/pool/main/e/element-desktop/element-desktop_${version}_amd64.deb)
 
 build() {
    tar -xvf data.tar.xz -C $PKG/
+
+install -Dm644 $PKG/opt/Element/LICENSES.chromium.html $PKG/usr/share/licenses/$name/LICENSES.chromium.html
+install -Dm644 $PKG/opt/Element/LICENSE.electron.txt $PKG/usr/share/licenses/$name/LICENSE.electron.txt
 }
