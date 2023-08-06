@@ -1,6 +1,8 @@
 description="The virtualization API"
 url="https://libvirt.org/"
 
+licens="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Yaolinux,Tnut,DocWOPR"
 
@@ -14,7 +16,7 @@ makedepends=(bash-completion bridge-utils cyrus-sasl dbus
 run=(qemu dmidecode dnsmasq ebtables iptables)
 
 name=libvirt
-version=9.5.0
+version=9.6.0
 
 PKGMK_GROUPS=(doc man devel)
 
@@ -39,6 +41,8 @@ build() {
 tun
 EOF
 
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 ../COPYING.LESSER $PKG/usr/share/licenses/$name/COPYING.LESSER
 
   # service
   mkdir -p $PKG/etc/rc.d/init.d
