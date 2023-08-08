@@ -1,6 +1,8 @@
 description="A clipboard plugin for the Xfce4 panel"
 url="http://goodies.xfce.org/projects/panel-plugins/xfce4-clipman-plugin"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Fabienwang,Tyrry,Greg,Tnut"
 
@@ -10,7 +12,7 @@ makedepends=(libxfce4util libxfce4ui xfce4-panel libunique1
 set=(xfce4-extra)
 
 name=xfce4-clipman-plugin
-version=1.6.3
+version=1.6.4
 
 source=(https://archive.xfce.org/src/panel-plugins/$name/${version%.*}/$name-$version.tar.bz2)
 
@@ -22,5 +24,7 @@ cd $name-$version
     --sysconfdir=/etc
 
 make
-make DESTDIR=$PKG install	
+make DESTDIR=$PKG install
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING	
 }
