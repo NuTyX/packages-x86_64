@@ -1,10 +1,10 @@
 description="a free, open source, and cross-platform media player"
 url="https://mpv.io/"
 
-license="GPL3"
+license="GPL3 LGPL"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Spiky, Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Tnut"
 
 makedepends=(ffmpeg lcms2 libcdio-paranoia libglade xorg-libxext
              xorg-libxscrnsaver xorg-libxinerama xorg-libx11 xorg-libxpresent
@@ -16,8 +16,7 @@ run=(desktop-file-utils hicolor-icon-theme xdg-utils luajit)
 
 name=mpv
 _waf_version=2.0.24
-version=0.35.1
-release=3
+version=0.36.0
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/mpv-player/mpv/archive/v${version}.tar.gz
@@ -46,4 +45,7 @@ build() {
 
   install -m644 DOCS/{encoding.rst,tech-overview.txt} \
     "$PKG"/usr/share/doc/mpv
+
+install -Dm644 LICENSE.GPL $PKG/usr/share/licenses/$name/LICENSE.GPL
+install -Dm644 LICENSE.LGPL $PKG/usr/share/licenses/$name/LICENSE.LGPL
 }
