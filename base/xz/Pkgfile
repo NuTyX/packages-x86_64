@@ -1,12 +1,14 @@
 description="Free general-purpose data compression software with high compression ratio."
 url="http://tukaani.org/xz/"
+
+license="GPL2 GPL3 LGPL2.1"
 maintainer="Lasse Collin, lasse dot collin at tukaani dot org"
 packager="spiky <spiky@nutyx.org>"
 
 PKGMK_GROUPS=(devel man doc)
 
 name=xz
-version=5.4.3
+version=5.4.4
 
 PKGMK_LOCALES=()
 source=(${url}$name-$version.tar.xz)
@@ -28,6 +30,11 @@ mv -v $PKG/usr/lib/liblzma.so.* \
 $PKG/lib
 
 ln -svf ../../lib/liblzma.so.$version $PKG/usr/lib/liblzma.so
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 COPYING.GPLv2 $PKG/usr/share/licenses/$name/COPYING.GPLv2
+install -Dm644 COPYING.GPLv3 $PKG/usr/share/licenses/$name/COPYING.GPLv3
+install -Dm644 COPYING.LGPLv2.1 $PKG/usr/share/licenses/$name/COPYING.LGPLv2.1
 }
 devel()
 {
