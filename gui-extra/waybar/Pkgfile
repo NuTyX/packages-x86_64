@@ -1,6 +1,8 @@
 description='Highly customizable Wayland bar for Sway and Wlroots based compositors.'
 url='https://github.com/Alexays/Waybar'
 
+license="MIT"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="BlogofraisFR"
 
@@ -8,7 +10,7 @@ makedepends=(meson wayland-protocols catch2)
 run=(gtkmm)
 
 name=waybar
-version=0.9.19
+version=0.9.20
 
 source=(https://github.com/Alexays/Waybar/archive/refs/tags/$version.tar.gz)
 
@@ -23,12 +25,17 @@ sed -i '2i#define USE_EXPERIMENTAL' include/factory.hpp
 }
 
 build() {
+cd $name-$version
+mkdir build
+cd    build
 
-meson setup $name-$version build \
+meson setup ..                \
        --prefix=/usr          \
             --buildtype=release
 
-meson compile -C build
+ninja
 
-DESTDIR=$PKG meson install -C build
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
