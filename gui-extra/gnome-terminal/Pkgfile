@@ -1,8 +1,10 @@
 description="The GNOME Terminal Emulator"
 url="https://www.gnome.org/"
 
-packager="Skythrew <mael.guerin@outlook.fr>"
-contributors="Jayce,Fanch,Rems,Tnut,Spiky"
+license="GPL"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Jayce,Fanch,Rems,Tnut,Skythrew"
 
 makedepends=(dconf gtk3 vte nautilus gnome-shell yelp-tools)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
@@ -10,9 +12,29 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 set=(cinnamon)
 
 name=gnome-terminal
-version=3.48.1
-release=2
+version=3.48.2
 
 source=(https://gitlab.gnome.org/GNOME/$name/-/archive/$version/$name-$version.tar.bz2)
 
-build=meson
+prepare() {
+cd $name-$version
+sed -i -r 's:"(/system):"/org/gnome\1:g' src/external.gschema.xml
+}
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+      meson setup         \
+      --prefix=/usr       \
+      --buildtype=release \
+      ..
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+}
