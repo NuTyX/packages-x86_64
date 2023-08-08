@@ -1,13 +1,15 @@
 description="The Vim package contains a powerful text editor."
 url="http://www.vim.org/"
 
+license="custom:VIM"
+
 contributors="Pierre,Tnut"
 packager="spiky <spiky@nutyx.org>"
 
 makedepends=(gpm)
 
 name=vim
-version=9.0.1676
+version=9.0.1678
 
 source=(https://github.com/$name/$name/archive/v$version/$name-$version.tar.gz)
 build()
@@ -33,4 +35,6 @@ ln -sv ../vim/vim${version/./}/doc $PKG/usr/share/doc/vim-$version
 
 rm -rf $PKG/usr/share/applications
 rm -rf $PKG/usr/share/icons
+
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
