@@ -1,14 +1,15 @@
 description="Date conversion routines"
 url="https://metacpan.org/pod/HTTP::Date"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+license="GPL PerlArtistic"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 run=(perl)
 
 name=perl-http-date
-version=6.05
-release=2
+version=6.06
 
 source=(https://search.cpan.org/CPAN/authors/id/O/OA/OALDERS/HTTP-Date-$version.tar.gz)
 
@@ -21,4 +22,6 @@ find $PKG \
          -name '*.bs' -or \
          -name '.packlist' -or \
          -empty -delete
+
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
