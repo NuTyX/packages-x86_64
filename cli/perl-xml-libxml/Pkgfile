@@ -1,13 +1,15 @@
 description="Interface to the libxml library"
 url="https://search.cpan.org/dist/XML-LibXML"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Spiky"
+license="GPL"
 
-makedepends=( perl-xml-sax perl-xml-namespacesupport)
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=( perl-xml-sax perl-xml-namespacesupport perl-alien-build)
 run=(perl-alien-libxml2 perl-xml-sax perl-xml-namespacesupport)
 name=perl-xml-libxml
-version=2.0208
+version=2.0209
 
 source=(https://www.cpan.org/authors/id/S/SH/SHLOMIF/XML-LibXML-$version.tar.gz)
 
@@ -16,4 +18,6 @@ cd XML-LibXML-$version
 perl Makefile.PL INSTALLDIRS=vendor
 make
 make DESTDIR=$PKG install
+
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
