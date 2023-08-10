@@ -1,6 +1,8 @@
 description=" Papirus icon theme for Linux"
 url="https://github.com/PapirusDevelopmentTeam/papirus-icon-theme"
 
+license="GPL3"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="DamnKid,Greg"
 
@@ -8,7 +10,7 @@ makedepends=(gtk-update-icon-cache)
 run=(gtk-update-icon-cache)
 
 name=papirus-icon-theme
-version=20230601
+version=20230801
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -18,5 +20,6 @@ build() {
 
 	cd ${name}-$version
 	make DESTDIR=$PKG install
-	
+
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE	
 }
