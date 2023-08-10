@@ -1,13 +1,15 @@
 description="Display graphical dialog boxes from shell scripts."
 url="http://www.gnome.org/"
 
+license="LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Tnut"
 
 makedepends=(itstool gtk3 libnotify yelp-tools)
 
 name=zenity
-version=3.44.1
+version=3.44.2
 
 source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
@@ -27,7 +29,9 @@ ninja
 
  DESTDIR=$PKG ninja install
 
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
+
 uptodate(){
 local latest lastversion url
 url="https://download.gnome.org/sources/${name}"
