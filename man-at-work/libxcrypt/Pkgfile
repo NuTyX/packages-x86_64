@@ -3,13 +3,14 @@ url='https://github.com/besser82/libxcrypt/'
 
 license='LGPL'
 
-packager="spiky <spiky@nutyx.org>"
-contributors=""
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(pkgconf glibc perl)
 
 name=libxcrypt
 version=4.4.36
+release=2
 
 source=(https://github.com/besser82/libxcrypt/releases/download/v$version/$name-$version.tar.xz)
 
@@ -24,8 +25,16 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 
+# usr/include/crypt.h is part of glibc.devel for the moment
+# Need to findout why it's in this package as well
+#
 
-# Required for binutils#
+mkdir $PKG/usr/include/$name
+mv $PKG/usr/include/crypt.h \
+$PKG/usr/include/$name/crypt.h
+
+# Required for binutils
+#
 
 make distclean
 ./configure --prefix=/usr                \
