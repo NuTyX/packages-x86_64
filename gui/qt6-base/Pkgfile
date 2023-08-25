@@ -36,6 +36,7 @@ build() {
  -DFEATURE_system_sqlite=ON                   -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON  \
  -DFEATURE_no_direct_extern_access=ON         -DFEATURE_system_xcb_xinput=ON   \
  -DFEATURE_qmake=ON                           -DCMAKE_BUILD_TYPE=Release       \
+ -DBUILD_TESTS_BY_DEFAULT=OFF \
  ../qtbase-everywhere-src-$version
 
  ninja
