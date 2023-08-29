@@ -1,7 +1,7 @@
 url="https://www.kernel.org"
 description="The 6.1 longterm support Linux Kernel version"
 
-packager="spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 makedepends=(bison flex perl gmp mpc libelf diffutils)
 run=(nutyx kmod busybox)
 
@@ -10,7 +10,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-61
-version=6.1.44
+version=6.1.49
 
 alias=(linux-61)
 INITRD="initrd-${name/*-/}"
@@ -24,8 +24,7 @@ _version=${version:0:3}
 ## Download all the sources
 #
 
-source=(gcc.patch
-        $url/pub/linux/kernel/v6.x/linux-${_version}.tar.xz config_64)
+source=($url/pub/linux/kernel/v6.x/linux-${_version}.tar.xz config_64)
 
 [ -z $patchname ] || source+=" $url/pub/linux/kernel/v6.x/$patchname"
 ## Time to build everything
@@ -36,7 +35,6 @@ build(){
 bsdtar -p -o -C $SRC -xf linux-${_version}.tar.xz
 
 cd linux-${_version}
-patch -Np1 -i ../gcc.patch
 if [ -f $SRC/patch-$version.xz ]; then
 	xz -d -c  $SRC/patch-$version.xz | patch -Np1
 fi
