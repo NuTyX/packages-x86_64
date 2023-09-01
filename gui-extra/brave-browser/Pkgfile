@@ -4,8 +4,8 @@ url="https://brave.com/"
 name=brave-browser
 version=1.52.126
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 run=(make-ca ttf-liberation dejavu-ttf
     hicolor-icon-theme desktop-file-utils
@@ -13,18 +13,17 @@ run=(make-ca ttf-liberation dejavu-ttf
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://github.com/brave/brave-browser/releases/download/v${version}/${name}_${version}_amd64.deb)
+source=(http://downloads.tuxfamily.org/nutyx/files/$name/libffmpeg.so
+        https://github.com/brave/$name/releases/download/v$version/$name-$version-1.x86_64.rpm)
+
 build() {
-	bsdtar -xf data.tar.xz -C "$PKG/"
-	
-	# Icons
-  for i in 16x16 24x24 32x32 48x48 64x64 128x128 256x256; do
-    install -Dm644 "$PKG"/opt/brave.com/brave/product_logo_${i/x*}.png \
-                   "$PKG"/usr/share/icons/hicolor/$i/apps/brave-browser.png
-  done
 
-  sed -i "/Exec=/i\StartupWMClass=Brave" "$PKG"/usr/share/applications/brave-browser.desktop
+cp -a {opt,usr} $PKG
+cp libffmpeg.so $PKG/opt/brave.com/brave/libffmpeg.so
 
-  rm -r "$PKG"/etc/cron.daily/ "$PKG"/opt/brave.com/brave/cron/
-  rm "$PKG"/opt/brave.com/brave/product_logo_*.png
+# install icons
+for res in 16 24 32 48 64 128 256; do
+   install -Dm644 $PKG/opt/brave.com/brave/product_logo_${res}.png \
+   $PKG/usr/share/icons/hicolor/${res}x${res}/apps/brave-browser.png
+done
 }
