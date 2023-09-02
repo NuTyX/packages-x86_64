@@ -5,10 +5,10 @@ url="https://llvm.org/"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Remy,Tnut"
 
-makedepends=(grep python cmake ninja libxml2)
+makedepends=(grep python cmake ninja libxml2 git)
 
 name=llvm
-version=15.0.7
+version=16.0.6
 
 PKGMK_GROUPS=(lib man devel doc)
 _url="https://github.com/llvm/llvm-project/releases/download/llvmorg-$version"
@@ -16,7 +16,8 @@ _url="https://github.com/llvm/llvm-project/releases/download/llvmorg-$version"
 source=(${_url}/$name-$version.src.tar.xz
 		${_url}/clang-$version.src.tar.xz
 		${_url}/compiler-rt-$version.src.tar.xz
-                ${_url}/cmake-$version.src.tar.xz)
+                ${_url}/cmake-$version.src.tar.xz
+                ${_url}/third-party-$version.src.tar.xz)
 
 prepare() {
 
@@ -28,6 +29,7 @@ cd $name-$version.src
 
 mv ../compiler-rt-${version}.src projects/compiler-rt
 mv ../clang-$version.src tools/clang
+mv ../third-party-$version.src ../third-party
 
 grep -rl '#!.*python' | xargs sed -i '1s/python$/python3/'
 
