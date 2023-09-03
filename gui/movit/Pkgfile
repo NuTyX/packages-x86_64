@@ -1,16 +1,28 @@
 description="The modern video toolkit"
 url="http://movit.sesse.net/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+license="GPL2"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(eigen3 gtest sdl fftw libepoxy)
 
 name=movit
-version=1.6.3
+version=1.7.1
 
 source=(https://movit.sesse.net/$name-$version.tar.gz)
 
+build() {
+cd $name-$version
+
+./configure --prefix=/usr
+
+make -j1
+
+make DESTDIR=$PKG install
+
+}
 package() {
 # Obsolet lib
 rm $PKG/usr/lib/libmovit.la
