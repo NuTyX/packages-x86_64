@@ -1,8 +1,10 @@
 description="GLib wrapper for libgit2"
 url="https://wiki.gnome.org/Projects/Libgit2-glib"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Spiky,DocWOPR,Tnut"
+license="LGPL2.1"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="DocWOPR,Tnut"
 
 makedepends=(gobject-introspection glib libgit2 meson python-gobject
              vala git )
@@ -10,12 +12,27 @@ run=()
 set=()
 
 name=libgit2-glib
-version=1.1.0
-release=3
+version=1.2.0
 
-source=(https://download.gnome.org/sources/$name/1.1/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/1.2/$name-$version.tar.xz)
 
-build=meson
+build() {
+
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+}
 
 package() {
   # strip $PKG from embedded paths:
