@@ -5,16 +5,10 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
 name=miniupnpc
-version=2.2.4
+version=2.2.5
 
-source=(http://miniupnp.free.fr/files/$name-$version.tar.gz
-        ed1dc4bb.patch)
+source=(http://miniupnp.free.fr/files/$name-$version.tar.gz)
 
-prepare() {
-cd $name-$version
-
-#patch -p2 -i ../ed1dc4bb.patch # Fix make install
-}
 
 build() {
   cd $SRC/$name-$version
