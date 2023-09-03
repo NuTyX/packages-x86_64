@@ -2,8 +2,10 @@ description="Lightweight PDF and XPS viewer"
 url="http://www.mupdf.com"
 packager="spiky <spiky@nutyx.org>"
 
+license="AGPL3"
+
 name=mupdf
-version=1.22.2
+version=1.23.2
 
 makedepends=(lcms2 harfbuzz libjpeg-turbo openjpeg freeglut xorg-libx11
              xorg-libxcursor xorg-libxext xorg-libxrandr xorg-libxinerama freetype)
@@ -47,4 +49,6 @@ install
 
 chmod 755 $PKG/usr/lib/libmupdf.so
 ln -svf mupdf-x11 $PKG/usr/bin/mupdf
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
