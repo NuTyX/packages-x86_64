@@ -1,16 +1,17 @@
 description="Runs several separate processes on a single physical character-based terminal."
 url="http://www.gnu.org/software/screen/screen.html"
 
+license="GPL3"
+
 contributors="Pierre,Greg,Tnut"
 packager="spiky <spiky@nutyx.org>"
 
 makedepends=(patch autoconf automake)
 
 name=screen
-version=4.9.0
+version=4.9.1
 
-source=(upstream_fixes-1.patch
-	https://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
+source=(https://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
 prepare() {
   cd $name-$version
@@ -32,6 +33,8 @@ make DESTDIR=$PKG install
 mkdir $PKG/etc
 install -m 644 etc/etcscreenrc \
 $PKG/etc/screenrc
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
 
 uptodate() {
