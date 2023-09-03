@@ -1,6 +1,8 @@
 description="library for the management d'images of way more effective that imlib"
 url="http://sourceforge.net/projects/enlightenment"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
@@ -8,7 +10,7 @@ makedepends=(aalib giflib xorg-libxext libtiff freetype
               xorg-libsm libpng libjpeg-turbo libid3tag )
 
 name=imlib2
-version=1.11.1
+version=1.12.0
 
 source=(http://downloads.sourceforge.net/enlightenment/$name-$version.tar.xz)
 build() {
@@ -24,6 +26,10 @@ esac
 $EXTRAOPTS
 make
 make DESTDIR=$PKG install
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 COPYING-PLAIN $PKG/usr/share/licenses/$name/COPYING-PLAIN
+
 
 # Obsolets libs
 rm $PKG/usr/lib/libImlib2.la
