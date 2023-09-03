@@ -1,6 +1,8 @@
 description="Python library useful for writing tests for software which talks to D-Bus services."
 url="https://github.com/martinpitt/python-dbusmock"
 
+license="GPL3"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
@@ -8,8 +10,7 @@ run=(python-dbus python-gobject)
 makedepends=(python)
 
 name=python-dbusmock
-version=0.29.0
-release=3
+version=0.29.1
 
 source=(https://github.com/martinpitt/$name/releases/download/$version/dist.${name}-$version.tar.gz)
 
@@ -17,4 +18,7 @@ build() {
 cd $name-$version
 python3 setup.py build
 python3 setup.py install --root=$PKG --optimize=1
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+
 }
