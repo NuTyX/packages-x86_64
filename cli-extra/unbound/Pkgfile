@@ -1,13 +1,15 @@
 description="A validating, recursive, and caching DNS resolver."
 url="http://www.unbound.net"
 
+license="BSD"
+
 contributors="Tnut,Greg"
 packager="spiky <spiky@nutyx.org>"
 
 makedepends=(openssl doxygen)
 
 name=unbound
-version=1.17.1
+version=1.18.0
 
 source=(${url}/downloads/$name-$version.tar.gz)
 
@@ -31,5 +33,6 @@ build()
 
   install -v -m755 -d $PKG/usr/share/doc/$name-$version
   install -v -m644 doc/html/* $PKG/usr/share/doc/$name-$version
-  
+
+ install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE  
 }
