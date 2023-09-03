@@ -1,12 +1,14 @@
 description="Free implementation of the .NET"
 url="http://www.mono-project.com/"
 
+license="MIT"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut,BlogofraisFR"
 
 makedepends=(cmake libgdiplus python zlib git)
 name=mono
-version=6.12.0.199
+version=6.12.0.205
 
 source=(https://download.mono-project.com/sources/$name/preview/$name-$version.tar.xz
         mono.binfmt.d)
@@ -41,4 +43,6 @@ rm $PKG/usr/lib/libmono-profiler-log-static.la
 rm $PKG/usr/lib/libmono-profiler-log.la
 rm $PKG/usr/lib/libmonoboehm-2.0.la
 rm $PKG/usr/lib/libmonosgen-2.0.la
+
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
