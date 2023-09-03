@@ -1,17 +1,36 @@
 description="DBus API that allows cloud storage sync clients to expose their services"
 url="https://gitlab.gnome.org/World/libcloudproviders"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Spiky"
+license="LGPL3"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
 makedepends=(meson git gobject-introspection vala gtk-doc)
 
 name=libcloudproviders
-version=0.3.1
+version=0.3.2
 
 
 prepare() {
   git clone https://gitlab.gnome.org/World/libcloudproviders.git \
   $name-$version
 }
-build=meson
+build() {
+
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+      --prefix=/usr
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
+
+}
+      
