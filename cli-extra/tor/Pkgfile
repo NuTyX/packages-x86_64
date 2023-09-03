@@ -1,13 +1,15 @@
 description="Tor is a anonymous network and proxy."
 url="http://www.torproject.org/"
 
+license="BSD"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Tnut"
 
 makedepends=(systemd libevent openssl zlib)
 
 name=tor
-version=0.4.7.14
+version=0.4.8.4
 
 source=(https://www.torproject.org/dist/tor-$version.tar.gz
 	tor.rc
@@ -55,4 +57,6 @@ build() {
 	find $PKG/var/log/tor/ -type f -exec chown root:root {} \; -execdir chmod 0640 {} \;
 
 	install -m 0750 -D $SRC/tor.rc $PKG/etc/rc.d/init.d/tor
+
+        install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
