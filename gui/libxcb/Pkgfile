@@ -1,15 +1,17 @@
 description="Interface to the X Window System protocol, which replaces the current Xlib interface."
 url="http://xcb.freedesktop.org"
 
-packager="Spiky <spiky@nutyx.org>"
+license="Custom"
+
+packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
 makedepends=(xcb-proto xorg-libxdmcp xorg-libxau libxslt)
 
 name=libxcb
-version=1.15
+version=1.16
 
-source=(http://xcb.freedesktop.org/dist/$name-$version.tar.xz)
+source=(https://xorg.freedesktop.org/archive/individual/lib/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
@@ -26,4 +28,6 @@ sed -e "s/pthread-stubs//" -i configure
 make
 make DESTDIR=$PKG install
 rm $PKG/usr/lib/*.la
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
