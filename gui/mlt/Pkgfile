@@ -1,6 +1,8 @@
 description="An open source multimedia framework"
 url="http://www.mltframework.org"
 
+license="GPL2 GPL3 LGPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
@@ -9,7 +11,7 @@ makedepends=(cmake python ladspa frei0r-plugins libdv sdl-image libsamplerate so
 
 
 name=mlt
-version=7.16.0
+version=7.18.0
 
 source=(https://github.com/mltframework/mlt/releases/download/v${version}/mlt-$version.tar.gz)
 
@@ -19,4 +21,8 @@ build() {
        -DSWIG_PYTHON=ON
  cmake --build build
  DESTDIR=$PKG cmake --install build
+
+install -Dm644 $name-$version/COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 $name-$version/GPL $PKG/usr/share/licenses/$name/GPL
+install -Dm644 $name-$version/GPLv3 $PKG/usr/share/licenses/$name/GPLv3
 }
