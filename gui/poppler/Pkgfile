@@ -1,6 +1,8 @@
 description='PDF rendering library and command line tools to manipulate PDF files.'
 url="http://poppler.freedesktop.org/"
 
+license="GPL2 GPL3 adobe"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Alienus,Pierre.,Fanch,Fabienwang,Tnut"
 
@@ -8,9 +10,9 @@ makedepends=(nss cmake xorg-libxxf86vm libpng xorg-fontconfig
              libjpeg-turbo cairo libxml2 lcms2
              gobject-introspection gtk3 openjpeg)
 
-dataversion=0.4.10
+dataversion=0.4.12
 name=poppler
-version=23.07.0
+version=23.08.0
 
 source=(
 https://poppler.freedesktop.org/$name-$version.tar.xz
@@ -30,6 +32,9 @@ cmake   -DCMAKE_BUILD_TYPE=Release   \
 make
 make DESTDIR=$PKG install
 
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 ../COPYING3 $PKG/usr/share/licenses/$name/COPYING3
+
 cd ../../poppler-data-$dataversion
 make prefix=/usr DESTDIR=$PKG install
 
@@ -46,4 +51,5 @@ rm -rf $PKG/usr/include/poppler/qt4/
 rm -f $PKG/usr/bin/poppler-qt-demo
 rm -rf $PKG/usr/include/poppler/qt/
 
+install -Dm644 COPYING.adobe $PKG/usr/share/licenses/$name/COPYING.adobe
 }
