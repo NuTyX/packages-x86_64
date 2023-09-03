@@ -1,6 +1,8 @@
 description="IRC client in curses UI. Light and extensible"
 url="https://www.weechat.org"
 
+license="GPL3"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Fabienwang,Tnut"
 
@@ -9,7 +11,7 @@ run=(gnutls libgcrypt openssl)
 set=()
 
 name=weechat
-version=4.0.3
+version=4.0.4
 
 source=(https://www.weechat.org/files/src/${name}-${version}.tar.xz)
 
@@ -24,4 +26,6 @@ cmake -Wno-dev . \
       -DENABLE_DOC_INCOMPLETE=ON
 make
 make DESTDIR=$PKG install
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
