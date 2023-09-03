@@ -1,6 +1,8 @@
 description="The BlueZ package contains the Bluetooth protocol stack for Linux."
 url="http://www.bluez.org/"
 
+license="LGPL2.1 GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
@@ -8,7 +10,7 @@ makedepends=(readline dbus libical libvorbis alsa-lib
              libusb-compat libsndfile cups glib)
 
 name=bluez
-version=5.68
+version=5.69
 
 runyx_version=20201011
 
@@ -20,8 +22,6 @@ source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 
 build() {
 cd $name-$version
-
-##sed 's/pause(/bluez_&/' -i profiles/audio/media.c
 
 ./configure --prefix=/usr \
     --sysconfdir=/etc \
@@ -46,6 +46,7 @@ make DESTDIR=$PKG install
 install -v -dm755 $PKG/{etc/bluetooth,usr/sbin}
 install -v -m644 src/main.conf $PKG/etc/bluetooth/main.conf
 ln -svf ../libexec/bluetooth/bluetoothd $PKG/usr/sbin
+
 
 cat > $PKG/etc/bluetooth/rfcomm.conf << "EOF"
 # rfcomm.conf
@@ -73,6 +74,9 @@ install -m644 profiles/network/network.conf \
 
 install -v -dm755 $PKG/usr/share/doc/$name-$version
 install -v -m644 doc/*.txt $PKG/usr/share/doc/$name-$version
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 COPYING.LIB $PKG/usr/share/licenses/$name/COPYING.LIB
 
 # Obsolet lib
 rm $PKG/usr/lib/libbluetooth.la
