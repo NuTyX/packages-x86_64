@@ -1,13 +1,15 @@
 description="High-level device independent layer for speech synthesis interface"
 url="https://devel.freebsoft.org/speechd"
 
+license="GPL2 GPL3 LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 makedepends=(texinfo intltool dotconf pulseaudio python-xdg)
 
 name=speech-dispatcher
-version=0.11.4
+version=0.11.5
 
 source=(https://github.com/brailcom/speechd/releases/download/$version/$name-$version.tar.gz)
 build() {
@@ -31,4 +33,9 @@ rm $PKG/usr/lib/libspeechd.la
 rm $PKG/usr/lib/speech-dispatcher/spd_alsa.la
 rm $PKG/usr/lib/speech-dispatcher/spd_oss.la
 rm $PKG/usr/lib/speech-dispatcher/spd_pulse.la
+
+install -Dm644 COPYING.GPL-2 $PKG/usr/share/licenses/$name/COPYING.GPL-2
+install -Dm644 COPYING.GPL-3 $PKG/usr/share/licenses/$name/COPYING.GPL-3
+install -Dm644 COPYING.LGPL $PKG/usr/share/licenses/$name/COPYING.LGPL
+
 }
