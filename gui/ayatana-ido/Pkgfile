@@ -1,6 +1,8 @@
 description="Ayatana Indicator Display Objects"
 url="https://github.com/AyatanaIndicators/ayatana-ido"
 
+license="GPL3 LGPL2 LGPL2.1 LGPL3"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
@@ -8,7 +10,7 @@ makedepends=(git extra-cmake-modules gobject-introspection vala)
 run=(gtk3 glib)
 
 name=ayatana-ido
-version=0.10.0
+version=0.10.1
 
 prepare() {
 git clone https://github.com/AyatanaIndicators/ayatana-ido.git
@@ -26,4 +28,9 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
 
 make
 make DESTDIR=$PKG install
+
+install -Dm644 ../COPYING.GPL-3 $PKG/usr/share/licenses/$name/COPYING.GPL-3
+install -Dm644 ../COPYING.LGPL-3 $PKG/usr/share/licenses/$name/COPYING.LGPL-3
+install -Dm644 ../COPYING.LGPL-2 $PKG/usr/share/licenses/$name/COPYING.LGPL-2
+install -Dm644 ../COPYING.LGPL-2.1 $PKG/usr/share/licenses/$name/COPYING.LGPL-2.1
 }
