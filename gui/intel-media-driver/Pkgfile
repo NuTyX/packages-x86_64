@@ -1,23 +1,22 @@
 description='Intel Media Driver for VAAPI — Broadwell+ iGPUs'
 url='https://github.com/intel/media-driver/'
 
+license="MLT BSD"
+
 packager="spiky <spiky@nutyx.org>"
 contributors=""
 
 makedepends=(cmake intel-gmmlib libva xorg-libpciaccess)
 
 name=intel-media-driver
-version=23.3.0
-license="MLT BSD"
-source=(https://github.com/intel/media-driver/archive/refs/tags/intel-media-$version.tar.gz
-        intel-media-driver-23.2.3-upstream_fixes-1.patch)
+version=23.3.1
+
+source=(https://github.com/intel/media-driver/archive/refs/tags/intel-media-$version.tar.gz)
 
 prepare() {
 
 mv media-driver-intel-media-$version $name-$version
 
-cd $name-$version
-#patch -Np1 -i ../intel-media-driver-23.2.3-upstream_fixes-1.patch
 }
 
 build() {
