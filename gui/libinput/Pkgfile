@@ -1,6 +1,8 @@
 description="Library for display servers and other applications that need to deal with input devices"
 url="http://www.freedesktop.org/wiki/Software/libinput/"
 
+license="MIT"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut,Pierre,Jayce,Tnut"
 
@@ -13,15 +15,20 @@ source=(https://gitlab.freedesktop.org/libinput/libinput/-/archive/$version/$nam
 
 build() {
 cd $name-$version
+
 mkdir build
 cd build
-meson --prefix=/usr \
+
+meson setup .. \
+        --prefix=/usr \
 	-Dtests=false \
 	-Ddebug-gui=false \
 	-Dudev-dir=/lib/udev \
 	-Ddocumentation=false
 ninja
 DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
 uptodate() {
 local url ext
