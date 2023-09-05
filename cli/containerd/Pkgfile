@@ -1,13 +1,15 @@
 description='A daemon to control runC'
 url='https://containerd.io/'
 
+license="APACHE"
+
 contributors="MattHoush,Tnut"
 packager="spiky <spiky@nutyx.org>"
 
 makedepends=(go btrfs-progs git libseccomp)
 
 name=containerd
-version=1.7.2
+version=1.7.5
 PKGMK_KEEP_SOURCES="no"
 
 source=(https://github.com/containerd/containerd/archive/refs/tags/v${version}.tar.gz)
@@ -24,4 +26,6 @@ build() {
     make GIT_COMMIT=1407cab509ff0d96baa4f0eb6ff9980270e6e620
     install -d -m 0755 $PKG/usr/bin
     install -m 0755 bin/* $PKG/usr/bin/
+
+    install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
