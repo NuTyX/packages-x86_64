@@ -1,6 +1,8 @@
 description="engine of made Web free for the browsers web version 3"
 url="http://webkitgtk.org/"
 
+license="Custom"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Greg,Fanch,Tnut"
 
@@ -12,7 +14,7 @@ makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              harfbuzz gtk-doc libnotify wayland woff2 libmanette unifdef)
              
 name=webkitgtk
-version=2.41.5
+version=2.41.92
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 prepare() {
@@ -59,4 +61,5 @@ $PKG/usr/share/gtk-doc/html/javascriptcoregtk
 rm -r $PKG/usr/share/gtk-doc/html/webkit2gtk-4.0
 rm -r $PKG/usr/share/gtk-doc/html/webkit2gtk-web-extension-4.0
 
+install -Dm644 ../Source/WTF/wtf/dtoa/LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
