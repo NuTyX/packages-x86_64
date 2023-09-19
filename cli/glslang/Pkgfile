@@ -11,12 +11,12 @@ name=glslang
 version=13.0.0
 
 #source=(https://github.com/KhronosGroup/glslang/archive/$version/$name-$version.tar.gz)
-source=(https://github.com/KhronosGroup/glslang/archive/refs/tags/main-tot.tar.gz)
+source=(https://github.com/KhronosGroup/glslang/archive/refs/tags/$version.tar.gz)
 
 ## Patched version
-prepare() {
-mv glslang-main-tot $name-$version
-}
+#prepare() {
+#mv glslang-main-tot $name-$version
+#}
 
 build() {
 cd $name-$version
