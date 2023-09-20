@@ -1,0 +1,32 @@
+description='C Library for NVM Express on Linux'
+url='https://github.com/linux-nvme/libnvme'
+
+license="LGPL2.1"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(dbus json-c keyutils swig)
+
+name=libnvme
+version=1.5
+
+source=(https://github.com/linux-nvme/$name/archive/refs/tags/v${version}/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+
+mkdir build &&
+cd    build &&
+
+meson setup .. \
+      --prefix=/usr \
+      --buildtype=release \
+      -Dlibdbus=auto
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+}
