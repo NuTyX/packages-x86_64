@@ -7,7 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Rems,Sundev79,Spiky,Skythrew"
 
 name=discord
-version=0.0.29
+version=0.0.30
 
 run=(gtk3 libnotify xorg-libxscrnsaver
      glibc alsa-lib nspr nss pulseaudio
@@ -17,7 +17,7 @@ run=(gtk3 libnotify xorg-libxscrnsaver
 PKGMK_KEEP_SOURCES="no"
 
 source=(https://dl.discordapp.net/apps/linux/$version/$name-$version.tar.gz
-        https://discord.com/terms https://discord.com/licenses)
+        terms licenses)
 
 prepare() {
   sed -i "s|Exec=.*|Exec=/usr/bin/$name|" Discord/$name.desktop
