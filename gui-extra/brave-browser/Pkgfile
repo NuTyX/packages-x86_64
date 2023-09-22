@@ -2,10 +2,10 @@ description="The web browser from Brave Browse faster by blocking ads and tracke
 url="https://brave.com/"
 
 name=brave-browser
-version=1.52.126
+version=1.58.131
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
 run=(make-ca ttf-liberation dejavu-ttf
     hicolor-icon-theme desktop-file-utils
@@ -13,7 +13,7 @@ run=(make-ca ttf-liberation dejavu-ttf
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(http://downloads.tuxfamily.org/nutyx/files/$name/libffmpeg.so
+source=(http://downloads.tuxfamily.org/nutyx/sources/$name/libffmpeg.so
         https://github.com/brave/$name/releases/download/v$version/$name-$version-1.x86_64.rpm)
 
 build() {
