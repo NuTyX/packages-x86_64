@@ -12,14 +12,15 @@ makedepends=(gtk3 zlib libjpeg-turbo libssh avahi vte
              libayatana-appindicator)
  
 name=remmina
-version=1.4.31
+version=1.4.33
 
 PKGMK_KEEP_SOURCES="no"
-source=(https://github.com/FreeRDP/Remmina/archive/v$version.tar.gz)
+source=(https://gitlab.com/Remmina/Remmina/-/archive/v.1.4.33/Remmina-v.${version}.tar.gz)
+
 
 build() {
 
-cd Remmina-$version
+cd Remmina-v.${version}
 
 cmake \
     -DCMAKE_INSTALL_PREFIX=/usr \
