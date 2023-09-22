@@ -7,7 +7,7 @@ packager="spiky <spiky@nutyx.org>"
 makedepends=(libpcap)
 
 name=ppp
-version=2.4.9
+version=2.5.0
 
 source=(http://samba.org/ftp/$name/$name-$version.tar.gz
 	ppp.systemd)
@@ -20,7 +20,7 @@ build() {
 
 	./configure --prefix=/usr 
 	make
-	make INSTROOT=$PKG install-etcppp
-	make INSTROOT=$PKG install
+#	make DESTDIR=$PKG install-etcppp
+	make DESTDIR=$PKG install
 install -D -m644 ../ppp.systemd $PKG/lib/systemd/system/ppp@.service	
 }
