@@ -1,14 +1,38 @@
 description="WebM GDK Pixbuf Loader library"
 url="https://github.com/aruiz/webp-pixbuf-loader"
 
+license="LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors=""
 
 makedepends=(gdk-pixbuf libwebp)
 
 name=webp-pixbuf-loader
-version=0.2.4
+version=0.2.5
 
-source=(https://github.com/aruiz/$name/archive/$version.tar.gz)
+source=(https://github.com/aruiz/$name/archive/$version.tar.gz
+        834657c8.patch)
 
-build=meson
+prepare() {
+cd $name-$version
+# Fix libwebp dependency
+patch -Np1 -i ../834657c8.patch
+}
+
+build() {
+
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSE.LGPL-2 $PKG/usr/share/licenses/$name/LICENSE.LGPL-2
+}
