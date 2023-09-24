@@ -1,6 +1,8 @@
 description="An unofficial WhatsApp desktop application for linux"
 url="https://github.com/eneshecan/whatsapp-for-linux"
 
+license="GPL3"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
@@ -12,7 +14,7 @@ run=(hicolor-icon-theme desktop-file-utils
      gstreamer-plugins-good gstreamer-plugins-bad)
 
 name=whatsapp-for-linux
-version=1.6.3
+version=1.6.4
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -26,4 +28,6 @@ cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
 make
 make DESTDIR=$PKG install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
