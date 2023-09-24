@@ -1,13 +1,15 @@
 description="A  minimalistic plugin API for video sources and filters"
 url="http://www.piksel.org/frei0r"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
 makedepends=(cmake gavl doxygen)
 
 name=frei0r-plugins
-version=2.3.0
+version=2.3.1
 
 source=(https://github.com/dyne/frei0r/archive/refs/tags/v$version.tar.gz)
 
@@ -17,12 +19,17 @@ mv frei0r-$version $name-$version
 
 build() {
 
+cd $name-$version
+
   mkdir -p build
   cd build
-  cmake ../$name-$version \
-    -DCMAKE_INSTALL_PREFIX=/usr
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        ..
+
   make
 
   make DESTDIR=$PKG install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
 
