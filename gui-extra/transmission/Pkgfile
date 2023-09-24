@@ -1,6 +1,8 @@
 description="Light and fast Bittorent client (GTK Interface)"
 url="https://www.transmissionbt.com/"
 
+license="GPL3 GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Alienus,Remy,Tnut"
 
@@ -9,15 +11,9 @@ run=(desktop-file-utils gtk-update-icon-cache
      hicolor-icon-theme shared-mime-info)
 name=transmission
 
-version=4.0.3
+version=4.0.4
 
-source=(transmission-3.00-openssl-3.patch 
-        https://github.com/transmission/transmission/releases/download/$version/$name-$version.tar.xz)
-
-prepare() {
- cd $name-$version
-# patch -Np1 -i ../transmission-3.00-openssl-3.patch
-}
+source=(https://github.com/transmission/transmission/releases/download/$version/$name-$version.tar.xz)
 
 
 build() {
@@ -36,4 +32,7 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
       ..
 make
 make DESTDIR=$PKG install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+
 }
