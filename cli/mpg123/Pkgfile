@@ -1,13 +1,15 @@
 description="The mpg123 package contains a console-based MP3 player. It claims to be the fastest MP3 decoder for Unix."
 url="http://mpg123.de/"
 
+license="LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Rems,Tnut"
 
 makedepends=(alsa-lib)
 
 name=mpg123
-version=1.32.0
+version=1.32.1
 
 source=( http://downloads.sourceforge.net/$name/$name-$version.tar.bz2)
 build() {
@@ -18,4 +20,6 @@ make DESTDIR=$PKG install
 # Obsolets
 rm $PKG/usr/lib/libout123.la
 rm $PKG/usr/lib/libmpg123.la
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
