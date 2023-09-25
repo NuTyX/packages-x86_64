@@ -32,7 +32,7 @@ rm ${PKG}/usr/bin/cinnamon-control-center
 rm ${PKG}/usr/share/cinnamon-control-center/ui/shell.ui
 }
 package() {
-wget https://download.tuxfamily.org/nutyx/files/cinnamon-translations-5.2.2.tar.gz
+wget http://download.tuxfamily.org/nutyx/sources/cinnamon-translations/cinnamon-translations-5.2.2.tar.gz
 bsdtar xf cinnamon-translations-5.2.2.tar.gz
 cd cinnamon-translations-5.2.2
 for file in po-export/$name/*.po
