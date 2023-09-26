@@ -1,17 +1,22 @@
 description="Utility to deliver and manage a complete PKI configuration"
 url="https://github.com/djlucas/make-ca/"
 
-packager="spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 run=(gawk nss p11-kit)
 
 name=make-ca
 version=1.12
+release=2
 
-source=(https://github.com/lfs-book/$name/releases/download/v${version}/$name-$version.tar.xz)
+source=(https://hg.mozilla.org/projects/nss/raw-file/tip/lib/ckfw/builtins/certdata.txt
+        https://github.com/lfs-book/$name/releases/download/v${version}/$name-$version.tar.xz)
 
 build() {
+install -vdm755 $PKG/etc/ssl
+install -m644 certdata.txt $PKG/etc/ssl/certdata.txt
+
 cd $name-$version
 make DESTDIR=$PKG install
-install -vdm755 $PKG/etc/ssl/local
 }

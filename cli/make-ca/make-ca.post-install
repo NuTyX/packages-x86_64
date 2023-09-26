@@ -1,4 +1,5 @@
 . lib/lsb/init-functions
-log_info_msg "${INFO}Generating new certificates${NORMAL}\n"
-usr/sbin/make-ca -g -f > /dev/null
+log_info_msg "${INFO}Generating certificates${NORMAL}\n"
+usr/sbin/make-ca -r > /dev/null
+log_info_msg "${INFO}run regularly the command: make-ca -g -f${NORMAL}\n"
 
