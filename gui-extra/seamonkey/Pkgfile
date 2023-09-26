@@ -12,14 +12,11 @@ run=(startup-notification desktop-file-utils hicolor-icon-theme
      shared-mime-info)
 
 name=seamonkey
-version=2.53.14
-release=2
+version=2.53.17.1
 
 locale_version=$version
-python2_version=2.7.18
 
-source=(https://www.python.org/ftp/python/${python2_version}/Python-${python2_version}.tar.xz 
-        https://ftp.mozilla.org/pub/$name/releases/$version/source/$name-$version.source.tar.xz )
+source=(https://ftp.mozilla.org/pub/$name/releases/$version/source/$name-$version.source.tar.xz )
 
 pack_remove_locale() {
 wget https://ftp.mozilla.org/pub/seamonkey/releases/${locale_version}/langpack/$name-${locale_version}.${1}.langpack.xpi
@@ -33,13 +30,6 @@ usr/lib/$name-$version/extensions/langpack-${1}@$name.mozilla.org.xpi
 
 rm usr/lib/$name-$version/extensions/langpack-${1}@$name.mozilla.org.xpi
 }
-prepare() {
-cd Python-${python2_version}
-./configure --prefix=/usr --disable-optimizations \
-            --without-lto --without-ensurepip
-
-DESTDIR=$SRC make install
-} 
 build()  {
 
 cd $name-$version
@@ -55,7 +45,6 @@ cat > mozconfig << "EOF"
 ac_add_options --disable-necko-wifi
 
 # Uncomment these lines if you have installed optional dependencies:
-#ac_add_options --enable-system-hunspell
 ac_add_options --enable-startup-notification
 
 # Uncomment the following option if you have not installed PulseAudio
@@ -77,6 +66,7 @@ ac_add_options --with-system-webp
 # The elf-hack is reported to cause failed installs (after successful builds)
 # on some machines. It is supposed to improve startup time and it shrinks
 # libxul.so by a few MB - comment this if you know your machine is not affected.
+ac_add_options --disable-debug-symbols
 ac_add_options --disable-elf-hack
 
 # Seamonkey has some additional features that are not turned on by default,
@@ -114,18 +104,16 @@ ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 EOF
 
-grep -rl \"rU\" | xargs sed -i 's/"rU"/"r"/'
-sed -e 's/?s)\./?s:.)/'               \
-    -e '/?m)/{s/?m)/?m:/;s/\$"/$)"/}' \
-    -e '/?s)%/{s/?s)/?s:/;s/?"/?)"/}' \
-    -i xpcom/idl-parser/xpidl/xpidl.py
-
+sed -e '1012 s/stderr=devnull/stderr=subprocess.DEVNULL/' \
+    -e '1013 s/OSError/(OSError, subprocess.CalledProcessError)/' \
+    -i third_party/python/distro/distro.py
 
 export CC=clang
 export CXX=clang++
 
 export PATH=$SRC/usr/bin:$PATH
 
+SHELL=/bin/sh ./mach configure
 SHELL=/bin/sh ./mach build
 
 SHELL=/bin/sh DESTDIR=$PKG ./mach install
