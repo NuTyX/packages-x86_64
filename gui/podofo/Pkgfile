@@ -1,15 +1,15 @@
 description="C++ library to work with the PDF file format"
 url="http://podofo.sourceforge.net"
 
-liceeeeense="GPL2"
+license="GPL2"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Alienus,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus,Spiky"
 
 makedepends=(cmake xorg-fontconfig freetype libidn libpng libtiff lua51)
 
 name=podofo
-version=0.10.1
+version=0.9.8
 
 source=(https://github.com/podofo/podofo/archive/refs/tags/$version.tar.gz)
 
@@ -21,6 +21,7 @@ build() {
     cmake -DCMAKE_INSTALL_PREFIX=/usr .. \
           -DFREETYPE_INCLUDE_DIR=/usr/include/freetype2 ..\
           -DLUA_INCLUDE_DIR=/usr/include/lua5.1 .. \
+          -DPODOFO_BUILD_SHARED=1 \
           -DPODOFO_HAVE_JPEG_LIB=1 \
           -DPODOFO_HAVE_PNG_LIB=1 \
           -DPODOFO_HAVE_TIFF_LIB=1
