@@ -1,6 +1,8 @@
 description="An image viewing/manipulation program"
 url="http://www.imagemagick.org/"
 
+license="custom"
+
 packager="Tnut <tnut@nutyx.org>"
 contributors="Tnut,Spiky"
 
@@ -8,12 +10,13 @@ makedepends=(freetype ghostscript lcms2 libgsf giflib libxml2 libjpeg-turbo
               openexr libwmf libpng librsvg libwebp djvulibre)
 
 name=imagemagick
-version=7.1.1-6
+version=7.1.1.18
+_version="${version%.*}-${version##*.}"
 
 PKGMK_KEEP_SOURCES="no"
 PKGMK_KEEP_LA_LIBS="yes"
 
-source=(https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${version}.tar.gz)
+source=(https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${_version}.tar.gz)
 build () {
     cd ImageMagick-*
     ./configure --prefix=/usr \
@@ -37,4 +40,6 @@ build () {
     make
     make DESTDIR=$PKG install
     find  $PKG -name perllocal.pod -exec rm {} \;
+
+    install -Dt $PKG/usr/share/licenses/$name -m644 LICENSE NOTICE
 }
