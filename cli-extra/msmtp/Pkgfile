@@ -1,13 +1,15 @@
 description="A mini smtp client"
 url="https://marlam.de/msmtp/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Rocket,Spiky"
+license="GPL3"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Rocket"
 
 makedepends=(gnutls)
 
 name=msmtp
-version=1.8.22
+version=1.8.24
 
 source=(https://marlam.de/$name/releases/$name-$version.tar.xz)
 
@@ -19,4 +21,6 @@ cd $name-$version
                --with-tls=gnutls
 make
 make DESTDIR="$PKG" install
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
