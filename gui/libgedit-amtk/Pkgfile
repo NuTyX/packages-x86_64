@@ -1,0 +1,32 @@
+description=' The libgedit-amtk package contains a basic GTKUIManager replacement based on GAction. '
+url=' https://gedit-technology.net/'
+
+license="LGPL3.0
+"
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(gtk3)
+
+name=libgedit-amtk
+version=5.8.0
+
+source=(https://gedit-technology.net/tarballs/$name/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+
+mkdir amtk-build
+cd    amtk-build
+
+meson setup ..              \
+      --prefix=/usr         \
+      --buildtype=release   \
+      -Dgtk_doc=false
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSES/LGPL-3.0-or-later.txt $PKG/usr/share/licenses/$name/LGPL-3.0-or-later.txt
+}
