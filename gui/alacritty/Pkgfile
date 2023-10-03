@@ -1,13 +1,15 @@
 description='A cross-platform, OpenGL terminal emulator. '
 url='https://alacritty.org/'
 
+license="APACHE MIT"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="BlogofraisFR"
 
 makedepends=(make rustc xorg-fontconfig xcb-util-renderutil)
 
 name=alacritty
-version=0.12.2
+version=0.12.3
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -27,4 +29,7 @@ build() {
   install -D -m644 "extra/completions/_alacritty" "$PKG/usr/share/zsh/site-functions/_alacritty"
   install -D -m644 "extra/completions/alacritty.fish" "$PKG/usr/share/fish/vendor_completions.d/alacritty.fish"
   install -D -m644 "extra/logo/alacritty-term.svg" "$PKG/usr/share/pixmaps/Alacritty.svg"
+
+  install -Dm644 LICENSE-APACHE $PKG/usr/share/licenses/$name/LICENSE-APACHE
+  install -Dm644 LICENSE-MIT $PKG/usr/share/licenses/$name/LICENSE-MIT
 }
