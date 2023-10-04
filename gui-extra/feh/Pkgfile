@@ -1,6 +1,8 @@
 description="X11 image viewer aimed mostly at console users. It is controlled via commandline arguments"
 url="https://feh.finalrewind.org/"
 
+license="Custom:MIT"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Geantbrun,Fabienwang"
 
@@ -8,7 +10,7 @@ makedepends=(libpng giblib libexif xorg-libxt xorg-libxcursor
              xorg-libxdamage xorg-libxrandr xorg-libxinerama curl)
 
 name=feh
-version=3.10
+version=3.10.1
 
 source=(http://feh.finalrewind.org/$name-$version.tar.bz2)
 
@@ -17,4 +19,6 @@ build() {
   sed -i "s:doc/feh:&-$version:" config.mk
   make PREFIX=/usr exif=1 help=1 stat64=1
   make DESTDIR=$PKG PREFIX=/usr install        
+
+ install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
