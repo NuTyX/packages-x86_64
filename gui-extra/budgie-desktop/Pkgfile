@@ -1,6 +1,8 @@
 description="Budgie desktop environnement"
 url="https://github.com/BuddiesOfBudgie/budgie-desktop"
 
+license="GPL2 LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="BlogofraisFR,Tnut"
 
@@ -14,8 +16,24 @@ run=(gnome-desktop mutter gnome-menus budgie-screensaver vala
 set=(budgie)
 
 name=budgie-desktop
-version=10.8
+version=10.8.1
 
 source=(https://github.com/BuddiesOfBudgie/budgie-desktop/releases/download/v$version/budgie-desktop-v$version.tar.xz)
 
-build=meson
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
+install -Dm644 ../LICENSE.LGPL2.1 $PKG/usr/share/licenses/$name/LICENSE.LGPL2.1
+}
