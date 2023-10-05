@@ -3,8 +3,8 @@ url="http://poppler.freedesktop.org/"
 
 license="GPL2 GPL3 adobe"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Alienus,Pierre.,Fanch,Fabienwang,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Alienus,Pierre.,Fanch,Fabienwang,Tnut"
 
 makedepends=(nss cmake xorg-libxxf86vm libpng xorg-fontconfig
              libjpeg-turbo cairo libxml2 lcms2
@@ -12,7 +12,7 @@ makedepends=(nss cmake xorg-libxxf86vm libpng xorg-fontconfig
 
 dataversion=0.4.12
 name=poppler
-version=23.09.0
+version=23.10.0
 
 source=(
 https://poppler.freedesktop.org/$name-$version.tar.xz
@@ -26,6 +26,9 @@ cd    build
 cmake   -DCMAKE_BUILD_TYPE=Release   \
 	-DCMAKE_INSTALL_PREFIX=/usr  \
 	-DTESTDATADIR=$PWD/testfiles \
+        -DENABLE_GPGME=OFF            \
+        -DENABLE_QT5=OFF              \
+        -DENABLE_QT6=OFF              \
 	-DENABLE_UNSTABLE_API_ABI_HEADERS=ON     \
 	..
 
