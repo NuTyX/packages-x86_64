@@ -1,13 +1,15 @@
 description="Show technical and tag informations about video or audio file."
 url="https://mediaarea.net/"
 
+license="BSD"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Remy"
 
 makedepends=(libmediainfo)
 
 name=mediainfo
-version=23.09
+version=23.10
 
 source=(https://mediaarea.net/download/source/$name/$version/"${name}"_$version.tar.xz)
 
@@ -18,4 +20,7 @@ build() {
   ./configure --prefix=/usr
   make
   make DESTDIR=$PKG install
+
+  install -Dm644 $SRC/MediaInfo/LICENSE $PKG/usr/share/licenses/$name/LICENSE
+  install -Dm644 $SRC/MediaInfo/License.html $PKG/usr/share/licenses/$name/License.html
 }
