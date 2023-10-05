@@ -1,13 +1,15 @@
 description="Shared library for mediainfo."
 url="http://mediainfo.sourceforge.net/"
 
+license="BSD"
+
 contributors="Alienus,Fanch,Greg,Tnut"
 packager="spiky <spiky@nutyx.org>"
 
 makedepends=(libmms libzen curl pkgconf)
 
 name=libmediainfo
-version=23.09
+version=23.10
 
 source=(https://mediaarea.net/download/source/$name/$version/"${name}"_$version.tar.xz)
 
@@ -46,4 +48,7 @@ package() {
 
   # Obsolet lib
   rm $PKG/usr/lib/libmediainfo.la  
+
+  install -Dm644 $SRC/MediaInfoLib/LICENSE $PKG/usr/share/licenses/$name/LICENSE
+  install -Dm644 $SRC/MediaInfoLib/License.html $PKG/usr/share/licenses/$name/License.html
 }
