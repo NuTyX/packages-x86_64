@@ -1,13 +1,15 @@
 description="Light-weight, simple and fast XML parser for C++ with XPath support."
 url="http://pugixml.org"
 
+license="MIT"
+
 contributors="Pierre,Greg,Tnut"
 packager="spiky <spiky@nutyx.org>"
 
 makedepends=(cmake)
 
 name=pugixml
-version=1.13
+version=1.14
 
 source=(http://github.com/zeux/pugixml/releases/download/v${version}/pugixml-${version}.tar.gz)
 
@@ -23,4 +25,6 @@ cd $name-$version
     ..
   make
   make DESTDIR=$PKG install  
+
+  install -Dm644 ../LICENSE.md $PKG/usr/share/licenses/$name/LICENSE.md
 }
