@@ -1,0 +1,28 @@
+description='Postmodern immutable and persistent data structures for C++'
+url='https://sinusoid.es/immer'
+
+license="boost"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake catch2)
+
+name=immer
+version=0.8.1
+
+source=(https://github.com/arximboldi/$name/archive/refs/tags/v$version.tar.gz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+
+make
+make DESTDIR=$PKG install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
+}
