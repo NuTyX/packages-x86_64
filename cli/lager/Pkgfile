@@ -1,0 +1,34 @@
+description='C++ library for value-oriented design using the unidirectional data-flow architecture'
+url='https://sinusoid.es/lager'
+
+license="boost"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+PKGMK_KEEP_SOURCES="no"
+
+makedepends=(cmake)
+
+name=lager
+version=0.1.0
+
+source=(https://github.com/arximboldi/lager/archive/refs/tags/v$version.tar.gz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -Dlager_BUILD_EXAMPLES=OFF  \
+      -Dlager_BUILD_TESTS=OFF     \
+      ..
+
+
+make
+make DESTDIR=$PKG install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
+}

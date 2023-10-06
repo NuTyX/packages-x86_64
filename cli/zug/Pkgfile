@@ -1,0 +1,28 @@
+description='Transducers for C++'
+url='https://sinusoid.es/zug/'
+
+license="boost"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake)
+
+name=zug
+version=0.1.0
+
+source=(https://github.com/arximboldi/zug/archive/refs/tags/v$version.tar.gz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+
+make
+make DESTDIR=$PKG install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
+}
