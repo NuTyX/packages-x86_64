@@ -1,0 +1,27 @@
+description='OpenPrinting - the legacy support library for PPD files'
+url='https://github.com/OpenPrinting/libppd'
+
+license="Apache"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(libcupsfilters)
+
+name=libppd
+version=2.0.0
+
+source=(https://github.com/OpenPrinting/libppd/releases/download/$version/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+./configure \
+        --prefix=/usr \
+        --disable-mutool \
+        --disable-pdftops
+
+make
+make DESTDIR=$PKG install
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+}
