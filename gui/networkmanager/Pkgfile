@@ -15,7 +15,7 @@ alias=(NetworkManager)
 _name=NetworkManager
 
 name=networkmanager
-version=1.44.0
+version=1.44.2
 
 runyx_version=20201011
 
@@ -41,6 +41,7 @@ meson --prefix        /usr       \
       -Dmodem_manager=false      \
       -Ddocs=true                \
       -Dsystemdsystemunitdir=/lib/systemd/system \
+      -Dvapi=false	         \
       ../${_name}-$version
 ninja
 DESTDIR=$PKG ninja install
