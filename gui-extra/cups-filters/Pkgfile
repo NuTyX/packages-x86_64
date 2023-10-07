@@ -4,13 +4,13 @@ url="http://www.cups.org"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
-makedepends=(glib cups lcms2 poppler mupdf qpdf libjpeg-turbo libexif
-             libpng libtiff ghostscript avahi ijs harfbuzz dejavu-ttf)
+makedepends=(glib cups lcms2 poppler mupdf qpdf libjpeg-turbo libexif libcupsfilters
+             libppd libpng libtiff ghostscript avahi ijs harfbuzz dejavu-ttf)
 
 set=(cups printer)
 
 name=cups-filters
-version=1.28.17
+version=2.0.0
 
 source=(https://github.com/OpenPrinting/cups-filters/releases/download/$version/$name-$version.tar.xz)
 
@@ -28,10 +28,11 @@ CXXFLAGS="$CXXFLAGS -std=c++17"             \
             --docdir=/usr/share/doc/$name-$version
 make
 make DESTDIR=$PKG install
-# Obsolets libs
-rm $PKG/usr/lib/lib{cupsfilters,fontembed}.la
 
-mkdir -p $PKG/lib/systemd/system
-install -v -m644 utils/cups-browsed.service \
-$PKG/lib/systemd/system/cups-browsed.service
+
+## No such file "cups-browsed.service" ##
+
+#mkdir -p $PKG/lib/systemd/system
+#install -v -m644 utils/cups-browsed.service \
+#$PKG/lib/systemd/system/cups-browsed.service
 }
