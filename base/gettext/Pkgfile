@@ -1,6 +1,8 @@
 description="Utilities for internationalization and localization."
 url="http://www.gnu.org/software/gettext/"
 
+license="GPL3"
+
 maintainer="Ulrich Drepper"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
@@ -8,7 +10,7 @@ contributors="Pierre,Tnut"
 makedepends=(acl attr ncurses)
 
 name=gettext
-version=0.22.2
+version=0.22.3
 PKGMK_LOCALES=()
 
 source=(http://ftp.gnu.org/gnu/gettext/gettext-$version.tar.xz)
@@ -23,6 +25,8 @@ make
 make check||true
 make DESTDIR=$PKG install
 chmod 0755 $PKG/usr/lib/preloadable_libintl.so
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
 devel()
 {
