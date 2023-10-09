@@ -1,13 +1,15 @@
 description="C library that performs DNS requests and name resolves asynchronously"
 url="https://c-ares.haxx.se/"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Greg,Tnut,Spiky"
+license="MIT"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Tnut"
 
 makedepends=(cmake)
 
 name=c-ares
-version=1.19.1
+version=1.20.1
 
 source=(https://c-ares.haxx.se/download/$name-$version.tar.gz)
 
@@ -19,5 +21,7 @@ cd    build
 cmake  -DCMAKE_INSTALL_PREFIX=/usr ..
 make
 make DESTDIR=$PKG install
+
+install -Dm644 ../LICENSE.md $PKG/usr/share/licenses/$name/LICENSE.md
 
 }
