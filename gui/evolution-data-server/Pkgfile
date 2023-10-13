@@ -1,6 +1,8 @@
 description="Programs that work with contacts, tasks, and calendar information"
 url="http://www.gnome.org/"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Jayce,Remy,Tnut"
 
@@ -9,7 +11,7 @@ makedepends=(vim db libcanberra gnome-online-accounts gnome-common gperf icu
              gobject-introspection kerberos gtk4 openldap gcr-4 webkit2gtk-6)
 
 name=evolution-data-server
-version=3.48.4
+version=3.50.0
 
 source=(https://gitlab.gnome.org/GNOME/$name/-/archive/$version/$name-$version.tar.gz)
 
@@ -33,4 +35,6 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr   \
       ..
 make
 make DESTDIR=$PKG install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
