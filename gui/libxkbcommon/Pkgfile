@@ -1,6 +1,8 @@
 description="Keymap compiler and support library by the XKB specification"
 url="http://xkbcommon.org/"
 
+license="Custo"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
@@ -8,8 +10,23 @@ makedepends=(meson ninja wayland wayland-protocols
              xorg-xkeyboard-config libxcb doxygen xorg-util-macros)
 
 name=libxkbcommon
-version=1.5.0
+version=1.6.0
 
 source=(http://xkbcommon.org/download/libxkbcommon-$version.tar.xz)
 
-build=meson
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
+}
