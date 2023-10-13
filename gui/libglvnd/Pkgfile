@@ -7,9 +7,9 @@ contributors="Llamatron,Tnut"
 makedepends=(xorg-libxext xorg-libx11 xorgproto python meson)
 
 name=libglvnd
-version=1.6.0
+version=1.7.0
 
-source=(https://gitlab.com/freedesktop-sdk/mirrors/github/NVIDIA/$name/-/archive/v$version/$name-v$version.tar.gz)
+source=(https://gitlab.freedesktop.org/glvnd/$name/-/archive/v$version/$name-v$version.tar.gz)
 
 build() {
 meson setup $name-v$version build -D x11=enabled -D glx=enabled \
