@@ -1,21 +1,30 @@
 description="The Shared Mime Info package contains a MIME database."
 url="http://freedesktop.org/"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre B, tnut"
 
 makedepends=(meson ninja libxml2 intltool glib itstool xmlto)
 
 name=shared-mime-info
-version=2.2
+version=2.3
 
 source=(https://gitlab.freedesktop.org/xdg/$name/-/archive/$version/$name-$version.tar.gz)
 build() {
 
 cd $name-$version
+
 mkdir build
 cd build
-meson --prefix=/usr -Dupdate-mimedb=true
+
+meson setup .. \
+      --prefix=/usr \
+      -Dupdate-mimedb=true
+
 ninja
 DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 } 
