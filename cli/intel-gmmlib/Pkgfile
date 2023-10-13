@@ -1,13 +1,15 @@
 description='Intel Graphics Memory Management Library'
 url='https://github.com/intel/gmmlib/'
 
+license="MIT"
+
 packager="spiky <spiky@nutyx.org>"
 contributors=""
 
 makedepends=(cmake)
 
 name=intel-gmmlib
-version=22.3.11
+version=22.3.12
 
 source=(https://github.com/intel/gmmlib/archive/refs/tags/$name-$version.tar.gz)
 
@@ -28,4 +30,6 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr   \
 
 make
 make DESTDIR=$PKG install
+
+install -Dm644 ../LICENSE.md $PKG/usr/share/licenses/$name/LICENSE.md
 }
