@@ -1,15 +1,16 @@
 description="Ayatana Indicators (Shared Library)"
 url="https://github.com/AyatanaIndicators/libayatana-indicator"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Spiky"
+license="GPL3"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
 makedepends=(extra-cmake-modules gobject-introspection vala)
 run=(gtk3 glib ayatana-ido)
 
 name=libayatana-indicator
-version=0.9.3
-release=2
+version=0.9.4
 
 prepare() {
 git clone https://github.com/AyatanaIndicators/libayatana-indicator.git
@@ -24,4 +25,6 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr  \
 ..
 make
 make DESTDIR=$PKG install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
