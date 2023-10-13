@@ -1,13 +1,15 @@
 description="Set of Javascript Bindings for GNOME"
 url="http://www.gnome.org/"
 
+license="GPL2 GPL3 MIT MPL LGPL2 LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Remy,Tnut"
 
-makedepends=(meson ninja cairo dbus-glib gobject-introspection js102 xorg-libxxf86vm)
+makedepends=(meson ninja cairo dbus-glib gobject-introspection js115 xorg-libxxf86vm)
 
 name=gjs
-version=1.76.2
+version=1.78.0
 
 source=(https://gitlab.gnome.org/GNOME/$name/-/archive/$version/$name-$version.tar.gz)
 build() {
@@ -23,6 +25,17 @@ cd $name-$version
 
   ninja
   DESTDIR=$PKG ninja install
+
+  install -Dm644 ../LICENSES/BSD-3-Clause.txt $PKG/usr/share/licenses/$name/BSD-3-Clause.txt
+  install -Dm644 ../LICENSES/CC0-1.0.txt $PKG/usr/share/licenses/$name/CC0-1.0.txt
+  install -Dm644 ../LICENSES/GPL-2.0-or-later.txt $PKG/usr/share/licenses/$name/GPL-2.0-or-later.txt
+  install -Dm644 ../LICENSES/GPL-3.0-or-later.txt $PKG/usr/share/licenses/$name/GPL-3.0-or-later.txt
+  install -Dm644 ../LICENSES/LGPL-2.0-or-later.txt $PKG/usr/share/licenses/$name/LGPL-2.0-or-later.txt
+  install -Dm644 ../LICENSES/LGPL-2.1-or-later.txt $PKG/usr/share/licenses/$name/LGPL-2.1-or-later.txt
+  install -Dm644 ../LICENSES/MIT.txt $PKG/usr/share/licenses/$name/MIT.txt
+  install -Dm644 ../LICENSES/MPL-1.1.txt $PKG/usr/share/licenses/$name/MPL-1.1.txt
+  install -Dm644 ../LICENSES/MPL-2.0.txt $PKG/usr/share/licenses/$name/MPL-2.0.txt
+  
 }
 
 
