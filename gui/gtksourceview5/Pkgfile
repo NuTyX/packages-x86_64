@@ -1,18 +1,36 @@
 description="A text widget adding syntax highlighting and more to GNOME"
 url="https://gitlab.gnome.org/GNOME/gtksourceview"
 
+license="LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 makedepends=(meson gobject-introspection vala gtk-doc pcre2 gtk4)
 
 name=gtksourceview5
-version=5.8.0
+version=5.10.0
 
 source=(https://gitlab.gnome.org/GNOME/gtksourceview/-/archive/$version/gtksourceview-$version.tar.gz)
 
 prepare() {
 mv gtksourceview-$version $name-$version
 }
-build=meson
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+}
 
