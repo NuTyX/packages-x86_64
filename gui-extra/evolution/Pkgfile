@@ -1,6 +1,8 @@
 description="Manage your email, contacts and schedule."
 url="https://www.gnome.org/"
 
+license="LGPL3 LGPL2 OpenLDAP"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Jayce,Fanch,Rems,Tnut"
 
@@ -13,9 +15,9 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
      shared-mime-info gnome-icon-theme adwaita-icon-theme)
 
 name=evolution
-version=3.48.4
+version=3.50.0
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://gitlab.gnome.org/GNOME/evolution/-/archive/$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
@@ -33,4 +35,12 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -G Ninja
 ninja
 DESTDIR=$PKG ninja install
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 COPYING-DOCS $PKG/usr/share/licenses/$name/COPYING-DOCS
+install -Dm644 COPYING-DOCS.CCBYSA $PKG/usr/share/licenses/$name/COPYING-DOCS.CCBYSA
+install -Dm644 COPYING-DOCS.GFDL $PKG/usr/share/licenses/$name/COPYING-DOCS.GFDL
+install -Dm644 COPYING.LGPL2 $PKG/usr/share/licenses/$name/COPYING.LGPL2
+install -Dm644 COPYING.LGPL3 $PKG/usr/share/licenses/$name/COPYING.LGPL3
+install -Dm644 COPYING.OPENLDAP $PKG/usr/share/licenses/$name/COPYING.OPENLDAP
 }
