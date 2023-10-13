@@ -1,11 +1,13 @@
 description='A free, fast and small automatic formatter for C, C++, C sharp, and Java source code.'
 url='http://astyle.sourceforge.net/'
 
+license="MIT"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 name=astyle
-version=3.4.6
+version=3.4.8
 _version=3.2.0
 source=(https://sourceforge.net/projects/astyle/files/astyle/astyle%203.4/$name-$version.tar.bz2)
 
@@ -32,4 +34,6 @@ for i in ../../doc/*.html; do
   install -m0644 $i \
   $PKG/usr/share/doc/$name
 done
+
+install -Dm644 $SRC/$name-$version/LICENSE.md $PKG/usr/share/licenses/$name/LICENSE.md
 }
