@@ -1,14 +1,32 @@
 description="Command line utilities for working with desktop entries"
 url="http://freedesktop.org/software/desktop-file-utils"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+license="GPL2"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(glib meson ninja)
 
 name=desktop-file-utils
-version=0.26
+version=0.27
 
 source=(http://freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-$version.tar.xz)
 
-build=meson
+build() {
+
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+}
