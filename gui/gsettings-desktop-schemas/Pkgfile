@@ -1,14 +1,15 @@
 description="Shared GSettings schemas for the desktop"
 url="http://www.gnome.org/"
 
-packager="Skythrew <mael.guerin@outlook.fr>"
-contributors="Pierre,Fanch,Tnut,Spiky"
+license="LGPL2.1"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Fanch,Tnut,Skythrew"
 
 makedepends=(meson ninja intltool glib gobject-introspection perl-xml-parser adobe-source-code-pro-fonts)
 
 name=gsettings-desktop-schemas
-version=44.0
-release=2
+version=45.0
 
 source=(https://gitlab.gnome.org/GNOME/$name/-/archive/$version/$name-$version.tar.gz)
 
@@ -20,7 +21,25 @@ schemas/org.gnome.desktop.background.gschema.xml.in
 
 sed -i -r 's:"(/system):"/org/gnome\1:g' schemas/*.in
 }
-build=meson
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+}
+
+
 uptodate(){
 local latest lastversion url
 url="https://download.gnome.org/sources/$name"
