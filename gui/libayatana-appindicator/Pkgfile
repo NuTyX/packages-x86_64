@@ -1,6 +1,8 @@
 description="Ayatana Application Indicators (Shared Library)"
 url="https://github.com/AyatanaIndicators/libayatana-appindicator"
 
+license="GPL3 LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
@@ -8,7 +10,7 @@ makedepends=(extra-cmake-modules glib gtk3 gtk-sharp-3 gobject-introspection val
 run=(libdbusmenu-gtk libayatana-indicator)
 
 name=libayatana-appindicator
-version=0.5.92
+version=0.5.93
 
 source=(https://github.com/AyatanaIndicators/$name/archive/refs/tags/$version.tar.gz)
 
@@ -23,4 +25,8 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr  \
 ..
 make
 make DESTDIR=$PKG install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 ../COPYING.GPL.3 $PKG/usr/share/licenses/$name/COPYING.GPL.3
+install -Dm644 ../COPYING.LGPL.2.1 $PKG/usr/share/licenses/$name/COPYING.LGPL.2.1
 }
