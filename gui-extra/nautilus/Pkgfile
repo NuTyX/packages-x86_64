@@ -1,6 +1,8 @@
 description="GNOME file manager"
 url="http://live.gnome.org/Nautilus"
 
+license="GPL3"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Jayce,Remy,Fabienwang,Tnut"
 
@@ -12,22 +14,24 @@ makedepends=(gnome-autoar libnotify gnome-desktop tracker gvfs
 set=(gnome)
 
 name=nautilus
-version=44.2.1
+version=45.0
 
 
-source=(https://ftp.acc.umu.se/pub/GNOME/sources/$name/${version:0:2}/$name-$version.tar.xz)
+source=(https://gitlab.gnome.org/GNOME/nautilus/-/archive/$version/$name-$version.tar.gz)
 
 build() {
   cd $name-$version
 
-#sed "/dependency/s@'libportal'@'libportal-gtk3'@" -i meson.build
-#sed "/portal-gtk3/s@portal/@portal-gtk3/@" -i src/nautilus-files-view.c
   mkdir -p build
   cd build
-  meson --prefix=/usr  \
-    --sysconfdir=/etc \
-    -Dpackagekit=false \
-    -Dselinux=false ..
+  meson setup .. \
+        --prefix=/usr  \
+        --sysconfdir=/etc \
+        -Dpackagekit=false \
+        -Dselinux=false
+
   ninja
   DESTDIR=$PKG ninja install
+
+  install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
