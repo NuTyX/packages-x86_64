@@ -1,6 +1,8 @@
 description="Clocks applications for GNOME"
 url="http://www.gnome.org/"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Jayce,Remy,Tnut"
 
@@ -11,8 +13,23 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache libadwai
 set=(gnome)
 
 name=gnome-clocks
-version=44.0
+version=45.0
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
-build=meson
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSE.md $PKG/usr/share/licenses/$name/LICENSE.md
+}
