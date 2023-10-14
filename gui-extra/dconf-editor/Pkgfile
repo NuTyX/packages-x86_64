@@ -1,6 +1,8 @@
 description="A graphical editor for the DConf database"
 url="http://www.gnome.org/"
 
+license="GPL3"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch, tnut, jayce, Remy, Schrodinger72"
 
@@ -9,15 +11,22 @@ makedepends=(dconf dbus gtk3 libxml2 libxslt meson ninja vala libhandy)
 set=(gnome)
 
 name=dconf-editor
-version=43.0
+version=45.0.1
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
+
 mkdir build
 cd build
-meson --prefix=/usr --sysconfdir=/etc
+
+meson setup .. \
+      --prefix=/usr \
+      --sysconfdir=/etc
+
 ninja
 DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
