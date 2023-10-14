@@ -1,30 +1,39 @@
 description="Window manager for gnome."
 url="https://www.gnome.org/"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Jayce,Fanch,Remy,Fabienwang,Tnut"
 
 makedepends=(clutter meson ninja glib xorg-libsm graphene
              gnome-desktop gnome-settings-daemon libwacom libxkbcommon upower
              gobject-introspection libcanberra startup-notification
-             xorg-libxcursor xorg-libxcomposite wayland-protocols)
+             xorg-libxcursor xorg-libxcomposite wayland-protocols libei)
 
 run=(xorg-server zenity pipewire xorg-xwayland)
 set=(gnome)
 
 name=mutter
-version=44.5
+version=45.0
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build() {
+cd $name-$version
 
-meson setup $name-$version build \
+mkdir build
+cd    build
+
+meson setup .. \
       --prefix=/usr \
       --buildtype=release \
       -Dprofiler=false \
       -Dtests=false
-meson compile -C build
 
-DESTDIR=$PKG meson install -C build
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
