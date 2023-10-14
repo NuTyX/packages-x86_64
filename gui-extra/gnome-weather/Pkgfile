@@ -1,6 +1,8 @@
 description="Access current weather conditions and forecasts"
 url="http://www.gnome.org/"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Jayce,Remy,Tnut"
 
@@ -9,8 +11,23 @@ run=(gnome-desktop gjs libgweather-4 gsettings-desktop-schemas
      desktop-file-utils gtk-update-icon-cache libadwaita)
 
 name=gnome-weather
-version=44.0
+version=45.0
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
-build=meson
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING.md $PKG/usr/share/licenses/$name/COPYING.md
+}
