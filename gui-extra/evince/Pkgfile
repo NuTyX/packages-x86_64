@@ -1,6 +1,8 @@
 description="Pdf, Postscript, DjVu, Tiff, DVI documents viewer."
 url="https://gnome.org"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Remy,Fanch,Fabienwang,Tnut"
 
@@ -14,18 +16,24 @@ run=(adwaita-icon-theme gsettings-desktop-schemas
 set=(gnome)
 
 name=evince
-version=44.3
+version=45.0
 
-source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
+source=(https://gitlab.gnome.org/GNOME/evince/-/archive/$version/$name-$version.tar.gz)
 
 build() {
+cd $name-$version
 
 mkdir build
 cd    build
-meson --prefix=/usr \
--Dgtk_doc=false \
-../$name-$version
+
+meson setup .. \
+      --prefix=/usr \
+      -Dgtk_doc=false \
+      --wrap-mode=nodownload
+
 
 ninja
 DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
