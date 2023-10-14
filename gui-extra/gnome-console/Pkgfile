@@ -11,7 +11,7 @@ run=()
 set=(gnome)
 
 name=gnome-console
-version=44.4
+version=45.0
 
 source=(https://gitlab.gnome.org/GNOME/console/-/archive/$version/console-$version.tar.gz)
 
@@ -21,8 +21,9 @@ cd console-$version
 mkdir build
 cd build
 
-meson --prefix=/usr \
-      ..
+meson setup .. \
+      --prefix=/usr
+
 ninja
 DESTDIR=$PKG ninja install
 
