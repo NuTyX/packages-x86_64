@@ -1,6 +1,8 @@
 description="A system monitor for GNOME"
 url="http://library.gnome.org/users/gnome-system-monitor/"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut,Jayce,Remy,Fanch,Tnut"
 
@@ -11,15 +13,22 @@ run=(gsettings-desktop-schemas desktop-file-utils libhandy)
 set=(gnome)
 
 name=gnome-system-monitor
-version=44.0
+version=45.0.2
 
-source=(http://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(http://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
+
 mkdir build
 cd build
-meson --prefix=/usr -Dsystemd=false
+
+meson setup .. \
+      --prefix=/usr \
+      -Dsystemd=false
+
 ninja
 DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
