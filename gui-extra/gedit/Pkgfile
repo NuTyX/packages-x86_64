@@ -1,20 +1,43 @@
 description="A text editor for GNOME"
 url="https://www.gnome.org/"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Jayce,Fanch,Tnut"
 
 set=()
 
 makedepends=(meson ninja libpeas yelp-xsl enchant iso-codes
-             gtksourceview5 gspell enchant gtk3 gvfs
+             libgedit-gtksourceview gspell enchant
              libsoup python-gobject python amtk tepl)
-run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
+run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache gvfs)
 
 name=gedit
-version=44.2
-release=2
+version=46.1
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
-build=meson
+prepare() {
+# First change the meson.build script so that it can accept a release build.
+cd $name-$version
+sed -i s/plain/release/ meson.build
+}
+build() {
+cd $name-$version
+
+mkdir gedit-build
+cd    gedit-build
+
+meson setup .. \
+       --prefix=/usr          \
+       --buildtype=release    \
+       -Dgtk_doc=false
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+}
+
