@@ -1,6 +1,8 @@
 description="Gnome-shell extensions"
 url="http://www.gnome.org/"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Tnut,Remy,Tnut,Fabienwang"
 
@@ -9,8 +11,22 @@ makedepends=(libgtop meson ninja)
 set=(gnome)
 
 name=gnome-shell-extensions
-version=44.0
+version=45.0
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
-build=meson
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+}
