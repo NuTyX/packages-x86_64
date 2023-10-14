@@ -1,6 +1,8 @@
 description="Panel for the Xfce desktop environment."
 url="http://www.xfce.org/"
 
+license="GPL2 LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tyrry,Greg,Fabienwang,Tnut"
 
@@ -9,7 +11,7 @@ makedepends=(exo garcon libwnck libxfce4ui gtk-doc gtk3)
 set=(xfce4)
 
 name=xfce4-panel
-version=4.18.4
+version=4.18.5
 
 source=(http://archive.xfce.org/src/xfce/$name/${version%.*}/$name-$version.tar.bz2)
 
@@ -21,4 +23,7 @@ cd $name-$version
 --sysconfdir=/etc
 make
 make DESTDIR=$PKG install
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 COPYING.LIB $PKG/usr/share/licenses/$name/COPYING.LIB
 }
