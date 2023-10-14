@@ -1,6 +1,8 @@
 description="Library for Graphical logins and managing local and remote displays."
 url="http://www.gnome.org/"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Schrodinger72,Tnut"
 
@@ -12,8 +14,7 @@ run=(xorg-xinit xorg-xhost xorg-xrdb upower iso-codes)
 set=(gnome budgie)
 
 name=gdm
-version=44.1
-release=2
+version=45.0.1
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
@@ -34,13 +35,14 @@ sed -e 's@systemd@elogind@'                                \
 
 mkdir build
 cd    build
-meson --prefix=/usr               \
+meson setup .. \
+      --prefix=/usr               \
       --localstatedir=/var        \
       -Ddefault-pam-config=lfs    \
       -Dplymouth=disabled         \
       -Dgdm-xsession=true         \
-      -Dpam-mod-dir=/lib/security \
-      ..
+      -Dpam-mod-dir=/lib/security
+
 ninja
 DESTDIR=$PKG ninja install
 
@@ -55,4 +57,6 @@ EOF
 chmod 755 $PKG/$SERVICE/run
 mkdir -p $PKG/etc/init/multi
 ln -sv $SERVICE $PKG/etc/init/multi
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
