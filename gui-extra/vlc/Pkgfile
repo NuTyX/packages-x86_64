@@ -1,6 +1,8 @@
 description="Media player, streamer, and encoder. It can play from many inputs"
 url="https://www.videolan.org/vlc"
 
+license="GPL2 LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Remy,Fabienwang,Tnut"
 
@@ -15,8 +17,7 @@ run=(desktop-file-utils libmatroska xdg-utils
      vlc.lib)
 
 name=vlc
-version=3.0.18
-release=4
+version=3.0.19
 
 source=(https://download.videolan.org/$name/$version/$name-$version.tar.xz)
 
@@ -67,4 +68,7 @@ done
 rm $PKG/usr/lib/libvlc{,core}.la
 rm $PKG/usr/lib/vlc/libcompat.la
 rm $PKG/usr/lib/vlc/libvlc{_pulse,_vdpau,_xcb_events}.la
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 COPYING.LIB $PKG/usr/share/licenses/$name/COPYING.LIB
 }
