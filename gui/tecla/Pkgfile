@@ -1,0 +1,33 @@
+description='The Tecla package contains a keyboard layout viewer. '
+url='https://gitlab.gnome.org/GNOME/tecla'
+
+license="GPL3"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(libadwaita libxkbcommon)
+
+set=(gnome)
+
+name=tecla
+version=45.0
+
+source=(https://gitlab.gnome.org/GNOME/tecla/-/archive/$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup ..\
+      --prefix=/usr \
+      --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
+}
