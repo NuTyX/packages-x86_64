@@ -1,6 +1,8 @@
 description="Gucharmap is a Unicode character map and font viewer"
 url="https://www.gnome.org/"
 
+license="GPL3 GFDL UNICODE"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Jayce,Tnut"
 
@@ -10,7 +12,7 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache)
 set=(gnome)
 
 name=gucharmap
-version=15.0.4
+version=15.1.1
 
 source=( https://gitlab.gnome.org/GNOME/gucharmap/-/archive/$version/$name-$version.tar.bz2)
 
@@ -22,20 +24,25 @@ build() {
         mkdir ucd
          pushd ucd
 
-         wget https://www.unicode.org/Public/zipped/15.0.0/UCD.zip
-         wget https://www.unicode.org/Public/zipped/15.0.0/Unihan.zip
+         wget https://www.unicode.org/Public/zipped/15.1.0/UCD.zip
+         wget https://www.unicode.org/Public/zipped/15.1.0/Unihan.zip
           unzip UCD.zip
         popd
 
- meson --prefix=/usr         \
+ meson setup .. \
+       --prefix=/usr         \
        --strip               \
        --buildtype=release   \
        -Ducd_path=./ucd      \
-       -Ddocs=false ..
+       -Ddocs=false
 
  ninja
 
  rm  -fv /usr/share/glib-2.0/schemas/org.gnome.Charmap.enums.xml
 
  DESTDIR=$PKG ninja install
+
+ install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+ install -Dm644 ../COPYING.GFDL $PKG/usr/share/licenses/$name/COPYING.GFDL
+ install -Dm644 ../COPYING.UNICODE $PKG/usr/share/licenses/$name/COPYING.UNICODE
 }
