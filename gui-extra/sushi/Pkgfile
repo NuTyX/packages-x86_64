@@ -1,6 +1,8 @@
 description="A quick previewer for Nautilus"
 url="https://gitlab.gnome.org/GNOME/sushi"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors=""
 
@@ -10,8 +12,23 @@ run=()
 set=(gnome)
 
 name=sushi
-version=44.2
+version=45.0
 
 source=(https://gitlab.gnome.org/GNOME/sushi/-/archive/$version/$name-$version.tar.gz)
 
-build=meson
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+}
