@@ -1,0 +1,32 @@
+description='The libei package contains a set of libraries for handling emulated inputs.'
+url='https://libinput.pages.freedesktop.org/libei/'
+
+license="Custom"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python-attrs python-jinja libxkbcommon libevdev libxml2)
+
+name=libei
+version=1.1.0
+
+source=(https://gitlab.freedesktop.org/libinput/libei/-/archive/$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+       --buildtype=release    \
+       -Dtests=disabled
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+}
