@@ -1,17 +1,33 @@
 description='A simple text editor for the GNOME DE'
 url='https://gitlab.gnome.org/GNOME/gnome-text-editor'
 
-packager="Skythrew <mael.guerin@outlook.fr>"
-contributors=""
+license="GPL3"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Skythrew"
 
 makedepends=(gtk4 gtksourceview5 libadwaita libeditorconfig enchant icu)
 run=()
 set=(gnome)
 
 name=gnome-text-editor
-version=44.0
-release=2
+version=45.0
 
 source=(https://gitlab.gnome.org/GNOME/gnome-text-editor/-/archive/$version/$name-$version.tar.bz2)
 
-build=meson
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+}
