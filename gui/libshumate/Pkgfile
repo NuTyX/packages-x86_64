@@ -9,14 +9,17 @@ makedepends=(gobject-introspection gi-docgen vala meson
              glib cairo sqlite gtk4 libsoup3)
 
 name=libshumate
-version=1.0.5
+version=1.1.0
 
 source=(https://download.gnome.org/sources/libshumate/1.0/$name-$version.tar.xz)
 
 build() {
 
 meson setup $name-$version build \
-       --prefix=/usr
+       --prefix=/usr \
+            --buildtype=release    \
+            --wrap-mode=nodownload \
+            -Dgtk_doc=false
 
 meson compile -C build
 
