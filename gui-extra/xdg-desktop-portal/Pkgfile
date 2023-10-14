@@ -1,21 +1,34 @@
 description='Desktop integration portals for sandboxed apps'
 url='https://github.com/flatpak/xdg-desktop-portal'
 
+license="LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 makedepends=(python xmlto docbook-xsl git libportal
-             geoclue2 glib pipewire)
+             geoclue2 glib pipewire bubblewrap)
 run=(fuse)
 
 name=xdg-desktop-portal
-version=1.16.0
+version=1.18.0
 
 prepare () {
 git clone https://github.com/flatpak/$name $name-$version
-
+}
+build() {
 cd $name-$version
-git checkout $version
 
-NOCONFIGURE=1 ./autogen.sh
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+       --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
