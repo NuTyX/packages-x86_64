@@ -1,14 +1,15 @@
 description="a regular expressions library"
 url="https://github.com/kkos/oniguruma"
 
+license="BSD"
 
-packager="Spiky <spiky@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contributors="Greg"
 
 makedepends=()
 
 name=oniguruma
-version=6.9.8
+version=6.9.9
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -24,4 +25,6 @@ build() {
 package() {
 	cd "$SRC"/onig-${version%.1}
 	make DESTDIR="$PKG" install
+
+ install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
