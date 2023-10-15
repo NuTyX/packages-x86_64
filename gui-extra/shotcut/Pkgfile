@@ -1,6 +1,8 @@
 description='Cross-platform Qt based Video Editor'
 url='https://www.shotcut.org'
 
+license="GPL3"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
@@ -10,7 +12,7 @@ run=(mlt movit ffmpeg x264 libvpx lame frei0r-plugins ladspa)
 set=()
 
 name=shotcut
-version=23.07.29
+version=23.09.29
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/mltframework/shotcut/archive/v$version.tar.gz)
@@ -36,4 +38,5 @@ export CXXFLAGS+=" -D SHOTCUT_NOUPGRADE"
 
   DESTDIR=$PKG cmake --install build
 
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
