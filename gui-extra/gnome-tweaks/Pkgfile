@@ -1,19 +1,36 @@
 description="A tool to customize advanced GNOME 3 options"
 url="https://live.gnome.org/GnomeTweakTool"
 
+license="GPL3 CC0-1.0"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut,Jayce,Schrodinger72"
 
-makedepends=(gtk3 libhandy meson)
+makedepends=(libhandy meson)
 run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
      python-gobject)
 
 set=(gnome)
 
 name=gnome-tweaks
-version=42.beta
-release=2
+version=45.0
 
-source=(https://download.gnome.org/sources/gnome-tweaks/42/gnome-tweaks-42.beta.tar.xz)
+source=(https://gitlab.gnome.org/GNOME/gnome-tweaks/-/archive/$version/$name-$version.tar.gz)
 
-build=meson
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSES/GPL-3.0 $PKG/usr/share/licenses/$name/GPL-3.0
+install -Dm644 ../LICENSES/CC0-1.0 $PKG/usr/share/licenses/$name/CC0-1.0
+}
