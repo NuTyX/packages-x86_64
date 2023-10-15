@@ -1,16 +1,25 @@
 description="P(ortable|ackageable) NaCl-based crypto library"
 url="https://github.com/jedisct1/libsodium"
-packager="tnut <tnut@nutyx.org>"
-contributors="Greg"
+
+license="Custom:ISC"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Tnut"
 
 name=libsodium
-version=1.0.18
+version=1.0.19
 
 source=(https://download.libsodium.org/libsodium/releases/libsodium-$version.tar.gz
 )
 
+prepare() {
+mv $name-stable $name-$version
+}
+
 package() {
 rm $PKG/usr/lib/libsodium.la
+
+install -Dm644 $SRC/$name-$version/LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
 
 uptodate() {
