@@ -9,11 +9,13 @@ makedepends=(python bison grep)
 
 name=glibc
 version=2.37
+release=2
 
 PKGMK_LOCALES=()
-source=(https://www.kernel.org/pub/linux/kernel/v${kernelversion:0:1}.x/linux-$kernelversion.tar.xz
+source=(https://download.tuxfamily.org/nutyx/sources/glibc/glibc-$version-fixes-1.patch
+        https://www.kernel.org/pub/linux/kernel/v${kernelversion:0:1}.x/linux-$kernelversion.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
-	https://ftp.gnu.org/gnu/$name/$name-$version.tar.xz glibc.locales.supported )
+	https://ftp.gnu.org/gnu/$name/$name-$version.tar.xz glibc.locales.supported)
 
 build() {
 
@@ -29,6 +31,7 @@ cp -rv usr/include/* $PKG/usr/include
 cd ../glibc-$version
 
 patch -Np1 -i ../glibc-$version-fhs-1.patch
+patch -Np1 -i ../glibc-$version-fixes-1.patch
 
 sed '/width -=/s/workend - string/number_length/' \
     -i stdio-common/vfprintf-process-arg.c
