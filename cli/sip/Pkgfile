@@ -9,13 +9,13 @@ contributors=""
 makedepends=(python-toml python-ply)
 
 name=sip
-version=6.7.11
-release=2
+version=6.7.12
 
-source=(https://files.pythonhosted.org/packages/ce/8c/f66d1c45946e73a46f258b9628fe974ba8cc46c41b4750a59be192981695/sip-6.7.11.tar.gz)
+source=(https://pypi.python.org/packages/source/s/sip/sip-$version.tar.gz)
 
 build() {
 cd sip-$version
+
 python setup.py build
 python setup.py install --skip-build --root="$PKG" --optimize=1
 
