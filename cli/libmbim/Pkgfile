@@ -1,11 +1,13 @@
 description="MBIM modem protocol helper library"
 url="http://www.freedesktop.org/wiki/Software/libmbim/"
 
+license="GPL2 LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
 name=libmbim
-version=1.28.4
+version=1.30.0
 
 makedepends=(meson ninja libgudev gtk-doc glib python help2man gtk-doc
             bash-completion)
@@ -17,9 +19,12 @@ build() {
 mkdir build
 cd    build
 
-meson --prefix=/usr \
-..
+meson setup .. \
+      --prefix=/usr
 
 ninja
 DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSES/GPL-2.0-or-later.txt $PKG/usr/share/licenses/$name/GPL-2.0-or-later.txt
+install -Dm644 ../LICENSES/LGPL-2.1-or-later.txt $PKG/usr/share/licenses/$name/LGPL-2.1-or-later.txt
 }
