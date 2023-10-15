@@ -1,6 +1,8 @@
 description="GLib-based library for talking to WWAN modems and devices (QMI) protocol."
 url="http://www.freedesktop.org/software/libqmi/"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
@@ -8,7 +10,7 @@ makedepends=(meson ninja python glib libgudev libmbim bash-completion
              perl-locale-gettext libqrtr-glib help2man)
 
 name=libqmi
-version=1.32.4
+version=1.34.0
 
 source=(https://gitlab.freedesktop.org/mobile-broadband/libqmi/-/archive/$version/$name-$version.tar.gz)
 
@@ -18,10 +20,12 @@ cd $name-$version
 mkdir build
 cd    build
 
-meson --prefix=/usr \
-      -Dgtk_doc=false \
-..
+meson setup .. \
+      --prefix=/usr \
+      -Dgtk_doc=false
 
 ninja
 DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
