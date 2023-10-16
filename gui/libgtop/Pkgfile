@@ -1,24 +1,30 @@
 description="A library that read information about processes and the running system"
 url="http://www.gnu.org/directory/libs/LibGTop.html"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="B,Juglas,Rems,Tnut"
 
 makedepends=(gtk-doc intltool gobject-introspection)
 
 name=libgtop
-version=2.41.1
+version=2.41.2
 
 source=(http://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
 build() {
 cd $name-$version
+
 ./configure --prefix=/usr \
 --disable-static --enable-gtk-doc
+
 make
 make DESTDIR=$PKG install
 install -v -m755 -d $PKG/usr/lib/libgtop/examples
 install -v -m755 examples/.libs/* $PKG/usr/lib/libgtop/examples
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 
 # Obsolet lib
 rm $PKG/usr/lib/libgtop-2.0.la
