@@ -1,5 +1,8 @@
 description="Advanced key-value store"
 url="http://redis.io/"
+
+license="BSD"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg"
 
@@ -31,4 +34,7 @@ make DESTDIR=$PKG PREFIX=/usr install
 install -D -m 755 $SRC/redis.rc $PKG/etc/rc.d/redis
 install -Dm644 redis.conf $PKG/etc/redis.conf
 install -Dm644 ../redis.logrotate $PKG/etc/logrotate.d/redis
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 CODE_OF_CONDUCT.md $PKG/usr/share/licenses/$name/CODE_OF_CONDUCT.md
 }
