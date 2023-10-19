@@ -1,0 +1,27 @@
+description="A library supporting 'Deferred Execution"
+url="https://gitlab.gnome.org/GNOME/libdex"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(vala libsoup3 gobject-introspection)
+
+name=libdex
+version=0.4.0
+
+source=(https://download.gnome.org/core/45/$version/sources/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+}
