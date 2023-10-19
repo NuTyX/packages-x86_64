@@ -8,8 +8,8 @@ contributors=""
 
 makedepends=(gobject-introspection meson sysprof xorg-server xorg-libsm
              gnome-desktop gnome-settings-daemon graphene colord dconf
-             mutter lcms2 libcanberra libgudev libinput libsm libxkbcommon
-             startup-notification mutter pipewire)
+             mutter lcms2 libcanberra libgudev libinput libxkbcommon
+             startup-notification mutter pipewire sysprof)
 run=()
 set=(budgie)
 
@@ -27,7 +27,9 @@ cd    build
 
 meson setup .. \
        --prefix=/usr          \
-            --buildtype=release
+            --buildtype=release \
+            -Dprofiler=false
+
 
 ninja
 
