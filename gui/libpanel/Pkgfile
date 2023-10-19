@@ -1,0 +1,28 @@
+description='Dock/panel library for GTK 4'
+url='https://gitlab.gnome.org/GNOME/libpanel'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(gobject-introspection vala gtk4 graphene hicolor-icon-theme libadwaita)
+
+name=libpanel
+version=1.4.0
+
+source=(https://download.gnome.org/core/45/$version/sources/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release \
+            -Ddocs=disabled
+
+ninja
+
+DESTDIR=$PKG ninja install
+}
