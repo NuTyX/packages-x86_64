@@ -1,4 +1,4 @@
-description='A backend implementation for xdg-desktop-portal using GTK'
+description="A backend implementation for xdg-desktop-portal using GTK"
 url='https://github.com/flatpak/xdg-desktop-portal-gtk'
 
 packager="spiky <spiky@nutyx.org>"
@@ -12,7 +12,9 @@ version=1.15.1
 
 prepare () {
 git clone https://github.com/flatpak/$name $name-$version
+}
 
+build() {
 cd $name-$version
 
 mkdir build
