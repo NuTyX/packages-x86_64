@@ -8,6 +8,7 @@ contributors="Tnut"
 
 name=qt6-base
 version=6.6.0
+release=2
 
 
 makedepends=(libb2 cmake ninja systemd icu at-spi2-core mtdev 
@@ -15,7 +16,7 @@ makedepends=(libb2 cmake ninja systemd icu at-spi2-core mtdev
              vulkan-headers shared-mime-info sqlite libinput
              double-conversion alsa-lib xcb-util-image xcb-util-keysyms
              xcb-util-cursor mesa pcre2 xdg-utils xcb-util-wm
-             xorg-libxrender libxkbcommon gtk3 mariadb postgresql)
+             xorg-libxrender libxkbcommon gtk3 mariadb postgresql brotli)
 
 source=(qt6-base-cflags.patch libxkbcommon-1.6.patch
         https://download.qt.io/official_releases/qt/${version%.*}/$version/submodules/qtbase-everywhere-src-$version.tar.xz)
