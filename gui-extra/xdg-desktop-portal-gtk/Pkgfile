@@ -1,20 +1,28 @@
-description='A backend implementation for xdg-desktop-portal using GTK'
+43.40description='A backend implementation for xdg-desktop-portal using GTK'
 url='https://github.com/flatpak/xdg-desktop-portal-gtk'
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(xdg-desktop-portal python git)
-run=(gtk3 gsettings-desktop-schemas)
+makedepends=(xdg-desktop-portal python git xdg-desktop-portal-gnome)
+run=(gtk3 gsettings-desktop-schemas xdg-desktop-portal)
 
 name=xdg-desktop-portal-gtk
-version=1.15.0
+version=1.15.1
 
 prepare () {
 git clone https://github.com/flatpak/$name $name-$version
 
 cd $name-$version
-git checkout $version
 
-NOCONFIGURE=1 ./autogen.sh
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+       --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
 }
