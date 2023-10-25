@@ -1,6 +1,8 @@
 description="The Xorg Server is the core of the X Window system."
 url="http://xorg.freedesktop.org"
 
+license="MIT"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Greg,Tnut"
 
@@ -9,7 +11,7 @@ libepoxy xcb-util-image xcb-util-renderutil xcb-util-wm mesa xorg-glu \
 xorg-pixman xorg-libdmx xorg-libxres xorg-libxfont2 xorg-xkeyboard-config wayland)
 
 name=xorg-server
-version=21.1.8
+version=21.1.9
 
 source=(consolidate.patch
 	https://ftp.x.org/pub/individual/xserver/$name-$version.tar.xz)
@@ -41,4 +43,6 @@ rm $PKG/usr/lib/xorg/modules/{libexa,libfbdevhw,libglamoregl,\
 libint10,libshadow,libshadowfb,libvgahw,libwfb}.la
 rm $PKG/usr/lib/xorg/modules/drivers/modesetting_drv.la
 rm $PKG/usr/lib/xorg/modules/extensions/libglx.la
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
