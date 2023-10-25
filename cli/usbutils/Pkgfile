@@ -1,15 +1,16 @@
 description="USB Device Utilities"
 url="http://downloads.sourceforge.net/linux-usb/"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Pierre,Spiky"
+license="GPL2 GPL3"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(libusb-compat)
 run=(hwdata)
 
 name=usbutils
-version=015
-release=2
+version=016
 
 source=(http://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-$version.tar.xz)
 
@@ -23,4 +24,7 @@ mkdir -p $PKG/usr/share/hwdata
 
 make
 make DESTDIR=$PKG install
+
+install -Dm644 LICENSES/GPL-2.0-only.txt $PKG/usr/share/licenses/$name/GPL-2.0-only.txt
+install -Dm644 LICENSES/GPL-3.0-only.txt $PKG/usr/share/licenses/$name/GPL-3.0-only.txt
 }
