@@ -1,6 +1,8 @@
 description="Modern file manager for Xfce"
 url="http://thunar.xfce.org"
 
+license="LGPL2 GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tyrry,Greg,Rems,Fabienwang,Tnut"
 
@@ -11,7 +13,7 @@ run=(desktop-file-utils gtk-update-icon-cache
 set=(xfce4)
 
 name=thunar
-version=4.18.7
+version=4.19.0
 
 source=(http://archive.xfce.org/src/xfce/thunar/${version%.*}/$name-$version.tar.bz2)
 
@@ -24,4 +26,7 @@ cd $name-$version
 --docdir=/usr/share/doc/$name-$version
 make
 make DESTDIR=$PKG install
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 COPYING.LIB $PKG/usr/share/licenses/$name/COPYING.LIB
 }
