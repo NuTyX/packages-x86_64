@@ -1,0 +1,34 @@
+description='v4l2loopback driver for kernel stable'
+url='https://github.com/umlaeute/v4l2loopback'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+run=(kernel-515)
+
+name=v4l2loopback-kernel-515
+version=0.12.7
+
+
+source=($url/archive/v$version/v4l2loopback-$version.tar.gz
+        $url/commit/e7edf2f55b7eb71b69984110f3c8e31b8ac6285e.patch)
+
+prepare() {
+	mv e7edf2f55b7eb71b69984110f3c8e31b8ac6285e.patch fix-kernel-5.18+-compat.patch
+    patch -p1 -d v4l2loopback-$version < fix-kernel-5.18+-compat.patch
+}
+
+build() {
+KERNEL_VERSION="$(basename /lib/modules/*)"
+cd v4l2loopback-${version}
+
+make -C /lib/modules/${KERNEL_VERSION}/build M=$(pwd)
+
+install -Dm755 v4l2loopback.ko \
+$PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/media/common/v4l2loopback.ko
+
+xz \
+$PKG/lib/modules/${KERNEL_VERSION}/kernel/drivers/media/common/v4l2loopback.ko
+
+echo "depmod -a ${KERNEL_VERSION}" > $PKGMK_ROOT/$name.post-install
+}
