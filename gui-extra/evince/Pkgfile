@@ -17,6 +17,7 @@ set=(gnome)
 
 name=evince
 version=45.0
+release=2
 
 source=(https://gitlab.gnome.org/GNOME/evince/-/archive/$version/$name-$version.tar.gz)
 
@@ -28,6 +29,7 @@ cd    build
 
 meson setup .. \
       --prefix=/usr \
+      --libdir=/usr/lib \
       -Dgtk_doc=false \
       --wrap-mode=nodownload
 
