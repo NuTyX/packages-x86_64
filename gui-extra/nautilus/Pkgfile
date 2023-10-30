@@ -15,6 +15,7 @@ set=(gnome budgie)
 
 name=nautilus
 version=45.1
+release=2
 
 
 source=(https://gitlab.gnome.org/GNOME/nautilus/-/archive/$version/$name-$version.tar.gz)
@@ -27,6 +28,7 @@ build() {
   meson setup .. \
         --prefix=/usr  \
         --sysconfdir=/etc \
+        --libdir=/usr/lib \
         -Dpackagekit=false \
         -Dselinux=false
 
