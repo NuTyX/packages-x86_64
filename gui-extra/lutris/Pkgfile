@@ -1,6 +1,8 @@
 description="Lutris is an open gaming platform for Linux."
 url="https://lutris.net"
 
+license="GPL3"
+
 makedepends=(gtk3 glib)
 run=(psmisc python-gobject python-yaml python-evdev
      unrar unzip p7zip curl xorg-xrandr python-dbus
@@ -10,7 +12,7 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 name=lutris
-version=0.5.13
+version=0.5.14
 
 source=($url/releases/${name}_$version.tar.xz)
 
@@ -18,5 +20,7 @@ build() {
 cd $name
 python setup.py build
 python setup.py install --root="$PKG" --optimize=1 --skip-build
+
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
 
