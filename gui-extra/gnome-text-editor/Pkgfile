@@ -11,7 +11,7 @@ run=()
 set=(gnome)
 
 name=gnome-text-editor
-version=45.0
+version=45.1
 
 source=(https://gitlab.gnome.org/GNOME/gnome-text-editor/-/archive/$version/$name-$version.tar.bz2)
 
@@ -23,7 +23,8 @@ cd    build
 
 meson setup .. \
        --prefix=/usr          \
-            --buildtype=release
+       --libdir=/usr/lib      \
+       --buildtype=release
 
 ninja
 
