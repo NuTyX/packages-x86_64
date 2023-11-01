@@ -15,6 +15,7 @@ set=(gnome budgie)
 
 name=gdm
 version=45.0.1
+release=2
 
 source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
 
@@ -38,6 +39,7 @@ cd    build
 meson setup .. \
       --prefix=/usr               \
       --localstatedir=/var        \
+      --libdir=/usr/lib           \
       -Ddefault-pam-config=lfs    \
       -Dplymouth=disabled         \
       -Dgdm-xsession=true         \
