@@ -13,6 +13,7 @@ set=(gnome)
 
 name=sushi
 version=45.0
+release=2
 
 source=(https://gitlab.gnome.org/GNOME/sushi/-/archive/$version/$name-$version.tar.gz)
 
@@ -24,7 +25,8 @@ cd    build
 
 meson setup .. \
        --prefix=/usr          \
-            --buildtype=release
+       --libdir=/usr/lib      \
+       --buildtype=release
 
 ninja
 
