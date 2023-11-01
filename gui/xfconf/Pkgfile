@@ -1,13 +1,15 @@
 description="A simple client-server configuration storage and query system"
 url="http://www.xfce.org/"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tyrry,Greg,Tnut"
 
 makedepends=(libxfce4util dbus-glib perl-glib gtk-doc gobject-introspection)
 
 name=xfconf
-version=4.18.2
+version=4.18.3
 
 source=(http://archive.xfce.org/src/xfce/${name}/${version%.*}/${name}-$version.tar.bz2)
 
@@ -25,4 +27,6 @@ make DESTDIR=$PKG install
 
 # Obsolet libs
 rm $PKG/usr/lib/lib${name}-0.la
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
