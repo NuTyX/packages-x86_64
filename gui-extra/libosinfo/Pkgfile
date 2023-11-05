@@ -1,6 +1,8 @@
 description="The Operating System information database"
 url="http://libosinfo.org"
 
+license="GPL2 LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut, Jayce"
 
@@ -9,11 +11,28 @@ makedepends=(libsoup check)
 set=(gnome)
 
 name=libosinfo
-version=1.10.0
+version=1.11.0
 
 source=(https://releases.pagure.org/$name/$name-$version.tar.xz)
 
-build=meson
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 ../COPYING.LIB $PKG/usr/share/licenses/$name/COPYING.LIB
+
+}
 
 
 uptodate() {
