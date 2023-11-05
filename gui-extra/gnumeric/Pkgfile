@@ -1,15 +1,17 @@
 description="The Gnumeric package is a spreadsheet program used to manipulate and analyze numeric data."
 url="https://www.gnumeric.org/"
 
-contributors="Greg,Rems,Spiky"
-packager="Tnut <tnut@nutyx.org>"
+license="GPL2 GPL3"
+
+contributors="Greg,Rems,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(goffice libglade python-gobject)
 run=(shared-mime-info desktop-file-utils
      gtk-update-icon-cache hicolor-icon-theme)
 
 name=gnumeric
-version=1.12.55
+version=1.12.56
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 
@@ -29,6 +31,10 @@ for FILE in `find $PKG/usr/lib/$name/$version/plugins -name "*.la"`
 do
  rm $FILE
 done
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 COPYING-gpl2 $PKG/usr/share/licenses/$name/COPYING-gpl2
+install -Dm644 COPYING-gpl3 $PKG/usr/share/licenses/$name/COPYING-gpl3
 }
 
 uptodate(){
