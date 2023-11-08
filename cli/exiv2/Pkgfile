@@ -1,15 +1,18 @@
 description="Exif and Iptc metadata manipulation library and tools"
 url="http://www.exiv2.org/index.html"
+
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
 name=exiv2
-version=0.28.0
+version=0.28.1
 makedepends=(cmake brotli inih)
-source=(https://github.com/Exiv2/exiv2/releases/download/v${version}/$name-$version-Source.tar.gz)
+source=(https://github.com/Exiv2/exiv2/archive/v$version.tar.gz)
 
 build() {
-cd $name-$version-Source
+cd $name-$version
 mkdir build
 cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr  \
@@ -22,4 +25,7 @@ cmake -DCMAKE_INSTALL_PREFIX=/usr  \
 
 make
 make DESTDIR=$PKG install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+
 }
