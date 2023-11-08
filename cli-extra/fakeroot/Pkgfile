@@ -1,13 +1,15 @@
 description="Gives a fake root environment."
 url="http://packages.debian.org/fakeroot"
 
+license="GPL3"
+
 contributors="Alienus,Greg,Rems,Tnut"
 packager="spiky <spiky@nutyx.org>"
 
 makedepends=(libcap attr)
 
 name=fakeroot
-version=1.32.1
+version=1.32.2
 
 source=(http://ftp.debian.org/debian/pool/main/f/$name/${name}_${version}.orig.tar.gz)
 
@@ -22,7 +24,10 @@ build() {
 	make
 	make DESTDIR=$PKG install
 
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+
 install -dm755 $PKG/etc/ld.so.conf.d/
 echo '/usr/lib/libfakeroot' > "$PKG/etc/ld.so.conf.d/fakeroot.conf"
 rm $PKG/usr/lib/libfakeroot/libfakeroot.la
+
 }
