@@ -1,13 +1,14 @@
 description="Set of utilities and libraries for handling elf files."
 url="http://xiph.org/ao/"
 
+license="GPL2 GPL3 LGPL3"
+
 packager="spiky <spiky@nutyx.org>"
 
 makedepends=(libelf zlib bzip2 xz)
 
 name=elfutils
-version=0.189
-release=2
+version=0.190
 
 source=(https://sourceware.org/elfutils/ftp/$version/elfutils-$version.tar.bz2 )
 
@@ -25,4 +26,8 @@ rm -r "${PKG}"/usr/include/libelf.h
 rm -r "${PKG}"/usr/include/nlist.h
 rm -f ${PKG}/usr/lib/pkgconfig/libelf.pc
 rm -f "${PKG}"/usr/lib/libelf*
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 COPYING-GPLV2 $PKG/usr/share/licenses/$name/COPYING-GPLV2
+install -Dm644 COPYING-LGPLV3 $PKG/usr/share/licenses/$name/COPYING-LGPLV3
 }
