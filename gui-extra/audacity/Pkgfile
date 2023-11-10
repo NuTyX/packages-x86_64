@@ -7,13 +7,13 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 name=audacity
-version=3.3.3
+version=3.4.1
 
 makedepends=(libvorbis libmad libid3tag wxgtk lame ffmpeg redland jack
              soundtouch cmake zip python vst3sdk wavpack libogg sqlite
              portaudio chrpath libsndfile portmidi libsbsms flac mpg123
              vamp-plugin-sdk vst3sdk xcb-util-cursor xcb-util-keysyms
-             gtkmm)
+             gtkmm rapidjson opusfile)
 run=(shared-mime-info desktop-file-utils hicolor-icon-theme)
 
 source=(https://github.com/audacity/audacity/archive/refs/tags/Audacity-$version.tar.gz
@@ -21,7 +21,7 @@ source=(https://github.com/audacity/audacity/archive/refs/tags/Audacity-$version
 
 prepare() {
 cd $name-Audacity-$version
-patch -Np1 -i ../remove_obsolete_printf_specifier.patch
+#patch -Np1 -i ../remove_obsolete_printf_specifier.patch
 }
 build() {
   export VST3SDK='/usr/share/vst3sdk'
