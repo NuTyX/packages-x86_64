@@ -2,14 +2,13 @@ description="The Shadow package contains programs for handling passwords in a se
 url="https://shadow-maint.github.io/shadow/"
 
 maintainer="pkg-shadow-devel@lists.alioth.debian.org"
-contributors="Pierre, Spiky"
-packager="Tnut <tnut@nutyx.org>"
+contributors="Pierre,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
-makedepends=(pam)
+makedepends=(libxcrypt pam)
 
 name=shadow
-version=4.13
-release=2
+version=4.14.2
 
 PKGMK_LOCALES=()
 source=(https://github.com/shadow-maint/shadow/releases/download/$version/shadow-$version.tar.xz)
@@ -27,8 +26,14 @@ sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
        -e 's@#\(SHA_CRYPT_..._ROUNDS 5000\)@\100@'       \
        -e 's@/var/spool/mail@/var/mail@' -i etc/login.defs
 
-./configure --sysconfdir=/etc --with-group-name-max-length=32
+./configure \
+ --sysconfdir=/etc \
+ --with-{b,yes}crypt \
+ --without-libbsd    \
+ --with-group-name-max-length=32
+
 make
+
 make DESTDIR=$PKG install
 mv -v $PKG/usr/bin/passwd $PKG/bin
 
