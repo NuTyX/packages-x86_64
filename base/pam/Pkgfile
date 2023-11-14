@@ -1,11 +1,15 @@
 description="Pluggable Authentication Modules to choose how applications authenticate users."
 url="http://www.kernel.org/pub/libs/pam"
-packager="spiky <spiky@nutyx.org>"
 
-makedepends=(autoconf automake texinfo)
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+makedepends=(autoconf automake texinfo libxcrypt)
 
 name=pam
 version=1.5.3
+release=2
+
 PKGMK_LOCALES=()
 
 source=(https://github.com/linux-pam/linux-pam/releases/download/v$version/Linux-PAM-$version.tar.xz)
