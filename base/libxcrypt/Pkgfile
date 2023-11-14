@@ -25,26 +25,6 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 
-# usr/include/crypt.h is part of glibc.devel for the moment
-# Need to findout why it's in this package as well
-#
-
-mkdir $PKG/usr/include/$name
-mv $PKG/usr/include/crypt.h \
-$PKG/usr/include/$name/crypt.h
-
-# Required for binutils
-#
-
-make distclean
-./configure --prefix=/usr                \
-            --enable-hashes=strong,glibc \
-            --enable-obsolete-api=glibc  \
-            --disable-static             \
-            --disable-failure-tokens
-make
-cp -av .libs/libcrypt.so.1* $PKG/usr/lib
-
 install -Dm644 LICENSING $PKG/usr/share/licenses/$name/LICENSING
 
 }
