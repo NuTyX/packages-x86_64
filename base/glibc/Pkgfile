@@ -8,11 +8,10 @@ kernelversion=6.1
 makedepends=(python bison grep)
 
 name=glibc
-version=2.37
-release=2
+version=2.38
 
 PKGMK_LOCALES=()
-source=(https://download.tuxfamily.org/nutyx/sources/glibc/glibc-$version-fixes-1.patch
+source=(https://download.tuxfamily.org/nutyx/sources/glibc/glibc-$version-upstream_fixes-3.patch
         https://www.kernel.org/pub/linux/kernel/v${kernelversion:0:1}.x/linux-$kernelversion.tar.xz
 	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
 	https://ftp.gnu.org/gnu/$name/$name-$version.tar.xz glibc.locales.supported)
@@ -31,10 +30,8 @@ cp -rv usr/include/* $PKG/usr/include
 cd ../glibc-$version
 
 patch -Np1 -i ../glibc-$version-fhs-1.patch
-patch -Np1 -i ../glibc-$version-fixes-1.patch
+patch -Np1 -i ../glibc-$version-upstream_fixes-3.patch
 
-sed '/width -=/s/workend - string/number_length/' \
-    -i stdio-common/vfprintf-process-arg.c
 
 mkdir $PKG/lib64
 
@@ -47,9 +44,10 @@ cd       build
 ../configure --prefix=/usr                                    \
 --with-bugurl=https://github.com/NuTyX/packages-x86_64/issues \
 --disable-werror                \
---enable-kernel=3.2             \
+--enable-kernel=4.19            \
 --with-headers=/usr/include     \
 --enable-stack-protector=strong \
+--disable-nscd                  \
 libc_cv_slibdir=/lib
 
 make || make -j1
