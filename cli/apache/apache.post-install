@@ -1,4 +1,11 @@
 . lib/lsb/init-functions
+
+[ -f etc/httpd/httpd.conf.example ] && sed \
+-e 's@User apache@User http@'   \
+-e 's@Group apache@Group http@' \
+-i etc/httpd/httpd.conf.example
+
+
 if [ ! -f etc/httpd/httpd.conf ]; then
 	cp etc/httpd/httpd.conf{.example,}
       log_success_msg "${WARNING} /etc//httpd/httpd.conf created ${NORMAL}"
