@@ -7,7 +7,8 @@ contributors="Pierre,Jayce,Tnut"
 # In case of rebuild systemd
 # dbus needs do be build once without systemd
 # 1/ dbus without systemd with following makedepends
-# makedepends=(expat) and --disable-systemd
+# makedepends=(expat) 
+# and --disable-systemd
 # 2/ build systemd with dbus
 # 3/ build dbus with systemd with folling makedepends
 # makedepends=(systemd expat) and --enable-systemd
@@ -20,7 +21,7 @@ version=1.14.10
 runyx_version=20201011
 
 PKGMK_GROUPS=(doc devel)
-source=(https://downloads.tuxfamily.org/nutyx/sources/runyx/runyx-${runyx_version}.tar.xz
+source=(http://download.tuxfamily.org/nutyx/sources/runyx/runyx-${runyx_version}.tar.xz
 		http://dbus.freedesktop.org/releases/dbus/$name-$version.tar.xz
 		dbus.system-local.conf)
 
