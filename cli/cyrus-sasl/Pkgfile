@@ -4,16 +4,16 @@ url="http://cyrusimap.org/"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre,Spiky"
 
-makedepends=(db automake libtool)
+makedepends=(db automake libtool libxcrypt)
 
 name=cyrus-sasl
 version=2.1.28
-release=2
+release=3
 
 runyx_version=20201011
 
 source=(https://github.com/cyrusimap/$name/archive/refs/tags/$name-$version.tar.gz
-        http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz)
+        http://downloads.tuxfamily.org/nutyx/sources/runyx/runyx-${runyx_version}.tar.xz)
 
 prepare() {
 cd $name-$name-$version
