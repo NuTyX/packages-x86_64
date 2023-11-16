@@ -1,14 +1,16 @@
 description="Screen saver and locker for the X Window System"
 url="http://www.jwz.org/xscreensaver/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Greg,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Greg,Spiky"
 
-makedepends=(bc libglade xorg-libxmu xorg-libxt xorg-libxpm gtk3)
+makedepends=(bc libglade xorg-libxmu xorg-libxt xorg-libxpm gtk3
+             libxcrypt)
 run=(gdk-pixbuf-xlib xorg-glu)
 
 name=xscreensaver
 version=6.08
+release=2
 
 source=(https://www.jwz.org/xscreensaver/$name-$version.tar.gz)
 
