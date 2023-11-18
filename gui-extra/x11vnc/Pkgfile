@@ -4,19 +4,32 @@ url="https://github.com/LibVNC/x11vnc"
 packager="tnut <tnut@nutyx.org"
 contributors="Greg"
 
+license="GPL"
+
 makedepends=(libjpeg-turbo xorg-libxdamage xorg-libxinerama
              xorg-libxrandr xorg-libxtst libvncserver)
 
 name=x11vnc
 version=0.9.16
+release=2
 
 PKGMK_KEEP_SOURCES="no"
-source=(https://github.com/LibVNC/x11vnc/archive/${version}.tar.gz)
+source=(https://github.com/LibVNC/x11vnc/archive/${version}.tar.gz
+        010-x11vnc-xfc-null-ptr.patch
+        020-x11vnc-gcc10-fix.patch
+        030-x11vnc-scan-limit-access-to-shared-memory)
+prepare() {
+cd $name-$version
+for i in ../*.patch; do
+       patch -Np1 -i $i
+done
 
+autoreconf -fiv
+}
 build() {
 
 cd $name-$version
-autoreconf -fi
+
 ./configure --prefix=/usr --mandir=/usr/share/man
 make
 make DESTDIR=$PKG install
