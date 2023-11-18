@@ -1,15 +1,16 @@
 description="An enhanced unicode capable version of the rxvt terminal emulator."
 url="http://software.schmorp.de/pkg/rxvt-unicode.html"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Alienus,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus,Spiky"
 
-makedepends=(gdk-pixbuf perl xorg-libxt xorg-libxft libnsl startup-notification libptytty)
+makedepends=(gdk-pixbuf perl xorg-libxt xorg-libxft libnsl
+             libxcrypt startup-notification libptytty)
 run=(startup-notification)
 
 name=rxvt-unicode
 version=9.31
-release=2
+release=3
 
 source=(
 http://dist.schmorp.de/rxvt-unicode/Attic/$name-$version.tar.bz2
