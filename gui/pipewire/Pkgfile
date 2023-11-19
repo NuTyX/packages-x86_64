@@ -10,7 +10,7 @@ makedepends=(meson dbus doxygen python-docutils ffmpeg glib graphviz gstreamer
              gstreamer-plugins-base sbc valgrind libsndfile xmltoman) 
 
 name=pipewire
-version=0.3.84
+version=0.3.85
 
 source=(https://github.com/PipeWire/pipewire/archive/$version/$name-$version.tar.gz)
 
@@ -24,7 +24,8 @@ cd $name-$version
     -Dpipewire-jack=disabled  \
     -Dvulkan=disabled         \
     -Ddocs=enabled            \
-    -Dman=enabled
+    -Dman=enabled             \
+    -Dsession-managers="[]"
 
 meson compile -C build
 
