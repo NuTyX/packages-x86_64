@@ -1,8 +1,8 @@
 url="https://www.kernel.org"
 description="The latest stable kernel version"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Sundev79,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Sundev79,Spiky"
 makedepends=(bison flex perl gmp mpc libelf diffutils)
 run=(nutyx kmod busybox)
 
@@ -11,7 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel
-version=6.5.9
+version=6.6.2
 
 alias=(linux)
 INITRD="initrd-stable"
@@ -81,7 +81,7 @@ cd $PKG/lib/modules/${KERNEL_VERSION}/
 mkdir -p $PKG/usr/src
 
 mv $SRC/linux-${_version} $PKG/usr/src/
-rm {build,source}
+rm build
 
 ln -sv /usr/src/linux-${_version} build
 ln -sv /usr/src/linux-${_version} source
