@@ -1,16 +1,14 @@
 description="NVIDIA modules for the latest stable Linux Kernel version."
 url="https://www.nvidia.com"
 
-packager="spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 
 name=nvidia-470-kernel
-version=470.199.02
-release=11
+version=470.223.02
 
 run=(kernel)
 
-source=(https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run
-        kernel-6.5.patch)
+source=(https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
 build()
 {
  sh NVIDIA-Linux-x86_64-$version.run --extract-only
@@ -20,8 +18,6 @@ build()
 
  sed -i "s@nv_dma_resv_add_excl_fence@dma_resv_add_excl_fence@" nvidia-drm/nvidia-dma-resv-helper.h
  sed -i "s@nv_dma_resv_add_excl_fence@dma_resv_add_excl_fence@" nvidia-drm/nvidia-drm-prime-fence.c
-
- patch -Np1 -i ../../kernel-6.5.patch
 
  modules_dir="$(basename /lib/modules/*)"
 
