@@ -1,13 +1,15 @@
 description="ISO AAC audio decoder"
 url="http://www.audiocoding.com"
 
+license="GPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
-makedepends=(autoconf automake libtool)
+makedepends=(cmake)
 
 name=faad2
-version=2.10.1
+version=2.11.1
 
 _version=${version//./_}
 
@@ -15,11 +17,17 @@ source=(https://github.com/knik0/faad2/archive/${version}/$name-${version}.tar.g
 
 build() {
 cd $name-${version}
-./bootstrap
-./configure --prefix=/usr --disable-static
+
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DBUILD_SHARED_LIBS=ON      \
+      ..
+
 make
 make DESTDIR=$PKG install
 
-# Obsolet lib
-rm $PKG/usr/lib/libfaad{,_drm}.la
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
