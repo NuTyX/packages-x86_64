@@ -8,15 +8,10 @@ contributors=""
 makedepends=(cmake ninja spirv-tools)
 
 name=glslang
-version=13.0.0
+version=13.1.1
 
 #source=(https://github.com/KhronosGroup/glslang/archive/$version/$name-$version.tar.gz)
 source=(https://github.com/KhronosGroup/glslang/archive/refs/tags/$version.tar.gz)
-
-## Patched version
-#prepare() {
-#mv glslang-main-tot $name-$version
-#}
 
 build() {
 cd $name-$version
@@ -26,6 +21,7 @@ cmake \
 		-GNinja \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_BUILD_TYPE=Release \
+                -DALLOW_EXTERNAL_SPIRV_TOOLS=ON \
 		-DBUILD_SHARED_LIBS=ON
 		ninja -Cbuild-shared
 	cmake \
@@ -33,6 +29,7 @@ cmake \
 		-GNinja \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_BUILD_TYPE=Release \
+                -DALLOW_EXTERNAL_SPIRV_TOOLS=ON \
 		-DBUILD_SHARED_LIBS=OFF
 		ninja -Cbuild-static
 
