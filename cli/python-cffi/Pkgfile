@@ -6,12 +6,11 @@ contributors="Tnut"
 makedepends=(python python-pycparser)
 
 name=python-cffi
-version=1.15.1
-release=3
+version=1.16.0
 
-source=(https://foss.heptapod.net/pypy/cffi/-/archive/v${version}/cffi-v${version}.tar.bz2)
+source=(https://github.com/python-cffi/cffi/archive/refs/tags/v1.16.0.tar.gz)
 build() {
-cd cffi-v${version}
+cd cffi-${version}
     python setup.py build
 
     python setup.py install --root=$PKG --optimize=1
