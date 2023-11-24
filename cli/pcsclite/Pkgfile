@@ -3,14 +3,13 @@ url="https://alioth.debian.org/projects/pcsclite/"
 
 license="BSD"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
-makedepends=(python eudev pkgconf flex)
+makedepends=(python eudev pkgconf flex polkit)
 
 name=pcsclite
-version=2.0.0
-release=2
+version=2.0.1
 
 PKGMK_KEEP_SOURCES="No"
 source=(https://pcsclite.apdu.fr/files/pcsc-lite-$version.tar.bz2
@@ -25,6 +24,7 @@ build() {
               --sysconfdir=/etc \
               --enable-ipcdir=/run/pcscd \
               --enable-usbdropdir=/usr/lib/pcsc/drivers \
+              --enable-polkit \
               --disable-documentation
   make
   make DESTDIR=$PKG install
