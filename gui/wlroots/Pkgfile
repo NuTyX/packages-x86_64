@@ -10,18 +10,22 @@ makedepends=(meson ninja vulkan-headers wayland-protocols xorg-xwayland glslang
 run=(libinput)
 
 name=wlroots
-version=0.16.2
+version=0.17.0
 
-source=(https://gitlab.freedesktop.org/wlroots/wlroots/-/archive/0.16.2/wlroots-0.16.2.tar.gz)
+source=(https://gitlab.freedesktop.org/wlroots/wlroots/-/archive/$version/$name-$version.tar.gz)
 
 build() {
+cd $name-$version
 
-meson setup $name-$version build \
+mkdir build
+cd    build
+
+meson setup .. \
        --prefix=/usr          \
             --buildtype=release \
             -Dexamples=false
 
-meson compile -C build
+ninja
 
-DESTDIR=$PKG meson install -C build
+DESTDIR=$PKG ninja install
 }
