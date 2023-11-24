@@ -1,13 +1,15 @@
 description='iAPI and commands for processing SPIR-V modules'
 url='https://www.khronos.org/vulkan/'
 
+license="APACHE"
+
 packager="spiky <spiky@nutyx.org>"
 contributors=""
 
 makedepends=(cmake git)
 
 name=spirv-tools
-version=2022.4
+version=2023.5
 
 #source=(https://github.com/KhronosGroup/SPIRV-Tools/archive/v$version/SPIRV-Tools-v$version.tar.gz)
 
@@ -41,4 +43,6 @@ cmake -GNinja \
 
 ninja
 DESTDIR="${PKG}" ninja install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
