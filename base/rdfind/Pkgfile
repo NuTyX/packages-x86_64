@@ -1,34 +1,5 @@
 description='Redundant data find - a program that finds duplicate files'
-<<<<<<< HEAD
-url='https://github.com/pauldreik/rdfind'
 
-license="GPL2"
-
-packager="spiky <spiky@nutyx.org>"
-contributors=""
-
-makedepends=(automake nettle)
-
-name=rdfind
-version=1.6.0
-PKGMK_KEEP_SOURCES="no"
-
-source=(https://github.com/pauldreik/rdfind/archive/refs/tags/releases/$version.tar.gz)
-
-prepare() {
-mv $name-releases-$version $name-$version
-}
-
-build() {
-cd $name-$version
-
-./bootstrap.sh
-./configure --prefix=/usr
-make
-make DESTDIR=$PKG install
-
-install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
-=======
 url='https://rdfind.pauldreik.se'
 
 license="GPL-2.0-only"
@@ -51,5 +22,4 @@ build() {
   install -dm755 $PKG/usr/share/doc/$name
   install -m644 AUTHORS ChangeLog README \
   $PKG/usr/share/doc/$name
->>>>>>> 129bf23be5eb985a498d4b3681c4a6792ff084dd
 }
