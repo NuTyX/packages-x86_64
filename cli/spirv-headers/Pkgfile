@@ -4,13 +4,13 @@ url='https://www.khronos.org/regitstry/spir-v/'
 packager="spiky <spiky@nutyx.org>"
 
 name=spirv-headers
-version=1.3.261.0
+version=1.3.268.0
 
 makedepends=(cmake)
 
-source=(https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/sdk-$version.tar.gz)
+source=(https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/vulkan-sdk-$version.tar.gz)
 
 prepare() {
-mv SPIRV-Headers-sdk-$version $name-$version
+mv SPIRV-Headers-vulkan-sdk-$version $name-$version
 }
 build=cmake
