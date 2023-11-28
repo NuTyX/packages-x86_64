@@ -1,0 +1,37 @@
+description='Library to create Wayland desktop components using the Layer Shell protocol'
+url='https://github.com/wmww/gtk-layer-shell'
+
+license="GPL3 LGPL3 MIT"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(gtk3 wayland gtk-doc gobject-introspection vala)
+
+name=gtk-layer-shell
+version=0.8.1
+
+source=(https://github.com/wmww/gtk-layer-shell/archive/v$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+      --prefix=/usr \
+        --wrap-mode=nofallback \
+        --buildtype=plain \
+        -Dtests=true \
+        -Ddocs=true \
+        -Dintrospection=true
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSE_GPL.txt $PKG/usr/share/licenses/$name/LICENSE_GPL.txt
+install -Dm644 ../LICENSE_LGPL.txt $PKG/usr/share/licenses/$name/LICENSE_LGPL.txt
+install -Dm644 ../LICENSE_MIT.txt $PKG/usr/share/licenses/$name/LICENSE_MIT.txt
+}
