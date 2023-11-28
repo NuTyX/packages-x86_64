@@ -13,9 +13,10 @@ PKGMK_GROUPS=(devel doc)
 name=kernel-66
 version=6.6.2
 
-alias=(linux)
-INITRD="initrd-stable"
-KERNEL="kernel-stable"
+alias=(linux-66)
+INITRD="initrd-${name/*-/}"
+KERNEL="${name}"
+
 
 _version=${version:0:3}
 
@@ -71,8 +72,7 @@ $PKG/boot/System_64.map-${KERNEL_VERSION}
 cp  .config    \
 $PKG/boot/config_64-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
-$PKG/boot/${KERNEL}
-ln -sf ${KERNEL} $PKG/boot/${name}
+$PKG/boot/$KERNEL
 
 
 # Reorgenise the sources
