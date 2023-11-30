@@ -1,7 +1,8 @@
 url="https://www.kernel.org"
 description="The latest development kernel version"
 
-packager="spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(gmp mpc bison flex perl libelf diffutils)
 run=(nutyx kmod busybox)
@@ -14,7 +15,7 @@ PKGMK_GROUPS=(devel doc)
 PKGMK_KEEP_SOURCES="no"
 
 name=kernel-mainline
-version=6.5-rc5
+version=6.7-rc3
 SUFFIX="${name/*-/}"
 INITRD="initrd-$SUFFIX"
 KERNEL="$name"
@@ -56,7 +57,8 @@ cp .config $SRC/config_64
 #
 # Kernel modules
 cd $SRC/linux-${_version}
-make INSTALL_MOD_PATH=$PKG modules_install
+make INSTALL_MOD_PATH=$PKG \
+INSTALL_MOD_STRIP=1 modules_install
 
 KERNEL_VERSION="$(basename $PKG/lib/modules/*)"
 
@@ -81,7 +83,7 @@ cd $PKG/lib/modules/${KERNEL_VERSION}/
 mkdir -p $PKG/usr/src
 
 mv $SRC/linux-${_version} $PKG/usr/src/
-rm {build,source}
+rm build
 
 ln -sv /usr/src/linux-${_version} build
 ln -sv /usr/src/linux-${_version} source
