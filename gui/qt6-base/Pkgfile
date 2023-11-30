@@ -7,8 +7,7 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 name=qt6-base
-version=6.6.0
-release=2
+version=6.6.1
 
 
 makedepends=(libb2 cmake ninja systemd icu at-spi2-core mtdev 
@@ -23,7 +22,7 @@ source=(qt6-base-cflags.patch libxkbcommon-1.6.patch
 prepare() {
  cd qtbase-everywhere-src-$version
  patch -Np1 -i ../qt6-base-cflags.patch
- patch -Np1 -i ../libxkbcommon-1.6.patch
+# patch -Np1 -i ../libxkbcommon-1.6.patch
 }
 build() {
  mkdir build
