@@ -11,8 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-66
-version=6.6.3
-release=4
+version=6.6.4
 
 alias=(linux-66)
 INITRD="initrd-${name/*-/}"
@@ -56,7 +55,9 @@ cp .config $SRC/config_64
 #
 # Kernel modules
 cd $SRC/linux-${_version}
-make INSTALL_MOD_PATH=$PKG modules_install
+ZSTD_CLEVEL=19 \
+make INSTALL_MOD_PATH=$PKG \
+INSTALL_MOD_STRIP=1 modules_install
 
 KERNEL_VERSION="$(basename $PKG/lib/modules/*)"
 
