@@ -15,7 +15,7 @@ PKGMK_GROUPS=(devel doc)
 PKGMK_KEEP_SOURCES="no"
 
 name=kernel-mainline
-version=6.7-rc3
+version=6.7-rc4
 SUFFIX="${name/*-/}"
 INITRD="initrd-$SUFFIX"
 KERNEL="$name"
@@ -57,6 +57,7 @@ cp .config $SRC/config_64
 #
 # Kernel modules
 cd $SRC/linux-${_version}
+ZSTD_CLEVEL=19 \
 make INSTALL_MOD_PATH=$PKG \
 INSTALL_MOD_STRIP=1 modules_install
 
