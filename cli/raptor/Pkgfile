@@ -8,12 +8,14 @@ makedepends=(expat libxml2 curl icu)
 
 name=raptor
 version=2.0.16
-release=2
+release=3
 
 source=(http://librdf.org/dist/source/raptor2-$version.tar.gz)
+
 build() {
 cd raptor2-$version
 
+sed -i 's/20627/20627 \&\& LIBXML_VERSION < 21100/' src/raptor_libxml.c
 ./configure --prefix=/usr \
 --disable-static \
 --with-icu-config=/usr/bin/icu-config
