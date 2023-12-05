@@ -1,6 +1,8 @@
 description='Common library for X-Apps project.'
 url='https://github.com/linuxmint/xapp'
 
+license="GPL3 LGPL3"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Tnut"
 
@@ -8,7 +10,7 @@ makedepends=(meson gobject-introspection gtk3
             python-gobject libgnomekbd vala libdbusmenu-gtk)
 
 name=xapp
-version=2.8.0
+version=2.8.1
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/linuxmint/xapp/archive/$version.tar.gz)
@@ -36,4 +38,7 @@ build() {
     python -m compileall -d "${_destdir}" "${_file}"
     python -O -m compileall -d "${_destdir}" "${_file}"
   done < <(find "${PKG}"/usr/lib/python* -name '*.py' -print0)
+
+install -Dm644 $SRC/$name-$version/COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 $SRC/$name-$version/COPYING.LESSER $PKG/usr/share/licenses/$name/COPYING.LESSER
 }
