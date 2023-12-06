@@ -6,7 +6,7 @@ license="Custom"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Greg,Fanch,Tnut"
 
-makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
+makedepends=(openjpeg ninja enchant cmake gstreamer gstreamer-plugins-base
              gstreamer-plugins-bad xorg-libxt gtk2 gtk3 gtk-doc
              hunspell hyphen icu libgudev libsecret libsoup
              libwebp mesa ruby sqlite enchant geoclue2 libavif
@@ -14,7 +14,7 @@ makedepends=(openjpeg ninja enchant cmake gstreamer-plugins-base
              harfbuzz gtk-doc libnotify wayland woff2 libmanette unifdef)
              
 name=webkitgtk
-version=2.42.2
+version=2.42.3
 
 source=(http://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 prepare() {
@@ -41,8 +41,10 @@ cmake -G Ninja                     \
       -DUSE_SOUP2=ON               \
       -DUSE_JPEGXL=OFF             \
       -DENABLE_GTKDOC=ON           \
+      -D ENABLE_DOCUMENTATION=OFF  \
       -DUSE_WPE_RENDERER=OFF       \
       -DENABLE_BUBBLEWRAP_SANDBOX=OFF \
+      -DUSE_GSTREAMER_TRANSCODER=OFF \
       -Wno-dev ..
 ninja || ninja -j1
 DESTDIR=$PKG ninja install || DESTDIR=$PKG ninja -j1 install
@@ -54,12 +56,12 @@ install -vm644  ../Documentation/webkit2gtk-web-extension-4.1/* \
 $PKG/usr/share/gtk-doc/html/webkit2gtk
 
 # avoid conflict with webkit2gtk-4
-mv $PKG/usr/share/gtk-doc/html/javascriptcoregtk-4.0 \
-$PKG/usr/share/gtk-doc/html/javascriptcoregtk
+#mv $PKG/usr/share/gtk-doc/html/javascriptcoregtk-4.0 \
+#$PKG/usr/share/gtk-doc/html/javascriptcoregtk
 
 # part of webkit2gtk-4
-rm -r $PKG/usr/share/gtk-doc/html/webkit2gtk-4.0
-rm -r $PKG/usr/share/gtk-doc/html/webkit2gtk-web-extension-4.0
+#rm -r $PKG/usr/share/gtk-doc/html/webkit2gtk-4.0
+#rm -r $PKG/usr/share/gtk-doc/html/webkit2gtk-web-extension-4.0
 
 install -Dm644 ../Source/WTF/wtf/dtoa/LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
