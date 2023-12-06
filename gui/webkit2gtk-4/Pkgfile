@@ -14,7 +14,7 @@ run=(cairo xorg-fontconfig freetype libgcrypt glib gtk3 harfbuzz icu
           gstreamer-plugins-base libmanette)
 
 name=webkit2gtk-4
-version=2.42.2
+version=2.42.3
 
 source=(https://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 
@@ -35,7 +35,9 @@ cmake -G Ninja                     \
       -DUSE_WOFF2=ON               \
       -DUSE_JPEGXL=OFF             \
       -DENABLE_GTKDOC=ON           \
+      -DENABLE_DOCUMENTATION=OFF   \
       -DENABLE_BUBBLEWRAP_SANDBOX=OFF \
+      -DUSE_GSTREAMER_TRANSCODER=OFF  \
       -Wno-dev ..
 ninja || ninja -j1
 DESTDIR=$PKG ninja install || DESTDIR=$PKG ninja -j1 install
