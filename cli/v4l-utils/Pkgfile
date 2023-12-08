@@ -1,24 +1,30 @@
 description="Userspace tools and conversion library for Video 4 Linux"
 url="http://freshmeat.net/projects/libv4l"
 
+license="GPL2 GPL2.1 LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
 makedepends=(llvm libjpeg-turbo alsa-lib)
 
 name=v4l-utils
-version=1.24.1
+version=1.26.0
 
-source=(http://linuxtv.org/downloads/v4l-utils/$name-$version.tar.bz2)
+source=(http://linuxtv.org/downloads/v4l-utils/$name-$version.tar.xz)
 
 build() {
 	cd $name-$version
-	./configure --prefix=/usr \
-	--sysconfdir=/etc/$name
-	 MAKEFLAGS="-j1" make install DESTDIR=$PKG
 
-	rm -f $PKG/usr/bin/ivtv-ctl
+mkdir build
+cd    build
+meson setup .. \
+       --prefix=/usr \
+       -Ddoxygen-doc=disabled \
+       -Dgconv=disabled \
+       --buildtype=release
 
-	# Remove la files
-	find $PKG -name '*.la' | xargs rm -v
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 ../COPYING.libdvbv5 $PKG/usr/share/licenses/$name/COPYING.libdvbv5
+install -Dm644 ../COPYING.libv4l $PKG/usr/share/licenses/$name/COPYING.libv4l
 }
