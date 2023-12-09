@@ -19,6 +19,7 @@ run=(pulseaudio icu sqlite libvpx nss gtk3 zip unzip
 
 name=firefox
 version=120.0.1
+release=2
 
 locale_version=$version
 
@@ -42,6 +43,10 @@ rm usr/lib/firefox/browser/extensions/langpack-${1}@firefox.mozilla.org.xpi
 
 prepare() {
 cd $name-$version
+
+(for i in {43..47}; do
+   sed '/ZWJ/s/}/,CLASS_CHARACTER&/' -i intl/lwbrk/LineBreaker.cpp || exit $?
+ done)
 }
 
 build() {
