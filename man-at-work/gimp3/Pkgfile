@@ -1,0 +1,40 @@
+description='GNU Image Manipulation Program'
+url='https://www.gimp.org/'
+
+license="LGPL3 GPL3"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(gtk3 curl libexif xorg-libxmu xorg-libxpm openexr
+             gegl poppler-glib glib-networking libmng alsa-lib libwmf
+             babl libmypaint mypaint-brushes lcms2 libgexiv2 aalib
+             harfbuzz libjpeg-turbo librsvg libtiff libxml2 appstream-glib python-packaging)
+
+name=gimp3
+version=2.99.16
+
+source=(https://download.gimp.org/pub/gimp/v2.99/gimp-$version.tar.xz)
+
+build() {
+cd gimp-$version
+
+mkdir gimp-build
+cd    gimp-build
+
+      meson setup .. \
+      --prefix=/usr  \
+      --sysconfdir=/etc \
+      -Dpython=disabled \
+      -Dgi-docgen=disabled \
+      -Dbug-report-url=https://github.com/NuTyX/packages-x86_64/issues \
+      --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 ../libgimp/COPYING $PKG/usr/share/licenses/$name/COPYING
+}
