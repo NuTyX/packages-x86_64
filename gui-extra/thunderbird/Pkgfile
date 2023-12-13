@@ -14,7 +14,7 @@ run=(startup-notification hunspell desktop-file-utils hicolor-icon-theme
      shared-mime-info gtk-update-icon-cache)
 
 name=thunderbird
-version=115.5.0
+version=115.5.1
 
 locale_version=$version
 
@@ -22,8 +22,11 @@ source=(https://archive.mozilla.org/pub/thunderbird/releases/$version/source/$na
 	$name.desktop)
 
 prepare() {
-  sed -e '/<exception>/i#include <cstdint>' -i \
-  $name-$version/comm/third_party/rnp/src/libsexp/include/sexp/sexp-error.h
+cd $name-$version
+
+(for i in {43..47}; do
+   sed '/ZWJ/s/}/,CLASS_CHARACTER&/' -i intl/lwbrk/LineBreaker.cpp || exit $?
+ done)
 }
 
 pack_remove_locale() {

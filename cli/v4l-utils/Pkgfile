@@ -3,13 +3,14 @@ url="http://freshmeat.net/projects/libv4l"
 
 license="GPL2 GPL2.1 LGPL2.1"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
 makedepends=(llvm libjpeg-turbo alsa-lib)
 
 name=v4l-utils
 version=1.26.0
+release=2
 
 source=(http://linuxtv.org/downloads/v4l-utils/$name-$version.tar.xz)
 
@@ -23,6 +24,8 @@ meson setup .. \
        -Ddoxygen-doc=disabled \
        -Dgconv=disabled \
        --buildtype=release
+meson compile
+meson install --destdir $PKG
 
 install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 install -Dm644 ../COPYING.libdvbv5 $PKG/usr/share/licenses/$name/COPYING.libdvbv5
