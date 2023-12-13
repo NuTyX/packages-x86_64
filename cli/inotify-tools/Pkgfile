@@ -1,0 +1,16 @@
+description='C library and a set of command-line programs for Linux providing a simple interface to inotify'
+url='https://github.com/inotify-tools/inotify-tools'
+
+packager="tnut <tnut@nutyx.org"
+contributors=""
+
+makedepends=(autoconf automake libtool)
+name=inotify-tools
+version=4.23.9.0
+
+source=(https://github.com/inotify-tools/inotify-tools/archive/$version/$name-$version.tar.gz)
+
+prepare() {
+ cd $name-$version
+ ./autogen.sh
+}
