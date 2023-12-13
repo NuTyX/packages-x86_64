@@ -1,0 +1,54 @@
+description='ReadyMedia (formerly known as MiniDLNA) is a simple media server software'
+url='http://sourceforge.net/projects/minidlna/'
+
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(ffmpeg libexif flac taglib libid3tag
+             libjpeg-turbo libvorbis x264 opus
+             inotify-tools libmatroska)
+
+run=(start-stop-daemon)
+
+name=minidlna
+version=1.3.3
+
+source=(minidlna minidlna.conf
+        https://downloads.sourceforge.net/project/$name/minidlna/${version}/${name}-${version}.tar.gz)
+
+prepare() {
+
+cd $name-$version
+./autogen.sh
+}
+package() {
+cd $name-$version
+gzip minidlnad.8
+gzip minidlna.conf.5
+install -D -m 644 -t $PKG/usr/share/man/man8/minidlnad.8.gz minidlnad.8.gz
+install -D -m 644 -t $PKG/usr/share/man/man5/minidlna.conf.5.gz minidlna.conf.5.gz
+
+install -D -m 755 $SRC/minidlna $PKG/etc/rc.d/init.d/minidlna
+install -D -m 644 $SRC/minidlna.conf $PKG/etc/minidlna.conf.example
+for i in 2 3 4 5
+do
+  mkdir $PKG/etc/rc.d/rc${i}.d
+  ln -sv ../init.d/minidlna \
+  $PKG/etc/rc.d/rc${i}.d/S80minidlna
+done
+
+for i in 0 1 6
+do
+ mkdir $PKG/etc/rc.d/rc${i}.d
+ ln -sv ../init.d/minidlna \
+ $PKG/etc/rc.d/rc${i}.d/K05minidlna
+done
+}
+service() {
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.service${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+etc/rc.d
+ 
+rm -r etc/rc.d
+}
+
