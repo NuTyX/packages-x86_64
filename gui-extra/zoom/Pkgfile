@@ -1,8 +1,8 @@
 description='Video Conferencing and Web Conferencing Service'
 url='https://zoom.us/'
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 run=(xorg-fontconfig glib pulseaudio xorg-libsm xorg-libx11 libxcb
      xorg-libxcomposite xorg-libxfixes xorg-libxi xorg-libxrandr
@@ -11,15 +11,18 @@ run=(xorg-fontconfig glib pulseaudio xorg-libsm xorg-libx11 libxcb
      desktop-file-utils gtk-update-icon-cache shared-mime-info)
 
 name=zoom
-
-version=5.16.0
-
-_build=26030.0627
+build=668
+version=5.16.10
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://zoom.us/client/latest/zoom_x86_64.pkg.tar.xz )
+source=(https://cdn.zoom.us/prod/$version.$build/zoom_x86_64.pkg.tar.xz )
+prepare() {
+ sed -i 's/Zoom\.png/Zoom/g' usr/share/applications/Zoom.desktop
 
+ sed -i 's/StartupWMClass=Zoom/StartupWMClass=zoom/g' \
+usr/share/applications/Zoom.desktop
+}
 build () {
-cp -dpr --no-preserve=ownership opt usr $PKG
+ cp -dpr --no-preserve=ownership opt usr $PKG
 }
