@@ -1,11 +1,12 @@
 description='The linux kernel firmware set of files. More and more hardware requires this package'
 url='https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary'
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 name=linux-firmware
 version=20231211
+release=2
 
 makedepends=(rdfind)
 
@@ -16,5 +17,6 @@ source=(https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.
 
 build() {
 cd $name-$version
-make DESTDIR=$PKG FIRMWAREDIR=/lib/firmware install
+ZSTD_CLEVEL=9 \
+make DESTDIR=$PKG FIRMWAREDIR=/lib/firmware install-zst
 }
