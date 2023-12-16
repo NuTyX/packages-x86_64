@@ -19,4 +19,5 @@ build() {
 cd $name-$version
 ZSTD_CLEVEL=9 \
 make DESTDIR=$PKG FIRMWAREDIR=/lib/firmware install-zst
+install -Dt $PKG/usr/share/licenses/$name -m644 WHENCE
 }
