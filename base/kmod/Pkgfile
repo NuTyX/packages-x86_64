@@ -1,14 +1,15 @@
 description="The Kmod package contains libraries and utilities for loading kernel modules."
 url="http://www.kernel.org/pub/linux/kernel/people/rusty/modules"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
-makedepends=(xz)
+makedepends=(xz zstd openssl)
 PKGMK_GROUPS=(devel doc man)
 
 name=kmod
 version=31
+release=2
 
 source=(http://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-$version.tar.xz )
 
@@ -20,7 +21,9 @@ cd $name-$version
 --sysconfdir=/etc \
 --with-rootlibdir=/lib \
 --with-xz \
---with-zlib
+--with-zlib \
+--with-zstd \
+--with-openssl
 
 make
 make DESTDIR=$PKG install
