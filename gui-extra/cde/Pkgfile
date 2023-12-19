@@ -1,12 +1,12 @@
 description='The Common desktop Environment (CDE)'
 url='https://sourceforge.net/projects/cdesktopenv/'
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(git m4 tcl flex bison ncompress printproto rpcsvc-proto libjpeg-turbo libtirpc
              libutempter openmotif pam xorg-libice xorg-libsm xorg-libx11 xorg-libxau xorg-xrdb
-             xorg-libxdmcp xorg-libxext xorg-bdftopcf xorg-mkfontscale xorg-libxaw
-             xorg-libxinerama xorg-libxmu xorg-libxpm xorg-libxscrnsaver xorg-libxt)
+             xorg-libxdmcp xorg-libxext xorg-bdftopcf xorg-mkfontscale xorg-libxaw xorg-sessreg
+             xorg-libxinerama xorg-libxmu xorg-libxpm xorg-libxscrnsaver xorg-libxt opensp)
 
 run=(font-adobe-100dpi font-adobe-utopia-100dpi font-bh-100dpi font-bitstream-100dpi
      font-bh-lucidatypewriter-100dpi xorg-xsetroot ksh gawk rpcbind)
@@ -15,6 +15,7 @@ source=(cde.service)
 
 name=cde
 version=git-75c377
+release=2
 
 prepare() {
   git clone http://git.code.sf.net/p/cdesktopenv/code
