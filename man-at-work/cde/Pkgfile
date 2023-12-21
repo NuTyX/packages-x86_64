@@ -1,7 +1,8 @@
 description='The Common desktop Environment (CDE)'
 url='https://sourceforge.net/projects/cdesktopenv/'
 
-packager="spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(git m4 tcl flex bison ncompress printproto rpcsvc-proto libjpeg-turbo libtirpc
              libutempter openmotif pam xorg-libice xorg-libsm xorg-libx11 xorg-libxau xorg-xrdb
@@ -14,8 +15,7 @@ run=(font-adobe-100dpi font-adobe-utopia-100dpi font-bh-100dpi font-bitstream-10
 source=(cde.service)
 
 name=cde
-version=git-75c377
-release=2
+version=git-76812a
 
 prepare() {
   git clone http://git.code.sf.net/p/cdesktopenv/code
@@ -25,10 +25,12 @@ prepare() {
 build() {
   cd code/$name
 
-  ./configure
+  ./configure --with-gnu-ld --prefix=/usr/dt
   
-  make -j1
-  make -j1 DESTDIR=$PKG install
+  export LANG=C
+  export LC_ALL=C
+  make
+  make  DESTDIR=$PKG install
 
 mkdir -p $PKG/usr/share/xsessions
 cp contrib/desktopentry/cde.desktop \
