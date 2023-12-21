@@ -18,6 +18,8 @@ name=cde
 version=git-76812a
 
 prepare() {
+  # Hope they is a better way
+  localedef -i en_US -f UTF-8 en_US.UTF8
   git clone http://git.code.sf.net/p/cdesktopenv/code
   cd code/$name
   ./autogen.sh
@@ -30,7 +32,7 @@ build() {
   export LANG=C
   export LC_ALL=C
   make
-  make  DESTDIR=$PKG install
+  make DESTDIR=$PKG install
 
 mkdir -p $PKG/usr/share/xsessions
 cp contrib/desktopentry/cde.desktop \
