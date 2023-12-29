@@ -1,11 +1,13 @@
 description="Connect your computer to a network which uses DHCP to assign network addresses."
 url="http://roy.marples.name/projects/dhcpcd"
 
+license="BSD-2-Clause"
+
 maintainer="Roy Marples"
 packager="spiky <spiky@nutyx.org>"
 
 name=dhcpcd
-version=10.0.5
+version=10.0.6
 
 runyx_version=20201011
 source=(http://download.tuxfamily.org/nutyx/sources/runyx/runyx-${runyx_version}.tar.xz
@@ -59,4 +61,6 @@ done
 
 make DESTDIR=$PKG install-sysd-dhcpcd
 sed -i "s@^Before@# Before@" $PKG/lib/systemd/system/dhcpcd@.service
+
+install -Dm644 $SRC/$name-$version/LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
