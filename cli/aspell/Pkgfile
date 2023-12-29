@@ -1,11 +1,13 @@
 description="An interactive spell checking program and the Aspell libraries."
 url="http://aspell.net"
+
+license="LGPL2.1"
+
 packager="spiky <spiky@nutyx.org>"
 
 makedepends=(perl)
 name=aspell
-version=0.60.8
-release=2
+version=0.60.8.1
 
 source=( http://ftp.gnu.org/gnu/$name/$name-$version.tar.gz)
 
@@ -21,6 +23,8 @@ install -v -m 755 scripts/ispell $PKG/usr/bin/
 install -v -m 755 scripts/spell $PKG/usr/bin/
 rm $PKG/usr/lib/lib{a,p}spell.la
 rm $PKG/usr/lib/aspell-0.60/{context,email,nroff,sgml,tex,texinfo}-filter.la
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
 
 uptodate() {
