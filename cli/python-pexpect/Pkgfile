@@ -6,14 +6,15 @@ contributors="Fanch,Tnut"
 
 makedepends=(git python)
 
+#source=(https://github.com/pexpect/pexpect/archive/refs/tags/4.9.tar.gz)
+
 name=python-pexpect
-version=4.8.0
-release=3
+version=4.9.0
 
 prepare() {
 git clone https://github.com/pexpect/pexpect.git
 cd pexpect
-git checkout $version
+git checkout 4.9
 }
 
 build() {
