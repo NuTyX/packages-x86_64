@@ -7,14 +7,14 @@ contributors="Pierre,Tnut"
 makedepends=(cmake libjpeg-turbo doxygen)
 
 name=jasper
-version=4.0.0
+version=4.1.1
 
 source=(https://github.com/mdadams/jasper/archive/version-${version}.tar.gz
         jasper-1.900.1-fix-filename-buffer-overflow.patch)
 
 prepare() {
 cd $name-version-$version
-patch -p1 < ../jasper-1.900.1-fix-filename-buffer-overflow.patch
+#patch -p1 < ../jasper-1.900.1-fix-filename-buffer-overflow.patch
 sed -r 's|(CMAKE_SKIP_BUILD_RPATH) FALSE|\1 TRUE|g' -i CMakeLists.txt
 }
 
