@@ -1,6 +1,8 @@
 description='Modular Wayland compositor library'
 url='https://gitlab.freedesktop.org/wlroots/wlroots'
 
+license="MIT"
+
 packager="spiky <spiky@nutyx.org>"
 contributors=""
 
@@ -28,4 +30,6 @@ meson setup .. \
 ninja
 
 DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
