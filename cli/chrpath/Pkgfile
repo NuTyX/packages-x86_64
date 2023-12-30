@@ -1,20 +1,30 @@
 description="Change or delete the rpath or runpath in ELF files"
 url="http://directory.fsf.org/project/chrpath/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Rems, Greg"
+license="GPL2"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Rems,Greg,Tnut"
+
+makedepends=(automake)
 
 name=chrpath
-version=0.16
-release=2
+version=0.17
 
-source=(http://http.debian.net/debian/pool/main/c/chrpath/"${name}"_"${version}".orig.tar.gz)
+source=(https://codeberg.org/pere/chrpath/archive/release-$version.tar.gz)
+
+prepare() {
+cd $name
+sh bootstrap
+}
 
 
 build() {
-    cd $name-$version
+    cd $name
     ./configure --prefix=/usr \
                 --mandir=/usr/share/man 
     make
     make DESTDIR=$PKG docdir=/usr/share/doc/chrpath install
+
+install -D -m644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
