@@ -1,13 +1,15 @@
 description="a modern interactive commandline shell."
 url="http://www.fishshell.com/"
 
+license="GPL2 LGPL2"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Fanch,Remy,Tnut"
 
 makedepends=(cmake doxygen)
 
 name=fish
-version=3.6.2
+version=3.6.4
 
 source=(https://github.com/fish-shell/fish-shell/releases/download/$version/$name-$version.tar.xz)
 
@@ -23,4 +25,6 @@ build() {
   ..
   make
   make DESTDIR=$PKG install
+
+  install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
 }
