@@ -11,7 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel
-version=6.5.13
+version=6.7
 
 alias=(linux)
 INITRD="initrd-stable"
@@ -25,7 +25,7 @@ _version=${version:0:3}
 ## Download all the sources
 #
 
-source=($url/pub/linux/kernel/v6.x/linux-${_version}.tar.xz config_64)
+source=($url/pub/linux/kernel/v6.x/linux-${_version}.tar.xz config)
 
 [ -z $patchname ] || source+=" $url/pub/linux/kernel/v6.x/$patchname"
 ## Time to build everything
@@ -42,13 +42,13 @@ if [ -f $SRC/patch-$version.xz ]; then
 fi
 
 make mrproper
-cp $SRC/config_64 ./.config
+cp $SRC/config ./.config
 
 # make menuconfig
 
 make
 
-cp .config $SRC/config_64
+cp .config $SRC/config
 
 ## Modules
 #
@@ -67,9 +67,9 @@ cd $SRC/linux-${_version}
 mkdir -p $PKG/boot
 
 cp  System.map \
-$PKG/boot/System_64.map-${KERNEL_VERSION}
+$PKG/boot/System.map-${KERNEL_VERSION}
 cp  .config    \
-$PKG/boot/config_64-${KERNEL_VERSION}
+$PKG/boot/config-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
 $PKG/boot/${KERNEL}
 ln -sf ${KERNEL} $PKG/boot/${name}
@@ -81,7 +81,7 @@ cd $PKG/lib/modules/${KERNEL_VERSION}/
 mkdir -p $PKG/usr/src
 
 mv $SRC/linux-${_version} $PKG/usr/src/
-rm {build,source}
+rm build
 
 ln -sv /usr/src/linux-${_version} build
 ln -sv /usr/src/linux-${_version} source
