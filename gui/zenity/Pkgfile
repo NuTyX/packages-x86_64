@@ -6,12 +6,12 @@ license="LGPL2.1"
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Tnut"
 
-makedepends=(itstool gtk3 libnotify yelp-tools)
+makedepends=(itstool gtk3 yelp-tools libadwaita libnotify)
 
 name=zenity
-version=3.44.2
+version=4.0.1
 
-source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
+source=(https://gitlab.gnome.org/GNOME/zenity/-/archive/$version/$name-$version.tar.gz)
 
 build() {
 
@@ -23,7 +23,6 @@ meson --prefix=/usr           \
 --sysconfdir=/etc             \
 --localstatedir=/var          \
 --buildtype=release           \
--Dlibnotify=true              \
 ..
 ninja
 
