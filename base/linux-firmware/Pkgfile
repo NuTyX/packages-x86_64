@@ -1,12 +1,11 @@
 description='The linux kernel firmware set of files. More and more hardware requires this package'
 url='https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary'
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 name=linux-firmware
-version=20231211
-release=4
+version=20240115
 
 makedepends=(rdfind)
 
@@ -24,13 +23,13 @@ echo "
 . lib/lsb/init-functions
 echo -e \"
 \${WARNING}
-******************************************************
-* The linux-firware package will be soon obsolet.    *
-* You should replace it with the set of packages.    *
-*                    Check                           *
-*   https://www.nutyx.org/en/upgrade-linux-firmware  *
-*                                                    *
-******************************************************
+****************************************************
+* The linux-firware package is now splited.        *
+* Maybe replace it with the set of packages.       *
+*                    Check                         *
+* https://www.nutyx.org/en/upgrade-linux-firmware  *
+*                                                  *
+****************************************************
 \${NORMAL}
 \"" > $PKGMK_ROOT/$name.post-install
 
