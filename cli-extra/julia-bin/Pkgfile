@@ -1,0 +1,23 @@
+description='High-level, high-performance, dynamic programming language - official binaries'
+url='https://julialang.org/'
+
+license="MIT"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Ndawka"
+
+name=julia-bin
+version=1.9.4
+
+run=(bash gmp libnghttp2 libssh2 libunwind python llvm)
+
+source=(https://julialang-s3.julialang.org/bin/linux/x64/${version:0:3}/julia-$version-linux-x86_64.tar.gz)
+
+build() {
+ mkdir -p ${pkgdir}/usr/share/licenses/julia
+ cp -r julia-$version/{bin,etc,include,lib,share,libexec} \
+ $PKG/usr/
+
+ install -Dm644 julia-$version/LICENSE.md \
+ $PKG/usr/share/licenses/julia-bin/LICENSE.md
+}
