@@ -1,0 +1,28 @@
+description='Display bandwidth usage on an interface'
+url='http://www.ex-parrot.com/~pdw/iftop/'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Ndawka"
+
+name=iftop
+version=1.0pre4
+
+makedepends=(ncurses libpcap)
+
+source=(mac-address-fix.patch
+        http://www.ex-parrot.com/~pdw/$name/download/$name-$version.tar.gz)
+
+prepare() {
+cd $name-$version
+patch -p0 -i ../mac-address-fix.patch
+}
+
+build(){
+cd $name-$version
+CFLAGS+=' -fcommon'
+./configure --prefix=/usr \
+  --sbindir=/usr/bin \
+  --mandir=/usr/share/man
+make
+make DESTDIR=$PKG install
+}
