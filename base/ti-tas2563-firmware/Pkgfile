@@ -1,0 +1,24 @@
+description="ti-tas2563 - tas2563 firmware"
+url='https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+set=(linux-firmware)
+
+name=ti-tas2563-firmware
+version=20240115
+
+makedepends=(rdfind)
+source=(WHENCE
+        https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-$version.tar.gz)
+
+build() {
+
+cd linux-firmware-$version
+cp ../WHENCE .
+make DESTDIR=$PKG FIRMWAREDIR=/lib/firmware install
+
+install -Dt $PKG/usr/share/licenses/$name -m644 WHENCE
+}
+

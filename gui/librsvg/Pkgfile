@@ -3,24 +3,22 @@ url="http://librsvg.sourceforge.net/"
 
 liense="GPL2"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
 makedepends=(gdk-pixbuf libcroco pango vala rustc
              gi-docgen python-docutils python-smartypants)
 
 name=librsvg
-version=2.57.0
+version=2.57.1
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
 build() {
 cd $name-$version
 ./configure --prefix=/usr \
 --disable-static \
---enable-vala
-
-# Until we findout what's wrong with pango
-sed -i 's@doc $(GIR_FILE)@doc $(GIR_FILE) || true@' doc/Makefile
+--enable-vala \
+--disable-gtk-doc
 
 make
 make DESTDIR=$PKG install

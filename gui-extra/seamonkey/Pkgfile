@@ -12,14 +12,14 @@ run=(startup-notification desktop-file-utils hicolor-icon-theme
      shared-mime-info)
 
 name=seamonkey
-version=2.53.18
+version=2.53.18.1
 
 locale_version=$version
 
-source=(https://ftp.mozilla.org/pub/$name/releases/$version/source/$name-$version.source.tar.xz )
+source=(https://archive.seamonkey-project.org/releases/$version/source/$name-$version.source.tar.xz )
 
 pack_remove_locale() {
-wget https://ftp.mozilla.org/pub/seamonkey/releases/${locale_version}/langpack/$name-${locale_version}.${1}.langpack.xpi
+wget https://archive.seamonkey-project.org/releases/${locale_version}/langpack/$name-${locale_version}.${1}.langpack.xpi
 install -Dm644 $name-${locale_version}.${1}.langpack.xpi \
 $PKG/usr/lib/$name-$version/extensions/langpack-${1}@$name.mozilla.org.xpi
 rm $name-${locale_version}.${1}.langpack.xpi
