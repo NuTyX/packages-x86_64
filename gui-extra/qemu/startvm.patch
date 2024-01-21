@@ -1,0 +1,62 @@
+--- a/startvm	2024-01-21 11:48:58.742088266 +0100
++++ b/startvm	2024-01-21 11:39:40.579986596 +0100
+@@ -98,17 +98,17 @@
+ }
+ 
+ sndhw_cmdline() {
+-case $SOUND_CARD_TYPE in
+-        none|NONE|no)
+-                _SNDHW_CMDLINE=""
+-        ;;
+-        ac97)
+-                _SNDHW_CMDLINE="-device AC97"
+-        ;;
+-	*)
+-		_SNDHW_CMDLINE="-soundhw $SOUND_CARD_TYPE"
+-	;;
+-esac
++  case $SOUND_CARD_TYPE in
++    none|NONE|no)
++      _SNDHW_CMDLINE=""
++      ;;
++    ac97)
++      _SNDHW_CMDLINE="-device AC97"
++      ;;
++    *)
++      _SNDHW_CMDLINE="-device $SOUND_CARD_TYPE"
++      ;;
++  esac
+ }
+ 
+ vga_cmdline() {
+@@ -130,21 +130,21 @@
+ 
+ display_cmdline() {
+ case $VGA_DISPLAY_TYPE in
+-        vnc|VNC)
+-                _DISPLAY_CMDLINE="-$VGA_DISPLAY_TYPE $REMOTE_PORT -k $VNC_LAYOUT $DISPLAY_OPTS"
+-        ;;
+-        spice)
+-                _DISPLAY_CMDLINE="-$VGA_DISPLAY_TYPE port=$REMOTE_PORT,$DISPLAY_OPTS"
+-        ;;
++  vnc|VNC)
++          _DISPLAY_CMDLINE="-$VGA_DISPLAY_TYPE $REMOTE_PORT -k $VNC_LAYOUT $DISPLAY_OPTS"
++  ;;
++  spice)
++          _DISPLAY_CMDLINE="-$VGA_DISPLAY_TYPE port=$REMOTE_PORT,$DISPLAY_OPTS -audio spice,id=1"
++  ;;
+ 	gtk)
+ 		if [[ $LOCAL_FULLSCREEN == yes ]]; then
+-			_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE -full-screen"
++			_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE -full-screen -audio pa,id=1"
+ 		else
+-			_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE"
++			_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE -audio pa,id=1"
+ 		fi
+ 	;;
+ 	egl-headless)
+-		_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE -spice port=$REMOTE_PORT,$DISPLAY_OPTS"
++		_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE -spice port=$REMOTE_PORT,$DISPLAY_OPTS -audio spice,id=1"
+ 	;;
+ 	*)
+ 		_DISPLAY_CMDLINE="-display $VGA_DISPLAY_TYPE"
