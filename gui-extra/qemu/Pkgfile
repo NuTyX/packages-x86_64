@@ -1,11 +1,12 @@
 description="Processor emulator using dynamic translation to achieve good emulation speed"
 url="http://www.qemu.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Rems,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Rems,Tnut"
 
 name=qemu
 version=8.2.0
+release=2
 
 makedepends=(gtk2 gtk3 sdl libseccomp libcap-ng
              python mesa vte virglrenderer lzo nettle
@@ -14,7 +15,7 @@ makedepends=(gtk2 gtk3 sdl libseccomp libcap-ng
              usbredir bridge-utils xorg-libdrm spice spice-protocol libaio libslirp)
 run=(desktop-file-utils ovmf)
 
-source=(configvm startvm
+source=(configvm startvm virtio.patch
         https://download.qemu.org/qemu-$version.tar.xz)
 
 prepare() {
@@ -29,6 +30,8 @@ done
 build() {
 
 cd qemu-$version
+
+patch -Np1 -i ../virtio.patch
 
 mkdir -vp build
 cd build
