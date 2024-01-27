@@ -3,14 +3,15 @@ url="http://www.gnome.org/"
 
 license="GPL2.1 APACHE"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
 makedepends=(gtk-doc intltool libxslt docbook-xsl
              glib gobject-introspection libgcrypt vala)
 
 name=libsecret
 version=0.21.2
+release=2
 
 source=(https://download.gnome.org/sources/$name/${version:0:4}/$name-$version.tar.xz)
 
@@ -20,10 +21,10 @@ cd $name-$version
 mkdir bld
 cd    bld
 
-meson setup .. \
- --prefix=/usr \
+meson setup ..  \
+ --prefix=/usr  \
 -Dgtk_doc=false \
--Dmanpage=false
+-Dmanpage=true
 
 ninja
 
