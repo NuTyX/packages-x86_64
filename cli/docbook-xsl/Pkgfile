@@ -8,46 +8,32 @@ contributors="Pierre B"
 
 makedepends=(libxml2 docbook-xml)
 
-alias=(docbook-xsl-nons)
-
 name=docbook-xsl
 version=1.79.2
-release=3
 
-source=(stackfix-1.patch
+source=($name-$version-stack_fix-1.patch
    https://github.com/docbook/xslt10-stylesheets/releases/download/release/$version/$name-$version.tar.bz2
-   https://github.com/docbook/xslt10-stylesheets/releases/download/release/$version/$name-nons-$version.tar.bz2
    https://github.com/docbook/xslt10-stylesheets/releases/download/release/$version/docbook-xsl-doc-$version.tar.bz2)
 
-prepare() {
-
- cd $name-$version
- patch -Np1 -i ../stackfix-1.patch
-
- cd ../$name-nons-$version
- patch -Np1 -i ../stackfix-1.patch
-
-}
 build() {
+cd $name-$version
+patch -Np1 -i ../$name-$version-stack_fix-1.patch
+install -v -m755 -d $PKG/usr/share/xml/docbook/xsl-stylesheets-$version
+cp -v -R VERSION assembly common eclipse epub epub3 extensions fo highlighting html \
+htmlhelp images javahelp lib manpages params profiling \
+roundtrip slides template tests tools webhelp website \
+xhtml xhtml-1_1 xhtml5 \
+$PKG/usr/share/xml/docbook/xsl-stylesheets-$version/
 
-  local pkgroot ns dir
-  for ns in -nons ''; do
-     pkgroot="$PKG/usr/share/xml/docbook/xsl-stylesheets-$version$ns"
-     dir=$name$ns-$version
+ln -s VERSION \
+$PKG/usr/share/xml/docbook/xsl-stylesheets-$version/VERSION.xsl
 
-     install -Dt "$pkgroot" -m644 $dir/VERSION{,.xsl}
+install -v -m644 -D README \
+$PKG/usr/share/doc/docbook-xsl-$version/README.txt
 
-     (
-       shopt -s nullglob  # ignore missing files
-       for fn in assembly common eclipse epub epub3 fo highlighting html \
-         htmlhelp javahelp lib manpages params profiling roundtrip template \
-         website xhtml xhtml-1_1 xhtml5
-       do
-         install -Dt "$pkgroot/$fn" -m644 $dir/$fn/*.{xml,xsl,dtd,ent}
-       done
-    )
-  done
-
-  install -d $PKG/etc/xml
-  install -Dt "$PKG/usr/share/licenses/$name" -m644 $dir/COPYING
+install -v -m755    RELEASE-NOTES* NEWS* \
+$PKG/usr/share/doc/docbook-xsl-$version
+cp -v -R doc/* \
+$PKG/usr/share/doc/docbook-xsl-$version
+chown 0:0 -R $PKG 
 }
