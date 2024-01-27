@@ -8,6 +8,7 @@ makedepends=(libtool automake python)
 
 name=libxml2
 version=2.12.4
+release=2
 
 PKGMK_GROUPS=(lib man devel doc)
 source=(https://gitlab.gnome.org/GNOME/libxml2/-/archive/v${version}/$name-v${version}.tar.gz)
@@ -20,11 +21,13 @@ build() {
 cd $name-$version
 
 autoreconf -fiv
-./configure \
+./configure       \
     --prefix=/usr \
-    --disable-static \
+    --sysconfdir=/etc \
+    --disable-static  \
     --with-history \
-    --with-python=/usr/bin/python3
+    --with-legacy  \
+    --with-python=/usr/bin/python
 make
 make DESTDIR=$PKG install
 rm $PKG/usr/lib/$name.la
