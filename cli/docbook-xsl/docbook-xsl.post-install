@@ -1,28 +1,51 @@
-generate_xml_catalog () {
-local version x new 
 version=1.79.2
 
-new=${version%-*}
-[[ -f etc/xml/catalog ]] || _xmlcatalog --create
+if [ ! -d etc/xml ]; then install -v -m755 -d etc/xml; fi &&
+if [ ! -f etc/xml/catalog ]; then
+    xmlcatalog --noout --create etc/xml/catalog
+fi
 
-for ver in $new current; do
-	for x in rewriteSystem rewriteURI; do
-		_xmlcatalog --add $x http://cdn.docbook.org/release/xsl/$ver \
-		usr/share/xml/docbook/xsl-stylesheets-$new
+xmlcatalog --noout --add "rewriteSystem" \
+           "http://docbook.sourceforge.net/release/xsl/$version" \
+           "/usr/share/xml/docbook/xsl-stylesheets-$version" \
+    etc/xml/catalog
 
-		_xmlcatalog --add $x http://cdn.docbook.org/release/xsl-nons/$ver \
-		usr/share/xml/docbook/xsl-stylesheets-$new-nons
+xmlcatalog --noout --add "rewriteURI" \
+           "http://docbook.sourceforge.net/release/xsl/$version" \
+           "/usr/share/xml/docbook/xsl-stylesheets-$version" \
+    etc/xml/catalog
 
-		_xmlcatalog --add $x http://docbook.sourceforge.net/release/xsl-ns/$ver \
-		usr/share/xml/docbook/xsl-stylesheets-$new
+xmlcatalog --noout --add "rewriteSystem" \
+           "http://docbook.sourceforge.net/release/xsl/current" \
+           "/usr/share/xml/docbook/xsl-stylesheets-$version" \
+    etc/xml/catalog
 
-		_xmlcatalog --add $x http://docbook.sourceforge.net/release/xsl/$ver \
-		usr/share/xml/docbook/xsl-stylesheets-$new-nons
-	done
+xmlcatalog --noout --add "rewriteURI" \
+           "http://docbook.sourceforge.net/release/xsl/current" \
+           "/usr/share/xml/docbook/xsl-stylesheets-$version" \
+    etc/xml/catalog
+
+for version in 1.67.2 
+do
+
+xmlcatalog --noout --add "rewriteSystem" \
+           "http://docbook.sourceforge.net/release/xsl/$version" \
+           "/usr/share/xml/docbook/xsl-stylesheets-$version" \
+    etc/xml/catalog
+
+xmlcatalog --noout --add "rewriteURI" \
+           "http://docbook.sourceforge.net/release/xsl/$version" \
+           "/usr/share/xml/docbook/xsl-stylesheets-$version" \
+    etc/xml/catalog
+
+xmlcatalog --noout --add "rewriteSystem" \
+           "http://docbook.sourceforge.net/release/xsl/$version" \
+           "/usr/share/xml/docbook/xsl-stylesheets-$version" \
+    etc/xml/catalog
+
+xmlcatalog --noout --add "rewriteURI" \
+           "http://docbook.sourceforge.net/release/xsl/$version" \
+           "/usr/share/xml/docbook/xsl-stylesheets-$version" \
+    etc/xml/catalog
+
 done
-}
-_xmlcatalog() {
-  xmlcatalog --noout "$@" etc/xml/catalog
-}
-
-generate_xml_catalog
