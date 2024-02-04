@@ -1,0 +1,34 @@
+description='UTF-8 with C++ in a Portable Way'
+url='https://github.com/nemtrif/utfcpp'
+
+license="Boost"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake)
+
+name=utf8cpp
+version=4.0.5
+
+source=(https://github.com/nemtrif/utfcpp/archive/v$version/utfcpp-$version.tar.gz)
+
+prepare() {
+mv utfcpp-$version $name-$version
+}
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+      cmake -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_BUILD_TYPE=Release  \
+            -DUTF8_TESTS=OFF            \
+            ..
+make
+make DESTDIR=$PKG install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
+}
