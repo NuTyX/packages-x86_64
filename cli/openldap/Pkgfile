@@ -1,29 +1,31 @@
 description="Lightweight Directory Access Protocol (LDAP) client and server"
 url="http://www.openldap.org"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
 makedepends=(autoconf m4)
 
 name=openldap
-version=2.6.6
+version=2.6.7
 runyx_version=20201011
 
 source=(http://downloads.tuxfamily.org/nutyx/files/runyx-${runyx_version}.tar.xz
 	https://www.openldap.org/software/download/OpenLDAP/openldap-release/$name-$version.tgz
-	openldap-2.6.2-consolidated-1.patch)
+	$name-$version-consolidated-1.patch)
 prepare() {
 
 (getent group  ldap > /dev/null) || groupadd -g 83 ldap
 (getent passwd ldap > /dev/null) || useradd  -c "OpenLDAP Daemon Owner" \
          -d /var/lib/openldap -u 83 \
          -g ldap -s /bin/false ldap
+cd $name-$version
+patch -Np1 -i ../$name-$version-consolidated-1.patch
+autoconf
 }
 build() {
 cd $name-$version
-patch -Np1 -i ../openldap-2.6.2-consolidated-1.patch
-autoconf
+
 ./configure --prefix=/usr \
             --sysconfdir=/etc \
             --disable-static \
