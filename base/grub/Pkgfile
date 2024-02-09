@@ -1,12 +1,11 @@
 description="The GRUB package contains the GRand Unified Bootloader."
 url="http://www.gnu.org/software/grub/"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Pierre,Schrodinger72,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Schrodinger72,Tnut"
 
 name=grub
-version=2.06
-release=8
+version=2.12
 
 dejavu_version=2.37
 splash_version=21.03.0-rc4
@@ -34,7 +33,9 @@ grub-$version
 gunzip -c unifont-13.0.06.pcf.gz \
 > grub-$version/unifont.pcf
 cd grub-$version
-patch -Np1 -i ../ext2-fixe.patch
+#patch -Np1 -i ../ext2-fixe.patch
+#fix missing file
+  echo depends bli part_gpt > grub-core/extra_deps.lst
 }
 
 build() {
@@ -42,6 +43,7 @@ build() {
   cp -a grub-$version grub-efi-$version-i386
 
 	cd grub-$version
+
 	./configure --prefix=/usr \
 		--sysconfdir=/etc       \
 		--sbindir=/sbin        \
@@ -55,6 +57,7 @@ build() {
 	make DESTDIR=$PKG install
 
 	cd ../grub-efi-$version
+
 	./configure --prefix=/usr \
 		--sysconfdir=/etc       \
 		--sbindir=/sbin        \
@@ -69,6 +72,7 @@ build() {
 	rm -r $SRC/dest
 
 	cd ../grub-efi-$version-i386
+
 	./configure --prefix=/usr \
 		--sysconfdir=/etc       \
 		--sbindir=/sbin        \
