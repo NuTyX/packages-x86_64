@@ -1,8 +1,8 @@
 description="Complete and free Internet live audio and video broadcasting solution"
 url="http://ffmpeg.org/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Remy,Greg,Fabienwang,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Remy,Greg,Fabienwang,Spiky"
 
 makedepends=(doxygen alsa-lib bzip2 fribidi gmp gsm jack ladspa lame
     libavc1394 libiec61883 libmodplug libraw1394 libssh libtheora
@@ -13,7 +13,7 @@ makedepends=(doxygen alsa-lib bzip2 fribidi gmp gsm jack ladspa lame
     xorg-libxfixes zlib libva libvdpau ffnvcodec-headers)
 
 name=ffmpeg
-version=6.0
+version=6.1.1
 
 _CONF_OPTS="    --prefix=/usr \
     --disable-static \
@@ -55,15 +55,8 @@ _CONF_OPTS="    --prefix=/usr \
     --enable-nvenc \
     --enable-openssl "
 
-source=(${url}releases/ffmpeg-{$version,4.4.1}.tar.xz
+source=(${url}releases/ffmpeg-$version.tar.xz
         add-av_stream_get_first_dts-for-chromium.patch)
-
-prepare() {
-  cd ffmpeg-4.4.1
-  sed -i 's/-lflite"/-lflite -lasound"/' configure
-  ./configure ${_CONF_OPTS} --enable-avresample
-  make
-}
 
 build() {
   cd ffmpeg-$version
@@ -80,14 +73,4 @@ build() {
   
   install -v -m755 -d $PKG/usr/share/doc/$name-$version
   install -v -m644 doc/*.txt $PKG/usr/share/doc/$name-$version
-}
-
-package() {
-  mkdir -p $PKG/{usr/lib/ffmpeg-4,etc/ld.so.conf.d}
-  cd $name-4.4.1
-  make DESTDIR=$PKG/usr/lib/ffmpeg-4 install-libs
-  mv $PKG/usr/lib/ffmpeg-4/usr/lib/* \
-  $PKG/usr/lib/ffmpeg-4
-  rm -d $PKG/usr/lib/ffmpeg-4/usr/{lib,}
-  echo "/usr/lib/ffmpeg-4" > $PKG/etc/ld.so.conf.d/ffmpeg-4.conf
 }
