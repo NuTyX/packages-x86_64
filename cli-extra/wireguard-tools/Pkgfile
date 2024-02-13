@@ -1,0 +1,36 @@
+description='next generation secure network tunnel - tools for configuration'
+url='https://www.wireguard.com/'
+
+packager='tnut <tnut@nutyx.org>'
+contributors=''
+
+run=(bash-completion)
+
+name=wireguard-tools
+version=1.0.20210914
+
+source=(https://git.zx2c4.com/${name}/snapshot/${name}-${version}.tar.xz)
+
+prepare() {
+	cd ${name}-${version}/
+	find contrib/ -name '.gitignore' -delete
+}
+
+build() {
+
+ cd ${name}-${version}/src
+
+ make
+
+ make DESTDIR=$PKG     \
+      PREFIX=/usr      \
+      RUNSTATEDIR=/run \
+      WITH_BASHCOMPLETION=yes \
+      WITH_WGQUICK=yes        \
+    WITH_SYSTEMDUNITS=no      \
+ install
+
+ install -d -m0755 $PKG/usr/share/$name
+ cp -r ../contrib \
+ $PKG/usr/share/$name/examples
+}
