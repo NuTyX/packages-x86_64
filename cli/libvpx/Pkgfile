@@ -1,8 +1,8 @@
 description="The VP8 Codec SDK"
 url="http://webm.googlecode.com/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
 makedepends=(perl sed diffutils yasm)
 
@@ -13,7 +13,12 @@ source=(https://github.com/webmproject/$name/archive/v$version/$name-$version.ta
 build() {
 cd $name-$version
 
-./configure --prefix=/usr \
+sed -i 's/cp -p/cp/' build/make/Makefile
+
+mkdir libvpx-build
+cd    libvpx-build
+
+../configure --prefix=/usr \
 --enable-shared --disable-static
 make
 
