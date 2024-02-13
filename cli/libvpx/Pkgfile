@@ -7,13 +7,18 @@ contributors="Pierre,Spiky"
 makedepends=(perl sed diffutils yasm)
 
 name=libvpx
-version=1.13.1
+version=1.14.0
 
 source=(https://github.com/webmproject/$name/archive/v$version/$name-$version.tar.gz)
 build() {
 cd $name-$version
 
-./configure --prefix=/usr \
+sed -i 's/cp -p/cp/' build/make/Makefile
+
+mkdir libvpx-build
+cd    libvpx-build
+
+../configure --prefix=/usr \
 --enable-shared --disable-static
 make
 
