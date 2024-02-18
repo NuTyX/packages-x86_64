@@ -3,16 +3,15 @@ url="http://www.graphviz.org"
 
 license="EPL"
 
-packager="tnut <tmit@nutyx.org>"
-contributors="Pierre,Rems,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Rems,Tnut"
 
 makedepends=(gtk2 freetype xorg-fontconfig gdk-pixbuf libjpeg-turbo
              libpng pango libglade ghostscript swig guile openjdk
              lua python ruby tcl tk libxcrypt)
 
 name=graphviz
-version=9.0.0
-release=2
+version=10.0.1
 
 source=(https://gitlab.com/graphviz/graphviz/-/archive/$version/$name-$version.tar.gz)
 
@@ -36,7 +35,7 @@ rm $PKG/usr/lib/graphviz/libgvplugin_core.la
 rm $PKG/usr/lib/graphviz/libgvplugin_dot_layout.la
 rm $PKG/usr/lib/graphviz/libgvplugin_gdk.la
 rm $PKG/usr/lib/graphviz/libgvplugin_gs.la
-rm $PKG/usr/lib/graphviz/libgvplugin_gtk.la
+#rm $PKG/usr/lib/graphviz/libgvplugin_gtk.la
 rm $PKG/usr/lib/graphviz/libgvplugin_neato_layout.la
 rm $PKG/usr/lib/graphviz/libgvplugin_pango.la
 rm $PKG/usr/lib/graphviz/libgvplugin_xlib.la
@@ -51,7 +50,7 @@ rm $PKG/usr/lib/libcdt.la
 rm $PKG/usr/lib/libcgraph.la
 rm $PKG/usr/lib/libgvc.la
 rm $PKG/usr/lib/libgvpr.la
-rm $PKG/usr/lib/liblab_gamut.la
+#rm $PKG/usr/lib/liblab_gamut.la
 rm $PKG/usr/lib/libpathplan.la
 rm $PKG/usr/lib/libxdot.la
 rm $PKG/usr/lib/tcl8.6/graphviz/libgv_tcl.la
