@@ -1,16 +1,15 @@
 description="For reading and writing GIFs as well as programs for converting and working with GIF files."
 url="http://downloads.sourceforge.net/giflib/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
-makedepends=(xmlto)
+makedepends=(xmlto imagemagick)
 
 name=giflib
-version=5.2.1
-release=2
+version=5.2.2
 
-source=(https://sourceforge.net/projects/giflib/files/giflib-$version.tar.gz )
+source=(https://sourceforge.net/projects/giflib/files/giflib-$version.tar.gz)
 
 build() {
 cd $name-$version
