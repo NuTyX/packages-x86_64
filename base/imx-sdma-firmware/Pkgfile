@@ -4,10 +4,12 @@ url='https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=su
 packager="tnut <tnut@nutyx.org>"
 contributors="Spiky"
 
+license=Custom
+
 set=(linux-firmware)
 
 name=imx-sdma-firmware
-version=20240115
+version=20240220
 
 makedepends=(rdfind)
 source=(WHENCE
@@ -20,5 +22,5 @@ cp ../WHENCE .
 make DESTDIR=$PKG FIRMWAREDIR=/lib/firmware install
 
 install -Dt $PKG/usr/share/licenses/$name -m644 WHENCE
+install -Dt $PKG/usr/share/licenses/$name -m644 LICENSE.sdma_firmware
 }
-
