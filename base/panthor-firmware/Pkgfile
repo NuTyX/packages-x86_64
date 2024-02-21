@@ -1,0 +1,26 @@
+description="panthor - Arm Mali CSF firmware"
+url='https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+license=Custom
+
+set=(linux-firmware)
+
+name=panthor-firmware
+version=20240220
+
+makedepends=(rdfind)
+source=(WHENCE
+        https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-$version.tar.gz)
+
+build() {
+
+cd linux-firmware-$version
+cp ../WHENCE .
+make DESTDIR=$PKG FIRMWAREDIR=/lib/firmware install
+
+install -Dt $PKG/usr/share/licenses/$name -m644 WHENCE
+install -Dt $PKG/usr/share/licenses/$name -m644 LICENCE.mali_csffw
+}
