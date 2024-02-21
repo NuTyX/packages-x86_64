@@ -1,13 +1,15 @@
-description="i915 -- Intel Integrated Graphics driver"
+description="i915 -- Intel Graphics driver"
 url='https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary'
 
 packager="tnut <tnut@nutyx.org>"
 contributors="Spiky"
 
+license=Custom
+
 set=(linux-firmware)
 
 name=i915-firmware
-version=20240115
+version=20240220
 
 makedepends=(rdfind)
 source=(WHENCE
@@ -20,5 +22,5 @@ cp ../WHENCE .
 make DESTDIR=$PKG FIRMWAREDIR=/lib/firmware install
 
 install -Dt $PKG/usr/share/licenses/$name -m644 WHENCE
+install -Dt $PKG/usr/share/licenses/$name -m644 LICENSE.i915
 }
-
