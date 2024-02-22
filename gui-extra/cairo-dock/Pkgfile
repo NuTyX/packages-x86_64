@@ -1,19 +1,18 @@
 description="Light eye-candy fully themable animated dock"
 url="https://glx-dock.org/"
 
-packager="Tnut <tnut@nutyx.org>"
-contributors="Dania"
+packager="spiky <spiky@nutyx.org>"
+contributors="Dania,Tnut"
 
 makedepends=(cairo cmake curl dbus-glib xorg-glu gtk3)
 
 name=cairo-dock
-version=3.4.1
-release=5
+version=3.5.0
 
-source=(https://launchpad.net/cairo-dock-core/3.4/$version/+download/$name-$version.tar.gz)
+source=(https://github.com/Cairo-Dock/cairo-dock-core/archive/refs/tags/$version.tar.gz)
 
 build() {
-  cd $name-$version 
+  cd $name-core-$version 
   mkdir build
   cd build
 
