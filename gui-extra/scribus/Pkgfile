@@ -9,15 +9,14 @@ makedepends=(icu cmake boost aspell cups qttools qtdeclarative gnutls kerberos p
 run=(shared-mime-info)
 
 name=scribus
-version=1.5.8
-release=21
+version=1.6.1
 
 source=(https://downloads.sourceforge.net/$name/$name-$version.tar.xz
         poppler.patch)
 
 prepare() {
  cd $name-$version
- patch -Np1 -i ../poppler.patch
+# patch -Np1 -i ../poppler.patch
 }
 
 build() {
