@@ -1,23 +1,26 @@
 description="Checks and undeletes partitions + PhotoRec, signature based recovery tool"
 url="http://www.cgsecurity.org/index.html?testdisk.html"
 
-contributors="Greg"
-packager="tnut <tnut@nutyx.org>"
+license="GPL2"
+
+contributors="Greg,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(util-linux ntfs-3g)
 
 name=testdisk
-version=7.1
-release=2
+version=7.2
 
-source=(http://www.cgsecurity.org/$name-$version.tar.bz2)
+source=(https://www.cgsecurity.org/$name-$version-WIP.tar.bz2)
 
 build() {
 
-	cd $name-$version
+	cd $name-${version}-WIP
 	./configure --prefix=/usr \
 	--without-ewf \
 	--enable-sudo
 	make
 	make DESTDIR=$PKG install
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
