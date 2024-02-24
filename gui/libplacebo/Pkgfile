@@ -1,0 +1,33 @@
+description='Reusable library for GPU-accelerated video/image rendering primitives'
+url='https://github.com/haasn/libplacebo'
+
+license="LGPL2.2"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(glad ffmpeg glslang vulkan-icd-loader lcms2)
+
+name=libplacebo
+version=6.338.2
+
+source=(https://github.com/haasn/libplacebo/archive/refs/tags/v$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+
+   mkdir build &&
+cd    build &&
+
+meson setup ..            \
+      --prefix=/usr       \
+      --buildtype=release \
+      -Dtests=true        \
+      -Ddemos=false
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
+}
