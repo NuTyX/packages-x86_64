@@ -1,15 +1,15 @@
 description="A C/C++ MIME creation and parser library with support for S/MIME, PGP, and Unix mbox spools"
 url="https://github.com/jstedfast/gmime"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors=""
 
 makedepends=(glib gpgme zlib libidn2 gobject-introspection gtk-doc git vala)
 run=()
 set=()
 
 name=gmime3
-version=3.2.13
+version=3.2.14
 
 source=(https://github.com/jstedfast/gmime/archive/$version.tar.gz)
 
@@ -20,6 +20,7 @@ cd gmime-$version
     --program-prefix=$pkgname \
     --enable-gtk-doc \
     --enable-smime \
+    --disable-largefile \
     --disable-static
 make DESTDIR=$PKG install
 }
