@@ -13,5 +13,5 @@ jobs:
           to: ${{ secrets.TELEGRAM_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message:  |
-             ${{ github.event_name} in testing.
+             Commit on testing: ${{ github.event.commits[0].message }}.
       
