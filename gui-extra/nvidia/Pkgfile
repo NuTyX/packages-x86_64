@@ -9,7 +9,7 @@ run=(libglvnd)
 set=()
 
 name=nvidia
-version=535.154.05
+version=550.54.14
 
 source=(https://us.download.nvidia.com/XFree86/Linux-x86_64/${version}/NVIDIA-Linux-x86_64-${version}.run
         20-nvidia.conf
@@ -52,16 +52,14 @@ cd NVIDIA-Linux-x86_64-${version}
     install -Dm755 "libnvidia-glsi.so.${version}" "${PKG}/usr/lib/libnvidia-glsi.so.${version}"
 
     # misc
+    install -Dm755 "libnvidia-api.so.1" "${PKG}/usr/lib/libnvidia-api.so.1"
     install -Dm755 "libnvidia-fbc.so.${version}" "${PKG}/usr/lib/libnvidia-fbc.so.${version}"
     install -Dm755 "libnvidia-encode.so.${version}" "${PKG}/usr/lib/libnvidia-encode.so.${version}"
     install -Dm755 "libnvidia-cfg.so.${version}" "${PKG}/usr/lib/libnvidia-cfg.so.${version}"
     install -Dm755 "libnvidia-ml.so.${version}" "${PKG}/usr/lib/libnvidia-ml.so.${version}"
     install -Dm755 "libnvidia-glvkspirv.so.${version}" "${PKG}/usr/lib/libnvidia-glvkspirv.so.${version}"
     install -Dm755 "libnvidia-allocator.so.${version}" "${PKG}/usr/lib/libnvidia-allocator.so.${version}"
-    install -Dm755 "libnvidia-vulkan-producer.so.${version}" "${PKG}/usr/lib/libnvidia-vulkan-producer.so.${version}"
-    # Sigh libnvidia-vulkan-producer.so has no SONAME set so create_links doesn't catch it. NVIDIA please fix!
-    ln -s "libnvidia-vulkan-producer.so.${version}" "${PKG}/usr/lib/libnvidia-vulkan-producer.so.1"
-    ln -s "libnvidia-vulkan-producer.so.${version}" "${PKG}/usr/lib/libnvidia-vulkan-producer.so"
+    install -Dm755 "libnvidia-gpucomp.so.${version}" "${PKG}/usr/lib/libnvidia-gpucomp.so.${version}"
 
     # GTK
     install -Dm755 "libnvidia-gtk3.so.${version}" "${PKG}/usr/lib/libnvidia-gtk3.so.${version}"
