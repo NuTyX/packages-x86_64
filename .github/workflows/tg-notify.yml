@@ -1,7 +1,5 @@
 name: tg notify
-on: 
-  push:
-    branches: [testing]
+on:  push
 
 jobs:
   notifyTelegram:
@@ -13,5 +11,5 @@ jobs:
           to: ${{ secrets.TELEGRAM_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message:  |
-             packages-x86_64 on testing: ${{ github.event.commits[0].message }}.
+             packages-x86_64 on ${{ github.ref }}: ${{ github.event.commits[0].message }}.
       
