@@ -11,5 +11,5 @@ jobs:
           to: ${{ secrets.TELEGRAM_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message:  |
-             packages-x86_64 on ${{ github.ref }}: ${{ github.event.head_commit.message }}.
+             packages-x86_64 on ${{ github.ref_name }}: ${{ github.event.head_commit.message }}.
       
