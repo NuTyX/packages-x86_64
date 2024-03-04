@@ -1,10 +1,13 @@
 name: tg notify
-on: [push]
+on: 
+  push:
+    branches: [testing]
+
 jobs:
-  build:
+  notifyTelegram:
     run-on: NuTyX-testing
     steps:
-      - name: Send telegram message on push
+      - name: Send telegram message when push
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_ID }}
