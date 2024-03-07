@@ -7,7 +7,7 @@ contributors="Pierre,Tnut"
 makedepends=(make-ca)
 
 name=tcl
-version=8.6.13
+version=8.6.14
 
 source=( http://downloads.sourceforge.net/$name/$name$version-src.tar.gz)
 
@@ -26,16 +26,16 @@ sed -e "s#$PKGMK_ROOT/unix#/usr/lib#" \
     -e "s#$PKGMK_ROOT#/usr/include#"  \
     -i tclConfig.sh
 
-sed -e "s#$PKGMK_ROOT/unix/pkgs/tdbc1.1.5#/usr/lib/tdbc1.1.5#" \
-    -e "s#$PKGMK_ROOT/pkgs/tdbc1.1.5/generic#/usr/include#"    \
-    -e "s#$PKGMK_ROOT/pkgs/tdbc1.1.5/library#/usr/lib/tcl8.6#" \
-    -e "s#$PKGMK_ROOT/pkgs/tdbc1.1.5#/usr/include#"            \
-    -i pkgs/tdbc1.1.5/tdbcConfig.sh
+sed -e "s#$PKGMK_ROOT/unix/pkgs/tdbc1.1.7#/usr/lib/tdbc1.1.7#" \
+    -e "s#$PKGMK_ROOT/pkgs/tdbc1.1.7/generic#/usr/include#"    \
+    -e "s#$PKGMK_ROOT/pkgs/tdbc1.1.7/library#/usr/lib/tcl8.6#" \
+    -e "s#$PKGMK_ROOT/pkgs/tdbc1.1.7#/usr/include#"            \
+    -i pkgs/tdbc1.1.7/tdbcConfig.sh
 
-sed -e "s#$PKGMK_ROOT/unix/pkgs/itcl4.2.3#/usr/lib/itcl4.2.3#" \
-    -e "s#$PKGMK_ROOT/pkgs/itcl4.2.3/generic#/usr/include#"    \
-    -e "s#$PKGMK_ROOT/pkgs/itcl4.2.3#/usr/include#"            \
-    -i pkgs/itcl4.2.3/itclConfig.sh
+sed -e "s#$PKGMK_ROOT/unix/pkgs/itcl4.2.4#/usr/lib/itcl4.2.4#" \
+    -e "s#$PKGMK_ROOT/pkgs/itcl4.2.4/generic#/usr/include#"    \
+    -e "s#$PKGMK_ROOT/pkgs/itcl4.2.4#/usr/include#"            \
+    -i pkgs/itcl4.2.4/itclConfig.sh
 
 make DESTDIR=$PKG install
 make DESTDIR=$PKG install-private-headers
