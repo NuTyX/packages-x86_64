@@ -1,23 +1,33 @@
 description="Library for id3 tagging"
 url="http://www.mars.org/home/rob/proj/mpeg/"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
+
+makedepends=(cmake)
 
 name=libid3tag
-version=0.15.1b
-release=3
+version=0.16.3
 
-source=(ftp://ftp.mars.org/pub/mpeg/$name-$version.tar.gz\
+source=(https://codeberg.org/tenacityteam/libid3tag/archive/0.16.3.tar.gz \
 	id3tag.pc)
 
-build() {
-	mkdir -p $PKG/usr/lib/pkgconfig/
-	sed "s/#version#/$version/" id3tag.pc > \
-	$PKG/usr/lib/pkgconfig/id3tag.pc
-	cd $name-$version
-	./configure --prefix=/usr 
-	make
-	make DESTDIR=$PKG install
+prepare() {
+mv $name $name-$version
+}
 
-        rm $PKG/usr/lib/$name.la
+build() {
+
+   cd $name-$version
+
+  mkdir build
+  cd    build
+
+        cmake -DCMAKE_INSTALL_PREFIX=/usr \
+              -DCMAKE_BUILD_TYPE=None     \
+              ..
+
+        make
+
+        make DESTDIR=$PKG install
 }
