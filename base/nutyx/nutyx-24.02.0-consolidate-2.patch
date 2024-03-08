@@ -1,0 +1,24 @@
+commit 98555426f002ab5ae1f9d2e6cec53fb70708cdec
+Author: tnut <tnut@nutyx.org>
+Date:   Fri Mar 8 11:14:55 2024 +0100
+
+    mkinitramfs
+    
+    Get rid of the warning message
+
+diff --git a/scripts/mkinitramfs.in b/scripts/mkinitramfs.in
+index ebad7ea..5c6cb24 100755
+--- a/scripts/mkinitramfs.in
++++ b/scripts/mkinitramfs.in
+@@ -33,6 +33,11 @@ do
+    cp /lib/modules/$KERNEL_VERSION/modules.$i \
+    $WDIR/lib/modules/$KERNEL_VERSION
+ done
++touch $WDIR/lib/modules/$KERNEL_VERSION/modules.builtin.modinfo
++
++[ -f /lib/modules/$KERNEL_VERSION/modules.builtin.modinfo ] && \
++   cp /lib/modules/$KERNEL_VERSION/modules.builtin.modinfo \
++   $WDIR/lib/modules/$KERNEL_VERSION
+ depmod -b $WDIR $KERNEL_VERSION
+ }
+ 
