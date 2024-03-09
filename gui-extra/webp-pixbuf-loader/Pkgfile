@@ -9,7 +9,7 @@ contributors=""
 makedepends=(gdk-pixbuf libwebp)
 
 name=webp-pixbuf-loader
-version=0.2.5
+version=0.2.7
 
 source=(https://github.com/aruiz/$name/archive/$version.tar.gz
         834657c8.patch)
@@ -17,7 +17,7 @@ source=(https://github.com/aruiz/$name/archive/$version.tar.gz
 prepare() {
 cd $name-$version
 # Fix libwebp dependency
-patch -Np1 -i ../834657c8.patch
+#patch -Np1 -i ../834657c8.patch
 }
 
 build() {
