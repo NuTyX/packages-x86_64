@@ -1,0 +1,17 @@
+description='Support for icon themes'
+url='https://community.kde.org/Frameworks'
+
+license="LGPL-2.0-only LGPL-3.0-only"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=kiconthemes
+version=6.0.0
+
+makedepends=(qt6-base qt6-tools qt6-svg extra-cmake-modules
+             karchive kconfig kconfigwidgets ki18n kcolorscheme kwidgetsaddons)
+
+source=(https://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
+
+build=kde6
