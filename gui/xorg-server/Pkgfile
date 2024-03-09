@@ -6,43 +6,40 @@ license="MIT"
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre,Greg,Spiky"
 
-makedepends=(nettle xorgproto xorg-xkbcomp xorg-font-util xcb-util-keysyms libxcvt \
-libepoxy xcb-util-image xcb-util-renderutil xcb-util-wm mesa xorg-glu \
-xorg-pixman xorg-libdmx xorg-libxres xorg-libxfont2 xorg-xkeyboard-config wayland)
+makedepends=(meson ninja meson libtirpc libepoxy libxcvt mesa
+             nettle xorgproto xorg-xkbcomp xorg-font-util xcb-util-keysyms \
+             xcb-util-image xcb-util-renderutil xcb-util-wm xorg-glu \
+             xorg-pixman xorg-libdmx xorg-libxres xorg-libxfont2 \
+             xorg-xkeyboard-config wayland)
 
 name=xorg-server
 version=21.1.11
+release=2
 
-source=(consolidate.patch
+source=(xorg-server-21.1.11-tearfree_backport-1.patch
 	https://ftp.x.org/pub/individual/xserver/$name-$version.tar.xz)
 
 prepare() {
   cd $name-$version
-  patch -Np1 -i ../consolidate.patch
+  patch -Np1 -i ../xorg-server-21.1.11-tearfree_backport-1.patch
 }
 build() {
 
 cd $name-$version
+mkdir build
+cd    build
+meson setup ..      \
+  --prefix=/usr     \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  -Dxkb_output_dir=/var/lib/xkb \
+  -Dglamor=true
+ninja
 
-sed -i 's/malloc(pScreen/calloc(1, pScreen/' dix/pixmap.c
-
-./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
---with-xkb-output=/var/lib/xkb \
---enable-glamor \
---with-fontrootdir=/usr/share/fonts \
---enable-install-setuid \
---disable-systemd-logind \
---enable-suid-wrapper
-make
-make DESTDIR=$PKG install
-
-install -m755 $PKG/usr/bin/Xvfb $PKG/usr/bin/xvfb-run
+DESTDIR=$PKG ninja install
 
 rm -rf $PKG/var
-rm $PKG/usr/lib/xorg/modules/{libexa,libfbdevhw,libglamoregl,\
-libint10,libshadow,libshadowfb,libvgahw,libwfb}.la
-rm $PKG/usr/lib/xorg/modules/drivers/modesetting_drv.la
-rm $PKG/usr/lib/xorg/modules/extensions/libglx.la
 
-install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 ../COPYING \
+   $PKG/usr/share/licenses/$name/COPYING
 }
