@@ -19,6 +19,7 @@ alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
 version=24.0.2
+release=2
 
 source=(LICENSE
         https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
@@ -32,8 +33,8 @@ cd    build
 meson setup                          \
       --prefix=/usr                  \
       -Dbuildtype=release            \
-      -Dgallium-drivers="nouveau,virgl,r300,r600,radeonsi,svga,swrast,iris,zink,crocus" \
-      -Dvulkan-drivers="intel,amd,swrast" \
+      -Dgallium-drivers=auto \
+      -Dvulkan-drivers=auto \
       -Dgallium-nine=false       \
       -Dgallium-vdpau=true       \
       -Dgallium-va=enabled       \
