@@ -1,0 +1,22 @@
+description="Plasma Specific Protocols for Wayland"
+url="https://www.kde.org/"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=plasma-wayland-protocols
+version=1.12.0
+
+makedepends=(extra-cmake-modules qt6-base)
+
+source=(https://download.kde.org/stable/$name/${name}-$version.tar.xz)
+
+build() {
+
+cd $name-$version
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+make
+make DESTDIR=$PKG install
+}
