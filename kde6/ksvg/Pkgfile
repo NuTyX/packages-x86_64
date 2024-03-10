@@ -1,0 +1,18 @@
+description='Components for handling SVGs'
+url='https://community.kde.org/Frameworks'
+
+license="LGPL-2.0-only LGPL-3.0-only"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=ksvg
+version=6.0.0
+
+makedepends=(qt6-base qt6-svg qt6-tools qt6-declarative extra-cmake-modules
+             karchive kcolorscheme kconfig kcoreaddons kguiaddons
+             kirigami)
+
+source=(https://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
+
+build=kde6
