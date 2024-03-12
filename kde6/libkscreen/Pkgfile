@@ -1,0 +1,18 @@
+description='KDE screen management software'
+url='https://kde.org/plasma-desktop/'
+
+license="LGPL-2.0-or-later"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=libkscreen
+version=6.0.1
+
+makedepends=(qt6-base qt6-wayland qt6-tools wayland libxcb
+             extra-cmake-modules plasma-wayland-protocols)
+
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build=kde6
