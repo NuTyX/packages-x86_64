@@ -6,22 +6,23 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 name=inkscape
-version=1.3
-release=4
+version=1.3.2
 
-source=(https://inkscape.org/gallery/item/42328/$name-$version.tar.xz
-        poppler-22.09.0.patch)
+source=(https://inkscape.org/gallery/item/44615/inkscape-1.3.2.tar.xz
+        inkscape-poppler-24.03.patch)
 
 makedepends=(cmake boost git gtkmm python lcms2 gsl libxslt gc
              dbus-glib lcms2 libjpeg-turbo poppler-glib gspell
              graphicsmagick libsoup double-conversion potrace
-             librevenge libcdr gzip readline jemalloc)
+             librevenge libcdr gzip readline jemalloc popt)
 run=(desktop-file-utils hicolor-icon-theme gtk-update-icon-cache
      shared-mime-info)
 
 prepare() {
-	mv $name-$version* $name
+	mv $name-1.3.2* $name
 	cd $name
+ patch -Np1 -i ../inkscape-poppler-24.03.patch
+sed -i '/uri.h/a #include <libxml/xmlmemory.h>' src/object/uri.h
 
 }
 
