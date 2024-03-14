@@ -1,0 +1,24 @@
+description='Advanced text editor of KDE'
+url='https://apps.kde.org/kate/'
+
+license="LGPL-2.0-or-later, GPL-2.0-or-later"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+makedepends=(qt6-base extra-cmake-modules kdoctools
+             kbookmarks kcolorscheme kcompletion kconfig kconfigwidgets
+             kcoreaddons kcrash kdbusaddons ki18n kiconthemes kio
+             knewstuff kparts kservice ktexteditor ktextwidgets kuserfeedback
+             kwidgetsaddons kwindowsystem kxmlgui)
+
+run=(hicolor-icon-theme)
+
+set=(kde6)
+
+name=kate
+version=24.02.0
+
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+
+build=kde6
