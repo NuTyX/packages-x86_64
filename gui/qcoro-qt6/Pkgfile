@@ -1,0 +1,27 @@
+description='C++ Coroutines for Qt'
+url='https://github.com/danvratil/qcoro'
+
+license="MIT"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
+
+name=qcoro-qt6
+version=0.10.0
+
+
+makedepends=(cmake qt6-base qt6-declarative qt6-websockets)
+
+source=(https://github.com/danvratil/qcoro/archive/v$version/$name-$version.tar.gz)
+
+build() {
+ mkdir build
+ cd    build
+ cmake -DCMAKE_INSTALL_PREFIX=/usr \
+       -DUSE_QT_VERSION=6          \
+       -DBUILD_SHARED_LIBS=ON      \
+       ../qcoro-$version
+  
+ make
+ make DESTDIR=$PKG install
+}
