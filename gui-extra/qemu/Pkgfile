@@ -5,10 +5,9 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Rems,Tnut"
 
 name=qemu
-version=8.2.0
-release=2
+version=8.2.2
 
-makedepends=(gtk2 gtk3 sdl libseccomp libcap-ng
+makedepends=(gtk2 gtk3 sdl libseccomp libcap-ng xorg-pixman
              python mesa vte virglrenderer lzo nettle
              cyrus-sasl libssh2 pulseaudio alsa-lib alsa-plugins
              alsa-utils check bluez libgcrypt gnutls libusb usbutils python-sphinx
@@ -31,7 +30,7 @@ build() {
 
 cd qemu-$version
 
-patch -Np1 -i ../virtio.patch
+#patch -Np1 -i ../virtio.patch
 
 mkdir -vp build
 cd build
