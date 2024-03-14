@@ -1,0 +1,21 @@
+description='Tools base on KDE Frameworks 5 to beter interact with the system'
+url='https://kde.org/plasma-desktop/'
+
+license="LGPL-2.0-or-later"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+set=(kde6)
+
+name=kde-cli-tools
+version=6.0.1
+
+makedepends=(qt6-base qt6-svg extra-cmake-modules kcmutils kcompletion kconfig
+             kcoreaddons kdesu ki18n kiconthemes kio kparts kservice
+             kwidgetsaddons kwindowsystem kdoctools)
+
+
+source=(http://download.kde.org/stable/plasma/${version}/$name-$version.tar.xz)
+
+build=kde6
