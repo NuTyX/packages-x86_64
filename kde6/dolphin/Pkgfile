@@ -1,0 +1,28 @@
+description='KDE File Manager'
+url='https://apps.kde.org/dolphin/'
+
+license="LGPL-2.0-or-later, GPL-2.0-or-later"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+
+set=(kde6)
+
+name=dolphin
+
+version=24.02.0
+
+makedepends=(qt6-base extra-cmake-modules kdoctools
+             baloo baloo-widgets kbookmarks kcmutils kcodecs kcolorscheme
+             kcompletion kconfig kconfigwidgets kcoreaddons kcrash kdbusaddons
+             kfilemetadata ki18n kiconthemes kio kio-extras kjobwidgets
+             knewstuff knotifications kparts kservice ktextwidgets kuserfeedback
+             kwidgetsaddons kwindowsystem kxmlgui phonon plasma-activities
+             kde-cli-tools ffmpegthumbs kio-admin konsole purpose)
+
+run=(hicolor-icon-theme)
+
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+
+build=kde6
