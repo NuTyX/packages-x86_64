@@ -1,0 +1,66 @@
+description='Vulkan Utilities and Tools'
+url='https://www.khronos.org/vulkan/'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+makedepends=(python glslang cmake spirv-tools xorg-libx11 vulkan-headers
+             vulkan-icd-loader wayland-protocols)
+
+name=vulkan-tools
+version=1.3.279
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/KhronosGroup/Vulkan-Tools/archive/refs/tags/v${version}.tar.gz)
+
+prepare() {
+ mv Vulkan-Tools-$version $name-$version
+ cd $name-$version
+ rm -rf build{,-wayland}
+ mkdir build{,-wayland}
+}
+build() {
+cd $name-$version
+cd build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_VOLK_INSTALL_DIR=scripts     \
+    -DCMAKE_INSTALL_SYSCONFDIR=/etc \
+    -DCMAKE_INSTALL_DATADIR=/usr/share \
+    -DCMAKE_SKIP_RPATH=True \
+    -DBUILD_WSI_XCB_SUPPORT=On \
+    -DBUILD_WSI_XLIB_SUPPORT=On \
+    -DBUILD_WSI_WAYLAND_SUPPORT=On \
+    -DBUILD_CUBE=ON \
+    -DBUILD_VULKANINFO=ON \
+    -DBUILD_ICD=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    ..
+  make
+cd ../build-wayland
+
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_SYSCONFDIR=/etc \
+    -DCMAKE_INSTALL_DATADIR=/usr/share \
+    -DCMAKE_SKIP_RPATH=True \
+    -DBUILD_WSI_XCB_SUPPORT=OFF \
+    -DBUILD_WSI_XLIB_SUPPORT=OFF \
+    -DBUILD_WSI_WAYLAND_SUPPORT=On \
+    -DBUILD_CUBE=ON \
+    -DCUBE_WSI_SELECTION=WAYLAND \
+    -DBUILD_VULKANINFO=OFF \
+    -DBUILD_ICD=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    ..
+  make
+
+cd ../build
+
+make DESTDIR=$PKG install
+
+install -m755 ../build-wayland/cube/vkcube-wayland $PKG/usr/bin/
+install -dm755 $PKG/usr/share/licenses/${name}-${version}
+install -m644 ../LICENSE.txt $PKG/usr/share/licenses/${name}-${version}/
+}
