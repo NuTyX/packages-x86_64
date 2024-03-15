@@ -1,0 +1,27 @@
+description='FUSE interface for KIO'
+url='https://community.kde.org/Frameworks'
+
+license="LGPL-2.0-only LGPL-3.0-only"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=kio-fuse
+version=5.1.0
+
+makedepends=(fuse qt6-base extra-cmake-modules kcoreaddons kio)
+
+source=(https://download.kde.org/stable/$name/$name-$version.tar.xz)
+
+build() {
+
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr    \
+      -DCMAKE_INSTALL_LIBEXECDIR=lib \
+      -DQT_MAJOR_VERSION=6           \
+      -DBUILD_TESTING=OFF -Wno-dev   \
+      ../$name-$version
+make
+make DESTDIR=$PKG install
+}

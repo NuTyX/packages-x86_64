@@ -1,4 +1,4 @@
-description='Core components for KDE Activities'
+description='KDE daemon listening for wall and write messages'
 url='https://kde.org/plasma-desktop/'
 
 license="LGPL-2.0-or-later"
@@ -8,11 +8,11 @@ contributors="Spiky"
 
 set=(kde6)
 
-name=plasma-activities
+name=kwrited
 version=6.0.2
 
-makedepends=(boost qt6-base qt6-declarative qt6-tools
-             extra-cmake-modules kconfig kcoreaddons)
+makedepends=(qt6-base extra-cmake-modules kdoctools
+             kcoreaddons kdbusaddons knotifications kpty)
 
 source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
 

@@ -1,0 +1,28 @@
+description="Wayland tools to display information about current compositor"
+url="https://gitlab.freedesktop.org/wayland/wayland-utils"
+
+license="MIT"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+makedepends=(meson xorg-libdrm wayland wayland-protocols)
+
+name=wayland-utils
+version=1.2.0
+
+source=(https://gitlab.freedesktop.org/wayland/wayland-utils/-/releases/$version/downloads/$name-$version.tar.xz)
+
+build() {
+
+  cd $name-$version
+  
+  meson setup build \
+  --prefix=/usr --buildtype=release
+  
+  meson compile -C build
+
+  DESTDIR=$PKG meson install -C build
+
+install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING  
+}

@@ -1,0 +1,22 @@
+description='The KDE crash handler'
+url='https://www.kde.org/plasma-desktop/'
+
+license="GPL-2.0-or-later"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+set=(kde6)
+
+
+name=drkonqi
+version=6.0.2
+
+makedepends=(python python-psutil qt6-base qt6-declarative extra-cmake-modules
+             kcmutils kconfig kcoreaddons kcrash ki18n kidletime kio
+             kitemmodels knotifications kservice kstatusnotifieritem kwallet
+             kwidgetsaddons kwindowsystem polkit-qt-1 syntax-highlighting)
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build=kde6
