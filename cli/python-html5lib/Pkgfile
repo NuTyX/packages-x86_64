@@ -1,0 +1,30 @@
+description='A Python HTML parser/tokenizer based on the WHATWG HTML5 spec'
+url='https://github.com/html5lib'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+run=(python)
+
+name=python-html5lib
+version=1.1
+
+makedepends=(python-six python-webencodings)
+
+
+_name=html5lib-python
+
+PKGMK_KEEP_SOURCES="no"
+
+source=($url/${_name}/archive/$version.tar.gz
+        pytest-6-compat.patch html5lib-mock-stdlib.patch
+        html5lib_pytest74.patch)
+prepare() {
+  cd ${_name}-$version
+  patch -p1 -i ../pytest-6-compat.patch
+  patch -p1 -i ../html5lib_pytest74.patch
+  patch -p1 -i ../html5lib-mock-stdlib.patch
+ 
+}
+
+build=python3
