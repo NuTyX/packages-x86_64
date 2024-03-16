@@ -1,0 +1,21 @@
+description='Automatic proxy configuration management library'
+url='https://libproxy.github.io/libproxy/'
+
+license="LGPL-2.1-or-later"
+
+packager="tnut <tnu@nutyx.org>"
+contributors="Spiky"
+
+makedepends=(git meson vala duktape gi-docgen gobject-introspection)
+run=(gsettings-desktop-schemas)
+
+name=libproxy
+version=0.5.4
+
+prepare() {
+ git clone https://github.com/libproxy/libproxy
+ mv $name $name-$version
+ cd $name-$version
+ git checkout $version
+}
+build=meson
