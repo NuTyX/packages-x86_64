@@ -1,0 +1,32 @@
+description='Uncomplicated and easy to use CLI tool for managing a netfilter firewall'
+url='https://launchpad.net/ufw'
+
+license='GPL3'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=ufw
+version=0.36.2
+
+run=(iptables python)
+
+source=(service
+        ${url}/${version%.*}/${version}/+download/${name}-${version}.tar.gz)
+
+prepare() {
+  cd $name-$version
+
+  # don't force-enable tcp selective acks
+  sed -i -e '/net\/ipv4\/tcp_sack/s/^/#/g' conf/sysctl.conf
+}
+
+build() {
+  cd $name-$version
+
+  python3 setup.py install --root=$PKG
+
+  install -Dm644 shell-completion/bash $PKG/usr/share/bash-completion/completions/ufw
+  install -Dm644 ../service $PKG/lib/systemd/system/ufw.service
+  chmod 644 $PKG/etc/ufw/*.rules
+}
