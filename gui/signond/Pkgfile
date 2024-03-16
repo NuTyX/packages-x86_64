@@ -1,0 +1,23 @@
+description='A D-Bus service which performs user authentication on behalf of its clients'
+url='https://gitlab.com/accounts-sso/signond/'
+
+license="LGPL"
+
+packager="tnut <tnut@nutyx.org"
+contributors="Spiky"
+
+name=signond
+version=8.61
+
+makedepends=(noto-fonts doxygen git graphviz qt6-base qt6-tools)
+
+source=(https://downloads.tuxfamily.org/nutyx/sources/$name/$name-$version.tar.xz)
+
+build() {
+  cd $name-$version
+  qmake6 PREFIX=/usr LIBDIR=/usr/lib
+
+  make
+
+  make INSTALL_ROOT=$PKG install
+}
