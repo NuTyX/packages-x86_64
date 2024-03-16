@@ -1,0 +1,31 @@
+description='The Budgie Desktop session handler'
+url='https://github.com/BuddiesOfBudgie/budgie-session'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(dconf dbus-glib docbook-xml docbook-xsl elogind
+             gnome-desktop json-glib libxslt mesa meson upower xmlto)
+
+set=(budgie)
+
+name=budgie-session
+version=0.9.1
+
+source=(https://github.com/BuddiesOfBudgie/budgie-session/releases/download/v0.9.1/budgie-session-v0.9.1.tar.xz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd build
+
+   meson setup .. \
+      --prefix=/usr \
+      -Dsystemd_journal=false \
+      -Dman=false \
+      -Ddocbook=false
+
+ninja
+DESTDIR=$PKG ninja install
+}
