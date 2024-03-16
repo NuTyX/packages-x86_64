@@ -12,7 +12,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-419
-version=4.19.308
+version=4.19.310
 
 alias=(linux-4.19)
 INITRD="initrd-${name/*-/}"
@@ -97,7 +97,18 @@ echo "if [ -f boot/$INITRD ]; then
     mkinitramfs ${KERNEL_VERSION}
     rm boot/$INITRD
     mv boot/initrd-${KERNEL_VERSION} boot/$INITRD
-fi" > $PKGMK_ROOT/$name.post-install
+fi
+
+echo -e \"
+******************************************************
+* This kernel-419 version is obsolet from Jan,2025.  *
+* After this date it will not be updated anymore.    *
+* You should replace this version before this date.  *
+*                                                    *
+*     https://www.nutyx.org/en/upgrade-kernel-lts    *
+*                                                    *
+******************************************************
+\"" > $PKGMK_ROOT/$name.post-install
 
 }
 devel() {
