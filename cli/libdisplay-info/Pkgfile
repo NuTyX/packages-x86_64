@@ -1,0 +1,16 @@
+description='EDID and DisplayID library'
+url='https://gitlab.freedesktop.org/emersion/libdisplay-info'
+
+license='MIT'
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=libdisplay-info
+version=0.1.1
+
+makedepends=(hwdata python meson ninja)
+
+source=($url/-/releases/$version/downloads/$name-$version.tar.xz)
+
+build=meson
