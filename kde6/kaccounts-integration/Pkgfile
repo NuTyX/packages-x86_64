@@ -1,0 +1,20 @@
+description='Online account management system and its Plasma integration components'
+url="https://apps.kde.org/konsole/"
+
+license="LGPL-2.0-or-later"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+makedepends=(qt6-base qt6-declarative extra-cmake-modules kdoctools
+             kcmutils kconfig kcoreaddons kdbusaddons ki18n kio kirigami kwallet
+             libaccounts-qt qcoro-qt6 signond signon-ui)
+
+set=(kde6)
+
+name=kaccounts-integration
+version=24.02.0
+
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+
+build=kde6
