@@ -1,0 +1,32 @@
+description='Provides a way to display web content in a QML application'
+url='https://www.qt.io/'
+
+license="FDL, GPL3, LGPL3, custom"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=qt6-webview
+version=6.6.2
+
+makedepends=(cmake ninja qt6-base qt6-declarative)
+
+_name=${name/6-/}-everywhere-src
+source=(https://download.qt.io/official_releases/qt/${version:0:3}/$version/submodules/${_name}-$version.tar.xz)
+
+build() {
+ cmake -S ${_name}-$version -B build -G Ninja
+ cmake --build build
+ DESTDIR=$PKG cmake --install build
+}
+devel() {
+  cd $PKG
+  bsdtar -cf \
+  $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
+  usr/include \
+  usr/lib/qt6/mkspecs \
+  usr/lib/cmake/
+  
+  rm -r usr/include usr/lib/qt6/mkspecs \
+  usr/lib/cmake
+}
