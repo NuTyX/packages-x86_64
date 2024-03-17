@@ -1,0 +1,22 @@
+description='KDE screenshot capture utility'
+url="https://apps.kde.org/spectacle/"
+
+license="LGPL-2.0-or-later"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+makedepends=(qt6-base qt6-multimedia qt6-declarative extra-cmake-modules kdoctools
+             kconfig kconfigwidgets kcoreaddons kdbusaddons ki18n kio kirigami
+             kjobwidgets knotifications kpipewire kservice kwidgetsaddons
+             kwindowsystem kxmlgui layer-shell-qt libxcb purpose wayland
+             xcb-util xcb-util-cursor xcb-util-image plasma-wayland-protocols)
+
+set=(kde6)
+
+name=spectacle
+version=24.02.0
+
+source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
+
+build=kde6
