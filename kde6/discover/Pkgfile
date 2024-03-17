@@ -1,0 +1,23 @@
+description='KDE and Plasma resources management GUI'
+url='https://apps.kde.org/discover/'
+
+license="LGPL-2.0-or-later"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+set=(kde6)
+
+name=discover
+version=6.0.2
+
+makedepends=(flatpak appstream-qt packagekit-qt6 qt6-base qt6-declarative
+             qt6-webview extra-cmake-modules
+             attica discount kcmutils kconfig kcoreaddons kcrash kdbusaddons
+             ki18n kidletime kio kirigami kirigami-addons kjobwidgets knewstuff
+             knotifications kservice kstatusnotifieritem kuserfeedback
+             kwidgetsaddons kwindowsystem purpose)
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build=kde6
