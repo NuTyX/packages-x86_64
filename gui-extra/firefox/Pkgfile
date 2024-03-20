@@ -18,7 +18,7 @@ run=(pulseaudio icu sqlite libvpx nss gtk3 zip unzip
 
 
 name=firefox
-version=123.0.1
+version=124.0
 
 locale_version=$version
 
@@ -157,7 +157,6 @@ EOF
 sed -e 's/checkImpl/checkFFImpl/g' -i js/src/vm/JSContext*.h
 
 export MOZBUILD_STATE_PATH=${PWD}/mozbuild
-export MACH_USE_SYSTEM_PYTHON=1
 
 SHELL=/bin/sh ./mach build
 SHELL=/bin/sh ./mach buildsymbols
@@ -167,10 +166,6 @@ mkdir -pv $PKG/usr/{bin,lib{,/mozilla/plugins}}
 SHELL=/bin/sh DESTDIR=$PKG ./mach install
 
 ln -svf ../mozilla/plugins $PKG/usr/lib/firefox/browser/
-
-# Need for gnash
-mkdir -p $PKG/usr/include/npapi
-cp -v dom/plugins/base/*.h $PKG/usr/include/npapi
 
 # Launcher
 mkdir -pv $PKG/usr/share/applications
