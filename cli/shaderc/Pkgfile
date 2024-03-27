@@ -1,0 +1,44 @@
+description='Collection of tools, libraries and tests for shader compilation'
+url='https://github.com/google/shaderc'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(git cmake glslang spirv-tools spirv-headers)
+
+name=shaderc
+version=2024.0
+
+source=(https://github.com/google/shaderc/archive/refs/tags/v$version.tar.gz)
+
+build() {
+
+  cd $name-$version
+  # de-vendor libs and disable git versioning
+  sed '/examples/d;/third_party/d' -i CMakeLists.txt
+  sed '/build-version/d' -i glslc/CMakeLists.txt
+
+  cat <<- EOF > glslc/src/build-version.inc
+"${version}\\n"
+"$(cards info spirv-tools | grep ^Version | cut -d ":" -f2 | cut -d " " -f2)\\n"
+"$(cards info glslang | grep ^Version | cut -d ":" -f2 | cut -d " " -f2)\\n"
+EOF
+
+  sed -e "s|\$<TARGET_FILE:spirv-dis>|spirv-dis|" \
+      -i glslc/test/CMakeLists.txt
+
+   mkdir build
+   cd    build
+
+        cmake -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DSHADERC_SKIP_TESTS=ON \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS -ffat-lto-objects" \
+    -DSPIRV-Headers_SOURCE_DIR="$SRC/SPIRV-Headers" \
+    -Dglslang_SOURCE_DIR=/usr/include/glslang \
+    -GNinja ..
+
+    ninja
+    DESTDIR="${PKG}" ninja install
+}
