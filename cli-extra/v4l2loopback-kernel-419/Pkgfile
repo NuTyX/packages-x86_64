@@ -7,17 +7,10 @@ contributors=""
 run=(kernel-419)
 
 name=v4l2loopback-kernel-419
-version=0.12.7
-release=5
+version=0.13.1
 
 
-source=($url/archive/v$version/v4l2loopback-$version.tar.gz
-        $url/commit/e7edf2f55b7eb71b69984110f3c8e31b8ac6285e.patch)
-
-prepare() {
-	mv e7edf2f55b7eb71b69984110f3c8e31b8ac6285e.patch fix-kernel-5.18+-compat.patch
-    patch -p1 -d v4l2loopback-$version < fix-kernel-5.18+-compat.patch
-}
+source=($url/archive/v$version/v4l2loopback-$version.tar.gz)
 
 build() {
 KERNEL_VERSION="$(basename /lib/modules/*)"
