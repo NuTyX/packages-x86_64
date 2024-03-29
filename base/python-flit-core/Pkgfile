@@ -1,0 +1,35 @@
+description='A PEP 517 build backend for packages using Flit'
+url='https://github.com/pypa/flit/tree/main/flit_core'
+
+license="BSD-3-Clause"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+_name="flit_core"
+
+alias=(${_name})
+
+name=python-flit-core
+version=3.9.0
+
+makedepends=(python python-flit-core)
+
+source=(https://pypi.io/packages/source/f/${_name}/${_name}-$version.tar.gz)
+
+build() {
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+}
+
