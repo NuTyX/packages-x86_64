@@ -1,0 +1,36 @@
+description='Core utilities for Python packages'
+url='https://github.com/pypa/packaging'
+
+license="Apache"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+_name="packaging"
+
+alias=(${_name})
+
+name=python-packaging
+version=23.2
+
+makedepends=(python python-flit-core)
+
+source=(https://pypi.io/packages/source/p/${_name}/${_name}-$version.tar.gz)
+
+build() {
+  cd ${_name}-$version
+
+  pip3 install tomli     \
+    --no-build-isolation \
+    --no-deps
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+}
+
