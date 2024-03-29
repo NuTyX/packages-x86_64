@@ -10,18 +10,24 @@ makedepends=(asciidoc babl gtk2 librsvg ruby lua ffmpeg librsvg meson \
 run=(vala)
 
 name=gegl
-version=0.4.46
-release=2
+version=0.4.48
 
 source=(https://download.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.xz)
 
-
+prepare() {
+sed -i /fatal-warnings/d \
+$name-$version/docs/reference/meson.build 
+}
 build() {
 cd $name-$version
 
 mkdir build
 cd build
-meson --prefix=/usr -Ddocs=false --buildtype=release
+meson setup           \
+  --prefix=/usr       \
+  --buildtype=release \
+  -Ddocs=false        \
+  ..
 ninja
 DESTDIR=$PKG ninja install
 }
