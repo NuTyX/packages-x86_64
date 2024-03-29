@@ -20,9 +20,6 @@ source=(https://pypi.io/packages/source/p/${_name}/${_name}-$version.tar.gz)
 build() {
   cd ${_name}-$version
 
-  pip3 install tomli     \
-    --no-build-isolation \
-    --no-deps
   pip3 wheel -w dist \
     --no-build-isolation \
     --no-deps $PWD
