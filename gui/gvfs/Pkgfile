@@ -8,10 +8,10 @@ contributors="Tyrry,Tnut"
 
 makedepends=(ninja meson libcdio-paranoia avahi dbus-glib libgdata libgudev
              libbluray intltool libsecret gtk3 libsoup3 udisks2 obexd fuse2 fuse
-             libarchive libmtp samba bluez gcr libgphoto2 libnfs openssh)
+             libarchive libmtp samba bluez gcr libgphoto2 libnfs openssh gcr4)
 
 name=gvfs
-version=1.52.2
+version=1.54.0
 
 source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz
        handle-inactive-vfs.patch)
@@ -29,6 +29,7 @@ meson setup             \
       --prefix=/usr     \
       --sysconfdir=/etc \
       -Dafc=false       \
+      -Donedrive=false  \
       -Dhttp=false      \
       -Ddnssd=false     \
       -Dgoa=false       \
