@@ -6,6 +6,21 @@ license="LGPL-2.1-or-later"
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Tnut"
 
+# The joy of circular dependencies:
+# When upgrade glib package:
+# 1/ rebuild first with -Dintrospection=disabled
+# 2/ upgrade and build gobject-introspection
+# 3/ rebuild with -Dintrospection=enabled and add
+# PKGMK_DEPENDS=(glib gobject-introspection) in
+# the glib recept.
+
+PKGMK_DEPENDS=(glib gobject-introspection)
+
+###########################################
+#  WARNING if glib fails for any reasons  #
+#  RESTART FROM 1/                        #
+###########################################
+
 makedepends=(libffi pcre2 python-packaging python-docutils
              elfutils meson ninja libxslt docbook-xsl)
 
@@ -41,7 +56,7 @@ build () {
 
   meson --prefix=/usr            \
         --buildtype=release      \
-        -Dintrospection=disabled \
+        -Dintrospection=enabled  \
         -Dman-pages=enabled
   ninja
 
