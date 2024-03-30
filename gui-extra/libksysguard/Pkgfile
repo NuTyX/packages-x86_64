@@ -1,29 +1,22 @@
-description="Libksysguard "
-url="https://www.kde.org/"
+description='Library to retrieve information on the current status of computer hardware'
+url='https://kde.org/plasma-desktop/'
+
+license="LGPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(extra-cmake-modules kdoctools
-             plasma-framework knewstuff libnl libpcap)
-
-set=(kde5)
+set=(kde6)
 
 name=libksysguard
-version=5.27.11
+version=6.0.3
+
+makedepends=(libnl lm-sensors libpcap qt6-base qt6-tools qt6-declarative
+             extra-cmake-modules kauth kconfig kcoreaddons
+             kdeclarative ki18n kirigami kitemmodels knewstuff
+             kpackage kquickcharts kservice solid)
+
 
 source=(http://download.kde.org/stable/plasma/${version}/$name-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
