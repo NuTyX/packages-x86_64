@@ -1,0 +1,35 @@
+description="Provides support for secure credentials storage"
+url="https://github.com/frankosterfeld/qtkeychain"
+
+license="BSD"
+
+packager="Tnut <tnut@nutyx.org>"
+contributors="Greg"
+
+makedepends=(libsecret qt6-base cmake qt6-tools qt6-declarative)
+
+name=qtkeychain-qt6
+version=0.14.2
+
+_name=qtkeychain
+
+PKGMK_KEEP_SOURCES="no"
+
+source=(https://github.com/frankosterfeld/qtkeychain/archive/$version.tar.gz)
+
+prepare() {
+mkdir -p build
+}
+
+build() {
+cd build
+cmake ../${_name}-$version    \
+-DCMAKE_BUILD_TYPE=Release \
+-DBUILD_WITH_QT6=ON        \
+-DCMAKE_INSTALL_PREFIX=/usr
+make
+make DESTDIR=$PKG install
+
+install -Dm644 ../${_name}-$version/COPYING \
+$PKG/usr/share/licenses/$name/LICENSE
+}
