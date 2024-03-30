@@ -1,26 +1,16 @@
-description="Abstraction to system policy and authentication features "
+description="Abstraction to system policy and authentication features"
 url="https://www.kde.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+license="LGPL-2.0-only LGPL-3.0-only"
 
-makedepends=(kcoreaddons polkit-qt)
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+makedepends=(kcoreaddons kwindowsystem qt6-base qt6-tools polkit-qt-1)
 
 name=kauth
-version=5.115.0
+version=6.0.0
 
 source=(https://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
