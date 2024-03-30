@@ -1,31 +1,25 @@
 description="A non-linear video editor for Linux using the MLT video framework"
 url="https://apps.kde.org/kdenlive/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+license="LGPL-2.0-or-later"
 
-makedepends=(qtquickcontrols qtmultimedia knotifyconfig qtnetworkauth
-             knotifications knewstuff kplotting qtquickcontrols2
-             kded kfilemetadata kdeclarative mlt xorg-glu sdl-image
-             syndication kdoctools v4l-utils ffmpeg cdrtools libdv purpose)
-run=(shared-mime-info frei0r-plugins hicolor-icon-theme
-     qtquickcontrols breeze libmediainfo)
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+makedepends=(qt6-base qt6-declarative qt6-multimedia qt6-networkauth qt6-tools
+             qt6-svg extra-cmake-modules kdoctools karchive kbookmarks kcodecs
+             kcolorscheme kcompletion kconfig kconfigwidgets kcoreaddons kcrash
+             kdbusaddons kfilemetadata kguiaddons ki18n kiconthemes kio kitemviews
+             knewstuff knotifications knotifyconfig ktextwidgets kwidgetsaddons
+             kxmlgui mlt purpose qqc2-desktop-style ffmpeg kimageformats
+             plasma-desktop doxygen)
+
+run=(shared-mime-info frei0r-plugins hicolor-icon-theme libmediainfo opencv
+     python recordmydesktop)
 
 name=kdenlive
-version=23.08.5
+version=24.02.1
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom # ATTENTION, ce feed n'est pas à jour.
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
