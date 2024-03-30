@@ -1,0 +1,28 @@
+description="API multimedia of KDE. the replaces the old aRts, which is more supported by KDE."
+url="https://www.kde.org/"
+
+license="LGPL"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=phonon
+version=4.12.0
+makedepends=(extra-cmake-modules pulseaudio
+             qt6-base qt6-tools qt6-5compat)
+
+source=(http://download.kde.org/stable/$name/$version/$name-$version.tar.xz)
+
+build() {
+cd $name-$version
+
+mkdir build
+cd    build
+
+cmake -DCMAKE_BUILD_TYPE=Release     \
+      -DPHONON_BUILD_QT5=OFF         \
+      -DCMAKE_INSTALL_PREFIX=/usr    \
+      -Wno-dev ..
+make
+make DESTDIR=$PKG install
+}
