@@ -1,30 +1,21 @@
-description="GTk Configurator for KDE Plasma Desktop"
-url="https://www.kde.org/"
+description='Syncs KDE settings to GTK applications'
+url='https://kde.org/plasma-desktop/'
+
+license="LGPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(extra-cmake-modules gtk2 gtk3
-             sassc)
-run=(qtsvg kdecoration kconfigwidgets kdbusaddons kwindowsystem)
-
-set=(kde5)
+set=(kde6)
 
 name=kde-gtk-config
-version=5.27.11
+version=6.0.3
 
-source=(https://download.kde.org/stable/plasma/${version}/$name-$version.tar.xz)
+makedepends=(glib gtk3 sassc qt6-base qt6-svg extra-cmake-modules
+             kcolorscheme kconfig kcoreaddons kdbusaddons kdecoration
+             kguiaddons kwindowsystem)
 
-build=kde5
 
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+source=(http://download.kde.org/stable/plasma/${version}/$name-$version.tar.xz)
+
+build=kde6
