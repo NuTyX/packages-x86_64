@@ -1,11 +1,16 @@
-description="Monitoring user activity "
+description="Monitoring user activity"
 url="https://www.kde.org/"
+
+license="LGPL-2.0-only LGPL-3.0-only"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
 name=kidletime
-version=5.115.0
-makedepends=(extra-cmake-modules qtbase qtx11extras)
+version=6.0.0
+makedepends=(extra-cmake-modules qt6-base qt6-wayland wayland-protocols
+             plasma-wayland-protocols xorg-libx11 xorg-libxext libxcb
+             xorg-libxscrnsaver)
 source=(https://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
 
-build=kde5
+build=kde6
