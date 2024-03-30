@@ -1,13 +1,17 @@
 description='Tool for annotating images'
 url='https://github.com/ksnip/kImageAnnotator'
 
-packager="spiky <spiky@nutyx.org>"
-contributors=""
+license="LGPL-3.0-only"
 
-makedepends=(qttools qtsvg cmake kcolorpicker)
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+makedepends=(qt6-base qt6-tools qt6-svg cmake kcolorpicker)
 
 name=kimageannotator
-version=0.6.1
+version=0.7.1
+release=2
+
 _name=kImageAnnotator
 
 source=(https://github.com/ksnip/${_name}/archive/refs/tags/v${version}/${_name}-$version.tar.gz)
@@ -19,6 +23,7 @@ cd    build
 
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_BUILD_TYPE=Release  \
+      -DBUILD_WITH_QT6=ON         \
       ..
 make
 make DESTDIR=$PKG install
