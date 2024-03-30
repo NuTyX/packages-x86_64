@@ -1,76 +1,35 @@
-description="KDE Plasma Workspace"
-url="https://www.kde.org/"
+description='KDE Plasma Workspace'
+url='https://kde.org/plasma-desktop/'
+
+license="LGPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="PierreB,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(xorg-libxres prison baloo milou networkmanager-qt plasma-integration libqalculate
-             kitemmodels kjsembed kwin krunner knotifyconfig kdesu kwallet kscreen
-             kdelibs4support ktexteditor kholidays kactivities-stats kpeople syndication
-             plasma-wayland-protocols pipewire)
-run=(pm-utils gvfs xorg-xrdb xorg-xsetroot xorg-xprop xorg-xmessage
-    kquickcharts xorg-xwayland)
-
-set=(kde5)
+set=(kde6)
 
 name=plasma-workspace
-version=5.27.11
+version=6.0.3
 
-source=(https://download.kde.org/stable/plasma/${version}/$name-$version.tar.xz)
+makedepends=(icu freetype xorg-fontconfig gpsd zlib wayland xcb-util xcb-util-image
+             libcanberra libqalculate xorg-libsm xorg-libx11 xorg-libxau libxcb
+             libxcrypt xorg-libxcursor xorg-libxfixes xorg-libxft xorg-libxtst
+             qt6-base qt6-declarative qt6-5compat qt6-svg qt6-tools qt6-wayland
+             qt6-virtualkeyboard  xorg-xrdb xorg-xsetroot xorg-xwayland
+             appmenu-gtk-module extra-cmake-modules kdoctools libplasma
+             plasma-wayland-protocols accountsservice appstream kunitconversion
+             kactivitymanagerd karchive kauth kbookmarks kcmutils kcolorscheme
+             kcompletion kconfig kconfigwidgets kcoreaddons kcrash kdbusaddons
+             kde-cli-tools kdeclarative kded kglobalaccel kguiaddons kholidays
+             ki18n kiconthemes kidletime kio kio-extras kio-fuse kirigami
+             kirigami-addons kitemmodels kjobwidgets knewstuff knotifications
+             knotifyconfig kpackage kparts kpipewire kquickcharts krunner
+             kscreenlocker kservice kstatusnotifieritem ksvg ksystemstats
+             ktexteditor ktextwidgets kuserfeedback kwallet kwayland kwin
+             kwidgetsaddons kwindowsystem kxmlgui layer-shell-qt milou
+             ocean-sound-theme phonon plasma-activities plasma-activities-stats
+             prison solid baloo networkmanager-qt plasma5support)
 
-build() {
-cd $name-$version
-mkdir build
-cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_BUILD_TYPE=Release  \
-      -DKDE_INSTALL_LIBDIR=lib    \
-      -DBUILD_TESTING=OFF         \
-      -Wno-dev ..
-make
-make DESTDIR=$PKG install
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
 
-mkdir -p $PKG/etc/pam.d
-
-cat > $PKG/etc/pam.d/kde << "EOF"
-# Begin /etc/pam.d/kde
-
-auth     requisite      pam_nologin.so
-auth     required       pam_env.so
-
-auth     required       pam_succeed_if.so uid >= 1000 quiet
-auth     include        system-auth
-
-account  include        system-account
-password include        system-password
-session  include        system-session
-
-# End /etc/pam.d/kde
-EOF
-
-cat > $PKG/etc/pam.d/kde-np << "EOF" 
-# Begin /etc/pam.d/kde-np
-
-auth     requisite      pam_nologin.so
-auth     required       pam_env.so
-
-auth     required       pam_succeed_if.so uid >= 1000 quiet
-auth     required       pam_permit.so
-
-account  include        system-account
-password include        system-password
-session  include        system-session
-
-# End /etc/pam.d/kde-np
-EOF
-
-cat > $PKG/etc/pam.d/kscreensaver << "EOF"
-# Begin /etc/pam.d/kscreensaver
-
-auth    include system-auth
-account include system-account
-
-# End /etc/pam.d/kscreensaver
-EOF
-
-}
+build=kde6
