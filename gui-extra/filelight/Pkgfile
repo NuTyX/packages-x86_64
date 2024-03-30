@@ -1,29 +1,21 @@
 description='View disk usage information'
 url='https://apps.kde.org/filelight/'
 
+license="LGPL-2.0-or-later"
+
 packager="tnut <tnut@nutyx.org>"
 contributors="Spiky"
 
-makedepends=(extra-cmake-modules kdoctools kquickcharts kdeclarative)
-run=(kio hicolor-icon-theme)
+makedepends=(qt6-base qt6-declarative extra-cmake-modules kdoctools kconfig
+             kcoreaddons ki18n kquickcharts kwidgetsaddons kxmlgui qqc2-desktop-style)
 
-set=(kde5)
+run=(kirigami kirigami-addons kio hicolor-icon-theme)
+
+set=(kde6)
 
 name=filelight
-version=23.08.5
+version=24.02.1
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
