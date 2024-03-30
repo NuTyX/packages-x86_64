@@ -1,18 +1,21 @@
-description="KDE menu editor "
-url="https://www.kde.org/"
+description='KDE menu editor'
+url='https://kde.org/plasma-desktop/'
+
+license="LGPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(khotkeys)
-run=(xdg-utils)
-
-set=(kde5)
+set=(kde6)
 
 name=kmenuedit
-version=5.27.11
+version=6.0.3
+
+makedepends=(qt6-base extra-cmake-modules kdoctools
+             kcompletion kconfig kconfigwidgets kcoreaddons kdbusaddons
+             kglobalaccel ki18n kiconthemes kio kitemviews kservice kwidgetsaddons
+             kwindowsystem kxmlgui sonnet)
 
 source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
 
-
-build=kde5
+build=kde6
