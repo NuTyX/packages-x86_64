@@ -1,23 +1,17 @@
-description="Spelling framework for Qt5 "
+description="Spelling framework for Qt6"
 url="https://www.kde.org/"
+
+license="LGPL-2.0-only LGPL-3.0-only"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
 name=sonnet
-version=5.115.0
-makedepends=(extra-cmake-modules qtbase qttools aspell aspell-dict hunspell)
+version=6.0.0
+
+makedepends=(extra-cmake-modules qt6-base qt6-tools qt6-declarative
+             aspell aspell-dict hunspell)
+
 source=(https://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
