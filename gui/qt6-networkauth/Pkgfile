@@ -1,0 +1,31 @@
+description='Network authentication module'
+url='https://www.qt.io/'
+
+license="FDL,GPL3,LGPL3,custom"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=qt6-networkauth
+version=6.6.3
+
+makedepends=(cmake ninja qt6-base)
+
+source=(https://download.qt.io/official_releases/qt/${version:0:3}/$version/submodules/qtnetworkauth-everywhere-src-$version.tar.xz)
+
+build() {
+ cmake -S qtnetworkauth-everywhere-src-$version -B build -G Ninja
+ cmake --build build
+ DESTDIR=$PKG cmake --install build
+}
+devel() {
+  cd $PKG
+  bsdtar -cf \
+  $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
+  usr/include \
+  usr/lib/qt6/mkspecs \
+  usr/lib/cmake/
+  
+  rm -r usr/include usr/lib/qt6/mkspecs \
+  usr/lib/cmake
+}
