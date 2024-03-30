@@ -1,29 +1,23 @@
 description='A simple music player application'
 url="https://apps.kde.org/elisa/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+license="LGPL-2.0-or-later"
 
-makedepends=(qtbase extra-cmake-modules baloo
-             vlc kdeclarative kirigami2
-             kdoctools qtmultimedia)
-run=(shared-mime-info kirigami2)
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+makedepends=(qt6-base qt6-declarative qt6-multimedia qt6-5compat vlc
+             extra-cmake-modules kdoctools kconfig kconfigwidgets kcoreaddons
+             kcrash kdbusaddons kfilemetadata ki18n kio kiconthemes kitemviews
+             kxmlgui qqc2-desktop-style)
+
+run=(hicolor-icon-theme kirigami)
+
+set=(kde6)
 
 name=elisa
-version=23.08.5
+version=24.02.1
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
