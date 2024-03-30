@@ -1,29 +1,21 @@
-description="Bookmark Organizer and Editor"
-url="https://konqueror.org/"
+description='Bookmark Organizer and Editor'
+url="https://www.kde.org/"
+
+license="LGPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(extra-cmake-modules kdoctools kcoreaddons ki18n kio
-             kbookmarks kparts kwindowsystem kiconthemes)
+makedepends=(qt6-base extra-cmake-modules
+             kdoctools kbookmarks kcodecs kcompletion kconfig kconfigwidgets
+             kcoreaddons ki18n kiconthemes kio kparts kwidgetsaddons kwindowsystem
+             kxmlgui)
 
-set=(kde5)
+set=(kde6)
 
 name=keditbookmarks
-version=23.08.5
+version=24.02.1
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
