@@ -1,0 +1,21 @@
+description='Components necessary to integrate browsers into the Plasma Desktop'
+url='https://kde.org/plasma-desktop/'
+
+license="LGPL-2.0-or-later"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+set=(kde6)
+
+name=plasma-browser-integration
+version=6.0.3
+
+makedepends=(qt6-base qt6-tools extra-cmake-modules kdoctools
+             kconfig kcoreaddons kcrash kdbusaddons kfilemetadata ki18n kio
+             kjobwidgets kservice kstatusnotifieritem plasma-activities
+             plasma-workspace purpose)
+
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build=kde6
