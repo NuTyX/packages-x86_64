@@ -1,26 +1,31 @@
 description='Qt bindings for pulseaudio'
 url="https://www.kde.org/"
 
-packager="spiky <spiky@nutyx.org>"
+license="LGPL"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 name=pulseaudio-qt
 version=1.4.0
+release=2
 
-makedepends=(qtbase pulseaudio extra-cmake-modules doxygen qttools qtdoc)
+makedepends=(qt6-base pulseaudio extra-cmake-modules doxygen qt6-tools)
 
 
 source=(https://download.kde.org/stable/$name/${name}-$version.tar.xz)
 
-build=kde5
+build() {
+cd $name-$version
+mkdir build
+cd    build
 
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DBUILD_TESTING=OFF         \
+      -DQT_MAJOR_VERSION=6        \
+      -DBUILD_QCH=ON              \
+      -DCMAKE_BUILD_TYPE=Release  \
+      ..
+make
+make DESTDIR=$PKG install
 }
