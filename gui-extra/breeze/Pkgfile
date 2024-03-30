@@ -1,30 +1,31 @@
-description="Artwork, styles and assets for the Breeze visual style for the Plasma Desktop "
-url="https://www.kde.org/"
+description='Artwork, styles and assets for the Breeze visual style for the Plasma Desktop'
+url='https://www.kde.org/plasma-desktop/'
+
+license="GPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(libxcb kdecoration breeze-icons
-             kcmutils libksysguard libxcb)
-run=(breeze-icons)
+set=(kde6)
 
-set=(kde5)
 
 name=breeze
-version=5.27.11
+version=6.0.3
 
-source=(https://download.kde.org/stable/plasma/${version}/$name-$version.tar.xz)
+makedepends=(qt6-base qt6-declarative extra-cmake-modules
+             kcmutils kcolorscheme kconfig kcoreaddons kdecoration kguiaddons
+             ki18n kiconthemes kirigami kwidgetsaddons kwindowsystem)
+run=(breeze-icons)
 
-build=kde5
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
 
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
+build() {
+ mkdir build
+ cd    build
+ cmake -DCMAKE_INSTALL_PREFIX=/usr \
+       -DBUILD_QT5=OFF             \
+       ../$name-$version
+  
+ make
+ make DESTDIR=$PKG install
 }
