@@ -10,7 +10,7 @@ makedepends=(qt6-base qt6-tools qt6-svg cmake kcolorpicker)
 
 name=kimageannotator
 version=0.7.1
-release=2
+release=3
 
 _name=kImageAnnotator
 
@@ -23,6 +23,7 @@ cd    build
 
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_BUILD_TYPE=Release  \
+      -DBUILD_SHARED_LIBS=ON      \
       -DBUILD_WITH_QT6=ON         \
       ..
 make
