@@ -1,28 +1,19 @@
-description="Secure and unified container for user passwords"
-url="https://www.kde.org/"
+description='Secure and unified container for user passwords'
+url='https://community.kde.org/Frameworks'
+
+license="LGPL-2.0-only LGPL-3.0-only"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
 name=kwallet
-version=5.115.0
-makedepends=(kconfig kconfigwidgets kdbusaddons kiconthemes
-             kservice kwindowsystem gpgme kcoreaddons ki18n
-             knotifications kwidgetsaddons libgcrypt gnupg
-             gpgme qgpgme qca-qt)
+version=6.0.0
+
+makedepends=(kcolorscheme kconfig kcoreaddons kdbusaddons ki18n
+             knotifications kwidgetsaddons kwindowsystem kdoctools
+             kservice gpgme libgcrypt gpgme qca-qt6)
 run=(libgcrypt gnupg gpgme qgpgme)
+
 source=(https://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
-
+build=kde6
