@@ -1,0 +1,20 @@
+description='Addons for the Kirigami framework'
+url='https://community.kde.org/Frameworks'
+
+license="GPL-2.0-only LGPL-2.1-only"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+set=(kde6)
+
+name=kirigami-addons
+version=1.0.1
+release=2
+
+makedepends=(qt6-base qt6-declarative qt6-multimedia extra-cmake-modules
+             kirigami kitemmodels ksvg)
+
+source=(https://download.kde.org/stable/$name//${name}-$version.tar.xz)
+
+build=kde6
