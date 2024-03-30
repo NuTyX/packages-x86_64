@@ -12,13 +12,13 @@ makedepends=(git bzip2 gettext xz util-linux)
 run_devel=(curl.devel gcc.devel glibc.devel libarchive.devel \
 openssl.devel zlib.devel bash binutils coreutils file \
 findutils gawk gettext groff make patch pkgconf \
-readline rsync bzip2.devel xz.devel)
+readline rsync bzip2.devel xz.devel zstd.devel)
 
 PKGMK_GROUPS=(devel doc man lib)
 PKGMK_LOCALES=()
 
 name=cards
-version=2.7.5
+version=2.7.4
 
 [ "$release" != "1" ] &&  patchname="$name-$version-consolidate-$release.patch"
 
