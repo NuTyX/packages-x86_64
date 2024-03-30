@@ -1,19 +1,19 @@
-description="Partition manager from KDE"
+description='Partition manager from KDE'
 url="https://apps.kde.org/partitionmanager/"
+
+license="LGPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
 contributors="Spiky"
 
-makedepends=(extra-cmake-modules qtbase kjobwidgets ki18n kconfigwidgets
-             kio kxmlgui kdoctools kwidgetsaddons kcoreaddons kcrash kpmcore)
-run=(btrfs-progs reiserfsprogs xfsprogs ntfs-3g
-     e2fsprogs dosfstools jfsutils)
-
-set=(kde5)
+makedepends=(qt6-base extra-cmake-modules kdoctools polkit-qt-1
+             kcolorscheme kconfig kconfigwidgets kcoreaddons kcrash kdbusaddons
+             ki18n kio kpmcore kwidgetsaddons kwindowsystem kxmlgui)
+set=(kde6)
 
 name=partitionmanager
-version=23.08.5
+version=24.02.1
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-build=kde5
+build=kde6
