@@ -1,14 +1,16 @@
-description="Extra CMake modules used by all KDE Frameworks 5 packages"
+description="Extra CMake modules used by all KDE Frameworks 6 packages"
 url="https://www.kde.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+license="LGPL"
 
-makedepends=(cmake qtbase qttools)
+packager="tnut <tnut@nutyx.org>"
+contributors=""
+
+makedepends=(cmake)
 
 name=extra-cmake-modules
-version=5.115.0
+version=6.0.0
 
 source=(https://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
 
-build=kde5
+build=kde6
