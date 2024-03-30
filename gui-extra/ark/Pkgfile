@@ -1,31 +1,23 @@
-description="Graphical file compression/decompression utility."
-url="https://apps.kde.org/ark/"
+description='Archiving Tool'
+url='https://apps.kde.org/ark/'
+
+license="LGPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(extra-cmake-modules karchive
-             kconfig kcrash kdbusaddons kdoctools ki18n
-             kiconthemes kio kservice kparts kpty
-             kwidgetsaddons kitemmodels)
-run=(shared-mime-info unzip unrar p7zip zip)
+set=(kde6)
 
-set=(kde5)
+makedepends=(qt6-base extra-cmake-modules kdoctools libarchive libzip
+             kcolorscheme kcompletion kconfig kconfigwidgets kcoreaddons kcrash
+             kdbusaddons kfilemetadata ki18n kio kjobwidgets kparts kpty kservice
+             kwidgetsaddons kwindowsystem kxmlgui)
+
+run=(unrar lzop)
 
 name=ark
-version=23.08.5
+version=24.02.1
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | sed "s@</title>@@" | \
-sed "s@v@@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
