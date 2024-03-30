@@ -1,28 +1,32 @@
-description="Widgets for Baloo"
-url="https://www.kde.org/"
+description='Widgets for Baloo'
+url='https://www.kde.org/'
+
+license="LGPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(kconfig kio ki18n kfilemetadata baloo)
+set=(kde6)
 
-set=(kde5)
 
 name=baloo-widgets
-version=23.08.5
+version=24.02.1
+
+makedepends=(qt6-base extra-cmake-modules baloo kconfig kcoreaddons
+             kfilemetadata ki18n kio kservice kwidgetsaddons kdoctools)
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-build=kde5
+build() {
 
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
+mkdir build
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr  \
+      -DCMAKE_BUILD_TYPE=Release   \
+      -DBUILD_WITH_QT6=ON          \
+      -DBUILD_TESTING=OFF -Wno-dev \
+      ../$name-$version
+make
+make DESTDIR=$PKG install
 }
+
