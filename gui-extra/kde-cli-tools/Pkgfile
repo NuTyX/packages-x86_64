@@ -1,41 +1,21 @@
-description="Tools based on KDE Frameworks 5 to better interact with the system "
-url="https://www.kde.org/"
+description='Tools base on KDE Frameworks 5 to beter interact with the system'
+url='https://kde.org/plasma-desktop/'
+
+license="LGPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(kconfig kdoctools kiconthemes kinit ki18n kcmutils kio kservice
-             kwindowsystem kactivities plasma-workspace)
-
-set=(kde5)
+set=(kde6)
 
 name=kde-cli-tools
-version=5.27.11
+version=6.0.3
 
-source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+makedepends=(qt6-base qt6-svg extra-cmake-modules kcmutils kcompletion kconfig
+             kcoreaddons kdesu ki18n kiconthemes kio kparts kservice
+             kwidgetsaddons kwindowsystem kdoctools)
 
-build() {
-cd $name-$version
-mkdir build
-cd    build
-cmake -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_BUILD_TYPE=Release  \
-      -DKDE_INSTALL_LIBDIR=lib    \
-      -DBUILD_TESTING=OFF         \
-      -Wno-dev ..
-make
-make DESTDIR=$PKG install
-ln -sfv ../lib/libexec/kf5/kdesu $PKG/usr/bin/kdesu5
-}
 
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+source=(http://download.kde.org/stable/plasma/${version}/$name-$version.tar.xz)
+
+build=kde6
