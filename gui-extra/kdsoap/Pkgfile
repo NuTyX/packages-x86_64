@@ -1,16 +1,26 @@
-description="Qt-based client-side and server-side SOAP component"
-url=""
+description='Qt-based client-side and server-side SOAP component'
+url="https://github.com/KDAB/KDSoap"
 
-packager="spiky <spiky@nutyx.org>"
-contributors=""
+license="GPL3,LGPL,custom"
 
-makedepends=(qtbase)
-run=()
-set=()
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 name=kdsoap
-version=2.1.1
+version=2.2.0
+
+makedepends=(cmake qt6-base)
 
 source=(https://github.com/KDAB/KDSoap/releases/download/$name-$version/$name-$version.tar.gz)
 
-build=kde5
+build() {
+ mkdir build
+ cd    build
+ cmake -DCMAKE_INSTALL_PREFIX=/usr \
+       -DKDSoap_QT6=ON             \
+       -DCMAKE_BUILD_TYPE=None     \
+       ../$name-$version
+  
+ make
+ make DESTDIR=$PKG install
+}
