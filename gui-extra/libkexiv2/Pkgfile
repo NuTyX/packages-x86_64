@@ -1,28 +1,29 @@
 description="A library to manipulate pictures metadata"
 url="http://www.kde.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+license="LGPL-2.0-or-later, GPL-2.0-or-later"
 
-set=(kde5)
-makedepends=(exiv2 extra-cmake-modules)
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+set=(kde6)
+
+makedepends=(exiv2 qt6-base extra-cmake-modules)
 
 name=libkexiv2
-version=23.08.5
+version=24.02.1
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
+build() {
+ mkdir build
+ cd    build
+ cmake -DCMAKE_INSTALL_PREFIX=/usr \
+       -DQT_MAJOR_VERSION=6        \
+       -DBUILD_SHARED_LIBS=ON      \
+       ../$name-$version
+  
+ make
+ make DESTDIR=$PKG install
 }
