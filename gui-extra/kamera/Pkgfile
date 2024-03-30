@@ -1,15 +1,24 @@
-description="KDE integration for gphoto2 cameras"
-url="https://kde.org/applications/graphics/kamera/"
+description='KDE integration for gphoto2 cameras'
+url="https://apps.kde.org/kamera/"
+
+license="LGPL-2.0-or-later"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
 
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(kio libgphoto2 extra-cmake-modules kcmutils kdoctools)
+makedepends=(qt6-base libgphoto2 extra-cmake-modules kconfig kcmutils kdoctools
+             kcoreaddons ki18n kwidgetsaddons kxmlgui)
 
-set=(kde5)
+run=(kio)
+
+set=(kde6)
 
 name=kamera
-version=23.08.5
+version=24.02.1
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-build=kde5
+build=kde6
