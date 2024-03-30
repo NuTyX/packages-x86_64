@@ -1,44 +1,30 @@
-description="FFmpeg-based thumbnail creator for video files"
-url="https://projects.kde.org/projects/kde/applications/FFmpeg-based thumbnail creator for video files"
+description='FFmpeg-based thumbnail creator for video files'
+url='https://apps.kde.org/ffmpegthumbs/'
+
+license="LGPL-2.0-or-later, GPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(extra-cmake-modules kdoctools kio ffmpeg)
+set=(kde6)
 
-set=(kde5)
 
 name=ffmpegthumbs
-version=23.08.5
+version=24.02.1
+
+makedepends=(ffmpeg qt6-base extra-cmake-modules kconfig kcoreaddons kio)
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
 build() {
-cd $name-$version
 
 mkdir build
-cd build
-
-export PKG_CONFIG_PATH="/usr/lib/ffmpeg2.8/pkgconfig"  
-
-cmake -DCMAKE_BUILD_TYPE=Release  \
-      -DCMAKE_INSTALL_PREFIX=/usr \
-      -DSYSCONF_INSTALL_DIR=/etc  \
-      -DPLUGIN_INSTALL_DIR=/usr/lib/qt/plugins \
-      -DKDE_INSTALL_LIBDIR=lib ..
-
+cd    build
+cmake -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release  \
+      -DQT_MAJOR_VERSION=6        \
+      -DBUILD_TESTING=OFF -Wno-dev \
+      ../$name-$version
 make
 make DESTDIR=$PKG install
-}
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
 }
