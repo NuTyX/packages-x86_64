@@ -1,15 +1,22 @@
-description="KDE system settings "
-url="https://www.kde.org/"
+description='KDE system manager for hardware, software, and workspaces'
+url='https://kde.org/plasma-desktop/'
+
+license="LGPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(kactivities-stats plasma-workspace khtml kdoctools)
-set=(kde5)
+set=(kde6)
 
 name=systemsettings
-version=5.27.11
+version=6.0.3
 
-source=(https://download.kde.org/stable/plasma/${version}/$name-$version.tar.xz)
+makedepends=(qt6-base qt6-declarative extra-cmake-modules kdoctools
+             kauth kcmutils kcolorscheme kconfig kconfigwidgets kcoreaddons
+             kcrash kdbusaddons ki18n kiconthemes kio kirigami kitemmodels
+             kitemviews kjobwidgets krunner kservice kwidgetsaddons
+             kwindowsystem kxmlgui plasma-activities)
 
-build=kde5
+source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+
+build=kde6
