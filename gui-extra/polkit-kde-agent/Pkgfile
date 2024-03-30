@@ -1,0 +1,22 @@
+description='Daemon providing a polkit authentication UI for KDE'
+url='https://kde.org/plasma-desktop/'
+
+license="LGPL-2.0-or-later"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+set=(kde6)
+
+name=polkit-kde-agent
+version=6.0.3
+
+makedepends=(qt6-base qt6-5compat qt6-declarative extra-cmake-modules kdoctools
+kcoreaddons kcrash kdbusaddons ki18n kirigami kwindowsystem polkit-qt-1)
+
+source=(https://download.kde.org/stable/plasma/$version/$name-1-$version.tar.xz)
+
+prepare() {
+ mv $name-1-$version $name-$version
+}
+build=kde6
