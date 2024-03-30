@@ -1,24 +1,18 @@
-description="Advanced text editing widgets "
-url="https://www.kde.org/"
+description='Advanced text editing widgets'
+url='https://community.kde.org/Frameworks'
+
+license="LGPL-2.0-only LGPL-3.0-only"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
 name=ktextwidgets
-version=5.115.0
-makedepends=(kcompletion kconfig kconfigwidgets ki18n kiconthemes
-             kservice kwidgetsaddons kwindowsystem sonnet)
+version=6.0.0
+
+makedepends=(qt6-base qt6-tools qt6-speech extra-cmake-modules
+             kcolorscheme kcompletion kconfig kconfigwidgets ki18n
+             kwidgetsaddons sonnet)
+
 source=(https://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
