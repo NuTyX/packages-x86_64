@@ -10,6 +10,7 @@ makedepends=(cmake qt6-base)
 
 name=kcolorpicker
 version=0.3.1
+release=2
 
 _name=kColorPicker
 
@@ -22,6 +23,7 @@ cd    build
 
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DBUILD_WITH_QT6=ON         \
+      -DBUILD_SHARED_LIBS=ON      \
       -DCMAKE_BUILD_TYPE=Release  \
       ..
 make
