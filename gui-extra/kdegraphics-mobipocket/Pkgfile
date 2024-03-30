@@ -1,28 +1,26 @@
-description="A collection of plugins to handle mobipocket files"
-url="https://konqueror.org/"
+description='A library to handle mobipocket files'
+url='https://kde.org/'
+
+license='GPL-2.0-or-later, LGPL-2.0-or-later'
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(extra-cmake-modules kio)
+set=(kde6)
 
-set=(kde5)
+makedepends=(qt6-base qt6-5compat extra-cmake-modules)
 
 name=kdegraphics-mobipocket
-version=23.08.5
+version=24.02.1
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-build=kde5
+build() {
+  cmake -B build -S $name-$version \
+    -DBUILD_TESTING=OFF \
+    -DQT_MAJOR_VERSION=6
 
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
+  cmake --build build
+
+  DESTDIR=$PKG cmake --install build
 }
