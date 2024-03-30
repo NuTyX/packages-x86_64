@@ -1,26 +1,16 @@
-description="The KDE calendar access library"
-url="https://community.kde.org/Frameworks"
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+description='The KDE calendar access library'
+url='https://community.kde.org/Frameworks'
 
-set=(kde5)
+license="LGPL-2.0-only LGPL-3.0-only"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 name=kcalendarcore
-version=5.115.0
-makedepends=(extra-cmake-modules qtbase doxygen qttools qtdoc kdoctools libical)
+version=6.0.0
 
-build="kde5"
+makedepends=(libical extra-cmake-modules qt6-base doxygen qt6-tools)
+
+build="kde6"
 
 source=(https://download.kde.org/stable/frameworks/${version%.*}/$name-$version.tar.xz)
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
