@@ -1,28 +1,20 @@
-description="The KDE calendar utility library "
-url="https://kontact.kde.org/"
+description='The KDE calendar utility library'
+url="https://kontact.kde.org"
+
+license="LGPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(extra-cmake-modules python kdoctools kcalendarcore kidentitymanagement)
+makedepends=(qt6-base qt6-tools extra-cmake-modules kcalendarcore kcodecs ki18n
+             kidentitymanagement kcoreaddons kiconthemes ktexttemplate
+             kwidgetsaddons doxygen)
 
-set=(kde5)
+set=(kde6)
 
 name=kcalutils
-version=23.08.5
-
-build=kde5
+version=24.02.1
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
