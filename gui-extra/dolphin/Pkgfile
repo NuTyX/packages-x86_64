@@ -1,33 +1,28 @@
-description="File Manager"
-url="https://apps.kde.org/dolphin/"
+description='KDE File Manager'
+url='https://apps.kde.org/dolphin/'
+
+license="LGPL-2.0-or-later, GPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(extra-cmake-modules kdoctools kinit kcmutils knewstuff
-             kcoreaddons ki18n kdbusaddons kbookmarks kconfig kio
-             kparts solid kiconthemes kcompletion ktextwidgets
-             kwindowsystem knotifications kcrash kactivities baloo
-             baloo-widgets kfilemetadata kdelibs4support ffmpegthumbs
-             kdegraphics-thumbnailers kde-cli-tools ruby)
-run=(ruby)
 
-set=(kde5)
+set=(kde6)
 
 name=dolphin
-version=23.08.5
+
+version=24.02.1
+
+makedepends=(qt6-base extra-cmake-modules kdoctools
+             baloo baloo-widgets kbookmarks kcmutils kcodecs kcolorscheme
+             kcompletion kconfig kconfigwidgets kcoreaddons kcrash kdbusaddons
+             kfilemetadata ki18n kiconthemes kio kio-extras kjobwidgets
+             knewstuff knotifications kparts kservice ktextwidgets kuserfeedback
+             kwidgetsaddons kwindowsystem kxmlgui phonon plasma-activities
+             kde-cli-tools ffmpegthumbs kio-admin konsole purpose)
+
+run=(hicolor-icon-theme)
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | sed "s@</title>@@" | \
-sed "s@v@@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
