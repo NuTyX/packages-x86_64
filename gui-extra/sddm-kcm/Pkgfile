@@ -1,21 +1,23 @@
 description="KDE Config Module for SDDM"
 url="https://kde.org/plasma-desktop/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fabienwang,Spiky"
+license="LGPL-2.0-or-later"
 
-makedepends=(kdoctools extra-cmake-modules)
-run=(sddm knewstuff systemsettings)
-set=(kde5)
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+
+makedepends=(qt6-base qt6-declarative qt6-5compat extra-cmake-modules kdoctools
+             karchive kauth kcmutils kconfig kcoreaddons ki18n kio
+             kservice kwidgetsaddons)
+
+run=(sddm knewstuff kirigami)
+
+set=(kde6)
 
 name=sddm-kcm
-version=5.27.11
+version=6.0.3
 
 source=(https://download.kde.org/stable/plasma/${version}/$name-$version.tar.xz)
 
-build() {
-  cmake -B build -S $name-$version \
-    -DBUILD_TESTING=OFF
-  cmake --build build
-  DESTDIR=$PKG cmake --install build
-}
+build=kde6
