@@ -1,31 +1,22 @@
-description="Makes taking screenshots"
+description='KDE screenshot capture utility'
 url="https://apps.kde.org/spectacle/"
 
+license="LGPL-2.0-or-later"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(extra-cmake-modules kcoreaddons kwidgetsaddons kdbusaddons knotifications
-             kconfig ki18n kio kxmlgui kwindowsystem xcb-proto xcb-util-cursor kpipewire
-             xcb-util-renderutil libkscreen libkipi kdeclarative knewstuff purpose kimageformats syndication)
+makedepends=(qt6-base qt6-multimedia qt6-declarative extra-cmake-modules kdoctools
+             kconfig kconfigwidgets kcoreaddons kdbusaddons ki18n kio kirigami
+             kjobwidgets knotifications kpipewire kservice kwidgetsaddons
+             kwindowsystem kxmlgui layer-shell-qt libxcb purpose wayland
+             xcb-util xcb-util-cursor xcb-util-image plasma-wayland-protocols)
 
-
-set=(kde5)
+set=(kde6)
 
 name=spectacle
-version=23.08.5
+version=24.02.1
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
