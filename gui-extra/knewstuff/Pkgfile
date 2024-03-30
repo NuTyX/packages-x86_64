@@ -1,26 +1,17 @@
-description="Support for downloading application assets from the network "
-url="https://www.kde.org/"
+description='Support for downloading application assets from the network'
+url='https://community.kde.org/Frameworks'
+
+license="LGPL-2.0-only LGPL-3.0-only"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
 name=knewstuff
-version=5.115.0
+version=6.0.0
 
-makedepends=( attica karchive kcompletion kconfig kcoreaddons kirigami2
-              ki18n kiconthemes kio kitemviews kservice ktextwidgets
-              kwidgetsaddons kxmlgui kpackage syndication)
+makedepends=( attica qt6-base qt6-5compat qt6-declarative qt6-tools
+              karchive kconfig kcoreaddons ki18n kpackage kwidgetsaddons
+              kirigami syndication)
 source=(https://download.kde.org/stable/frameworks/${version%.*}/${name}-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
