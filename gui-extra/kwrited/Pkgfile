@@ -1,16 +1,19 @@
-description="Manages the power consumption settings of a Plasma Shell"
-url="https://www.kde.org/"
+description='KDE daemon listening for wall and write messages'
+url='https://kde.org/plasma-desktop/'
+
+license="LGPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Thut,Fabienwang,Fabienwang,Spiky"
+contributors="Spiky"
 
-makedepends=(kwayland-integration)
-
-set=(kde5)
+set=(kde6)
 
 name=kwrited
-version=5.27.11
+version=6.0.3
+
+makedepends=(qt6-base extra-cmake-modules kdoctools
+             kcoreaddons kdbusaddons knotifications kpty)
 
 source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
 
-build=kde5
+build=kde6
