@@ -1,32 +1,21 @@
 description="A user friendly IRC client for KDE"
 url="https://apps.kde.org/konversation/"
 
+license="LGPL-2.0-or-later"
+
 packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Fabienwang,Spiky"
+contributors="Spiky"
 
 name=konversation
-version=23.08.5
+version=24.02.1
 
-makedepends=(qtmultimedia kwallet knotifications knotifyconfig kemoticons kparts kidletime
-             hicolor-icon-theme extra-cmake-modules kdoctools knewstuff syndication )
+makedepends=(qt6-base qt6-5compat qt6-multimedia qt6-tools python extra-cmake-modules
+             kdoctools karchive kbookmarks kcodecs kcolorscheme kcompletion
+             kconfig kconfigwidgets kcoreaddons kcrash kdbusaddons kglobalaccel
+             ki18n kidletime kio kitemviews knewstuff knotifications knotifyconfig
+             kparts kstatusnotifieritem ktextwidgets kwallet kwidgetsaddons
+             kwindowsystem kxmlgui perl qca-qt6 keditbookmarks)
 
 source=(https://download.kde.org/stable/release-service/$version/src/$name-$version.tar.xz)
 
-prepare() {
-sed -i  '/#include <QFile>/a #include <QMetaMethod>' \
- $name-$version/src/irc/outputfilter.cpp
-}
-
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
