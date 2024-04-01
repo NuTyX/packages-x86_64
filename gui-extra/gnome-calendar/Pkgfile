@@ -1,10 +1,10 @@
 description="GNOME calendar"
 url="http://www.gnome.org/"
 
-license="GPL3"
+license="GPL3-or-later"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Jayce,Remy,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Jayce,Remy,Spiky"
 
 makedepends=(libdazzle meson intltool libhandy
              evolution-data-server python)
@@ -14,7 +14,7 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache libgweat
 set=(gnome)
 
 name=gnome-calendar
-version=45.1
+version=46.0
 
 source=(https://download.gnome.org/sources/${name}/${version:0:2}/${name}-$version.tar.xz)
 
