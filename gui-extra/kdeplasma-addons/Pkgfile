@@ -1,29 +1,25 @@
-description="All kind of addons to improve your Plasma experience "
-url="https://www.kde.org/"
+description='All kind of addons to improve your Plasma experience'
+url='https://kde.org/plasma-desktop/'
+
+license="LGPL-2.0-or-later"
 
 packager="tnut <tnut@nutyx.org>"
 contributors="Pierre,Fabienwang,Fabienwang,Spiky"
 
-makedepends=(plasma-desktop kholidays kross)
-run=(xdg-utils)
+set=(kde6)
 
-set=(kde5)
+makedepends=(qt6-base qt6-declarative qt6-5compat qt6-quick3d extra-cmake-modules
+             icu kcmutils kconfig kcoreaddons kdeclarative kglobalaccel kholidays
+             ki18n kiconthemes kio kitemmodels kjobwidgets knewstuff knotifications
+             kpackage krunner kservice ksvg kunitconversion kwidgetsaddons kwin
+             kwindowsystem kxmlgui libplasma plasma-workspace plasma5support
+             qt6-webengine networkmanager-qt)
+
+run=(kirigami kirigami-addons)
 
 name=kdeplasma-addons
-version=5.27.11
+version=6.0.3
 
 source=(http://download.kde.org/stable/plasma/${version}/${name}-$version.tar.xz)
 
-build=kde5
-
-uptodate() {
-feed=https://github.com/KDE/$name/releases.atom 
-exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
-ligne=1 # nombre de notification ? afficher
-$exec $feed | grep title | \
-sed "s@<title>@@" | \
-sed "s@</title>@@" | \
-sed "s@v@@" | sed "s@ @@g" | \
-head -n $(($ligne+1 )) | \
-tail -n $(($ligne))
-}
+build=kde6
