@@ -8,6 +8,7 @@ contributors="Spiky"
 
 name=kf5-libscreen
 version=5.27.11
+release=2
 
 _name=libkscreen
 
@@ -18,4 +19,13 @@ source=(https://download.kde.org/stable/plasma/${version}/${_name}-$version.tar.
 prepare() {
  mv ${_name}-$version $name-$version
 }
+
 build=kde5
+
+package() {
+rm -r $PKG/usr/bin
+rm -r $PKG/usr/lib/libexec
+rm -r $PKG/usr/share/zsh
+rm -r $PKG/usr/share/dbus-1
+rm -r $PKG/usr/lib/systemd
+}
