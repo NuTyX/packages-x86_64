@@ -10,14 +10,15 @@ set=(kde6)
 
 name=plasma-desktop
 version=6.0.3
+release=2
 
 makedepends=(icu xorg-libx11 libxcb xorg-libxcursor xorg-libxi libxkbcommon
              xorg-libxkbfile xorg-xf86-input-evdev xorg-xf86-input-libinput
              qt6-base qt6-5compat qt6-declarative qt6-wayland extra-cmake-modules
              kdoctools wayland-protocols baloo kauth kbookmarks kcmutils kcodecs
              kcompletion kconfig kconfigwidgets kcoreaddons kcrash kdbusaddons
-             kdeclarative kglobalaccel kguiaddons ki18n kiconthemes kio kirigami
-             kirigami-addons kitemmodels kitemviews kjobwidgets kmenuedit
+             kdeclarative kglobalaccel kguiaddons ki18n kiconthemes kio
+             kitemmodels kitemviews kjobwidgets kmenuedit
              knewstuff knotifications knotifyconfig kpackage kpipewire krunner
              kservice ksvg kwidgetsaddons kwindowsystem kxmlgui libcanberra
              libksysguard libplasma plasma-activities xdg-user-dirs
@@ -26,7 +27,7 @@ makedepends=(icu xorg-libx11 libxcb xorg-libxcursor xorg-libxi libxkbcommon
              bluedevil ibus kaccounts-integration kscreen libaccounts-qt
              packagekit-qt6 plasma-nm plasma-pa scim kaccounts-integration)
 
-run=(noto-fonts-emoji)
+run=(noto-fonts-emoji kirigami kirigami-addons)
 
 source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
 
