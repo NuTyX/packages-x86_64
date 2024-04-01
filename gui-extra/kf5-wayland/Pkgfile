@@ -1,0 +1,22 @@
+description="Qt-style Client and Server library wrapper for the Wayland libraries"
+url="https://www.kde.org/"
+
+license="LGPL"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=kf5-wayland
+version=5.115.0
+
+_name=kwayland
+
+makedepends=(qtbase qtwayland qttools extra-cmake-modules
+             plasma-wayland-protocols wayland-protocols)
+
+source=(https://download.kde.org/stable/frameworks/${version%.*}/${_name}-$version.tar.xz)
+
+prepare() {
+ mv ${_name}-$version $name-$version
+}
+build=kde5
