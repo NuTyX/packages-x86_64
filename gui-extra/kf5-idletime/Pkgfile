@@ -1,0 +1,21 @@
+description="Monitoring user activity"
+url="https://www.kde.org/"
+
+license="LGPL"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=kf5-idletime
+version=5.115.0
+
+_name=kidletime
+
+makedepends=(qtbase qttools qtx11extras extra-cmake-modules)
+
+source=(https://download.kde.org/stable/frameworks/${version%.*}/${_name}-$version.tar.xz)
+
+prepare() {
+ mv ${_name}-$version $name-$version
+}
+build=kde5
