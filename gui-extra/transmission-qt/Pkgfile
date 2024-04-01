@@ -1,8 +1,8 @@
 description="Light and fast Bittorent client (QT Interface)"
 url="http://www.transmissionbt.com/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Alienus,Remy,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Alienus,Remy,Spiky"
 
 makedepends=(e2fsprogs kerberos intltool curl
              libevent openssl qt6-base qt6-tools qt6-svg doxygen gdb)
@@ -10,6 +10,7 @@ run=(desktop-file-utils gtk-update-icon-cache)
 
 name=transmission-qt
 version=4.0.5
+release=2
 
 source=(https://github.com/transmission/transmission/releases/download/$version/transmission-$version.tar.xz)
 
@@ -44,4 +45,8 @@ install -Dm644 -t $PKG/usr/share/transmission-qt/translations qt/translations/*.
 install -m644 ./qt/transmission-qt.desktop $PKG/usr/share/applications/transmission-qt.desktop
 install -m644 icon.png  $PKG/usr/share/pixmaps/transmission-qt.png
 
+}
+package() {
+ #part of transmission
+ rm -r $PKG/usr/share/transmission
 }
