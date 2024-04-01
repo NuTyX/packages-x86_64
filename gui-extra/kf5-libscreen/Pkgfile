@@ -1,0 +1,21 @@
+description="KDE's screen management software"
+url="https://www.kde.org/"
+
+license="LGPL"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=kf5-libscreen
+version=5.27.11
+
+_name=libkscreen
+
+makedepends=(qtbase qtx11extras qtsensors extra-cmake-modules kf5-config kf5-wayland)
+
+source=(https://download.kde.org/stable/plasma/${version}/${_name}-$version.tar.xz)
+
+prepare() {
+ mv ${_name}-$version $name-$version
+}
+build=kde5
