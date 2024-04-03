@@ -6,17 +6,30 @@ license="LGPL MPL"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,<,Tnut"
 
-run=(python cairo)
+makedepends=(python python-wheel cairo)
 
 name=python-cairo
+_name="pycairo"
+alias=(${_name})
+
 version=1.26.0
 
 source=(https://github.com/pygobject/pycairo/releases/download/v$version/pycairo-$version.tar.gz)
 
 build() {
-	cd pycairo-$version
-	python3 setup.py build
-	python3 setup.py install --optimize=1 --root=$PKG
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 
 install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 install -Dm644 COPYING-LGPL-2.1 $PKG/usr/share/licenses/$name/COPYING-LGPL-2.1
