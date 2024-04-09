@@ -4,15 +4,28 @@ url="https://pypi.org/project/MarkupSafe/"
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python)
+makedepends=(python-setuptools python-wheel)
 
 name=python-markupsafe
+_name="MarkupSafe"
+alias=(${_name})
+
 version=2.1.5
+release=2
 
 source=(https://files.pythonhosted.org/packages/source/M/MarkupSafe/MarkupSafe-$version.tar.gz)
 
 build() {
 
-cd MarkupSafe-$version
-python3 setup.py install --root=$PKG --optimize=1
+cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
 }
