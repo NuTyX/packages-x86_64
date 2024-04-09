@@ -1,0 +1,34 @@
+description='Easily download, build, install, upgrade, and uninstall Python packages'
+url='https://pypi.python.org/pypi/setuptools'
+
+packager="spiky <spiky0011@gmail.com>"
+contributors=""
+
+makedepends=(python python-wheel)
+
+name=python-setuptools
+_name="setuptools"
+alias=(${_name})
+
+version=69.2.0
+
+source=(https://pypi.org/packages/source/s/setuptools/setuptools-$version.tar.gz)
+
+build() {
+cd ${_name}-$version
+
+
+	export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
+
+	  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+}
