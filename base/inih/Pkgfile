@@ -6,23 +6,26 @@ packager="spiky <spiky@nutyx.org>"
 makedepends=(meson ninja python)
 
 name=inih
-version=56
-release=2
+version=58
 
-source=(https://github.com/benhoyt/inih/archive/refs/tags/r56.tar.gz)
+source=(https://github.com/benhoyt/inih/archive/refs/tags/r${version}.tar.gz)
 
 prepare() {
-mv $name-r56 $name-$version
+mv $name-r$version $name-$version
 }
 
 build(){
+cd $name-$version
+
 mkdir build
 cd build
 
-  meson setup --prefix=/usr \
+  meson setup .. \
+  --prefix=/usr \
+  --buildtype=release      \
   -Ddefault_library=shared \
-  -Ddistro_install=true \
-  ../$name-$version
+  -Ddistro_install=true
+
   ninja
   DESTDIR=$PKG ninja install
 }
