@@ -4,11 +4,13 @@ url='https://pypi.python.org/pypi/wheel'
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python)
+makedepends=(python python-flit-core)
 
 name=python-wheel
-version=0.42.0
-_name=wheel
+_name="wheel"
+alias=(${_name})
+
+version=0.43.0
 
 source=(https://files.pythonhosted.org/packages/source/${name:7:1}/${name#*-}/${name#*-}-$version.tar.gz)
 
@@ -18,5 +20,20 @@ prepare() {
   LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
   bsdtar -xf $PKGMK_SOURCE_DIR/${name#*-}-$version.tar.gz
 }
-build=python3
+
+build() {
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+}
 
