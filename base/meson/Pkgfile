@@ -8,9 +8,13 @@ license="Apache"
 set=(devel)
 
 name=meson
-version=1.4.0
+_name="meson"
+alias=(${_name})
 
-PKGMK_DEPENDS=(sqlite expat libffi python)
+version=1.4.0
+release=2
+
+PKGMK_DEPENDS=(sqlite expat libffi python python-wheel python-setuptools)
 source=(skip-test.diff
 	https://github.com/mesonbuild/$name/releases/download/$version/$name-$version.tar.gz)
 prepare()
@@ -20,8 +24,16 @@ prepare()
 }
 build() {
   cd $name-$version
-  python3 setup.py build
-  python3 setup.py install --root=$PKG --optimize=1 --skip-build
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
 
   install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 }
