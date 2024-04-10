@@ -4,17 +4,29 @@ url='https://github.com/sphinx-doc/sphinxcontrib-applehelp'
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python)
+makedepends=(python-setuptools python-wheel python-flit-core)
 
 name=python-sphinxcontrib-applehelp
-_name=sphinxcontrib-applehelp
-version=1.0.2
-release=4
+_name="sphinxcontrib-applehelp"
+alias=(${_name})
 
-source=(https://files.pythonhosted.org/packages/9f/01/ad9d4ebbceddbed9979ab4a89ddb78c9760e74e6757b1880f1b2760e8295/sphinxcontrib-applehelp-1.0.2.tar.gz)
+version=1.0.8
+
+source=(https://github.com/sphinx-doc/sphinxcontrib-applehelp/archive/refs/tags/$version.tar.gz)
 
 build() {
-cd ${_name}-$version
-python setup.py build
-python setup.py install --root=$PKG --optimize=1 --skip-build
+
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
