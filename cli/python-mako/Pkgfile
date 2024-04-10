@@ -4,16 +4,29 @@ url="https://pypi.org/project/Mako/"
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python python-markupsafe)
+makedepends=(python-setuptools python-wheel python-markupsafe)
 
 name=python-mako
+_name="Mako"
+alias=(${_name})
+
 version=1.3.2
+release=2
 
 source=(https://files.pythonhosted.org/packages/d4/1b/71434d9fa9be1ac1bc6fb5f54b9d41233be2969f16be759766208f49f072/Mako-1.3.2.tar.gz)
 
-
 build() {
+  cd ${_name}-$version
 
-cd Mako-$version
-python3 setup.py install --root=$PKG --optimize=1
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
