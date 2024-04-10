@@ -4,17 +4,30 @@ url='https://github.com/sphinx-doc/sphinxcontrib-devhelp'
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python)
+makedepends=(python-setuptools python-wheel python-flit-core)
 
 name=python-sphinxcontrib-devhelp
-version=1.0.2
-release=4
+_name="sphinxcontrib-devhelp"
+alias=(${_name})
+
+version=1.0.6
 _name=sphinxcontrib-devhelp
 
-source=(https://files.pythonhosted.org/packages/98/33/dc28393f16385f722c893cb55539c641c9aaec8d1bc1c15b69ce0ac2dbb3/${_name}-$version.tar.gz)
+source=(https://github.com/sphinx-doc/sphinxcontrib-devhelp/archive/refs/tags/$version.tar.gz)
 
 build() {
-cd ${_name}-$version
- python setup.py build
-python setup.py install --root=$PKG --optimize=1 --skip-build
+
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf
 }
