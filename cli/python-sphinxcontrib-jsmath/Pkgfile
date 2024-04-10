@@ -4,17 +4,30 @@ url='https://github.com/sphinx-doc/sphinxcontrib-jsmath'
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python)
+makedepends=(python-setuptools python-wheel)
 
 name=python-sphinxcontrib-jsmath
+_name="sphinxcontrib-jsmath"
+alias=(${_name})
+
 version=1.0.1
 release=4
-_name=sphinxcontrib-jsmath
 
 source=(https://files.pythonhosted.org/packages/b2/e8/9ed3830aeed71f17c026a07a5097edcf44b692850ef215b161b8ad875729/${_name}-$version.tar.gz)
 
 build() {
-cd ${_name}-$version
-python setup.py build
-python setup.py install --root=$PKG --optimize=1 --skip-build
+
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
