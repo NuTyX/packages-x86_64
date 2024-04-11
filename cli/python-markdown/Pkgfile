@@ -4,16 +4,31 @@ url="http://pypi.python.org/pypi/Markdown"
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python)
+makedepends=(python-wheel python-setuptools)
 
 name=python-markdown
-version=3.4.1
-release=4
+_name="Markdown"
+alias=(${_name})
+
+version=3.6
 
 source=(https://files.pythonhosted.org/packages/source/M/Markdown/Markdown-${version}.tar.gz)
 
 build() {
     find Markdown-$version/ -name '*py' | xargs sed -i 's|\r||g'
-    cd Markdown-$version
-    python setup.py install --root=$PKG --optimize=0
+
+cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+
 }
