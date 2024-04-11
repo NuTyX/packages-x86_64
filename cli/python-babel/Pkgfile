@@ -4,11 +4,13 @@ url='http://babel.pocoo.org/'
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python python-pytz)
+makedepends=(python-setuptools python-wheel python-pytz)
 
 name=python-babel
-version=2.12.1
-release=3
+_name="babel"
+alias=(${_name})
+
+version=2.14.0
 
 
 source=(https://github.com/python-babel/babel/archive/v$version/$name-$version.tar.gz
@@ -19,10 +21,21 @@ cp /sources/core.zip $SRC/babel-$version/cldr/cldr-core-41.zip
 }
 
 build() {
-cd babel-$version
+
+cd ${_name}-$version
 
 python setup.py import_cldr
-python setup.py build
 
-python setup.py install --root=$PKG --optimize=1 --skip-build
+pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+
 }
