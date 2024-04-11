@@ -4,16 +4,30 @@ url='https://github.com/pexpect/ptyprocess'
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Tnut"
 
-makedepends=(python)
+makedepends=(python-setuptools python-wheel)
 
 name=python-ptyprocess
-_name=ptyprocess
+_name="ptyprocess"
+alias=(${_name})
+
 version=0.7.0
-release=3
+release=4
 
 source=(https://pypi.io/packages/source/p/${_name}/${_name}-$version.tar.gz)
 
 build() {
-    cd ptyprocess-$version
-    python setup.py install --prefix=/usr --root=$PKG
+
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
