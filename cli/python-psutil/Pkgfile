@@ -4,16 +4,34 @@ url="https://github.com/giampaolo/psutil"
 packager="spiky <spiky@nutyx.org>"
 contributors="Dania,Tnut"
 
-makedepends=(python)
+makedepends=(python-setuptools python-wheel)
 
 name=python-psutil
+_name="psutil"
+alias=(${_name})
+
 version=5.9.8
+release=2
 
 source=(https://github.com/giampaolo/psutil/archive/release-$version.tar.gz)
 
+prepare() {
+mv psutil-release-$version ${_name}-$version
+}
+
 build() {
 
-  cd psutil-release-$version
-  python3 setup.py build 
-  python3 setup.py install --skip-build --root=$PKG --optimize=1
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
