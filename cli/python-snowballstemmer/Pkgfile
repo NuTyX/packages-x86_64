@@ -1,0 +1,32 @@
+description='Snowball stemming library collection for Python'
+url='https://github.com/shibukawa/snowball_py/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python-setuptools python-wheel)
+
+name=python-snowballstemmer
+_name="snowballstemmer"
+alias=(${_name})
+
+version=2.2.0
+
+source=(https://files.pythonhosted.org/packages/source/s/snowballstemmer/snowballstemmer-$version.tar.gz)
+
+build() {
+
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+}
