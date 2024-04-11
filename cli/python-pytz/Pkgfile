@@ -4,22 +4,26 @@ url='https://pypi.python.org/pypi/pytz'
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Tnut"
 
-makedepends=(python)
+makedepends=(python-setuptools )
 
 name=python-pytz
+_name="pytz"
+alias=(${_name})
+
 version=2024.1
+release=2
 
 source=(https://pypi.io/packages/source/p/pytz/pytz-${version}.tar.gz
        0001-Use-the-system-zoneinfo-from-the-tzdata-package.patch)
 prepare() {
-  cd pytz-$version
+  cd ${_name}-$version
   patch -p2 -i ../0001-Use-the-system-zoneinfo-from-the-tzdata-package.patch
   rm -r pytz/zoneinfo/
 }
 
 
 build() {
-  cd pytz-$version
+  cd ${_name}-$version
   python setup.py build
   python setup.py install --prefix=/usr --root=$PKG
 }
