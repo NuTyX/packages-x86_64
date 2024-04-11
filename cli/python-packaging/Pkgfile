@@ -3,17 +3,17 @@ url='https://github.com/pypa/packaging'
 
 license="Apache"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Spiky"
-
-_name="packaging"
-
-alias=(${_name})
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
 name=python-packaging
-version=24.0
+_name="packaging"
+alias=(${_name})
 
-makedepends=(python python-flit-core)
+version=24.0
+release=2
+
+makedepends=(python-setuptools python-flit-core)
 
 source=(https://pypi.io/packages/source/p/${_name}/${_name}-$version.tar.gz)
 
