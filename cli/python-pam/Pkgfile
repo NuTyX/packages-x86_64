@@ -4,17 +4,30 @@ url='https://github.com/FirefighterBlu3/python-pam'
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Tnut"
 
-makedepends=(python pam)
+makedepends=(python-setuptools python-wheel pam)
 
 name=python-pam
-version=1.8.4
-release=3
+_name="python-pam"
+alias=(${_name})
+
+version=2.0.2
 
 
 source=(https://files.pythonhosted.org/packages/source/${name:0:1}/$name/$name-$version.tar.gz)
 
 build() {
-  cd python-pam-$version
-  python setup.py build
-  python setup.py install --prefix=/usr --root=$PKG
+
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf
 }
