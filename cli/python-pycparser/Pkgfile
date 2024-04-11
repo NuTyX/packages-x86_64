@@ -4,15 +4,18 @@ url="https://github.com/eliben/pycparser"
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python python-ply)
+makedepends=(python-setuptools python-ply)
 
 name=python-pycparser
-version=2.21
-release=4
+_name="pycparser"
+alias=(${_name})
+
+version=2.22
 
 source=(https://github.com/eliben/pycparser/archive/refs/tags/release_v${version}.tar.gz)
 build() {
-cd pycparser-release_v${version}
+
+cd ${_name}-release_v${version}
 python setup.py build
   cd pycparser
   python _build_tables.py
