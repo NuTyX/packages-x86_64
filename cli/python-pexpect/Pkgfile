@@ -4,12 +4,16 @@ url='https://pexpect.readthedocs.org/en/stable/'
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Tnut"
 
-makedepends=(git python)
+makedepends=(git python-setuptools python-wheel python-ptyprocess)
 
 #source=(https://github.com/pexpect/pexpect/archive/refs/tags/4.9.tar.gz)
 
 name=python-pexpect
+_name="pexpect"
+alias=(${_name})
+
 version=4.9.0
+release=2
 
 prepare() {
 git clone https://github.com/pexpect/pexpect.git
@@ -18,6 +22,17 @@ git checkout 4.9
 }
 
 build() {
-    cd pexpect
-    python setup.py install --root=$PKG
+
+cd ${_name}
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
