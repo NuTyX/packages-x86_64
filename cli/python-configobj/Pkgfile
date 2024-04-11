@@ -4,18 +4,30 @@ url="https://github.com/DiffSK/configobj"
 packager="spiky <spiky@nutyx.org>"
 contributors="Dania,Tnut"
 
-makedepends=(python-six)
-run=(python)
+makedepends=(python-setuptools python-six)
 
 name=python-configobj
+_name="configobj"
+alias=(${_name})
+
 version=5.0.8
-release=3
+release=4
 
 source=(https://github.com/DiffSK/configobj/archive/v$version.tar.gz)
 
 build() {
 
-  cd configobj-$version
-  python3 setup.py build 
-  python3 setup.py install --skip-build --root=$PKG --optimize=1
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
