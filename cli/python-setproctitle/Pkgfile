@@ -4,16 +4,30 @@ url="https://github.com/dvarrazzo/py-setproctitle"
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python)
+makedepends=(python-setuptools python-wheel)
 
 name=python-setproctitle
+_name="setproctitle"
+alias=(${_name})
+
 version=1.3.3
+release=2
 
 source=(https://files.pythonhosted.org/packages/source/s/setproctitle/setproctitle-$version.tar.gz)
 
 build() {
 
-cd setproctitle-$version
-python3 setup.py build 
-python3 setup.py install --skip-build -O1 --root=$PKG
+ cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
