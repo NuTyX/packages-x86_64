@@ -4,17 +4,32 @@ url="http://pygments.org"
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python)
+makedepends=(python-setuptools python-wheel python-hatchling)
 
 name=python-pygments
-version=2.14.0
-release=3
+_name="pygments"
+alias=(${_name})
 
-source=(https://pypi.org/packages/source/P/Pygments/Pygments-${version}.tar.gz)
+version=2.17.2
+
+source=(https://pypi.org/packages/source/p/pygments/pygments-${version}.tar.gz)
 
 build() {
-    cd Pygments-$version
-    python3 setup.py install --root=$PKG -O1
+
+ cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+
 }
 uptodate() {
 lynx -read_timeout=20 -dump -listonly -nonumbers \
