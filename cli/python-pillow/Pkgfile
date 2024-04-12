@@ -5,21 +5,34 @@ maintainer="https://github.com/python-pillow/Pillow/releases.atom"
 packager="spiky <spiky@nutyx.org>"
 contributors="Hugo,Rémy,Tnut"
 
-makedepends=(lcms2 libtiff freetype openjpeg libwebp)
-run=(python)
+makedepends=(python-setuptools python-wheel lcms2 libtiff freetype openjpeg libwebp)
 
 name=python-pillow
-version=10.0.1
-_name=Pillow
+_name="Pillow"
+alias=(${_name})
+
+version=10.2.0
 
 source=(https://github.com/python-pillow/Pillow/archive/$version/${_name}-$version.tar.gz)
 
 
 build() {
+
 cd ${_name}-$version
-python3 setup.py build
-python3 setup.py install --root=$PKG --optimize=1
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
+
 uptodate() {
 lynx -read_timeout=20 -dump -listonly -nonumbers $maintainer \
 grep release | grep alternate | grep tag| \
