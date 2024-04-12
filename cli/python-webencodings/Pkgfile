@@ -1,16 +1,38 @@
 description='This is a Python implementation of the WHATWG Encoding standard.'
 url='https://github.com/gsnedders/python-webencodings'
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
-run=(python)
+makedepends=(python-setuptools python-wheel)
 
 name=python-webencodings
+_name="webencodings"
+alias=(${_name})
+
 version=0.5.1
+release=2
 
 PKGMK_KEEP_SOURCES="no"
-_name=$name
+
 source=(https://github.com/gsnedders/python-webencodings/archive/v$version.tar.gz)
 
-build=python3
+prepare() {
+mv $name-$version ${_name}-$version
+}
+
+build() {
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+}
