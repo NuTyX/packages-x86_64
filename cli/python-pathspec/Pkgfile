@@ -1,0 +1,32 @@
+description='Utility library for gitignore style pattern matching of file paths'
+url='https://github.com/cpburnz/python-path-specification'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python-setuptools python-wheel python-flit-core)
+
+name=python-pathspec
+_name="pathspec"
+alias=(${_name})
+
+version=0.12.1
+
+source=(https://pypi.io/packages/source/p/pathspec/pathspec-$version.tar.gz)
+
+build() {
+
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+}
