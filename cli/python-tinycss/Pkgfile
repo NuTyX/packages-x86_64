@@ -4,16 +4,30 @@ url='https://pypi.python.org/pypi/tinycss'
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Tnut"
 
-makedepends=(python cython)
+makedepends=(python-setuptools python-wheel cython)
 
 name=python-tinycss
+_name="tinycss"
+alias=(${_name})
+
 version=0.4
-release=4
+release=5
 
 source=(https://pypi.io/packages/source/t/tinycss/tinycss-$version.tar.gz)
 
 build() {
-    cd tinycss-$version
-    python setup.py build
-    python setup.py install --prefix=/usr --root=$PKG
+
+ cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
