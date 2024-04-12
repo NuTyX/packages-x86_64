@@ -4,19 +4,21 @@ url='http://www.sphinx-doc.org/'
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python python-docutils python-jinja python-packaging 
-             python-pygments python-requests python-babel python-imagesize
+makedepends=(python-setuptools python-wheel python-docutils python-jinja 
+             python-packaging python-pygments python-requests python-babel
              python-sphinx-alabaster-theme python-sphinxcontrib-applehelp
              python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp
              python-sphinxcontrib-jsmath python-sphinxcontrib-qthelp
-             python-sphinxcontrib-serializinghtml)
+             python-sphinxcontrib-serializinghtml python-imagesize python-snowballstemmer)
 
 
 name=python-sphinx
-version=5.1.1
-release=3
+_name="sphinx"
+alias=(${_name})
 
-source=(https://pypi.org/packages/source/S/Sphinx/Sphinx-$version.tar.gz)
+version=7.2.6
+
+source=(https://pypi.org/packages/source/s/sphinx/sphinx-$version.tar.gz)
 
 
 PKGMK_IGNORE_UNPACK="yes"
@@ -24,15 +26,24 @@ PKGMK_IGNORE_UNPACK="yes"
 
 prepare() {
 localedef -i en_US -f UTF-8 en_US.UTF-8
-    install -d $SRC/Sphinx-${version}
+    install -d $SRC/sphinx-${version}
     LC_ALL=en_US.UTF-8 LANG=en_US.utf-8 \
-    bsdtar -xf $PKGMK_SOURCE_DIR/Sphinx-${version}.tar.gz \
+    bsdtar -xf $PKGMK_SOURCE_DIR/sphinx-${version}.tar.gz \
         -C $SRC
 }
 build() {
-cd Sphinx-$version
 
-python3 setup.py build
+  cd ${_name}-$version
 
-python3 setup.py install --root=$PKG --optimize=1 --skip-build
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
