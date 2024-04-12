@@ -1,0 +1,32 @@
+description='Modern, extensible Python project management'
+url='https://github.com/pypa/hatch'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python-setuptools python-wheel python-editables python-pathspec python-flit-core
+             python-pluggy python-trove-classifiers python-packaging)
+
+name=python-hatchling
+_name="hatchling"
+alias=(${_name})
+
+version=1.22.4
+
+source=( https://files.pythonhosted.org/packages/source/h/hatchling/hatchling-$version.tar.gz)
+
+build() {
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+}
