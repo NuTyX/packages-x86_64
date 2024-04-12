@@ -5,19 +5,31 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 name=python-sgmllib3k
-version=1.0.0
-release=3
+_name="sgmllib3k"
+alias=(${_name})
 
-run=(python)
+version=1.0.0
+release=4
+
+makedepends=(python-setuptools python-wheel)
 
 PKGMK_KEEP_SOURCES="no"
-_name=${name#python-}
+
 source=(https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-$version.tar.gz)
 
 build() {
 
-cd ${_name}-$version
+  cd ${_name}-$version
 
-python setup.py build
-python setup.py install --root=$PKG --optimize=1 --skip-build
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
