@@ -4,17 +4,30 @@ url="https://github.com/mintchaos/typogrify"
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python python-smartypants)
+makedepends=(python-setuptools python-wheel python-smartypants)
 
 name=python-typogrify
-_name=typogrify
+_name="typogrify"
+alias=(${_name})
+
 version=2.0.7
-release=5
+release=6
 
 source=(https://pypi.python.org/packages/source/${_name::1}/${_name}/${_name}-$version.tar.gz)
 
 build() {
-  cd $_name-$version
-  python setup.py build
-  python setup.py install --prefix=/usr --root="${PKG}" -O1 --skip-build
+
+ cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
