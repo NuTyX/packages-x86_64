@@ -6,13 +6,14 @@ license="LGPL2.1"
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python glib gobject-introspection libbytesize lvm2
+makedepends=(python python-pygments glib gobject-introspection libbytesize lvm2
              volume_key parted gtk-doc yaml libnvme e2fsprogs)
 run=(gptfdisk)
 
 
 name=libblockdev
 version=3.1.1
+release=2
 
 source=(https://github.com/storaged-project/$name/releases/download/$version-1/$name-$version.tar.gz)
 
