@@ -1,22 +1,33 @@
 description='Python module used for monitoring filesystems events on Linux platforms with inotify.'
 url='https://github.com/seb-m/pyinotify'
 
-run=(python)
+makedepends=(python-setuptools python-wheel)
 
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Tnut"
 
 name=python-pyinotify
+_name="pyinotify"
+alias=(${_name})
+
 version=0.9.6
-release=3
+release=4
 
 source=(https://github.com/seb-m/pyinotify/archive/${version}.tar.gz)
 
 build() {
 
-  cd pyinotify-$version
+ cd ${_name}-$version
 
-  python setup.py build
-  python setup.py install --root=$PKG -O1
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
 
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
