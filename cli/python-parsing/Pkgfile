@@ -4,17 +4,29 @@ contributors="Rems,Tnut"
 packager="spiky <spiky@nutyx.org>"
  
 name=python-parsing
-version=3.0.7
-release=4
+_name="pyparsing"
+alias=(${_name})
 
-makedepends=(python)
+version=3.1.2
+
+makedepends=(python-setuptools python-wheel)
 run=(python)
 
-source=(https://github.com/pyparsing/pyparsing/archive/pyparsing_$version.tar.gz)
+source=(https://github.com/pyparsing/pyparsing/archive/refs/tags/$version.tar.gz)
 
 build() {
 
-cd pyparsing-pyparsing_$version
-python3 setup.py build
-python3 setup.py install --prefix=/usr --root=$PKG --optimize=1
+ cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
