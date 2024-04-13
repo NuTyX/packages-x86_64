@@ -9,7 +9,7 @@ license="Custom"
 set=(linux-firmware)
 
 name=ath10k-firmware
-version=20240312
+version=20240410
 
 makedepends=(rdfind)
 source=(WHENCE
@@ -23,4 +23,5 @@ make DESTDIR=$PKG FIRMWAREDIR=/lib/firmware install
 
 install -Dt $PKG/usr/share/licenses/$name -m644 WHENCE
 install -Dt $PKG/usr/share/licenses/$name -m644 LICENSE.QualcommAtheros_ath10k
+install -Dt $PKG/usr/share/licenses/$name -m644 LICENSE.qcom
 }

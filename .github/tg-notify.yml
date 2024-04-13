@@ -1,0 +1,14 @@
+name: tg notify
+on:  push
+
+jobs:
+  notifyTelegram:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send telegram message when push
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message:  |
+             packages-x86_64 on ${{ github.ref_name }}: ${{ github.event.head_commit.message }}.
