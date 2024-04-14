@@ -10,9 +10,16 @@ makedepends=(protobuf)
 
 name=protobuf-c
 version=1.5.0
-release=2
+release=3
 
-source=(https://github.com/protobuf-c/protobuf-c/releases/download/v$version/$name-$version.tar.gz)
+source=(https://github.com/protobuf-c/protobuf-c/releases/download/v$version/$name-$version.tar.gz
+        https://www.linuxfromscratch.org/patches/blfs/svn/protobuf-c-1.5.0-consolidated_fixes-1.patch)
+
+prepare() {
+cd $name-$version
+
+patch -Np1 -i ../$name-$version-consolidated_fixes-1.patch
+}
 
 build() {
 
