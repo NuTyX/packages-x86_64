@@ -14,6 +14,7 @@ run=(samba.lib)
 
 name=samba
 version=4.20.0
+release=2
 
 runyx_version=20201011
 
@@ -79,8 +80,8 @@ ln -v -sf /usr/bin/smbspool $PKG/usr/lib/cups/backend/smb
 
 _ARCH="x86_64"
 [ "$PKGMK_ARCH" = "i686" ] && _ARCH=i386
-rm $PKG/usr/lib/python3.11/site-packages/_tdb_text.py
-rm $PKG/usr/lib/python3.11/site-packages/tdb.cpython-311-${_ARCH}-linux-gnu.so
+rm $PKG/usr/lib/python3.12/site-packages/_tdb_text.py
+rm $PKG/usr/lib/python3.12/site-packages/tdb.cpython-312-${_ARCH}-linux-gnu.so
 
 # service
 cd $SRC/runyx-${runyx_version}
