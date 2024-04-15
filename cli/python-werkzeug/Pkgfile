@@ -1,0 +1,32 @@
+description='Swiss Army knife of Python web development'
+url='https://pypi.org/project/Werkzeug/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python-setuptools python-wheel python-flit-core python-markupsafe)
+
+name=python-werkzeug
+_name="werkzeug"
+alias=(${_name})
+
+version=3.0.2
+
+source=(https://files.pythonhosted.org/packages/0f/84/00f7193d7bd88ced26cd5f868903e431054424610dc7c041bbe87d2a4d66/werkzeug-3.0.2.tar.gz)
+
+build() {
+
+      cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+}
