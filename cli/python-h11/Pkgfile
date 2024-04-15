@@ -1,0 +1,32 @@
+description='A pure-Python, bring-your-own-I/O implementation of HTTP/1.1'
+url='https://pypi.org/project/h11/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python-setuptools)
+
+name=python-h11
+_name="h11"
+alias=(${_name})
+
+version=0.14.0
+
+source=(https://files.pythonhosted.org/packages/f5/38/3af3d3633a34a3316095b39c8e8fb4853a28a536e55d347bd8d8e9a14b03/h11-0.14.0.tar.gz)
+
+build() {
+
+      cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+}
