@@ -1,0 +1,33 @@
+description='Micro webdevelopment framework for Python'
+url='https://pypi.org/project/Flask/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python-setuptools python-wheel python-flit-core python-click python-blinker
+             python-werkzeug python-jinja python-itsdangerous)
+
+name=python-flask
+_name="flask"
+alias=(${_name})
+
+version=3.0.3
+
+source=(https://files.pythonhosted.org/packages/41/e1/d104c83026f8d35dfd2c261df7d64738341067526406b40190bc063e829a/flask-3.0.3.tar.gz)
+
+build() {
+
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+}
