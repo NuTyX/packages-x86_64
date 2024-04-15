@@ -5,19 +5,33 @@ license="GPL"
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python)
+makedepends=(python-setuptools python-wheel python-packaging sip)
 
 name=pyqt-builder
-version=1.15.4
+_name="PyQt-builder"
+alias=(${_name})
+
+version=1.16.0
 
 source=(https://pypi.io/packages/source/P/PyQt-builder/PyQt-builder-$version.tar.gz)
 
 build() {
-cd PyQt-builder-$version
-python setup.py build
-python setup.py install --root=$PKG
 
-install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
-install -Dm644 LICENSE-GPL2 $PKG/usr/share/licenses/$name/LICENSE-GPL2
-install -Dm644 LICENSE-GPL3 $PKG/usr/share/licenses/$name/LICENSE-GPL3
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+
+install -Dm644 pyqtbuild/bundle/qt_wheel_distinfo/LICENSE $PKG/usr/share/licenses/$name/LICENSE
+#install -Dm644 LICENSE-GPL2 $PKG/usr/share/licenses/$name/LICENSE-GPL2
+#install -Dm644 LICENSE-GPL3 $PKG/usr/share/licenses/$name/LICENSE-GPL3
 }
