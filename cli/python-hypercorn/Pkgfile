@@ -1,0 +1,33 @@
+description='An ASGI Server based on Hyper libraries and inspired by Gunicorn'
+url='https://pypi.org/project/Hypercorn/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python-setuptools python-wheel python-poetry-core python-h11
+             python-h2 python-priority python-wsproto)
+
+name=python-hypercorn
+_name="hypercorn"
+alias=(${_name})
+
+version=0.16.0
+
+source=(https://files.pythonhosted.org/packages/56/c4/8aeb5c33d73dc25244db5e2d72d0303bd7d9094d0da26844691e5942b4bf/hypercorn-0.16.0.tar.gz)
+
+build() {
+
+      cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+}
