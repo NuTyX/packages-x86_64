@@ -4,18 +4,30 @@ url="https://files.pythonhosted.org"
 packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
-makedepends=(python)
+makedepends=(python-wheel python-setuptools python-poetry-core python-aiofiles
+             python-blinker python-click python-flask python-hypercorn)
 
 name=python-quart
-version=0.18.4
-release=2
+_name="quart"
+alias=(${_name})
 
-source=(https://files.pythonhosted.org/packages/c5/93/be1bd58558bd2f026b75a147c814f5117617dbb9f1e1144849ed2852d6c7/quart-0.18.4.tar.gz)
+version=0.19.5
+
+source=(https://files.pythonhosted.org/packages/49/f5/cf1b29053ffa0340166159c854ebbd8400fa32a9e9c12f75a06083cebf9d/quart-0.19.5.tar.gz)
 
 build() {
-      cd quart-$version
 
-      python setup.py build
+  cd ${_name}-$version
 
-      python3 setup.py install --prefix=/usr --root=$PKG
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 }
