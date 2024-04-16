@@ -3,11 +3,11 @@ url='https://www.qt.io/'
 
 license="FDL, GPL3, LGPL3, custom"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
 name=qt6-webengine
-version=6.6.3
+version=6.7.0
 
 makedepends=(cmake ninja qt6-base qt6-declarative qt6-positioning qt6-webchannel
              qt6-tools qt6-websockets python-html5lib gzip
@@ -20,8 +20,10 @@ makedepends=(cmake ninja qt6-base qt6-declarative qt6-positioning qt6-webchannel
 
 _name=${name/6-/}-everywhere-src
 source=(https://download.qt.io/official_releases/qt/${version:0:3}/$version/submodules/${_name}-$version.tar.xz)
-
+export NINJAJOBS=4
 build() {
+export NINJAJOBS=4
+
  cmake -S ${_name}-$version -B build -G Ninja
  cmake --build build
  DESTDIR=$PKG cmake --install build
