@@ -1,0 +1,19 @@
+description='A small utility to modify the dynamic linker and RPATH of ELF executables'
+url='https://nixos.org/patchelf.html'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=()
+
+name=patchelf
+version=0.18.0
+
+source=(https://github.com/NixOS/patchelf/releases/download/$version/$name-$version.tar.gz)
+
+build() {
+cd $name-$version
+./configure --prefix=/usr
+make
+make DESTDIR=$PKG install
+}
