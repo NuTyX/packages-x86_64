@@ -1,0 +1,20 @@
+description='Common build files of the C++ bindings'
+url='https://gtkmm.org/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(libsigc++ meson ninja git doxygen)
+
+name=mm-common
+version=1.0.6
+
+source=(https://gitlab.gnome.org/GNOME/mm-common/-/archive/$version/$name-$version.tar.gz
+        https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/libstdc++.tag)
+
+prepare() {
+cd $name-$version
+  cp ../libstdc++.tag doctags
+}
+
+build=meson
