@@ -1,0 +1,31 @@
+description='++ bindings for GTK 4'
+url='https://www.gtkmm.org/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cairomm glibmm gtk4 mm-common pangomm)
+
+name=gtk4mm
+_name=gtkmm
+
+version=4.14.0
+
+source=(https://gitlab.gnome.org/GNOME/gtkmm/-/archive/$version/gtkmm-$version.tar.gz)
+
+build() {
+
+cd ${_name}-$version
+
+mkdir bld
+cd bld
+
+meson setup .. \
+       --prefix=/usr          \
+       --buildtype=release    \
+       -D maintainer-mode=true
+
+ninja
+
+DESTDIR=$PKG ninja install
+}
