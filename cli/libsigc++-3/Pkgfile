@@ -1,0 +1,29 @@
+description='A callback Framework for C++'
+url='https://libsigcplusplus.github.io/libsigcplusplus/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(meson ninja python)
+
+name=libsigc++-3
+_name=libsigc++
+
+version=3.6.0
+
+source=(https://github.com/libsigcplusplus/libsigcplusplus/releases/download/$version/libsigc++-$version.tar.xz)
+
+build() {
+
+cd ${_name}-$version
+
+cd build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+}
