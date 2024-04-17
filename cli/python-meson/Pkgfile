@@ -1,0 +1,33 @@
+description='Meson PEP 517 Python build backend'
+url='https://github.com/mesonbuild/meson-python'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python-setuptools python-packaging pyproject-metadata)
+run=(patchelf)
+
+name=python-meson
+_name="meson_python"
+alias=(${_name})
+
+version=0.15.0
+
+source=(https://files.pythonhosted.org/packages/source/m/meson_python/meson_python-$version.tar.gz)
+
+build() {
+
+      cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+}
