@@ -7,17 +7,32 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 run=(python-dbus python-gobject)
-makedepends=(python)
+makedepends=(python-setuptools)
 
 name=python-dbusmock
+_name="python-dbusmock"
+alias=(${_name})
+
 version=0.31.1
+release=2
 
 source=(https://github.com/martinpitt/$name/releases/download/$version/dist.${name}-$version.tar.gz)
 
 build() {
-cd $name-$version
-python3 setup.py build
-python3 setup.py install --root=$PKG --optimize=1
+
+ cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
 
 install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
 
