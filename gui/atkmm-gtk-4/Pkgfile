@@ -1,0 +1,31 @@
+description='Atkmm is the official C++ interface for the ATK accessibility toolkit library.'
+url='http://gtkmm.sourceforge.net/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(git at-spi2-core glibmm-gtk4 meson doxygen
+             libsigc++-3 graphviz mm-common)
+
+name=atkmm-gtk-4
+_name=atkmm
+
+version=2.36.3
+
+source=(https://gitlab.gnome.org/GNOME/atkmm/-/archive/$version/atkmm-$version.tar.gz)
+
+build() {
+
+cd $_name-$version
+mkdir bld
+cd bld
+
+meson setup .. \
+       --prefix=/usr          \
+       --buildtype=release    \
+       -D maintainer-mode=true
+
+ninja
+
+DESTDIR=$PKG ninja install
+}
