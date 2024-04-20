@@ -1,0 +1,30 @@
+description='The GLibmm package is a set of C++ bindings for GLib'
+url='http://www.gtkmm.org'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(git libsigc++-3 glib doxygen perl-xml-parser graphviz mm-common)
+
+name=glibmm-gtk-4
+_name=glibmm
+
+version=2.80.0
+release=2
+
+source=(https://gitlab.gnome.org/GNOME/glibmm/-/archive/$version/glibmm-$version.tar.gz)
+
+build() {
+cd $_name-$version
+mkdir bld
+cd bld
+
+meson setup .. \
+       --prefix=/usr          \
+       --buildtype=release    \
+       -D maintainer-mode=true
+
+ninja
+
+DESTDIR=$PKG ninja install
+}
