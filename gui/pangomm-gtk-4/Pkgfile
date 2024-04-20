@@ -1,0 +1,40 @@
+description='C++ bindings for pango'
+url='http://cairographics.org/cairomm/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(libsigc++-3 cairomm-gtk4 glibmm-gtk4 pango graphviz mm-common)
+
+name=pangomm-gtk-4
+_name=pangomm
+
+version=2.52.0
+
+source=(https://download.gnome.org/sources/$name/${version%.*}/$_name-$version.tar.xz)
+
+build() {
+
+cd $_name-$version
+
+mkdir bld
+cd    bld
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+}
+
+uptodate(){
+local latest lastversion url
+url="https://download.gnome.org/sources/$name"
+latest="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$url/?C=N\;O=D|grep [0-9]/$|head -1`"
+lastversion="`lynx -read_timeout=20 -dump -listonly -nonumbers \
+$latest/?C=N\;O=D|grep LATEST|grep [0-9]$|cut -d "-" -f3`"
+echo "$lastversion"
+}
