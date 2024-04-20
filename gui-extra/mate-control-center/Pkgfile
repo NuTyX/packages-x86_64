@@ -1,18 +1,18 @@
 description="The Control Center for MATE"
 url="https://mate-desktop.org/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Fanch, Spiky, Jayce, Greg"
+packager="spiky <spiky@nutyx.org>"
+contributors="Fanch,Jayce,Greg,Tnut"
 
 makedepends=(caja dconf gsettings-desktop-schemas gtk3 accountsservice
              libgtop librsvg libunique1 xorg-libxscrnsaver xorg-libxt mate-desktop
-             mate-libkbd mate-menus marco mate-settings-daemon)
+             mate-libkbd mate-menus marco mate-settings-daemon udisks2 libayatana-appindicator)
 run=(shared-mime-info murrine desktop-file-utils mate-icon-theme)
 
 set=(mate)
 
 name=mate-control-center
-version=1.26.1
+version=1.28.0
 
 source=(https://pub.mate-desktop.org/releases/${version%.*}/$name-$version.tar.xz)
 
@@ -32,9 +32,9 @@ make
 sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
 make DESTDIR=$PKG install
 rm -f  $PKG/usr/share/applications/mimeinfo.cache
-rm $PKG/usr/lib/libmate-window-settings.la
-rm $PKG/usr/lib/libmate-slab.la
-rm $PKG/usr/lib/window-manager-settings/libmarco.la
+#rm $PKG/usr/lib/libmate-window-settings.la
+#rm $PKG/usr/lib/libmate-slab.la
+#rm $PKG/usr/lib/window-manager-settings/libmarco.la
 }
 
 uptodate() {
