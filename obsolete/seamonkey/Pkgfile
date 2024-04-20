@@ -1,0 +1,195 @@
+description="Browser suite, the Open Source sibling of Netscape"
+url="https://www.seamonkey-project.org/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
+
+makedepends=(autoconf2-13 python gtk2 gtk3 unzip yasm zip icu llvm
+             cbindgen libevent nspr nss pulseaudio rustc dbus-glib
+             gstreamer-plugins-base startup-notification libwebp)
+
+run=(startup-notification desktop-file-utils hicolor-icon-theme
+     shared-mime-info python)
+
+name=seamonkey
+version=2.53.18.2
+release=2
+
+locale_version=$version
+
+source=(https://archive.seamonkey-project.org/releases/$version/source/$name-$version.source.tar.xz )
+
+pack_remove_locale() {
+wget https://archive.seamonkey-project.org/releases/${locale_version}/langpack/$name-${locale_version}.${1}.langpack.xpi
+install -Dm644 $name-${locale_version}.${1}.langpack.xpi \
+$PKG/usr/lib/$name-$version/extensions/langpack-${1}@$name.mozilla.org.xpi
+rm $name-${locale_version}.${1}.langpack.xpi
+cd $PKG
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/${name}.${1}${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+usr/lib/$name-$version/extensions/langpack-${1}@$name.mozilla.org.xpi
+
+rm usr/lib/$name-$version/extensions/langpack-${1}@$name.mozilla.org.xpi
+}
+prepare() {
+cd $name-$version
+
+(for i in {43..47}; do
+   sed '/ZWJ/s/$/,CLASS_CHARACTER/' -i intl/lwbrk/LineBreaker.cpp || exit $?
+ done)
+}
+build()  {
+
+cd $name-$version
+cat > mozconfig << "EOF"
+# If you have a multicore machine, all cores will be used.
+
+# If you have installed DBus-Glib comment out this line:
+# ac_add_options --disable-dbus
+
+# If you have installed dbus-glib, and you have installed (or will install)
+# wireless-tools, and you wish to use geolocation web services, comment out
+# this line
+ac_add_options --disable-necko-wifi
+
+# Uncomment these lines if you have installed optional dependencies:
+ac_add_options --enable-startup-notification
+
+# Uncomment the following option if you have not installed PulseAudio
+#ac_add_options --disable-pulseaudio
+# and uncomment this if you installed alsa-lib instead of PulseAudio
+#ac_add_options --enable-alsa
+
+# Comment out following option if you have gconf installed
+ac_add_options --disable-gconf
+
+# Comment out following options if you have not installed
+# recommended dependencies:
+ac_add_options --with-system-libevent
+ac_add_options --with-system-nspr
+ac_add_options --with-system-nss
+ac_add_options --with-system-icu
+ac_add_options --with-system-webp
+
+# The elf-hack is reported to cause failed installs (after successful builds)
+# on some machines. It is supposed to improve startup time and it shrinks
+# libxul.so by a few MB - comment this if you know your machine is not affected.
+ac_add_options --disable-debug-symbols
+ac_add_options --disable-elf-hack
+
+# Seamonkey has some additional features that are not turned on by default,
+# such as an IRC client, calendar, and DOM Inspector. The DOM Inspector
+# aids with designing web pages. Comment these options if you do not
+# desire these features.
+ac_add_options --enable-calendar
+ac_add_options --enable-dominspector
+ac_add_options --enable-irc
+
+# The BLFS editors recommend not changing anything below this line:
+ac_add_options --prefix=/usr
+ac_add_options --enable-application=comm/suite
+
+ac_add_options --disable-crashreporter
+ac_add_options --disable-updater
+ac_add_options --disable-tests
+
+# rust-simd does not compile with recent versions of rust.
+# It is disabled in recent versions of firefox
+ac_add_options --disable-rust-simd
+
+ac_add_options --enable-optimize="-O2"
+ac_add_options --enable-strip
+ac_add_options --enable-install-strip
+ac_add_options --enable-official-branding
+
+# The option to use system cairo was removed in 2.53.9.
+ac_add_options --enable-system-ffi
+ac_add_options --enable-system-pixman
+
+ac_add_options --with-system-bz2
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-png
+ac_add_options --with-system-zlib
+EOF
+
+sed -e '1012 s/stderr=devnull/stderr=subprocess.DEVNULL/' \
+    -e '1013 s/OSError/(OSError, subprocess.CalledProcessError)/' \
+    -i third_party/python/distro/distro.py
+
+export CC=clang
+export CXX=clang++
+
+export PATH=$SRC/usr/bin:$PATH
+
+SHELL=/bin/sh ./mach configure
+SHELL=/bin/sh ./mach build
+
+SHELL=/bin/sh DESTDIR=$PKG ./mach install
+
+chown -R 0:0 $PKG/usr/lib/$name
+
+mkdir -p $PKG/usr/share/man/man1
+cp -v $(find -name seamonkey.1 | head -n1) $PKG/usr/share/man/man1
+
+install -Dm644 toolkit/mozapps/installer/linux/rpm/mozilla.desktop \
+$PKG/usr/share/applications/seamonkey.desktop
+
+sed -i 's/@MOZ_APP_DISPLAYNAME@/SeaMonkey internet suite/' \
+$PKG/usr/share/applications/seamonkey.desktop
+
+sed -i 's/@MOZ_APP_NAME@/seamonkey/' \
+$PKG/usr/share/applications/seamonkey.desktop
+
+# icons
+mkdir -p $PKG/usr/share/icons/hicolor
+for i in 16 24 32 48 64 128 256
+do
+  install -Dm644 comm/suite/branding/seamonkey//default${i}.png \
+  "$PKG"/usr/share/icons/hicolor/${i}x${i}/apps/$name.png
+done
+
+}
+locale_cs()
+{
+pack_remove_locale cs
+}
+locale_de()
+{
+pack_remove_locale de
+}
+locale_fr()
+{
+pack_remove_locale fr
+}
+locale_hu()
+{
+pack_remove_locale hu
+}
+locale_it()
+{
+pack_remove_locale it
+}
+locale_ja()
+{
+pack_remove_locale ja
+}
+locale_lt()
+{
+pack_remove_locale lt
+}
+locale_nl()
+{
+pack_remove_locale nl
+}
+locale_pl()
+{
+pack_remove_locale pl
+}
+locale_ru()
+{
+pack_remove_locale ru
+}
+locale_sk()
+{
+pack_remove_locale sk
+}
