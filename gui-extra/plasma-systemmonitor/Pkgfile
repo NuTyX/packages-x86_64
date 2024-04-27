@@ -3,8 +3,8 @@ url='https://kde.org/plasma-desktop/'
 
 license="GPL-2.0-or-later, LGPL-2.0-or-later"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 set=(kde6)
 
@@ -13,10 +13,10 @@ version=6.0.4
 
 makedepends=(qt6-base qt6-declarative extra-cmake-modules
              kconfig kcoreaddons kdbusaddons kglobalaccel ki18n
-             kitemmodels knewstuff kquickcharts kservice
+             kitemmodels knewstuff kservice
              ksystemstats kwindowsystem libksysguard)
 
-run=(kirigami kirigami-addons)
+run=(kirigami kirigami-addons kquickcharts)
 
 source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
 
