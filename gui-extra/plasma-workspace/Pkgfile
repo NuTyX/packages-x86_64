@@ -3,8 +3,8 @@ url='https://kde.org/plasma-desktop/'
 
 license="LGPL-2.0-or-later"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 set=(kde6)
 
@@ -15,22 +15,22 @@ makedepends=(icu freetype xorg-fontconfig gpsd zlib wayland xcb-util xcb-util-im
              libcanberra libqalculate xorg-libsm xorg-libx11 xorg-libxau libxcb
              libxcrypt xorg-libxcursor xorg-libxfixes xorg-libxft xorg-libxtst
              qt6-base qt6-declarative qt6-5compat qt6-svg qt6-tools qt6-wayland
-             qt6-virtualkeyboard  xorg-xrdb xorg-xsetroot xorg-xwayland
-             appmenu-gtk-module extra-cmake-modules kdoctools libplasma
-             plasma-wayland-protocols accountsservice appstream kunitconversion
-             kactivitymanagerd karchive kauth kbookmarks kcmutils kcolorscheme
-             kcompletion kconfig kconfigwidgets kcoreaddons kcrash kdbusaddons
-             kde-cli-tools kdeclarative kded kglobalaccel kguiaddons kholidays
+             qt6-virtualkeyboard xorg-xrdb xorg-xsetroot appmenu-gtk-module
+             extra-cmake-modules kdoctools libplasma plasma-wayland-protocols
+             accountsservice appstream kunitconversion kactivitymanagerd karchive
+             kauth kbookmarks kcmutils kcolorscheme kcompletion kconfig
+             kconfigwidgets kcoreaddons kcrash kdbusaddons kde-cli-tools
+             kdeclarative kded kglobalaccel kguiaddons kholidays
              ki18n kiconthemes kidletime kio kio-extras kio-fuse
              kitemmodels kjobwidgets knewstuff knotifications
-             knotifyconfig kpackage kparts kpipewire kquickcharts krunner
+             knotifyconfig kpackage kparts kpipewire krunner
              kscreenlocker kservice kstatusnotifieritem ksvg ksystemstats
              ktexteditor ktextwidgets kuserfeedback kwallet kwayland kwin baloo
              kwidgetsaddons kwindowsystem kxmlgui layer-shell-qt milou solid
              ocean-sound-theme phonon plasma-activities plasma-activities-stats
              prison networkmanager-qt plasma5support kwayland-integration)
 
-run=(breeze kirigami kirigami-addons)
+run=(breeze kirigami kirigami-addons xorg-xwayland kquickcharts)
 
 source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
 
