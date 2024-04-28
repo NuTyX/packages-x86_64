@@ -3,16 +3,16 @@ url='https://kde.org/plasma-desktop/'
 
 license="LGPL-2.0-only LGPL-3.0-only"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 name=qqc2-breeze-style
 version=6.0.4
 
 makedepends=(qt6-base qt6-declarative extra-cmake-modules
              kcolorscheme kconfig kguiaddons kiconthemes
-             kirigami kquickcharts)
-
+             kirigami)
+run=(kquickcharts)
 source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
 
 build=kde6

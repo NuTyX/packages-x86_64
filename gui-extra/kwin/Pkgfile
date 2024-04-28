@@ -3,8 +3,8 @@ url='https://kde.org/plasma-desktop/'
 
 license="LGPL-2.0-or-later"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 set=(kde6)
 
@@ -17,10 +17,12 @@ makedepends=(xorg-libx11 xorg-libdrm libxcb libepoxy libinput pipewire libxkbcom
              qt6-wayland qt6-sensors extra-cmake-modules kdoctools kcmutils kconfig
              kcolorscheme kconfigwidgets kcoreaddons kcrash kdbusaddons kdeclarative
              kdecoration kglobalaccel kglobalacceld kguiaddons ki18n kidletime
-             kirigami kitemmodels knewstuff knotifications kpackage kquickcharts
+             kirigami kitemmodels knewstuff knotifications kpackage
              kscreenlocker kservice ksvg kwayland kwidgetsaddons kwindowsystem
              kxmlgui plasma-wayland-protocols krunner plasma-activities wayland)
 
-source=(https://download.kde.org/stable/plasma/6.0.4/$name-$version.tar.xz)
+run=(kquickcharts)
+
+source=(https://download.kde.org/stable/plasma/${version:0:5}/$name-$version.tar.xz)
 
 build=kde6

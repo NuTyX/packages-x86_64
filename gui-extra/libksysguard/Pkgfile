@@ -3,8 +3,8 @@ url='https://kde.org/plasma-desktop/'
 
 license="LGPL-2.0-or-later"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 set=(kde6)
 
@@ -14,8 +14,8 @@ version=6.0.4
 makedepends=(libnl lm-sensors libpcap qt6-base qt6-tools qt6-declarative
              extra-cmake-modules kauth kconfig kcoreaddons
              kdeclarative ki18n kirigami kitemmodels knewstuff
-             kpackage kquickcharts kservice solid)
-
+             kpackage kservice solid)
+run=(kquickcharts)
 
 source=(http://download.kde.org/stable/plasma/${version}/$name-$version.tar.xz)
 
