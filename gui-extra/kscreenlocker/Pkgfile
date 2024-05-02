@@ -10,6 +10,7 @@ set=(kde6)
 
 name=kscreenlocker
 version=6.0.4
+release=2
 
 makedepends=(xorg-libx11 libxcb xorg-libxi qt6-base qt6-declarative
              xcb-util-keysyms extra-cmake-modules kcmutils kdoctools
@@ -17,6 +18,15 @@ makedepends=(xorg-libx11 libxcb xorg-libxi qt6-base qt6-declarative
              kio kirigami knotifications kpackage ksvg kwindowsystem kxmlgui
              layer-shell-qt libkscreen libplasma)
 
-source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
+source=(kde kde-np kscreensaver
+        https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
 
+prepare() {
+  mkdir -p $PKG/etc/pam.d
+
+  for file in kde kde-np kscreensaver
+  do
+    install -Dm644 $file $PKG/etc/pam.d/$file
+  done
+}
 build=kde6
