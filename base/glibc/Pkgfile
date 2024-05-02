@@ -9,11 +9,13 @@ makedepends=(python bison grep)
 
 name=glibc
 version=2.39
+release=2
 
 PKGMK_LOCALES=()
 source=(
         https://www.kernel.org/pub/linux/kernel/v${kernelversion:0:1}.x/linux-$kernelversion.tar.xz
-	http://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
+	https://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-fhs-1.patch
+	https://www.linuxfromscratch.org/patches/downloads/$name/glibc-$version-upstream_fix-1.patch
 	https://ftp.gnu.org/gnu/$name/$name-$version.tar.xz glibc.locales.supported
        )
 
@@ -31,6 +33,8 @@ cp -rv usr/include/* $PKG/usr/include
 cd ../glibc-$version
 
 patch -Np1 -i ../glibc-$version-fhs-1.patch
+patch -Np1 -i ../glibc-$version-upstream_fix-1.patch
+
 
 
 mkdir $PKG/lib64
