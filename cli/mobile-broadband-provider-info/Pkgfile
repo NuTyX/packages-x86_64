@@ -7,13 +7,21 @@ contributors="Pierre,Tnut"
 makedepends=(libxslt)
 
 name=mobile-broadband-provider-info
-version=20230416
+version=20240407
 
 source=(http://download.gnome.org/sources/$name/$version/$name-$version.tar.xz)
 
 build() {
-  cd $name-$version
-  ./configure --prefix=/usr
-  make
-  make DESTDIR=$PKG install
+cd $name-$version
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
 }
