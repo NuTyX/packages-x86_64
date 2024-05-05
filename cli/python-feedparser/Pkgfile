@@ -6,10 +6,12 @@ license="Custom"
 packager="spiky <spiky@nutyx.org>"
 contributors="Rems,Tnut"
 
-makedepends=(libxml2)
+makedepends=(libxml2 python-setuptools python-wheel python-build
+             python-installer)
 
 name=python-feedparser
 version=6.0.11
+release=2
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/kurtmckee/feedparser/archive/$version.tar.gz)
@@ -17,15 +19,8 @@ source=(https://github.com/kurtmckee/feedparser/archive/$version.tar.gz)
 build() {
   cd feedparser-$version
 
-  python3 /usr/lib/python3.11/compileall.py feedparser/sgml.py
-  python3 setup.py build
-  python3 setup.py install --prefix=/usr --root=$PKG
+  python -m build --wheel --skip-dependency-check --no-isolation
+  python -m installer --destdir=$PKG dist/*.whl
 
- install -Dm644 feedparser/sgml.py \
- $PKG/usr/lib/python3.11/site-packages/sgml.py
-
- install -Dm644 feedparser/__pycache__/sgml.cpython-311.pyc \
- $PKG/usr/lib/python3.11/site-packages/__pycache__/sgml.cpython-311.pyc
-
- install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
+  install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
