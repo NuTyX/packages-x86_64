@@ -1,15 +1,18 @@
 description="Python library for accessing FreeDesktop standards"
 url="http://freedesktop.org/wiki/Software/pyxdg"
 
+_basename=pyxdg
+alias=(${_basename})
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Geantbrun,Tnut"
 
+makedepends=(python-setuptools)
 run=(python)
 
 name=python-xdg
 version=0.28
-release=3
-_basename=pyxdg
+release=4
 
 source=(https://files.pythonhosted.org/packages/source/${_basename::1}/${_basename}/${_basename}-$version.tar.gz)
 
