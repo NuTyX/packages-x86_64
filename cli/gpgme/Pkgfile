@@ -8,6 +8,7 @@ makedepends=(libassuan libgpg-error python)
 
 name=gpgme
 version=1.23.2
+release=2
 
 source=(https://www.gnupg.org/ftp/gcrypt/$name/$name-$version.tar.bz2)
 build() {
@@ -18,12 +19,4 @@ cd $name-$version
 make
 make DESTDIR=$PKG install
 rm $PKG/usr/lib/libgpgme{,pp}.la
-}
-uptodate() {
-local url ext
-
-url="https://www.gnupg.org/ftp/gcrypt/$name"
-ext=".tar.bz2"
-lynx -read_timeout=20 -dump -listonly -nonumbers \
-$url|grep $name-|head -1|sed "s@$url/$name-@@"|sed "s@$ext@@"
 }
