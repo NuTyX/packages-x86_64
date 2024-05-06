@@ -1,16 +1,23 @@
 description="Library for password quality checking and generating random passwords"
 url="https://fedorahosted.org/libpwquality/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
-makedepends=(pam python cracklib)
+makedepends=(autoconf libtool python-setuptools
+             pam python cracklib)
 
 name=libpwquality
 version=1.4.5
+release=2
 
-source=(https://github.com/$name/$name/releases/download/$name-$version/$name-$version.tar.bz2)
-
+source=(python.patch
+        https://github.com/$name/$name/releases/download/$name-$version/$name-$version.tar.bz2)
+prepare() {
+ cd $name-$version
+ patch -Np1 -i ../python.patch
+ autoreconf -fi
+}
 build() {
 cd $name-$version
 ./configure --prefix=/usr      \
