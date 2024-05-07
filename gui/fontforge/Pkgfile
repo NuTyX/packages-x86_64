@@ -6,14 +6,19 @@ contributors="Pierre,Tnut,Spiky"
 
 name=fontforge
 version=20230101
-release=2
+release=3
 
 makedepends=(cmake xorgproto m4 shared-mime-info freetype libxml2 cairo gtk3
              pango giflib libjpeg-turbo libpng libtiff)
 run=(shared-mime-info desktop-file-utils)
 
-source=(https://github.com/$name/$name/releases/download/$version/$name-$version.tar.xz)
+source=(po.patch
+        https://github.com/$name/$name/releases/download/$version/$name-$version.tar.xz)
 
+prepare() {
+   cd $name-$version
+   patch -Np1 -i ../po.patch
+}
 build() {
     mkdir build
     cd build
