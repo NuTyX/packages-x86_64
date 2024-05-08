@@ -2,7 +2,7 @@ url="https://www.kernel.org"
 description="The latest stable kernel version"
 
 packager="tnut <tnut@nutyx.org>"
-contributors="Sundev79,Spiky"
+contributors="Spiky"
 makedepends=(bison flex perl gmp mpc libelf diffutils)
 run=(nutyx kmod busybox)
 
@@ -11,7 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-surface
-version=6.5.7
+version=6.8.9
 
 alias=(linux)
 INITRD="initrd-surface"
@@ -40,7 +40,7 @@ source=(
 0012-cameras.patch
 0013-amd-gpio.patch
 0014-rtc.patch
-$url/pub/linux/kernel/v6.x/linux-${_version}.tar.xz config_64)
+$url/pub/linux/kernel/v6.x/linux-${_version}.tar.xz config)
 
 [ -z $patchname ] || source+=" $url/pub/linux/kernel/v6.x/$patchname"
 ## Time to build everything
@@ -56,32 +56,19 @@ if [ -f $SRC/patch-$version.xz ]; then
 	xz -d -c  $SRC/patch-$version.xz | patch -Np1
 fi
 
-for i in 0001-surface3-oemb.patch \
-0002-mwifiex.patch \
-0003-ath10k.patch \
-0004-ipts.patch \
-0005-ithc.patch \
-0006-surface-sam.patch \
-0007-surface-sam-over-hid.patch \
-0008-surface-button.patch    \
-0009-surface-typecover.patch \
-0010-surface-shutdown.patch  \
-0011-surface-gpe.patch \
-0012-cameras.patch \
-0013-amd-gpio.patch \
-0014-rtc.patch
+for i in ../*.patch
 do
- patch -Np1 -i ../$i
+ patch -Np1 -i $i
 done
 
 make mrproper
-cp $SRC/config_64 ./.config
+cp $SRC/config ./.config
 
 # make menuconfig
 
 make
 
-cp .config $SRC/config_64
+cp .config $SRC/config
 
 ## Modules
 #
@@ -100,9 +87,9 @@ cd $SRC/linux-${_version}
 mkdir -p $PKG/boot
 
 cp  System.map \
-$PKG/boot/System_64.map-${KERNEL_VERSION}
+$PKG/boot/System.map-${KERNEL_VERSION}
 cp  .config    \
-$PKG/boot/config_64-${KERNEL_VERSION}
+$PKG/boot/config-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
 $PKG/boot/${KERNEL}
 ln -sf ${KERNEL} $PKG/boot/${name}
@@ -114,7 +101,7 @@ cd $PKG/lib/modules/${KERNEL_VERSION}/
 mkdir -p $PKG/usr/src
 
 mv $SRC/linux-${_version} $PKG/usr/src/
-rm {build,source}
+rm build
 
 ln -sv /usr/src/linux-${_version} build
 ln -sv /usr/src/linux-${_version} source

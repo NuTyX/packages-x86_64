@@ -1,4 +1,4 @@
-From b595029ce12d05babb051893a3b5ad8a0555a553 Mon Sep 17 00:00:00 2001
+From 3584a6c1791dc9c9b9c3ee846621571cbfabe37e Mon Sep 17 00:00:00 2001
 From: Sachi King <nakato@nakato.io>
 Date: Tue, 5 Oct 2021 00:05:09 +1100
 Subject: [PATCH] Input: soc_button_array - support AMD variant Surface devices
@@ -20,10 +20,10 @@ Patchset: surface-button
  1 file changed, 8 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/input/misc/soc_button_array.c b/drivers/input/misc/soc_button_array.c
-index e79f5497948b..2bddbe6e9ea4 100644
+index f6d060377d18..b8603f74eb28 100644
 --- a/drivers/input/misc/soc_button_array.c
 +++ b/drivers/input/misc/soc_button_array.c
-@@ -537,8 +537,8 @@ static const struct soc_device_data soc_device_MSHW0028 = {
+@@ -540,8 +540,8 @@ static const struct soc_device_data soc_device_MSHW0028 = {
   * Both, the Surface Pro 4 (surfacepro3_button.c) and the above mentioned
   * devices use MSHW0040 for power and volume buttons, however the way they
   * have to be addressed differs. Make sure that we only load this drivers
@@ -34,7 +34,7 @@ index e79f5497948b..2bddbe6e9ea4 100644
   */
  #define MSHW0040_DSM_REVISION		0x01
  #define MSHW0040_DSM_GET_OMPR		0x02	// get OEM Platform Revision
-@@ -549,31 +549,14 @@ static const guid_t MSHW0040_DSM_UUID =
+@@ -552,31 +552,14 @@ static const guid_t MSHW0040_DSM_UUID =
  static int soc_device_check_MSHW0040(struct device *dev)
  {
  	acpi_handle handle = ACPI_HANDLE(dev);
@@ -73,9 +73,9 @@ index e79f5497948b..2bddbe6e9ea4 100644
  
  /*
 -- 
-2.42.0
+2.44.0
 
-From 701b3618008b9aad7c8f480e781a3fd412b169f0 Mon Sep 17 00:00:00 2001
+From c26bb1d0af0fe40be270d203d6aaeab28dd04a10 Mon Sep 17 00:00:00 2001
 From: Sachi King <nakato@nakato.io>
 Date: Tue, 5 Oct 2021 00:22:57 +1100
 Subject: [PATCH] platform/surface: surfacepro3_button: don't load on amd
@@ -145,5 +145,5 @@ index 2755601f979c..4240c98ca226 100644
  
  
 -- 
-2.42.0
+2.44.0
 
