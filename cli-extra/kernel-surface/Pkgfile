@@ -13,9 +13,9 @@ PKGMK_GROUPS=(devel doc)
 name=kernel-surface
 version=6.8.9
 
-alias=(linux)
-INITRD="initrd-surface"
-KERNEL="kernel-surface"
+alias=(linux-surface)
+INITRD="initrd-${name/*-/}"
+KERNEL="${name}"
 
 _version=${version:0:3}
 
@@ -91,8 +91,7 @@ $PKG/boot/System.map-${KERNEL_VERSION}
 cp  .config    \
 $PKG/boot/config-${KERNEL_VERSION}
 cp  arch/x86_64/boot/bzImage \
-$PKG/boot/${KERNEL}
-ln -sf ${KERNEL} $PKG/boot/${name}
+$PKG/boot/$KERNEL
 
 
 # Reorgenise the sources
