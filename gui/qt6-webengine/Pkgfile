@@ -10,7 +10,7 @@ name=qt6-webengine
 version=6.7.0
 
 makedepends=(cmake ninja qt6-base qt6-declarative qt6-positioning qt6-webchannel
-             qt6-tools qt6-websockets python-html5lib gzip
+             qt6-tools qt6-websockets python-html5lib gzip icu
              alsa-lib dbus expat ffmpeg xorg-fontconfig freetype glib harfbuzz
              icu lcms2 xorg-libdrm libevent libjpeg-turbo libpng libtiff libwebp
              xorg-libx11 libxcb xorg-libxcomposite xorg-libxdamage xorg-libxext
@@ -19,12 +19,23 @@ makedepends=(cmake ninja qt6-base qt6-declarative qt6-positioning qt6-webchannel
              pipewire gperf jsoncpp libepoxy node)
 
 _name=${name/6-/}-everywhere-src
-source=(https://download.qt.io/official_releases/qt/${version:0:3}/$version/submodules/${_name}-$version.tar.xz)
-export NINJAJOBS=4
+source=(ninja.patch
+        https://download.qt.io/official_releases/qt/${version:0:3}/$version/submodules/${_name}-$version.tar.xz)
+export NINJAJOBS=8
+prepare() {
+cd ${_name}-$version
+patch -Np1 -i ../ninja.patch
+}
 build() {
-export NINJAJOBS=4
+export NINJAJOBS=8
 
- cmake -S ${_name}-$version -B build -G Ninja
+ cmake -D CMAKE_MESSAGE_LOG_LEVEL=STATUS       \
+ -D QT_FEATURE_webengine_system_icu=ON         \
+ -D QT_FEATURE_webengine_system_libevent=ON    \
+ -D QT_FEATURE_webengine_proprietary_codecs=ON \
+ -D QT_FEATURE_webengine_webrtc_pipewire=ON    \
+ -D QT_BUILD_EXAMPLES_BY_DEFAULT=OFF           \
+ -S ${_name}-$version -B build -G Ninja
  cmake --build build
  DESTDIR=$PKG cmake --install build
 }

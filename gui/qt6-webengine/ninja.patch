@@ -1,0 +1,66 @@
+diff -Naur a/src/3rdparty/chromium/components/history/core/browser/BUILD.gn b/src/3rdparty/chromium/components/history/core/browser/BUILD.gn
+--- a/src/3rdparty/chromium/components/history/core/browser/BUILD.gn	2024-03-22 21:13:57.000000000 +0100
++++ b/src/3rdparty/chromium/components/history/core/browser/BUILD.gn	2024-05-09 12:04:50.567359936 +0200
+@@ -123,6 +123,7 @@
+     "//components/prefs",
+     "//components/query_parser",
+     "//components/search_engines",
++    "//components/signin/public/base:signin_buildflags",
+     "//components/signin/public/identity_manager",
+     "//components/sync",
+     "//components/url_formatter",
+diff -Naur a/src/3rdparty/chromium/components/webcrypto/BUILD.gn b/src/3rdparty/chromium/components/webcrypto/BUILD.gn
+--- a/src/3rdparty/chromium/components/webcrypto/BUILD.gn	2024-03-22 21:13:57.000000000 +0100
++++ b/src/3rdparty/chromium/components/webcrypto/BUILD.gn	2024-05-09 12:04:50.567359936 +0200
+@@ -60,6 +60,7 @@
+   deps = [
+     "//base",
+     "//crypto",
++    "//third_party/blink/renderer/platform/heap:heap",
+     "//third_party/blink/public:blink_headers",
+     "//third_party/boringssl",
+   ]
+diff -Naur a/src/3rdparty/chromium/content/browser/BUILD.gn b/src/3rdparty/chromium/content/browser/BUILD.gn
+--- a/src/3rdparty/chromium/content/browser/BUILD.gn	2024-03-22 21:13:57.000000000 +0100
++++ b/src/3rdparty/chromium/content/browser/BUILD.gn	2024-05-09 11:27:19.730980359 +0200
+@@ -196,6 +196,7 @@
+     "//components/services/storage/dom_storage:local_storage_proto",
+     "//components/services/storage/public/cpp",
+     "//components/services/storage/public/mojom",
++    "//components/spellcheck:buildflags",
+     "//components/sqlite_proto",
+     "//components/system_media_controls",
+     "//components/tracing:startup_tracing",
+diff -Naur a/src/3rdparty/chromium/content/public/browser/BUILD.gn b/src/3rdparty/chromium/content/public/browser/BUILD.gn
+--- a/src/3rdparty/chromium/content/public/browser/BUILD.gn	2024-03-22 21:13:57.000000000 +0100
++++ b/src/3rdparty/chromium/content/public/browser/BUILD.gn	2024-05-09 12:02:44.073373725 +0200
+@@ -539,6 +539,7 @@
+     "//cc",
+     "//components/services/storage/public/cpp",
+     "//components/viz/host",
++    "//components/spellcheck:buildflags",
+     "//content/browser",  # Must not be public_deps!
+     "//device/fido",
+     "//gpu",
+diff -Naur a/src/3rdparty/chromium/extensions/browser/api/declarative_net_request/BUILD.gn b/src/3rdparty/chromium/extensions/browser/api/declarative_net_request/BUILD.gn
+--- a/src/3rdparty/chromium/extensions/browser/api/declarative_net_request/BUILD.gn	2024-03-22 21:13:57.000000000 +0100
++++ b/src/3rdparty/chromium/extensions/browser/api/declarative_net_request/BUILD.gn	2024-05-09 12:03:47.063699707 +0200
+@@ -23,6 +23,7 @@
+     "//extensions/common",
+     "//extensions/common/api",
+     "//services/preferences/public/cpp",
++    "//components/web_cache/browser",
+   ]
+ 
+   public_deps = [ "//extensions/browser:browser_sources" ]
+diff -Naur a/src/3rdparty/chromium/third_party/blink/renderer/platform/heap/BUILD.gn b/src/3rdparty/chromium/third_party/blink/renderer/platform/heap/BUILD.gn
+--- a/src/3rdparty/chromium/third_party/blink/renderer/platform/heap/BUILD.gn	2024-03-22 21:13:57.000000000 +0100
++++ b/src/3rdparty/chromium/third_party/blink/renderer/platform/heap/BUILD.gn	2024-05-09 12:04:50.567359936 +0200
+@@ -84,6 +84,7 @@
+     "//third_party/blink/renderer/platform/instrumentation:instrumentation",
+     "//third_party/blink/renderer/platform/loader:loader",
+     "//third_party/blink/renderer/platform/scheduler:scheduler",
++    "//components/webcrypto:webcrypto",
+   ]
+ }
+ 
