@@ -1,0 +1,28 @@
+diff --git a/src/gsttools/qgstvideorenderersink.cpp b/src/gsttools/qgstvideorenderersink.cpp
+index 4000f2178..a446d93fe 100644
+--- a/src/gsttools/qgstvideorenderersink.cpp
++++ b/src/gsttools/qgstvideorenderersink.cpp
+@@ -368,7 +368,8 @@ static GstGLContext *gstGLDisplayContext(QAbstractVideoSurface *surface)
+     if (!nativeContext)
+         qWarning() << "Could not find resource for" << contextName;
+ 
+-    GstGLContext *appContext = gst_gl_context_new_wrapped(display, (guintptr)nativeContext, glPlatform, GST_GL_API_ANY);
++    GstGLAPI glApi = QOpenGLContext::openGLModuleType() == QOpenGLContext::LibGL ? GST_GL_API_OPENGL : GST_GL_API_GLES2;
++    GstGLContext *appContext = gst_gl_context_new_wrapped(display, (guintptr)nativeContext, glPlatform, glApi);
+     if (!appContext)
+         qWarning() << "Could not create wrappped context for platform:" << glPlatform;
+ 
+diff --git a/src/multimediawidgets/multimediawidgets.pro b/src/multimediawidgets/multimediawidgets.pro
+index 1919e8107..4c30d8fbf 100644
+--- a/src/multimediawidgets/multimediawidgets.pro
++++ b/src/multimediawidgets/multimediawidgets.pro
+@@ -2,8 +2,6 @@
+ TARGET = QtMultimediaWidgets
+ QT = core gui multimedia widgets-private
+ QT_PRIVATE += multimedia-private
+-qtHaveModule(opengl): \
+-   QT_PRIVATE += opengl
+ 
+ PRIVATE_HEADERS += \
+     qvideowidget_p.h \
+Submodule qtquick3d d29b769a..d4f5966b:
