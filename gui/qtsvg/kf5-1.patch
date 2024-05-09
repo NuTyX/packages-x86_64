@@ -1,0 +1,123 @@
+diff --git a/src/plugins/imageformats/svg/qsvgiohandler.cpp b/src/plugins/imageformats/svg/qsvgiohandler.cpp
+index 561e77e..12e0574 100644
+--- a/src/plugins/imageformats/svg/qsvgiohandler.cpp
++++ b/src/plugins/imageformats/svg/qsvgiohandler.cpp
+@@ -191,6 +191,8 @@ bool QSvgIOHandler::read(QImage *image)
+             }
+         }
+         if (!finalSize.isEmpty()) {
++            if (qMax(finalSize.width(), finalSize.height()) > 0xffff)
++                return false; // Assume corrupted file
+             image->fill(d->backColor.rgba());
+             QPainter p(image);
+             d->r.render(&p, bounds);
+diff --git a/src/svg/qsvgfont_p.h b/src/svg/qsvgfont_p.h
+index fd0a3fa..fcffbe8 100644
+--- a/src/svg/qsvgfont_p.h
++++ b/src/svg/qsvgfont_p.h
+@@ -74,6 +74,7 @@ public:
+ class Q_SVG_PRIVATE_EXPORT QSvgFont : public QSvgRefCounted
+ {
+ public:
++    static constexpr qreal DEFAULT_UNITS_PER_EM = 1000;
+     QSvgFont(qreal horizAdvX);
+ 
+     void setFamilyName(const QString &name);
+@@ -86,9 +87,7 @@ public:
+     void draw(QPainter *p, const QPointF &point, const QString &str, qreal pixelSize, Qt::Alignment alignment) const;
+ public:
+     QString m_familyName;
+-    qreal m_unitsPerEm;
+-    qreal m_ascent;
+-    qreal m_descent;
++    qreal m_unitsPerEm = DEFAULT_UNITS_PER_EM;
+     qreal m_horizAdvX;
+     QHash<QChar, QSvgGlyph> m_glyphs;
+ };
+diff --git a/src/svg/qsvghandler.cpp b/src/svg/qsvghandler.cpp
+index c229c3b..222b6d8 100644
+--- a/src/svg/qsvghandler.cpp
++++ b/src/svg/qsvghandler.cpp
+@@ -1393,9 +1393,10 @@ static void parseFont(QSvgNode *node,
+         case FontSizeNone:
+             break;
+         case FontSizeValue: {
+-            QSvgHandler::LengthType dummy; // should always be pixel size
+-            fontStyle->setSize(qMin(parseLength(attributes.fontSize, dummy, handler),
+-                                    qreal(0xffff)));
++            QSvgHandler::LengthType type;
++            qreal fs = parseLength(attributes.fontSize, type, handler);
++            fs = convertToPixels(fs, true, type);
++            fontStyle->setSize(qMin(fs, qreal(0xffff)));
+         }
+             break;
+         default:
+@@ -2578,6 +2579,8 @@ static QSvgNode *createCircleNode(QSvgNode *parent,
+     qreal ncx = toDouble(cx);
+     qreal ncy = toDouble(cy);
+     qreal nr  = toDouble(r);
++    if (nr < 0.0)
++        return nullptr;
+ 
+     QRectF rect(ncx-nr, ncy-nr, nr*2, nr*2);
+     QSvgNode *circle = new QSvgCircle(parent, rect);
+@@ -2668,7 +2671,7 @@ static bool parseFontFaceNode(QSvgStyleProperty *parent,
+ 
+     qreal unitsPerEm = toDouble(unitsPerEmStr);
+     if (!unitsPerEm)
+-        unitsPerEm = 1000;
++        unitsPerEm = QSvgFont::DEFAULT_UNITS_PER_EM;
+ 
+     if (!name.isEmpty())
+         font->setFamilyName(name);
+@@ -3048,15 +3051,16 @@ static QSvgStyleProperty *createRadialGradientNode(QSvgNode *node,
+ 
+     qreal ncx = 0.5;
+     qreal ncy = 0.5;
+-    qreal nr  = 0.5;
+     if (!cx.isEmpty())
+         ncx = toDouble(cx);
+     if (!cy.isEmpty())
+         ncy = toDouble(cy);
++
++    qreal nr = 0.0;
+     if (!r.isEmpty())
+         nr = toDouble(r);
+-    if (nr < 0.5)
+-        nr = 0.5;
++    if (nr <= 0.0)
++        return nullptr;
+ 
+     qreal nfx = ncx;
+     if (!fx.isEmpty())
+@@ -3352,7 +3356,9 @@ static QSvgNode *createTextNode(QSvgNode *parent,
+     //### editable and rotate not handled
+     QSvgHandler::LengthType type;
+     qreal nx = parseLength(x, type, handler);
++    nx = convertToPixels(nx, true, type);
+     qreal ny = parseLength(y, type, handler);
++    ny = convertToPixels(ny, true, type);
+ 
+     QSvgNode *text = new QSvgText(parent, QPointF(nx, ny));
+     return text;
+diff --git a/src/svg/qsvgstructure.cpp b/src/svg/qsvgstructure.cpp
+index b89608b..89c9e4e 100644
+--- a/src/svg/qsvgstructure.cpp
++++ b/src/svg/qsvgstructure.cpp
+@@ -255,9 +255,13 @@ inline static bool isSupportedSvgFeature(const QString &str)
+     };
+ 
+     if (str.length() <= MAX_WORD_LENGTH && str.length() >= MIN_WORD_LENGTH) {
++        const char16_t unicode44 = str.at(44).unicode();
++        const char16_t unicode45 = str.at(45).unicode();
++        if (unicode44 >= sizeof(asso_values) || unicode45 >= sizeof(asso_values))
++            return false;
+         const int key = str.length()
+-                        + asso_values[str.at(45).unicode()]
+-                        + asso_values[str.at(44).unicode()];
++                        + asso_values[unicode45]
++                        + asso_values[unicode44];
+         if (key <= MAX_HASH_VALUE && key >= 0)
+             return str == QLatin1String(wordlist[key]);
+     }
+Submodule qttools e089fe78..bd0ceb7d:
