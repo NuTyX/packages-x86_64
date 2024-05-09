@@ -1,0 +1,115 @@
+diff --git a/src/bluetooth/qbluetoothsocket.cpp b/src/bluetooth/qbluetoothsocket.cpp
+index 9da67272..fcd0fbb2 100644
+--- a/src/bluetooth/qbluetoothsocket.cpp
++++ b/src/bluetooth/qbluetoothsocket.cpp
+@@ -797,7 +797,9 @@ void QBluetoothSocket::close()
+   Returns true on success
+ */
+ 
+-
++// ### Qt 7 consider making this function private. The qbluetoothsocket_bluez backend is the
++// the only backend providing publicly accessible support for this. Other backends implement
++// similarly named, but private, overload
+ bool QBluetoothSocket::setSocketDescriptor(int socketDescriptor, QBluetoothServiceInfo::Protocol socketType,
+                                            SocketState socketState, OpenMode openMode)
+ {
+diff --git a/src/bluetooth/qbluetoothuuid.cpp b/src/bluetooth/qbluetoothuuid.cpp
+index bc00aa95..517465bd 100644
+--- a/src/bluetooth/qbluetoothuuid.cpp
++++ b/src/bluetooth/qbluetoothuuid.cpp
+@@ -834,8 +834,6 @@ QString QBluetoothUuid::serviceClassToString(QBluetoothUuid::ServiceClassUuid uu
+     //: Connection management (Bluetooth)
+     case QBluetoothUuid::BondManagement: return QBluetoothServiceDiscoveryAgent::tr("Bond Management");
+     case QBluetoothUuid::ContinuousGlucoseMonitoring: return QBluetoothServiceDiscoveryAgent::tr("Continuous Glucose Monitoring");
+-    default:
+-        break;
+     }
+ 
+     return QString();
+@@ -878,8 +876,6 @@ QString QBluetoothUuid::protocolToString(QBluetoothUuid::ProtocolUuid uuid)
+     case QBluetoothUuid::McapControlChannel: return QBluetoothServiceDiscoveryAgent::tr("Multi-Channel Adaptation Protocol - Control");
+     case QBluetoothUuid::McapDataChannel: return QBluetoothServiceDiscoveryAgent::tr("Multi-Channel Adaptation Protocol - Data");
+     case QBluetoothUuid::L2cap: return QBluetoothServiceDiscoveryAgent::tr("Layer 2 Control Protocol");
+-    default:
+-        break;
+     }
+ 
+     return QString();
+@@ -1081,13 +1077,13 @@ QString QBluetoothUuid::characteristicToString(CharacteristicType uuid)
+     case QBluetoothUuid::BodyCompositionFeature: return QBluetoothServiceDiscoveryAgent::tr("Body Composition Feature");
+     case QBluetoothUuid::BodyCompositionMeasurement: return QBluetoothServiceDiscoveryAgent::tr("Body Composition Measurement");
+     case QBluetoothUuid::WeightMeasurement: return QBluetoothServiceDiscoveryAgent::tr("Weight Measurement");
++    case QBluetoothUuid::CharacteristicType::WeightScaleFeature:
++        return QBluetoothServiceDiscoveryAgent::tr("Weight Scale Feature");
+     case QBluetoothUuid::UserControlPoint: return QBluetoothServiceDiscoveryAgent::tr("User Control Point");
+     case QBluetoothUuid::MagneticFluxDensity2D: return QBluetoothServiceDiscoveryAgent::tr("Magnetic Flux Density 2D");
+     case QBluetoothUuid::MagneticFluxDensity3D: return QBluetoothServiceDiscoveryAgent::tr("Magnetic Flux Density 3D");
+     case QBluetoothUuid::Language: return QBluetoothServiceDiscoveryAgent::tr("Language");
+     case QBluetoothUuid::BarometricPressureTrend: return QBluetoothServiceDiscoveryAgent::tr("Barometric Pressure Trend");
+-    default:
+-        break;
+     }
+ 
+     return QString();
+@@ -1104,6 +1100,8 @@ QString QBluetoothUuid::characteristicToString(CharacteristicType uuid)
+ QString QBluetoothUuid::descriptorToString(QBluetoothUuid::DescriptorType uuid)
+ {
+     switch (uuid) {
++    case QBluetoothUuid::UnknownDescriptorType:
++        break; // returns {} below
+     case QBluetoothUuid::CharacteristicExtendedProperties:
+         return QBluetoothServiceDiscoveryAgent::tr("Characteristic Extended Properties");
+     case QBluetoothUuid::CharacteristicUserDescription:
+@@ -1128,8 +1126,6 @@ QString QBluetoothUuid::descriptorToString(QBluetoothUuid::DescriptorType uuid)
+         return QBluetoothServiceDiscoveryAgent::tr("Environmental Sensing Measurement");
+     case QBluetoothUuid::EnvironmentalSensingTriggerSetting:
+         return QBluetoothServiceDiscoveryAgent::tr("Environmental Sensing Trigger Setting");
+-    default:
+-        break;
+     }
+ 
+     return QString();
+diff --git a/src/tools/sdpscanner/main.cpp b/src/tools/sdpscanner/main.cpp
+index 7e09ca6e..c39ff8f3 100644
+--- a/src/tools/sdpscanner/main.cpp
++++ b/src/tools/sdpscanner/main.cpp
+@@ -39,6 +39,7 @@
+ 
+ #include <QtCore/QByteArray>
+ #include <QtCore/QDebug>
++#include <QtCore/QUrl>
+ #include <stdio.h>
+ #include <string>
+ #include <bluetooth/bluetooth.h>
+@@ -159,7 +160,9 @@ static void parseAttributeValues(sdp_data_t *data, int indentation, QByteArray &
+                 break;
+             } else if (!isprint(text[i])) {
+                 hasNonPrintableChar = true;
+-                text.resize(text.indexOf('\0')); // cut trailing content
++                const auto firstNullIdx = text.indexOf('\0');
++                if (firstNullIdx > 0)
++                    text.resize(firstNullIdx); // cut trailing content
+                 break;
+             }
+         }
+@@ -211,11 +214,17 @@ static void parseAttributeValues(sdp_data_t *data, int indentation, QByteArray &
+     case SDP_URL_STR8:
+     case SDP_URL_STR16:
+     case SDP_URL_STR32:
+-        strncpy(snBuffer, data->val.str, data->unitSize - 1);
++    {
+         xmlOutput.append("<url value=\"");
+-        xmlOutput.append(snBuffer);
++        const QByteArray urlData =
++                QByteArray::fromRawData(data->val.str, qstrnlen(data->val.str, data->unitSize));
++        const QUrl url = QUrl::fromEncoded(urlData);
++        // Encoded url %-encodes all of the XML special characters except '&',
++        // so we need to do that manually
++        xmlOutput.append(url.toEncoded().replace('&', "&amp;"));
+         xmlOutput.append("\"/>\n");
+         break;
++    }
+     default:
+         fprintf(stderr, "Unknown dtd type\n");
+     }
+Submodule qtdeclarative 105e6105..792a55bb:
