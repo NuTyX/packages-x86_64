@@ -1,0 +1,438 @@
+diff --git a/src/webchannel/qmetaobjectpublisher.cpp b/src/webchannel/qmetaobjectpublisher.cpp
+index 536eb5c..898d769 100644
+--- a/src/webchannel/qmetaobjectpublisher.cpp
++++ b/src/webchannel/qmetaobjectpublisher.cpp
+@@ -186,8 +186,6 @@ Q_DECLARE_TYPEINFO(OverloadResolutionCandidate, Q_MOVABLE_TYPE);
+ QMetaObjectPublisher::QMetaObjectPublisher(QWebChannel *webChannel)
+     : QObject(webChannel)
+     , webChannel(webChannel)
+-    , signalHandler(this)
+-    , clientIsIdle(false)
+     , blockUpdates(false)
+     , propertyUpdatesInitialized(false)
+ {
+@@ -301,17 +299,17 @@ QJsonObject QMetaObjectPublisher::classInfoForObject(const QObject *object, QWeb
+     return data;
+ }
+ 
+-void QMetaObjectPublisher::setClientIsIdle(bool isIdle)
++void QMetaObjectPublisher::setClientIsIdle(bool isIdle, QWebChannelAbstractTransport *transport)
+ {
+-    if (clientIsIdle == isIdle) {
+-        return;
+-    }
+-    clientIsIdle = isIdle;
+-    if (!isIdle && timer.isActive()) {
+-        timer.stop();
+-    } else if (isIdle && !timer.isActive()) {
+-        timer.start(PROPERTY_UPDATE_INTERVAL, this);
+-    }
++    transportState[transport].clientIsIdle = isIdle;
++    if (isIdle)
++        sendEnqueuedPropertyUpdates(transport);
++}
++
++bool QMetaObjectPublisher::isClientIdle(QWebChannelAbstractTransport *transport)
++{
++    auto found = transportState.find(transport);
++    return found != transportState.end() && found.value().clientIsIdle;
+ }
+ 
+ QJsonObject QMetaObjectPublisher::initializeClient(QWebChannelAbstractTransport *transport)
+@@ -333,6 +331,7 @@ QJsonObject QMetaObjectPublisher::initializeClient(QWebChannelAbstractTransport
+ 
+ void QMetaObjectPublisher::initializePropertyUpdates(const QObject *const object, const QJsonObject &objectInfo)
+ {
++    auto *signalHandler = signalHandlerFor(object);
+     foreach (const QJsonValue &propertyInfoVar, objectInfo[KEY_PROPERTIES].toArray()) {
+         const QJsonArray &propertyInfo = propertyInfoVar.toArray();
+         if (propertyInfo.size() < 2) {
+@@ -353,19 +352,19 @@ void QMetaObjectPublisher::initializePropertyUpdates(const QObject *const object
+ 
+         // Only connect for a property update once
+         if (connectedProperties.isEmpty()) {
+-            signalHandler.connectTo(object, signalIndex);
++            signalHandler->connectTo(object, signalIndex);
+         }
+ 
+         connectedProperties.insert(propertyIndex);
+     }
+ 
+     // also always connect to destroyed signal
+-    signalHandler.connectTo(object, s_destroyedSignalIndex);
++    signalHandler->connectTo(object, s_destroyedSignalIndex);
+ }
+ 
+ void QMetaObjectPublisher::sendPendingPropertyUpdates()
+ {
+-    if (blockUpdates || !clientIsIdle || pendingPropertyUpdates.isEmpty()) {
++    if (blockUpdates) {
+         return;
+     }
+ 
+@@ -415,18 +414,19 @@ void QMetaObjectPublisher::sendPendingPropertyUpdates()
+ 
+     // data does not contain specific updates
+     if (!data.isEmpty()) {
+-        setClientIsIdle(false);
+-
+         message[KEY_DATA] = data;
+-        broadcastMessage(message);
++        enqueueBroadcastMessage(message);
+     }
+ 
+     // send every property update which is not supposed to be broadcasted
+     const QHash<QWebChannelAbstractTransport*, QJsonArray>::const_iterator suend = specificUpdates.constEnd();
+     for (QHash<QWebChannelAbstractTransport*, QJsonArray>::const_iterator it = specificUpdates.constBegin(); it != suend; ++it) {
+         message[KEY_DATA] = it.value();
+-        it.key()->sendMessage(message);
++        enqueueMessage(message, it.key());
+     }
++
++    for (auto state = transportState.begin(); state != transportState.end(); ++state)
++        sendEnqueuedPropertyUpdates(state.key());
+ }
+ 
+ QVariant QMetaObjectPublisher::invokeMethod(QObject *const object, const QMetaMethod &method,
+@@ -572,7 +572,7 @@ void QMetaObjectPublisher::signalEmitted(const QObject *object, const int signal
+         }
+     } else {
+         pendingPropertyUpdates[object][signalIndex] = arguments;
+-        if (clientIsIdle && !blockUpdates && !timer.isActive()) {
++        if (!blockUpdates && !timer.isActive()) {
+             timer.start(PROPERTY_UPDATE_INTERVAL, this);
+         }
+     }
+@@ -590,7 +590,7 @@ void QMetaObjectPublisher::objectDestroyed(const QObject *object)
+     // only remove from handler when we initialized the property updates
+     // cf: https://bugreports.qt.io/browse/QTBUG-60250
+     if (propertyUpdatesInitialized) {
+-        signalHandler.remove(object);
++        signalHandlerFor(object)->remove(object);
+         signalToPropertyMap.remove(object);
+     }
+     pendingPropertyUpdates.remove(object);
+@@ -852,6 +852,52 @@ void QMetaObjectPublisher::broadcastMessage(const QJsonObject &message) const
+     }
+ }
+ 
++void QMetaObjectPublisher::enqueueBroadcastMessage(const QJsonObject &message)
++{
++    if (webChannel->d_func()->transports.isEmpty()) {
++        qWarning("QWebChannel is not connected to any transports, cannot send message: %s",
++                 QJsonDocument(message).toJson().constData());
++        return;
++    }
++
++    for (auto *transport : webChannel->d_func()->transports) {
++        auto &state = transportState[transport];
++        state.queuedMessages.append(message);
++    }
++}
++
++void QMetaObjectPublisher::enqueueMessage(const QJsonObject &message,
++                                          QWebChannelAbstractTransport *transport)
++{
++    auto &state = transportState[transport];
++    state.queuedMessages.append(message);
++}
++
++void QMetaObjectPublisher::sendEnqueuedPropertyUpdates(QWebChannelAbstractTransport *transport)
++{
++    auto found = transportState.find(transport);
++    if (found != transportState.end() && found.value().clientIsIdle
++        && !found.value().queuedMessages.isEmpty()) {
++
++        // If the client is connected with an in-process transport, it can
++        // happen that a message triggers a subsequent property change. In
++        // that case, we need to ensure that the queued messages have already
++        // been cleared; otherwise the recursive call will send everythig again.
++        // Case in point: The qmlwebchannel tests fail if we don't clear the
++        // queued messages before sending them out.
++        // For that same reason set the client to "busy" (aka non-idle) just
++        // right before sending out the messages; otherwise a potential
++        // "Idle" type message will not correctly restore the Idle state.
++        const auto messages = std::move(found.value().queuedMessages);
++        Q_ASSERT(found.value().queuedMessages.isEmpty());
++        found.value().clientIsIdle = false;
++
++        for (const auto &message : messages) {
++            transport->sendMessage(message);
++        }
++    }
++}
++
+ void QMetaObjectPublisher::handleMessage(const QJsonObject &message, QWebChannelAbstractTransport *transport)
+ {
+     if (!webChannel->d_func()->transports.contains(transport)) {
+@@ -866,7 +912,7 @@ void QMetaObjectPublisher::handleMessage(const QJsonObject &message, QWebChannel
+ 
+     const MessageType type = toType(message.value(KEY_TYPE));
+     if (type == TypeIdle) {
+-        setClientIsIdle(true);
++        setClientIsIdle(true, transport);
+     } else if (type == TypeInit) {
+         if (!message.contains(KEY_ID)) {
+             qWarning("JSON message object is missing the id property: %s",
+@@ -913,9 +959,9 @@ void QMetaObjectPublisher::handleMessage(const QJsonObject &message, QWebChannel
+                 return;
+             transport->sendMessage(createResponse(message.value(KEY_ID), wrapResult(result, transport)));
+         } else if (type == TypeConnectToSignal) {
+-            signalHandler.connectTo(object, message.value(KEY_SIGNAL).toInt(-1));
++            signalHandlerFor(object)->connectTo(object, message.value(KEY_SIGNAL).toInt(-1));
+         } else if (type == TypeDisconnectFromSignal) {
+-            signalHandler.disconnectFrom(object, message.value(KEY_SIGNAL).toInt(-1));
++            signalHandlerFor(object)->disconnectFrom(object, message.value(KEY_SIGNAL).toInt(-1));
+         } else if (type == TypeSetProperty) {
+             setProperty(object, message.value(KEY_PROPERTY).toInt(-1),
+                         message.value(KEY_VALUE));
+@@ -931,6 +977,7 @@ void QMetaObjectPublisher::setBlockUpdates(bool block)
+     blockUpdates = block;
+ 
+     if (!blockUpdates) {
++        timer.start(PROPERTY_UPDATE_INTERVAL, this);
+         sendPendingPropertyUpdates();
+     } else if (timer.isActive()) {
+         timer.stop();
+@@ -948,4 +995,15 @@ void QMetaObjectPublisher::timerEvent(QTimerEvent *event)
+     }
+ }
+ 
++SignalHandler<QMetaObjectPublisher> *QMetaObjectPublisher::signalHandlerFor(const QObject *object)
++{
++    auto thread = object->thread();
++    auto it = signalHandlers.find(thread);
++    if (it == signalHandlers.end()) {
++        it = signalHandlers.emplace(thread, this).first;
++        it->second.moveToThread(thread);
++    }
++    return &it->second;
++}
++
+ QT_END_NAMESPACE
+diff --git a/src/webchannel/qmetaobjectpublisher_p.h b/src/webchannel/qmetaobjectpublisher_p.h
+index bbd9875..4713ef1 100644
+--- a/src/webchannel/qmetaobjectpublisher_p.h
++++ b/src/webchannel/qmetaobjectpublisher_p.h
+@@ -59,6 +59,9 @@
+ #include <QBasicTimer>
+ #include <QPointer>
+ #include <QJsonObject>
++#include <QQueue>
++
++#include <unordered_map>
+ 
+ #include "qwebchannelglobal.h"
+ 
+@@ -109,17 +112,36 @@ public:
+      */
+     void broadcastMessage(const QJsonObject &message) const;
+ 
++    /**
++     * Enqueue the given @p message to all known transports.
++     */
++    void enqueueBroadcastMessage(const QJsonObject &message);
++
++    /**
++     * Enqueue the given @p message to @p transport.
++     */
++    void enqueueMessage(const QJsonObject &message, QWebChannelAbstractTransport *transport);
++
++    /**
++     * If client for given @p transport is idle, send queued messaged to @p transport and then mark
++     * the client as not idle.
++     */
++    void sendEnqueuedPropertyUpdates(QWebChannelAbstractTransport *transport);
++
+     /**
+      * Serialize the QMetaObject of @p object and return it in JSON form.
+      */
+     QJsonObject classInfoForObject(const QObject *object, QWebChannelAbstractTransport *transport);
+ 
+     /**
+-     * Set the client to idle or busy, based on the value of @p isIdle.
+-     *
+-     * When the value changed, start/stop the property update timer accordingly.
++     * Set the client to idle or busy for a single @p transport, based on the value of @p isIdle.
++     */
++    void setClientIsIdle(bool isIdle, QWebChannelAbstractTransport *transport);
++
++    /**
++     * Check that client is idle for @p transport.
+      */
+-    void setClientIsIdle(bool isIdle);
++    bool isClientIdle(QWebChannelAbstractTransport *transport);
+ 
+     /**
+      * Initialize clients by sending them the class information of the registered objects.
+@@ -272,10 +294,18 @@ private:
+     friend class TestWebChannel;
+ 
+     QWebChannel *webChannel;
+-    SignalHandler<QMetaObjectPublisher> signalHandler;
++    std::unordered_map<const QThread*, SignalHandler<QMetaObjectPublisher>> signalHandlers;
++    SignalHandler<QMetaObjectPublisher> *signalHandlerFor(const QObject *object);
+ 
+-    // true when the client is idle, false otherwise
+-    bool clientIsIdle;
++    struct TransportState
++    {
++        TransportState() : clientIsIdle(false) { }
++        // true when the client is idle, false otherwise
++        bool clientIsIdle;
++        // messages to send
++        QQueue<QJsonObject> queuedMessages;
++    };
++    QHash<QWebChannelAbstractTransport *, TransportState> transportState;
+ 
+     // true when no property updates should be sent, false otherwise
+     bool blockUpdates;
+diff --git a/src/webchannel/signalhandler_p.h b/src/webchannel/signalhandler_p.h
+index 27afadb..d77373c 100644
+--- a/src/webchannel/signalhandler_p.h
++++ b/src/webchannel/signalhandler_p.h
+@@ -56,6 +56,7 @@
+ #include <QVector>
+ #include <QMetaMethod>
+ #include <QDebug>
++#include <QThread>
+ 
+ QT_BEGIN_NAMESPACE
+ 
+@@ -71,6 +72,7 @@ static const int s_destroyedSignalIndex = QObject::staticMetaObject.indexOfMetho
+ template<class Receiver>
+ class SignalHandler : public QObject
+ {
++    Q_DISABLE_COPY(SignalHandler)
+ public:
+     SignalHandler(Receiver *receiver, QObject *parent = 0);
+ 
+@@ -268,6 +270,7 @@ int SignalHandler<Receiver>::qt_metacall(QMetaObject::Call call, int methodId, v
+     if (call == QMetaObject::InvokeMetaMethod) {
+         const QObject *object = sender();
+         Q_ASSERT(object);
++        Q_ASSERT(QThread::currentThread() == object->thread());
+         Q_ASSERT(senderSignalIndex() == methodId);
+         Q_ASSERT(m_connectionsCounter.contains(object));
+         Q_ASSERT(m_connectionsCounter.value(object).contains(methodId));
+diff --git a/tests/auto/qml/testwebchannel.cpp b/tests/auto/qml/testwebchannel.cpp
+index 9891687..3ca81c2 100644
+--- a/tests/auto/qml/testwebchannel.cpp
++++ b/tests/auto/qml/testwebchannel.cpp
+@@ -46,7 +46,11 @@ TestWebChannel::~TestWebChannel()
+ 
+ bool TestWebChannel::clientIsIdle() const
+ {
+-    return QWebChannel::d_func()->publisher->clientIsIdle;
++    for (auto *transport : QWebChannel::d_func()->transports) {
++        if (QWebChannel::d_func()->publisher->isClientIdle(transport))
++            return true;
++    }
++    return false;
+ }
+ 
+ QT_END_NAMESPACE
+diff --git a/tests/auto/webchannel/tst_webchannel.cpp b/tests/auto/webchannel/tst_webchannel.cpp
+index 181da9e..37f989a 100644
+--- a/tests/auto/webchannel/tst_webchannel.cpp
++++ b/tests/auto/webchannel/tst_webchannel.cpp
+@@ -785,7 +785,7 @@ void TestWebChannel::testTransportWrapObjectProperties()
+     DummyTransport *dummyTransport = new DummyTransport(this);
+     channel.connectTo(dummyTransport);
+     channel.d_func()->publisher->initializeClient(dummyTransport);
+-    channel.d_func()->publisher->setClientIsIdle(true);
++    channel.d_func()->publisher->setClientIsIdle(true, dummyTransport);
+ 
+     QCOMPARE(channel.d_func()->publisher->transportedWrappedObjects.size(), 0);
+ 
+@@ -943,8 +943,6 @@ void TestWebChannel::testInfiniteRecursion()
+ 
+ void TestWebChannel::testAsyncObject()
+ {
+-    QSKIP("This test is broken. See QTBUG-80729");
+-
+     QWebChannel channel;
+     channel.connectTo(m_dummyTransport);
+ 
+@@ -990,6 +988,50 @@ void TestWebChannel::testAsyncObject()
+     thread.wait();
+ }
+ 
++void TestWebChannel::testPropertyMultipleTransports()
++{
++    DummyTransport transport1;
++    DummyTransport transport2;
++
++    QWebChannel channel;
++    QMetaObjectPublisher *publisher = channel.d_func()->publisher;
++
++    TestObject testObj;
++    testObj.setObjectName("testObject");
++    channel.registerObject(testObj.objectName(), &testObj);
++    channel.connectTo(&transport1);
++    channel.connectTo(&transport2);
++
++    testObj.setProp("Hello");
++
++    publisher->initializeClient(&transport1);
++    publisher->initializeClient(&transport2);
++    publisher->setClientIsIdle(true, &transport1);
++    QCOMPARE(publisher->isClientIdle(&transport1), true);
++    QCOMPARE(publisher->isClientIdle(&transport2), false);
++    QVERIFY(transport1.messagesSent().isEmpty());
++    QVERIFY(transport2.messagesSent().isEmpty());
++
++    testObj.setProp("World");
++    QTRY_COMPARE_WITH_TIMEOUT(transport1.messagesSent().size(), 1u, 2000);
++    QCOMPARE(transport2.messagesSent().size(), 0u);
++    publisher->setClientIsIdle(true, &transport2);
++    QTRY_COMPARE_WITH_TIMEOUT(transport2.messagesSent().size(), 1u, 2000);
++    QCOMPARE(publisher->isClientIdle(&transport1), false);
++    QCOMPARE(publisher->isClientIdle(&transport2), false);
++
++    testObj.setProp("!!!");
++    publisher->setClientIsIdle(true, &transport2);
++    QCOMPARE(publisher->isClientIdle(&transport2), true);
++    QCOMPARE(publisher->isClientIdle(&transport1), false);
++    QTRY_COMPARE_WITH_TIMEOUT(transport2.messagesSent().size(), 2u, 2000);
++    QCOMPARE(transport1.messagesSent().size(), 1u);
++    publisher->setClientIsIdle(true, &transport1);
++    QTRY_COMPARE_WITH_TIMEOUT(transport1.messagesSent().size(), 2u, 2000);
++    QCOMPARE(publisher->isClientIdle(&transport1), false);
++    QCOMPARE(publisher->isClientIdle(&transport2), false);
++}
++
+ class FunctionWrapper : public QObject
+ {
+     Q_OBJECT
+@@ -1082,7 +1124,7 @@ void TestWebChannel::benchInitializeClients()
+ 
+         publisher->propertyUpdatesInitialized = false;
+         publisher->signalToPropertyMap.clear();
+-        publisher->signalHandler.clear();
++        publisher->signalHandlers.clear();
+     }
+ }
+ 
+@@ -1107,7 +1149,7 @@ void TestWebChannel::benchPropertyUpdates()
+             obj->change();
+         }
+ 
+-        channel.d_func()->publisher->clientIsIdle = true;
++        channel.d_func()->publisher->setClientIsIdle(true, m_dummyTransport);
+         channel.d_func()->publisher->sendPendingPropertyUpdates();
+     }
+ }
+diff --git a/tests/auto/webchannel/tst_webchannel.h b/tests/auto/webchannel/tst_webchannel.h
+index eae21f4..dd4e690 100644
+--- a/tests/auto/webchannel/tst_webchannel.h
++++ b/tests/auto/webchannel/tst_webchannel.h
+@@ -348,6 +348,7 @@ private slots:
+     void testJsonToVariant();
+     void testInfiniteRecursion();
+     void testAsyncObject();
++    void testPropertyMultipleTransports();
+     void testDeletionDuringMethodInvocation_data();
+     void testDeletionDuringMethodInvocation();
+ 
+Submodule qtwebsockets 4a67d49f..9a7b9972:
