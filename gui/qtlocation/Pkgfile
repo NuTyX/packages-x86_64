@@ -9,16 +9,23 @@ contributors="Pierre,Rems,Tnut"
 makedepends=(icu qtbase qtdeclarative qttools)
 
 name=qtlocation
-version=5.15.11
+version=5.15.12
 
 _name="${name}-everywhere-opensource-src"
 
-source=(consolidated-1.patch
+source=(kf5-1.patch
 	https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 prepare() {
  cd ${_name/-opensource/}-${version}
- patch -Np1 -i ../consolidated-1.patch
+ patch -Np1 -i ../kf5-1.patch
+ sed -e 's|c++14|c++17|g' -e '/c++1z/d' -i \
+ src/3rdparty/mapbox-gl-native/mapbox-gl-native.pro
+
+ sed -e "/pragma once/a#include <cstdint>"                          \
+    -i src/3rdparty/mapbox-gl-native/include/mbgl/util/geometry.hpp \
+       src/3rdparty/mapbox-gl-native/include/mbgl/util/string.hpp   \
+       src/3rdparty/mapbox-gl-native/src/mbgl/gl/stencil_mode.hpp
 }
 build() {
 mkdir build
