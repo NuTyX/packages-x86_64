@@ -1,0 +1,170 @@
+diff --git a/src/plugins/imageformats/tga/qtgafile.cpp b/src/plugins/imageformats/tga/qtgafile.cpp
+index 5d086c6..3961c16 100644
+--- a/src/plugins/imageformats/tga/qtgafile.cpp
++++ b/src/plugins/imageformats/tga/qtgafile.cpp
+@@ -220,9 +220,18 @@ QImage QTgaFile::readImage()
+ 
+     int offset = mHeader[IdLength];  // Mostly always zero
+ 
+-    // Even in TrueColor files a color pallette may be present
+-    if (mHeader[ColorMapType] == 1)
+-        offset += littleEndianInt(&mHeader[CMapLength]) * littleEndianInt(&mHeader[CMapDepth]);
++    // Even in TrueColor files a color palette may be present so we have to check it here
++    // even we only support image type 2 (= uncompressed true-color image)
++    if (mHeader[ColorMapType] == 1) {
++        int cmapDepth = mHeader[CMapDepth];
++        if (cmapDepth == 15)    // 15 bit is stored as 16 bit + ignoring the highest bit (no alpha)
++            cmapDepth = 16;
++        if (cmapDepth != 16 && cmapDepth != 24 && cmapDepth != 32) {
++            mErrorMessage = tr("Invalid color map depth (%1)").arg(cmapDepth);
++            return {};
++        }
++        offset += littleEndianInt(&mHeader[CMapLength]) * cmapDepth / 8;
++    }
+ 
+     mDevice->seek(HeaderSize + offset);
+ 
+diff --git a/src/plugins/imageformats/tiff/qtiffhandler.cpp b/src/plugins/imageformats/tiff/qtiffhandler.cpp
+index ac8956c..79be154 100644
+--- a/src/plugins/imageformats/tiff/qtiffhandler.cpp
++++ b/src/plugins/imageformats/tiff/qtiffhandler.cpp
+@@ -38,11 +38,15 @@
+ ****************************************************************************/
+ 
+ #include "qtiffhandler_p.h"
+-#include <qvariant.h>
+ #include <qcolorspace.h>
+ #include <qdebug.h>
+ #include <qimage.h>
+ #include <qglobal.h>
++#include <qvariant.h>
++#include <qvarlengtharray.h>
++#include <qbuffer.h>
++#include <qfiledevice.h>
++
+ extern "C" {
+ #include "tiffio.h"
+ }
+@@ -90,13 +94,33 @@ toff_t qtiffSizeProc(thandle_t fd)
+     return static_cast<QIODevice *>(fd)->size();
+ }
+ 
+-int qtiffMapProc(thandle_t /*fd*/, tdata_t* /*pbase*/, toff_t* /*psize*/)
++int qtiffMapProc(thandle_t fd, void **base, toff_t *size)
+ {
++    QIODevice *device = static_cast<QIODevice *>(fd);
++
++    QFileDevice *file = qobject_cast<QFileDevice *>(device);
++    if (file) {
++        *base = file->map(0, file->size());
++        if (*base != nullptr) {
++            *size = file->size();
++            return 1;
++        }
++    } else {
++        QBuffer *buf = qobject_cast<QBuffer *>(device);
++        if (buf) {
++            *base = const_cast<char *>(buf->data().constData());
++            *size = buf->size();
++            return 1;
++        }
++    }
+     return 0;
+ }
+ 
+-void qtiffUnmapProc(thandle_t /*fd*/, tdata_t /*base*/, toff_t /*size*/)
++void qtiffUnmapProc(thandle_t fd, void *base, toff_t /*size*/)
+ {
++    QFileDevice *file = qobject_cast<QFileDevice *>(static_cast<QIODevice *>(fd));
++    if (file && base)
++        file->unmap(static_cast<uchar *>(base));
+ }
+ 
+ 
+diff --git a/src/plugins/imageformats/webp/CMakeLists.txt b/src/plugins/imageformats/webp/CMakeLists.txt
+index 25aa0c9..fbbcc1c 100644
+--- a/src/plugins/imageformats/webp/CMakeLists.txt
++++ b/src/plugins/imageformats/webp/CMakeLists.txt
+@@ -30,6 +30,7 @@ qt_internal_extend_target(QWebpPlugin CONDITION QT_FEATURE_system_webp
+ qt_internal_extend_target(QWebpPlugin CONDITION NOT QT_FEATURE_system_webp
+     SOURCES
+         ../../../3rdparty/libwebp/sharpyuv/sharpyuv.c
++        ../../../3rdparty/libwebp/sharpyuv/sharpyuv_cpu.c
+         ../../../3rdparty/libwebp/sharpyuv/sharpyuv_csp.c
+         ../../../3rdparty/libwebp/sharpyuv/sharpyuv_dsp.c
+         ../../../3rdparty/libwebp/sharpyuv/sharpyuv_gamma.c
+diff --git a/src/plugins/imageformats/webp/qwebphandler.cpp b/src/plugins/imageformats/webp/qwebphandler.cpp
+index 82d38cb..d02eb05 100644
+--- a/src/plugins/imageformats/webp/qwebphandler.cpp
++++ sb/src/plugins/imageformats/webp/qwebphandler.cpp
+@@ -45,6 +45,7 @@
+ #include <qdebug.h>
+ #include <qpainter.h>
+ #include <qvariant.h>
++#include <QtEndian>
+ 
+ static const int riffHeaderSize = 12; // RIFF_HEADER_SIZE from webp/format_constants.h
+ 
+@@ -102,21 +103,23 @@ bool QWebpHandler::ensureScanned() const
+ 
+     m_scanState = ScanError;
+ 
+-    if (device()->isSequential()) {
+-        qWarning() << "Sequential devices are not supported";
++    QWebpHandler *that = const_cast<QWebpHandler *>(this);
++    const int headerBytesNeeded = sizeof(WebPBitstreamFeatures);
++    QByteArray header = device()->peek(headerBytesNeeded);
++    if (header.size() < headerBytesNeeded)
+         return false;
+-    }
+ 
+-    qint64 oldPos = device()->pos();
+-    device()->seek(0);
+-
+-    QWebpHandler *that = const_cast<QWebpHandler *>(this);
+-    QByteArray header = device()->peek(sizeof(WebPBitstreamFeatures));
++    // We do no random access during decoding, just a readAll() of the whole image file. So if
++    // if it is all available already, we can accept a sequential device. The riff header contains
++    // the file size minus 8 bytes header
++    qint64 byteSize = qFromLittleEndian<quint32>(header.constData() + 4);
++    if (device()->isSequential() && device()->bytesAvailable() < byteSize + 8) {
++        qWarning() << "QWebpHandler: Insufficient data available in sequential device";
++        return false;
++    }
+     if (WebPGetFeatures((const uint8_t*)header.constData(), header.size(), &(that->m_features)) == VP8_STATUS_OK) {
+         if (m_features.has_animation) {
+             // For animation, we have to read and scan whole file to determine loop count and images count
+-            device()->seek(oldPos);
+-
+             if (that->ensureDemuxer()) {
+                 that->m_loop = WebPDemuxGetI(m_demuxer, WEBP_FF_LOOP_COUNT);
+                 that->m_frameCount = WebPDemuxGetI(m_demuxer, WEBP_FF_FRAME_COUNT);
+@@ -126,17 +129,13 @@ bool QWebpHandler::ensureScanned() const
+                 if (that->m_features.has_alpha)
+                     that->m_composited->fill(Qt::transparent);
+ 
+-                // We do not reset device position since we have read in all data
+                 m_scanState = ScanSuccess;
+-                return true;
+             }
+         } else {
+             m_scanState = ScanSuccess;
+         }
+     }
+ 
+-    device()->seek(oldPos);
+-
+     return m_scanState == ScanSuccess;
+ }
+ 
+@@ -159,7 +158,7 @@ bool QWebpHandler::ensureDemuxer()
+ 
+ bool QWebpHandler::read(QImage *image)
+ {
+-    if (!ensureScanned() || device()->isSequential() || !ensureDemuxer())
++    if (!ensureScanned() || !ensureDemuxer())
+         return false;
+ 
+     QRect prevFrameRect;
+Submodule qtlocation b6d96559..5b27b892:
+Submodule src/3rdparty/mapbox-gl-native d3101bbc...4c88f2c0 (commits not present)
