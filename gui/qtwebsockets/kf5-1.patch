@@ -1,0 +1,25 @@
+diff --git a/src/websockets/qwebsocket_p.cpp b/src/websockets/qwebsocket_p.cpp
+index cf3087f..0dd0fa6 100644
+--- a/src/websockets/qwebsocket_p.cpp
++++ b/src/websockets/qwebsocket_p.cpp
+@@ -1100,6 +1100,8 @@ void QWebSocketPrivate::processHandshake(QTcpSocket *pSocket)
+         m_handshakeState = AllDoneState;
+         setErrorString(errorDescription);
+         Q_EMIT q->error(QAbstractSocket::ConnectionRefusedError);
++        if (m_pSocket->state() != QAbstractSocket::UnconnectedState)
++            m_pSocket->disconnectFromHost();
+     }
+ }
+ 
+diff --git a/src/websockets/qwebsocketdataprocessor.cpp b/src/websockets/qwebsocketdataprocessor.cpp
+index 2affdd5..95f1194 100644
+--- a/src/websockets/qwebsocketdataprocessor.cpp
++++ b/src/websockets/qwebsocketdataprocessor.cpp
+@@ -273,6 +273,7 @@ void QWebSocketDataProcessor::clear()
+     if (!m_pConverterState)
+         m_pConverterState = new QTextCodec::ConverterState(QTextCodec::ConvertInvalidToNull |
+                                                            QTextCodec::IgnoreHeader);
++    frame.clear();
+ }
+ 
+ /*!
