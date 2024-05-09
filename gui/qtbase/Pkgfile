@@ -7,8 +7,7 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre,Rems,Spiky"
 
 name=qtbase
-version=5.15.11
-release=2
+version=5.15.12
 
 makedepends=(git pcre2 xorgproto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-libxext
              xorg-libfs xorg-libice xorg-libsm xcb-proto libxcb xcb-util-keysyms
@@ -26,17 +25,17 @@ makedepends=(git pcre2 xorgproto xorg-libxkbfile xorg-xtrans xorg-libx11 xorg-li
 
 _name="${name}-everywhere-opensource-src"
 
-source=(https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
+source=(kf5-1.patch security_fix-1.patch
+        https://download.qt.io/official_releases/qt/${version:0:4}/$version/submodules/${_name}-${version}.tar.xz)
 
 build() {
 
 cd ${_name/-opensource/}-${version}
 
-sed -i '276,279d' src/platformsupport/input/xkbcommon/qxkbcommon.cpp
+patch -Np1 -i ../kf5-1.patch
+patch -Np1 -i ../security_fix-1.patch
 
-sed -i '/utility/a #include <limits>'     src/corelib/global/qglobal.h
-sed -i '/string/a #include <limits>'      src/corelib/global/qfloat16.h
-sed -i '/qbytearray/a #include <limits>'  src/corelib/text/qbytearraymatcher.h
+mkdir .git
 
 ./configure -prefix         /usr                        \
             -sysconfdir     /etc/xdg                    \
