@@ -1,46 +1,43 @@
 description="A small, fast graphical web browser built on FLTK"
 url="http://www.dillo.org/"
 
+license="GPL"
+
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
-makedepends=(fltk libpng libjpeg-turbo openssl)
+makedepends=(perl fltk libpng libjpeg-turbo openssl)
 
 name=dillo
-version=3.0.5
-release=8
+version=3.1.0
 
-source=(openssl.patch
-	http://www.dillo.org/download/dillo-$version.tar.bz2
-        http://www.dillo.org/Icons/d2_icon3_122x122.png)
+source=(https://github.com/dillo-browser/dillo/releases/download/v$version/dillo-$version.tar.gz
+       )
 build() {
 cd $name-$version
-patch -Np1 -i ../openssl.patch
-autoreconf -i
-CFLAGS+=' -fcommon'
 
 ./configure --prefix=/usr \
 --sysconfdir=/etc \
---enable-ssl \
+--enable-tll \
 --enable-cookies
 
 make
 make DESTDIR=$PKG install
-mkdir -p $PKG/usr/share/{applications,pixmaps}
+mkdir -p $PKG/usr/share/applications
 cat > $PKG/usr/share/applications/dillo.desktop << EOF
 [Desktop Entry]
 Encoding=UTF-8
 Type=Application
 Name=Dillo
 Name[fr]=Dillo
-Comment=Browse The Web
-Comment[fr]=Navigateur Web
+Comment=Very light Browser
+Comment[fr]=Navigateur très léger
+GenericName=Web Browser
 GenericName[fr]=Navigateur Web
 Icon=dillo
 Exec=dillo
-Categories=Network;Application;Browser;WebBrowser;
+Categories=Network;WebBrowser;
 StartupNotify=true
 Terminal=false
 EOF
-install -m644 ../d2_icon3_122x122.png $PKG/usr/share/pixmaps/dillo.png
 }
