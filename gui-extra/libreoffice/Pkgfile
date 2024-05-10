@@ -2,10 +2,10 @@ description="Office suite. It is largely compatible with Microsoft Office \
 (fork from OpenOffice.org)."
 url="https://www.libreoffice.org"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Greg,Fabienwang,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Greg,Fabienwang,Spiky"
 
-makedepends=(tar python perl-archive-zip unzip zip icu gtk3 cups poppler-glib
+makedepends=(tar python perl-archive-zip unzip zip gtk3 cups poppler-glib
              libtiff xorg-fontconfig libxslt kerberos xorgproto dbus-glib mesa
              libwebp postgresql wget apache-ant apr boost clucene dbus-glib
              libepoxy libjpeg-turbo xorg-glu gstreamer-plugins-base
@@ -16,7 +16,7 @@ run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache
      hicolor-icon-theme)
 
 name=libreoffice
-version=24.2.2.2
+version=24.2.3.2
 
 categories=(Office Graphics Education)
 
@@ -39,7 +39,6 @@ prepare() {
 
   patch -Np1 -i ../Remove-check-if-root-due-to-issue-with-fakeroot.patch
   sed -i '/icuuc \\/a zlib\\' writerperfect/Library_wpftdraw.mk
-  sed -e /LBCM/d -i i18npool/source/breakiterator/data/line.txt
 
   install -dm755 external/tarballs/
   ln -sv ../../../$name-dictionaries-$version.tar.xz  external/tarballs/
@@ -62,6 +61,8 @@ build() {
    cd $name-$version
 
    export ac_cv_lib_gpgmepp_progress_callback=yes
+
+   CPPFLAGS+=' -DU_USING_ICU_NAMESPACE=1'
 
    ./autogen.sh --prefix=/usr \
 	--sysconfdir=/etc \
@@ -90,7 +91,6 @@ build() {
 	--with-system-expat         \
 	--with-system-gpgmepp       \
 	--with-system-hunspell      \
-	--with-system-icu           \
 	--with-system-jpeg          \
 	--with-system-lcms2         \
 	--with-system-libabw        \
