@@ -17,7 +17,8 @@ release=2
 
 locale_version=$version
 
-source=(https://archive.seamonkey-project.org/releases/$version/source/$name-$version.source.tar.xz )
+source=(cxx17-1.patch
+        https://archive.seamonkey-project.org/releases/$version/source/$name-$version.source.tar.xz )
 
 pack_remove_locale() {
 wget https://archive.seamonkey-project.org/releases/${locale_version}/langpack/$name-${locale_version}.${1}.langpack.xpi
@@ -76,6 +77,8 @@ ac_add_options --with-system-webp
 # libxul.so by a few MB - comment this if you know your machine is not affected.
 ac_add_options --disable-debug-symbols
 ac_add_options --disable-elf-hack
+ac_add_options --enable-linker=bfd
+export LDFLAGS="$LDFLAGS -Wl,-z,pack-relative-relocs"
 
 # Seamonkey has some additional features that are not turned on by default,
 # such as an IRC client, calendar, and DOM Inspector. The DOM Inspector
@@ -110,14 +113,19 @@ ac_add_options --with-system-bz2
 ac_add_options --with-system-jpeg
 ac_add_options --with-system-png
 ac_add_options --with-system-zlib
+
+export CC=clang CXX=clang++
 EOF
+
+for i in {43..47}; do
+   sed '/ZWJ/s/$/,CLASS_CHARACTER/' -i intl/lwbrk/LineBreaker.cpp || exit $?
+done
+
+patch -Np1 -i ../cxx17-1.patch
 
 sed -e '1012 s/stderr=devnull/stderr=subprocess.DEVNULL/' \
     -e '1013 s/OSError/(OSError, subprocess.CalledProcessError)/' \
     -i third_party/python/distro/distro.py
-
-export CC=clang
-export CXX=clang++
 
 export PATH=$SRC/usr/bin:$PATH
 

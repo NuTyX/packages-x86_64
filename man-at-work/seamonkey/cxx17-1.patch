@@ -1,0 +1,321 @@
+Submitted By:            Xi Ruoyao <xry111 at xry111 dot site>
+Date:                    2024-04-25
+Initial Package Version: 2.53.18.2
+Origin:                  Upstream + Self (modified to fit this codebase)
+ - https://hg.mozilla.org/mozilla-central/rev/b9a53cec8555
+ - https://hg.mozilla.org/mozilla-central/rev/e9cddb23f947
+ - https://hg.mozilla.org/mozilla-central/rev/55974feb88c1
+ - https://hg.mozilla.org/mozilla-central/rev/ac19304c1887
+Upstream Status:         Not Applied
+Description:             Port Seamonkey C++ code to C++17 as the ICU-75
+                         headers are requiring.
+
+diff --color -Naur seamonkey-2.53.18.2/build/moz.configure/toolchain.configure seamonkey-2.53.18.2-patched/build/moz.configure/toolchain.configure
+--- seamonkey-2.53.18.2/build/moz.configure/toolchain.configure	2024-04-25 03:35:18.880662891 +0800
++++ seamonkey-2.53.18.2-patched/build/moz.configure/toolchain.configure	2024-04-25 15:41:22.824640317 +0800
+@@ -513,15 +513,15 @@
+     # Note: MSVC, while supporting C++14, still reports 199711L for __cplusplus.
+     # Note: this is a strict version check because we used to always add
+     # -std=gnu++14.
+-    cxx14_version = 201402
++    cxx17_version = 201703
+     if info.language == 'C++':
+-        if info.type == 'clang' and info.language_version != cxx14_version:
+-            flags.append('-std=gnu++14')
++        if info.type == 'clang' and info.language_version != cxx17_version:
++            flags.append('-std=gnu++17')
+         # MSVC headers include C++14 features, but don't guard them
+         # with appropriate checks.
+-        elif info.type == 'clang-cl' and info.language_version != cxx14_version:
++        elif info.type == 'clang-cl' and info.language_version != cxx17_version:
+             flags.append('-Xclang')
+-            flags.append('-std=c++14')
++            flags.append('-std=c++17')
+ 
+ 
+     # Check compiler target
+diff --color -Naur seamonkey-2.53.18.2/js/src/jsapi.h seamonkey-2.53.18.2-patched/js/src/jsapi.h
+--- seamonkey-2.53.18.2/js/src/jsapi.h	2023-11-29 04:05:19.000000000 +0800
++++ seamonkey-2.53.18.2-patched/js/src/jsapi.h	2024-04-25 15:32:32.682303770 +0800
+@@ -5438,10 +5438,16 @@
+     // Create a deep copy of notes.
+     js::UniquePtr<JSErrorNotes> copy(JSContext* cx);
+ 
+-    class iterator : public std::iterator<std::input_iterator_tag, js::UniquePtr<Note>>
++    class iterator final
+     {
+         js::UniquePtr<Note>* note_;
+       public:
++        using iterator_category = std::input_iterator_tag;
++        using value_type = js::UniquePtr<Note>;
++        using difference_type = ptrdiff_t;
++        using pointer = value_type*;
++        using reference = value_type&;
++
+         explicit iterator(js::UniquePtr<Note>* note = nullptr) : note_(note)
+         {}
+ 
+diff --color -Naur seamonkey-2.53.18.2/memory/build/malloc_decls.h seamonkey-2.53.18.2-patched/memory/build/malloc_decls.h
+--- seamonkey-2.53.18.2/memory/build/malloc_decls.h	2021-08-08 21:02:00.000000000 +0800
++++ seamonkey-2.53.18.2-patched/memory/build/malloc_decls.h	2024-04-25 15:32:42.344294076 +0800
+@@ -32,19 +32,23 @@
+ #define MALLOC_FUNCS MALLOC_FUNCS_ALL
+ #endif
+ 
++#ifndef NOTHROW_MALLOC_DECL
++#define NOTHROW_MALLOC_DECL MALLOC_DECL
++#endif
++
+ #ifdef MALLOC_DECL
+ #if MALLOC_FUNCS & MALLOC_FUNCS_MALLOC_BASE
+ MALLOC_DECL(malloc, void*, size_t)
+ MALLOC_DECL(calloc, void*, size_t, size_t)
+ MALLOC_DECL(realloc, void*, void*, size_t)
+-MALLOC_DECL(free, void, void*)
+-MALLOC_DECL(memalign, void*, size_t, size_t)
++NOTHROW_MALLOC_DECL(free, void, void*)
++NOTHROW_MALLOC_DECL(memalign, void*, size_t, size_t)
+ #endif
+ #if MALLOC_FUNCS & MALLOC_FUNCS_MALLOC_EXTRA
+-MALLOC_DECL(posix_memalign, int, void**, size_t, size_t)
+-MALLOC_DECL(aligned_alloc, void*, size_t, size_t)
+-MALLOC_DECL(valloc, void*, size_t)
+-MALLOC_DECL(malloc_usable_size, size_t, usable_ptr_t)
++NOTHROW_MALLOC_DECL(posix_memalign, int, void**, size_t, size_t)
++NOTHROW_MALLOC_DECL(aligned_alloc, void*, size_t, size_t)
++NOTHROW_MALLOC_DECL(valloc, void*, size_t)
++NOTHROW_MALLOC_DECL(malloc_usable_size, size_t, usable_ptr_t)
+ MALLOC_DECL(malloc_good_size, size_t, size_t)
+ #endif
+ #if MALLOC_FUNCS & MALLOC_FUNCS_JEMALLOC
+@@ -121,5 +125,6 @@
+ 
+ #endif // MALLOC_DECL
+ 
++#undef NOTHROW_MALLOC_DECL
+ #undef MALLOC_DECL
+ #undef MALLOC_FUNCS
+diff --color -Naur seamonkey-2.53.18.2/memory/build/mozjemalloc.cpp seamonkey-2.53.18.2-patched/memory/build/mozjemalloc.cpp
+--- seamonkey-2.53.18.2/memory/build/mozjemalloc.cpp	2023-06-10 18:41:20.000000000 +0800
++++ seamonkey-2.53.18.2-patched/memory/build/mozjemalloc.cpp	2024-04-25 15:32:42.365294055 +0800
+@@ -4852,26 +4852,28 @@
+   // ***************************************************************************
+   // Definition of all the _impl functions
+ 
+-#define GENERIC_MALLOC_DECL2(name, name_impl, return_type, ...)                \
+-  return_type name_impl(ARGS_HELPER(TYPED_ARGS, ##__VA_ARGS__))                \
++#define GENERIC_MALLOC_DECL2(attributes, name, name_impl, return_type, ...)                \
++  return_type name_impl(ARGS_HELPER(TYPED_ARGS, ##__VA_ARGS__)) attributes                \
+   {                                                                            \
+     return DefaultMalloc::name(ARGS_HELPER(ARGS, ##__VA_ARGS__));              \
+   }
+ 
+-#define GENERIC_MALLOC_DECL(name, return_type, ...)                            \
+-  GENERIC_MALLOC_DECL2(name, name##_impl, return_type, ##__VA_ARGS__)
++#define GENERIC_MALLOC_DECL(attributes, name, return_type, ...)                            \
++  GENERIC_MALLOC_DECL2(attributes, name, name##_impl, return_type, ##__VA_ARGS__)
+ 
++#define NOTHROW_MALLOC_DECL(...)                                                       \
++  MOZ_MEMORY_API MACRO_CALL(GENERIC_MALLOC_DECL, (noexcept(true), __VA_ARGS__))
+ #define MALLOC_DECL(...)                                                       \
+-  MOZ_MEMORY_API MACRO_CALL(GENERIC_MALLOC_DECL, (__VA_ARGS__))
++  MOZ_MEMORY_API MACRO_CALL(GENERIC_MALLOC_DECL, (, __VA_ARGS__))
+ #define MALLOC_FUNCS MALLOC_FUNCS_MALLOC
+ #include "malloc_decls.h"
+ 
+ #undef GENERIC_MALLOC_DECL
+-#define GENERIC_MALLOC_DECL(name, return_type, ...)                            \
+-  GENERIC_MALLOC_DECL2(name, name, return_type, ##__VA_ARGS__)
++#define GENERIC_MALLOC_DECL(attributes, name, return_type, ...)                            \
++  GENERIC_MALLOC_DECL2(attributes, name, name, return_type, ##__VA_ARGS__)
+ 
+ #define MALLOC_DECL(...)                                                       \
+-  MOZ_JEMALLOC_API MACRO_CALL(GENERIC_MALLOC_DECL, (__VA_ARGS__))
++  MOZ_JEMALLOC_API MACRO_CALL(GENERIC_MALLOC_DECL, (, __VA_ARGS__))
+ #define MALLOC_FUNCS (MALLOC_FUNCS_JEMALLOC | MALLOC_FUNCS_ARENA)
+ #include "malloc_decls.h"
+   // ***************************************************************************
+diff --color -Naur seamonkey-2.53.18.2/memory/build/mozmemory.h seamonkey-2.53.18.2-patched/memory/build/mozmemory.h
+--- seamonkey-2.53.18.2/memory/build/mozmemory.h	2021-03-02 02:17:57.000000000 +0800
++++ seamonkey-2.53.18.2-patched/memory/build/mozmemory.h	2024-04-25 15:32:42.352294068 +0800
+@@ -54,6 +54,8 @@
+ 
+ #endif
+ 
++#define NOTHROW_MALLOC_DECL(name, return_type, ...)                                    \
++  MOZ_JEMALLOC_API return_type name(__VA_ARGS__) noexcept(true);
+ #define MALLOC_DECL(name, return_type, ...)                                    \
+   MOZ_JEMALLOC_API return_type name(__VA_ARGS__);
+ #define MALLOC_FUNCS MALLOC_FUNCS_ARENA
+diff --color -Naur seamonkey-2.53.18.2/memory/build/mozmemory_wrap.cpp seamonkey-2.53.18.2-patched/memory/build/mozmemory_wrap.cpp
+--- seamonkey-2.53.18.2/memory/build/mozmemory_wrap.cpp	2021-03-02 02:17:57.000000000 +0800
++++ seamonkey-2.53.18.2-patched/memory/build/mozmemory_wrap.cpp	2024-04-25 15:32:42.371294049 +0800
+@@ -10,6 +10,8 @@
+ 
+ // Declare malloc implementation functions with the right return and
+ // argument types.
++#define NOTHROW_MALLOC_DECL(name, return_type, ...)                                    \
++  MOZ_MEMORY_API return_type name##_impl(__VA_ARGS__) noexcept(true);
+ #define MALLOC_DECL(name, return_type, ...)                                    \
+   MOZ_MEMORY_API return_type name##_impl(__VA_ARGS__);
+ #define MALLOC_FUNCS MALLOC_FUNCS_MALLOC
+diff --color -Naur seamonkey-2.53.18.2/memory/mozalloc/mozalloc.cpp seamonkey-2.53.18.2-patched/memory/mozalloc/mozalloc.cpp
+--- seamonkey-2.53.18.2/memory/mozalloc/mozalloc.cpp	2021-10-27 00:49:54.000000000 +0800
++++ seamonkey-2.53.18.2-patched/memory/mozalloc/mozalloc.cpp	2024-04-25 15:32:42.316294104 +0800
+@@ -7,35 +7,14 @@
+ 
+ #include <stddef.h>             // for size_t
+ 
+-#if defined(MOZ_MEMORY)
+-// mozalloc.cpp is part of the same library as mozmemory, thus MOZ_MEMORY_IMPL
+-// is needed.
+-#define MOZ_MEMORY_IMPL
+-#include "mozmemory_wrap.h"
+-
+-#if defined(XP_DARWIN)
+-#include <malloc/malloc.h> // for malloc_size
+-#endif
+-
+-// See mozmemory_wrap.h for more details. This file is part of libmozglue, so
+-// it needs to use _impl suffixes. However, with libmozglue growing, this is
+-// becoming cumbersome, so we will likely use a malloc.h wrapper of some sort
+-// and allow the use of the functions without a _impl suffix.
+-#define MALLOC_DECL(name, return_type, ...) \
+-  MOZ_MEMORY_API return_type name ## _impl(__VA_ARGS__);
+-#define MALLOC_FUNCS MALLOC_FUNCS_MALLOC
+-#include "malloc_decls.h"
+-
+-MOZ_MEMORY_API char *strdup_impl(const char *);
+-MOZ_MEMORY_API char *strndup_impl(const char *, size_t);
++#if defined(MALLOC_H)
++#  include MALLOC_H             // for memalign, malloc_size, malloc_us
++#endif // if defined(MALLOC_H)
+ 
+-#else
++#if !defined(MOZ_MEMORY)
+ // When jemalloc is disabled, or when building the static runtime variant,
+ // we need not to use the suffixes.
+ 
+-#if defined(MALLOC_H)
+-#  include MALLOC_H             // for memalign, malloc_size, malloc_us
+-#endif // if defined(MALLOC_H)
+ #include <stdlib.h>             // for malloc, free
+ #if defined(XP_UNIX)
+ #  include <unistd.h>
+@@ -64,6 +43,11 @@
+ #include "mozilla/mozalloc.h"
+ #include "mozilla/mozalloc_oom.h"  // for mozalloc_handle_oom
+ 
++#if defined(MOZ_MEMORY)
++MOZ_MEMORY_API char *strdup_impl(const char *);
++MOZ_MEMORY_API char *strndup_impl(const char *, size_t);
++#endif
++
+ void*
+ moz_xmalloc(size_t size)
+ {
+diff --color -Naur seamonkey-2.53.18.2/memory/mozalloc/mozalloc.h seamonkey-2.53.18.2-patched/memory/mozalloc/mozalloc.h
+--- seamonkey-2.53.18.2/memory/mozalloc/mozalloc.h	2021-10-27 00:49:54.000000000 +0800
++++ seamonkey-2.53.18.2-patched/memory/mozalloc/mozalloc.h	2024-04-25 15:32:42.332294088 +0800
+@@ -8,6 +8,21 @@
+ #ifndef mozilla_mozalloc_h
+ #define mozilla_mozalloc_h
+ 
++#if defined(MOZ_MEMORY) && defined(IMPL_MFBT)
++#  define MOZ_MEMORY_IMPL
++#  include "mozmemory_wrap.h"
++#  define MALLOC_FUNCS MALLOC_FUNCS_MALLOC
++// See mozmemory_wrap.h for more details. Files that are part of libmozglue,
++// need to use _impl suffixes, which is becoming cumbersome. We'll have to use
++// something like a malloc.h wrapper and allow the use of the functions without
++// a _impl suffix. In the meanwhile, this is enough to get by for C++ code.
++#  define NOTHROW_MALLOC_DECL(name, return_type, ...) \
++    MOZ_MEMORY_API return_type name##_impl(__VA_ARGS__) noexcept(true);
++#  define MALLOC_DECL(name, return_type, ...) \
++    MOZ_MEMORY_API return_type name##_impl(__VA_ARGS__);
++#  include "malloc_decls.h"
++#endif
++
+ /*
+  * https://bugzilla.mozilla.org/show_bug.cgi?id=427099
+  */
+diff --color -Naur seamonkey-2.53.18.2/memory/mozalloc/winheap.cpp seamonkey-2.53.18.2-patched/memory/mozalloc/winheap.cpp
+--- seamonkey-2.53.18.2/memory/mozalloc/winheap.cpp	2023-11-07 05:01:24.000000000 +0800
++++ seamonkey-2.53.18.2-patched/memory/mozalloc/winheap.cpp	2024-04-25 15:32:42.338294082 +0800
+@@ -5,31 +5,15 @@
+  * License, v. 2.0. If a copy of the MPL was not distributed with this
+  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ 
+-#include "mozilla/Types.h"
++#include "mozilla/mozalloc.h"
+ #include <windows.h>
+ 
+-#if defined(MOZ_MEMORY)
+-// mozalloc.cpp is part of the same library as mozmemory, thus MOZ_MEMORY_IMPL
+-// is needed.
+-#define MOZ_MEMORY_IMPL
+-#include "mozmemory_wrap.h"
+-
+-// See mozmemory_wrap.h for more details. This file is part of libmozglue, so
+-// it needs to use _impl suffixes. However, with libmozglue growing, this is
+-// becoming cumbersome, so we will likely use a malloc.h wrapper of some sort
+-// and allow the use of the functions without a _impl suffix.
+-#define MALLOC_DECL(name, return_type, ...) \
+-  MOZ_MEMORY_API return_type name ## _impl(__VA_ARGS__);
+-#define MALLOC_FUNCS MALLOC_FUNCS_MALLOC
+-#include "malloc_decls.h"
+-#else
+-
++#if !defined(MOZ_MEMORY)
+ #include <malloc.h>
+ #define malloc_impl malloc
+ #define calloc_impl calloc
+ #define realloc_impl realloc
+ #define free_impl free
+-
+ #endif
+ 
+ // Warning: C4273: 'HeapAlloc': inconsistent dll linkage
+diff --color -Naur seamonkey-2.53.18.2/mozglue/build/Authenticode.cpp seamonkey-2.53.18.2-patched/mozglue/build/Authenticode.cpp
+--- seamonkey-2.53.18.2/mozglue/build/Authenticode.cpp	2023-06-10 18:41:20.000000000 +0800
++++ seamonkey-2.53.18.2-patched/mozglue/build/Authenticode.cpp	2024-04-25 15:32:08.700327899 +0800
+@@ -4,18 +4,6 @@
+  * License, v. 2.0. If a copy of the MPL was not distributed with this
+  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ 
+-#ifdef MOZ_MEMORY
+-#define MOZ_MEMORY_IMPL
+-#include "mozmemory_wrap.h"
+-#define MALLOC_FUNCS MALLOC_FUNCS_MALLOC
+-// See mozmemory_wrap.h for more details. This file is part of libmozglue, so
+-// it needs to use _impl suffixes.
+-#define MALLOC_DECL(name, return_type, ...) \
+-  extern "C" MOZ_MEMORY_API return_type name ## _impl(__VA_ARGS__);
+-#include "malloc_decls.h"
+-#include "mozilla/mozalloc.h"
+-#endif
+-
+ #include "Authenticode.h"
+ 
+ #include "mozilla/ArrayUtils.h"
+diff --color -Naur seamonkey-2.53.18.2/mozglue/build/WindowsDllBlocklist.cpp seamonkey-2.53.18.2-patched/mozglue/build/WindowsDllBlocklist.cpp
+--- seamonkey-2.53.18.2/mozglue/build/WindowsDllBlocklist.cpp	2023-11-07 05:01:24.000000000 +0800
++++ seamonkey-2.53.18.2-patched/mozglue/build/WindowsDllBlocklist.cpp	2024-04-25 15:32:08.718327881 +0800
+@@ -3,17 +3,6 @@
+  * License, v. 2.0. If a copy of the MPL was not distributed with this
+  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ 
+-#ifdef MOZ_MEMORY
+-#define MOZ_MEMORY_IMPL
+-#include "mozmemory_wrap.h"
+-#define MALLOC_FUNCS MALLOC_FUNCS_MALLOC
+-// See mozmemory_wrap.h for more details. This file is part of libmozglue, so
+-// it needs to use _impl suffixes.
+-#define MALLOC_DECL(name, return_type, ...) \
+-  MOZ_MEMORY_API return_type name ## _impl(__VA_ARGS__);
+-#include "malloc_decls.h"
+-#endif
+-
+ #include <windows.h>
+ #include <winternl.h>
+ #include <io.h>
