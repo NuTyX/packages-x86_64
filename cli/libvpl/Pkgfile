@@ -1,0 +1,35 @@
+description='Intel Video Processing Library'
+url='https://intel.github.io/libvpl/'
+
+license="MIT"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=libvpl
+version=2.11.0
+
+makedepends=(cmake)
+
+source=(https://github.com/intel/libvpl/archive/v$version/$name-$version.tar.gz)
+
+build() {
+  export CFLAGS+=' -DNDEBUG'
+  export CXXFLAGS+=' -DNDEBUG'
+  cmake -B build -S "libvpl-$version" \
+  -G 'Unix Makefiles' \
+  -DCMAKE_BUILD_TYPE:STRING='None' \
+  -DCMAKE_INSTALL_PREFIX:PATH='/usr' \
+  -DCMAKE_INSTALL_SYSCONFDIR:PATH='/etc' \
+  -DBUILD_EXAMPLES:BOOL='OFF' \
+  -DBUILD_TESTS:BOOL='ON' \
+  -DVPL_INSTALL_LICENSEDIR:PATH="share/licenses/$name" \
+  -Wno-dev
+
+  cmake --build build
+
+  DESTDIR=$PKG cmake --install build
+  rm -r $PKG/usr/share/vpl/examples
+
+  rm $PKG/{etc/vpl/vars.sh,usr/include/vpl/preview/{,legacy/}README.txt}
+}
