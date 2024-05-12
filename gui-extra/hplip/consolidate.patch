@@ -1,0 +1,606 @@
+diff -Naur a/base/password.py b/base/password.py
+--- a/base/password.py	2022-02-23 08:41:04.000000000 +0100
++++ b/base/password.py	2022-03-14 12:46:12.020279605 +0100
+@@ -56,6 +56,7 @@
+               'gos': 'sudo',
+               'boss': 'su',
+               'lfs': 'su',
++              'nutyx': 'sudo',
+               'manjarolinux': 'sudo',
+               'uos': 'sudo',
+               'zorinos': 'sudo',
+diff -Naur a/base/sixext.py b/base/sixext.py
+--- a/base/sixext.py	2022-02-23 08:41:04.000000000 +0100
++++ b/base/sixext.py	2022-03-14 12:46:12.020279605 +0100
+@@ -110,11 +110,11 @@
+ 
+ 
+     def to_string_utf8(s):
+-        return s.decode("utf-8")
++        return s.decode("utf-8", 'ignore')
+ 
+ 
+     def to_string_latin(s):
+-        return s.decode("latin-1")
++        return s.decode("latin-1", 'ignore')
+ 
+ 
+     def to_unicode(s, enc=None):
+diff -Naur a/configure.in b/configure.in
+--- a/configure.in	2022-02-23 08:41:04.000000000 +0100
++++ b/configure.in	2022-03-14 12:46:12.020279605 +0100
+@@ -618,7 +618,7 @@
+ 
+ if test "$class_driver" = "no" && test "$hpijs_only_build" = "no" && test "$hpcups_only_build" = "no"; then
+    AC_CHECK_LIB([cups], [cupsDoFileRequest], [LIBS="$LIBS"], [AC_MSG_ERROR([cannot find libcups support], 9)])
+-   AC_CHECK_HEADERS(cups/cups.h, ,[AC_MSG_ERROR([cannot find cups-devel support], 3)])
++   AC_CHECK_HEADERS(cups/cups.h cups/ppd.h, ,[AC_MSG_ERROR([cannot find cups-devel support], 3)])
+    if test "$libusb01_build" = "yes"; then
+       AC_CHECK_LIB([usb], [usb_init], [LIBS="$LIBS"], [AC_MSG_ERROR([cannot find libusb support], 2)])
+       AC_CHECK_HEADERS(usb.h, ,[AC_MSG_ERROR([cannot find libusb-devel support], 11)])
+@@ -628,17 +628,29 @@
+    fi
+ fi
+ 
+-SAVE_CPPFLAGS="$CPPFLAGS"
+-CFLAGS=`python-config --includes`
+-if [ $? -eq 0 ] 
+-then
+-   echo $FLAGS
+-else
+-CFLAGS=`python3-config --includes`
+-   if [ $? -eq 0 ]
+-   then
+-   echo $FLAGS
+-   fi
++AC_PATH_PROG(python3_config_path, python3-config, [AC_MSG_ERROR([python3-config not installed], 6)])
++
++PYTHON_INCLUDES=`$python3_config_path --includes`
++if test "X$PYTHON_INCLUDES" = "X" ; then
++  AC_MSG_ERROR([Cannot get Python includes via python3-config], 6)
++fi
++
++PYTHON_LIBS=`$python3_config_path --libs`
++if test "X$PYTHON_LIBS" = "X" ; then
++  AC_MSG_ERROR([Cannot get Python libs via python3-config], 6)
++fi
++
++SAVE_CFLAGS=$CFLAGS
++SAVE_LIBS=$LIBS
++
++CFLAGS="$CFLAGS $PYTHON_INCLUDES"
++LIBS="$LIBS $PYTHON_LIBS"
++
++AC_TRY_LINK(,[ ], AC_MSG_RESULT(yes); python_includes="ok", AC_MSG_ERROR([no: PYTHON DISABLED], 6))
++
++if test "X$python_includes" != "Xok" ; then
++  CFLAGS="$SAVE_CFLAGS"
++  LIBS="$SAVE_LIBS"
+ fi
+ 
+ #CFLAGS=`(python-config --includes)`
+@@ -664,7 +676,6 @@
+    AS_IF([test "x$FOUND_HEADER" != "xyes"],
+           [AC_MSG_ERROR([cannot find python-devel support], 6)])
+ fi
+-CFLAGS="$save_CFLAGS"
+ 
+ if test "$hpijs_only_build" = "no" && test "$scan_build" = "yes" && test "$hpcups_only_build" = "no"; then
+    AC_CHECK_LIB([sane], [sane_open], [LIBS="$LIBS"], [AC_MSG_ERROR([cannot find sane-backends-devel support (or --disable-scan-build)], 12)])
+diff -Naur a/createPPD.sh b/createPPD.sh
+--- a/createPPD.sh	2022-02-23 08:41:04.000000000 +0100
++++ b/createPPD.sh	2022-03-14 13:17:46.349720581 +0100
+@@ -54,15 +54,15 @@
+ 	else
+ 		cp prnt/ps/hp-postscript*.ppd ppd/classppd/ps
+ 		for i in ppd/classppd/ps/*.ppd; do
+-			gzip -c "$i" > "$i.gz"
++			gzip -nc "$i" > "$i.gz"
+ 		done
+ 	fi
+         #cp prnt/ps/hp-postscript*.ppd.gz ppd/classppd/ps
+ 	for i in ppd/classppd/hpcups/*.ppd; do
+-		gzip -c "$i" > "$i.gz"
++		gzip -nc "$i" > "$i.gz"
+ 	done
+ 	#for i in ppd/classppd/ps/*.ppd; do
+-	#	gzip -c "$i" > "$i.gz"
++	#	gzip -nc "$i" > "$i.gz"
+ 	#done
+ 
+ 	cat > class_cups_drv.inc <<EOF
+@@ -81,14 +81,14 @@
+ install -d ppd/hpcups
+ ppdc -d ppd/hpcups prnt/drv/hpcups.drv
+ for i in ppd/hpcups/*.ppd; do
+-      gzip -c "$i" > "$i.gz"
++      gzip -nc "$i" > "$i.gz"
+ done
+ 
+ install -d ppd/hpijs
+ ppdc -d ppd/hpijs prnt/drv/hpijs.drv
+ echo "gzip ppd files..."
+ for i in ppd/hpijs/*.ppd; do
+-      gzip -c "$i" > "$i.gz"
++      gzip -nc "$i" > "$i.gz"
+ done
+ echo "building foomatic_drv.inc..."
+ ./hpijs-drv > foomatic_drv.inc $shadow
+diff -Naur a/installer/distros.dat b/installer/distros.dat
+--- a/installer/distros.dat	2022-02-23 08:41:04.000000000 +0100
++++ b/installer/distros.dat	2022-03-14 12:46:12.023612872 +0100
+@@ -94,7 +94,7 @@
+ # ****************************************
+ 
+ [distros]
+-distros=unknown,mepis,debian,suse,mandriva,fedora,redhat,rhel,slackware,gentoo,redflag,ubuntu,xandros,freebsd,linspire,ark,pclinuxos,centos,igos,linuxmint,linpus,gos,boss,lfs,manjarolinux,zorin,mxlinux,elementary
++distros=unknown,mepis,debian,suse,mandriva,fedora,redhat,rhel,slackware,gentoo,redflag,ubuntu,xandros,freebsd,linspire,ark,pclinuxos,centos,igos,linuxmint,linpus,gos,boss,lfs,nutyx,manjarolinux,zorin,mxlinux,elementary
+ 
+ # ****************************************
+ 
+@@ -16553,6 +16553,280 @@
+ [lfs:6:epm]
+ packages=epm
+ 
++# ****************************************
++[nutyx]
++index=51
++versions=rolling,testing
++display_name=GNU/Linux NuTyX
++alt_names=
++display=1
++notes=
++package_mgrs=
++package_mgr_cmd=$packages_to_install
++pre_depend_cmd=
++post_depend_cmd=
++hplip_remove_cmd=
++su_sudo=su
++ppd_install=ppd
++udev_mode_fix=1
++ppd_dir=/usr/share/ppd/HP
++fix_ppd_symlink=0
++drv_dir=/usr/share/cups/drv/HP
++
++[nutyx:rolling]
++code_name=NuTyX
++supported=0
++scan_supported=1
++fax_supported=1
++pcard_supported=1
++network_supported=1
++parallel_supported=0
++usb_supported=1
++packaged_version=
++release_date=
++notes=
++ppd_install=ppd
++udev_mode_fix=1
++ppd_dir=/usr/share/ppd/HP
++fix_ppd_symlink=0
++drv_dir=/usr/share/cups/drv/HP
++ui_toolkit=qt4
++foomatic_rip_hplip=1
++
++[nutyx:rolling:cups]
++packages=cups
++
++[nutyx:rolling:cups-devel]
++packages=cups.devel
++
++[nutyx:rolling:gcc]
++packages=gcc.devel
++
++[nutyx:rolling:gs]
++packages=ghostscript
++
++[nutyx:rolling:libcrypto]
++packages=openssl
++
++[nutyx:rolling:libjpeg]
++packages=libjpeg.devel
++
++[nutyx:rolling:libnetsnmp-devel]
++packages=snmp.devel
++
++[nutyx:rolling:libpthread]
++packages=glibc
++
++[nutyx:rolling:libtool]
++packages=libtool
++
++[nutyx:rolling:libusb]
++packages=libusb
++
++[nutyx:rolling:make]
++packages=make
++
++[nutyx:rolling:pil]
++packages=python-imaging
++
++[nutyx:rolling:ppdev]
++packages=
++commands=sudo "modprobe ppdev",sudo -c cp -f /etc/modules /etc/modules.hplip,echo ppdev | sudo tee -a /etc/modules
++
++[nutyx:rolling:pyqt]
++packages=python-qt3
++
++[nutyx:rolling:python-devel]
++packages=python.devel
++
++[nutyx:rolling:pyqt4]
++packages=python-qt4
++
++[nutyx:rolling:pyqt4-dbus]
++packages=python-qt4-dbus
++
++[nutyx:rolling:python23]
++packages=python
++
++[nutyx:rolling:python2X]
++packages=python2
++
++[nutyx:rolling:reportlab]
++packages=python-reportlab
++
++[nutyx:rolling:sane]
++packages=sane
++
++[nutyx:rolling:sane-devel]
++packages=sane.devel
++
++[nutyx:rolling:scanimage]
++packages=sane
++
++[nutyx:rolling:xsane]
++packages=xsane
++
++[nutyx:rolling:cups-ddk]
++packages=cups
++
++[nutyx:rolling:python-dbus]
++packages=python-dbus,python-gobject
++
++[nutyx:rolling:dbus]
++packages=dbus
++
++[nutyx:rolling:python-ctypes]
++packages=python
++
++[nutyx:rolling:cups-image]
++packages=cups
++
++[nutyx:rolling:policykit]
++packages=polkit
++
++[nutyx:rolling:python-notify]
++packages=python-notify
++
++[nutyx:rolling:network]
++packages=wget
++
++[nutyx:rolling:avahi-utils]
++packages=avahi
++
++[nutyx:rolling:automake]
++packages=automake1.11
++
++[nutyx:rolling:epm]
++packages=epm
++
++[nutyx:testing]
++code_name=NuTyX
++supported=0
++scan_supported=1
++fax_supported=1
++pcard_supported=1
++network_supported=1
++parallel_supported=0
++usb_supported=1
++packaged_version=
++release_date=
++notes=
++ppd_install=ppd
++udev_mode_fix=1
++ppd_dir=/usr/share/ppd/HP
++fix_ppd_symlink=0
++drv_dir=/usr/share/cups/drv/HP
++ui_toolkit=qt4
++foomatic_rip_hplip=1
++
++[nutyx:testing:cups]
++packages=cups
++
++[nutyx:testing:cups-devel]
++packages=cups.devel
++
++[nutyx:testing:gcc]
++packages=gcc.devel
++
++[nutyx:testing:gs]
++packages=ghostscript
++
++[nutyx:testing:libcrypto]
++packages=openssl
++
++[nutyx:testing:libjpeg]
++packages=libjpeg.devel
++
++[nutyx:testing:libnetsnmp-devel]
++packages=snmp.devel
++
++[nutyx:testing:libpthread]
++packages=glibc
++
++[nutyx:testing:libtool]
++packages=libtool
++
++[nutyx:testing:libusb]
++packages=libusb
++
++[nutyx:testing:make]
++packages=make
++
++[nutyx:testing:pil]
++packages=python-imaging
++
++[nutyx:testing:ppdev]
++packages=
++commands=sudo "modprobe ppdev",sudo -c cp -f /etc/modules /etc/modules.hplip,echo ppdev | sudo tee -a /etc/modules
++
++[nutyx:testing:pyqt]
++packages=python-qt3
++
++[nutyx:testing:python-devel]
++packages=python.devel
++
++[nutyx:testing:pyqt4]
++packages=python-qt4
++
++[nutyx:testing:pyqt4-dbus]
++packages=python-qt4-dbus
++
++[nutyx:testing:python23]
++packages=python
++
++[nutyx:testing:python2X]
++packages=python2
++
++[nutyx:testing:reportlab]
++packages=python-reportlab
++
++[nutyx:testing:sane]
++packages=sane
++
++[nutyx:testing:sane-devel]
++packages=sane.devel
++
++[nutyx:testing:scanimage]
++packages=sane
++
++[nutyx:testing:xsane]
++packages=xsane
++
++[nutyx:testing:cups-ddk]
++packages=cups
++
++[nutyx:testing:python-dbus]
++packages=python-dbus,python-gobject
++
++[nutyx:testing:dbus]
++packages=dbus
++
++[nutyx:testing:python-ctypes]
++packages=python
++
++[nutyx:testing:cups-image]
++packages=cups
++
++[nutyx:testing:policykit]
++packages=polkit
++
++[nutyx:testing:python-notify]
++packages=python-notify
++
++[nutyx:testing:network]
++packages=wget
++
++[nutyx:testing:avahi-utils]
++packages=avahi
++
++[nutyx:testing:automake]
++packages=automake1.11
++
++[nutyx:testing:epm]
++packages=epm
++
++
++
+ 
+ 
+ # ****************************************
+diff -Naur a/Makefile.am b/Makefile.am
+--- a/Makefile.am	2022-02-23 08:41:04.000000000 +0100
++++ b/Makefile.am	2022-03-14 12:46:12.023612872 +0100
+@@ -687,19 +687,19 @@
+ 
+ install-data-hook:
+ if HPLIP_BUILD
+-	if [ \( "$(UNAME)" = "x86_64" -a  -d "$(libdir)/" \) ]; then \
+-		cp prnt/hpcups/libImageProcessor-x86_64.so $(libdir)/ ; \
+-		chmod 775 $(libdir)/libImageProcessor-x86_64.so ; \
+-		ln -sf $(libdir)/libImageProcessor-x86_64.so $(libdir)/libImageProcessor.so ; \
++	if [ \( "$(UNAME)" = "x86_64" -a  -d "$(DESTDIR)$(libdir)/" \) ]; then \
++		cp prnt/hpcups/libImageProcessor-x86_64.so $(DESTDIR)$(libdir)/ ; \
++		chmod 775 $(DESTDIR)$(libdir)/libImageProcessor-x86_64.so ; \
++		ln -sf $(libdir)/libImageProcessor-x86_64.so $(DESTDIR)$(libdir)/libImageProcessor.so ; \
+ 	fi; \
+-	if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(libdir)/" \) ]; then \
+-		cp prnt/hpcups/libImageProcessor-x86_32.so $(libdir)/ ; \
+-		chmod 775 $(libdir)/libImageProcessor-x86_32.so ; \
+-		ln -sf $(libdir)/libImageProcessor-x86_32.so $(libdir)/libImageProcessor.so ; \
++	if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(DESTDIR)$(libdir)/" \) ]; then \
++		cp prnt/hpcups/libImageProcessor-x86_32.so $(DESTDIR)$(libdir)/ ; \
++		chmod 775 $(DESTDIR)$(libdir)/libImageProcessor-x86_32.so ; \
++		ln -sf $(libdir)/libImageProcessor-x86_32.so $(DESTDIR)$(libdir)/libImageProcessor.so ; \
+ 	fi
+-	if [ -d "/usr/share/ipp-usb/quirks/" ]; then \
++	if [ -d "$(DESTDIR)/usr/share/ipp-usb/quirks/" ]; then \
+ 		echo "ipp-usb directory exists"; \
+-		cp prnt/ipp-usb/HPLIP.conf /usr/share/ipp-usb/quirks/ ; \
++		cp prnt/ipp-usb/HPLIP.conf $(DESTDIR)/usr/share/ipp-usb/quirks/ ; \
+ 	fi
+ if !HPLIP_CLASS_DRIVER
+ #	   If scanner build, add hpaio entry to sane dll.conf.
+@@ -712,15 +712,15 @@
+ 		  echo "Adding hpaio entry to /etc/sane.d/dll.conf." ; \
+ 		  echo hpaio >>$(DESTDIR)/etc/sane.d/dll.conf ; \
+ 	   fi; \
+- 	   if [ \( "$(UNAME)" = "x86_64" -a  -d "$(libdir)/x86_64-linux-gnu/sane" \) ]; then \
+-	  	ln -sf $(libdir)/sane/libsane-hpaio.so $(libdir)/x86_64-linux-gnu/sane/ ; \
+-	  	ln -sf $(libdir)/sane/libsane-hpaio.so.1 $(libdir)/x86_64-linux-gnu/sane/ ; \
++ 	   if [ \( "$(UNAME)" = "x86_64" -a  -d "$(DESTDIR)$(libdir)/x86_64-linux-gnu/sane" \) ]; then \
++	  	ln -sf $(libdir)/sane/libsane-hpaio.so $(DESTDIR)$(libdir)/x86_64-linux-gnu/sane/ ; \
++	  	ln -sf $(libdir)/sane/libsane-hpaio.so.1 $(DESTDIR)$(libdir)/x86_64-linux-gnu/sane/ ; \
+ 	   fi; \
+-	   if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(libdir)/i386-linux-gnu" \) ]; then \
+-	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(libdir)/i386-linux-gnu/libhpmud.so ; \
+-	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(libdir)/i386-linux-gnu/libhpmud.so.0 ; \
+-	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(libdir)/i386-linux-gnu/sane/libsane-hpaio.so.1 ; \
+-	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(libdir)/i386-linux-gnu/sane/libsane-hpaio.so ; \
++	   if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(DESTDIR)$(libdir)/i386-linux-gnu" \) ]; then \
++	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(DESTDIR)$(libdir)/i386-linux-gnu/libhpmud.so ; \
++	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(DESTDIR)$(libdir)/i386-linux-gnu/libhpmud.so.0 ; \
++	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(DESTDIR)$(libdir)/i386-linux-gnu/sane/libsane-hpaio.so.1 ; \
++	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(DESTDIR)$(libdir)/i386-linux-gnu/sane/libsane-hpaio.so ; \
+ 	   fi \
+ 	fi
+ endif #HPLIP_CLASS_DRIVER
+diff -Naur a/Makefile.in b/Makefile.in
+--- a/Makefile.in	2022-02-23 08:42:31.000000000 +0100
++++ b/Makefile.in	2022-03-14 12:46:12.026946139 +0100
+@@ -9798,19 +9798,19 @@
+ 
+ 
+ install-data-hook:
+-@HPLIP_BUILD_TRUE@	if [ \( "$(UNAME)" = "x86_64" -a  -d "$(libdir)/" \) ]; then \
+-@HPLIP_BUILD_TRUE@		cp prnt/hpcups/libImageProcessor-x86_64.so $(libdir)/ ; \
+-@HPLIP_BUILD_TRUE@		chmod 775 $(libdir)/libImageProcessor-x86_64.so ; \
+-@HPLIP_BUILD_TRUE@		ln -sf $(libdir)/libImageProcessor-x86_64.so $(libdir)/libImageProcessor.so ; \
++@HPLIP_BUILD_TRUE@	if [ \( "$(UNAME)" = "x86_64" -a  -d "$(DESTDIR)$(libdir)/" \) ]; then \
++@HPLIP_BUILD_TRUE@		cp prnt/hpcups/libImageProcessor-x86_64.so $(DESTDIR)$(libdir)/ ; \
++@HPLIP_BUILD_TRUE@		chmod 775 $(DESTDIR)$(libdir)/libImageProcessor-x86_64.so ; \
++@HPLIP_BUILD_TRUE@		ln -sf $(libdir)/libImageProcessor-x86_64.so $(DESTDIR)$(libdir)/libImageProcessor.so ; \
+ @HPLIP_BUILD_TRUE@	fi; \
+-@HPLIP_BUILD_TRUE@	if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(libdir)/" \) ]; then \
+-@HPLIP_BUILD_TRUE@		cp prnt/hpcups/libImageProcessor-x86_32.so $(libdir)/ ; \
+-@HPLIP_BUILD_TRUE@		chmod 775 $(libdir)/libImageProcessor-x86_32.so ; \
+-@HPLIP_BUILD_TRUE@		ln -sf $(libdir)/libImageProcessor-x86_32.so $(libdir)/libImageProcessor.so ; \
++@HPLIP_BUILD_TRUE@	if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(DESTDIR)$(libdir)/" \) ]; then \
++@HPLIP_BUILD_TRUE@		cp prnt/hpcups/libImageProcessor-x86_32.so $(DESTDIR)$(libdir)/ ; \
++@HPLIP_BUILD_TRUE@		chmod 775 $(DESTDIR)$(libdir)/libImageProcessor-x86_32.so ; \
++@HPLIP_BUILD_TRUE@		ln -sf $(libdir)/libImageProcessor-x86_32.so $(DESTDIR)$(libdir)/libImageProcessor.so ; \
+ @HPLIP_BUILD_TRUE@	fi
+-@HPLIP_BUILD_TRUE@	if [ -d "/usr/share/ipp-usb/quirks/" ]; then \
++@HPLIP_BUILD_TRUE@	if [ -d "$(DESTDIR)/usr/share/ipp-usb/quirks/" ]; then \
+ @HPLIP_BUILD_TRUE@		echo "ipp-usb directory exists"; \
+-@HPLIP_BUILD_TRUE@		cp prnt/ipp-usb/HPLIP.conf /usr/share/ipp-usb/quirks/ ; \
++@HPLIP_BUILD_TRUE@		cp prnt/ipp-usb/HPLIP.conf $(DESTDIR)/usr/share/ipp-usb/quirks/ ; \
+ @HPLIP_BUILD_TRUE@	fi
+ #	   If scanner build, add hpaio entry to sane dll.conf.
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	if [ "$(scan_build)" = "yes" ]; then \
+@@ -9822,15 +9822,15 @@
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@		  echo "Adding hpaio entry to /etc/sane.d/dll.conf." ; \
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@		  echo hpaio >>$(DESTDIR)/etc/sane.d/dll.conf ; \
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	   fi; \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@ 	   if [ \( "$(UNAME)" = "x86_64" -a  -d "$(libdir)/x86_64-linux-gnu/sane" \) ]; then \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	  	ln -sf $(libdir)/sane/libsane-hpaio.so $(libdir)/x86_64-linux-gnu/sane/ ; \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	  	ln -sf $(libdir)/sane/libsane-hpaio.so.1 $(libdir)/x86_64-linux-gnu/sane/ ; \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@ 	   if [ \( "$(UNAME)" = "x86_64" -a  -d "$(DESTDIR)$(libdir)/x86_64-linux-gnu/sane" \) ]; then \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	  	ln -sf $(libdir)/sane/libsane-hpaio.so $(DESTDIR)$(libdir)/x86_64-linux-gnu/sane/ ; \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	  	ln -sf $(libdir)/sane/libsane-hpaio.so.1 $(DESTDIR)$(libdir)/x86_64-linux-gnu/sane/ ; \
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	   fi; \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	   if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(libdir)/i386-linux-gnu" \) ]; then \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(libdir)/i386-linux-gnu/libhpmud.so ; \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(libdir)/i386-linux-gnu/libhpmud.so.0 ; \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(libdir)/i386-linux-gnu/sane/libsane-hpaio.so.1 ; \
+-@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(libdir)/i386-linux-gnu/sane/libsane-hpaio.so ; \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	   if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(DESTDIR)$(libdir)/i386-linux-gnu" \) ]; then \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(DESTDIR)$(libdir)/i386-linux-gnu/libhpmud.so ; \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/libhpmud.so.0.0.6  $(DESTDIR)$(libdir)/i386-linux-gnu/libhpmud.so.0 ; \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(DESTDIR)$(libdir)/i386-linux-gnu/sane/libsane-hpaio.so.1 ; \
++@HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	      ln -sf $(libdir)/sane/libsane-hpaio.so.1.0.0 $(DESTDIR)$(libdir)/i386-linux-gnu/sane/libsane-hpaio.so ; \
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	   fi \
+ @HPLIP_BUILD_TRUE@@HPLIP_CLASS_DRIVER_FALSE@	fi
+ #	   Create hp-xxx commands in bindir.
+diff -Naur a/prnt/hpcups/CommonDefinitions.h b/prnt/hpcups/CommonDefinitions.h
+--- a/prnt/hpcups/CommonDefinitions.h	2022-02-23 08:41:04.000000000 +0100
++++ b/prnt/hpcups/CommonDefinitions.h	2022-03-14 12:46:12.030279407 +0100
+@@ -40,6 +40,7 @@
+ #include <fcntl.h>
+ #include <sys/stat.h>
+ #include <cups/cups.h>
++#include <cups/ppd.h>
+ #include <cups/raster.h>
+ #include <stdarg.h>
+ #include <stdio.h>
+diff -Naur a/prnt/hpijs/hpcupsfax.cpp b/prnt/hpijs/hpcupsfax.cpp
+--- a/prnt/hpijs/hpcupsfax.cpp	2022-02-23 08:41:05.000000000 +0100
++++ b/prnt/hpijs/hpcupsfax.cpp	2022-03-14 12:46:12.030279407 +0100
+@@ -43,6 +43,7 @@
+ #include <arpa/inet.h>
+ #include <math.h>
+ #include <cups/cups.h>
++#include <cups/ppd.h>
+ #include <cups/raster.h>
+ #include <string>
+ #ifdef FALSE
+diff -Naur a/scan/sane/bb_ledm.c b/scan/sane/bb_ledm.c
+--- a/scan/sane/bb_ledm.c	2022-02-23 08:41:05.000000000 +0100
++++ b/scan/sane/bb_ledm.c	2022-03-14 13:19:51.977235532 +0100
+@@ -1015,7 +1015,7 @@
+   c +=11;
+   char BinaryURL[30];
+   i = 0;
+-  while(*c != '<')
++  while(*c != '<' && i < 29)
+   {
+      BinaryURL[i++] = *c ;
+      c++;
+diff -Naur a/setup.py b/setup.py
+--- a/setup.py	2022-02-23 08:41:05.000000000 +0100
++++ b/setup.py	2022-03-14 12:46:12.030279407 +0100
+@@ -552,7 +552,7 @@
+                         if os.path.exists(file_path) and os.path.isfile(file_path):
+ 
+                             if file_path.endswith('.gz'):
+-                                nickname = gzip.GzipFile(file_path, 'r').read(4096)
++                                nickname = gzip.open(file_path, 'rt').read(4096)
+                             else:
+                                 nickname = open(file_path, 'r').read(4096)
+ 
+diff -Naur a/upgrade.py b/upgrade.py
+--- a/upgrade.py	2022-02-23 08:41:05.000000000 +0100
++++ b/upgrade.py	2022-03-14 13:11:02.797671036 +0100
+@@ -207,6 +207,9 @@
+ if os.getenv("HPLIP_DEBUG"):
+     log.set_level('debug')
+ 
++log.error("HPLIP upgrade is disabled by NuTyX for security reasons. Please use cards to upgrade.")
++clean_exit(1)
++
+ for o, a in opts:
+     if o in ('-h', '--help'):
+         usage()
+@@ -280,11 +283,9 @@
+         os.remove(log_file)
+     except OSError:
+         pass
+-
+ log.set_logfile(log_file)
+ log.set_where(log.LOG_TO_CONSOLE_AND_FILE)
+ 
+-
+ log.debug("Upgrade log saved in: %s" % log.bold(log_file))
+ log.debug("")
+ try:

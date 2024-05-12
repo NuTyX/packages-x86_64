@@ -1,0 +1,53 @@
+description="HP Linux Imaging and Printing"
+url="https://hplipopensource.com"
+
+contributors="Greg,Rems,BlogofraisFR,Spiky"
+packager="tnut <tnut@nutyx.org>"
+
+makedepends=(python cups foomatic-filters libusb net-snmp libjpeg-turbo)
+
+
+name=hplip
+version=3.23.12
+
+
+source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
+
+build() {
+ export PYTHON=/usr/bin/python3
+ cd $name-$version
+  ./configure --prefix=/usr \
+      --disable-doc-build \
+      --enable-lite-build \
+      --disable-network-build \
+      --with-hpppddir=/usr/share/cups/model \
+      --disable-scan-build \
+      --disable-fax-build \
+      --enable-hpijs-install \
+      --enable-foomatic-ppd-install \
+      --enable-foomatic-drv-install
+ make
+}
+
+package() {
+ cd $name-$version
+ make -j1 DESTDIR=$PKG install
+ 
+ # remove config provided by sane and autostart of hp-daemon
+ rm -rf $PKG/etc/{sane.d,xdg}
+ install -dm755 $PKG/etc/sane.d/dll.d
+ echo hpaio > $PKG/etc/sane.d/dll.d/hpaio
+ 
+ # remove HAL .fdi file because HAL is no longer used
+ rm -vrf $PKG/usr/share/hal
+ 
+ # remove rc script
+ rm -vrf $PKG/etc/init.d
+
+ # add mixed license file
+ install -Dt $PKG/usr/share/licenses/$name -m644 COPYING
+
+ python3 -m compileall -d /usr/share $PKG/usr/share
+ python3 -O -m compileall -d /usr/share $PKG/usr/share
+
+}
