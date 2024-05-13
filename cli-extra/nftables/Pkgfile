@@ -1,13 +1,14 @@
 description="Netfilter nftables userspace tools"
-url="http://netfilter.org/projects/nftables/"
+url="https://netfilter.org/projects/nftables/"
 
-contributors="Alienus,Fanch,Greg,Tnut"
-packager="spiky <spiky@nutyx.org>"
+contributors="Alienus,Fanch,Greg,Spiky"
+packager="tnut <tnut@nutyx.org>"
 
-makedepends=(gmp readline docbook2x asciidoc libmnl  libnftnl jansson)
+makedepends=(python-setuptools
+             gmp readline docbook2x asciidoc libmnl  libnftnl jansson)
 
 name=nftables
-version=1.0.7
+version=1.0.9
 
 source=($url/files/nftables-$version.tar.xz
         nftables.conf)
