@@ -1,0 +1,153 @@
+url="https://www.kernel.org"
+description="The latest stable kernel version"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+makedepends=(bison flex perl gmp mpc libelf diffutils)
+run=(nutyx kmod busybox)
+
+PKGMK_IGNORE_UNPACK="yes"
+PKGMK_NO_STRIP="yes"
+PKGMK_GROUPS=(devel doc)
+
+name=kernel-surface-66
+version=6.6.30
+
+alias=(linux-surface-66)
+INITRD="initrd-${name/*-/}"
+KERNEL="${name}"
+
+_version=${version:0:3}
+
+# Linux patch version
+[ "${_version}" != "${version}" ] && patchname="patch-$version.xz"
+
+## Download all the sources
+#
+
+source=(
+0001-surface3-oemb.patch
+0002-mwifiex.patch
+0003-ath10k.patch
+0004-ipts.patch
+0005-ithc.patch
+0006-surface-sam.patch
+0007-surface-sam-over-hid.patch
+0008-surface-button.patch
+0009-surface-typecover.patch
+0010-surface-shutdown.patch
+0011-surface-gpe.patch
+0012-cameras.patch
+0013-amd-gpio.patch
+0014-rtc.patch
+$url/pub/linux/kernel/v6.x/linux-${_version}.tar.xz config)
+
+[ -z $patchname ] || source+=" $url/pub/linux/kernel/v6.x/$patchname"
+## Time to build everything
+#
+
+build(){
+
+bsdtar -p -o -C $SRC -xf linux-${_version}.tar.xz
+
+cd linux-${_version}
+
+if [ -f $SRC/patch-$version.xz ]; then
+	xz -d -c  $SRC/patch-$version.xz | patch -Np1
+fi
+
+for i in ../*.patch
+do
+ patch -Np1 -i $i
+done
+
+make mrproper
+cp $SRC/config ./.config
+
+# make menuconfig
+
+make
+
+cp .config $SRC/config
+
+## Modules
+#
+# Kernel modules
+cd $SRC/linux-${_version}
+make INSTALL_MOD_PATH=$PKG modules_install
+
+KERNEL_VERSION="$(basename $PKG/lib/modules/*)"
+
+# depmod needed
+depmod -b $PKG -a ${KERNEL_VERSION}
+
+# Install config and kernel files
+cd $SRC/linux-${_version}
+
+mkdir -p $PKG/boot
+
+cp  System.map \
+$PKG/boot/System.map-${KERNEL_VERSION}
+cp  .config    \
+$PKG/boot/config-${KERNEL_VERSION}
+cp  arch/x86_64/boot/bzImage \
+$PKG/boot/$KERNEL
+
+
+# Reorgenise the sources
+cd $PKG/lib/modules/${KERNEL_VERSION}/
+
+mkdir -p $PKG/usr/src
+
+mv $SRC/linux-${_version} $PKG/usr/src/
+rm build
+
+ln -sv /usr/src/linux-${_version} build
+ln -sv /usr/src/linux-${_version} source
+
+mkdir $SRC/linux-${_version}
+mv $PKG/usr/src/linux-${_version}/Documentation \
+$SRC/linux-${_version}
+
+# Firmware are in linux-firmware
+rm -rf $PKG/lib/firmware
+
+# post-install autogen
+echo "if [ -f boot/$INITRD ]; then
+    mkinitramfs ${KERNEL_VERSION}
+    rm boot/$INITRD
+    mv boot/initrd-${KERNEL_VERSION} boot/$INITRD
+fi" > $PKGMK_ROOT/$name.post-install
+
+}
+devel() {
+
+cd $PKG
+rm -r usr/src/linux-${_version}/{block,drivers,fs,ipc,init,net,mm,samples,security,sound,virt}
+find  usr/src/linux-${_version}/ -type f -name "*.o"  \
+-o -name "*.ko" -o -name "*.cmd" -o -name "*.gcno" -delete
+
+mv usr/src/linux-${_version}/arch/x86 usr/src/linux-${_version}/arch/.x86
+rm -rf usr/src/linux-${_version}/arch/*
+mv usr/src/linux-${_version}/arch/.x86 usr/src/linux-${_version}/arch/x86
+
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
+usr/src/linux-${_version}
+
+rm -r usr
+}
+
+doc() {
+
+cd $PKG
+mkdir -p usr/share/doc
+mv $SRC/linux-${_version}/Documentation \
+usr/share/doc/linux-$version
+
+bsdtar -cf \
+$PKGMK_PACKAGE_DIR/$name.doc${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
+usr/share/doc/linux-$version
+
+rm -r usr
+}
