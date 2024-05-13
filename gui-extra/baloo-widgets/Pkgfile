@@ -11,6 +11,7 @@ set=(kde6)
 
 name=baloo-widgets
 version=24.02.2
+release=2
 
 makedepends=(qt6-base extra-cmake-modules baloo kconfig kcoreaddons
              kfilemetadata ki18n kio kservice kwidgetsaddons kdoctools)
@@ -24,6 +25,7 @@ cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr  \
       -DCMAKE_BUILD_TYPE=Release   \
       -DBUILD_WITH_QT6=ON          \
+      -DCMAKE_INSTALL_LIBDIR=lib   \
       -DBUILD_TESTING=OFF -Wno-dev \
       ../$name-$version
 make
