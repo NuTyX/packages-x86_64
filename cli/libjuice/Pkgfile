@@ -1,0 +1,30 @@
+description='UDP Interactive Connectivity Establishment (ICE) library'
+url='https://github.com/paullouisageneau/libjuice'
+
+license="MPL-2.0"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=libjuice
+version=1.4.1
+
+makedepends=(cmake)
+
+PKGMK_KEEP_SOURCES="no"
+source=($url/archive/refs/tags/v$version.tar.gz)
+
+build() {
+
+cmake -B build -S $name-$version \
+     -DCMAKE_BUILD_TYPE='None' \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DNO_TESTS=1 \
+     -Wno-dev
+
+cmake --build build
+DESTDIR=$PKG/ cmake --install build
+
+install -Dm644 $name-$version/LICENSE \
+$PKG/usr/share/licenses/$name/LICENSE
+}
