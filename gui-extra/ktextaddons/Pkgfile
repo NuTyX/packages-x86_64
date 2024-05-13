@@ -10,6 +10,7 @@ set=(kde6)
 
 name=ktextaddons
 version=1.5.4
+release=2
 
 makedepends=(qt6-base qt6-speech qt6-tools extra-cmake-modules karchive kconfig
              kconfigwidgets ki18n kio kwidgetsaddons kxmlgui sonnet qtkeychain-qt6
@@ -24,6 +25,7 @@ build() {
        -DBUILD_DESIGNERPLUGIN=ON   \
        -DBUILD_TESTING=OFF         \
        -DBUILD_QCH=ON              \
+       -DCMAKE_INSTALL_LIBDIR=lib  \
        -DQT_MAJOR_VERSION=6        \
        ../$name-$version
   
