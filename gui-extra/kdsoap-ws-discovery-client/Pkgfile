@@ -10,6 +10,7 @@ set=(kde6)
 
 name=kdsoap-ws-discovery-client
 version=0.4.0
+release=2
 
 makedepends=(qt6-base qt6-tools kdsoap extra-cmake-modules)
 
@@ -20,6 +21,7 @@ build() {
  cd    build
  cmake -DCMAKE_INSTALL_PREFIX=/usr \
        -DQT_MAJOR_VERSION=6        \
+       -DCMAKE_INSTALL_LIBDIR=lib  \
        -DCMAKE_BUILD_TYPE=None     \
        ../$name-$version
   
