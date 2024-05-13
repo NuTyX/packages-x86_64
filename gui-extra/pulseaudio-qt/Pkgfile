@@ -8,7 +8,7 @@ contributors="Spiky"
 
 name=pulseaudio-qt
 version=1.4.0
-release=2
+release=3
 
 makedepends=(qt6-base pulseaudio extra-cmake-modules doxygen qt6-tools)
 
@@ -22,6 +22,7 @@ cd    build
 
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DBUILD_TESTING=OFF         \
+      -DCMAKE_INSTALL_LIBDIR=lib  \
       -DQT_MAJOR_VERSION=6        \
       -DBUILD_QCH=ON              \
       -DCMAKE_BUILD_TYPE=Release  \
