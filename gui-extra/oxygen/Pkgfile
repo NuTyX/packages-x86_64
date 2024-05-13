@@ -10,6 +10,7 @@ set=(kde6)
 
 name=oxygen
 version=6.0.4
+release=2
 
 makedepends=(libxcb qt6-base qt6-declarative extra-cmake-modules libplasma
               kcmutils kcolorscheme kcompletion kconfig kconfigwidgets
@@ -18,14 +19,4 @@ makedepends=(libxcb qt6-base qt6-declarative extra-cmake-modules libplasma
 
 source=(https://download.kde.org/stable/plasma/$version/$name-$version.tar.xz)
 
-build() {
- mkdir build
- cd    build
- cmake -DCMAKE_INSTALL_PREFIX=/usr \
-       -DBUILD_TESTING=OFF         \
-       -DBUILD_QT5=OFF             \
-       ../$name-$version
-  
- make
- make DESTDIR=$PKG install
-}
+build=kde6
