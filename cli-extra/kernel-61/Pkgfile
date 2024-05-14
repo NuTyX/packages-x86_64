@@ -1,8 +1,8 @@
 url="https://www.kernel.org"
 description="The 6.1 longterm support Linux Kernel version"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 makedepends=(bison flex perl gmp mpc libelf diffutils)
 run=(nutyx kmod busybox)
 
@@ -11,7 +11,7 @@ PKGMK_NO_STRIP="yes"
 PKGMK_GROUPS=(devel doc)
 
 name=kernel-61
-version=6.1.88
+version=6.1.90
 
 alias=(linux-61)
 INITRD="initrd-${name/*-/}"
