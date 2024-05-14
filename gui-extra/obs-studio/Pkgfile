@@ -5,13 +5,14 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Greg,Fabienwang,Spiky"
 
 makedepends=(ffmpeg jansson xorg-libxinerama libxkbcommon
-             qt6-svg cmake xorg-libxcomposite libvpl
+             qt6-svg cmake xorg-libxcomposite libvpl mbedtls
              vlc swig python luajit fdk-aac zlib swig
-             wayland pipewire xdg-utils cef-minimal)
+             wayland pipewire xdg-utils cef-minimal libdatachannel)
 run=(gtk-update-icon-cache x264 curl jack)
 
 name=obs-studio
 version=30.1.2
+release=2
 
 PKGMK_KEEP_SOURCES="no"
 
@@ -32,7 +33,6 @@ build() {
     -DENABLE_PIPEWIRE=ON \
     -DENABLE_NEW_MPEGTS_OUTPUT=OFF \
     -DENABLE_AJA=OFF \
-    -DENABLE_BROWSER=OFF \
     -DENABLE_VLC=OFF \
     -DBUILD_VST=ON ..
   make
