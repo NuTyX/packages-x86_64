@@ -1,0 +1,40 @@
+description='C/C++ WebRTC network library featuring Data Channels, Media Transport, and WebSockets'
+url='https://github.com/paullouisageneau/libdatachannel'
+
+license="MPL-2.0"
+
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
+
+name=libdatachannel
+version=0.21.0
+
+makedepends=(git openssl cmake libjuice libsrtp)
+
+
+prepare() {
+  git clone https://github.com/paullouisageneau/$name $name-$version
+  cd $name-$version
+  git checkout  v$version
+  git submodule update --init --recursive deps/{usrsctp,plog,json}
+}
+build() {
+
+  cmake -B build $name-$version \
+  -DCMAKE_BUILD_TYPE='None' \
+  -DCMAKE_INSTALL_PREFIX=/usr \
+  -DUSE_GNUTLS=0 \
+  -DUSE_NICE=0 \
+  -DUSE_SYSTEM_JUICE=1 \
+  -DUSE_SYSTEM_SRTP=1 \
+  -DNO_EXAMPLES=0 \
+  -DNO_TESTS=1 \
+  -Wno-dev
+
+ cmake --build build
+
+ DESTDIR=$PKG/ cmake --install build
+
+ install -Dm644 $name-$version/LICENSE \
+ $PKG/usr/share/licenses/$pkgname/LICENSE
+}
