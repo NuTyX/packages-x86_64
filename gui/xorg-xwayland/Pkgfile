@@ -12,7 +12,7 @@ makedepends=(meson xorgproto xorg-xtrans xorg-libxkbfile dbus xorg-font-util
 run=()
 
 name=xorg-xwayland
-version=23.2.6
+version=24.1.0
 
 source=(https://xorg.freedesktop.org/archive/individual/xserver/xwayland-$version.tar.xz)
 
@@ -28,7 +28,6 @@ meson setup .. \
     -Dxdmcp=false \
     -Dxcsecurity=true \
     -Ddri3=true \
-    -Dxwayland_eglstream=false \
     -Dglamor=true \
     -Dxkb_dir=/usr/share/X11/xkb \
     -Dxkb_output_dir=/var/lib/xkb
