@@ -11,7 +11,7 @@ makedepends=(grep autoconf libtool
 
 name=hplip
 version=3.23.12
-release=2
+release=3
 
 source=(consolidate.patch
         http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
@@ -33,6 +33,7 @@ build() {
       --disable-network-build \
       --disable-qt4 \
       --enable-hpcups-install \
+      --disable-imageProcessor-build \
       --enable-cups-drv-install
  make
 }
