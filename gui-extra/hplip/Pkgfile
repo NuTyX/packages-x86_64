@@ -4,15 +4,26 @@ url="https://hplipopensource.com"
 contributors="Greg,Rems,BlogofraisFR,Spiky"
 packager="tnut <tnut@nutyx.org>"
 
-makedepends=(python cups foomatic-filters libusb net-snmp libjpeg-turbo)
+makedepends=(grep autoconf libtool
+             python cups foomatic-filters libusb net-snmp
+             libjpeg-turbo sane)
 
 
 name=hplip
 version=3.23.12
+release=2
 
+source=(consolidate.patch
+        http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
 
-source=(http://downloads.sourceforge.net/$name/$name-$version.tar.gz)
+prepare() {
+ cd $name-$version
 
+ patch -Np1 -i ../consolidate.patch
+ export AUTOMAKE='automake --foreign'
+ autoreconf -fi
+
+}
 build() {
  export PYTHON=/usr/bin/python3
  cd $name-$version
@@ -20,12 +31,9 @@ build() {
       --disable-doc-build \
       --enable-lite-build \
       --disable-network-build \
-      --with-hpppddir=/usr/share/cups/model \
-      --disable-scan-build \
-      --disable-fax-build \
-      --enable-hpijs-install \
-      --enable-foomatic-ppd-install \
-      --enable-foomatic-drv-install
+      --disable-qt4 \
+      --enable-hpcups-install \
+      --enable-cups-drv-install
  make
 }
 
