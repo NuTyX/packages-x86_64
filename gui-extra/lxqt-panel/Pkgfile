@@ -3,10 +3,10 @@ url="https://github.com/lxqt/lxqt-panel"
 
 license="LGPL2.1"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Greg,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Tnut"
 
-makedepends=(cmake kf5-solid libsysstat lxqt-build-tools libdbusmenu-qt
+makedepends=(cmake solid libsysstat lxqt-build-tools libdbusmenu-lxqt layer-shell-qt
              menu-cache lxqt-globalkeys xorg-libxcomposite lxqt-menu-data)
 
 run=(lxde-menu-data lm-sensors sysstat libstatgrab pulseaudio)
@@ -14,9 +14,8 @@ run=(lxde-menu-data lm-sensors sysstat libstatgrab pulseaudio)
 set=(lxqt)
 
 name=lxqt-panel
-version=1.4.0
-release=2
+version=2.0.1
 
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
-build=kde5
+build=kde6
