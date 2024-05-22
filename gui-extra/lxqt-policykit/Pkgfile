@@ -4,16 +4,16 @@ url="https://gihub.com/lxqt/lxqt-policykit"
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Tnut"
 
-makedepends=(cmake lxqt-build-tools liblxqt polkit-qt)
+makedepends=(cmake lxqt-build-tools liblxqt polkit-qt-1)
 
 set=(lxqt)
 
 name=lxqt-policykit
-version=1.4.0
+version=2.0.0
 
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
-build=kde5
+build=kde6
 
 uptodate() {
 feed=https://github.com/lxde/$name/releases.atom 
