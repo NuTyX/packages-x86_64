@@ -6,16 +6,15 @@ license="LGPL2.1"
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Tnut"
 
-makedepends=(lxqt-build-tools liblxqt qtsvg
-             qtx11extras kf5-solid kf5-idletime)
+makedepends=(lxqt-build-tools liblxqt qt6-svg
+             qtx11extras solid kidletime)
 run=(upower hicolor-icon-theme lxqt-globalkeys)
 
 set=(lxqt)
 
 name=lxqt-powermanagement
-version=1.4.0
-release=2
+version=2.0.0
 
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
-build=kde5
+build=kde6
