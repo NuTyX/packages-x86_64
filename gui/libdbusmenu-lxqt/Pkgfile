@@ -1,0 +1,26 @@
+description="Library that provides a Qt5 implementation of the DBusMenu protocol"
+url="https://www.kde.org/"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake qt6-base)
+
+set=(lxqt)
+
+name=libdbusmenu-lxqt
+version=0.1.0
+
+source=(https://github.com/lxqt/libdbusmenu-lxqt/releases/download/$version/$name-$version.tar.xz)
+
+build=kde6
+
+uptodate() {
+feed=http://www.linuxfromscratch.org/~krejzi/?C=M;O=D
+exec="lynx -read_timeout=20 -dump -listonly -nonumbers $feed"
+ligne=1 # nombre de notification ? afficher
+$exec $feed | grep libdbusmenu | \
+sed "s@.tar.xz@@" | \
+#head -n $(($ligne+1)) | \
+tail -n $(($ligne))
+}
