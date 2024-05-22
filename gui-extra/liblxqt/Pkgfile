@@ -3,17 +3,16 @@ url="https://github.com/lxqt/liblxqt"
 
 license="LGPL2.1"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Greg,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Tnut"
 
-makedepends=(kf5-windowsystem libqtxdg xorg-libxscrnsaver polkit-qt lxqt-build-tools)
+makedepends=(kwindowsystem libqtxdg xorg-libxscrnsaver polkit-qt-1 lxqt-build-tools)
 
 set=(lxqt)
 
 name=liblxqt
-version=1.4.0
-release=2
+version=2.0.0
 
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
-build=kde5
+build=kde6
