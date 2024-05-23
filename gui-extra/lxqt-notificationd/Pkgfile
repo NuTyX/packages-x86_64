@@ -4,16 +4,16 @@ url="https://github.com/lxqt/lxqt-notificationd"
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Tnut"
 
-makedepends=(cmake qtbase kwindowsystem lxqt-build-tools liblxqt)
+makedepends=(cmake qt6-base kwindowsystem lxqt-build-tools liblxqt layer-shell-qt)
 
 set=(lxqt)
 
 name=lxqt-notificationd
-version=1.4.0
+version=2.0.1
 
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
-build=kde5
+build=kde6
 
 uptodate() {
 feed=https://github.com/lxde/$name/releases.atom
