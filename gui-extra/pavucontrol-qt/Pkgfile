@@ -4,18 +4,18 @@ url="https://github.com/lxqt/pavucontrol-qt"
 packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Tnut"
 
-makedepends=(lxqt-build-tools qtbase cmake)
+makedepends=(lxqt-build-tools qt6-base cmake)
 run=(pulseaudio)
 
 set=(lxqt)
 
 name=pavucontrol-qt
-version=1.4.0
+version=2.0.0
 
 
 source=(https://github.com/lxqt/$name/releases/download/$version/$name-$version.tar.xz)
 
-build=kde5
+build=kde6
 
 uptodate() {
 feed=https://github.com/lxde/$name/releases.atom 
