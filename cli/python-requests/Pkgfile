@@ -9,7 +9,7 @@ name=python-requests
 _name="requests"
 alias=(${_name})
 
-version=2.31.0
+version=2.32.2
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://files.pythonhosted.org/packages/source/r/requests/requests-$version.tar.gz
@@ -26,7 +26,7 @@ prepare() {
     -e '/charset_normalizer/d' \
     -i setup.py
 
-  patch -p1 -i $SRC/certs.patch
+  patch -p1 -d src -i $SRC/certs.patch
 }
 
 build(){
