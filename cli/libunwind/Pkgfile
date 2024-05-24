@@ -7,9 +7,9 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
 name=libunwind
-version=1.6.2
+version=1.8.1
 
-source=(http://download.savannah.gnu.org/releases/$name/$name-$version.tar.gz)
+source=(https://github.com/libunwind/libunwind/releases/download/v$version/$name-$version.tar.gz)
 build() {
 cd $name-$version
 CFLAGS+=' -fcommon' # https://wiki.gentoo.org/wiki/Gcc_10_porting_notes/fno_common
