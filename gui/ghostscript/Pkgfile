@@ -8,6 +8,7 @@ makedepends=(glib at-spi2-core libpng libjpeg-turbo libtiff jasper lcms2 gnutls 
 
 name=ghostscript
 version=10.03.1
+release=2
 
 source=(https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${version//./}/$name-$version.tar.xz
          http://downloads.sourceforge.net/gs-fonts/ghostscript-fonts-std-8.11.tar.gz
@@ -17,6 +18,10 @@ unset MAKEFLAGS
 
 build() {
 cd $name-$version
+
+# gcc14 buildfix
+  export CFLAGS+=" -Wno-incompatible-pointer-types -Wno-int-conversion"
+
 rm -rf freetype lcms2 jpeg libpng zlib openjpeg
 rm -rf zlib
 ./configure --prefix=/usr \
