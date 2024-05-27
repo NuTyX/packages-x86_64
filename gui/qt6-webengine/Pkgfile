@@ -7,7 +7,7 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Tnut"
 
 name=qt6-webengine
-version=6.7.0
+version=6.7.1
 
 makedepends=(cmake ninja qt6-base qt6-declarative qt6-positioning qt6-webchannel
              qt6-tools qt6-websockets python-html5lib gzip icu
@@ -19,12 +19,13 @@ makedepends=(cmake ninja qt6-base qt6-declarative qt6-positioning qt6-webchannel
              pipewire gperf jsoncpp libepoxy node)
 
 _name=${name/6-/}-everywhere-src
-source=(ninja.patch
+source=(ninja.patch ninja-1.12.patch
         https://download.qt.io/official_releases/qt/${version:0:3}/$version/submodules/${_name}-$version.tar.xz)
 export NINJAJOBS=8
 prepare() {
 cd ${_name}-$version
-patch -Np1 -i ../ninja.patch
+#patch -Np1 -i ../ninja.patch
+patch -Np1 -i ../ninja-1.12.patch
 }
 build() {
 export NINJAJOBS=8
