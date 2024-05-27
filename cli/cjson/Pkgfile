@@ -1,0 +1,30 @@
+description='Ultralightweight JSON parser in ANSI C'
+url='https://github.com/DaveGamble/cJSON'
+
+license="MIT"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake)
+
+name=cjson
+version=1.7.18
+source=(https://github.com/DaveGamble/cJSON/archive/v$version.tar.gz)
+
+build() {
+cd cJSON-$version
+
+mkdir build
+cd    build
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr  \
+      -DENABLE_CJSON_UTILS=On      \
+      -DCMAKE_INSTALL_LIBDIR=lib   \
+      ..
+
+make
+make DESTDIR=$PKG install
+
+install -Dm644 ../LICENSE $PKG/usr/share/licenses/$name/LICENSE
+}
