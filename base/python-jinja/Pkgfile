@@ -10,13 +10,12 @@ name=python-jinja
 _name="Jinja2"
 alias=(${_name})
 
-version=3.1.3
-release=2
+version=3.1.4
 
-source=(https://pypi.org/packages/source/J/${_name}/${_name}-$version.tar.gz)
+source=(https://pypi.org/packages/source/J/${_name}/jinja2-$version.tar.gz)
 
 build() {
-cd ${_name}-$version
+cd jinja2-$version
 
   pip3 wheel -w dist \
     --no-build-isolation \
