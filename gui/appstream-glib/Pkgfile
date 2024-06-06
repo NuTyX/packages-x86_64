@@ -10,7 +10,7 @@ makedepends=(gdk-pixbuf json-glib libarchive libsoup meson ninja pango gcab
 set=(gnome)
 
 name=appstream-glib
-version=0.8.2
+version=0.8.3
 
 source=(https://people.freedesktop.org/~hughsient/$name/releases/$name-$version.tar.xz)
 
@@ -22,7 +22,6 @@ cd    build
 meson --prefix=/usr \
       -Dgtk-doc=false \
       -Drpm=false \
-      -Dstemmer=false \
       ../$name-$version
 ninja
 DESTDIR=$PKG ninja install
