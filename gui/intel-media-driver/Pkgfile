@@ -3,13 +3,14 @@ url='https://github.com/intel/media-driver/'
 
 license="MLT BSD"
 
-packager="spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 contributors=""
 
 makedepends=(cmake intel-gmmlib libva xorg-libpciaccess)
 
 name=intel-media-driver
 version=24.2.3
+release=2
 
 source=(https://github.com/intel/media-driver/archive/refs/tags/intel-media-$version.tar.gz)
 
@@ -28,6 +29,7 @@ cd    build
 cmake -DCMAKE_INSTALL_PREFIX=/usr   \
       -DINSTALL_DRIVER_SYSCONF=OFF  \
       -DBUILD_TYPE=Release          \
+      -DMEDIA_BUILD_FATAL_WARNINGS=OFF \
       -Wno-dev ..
 
 make
