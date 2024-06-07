@@ -1,19 +1,19 @@
 description='NVIDIA modules for the latest stable Linux Kernel version.'
 url='https://www.nvidia.com'
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=()
 run=(kernel)
 
 name=nvidia-390-kernel
 version=390.157
-release=25
+release=26
 
 source=(https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run
         kernel-4.16+-memory-encryption.patch kernel-6.4.patch kernel-6.5.patch kernel-6.6.patch
-        kernel-6.2.patch kernel-6.3.patch kernel-6.8.patch)
+        kernel-6.2.patch kernel-6.3.patch kernel-6.8.patch gcc-14.patch)
 
 build() {
 sh NVIDIA-Linux-x86_64-$version.run --extract-only
@@ -28,6 +28,7 @@ sh NVIDIA-Linux-x86_64-$version.run --extract-only
  patch -Np1 -i ../kernel-6.5.patch
  patch -Np1 -i ../kernel-6.6.patch
  patch -Np1 -i ../kernel-6.8.patch
+ patch -Np1 -i ../gcc-14.patch
 
 
  cd kernel
