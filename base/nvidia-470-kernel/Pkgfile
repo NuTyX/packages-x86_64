@@ -1,21 +1,27 @@
 description="NVIDIA modules for the latest stable Linux Kernel version."
 url="https://www.nvidia.com"
 
-packager="spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 
 name=nvidia-470-kernel
-version=470.239.06
-release=4
+version=470.256.02
 
 run=(kernel)
 
-source=(https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
+source=(0001-Fix-conftest-to-ignore-implicit-function-declaration.patch
+        0002-Fix-conftest-to-use-a-short-wchar_t.patch
+        0003-Fix-conftest-to-use-nv_drm_gem_vmap-which-has-the-se.patch
+        https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
 build()
 {
  sh NVIDIA-Linux-x86_64-$version.run --extract-only
 
 
  cd NVIDIA-Linux-x86_64-$version/kernel
+
+ patch -p1 -i ../../0001-Fix-conftest-to-ignore-implicit-function-declaration.patch
+ patch -p1 -i ../../0002-Fix-conftest-to-use-a-short-wchar_t.patch
+ patch -p1 -i ../../0003-Fix-conftest-to-use-nv_drm_gem_vmap-which-has-the-se.patch
 
  sed -i "s@nv_dma_resv_add_excl_fence@dma_resv_add_excl_fence@" nvidia-drm/nvidia-dma-resv-helper.h
  sed -i "s@nv_dma_resv_add_excl_fence@dma_resv_add_excl_fence@" nvidia-drm/nvidia-drm-prime-fence.c
