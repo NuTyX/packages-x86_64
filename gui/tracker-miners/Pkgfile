@@ -1,8 +1,8 @@
 description="Collection of data extractors for Tracker/Nepomuk"
 url="http://www.gnome.org"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Jayce,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Jayce,Tnut"
 
 run=(desktop-file-utils gtk-update-icon-cache)
 makedepends=(meson ninja exempi libgrss flac libexif
@@ -11,8 +11,7 @@ makedepends=(meson ninja exempi libgrss flac libexif
 
 
 name=tracker-miners
-version=3.5.2
-release=3
+version=3.7.3
 
 source=(https://download.gnome.org/sources/$name/${version:0:3}/$name-$version.tar.xz)
 
@@ -21,6 +20,7 @@ build() {
 meson setup $name-$version build \
       --prefix=/usr              \
       --buildtype=release        \
+      -Dlandlock=enabled         \
       -Dman=false
 
 meson compile -C build
