@@ -1,0 +1,34 @@
+description='Tool and a library for bi-directional translation between SPIR-V and LLVM IR'
+url='https://github.com/KhronosGroup/SPIRV-LLVM-Translator/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(llvm libxml2 spirv-tools spirv-headers ninja)
+
+name=spirv-llvm-translator
+_name="SPIRV-LLVM-Translator"
+alias=(${_name})
+
+version=18.1.1
+
+source=(https://github.com/KhronosGroup/${_name}/archive/refs/tags/v$version.tar.gz)
+
+build() {
+cd ${_name}-$version
+
+   mkdir build
+   cd    build
+
+cmake -D CMAKE_INSTALL_PREFIX=/usr                   \
+      -D CMAKE_BUILD_TYPE=Release                    \
+      -D BUILD_SHARED_LIBS=ON                        \
+      -D CMAKE_SKIP_INSTALL_RPATH=ON                 \
+      -D LLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=/usr \
+      -G Ninja ..
+
+  ninja
+
+  DESTDIR=$PKG ninja install
+
+}
