@@ -8,7 +8,7 @@ license="custom"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Rems,Tnut"
 
-makedepends=(meson ninja
+makedepends=(meson ninja libclc python-ply rust-bindgen cbindgen
              xorgproto pkgconf libtool xorg-xrandr wayland python-mako
              wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext
              xorg-libxdamage expat llvm elfutils xorg-libxshmfence
@@ -18,7 +18,7 @@ run=(libglvnd)
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=24.0.8
+version=24.1.1
 
 source=(LICENSE
         https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
