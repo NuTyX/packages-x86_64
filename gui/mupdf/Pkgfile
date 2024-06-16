@@ -5,7 +5,7 @@ packager="spiky <spiky@nutyx.org>"
 license="AGPL3"
 
 name=mupdf
-version=1.23.11
+version=1.24.3
 
 makedepends=(lcms2 harfbuzz libjpeg-turbo openjpeg freeglut xorg-libx11
              xorg-libxcursor xorg-libxext xorg-libxrandr xorg-libxinerama freetype)
@@ -47,7 +47,10 @@ make prefix=$PKG/usr shared=yes \
 docdir=$PKG/usr/share/doc/$name-$version \
 install
 
-chmod 755 $PKG/usr/lib/libmupdf.so
+ln -sfv libmupdf.so.24.3 /usr/lib/libmupdf.so
+ln -sfv libmupdf.so.24.3 /usr/lib/libmupdf.so.3
+chmod 755 $PKG/usr/lib/libmupdf.so.24.3
+
 ln -svf mupdf-x11 $PKG/usr/bin/mupdf
 
 install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
