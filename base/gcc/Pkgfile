@@ -8,11 +8,12 @@ maintainer="Jakub Jelinek (jakub at redhat dot com),Manuel López-Ibáñez (manu
 makedepends=(gmp mpfr mpc tar flex)
 name=gcc
 version=14.1.0
+release=2
 
 PKGMK_KEEP_LA_LIBS="yes"
 PKGMK_IGNORE_UNPACK="yes"
 PKGMK_LOCALES=()
-source=(http://ftp.gnu.org/gnu/gcc/gcc-$version/gcc-$version.tar.xz)
+source=(https://ftp.gnu.org/gnu/gcc/gcc-$version/gcc-$version.tar.xz)
 
 prepare() {
 tar -xf $name-$version.tar.xz
@@ -36,9 +37,12 @@ cd       build
 ../configure --prefix=/usr \
     --libdir=/usr/lib \
     --enable-languages=c,c++,d,fortran,objc,obj-c++ \
-    --disable-multilib \
+    --disable-multilib  \
     --disable-bootstrap \
-    --with-system-zlib
+    --with-system-zlib  \
+    --disable-fixincludes \
+    --enable-default-pie \
+    --enable-default-ssp
 
 make
 
