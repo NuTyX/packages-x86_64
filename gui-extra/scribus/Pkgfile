@@ -5,20 +5,13 @@ packager="tnut <tnut@nutyx.org>"
 contributors="Pierre,Spiky"
 
 makedepends=(icu cmake boost aspell cups qttools qtdeclarative gnutls kerberos podofo librevenge
-             boost ghostscript lcms2 libxml2 cairo desktop-file-utils shared-mime-info poppler)
-run=(shared-mime-info)
+             boost ghostscript lcms2 libxml2 cairo poppler)
+run=(shared-mime-info desktop-file-utils)
 
 name=scribus
-version=1.6.1
-release=2
+version=1.6.2
 
-source=(https://downloads.sourceforge.net/$name/$name-$version.tar.xz
-        poppler-24.03.patch)
-
-prepare() {
- cd $name-$version
- patch -Np1 -i ../poppler-24.03.patch
-}
+source=(https://downloads.sourceforge.net/$name/$name-$version.tar.xz)
 
 build() {
 	cd $name-$version
