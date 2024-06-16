@@ -1,0 +1,33 @@
+description='Library requirements of the OpenCL C programming language'
+url='https://libclc.llvm.org/'
+
+license="MIT"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(cmake ninja spirv-llvm-translator)
+
+name=libclc
+version=17.0.6
+
+source=(https://github.com/llvm/llvm-project/releases/download/llvmorg-$version/$name-$version.src.tar.xz)
+
+build() {
+cd $name-$version.src
+
+   mkdir build
+   cd    build
+
+
+cmake -D CMAKE_INSTALL_PREFIX=/usr \
+      -D CMAKE_BUILD_TYPE=Release  \
+      -G Ninja ..
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../LICENSE.TXT $PKG/usr/share/licenses/$name/LICENSE.TXT
+
+}
