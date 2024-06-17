@@ -9,6 +9,8 @@ contributors="Spiky"
 name=discount
 version=3.0.0.d
 _version=3.0.0d
+release=2
+
 source=(https://github.com/Orc/discount/archive/v${_version}/$name-$version.tar.gz)
 
 build() {
@@ -25,5 +27,5 @@ build() {
 
    make DESTDIR=$PKG install.everything
    install -Dm644 COPYRIGHT \
-   $PKG/usr/share/licenses/$pkgname/LICENSE
+   $PKG/usr/share/licenses/$name/LICENSE
 }
