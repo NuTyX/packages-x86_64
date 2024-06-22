@@ -7,14 +7,10 @@ packager="spiky <spiky@nutyx.org>"
 contributors="Greg,Tnut"
 
 name=libsodium
-version=1.0.19
+version=1.0.20
 
 source=(https://download.libsodium.org/libsodium/releases/libsodium-$version.tar.gz
 )
-
-prepare() {
-mv $name-stable $name-$version
-}
 
 package() {
 rm $PKG/usr/lib/libsodium.la
