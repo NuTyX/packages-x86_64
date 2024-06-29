@@ -1,16 +1,20 @@
 description="Convert xml to many other formats"
 url="http://cyberelk.net/tim/software/xmlto/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre B"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 makedepends=(libxslt docbook-xsl docbook-xml links)
 
 name=xmlto
-version=0.0.28
-release=4
+version=0.0.29
 
-source=(http://anduin.linuxfromscratch.org/BLFS/$name/$name-$version.tar.bz2)
+source=(https://pagure.io/xmlto/archive/$version/$name-$version.tar.gz)
+
+prepare() {
+cd $name-$version
+autoreconf -fiv
+}
 
 build() {
 cd $name-$version
