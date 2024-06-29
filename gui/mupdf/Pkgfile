@@ -6,6 +6,7 @@ license="AGPL3"
 
 name=mupdf
 version=1.24.5
+release=2
 
 makedepends=(lcms2 harfbuzz libjpeg-turbo openjpeg freeglut xorg-libx11
              xorg-libxcursor xorg-libxext xorg-libxrandr xorg-libxinerama freetype)
@@ -47,9 +48,9 @@ make prefix=$PKG/usr shared=yes \
 docdir=$PKG/usr/share/doc/$name-$version \
 install
 
-ln -sfv libmupdf.so.24.3 /usr/lib/libmupdf.so
-ln -sfv libmupdf.so.24.3 /usr/lib/libmupdf.so.3
-chmod 755 $PKG/usr/lib/libmupdf.so.24.3
+ln -sfv libmupdf.so.24.5 /usr/lib/libmupdf.so
+ln -sfv libmupdf.so.24.5 /usr/lib/libmupdf.so.5
+chmod 755 $PKG/usr/lib/libmupdf.so.24.5
 
 ln -svf mupdf-x11 $PKG/usr/bin/mupdf
 
