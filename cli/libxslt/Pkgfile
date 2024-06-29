@@ -10,7 +10,7 @@ makedepends=(automake autoconf m4 sed grep
 run=(libxslt.lib)
 
 name=libxslt
-version=1.1.40
+version=1.1.41
 
 PKGMK_GROUPS=(lib man devel doc)
 source=(https://download.gnome.org/sources/$name/1.1/$name-$version.tar.xz)
@@ -38,9 +38,9 @@ devel() {
 cd $PKG
 bsdtar -cf \
 $PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
-usr/lib/pkgconfig usr/include usr/share/aclocal \
+usr/lib/pkgconfig usr/include \
 usr/lib/xsltConf.sh
-rm -r usr/{share/aclocal,include,lib/{pkgconfig,xsltConf.sh}}
+rm -r usr/{include,lib/{pkgconfig,xsltConf.sh}}
 rm -d usr/lib || true
 }
 package() {
