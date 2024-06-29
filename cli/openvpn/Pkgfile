@@ -8,19 +8,19 @@ makedepends=(autoconf libcap-ng automake m4 libtool sed grep pam
              lzo python-docutils lz4)
 
 name=openvpn
-version=2.6.10
+version=2.6.11
 
 PKGMK_KEEP_SOURCES="no"
 
 source=(0001-unprivileged.patch
         https://github.com/OpenVPN/$name/archive/v$version.tar.gz)
 
-prepare() {
-ln -sv rst2man.py /usr/bin/rst2man
-ln -sv rst2html.py /usr/bin/rst2html
+#prepare() {
+#ln -sv rst2man.py /usr/bin/rst2man
+#ln -sv rst2html.py /usr/bin/rst2html
 
 
-}
+#}
 build(){
 
 cd $name-$version
