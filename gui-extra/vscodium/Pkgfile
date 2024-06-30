@@ -14,7 +14,7 @@ run=(ffmpeg glib nspr gtk3 pango cairo xorg-libx11
      cups.lib alsa-lib at-spi2-core)
 
 name=vscodium
-version=1.85.1.23348
+version=1.90.2.24171
 
 source=(https://github.com/VSCodium/vscodium/releases/download/$version/codium_${version}_amd64.deb)
 
@@ -22,5 +22,9 @@ build() {
    tar -xf data.tar.xz -C $PKG/
 
    mkdir -p $PKG/usr/bin
-   ln -sv /usr/share/codium/bin/codium $PKG/usr/bin/codium
+   for i in codium vscodium
+   do
+      ln -s /usr/share/codium/bin/codium \
+      $PKG/usr/bin/$i
+   done
 }
