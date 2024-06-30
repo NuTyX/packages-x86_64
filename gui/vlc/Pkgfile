@@ -3,8 +3,8 @@ url="https://www.videolan.org/vlc"
 
 license="GPL2 LGPL2.1"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Remy,Fabienwang,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Remy,Fabienwang,Tnut"
 
 makedepends=(tar qtbase qtsvg qtx11extras x264 flac libmad glib librsvg
              alsa-lib xorg-libxinerama xorg-libxpm libcdio vcdimager
@@ -17,10 +17,10 @@ run=(desktop-file-utils libmatroska xdg-utils
      vlc.lib)
 
 name=vlc
-version=3.0.20
-release=2
+version=3.0.21
 
 source=($name-$version-taglib-1.patch
+        $name-$version-fedora_ffmpeg7-1.patch
         https://download.videolan.org/$name/$version/$name-$version.tar.xz)
 
 PKGMK_GROUPS=(doc devel lib man)
@@ -28,6 +28,7 @@ PKGMK_GROUPS=(doc devel lib man)
 prepare() {
   cd $name-$version
   patch -Np1 -i ../$name-$version-taglib-1.patch
+  patch -Np1 -i ../$name-$version-fedora_ffmpeg7-1.patch
 }
 build() {
 
