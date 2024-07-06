@@ -12,15 +12,15 @@ name=python-certifi
 _name=certifi
 alias=(${_name})
 
-version=2024.6.2
+version=2024.07.04
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://pypi.io/packages/source/c/certifi/certifi-$version.tar.gz)
+source=(https://github.com/certifi/python-certifi/archive/refs/tags/$version.tar.gz)
 
 build() {
 
-  cd ${_name}-$version
+  cd ${name}-$version
 
   pip3 wheel -w dist \
     --no-build-isolation \
