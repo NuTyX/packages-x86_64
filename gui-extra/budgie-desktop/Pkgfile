@@ -16,16 +16,15 @@ run=(gnome-desktop magpie-wm gnome-menus budgie-screensaver vala
 set=(budgie)
 
 name=budgie-desktop
-version=10.9.1
-release=2
+version=10.9.2
 
 source=(https://github.com/BuddiesOfBudgie/budgie-desktop/releases/download/v$version/budgie-desktop-v$version.tar.xz
         libxfce4windowing.patch)
 
-prepare() {
-cd $name-$version
-patch -Np1 -i ../libxfce4windowing.patch
-}
+#prepare() {
+#cd $name-$version
+#patch -Np1 -i ../libxfce4windowing.patch
+#}
 
 build() {
 cd $name-$version
