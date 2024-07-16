@@ -12,13 +12,12 @@ name=scons
 _name="SCons"
 alias=(${_name})
 
-version=4.7.0
-release=2
+version=4.8.0
 
 source=(https://sourceforge.net/projects/scons/files/scons/$version/SCons-$version.tar.gz)
 build () 
 { 
-cd ${_name}-$version
+cd ${name}-$version
 sed -i 's/env python/&3/' SCons/Utilities/*.py
 sed -i 's:build/doc/man/::' setup.cfg
 
