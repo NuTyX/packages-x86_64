@@ -4,12 +4,14 @@ url="https://www.nvidia.com"
 packager="tnut <tnut@nutyx.org>"
 
 name=nvidia-470-kernel-515
-version=470.239.06
-release=5
+version=470.256.02
 
 run=(kernel-515)
 
-source=(https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
+source=(0001-Fix-conftest-to-ignore-implicit-function-declaration.patch
+        0002-Fix-conftest-to-use-a-short-wchar_t.patch
+        0003-Fix-conftest-to-use-nv_drm_gem_vmap-which-has-the-se.patch
+        https://download.nvidia.com/XFree86/Linux-x86_64/$version/NVIDIA-Linux-x86_64-$version.run)
 
 build()
 {
@@ -17,6 +19,10 @@ build()
 
 
  cd NVIDIA-Linux-x86_64-$version/kernel
+
+ patch -Np1 -i ../../0001-Fix-conftest-to-ignore-implicit-function-declaration.patch
+ patch -Np1 -i ../../0002-Fix-conftest-to-use-a-short-wchar_t.patch
+ patch -Np1 -i ../../0003-Fix-conftest-to-use-nv_drm_gem_vmap-which-has-the-se.patch
 
  modules_dir="$(basename /lib/modules/*)"
 
