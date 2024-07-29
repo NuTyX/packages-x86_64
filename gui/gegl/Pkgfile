@@ -11,12 +11,14 @@ run=(vala)
 
 name=gegl
 version=0.4.48
+release=2
 
-source=(https://download.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.xz)
+source=(consolidate.patch
+        https://download.gimp.org/pub/$name/${version:0:3}/$name-$version.tar.xz)
 
 prepare() {
-sed -i /fatal-warnings/d \
-$name-$version/docs/reference/meson.build 
+ cd $name-$version
+ patch -Np1 -i ../consolidate.patch
 }
 build() {
 cd $name-$version
@@ -27,6 +29,10 @@ meson setup           \
   --prefix=/usr       \
   --buildtype=release \
   -Ddocs=false        \
+  -Dgi-docgen=disabled\
+  -Dworkshop=true     \
+  -Dmrg=disabled      \
+  -Dmaxflow=disabled  \
   ..
 ninja
 DESTDIR=$PKG ninja install
