@@ -12,13 +12,15 @@ run=(start-stop-daemon)
 
 name=minidlna
 version=1.3.3
+release=2
 
-source=(minidlna minidlna.conf
+source=(minidlna minidlna.conf consolidate.patch
         https://downloads.sourceforge.net/project/$name/minidlna/${version}/${name}-${version}.tar.gz)
 
 prepare() {
 
 cd $name-$version
+patch -p1 -i ../consolidate.patch
 ./autogen.sh
 }
 package() {
