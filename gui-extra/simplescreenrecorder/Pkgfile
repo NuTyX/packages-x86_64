@@ -1,8 +1,8 @@
 description="A feature-rich screen recorder that supports X11 and OpenGL"
 url="http://www.maartenbaert.be/simplescreenrecorder/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Greg,Remy"
+packager="tnut <tnut@nutyx.org>"
+contributors="Greg,Remy,Spiky"
 
 makedepends=(qtbase qtx11extras qttools ffmpeg alsa-lib pulseaudio
              jack mesa xorg-glu xorg-libx11 xorg-libxext xorg-libxfixes
@@ -11,16 +11,16 @@ run=(desktop-file-utils gtk-update-icon-cache)
 
 name=simplescreenrecorder
 version=0.4.4
-release=2
+release=3
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://github.com/MaartenBaert/ssr/archive/$version.tar.gz
-        ffmpeg5.patch)
+        ffmpeg7.patch)
 
 prepare() {
 
 cd ssr-$version
-patch -p1 -i ../ffmpeg5.patch
+patch -p1 -i ../ffmpeg7.patch
 }
 
 build() {
