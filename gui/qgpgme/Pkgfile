@@ -1,16 +1,21 @@
 description="Qt bindings for GPGme"
 url="http://www.gnupg.org/related_software/gpgme/"
 
-packager="Spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut,Spiky"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
-makedepends=(qtbase libgpg-error gnupg gpgme)
+makedepends=(qt6-base libgpg-error gnupg gpgme)
 
 name=qgpgme
-version=1.17.1
+version=1.23.2
 
 source=(https://gnupg.org/ftp/gcrypt/gpgme/gpgme-$version.tar.bz2)
 
+prepare() {
+ cd gpgme-$version
+ sed -i 's/-unknown//' autogen.sh
+ autoreconf -fi
+}
 build() {
  cd gpgme-$version
  ./configure --prefix=/usr        \
@@ -20,6 +25,4 @@ build() {
  cd lang/qt
  make DESTDIR=$PKG install
 
-# Obsolet lib
-rm $PKG/usr/lib/libqgpgme.la
 }

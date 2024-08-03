@@ -3,11 +3,11 @@ url="https://www.gnome.org/"
 
 license="LGPL3 LGPL2 OpenLDAP"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Jayce,Fanch,Rems,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Jayce,Fanch,Rems,Spiky"
 
 makedepends=(evolution-data-server gnome-autoar gnome-desktop
-             highlight gstreamer libcanberra libgweather-4 libcryptui gtkspell 
+             highlight gstreamer libcanberra libgweather-4 gtkspell 
              itstool libgdata libnotify clutter-gtk
              gtk-doc openldap webkit2gtk-4 gspell)
 
@@ -16,6 +16,7 @@ run=(gsettings-desktop-schemas desktop-file-utils gtk-update-icon-cache
 
 name=evolution
 version=3.52.3
+release=2
 
 source=(https://gitlab.gnome.org/GNOME/evolution/-/archive/$version/$name-$version.tar.gz)
 
@@ -25,13 +26,10 @@ cd $name-$version
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DSYSCONF_INSTALL_DIR=/etc  \
       -DENABLE_INSTALLED_TESTS=ON \
-      -DENABLE_LIBCRYPTUI=OFF     \
       -DENABLE_PST_IMPORT=OFF     \
-      -DENABLE_GTKSPELL=OFF       \
-      -DENABLE_YTNEF=OFF	  \
+      -DENABLE_YTNEF=OFF	    \
       -DENABLE_CONTACT_MAPS=OFF   \
       -DENABLE_MARKDOWN=OFF       \
-      -DWITH_GWEATHER4=ON         \
       -G Ninja
 ninja
 DESTDIR=$PKG ninja install
