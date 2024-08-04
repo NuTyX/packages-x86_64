@@ -15,10 +15,10 @@ version=1.24.6
 source=(https://gstreamer.freedesktop.org/src/${_name}/gst-libav-$version.tar.xz
        ffmpeg7.patch)
 
-prepare() {
-cd gst-*
-patch -Np3 -i ../ffmpeg7.patch
-}
+#prepare() {
+#cd gst-*
+#patch -Np3 -i ../ffmpeg7.patch
+#}
 
 build() {
 cd gst-*
