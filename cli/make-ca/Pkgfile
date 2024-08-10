@@ -7,10 +7,10 @@ contributors="Tnut"
 run=(gawk nss p11-kit)
 
 name=make-ca
-version=1.13
+version=1.14
 
 source=(https://hg.mozilla.org/projects/nss/raw-file/tip/lib/ckfw/builtins/certdata.txt
-        https://github.com/lfs-book/$name/releases/download/v${version}/$name-$version.tar.xz)
+        https://github.com/lfs-book/$name/archive/v$version/$name-$version.tar.gz)
 
 build() {
 install -vdm755 $PKG/etc/ssl
