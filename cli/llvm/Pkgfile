@@ -8,7 +8,7 @@ contributors="Pierre,Remy,Tnut"
 makedepends=(grep python cmake ninja libxml2 git)
 
 name=llvm
-version=18.1.6
+version=18.1.8
 
 PKGMK_GROUPS=(lib man devel doc)
 _url="https://github.com/llvm/llvm-project/releases/download/llvmorg-$version"
@@ -24,6 +24,8 @@ prepare() {
 mv cmake-$version.src cmake
 }
 build() {
+
+export NINJAJOBS=10
 
 cd $name-$version.src
 
