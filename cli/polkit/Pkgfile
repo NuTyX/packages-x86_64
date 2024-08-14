@@ -1,11 +1,11 @@
 description="Application development toolkit for controlling system-wide privileges"
 url="http://hal.freedesktop.org/docs/polkit"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierre,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut"
 
 name=polkit
-version=124
+version=125
 
 makedepends=(pam systemd gettext glib duktape gobject-introspection elogind
              patch autoconf intltool perl-xml-parser libxslt docbook-xsl)
@@ -32,7 +32,7 @@ cd    build
 meson --prefix=/usr                       \
       --buildtype=release                 \
       -Dman=false                         \
-      -Dsession_tracking=libelogind       \
+      -Dsession_tracking=elogind       \
       -Dtests=true                        \
       -Djs_engine=duktape                 \
       ..
