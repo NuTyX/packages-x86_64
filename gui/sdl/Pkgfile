@@ -11,10 +11,13 @@ makedepends=(cmake ninja xorg-libxext xorg-libxrender xorg-libx11
 
 name=sdl
 version=2.30.5
+release=2
 
 source=(${url}/release/SDL2-$version.tar.gz)
 
 build() {
+
+  CFLAGS+=" -ffat-lto-objects"
   cd SDL2-$version
   mkdir build 
   cd build
