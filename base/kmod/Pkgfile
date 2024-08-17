@@ -8,7 +8,7 @@ makedepends=(xz zstd openssl)
 PKGMK_GROUPS=(devel doc man)
 
 name=kmod
-version=32
+version=33
 
 source=(http://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-$version.tar.xz )
 
@@ -22,7 +22,8 @@ cd $name-$version
 --with-xz \
 --with-zlib \
 --with-zstd \
---with-openssl
+--with-openssl \
+--disable-manpages
 
 make
 make DESTDIR=$PKG install
