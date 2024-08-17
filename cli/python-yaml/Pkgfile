@@ -1,8 +1,8 @@
 description="Python bindings for YAML, using fast libYAML library"
 url="http://pyyaml.org/wiki/PyYAML"
 
-packager="tnut <tnut@nutyx.org>"
-contributors=""
+packager="spiky <spiky@nutyx.org>"
+contributors="Tnut"
 
 makedepends=(yaml cython)
 
@@ -10,20 +10,19 @@ name=python-yaml
 _name="PyYAML"
 alias=(${_name})
 
-version=6.0.1
-release=2
+version=6.0.2
 
 PKGMK_KEEP_SOURCES="no"
 source=(731.patch
-        https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${version}.tar.gz)
+        https://files.pythonhosted.org/packages/source/P/PyYAML/pyyaml-$version.tar.gz)
 
-prepare() {
- cd PyYAML-$version
- patch -Np1 -i $SRC/731.patch
-}
+#prepare() {
+# cd PyYAML-$version
+# patch -Np1 -i $SRC/731.patch
+#}
 
 build() {
-  cd ${_name}-$version
+  cd pyyaml-$version
 
   pip3 wheel -w dist \
     --no-build-isolation \
