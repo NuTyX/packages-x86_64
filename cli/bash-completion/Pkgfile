@@ -1,14 +1,19 @@
 description="Bash completion functions"
 url="https://github.com/scop/bash-completion"
 
-contributors="Berlius, Greg, Rems"
-packager="tnut <tnut@nutyx.org>"
+contributors="Berlius,Greg,Rems,Tnut"
+packager="spiky <spiky@nutyx.org>"
 
 
 name=bash-completion
-version=2.11
+version=2.14.0
 
+PKGMK_IGNORE_UNPACK='yes'
 source=(https://github.com/scop/$name/releases/download/$version/$name-$version.tar.xz)
+
+prepare() {
+  tar xf $name-$version.tar.xz
+}
 
 build() {
 
