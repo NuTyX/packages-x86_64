@@ -1,27 +1,38 @@
 description="Mobile broadband modem management service."
 url="http://www.freedesktop.org/wiki/Software/ModemManager/"
 
-packager="Spiky <spiky@nutyx.org>"
+license="GPL2 LGPL2.1"
+
+packager="spiky <spiky@nutyx.org>"
 
 makedepends=(libgudev gobject-introspection libmbim libqmi polkit gtk-doc)
 
 name=modemmanager
-version=1.18.12
+version=1.22.0
 
-source=(http://www.freedesktop.org/software/ModemManager/ModemManager-$version.tar.xz)
+source=(https://gitlab.freedesktop.org/mobile-broadband/ModemManager/-/archive/$version/ModemManager-$version.tar.gz)
+
 build() {
 cd ModemManager-$version
-./configure --prefix=/usr             \
-            --sysconfdir=/etc         \
-            --localstatedir=/var      \
-            --disable-static          \
-            --enable-more-warnings=no
-make
-make DESTDIR=$PKG install
+
+mkdir build
+cd    build
+
+meson setup .. \
+       --prefix=/usr          \
+       --libdir=/usr/lib \
+            --buildtype=release
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 ../COPYING.LIB $PKG/usr/share/licenses/$name/COPYING.LIB
 
 # Obsolet libs
-rm $PKG/usr/lib/ModemManager/*.la
-rm $PKG/usr/lib/libmm-glib.la
+#rm $PKG/usr/lib/ModemManager/*.la
+#rm $PKG/usr/lib/libmm-glib.la
 }
 uptodate() {
 local url ext name
