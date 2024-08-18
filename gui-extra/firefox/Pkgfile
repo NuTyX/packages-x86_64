@@ -18,12 +18,13 @@ run=(pulseaudio icu sqlite libvpx nss gtk3 zip unzip
 
 
 name=firefox
-version=129.0
+version=129.0.1
 
 locale_version=$version
 
 source=(firefox.desktop
-	https://archive.mozilla.org/pub/firefox/releases/$version/source/$name-$version.source.tar.xz)
+	https://archive.mozilla.org/pub/firefox/releases/$version/source/$name-$version.source.tar.xz
+        cbindgen-0.27.patch)
 
 pack_remove_locale() {
 
@@ -46,6 +47,8 @@ cd $name-$version
 (for i in {43..47}; do
    sed '/ZWJ/s/}/,CLASS_CHARACTER&/' -i intl/lwbrk/LineBreaker.cpp || exit $?
  done)
+
+patch -Np1 -i ../cbindgen-0.27.patch
 }
 
 build() {
