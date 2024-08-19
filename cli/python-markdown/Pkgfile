@@ -10,14 +10,14 @@ name=python-markdown
 _name="Markdown"
 alias=(${_name})
 
-version=3.6
+version=3.7
 
-source=(https://files.pythonhosted.org/packages/source/M/Markdown/Markdown-${version}.tar.gz)
+source=(https://pypi.org/packages/source/m/markdown/markdown-$version.tar.gz)
 
 build() {
-    find Markdown-$version/ -name '*py' | xargs sed -i 's|\r||g'
+    find markdown-$version/ -name '*py' | xargs sed -i 's|\r||g'
 
-cd ${_name}-$version
+cd markdown-$version
 
   pip3 wheel -w dist \
     --no-build-isolation \
