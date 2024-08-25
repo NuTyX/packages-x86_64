@@ -1,16 +1,20 @@
 description="Data files describing media player capabilities, for post-HAL systems"
 url="http://cgit.freedesktop.org/media-player-info/"
 
-packager="tnut <tnut@nutyx.org>"
+packager="spiky <spiky@nutyx.org>"
 contributions="Pierre B"
 
 run=(python)
 
 name=media-player-info
-version=24
-release=3
+version=26
 
-source=(http://www.freedesktop.org/software/$name/$name-$version.tar.gz )
+source=(https://gitlab.freedesktop.org/media-player-info/$name/-/archive/$version/$name-$version.tar.gz)
+
+prepare() {
+cd $name-$version
+autoreconf -fi
+}
 
 build() {
 	cd $name-$version
