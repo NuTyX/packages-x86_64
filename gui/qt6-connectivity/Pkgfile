@@ -1,0 +1,20 @@
+description='A cross-platform application and UI framework, QtConnectivity files'
+url='http://qt-project.org/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(qt6-declarative bluez cmake)
+
+name=qt6-connectivity
+version=6.7.2
+
+_name=${name/6-/}-everywhere-src
+
+source=(https://download.qt.io/official_releases/qt/${version:0:3}/$version/submodules/${_name}-$version.tar.xz)
+
+build() {
+cmake -S ${_name}-$version -B build -G Ninja
+ cmake --build build
+ DESTDIR=$PKG cmake --install build
+}
