@@ -7,13 +7,13 @@ packager="spiky <spiky@nutyx.org>"
 makedepends=(pkgconf kmod asciidoc)
 
 name=dracut
-version=059
+version=103
 
-source=(https://github.com/dracutdevs/dracut/archive/refs/tags/$version.tar.gz)
+source=(https://github.com/dracut-ng/dracut-ng/archive/$version/$name-$version.tar.gz)
 
 build() {
 
-	cd $name-$version
+	cd $name-ng-$version
 	./configure --prefix=/usr
 	make
 	make DESTDIR=$PKG install
