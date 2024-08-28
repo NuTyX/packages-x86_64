@@ -5,11 +5,22 @@ packager="spiky <spiky@nutyx.org>"
 
 
 name=subversion
-version=1.14.2
-release=2
-makedepends=(apr apr-util neon expat sqlite db cyrus-sasl serf lz4)
+version=1.14.3
+makedepends=(apr apr-util neon expat sqlite db cyrus-sasl serf lz4 swig)
 
-source=(http://archive.apache.org/dist/$name/$name-$version.tar.bz2)
+source=(http://archive.apache.org/dist/$name/$name-$version.tar.bz2
+        subversion-1.14.3-upstream_fixes-1.patch)
+
+prepare() {
+       cd $name-$version
+
+grep -rl '^#!.*python$' | xargs sed -i '1s/python/&3/'
+patch -Np1 -i ../subversion-1.14.3-upstream_fixes-1.patch
+
+touch build/generator/swig/*.py
+mv -v build-outputs.mk{,.old}
+./autogen.sh --release
+}
 
 build() {
 	unset MAKEFLAGS
