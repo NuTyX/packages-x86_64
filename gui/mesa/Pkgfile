@@ -11,14 +11,14 @@ contributors="Pierre,Rems,Tnut"
 makedepends=(meson ninja libclc python-ply rust-bindgen cbindgen
              xorgproto pkgconf libtool xorg-xrandr wayland python-mako
              wayland-protocols xorg-libx11 xorg-libdrm xorg-libxext
-             xorg-libxdamage expat llvm elfutils xorg-libxshmfence
+             xorg-libxdamage expat llvm elfutils xorg-libxshmfence python-yaml
              libva libvdpau valgrind lm-sensors xorg-libxvmc libunwind vulkan-icd-loader glslang)
 
 run=(libglvnd)
 alias=(xorg-mesa Mesa mesa3d Mesa3D mesa3)
 
 name=mesa
-version=24.1.6
+version=24.2.1
 
 source=(LICENSE
         https://mesa.freedesktop.org/archive/mesa-$version.tar.xz)
@@ -32,7 +32,7 @@ cd    build
 meson setup                          \
       --prefix=/usr                  \
       -Dbuildtype=release            \
-      -Dgallium-drivers=auto \
+      -Dgallium-drivers="crocus,iris,nouveau,r300,r600,radeonsi,svga,swrast,virgl,zink" \
       -Dvulkan-drivers=auto \
       -Dgallium-nine=false       \
       -Dgallium-vdpau=true       \
@@ -41,6 +41,7 @@ meson setup                          \
       -Dosmesa=true              \
       -Dvalgrind=false           \
       -Dlibunwind=false          \
+      -Dplatforms="x11,wayland"  \
       -Ddri3=enabled             \
       -Dglvnd=true               \
       -Dglx-direct=true          \
