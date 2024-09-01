@@ -16,7 +16,7 @@ run=(shared-mime-info xdg-utils desktop-file-utils gtk-update-icon-cache
      hicolor-icon-theme)
 
 name=libreoffice
-version=24.2.5.2
+version=24.8.0.3
 
 categories=(Office Graphics Education)
 
@@ -24,7 +24,7 @@ PKGMK_IGNORE_UNPACK="yes"
 _url="https://download.documentfoundation.org/libreoffice/src/${version:0:6}/"
 
 source=(Remove-check-if-root-due-to-issue-with-fakeroot.patch
-        libreoffice-24.2.5.2-boost_fixes-2.patch
+        libreoffice-24.8.0.3-boost_fixes-1.patch
 https://dev-www.libreoffice.org/extern/f543e6e2d7275557a839a164941c0a86e5f2c3f2a0042bfc434c88c6dde9e140-opens___.ttf
 	${_url}$name-$version.tar.xz
 	${_url}$name-dictionaries-$version.tar.xz
@@ -38,15 +38,9 @@ prepare() {
 
   cd $name-$version
 
-  patch -Np1 -i ../libreoffice-24.2.5.2-boost_fixes-2.patch
+  patch -Np1 -i ../libreoffice-24.8.0.3-boost_fixes-1.patch
   patch -Np1 -i ../Remove-check-if-root-due-to-issue-with-fakeroot.patch
   sed -i '/icuuc \\/a zlib\\' writerperfect/Library_wpftdraw.mk
-
-  sed -e /LBCM/d -i i18npool/source/breakiterator/data/line.txt
-
-  # fix build with icu 75.1
-  # remove breaking test breaking rule
-  sed -i "109d" i18npool/source/breakiterator/data/sent.txt 
 
   install -dm755 external/tarballs/
   ln -sv ../../../$name-dictionaries-$version.tar.xz  external/tarballs/

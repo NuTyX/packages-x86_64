@@ -1,0 +1,49 @@
+Submitted By:            Douglas R. Reno <renodr at linuxfromscratch dot org>
+Initial Provider:        Marty Jack
+Date:                    2024-08-30
+Initial Package Version: 24.8.0.3
+Origin:                  Upstream
+Upstream Status:         Applied
+Description:             Fixes building the built-in libcmis library with the
+                         latest version of boost (1.86.0). The problem is
+                         caused by a function prototype change. Updated to fix
+                         a pointer error that results in a segmentation fault.
+
+diff -Naur libreoffice-24.2.5.2.orig/external/libcmis/boost_1.86.0_build_failure.patch.1 libreoffice-24.2.5.2/external/libcmis/boost_1.86.0_build_failure.patch.1
+--- libreoffice-24.2.5.2.orig/external/libcmis/boost_1.86.0_build_failure.patch.1	1969-12-31 19:00:00.000000000 -0500
++++ libreoffice-24.2.5.2/external/libcmis/boost_1.86.0_build_failure.patch.1	2024-08-15 16:06:04.095990851 -0400
+@@ -0,0 +1,23 @@
++diff -ur libcmis.org/src/libcmis/xml-utils.cxx libcmis/src/libcmis/xml-utils.cxx
++--- libcmis.org/src/libcmis/xml-utils.cxx       2024-08-15 15:56:04.039673015 -0400
+++++ libcmis/src/libcmis/xml-utils.cxx   2024-08-15 15:57:42.787321115 -0400
++@@ -535,7 +535,7 @@
++         boost::uuids::detail::sha1 sha1;
++         sha1.process_bytes( str.c_str(), str.size() );
++ 
++-        unsigned int digest[5];
+++        unsigned char digest[20];
++         sha1.get_digest( digest );
++ 
++         stringstream out;
++@@ -543,8 +543,9 @@
++         // hexadecimal digits, including possible leading 0s, or we get
++         // less than 40 digits as result.
++         out << hex << setfill('0') << right;
+++       unsigned int * idigest = reinterpret_cast<unsigned int *>(&digest[0]);
++         for ( int i = 0; i < 5; ++i )
++-            out << setw(8) << digest[i];
+++            out << setw(8) << idigest[i];
++         return out.str();
++     }
++ 
+diff -Naur libreoffice-24.8.0.3.orig/external/libcmis/UnpackedTarball_libcmis.mk libreoffice-24.8.0.3/external/libcmis/UnpackedTarball_libcmis.mk
+--- libreoffice-24.8.0.3.orig/external/libcmis/UnpackedTarball_libcmis.mk	2024-08-08 16:59:54.000000000 -0400
++++ libreoffice-24.8.0.3/external/libcmis/UnpackedTarball_libcmis.mk	2024-08-22 05:39:31.013948217 -0400
+@@ -18,6 +18,7 @@
+ $(eval $(call gb_UnpackedTarball_add_patches,libcmis,\
+ 	external/libcmis/0001-cid-1545775-COPY_INSTEAD_OF_MOVE.patch \
+ 	external/libcmis/0001-Fix-warning-C4589-when-building-with-MSVC.patch \
++	external/libcmis/boost_1.86.0_build_failure.patch.1 \
+ 	external/libcmis/http-session-cleanup.patch.1 \
+ 	external/libcmis/factory-no-retry-ssl.patch.1 \
+ 	external/libcmis/sharepoint-auth.patch.1 \
