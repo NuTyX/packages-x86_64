@@ -9,9 +9,16 @@ makedepends=(bash-completion gobject-introspection gtk-doc python-gobject
              gstreamer-plugins-base gstreamer-plugins-bad gstreamer-plugins-good)
 
 name=gstreamer-editing-services
-version=1.24.7
+version=1.24.8
 
-source=(https://gstreamer.freedesktop.org/src/gst-editing-services/gst-editing-services-$version.tar.xz)
+source=(https://gstreamer.freedesktop.org/src/gst-editing-services/gst-editing-services-$version.tar.xz
+        ges-Fix-name-of-GESFrameCompositionMeta-API-type.patch)
+
+prepare() {
+cd gst-editing-services-$version
+
+patch -Np3 -i ../ges-Fix-name-of-GESFrameCompositionMeta-API-type.patch
+}
 
 build() {
 cd gst-editing-services-$version
