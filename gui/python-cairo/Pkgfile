@@ -12,27 +12,28 @@ name=python-cairo
 _name="pycairo"
 alias=(${_name})
 
-version=1.26.1
-release=2
+version=1.27.0
 
 source=(https://github.com/pygobject/pycairo/releases/download/v$version/pycairo-$version.tar.gz)
 
 build() {
   cd ${_name}-$version
 
-  pip3 wheel -w dist \
-    --no-build-isolation \
-    --no-deps $PWD
-  pip3 install --no-index \
-    --find-links dist \
-    --no-cache-dir    \
-    --no-user         \
-    --root=$PKG       \
-    ${_name}
+  mkdir build
+  cd    build
 
- find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+       meson setup .. \
+             --prefix=/usr \
+    --buildtype=plain \
+    --wrap-mode nodownload \
+    -D b_lto=true \
+    -D b_pie=true \
+    -D python=/usr/bin/python3
 
-install -Dm644 COPYING $PKG/usr/share/licenses/$name/COPYING
-install -Dm644 COPYING-LGPL-2.1 $PKG/usr/share/licenses/$name/COPYING-LGPL-2.1
-install -Dm644 COPYING-MPL-1.1 $PKG/usr/share/licenses/$name/COPYING-MPL-1.1
+  ninja
+  DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING $PKG/usr/share/licenses/$name/COPYING
+install -Dm644 ../COPYING-LGPL-2.1 $PKG/usr/share/licenses/$name/COPYING-LGPL-2.1
+install -Dm644 ../COPYING-MPL-1.1 $PKG/usr/share/licenses/$name/COPYING-MPL-1.1
 }  
