@@ -6,26 +6,34 @@ liense="GPL2"
 packager="spiky <spiky@nutyx.org>"
 contributors="Pierre,Tnut"
 
-makedepends=(gdk-pixbuf libcroco pango vala rustc
+makedepends=(gdk-pixbuf libcroco pango vala cargo-c
              gi-docgen python-docutils python-smartypants)
 
 name=librsvg
-version=2.58.3
+version=2.59.0
 
-source=(https://download.gnome.org/sources/$name/${version%.*}/$name-$version.tar.xz)
+source=(https://gitlab.gnome.org/GNOME/librsvg/-/archive/$version/$name-$version.tar.gz)
 build() {
 cd $name-$version
-./configure --prefix=/usr \
---disable-static \
---enable-vala \
---disable-gtk-doc
 
-make
-make DESTDIR=$PKG install
-rm $PKG/usr/lib/librsvg-2.la
-rm $PKG/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.la
+        export CARGO_PROFILE_RELEASE_LTO=true 
+	export CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
 
-install -Dm644 COPYING.LIB $PKG/usr/share/licenses/$name/COPYING.LIB
+   mkdir build
+   cd    build
+
+         meson setup .. \
+                -Dpixbuf-loader=enabled \
+		-Dvala=enabled \
+        	-Dtests=false  \
+                -Ddocs=disabled
+
+
+ninja
+
+DESTDIR=$PKG ninja install
+
+install -Dm644 ../COPYING.LIB $PKG/usr/share/licenses/$name/COPYING.LIB
 }
 uptodate(){
 local latest lastversion url
