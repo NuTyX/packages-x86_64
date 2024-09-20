@@ -1,0 +1,30 @@
+description='A cargo subcommand to build and install C-ABI compatibile dynamic and static libraries'
+url='https://github.com/lu-zero/cargo-c/'
+
+license="MIT"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(rustc openssl zlib)
+
+name=cargo-c
+version=0.10.4
+
+source=(https://github.com/lu-zero/cargo-c/archive/v$version/$name-$version.tar.gz
+       https://github.com/lu-zero/cargo-c/releases/download/v$version/Cargo.lock)
+
+prepare() {
+mv Cargo.lock $name-$version/Cargo.lock
+}
+
+build() {
+
+export CFLAGS+=' -ffat-lto-objects'
+  cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')" --manifest-path $name-$version/Cargo.toml
+  cargo build --release --frozen --manifest-path $name-$version/Cargo.toml
+
+  find $SRC/$name-$version/target/release -maxdepth 1 -type f -executable -exec install -D -m755 -t $PKG/usr/bin {} +
+
+install -Dm644 $name-$version/LICENSE $PKG/usr/share/licenses/$name/LICENSE
+}
