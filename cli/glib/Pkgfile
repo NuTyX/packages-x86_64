@@ -6,30 +6,19 @@ license="LGPL-2.1-or-later"
 packager="spiky <spiky@nutyx.org>"
 contributors="Fanch,Tnut"
 
-# The joy of circular dependencies:
-# When upgrade glib package:
-# 1/ rebuild first with -Dintrospection=disabled
-# 2/ upgrade and build gobject-introspection
-# 3/ rebuild with -Dintrospection=enabled and add
-# PKGMK_DEPENDS=(glib gobject-introspection) in
-# the glib recept.
 
-PKGMK_DEPENDS=(glib gobject-introspection)
-
-###########################################
-#  WARNING if glib fails for any reasons  #
-#  RESTART FROM 1/                        #
-###########################################
-
-makedepends=(libffi pcre2 python-packaging python-docutils
+makedepends=(flex bison libffi pcre2 python-packaging
+             python-docutils python-packaging
              elfutils meson ninja libxslt docbook-xsl)
 
 PKGMK_GROUPS=(man devel doc )
 
 name=glib
 version=2.82.0
+giversion=1.82.0
 
-source=(https://download.gnome.org/sources/glib/${version:0:4}/$name-$version.tar.xz
+source=(https://download.gnome.org/sources/gobject-introspection/${giversion:0:4}/gobject-introspection-$giversion.tar.xz
+        https://download.gnome.org/sources/glib/${version:0:4}/$name-$version.tar.xz
         glib-skip_warnings-3.patch)
 prepare () {
   URL="http://downloads.tuxfamily.org/nutyx/WallPapers"
@@ -44,29 +33,54 @@ prepare () {
    install -D -m644 $i $PKG/usr/share/backgrounds/nutyx/$i
   done
   
+  mkdir build
 
-}
-build () {
   cd $name-$version
 
   patch -Np1 -i ../glib-skip_warnings-3.patch
 
-  mkdir build-glib
-  cd    build-glib
+  if [[ -e $PKG/usr/include/glib-2.0 ]]
+  then
+     mv -vf $PKG/usr/include/glib-2.0{,.old}
+  fi
 
-  meson --prefix=/usr            \
-        --buildtype=release      \
-        -Dintrospection=enabled  \
-        -Dman-pages=enabled
+
+}
+build () {
+
+  cd build
+
+  meson --prefix=/usr \
+        --libdir=/usr/lib \
+        -Dintrospection=disabled \
+        -Dman=false \
+        ../$name-$version
+
   ninja
+  ninja install
 
-  DESTDIR=$PKG ninja install
+  cd ../
+  rm -r build/
 
+  meson setup $SRC/gobject-introspection-$giversion gi-build \
+            --prefix=/usr \
+            --libdir=/usr/lib \
+            --buildtype=release
+  ninja -C gi-build
+  ninja -C gi-build install
 
-  # Default NuTyX Wallpaper
-  ln -sv nutyx-21-red.jpg $PKG/usr/share/backgrounds/nutyx/nutyx.jpg
+  # Build glib again
+  # with introspection
+  mkdir build && cd build
 
-  # License
-  install -Dt $PKG/usr/share/licenses/$name -m644 ../docs/reference/COPYING
+  meson --prefix=/usr \
+        --libdir=/usr/lib \
+        -Dintrospection=enabled \
+        -Dman=false \
+        ../$name-$version
+  ninja
+}
 
+package() {
+  DESTDIR=$PKG ninja -C build install
 }
