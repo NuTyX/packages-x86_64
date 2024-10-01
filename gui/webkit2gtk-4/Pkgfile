@@ -1,11 +1,11 @@
 description="Web content engine for GTK"
 url="https://webkitgtk.org"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(cmake mesa ninja gtk-doc python ruby gobject-introspection
-             wayland-protocols  gstreamer-plugins-bad gperf unifdef)
+             wayland-protocols  gstreamer-plugins-bad gperf unifdef sysprof)
 run=(cairo xorg-fontconfig freetype libgcrypt glib gtk3 harfbuzz icu
           libjpeg-turbo libsoup3 libxml2 zlib libpng sqlite libwebp at-spi2-core
           libwpe wpebackend-fdo libxslt libsecret libtasn1 enchant xorg-libx11 
@@ -14,18 +14,18 @@ run=(cairo xorg-fontconfig freetype libgcrypt glib gtk3 harfbuzz icu
           gstreamer-plugins-base libmanette)
 
 name=webkit2gtk-4
-version=2.44.3
+version=2.46.1
 
 source=(https://webkitgtk.org/releases/webkitgtk-$version.tar.xz)
 
-export NINJAJOBS=25
+export NINJAJOBS=20
 
 build() {
 cd webkitgtk-$version
+
 mkdir -p build
 cd       build
-CFLAGS=-Wno-expansion-to-defined   \
-CXXFLAGS=-Wno-expansion-to-defined \
+
 cmake -G Ninja                     \
       -DCMAKE_BUILD_TYPE=Release   \
       -DCMAKE_INSTALL_PREFIX=/usr  \
@@ -38,13 +38,12 @@ cmake -G Ninja                     \
       -DUSE_JPEGXL=OFF             \
       -DUSE_GTK4=OFF               \
       -DUSE_LIBBACKTRACE=OFF       \
-      -DENABLE_GTKDOC=ON           \
       -DENABLE_DOCUMENTATION=OFF   \
       -DENABLE_BUBBLEWRAP_SANDBOX=OFF \
       -DUSE_GSTREAMER_TRANSCODER=OFF  \
       -Wno-dev ..
-ninja || ninja -j1
-DESTDIR=$PKG ninja install || DESTDIR=$PKG ninja -j1 install
+
+DESTDIR=$PKG ninja install
 
 install -vdm755 $PKG/usr/share/gtk-doc/html/webkit{2,web-process-extension}gtk-6.0
 install -vm644  ../Documentation/webkitgtk-6.0/* \
