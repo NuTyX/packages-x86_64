@@ -1,8 +1,8 @@
 description="Accessing the list of user accounts and information attached to those accounts." 
 url="http://www.freedesktop.org/wiki/Software/AccountsService/"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Pierrei,Jayce,Spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierrei,Jayce,Tnut"
 
 makedepends=(meson ninja xmlto libxslt polkit libxcrypt
              elogind gobject-introspection vala)
@@ -11,9 +11,20 @@ set=(gnome kde6)
 
 name=accountsservice
 version=23.13.9
-release=3
+release=4
 
 source=(http://www.freedesktop.org/software/$name/$name-$version.tar.xz)
+
+prepare() {
+cd $name-$version
+   mv tests/dbusmock{,-tests}
+
+   sed -e '/accounts_service\.py/s/dbusmock/dbusmock-tests/' \
+    -e 's/assertEquals/assertEqual/'                      \
+    -i tests/test-libaccountsservice.py
+
+sed -i '/^SIMULATED_SYSTEM_LOCALE/s/en_IE.UTF-8/en_HK.iso88591/' tests/test-daemon.py
+}
 
 build() {
 cd $name-$version
@@ -23,6 +34,12 @@ meson --prefix=/usr             \
       -Dadmin_group=adm         \
       -Delogind=true            \
       ..
+
+grep 'print_indent'     ../subprojects/mocklibc-1.0/src/netgroup.c \
+     | sed 's/ {/;/' >> ../subprojects/mocklibc-1.0/src/netgroup.h &&
+sed -i '1i#include <stdio.h>'                                      \
+    ../subprojects/mocklibc-1.0/src/netgroup.h
+
 ninja
 DESTDIR=$PKG ninja install
  
