@@ -3,35 +3,31 @@ url="http://librsvg.sourceforge.net/"
 
 liense="GPL2"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
-makedepends=(gdk-pixbuf libcroco pango vala cargo-c
+makedepends=(gdk-pixbuf libcroco pango vala rustc cargo-c
              gi-docgen python-docutils python-smartypants)
 
 name=librsvg
-version=2.59.0
+version=2.59.1
 
 source=(https://gitlab.gnome.org/GNOME/librsvg/-/archive/$version/$name-$version.tar.gz)
 build() {
 cd $name-$version
 
-        export CARGO_PROFILE_RELEASE_LTO=true 
-	export CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
 
-   mkdir build
-   cd    build
+mkdir build
+cd    build
 
-         meson setup .. \
-                -Dpixbuf-loader=enabled \
-		-Dvala=enabled \
-        	-Dtests=false  \
-                -Ddocs=disabled
+meson setup ..      \
+-Dtests=false       \
+--buildtype=release \
+-Ddocs=disabled
 
+meson compile
 
-ninja
-
-DESTDIR=$PKG ninja install
+DESTDIR=$PKG meson install --no-rebuild
 
 install -Dm644 ../COPYING.LIB $PKG/usr/share/licenses/$name/COPYING.LIB
 }
