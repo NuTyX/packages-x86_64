@@ -18,8 +18,8 @@ PKGMK_GROUPS=(devel doc man lib)
 PKGMK_LOCALES=()
 
 name=cards
-version=2.7.4
-release=3
+version=2.83
+release=1
 
 [ "$release" != "1" ] &&  patchname="$name-$version-consolidate-$release.patch"
 
@@ -46,7 +46,7 @@ $PKG/usr/share/doc/cards-$version/ChangeLog
 lib() {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/$name.lib${PKGMK_BUILDVER}${PKGMK_ARCH}.cards.tar \
+$PKGMK_PACKAGE_DIR/$name.lib${PKGMK_PACKAGE_EXT}$version-$release \
 usr/lib
 
 rm usr/lib/libcards*
@@ -56,7 +56,7 @@ devel()
 {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/$name.${group}${PKGMK_BUILDVER}${PKGMK_ARCH}.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/include \
 usr/bin \
 etc/pkgmk.conf.example \
