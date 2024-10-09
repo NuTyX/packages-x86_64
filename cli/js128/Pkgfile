@@ -1,0 +1,39 @@
+description='JavaScript interpreter and libraries - Version 128'
+url='https://spidermonkey.dev/'
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(autoconf2-13 readline llvm icu rustc libffi python zlib zip cbindgen)
+
+name=js128
+version=128.3.0
+
+source=(https://archive.mozilla.org/pub/firefox/releases/${version}esr/source/firefox-${version}esr.source.tar.xz)
+
+
+build() {
+cd firefox-$version
+
+ mkdir obj
+ cd    obj
+
+  sh  ../../firefox-$version/js/src/configure \
+              --prefix=/usr       \
+              --with-intl-api     \
+              --with-system-zlib  \
+              --with-system-icu   \
+              --disable-jemalloc  \
+              --disable-debug-symbols  \
+              --enable-readline
+
+  SHELL=/bin/sh make
+
+  SHELL=/bin/sh make DESTDIR=$PKG install
+
+
+  # conflict with js60
+  rm $PKG/usr/lib/libjs_static.ajs
+ 
+  sed -i '/@NSPR_CFLAGS@/d' $PKG/usr/bin/js128-config
+}
