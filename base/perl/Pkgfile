@@ -4,18 +4,24 @@ url="http://www.perl.org/"
 
 license="GPL"
 
-packager="tnut <tnut@nutyx.org>"
-contributors="Greg,spiky"
+packager="spiky <spiky@nutyx.org>"
+contributors="Greg,Tnut"
 
 makedepends=(bzip2 less libxcrypt)
 set=(devel)
 
 name=perl
-version=5.38.2
+version=5.40.0
 
 _majversion=${version:0:4}
 
-source=(https://www.cpan.org/src/5.0/$name-$version.tar.xz)
+source=(https://www.cpan.org/src/5.0/$name-$version.tar.xz
+        perl-5.40.0-fix-compilation-in-eprefix-bug-939014.patch)
+
+prepare() {
+cd $name-$version
+patch -Np1 -i ../perl-5.40.0-fix-compilation-in-eprefix-bug-939014.patch
+}
 
 build()
 {
