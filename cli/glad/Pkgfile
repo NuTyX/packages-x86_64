@@ -6,19 +6,19 @@ license="MIT"
 packager="spiky <spiky@nutyx.org>"
 contributors=""
 
-makedepends=(python python-jinja)
+makedepends=(python python-jinja python-build python-installer)
 
 name=glad
-version=2.0.7
+version=2.0.8
 
 source=(https://github.com/Dav1dde/glad/archive/refs/tags/v$version/$name-$version.tar.gz)
 
 build() {
 cd $name-$version
 
-  python setup.py build
+  python -m build --wheel --no-isolation
 
-  python setup.py install --root="$PKG" --optimize=1
+  python -m installer --destdir="$pkgdir" dist/*.whl
 
 install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
 }
