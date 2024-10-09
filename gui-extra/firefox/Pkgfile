@@ -3,8 +3,8 @@ url="https://www.mozilla.com/firefox/"
 
 license="MPL-2.0, GPL-2.0-or-later, LGPL-2.1-or-later"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Remy,Fabienwang,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Remy,Fabienwang,Spiky"
 
 categories=(Network WebBrowser)
 
@@ -18,13 +18,12 @@ run=(pulseaudio icu sqlite libvpx nss gtk3 zip unzip
 
 
 name=firefox
-version=129.0.2
+version=131.0.2
 
 locale_version=$version
 
 source=(firefox.desktop
-	https://archive.mozilla.org/pub/firefox/releases/$version/source/$name-$version.source.tar.xz
-        cbindgen-0.27.patch)
+        https://archive.mozilla.org/pub/firefox/releases/$version/source/$name-$version.source.tar.xz)
 
 pack_remove_locale() {
 
@@ -48,7 +47,6 @@ cd $name-$version
    sed '/ZWJ/s/}/,CLASS_CHARACTER&/' -i intl/lwbrk/LineBreaker.cpp || exit $?
  done)
 
-patch -Np1 -i ../cbindgen-0.27.patch
 }
 
 build() {
