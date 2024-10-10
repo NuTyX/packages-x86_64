@@ -1,0 +1,31 @@
+Submitted By:            Douglas R. Reno <renodr at linuxfromscratch dot org>
+Date:                    2024-10-09
+Initial Package Version: 2.0.0
+Upstream Status:         Applied (commit 95576ec3d)
+Origin:                  Upstream
+Description:             Fixes a part of the vulnerability chain that allows for
+                         unauthenticated (with no user interaction required)
+                         remote code execution. This fixes CVE-2024-47076 by
+                         validating IPP attributes returned from an IPP server
+                         in the cfGetPrinterAttributes5 function. Without this
+                         fix, attackers are able to generate a PPD file with
+                         user controlled values.
+
+diff -Naurp libcupsfilters-2.0.0.orig/cupsfilters/ipp.c libcupsfilters-2.0.0/cupsfilters/ipp.c
+--- libcupsfilters-2.0.0.orig/cupsfilters/ipp.c	2024-10-09 13:59:27.394243819 -0500
++++ libcupsfilters-2.0.0/cupsfilters/ipp.c	2024-10-09 14:01:01.767616023 -0500
+@@ -452,6 +452,14 @@ cfGetPrinterAttributes5(http_t *http_pri
+ 	    ippDelete(response2);
+ 	  }
+ 	}
++
++   // Check if the response is valid
++   if (!ippValidateAttributes(response))
++   {
++      ippDelete(response);
++      response = NULL;
++   }
++
+ 	if (have_http == 0) httpClose(http_printer);
+ 	if (uri) free(uri);
+ 	return (response);
