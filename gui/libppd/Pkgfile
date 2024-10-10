@@ -11,7 +11,13 @@ makedepends=(libcupsfilters)
 name=libppd
 version=2.0.0
 
-source=(https://github.com/OpenPrinting/libppd/releases/download/$version/$name-$version.tar.xz)
+source=(https://github.com/OpenPrinting/libppd/releases/download/$version/$name-$version.tar.xz
+        libppd-2.0.0-upstream_fixes-1.patch)
+
+prepare() {
+cd $name-$version
+patch -Np1 -i ../libppd-2.0.0-upstream_fixes-1.patch
+}
 
 build() {
 cd $name-$version
