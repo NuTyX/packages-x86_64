@@ -6,16 +6,10 @@ packager="spiky <spiky@nutyx.org>"
 makedepends=(libevent)
 
 name=tmux
-version=3.4
+version=3.5a
 
-source=(https://github.com/tmux/tmux/releases/download/$version/$name-$version.tar.gz
-        CVE-2022-47016.patch)
+source=(https://github.com/tmux/tmux/releases/download/$version/$name-$version.tar.gz)
 
-prepare() {
-cd $name-$version
-
-#patch -Np1 -i ../CVE-2022-47016.patch
-}
 
 build() {
 	cd $name-$version
