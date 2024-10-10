@@ -6,7 +6,7 @@ contributors="Pierre,Tnut"
 
 name=keyutils
 version=1.6.3
-release=2
+release=3
 
 source=(request-key.conf.patch reproducible.patch
 	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git/snapshot/$name-$version.tar.gz)
@@ -19,6 +19,5 @@ build() {
 
 	make CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
 
-        make
-        make  DESTDIR=$PKG install
+        make LIBDIR=/usr/lib BINDIR=/usr/bin SBINDIR=/usr/sbin  DESTDIR=$PKG install
 }
