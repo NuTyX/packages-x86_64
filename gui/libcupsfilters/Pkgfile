@@ -10,9 +10,15 @@ makedepends=(cups xorg-fontconfig ghostscript lcms2 qpdf)
 
 name=libcupsfilters
 version=2.0.0
-release=2
+release=3
 
-source=(https://github.com/OpenPrinting/libcupsfilters/releases/download/$version/$name-$version.tar.xz)
+source=(https://github.com/OpenPrinting/libcupsfilters/releases/download/$version/$name-$version.tar.xz
+        libcupsfilters-2.0.0-upstream_fixes-1.patch)
+
+prepare() {
+cd $name-$version
+patch -Np1 -i ../libcupsfilters-2.0.0-upstream_fixes-1.patch
+}
 
 build() {
 cd $name-$version
