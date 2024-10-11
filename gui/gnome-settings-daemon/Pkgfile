@@ -9,13 +9,18 @@ contributors="Fanch,Jayce,Remy,Tnut"
 makedepends=(geoclue2 geocode-glib libgweather-4 librsvg meson
              networkmanager ninja nss intltool cups colord
              gnome-desktop libcanberra libnotify libgnomekbd
-             libwacom pulseaudio upower elogind  gcr-4)
+             libwacom pulseaudio upower elogind  gcr-4 pkgconfig)
 run=(gtk-update-icon-cache gsettings-desktop-schemas)
 
 name=gnome-settings-daemon
-version=46.0
+version=47.1
 
-source=(https://download.gnome.org/sources/$name/46/$name-$version.tar.xz)
+source=(https://download.gnome.org/sources/$name/${version:0:2}/$name-$version.tar.xz)
+
+prepare() {
+  cd $name-$version
+  sed "/  policy,/d" -i plugins/{power,wacom}/meson.build
+}
 
 build() {
 cd $name-$version
