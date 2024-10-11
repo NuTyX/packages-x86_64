@@ -1,18 +1,18 @@
 description="PPD files from the data in Foomatic's XML database."
 url="http://www.linuxprinting.org/foomatic.html"
 
-packager="fabienwang <fabienwang@nutyx.org>"
-contributors="Pierre B, tnut"
+packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Tnut,Fabienwang"
 
 makedepends=(libxml2 cups)
 
 name=foomatic-db-engine
-version=4.0
-release=1
+version=20241010
+_version=4.0
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(http://www.openprinting.org/download/foomatic/$name-$version-current.tar.gz)
+source=(https://www.openprinting.org/download/foomatic/$name-${_version}-$version.tar.gz)
 
 build() {
     cd $name-*
