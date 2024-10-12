@@ -11,11 +11,12 @@ makedepends=(coreutils grep procps-ng sed
 run=(gawk pciutils usbutils xorg-xdpyinfo xorg-xprop xorg-xrandr lm-sensors)
 
 name=inxi
-version=3.3.35.1
+version=3.3.36.1
+_version=3.3.36-1
 
 PKGMK_KEEP_SOURCES="no"
 
-source=(https://codeberg.org/smxi/inxi/archive/3.3.33-1.tar.gz)
+source=(https://codeberg.org/smxi/inxi/archive/${_version}.tar.gz)
 
 build() {
 cd $name
