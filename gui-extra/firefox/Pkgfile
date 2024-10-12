@@ -18,7 +18,7 @@ run=(pulseaudio icu sqlite libvpx nss gtk3 zip unzip
 
 
 name=firefox
-version=129.0.2
+version=131.0.2
 
 locale_version=$version
 
@@ -48,7 +48,7 @@ cd $name-$version
    sed '/ZWJ/s/}/,CLASS_CHARACTER&/' -i intl/lwbrk/LineBreaker.cpp || exit $?
  done)
 
-patch -Np1 -i ../cbindgen-0.27.patch
+#patch -Np1 -i ../cbindgen-0.27.patch
 }
 
 build() {
