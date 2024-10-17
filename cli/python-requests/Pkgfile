@@ -3,31 +3,23 @@ url="https://pypi.python.org/pypi/requests"
 packager="spiky <spiky@nutyx.org>"
 contributors="Hugo,Tnut"
 
-makedepends=(python-urllib3 python-chardet python-certifi python-idna)
+makedepends=(python-urllib3 python-chardet python-certifi python-idna python-charset-normalizer)
 
 name=python-requests
 _name="requests"
 alias=(${_name})
 
 version=2.32.3
-release=2
+release=5
 
 PKGMK_KEEP_SOURCES="no"
 source=(https://files.pythonhosted.org/packages/source/r/requests/requests-$version.tar.gz
-        certs.patch)
+        requests-2.32.3-use_system_certs-1.patch)
 
 prepare() {
   cd ${_name}-$version
 
-  # Stay with chardet for now: https://github.com/psf/requests/issues/5871
-
-  sed \
-    -e '/certifi/d' \
-    -e "s/,<.*'/'/" \
-    -e '/charset_normalizer/d' \
-    -i setup.py
-
-  patch -p1 -d src -i $SRC/certs.patch
+patch -Np1 -i ../requests-2.32.3-use_system_certs-1.patch
 }
 
 build(){
