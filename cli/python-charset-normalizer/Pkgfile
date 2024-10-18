@@ -1,0 +1,43 @@
+description='The charset-normalizer library helps with reading text from an unknown character encoding'
+url='https://github.com/ousret/charset_normalizer'
+
+license="MIT"
+
+packager="spiky <spiky@nutyx.org>"
+contributors=""
+
+makedepends=(python-setuptools)
+
+name=python-charset-normalizer
+_name="charset-normalizer"
+alias=(${_name})
+
+version=3.4.0
+release=2
+
+source=(https://github.com/Ousret/charset_normalizer/archive/$version/${_name}-$version.tar.gz)
+
+prepare() {
+
+mv charset_normalizer-$version ${_name}-$version
+}
+
+build() {
+
+      
+  cd ${_name}-$version
+
+  pip3 wheel -w dist \
+    --no-build-isolation \
+    --no-deps $PWD
+  pip3 install --no-index \
+    --find-links dist \
+    --no-cache-dir    \
+    --no-user         \
+    --root=$PKG       \
+    ${_name}
+
+ find $PKG -type d -name vendor -o -name tests |xargs rm -rf 
+
+install -Dm644 LICENSE $PKG/usr/share/licenses/$name/LICENSE
+}
