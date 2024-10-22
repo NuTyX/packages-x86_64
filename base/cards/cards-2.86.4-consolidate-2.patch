@@ -1,0 +1,18 @@
+diff --git a/scripts/pkgmk.in b/scripts/pkgmk.in
+index edbde0c..372168c 100755
+--- a/scripts/pkgmk.in
++++ b/scripts/pkgmk.in
+@@ -401,11 +401,9 @@ check_footprint() {
+ 	local TARGET FILE="$PKGMK_WORK_DIR/.tmp"
+ 
+ 	cd $PKGMK_ROOT
++	get_packages_list
+ 	if [ -z $TARGETS ]; then
+-		get_packages_list
+-		if [ -z $TARGETS ]; then
+-			error "Unable to update footprint"
+-		fi
++		error "Unable to update footprint"
+ 	fi
+ 	for TARGET in ${TARGETS[@]}; do
+ 		if [ -f $PKGMK_PACKAGE_DIR/$TARGET ]; then
