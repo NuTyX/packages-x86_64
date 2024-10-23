@@ -2,11 +2,12 @@ description="Utilities to administer the extended attributes on filesystem objec
 url="http://savannah.nongnu.org/projects/attr"
 
 maintainer="Andreas Gruenbacher <agruen>, Brandon Philips <philips>"
-contributors="Pierre,Tnut"
-packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Spiky"
+packager="tnut <tnut@nutyx.org>"
 
 name=attr
 version=2.5.2
+release=2
 
 PKGMK_GROUPS=(devel man doc)
 PKGMK_LOCALES=()
@@ -35,7 +36,7 @@ ln -sfv ../../lib/libattr.so.1 $PKG/usr/lib/libattr.so
 devel () {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/lib usr/include
 rm -rvf usr/lib usr/include
 }
