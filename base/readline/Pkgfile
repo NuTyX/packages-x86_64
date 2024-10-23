@@ -1,14 +1,13 @@
 description="Set of libraries that offers command-line editing and history capabilities"
 url="http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html"
 maintainer="Chet Ramey, chet dot ramey at case dot edu"
-contributors="Pierre,Tnut"
-packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Spiky"
+packager="tnut <tnut@nutyx.org>"
 
 name=readline
-version=8.2
-release=2
+version=8.2.13
 
-source=(http://ftp.gnu.org/gnu/readline/readline-$version.tar.gz)
+source=(https://ftp.gnu.org/gnu/readline/readline-$version.tar.gz)
 
 PKGMK_GROUPS=(devel man doc)
 
@@ -54,7 +53,7 @@ devel()
 {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/lib/libhistory.a usr/lib/libreadline.a usr/include usr/share/readline \
 usr/lib/libhistory.so usr/lib/libreadline.so
 rm -r usr/lib/libhistory.a usr/lib/libreadline.a usr/include usr/share/readline \
