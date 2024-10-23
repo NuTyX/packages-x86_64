@@ -1,0 +1,186 @@
+diff --git a/src/cache.cxx b/src/cache.cxx
+index db30d9b..081c2ee 100644
+--- a/src/cache.cxx
++++ b/src/cache.cxx
+@@ -40,14 +40,6 @@ const std::string& cache::name()
+ {
+ 	return m_name;
+ }
+-void cache::baseName(const std::string& name)
+-{
+-	m_name=name;
+-}
+-const std::string& cache::baseName()
+-{
+-	return m_name;
+-}
+ const std::string& cache::fileName()
+ {
+ 	return m_fileName;
+diff --git a/src/cache.h b/src/cache.h
+index 74e2cfb..ab61cf9 100644
+--- a/src/cache.h
++++ b/src/cache.h
+@@ -13,7 +13,6 @@ class cache: public db
+ 	unsigned int long   m_size;
+ 	bool				m_installed;
+ 	std::string			m_name;
+-	std::string			m_baseName;
+ 	std::string			m_fileName;
+ 	std::string			m_fileDate;
+ 	std::string			m_dirName;
+@@ -27,7 +26,6 @@ public:
+ 	bool				toinstall();
+ 	bool				toremove();
+ 	const std::string&	name();
+-	const std::string&	baseName();
+ 	const std::string&	fileName();
+ 	const std::string&	fileDate();
+ 	const std::string&	dirName();
+@@ -37,7 +35,6 @@ public:
+ 	void				unsetStatus(StatusEnum status);
+ 	void				installed(bool installed);
+ 	void				name(const std::string& name);
+-	void				baseName(const std::string& baseName);
+ 	void				fileName(const std::string& fileName);
+ 	void				fileDate(const std::string& filedate);
+ 	void				dirName(const std::string& dirname);
+diff --git a/src/pkg.cxx b/src/pkg.cxx
+index 223ad61..a64efb4 100644
+--- a/src/pkg.cxx
++++ b/src/pkg.cxx
+@@ -107,6 +107,14 @@ const std::set<std::string>& pkg::sets()
+ {
+ 	return m_sets;
+ }
++void pkg::baseName(const std::string& name)
++{
++	m_baseName=name;
++}
++const std::string& pkg::baseName()
++{
++	return m_baseName;
++}
+ void pkg::collection(const std::string& collection)
+ {
+ 	m_collection = collection;
+diff --git a/src/pkg.h b/src/pkg.h
+index fe154f3..4a6f0ea 100644
+--- a/src/pkg.h
++++ b/src/pkg.h
+@@ -17,15 +17,16 @@ class pkg
+ 	std::string 			m_contributors;
+ 
+ 	std::string 			m_version;
+-	unsigned short int 		m_release;
++	unsigned short int		m_release;
+ 
+ 	std::set<std::string>   m_libs;
+ 	std::set<std::string> 	m_alias;
+ 	std::set<std::string> 	m_sets;
+ 	std::set<std::string> 	m_categories;
+ 
+-	std::string 			m_group;
+-	std::string 			m_collection;
++	std::string				m_group;
++	std::string				m_baseName;
++	std::string				m_collection;
+ 	std::string 			m_arch;
+ 	std::string 			m_license;
+ 	std::string 			m_signature;
+@@ -48,7 +49,8 @@ public:
+ 	const std::string& 		version();
+ 	unsigned short int 		release();
+ 
+-	const std::string& 		group();
++	const std::string&		group();
++	const std::string&		baseName();
+ 	const std::string&		collection();
+ 	const std::set<std::string>&    libs();
+ 	const std::set<std::string>& 	alias();
+@@ -77,6 +79,7 @@ public:
+ 	void					categories(const std::set<std::string>& categories);
+ 
+ 	void					collection(const std::string& collection);
++	void					baseName(const std::string& baseName);
+ 	void					group(const std::string& group);
+ 	void					arch(const std::string& arch);
+ 	void					license(const std::string& license);
+diff --git a/src/pkgdbh.cxx b/src/pkgdbh.cxx
+index b7c9b96..9ffbec6 100644
+--- a/src/pkgdbh.cxx
++++ b/src/pkgdbh.cxx
+@@ -528,8 +528,10 @@ pkgdbh::buildDatabase(const bool& progress,
+ 				}
+ 				// As a group is not always present we cannot
+ 				// depend on a found one to break
+-				if (s[0] == GROUP)
++				if (s[0] == GROUP) {
+ 					info.group(s.substr(1));
++					info.baseName(pkgName.substr(0,pkgName.size() - s.size()));
++				}
+ 
+ 				// As a std::set is not always present we cannot
+ 				// depen on a found one to break
+@@ -623,9 +625,10 @@ pkgdbh::buildSimpleDatabase()
+ 				if (s[0] == BUILD)
+ 					info.build(strtoul(s.substr(1).c_str(),nullptr,0));
+ 
+-				if (s[0] == GROUP)
++				if (s[0] == GROUP) {
+ 					info.group(s.substr(1));
+-
++					info.baseName(i.substr(0,i.size() - s.size()));
++				}
+ 				if (s[0] == ALIAS)
+ 					alias.insert(s.substr(1));
+ 
+@@ -637,6 +640,10 @@ pkgdbh::buildSimpleDatabase()
+ 						info.dependency(true);
+ 				}
+ 			}
++			if ((info.collection().size() == 0) &&
++					(info.baseName().size() > 0) )
++				info.collection(m_listOfPackages[info.baseName()].collection());
++
+ 			info.sets(sets);
+ 			info.alias(alias);
+ 			m_listOfPackages[i] = info;
+@@ -717,19 +724,20 @@ void pkgdbh::buildCompleteDatabase(const bool& progress)
+ 				if (s[0] == COLLECTION)
+ 					info.collection(s.substr(1));
+ 
+-				if ( s[0] == SETS ) {
++				if ( s[0] == SETS )
+ 					sets.insert(s.substr(1));
+-				}
+-				if ( s[0] == GROUP ) {
+-					info.group( s.substr(1) );
++
++				if (s[0] == GROUP) {
++					info.group(s.substr(1));
++					info.baseName(i.substr(0,i.size() - s.size()));
+ 				}
+ 				if ( s[0] == 'd' ) {
+ 					if ( s == "d1" )
+ 						info.dependency(true);
+ 				}
+-				if (s[0] == SIZE_I) {
++				if (s[0] == SIZE_I)
+ 					info.space( atoi(s.substr(1).c_str()) );
+-				}
++
+ 				if (s[0] == ALIAS) {
+ 					alias.insert(s.substr(1));
+ 					m_listOfAlias[s.substr(1)] = i;
+@@ -744,6 +752,10 @@ void pkgdbh::buildCompleteDatabase(const bool& progress)
+ 					dependencies.insert(NameEpoch);
+ 				}
+ 			}
++			if ((info.collection().size() == 0) &&
++					(info.baseName().size() > 0) )
++				info.collection(m_listOfPackages[info.baseName()].collection());
++
+ 			info.alias(alias);
+ 			info.sets(sets);
+ 			info.categories(categories);
