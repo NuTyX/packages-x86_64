@@ -2,13 +2,14 @@ description="The MPFR package contains functions for multiple precision math"
 url="http://www.mpfr.org"
 
 maintainer="Guillaume Hanrot,Vincent Lefèvre,Patrick Pélissier,Philippe Théveny and Paul Zimmermann"
-contributors="Pierre,Tnut"
-packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Spiky"
+packager="tnut <tnut@nutyx.org>"
 
 makedepends=(gmp texinfo)
 
 name=mpfr
 version=4.2.1
+release=2
 
 source=(https://ftp.gnu.org/gnu/$name/$name-$version.tar.xz)
 
@@ -31,7 +32,7 @@ devel()
 {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.cards.tar \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/lib/pkgconfig \
 usr/include
 
