@@ -2,7 +2,7 @@ description="Library that can create and read several streaming archive formats.
 url="http://people.freebsd.org/~kientzle/libarchive"
 
 maintainer="kientzle at acm dot org"
-packager="spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
 license="BSD"
 
 makedepends=(bzip2 zstd)
@@ -32,7 +32,7 @@ rm $PKG/usr/lib/libarchive.la
 devel() {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/lib/libarchive.a usr/include usr/lib/pkgconfig
 rm -r usr/lib/libarchive.a
 rm -r usr/include
