@@ -2,8 +2,8 @@ description="The Gawk package contains programs for manipulating text files."
 url="http://www.gnu.org/software/gawk/"
 
 maintainer="Paul Rubin,Paul Finlason,Richard Stallman,David Trueman and,Arnold Robbins"
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
 name=gawk
 version=5.3.1
@@ -27,7 +27,7 @@ devel()
 {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/share/awk usr/include
 
 rm -r usr/share/awk usr/include
