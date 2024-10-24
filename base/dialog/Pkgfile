@@ -1,7 +1,7 @@
 [ "$PKGMK_ARCH" == "x86_64" ] && PKGMK_GROUPS=(devel man)
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Rems,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Rems,Spiky"
 maintainer="Thomas E. Dickey dickey at invisible-island dot net"
 
 url="http://hightek.org/dialog/"
@@ -27,7 +27,7 @@ make DESTDIR=$PKG install
 devel() {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/lib
 
 rm -r usr/lib
