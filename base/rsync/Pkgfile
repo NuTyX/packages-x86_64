@@ -1,12 +1,13 @@
 description="Synchronizing files over a network by sending just the differences in the files."
 url="http://samba.anu.edu.au/rsync/"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 run=(shadow)
 
 name=rsync
 version=3.3.0
+
 runyx_version=20201011
 
 source=(http://downloads.tuxfamily.org/nutyx/sources/runyx/runyx-${runyx_version}.tar.xz
@@ -48,7 +49,7 @@ make DESTDIR=$PKG install-sysd-rsyncd
 service() {
 cd $PKG
 bsdtar -r -f \
-$PKGMK_PACKAGE_DIR/${name}.${group}${PKGMK_BUILDVER}any.${PKGMK_PACKAGE_EXT} \
+$PKGMK_PACKAGE_DIR/${name}.${group}${PKGMK_PACKAGE_EXT}$version-$release \
 etc/rc.d etc/init lib/init lib/systemd
 rm -r etc/rc.d etc/init lib/init lib/systemd
 }
