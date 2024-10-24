@@ -1,8 +1,8 @@
 url="https://www.kernel.org/pub/linux/utils/net/iproute2/"
 description="Programs for basic and advanced network routing."
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,<Tnut@Nutyxdot,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
 makedepends=(libcap bison flex)
 
@@ -32,7 +32,7 @@ devel()
 {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/lib
 
 rm -r usr/lib
