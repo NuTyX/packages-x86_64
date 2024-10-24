@@ -1,8 +1,9 @@
 description="Contains compression and decompression routines used by some programs."
 url="http://www.zlib.net/"
+
 maintainer="Jean-loup Gailly (compression), Mark Adler (decompression)"
-contributors="Pierre,Tnut"
-packager="spiky <spiky@nutyx.org>"
+contributors="Pierre,Spiky"
+packager="tnut <tnut@nutyx.org>"
 
 name=zlib
 version=1.3.1
@@ -50,7 +51,7 @@ ln -sfv ../../lib/libz.so.$version  $PKG/usr/lib/libz.so
 devel () {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/lib usr/include
 rm -rvf usr/lib usr/include
 }
