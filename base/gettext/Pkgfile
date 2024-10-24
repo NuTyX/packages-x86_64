@@ -4,13 +4,14 @@ url="http://www.gnu.org/software/gettext/"
 license="GPL3"
 
 maintainer="Ulrich Drepper"
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
 makedepends=(acl attr ncurses)
 
 name=gettext
 version=0.22.5
+
 PKGMK_LOCALES=()
 
 source=(http://ftp.gnu.org/gnu/gettext/gettext-$version.tar.xz)
@@ -32,7 +33,7 @@ devel()
 {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/include usr/share/aclocal usr/share/gettext
 
 rm -r usr/include usr/share/aclocal usr/share/gettext
