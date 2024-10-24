@@ -2,7 +2,8 @@ description="Utilities for handling the ext2,3 and 4 files system."
 url="http://e2fsprogs.sourceforge.net/"
 
 maintainer="Ted Ts'o tytso at mit dot edu,tytso at alum dot mit dot edu"
-packager="spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiyk"
 
 makedepends=(util-linux texinfo sed)
 PKGMK_GROUPS=(devel man doc)
@@ -46,7 +47,7 @@ devel()
 {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/include usr/lib/pkgconfig usr/share/et usr/share/ss
 
 rm -r usr/{include,lib/pkgconfig,share/et,share/ss}
