@@ -48,6 +48,7 @@ mkdir -p $PKG/lib
 mv -v $PKG/usr/lib/libz.so.* $PKG/lib
 ln -sfv ../../lib/libz.so.$version  $PKG/usr/lib/libz.so
 }
+
 devel () {
 cd $PKG
 bsdtar -cf \
