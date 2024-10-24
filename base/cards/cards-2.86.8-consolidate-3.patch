@@ -18,3 +18,16 @@ index 68dba7b..6e2dc1a 100755
  		echo "B$PKGMK_BUILDVER" >> .META
  	else
  	    echo "g$GROUP" >> .META
+diff --git a/src/create.cxx b/src/create.cxx
+index 6f4d4e1..1afda99 100644
+--- a/src/create.cxx
++++ b/src/create.cxx
+@@ -425,7 +425,7 @@ void create::buildBinary(std::string packageName)
+             + " "
+             + version;
+         m_upgrade = 0;
+-        buildDatabase(false, false);
++        buildDatabase(false, true);
+ 		if (checkPackageNameExist(name)) {
+ 			message = name + ": is ALLREADY installed";
+ 			m_upgrade = 1;
