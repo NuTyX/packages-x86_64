@@ -1,5 +1,6 @@
 description="Programs for compressing and decompressing files."
 url="http://www.bzip.org/"
+
 maintainer="Julian Seward ( jseward at bzip dot org )"
 packager="tnut <tnut@nutyx.org>"
 
@@ -52,7 +53,7 @@ done
 devel() {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}`uname -m`.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/lib usr/include
 rm -r usr/lib usr/include
 }
