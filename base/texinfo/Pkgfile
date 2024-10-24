@@ -1,12 +1,15 @@
 description="Texinfo is the official documentation format of the GNU project."
 url="http://www.gnu.org/software/texinfo"
+
 maintainer="Karl Berry"
-packager="spiky <spiky@nutyx.org>"
+packager="tnut <tnut@nutyx.org>"
+contributors="Spiky"
 
 makedepends=(perl)
 
 name=texinfo
 version=7.1.1
+
 PKGMK_LOCALES=()
 source=(http://ftp.gnu.org/gnu/$name/texinfo-$version.tar.xz)
 
@@ -21,7 +24,7 @@ devel()
 {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/${name}.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/share/texinfo
 rm -r usr/share/texinfo
 }
