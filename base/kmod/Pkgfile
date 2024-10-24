@@ -1,8 +1,8 @@
 description="The Kmod package contains libraries and utilities for loading kernel modules."
 url="http://www.kernel.org/pub/linux/kernel/people/rusty/modules"
 
-packager="spiky <spiky@nutyx.org>"
-contributors="Pierre,Tnut"
+packager="tnut <tnut@nutyx.org>"
+contributors="Pierre,Spiky"
 
 makedepends=(xz zstd openssl)
 PKGMK_GROUPS=(devel doc man)
@@ -39,7 +39,7 @@ devel()
 {
 cd $PKG
 bsdtar -cf \
-$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_BUILDVER}any.$PKGMK_PACKAGE_EXT \
+$PKGMK_PACKAGE_DIR/$name.devel${PKGMK_PACKAGE_EXT}$version-$release \
 usr/lib \
 usr/include \
 usr/share/bash-completion
